@@ -2,115 +2,187 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 256557E7FD3
-	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 18:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A66E67E8283
+	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 20:32:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230416AbjKJR7y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 10 Nov 2023 12:59:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51456 "EHLO
+        id S1346178AbjKJTUo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 10 Nov 2023 14:20:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235323AbjKJR7T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 10 Nov 2023 12:59:19 -0500
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 383458A45;
-        Fri, 10 Nov 2023 00:02:47 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 3360E1C0009;
-        Fri, 10 Nov 2023 08:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1699603365;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=UylwPPbht2Hmc2zuuPi5hzrxk1rL9hBKeGOaaTtVLi4=;
-        b=adNudLuyHW4/6U4RdKKgOWUCa0RyMVCDhzAvm7stVMvL7UcMUj/AS+Afg/wW/yHHQ3CEhy
-        aoGyZFmzcld4q/WDRVnFpcLWgQnkvBXdB+SRtZ++vAfK7IkAi8xI1w6kLSnddZmNX/rCmf
-        TLNi+SC6JYMW+ZP21vcz6Rx+gHUAhJc9GuWkhXlztr3eOyXJOpllOLmXNPNdVL8J4lxgd2
-        tafw4l8+m2JpM6omPHipsDCqsVpnfdmenB06qKKl7lBc4Yqt0E0O2hE6u4o2BQ8Z2EvmUo
-        du2PNKh/ZpROAsdbOKt5O1OAeM3QniDUolQGEYn4Q9tqnbj4sDOL9VMNbeYQ7Q==
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Saravana Kannan <saravanak@google.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Steen Hegelund <steen.hegelund@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Herve Codina <herve.codina@bootlin.com>, stable@vger.kernel.org
-Subject: [PATCH 1/1] driver core: Remove warning on driver unbinding
-Date:   Fri, 10 Nov 2023 09:02:40 +0100
-Message-ID: <20231110080241.702999-1-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S236053AbjKJTUZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 10 Nov 2023 14:20:25 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D759ED1
+        for <stable@vger.kernel.org>; Fri, 10 Nov 2023 00:26:57 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-32d9d8284abso1043600f8f.3
+        for <stable@vger.kernel.org>; Fri, 10 Nov 2023 00:26:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1699604816; x=1700209616; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=1Sl6LMd5GvY2HGP4rRStwyGMOVlrH/dOjLpczszfQNw=;
+        b=dVMwdMh7csv6ocS6Dn7T4xfuJ7I+6vh9XgT5fDmLsTKqmtCc854XNBLTYIRQbFNE4J
+         yzFeBqXtk422Td9xptMQW6yvadSLHyVEchXOkVvyTA0cm1Vw0eMBNVzyoyjEYGOmkODv
+         L4q52QXVzUykwCqYQKP3GeWAaAYWTvGjyflwE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699604816; x=1700209616;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Sl6LMd5GvY2HGP4rRStwyGMOVlrH/dOjLpczszfQNw=;
+        b=UJbaM9mPIHtBwTLXBHUZ/FuMwsirl+j0PD0ZHDmkI9TxULe5Iu7fvoc73u8LFXG/4G
+         32nUKpHP2i87CNde6e3AZwLUOwzk2OaGyiEyCh3TVo0Weo9xNqDjVY1Vj9KHUY8nuVRz
+         1nd2xwzDUeIaf62YyaSpgDpMNAuaZ24AHesqW62/vpiPuH4zm/WQqnPNClDlkAO17CHa
+         eTQ82IfdR80Q4uFElD37iNJ57HBFfEOQsZcIm536qFvpIdhqMulBbRj0ygKSSdFmIwUc
+         NfPj/rc+j8HLUEFpjLT2ufkIv2m2lIm1xFnkmMxfTS1ubR5FWMG3AFLH9MDJOMTsuooi
+         cJ8Q==
+X-Gm-Message-State: AOJu0YxK7/NJPMZbYROcVSOhV9DgmRTWocYfHMgmgs2xhsbHmPNeE4Qv
+        nDBZ0SmjhuJrI2hPfAPjGFblLQ==
+X-Google-Smtp-Source: AGHT+IFa/6wfx+9kLbmLi8ldMycAx55pGtShVMYgpoK2iaa/HjZ2LPKqxCeLbkFt09pu6AmXKiAvUQ==
+X-Received: by 2002:adf:8b14:0:b0:331:3a1e:b85 with SMTP id n20-20020adf8b14000000b003313a1e0b85mr971558wra.22.1699604815657;
+        Fri, 10 Nov 2023 00:26:55 -0800 (PST)
+Received: from google.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
+        by smtp.gmail.com with ESMTPSA id z14-20020a056000110e00b0032f7cc56509sm1391486wrw.98.2023.11.10.00.26.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Nov 2023 00:26:55 -0800 (PST)
+Date:   Fri, 10 Nov 2023 08:26:53 +0000
+From:   Kornel =?utf-8?Q?Dul=C4=99ba?= <korneld@chromium.org>
+To:     Sven van Ashbrook <svenva@chromium.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Jason Lai <jasonlai.genesyslogic@gmail.com>,
+        Victor Shih <victor.shih@genesyslogic.com.tw>,
+        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+        =?utf-8?Q?Stanis=C5=82aw?= Kardach <skardach@google.com>,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] mmc: sdhci-pci-gli: Disable LPM during initialization
+Message-ID: <ZU3pTY0qbA6cDB7f@google.com>
+References: <20231109111934.4172565-1-korneld@chromium.org>
+ <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-During driver unbinding, __device_links_no_driver() can raise the
-following warning:
-   --- 8< ---
-   WARNING: CPU: 0 PID: 166 at drivers/base/core.c:1426 __device_links_no_driver+0xac/0xb4
-   ...
-   Call trace:
-   __device_links_no_driver+0xac/0xb4
-   device_links_driver_cleanup+0xa8/0xf0
-   device_release_driver_internal+0x204/0x240
-   device_release_driver+0x18/0x24
-   bus_remove_device+0xcc/0x10c
-   device_del+0x158/0x414
-   platform_device_del.part.0+0x1c/0x88
-   platform_device_unregister+0x24/0x40
-   of_platform_device_destroy+0xfc/0x10c
-   device_for_each_child_reverse+0x64/0xb4
-   devm_of_platform_populate_release+0x4c/0x84
-   release_nodes+0x5c/0x90
-   devres_release_all+0x8c/0xdc
-   device_unbind_cleanup+0x18/0x68
-   device_release_driver_internal+0x20c/0x240
-   device_links_unbind_consumers+0xe0/0x108
-   device_release_driver_internal+0xf0/0x240
-   driver_detach+0x50/0x9c
-   bus_remove_driver+0x6c/0xbc
-   driver_unregister+0x30/0x60
-   ...
-   --- 8< ---
+Hi Sven,
 
-This warning is raised because, during device removal, we unlink a
-consumer while its supplier links.status is DL_DEV_UNBINDING.
-Even if the link is not a SYNC_STATE_ONLY, the warning should not
-appear in that case.
+>Hi Kornel, see below.
+>
+>On Thu, Nov 9, 2023 at 6:20 AM Kornel Dulęba <korneld@chromium.org> wrote:
+>>
+>> To address IO performance commit f9e5b33934ce
+>> ("mmc: host: Improve I/O read/write performance for GL9763E")
+>> limited LPM negotiation to runtime suspend state.
+>> The problem is that it only flips the switch in the runtime PM
+>> resume/suspend logic.
+>>
+>> Disable LPM negotiation in gl9763e_add_host.
+>> This helps in two ways:
+>> 1. It was found that the LPM switch stays in the same position after
+>>    warm reboot. Having it set in init helps with consistency.
+>> 2. Disabling LPM during the first runtime resume leaves us susceptible
+>>    to the performance issue in the time window between boot and the
+>>    first runtime suspend.
+>>
+>> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Kornel Dulęba <korneld@chromium.org>
+>> ---
+>>  drivers/mmc/host/sdhci-pci-gli.c | 8 +++++++-
+>>  1 file changed, 7 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+>> index d83261e857a5..ce91d1e63a8e 100644
+>> --- a/drivers/mmc/host/sdhci-pci-gli.c
+>> +++ b/drivers/mmc/host/sdhci-pci-gli.c
+>> @@ -220,6 +220,9 @@
+>>
+>>  #define GLI_MAX_TUNING_LOOP 40
+>>
+>> +static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot,
+>> +                                             bool enable);
+>> +
+>>  /* Genesys Logic chipset */
+>>  static inline void gl9750_wt_on(struct sdhci_host *host)
+>>  {
+>> @@ -1281,6 +1284,9 @@ static int gl9763e_add_host(struct sdhci_pci_slot *slot)
+>>         if (ret)
+>>                 goto cleanup;
+>>
+>> +       /* Disable LPM negotiation to avoid entering L1 state. */
+>> +       gl9763e_set_low_power_negotiation(slot, false);
+>> +
+>>         return 0;
+>
+>What happens if the bridge is not driving the system rootfs? Imagine
+>the case where
+>the bridge is used to drive an auxiliary eMMC, unused until a few hours
+>after boot. After this patch, the bridge may remain active (not-L1)
+>for the entire time,
+>although it's not being used...
 
-Filter out this warning in case of the supplier driver is unbinding.
+That's already addressed by runtime PM. LPM negotiation will be
+re-enabled duing the first runtime suspend. The default autosuspend
+delay for all PCI MMC controllers is 50ms, so I think that's fine.
+The only scenario where LPM will never be entered is if the user
+explicitly disabled runtime PM for the controller. In that case however,
+it's arguably better to have the LPM negotiation disabled for the sake 
+of performance.
 
-Fixes: 8c3e315d4296 ("driver core: Update device link status correctly for SYNC_STATE_ONLY links")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/base/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+>
+>I suspect we want the following:
+>1. consistency - LPM register setting and runtime_pm state must agree
+>2. power-efficient initial state - bridge must come out of probe
+>runtime-suspended
+>and LPM must be enabled
+>
+>I suspect the above will be fulfilled if we do
+>
+>+ /* Bring to consistent runtime suspended state with LPM negotiation enabled */
+>+ gl9763e_set_low_power_negotiation(slot, false);
+>+ pm_runtime_set_suspended(dev);
+>
+>WDYT?
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 17f2568e0a79..f4b09691998e 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -1423,7 +1423,8 @@ static void __device_links_no_driver(struct device *dev)
- 		if (link->supplier->links.status == DL_DEV_DRIVER_BOUND) {
- 			WRITE_ONCE(link->status, DL_STATE_AVAILABLE);
- 		} else {
--			WARN_ON(!(link->flags & DL_FLAG_SYNC_STATE_ONLY));
-+			WARN_ON(!(link->flags & DL_FLAG_SYNC_STATE_ONLY) &&
-+				link->supplier->links.status != DL_DEV_UNBINDING);
- 			WRITE_ONCE(link->status, DL_STATE_DORMANT);
- 		}
- 	}
--- 
-2.41.0
+I don't think this is something that we want do to. Apart from my
+argument above there is one more thing to consider.
+During runtime PM initialization in sdhci_pci_runtime_pm_allow
+the usage counter is dropped using pm_runtime_put_noidle,
+which doesn't trigger the machinery to suspend the device.
+According to the comment that's because the mmc core logic will shortly
+talk to the device, probably to initialize the eMMC card itself.
 
+>
+>>
+>>  cleanup:
+>> @@ -1323,7 +1329,6 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
+>>         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+>>  }
+>>
+>> -#ifdef CONFIG_PM
+>>  static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
+>>  {
+>>         struct pci_dev *pdev = slot->chip->pdev;
+>> @@ -1349,6 +1354,7 @@ static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool
+>>         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+>>  }
+>>
+>> +#ifdef CONFIG_PM
+>>  static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
+>>  {
+>>         struct sdhci_pci_slot *slot = chip->slots[0];
+>> --
+>> 2.42.0.869.gea05f2083d-goog
+>>
