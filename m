@@ -2,47 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B57B7E7F7B
-	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 18:54:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 181A57E8054
+	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 19:09:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbjKJRyS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 10 Nov 2023 12:54:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59948 "EHLO
+        id S235330AbjKJSJ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 10 Nov 2023 13:09:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229969AbjKJRx0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 10 Nov 2023 12:53:26 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 188422FED2;
-        Fri, 10 Nov 2023 03:30:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFC0C433C8;
-        Fri, 10 Nov 2023 11:30:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699615844;
-        bh=njSaKFsGWjCldhNW7Y7iD3HrJm8EnbqsgMz5zjrw6Ho=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IGtrMwspaNcfUWQFWD9Mn9esgOUZwlXqIYnHRt/ONA36Vi0xFevDcjIDyNdxHdstb
-         CMUsgVaJeowXqHuk4o3yZ/OJwRjBd6kDUYdkN0cB39smLWfaiRYieBSYr+WYQX6H/7
-         j4/VU9AQsEUXMp6ptXOg2j7V+isEosVSRIJ5sj/1y80v1FoXVd8SYPReSoJsejT+cH
-         lJjCz3bwOvWULf6teJ8fwB55ql6PqDZpM0agIjRpfjktSyxIXSocVMxeUY7WrCQPOR
-         q52ZdkeQUqPrs4ZLOmgRNvAvKzhfM1bCOdZj+brnECWTTKQeKjmSwxrs/nGD65tUJR
-         riBTtu03lvvug==
-Date:   Fri, 10 Nov 2023 12:30:39 +0100
-From:   Andi Shyti <andi.shyti@kernel.org>
-To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc:     Robert Marko <robert.marko@sartura.hr>, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linus.walleij@linaro.org,
-        wsa@kernel.org, codrin.ciubotariu@microchip.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "i2c: pxa: move to generic GPIO recovery"
-Message-ID: <20231110113039.esdkjkpzj7p2aqc3@zenone.zhora.eu>
-References: <20231110093039.190076-1-robert.marko@sartura.hr>
- <ZU37aJfDpcixU2OZ@shell.armlinux.org.uk>
+        with ESMTP id S235332AbjKJSH1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 10 Nov 2023 13:07:27 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60EB131E7D;
+        Fri, 10 Nov 2023 03:57:19 -0800 (PST)
+Received: from [100.107.97.3] (cola.collaboradmins.com [195.201.22.229])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 4221E66073D6;
+        Fri, 10 Nov 2023 11:57:17 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1699617438;
+        bh=yxdMDAZYCs0R8XzpVH/gErPFhSqVtu/4cjaOro2h2b4=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=WO3nx56UqM87HIFLLfwM2R/w0GJjvdvHpUw6z00XcHu2y+woW1xgDbCtxrNmbLnbJ
+         etYOhBicHSRnRFOrs2OtpBKDwUUt9BfIC3SdbIFpOsOY4xeruQuEjin51sL+msfcei
+         YBN3so3JS8iJzJFVY+/AApKOYN90tP2IjNQqKDQEWW2QDN9BMANB9IYjCTtcRL3pnd
+         WoI/wxS/kE1UcePbmj8LvrfvAQRYxzvvExRX/UMuIATNSVY5Ros/TWFcBGBnIfYLWD
+         JqSK3iHF+sNyUgbFzfiPuY4mwZYYtZjL7xfp6qqLvVs3XA4C6in3jGgh9NvlYbCwze
+         jbVQZPB/+a2jg==
+Message-ID: <b56b155c-25c0-4958-9f59-20669ee2ea01@collabora.com>
+Date:   Fri, 10 Nov 2023 12:57:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZU37aJfDpcixU2OZ@shell.armlinux.org.uk>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] drm/mediatek: Fix access violation in
+ mtk_drm_crtc_dma_dev_get
+Content-Language: en-US
+To:     Stuart Lee <stuart.lee@mediatek.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "Nancy . Lin" <nancy.lin@mediatek.com>,
+        dri-devel@lists.freedesktop.org,
+        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        Lancelot Wu <lancelot.wu@mediatek.com>,
+        Shawn Sung <shawn.sung@mediatek.com>,
+        Pablo Sun <pablo.sun@mediatek.com>,
+        Macpaul Lin <macpaul.lin@mediatek.com>, stable@vger.kernel.org
+References: <20231110012914.14884-1-stuart.lee@mediatek.com>
+ <20231110012914.14884-2-stuart.lee@mediatek.com>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20231110012914.14884-2-stuart.lee@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,37 +69,19 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Marko,
-
-On Fri, Nov 10, 2023 at 09:44:08AM +0000, Russell King (Oracle) wrote:
-> On Fri, Nov 10, 2023 at 10:30:11AM +0100, Robert Marko wrote:
-> > This reverts commit 0b01392c18b9993a584f36ace1d61118772ad0ca.
-> > 
-> > Conversion of PXA to generic I2C recovery, makes the I2C bus completely
-> > lock up if recovery pinctrl is present in the DT and I2C recovery is
-> > enabled.
-> > 
-> > So, until the generic I2C recovery can also work with PXA lets revert
-> > to have working I2C and I2C recovery again.
-
-Reverts are never nice, but if you are confirming this doesn't
-work I can't do anything else than acking and bringing the driver
-back to a working status.
-
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
-
-I would have preferred a different fix, directly in the generic
-i2c recovery, but this goes beyond the scope of the patch.
-
-> > Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> > Cc: stable@vger.kernel.org # 5.11+
+Il 10/11/23 02:29, Stuart Lee ha scritto:
+> Add error handling to check NULL input in
+> mtk_drm_crtc_dma_dev_get function.
 > 
-> My feels were that this should not have been converted to the generic
-> recovery as pointed out at the time, so thanks for confirming that it
-> broke as a result of that conversion, it did indeed break.
+> While display path is not configured correctly, none of crtc is
+> established. So the caller of mtk_drm_crtc_dma_dev_get may pass
+> input parameter *crtc as NULL, Which may cause coredump when
+> we try to get the container of NULL pointer.
 > 
-> Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> Fixes: cb1d6bcca542 ("drm/mediatek: Add dma dev get function")
+> Signed-off-by: Stuart Lee <stuart.lee@mediatek.com>
+> Cc: stable@vger.kernel.org
 
-Thanks Russel!
+Reviewed-by: AngeloGioacchino DEl Regno <angelogioacchino.delregno@collabora.com>
 
-Andi
+
