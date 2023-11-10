@@ -2,187 +2,210 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A66E67E8283
-	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 20:32:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22F6D7E82AB
+	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 20:32:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346178AbjKJTUo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 10 Nov 2023 14:20:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34560 "EHLO
+        id S236143AbjKJT2Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 10 Nov 2023 14:28:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236053AbjKJTUZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 10 Nov 2023 14:20:25 -0500
-Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D759ED1
-        for <stable@vger.kernel.org>; Fri, 10 Nov 2023 00:26:57 -0800 (PST)
-Received: by mail-wr1-x42a.google.com with SMTP id ffacd0b85a97d-32d9d8284abso1043600f8f.3
-        for <stable@vger.kernel.org>; Fri, 10 Nov 2023 00:26:57 -0800 (PST)
+        with ESMTP id S229992AbjKJT2O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 10 Nov 2023 14:28:14 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8389624486
+        for <stable@vger.kernel.org>; Fri, 10 Nov 2023 01:30:44 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9c3aec5f326so603662466b.1
+        for <stable@vger.kernel.org>; Fri, 10 Nov 2023 01:30:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1699604816; x=1700209616; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=1Sl6LMd5GvY2HGP4rRStwyGMOVlrH/dOjLpczszfQNw=;
-        b=dVMwdMh7csv6ocS6Dn7T4xfuJ7I+6vh9XgT5fDmLsTKqmtCc854XNBLTYIRQbFNE4J
-         yzFeBqXtk422Td9xptMQW6yvadSLHyVEchXOkVvyTA0cm1Vw0eMBNVzyoyjEYGOmkODv
-         L4q52QXVzUykwCqYQKP3GeWAaAYWTvGjyflwE=
+        d=sartura.hr; s=sartura; t=1699608643; x=1700213443; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rkNN8+PjnJ5Ef46R2X9sE8qx4x4isQxNOv4iGhlDVRw=;
+        b=rbBog5pyOhfxKqUSCaXySxYXppt/708RL5o04jGpslRlgL29BffDpBY9NdUKaUwWQa
+         6/UIaHyqTANUBIrPS2941NyPSR9yGSjpG5gTGkXrCQc1PyXZvGbEkMu1taNzFKjvGstD
+         7dLjbDkIPJlngs7QngDgpoCdqv8G/1jwgOePijeRlIHSlmVRUSpvJJMIUAqcW6VO7Cf0
+         CJASVo+FgiYO+FMEPotP8ETAdyNNg0cNE+HC23bT94lkS+8Ayr6lxCG7ACoHueXNIocM
+         xPAE3aTFIgudUEmg3gxdf+fThe0Zt1UOSenCgEmu84hlltecjdbCVdXOt2bBmvoU+MmM
+         j7rA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699604816; x=1700209616;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1Sl6LMd5GvY2HGP4rRStwyGMOVlrH/dOjLpczszfQNw=;
-        b=UJbaM9mPIHtBwTLXBHUZ/FuMwsirl+j0PD0ZHDmkI9TxULe5Iu7fvoc73u8LFXG/4G
-         32nUKpHP2i87CNde6e3AZwLUOwzk2OaGyiEyCh3TVo0Weo9xNqDjVY1Vj9KHUY8nuVRz
-         1nd2xwzDUeIaf62YyaSpgDpMNAuaZ24AHesqW62/vpiPuH4zm/WQqnPNClDlkAO17CHa
-         eTQ82IfdR80Q4uFElD37iNJ57HBFfEOQsZcIm536qFvpIdhqMulBbRj0ygKSSdFmIwUc
-         NfPj/rc+j8HLUEFpjLT2ufkIv2m2lIm1xFnkmMxfTS1ubR5FWMG3AFLH9MDJOMTsuooi
-         cJ8Q==
-X-Gm-Message-State: AOJu0YxK7/NJPMZbYROcVSOhV9DgmRTWocYfHMgmgs2xhsbHmPNeE4Qv
-        nDBZ0SmjhuJrI2hPfAPjGFblLQ==
-X-Google-Smtp-Source: AGHT+IFa/6wfx+9kLbmLi8ldMycAx55pGtShVMYgpoK2iaa/HjZ2LPKqxCeLbkFt09pu6AmXKiAvUQ==
-X-Received: by 2002:adf:8b14:0:b0:331:3a1e:b85 with SMTP id n20-20020adf8b14000000b003313a1e0b85mr971558wra.22.1699604815657;
-        Fri, 10 Nov 2023 00:26:55 -0800 (PST)
-Received: from google.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
-        by smtp.gmail.com with ESMTPSA id z14-20020a056000110e00b0032f7cc56509sm1391486wrw.98.2023.11.10.00.26.54
+        d=1e100.net; s=20230601; t=1699608643; x=1700213443;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rkNN8+PjnJ5Ef46R2X9sE8qx4x4isQxNOv4iGhlDVRw=;
+        b=adLgrkvAcEaS3c0Fr2+oWtrP8ryKgFPjnvt4B0Q84AZL5jJ9lcytSwZnwp/DY5GY5M
+         mkqhRqgstldbuwddYE+1hjgT2tlLcTudp/iVPETZfm27S10XWu0CQDEReg7vL30twDdK
+         amfmpOvcc69rP1cKBx3Na82n7NNmRiD7Q0KwLa6+5EYj5RR5NLumFMQ/823Mb3fu59w6
+         cAMHZZn4yWj255txzjRcW57xiy644dwAXp/fbUTYVTutLwNxpsLhjgYn98giycANy/Ah
+         dmZIrIRBRfB2RJHg5BjJcKUGEyM2B1Bjk46dAvoYYqa7t8y2CyarjZXf1BwlRmWYuyGQ
+         GmDw==
+X-Gm-Message-State: AOJu0Yx9jGnxN0CBUuqCyvqhb5VAsA3SZ+iUHGB/q1xwT4TfUgbAi0QL
+        ZKk6w0ks8YF1lngDfC2Plzw5AEzcGqBWpjajIfY=
+X-Google-Smtp-Source: AGHT+IGrq9EMu2rzFwR4CptNlJT8qkAN1l9yBCm3T0SUuvlgbNK0GYonHNm+aPvGsjAH9Vh9pfdabg==
+X-Received: by 2002:a17:906:3bcb:b0:9ae:5513:e475 with SMTP id v11-20020a1709063bcb00b009ae5513e475mr1885957ejf.9.1699608642876;
+        Fri, 10 Nov 2023 01:30:42 -0800 (PST)
+Received: from fedora.. (cpezg-94-253-128-32-cbl.xnet.hr. [94.253.128.32])
+        by smtp.googlemail.com with ESMTPSA id dt14-20020a170907728e00b009e5d30422ebsm917829ejc.101.2023.11.10.01.30.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Nov 2023 00:26:55 -0800 (PST)
-Date:   Fri, 10 Nov 2023 08:26:53 +0000
-From:   Kornel =?utf-8?Q?Dul=C4=99ba?= <korneld@chromium.org>
-To:     Sven van Ashbrook <svenva@chromium.org>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jason Lai <jasonlai.genesyslogic@gmail.com>,
-        Victor Shih <victor.shih@genesyslogic.com.tw>,
-        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        =?utf-8?Q?Stanis=C5=82aw?= Kardach <skardach@google.com>,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] mmc: sdhci-pci-gli: Disable LPM during initialization
-Message-ID: <ZU3pTY0qbA6cDB7f@google.com>
-References: <20231109111934.4172565-1-korneld@chromium.org>
- <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
+        Fri, 10 Nov 2023 01:30:42 -0800 (PST)
+From:   Robert Marko <robert.marko@sartura.hr>
+To:     andi.shyti@kernel.org, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux@armlinux.org.uk,
+        linus.walleij@linaro.org, wsa@kernel.org,
+        codrin.ciubotariu@microchip.com
+Cc:     Robert Marko <robert.marko@sartura.hr>, stable@vger.kernel.org
+Subject: [PATCH] Revert "i2c: pxa: move to generic GPIO recovery"
+Date:   Fri, 10 Nov 2023 10:30:11 +0100
+Message-ID: <20231110093039.190076-1-robert.marko@sartura.hr>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Sven,
+This reverts commit 0b01392c18b9993a584f36ace1d61118772ad0ca.
 
->Hi Kornel, see below.
->
->On Thu, Nov 9, 2023 at 6:20 AM Kornel Dulęba <korneld@chromium.org> wrote:
->>
->> To address IO performance commit f9e5b33934ce
->> ("mmc: host: Improve I/O read/write performance for GL9763E")
->> limited LPM negotiation to runtime suspend state.
->> The problem is that it only flips the switch in the runtime PM
->> resume/suspend logic.
->>
->> Disable LPM negotiation in gl9763e_add_host.
->> This helps in two ways:
->> 1. It was found that the LPM switch stays in the same position after
->>    warm reboot. Having it set in init helps with consistency.
->> 2. Disabling LPM during the first runtime resume leaves us susceptible
->>    to the performance issue in the time window between boot and the
->>    first runtime suspend.
->>
->> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Kornel Dulęba <korneld@chromium.org>
->> ---
->>  drivers/mmc/host/sdhci-pci-gli.c | 8 +++++++-
->>  1 file changed, 7 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
->> index d83261e857a5..ce91d1e63a8e 100644
->> --- a/drivers/mmc/host/sdhci-pci-gli.c
->> +++ b/drivers/mmc/host/sdhci-pci-gli.c
->> @@ -220,6 +220,9 @@
->>
->>  #define GLI_MAX_TUNING_LOOP 40
->>
->> +static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot,
->> +                                             bool enable);
->> +
->>  /* Genesys Logic chipset */
->>  static inline void gl9750_wt_on(struct sdhci_host *host)
->>  {
->> @@ -1281,6 +1284,9 @@ static int gl9763e_add_host(struct sdhci_pci_slot *slot)
->>         if (ret)
->>                 goto cleanup;
->>
->> +       /* Disable LPM negotiation to avoid entering L1 state. */
->> +       gl9763e_set_low_power_negotiation(slot, false);
->> +
->>         return 0;
->
->What happens if the bridge is not driving the system rootfs? Imagine
->the case where
->the bridge is used to drive an auxiliary eMMC, unused until a few hours
->after boot. After this patch, the bridge may remain active (not-L1)
->for the entire time,
->although it's not being used...
+Conversion of PXA to generic I2C recovery, makes the I2C bus completely
+lock up if recovery pinctrl is present in the DT and I2C recovery is
+enabled.
 
-That's already addressed by runtime PM. LPM negotiation will be
-re-enabled duing the first runtime suspend. The default autosuspend
-delay for all PCI MMC controllers is 50ms, so I think that's fine.
-The only scenario where LPM will never be entered is if the user
-explicitly disabled runtime PM for the controller. In that case however,
-it's arguably better to have the LPM negotiation disabled for the sake 
-of performance.
+So, until the generic I2C recovery can also work with PXA lets revert
+to have working I2C and I2C recovery again.
 
->
->I suspect we want the following:
->1. consistency - LPM register setting and runtime_pm state must agree
->2. power-efficient initial state - bridge must come out of probe
->runtime-suspended
->and LPM must be enabled
->
->I suspect the above will be fulfilled if we do
->
->+ /* Bring to consistent runtime suspended state with LPM negotiation enabled */
->+ gl9763e_set_low_power_negotiation(slot, false);
->+ pm_runtime_set_suspended(dev);
->
->WDYT?
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Cc: stable@vger.kernel.org # 5.11+
+---
+ drivers/i2c/busses/i2c-pxa.c | 76 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 68 insertions(+), 8 deletions(-)
 
-I don't think this is something that we want do to. Apart from my
-argument above there is one more thing to consider.
-During runtime PM initialization in sdhci_pci_runtime_pm_allow
-the usage counter is dropped using pm_runtime_put_noidle,
-which doesn't trigger the machinery to suspend the device.
-According to the comment that's because the mmc core logic will shortly
-talk to the device, probably to initialize the eMMC card itself.
+diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
+index 1d7648242749..76f79b68cef8 100644
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -265,6 +265,9 @@ struct pxa_i2c {
+ 	u32			hs_mask;
+ 
+ 	struct i2c_bus_recovery_info recovery;
++	struct pinctrl		*pinctrl;
++	struct pinctrl_state	*pinctrl_default;
++	struct pinctrl_state	*pinctrl_recovery;
+ };
+ 
+ #define _IBMR(i2c)	((i2c)->reg_ibmr)
+@@ -1299,12 +1302,13 @@ static void i2c_pxa_prepare_recovery(struct i2c_adapter *adap)
+ 	 */
+ 	gpiod_set_value(i2c->recovery.scl_gpiod, ibmr & IBMR_SCLS);
+ 	gpiod_set_value(i2c->recovery.sda_gpiod, ibmr & IBMR_SDAS);
++
++	WARN_ON(pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_recovery));
+ }
+ 
+ static void i2c_pxa_unprepare_recovery(struct i2c_adapter *adap)
+ {
+ 	struct pxa_i2c *i2c = adap->algo_data;
+-	struct i2c_bus_recovery_info *bri = adap->bus_recovery_info;
+ 	u32 isr;
+ 
+ 	/*
+@@ -1318,7 +1322,7 @@ static void i2c_pxa_unprepare_recovery(struct i2c_adapter *adap)
+ 		i2c_pxa_do_reset(i2c);
+ 	}
+ 
+-	WARN_ON(pinctrl_select_state(bri->pinctrl, bri->pins_default));
++	WARN_ON(pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_default));
+ 
+ 	dev_dbg(&i2c->adap.dev, "recovery: IBMR 0x%08x ISR 0x%08x\n",
+ 	        readl(_IBMR(i2c)), readl(_ISR(i2c)));
+@@ -1340,20 +1344,76 @@ static int i2c_pxa_init_recovery(struct pxa_i2c *i2c)
+ 	if (IS_ENABLED(CONFIG_I2C_PXA_SLAVE))
+ 		return 0;
+ 
+-	bri->pinctrl = devm_pinctrl_get(dev);
+-	if (PTR_ERR(bri->pinctrl) == -ENODEV) {
+-		bri->pinctrl = NULL;
++	i2c->pinctrl = devm_pinctrl_get(dev);
++	if (PTR_ERR(i2c->pinctrl) == -ENODEV)
++		i2c->pinctrl = NULL;
++	if (IS_ERR(i2c->pinctrl))
++		return PTR_ERR(i2c->pinctrl);
++
++	if (!i2c->pinctrl)
++		return 0;
++
++	i2c->pinctrl_default = pinctrl_lookup_state(i2c->pinctrl,
++						    PINCTRL_STATE_DEFAULT);
++	i2c->pinctrl_recovery = pinctrl_lookup_state(i2c->pinctrl, "recovery");
++
++	if (IS_ERR(i2c->pinctrl_default) || IS_ERR(i2c->pinctrl_recovery)) {
++		dev_info(dev, "missing pinmux recovery information: %ld %ld\n",
++			 PTR_ERR(i2c->pinctrl_default),
++			 PTR_ERR(i2c->pinctrl_recovery));
++		return 0;
++	}
++
++	/*
++	 * Claiming GPIOs can influence the pinmux state, and may glitch the
++	 * I2C bus. Do this carefully.
++	 */
++	bri->scl_gpiod = devm_gpiod_get(dev, "scl", GPIOD_OUT_HIGH_OPEN_DRAIN);
++	if (bri->scl_gpiod == ERR_PTR(-EPROBE_DEFER))
++		return -EPROBE_DEFER;
++	if (IS_ERR(bri->scl_gpiod)) {
++		dev_info(dev, "missing scl gpio recovery information: %pe\n",
++			 bri->scl_gpiod);
++		return 0;
++	}
++
++	/*
++	 * We have SCL. Pull SCL low and wait a bit so that SDA glitches
++	 * have no effect.
++	 */
++	gpiod_direction_output(bri->scl_gpiod, 0);
++	udelay(10);
++	bri->sda_gpiod = devm_gpiod_get(dev, "sda", GPIOD_OUT_HIGH_OPEN_DRAIN);
++
++	/* Wait a bit in case of a SDA glitch, and then release SCL. */
++	udelay(10);
++	gpiod_direction_output(bri->scl_gpiod, 1);
++
++	if (bri->sda_gpiod == ERR_PTR(-EPROBE_DEFER))
++		return -EPROBE_DEFER;
++
++	if (IS_ERR(bri->sda_gpiod)) {
++		dev_info(dev, "missing sda gpio recovery information: %pe\n",
++			 bri->sda_gpiod);
+ 		return 0;
+ 	}
+-	if (IS_ERR(bri->pinctrl))
+-		return PTR_ERR(bri->pinctrl);
+ 
+ 	bri->prepare_recovery = i2c_pxa_prepare_recovery;
+ 	bri->unprepare_recovery = i2c_pxa_unprepare_recovery;
++	bri->recover_bus = i2c_generic_scl_recovery;
+ 
+ 	i2c->adap.bus_recovery_info = bri;
+ 
+-	return 0;
++	/*
++	 * Claiming GPIOs can change the pinmux state, which confuses the
++	 * pinctrl since pinctrl's idea of the current setting is unaffected
++	 * by the pinmux change caused by claiming the GPIO. Work around that
++	 * by switching pinctrl to the GPIO state here. We do it this way to
++	 * avoid glitching the I2C bus.
++	 */
++	pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_recovery);
++
++	return pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_default);
+ }
+ 
+ static int i2c_pxa_probe(struct platform_device *dev)
+-- 
+2.41.0
 
->
->>
->>  cleanup:
->> @@ -1323,7 +1329,6 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
->>         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
->>  }
->>
->> -#ifdef CONFIG_PM
->>  static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
->>  {
->>         struct pci_dev *pdev = slot->chip->pdev;
->> @@ -1349,6 +1354,7 @@ static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool
->>         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
->>  }
->>
->> +#ifdef CONFIG_PM
->>  static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
->>  {
->>         struct sdhci_pci_slot *slot = chip->slots[0];
->> --
->> 2.42.0.869.gea05f2083d-goog
->>
