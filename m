@@ -2,83 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7397EBC82
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 05:05:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0FB7E75CE
+	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 01:18:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234323AbjKOEF6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 23:05:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50436 "EHLO
+        id S1345462AbjKJASC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 19:18:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbjKOEF5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 23:05:57 -0500
-Received: from ns3154000.ip-51-89-173.eu (ns3154000.ip-51-89-173.eu [51.89.173.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0CDACA
-        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 20:05:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=corptia.com
-        ; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID
-        :Date:Subject:To:From:Reply-To:Sender:Cc:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=AuFOzWEY1p4B/ao4HYur+KTak9IfXFRGw/OWFKPeT54=; b=fTMjWLlbRiKLIepv9SdBaxFk3r
-        GD26QhADGqiMTGhZDfRVTId4o4IzSHmki3jsRT2bU7bjmv3nAGwU/svjOhABdN0PVAc+ri8SNFe+9
-        3eYAAdsZVmXoMrYyLzFjxXPZOTYxyfDmjJTLNDVhxK2jydNHzFDLLMdUwD1pPvwr9PjQnbpSZZems
-        8KoKqI+0HybdSc8rUdTlpVxiOZDSYXhn4KKkM3YZ9NzUz1AtcDxqJFNhusoLdSvE/xOM0SsgkMnqu
-        8EMkQKifACRqmo0EHS273p+Fs/8XknWA7KTwMw96FAdsENkqAL07F0r9YxqHxxNaxH5hCKhKSk7UE
-        BOZ1J4rA==;
-Received: from [46.183.223.78] (port=53711 helo=corptia.com)
-        by ns3154000.ip-51-89-173.eu with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.96.2)
-        (envelope-from <jobs@corptia.com>)
-        id 1r1Cjx-0005cW-2f
-        for stable@vger.kernel.org;
-        Thu, 09 Nov 2023 21:39:04 +0000
-Reply-To: projects@adnoc-suppplier.com
-From:   Abu Dhabi National Oil Company <jobs@corptia.com>
-To:     stable@vger.kernel.org
-Subject: VENDORS EOI
-Date:   09 Nov 2023 23:39:03 +0200
-Message-ID: <20231109233903.374E0C7D370C3119@corptia.com>
+        with ESMTP id S1345464AbjKJASB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 19:18:01 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D45771FEA
+        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 16:17:58 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-54366784377so2368279a12.3
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 16:17:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1699575476; x=1700180276; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=86AHDKme0oU/mK4LbTg0+f9o2KRKUMP2vouZ/vFV6kM=;
+        b=BqnIahjEqXb6bfyUEIL6vDApH1h7ux/OBzoMeEgKnjGCMMNKQ3I55CcvgclnPzBY3Y
+         3GclvI/jS1C8LfagOEh3aDWEX5/q4gDvHHWySbhZgLzh38wwmDDVUwfpQw1aqpfM5HrI
+         pivThmLqSeq09z3FHeotJpVzJsM6L4ES3QfR4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699575476; x=1700180276;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=86AHDKme0oU/mK4LbTg0+f9o2KRKUMP2vouZ/vFV6kM=;
+        b=ENFMNQN1y2C7becdyRzsXEVtiSrANX/39icBwR1AGVdRrD0lcxg0ZnpmOiwMmPN0OR
+         Ys69ihAC62M+pudnHiqxQ6vtde9gS2TFHfkX+N+BxFtkY/k3gip1p9uhhto2D/fLc3lY
+         mSifD8pKsLC7ZU90uo6B1+UUrIoODNgOeW4cvd/6cq6omv9Pz5X35aRXsHWBFlN1R78H
+         sbeZo0aoEJpphqvC7SYcXrXgEZGelkL1MwrLKFAZ0EuShCuN6YpxqgpgiViUN+Y1cUrp
+         LrY84MTtIq6QKZRvExInlnRj4rcc0iSD97mfhSre1KYPdPgEM8T0Y0x5Z/cfNU8kr6NR
+         F/9Q==
+X-Gm-Message-State: AOJu0YyDjo+Mv7zF46JeykAgKPfhD6eOzITm1TNRcHH3ntQ7kTRU3y6l
+        +XMd9IAbffjCLvO6U4vX3d1t74QgDl/tQqCavW5mVg==
+X-Google-Smtp-Source: AGHT+IGgvoxxa7/hr0s2dfelnEeaCFBbPSRUd2e9fqP7jVgXHx7JfiiqeLA3mMFxfFqpNdOtF9XPHw==
+X-Received: by 2002:a17:906:db06:b0:9de:4007:d676 with SMTP id xj6-20020a170906db0600b009de4007d676mr6263685ejb.16.1699575475685;
+        Thu, 09 Nov 2023 16:17:55 -0800 (PST)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com. [209.85.128.52])
+        by smtp.gmail.com with ESMTPSA id bm25-20020a170906c05900b009c0c511bd62sm3168087ejb.197.2023.11.09.16.17.54
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Nov 2023 16:17:54 -0800 (PST)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40837124e1cso137775e9.0
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 16:17:54 -0800 (PST)
+X-Received: by 2002:a05:600c:2195:b0:404:74f8:f47c with SMTP id
+ e21-20020a05600c219500b0040474f8f47cmr277112wme.5.1699575474598; Thu, 09 Nov
+ 2023 16:17:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
+References: <20231107204611.3082200-1-hsinyi@chromium.org> <20231107204611.3082200-2-hsinyi@chromium.org>
+In-Reply-To: <20231107204611.3082200-2-hsinyi@chromium.org>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 9 Nov 2023 16:17:39 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=UDWNhuBPBUWJNa9E7njYwxJ=zsGqMb=u5CkDGs5UkHzw@mail.gmail.com>
+Message-ID: <CAD=FV=UDWNhuBPBUWJNa9E7njYwxJ=zsGqMb=u5CkDGs5UkHzw@mail.gmail.com>
+Subject: Re: [PATCH v6 1/5] drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01
+ name and timing
+To:     Hsin-Yi Wang <hsinyi@chromium.org>
+Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - ns3154000.ip-51-89-173.eu
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - corptia.com
-X-Get-Message-Sender-Via: ns3154000.ip-51-89-173.eu: authenticated_id: jobs@corptia.com
-X-Authenticated-Sender: ns3154000.ip-51-89-173.eu: jobs@corptia.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: *
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi,
 
-Greetings of the day,
+On Tue, Nov 7, 2023 at 12:46=E2=80=AFPM Hsin-Yi Wang <hsinyi@chromium.org> =
+wrote:
+>
+> Rename AUO 0x405c B116XAK01 to B116XAK01.0 and adjust the timing of
+> auo_b116xak01: T3=3D200, T12=3D500, T7_max =3D 50 according to decoding e=
+did
+> and datasheet.
+>
+> Fixes: da458286a5e2 ("drm/panel: Add support for AUO B116XAK01 panel")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> ---
+> v5->v6: split to 2 patches.
+> ---
+>  drivers/gpu/drm/panel/panel-edp.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-We are inviting your esteemed company for vendor registration and=20
-intending partners for Abu Dhabi National Oil Company (ADNOC)
-2023/2024 projects.
+Even though this is a fix, it's not super urgent since it'll cause
+conflicts with other changes, so pushed to drm-misc-next rather than
+drm-misc-fixes.
 
-These projects are open for all companies around the world, if=20
-you have intention to participate in the process, please confirm=20
-your interest by asking for Vendor Questionnaire and EOI.
-
-We appreciate your interest in this invitation, and look forward=20
-to your early response.
-
-Kind Regards,
-Mr. Mohamed Ghazi B.
-Senior Project Manager
-projects@adnoc-suppplier.com
+fc6e76792965 drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and timin=
+g
