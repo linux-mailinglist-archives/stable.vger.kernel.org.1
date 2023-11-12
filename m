@@ -2,87 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5A087E918B
-	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 16:49:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8497E91C4
+	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 18:18:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231874AbjKLPtM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 10:49:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43734 "EHLO
+        id S229607AbjKLRSY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 12:18:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231810AbjKLPtJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 10:49:09 -0500
+        with ESMTP id S229535AbjKLRSX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 12:18:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE7B544B6;
-        Sun, 12 Nov 2023 07:48:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689F7C433C9;
-        Sun, 12 Nov 2023 15:48:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699804135;
-        bh=6LiDksMQRO+rxTxWlTc73AISzUa+PbV4ghjGHkjraeI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=pDIsw6KHFV8FQjDtO8zltn/UbSexTcezC5tj7z/2xYn9SVmycCdUULPPX/F6Wn3xw
-         meFx3qCXxQ2hmtUypF5R22cQcWdgkcgpgjZfpNqHd0Vr5UWrEBE7nNjHZlZIwwOoGD
-         rKkChfNfZe0GbknFc80h7vhql911xDI4DrA2dvEbvXtPXyIeTBFSToo14qv8zphmFm
-         R+B1cK9KYp/UhNixgdUL8dJoDE/qeKSD9vMDFuUKz6SiLqfvyHVJ478M7xcr6tkVrr
-         b8JbGExdcemUrn8T9UyanDS1NkFtNKpMdHIvW2J2M74A0UlrYjZ/GlcLc7Al7xF67H
-         dxQ+66KawTmwQ==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Philipp Stanner <pstanner@redhat.com>,
-        Dave Airlie <airlied@redhat.com>,
-        Wolfram Sang <wsa@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        linux-i2c@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19] i2c: dev: copy userspace array safely
-Date:   Sun, 12 Nov 2023 10:48:52 -0500
-Message-ID: <20231112154852.229373-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C6BD1FF6;
+        Sun, 12 Nov 2023 09:18:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47788C433C7;
+        Sun, 12 Nov 2023 17:18:19 +0000 (UTC)
+Date:   Sun, 12 Nov 2023 12:18:17 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     LKML <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Milian Wolff <milian.wolff@kdab.com>, akaher@vmware.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [v6.6][PATCH] eventfs: Check for NULL ef in eventfs_set_attr()
+Message-ID: <20231112121817.2713c150@rorschach.local.home>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.298
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Philipp Stanner <pstanner@redhat.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-[ Upstream commit cc9c54232f04aef3a5d7f64a0ece7df00f1aaa3d ]
+The top level events directory dentry does not have a d_fsdata set to a
+eventfs_file pointer. This dentry is still passed to eventfs_set_attr().
+It can not assume that the d_fsdata is set. Check for that.
 
-i2c-dev.c utilizes memdup_user() to copy a userspace array. This is done
-without an overflow check.
+Link: https://lore.kernel.org/all/20231112104158.6638-1-milian.wolff@kdab.com/
 
-Use the new wrapper memdup_array_user() to copy the array more safely.
-
-Suggested-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9aaee3eebc91 ("eventfs: Save ownership and mode")
+Reported-by: Milian Wolff <milian.wolff@kdab.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- drivers/i2c/i2c-dev.c | 4 ++--
+
+Note: This only affects 6.6 as the code in 6.7 here was rewritten.
+   I tested 6.7 and it does not have this bug.
+
+ fs/tracefs/event_inode.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/i2c-dev.c b/drivers/i2c/i2c-dev.c
-index 140dd074fdee5..e4c8d029d73c0 100644
---- a/drivers/i2c/i2c-dev.c
-+++ b/drivers/i2c/i2c-dev.c
-@@ -459,8 +459,8 @@ static long i2cdev_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 		if (rdwr_arg.nmsgs > I2C_RDWR_IOCTL_MAX_MSGS)
- 			return -EINVAL;
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 5fcfb634fec2..efbdc47c74dc 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -113,14 +113,14 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
  
--		rdwr_pa = memdup_user(rdwr_arg.msgs,
--				      rdwr_arg.nmsgs * sizeof(struct i2c_msg));
-+		rdwr_pa = memdup_array_user(rdwr_arg.msgs,
-+					    rdwr_arg.nmsgs, sizeof(struct i2c_msg));
- 		if (IS_ERR(rdwr_pa))
- 			return PTR_ERR(rdwr_pa);
+ 	mutex_lock(&eventfs_mutex);
+ 	ef = dentry->d_fsdata;
+-	if (ef->is_freed) {
++	if (ef && ef->is_freed) {
+ 		/* Do not allow changes if the event is about to be removed. */
+ 		mutex_unlock(&eventfs_mutex);
+ 		return -ENODEV;
+ 	}
  
+ 	ret = simple_setattr(idmap, dentry, iattr);
+-	if (!ret)
++	if (!ret && ef)
+ 		update_attr(ef, iattr);
+ 	mutex_unlock(&eventfs_mutex);
+ 	return ret;
 -- 
 2.42.0
 
