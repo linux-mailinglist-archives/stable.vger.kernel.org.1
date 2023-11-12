@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53C9D7E90B9
-	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 14:32:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87EDC7E9099
+	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 14:31:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232007AbjKLN2q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 08:28:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44804 "EHLO
+        id S231848AbjKLN26 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 08:28:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232009AbjKLN2b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 08:28:31 -0500
+        with ESMTP id S231772AbjKLN2c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 08:28:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09D4B44BD;
-        Sun, 12 Nov 2023 05:27:53 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB24EC433C9;
-        Sun, 12 Nov 2023 13:27:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E4B3A9B;
+        Sun, 12 Nov 2023 05:27:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 563C9C433C7;
+        Sun, 12 Nov 2023 13:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699795672;
-        bh=OQcedTAkLfa3WK98xTKXsrs1ITYYrTmtA2kDvbGrQ74=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=USs2p/LMyddVIkwdUZbjxZ9q6XZI0v7s5TPpHBRbkNuqi4HOSOxcz1TdbJky3QcM8
-         nJTP3wWbn225yLg/CBDEIzn7RN5sfVat2TlS5mKdjLgUdD7Szsz2qTzbtf2mF7PSVO
-         R1z9za0yKB7KaMdgE4YF8utVNVnrPy7A5BZR5HwVjjhLZOqUXjPMOiI0oLXV8R5zRt
-         gfwTue2dV7phgcZo7TfWPy5u5tXf5fNHCznfBXHhLK1kv5n16lESxN8ygYjacTbUsY
-         rA8fBcf5ZbVjdv/0u3NJpCPJawZH1pvcVhbaVMcpHjpLjApH272MlvxNmzuvrFTL/a
-         77r1Qpc8kTZdQ==
+        s=k20201202; t=1699795679;
+        bh=rJeXy8nq+IYTVdj99U/CT6dlPvMPglGs0y3dXPKYaXM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DbHwegr++t86MFWoMjNMCZy0Xxniu/K1n1MRcXW+oetBayeGgYYOrzkp52ZkgTDAH
+         73ho8Q5GJtfhoiijnqMSBfA/hGwbM6MRPjCkMp06Q8QIV4esahC6gu+1YWT8gILXZD
+         gtzbSWEKD5z6ifdgB8+sQR4cV2UV+y8lRK9sTsjmyneRLcmDqh0nj+vRRWwp7v/1Ro
+         fH8lGSbbLSyXELD91LjXVKyrits6EyLJLuK/Y85bS3kGU/AJkBxdpzIvtezqaVoTVS
+         aDwAWU8YC6HOG8IaO/Ybs8XhD/uUa4aJ3UWTf8uTutm9lIu/U6go9RX4vucAOnkEXQ
+         nyaB31IRkoy9Q==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Juntong Deng <juntong.deng@outlook.com>,
-        syzbot+29c47e9e51895928698c@syzkaller.appspotmail.com,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        Sasha Levin <sashal@kernel.org>, swhiteho@redhat.com,
-        rpeterso@redhat.com, cluster-devel@redhat.com
-Subject: [PATCH AUTOSEL 6.6 11/11] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
-Date:   Sun, 12 Nov 2023 08:27:34 -0500
-Message-ID: <20231112132736.175494-11-sashal@kernel.org>
+Cc:     Rajeshwar R Shinde <coolrrsh@gmail.com>,
+        syzbot+e27f3dbdab04e43b9f73@syzkaller.appspotmail.com,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>, hverkuil@xs4all.nl,
+        linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.5 01/10] media: gspca: cpia1: shift-out-of-bounds in set_flicker
+Date:   Sun, 12 Nov 2023 08:27:44 -0500
+Message-ID: <20231112132755.175757-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231112132736.175494-1-sashal@kernel.org>
-References: <20231112132736.175494-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.1
+X-stable-base: Linux 6.5.11
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,54 +52,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Juntong Deng <juntong.deng@outlook.com>
+From: Rajeshwar R Shinde <coolrrsh@gmail.com>
 
-[ Upstream commit bdcb8aa434c6d36b5c215d02a9ef07551be25a37 ]
+[ Upstream commit 099be1822d1f095433f4b08af9cc9d6308ec1953 ]
 
-In gfs2_put_super(), whether withdrawn or not, the quota should
-be cleaned up by gfs2_quota_cleanup().
+Syzkaller reported the following issue:
+UBSAN: shift-out-of-bounds in drivers/media/usb/gspca/cpia1.c:1031:27
+shift exponent 245 is too large for 32-bit type 'int'
 
-Otherwise, struct gfs2_sbd will be freed before gfs2_qd_dealloc (rcu
-callback) has run for all gfs2_quota_data objects, resulting in
-use-after-free.
+When the value of the variable "sd->params.exposure.gain" exceeds the
+number of bits in an integer, a shift-out-of-bounds error is reported. It
+is triggered because the variable "currentexp" cannot be left-shifted by
+more than the number of bits in an integer. In order to avoid invalid
+range during left-shift, the conditional expression is added.
 
-Also, gfs2_destroy_threads() and gfs2_quota_cleanup() is already called
-by gfs2_make_fs_ro(), so in gfs2_put_super(), after calling
-gfs2_make_fs_ro(), there is no need to call them again.
-
-Reported-by: syzbot+29c47e9e51895928698c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=29c47e9e51895928698c
-Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Reported-by: syzbot+e27f3dbdab04e43b9f73@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/20230818164522.12806-1-coolrrsh@gmail.com
+Link: https://syzkaller.appspot.com/bug?extid=e27f3dbdab04e43b9f73
+Signed-off-by: Rajeshwar R Shinde <coolrrsh@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/media/usb/gspca/cpia1.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 0dd5641990b90..5f4ebe279aaae 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -602,13 +602,15 @@ static void gfs2_put_super(struct super_block *sb)
- 	}
- 	spin_unlock(&sdp->sd_jindex_spin);
+diff --git a/drivers/media/usb/gspca/cpia1.c b/drivers/media/usb/gspca/cpia1.c
+index 46ed95483e222..5f5fa851ca640 100644
+--- a/drivers/media/usb/gspca/cpia1.c
++++ b/drivers/media/usb/gspca/cpia1.c
+@@ -18,6 +18,7 @@
  
--	if (!sb_rdonly(sb)) {
-+	if (!sb_rdonly(sb))
- 		gfs2_make_fs_ro(sdp);
--	}
--	if (gfs2_withdrawn(sdp)) {
--		gfs2_destroy_threads(sdp);
-+	else {
-+		if (gfs2_withdrawn(sdp))
-+			gfs2_destroy_threads(sdp);
-+
- 		gfs2_quota_cleanup(sdp);
- 	}
-+
- 	WARN_ON(gfs2_withdrawing(sdp));
+ #include <linux/input.h>
+ #include <linux/sched/signal.h>
++#include <linux/bitops.h>
  
- 	/*  At this point, we're through modifying the disk  */
+ #include "gspca.h"
+ 
+@@ -1028,6 +1029,8 @@ static int set_flicker(struct gspca_dev *gspca_dev, int on, int apply)
+ 			sd->params.exposure.expMode = 2;
+ 			sd->exposure_status = EXPOSURE_NORMAL;
+ 		}
++		if (sd->params.exposure.gain >= BITS_PER_TYPE(currentexp))
++			return -EINVAL;
+ 		currentexp = currentexp << sd->params.exposure.gain;
+ 		sd->params.exposure.gain = 0;
+ 		/* round down current exposure to nearest value */
 -- 
 2.42.0
 
