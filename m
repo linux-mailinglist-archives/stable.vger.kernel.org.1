@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 659C17E8F61
-	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 10:45:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B17CA7E8FE4
+	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 14:23:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229548AbjKLJpi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 04:45:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36126 "EHLO
+        id S229588AbjKLNXc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 08:23:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjKLJph (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 04:45:37 -0500
+        with ESMTP id S229441AbjKLNXb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 08:23:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F332D77;
-        Sun, 12 Nov 2023 01:45:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C05C433C7;
-        Sun, 12 Nov 2023 09:45:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1082702;
+        Sun, 12 Nov 2023 05:23:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8EDC433C8;
+        Sun, 12 Nov 2023 13:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699782334;
-        bh=OB/TnIUPp8h8xH68B7wjC4cmDf3tWH563iHB+jmZzlQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YLosm4TwwZoY2bJ+rW5VRYe0hJiWvYBuZYkqYZBW658Q3BsWFPT+vKDGC/KPt+IM7
-         nFVoyCaaG7BWW+yFKXy+mrWVq8mQe91e4dHwikc4CvXjZzM9cGX5GSsCM7kEnrChc7
-         0mLJ8e2lHGUq8/ebxcGVmVNQmSuSu5OdRmJyO0xAPOaD/omKwqNZHJnoVhy4jo6TUC
-         URiDNqwSJ6J7NwFDumtTT1XkerWIv0dYnNEdQ2GXsKmkmcagGCCUb4rL7U5G7v2rMP
-         gnf581OhMHFylepHTE3bJARq7/wwCTCDhz67gM6/tJQblEzJm5EAHqwd7vEWWPHjcd
-         90nlGLDhe+PsQ==
-Date:   Sun, 12 Nov 2023 09:45:24 +0000
-From:   Simon Horman <horms@kernel.org>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        kys@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        davem@davemloft.net, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH net,v4, 1/3] hv_netvsc: fix race of netvsc and VF
- register_netdevice
-Message-ID: <20231112094524.GF705326@kernel.org>
-References: <1699627140-28003-1-git-send-email-haiyangz@microsoft.com>
- <1699627140-28003-2-git-send-email-haiyangz@microsoft.com>
+        s=k20201202; t=1699795407;
+        bh=KIXhWrqL7vDKt6zj9PJHDRT9sxGHrsKjJWVor0Hm6qc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=m55gmcU0yOatShkB1n6w3f0JPVSxFamZYKA+t2mtyhfyiXx5aONEapszPtKxKx4bk
+         R+o/6YnWISaWWi29Pu/uqltNTzFkMOXiqDMjCNKAPn5CFO7ziNGNJ805pPizEbNPto
+         +WigjWwa+ljFBYa1iAM8LqiXIornDU3rWZxuuOB6PjTzyk4vMQBiNuD3CeET4bhXiy
+         CFDOZs3K7OG9/bDUAxLlmZWwH8601GYMHGUbopoKQDv5QxKx4RFDUci001LrJakKTk
+         wYqTMmc+SZCd6ySZEU0TB1e3znkQyMFM79wo5jgO81VWnnzXQcjrOQfILLEI/BkL99
+         pgDtdXWOPIDew==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Sasha Levin <sashal@kernel.org>, keescook@chromium.org,
+        gustavoars@kernel.org, linux-i3c@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 1/7] i3c: mipi-i3c-hci: Fix out of bounds access in hci_dma_irq_handler
+Date:   Sun, 12 Nov 2023 08:23:10 -0500
+Message-ID: <20231112132323.174148-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1699627140-28003-2-git-send-email-haiyangz@microsoft.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.1
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -53,21 +51,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Nov 10, 2023 at 06:38:58AM -0800, Haiyang Zhang wrote:
-> The rtnl lock also needs to be held before rndis_filter_device_add()
-> which advertises nvsp_2_vsc_capability / sriov bit, and triggers
-> VF NIC offering and registering. If VF NIC finished register_netdev()
-> earlier it may cause name based config failure.
-> 
-> To fix this issue, move the call to rtnl_lock() before
-> rndis_filter_device_add(), so VF will be registered later than netvsc
-> / synthetic NIC, and gets a name numbered (ethX) after netvsc.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
-> Reported-by: Dexuan Cui <decui@microsoft.com>
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-> Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+[ Upstream commit 45a832f989e520095429589d5b01b0c65da9b574 ]
+
+Do not loop over ring headers in hci_dma_irq_handler() that are not
+allocated and enabled in hci_dma_init(). Otherwise out of bounds access
+will occur from rings->headers[i] access when i >= number of allocated
+ring headers.
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20230921055704.1087277-5-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 2990ac9eaade7..71b5dbe45c45c 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -734,7 +734,7 @@ static bool hci_dma_irq_handler(struct i3c_hci *hci, unsigned int mask)
+ 	unsigned int i;
+ 	bool handled = false;
+ 
+-	for (i = 0; mask && i < 8; i++) {
++	for (i = 0; mask && i < rings->total; i++) {
+ 		struct hci_rh_data *rh;
+ 		u32 status;
+ 
+-- 
+2.42.0
 
