@@ -2,31 +2,31 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E70977E8F5A
-	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 10:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 659C17E8F61
+	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 10:45:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230198AbjKLJla (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 04:41:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57742 "EHLO
+        id S229548AbjKLJpi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 04:45:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjKLJl3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 04:41:29 -0500
+        with ESMTP id S229441AbjKLJph (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 04:45:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95462D51;
-        Sun, 12 Nov 2023 01:41:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17725C433C7;
-        Sun, 12 Nov 2023 09:41:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69F332D77;
+        Sun, 12 Nov 2023 01:45:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C05C433C7;
+        Sun, 12 Nov 2023 09:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699782085;
-        bh=QbWO5jczDTWfiCBuWGRjNrmWNSsp8db3vx0cMyEInsQ=;
+        s=k20201202; t=1699782334;
+        bh=OB/TnIUPp8h8xH68B7wjC4cmDf3tWH563iHB+jmZzlQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=umeAOQNvYTTSjOARLRDC8O83rwJGdTlNbnWGhFv+AtM1FcY6KDGpu0ebt34mXyMgs
-         mzx0rO291VsLcpjMPdY/+qqpyqcHiwVs4driFi4ruXjHDBpqdNxdN5x8odw4LgZ9el
-         fAov68D2HIVZOwkG774JqCWgLv+hs4uA90uvqXzRa/fP023WJEH1imsbh8e4KzmJ6L
-         +AVidXc0e1g+uBfpun3DIuvUPzzxkHSHSmjdtn6AXbxcCD719eeFnIGQPofdh1WPE3
-         EIipNt01pq8UELRHjoKHEcBADsVRNSUSeM5S0Jy+TbrU3pKVX5K8BkYRXVenpiGCI7
-         yQivqWp6ApWqw==
-Date:   Sun, 12 Nov 2023 09:41:15 +0000
+        b=YLosm4TwwZoY2bJ+rW5VRYe0hJiWvYBuZYkqYZBW658Q3BsWFPT+vKDGC/KPt+IM7
+         nFVoyCaaG7BWW+yFKXy+mrWVq8mQe91e4dHwikc4CvXjZzM9cGX5GSsCM7kEnrChc7
+         0mLJ8e2lHGUq8/ebxcGVmVNQmSuSu5OdRmJyO0xAPOaD/omKwqNZHJnoVhy4jo6TUC
+         URiDNqwSJ6J7NwFDumtTT1XkerWIv0dYnNEdQ2GXsKmkmcagGCCUb4rL7U5G7v2rMP
+         gnf581OhMHFylepHTE3bJARq7/wwCTCDhz67gM6/tJQblEzJm5EAHqwd7vEWWPHjcd
+         90nlGLDhe+PsQ==
+Date:   Sun, 12 Nov 2023 09:45:24 +0000
 From:   Simon Horman <horms@kernel.org>
 To:     Haiyang Zhang <haiyangz@microsoft.com>
 Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
@@ -34,15 +34,15 @@ Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
         edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
         davem@davemloft.net, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Subject: Re: [PATCH net,v4, 2/3] hv_netvsc: Fix race of
- register_netdevice_notifier and VF register
-Message-ID: <20231112094115.GE705326@kernel.org>
+Subject: Re: [PATCH net,v4, 1/3] hv_netvsc: fix race of netvsc and VF
+ register_netdevice
+Message-ID: <20231112094524.GF705326@kernel.org>
 References: <1699627140-28003-1-git-send-email-haiyangz@microsoft.com>
- <1699627140-28003-3-git-send-email-haiyangz@microsoft.com>
+ <1699627140-28003-2-git-send-email-haiyangz@microsoft.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1699627140-28003-3-git-send-email-haiyangz@microsoft.com>
+In-Reply-To: <1699627140-28003-2-git-send-email-haiyangz@microsoft.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -53,71 +53,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Nov 10, 2023 at 06:38:59AM -0800, Haiyang Zhang wrote:
-> If VF NIC is registered earlier, NETDEV_REGISTER event is replayed,
-> but NETDEV_POST_INIT is not.
+On Fri, Nov 10, 2023 at 06:38:58AM -0800, Haiyang Zhang wrote:
+> The rtnl lock also needs to be held before rndis_filter_device_add()
+> which advertises nvsp_2_vsc_capability / sriov bit, and triggers
+> VF NIC offering and registering. If VF NIC finished register_netdev()
+> earlier it may cause name based config failure.
 > 
-> Move register_netdevice_notifier() earlier, so the call back
-> function is set before probing.
+> To fix this issue, move the call to rtnl_lock() before
+> rndis_filter_device_add(), so VF will be registered later than netvsc
+> / synthetic NIC, and gets a name numbered (ethX) after netvsc.
 > 
 > Cc: stable@vger.kernel.org
 > Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
 > Reported-by: Dexuan Cui <decui@microsoft.com>
 > Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 > Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-> 
-> ---
-> v3:
->   Divide it into two patches, suggested by Jakub Kicinski.
-> v2:
->   Fix rtnl_unlock() in error handling as found by Wojciech Drewek.
-> ---
->  drivers/net/hyperv/netvsc_drv.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-> index 5e528a76f5f5..1d1491da303b 100644
-> --- a/drivers/net/hyperv/netvsc_drv.c
-> +++ b/drivers/net/hyperv/netvsc_drv.c
-> @@ -2793,11 +2793,14 @@ static int __init netvsc_drv_init(void)
->  	}
->  	netvsc_ring_bytes = ring_size * PAGE_SIZE;
->  
-> +	register_netdevice_notifier(&netvsc_netdev_notifier);
-> +
->  	ret = vmbus_driver_register(&netvsc_drv);
-> -	if (ret)
-> +	if (ret) {
-> +		unregister_netdevice_notifier(&netvsc_netdev_notifier);
->  		return ret;
-> +	}
->  
-> -	register_netdevice_notifier(&netvsc_netdev_notifier);
->  	return 0;
->  }
 
-Hi Haiyang Zhang,
-
-functionally this change looks good to me, thanks!
-
-I'm wondering if we could improve things slightly by using a more idiomatic
-form for the error path. Something like the following (completely untested!).
-
-My reasoning is that this way things are less likely go to wrong if more
-error conditions are added to this function later.
-
-	...
-
-	register_netdevice_notifier(&netvsc_netdev_notifier);
-
-	ret = vmbus_driver_register(&netvsc_drv);
-	if (ret)
-		goto err_unregister_netdevice_notifier;
-
-	return 0;
-
-err_unregister_netdevice_notifier:
-	unregister_netdevice_notifier(&netvsc_netdev_notifier);
-	return ret;
-}
+Reviewed-by: Simon Horman <horms@kernel.org>
 
