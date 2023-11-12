@@ -2,80 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC3417E9223
-	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 19:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF31C7E92B2
+	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 21:37:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231907AbjKLSvu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 13:51:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56186 "EHLO
+        id S229664AbjKLUhW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 15:37:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230092AbjKLSvt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 13:51:49 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C57341FE5;
-        Sun, 12 Nov 2023 10:51:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35018C433C8;
-        Sun, 12 Nov 2023 18:51:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699815106;
-        bh=7V7AfIKqaTCD6m2lsmbg52UA7J/T4Eb6G/9aTJ+EDlU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NnN+Anc7K9m4jgChYzwebKq17e4JzFGV7xmKvAH4blQEQ3Y61Yc1e0iP7MoJHqdhm
-         IuG9hXhtSC/wSHts98yNgLT7fSQyNJjujIQyVGUKKYXVS96XIDweNeSqAf9M20iJe/
-         zxRSOmmoGznY0Tn3rBQCwVTeJklGF7NEwSP3k2/SapxQDbHX2dW4UEUpWwCFi18ghx
-         WaitH1pGjKyfLdbYRtycne5fQCp6df3bh9xoZC/4xINF1NW94GbsGFdHJA13f9ZJ0n
-         5zXTPqxRakp3zZoVQ24ZMF3kOrD+4s/Ix8diS4XFVScdjAYrWtWHVFo2/UyI9ocAeZ
-         rfsRJ+xjZA2DA==
-Date:   Sun, 12 Nov 2023 13:51:44 -0500
-From:   Sasha Levin <sashal@kernel.org>
-To:     Alex Deucher <alexdeucher@gmail.com>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        airlied@linux.ie, dri-devel@lists.freedesktop.org,
-        amd-gfx@lists.freedesktop.org,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Subject: Re: [PATCH AUTOSEL 6.6 09/11] drm/amd: Fix UBSAN
- array-index-out-of-bounds for Powerplay headers
-Message-ID: <ZVEewK-GAnRsrPA3@sashalap>
-References: <20231112132736.175494-1-sashal@kernel.org>
- <20231112132736.175494-9-sashal@kernel.org>
- <CADnq5_OyK=rDH38Q8Kiyq9BhWuihgd8wX7XKAffxwkO4w+ksog@mail.gmail.com>
+        with ESMTP id S229886AbjKLUhV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 15:37:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 765C39F
+        for <stable@vger.kernel.org>; Sun, 12 Nov 2023 12:36:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1699821393;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=JsTSvLKKtPDIeM2vbfnmEierpQqaOVW3rPX7mSajhtk=;
+        b=I1q3YMaD8xcbDww0yuUGkUdhSISwtJHztjyZ4XQ7zltM77A4DR8h+bgM3xFHE3RoZ4JIMy
+        IG29B5RhLXdHw/rtETMGcJKQ7wBaf+gMJfjCWXVVofMyLyD3tPeYOuWqg4cWrccOTXIZHc
+        IfynV6ajHCwJjCOfI04uk7/noS/oO1Q=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-423-dYXPrEb2PkS5w759ZdYmcQ-1; Sun,
+ 12 Nov 2023 15:36:30 -0500
+X-MC-Unique: dYXPrEb2PkS5w759ZdYmcQ-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9340E38C6168;
+        Sun, 12 Nov 2023 20:36:29 +0000 (UTC)
+Received: from shalem.redhat.com (unknown [10.39.192.51])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 84F80492BE0;
+        Sun, 12 Nov 2023 20:36:28 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     "Rafael J . Wysocki" <rafael@kernel.org>
+Cc:     Hans de Goede <hdegoede@redhat.com>,
+        "Owen T . Heisler" <writer@owenh.net>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-acpi@vger.kernel.org, regressions@lists.linux.dev,
+        stable@vger.kernel.org
+Subject: [PATCH 0/2] ACPI: video: Use acpi_device_fix_up_power_children()
+Date:   Sun, 12 Nov 2023 21:36:25 +0100
+Message-ID: <20231112203627.34059-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADnq5_OyK=rDH38Q8Kiyq9BhWuihgd8wX7XKAffxwkO4w+ksog@mail.gmail.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Nov 12, 2023 at 01:00:37PM -0500, Alex Deucher wrote:
->On Sun, Nov 12, 2023 at 8:27 AM Sasha Levin <sashal@kernel.org> wrote:
->>
->> From: Alex Deucher <alexander.deucher@amd.com>
->>
->> [ Upstream commit 49afe91370b86566857a3c2c39612cf098110885 ]
->>
->> For pptable structs that use flexible array sizes, use flexible arrays.
->>
->> Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2039926
->> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
->> Acked-by: Christian König <christian.koenig@amd.com>
->> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->I don't think any of these UBSAN flexible array changes are stable material.
+Hi Rafael,
 
-I'll drop it, but in general we've been taking kasan/ubsan/kcsan/...
-annotation fixes since it enables (easier) testing on the LTS trees, and
-for example finding issues specific to those LTS trees.
+This series fixes a regression reported in 6.6:
+
+https://lore.kernel.org/regressions/9f36fb06-64c4-4264-aaeb-4e1289e764c4@owenh.net/
+https://gitlab.freedesktop.org/drm/nouveau/-/issues/273
+https://bugzilla.kernel.org/show_bug.cgi?id=218124
+
+The reporter has confirmed that this series fixes things and
+Kai-Heng has confirmed that backlight control still works on
+the HP ZBook Fury 16 G10 for which the original
+acpi_device_fix_up_power_extended() call this replaces was added.
+
+Assuming you agree with this series, can you get it on its way
+to Linus so that it can be backported to 6.6 please ?
+
+Regards,
+
+Hans
+
+
+Hans de Goede (2):
+  ACPI: PM: Add acpi_device_fix_up_power_children() function
+  ACPI: video: Use acpi_device_fix_up_power_children()
+
+ drivers/acpi/acpi_video.c |  2 +-
+ drivers/acpi/device_pm.c  | 13 +++++++++++++
+ include/acpi/acpi_bus.h   |  1 +
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+
 -- 
-Thanks,
-Sasha
+2.41.0
+
