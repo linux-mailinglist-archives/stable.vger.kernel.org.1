@@ -2,81 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B39E67E91C5
-	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 18:20:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C168A7E91D0
+	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 18:39:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231542AbjKLRUX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 12:20:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54580 "EHLO
+        id S229782AbjKLRjo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 12:39:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbjKLRUW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 12:20:22 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD1992699
-        for <stable@vger.kernel.org>; Sun, 12 Nov 2023 09:20:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699809619; x=1731345619;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=A+ladAgLjDK1J5A68SWHTLVa+yDpBy9DjW3bmjnLS9Y=;
-  b=YavjWIN/l22or0Uhp3ovS9KBV4SHeOdWGiF0Ol1+v3ZaKuZB/EcjbQT4
-   sIeRrVy9w3BYBCbY8GPxQmBurLyf9l7Nd73l6SxbNRVI9ymI3K42a3MAn
-   lFvsMIQ55hSvLNcjJHzJ03ZjPh00iNZQAAum0Dq8ULY4/GauhkzN3EOL0
-   r2rimluqWRwWMSejpZAKptoMmPLCR5pjWkkNwpBKDVgEX8SVn++JYsDpZ
-   c0YT1RhVr9d9pEnFIi3y/36mJTlf8cMbXGCWVqf1CXKH5/wjNHVI7NxwU
-   ELxMoub+wrsOdL0gcu6DI8l5J1mTJXB9IKtgBnYWHRvvIO5WO/dzBfdEv
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10892"; a="387504053"
-X-IronPort-AV: E=Sophos;i="6.03,297,1694761200"; 
-   d="scan'208";a="387504053"
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2023 09:20:19 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10892"; a="834538585"
-X-IronPort-AV: E=Sophos;i="6.03,297,1694761200"; 
-   d="scan'208";a="834538585"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by fmsmga004.fm.intel.com with ESMTP; 12 Nov 2023 09:20:18 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1r2E88-000BMG-1m;
-        Sun, 12 Nov 2023 17:20:16 +0000
-Date:   Mon, 13 Nov 2023 01:19:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+        with ESMTP id S229535AbjKLRjo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 12:39:44 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DBFF211B;
+        Sun, 12 Nov 2023 09:39:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80743C433C7;
+        Sun, 12 Nov 2023 17:39:40 +0000 (UTC)
+Date:   Sun, 12 Nov 2023 12:39:38 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     LKML <linux-kernel@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Milian Wolff <milian.wolff@kdab.com>, akaher@vmware.com,
+        Andrew Morton <akpm@linux-foundation.org>
 Subject: Re: [v6.6][PATCH] eventfs: Check for NULL ef in eventfs_set_attr()
-Message-ID: <ZVEJFLmuAFBe1Wsg@a9cca7fa5d54>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-ID: <20231112123938.58bb5c74@rorschach.local.home>
 In-Reply-To: <20231112121817.2713c150@rorschach.local.home>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20231112121817.2713c150@rorschach.local.home>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Sun, 12 Nov 2023 12:18:17 -0500
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-Thanks for your patch.
+> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+> 
+> The top level events directory dentry does not have a d_fsdata set to a
+> eventfs_file pointer. This dentry is still passed to eventfs_set_attr().
+> It can not assume that the d_fsdata is set. Check for that.
+> 
+> Link: https://lore.kernel.org/all/20231112104158.6638-1-milian.wolff@kdab.com/
+> 
+> Fixes: 9aaee3eebc91 ("eventfs: Save ownership and mode")
+> Reported-by: Milian Wolff <milian.wolff@kdab.com>
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+I guess I should have included the "Cc: stable" tag. This is a bit
+different patch since it's not going to land in upstream, as the bug
+doesn't exist there.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+I can resend if needed.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [v6.6][PATCH] eventfs: Check for NULL ef in eventfs_set_attr()
-Link: https://lore.kernel.org/stable/20231112121817.2713c150%40rorschach.local.home
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+-- Steve
