@@ -2,149 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 437027E9542
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 03:56:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4A187E9560
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 04:17:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230044AbjKMC4G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 21:56:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59516 "EHLO
+        id S230053AbjKMDRN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 22:17:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbjKMC4F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 21:56:05 -0500
-Received: from BN3PR00CU001.outbound.protection.outlook.com (mail-eastus2azon11020003.outbound.protection.outlook.com [52.101.56.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A2B3115;
-        Sun, 12 Nov 2023 18:56:02 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=T2B9uN87iOU+TcT/zdxiz7jRjsF6kpRLvU0Y3I2JVjVBT924rI3zNODYGKTE4ZR90Sxbpt8l3DPtUjr/031BYpKYu71Xlbt4cEPuHxysGew0Za5NI+1UCC98mQ/5omzdvuwObVg5BTF7YXqFtXAZObdR8oKslqQnThiRGEBKoHL6Qqb+nydaxLCmql3xgo9ZGfM82vFisOrgRkiMrthQbHUqDbrbPk6Rd/IatU3ZnTQjHOA9ReGZ6864zfmCvMCPkHRjJcNdT0SF1GVUSv8FOaVzihtdrV+kxZy23wHV7VGLHTQak0Tia/D9XbERhXuuoMW3RNPJhJcrz+Pq1KLa7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bCvCZ+RI5RQWquQzy735geEcbdEXp8C4qPj6eqG/qSA=;
- b=TFfMLOeWwHWKlwCPIM78IIs6/nr3vzTzhMajdlTxpZbwR/kfowwooz+Iw+e2UNgJBiMNaqAJVsPTtIsH9xN07m6zboYa6XFqaCvWsXPt3p70Hd/1W4yMj5DcEIuqWIkq6VjvBgj7WwG5Tjqoq9S5Ncrbu6PRFEflPVYG/iyl+HcDfU8kVOahRLozs87lsdwc3mKpZCIxdEFrvP5bN5maLXyW0XpZZUs8V9f2zG/MRHcJCASFU9yLOqR0AwcD6Oz411wljv6fi00ASX5Z4pNHbZWHm6jOUY/ZKLxbXm7WBE9Ho9XwryH2FjUpVF3Vhi82Mh5zDnZOTs8vRizRN69cuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bCvCZ+RI5RQWquQzy735geEcbdEXp8C4qPj6eqG/qSA=;
- b=jiUGlFFxIdME1DDpEZ2k1DJiHbA207vctJqeuw1Jjflm3XTAPm+qKNFgVQu4aOdxo2K7S9SSOKL9TZQ9Pvj2+PpoAkpRAsg9civkwhUoU0rleM429Cy2LXY6mygwW0W//K4RiudY4Fh1Vj6bXRfX5H8q5rvOqHEkBP2/1mmzn0Y=
-Received: from SA1PR21MB1335.namprd21.prod.outlook.com (2603:10b6:806:1f2::11)
- by IA1PR21MB3691.namprd21.prod.outlook.com (2603:10b6:208:3e0::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.3; Mon, 13 Nov
- 2023 02:55:58 +0000
-Received: from SA1PR21MB1335.namprd21.prod.outlook.com
- ([fe80::c1de:d3e5:8e05:1e4a]) by SA1PR21MB1335.namprd21.prod.outlook.com
- ([fe80::c1de:d3e5:8e05:1e4a%2]) with mapi id 15.20.7025.003; Mon, 13 Nov 2023
- 02:55:58 +0000
-From:   Dexuan Cui <decui@microsoft.com>
-To:     Haiyang Zhang <haiyangz@microsoft.com>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     KY Srinivasan <kys@microsoft.com>,
-        "wei.liu@kernel.org" <wei.liu@kernel.org>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH net,v4, 2/3] hv_netvsc: Fix race of
- register_netdevice_notifier and VF register
-Thread-Topic: [PATCH net,v4, 2/3] hv_netvsc: Fix race of
- register_netdevice_notifier and VF register
-Thread-Index: AQHaE+O3d+O/3LKXnUqVpJmgJOhto7B3kJcw
-Date:   Mon, 13 Nov 2023 02:55:58 +0000
-Message-ID: <SA1PR21MB13353EB2FAB9ECF0F135BF19BFB3A@SA1PR21MB1335.namprd21.prod.outlook.com>
-References: <1699627140-28003-1-git-send-email-haiyangz@microsoft.com>
- <1699627140-28003-3-git-send-email-haiyangz@microsoft.com>
-In-Reply-To: <1699627140-28003-3-git-send-email-haiyangz@microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=fed65eb1-c1dd-4818-b041-a7c0e6283030;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-11-13T02:50:39Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB1335:EE_|IA1PR21MB3691:EE_
-x-ms-office365-filtering-correlation-id: 229f53e1-1aa6-445f-b485-08dbe3f41032
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: lXV5FhPjs/Xi1CZv4EK24dtzWi/xcvjtzY9McuaxDvr8TSMyjKVS9kQUSxceSzqdZOebyehFmqSTSjqAcMKWHy6/l4INHALhSElC/9fZ6OuO7NOZIKhT58nkMewHjPjf5nNi01ZpR/qYCvoUUl6wY0qFS7vwEMtHdkPm+W7xHpBSMuVol8UQ36FhxmqHzt1rMyM9NzvwhFkqHb3OllLkTF/9byQwwW6duEgXq4hPbRXwXrLX+rVKlaef1Y3J9zUjHalgnOOYvTny6IUrkAjTGb+GrzXb6PXHVZcLvwXrF3kKsBvDWxpE52UaDE0uzru7OjC6t4MybkfSbwVhVphrSNBf+F15dithjUzMEHdtSoFAabVUZwh4kq9g3D/Vkgly93gnCDEt5BA9bcJXW/cipSsXdPxz18tUYiWITRcHQ/9CJRzCLDfS6RYfFEFxrcp7sIHYk2lMpAWTWmE12xXmSeJXsie9yamr8u478GzXBLvKm/HTqeqpnNxUnNjgztvQPIt0KZjz22N8b/+/ZZuj5+PBkXWve97GZmr/OctDbaRgBWBIIIAapvBN0hPeK/X4cS2ESEKgKQYijvZdayUbk3MW75k3FjA8NBPR4m7tpt7MrzYgX3qQjvRNFhBxsQVBD6YZhJ10DThxi/gu9Ty+ew6X9ubkGtemvdXXLqM5hNE=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB1335.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(396003)(376002)(366004)(136003)(39860400002)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(54906003)(64756008)(316002)(66476007)(110136005)(66446008)(76116006)(66946007)(66556008)(8936002)(8676002)(4326008)(52536014)(10290500003)(478600001)(71200400001)(8990500004)(33656002)(41300700001)(5660300002)(86362001)(4744005)(2906002)(38100700002)(122000001)(7696005)(6506007)(9686003)(83380400001)(82950400001)(82960400001)(38070700009)(55016003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?wn7eMaIh2kjeigKew4v+j872VjER6bvbYBuqbFP9b/SBhK7FT05qB9mGdEYp?=
- =?us-ascii?Q?38HqwOaDFvncFKGxnY3V8uwkx56RE5U2FmFi/XvPQcpwDTqchuhHbWUSwis1?=
- =?us-ascii?Q?LmsTev45O1uVNNXQrs8bYTqtFh66bYF9IDZOSb/WLbc9biEy9qI8TnIODH5s?=
- =?us-ascii?Q?3GdZ6gl+q58Hcr/Ra6fkuI76eF1OdyL51NhOxfc9b0jQzC5jbgrB0pBFdV8K?=
- =?us-ascii?Q?UJRvBNPNeLrWwUnM/VlaZDvZ50rrAw7+ay2UGWHUqFv5PvzGRNRkDHo1xneI?=
- =?us-ascii?Q?NnGfFgl84dvqa/nrCHERnw/PW/nQx4LKFntvDjUDYLUwo988zhClHPjiYwYJ?=
- =?us-ascii?Q?oGjqFtuPsa6u7bMKOQCb0EHgEQoTpBIQUObx1FQ9crM6U4luo1JOY1YNZCTL?=
- =?us-ascii?Q?tt+xoDPX4R9T2AztLOj5SxywUrEMaVHR+Qc8IkSvVE/XjLPL0c7QjDKTYOXY?=
- =?us-ascii?Q?hPf0M5za9Y3qA3AgaLh/W0uFLcCfPPa33BipJDLP/PlPx4x57w3Yq9/l3Aet?=
- =?us-ascii?Q?7YbOeujrzpdgDCNy2OWfNSEjbKM9cgrGah9YBW0I5/HqdpeuF7YjqNW8pKWI?=
- =?us-ascii?Q?1imTiS3JubPXfPu596w6pKhTVRz6TJDuWr6w+bIodWcXTsHlOe/kQrqehJ39?=
- =?us-ascii?Q?n0yk4OeKixQwuUahAltECGTWK0LzZskbYfiWZx0Y8FFE5xZ8FYJ4YQlZQC71?=
- =?us-ascii?Q?gAucIzyDFOwAEg6QUaerKldW5jj0mgPnx72klUWU3rlwMEXzCXMvivM3kA2v?=
- =?us-ascii?Q?gsSLAa6jFyLXij8JMK64PUE6CIskaKZzDO/SnDXNbv3KhAzcckjXxw1by71X?=
- =?us-ascii?Q?S9ENgqv9I5ynVeCnetIJ5kRvfCTh7VJjzkOK28D5OsOycwJ/HQSMx9FvB8iO?=
- =?us-ascii?Q?PFs1kkUpdO60z9YjihU2BS2wd34iJZRYcA6OjSgyrL0Je3VdBTNOFZJUQITU?=
- =?us-ascii?Q?m5QyE4jZS5VFAwsR0Gs2EJsUu6QXN+VXF2YB4tM3wXX0xZDW7Jb4Q1Svgbk1?=
- =?us-ascii?Q?D3SwUPJiX9j+J8vjkewyFV2d3h2ZQBU9ToGGjJK5/XA4Safhpi9MJyBo3AvE?=
- =?us-ascii?Q?Az/hyv0jSXiEFQKaU3Pq3EY3/hisd+crXimI8q//M05G7s6spHofA/vf3Lat?=
- =?us-ascii?Q?+fSBF93ipb49nNcq62Aof4VAceCIz63A/Tpemn4MyLyJEoVj6hTWCVM0izGW?=
- =?us-ascii?Q?n7F7w2WzzZ7OwKNfQDfreGiNjZ2RvzrIQF1BIzFLjzybYH4yo5wTNDtJUF9u?=
- =?us-ascii?Q?nNefqjazV3ojIgmkadY6CJ77lNWclSxV4QjeNINWNwDjtsmch2cjwmxBq1bB?=
- =?us-ascii?Q?hT3woqHp+MmcpnhF+/0uzBAUQQE879bjWVimLHD50iC0xbP04xmNxiU71oRP?=
- =?us-ascii?Q?iVpJ8KUiCXmTntJW88pUBMl57nRAXcpvsJAi/vmkJQcWa8LuOPOnRkk6we+2?=
- =?us-ascii?Q?ZQ4o5LROIh/wPUVhWoRQ8M6TCZaU8ANAznwrfYYNrQ0lf5AmO1FiXElqYrmJ?=
- =?us-ascii?Q?oc9gGu/QY9igDc707dvDMvBGaJznITkqKHcLiY8BTYFLFKpUnJRuKCs93g?=
- =?us-ascii?Q?=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229665AbjKMDRM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 22:17:12 -0500
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC70170E;
+        Sun, 12 Nov 2023 19:17:09 -0800 (PST)
+Received: by mail-qv1-xf34.google.com with SMTP id 6a1803df08f44-66d0169cf43so25282416d6.3;
+        Sun, 12 Nov 2023 19:17:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699845429; x=1700450229; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MoTUt+5xCFIEtAHrqW+YCq47pwtJA2Iy+VDWAz+zkeE=;
+        b=K1ZXDR/mBGjHl83hYVpYPlM41EOJ4JtNFnHO40lXt4mUUZC8gMaUeFXcUwfBA2jB4B
+         Wg0Etcu+wJRGRYmWEZSQb0/mjFn/CYOBLp03xGX+Hyrwq6IRxt0ucsWdCZqw1oORXlNn
+         +Gttjtof6FAZj3X9evJkcDYEFQcblhYwYk5Rkxn3AYF7Odwq0a7JCUxiVkigdKqXhvIX
+         DqQJLF4MniRSI3rXj/bEAp41/PEaLR4O+ZGmzOWNAg7i6Y01yUx3+SAsWsAD6LqCBXOg
+         7VqbUoCE5dr/PtSwhpd57OJkzTrFdZy7Bj90BpZG6Xim/Aq3GPuDUeWBQ3gYtr6C79p8
+         lVMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699845429; x=1700450229;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MoTUt+5xCFIEtAHrqW+YCq47pwtJA2Iy+VDWAz+zkeE=;
+        b=CrjkseWTto1vW/6Ph54JKUsHBTiy6GfACx5oHG8TAemQDs7M6AXKqoRb9XrBdseeUP
+         ZSuXclbRy68dT1PzulWAifwry5mBZa5717/v7O3os0D9sWjT8smashDtU79icldCJNRQ
+         q9Asa8uyypefH4M+VQcJNpRzoGwbN4/WTE3ObnMf1Uycw8fSk8FqvmoRLZTJfTJVFJxO
+         OdSqZ5XG5dILu/BSGFfoTIr/nJWQepwCI0rXeauIHLU1HIiC/ieS9/xF2ls0l/Xsm3mx
+         iZOWZsClQ/1XhsLwMV05AstChIRYs3n5nZnZWDDH7XcM58wBkSUox/WmG0ELtnkLLtfi
+         uIHw==
+X-Gm-Message-State: AOJu0Yx6C5oQ0Si7yDykfaCAvKA46ciETQoo9ScN9kbaGExesCi05Wzx
+        sC0cBYH2gAHfhFEbLssmAvzWVhEsf94=
+X-Google-Smtp-Source: AGHT+IE7nJbarY274kaRwFgLsGrevOrjeCHr0tqfcX7QZb+L+jLlKOQEzKXY8IoIw7w/i/elQtMVYQ==
+X-Received: by 2002:a05:6214:5153:b0:66d:28a4:5697 with SMTP id kh19-20020a056214515300b0066d28a45697mr5968243qvb.61.1699845428844;
+        Sun, 12 Nov 2023 19:17:08 -0800 (PST)
+Received: from willemb.c.googlers.com.com (240.157.150.34.bc.googleusercontent.com. [34.150.157.240])
+        by smtp.gmail.com with ESMTPSA id pb7-20020a05620a838700b007742c2ad7dfsm1564328qkn.73.2023.11.12.19.17.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Nov 2023 19:17:08 -0800 (PST)
+From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To:     netdev@vger.kernel.org
+Cc:     davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+        pabeni@redhat.com, linux-ppp@vger.kernel.org,
+        stable@vger.kernel.org, mitch@sfgoth.com, mostrows@earthlink.net,
+        jchapman@katalix.com, Willem de Bruijn <willemb@google.com>,
+        syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
+Subject: [PATCH net] ppp: limit MRU to 64K
+Date:   Sun, 12 Nov 2023 22:16:32 -0500
+Message-ID: <20231113031705.803615-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB1335.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 229f53e1-1aa6-445f-b485-08dbe3f41032
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Nov 2023 02:55:58.6257
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: O1RQ8pn8I0nmOxIRKCNds91xTMzR26dQeJXD2PAMiqXtmpVyHjO6j2nvq4JseVnb9ZmkihBYJFIGRkfvsHcsMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR21MB3691
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> From: LKML haiyangz <lkmlhyz@microsoft.com> On Behalf Of Haiyang Zhang
-> Sent: Friday, November 10, 2023 9:39 AM
-> [...]
-> If VF NIC is registered earlier, NETDEV_REGISTER event is replayed,
-> but NETDEV_POST_INIT is not.
->=20
-> Move register_netdevice_notifier() earlier, so the call back
-> function is set before probing.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earl=
-ier in
-> netvsc_probe()")
-> Reported-by: Dexuan Cui <decui@microsoft.com>
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-> Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+From: Willem de Bruijn <willemb@google.com>
 
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
+ppp_sync_ioctl allows setting device MRU, but does not sanity check
+this input.
 
-It's better to post a new version that follows Simon Horman's suggestion,
-i.e., use a more idiomatic form for the error path.
+Limit to a sane upper bound of 64KB.
+
+No implementation I could find generates larger than 64KB frames.
+RFC 2823 mentions an upper bound of PPP over SDL of 64KB based on the
+16-bit length field. Other protocols will be smaller, such as PPPoE
+(9KB jumbo frame) and PPPoA (18190 maximum CPCS-SDU size, RFC 2364).
+PPTP and L2TP encapsulate in IP.
+
+Syzbot managed to trigger alloc warning in __alloc_pages:
+
+	if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
+
+    WARNING: CPU: 1 PID: 37 at mm/page_alloc.c:4544 __alloc_pages+0x3ab/0x4a0 mm/page_alloc.c:4544
+
+    __alloc_skb+0x12b/0x330 net/core/skbuff.c:651
+    __netdev_alloc_skb+0x72/0x3f0 net/core/skbuff.c:715
+    netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
+    dev_alloc_skb include/linux/skbuff.h:3238 [inline]
+    ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
+    ppp_sync_receive+0xff/0x680 drivers/net/ppp/ppp_synctty.c:334
+    tty_ldisc_receive_buf+0x14c/0x180 drivers/tty/tty_buffer.c:390
+    tty_port_default_receive_buf+0x70/0xb0 drivers/tty/tty_port.c:37
+    receive_buf drivers/tty/tty_buffer.c:444 [inline]
+    flush_to_ldisc+0x261/0x780 drivers/tty/tty_buffer.c:494
+    process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+
+With call
+
+    ioctl$PPPIOCSMRU1(r1, 0x40047452, &(0x7f0000000100)=0x5e6417a8)
+
+Similar code exists in other drivers that implement ppp_channel_ops
+ioctl PPPIOCSMRU. Those might also be in scope. Notably excluded from
+this are pppol2tp_ioctl and pppoe_ioctl.
+
+This code goes back to the start of git history.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+---
+ drivers/net/ppp/ppp_synctty.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index ea261a628786..52d05ce4a281 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -453,6 +453,10 @@ ppp_sync_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
+ 	case PPPIOCSMRU:
+ 		if (get_user(val, (int __user *) argp))
+ 			break;
++		if (val > U16_MAX) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (val < PPP_MRU)
+ 			val = PPP_MRU;
+ 		ap->mru = val;
+-- 
+2.43.0.rc0.421.g78406f8d94-goog
+
