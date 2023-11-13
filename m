@@ -2,187 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 379487EA16A
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 17:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3102C7EA2DB
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 19:31:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229675AbjKMQnj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 11:43:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57034 "EHLO
+        id S229989AbjKMSbM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 13:31:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjKMQni (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 11:43:38 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31174D53;
-        Mon, 13 Nov 2023 08:43:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AFCC433C7;
-        Mon, 13 Nov 2023 16:43:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1699893814;
-        bh=VV9L2BIh1A1TDShp08tq5N8z6K6agwYg9sCR8dbKvIM=;
-        h=Date:To:From:Subject:From;
-        b=d1gPoVitIlkekE/lHH0I+OpcmgwMibM7DmkzdC6keIfbSH36bis10NzOQ/Dyw9DGE
-         ZJRu9aMTxCnLFCwAoyTA2wUNK/4bYww9Ba4JLbmNNexJ9JsVp4ak89lq0Jswmx2kG9
-         Xfk5gq6bmMZmhMXc+iQEwhZpDAgycOHedM81OapE=
-Date:   Mon, 13 Nov 2023 08:43:34 -0800
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        matoro_mailinglist_kernel@matoro.tk, deller@gmx.de,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + parisc-fix-mmap_base-calculation-when-stack-grows-upwards.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231113164334.C2AFCC433C7@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S231515AbjKMSbL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 13:31:11 -0500
+Received: from smtp.inaport4.co.id (unknown [103.219.76.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DA1610EC
+        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 10:31:08 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id 4405785B8DC2;
+        Tue, 14 Nov 2023 01:27:15 +0800 (WITA)
+Received: from smtp.inaport4.co.id ([127.0.0.1])
+        by localhost (mta-2.inaport4.co.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ynkS7KrXs4CP; Tue, 14 Nov 2023 01:27:14 +0800 (WITA)
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id 9261885B8DCD;
+        Tue, 14 Nov 2023 01:27:12 +0800 (WITA)
+DKIM-Filter: OpenDKIM Filter v2.10.3 smtp.inaport4.co.id 9261885B8DCD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inaport4.co.id;
+        s=67133E3A-D729-11EC-9A3E-209BEC03DFB2; t=1699896433;
+        bh=piiWAM3XM5sEZ8YiKJEsg4tmakIxK0F2Tma00Ti468c=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=cm1m3uYsEghmcItvkZ1Elvvc3iPQF+D1kbvkGSb2T+N8Zyio2VkUalVL47I5F3cZT
+         /koODHiIi3NaImjVZWHXoAapztOz2E26XiPp3X2hJqy+smovOdVEcWBKieLocIhOkY
+         OEYlajsp24VakZ3mYq4cfeYMONX8e9iPMgk2MbeMN92ekvpbh6LhOVoB2joMxSdScq
+         nEZXULdogf8Ds7Cbtc1xzo4bjEXZ/4BE+P0mMcEIXrJfPgKqlL3rM2j44X8JgOLhTA
+         yiHXe4Es2ueK9RJzZMgDF+ZQIA5wFQ65aO5OPG+LuuuFYHsxhIZNQC6V91K3zz1o8p
+         ChpcAZOhvAY8w==
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+        mta-2.inaport4.co.id
+X-Virus-Scanned: amavisd-new at 
+Received: from smtp.inaport4.co.id ([127.0.0.1])
+        by localhost (mta-2.inaport4.co.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 3w1cHLcEsggL; Tue, 14 Nov 2023 01:27:12 +0800 (WITA)
+Received: from mailstore.inaport4.co.id (mailstore.inaport4.co.id [172.10.1.75])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id 3E9B685B8DBB;
+        Tue, 14 Nov 2023 01:27:07 +0800 (WITA)
+Date:   Tue, 14 Nov 2023 01:27:07 +0800 (WITA)
+From:   =?utf-8?B?0YHQuNGB0YLQtdC80L3QuNC5INCw0LTQvNGW0L3RltGB0YLRgNCw0YLQvtGA?= 
+        <syafri@inaport4.co.id>
+Reply-To: sistemassadmins@mail2engineer.com
+Message-ID: <1271379365.368831.1699896427218.JavaMail.zimbra@inaport4.co.id>
+Subject: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+X-Mailer: Zimbra 8.8.8_GA_3025 (zclient/8.8.8_GA_3025)
+Thread-Index: MjRGIlmt+p8hjgGKs4/eXdXSmfeUkQ==
+Thread-Topic: 
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        MISSING_HEADERS,RCVD_IN_DNSWL_BLOCKED,REPLYTO_WITHOUT_TO_CC,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [103.219.76.7 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  1.0 MISSING_HEADERS Missing To: header
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+=D1=83=D0=B2=D0=B0=D0=B3=D0=B0;
 
-The patch titled
-     Subject: parisc: fix mmap_base calculation when stack grows upwards
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     parisc-fix-mmap_base-calculation-when-stack-grows-upwards.patch
+=D0=92=D0=B0=D1=88=D0=B0 =D0=B5=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=
+=D0=BD=D0=B0 =D0=BF=D0=BE=D1=88=D1=82=D0=B0 =D0=BF=D0=B5=D1=80=D0=B5=D0=B2=
+=D0=B8=D1=89=D0=B8=D0=BB=D0=B0 =D0=BE=D0=B1=D0=BC=D0=B5=D0=B6=D0=B5=D0=BD=
+=D0=BD=D1=8F =D0=BF=D0=B0=D0=BC'=D1=8F=D1=82=D1=96, =D1=8F=D0=BA=D0=B5 =D1=
+=81=D1=82=D0=B0=D0=BD=D0=BE=D0=B2=D0=B8=D1=82=D1=8C 5 =D0=93=D0=91, =D0=B2=
+=D0=B8=D0=B7=D0=BD=D0=B0=D1=87=D0=B5=D0=BD=D0=B5 =D0=B0=D0=B4=D0=BC=D1=96=
+=D0=BD=D1=96=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D1=8F=
+=D0=BA=D0=B5 =D0=B2 =D0=B4=D0=B0=D0=BD=D0=B8=D0=B9 =D1=87=D0=B0=D1=81 =D0=
+=BF=D1=80=D0=B0=D1=86=D1=8E=D1=94 =D0=BD=D0=B0 10,9 =D0=93=D0=91. =D0=92=D0=
+=B8 =D0=BD=D0=B5 =D0=B7=D0=BC=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BD=D0=B0=D0=
+=B4=D1=81=D0=B8=D0=BB=D0=B0=D1=82=D0=B8 =D0=B0=D0=B1=D0=BE =D0=BE=D1=82=D1=
+=80=D0=B8=D0=BC=D1=83=D0=B2=D0=B0=D1=82=D0=B8 =D0=BD=D0=BE=D0=B2=D1=83 =D0=
+=BF=D0=BE=D1=88=D1=82=D1=83, =D0=B4=D0=BE=D0=BA=D0=B8 =D0=BD=D0=B5 =D0=BF=
+=D0=B5=D1=80=D0=B5=D0=B2=D1=96=D1=80=D0=B8=D1=82=D0=B5 =D0=BF=D0=BE=D1=88=
+=D1=82=D0=BE=D0=B2=D1=83 =D1=81=D0=BA=D1=80=D0=B8=D0=BD=D1=8C=D0=BA=D1=83=
+ "=D0=92=D1=85=D1=96=D0=B4=D0=BD=D1=96". =D0=A9=D0=BE=D0=B1 =D0=B2=D1=96=D0=
+=B4=D0=BD=D0=BE=D0=B2=D0=B8=D1=82=D0=B8 =D1=81=D0=BF=D1=80=D0=B0=D0=B2=D0=
+=BD=D1=96=D1=81=D1=82=D1=8C =D0=BF=D0=BE=D1=88=D1=82=D0=BE=D0=B2=D0=BE=D1=
+=97 =D1=81=D0=BA=D1=80=D0=B8=D0=BD=D1=8C=D0=BA=D0=B8, =D0=BD=D0=B0=D0=B4=D1=
+=96=D1=88=D0=BB=D1=96=D1=82=D1=8C =D1=82=D0=B0=D0=BA=D1=96 =D0=B2=D1=96=D0=
+=B4=D0=BE=D0=BC=D0=BE=D1=81=D1=82=D1=96
+=D0=BD=D0=B8=D0=B6=D1=87=D0=B5:
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/parisc-fix-mmap_base-calculation-when-stack-grows-upwards.patch
+=D0=86=D0=BC'=D1=8F:
+=D0=86=D0=BC'=D1=8F =D0=BA=D0=BE=D1=80=D0=B8=D1=81=D1=82=D1=83=D0=B2=D0=B0=
+=D1=87=D0=B0:
+=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=9F=D1=96=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B6=D0=B5=D0=BD=D0=BD=D1=
+=8F =D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8F:
+=D0=90=D0=B4=D1=80=D0=B5=D1=81=D0=B0 =D0=B5=D0=BB=D0=B5=D0=BA=D1=82=D1=80=
+=D0=BE=D0=BD=D0=BD=D0=BE=D1=97 =D0=BF=D0=BE=D1=88=D1=82=D0=B8:
+=D1=82=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+=D0=AF=D0=BA=D1=89=D0=BE =D0=BD=D0=B5 =D0=B2=D0=B4=D0=B0=D1=94=D1=82=D1=8C=
+=D1=81=D1=8F =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D0=B5=
+=D1=80=D0=B5=D0=B2=D1=96=D1=80=D0=B8=D1=82=D0=B8 =D0=BF=D0=BE=D0=B2=D1=96=
+=D0=B4=D0=BE=D0=BC=D0=BB=D0=B5=D0=BD=D0=BD=D1=8F, =D0=B2=D0=B0=D1=88=D0=B0=
+ =D0=BF=D0=BE=D1=88=D1=82=D0=BE=D0=B2=D0=B0 =D1=81=D0=BA=D1=80=D0=B8=D0=BD=
+=D1=8C=D0=BA=D0=B0 =D0=B1=D1=83=D0=B4=D0=B5 =D0=92=D0=B8=D0=BC=D0=BA=D0=BD=
+=D1=83=D1=82=D0=BE!
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC=D0=BE =D0=B2=D0=B8=D0=B1=
+=D0=B0=D1=87=D0=B5=D0=BD=D0=BD=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D0=B7=D1=80=
+=D1=83=D1=87=D0=BD=D0=BE=D1=81=D1=82=D1=96.
+=D0=9A=D0=BE=D0=B4 =D0=BF=D1=96=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B6=
+=D0=B5=D0=BD=D0=BD=D1=8F:@WEB.001.ADMIN.UA:@2023.UA.=D1=81=D0=B8=D1=81=D1=
+=82=D0=B5=D0=BC=D0=BD=D0=B8=D0=B9 =D0=B0=D0=B4=D0=BC=D1=96=D0=BD=D1=96=D1=
+=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80
+=D0=A2=D0=B5=D1=85=D0=BD=D1=96=D1=87=D0=BD=D0=B0 =D0=BF=D1=96=D0=B4=D1=82=
+=D1=80=D0=B8=D0=BC=D0=BA=D0=B0 =D0=9F=D0=BE=D1=88=D1=82=D0=B8 =D0=A1=D0=B8=
+=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D0=B8=D0=B9 =D0=B0=D0=B4=D0=BC=D1=96=D0=BD=
+=D1=96=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80 @2023
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Helge Deller <deller@gmx.de>
-Subject: parisc: fix mmap_base calculation when stack grows upwards
-Date: Mon, 13 Nov 2023 11:12:57 +0100
-
-Matoro reported various userspace crashes on the parisc platform with kernel
-6.6 and bisected it to commit 3033cd430768 ("parisc: Use generic mmap top-down
-layout and brk randomization").
-
-That commit switched parisc to use the common infrastructure to calculate
-mmap_base, but missed that the mmap_base() function takes care for
-architectures where the stack grows downwards only.
-
-Fix the mmap_base() calculation to include the stack-grows-upwards case
-and thus fix the userspace crashes on parisc.
-
-Link: https://lkml.kernel.org/r/ZVH2qeS1bG7/1J/l@p100
-Fixes: 3033cd430768 ("parisc: Use generic mmap top-down layout and brk randomization")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: matoro <matoro_mailinglist_kernel@matoro.tk>
-Tested-by: matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/parisc/Kconfig                 |    6 +++---
- arch/parisc/include/asm/elf.h       |   10 +---------
- arch/parisc/include/asm/processor.h |    2 ++
- arch/parisc/kernel/sys_parisc.c     |    2 +-
- mm/util.c                           |   10 ++++++++++
- 5 files changed, 17 insertions(+), 13 deletions(-)
-
---- a/arch/parisc/include/asm/elf.h~parisc-fix-mmap_base-calculation-when-stack-grows-upwards
-+++ a/arch/parisc/include/asm/elf.h
-@@ -349,15 +349,7 @@ struct pt_regs;	/* forward declaration..
- 
- #define ELF_HWCAP	0
- 
--/* Masks for stack and mmap randomization */
--#define BRK_RND_MASK	(is_32bit_task() ? 0x07ffUL : 0x3ffffUL)
--#define MMAP_RND_MASK	(is_32bit_task() ? 0x1fffUL : 0x3ffffUL)
--#define STACK_RND_MASK	MMAP_RND_MASK
--
--struct mm_struct;
--extern unsigned long arch_randomize_brk(struct mm_struct *);
--#define arch_randomize_brk arch_randomize_brk
--
-+#define STACK_RND_MASK	0x7ff	/* 8MB of VA */
- 
- #define ARCH_HAS_SETUP_ADDITIONAL_PAGES 1
- struct linux_binprm;
---- a/arch/parisc/include/asm/processor.h~parisc-fix-mmap_base-calculation-when-stack-grows-upwards
-+++ a/arch/parisc/include/asm/processor.h
-@@ -47,6 +47,8 @@
- 
- #ifndef __ASSEMBLY__
- 
-+struct rlimit;
-+unsigned long mmap_upper_limit(struct rlimit *rlim_stack);
- unsigned long calc_max_stack_size(unsigned long stack_max);
- 
- /*
---- a/arch/parisc/Kconfig~parisc-fix-mmap_base-calculation-when-stack-grows-upwards
-+++ a/arch/parisc/Kconfig
-@@ -140,11 +140,11 @@ config ARCH_MMAP_RND_COMPAT_BITS_MIN
- 	default 8
- 
- config ARCH_MMAP_RND_BITS_MAX
--	default 24 if 64BIT
--	default 17
-+	default 18 if 64BIT
-+	default 13
- 
- config ARCH_MMAP_RND_COMPAT_BITS_MAX
--	default 17
-+	default 13
- 
- # unless you want to implement ACPI on PA-RISC ... ;-)
- config PM
---- a/arch/parisc/kernel/sys_parisc.c~parisc-fix-mmap_base-calculation-when-stack-grows-upwards
-+++ a/arch/parisc/kernel/sys_parisc.c
-@@ -77,7 +77,7 @@ unsigned long calc_max_stack_size(unsign
-  * indicating that "current" should be used instead of a passed-in
-  * value from the exec bprm as done with arch_pick_mmap_layout().
-  */
--static unsigned long mmap_upper_limit(struct rlimit *rlim_stack)
-+unsigned long mmap_upper_limit(struct rlimit *rlim_stack)
- {
- 	unsigned long stack_base;
- 
---- a/mm/util.c~parisc-fix-mmap_base-calculation-when-stack-grows-upwards
-+++ a/mm/util.c
-@@ -414,6 +414,15 @@ static int mmap_is_legacy(struct rlimit
- 
- static unsigned long mmap_base(unsigned long rnd, struct rlimit *rlim_stack)
- {
-+#ifdef CONFIG_STACK_GROWSUP
-+	/*
-+	 * For an upwards growing stack the calculation is much simpler.
-+	 * Memory for the maximum stack size is reserved at the top of the
-+	 * task. mmap_base starts directly below the stack and grows
-+	 * downwards.
-+	 */
-+	return PAGE_ALIGN_DOWN(mmap_upper_limit(rlim_stack) - rnd);
-+#else
- 	unsigned long gap = rlim_stack->rlim_cur;
- 	unsigned long pad = stack_guard_gap;
- 
-@@ -431,6 +440,7 @@ static unsigned long mmap_base(unsigned
- 		gap = MAX_GAP;
- 
- 	return PAGE_ALIGN(STACK_TOP - gap - rnd);
-+#endif
- }
- 
- void arch_pick_mmap_layout(struct mm_struct *mm, struct rlimit *rlim_stack)
-_
-
-Patches currently in -mm which might be from deller@gmx.de are
-
-parisc-fix-mmap_base-calculation-when-stack-grows-upwards.patch
 
