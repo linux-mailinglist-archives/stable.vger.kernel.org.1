@@ -2,59 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E3327E9567
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 04:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BCB97E956E
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 04:23:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229665AbjKMDUp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 22:20:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51568 "EHLO
+        id S232954AbjKMDX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 22:23:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232876AbjKMDUo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 22:20:44 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F041704
-        for <stable@vger.kernel.org>; Sun, 12 Nov 2023 19:20:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699845642; x=1731381642;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=qXMova+Doo2vJVahJwAaReiVlhiIRW+2rK0QU+dGz/A=;
-  b=ckp3qknC0tZVdOvwgRm4Y/NGL8wEeyOgn1lZxXzPgNsVYM0VaugCA18O
-   elBonY6PBtrgpRuWo2y0fhEc5v7t884fzoVmwbPAj1sjFRzS3GtDmEqFB
-   EI+L53EfvkP9syA1XaY6OVUh45N8MNUkHdbsYxxjiP9ETEEDWZmt2aJUH
-   7GdfDQfUpjNqNdEFeXnWtJTsN588ssUGbhDe1akEWqh9C3gzmMCJzrPAv
-   tr/R4WXOa3th4EY1/jg/vG6nRQm4AzB1xgVobh+ULa7cqwjCipbEWxDpR
-   9yQ6uPnRfZSVo/EJ7YCWTkz3+c6Ewnj5n4QaWVao2DOrOShLKpjmZ4hHz
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10892"; a="370571391"
-X-IronPort-AV: E=Sophos;i="6.03,298,1694761200"; 
-   d="scan'208";a="370571391"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2023 19:20:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10892"; a="757683000"
-X-IronPort-AV: E=Sophos;i="6.03,298,1694761200"; 
-   d="scan'208";a="757683000"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 12 Nov 2023 19:20:40 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1r2NV7-000BkU-2t;
-        Mon, 13 Nov 2023 03:20:37 +0000
-Date:   Mon, 13 Nov 2023 11:19:54 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net] ppp: limit MRU to 64K
-Message-ID: <ZVGV2hIhSNWU9ylR@a9cca7fa5d54>
+        with ESMTP id S232973AbjKMDX7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 22:23:59 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25715172B
+        for <stable@vger.kernel.org>; Sun, 12 Nov 2023 19:23:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 3970EC433B6;
+        Mon, 13 Nov 2023 03:23:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699845835;
+        bh=3fhqQ/6Paof6tKXgjKwnx+l50Cg3avv/xAwzx5scwHA=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=cHdRd0B2QP8kwbaKeutfP4bb6zeLjivj6vjCDrlzRkfmENozNn5IK8TQhzd2TZtLW
+         2hb44pwT1g04n+hfzQQA+rMbnEFa43VxfnKK0mVW+9JvcJNuX43GIrpDPN16BwKSRU
+         Azs+PDkJg+14ukH5bZC7NxBSydgjSAyFLzT77tDD3kF1raUoh5t3JJt0hVItieSCwC
+         saAjdm2d1ntefledwJJbvRfedLAHCGIxfOXOp+Umd3trduL9iC7WwUxITe533aUS17
+         SzjCuM6h3SY2M1WH+UumCLa7HEZr157CKpz01DH5zfE/I8o4Aal+KdjqYU38QZsHTM
+         ud9Bz4HzTdDRA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 1F47EE21ECD;
+        Mon, 13 Nov 2023 03:23:55 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231113031705.803615-1-willemdebruijn.kernel@gmail.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v2] iio: cros_ec: fix an use-after-free in
+ cros_ec_sensors_push_data()
+From:   patchwork-bot+chrome-platform@kernel.org
+Message-Id: <169984583512.27851.7360374052526064442.git-patchwork-notify@kernel.org>
+Date:   Mon, 13 Nov 2023 03:23:55 +0000
+References: <20230829030622.1571852-1-tzungbi@kernel.org>
+In-Reply-To: <20230829030622.1571852-1-tzungbi@kernel.org>
+To:     Tzung-Bi Shih <tzungbi@kernel.org>
+Cc:     bleung@chromium.org, groeck@chromium.org, jic23@kernel.org,
+        lars@metafoo.de, chrome-platform@lists.linux.dev,
+        gwendal@chromium.org, linux-iio@vger.kernel.org,
+        dianders@chromium.org, swboyd@chromium.org, stable@vger.kernel.org
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,21 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Hello:
 
-Thanks for your patch.
+This patch was applied to chrome-platform/linux.git (for-kernelci)
+by Jonathan Cameron <Jonathan.Cameron@huawei.com>:
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+On Tue, 29 Aug 2023 11:06:22 +0800 you wrote:
+> cros_ec_sensors_push_data() reads `indio_dev->active_scan_mask` and
+> calls iio_push_to_buffers_with_timestamp() without making sure the
+> `indio_dev` stays in buffer mode.  There is a race if `indio_dev` exits
+> buffer mode right before cros_ec_sensors_push_data() accesses them.
+> 
+> An use-after-free on `indio_dev->active_scan_mask` was observed.  The
+> call trace:
+> [...]
+>  _find_next_bit
+>  cros_ec_sensors_push_data
+>  cros_ec_sensorhub_event
+>  blocking_notifier_call_chain
+>  cros_ec_irq_thread
+> 
+> [...]
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Here is the summary with links:
+  - [v2] iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()
+    https://git.kernel.org/chrome-platform/c/7771c8c80d62
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net] ppp: limit MRU to 64K
-Link: https://lore.kernel.org/stable/20231113031705.803615-1-willemdebruijn.kernel%40gmail.com
-
+You are awesome, thank you!
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
