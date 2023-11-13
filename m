@@ -2,177 +2,175 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 472B07E95B0
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 04:46:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 873DA7E975D
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 09:09:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232926AbjKMDqm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 22:46:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52666 "EHLO
+        id S229768AbjKMIJS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 03:09:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230457AbjKMDql (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 22:46:41 -0500
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D19C111;
-        Sun, 12 Nov 2023 19:46:38 -0800 (PST)
-Received: from [10.3.2.161] (zone.collabora.co.uk [167.235.23.81])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 383FB66071EF;
-        Mon, 13 Nov 2023 03:46:35 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1699847196;
-        bh=IYaMjc+qTvS7LQ5LbfeS/pcvc+pAiE5iS07jfl+bqtU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=P1THUFvdl7/Ghu3ZCKMSYlY0BKgMc5jnQG09WFUrEnHyat1Chjki2Nxy+kJ/lHGbg
-         Z3BfdVGX59JeHi89FD8K21PFJMbKAtlnS9y7PQfAr82wZAHVzFI1DDiaGCnGW+16Ky
-         STN28oMW55Wb0lXmvUYSawOvUxo0uFCzHZAJuEYOPHo18TSWZTZ+t7BL9WB8D+TK7Z
-         23xbXofCSRGr7aRzMVc7axNMxiA1xnsB6wOway4UzA+OwoNTosPGWsrlelXpD4OIGA
-         urFBrIdE6EonOvKSmoSajswDJL8uLxEe8cuz8fMwjrsxuqt6OlmbFw11/VyB34cq/o
-         6uyb22O/c/vwQ==
-Message-ID: <69941f8e-de1f-0319-6729-58625b362b8e@collabora.com>
-Date:   Mon, 13 Nov 2023 06:46:30 +0300
+        with ESMTP id S229449AbjKMIJS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 03:09:18 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6B5910F1
+        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 00:09:14 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-54366bb1c02so9727a12.1
+        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 00:09:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1699862953; x=1700467753; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IZoiKeK25c+eUBM5+IcX3nIvRllqin03QRw6rKMwSeI=;
+        b=HT9S/jFtfBICCDUuwqg3igBCTDY12VJMgbFVv31E54kzTJCJA24qB8sEVWdViVd0Iw
+         oJdIpN3g34otI/ZELCUdKVgI7OKYeBMZMc9IYWR+1XVuAySV4YhUFCWw/uZHJ0Y4gu03
+         l3cKD2UyBJmpcBXBx+tojBllS5xXlPuovSp0MOAiFV+zJW/gw4DQRcncyhpQMJYzHovs
+         nteST+XAVzXbNvInh/RkEEryJAf1O8Ec4ui6Nj5nXfOW9NT7DK3D7Pns+sTmDydK4fuh
+         G/6p8nNVcGDR/VjNNuAI9B+RzaPBXnTX7qvqIP2oWHs7tuJZyBH7DfA3kVIwcgtkUPD2
+         GfWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699862953; x=1700467753;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IZoiKeK25c+eUBM5+IcX3nIvRllqin03QRw6rKMwSeI=;
+        b=pNQtuLtLKWHdcSIgAG9PMaP2Ig+a1T57zy0xZaImiYz4ECUdacTyS7+0V0r7sMOiN3
+         AF9TP9iXhzi32vhdIdX6SwGNOAlu2nqq98/VbKflnGDe23k+Sui8lmg6XacYKWZbN9hM
+         1n8L0i7vzdoxlafuokG7bmRo+5r9wh+JjSSKAo79u5eSFYSi18g9cMDQr5aU/bbz3RDC
+         ZVFkQ5FTZwhxMFmGU8+c0Cxm+UmljzaArJC0AFfYCuKw/TCvR0X3j2ytzDoWYrhzhMSu
+         5RuBTsuaE5zf2lFkyc2hQDrc1eqGXiTahfp47NNeh3bl56v/7CUQuBLO0uiL7BAjd//G
+         pUbQ==
+X-Gm-Message-State: AOJu0YxwN739vJ2ly0gvTnPT96ogaL5BKfXAaIcQd0BX0WBhi0ADprad
+        pRPU9A4+iKkoZAfXhPSn1rk+mYfYuCrLOT8zLZqeCA==
+X-Google-Smtp-Source: AGHT+IFzRJ5jkVI6/mAvKVYmcFvOau5ZJS31ms3DOXuF4B7wj28TwQl+V6wt0JtbBzn8SakFOoOq6C4IAp58Rg6NfHQ=
+X-Received: by 2002:a05:6402:51a:b0:545:94c:862e with SMTP id
+ m26-20020a056402051a00b00545094c862emr115385edv.2.1699862953009; Mon, 13 Nov
+ 2023 00:09:13 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v7 2/5] i2c: core: run atomic i2c xfer when !preemptible
-Content-Language: en-US
-To:     Chris Morgan <macroalpha82@gmail.com>,
-        Benjamin Bara <bbara93@gmail.com>
-Cc:     Wolfram Sang <wsa@kernel.org>, Lee Jones <lee@kernel.org>,
-        rafael.j.wysocki@intel.com,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        peterz@infradead.org, jonathanh@nvidia.com,
-        richard.leitner@linux.dev, treding@nvidia.com,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-tegra@vger.kernel.org,
-        Benjamin Bara <benjamin.bara@skidata.com>,
-        stable@vger.kernel.org, Nishanth Menon <nm@ti.com>,
-        heiko@sntech.de, max.schwarz@online.de
-References: <20230327-tegra-pmic-reboot-v7-0-18699d5dcd76@skidata.com>
- <20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com>
- <655177f4.050a0220.d85c9.3ba0@mx.google.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <655177f4.050a0220.d85c9.3ba0@mx.google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20231113031705.803615-1-willemdebruijn.kernel@gmail.com>
+In-Reply-To: <20231113031705.803615-1-willemdebruijn.kernel@gmail.com>
+From:   Eric Dumazet <edumazet@google.com>
+Date:   Mon, 13 Nov 2023 09:09:00 +0100
+Message-ID: <CANn89iLeuGukAFOYk-mMaow1j4EPeO-VEA0wWVFA=byabJ91yw@mail.gmail.com>
+Subject: Re: [PATCH net] ppp: limit MRU to 64K
+To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc:     netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+        pabeni@redhat.com, linux-ppp@vger.kernel.org,
+        stable@vger.kernel.org, mitch@sfgoth.com, mostrows@earthlink.net,
+        jchapman@katalix.com, Willem de Bruijn <willemb@google.com>,
+        syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/13/23 04:12, Chris Morgan wrote:
-> On Sat, Jul 15, 2023 at 09:53:24AM +0200, Benjamin Bara wrote:
->> From: Benjamin Bara <benjamin.bara@skidata.com>
->>
->> Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
->> disabled. However, non-atomic i2c transfers require preemption (e.g. in
->> wait_for_completion() while waiting for the DMA).
->>
->> panic() calls preempt_disable_notrace() before calling
->> emergency_restart(). Therefore, if an i2c device is used for the
->> restart, the xfer should be atomic. This avoids warnings like:
->>
->> [   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
->> [   12.676926] Voluntary context switch within RCU read-side critical section!
->> ...
->> [   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
->> [   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
->> ...
->> [   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
->> [   13.001050]  machine_restart from panic+0x2a8/0x32c
->>
->> Use !preemptible() instead, which is basically the same check as
->> pre-v5.2.
->>
->> Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
->> Cc: stable@vger.kernel.org # v5.2+
->> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->> Acked-by: Wolfram Sang <wsa@kernel.org>
->> Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->> Tested-by: Nishanth Menon <nm@ti.com>
->> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-> 
-> For kernel 6.7 I'm having an issue when I shutdown or reboot my
-> Rockchip RK3326 or Rockchip RK3566 based devices, and I've bisected
-> the issue down to this specific commit.
-> 
-> When I shutdown or restart the device, I receive messages in the kernel
-> log like the following:
-> 
-> [   37.121148] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> [   37.122178] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> [   37.123212] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> [   37.124226] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> [   37.125242] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> [   37.126133] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x1
-> 
-> The device will also occasionally freeze instead of rebooting or
-> shutting down. The i2c errors are consistent, but the freezing
-> behavior is not.
+On Mon, Nov 13, 2023 at 4:17=E2=80=AFAM Willem de Bruijn
+<willemdebruijn.kernel@gmail.com> wrote:
+>
+> From: Willem de Bruijn <willemb@google.com>
+>
+> ppp_sync_ioctl allows setting device MRU, but does not sanity check
+> this input.
+>
+> Limit to a sane upper bound of 64KB.
+>
+> No implementation I could find generates larger than 64KB frames.
+> RFC 2823 mentions an upper bound of PPP over SDL of 64KB based on the
+> 16-bit length field. Other protocols will be smaller, such as PPPoE
+> (9KB jumbo frame) and PPPoA (18190 maximum CPCS-SDU size, RFC 2364).
+> PPTP and L2TP encapsulate in IP.
+>
+> Syzbot managed to trigger alloc warning in __alloc_pages:
+>
+>         if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
+>
+>     WARNING: CPU: 1 PID: 37 at mm/page_alloc.c:4544 __alloc_pages+0x3ab/0=
+x4a0 mm/page_alloc.c:4544
+>
+>     __alloc_skb+0x12b/0x330 net/core/skbuff.c:651
+>     __netdev_alloc_skb+0x72/0x3f0 net/core/skbuff.c:715
+>     netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
+>     dev_alloc_skb include/linux/skbuff.h:3238 [inline]
+>     ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
+>     ppp_sync_receive+0xff/0x680 drivers/net/ppp/ppp_synctty.c:334
+>     tty_ldisc_receive_buf+0x14c/0x180 drivers/tty/tty_buffer.c:390
+>     tty_port_default_receive_buf+0x70/0xb0 drivers/tty/tty_port.c:37
+>     receive_buf drivers/tty/tty_buffer.c:444 [inline]
+>     flush_to_ldisc+0x261/0x780 drivers/tty/tty_buffer.c:494
+>     process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+>
+> With call
+>
+>     ioctl$PPPIOCSMRU1(r1, 0x40047452, &(0x7f0000000100)=3D0x5e6417a8)
+>
+> Similar code exists in other drivers that implement ppp_channel_ops
+> ioctl PPPIOCSMRU. Those might also be in scope. Notably excluded from
+> this are pppol2tp_ioctl and pppoe_ioctl.
+>
+> This code goes back to the start of git history.
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
+> ---
+>  drivers/net/ppp/ppp_synctty.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.=
+c
+> index ea261a628786..52d05ce4a281 100644
+> --- a/drivers/net/ppp/ppp_synctty.c
+> +++ b/drivers/net/ppp/ppp_synctty.c
+> @@ -453,6 +453,10 @@ ppp_sync_ioctl(struct ppp_channel *chan, unsigned in=
+t cmd, unsigned long arg)
+>         case PPPIOCSMRU:
+>                 if (get_user(val, (int __user *) argp))
+>                         break;
+> +               if (val > U16_MAX) {
+> +                       err =3D -EINVAL;
+> +                       break;
+> +               }
+>                 if (val < PPP_MRU)
+>                         val =3D PPP_MRU;
+>                 ap->mru =3D val;
+> --
+> 2.43.0.rc0.421.g78406f8d94-goog
+>
 
-I couldn't reproduce your issue with v6.7-rc1 and RK3399 that also uses rk3x-i2c. Though, the rk3x-i2c driver looks suspicious. Please try this patch:
+Reviewed-by: Eric Dumazet <edumazet@google.com>
 
-diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
-index a044ca0c35a1..aad00e9909cc 100644
---- a/drivers/i2c/busses/i2c-rk3x.c
-+++ b/drivers/i2c/busses/i2c-rk3x.c
-@@ -219,6 +219,8 @@ struct rk3x_i2c {
- 	enum rk3x_i2c_state state;
- 	unsigned int processed;
- 	int error;
-+
-+	int irq;
- };
- 
- static inline void i2c_writel(struct rk3x_i2c *i2c, u32 value,
-@@ -1090,8 +1092,10 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
- 		rk3x_i2c_start(i2c);
- 
- 		if (!polling) {
-+			enable_irq(i2c->irq);
- 			timeout = wait_event_timeout(i2c->wait, !i2c->busy,
- 						     msecs_to_jiffies(WAIT_TIMEOUT));
-+			disable_irq(i2c->irq);
- 		} else {
- 			timeout = rk3x_i2c_wait_xfer_poll(i2c);
- 		}
-@@ -1236,7 +1240,6 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
- 	int ret = 0;
- 	int bus_nr;
- 	u32 value;
--	int irq;
- 	unsigned long clk_rate;
- 
- 	i2c = devm_kzalloc(&pdev->dev, sizeof(struct rk3x_i2c), GFP_KERNEL);
-@@ -1299,11 +1302,14 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
- 	}
- 
- 	/* IRQ setup */
--	irq = platform_get_irq(pdev, 0);
--	if (irq < 0)
--		return irq;
-+	i2c->irq = platform_get_irq(pdev, 0);
-+	if (i2c->irq < 0)
-+		return i2c->irq;
-+
-+	/* interrupt will be enabled during of transfer time */
-+	irq_set_status_flags(i2c->irq, IRQ_NOAUTOEN);
- 
--	ret = devm_request_irq(&pdev->dev, irq, rk3x_i2c_irq,
-+	ret = devm_request_irq(&pdev->dev, i2c->irq, rk3x_i2c_irq,
- 			       0, dev_name(&pdev->dev), i2c);
- 	if (ret < 0) {
- 		dev_err(&pdev->dev, "cannot request IRQ\n");
+It is unclear why ppp_sync_input() does not allocate an skb based on
+@count argument though...
 
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index ebcdffdf4f0e0193635d2b479e8a9f7a32703509..79cb7916ff03c9b311109372e3d=
+3e434e3669fa6
+100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -659,14 +659,14 @@ ppp_sync_input(struct syncppp *ap, const u8
+*buf, const u8 *flags, int count)
+        struct sk_buff *skb;
+        unsigned char *p;
 
--- 
-Best regards,
-Dmitry
+-       if (count =3D=3D 0)
++       if (count <=3D 0)
+                return;
 
+        if (ap->flags & SC_LOG_INPKT)
+                ppp_print_buffer ("receive buffer", buf, count);
+
+        /* stuff the chars in the skb */
+-       skb =3D dev_alloc_skb(ap->mru + PPP_HDRLEN + 2);
++       skb =3D dev_alloc_skb(count + PPP_HDRLEN + 2);
+        if (!skb) {
+                printk(KERN_ERR "PPPsync: no memory (input pkt)\n");
+                goto err;
