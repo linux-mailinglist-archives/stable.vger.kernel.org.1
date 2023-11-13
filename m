@@ -2,80 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9490A7E9AC5
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 12:10:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93F2F7E9BE7
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 13:11:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229642AbjKMLKa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 06:10:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56368 "EHLO
+        id S229710AbjKMMMA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 07:12:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229658AbjKMLK3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 06:10:29 -0500
+        with ESMTP id S229497AbjKMMMA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 07:12:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED19F10E2;
-        Mon, 13 Nov 2023 03:10:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8D12AC433CC;
-        Mon, 13 Nov 2023 11:10:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39108D75;
+        Mon, 13 Nov 2023 04:11:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D2EC433CC;
+        Mon, 13 Nov 2023 12:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699873824;
-        bh=ExY8ABX+iV1daP2D0jLDdL7Fvhf76TXH+N7JEGyRTRI=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=utTQ57/7tis1IBrFNvNhsfTp8PD2nGin4E3EZxjUcgTEUlGlmZXTsOlx34/fl80Lz
-         yAZG7Oyqi2x5UIdUVf+UxVBbYn9H9PvA4SpY/ATQBZgxCb98EjU0g7ALaZ09tOslY/
-         gf5wYeZBKTijG6uoAG1Bsi7mR9agqcErfzvcFI0ySG/4mSbY/UAIIZ3LeDG4WLnVph
-         qkCXI7tnTwRpddt5wHt1pIzCCvBwiCIw97ThPLhnc9NByj0vFKDgGiPx7XaMgIBBQd
-         CxvMneHmCLbqwvHdrBJXleCKa5KmHIUAgn91R+khUKFx2SSapqPuoIIbaSsyiaLaSV
-         IsLBEdHFld3yw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6A69BC04DD9;
-        Mon, 13 Nov 2023 11:10:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1699877516;
+        bh=5gp7DoHA+vUU9ry2Kt97UnYD5nWLqN4A470cWdz48KY=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=rmU0WSm3SSGv3pcP9pj9/IqbRpBhOl2X4aZhIynQcaEi1mDO1nBN7XW5Q7MKDV5dW
+         lqEtrFkfE4WQ++F343EKPT54Os3Z17480xxg4f+B8laJb8REOnv6okROXyEDhW+S7c
+         KjKq8Aq6LEIpUKp1YnVeW9gFC+ZbhDKfoxVjgTZDlT7RRgglrofZ+jUneAqiSp9rpP
+         M3ol+hg6v2pequOZw+rdw1SmQhRWS7lKvU7E1CnxNYeuWxdU4fxmTI5d2gTB0f4GQZ
+         vth6bS5uNoVfJ0anhWgeM0y5OHSsYn5+71vsDPMNbeq2THlmueBO0joTFq1Br82wDM
+         Zaczlf0wN25LQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Zheng Hacker <hackerzheng666@gmail.com>,
+        Zheng Wang <zyytlz.wz@163.com>, aspriel@gmail.com,
+        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        johannes.berg@intel.com, marcan@marcan.st,
+        linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
+        linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        security@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in
+ brcmf_cfg80211_detach
+References: <20231106141704.866455-1-zyytlz.wz@163.com>
+        <87o7g7ueom.fsf@kernel.org>
+        <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com>
+        <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+        <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
+        <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com>
+Date:   Mon, 13 Nov 2023 14:11:51 +0200
+In-Reply-To: <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com> (Arend van
+        Spriel's message of "Mon, 13 Nov 2023 10:18:06 +0100")
+Message-ID: <874jhpvomw.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ppp: limit MRU to 64K
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169987382443.356.16944997528877845349.git-patchwork-notify@kernel.org>
-Date:   Mon, 13 Nov 2023 11:10:24 +0000
-References: <20231113031705.803615-1-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20231113031705.803615-1-willemdebruijn.kernel@gmail.com>
-To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc:     netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        edumazet@google.com, pabeni@redhat.com, linux-ppp@vger.kernel.org,
-        stable@vger.kernel.org, mitch@sfgoth.com, mostrows@earthlink.net,
-        jchapman@katalix.com, willemb@google.com,
-        syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+Arend van Spriel <arend.vanspriel@broadcom.com> writes:
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+> On November 8, 2023 4:03:26 AM Zheng Hacker <hackerzheng666@gmail.com>
+> wrote:
+>
+>> Arend Van Spriel <arend.vanspriel@broadcom.com> =E4=BA=8E2023=E5=B9=B411=
+=E6=9C=886=E6=97=A5=E5=91=A8=E4=B8=80 23:48=E5=86=99=E9=81=93=EF=BC=9A
+>>>
+>>> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.com> =
+wrote:
+>>>
+>>>> Thanks! I didn't test it for I don't have a device. Very appreciated
+>>>> if anyone could help with that.
+>>>
+>>> I would volunteer, but it made me dig deep and not sure if there is a
+>>> problem to solve here.
+>>>
+>>> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scanning(=
+) ->
+>>> brcmf_notify_escan_complete() which does delete the timer.
+>>>
+>>> What am I missing here?
+>>
+>> Thanks four your detailed review. I did see the code and not sure if
+>> brcmf_notify_escan_complete
+>> would be triggered for sure. So in the first version I want to delete
+>> the pending timer ahead of time.
+>
+> Why requesting a CVE when you are not sure? Seems a bit hasty to put
+> it mildly.
 
-On Sun, 12 Nov 2023 22:16:32 -0500 you wrote:
-> From: Willem de Bruijn <willemb@google.com>
-> 
-> ppp_sync_ioctl allows setting device MRU, but does not sanity check
-> this input.
-> 
-> Limit to a sane upper bound of 64KB.
-> 
-> [...]
+TBH I don't take CVE entries seriously anymore. I don't know what has
+happened there.
 
-Here is the summary with links:
-  - [net] ppp: limit MRU to 64K
-    https://git.kernel.org/netdev/net/c/c0a2a1b0d631
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
