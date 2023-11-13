@@ -2,69 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B60A7EA078
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 16:48:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3D0C7EA0A6
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 16:54:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229584AbjKMPsl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 10:48:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40082 "EHLO
+        id S230106AbjKMPyY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 10:54:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjKMPsl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 10:48:41 -0500
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95972D63;
-        Mon, 13 Nov 2023 07:48:37 -0800 (PST)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2c503da4fd6so58591541fa.1;
-        Mon, 13 Nov 2023 07:48:37 -0800 (PST)
+        with ESMTP id S229644AbjKMPyX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 10:54:23 -0500
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA0893;
+        Mon, 13 Nov 2023 07:54:20 -0800 (PST)
+Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-3b2f28caab9so2851801b6e.1;
+        Mon, 13 Nov 2023 07:54:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699890515; x=1700495315; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1699890860; x=1700495660; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PXnf0eXrDDD8zHz/bTp9TBZLf7/Ul4A7eXzOYgBnS0o=;
-        b=FkUqRK3oFLT9imv+K+Fpe9D6klNt3x433OOxTytajgzzoRZkKreKHzyMmRJUPBOHCq
-         lG6eLjoUtAk5OCqKY1hwOHbUuwNXsrQivXQjsF6Wm5SKlTlHOpa7/vEMeDt1eTiXh3ff
-         +DZDo7bki2RxnVgMiC7gs3iibz+ygPBwjlDZDXIs4+b6SSGxMXm6s0VMZyTgRgMDPxEU
-         8CVcvETHu/jc3P2nwcYJ+U3nANl2HkSVJlPJfpQosJfRwtFw4aZgJeqBs0Q2EmucvhSp
-         6WjXqn+gDt8lirz/GsvX6FgDfe/0R2JqBhOToV8QELGR35j/Cak80nlW0ZLj/E1cg7xm
-         9Eyw==
+        bh=m9P5g3/fICZscbHOqQNcqknCdN9kVr+xTLjYRH6XTbc=;
+        b=eTTRM7Rwd3EBv48LZWBcBqSucUfO5aZOsf2vd8gC+/rp3j1eKF6/sBpJ1lIMYTk0fI
+         QHJ41rMcuds7wQuBpoOBzid8WPPq3bgOcbulPrzFgcAPmS5+nJlKiU2978JvD71U8982
+         nj5la319XQvcXMyQ2f0LHGALszE3CA2fHIbMnonclOvR88KVU7WQvF9X3h7tZA1fpvxD
+         7tj9axPBVWf7VAhMYFO9YD4RsXiKSEN7hA1dPQnU1spBtzbETcCA18Cio80CJAJtLWDx
+         JoBcubKYSjnsenAOSCa8BKFxjnqGZvf8KF+VJh0j3OI5xebiXcp1knxW0xTsWsiBMjBO
+         NqdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699890515; x=1700495315;
+        d=1e100.net; s=20230601; t=1699890860; x=1700495660;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PXnf0eXrDDD8zHz/bTp9TBZLf7/Ul4A7eXzOYgBnS0o=;
-        b=rcfKaghUyNrrQ8dVGDdC9YpKmF0mFXhKlu3IvldV4X4VnK6gorfIK2Z99PF3eLa7ZB
-         ShhuWoZmVgI9A04p6rPgS25jXqIPQU/DuebJvgMNDVQHKufx6sinRAxXQA+42j4iZLWW
-         nfT0xDVxZ5XzUlwC7JLD4Bkib3NaKeuFdvCPR49rHrT1eIu4gysSyRrfTY36WcWKIomM
-         k+KFM9ueJ3oB7/CyBV38MvSnafdpPbFFSIWZHSi6lqUmeWfwli9MtFXQ7kbtCtuCkNwT
-         BLWUpCbK3xuMhytMqteegVqTLX1D8V9MNEEGfKN3sdRmvsndd6FZpcwlEywaLVdZgdO2
-         8qXw==
-X-Gm-Message-State: AOJu0YyTY4HTGLI9/ysLSg3fNyLp4hQ3zVTmArHaCw1PCsomQIzwwNYm
-        Q2gjrawGRjZ8mzhIX4r5Yxg=
-X-Google-Smtp-Source: AGHT+IGjshQ2RR3uLR3NR5XH4kZGq0bKwKJa9nFrnJR2Ve3ZB8NkzMtucWJSHIFp3cqZB2IgNChubw==
-X-Received: by 2002:a2e:5151:0:b0:2c5:2eaa:5397 with SMTP id b17-20020a2e5151000000b002c52eaa5397mr4840794lje.11.1699890514398;
-        Mon, 13 Nov 2023 07:48:34 -0800 (PST)
-Received: from PCBABN.skidata.net ([91.230.2.244])
-        by smtp.gmail.com with ESMTPSA id d14-20020a05600c34ce00b00406443c8b4fsm14255122wmq.19.2023.11.13.07.48.32
+        bh=m9P5g3/fICZscbHOqQNcqknCdN9kVr+xTLjYRH6XTbc=;
+        b=mu5sigezdjhWED4PDaVqI4UI/s58N6OZJrNPYKJfDg0to6hU6mc6NJnbtUMb0dghAq
+         0XfBnMNtAzTU7ZQ6pDv4dBL5ABtaHHmkNBQ1WQZT8AqYKm/+uya+4+maQugBEYoXtVlT
+         aslYlE4Bo6yjLanFKs1qnbNyd3xdDY7fveFkD+P9qHQuH31BISt5akNZCc0mhMVCaFyT
+         QQu+M5TBQkaeSqjp4wPJLuNUTU0xBE3T50l0jVLF7xWBReEOOZ8yA26OIGhOrH2AN2yN
+         ko4+12WTTwHR0nmoCn+NbXNoEgWYuHe6Ey+l9JQUSo/W/+EdpYLjA97OSxlVCyGeUKTt
+         5T7w==
+X-Gm-Message-State: AOJu0Yz1hqwRpaITxtxeRkxaM0EOo6xsZsxCkH4TBebwPEqM8gEpNtkb
+        ApcLLXBbhpU0xG9BC3N5OBc=
+X-Google-Smtp-Source: AGHT+IH7k7dXZTgMDY7KAlEHkCgMgyykBUG0pei1zXSEMtetT39nGZqwDyaAZ6slrLKnSuvOyvLMAw==
+X-Received: by 2002:a54:4810:0:b0:3ac:a4ec:e136 with SMTP id j16-20020a544810000000b003aca4ece136mr7716635oij.51.1699890860256;
+        Mon, 13 Nov 2023 07:54:20 -0800 (PST)
+Received: from localhost.localdomain ([149.167.148.33])
+        by smtp.gmail.com with ESMTPSA id e15-20020a65678f000000b0057ab7d42a4dsm3562722pgr.86.2023.11.13.07.54.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 07:48:33 -0800 (PST)
-From:   Benjamin Bara <bbara93@gmail.com>
-To:     macroalpha82@gmail.com
-Cc:     bbara93@gmail.com, benjamin.bara@skidata.com,
-        dmitry.osipenko@collabora.com, heiko@sntech.de,
-        jonathanh@nvidia.com, lee@kernel.org, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-        max.schwarz@online.de, nm@ti.com, peterz@infradead.org,
-        rafael.j.wysocki@intel.com, richard.leitner@linux.dev,
-        stable@vger.kernel.org, treding@nvidia.com,
-        wsa+renesas@sang-engineering.com, wsa@kernel.org
-Subject: Re: [PATCH v7 2/5] i2c: core: run atomic i2c xfer when !preemptible
-Date:   Mon, 13 Nov 2023 16:48:26 +0100
-Message-Id: <20231113154826.2856145-1-bbara93@gmail.com>
+        Mon, 13 Nov 2023 07:54:19 -0800 (PST)
+From:   Ronald Monthero <debug.penguin32@gmail.com>
+Cc:     richard@nod.at, vigneshr@ti.com, heiko@sntech.de,
+        martin.blumenstingl@googlemail.com, paul@crapouillou.net,
+        robh@kernel.org, u.kleine-koenig@pengutronix.de,
+        debug.penguin32@gmail.com, AVKrasnov@sberdevices.ru,
+        r.czerwinski@pengutronix.de, andriy.shevchenko@linux.intel.com,
+        jaimeliao.tw@gmail.com, linux-mtd@lists.infradead.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH v2] mtd: rawnand: Increment IFC_TIMEOUT_MSECS for nand controller response
+Date:   Tue, 14 Nov 2023 01:53:51 +1000
+Message-Id: <20231113155354.620298-1-debug.penguin32@gmail.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <655238b2.050a0220.209e.4ad5@mx.google.com>
-References: <655238b2.050a0220.209e.4ad5@mx.google.com>
+In-Reply-To: <20231113131634.614467-1-debug.penguin32@gmail.com>
+References: <20231113131634.614467-1-debug.penguin32@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -73,45 +72,49 @@ X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi!
+Under heavy load it is likely that the controller is done
+with its own task but the thread unlocking the wait is not
+scheduled in time. Increasing IFC_TIMEOUT_MSECS allows the
+controller to respond within allowable timeslice of 1 sec
 
-Thanks for testing and the feedback!
+fsl,ifc-nand 7e800000.nand: Controller is not responding
+main/smp_fsm.c:1884 <inrcu: rcu_preempt detected stalls on CPUs/tasks:
+rcu:    Tasks blocked on level-0 rcu_node (CPUs 0-1): P116/2:b..l
+        (detected by 1, t=2102 jiffies, g=7729, q=754)
+task:irq/31-arm-irq1 state:D stack: 0 pid: 116 ppid: 2 flags:0x00000000
+[<8064b97f>] (__schedule) from [<8064bb01>] (schedule+0x8d/0xc2)
+[<8064bb01>] (schedule) from [<8064dacd>]
+[<8064dacd>] (rt_mutex_slowlock_block.constprop.0) from [<8064db57>]
+[<8064db57>] (__rt_mutex_slowlock.constprop.0) from [<8064dbf7>]
+[<8064dbf7>] (rt_mutex_slowlock.constprop.0) from [<804b2047>]
+[<804b2047>] (nand_get_device) from [<804b5335>] (nand_write_oob+0x1b/0x4a)
+[<804b5335>] (nand_write_oob) from [<804a3585>] (mtd_write+0x41/0x5c)
+[<804a3585>] (mtd_write) from [<804c1d47>] (ubi_io_write+0x17f/0x22c)
+[<804c1d47>] (ubi_io_write) from [<804c047b>] (ubi_eba_write_leb+0x5b/0x1d0)
 
-On Mon, 13 Nov 2023 at 15:54, Chris Morgan <macroalpha82@gmail.com> wrote:
-> I can confirm I no longer get any of the errors with this patch. Tested
-> on both an Anbernic RG353P (RK3566 with an RK817 PMIC) and an Odroid
-> Go Advance (RK3326 with an RK817 PMIC). The device appears to shut
-> down consistently again and I no longer see these messages in my dmesg
-> log when I shut down.
+Signed-off-by: Ronald Monthero <debug.penguin32@gmail.com>
+---
+ drivers/mtd/nand/raw/fsl_ifc_nand.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Just to make sure: Are you compiling with CONFIG_PREEMPTION (and
-therefore CONFIG_PREEMPT_COUNT)?
-
-If yes, could you please also test the following patch? Because I am not
-sure yet how polling can be false in a "polling required" situation,
-meaning .master_xfer() is called instead of .master_xfer_atomic() (while
-your test shows that irq_disabled() is true, which is basically done
-with !preemptible()). The patch should test the other way round: if the
-situation is found, force an atomic transfer instead.
-
-Thank you!
-
-diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
-index a044ca0c35a1..6e3e8433018f 100644
---- a/drivers/i2c/busses/i2c-rk3x.c
-+++ b/drivers/i2c/busses/i2c-rk3x.c
-@@ -1131,6 +1131,10 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
- static int rk3x_i2c_xfer(struct i2c_adapter *adap,
-                         struct i2c_msg *msgs, int num)
- {
-+       if (irqs_disabled()) {
-+               WARN_ONCE(1, "Landed in non-atomic handler with disabled IRQs");
-+               return rk3x_i2c_xfer_common(adap, msgs, num, true);
-+       }
-        return rk3x_i2c_xfer_common(adap, msgs, num, false);
- }
+diff --git a/drivers/mtd/nand/raw/fsl_ifc_nand.c b/drivers/mtd/nand/raw/fsl_ifc_nand.c
+index 20bb1e0cb5eb..42f8ea46b6a8 100644
+--- a/drivers/mtd/nand/raw/fsl_ifc_nand.c
++++ b/drivers/mtd/nand/raw/fsl_ifc_nand.c
+@@ -21,7 +21,7 @@
+ 
+ #define ERR_BYTE		0xFF /* Value returned for read
+ 					bytes when read failed	*/
+-#define IFC_TIMEOUT_MSECS	500  /* Maximum number of mSecs to wait
++#define IFC_TIMEOUT_MSECS	1000  /* Maximum number of mSecs to wait
+ 					for IFC NAND Machine	*/
+ 
+ struct fsl_ifc_ctrl;
+-- 
+2.34.1
 
