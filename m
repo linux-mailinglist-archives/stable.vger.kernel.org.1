@@ -2,136 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D86887EA461
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 21:10:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B11347EA6C9
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 00:16:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229907AbjKMUK1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 15:10:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49838 "EHLO
+        id S229555AbjKMXQu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 18:16:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230347AbjKMUK0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 15:10:26 -0500
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CE5CD5D
-        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 12:10:23 -0800 (PST)
-Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-41cdc669c5eso53521cf.1
-        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 12:10:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699906222; x=1700511022; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6A1mokEzY/ElrGYFkRMtl6uz5gA/gkkYl9e8YMn+3JM=;
-        b=C7vnxZ1ma+9buSpdRJkSdEURliyBKEsZJOVXaJxLfDiOJfZEt2BHqkyPvRR8cL/4mT
-         3H53uoC7en11DNvb1uFAh/EFAv5Z6bm5TQjJbCo3HOJubsGgDkSC8cPd6m6I549IYBeh
-         TgT5zBB3oyVPDdzfBzgu6QZNiCKTZdwBdCbtGVTYiCgYliPdzw0XXb4O1adLbsVx0Gl0
-         eHCULSiEfBip8JU8Z1w8048JoSscc1wYN07Tu3URa54tolqUmoTMBAOxeCMEmmU7ZccW
-         xLO12hjTSSZpIIJDTWKHGpH2fW/VyqnZ4O16JELsSYfDoCDrMuY8cQFeitSgwIVvBAGZ
-         JYrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699906222; x=1700511022;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6A1mokEzY/ElrGYFkRMtl6uz5gA/gkkYl9e8YMn+3JM=;
-        b=ridLTOyJVJrSc5WI4SkRCPQUl1bfmCVTuRxmTyoiNDTiIhirhHJCtXbZ9/zhMio8Xd
-         3I5LD/P7z2lA6Yj10lds6gbnpevANs7jSOSuM7E/gRL0mHPAMLJ5FEcjxVlQUHTG+vfN
-         XOg9o+4jyry+LfywwjBU35SkEYciApwV+DNHxm7yesFddAb00nt7ZVAvUgneSYnOhiWr
-         H6zmfa0uFsSH5slPuF/zRBLVlMPR6jgMQ8Q0iXQ9DhAU5dqOLWhjCSwyd8pflwfp52Qi
-         N6ZN5PtCFr0vLCQQnBT9ynoPo4WwhGf7hxVz4bnRujHPlWY7KomNh+HCF5tpmjLm8IVc
-         hbBg==
-X-Gm-Message-State: AOJu0YxW3EDQfVUmqPQq9hvICeR/fzgnjrsdFwn+NvSvk92UJ8bslLcw
-        Dg3V2TCTgHJP42jJNay6pIA5A2II+a6O9xoZzX+9xw==
-X-Google-Smtp-Source: AGHT+IEEBDLKlQpbT5O2Rio4DF+E/b35xHjZ33DYvELnzkfwGVtkrZbS0gNSVBOpY4wrF9A3BK8+o9uf7kZ6IpSCDyY=
-X-Received: by 2002:a05:622a:1cc4:b0:41c:bfd9:b990 with SMTP id
- bc4-20020a05622a1cc400b0041cbfd9b990mr48404qtb.17.1699906222182; Mon, 13 Nov
- 2023 12:10:22 -0800 (PST)
+        with ESMTP id S229511AbjKMXQu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 18:16:50 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0545B99;
+        Mon, 13 Nov 2023 15:16:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9948FC433C8;
+        Mon, 13 Nov 2023 23:16:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699917406;
+        bh=B3CDSKAh5EeyTf0TZ3ge4LVPSyWJ3s03LlETBXgm6LU=;
+        h=From:Subject:Date:To:Cc:From;
+        b=FzUHl78qx9c3bb7dlwp6spsLyZViukUly7NLW8cVvNb/q30K0AYT5JdC+ST6qTKeg
+         mwOzO+gLjV94eVzafQV8J0K3uVdfWuq9B5R1NoC6ciov+sFa7iZC0ejodsx6y03k7W
+         LPGo09AWkKx1H2dT2GFxb+r9b+gUGIvFfwOVlvtTLQLYiDjYLmn/vpKJlDn+kVyvCL
+         1MoNe/8EgYWUutTuiqxFHJKHO9wDPuGXO4yis7VrKiabxZrjO8ZeLZSMTX6tQfPgoX
+         l5VYMzilxuAHLVjhl94ltiPzq4kz4twtn5FUyuBdZFxTbb9qKyrbEsCey+oslbu5Ab
+         1W7CTVi1Z2agw==
+From:   Matthieu Baerts <matttbe@kernel.org>
+Subject: [PATCH net 0/5] mptcp: misc. fixes for v6.7
+Date:   Tue, 14 Nov 2023 00:16:12 +0100
+Message-Id: <20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-0-7b9cd6a7b7f4@kernel.org>
 MIME-Version: 1.0
-References: <20231113133044.55257-1-herve.codina@bootlin.com>
-In-Reply-To: <20231113133044.55257-1-herve.codina@bootlin.com>
-From:   Saravana Kannan <saravanak@google.com>
-Date:   Mon, 13 Nov 2023 12:09:43 -0800
-Message-ID: <CAGETcx8-iXbWkRyVT3s4XkmQii2CSysSLedDLWn0oNLQLPM3ow@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] driver core: Keep the supplier fwnode consistent
- with the device
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Steen Hegelund <steen.hegelund@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADyuUmUC/z3MQQoCMQyF4asMWRtoWhzBq4iL2qaaRWtpqgjD3
+ N3gwuX/eHwbKA9hhfOyweC3qDybBR0WSI/Y7oySrcE7H4go4KvrHBwrNp74X2ufqWMVTVjkw4o
+ rnnAkj5mOuazu5mIoYGgf/DuYeQEj4LrvX8PMRfyFAAAA
+To:     mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Poorva Sonparote <psonparo@redhat.com>,
+        Shuah Khan <shuah@kernel.org>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Matthieu Baerts <matttbe@kernel.org>,
+        Christoph Paasch <cpaasch@apple.com>, stable@vger.kernel.org,
+        syzbot+9dfbaedb6e6baca57a32@syzkaller.appspotmail.com,
+        Xiumei Mu <xmu@redhat.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1539; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=B3CDSKAh5EeyTf0TZ3ge4LVPSyWJ3s03LlETBXgm6LU=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBlUq5ZU08Ykzt8hJW2cUGoPBfTmSwG5QDo+IPSz
+ 5UPDpNInrOJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZVKuWQAKCRD2t4JPQmmg
+ c6ePEADI2lHA6ITonWXfosREfVsFyqN4PzF7vVcKLB+XveJGG0+N4ynir0BbWZsxnsUB4aLVek/
+ BQXZFOrhoqX0lLHLiRbM66fH0jNJ6p0wWnDy2kUi+NsL09H0ouKmkXe1eeD4Z4oAeRz4RfiRPV5
+ BckD7EWXVTk4WTha9yibaSOOeJ+Ord6nozEn+fdoNfotGiG+G9tN1nc0M/B0a+V9rliNSuDvsj1
+ DwMBAvUxjdb+4XywzzM4bPG1RE53fd4gqSAxNsevx9SDfwmumcH3zwWP0N3lmmvuv57FYVeEKwe
+ 8jLhH7NNc+CgyK4l8QYwZuI6mzHOSzql949h6vFZ2ar2Um5Mkaz3atGDMrWQyAxRdOpau9ltD9I
+ cTSOLdiobYniWe2MqKOVQssVZxXVcwMNokrSp3sDE1ie/ZT4ryYtILjpjpqDP/r30F+hicUhRbv
+ 20jJ7Zct12aISuXRbgFPC07CxrENlV2156BItsw2hxREh/53WaF5v7OUAazXvb1FcTOyWLx+RSl
+ mEBO6UaeWbsDBDMRhMCs6fbnUiYZG201ajrQLO/vgDa6o2nUF8xfCpAhT2vI6FGkz1b9bMJASWK
+ RHBhNesM9FiBqMi2rZXDDDIatT2NmPOUJiQvxs6VFJcEu/cRa/N5OsoUBv+CJQ8wOLfnV8eKgPu
+ 5KDuEYzM7THv0aA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 13, 2023 at 5:30=E2=80=AFAM Herve Codina <herve.codina@bootlin.=
-com> wrote:
->
-> The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
-> fwnode's consumer links") introduces the possibility to use the
-> supplier's parent device instead of the supplier itself.
-> In that case the supplier fwnode used is not updated and is no more
-> consistent with the supplier device used.
+Here are a few fixes related to MPTCP:
 
-Looks like you missed this comment from my previous reply.
+- Patch 1 limits GSO max size to ~64K when MPTCP is being used due to a
+  spec limit. 'gso_max_size' can exceed the max value supported by MPTCP
+  since v5.19.
 
-Nack. It's easier to debug when you know what supplier you were
-pointing to in DT that triggered the creation of the device link.
+- Patch 2 fixes a possible NULL pointer dereference on close that can
+  happen since v6.7-rc1.
 
-It can get confusing real quick otherwise.
+- Patch 3 avoids sending a RM_ADDR when the corresponding address is no
+  longer tracked locally. A regression for a fix backported to v5.19.
 
--Saravana
+- Patch 4 adds a missing lock when changing the IP TOS with setsockopt().
+  A fix for v5.17.
 
->
-> Update the fwnode used to be consistent with the supplier device used.
->
-> Fixes: 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child fwnode's=
- consumer links")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
-> Changes v1 -> v2:
->   Remove sup_handle check and related pr_debug() call as sup_handle canno=
-t be
->   invalid if sup_dev is valid.
->
->  drivers/base/core.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index 4d8b315c48a1..2f6a21b908ec 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -2076,6 +2076,13 @@ static int fw_devlink_create_devlink(struct device=
- *con,
->                 sup_dev =3D get_dev_from_fwnode(sup_handle);
->
->         if (sup_dev) {
-> +               /*
-> +                * The supplier device may have changed and so, the suppl=
-ier
-> +                * fwnode maybe inconsistent.
-> +                * Update the supplier fwnode
-> +                */
-> +               sup_handle =3D sup_dev->fwnode;
-> +
->                 /*
->                  * If it's one of those drivers that don't actually bind =
-to
->                  * their device using driver core, then don't wait on thi=
-s
-> --
-> 2.41.0
->
+- Patch 5 fixes an expectation when running MPTCP Join selftest with the
+  checksum option (-C). An issue present since v6.1.
+
+Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+---
+Geliang Tang (1):
+      mptcp: add validity check for sending RM_ADDR
+
+Paolo Abeni (4):
+      mptcp: deal with large GSO size
+      mptcp: fix possible NULL pointer dereference on close
+      mptcp: fix setsockopt(IP_TOS) subflow locking
+      selftests: mptcp: fix fastclose with csum failure
+
+ net/mptcp/pm_netlink.c                          |  5 +++--
+ net/mptcp/protocol.c                            | 11 ++++++++---
+ net/mptcp/sockopt.c                             |  3 +++
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  2 +-
+ 4 files changed, 15 insertions(+), 6 deletions(-)
+---
+base-commit: 2bd5b559a1f391f05927bbb0b31381fa71c61e26
+change-id: 20231113-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-d15df60b0a3f
+
+Best regards,
+-- 
+Matthieu Baerts <matttbe@kernel.org>
+
