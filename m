@@ -2,99 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 368527EA130
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 17:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07ED57EA157
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 17:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbjKMQVw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 11:21:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42278 "EHLO
+        id S229820AbjKMQha (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 11:37:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230034AbjKMQVw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 11:21:52 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1295BC6;
-        Mon, 13 Nov 2023 08:21:49 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-32df66c691dso2691418f8f.3;
-        Mon, 13 Nov 2023 08:21:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699892507; x=1700497307; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6isXPs0sflYE9m4fOOkPNOo14+5QhUVptrDTcdlr+qo=;
-        b=C+se6vbBk2dshH1TYDc0XuOWG6yLbjM3QelxHtAsN6ztcQEbuBoLBVlefAcvDEEuuB
-         P0LhbBP80oN5uCjMg9cEDAklHxeBeyXs6GK2KdgxEie/jMpUv24cXxaFgJeozw1MsewG
-         nks3tmzqOUrKMZH0UCn7pBqjo1vrJNsDee/WvYwErCf9ID2jRSyFom4QfHAGSfjiEKE6
-         WLC6pdn9HXNQMIdYYnlxhIC50OCx6Q5IYJDeFY4WG98DRWv80t9SPXPMN8TGehIkRyqk
-         5OF8zFB4+LXowP8d4HGtLi5Ci3GkJzsgmrVBR2KLWab7FjkPvxyC0krHAL36mKJWdDoq
-         OTSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699892507; x=1700497307;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6isXPs0sflYE9m4fOOkPNOo14+5QhUVptrDTcdlr+qo=;
-        b=Ea4Z6c50tbPYBE21BjG/1w+m3UqnB2CjQ4EZ39Asi5e4cahkfE0qBtTzXv8VeGkJmp
-         KgiuPEQeUWUpi8q5zSwG6mnhxmEyk41efFE5IM3D0S2BOoCxxTozXjMytR2/A941Af/l
-         jg7613GxfPivA3TgsNgCUDXnPOjFq61ZW2W88uinM70hv7GccTNCiAVAGBKfz3Ewjjcf
-         hos92PWslH+bZdBH+xEVZvkIv51v9ObbTTVR9MPWUJkGmeEIIoTTAhiZxW9Q6Ct3dBxH
-         USFu5sxat8BXSBmwa2TZWxTg7M4kovBXNm4hE7wEVJMgA2XCV8TxEdphZHfZh98NLRyE
-         ioAw==
-X-Gm-Message-State: AOJu0Yzl6TONMxZJvWfh+UpN2FgqUcCkcXngC9Zq6J7PE8vRMsVHDWFH
-        WwEV0/CPalsY1R1deqwgAB9O/ryCua+di1CKFTI=
-X-Google-Smtp-Source: AGHT+IGH5cy4DsubHL/XylXgpUblwWeL3F6iuwanO8ohcoJVAu0Bwf3MZeyChqUcj8ZiHZaht5eLzm3V9SNQ3bWEDPg=
-X-Received: by 2002:adf:e64b:0:b0:32d:b551:3fb8 with SMTP id
- b11-20020adfe64b000000b0032db5513fb8mr3662969wrn.62.1699892507347; Mon, 13
- Nov 2023 08:21:47 -0800 (PST)
+        with ESMTP id S229454AbjKMQha (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 11:37:30 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 594EFF7
+        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 08:37:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C187DC433C8;
+        Mon, 13 Nov 2023 16:37:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699893447;
+        bh=MS6OK3Y9zr6NroPi54QBhTFjm/3rXWVuwNhqgxT80rs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NuVtMTkKIcxY12QgKlUgvvEIdmu5R03mehE2D8ykODRAe6jpXB/Wbe7/QiWZQoJOS
+         FcC6WqWPeyzM50wqIQHxoc+GlMx7wFRld2aIALSOQen2w2c9ggQP3dWt52apcaon0F
+         Lnb4g+aU6CFOG+AUv7rCIxY1WlhzzZlSNahodRl+5rz9NzLAbdEbCPAN1TwXffnteP
+         Pm+IWB3o3uuub9xYtN1tCfR9HkjtR6F6ZtIk3sEc8Q6HXp+ElDOV2LY9Hfs6phMSqP
+         sNptxw2Fsxiv3j3fir6sqZnrCh2tVgAdLZ2S9UOejaG2rBtAabf/+Z26TLwgmHKbfB
+         mxwAFobtfX8tg==
+Date:   Mon, 13 Nov 2023 11:37:25 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Jocelyn Falempe <jfalempe@redhat.com>,
+        Keno Fischer <keno@juliahub.com>, stable@vger.kernel.org,
+        Greg KH <gregkh@linuxfoundation.org>, airlied@redhat.com,
+        dri-devel@lists.freedesktop.org, regressions@lists.linux.dev
+Subject: Re: Incomplete stable drm/ast backport - screen freeze on boot
+Message-ID: <ZVJQxS6h_K73fMfQ@sashalap>
+References: <CABV8kRwx=92ntPW155ef=72z6gtS_NPQ9bRD=R1q_hx1p7wy=g@mail.gmail.com>
+ <32a25774-440c-4de3-8836-01d46718b4f8@redhat.com>
+ <9dc39636-ff41-44d7-96cb-f954008bfc9d@suse.de>
 MIME-Version: 1.0
-References: <20231113131634.614467-1-debug.penguin32@gmail.com>
- <20231113160751.620810-1-debug.penguin32@gmail.com> <ZVJLhbvXSbmnEfwb@smile.fi.intel.com>
-In-Reply-To: <ZVJLhbvXSbmnEfwb@smile.fi.intel.com>
-From:   Ronald Monthero <debug.penguin32@gmail.com>
-Date:   Tue, 14 Nov 2023 02:21:35 +1000
-Message-ID: <CALk6Uxo-Ojc8U7b5wDUJMA-uY1MeXqLBRXSrt6YeSwMnRkhy1w@mail.gmail.com>
-Subject: Re: [PATCH v2] mtd: rawnand: Increment IFC_TIMEOUT_MSECS for nand
- controller response
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     richard@nod.at, vigneshr@ti.com, heiko@sntech.de,
-        martin.blumenstingl@googlemail.com, paul@crapouillou.net,
-        robh@kernel.org, u.kleine-koenig@pengutronix.de,
-        AVKrasnov@sberdevices.ru, r.czerwinski@pengutronix.de,
-        jaimeliao.tw@gmail.com, linux-mtd@lists.infradead.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <9dc39636-ff41-44d7-96cb-f954008bfc9d@suse.de>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Nov 14, 2023 at 2:15=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Mon, Nov 13, 2023 at 10:49:01AM +0100, Thomas Zimmermann wrote:
+>(cc: gregkh)
 >
-> On Tue, Nov 14, 2023 at 02:07:49AM +1000, Ronald Monthero wrote:
+>Hi Jocelyn
 >
-> I'm not sure if it's a dup email of the previously sent v2. In any case I=
- have
-> commented on v1 and v2, please consider addressing them.
+>Am 13.11.23 um 10:36 schrieb Jocelyn Falempe:
+>>On 13/11/2023 09:34, Keno Fischer wrote:
+>>>Greetings,
+>>>
+>>>When connected to a remote machine via the BMC KVM functionality,
+>>>I am experiencing screen freezes on boot when using 6.5 stable,
+>>>but not master.
+>>>
+>>>The BMC on the machine in question is an ASpeed AST2600.
+>>>A quick bisect shows the problematic commit to be 2fb9667
+>>>("drm/ast: report connection status on Display Port.").
+>>>This is commit f81bb0ac upstream.
+>>>
+>>>I believe the problem is that the previous commit in the series
+>>>e329cb5 ("drm/ast: Add BMC virtual connector")
+>>>was not backported to the stable branch.
+>>>As a consequence, it appears that the more accurate DP state detection
+>>>is causing the kernel to believe that no display is connected,
+>>>even when the BMC's virtual display is in fact in use.
+>>>A cherry-pick of e329cb5 onto the stable branch resolves the issue.
+>>
+>>Yes, you're right this two patches must be backported together.
+>>
+>>I'm sorry I didn't pay enough attention, that only one of the two 
+>>was picked up for the stable branch.
+>>
+>>Is it possible to backport e329cb5 to the stable branch, or should I 
+>>push it to drm-misc-fixes ?
 >
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+>I think stable, which is in cc, will pick up commit e329cb5 
+>semi-automatically now. Otherwise, maybe ping gregkh in a few days 
+>about it.
 
-Andy jfyi, the 2 emails of v2 are the same except that the latter has
-the stable tag, which was missed.
-I will address the review comments and send it.
+I thikn it would be more appropriate to revert 2fb9667, as e329cb5
+doesn't look like -stable material. I'll go ahead and do that.
 
-BR,
-Ron
+-- 
+Thanks,
+Sasha
