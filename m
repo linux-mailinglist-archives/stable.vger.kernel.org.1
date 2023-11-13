@@ -2,79 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2EA37E9F4E
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 15:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACB6C7E9F5D
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 15:58:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229827AbjKMOyt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 09:54:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46102 "EHLO
+        id S230189AbjKMO6B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 09:58:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229549AbjKMOys (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 09:54:48 -0500
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 459C91A5;
-        Mon, 13 Nov 2023 06:54:43 -0800 (PST)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1f084cb8b54so2838861fac.1;
-        Mon, 13 Nov 2023 06:54:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699887282; x=1700492082; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=/cdXZ51UOpBcHr+K7BDEzqx93FDXiho8JciU1Wgacso=;
-        b=UMv59hATd9lBqx7Xx5kKvSLG2BPIWdgO2guhQpCER16fHTRLFZX7tRuYSUfxlnq2lo
-         FdIgtOnl0JbqQvtkKYEiTKkSrBcoUdfO+TpCbzhh980ziGM1rm0OyO37GazcjON0H1Nl
-         gKkPMJklrOfpIoz0yo1wcE82n6L4FRMHmHKbRO1F7mvrmfssFz8Ap0f2gFgJ35A/YOdE
-         sBX9fsZW00rbT8nZ0pyn7mYhH16be73mXli2F1JBoS+diotYqieCjAEALgIRrxO+9R0S
-         79cGLP3rqToXOX5xyQYB7CxPBhJBFy3hDk+X22UMmsh5lUJ0u3wDtK7V5pYl2X3Ky2oD
-         0VHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699887282; x=1700492082;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/cdXZ51UOpBcHr+K7BDEzqx93FDXiho8JciU1Wgacso=;
-        b=Oxck1hSMzoj5f5NHTn9ZpPsmUUdGo51sEnqJit+NtfcwAlugpknMfylbf5M1scwZtD
-         8yc3CKRx8RCAZjPuAiIFHrLDPcoFMqHbU1rHPpoU1zVgWSqMFahUmNBI2IMP32ZPVwT0
-         0BGadMWaP6ySMdWX6ZeNahJXB57/RCSdl4Fi+U03zkWsEFQdoxGcjHpjKeLDcu4hRLp7
-         3+dFkw+WZoRSZl5K07jMqRimk8lNnDwzmSuPvCCVz/lGlv3TR+F0Nmg3m6T9m+xT00t1
-         /nuLuH9hCb70wDrmbFKuocbNpiLM4wNAFE4j3Z8p2K3HBdkro9r8KMXD1EYMzo09cXy8
-         biNw==
-X-Gm-Message-State: AOJu0Yzh0Z2Q+eb2YnIw6pwWHV6UhUcRr/aeDG7tsmhMh0UAMiW5Jh4l
-        J7QdGAw2YGV1Tic8ariF+nfSsY4Eu7M=
-X-Google-Smtp-Source: AGHT+IGT0W5k2Q+NZAVZZ6YDDOcy5mJD33vZUMb9jV6OEkM92NHIZCc+ytJa15R18MSKrfUTtaHsVg==
-X-Received: by 2002:a05:6870:a9a8:b0:1e9:ba42:76bb with SMTP id ep40-20020a056870a9a800b001e9ba4276bbmr7969709oab.39.1699887282252;
-        Mon, 13 Nov 2023 06:54:42 -0800 (PST)
-Received: from neuromancer. ([75.28.21.198])
-        by smtp.gmail.com with ESMTPSA id ps6-20020a0568709e0600b001efca9337c7sm1068852oab.5.2023.11.13.06.54.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Nov 2023 06:54:42 -0800 (PST)
-Message-ID: <655238b2.050a0220.209e.4ad5@mx.google.com>
-X-Google-Original-Message-ID: <ZVI4r8TKT0hWxL90@neuromancer.>
-Date:   Mon, 13 Nov 2023 08:54:39 -0600
-From:   Chris Morgan <macroalpha82@gmail.com>
-To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc:     Benjamin Bara <bbara93@gmail.com>, Wolfram Sang <wsa@kernel.org>,
-        Lee Jones <lee@kernel.org>, rafael.j.wysocki@intel.com,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        peterz@infradead.org, jonathanh@nvidia.com,
-        richard.leitner@linux.dev, treding@nvidia.com,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
-        linux-tegra@vger.kernel.org,
-        Benjamin Bara <benjamin.bara@skidata.com>,
-        stable@vger.kernel.org, Nishanth Menon <nm@ti.com>,
-        heiko@sntech.de, max.schwarz@online.de
-Subject: Re: [PATCH v7 2/5] i2c: core: run atomic i2c xfer when !preemptible
-References: <20230327-tegra-pmic-reboot-v7-0-18699d5dcd76@skidata.com>
- <20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com>
- <655177f4.050a0220.d85c9.3ba0@mx.google.com>
- <69941f8e-de1f-0319-6729-58625b362b8e@collabora.com>
+        with ESMTP id S229686AbjKMO6B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 09:58:01 -0500
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62668132;
+        Mon, 13 Nov 2023 06:57:57 -0800 (PST)
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3ADB72Xl018219;
+        Mon, 13 Nov 2023 15:57:47 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding:content-type; s=selector1; bh=leYW5zo
+        NQ+ApABUs14mu1OjZ7G1VzudQ+i7kL1VaH9Y=; b=X6Nd/GUtFsddjGOAuGw+JSn
+        CA9LzJfviWzSLHi9EE3Iz8OnaJgcLbGFndBuhT0VZGsBTuWspFErBRFF25aG9Gw1
+        +aH977PuOnXxCjhee8RRwCVJOPPx124SwrsmCsBpG6sVuDuLjo9clfHIMHhqvaCv
+        T0awNCvTGqa4NOhViOvu8eVJAzH/4VvCJ3VPsQSU93gmicCSUFYX5TMDA5ga4SVI
+        Nnf4YaOqv1iZGHHiNecYAg2EO8GbtoOphTJeoZgTcqY4cn49f9Z+L9WScERcoMz+
+        7vUMjEg+1AWDQOk+dRmaD4bPqlPXeZm6SFEdpMyhJfveCuP4jMGq7wCFBtLRp6w=
+        =
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ua1cgypa3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 13 Nov 2023 15:57:47 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 44CA910005B;
+        Mon, 13 Nov 2023 15:57:46 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3AC6D21ED28;
+        Mon, 13 Nov 2023 15:57:46 +0100 (CET)
+Received: from localhost (10.129.178.213) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 13 Nov
+ 2023 15:57:46 +0100
+From:   Alain Volmat <alain.volmat@foss.st.com>
+To:     Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
+        Sylvain Petinot <sylvain.petinot@foss.st.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>
+CC:     <stable@vger.kernel.org>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        Alain Volmat <alain.volmat@foss.st.com>,
+        <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] media: i2c: st-mipid02: correct format propagation
+Date:   Mon, 13 Nov 2023 15:57:30 +0100
+Message-ID: <20231113145731.89796-1-alain.volmat@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69941f8e-de1f-0319-6729-58625b362b8e@collabora.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.129.178.213]
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-13_05,2023-11-09_01,2023-05-22_02
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,122 +74,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 13, 2023 at 06:46:30AM +0300, Dmitry Osipenko wrote:
-> On 11/13/23 04:12, Chris Morgan wrote:
-> > On Sat, Jul 15, 2023 at 09:53:24AM +0200, Benjamin Bara wrote:
-> >> From: Benjamin Bara <benjamin.bara@skidata.com>
-> >>
-> >> Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
-> >> disabled. However, non-atomic i2c transfers require preemption (e.g. in
-> >> wait_for_completion() while waiting for the DMA).
-> >>
-> >> panic() calls preempt_disable_notrace() before calling
-> >> emergency_restart(). Therefore, if an i2c device is used for the
-> >> restart, the xfer should be atomic. This avoids warnings like:
-> >>
-> >> [   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-> >> [   12.676926] Voluntary context switch within RCU read-side critical section!
-> >> ...
-> >> [   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-> >> [   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-> >> ...
-> >> [   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-> >> [   13.001050]  machine_restart from panic+0x2a8/0x32c
-> >>
-> >> Use !preemptible() instead, which is basically the same check as
-> >> pre-v5.2.
-> >>
-> >> Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-> >> Cc: stable@vger.kernel.org # v5.2+
-> >> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> >> Acked-by: Wolfram Sang <wsa@kernel.org>
-> >> Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> >> Tested-by: Nishanth Menon <nm@ti.com>
-> >> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-> > 
-> > For kernel 6.7 I'm having an issue when I shutdown or reboot my
-> > Rockchip RK3326 or Rockchip RK3566 based devices, and I've bisected
-> > the issue down to this specific commit.
-> > 
-> > When I shutdown or restart the device, I receive messages in the kernel
-> > log like the following:
-> > 
-> > [   37.121148] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> > [   37.122178] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> > [   37.123212] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> > [   37.124226] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> > [   37.125242] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
-> > [   37.126133] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x1
-> > 
-> > The device will also occasionally freeze instead of rebooting or
-> > shutting down. The i2c errors are consistent, but the freezing
-> > behavior is not.
-> 
-> I couldn't reproduce your issue with v6.7-rc1 and RK3399 that also uses rk3x-i2c. Though, the rk3x-i2c driver looks suspicious. Please try this patch:
-> 
-> diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
-> index a044ca0c35a1..aad00e9909cc 100644
-> --- a/drivers/i2c/busses/i2c-rk3x.c
-> +++ b/drivers/i2c/busses/i2c-rk3x.c
-> @@ -219,6 +219,8 @@ struct rk3x_i2c {
->  	enum rk3x_i2c_state state;
->  	unsigned int processed;
->  	int error;
-> +
-> +	int irq;
->  };
->  
->  static inline void i2c_writel(struct rk3x_i2c *i2c, u32 value,
-> @@ -1090,8 +1092,10 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
->  		rk3x_i2c_start(i2c);
->  
->  		if (!polling) {
-> +			enable_irq(i2c->irq);
->  			timeout = wait_event_timeout(i2c->wait, !i2c->busy,
->  						     msecs_to_jiffies(WAIT_TIMEOUT));
-> +			disable_irq(i2c->irq);
->  		} else {
->  			timeout = rk3x_i2c_wait_xfer_poll(i2c);
->  		}
-> @@ -1236,7 +1240,6 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
->  	int ret = 0;
->  	int bus_nr;
->  	u32 value;
-> -	int irq;
->  	unsigned long clk_rate;
->  
->  	i2c = devm_kzalloc(&pdev->dev, sizeof(struct rk3x_i2c), GFP_KERNEL);
-> @@ -1299,11 +1302,14 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
->  	}
->  
->  	/* IRQ setup */
-> -	irq = platform_get_irq(pdev, 0);
-> -	if (irq < 0)
-> -		return irq;
-> +	i2c->irq = platform_get_irq(pdev, 0);
-> +	if (i2c->irq < 0)
-> +		return i2c->irq;
-> +
-> +	/* interrupt will be enabled during of transfer time */
-> +	irq_set_status_flags(i2c->irq, IRQ_NOAUTOEN);
->  
-> -	ret = devm_request_irq(&pdev->dev, irq, rk3x_i2c_irq,
-> +	ret = devm_request_irq(&pdev->dev, i2c->irq, rk3x_i2c_irq,
->  			       0, dev_name(&pdev->dev), i2c);
->  	if (ret < 0) {
->  		dev_err(&pdev->dev, "cannot request IRQ\n");
-> 
+Use a copy of the struct v4l2_subdev_format when propagating
+format from the sink to source pad in order to avoid impacting the
+sink format returned to the application.
 
-I can confirm I no longer get any of the errors with this patch. Tested
-on both an Anbernic RG353P (RK3566 with an RK817 PMIC) and an Odroid
-Go Advance (RK3326 with an RK817 PMIC). The device appears to shut
-down consistently again and I no longer see these messages in my dmesg
-log when I shut down.
+Thanks to Jacopo Mondi for pointing the issue.
 
-Thank you.
+Fixes: 6c01e6f3f27b ("media: st-mipid02: Propagate format from sink to source pad")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/media/i2c/st-mipid02.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-> 
-> -- 
-> Best regards,
-> Dmitry
-> 
+diff --git a/drivers/media/i2c/st-mipid02.c b/drivers/media/i2c/st-mipid02.c
+index fa27638edc07..dab14787116b 100644
+--- a/drivers/media/i2c/st-mipid02.c
++++ b/drivers/media/i2c/st-mipid02.c
+@@ -770,6 +770,7 @@ static void mipid02_set_fmt_sink(struct v4l2_subdev *sd,
+ 				 struct v4l2_subdev_format *format)
+ {
+ 	struct mipid02_dev *bridge = to_mipid02_dev(sd);
++	struct v4l2_subdev_format source_fmt;
+ 	struct v4l2_mbus_framefmt *fmt;
+ 
+ 	format->format.code = get_fmt_code(format->format.code);
+@@ -781,8 +782,12 @@ static void mipid02_set_fmt_sink(struct v4l2_subdev *sd,
+ 
+ 	*fmt = format->format;
+ 
+-	/* Propagate the format change to the source pad */
+-	mipid02_set_fmt_source(sd, sd_state, format);
++	/*
++	 * Propagate the format change to the source pad, taking
++	 * care not to update the format pointer given back to user
++	 */
++	source_fmt = *format;
++	mipid02_set_fmt_source(sd, sd_state, &source_fmt);
+ }
+ 
+ static int mipid02_set_fmt(struct v4l2_subdev *sd,
+-- 
+2.25.1
+
