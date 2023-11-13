@@ -2,49 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF4C7EA110
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 17:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 368527EA130
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 17:21:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231731AbjKMQPR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 11:15:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46316 "EHLO
+        id S230177AbjKMQVw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 11:21:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231640AbjKMQPO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 11:15:14 -0500
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E9451732;
-        Mon, 13 Nov 2023 08:15:09 -0800 (PST)
-Received: from ideasonboard.com (93-61-96-190.ip145.fastwebnet.it [93.61.96.190])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2FDC629A;
-        Mon, 13 Nov 2023 17:14:43 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1699892083;
-        bh=jbwW8U517Pub9rnbNDGmI79ycJWQYPSXd+6TbJGS91s=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Co6IIJXHCPZQ0uaKQzupmlli97jx8F7SdewXYugfOeVWTiVCChPBIhvWLQy3slJ9e
-         7qj8XCZSoYDRPiiMaVvqtr4aZdr6Te9PeWveBPW1T/QRhi1Saef3e9NxqZWeR1tODG
-         HNwbDZSWNbStofhszYmMRADeofnPEOzjpwax9C94=
-Date:   Mon, 13 Nov 2023 17:15:05 +0100
-From:   Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-To:     Alain Volmat <alain.volmat@foss.st.com>
-Cc:     Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-        Sylvain Petinot <sylvain.petinot@foss.st.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        stable@vger.kernel.org,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: i2c: st-mipid02: correct format propagation
-Message-ID: <gcj7tu5kj7v53lm5iz4i22zk4ab7umqeftrdz37lx2xoheingi@s3c23byizc5t>
-References: <20231113145731.89796-1-alain.volmat@foss.st.com>
+        with ESMTP id S230034AbjKMQVw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 11:21:52 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1295BC6;
+        Mon, 13 Nov 2023 08:21:49 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-32df66c691dso2691418f8f.3;
+        Mon, 13 Nov 2023 08:21:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699892507; x=1700497307; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6isXPs0sflYE9m4fOOkPNOo14+5QhUVptrDTcdlr+qo=;
+        b=C+se6vbBk2dshH1TYDc0XuOWG6yLbjM3QelxHtAsN6ztcQEbuBoLBVlefAcvDEEuuB
+         P0LhbBP80oN5uCjMg9cEDAklHxeBeyXs6GK2KdgxEie/jMpUv24cXxaFgJeozw1MsewG
+         nks3tmzqOUrKMZH0UCn7pBqjo1vrJNsDee/WvYwErCf9ID2jRSyFom4QfHAGSfjiEKE6
+         WLC6pdn9HXNQMIdYYnlxhIC50OCx6Q5IYJDeFY4WG98DRWv80t9SPXPMN8TGehIkRyqk
+         5OF8zFB4+LXowP8d4HGtLi5Ci3GkJzsgmrVBR2KLWab7FjkPvxyC0krHAL36mKJWdDoq
+         OTSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699892507; x=1700497307;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6isXPs0sflYE9m4fOOkPNOo14+5QhUVptrDTcdlr+qo=;
+        b=Ea4Z6c50tbPYBE21BjG/1w+m3UqnB2CjQ4EZ39Asi5e4cahkfE0qBtTzXv8VeGkJmp
+         KgiuPEQeUWUpi8q5zSwG6mnhxmEyk41efFE5IM3D0S2BOoCxxTozXjMytR2/A941Af/l
+         jg7613GxfPivA3TgsNgCUDXnPOjFq61ZW2W88uinM70hv7GccTNCiAVAGBKfz3Ewjjcf
+         hos92PWslH+bZdBH+xEVZvkIv51v9ObbTTVR9MPWUJkGmeEIIoTTAhiZxW9Q6Ct3dBxH
+         USFu5sxat8BXSBmwa2TZWxTg7M4kovBXNm4hE7wEVJMgA2XCV8TxEdphZHfZh98NLRyE
+         ioAw==
+X-Gm-Message-State: AOJu0Yzl6TONMxZJvWfh+UpN2FgqUcCkcXngC9Zq6J7PE8vRMsVHDWFH
+        WwEV0/CPalsY1R1deqwgAB9O/ryCua+di1CKFTI=
+X-Google-Smtp-Source: AGHT+IGH5cy4DsubHL/XylXgpUblwWeL3F6iuwanO8ohcoJVAu0Bwf3MZeyChqUcj8ZiHZaht5eLzm3V9SNQ3bWEDPg=
+X-Received: by 2002:adf:e64b:0:b0:32d:b551:3fb8 with SMTP id
+ b11-20020adfe64b000000b0032db5513fb8mr3662969wrn.62.1699892507347; Mon, 13
+ Nov 2023 08:21:47 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231113145731.89796-1-alain.volmat@foss.st.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+References: <20231113131634.614467-1-debug.penguin32@gmail.com>
+ <20231113160751.620810-1-debug.penguin32@gmail.com> <ZVJLhbvXSbmnEfwb@smile.fi.intel.com>
+In-Reply-To: <ZVJLhbvXSbmnEfwb@smile.fi.intel.com>
+From:   Ronald Monthero <debug.penguin32@gmail.com>
+Date:   Tue, 14 Nov 2023 02:21:35 +1000
+Message-ID: <CALk6Uxo-Ojc8U7b5wDUJMA-uY1MeXqLBRXSrt6YeSwMnRkhy1w@mail.gmail.com>
+Subject: Re: [PATCH v2] mtd: rawnand: Increment IFC_TIMEOUT_MSECS for nand
+ controller response
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     richard@nod.at, vigneshr@ti.com, heiko@sntech.de,
+        martin.blumenstingl@googlemail.com, paul@crapouillou.net,
+        robh@kernel.org, u.kleine-koenig@pengutronix.de,
+        AVKrasnov@sberdevices.ru, r.czerwinski@pengutronix.de,
+        jaimeliao.tw@gmail.com, linux-mtd@lists.infradead.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        =?UTF-8?Q?Philippe_Mathieu=2DDaud=C3=A9?= <philmd@linaro.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,59 +77,24 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello Alain
-
-On Mon, Nov 13, 2023 at 03:57:30PM +0100, Alain Volmat wrote:
-> Use a copy of the struct v4l2_subdev_format when propagating
-> format from the sink to source pad in order to avoid impacting the
-> sink format returned to the application.
+On Tue, Nov 14, 2023 at 2:15=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
 >
-> Thanks to Jacopo Mondi for pointing the issue.
+> On Tue, Nov 14, 2023 at 02:07:49AM +1000, Ronald Monthero wrote:
 >
-
-;)
-
-> Fixes: 6c01e6f3f27b ("media: st-mipid02: Propagate format from sink to source pad")
-> Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/media/i2c/st-mipid02.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+> I'm not sure if it's a dup email of the previously sent v2. In any case I=
+ have
+> commented on v1 and v2, please consider addressing them.
 >
-> diff --git a/drivers/media/i2c/st-mipid02.c b/drivers/media/i2c/st-mipid02.c
-> index fa27638edc07..dab14787116b 100644
-> --- a/drivers/media/i2c/st-mipid02.c
-> +++ b/drivers/media/i2c/st-mipid02.c
-> @@ -770,6 +770,7 @@ static void mipid02_set_fmt_sink(struct v4l2_subdev *sd,
->  				 struct v4l2_subdev_format *format)
->  {
->  	struct mipid02_dev *bridge = to_mipid02_dev(sd);
-> +	struct v4l2_subdev_format source_fmt;
->  	struct v4l2_mbus_framefmt *fmt;
->
->  	format->format.code = get_fmt_code(format->format.code);
-> @@ -781,8 +782,12 @@ static void mipid02_set_fmt_sink(struct v4l2_subdev *sd,
->
->  	*fmt = format->format;
->
-> -	/* Propagate the format change to the source pad */
-> -	mipid02_set_fmt_source(sd, sd_state, format);
-> +	/*
-> +	 * Propagate the format change to the source pad, taking
-> +	 * care not to update the format pointer given back to user
-> +	 */
-> +	source_fmt = *format;
-> +	mipid02_set_fmt_source(sd, sd_state, &source_fmt);
-
-Looks good!
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-
-Thanks
-  j
-
->  }
->
->  static int mipid02_set_fmt(struct v4l2_subdev *sd,
 > --
-> 2.25.1
+> With Best Regards,
+> Andy Shevchenko
 >
+>
+
+Andy jfyi, the 2 emails of v2 are the same except that the latter has
+the stable tag, which was missed.
+I will address the review comments and send it.
+
+BR,
+Ron
