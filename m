@@ -2,175 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 873DA7E975D
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 09:09:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E24517E97D0
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 09:34:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbjKMIJS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 03:09:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33194 "EHLO
+        id S233083AbjKMIe6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 03:34:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjKMIJS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 03:09:18 -0500
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6B5910F1
-        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 00:09:14 -0800 (PST)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-54366bb1c02so9727a12.1
-        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 00:09:14 -0800 (PST)
+        with ESMTP id S229817AbjKMIe6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 03:34:58 -0500
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3343510EC
+        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 00:34:55 -0800 (PST)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-507bd19eac8so5506115e87.0
+        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 00:34:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699862953; x=1700467753; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IZoiKeK25c+eUBM5+IcX3nIvRllqin03QRw6rKMwSeI=;
-        b=HT9S/jFtfBICCDUuwqg3igBCTDY12VJMgbFVv31E54kzTJCJA24qB8sEVWdViVd0Iw
-         oJdIpN3g34otI/ZELCUdKVgI7OKYeBMZMc9IYWR+1XVuAySV4YhUFCWw/uZHJ0Y4gu03
-         l3cKD2UyBJmpcBXBx+tojBllS5xXlPuovSp0MOAiFV+zJW/gw4DQRcncyhpQMJYzHovs
-         nteST+XAVzXbNvInh/RkEEryJAf1O8Ec4ui6Nj5nXfOW9NT7DK3D7Pns+sTmDydK4fuh
-         G/6p8nNVcGDR/VjNNuAI9B+RzaPBXnTX7qvqIP2oWHs7tuJZyBH7DfA3kVIwcgtkUPD2
-         GfWQ==
+        d=juliahub.com; s=google; t=1699864493; x=1700469293; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nSmZOQp3NDYoYQRoOZeW69Lq5ePPtNZcj13zDtILkTQ=;
+        b=Un/eWOrSRIpXkOWzJEXL7+SF8dcbycBGpIfz/SXHD5MmBgL1lQF80BdGbdyTV0qnvT
+         vH732lZc/yrP6+vdk86TvaaXzTaceZZ84ZmjXEEnQ1GqMk5ZReKoAhY3eUVqweff3SrT
+         Ym0C92gdgR0BNtTTAXWnu3TA3kYrZHOSzSCGXZ5C+VPYVy2zWAS8itF6WoMHY2kg7pj7
+         4voEY2IsO0l2bLntPoh0gLg9BNs28/s/ZRJWHpQm72d745RJUTytjysqEpXc3CS09Q3J
+         RO2Q9y1QhAwoK2zqIC8FB7650SwGUKNu496NxyWA+GwxJDx/g8/XpEgUZk26fNMZ0XFG
+         tO3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699862953; x=1700467753;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IZoiKeK25c+eUBM5+IcX3nIvRllqin03QRw6rKMwSeI=;
-        b=pNQtuLtLKWHdcSIgAG9PMaP2Ig+a1T57zy0xZaImiYz4ECUdacTyS7+0V0r7sMOiN3
-         AF9TP9iXhzi32vhdIdX6SwGNOAlu2nqq98/VbKflnGDe23k+Sui8lmg6XacYKWZbN9hM
-         1n8L0i7vzdoxlafuokG7bmRo+5r9wh+JjSSKAo79u5eSFYSi18g9cMDQr5aU/bbz3RDC
-         ZVFkQ5FTZwhxMFmGU8+c0Cxm+UmljzaArJC0AFfYCuKw/TCvR0X3j2ytzDoWYrhzhMSu
-         5RuBTsuaE5zf2lFkyc2hQDrc1eqGXiTahfp47NNeh3bl56v/7CUQuBLO0uiL7BAjd//G
-         pUbQ==
-X-Gm-Message-State: AOJu0YxwN739vJ2ly0gvTnPT96ogaL5BKfXAaIcQd0BX0WBhi0ADprad
-        pRPU9A4+iKkoZAfXhPSn1rk+mYfYuCrLOT8zLZqeCA==
-X-Google-Smtp-Source: AGHT+IFzRJ5jkVI6/mAvKVYmcFvOau5ZJS31ms3DOXuF4B7wj28TwQl+V6wt0JtbBzn8SakFOoOq6C4IAp58Rg6NfHQ=
-X-Received: by 2002:a05:6402:51a:b0:545:94c:862e with SMTP id
- m26-20020a056402051a00b00545094c862emr115385edv.2.1699862953009; Mon, 13 Nov
- 2023 00:09:13 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699864493; x=1700469293;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nSmZOQp3NDYoYQRoOZeW69Lq5ePPtNZcj13zDtILkTQ=;
+        b=PFO6+Rtb/sgAaz0IaYvkVwILEe0mmCsKWty0Ex9/sVOIJY+3j4Kbhexv+XiVtBZER/
+         +7HIeKp+j4TreGWFXm2sKsHippcYxi5e7q5YJcA9MsmhTe31/fzEfV/myFlwF32Dc24c
+         cDK/1CGTQ64508cEBfdWvrIpELnfe8uhbVCAH5R0WpViuhb/LdJhJFe8kfilvT+ibzbx
+         HVclG1FF8wqXiAi0NadhgKk6IT83Ctjm6DxukxIKSmhtuGeQcHUWF9K3QVy3G4tFWUhc
+         JzKbsi8ZuT7/LIDFMgArP+MFtt3qw40Gvgb3c+rhC7PVUm5nstuLo+LqWm9w+9iOU9n3
+         /4xA==
+X-Gm-Message-State: AOJu0YwA05/MsD/D7He+hxcFzyXiMLbhDjg+jb1ZX4SwDey1JoGErked
+        ovEl9R37e8kKONcJpgmwnHlsGJt8d7v3F+bma8y0rlBIPLlGZ461
+X-Google-Smtp-Source: AGHT+IFgq88MRaTHmaB9J8NNC+BSZ2b2vgGjklcYDBiGTryencLrXHqw3v0z2CHQw9bfeLiZxgYwLYjzwO05rQCXNX8=
+X-Received: by 2002:a05:6512:3904:b0:503:258f:fd1b with SMTP id
+ a4-20020a056512390400b00503258ffd1bmr3749298lfu.18.1699864492911; Mon, 13 Nov
+ 2023 00:34:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20231113031705.803615-1-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20231113031705.803615-1-willemdebruijn.kernel@gmail.com>
-From:   Eric Dumazet <edumazet@google.com>
-Date:   Mon, 13 Nov 2023 09:09:00 +0100
-Message-ID: <CANn89iLeuGukAFOYk-mMaow1j4EPeO-VEA0wWVFA=byabJ91yw@mail.gmail.com>
-Subject: Re: [PATCH net] ppp: limit MRU to 64K
-To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc:     netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
-        pabeni@redhat.com, linux-ppp@vger.kernel.org,
-        stable@vger.kernel.org, mitch@sfgoth.com, mostrows@earthlink.net,
-        jchapman@katalix.com, Willem de Bruijn <willemb@google.com>,
-        syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
+From:   Keno Fischer <keno@juliahub.com>
+Date:   Mon, 13 Nov 2023 03:34:16 -0500
+Message-ID: <CABV8kRwx=92ntPW155ef=72z6gtS_NPQ9bRD=R1q_hx1p7wy=g@mail.gmail.com>
+Subject: Incomplete stable drm/ast backport - screen freeze on boot
+To:     stable@vger.kernel.org
+Cc:     regressions@lists.linux.dev, sashal@kernel.org,
+        tzimmermann@suse.de, jfalempe@redhat.com, airlied@redhat.com,
+        dri-devel@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 13, 2023 at 4:17=E2=80=AFAM Willem de Bruijn
-<willemdebruijn.kernel@gmail.com> wrote:
->
-> From: Willem de Bruijn <willemb@google.com>
->
-> ppp_sync_ioctl allows setting device MRU, but does not sanity check
-> this input.
->
-> Limit to a sane upper bound of 64KB.
->
-> No implementation I could find generates larger than 64KB frames.
-> RFC 2823 mentions an upper bound of PPP over SDL of 64KB based on the
-> 16-bit length field. Other protocols will be smaller, such as PPPoE
-> (9KB jumbo frame) and PPPoA (18190 maximum CPCS-SDU size, RFC 2364).
-> PPTP and L2TP encapsulate in IP.
->
-> Syzbot managed to trigger alloc warning in __alloc_pages:
->
->         if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
->
->     WARNING: CPU: 1 PID: 37 at mm/page_alloc.c:4544 __alloc_pages+0x3ab/0=
-x4a0 mm/page_alloc.c:4544
->
->     __alloc_skb+0x12b/0x330 net/core/skbuff.c:651
->     __netdev_alloc_skb+0x72/0x3f0 net/core/skbuff.c:715
->     netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
->     dev_alloc_skb include/linux/skbuff.h:3238 [inline]
->     ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
->     ppp_sync_receive+0xff/0x680 drivers/net/ppp/ppp_synctty.c:334
->     tty_ldisc_receive_buf+0x14c/0x180 drivers/tty/tty_buffer.c:390
->     tty_port_default_receive_buf+0x70/0xb0 drivers/tty/tty_port.c:37
->     receive_buf drivers/tty/tty_buffer.c:444 [inline]
->     flush_to_ldisc+0x261/0x780 drivers/tty/tty_buffer.c:494
->     process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
->
-> With call
->
->     ioctl$PPPIOCSMRU1(r1, 0x40047452, &(0x7f0000000100)=3D0x5e6417a8)
->
-> Similar code exists in other drivers that implement ppp_channel_ops
-> ioctl PPPIOCSMRU. Those might also be in scope. Notably excluded from
-> this are pppol2tp_ioctl and pppoe_ioctl.
->
-> This code goes back to the start of git history.
->
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
-> ---
->  drivers/net/ppp/ppp_synctty.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.=
-c
-> index ea261a628786..52d05ce4a281 100644
-> --- a/drivers/net/ppp/ppp_synctty.c
-> +++ b/drivers/net/ppp/ppp_synctty.c
-> @@ -453,6 +453,10 @@ ppp_sync_ioctl(struct ppp_channel *chan, unsigned in=
-t cmd, unsigned long arg)
->         case PPPIOCSMRU:
->                 if (get_user(val, (int __user *) argp))
->                         break;
-> +               if (val > U16_MAX) {
-> +                       err =3D -EINVAL;
-> +                       break;
-> +               }
->                 if (val < PPP_MRU)
->                         val =3D PPP_MRU;
->                 ap->mru =3D val;
-> --
-> 2.43.0.rc0.421.g78406f8d94-goog
->
+Greetings,
 
-Reviewed-by: Eric Dumazet <edumazet@google.com>
+When connected to a remote machine via the BMC KVM functionality,
+I am experiencing screen freezes on boot when using 6.5 stable,
+but not master.
 
-It is unclear why ppp_sync_input() does not allocate an skb based on
-@count argument though...
+The BMC on the machine in question is an ASpeed AST2600.
+A quick bisect shows the problematic commit to be 2fb9667
+("drm/ast: report connection status on Display Port.").
+This is commit f81bb0ac upstream.
 
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index ebcdffdf4f0e0193635d2b479e8a9f7a32703509..79cb7916ff03c9b311109372e3d=
-3e434e3669fa6
-100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -659,14 +659,14 @@ ppp_sync_input(struct syncppp *ap, const u8
-*buf, const u8 *flags, int count)
-        struct sk_buff *skb;
-        unsigned char *p;
+I believe the problem is that the previous commit in the series
+e329cb5 ("drm/ast: Add BMC virtual connector")
+was not backported to the stable branch.
+As a consequence, it appears that the more accurate DP state detection
+is causing the kernel to believe that no display is connected,
+even when the BMC's virtual display is in fact in use.
+A cherry-pick of e329cb5 onto the stable branch resolves the issue.
 
--       if (count =3D=3D 0)
-+       if (count <=3D 0)
-                return;
-
-        if (ap->flags & SC_LOG_INPKT)
-                ppp_print_buffer ("receive buffer", buf, count);
-
-        /* stuff the chars in the skb */
--       skb =3D dev_alloc_skb(ap->mru + PPP_HDRLEN + 2);
-+       skb =3D dev_alloc_skb(count + PPP_HDRLEN + 2);
-        if (!skb) {
-                printk(KERN_ERR "PPPsync: no memory (input pkt)\n");
-                goto err;
+Cheers,
+Keno
