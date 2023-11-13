@@ -2,58 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93F2F7E9BE7
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 13:11:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3F5C7E9C65
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 13:49:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbjKMMMA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 07:12:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40966 "EHLO
+        id S229569AbjKMMtv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 07:49:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229497AbjKMMMA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 07:12:00 -0500
+        with ESMTP id S229470AbjKMMtu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 07:49:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39108D75;
-        Mon, 13 Nov 2023 04:11:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D2EC433CC;
-        Mon, 13 Nov 2023 12:11:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE708171A;
+        Mon, 13 Nov 2023 04:49:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387A4C433C8;
+        Mon, 13 Nov 2023 12:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699877516;
-        bh=5gp7DoHA+vUU9ry2Kt97UnYD5nWLqN4A470cWdz48KY=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=rmU0WSm3SSGv3pcP9pj9/IqbRpBhOl2X4aZhIynQcaEi1mDO1nBN7XW5Q7MKDV5dW
-         lqEtrFkfE4WQ++F343EKPT54Os3Z17480xxg4f+B8laJb8REOnv6okROXyEDhW+S7c
-         KjKq8Aq6LEIpUKp1YnVeW9gFC+ZbhDKfoxVjgTZDlT7RRgglrofZ+jUneAqiSp9rpP
-         M3ol+hg6v2pequOZw+rdw1SmQhRWS7lKvU7E1CnxNYeuWxdU4fxmTI5d2gTB0f4GQZ
-         vth6bS5uNoVfJ0anhWgeM0y5OHSsYn5+71vsDPMNbeq2THlmueBO0joTFq1Br82wDM
-         Zaczlf0wN25LQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Zheng Hacker <hackerzheng666@gmail.com>,
-        Zheng Wang <zyytlz.wz@163.com>, aspriel@gmail.com,
-        franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        johannes.berg@intel.com, marcan@marcan.st,
-        linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
-        linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        security@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in
- brcmf_cfg80211_detach
-References: <20231106141704.866455-1-zyytlz.wz@163.com>
-        <87o7g7ueom.fsf@kernel.org>
-        <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com>
-        <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-        <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
-        <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com>
-Date:   Mon, 13 Nov 2023 14:11:51 +0200
-In-Reply-To: <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com> (Arend van
-        Spriel's message of "Mon, 13 Nov 2023 10:18:06 +0100")
-Message-ID: <874jhpvomw.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        s=k20201202; t=1699879787;
+        bh=tU8xq2J57Sl4LuqrzTRB/W0EKcXKJwV5rRjDD+w+8WE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GLCnkFzCfiUeYlaC2/UHWgyq9vWZNCUiwhhXZnxTQcERjWEjj83uAm8iGnC4VaR+P
+         JdUniYfYlBeun2m5HKDfT4MyRHHzyN1vcFRmSL6T8UiXduMXXHb8tRcZwSvNVYIiVw
+         Z5jShIRXJ4DABlzUyEiVza1Qc7HI23BBwjilCKXsg6P8RpQXU+xgAfMT947zkO8JKa
+         8ip4Y4w+j56XWLRY1udC+yAtCg+W/Qysn6vaeaW/bEbdEE5BIN2ypoEFsDTT7pbm1W
+         UYHKLqe0VKRHdMJeLJVDI01gAYvgvcC/GAGcYeqBC2QS2LGRqB1huMd7NCSO8YyRRI
+         QiUf055zrosgg==
+Date:   Mon, 13 Nov 2023 07:49:44 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+Cc:     stable@vger.kernel.org, stable-commits@vger.kernel.org,
+        Helge Deller <deller@gmx.de>
+Subject: Re: Patch "fbdev: omapfb: Drop unused remove function" has been
+ added to the 6.6-stable tree
+Message-ID: <ZVIbaGnc-ClgzbW-@sashalap>
+References: <20231113043603.303944-1-sashal@kernel.org>
+ <20231113085330.ik34bufqhut6bt6t@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231113085330.ik34bufqhut6bt6t@pengutronix.de>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -64,42 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Arend van Spriel <arend.vanspriel@broadcom.com> writes:
-
-> On November 8, 2023 4:03:26 AM Zheng Hacker <hackerzheng666@gmail.com>
-> wrote:
->
->> Arend Van Spriel <arend.vanspriel@broadcom.com> =E4=BA=8E2023=E5=B9=B411=
-=E6=9C=886=E6=97=A5=E5=91=A8=E4=B8=80 23:48=E5=86=99=E9=81=93=EF=BC=9A
->>>
->>> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.com> =
-wrote:
->>>
->>>> Thanks! I didn't test it for I don't have a device. Very appreciated
->>>> if anyone could help with that.
->>>
->>> I would volunteer, but it made me dig deep and not sure if there is a
->>> problem to solve here.
->>>
->>> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scanning(=
-) ->
->>> brcmf_notify_escan_complete() which does delete the timer.
->>>
->>> What am I missing here?
+On Mon, Nov 13, 2023 at 09:53:30AM +0100, Uwe Kleine-König wrote:
+>On Sun, Nov 12, 2023 at 11:36:02PM -0500, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
 >>
->> Thanks four your detailed review. I did see the code and not sure if
->> brcmf_notify_escan_complete
->> would be triggered for sure. So in the first version I want to delete
->> the pending timer ahead of time.
+>>     fbdev: omapfb: Drop unused remove function
+>>
+>> to the 6.6-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>      fbdev-omapfb-drop-unused-remove-function.patch
+>> and it can be found in the queue-6.6 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>>
+>>
+>>
+>> commit a772de6bea2f5a9b5dad8afe0d9145fd8ee62564
+>> Author: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>> Date:   Fri Nov 3 18:35:58 2023 +0100
+>>
+>>     fbdev: omapfb: Drop unused remove function
+>>
+>>     [ Upstream commit fc6699d62f5f4facc3e934efd25892fc36050b70 ]
+>>
+>>     OMAP2_VRFB is a bool, so the vrfb driver can never be compiled as a
+>>     module. With that __exit_p(vrfb_remove) always evaluates to NULL and
+>>     vrfb_remove() is unused.
+>>
+>>     If the driver was compilable as a module, it would fail to build because
+>>     the type of vrfb_remove() isn't compatible with struct
+>>     platform_driver::remove(). (The former returns void, the latter int.)
+>>
+>>     Fixes: aa1e49a3752f ("OMAPDSS: VRFB: add omap_vrfb_supported()")
+>>     Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>>     Signed-off-by: Helge Deller <deller@gmx.de>
+>>     Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
-> Why requesting a CVE when you are not sure? Seems a bit hasty to put
-> it mildly.
+>While it doesn't hurt to backport this patch, I guess it also doesn't
+>give any benefit (apart from increasing my patch count in stable :-).
+>
+>This commit just removes code that was thrown away by the compiler
+>before. So I'd not backport it.
 
-TBH I don't take CVE entries seriously anymore. I don't know what has
-happened there.
+Ack, dropped. Thanks!
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+-- 
+Thanks,
+Sasha
