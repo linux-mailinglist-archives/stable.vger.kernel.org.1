@@ -2,49 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3F5C7E9C65
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 13:49:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 770A77E9D29
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 14:30:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229569AbjKMMtv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 07:49:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40124 "EHLO
+        id S230434AbjKMNay (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 13 Nov 2023 08:30:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjKMMtu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 07:49:50 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE708171A;
-        Mon, 13 Nov 2023 04:49:47 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387A4C433C8;
-        Mon, 13 Nov 2023 12:49:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699879787;
-        bh=tU8xq2J57Sl4LuqrzTRB/W0EKcXKJwV5rRjDD+w+8WE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GLCnkFzCfiUeYlaC2/UHWgyq9vWZNCUiwhhXZnxTQcERjWEjj83uAm8iGnC4VaR+P
-         JdUniYfYlBeun2m5HKDfT4MyRHHzyN1vcFRmSL6T8UiXduMXXHb8tRcZwSvNVYIiVw
-         Z5jShIRXJ4DABlzUyEiVza1Qc7HI23BBwjilCKXsg6P8RpQXU+xgAfMT947zkO8JKa
-         8ip4Y4w+j56XWLRY1udC+yAtCg+W/Qysn6vaeaW/bEbdEE5BIN2ypoEFsDTT7pbm1W
-         UYHKLqe0VKRHdMJeLJVDI01gAYvgvcC/GAGcYeqBC2QS2LGRqB1huMd7NCSO8YyRRI
-         QiUf055zrosgg==
-Date:   Mon, 13 Nov 2023 07:49:44 -0500
-From:   Sasha Levin <sashal@kernel.org>
-To:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-Cc:     stable@vger.kernel.org, stable-commits@vger.kernel.org,
-        Helge Deller <deller@gmx.de>
-Subject: Re: Patch "fbdev: omapfb: Drop unused remove function" has been
- added to the 6.6-stable tree
-Message-ID: <ZVIbaGnc-ClgzbW-@sashalap>
-References: <20231113043603.303944-1-sashal@kernel.org>
- <20231113085330.ik34bufqhut6bt6t@pengutronix.de>
+        with ESMTP id S229470AbjKMNax (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 08:30:53 -0500
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43627D7E;
+        Mon, 13 Nov 2023 05:30:49 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 19D1AC0005;
+        Mon, 13 Nov 2023 13:30:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1699882247;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Ii8+etSPHzTAe8bcWFf2RWURPKpC4OnFERtK3d3IciM=;
+        b=fR+ULvXqo6//waqmCqREZxa/7vwOQ8eUTpiQRwdogv0NjGQvN0cjQWy2zM5EYQONGVnYhb
+        d4xAkj94uHYrxWZuNeiaqKhukFIMx4T3jaKH9aBmClx6KuFs0OSXZX/YtHaGIaVQFlV54B
+        pU8PmuTpcSWqc7tiiLVGWzC2C6yc4urbYNn6pZ5K07Dw2uijkEs+f44nljE0UB2MKOZwqg
+        e2jTxa/V7hsDzpDy1rPVXnUAOv6di2oR1LyYVmw9ZGLjFU3vEZQKT6RY/qQvwuDywbB07Y
+        wULgHhYPKjA93troZkRyir3ilPFoADmdLS0tGXv3zgbJtPJu4EhWAu2K6wGJBA==
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Saravana Kannan <saravanak@google.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Steen Hegelund <steen.hegelund@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Herve Codina <herve.codina@bootlin.com>, stable@vger.kernel.org
+Subject: [PATCH v2 1/1] driver core: Keep the supplier fwnode consistent with the device
+Date:   Mon, 13 Nov 2023 14:30:44 +0100
+Message-ID: <20231113133044.55257-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231113085330.ik34bufqhut6bt6t@pengutronix.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-GND-Sasl: herve.codina@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,53 +54,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 13, 2023 at 09:53:30AM +0100, Uwe Kleine-König wrote:
->On Sun, Nov 12, 2023 at 11:36:02PM -0500, Sasha Levin wrote:
->> This is a note to let you know that I've just added the patch titled
->>
->>     fbdev: omapfb: Drop unused remove function
->>
->> to the 6.6-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->> The filename of the patch is:
->>      fbdev-omapfb-drop-unused-remove-function.patch
->> and it can be found in the queue-6.6 subdirectory.
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->>
->>
->>
->> commit a772de6bea2f5a9b5dad8afe0d9145fd8ee62564
->> Author: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
->> Date:   Fri Nov 3 18:35:58 2023 +0100
->>
->>     fbdev: omapfb: Drop unused remove function
->>
->>     [ Upstream commit fc6699d62f5f4facc3e934efd25892fc36050b70 ]
->>
->>     OMAP2_VRFB is a bool, so the vrfb driver can never be compiled as a
->>     module. With that __exit_p(vrfb_remove) always evaluates to NULL and
->>     vrfb_remove() is unused.
->>
->>     If the driver was compilable as a module, it would fail to build because
->>     the type of vrfb_remove() isn't compatible with struct
->>     platform_driver::remove(). (The former returns void, the latter int.)
->>
->>     Fixes: aa1e49a3752f ("OMAPDSS: VRFB: add omap_vrfb_supported()")
->>     Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
->>     Signed-off-by: Helge Deller <deller@gmx.de>
->>     Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->While it doesn't hurt to backport this patch, I guess it also doesn't
->give any benefit (apart from increasing my patch count in stable :-).
->
->This commit just removes code that was thrown away by the compiler
->before. So I'd not backport it.
+The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
+fwnode's consumer links") introduces the possibility to use the
+supplier's parent device instead of the supplier itself.
+In that case the supplier fwnode used is not updated and is no more
+consistent with the supplier device used.
 
-Ack, dropped. Thanks!
+Update the fwnode used to be consistent with the supplier device used.
 
+Fixes: 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child fwnode's consumer links")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+Changes v1 -> v2:
+  Remove sup_handle check and related pr_debug() call as sup_handle cannot be
+  invalid if sup_dev is valid.
+
+ drivers/base/core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 4d8b315c48a1..2f6a21b908ec 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2076,6 +2076,13 @@ static int fw_devlink_create_devlink(struct device *con,
+ 		sup_dev = get_dev_from_fwnode(sup_handle);
+ 
+ 	if (sup_dev) {
++		/*
++		 * The supplier device may have changed and so, the supplier
++		 * fwnode maybe inconsistent.
++		 * Update the supplier fwnode
++		 */
++		sup_handle = sup_dev->fwnode;
++
+ 		/*
+ 		 * If it's one of those drivers that don't actually bind to
+ 		 * their device using driver core, then don't wait on this
 -- 
-Thanks,
-Sasha
+2.41.0
+
