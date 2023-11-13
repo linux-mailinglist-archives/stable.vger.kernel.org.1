@@ -2,81 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFCBC7E92FB
-	for <lists+stable@lfdr.de>; Sun, 12 Nov 2023 23:36:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A445B7E93EE
+	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 02:12:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229886AbjKLWgj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 12 Nov 2023 17:36:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56664 "EHLO
+        id S230053AbjKMBM0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 12 Nov 2023 20:12:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229738AbjKLWgi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 17:36:38 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EEB12117
-        for <stable@vger.kernel.org>; Sun, 12 Nov 2023 14:36:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699828596; x=1731364596;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=FDKQJc4AeibGqoYELpJwBZ6gXqXZ4aq3PPO5w+lJ9tk=;
-  b=SL5eqd48XYtr1byspntjUZW68eHvhyX8NjJuxAsQxH43+wDM7gFQn7SQ
-   D2rHNkpCNauOU0wC7odTiCU6ixTxub+9Rex1gfIo6OoMG6qqaHWZGd9t6
-   Qxec679q+r6YEYTiuvN4BV4rPfPITc2ZyM6Xe6xGREo8lYZBwrd4nep29
-   +gNin+Rc8pGnG12IEQRPE1toHhNLLBh5sXfkkUFEsWBnthf2qKSghT/0q
-   92HIDHqp1AJ2a0+WTioKqULFk+zOHZa1yojwAORju/9MTfYLobBxL6tUU
-   kCfdJ0O7oLijAPThfJHEaFSm41k8AmAheljA3AZiInJvIqlriiySWBayL
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10892"; a="11906064"
-X-IronPort-AV: E=Sophos;i="6.03,298,1694761200"; 
-   d="scan'208";a="11906064"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Nov 2023 14:36:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10892"; a="757646558"
-X-IronPort-AV: E=Sophos;i="6.03,298,1694761200"; 
-   d="scan'208";a="757646558"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 12 Nov 2023 14:36:34 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1r2J4B-000BaE-2u;
-        Sun, 12 Nov 2023 22:36:31 +0000
-Date:   Mon, 13 Nov 2023 06:35:19 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] ACPI: video: Use acpi_device_fix_up_power_children()
-Message-ID: <ZVFTJwxQd48gi3bv@a9cca7fa5d54>
+        with ESMTP id S229994AbjKMBMZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 12 Nov 2023 20:12:25 -0500
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1625FD1;
+        Sun, 12 Nov 2023 17:12:22 -0800 (PST)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1e9c9d181d6so2522722fac.0;
+        Sun, 12 Nov 2023 17:12:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699837941; x=1700442741; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=BykRQa61TmxkQ2aJIQrB52hdaOo4yv0JvlCUuaXQp4E=;
+        b=iwgIocclF+dstaKlsU3LsVFbiC45zoaAO8rZ6Zf/biBZthkZ9H55c00e3DLYebFiy7
+         lzKFGWLq0JFKU/F+meljKWJvLJ40AOeblgVLva93eCIwUZCMuYg+18ybpYmDVy5fJYHX
+         bJ+bP3ae5w4uNhlYRwTPMBp6Q5zv6pTE+oNZ3YyaE9Zo2miSLj85qs3AgrITiKVVgROO
+         sb2b4iEsUNeouNH0ZpTwoMPcHNbU9OplmodH5j5tN0T86++Mt/uoY+G7S+UYs/4hD6RH
+         beis23l+/2Kin5CRbkiaLEJVeHFdAiLYtgz6b6gDn+hBXMASkT3lmm5nLx/Srs63pz7p
+         jQrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699837941; x=1700442741;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BykRQa61TmxkQ2aJIQrB52hdaOo4yv0JvlCUuaXQp4E=;
+        b=B3NBr+tctt+Ef2u8SUFAq23f41VQ8HyI3xUdg+12g3yTomq6063LZcRbZlmQEQyu51
+         ibLDpbybsTbMVUrMY7k2E+EgPbJtlQoV+PpoUW6Uz68I6Qdk2eAu8SNnC7pHb6Ge+2Yg
+         AQT2pEtJEazb8DIH0FEehb3xgba7nSG5gCNrGC8dXez8RFZ46TCWO3DA2f6zcB5nYZdg
+         p50wnPFm1m5pXjADvdRsd1ZWUE7KtmT+XWzwkLENHc/ID6jqhD9E9Nisp52pD5Aovr+G
+         sioA/LluVP7hIt/R1F4vVQycaRUcHb+S4jz3WE98f5A4FvCQdAZkTl2GXlp9JGHhM7W4
+         jJEg==
+X-Gm-Message-State: AOJu0YwtAoNLWzXprqhcV/lI1g4SpLKciJ9IG1sa0oLscu5VbPgTqNfi
+        sxIToakBkQugcQVbG//Dws8=
+X-Google-Smtp-Source: AGHT+IEfdsKyflENvLWfBGllYfegw42Agn4IZSoOohVpE21eLGGFklIzel+5lXB5EbERfl2tC5vLvA==
+X-Received: by 2002:a05:6870:d3cc:b0:1ef:abaa:cae0 with SMTP id l12-20020a056870d3cc00b001efabaacae0mr7153000oag.29.1699837941098;
+        Sun, 12 Nov 2023 17:12:21 -0800 (PST)
+Received: from neuromancer. ([75.28.21.198])
+        by smtp.gmail.com with ESMTPSA id pu27-20020a0568709e9b00b001f49285a366sm849666oab.45.2023.11.12.17.12.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Nov 2023 17:12:20 -0800 (PST)
+Message-ID: <655177f4.050a0220.d85c9.3ba0@mx.google.com>
+X-Google-Original-Message-ID: <ZVF38Btn9FmFGK7l@neuromancer.>
+Date:   Sun, 12 Nov 2023 19:12:16 -0600
+From:   Chris Morgan <macroalpha82@gmail.com>
+To:     Benjamin Bara <bbara93@gmail.com>
+Cc:     Wolfram Sang <wsa@kernel.org>, Lee Jones <lee@kernel.org>,
+        rafael.j.wysocki@intel.com,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        dmitry.osipenko@collabora.com, peterz@infradead.org,
+        jonathanh@nvidia.com, richard.leitner@linux.dev,
+        treding@nvidia.com, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Benjamin Bara <benjamin.bara@skidata.com>,
+        stable@vger.kernel.org, Nishanth Menon <nm@ti.com>,
+        heiko@sntech.de, max.schwarz@online.de
+Subject: Re: [PATCH v7 2/5] i2c: core: run atomic i2c xfer when !preemptible
+References: <20230327-tegra-pmic-reboot-v7-0-18699d5dcd76@skidata.com>
+ <20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231112203627.34059-3-hdegoede@redhat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Sat, Jul 15, 2023 at 09:53:24AM +0200, Benjamin Bara wrote:
+> From: Benjamin Bara <benjamin.bara@skidata.com>
+> 
+> Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
+> disabled. However, non-atomic i2c transfers require preemption (e.g. in
+> wait_for_completion() while waiting for the DMA).
+> 
+> panic() calls preempt_disable_notrace() before calling
+> emergency_restart(). Therefore, if an i2c device is used for the
+> restart, the xfer should be atomic. This avoids warnings like:
+> 
+> [   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+> [   12.676926] Voluntary context switch within RCU read-side critical section!
+> ...
+> [   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+> [   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+> ...
+> [   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+> [   13.001050]  machine_restart from panic+0x2a8/0x32c
+> 
+> Use !preemptible() instead, which is basically the same check as
+> pre-v5.2.
+> 
+> Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+> Cc: stable@vger.kernel.org # v5.2+
+> Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Acked-by: Wolfram Sang <wsa@kernel.org>
+> Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Tested-by: Nishanth Menon <nm@ti.com>
+> Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
 
-Thanks for your patch.
+For kernel 6.7 I'm having an issue when I shutdown or reboot my
+Rockchip RK3326 or Rockchip RK3566 based devices, and I've bisected
+the issue down to this specific commit.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+When I shutdown or restart the device, I receive messages in the kernel
+log like the following:
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+[   37.121148] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
+[   37.122178] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
+[   37.123212] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
+[   37.124226] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
+[   37.125242] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x3
+[   37.126133] rk3x-i2c fdd40000.i2c: irq in STATE_IDLE, ipd = 0x1
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 2/2] ACPI: video: Use acpi_device_fix_up_power_children()
-Link: https://lore.kernel.org/stable/20231112203627.34059-3-hdegoede%40redhat.com
+The device will also occasionally freeze instead of rebooting or
+shutting down. The i2c errors are consistent, but the freezing
+behavior is not.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thank you.
 
-
-
+> ---
+>  drivers/i2c/i2c-core.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/i2c/i2c-core.h b/drivers/i2c/i2c-core.h
+> index 1247e6e6e975..05b8b8dfa9bd 100644
+> --- a/drivers/i2c/i2c-core.h
+> +++ b/drivers/i2c/i2c-core.h
+> @@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
+>   */
+>  static inline bool i2c_in_atomic_xfer_mode(void)
+>  {
+> -	return system_state > SYSTEM_RUNNING && irqs_disabled();
+> +	return system_state > SYSTEM_RUNNING && !preemptible();
+>  }
+>  
+>  static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
+> 
+> -- 
+> 2.34.1
+> 
