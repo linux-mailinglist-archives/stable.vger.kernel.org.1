@@ -2,142 +2,132 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B7957EA855
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 02:42:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAC9D7EAA20
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 06:28:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231265AbjKNBmy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 20:42:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37032 "EHLO
+        id S232161AbjKNF2w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 00:28:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230437AbjKNBmx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 20:42:53 -0500
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E26D44;
-        Mon, 13 Nov 2023 17:42:49 -0800 (PST)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-280260db156so4596651a91.2;
-        Mon, 13 Nov 2023 17:42:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699926169; x=1700530969; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3hmwID4NUoEMNhNLHUF25keYaca4bGqY6IjYsobRAqI=;
-        b=DC6sQmEXqN0w1ihMdrckgsS43q1ehrFXSTwmfJySsq51xv4JrG5Gbf8tykuxOWTx+M
-         pl3jI9gVZl/Gt4ijgvgX4lgtt2q0oqMr6oWhwAXMlQI9TRzpyS0JsJta67yoaYDrbNQC
-         Z9oDa5j6pKfxzcPQJ2eh2IOQTsLSkmbkXz1yBGtPcyugZRmhRnJwtowX3ruVMcbycw5L
-         iW6zgGr06vHiNacMuzp7JiDyaahydfAlnTze/8NXbQCZlCnI4Fj+RAbmsiHwbTvrK/tt
-         ZHk+hMOSFEE6Rd6uTH27xEvS4405FHNXl7d5sjJqFKj2DfC/PMKKZuwpPJAYbh5+zbr3
-         KjDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699926169; x=1700530969;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3hmwID4NUoEMNhNLHUF25keYaca4bGqY6IjYsobRAqI=;
-        b=PG0rw7FG9kCv5mY4PbMFLsOapSN8zs3bB48cCLIC8ajGNAsJ7DgzO+/VHTBDjATEgf
-         BFxhYlcRyQL6QAXkonad17xujgAuzUAHlIOLyQgq2WMRBSMntkNxIlHZFEeRJOXHkg43
-         nBcYB8UHBpnRpIDB50lFVnE59JnrWZ6OEyDuzmrkvmyySlm7xDoL+RzmZl7XpQg2WPDR
-         rikygRyOZtY5cmY/3SEO/VmJWvnBHWHS0gUpILOHMvI/YwRedlQZy+KH7fy68GuZVqDN
-         vpYUTGRHRVy84VNAyNNH1GtitlrQwwJMql8BNBYb5SCaMfiv5Ca5kXfw+91uKdWHALyN
-         5oFw==
-X-Gm-Message-State: AOJu0YyicbRZe+PcuOGmAVPZvR+soFZsZwjflZrKSQVryPbSGsAiinDS
-        eG8vRhwBXXBDLi3KGGav75tcnBiC8PfjOSqRkqY=
-X-Google-Smtp-Source: AGHT+IFmSIzM64Ultyohl3cddt8R4PwwVe85tC1PBHmfR8nuPKj4+JgFvHIZba39aYMDlnANYytNFC2LfOv09/LYPS8=
-X-Received: by 2002:a17:90a:bb83:b0:280:125:e52e with SMTP id
- v3-20020a17090abb8300b002800125e52emr8679244pjr.35.1699926169047; Mon, 13 Nov
- 2023 17:42:49 -0800 (PST)
-MIME-Version: 1.0
-References: <20231108171517.2436103-1-shr@devkernel.io>
-In-Reply-To: <20231108171517.2436103-1-shr@devkernel.io>
-From:   Yang Shi <shy828301@gmail.com>
-Date:   Mon, 13 Nov 2023 17:42:37 -0800
-Message-ID: <CAHbLzkqx9A2XoPJynr4JR-31UstASW-bgym4PM9mok7gUOSM3A@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: Fix for negative counter: nr_file_hugepages
-To:     Stefan Roesch <shr@devkernel.io>
-Cc:     kernel-team@fb.com, akpm@linux-foundation.org, hannes@cmpxchg.org,
-        riel@surriel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org, willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232386AbjKNF22 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 00:28:28 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F4D4171A;
+        Mon, 13 Nov 2023 21:28:20 -0800 (PST)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AE52Ocf022800;
+        Tue, 14 Nov 2023 05:27:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references; s=qcppdkim1;
+ bh=vi+ivIzdj5lz69ubLpbSMW3Cjsd+LFLFD/vSlhgdYaY=;
+ b=Fi2OqVchCBJXH82l59S/tB4JYgK6UMkuBOoXjtKzO5+oBstJ5P23AR99cpz3S0jhu/WX
+ uuhGNcLIRdp3LTMpSHa47nBLWUEQ0it9VaP4y1iETjONZRmNG6DLxJ5y7qAmMIg/fx6Y
+ atqyHcCS0nqvzPFzrz83AauQI/OKvH36yLYjEZ37aFM3R3IlvlWGuFOzbCHTA08Mk79f
+ Chn4paNRIjjxaMdbJD926KkFL3i0MPaUxG4gRscog3IwjBVLQqV/ok6KNPUQl5wEZd9Y
+ l5j49fP/66jbBmrFPBL4YWVzYcgyIl9zsQS7gtDFO90NsF13Yk1CtYmrSnBsIDjZ1YJT xw== 
+Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uc048086y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 14 Nov 2023 05:27:45 +0000
+Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
+        by APTAIPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 3AE5Rhme008880;
+        Tue, 14 Nov 2023 05:27:43 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by APTAIPPMTA01.qualcomm.com (PPS) with ESMTP id 3ua2pkg46a-1;
+        Tue, 14 Nov 2023 05:27:43 +0000
+Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AE5RhkH008869;
+        Tue, 14 Nov 2023 05:27:43 GMT
+Received: from cbsp-sh-gv.qualcomm.com (CBSP-SH-gv.ap.qualcomm.com [10.231.249.68])
+        by APTAIPPMTA01.qualcomm.com (PPS) with ESMTP id 3AE5RgJC008868;
+        Tue, 14 Nov 2023 05:27:43 +0000
+Received: by cbsp-sh-gv.qualcomm.com (Postfix, from userid 4098150)
+        id 33BE5549D; Tue, 14 Nov 2023 13:27:42 +0800 (CST)
+From:   Qiang Yu <quic_qianyu@quicinc.com>
+To:     mani@kernel.org, quic_jhugo@quicinc.com
+Cc:     mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, quic_cang@quicinc.com,
+        quic_mrana@quicinc.com, Bhaumik Bhatt <bbhatt@codeaurora.org>,
+        stable@vger.kernel.org, Qiang Yu <quic_qianyu@quicinc.com>
+Subject: [PATCH v4 1/4] bus: mhi: host: Add spinlock to protect WP access when queueing TREs
+Date:   Tue, 14 Nov 2023 13:27:38 +0800
+Message-Id: <1699939661-7385-2-git-send-email-quic_qianyu@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1699939661-7385-1-git-send-email-quic_qianyu@quicinc.com>
+References: <1699939661-7385-1-git-send-email-quic_qianyu@quicinc.com>
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: fEW3KgFGSHMfIq2igPBxNogHINopilhk
+X-Proofpoint-GUID: fEW3KgFGSHMfIq2igPBxNogHINopilhk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-14_04,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 adultscore=0 malwarescore=0 bulkscore=0 phishscore=0
+ mlxlogscore=357 clxscore=1015 spamscore=0 lowpriorityscore=0 mlxscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311140040
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Nov 8, 2023 at 9:15=E2=80=AFAM Stefan Roesch <shr@devkernel.io> wro=
-te:
->
-> While qualifiying the 6.4 release, the following warning was detected in
-> messages:
->
-> vmstat_refresh: nr_file_hugepages -15664
->
-> The warning is caused by the incorrect updating of the NR_FILE_THPS
-> counter in the function split_huge_page_to_list. The if case is checking
-> for folio_test_swapbacked, but the else case is missing the check for
-> folio_test_pmd_mappable. The other functions that manipulate the counter
-> like __filemap_add_folio and filemap_unaccount_folio have the
-> corresponding check.
->
-> I have a test case, which reproduces the problem. It can be found here:
->   https://github.com/sroeschus/testcase/blob/main/vmstat_refresh/madv.c
->
-> The test case reproduces on an XFS filesystem. Running the same test
-> case on a BTRFS filesystem does not reproduce the problem.
->
-> AFAIK version 6.1 until 6.6 are affected by this problem.
->
-> Signed-off-by: Stefan Roesch <shr@devkernel.io>
-> Co-debugged-by: Johannes Weiner <hannes@cmpxchg.org>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: stable@vger.kernel.org
+From: Bhaumik Bhatt <bbhatt@codeaurora.org>
 
-Reviewed-by: Yang Shi <shy828301@gmail.com>
+Protect WP accesses such that multiple threads queueing buffers for
+incoming data do not race.
 
-> ---
->  mm/huge_memory.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 064fbd90822b4..874000f97bfc1 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2737,13 +2737,15 @@ int split_huge_page_to_list(struct page *page, st=
-ruct list_head *list)
->                         int nr =3D folio_nr_pages(folio);
->
->                         xas_split(&xas, folio, folio_order(folio));
-> -                       if (folio_test_swapbacked(folio)) {
-> -                               __lruvec_stat_mod_folio(folio, NR_SHMEM_T=
-HPS,
-> -                                                       -nr);
-> -                       } else {
-> -                               __lruvec_stat_mod_folio(folio, NR_FILE_TH=
-PS,
-> -                                                       -nr);
-> -                               filemap_nr_thps_dec(mapping);
-> +                       if (folio_test_pmd_mappable(folio)) {
-> +                               if (folio_test_swapbacked(folio)) {
-> +                                       __lruvec_stat_mod_folio(folio,
-> +                                                       NR_SHMEM_THPS, -n=
-r);
-> +                               } else {
-> +                                       __lruvec_stat_mod_folio(folio,
-> +                                                       NR_FILE_THPS, -nr=
-);
-> +                                       filemap_nr_thps_dec(mapping);
-> +                               }
->                         }
->                 }
->
->
-> base-commit: ffc253263a1375a65fa6c9f62a893e9767fbebfa
-> --
-> 2.39.3
->
->
+Cc: <stable@vger.kernel.org>
+Fixes: 189ff97cca53 ("bus: mhi: core: Add support for data transfer")
+Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+---
+ drivers/bus/mhi/host/main.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
+index dcf627b..6c6d253 100644
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -1204,6 +1204,9 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+ 	int eot, eob, chain, bei;
+ 	int ret;
+ 
++	/* Protect accesses for reading and incrementing WP */
++	write_lock_bh(&mhi_chan->lock);
++
+ 	buf_ring = &mhi_chan->buf_ring;
+ 	tre_ring = &mhi_chan->tre_ring;
+ 
+@@ -1221,8 +1224,10 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+ 
+ 	if (!info->pre_mapped) {
+ 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
+-		if (ret)
++		if (ret) {
++			write_unlock_bh(&mhi_chan->lock);
+ 			return ret;
++		}
+ 	}
+ 
+ 	eob = !!(flags & MHI_EOB);
+@@ -1239,6 +1244,8 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+ 	mhi_add_ring_element(mhi_cntrl, tre_ring);
+ 	mhi_add_ring_element(mhi_cntrl, buf_ring);
+ 
++	write_unlock_bh(&mhi_chan->lock);
++
+ 	return 0;
+ }
+ 
+-- 
+2.7.4
+
