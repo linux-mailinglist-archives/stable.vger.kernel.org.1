@@ -2,116 +2,180 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C36287EAF7D
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 12:48:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9E357EAF8A
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 12:56:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232085AbjKNLsj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 06:48:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44080 "EHLO
+        id S231938AbjKNL4D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 06:56:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjKNLsi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 06:48:38 -0500
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAAF1A7;
-        Tue, 14 Nov 2023 03:48:35 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3821AFF803;
-        Tue, 14 Nov 2023 11:48:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1699962514;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ecc2U8XKNAiKPYVEs6kOx9hM2XH9Tt8TCuws1240YTw=;
-        b=WTnPxPVyckP+A0BzC7eaUF/2H8p8/YNg/sg7BmqSWyd7UP8TY5OwzJRhkgq+AYfexSM5Yr
-        js51iQf9AqX1FcmCaQm8LmT5XNQVOceD75MYOjJGe9Niyqm7ppgaSdY+uUU2TkcDn13lUK
-        sS4YdHGe7f3amOLybBZ9xcsB1b7VR4KROu5tiV3cZRJjUx0xzkSIWJN491T7B1EUkf5mTP
-        fa8FQInIoiC9c6gYc5oU3ct2BF3QbQV1KnvjmKkuFUREDpzJdsM5l8DBVCqcIxnxjnE2gJ
-        XXJOkgslyXRWnb0tZJkTVVqzrke6aSLEkYgLpfmBc6fJGhAKv1p5d26CMQwI4Q==
-Date:   Tue, 14 Nov 2023 12:48:32 +0100
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        linux-kernel@vger.kernel.org,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Steen Hegelund <steen.hegelund@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        with ESMTP id S229441AbjKNL4C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 06:56:02 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273CECB
+        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 03:55:59 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-4083f61312eso45630275e9.3
+        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 03:55:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1699962957; x=1700567757; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9xzvHCmaOoa5xWGnHHS8h9I/GT+m5dxekFoJRER5f1U=;
+        b=D6kHBoSkc70xDLx1R6aB/g/pmNwkHmkStuZHHtq62QqKwwybCc4OMKXvTT5a5j/TQE
+         LdrBGwjXFn2oDGT+Ul0jTxJllMhcBBSiD2xzYiqS+EM/rI0jjGsPzF2c2jVybJqAWQUe
+         mW6UdKec87nbDJpDYBGVE92no8WkRN6Ie93Ck=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699962957; x=1700567757;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9xzvHCmaOoa5xWGnHHS8h9I/GT+m5dxekFoJRER5f1U=;
+        b=AL3V21/eROa6gJmJ0hjMvtLoA/DFtzfLouE0HrIGK9awX5vn5sJXOdlrcn8NM/s/cW
+         PKz+srSe224u47M9CDs4UuVWpPOorsApTDk0Nuwi8D++26VUbjXUQkqK/3OT22ASjFHL
+         upvbZ2M7klCG1gPDq5rdJ/lHxfk2AxZVFS2UZWlaRuiqPE+Od2CyNkpV6DmHeXYp2iVR
+         SgJ/0sMcIb0JDKa0iqVhK5z7Q/BAjRoDJFayVyd0SrHDvCiKiMdOGHBq07v3M6c+3rIZ
+         eYbwfvp8urGVkpRHe7vllHq/0C4S7ewjWDerXNViTz4U1q9asTVb7ao2htf3gLEDBmZ2
+         o+pQ==
+X-Gm-Message-State: AOJu0Ywr7bM1NY/OIbyevEQV7f619zBslsJjqk5FDq04WlIaHX5Pvyf4
+        TQUwTN7cx3sFpwL8lCoTNZ5GCA==
+X-Google-Smtp-Source: AGHT+IH+PgRwaOtjvfynXjyWiD2G62mM/SzLy4sifyw8k1h4lYi60YC60aAPWw5jIYfOD/QuabTbbw==
+X-Received: by 2002:a05:600c:154c:b0:405:359e:ee43 with SMTP id f12-20020a05600c154c00b00405359eee43mr7680717wmg.1.1699962957545;
+        Tue, 14 Nov 2023 03:55:57 -0800 (PST)
+Received: from orzel1.c.googlers.com.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
+        by smtp.gmail.com with ESMTPSA id v18-20020a05600c4d9200b004068495910csm16612748wmp.23.2023.11.14.03.55.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 Nov 2023 03:55:57 -0800 (PST)
+From:   =?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Sven van Ashbrook <svenva@google.com>,
+        Jason Lai <jasonlai.genesyslogic@gmail.com>
+Cc:     Victor Shih <victor.shih@genesyslogic.com.tw>,
+        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+        =?UTF-8?q?Stanis=C5=82aw=20Kardach?= <skardach@google.com>,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        =?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
         stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] lib/vsprintf: Fix %pfwf when current node refcount
- == 0
-Message-ID: <20231114124832.40d4ced4@bootlin.com>
-In-Reply-To: <ZVNZ63HdoRKT4IQ9@kekkonen.localdomain>
-References: <20231114110456.273844-1-herve.codina@bootlin.com>
-        <ZVNZ63HdoRKT4IQ9@kekkonen.localdomain>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+Subject: [PATCH v2] mmc: sdhci-pci-gli: Disable LPM during initialization
+Date:   Tue, 14 Nov 2023 11:54:49 +0000
+Message-ID: <20231114115516.1585361-1-korneld@chromium.org>
+X-Mailer: git-send-email 2.43.0.rc0.421.g78406f8d94-goog
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Sakari,
+To address IO performance commit f9e5b33934ce
+("mmc: host: Improve I/O read/write performance for GL9763E")
+limited LPM negotiation to runtime suspend state.
+The problem is that it only flips the switch in the runtime PM
+resume/suspend logic.
 
-On Tue, 14 Nov 2023 11:28:43 +0000
-Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+Disable LPM negotiation in gl9763e_add_host.
+This helps in two ways:
+1. It was found that the LPM switch stays in the same position after
+   warm reboot. Having it set in init helps with consistency.
+2. Disabling LPM during the first runtime resume leaves us susceptible
+   to the performance issue in the time window between boot and the
+   first runtime suspend.
 
-> > --- a/lib/vsprintf.c
-> > +++ b/lib/vsprintf.c
-> > @@ -2108,8 +2108,8 @@ char *fwnode_full_name_string(struct fwnode_handle *fwnode, char *buf,
-> >  {
-> >  	int depth;
-> >  
-> > -	/* Loop starting from the root node to the current node. */
-> > -	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
-> > +	/* Loop starting from the root node to the parent of current node. */
-> > +	for (depth = fwnode_count_parents(fwnode); depth > 0; depth--) {
-> >  		struct fwnode_handle *__fwnode =
-> >  			fwnode_get_nth_parent(fwnode, depth);  
-> 
-> How about, without changing the loop:
-> 
-> 		/*
-> 		 * Only get a reference for other nodes, fwnode refcount
-> 		 * may be 0 here.
-> 		 */
-> 		struct fwnode_handle *__fwnode =
-> 			depth ? fwnode_get_nth_parent(fwnode, depth) : fwnode;
-> 
-> >  
-> > @@ -2121,6 +2121,16 @@ char *fwnode_full_name_string(struct fwnode_handle *fwnode, char *buf,
-> >  		fwnode_handle_put(__fwnode);  
-> 
-> And:
-> 
-> 		if (__fwnode != fwnode)
-> 			fwnode_handle_put(__fwnode);
-> 
+Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kornel Dulęba <korneld@chromium.org>
+---
+v2: Move up gl9763e_set_low_power_negotiation to avoid having to forward
+    declare it.
 
-Sure.
-I will just change to keep the both tests consistent.
-I mean test with depth or test with __fwnode != fwnode but avoid
-mixing them.
+ drivers/mmc/host/sdhci-pci-gli.c | 54 +++++++++++++++++---------------
+ 1 file changed, 29 insertions(+), 25 deletions(-)
 
-What do you think about testing using depth in all cases and so:
-	if (depth)
-		fwnode_handle_put(__fwnode);
-
-Best regards,
-Hervé
+diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+index d8a991b349a8..77911a57b12c 100644
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -1189,6 +1189,32 @@ static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
+ 	sdhci_writel(host, val, SDHCI_GLI_9763E_HS400_ES_REG);
+ }
+ 
++static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot,
++					      bool enable)
++{
++	struct pci_dev *pdev = slot->chip->pdev;
++	u32 value;
++
++	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
++	value &= ~GLI_9763E_VHS_REV;
++	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_W);
++	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
++
++	pci_read_config_dword(pdev, PCIE_GLI_9763E_CFG, &value);
++
++	if (enable)
++		value &= ~GLI_9763E_CFG_LPSN_DIS;
++	else
++		value |= GLI_9763E_CFG_LPSN_DIS;
++
++	pci_write_config_dword(pdev, PCIE_GLI_9763E_CFG, value);
++
++	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
++	value &= ~GLI_9763E_VHS_REV;
++	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
++	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
++}
++
+ static void sdhci_set_gl9763e_signaling(struct sdhci_host *host,
+ 					unsigned int timing)
+ {
+@@ -1297,6 +1323,9 @@ static int gl9763e_add_host(struct sdhci_pci_slot *slot)
+ 	if (ret)
+ 		goto cleanup;
+ 
++	/* Disable LPM negotiation to avoid entering L1 state. */
++	gl9763e_set_low_power_negotiation(slot, false);
++
+ 	return 0;
+ 
+ cleanup:
+@@ -1340,31 +1369,6 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
+ }
+ 
+ #ifdef CONFIG_PM
+-static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
+-{
+-	struct pci_dev *pdev = slot->chip->pdev;
+-	u32 value;
+-
+-	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
+-	value &= ~GLI_9763E_VHS_REV;
+-	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_W);
+-	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+-
+-	pci_read_config_dword(pdev, PCIE_GLI_9763E_CFG, &value);
+-
+-	if (enable)
+-		value &= ~GLI_9763E_CFG_LPSN_DIS;
+-	else
+-		value |= GLI_9763E_CFG_LPSN_DIS;
+-
+-	pci_write_config_dword(pdev, PCIE_GLI_9763E_CFG, value);
+-
+-	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
+-	value &= ~GLI_9763E_VHS_REV;
+-	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
+-	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+-}
+-
+ static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
+ {
+ 	struct sdhci_pci_slot *slot = chip->slots[0];
+-- 
+2.43.0.rc0.421.g78406f8d94-goog
 
