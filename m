@@ -2,167 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A547EB626
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 19:09:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC21C7EB68E
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 19:43:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233821AbjKNSJy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 13:09:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48680 "EHLO
+        id S233896AbjKNSnn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 13:43:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229607AbjKNSJx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 13:09:53 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 291C912F
-        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 10:09:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1699985389;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=7C7wW8Bb55AP5fqpBh20EWuPiJ+kxnmpZ3Q7RhkSlhM=;
-        b=aRpOE9BokjZKAr0bGVvJJCr6m3dcod1iyEH8PVFa9opQrN17itDHKDm+tV+L6IuHnsYQH1
-        AfPS7dSO7omu/VtwVieL9rIInX13sNppIazWmfMP0o9cmolB29a7v2wDtzgYf1dQqU3GXV
-        hKh/cUh0/2mjJf0h4Q1gGQYZHwk2dww=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-445-T8tSi6ICMZOVyh5RPLgJ9Q-1; Tue, 14 Nov 2023 13:09:48 -0500
-X-MC-Unique: T8tSi6ICMZOVyh5RPLgJ9Q-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-32d9602824dso2753724f8f.2
-        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 10:09:47 -0800 (PST)
+        with ESMTP id S229770AbjKNSnn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 13:43:43 -0500
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2082ECC;
+        Tue, 14 Nov 2023 10:43:40 -0800 (PST)
+Received: by mail-oi1-x22e.google.com with SMTP id 5614622812f47-3b6c31e604cso3600393b6e.2;
+        Tue, 14 Nov 2023 10:43:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699987419; x=1700592219; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=iad1M7sTlxmoH5/Gz+DQ7dI9dCA8jhAGqNXduqEs6bo=;
+        b=Qgd4PSIAU6ZL/6b7ELPOhZ8QxtHywJnhZe0b8NpNrxH5K4Lxv/zx6z5whEoUipPGmv
+         kpmweA1T6DPnvnjmC13iz1FULNZhfBSMf54vj/vhGwubz4bdgOd/BXuiwe6am3IdoOrn
+         Tnvn7wVjcRReZ7WZy/7cXMA87Z0thnCxWvMmYitW9dutvupZIBDJ9NMQMlAVySaZBpNb
+         +roKSWPbe8fCwOA/vUCaFsvOUqv0AdxIrd71J36DKayRPPcg5BQe5DTv5/yISXPGoDsF
+         qCCWbKGEa5fxe4M3VRj7l3rBYlt0Ihlf3SSTkyNElVL8titV65+NgTOCe/fmylI4bbRB
+         KRLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699985386; x=1700590186;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7C7wW8Bb55AP5fqpBh20EWuPiJ+kxnmpZ3Q7RhkSlhM=;
-        b=HZ+T5PzjLQWww9nuSxy7Ay5qt7e8YpIL+cLU8SAttNBFtn3i/Rj/U3yWFg5WXy+Ns3
-         3rBjjkfl3FfzS1sTZ8TqVKvPbdLcXZ6wjwArHbLecPJIpMGAt95sXnjMm7JQIYnkc03E
-         QoenI7+9PK5dYc9pkb6kuXaKLVx10a5jAKK+RlkFx1Lc9TGZtrWUmakrriuo8rzDVuIi
-         5tbDvkKN6gI0PjpjDoELTVWCmqvBRAOzdlbUXi727/fmPN+Qiz49YIZQ96joCXAnSznk
-         B3tFwJ6TWRpWtGvZ8rHuwkFgZjXTmTtzjVjYsTdY2+C9FwCNpqi2ePG+d1iDbQOC8rvB
-         hovw==
-X-Gm-Message-State: AOJu0YxoorcrA+rfJVqffWFqi6ZF+n6FVrGD05oXDJbLk9Py4//0f5tE
-        FUk9gUxMp18d2sk5Z2pMbgdI7xGCpIWueGVt1PAIRUtSisrPxe04aRs8D520ahQCzplcMn5mbBq
-        Hq4rFaLpOvcQ1af1Iw6f8BNlc
-X-Received: by 2002:a05:6000:1567:b0:319:867e:97d7 with SMTP id 7-20020a056000156700b00319867e97d7mr9247562wrz.52.1699985386715;
-        Tue, 14 Nov 2023 10:09:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGQK+7LGbBm9NWV35d1R+NImBNQNggBVsNQ2twsZUsBZR8uiQcCCjKalWkzse4WmlZcEOZ58Q==
-X-Received: by 2002:a05:6000:1567:b0:319:867e:97d7 with SMTP id 7-20020a056000156700b00319867e97d7mr9247549wrz.52.1699985386363;
-        Tue, 14 Nov 2023 10:09:46 -0800 (PST)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id n7-20020a5d4847000000b0032d88e370basm8419537wrs.34.2023.11.14.10.09.46
+        d=1e100.net; s=20230601; t=1699987419; x=1700592219;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iad1M7sTlxmoH5/Gz+DQ7dI9dCA8jhAGqNXduqEs6bo=;
+        b=fdRFVbFn/A7vcBTB7DXJN9goOOSObSF6Jn26xwlvtgGyk1i04cv+SEeyeyE9qQE7L5
+         Sk+83agVGyYei7+JwFFOyfb6gUdNGIcKTdJvmAoxb71T5aAXzVdyngPQUPKkBQ2MQfRw
+         xYVyd7+EbJzekRPEsc+4pJ1ybNSncFurx3dFb47svUfZOxEG4MgLgqFx+oF8WUOmOYJK
+         FMMtvZeuM2zfwk+Muo4K1DvDqt+hnhNVwof4Ti48e7/MhRoKK7ldkvsurL8TMvFXs/Yk
+         negehR54GFVYtqBUwgaqVWGyV/RvzMcujEsW67iDE7AE3HVKwQP8cxrzdKxCzV54sPn8
+         Bmsg==
+X-Gm-Message-State: AOJu0Yx9vS60JEH7STlAoQ+AJO273YAJXYgqM41R5PMkm4LqYAJ5/9ZN
+        9rTusgTQQyKGJXnbHZQiwo4=
+X-Google-Smtp-Source: AGHT+IH98vlzW4/W9fI0+WeMmjyz/fdNutPArPXFhZ5iM81GrHnw6IYD0fyPYRqcN6w9w9NBy4yOGg==
+X-Received: by 2002:a05:6870:3d99:b0:1e9:8780:a0e with SMTP id lm25-20020a0568703d9900b001e987800a0emr14899288oab.28.1699987419384;
+        Tue, 14 Nov 2023 10:43:39 -0800 (PST)
+Received: from neuromancer. ([75.28.21.198])
+        by smtp.gmail.com with ESMTPSA id ec21-20020a0568708c1500b001e5ad4b2f65sm1470312oab.19.2023.11.14.10.43.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Nov 2023 10:09:46 -0800 (PST)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        linux-kernel@vger.kernel.org
-Cc:     nerdopolis <bluescreen_avenger@verizon.net>,
-        Pekka Paalanen <pekka.paalanen@collabora.com>,
-        dri-devel@lists.freedesktop.org,
-        Sima Vetter <daniel.vetter@ffwll.ch>,
-        Bilal Elmoussaoui <belmouss@redhat.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Gerd Hoffmann <kraxel@redhat.com>, stable@vger.kernel.org,
-        Erico Nunes <nunes.erico@gmail.com>
-Subject: Re: [PATCH 2/6] drm: Add
- drm_atomic_helper_buffer_damage_{iter_init,merged}() helpers
-In-Reply-To: <a8731f9f-3652-4efd-b40e-06a792d0fccf@suse.de>
-References: <20231109172449.1599262-1-javierm@redhat.com>
- <20231109172449.1599262-3-javierm@redhat.com>
- <c4fdfec8-aa9a-4a09-94c4-114595cf5596@suse.de>
- <8734x872dy.fsf@minerva.mail-host-address-is-not-set>
- <a8731f9f-3652-4efd-b40e-06a792d0fccf@suse.de>
-Date:   Tue, 14 Nov 2023 19:09:45 +0100
-Message-ID: <87r0ks5hqu.fsf@minerva.mail-host-address-is-not-set>
+        Tue, 14 Nov 2023 10:43:38 -0800 (PST)
+Message-ID: <6553bfda.050a0220.b2675.7cce@mx.google.com>
+X-Google-Original-Message-ID: <ZVO/2ZR/bzbmbiVv@neuromancer.>
+Date:   Tue, 14 Nov 2023 12:43:37 -0600
+From:   Chris Morgan <macroalpha82@gmail.com>
+To:     Benjamin Bara <bbara93@gmail.com>
+Cc:     benjamin.bara@skidata.com, dmitry.osipenko@collabora.com,
+        heiko@sntech.de, jonathanh@nvidia.com, lee@kernel.org,
+        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-tegra@vger.kernel.org, max.schwarz@online.de, nm@ti.com,
+        peterz@infradead.org, rafael.j.wysocki@intel.com,
+        richard.leitner@linux.dev, stable@vger.kernel.org,
+        treding@nvidia.com, wsa+renesas@sang-engineering.com,
+        wsa@kernel.org
+Subject: Re: [PATCH v7 2/5] i2c: core: run atomic i2c xfer when !preemptible
+References: <655238b2.050a0220.209e.4ad5@mx.google.com>
+ <20231113154826.2856145-1-bbara93@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231113154826.2856145-1-bbara93@gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+On Mon, Nov 13, 2023 at 04:48:26PM +0100, Benjamin Bara wrote:
+> Hi!
+> 
+> Thanks for testing and the feedback!
+> 
+> On Mon, 13 Nov 2023 at 15:54, Chris Morgan <macroalpha82@gmail.com> wrote:
+> > I can confirm I no longer get any of the errors with this patch. Tested
+> > on both an Anbernic RG353P (RK3566 with an RK817 PMIC) and an Odroid
+> > Go Advance (RK3326 with an RK817 PMIC). The device appears to shut
+> > down consistently again and I no longer see these messages in my dmesg
+> > log when I shut down.
+> 
+> Just to make sure: Are you compiling with CONFIG_PREEMPTION (and
+> therefore CONFIG_PREEMPT_COUNT)?
+> 
+> If yes, could you please also test the following patch? Because I am not
+> sure yet how polling can be false in a "polling required" situation,
+> meaning .master_xfer() is called instead of .master_xfer_atomic() (while
+> your test shows that irq_disabled() is true, which is basically done
+> with !preemptible()). The patch should test the other way round: if the
+> situation is found, force an atomic transfer instead.
+> 
+> Thank you!
+> 
+> diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
+> index a044ca0c35a1..6e3e8433018f 100644
+> --- a/drivers/i2c/busses/i2c-rk3x.c
+> +++ b/drivers/i2c/busses/i2c-rk3x.c
+> @@ -1131,6 +1131,10 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
+>  static int rk3x_i2c_xfer(struct i2c_adapter *adap,
+>                          struct i2c_msg *msgs, int num)
+>  {
+> +       if (irqs_disabled()) {
+> +               WARN_ONCE(1, "Landed in non-atomic handler with disabled IRQs");
+> +               return rk3x_i2c_xfer_common(adap, msgs, num, true);
+> +       }
+>         return rk3x_i2c_xfer_common(adap, msgs, num, false);
+>  }
+> 
 
-> Hi
->
-> Am 14.11.23 um 16:58 schrieb Javier Martinez Canillas:
->> Thomas Zimmermann <tzimmermann@suse.de> writes:
->> 
->> Hello Thomas,
->> 
->> Thanks a lot for your feedback.
->> 
->>> Hi
->>>
->>> Am 09.11.23 um 18:24 schrieb Javier Martinez Canillas:
->>>> To be used by drivers that do per-buffer (e.g: virtio-gpu) uploads (rather
->>>> than per-plane uploads), since these type of drivers need to handle buffer
->>>> damages instead of frame damages.
->>>>
->>>> The drm_atomic_helper_buffer_damage_iter_init() has the same logic than
->>>> drm_atomic_helper_damage_iter_init() but it also takes into account if the
->>>> framebuffer attached to plane's state has changed since the last update.
->>>>
->>>> And the drm_atomic_helper_buffer_damage_merged() is just a version of the
->>>> drm_atomic_helper_damage_merged() helper, but it uses the iter_init helper
->>>> that is mentioned above.
->>>>
->>>> Fixes: 01f05940a9a7 ("drm/virtio: Enable fb damage clips property for the primary plane")
->>>> Cc: <stable@vger.kernel.org> # v6.4+
->>>> Reported-by: nerdopolis <bluescreen_avenger@verizon.net>
->>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218115
->>>> Suggested-by: Sima Vetter <daniel.vetter@ffwll.ch>
->>>> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
->>>> ---
->>>>
->>>>    drivers/gpu/drm/drm_damage_helper.c | 79 ++++++++++++++++++++++++++---
->>>>    include/drm/drm_damage_helper.h     |  7 +++
->>>>    2 files changed, 80 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/drivers/gpu/drm/drm_damage_helper.c b/drivers/gpu/drm/drm_damage_helper.c
->>>> index aa2325567918..b72062c9d31c 100644
->>>> --- a/drivers/gpu/drm/drm_damage_helper.c
->>>> +++ b/drivers/gpu/drm/drm_damage_helper.c
->>>> @@ -204,7 +204,8 @@ EXPORT_SYMBOL(drm_atomic_helper_dirtyfb);
->>>>    static void
->>>>    __drm_atomic_helper_damage_iter_init(struct drm_atomic_helper_damage_iter *iter,
->>>>    				     const struct drm_plane_state *old_state,
->>>> -				     const struct drm_plane_state *state)
->>>> +				     const struct drm_plane_state *state,
->>>> +				     bool buffer_damage)
->>>
->>> I think it would be preferable to drop patches one and two and instead
->>> add this parameter directly to drm_atomic_helper_damage_iter_init() and
->>> drm_atomic_helper_damage_merged().  That's a bit of churn, but more
->>> readable code.
->>>
->> 
->> Makes sense. I'll do that in v2.
->
-> Instead of modifying these function interfaces, it might be even better 
-> to introduce a state flag in struct drm_plane_state that you can modify 
-> in the plane's atomic_check helper. Something simple like this:
->
->    if (old_fb != new_fb)
->      plane_state->ignore_damage_clips = true;
->
-> in the affected drivers/planes. In drm_atomic_helper_damage_iter_init() 
-> you can use it to generate a full update. This avoids the churn and is 
-> in line with the overall check/commit design of the DRM framework.
->
+I have CONFIG_PREEMPT_VOLUNTARY=y but CONFIG_PREEMPTION is not set.
 
-Thanks. That indeed seems more aligned with the rest of the DRM framework.
-
--- 
-Best regards,
-
-Javier Martinez Canillas
-Core Platforms
-Red Hat
-
+Thank you.
