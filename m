@@ -2,137 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 239F07EAE49
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 11:47:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A7017EAE91
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 12:05:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229694AbjKNKrJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 05:47:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55714 "EHLO
+        id S232808AbjKNLFH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 06:05:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjKNKrI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 05:47:08 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37BB0186;
-        Tue, 14 Nov 2023 02:47:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699958825; x=1731494825;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=F6ST2CZU5lQlX8QXKrdKxRtSIOrwexjLiZAG8hQ68iU=;
-  b=DP1IfjzyurPMSYjBahoYKKChAY2fveY1xgHryjDWX++X7zqrp1AyXERu
-   MEs16AU8JW0HXqogKh7pzpkyQxdQxkIkSfKmiNpnP/VQHhTUjzJsZcT/S
-   AFobzaOZwO3PwxTVwm3uYvDQCrkvEhAFTFMAOPjcQObCF0M2BhGbFqtmZ
-   fzezU5Ixu6mGyCB2JUSk6wahfKvC5H9lXm6UlT0B0wuVPXORaFwHE3gzw
-   vAcLhgJuH4PMLmH6wLTwqbJXx+VH+xAlvGZu9Lwg+cOPlMnjy6ADzDwTy
-   LOWjUbeeGhaAoPVBcySmjLCyY73Uda4znbMKnz6K8ANTE2KvOiUkbac/0
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="457125448"
-X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; 
-   d="scan'208";a="457125448"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 02:47:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; 
-   d="scan'208";a="12398950"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.39.179])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 02:47:02 -0800
-Message-ID: <fc758174-e286-48f7-bec9-64e4f22bce2f@intel.com>
-Date:   Tue, 14 Nov 2023 12:46:57 +0200
+        with ESMTP id S230434AbjKNLFG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 06:05:06 -0500
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11BA1D9;
+        Tue, 14 Nov 2023 03:05:01 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 77B05FF806;
+        Tue, 14 Nov 2023 11:04:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1699959900;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Kd3NZ8a4zLSdrVW2pyTXkblkfiqMqtu4eWyUiU4OKDc=;
+        b=WNF3rj0KHC0t0bMTi+avu+bqHhgub6Djlh3UWFLgEmH1Vzcw3MPp1WraG3RvCxBJqHq995
+        +mV7YRfvrh8R+GDj2+VW/MIa4OOPC5lfdNPWr9RHpkSwvMtbdYGby25fHikv667bMzvroU
+        6RgFCVJAxmmk5i61mJ48++aeEobralqjLN6s3/33Bxi0Iyr510/UJnbJKQomk7+AbGwt1E
+        jc9QTCGkJVygVTgFD/zGHm2qe1eFlG9FzFmXsPXjLLPQ4FqF4cSnAU6NFHi+PNHH9W+ZKu
+        vdfEQn1vGTbC1IeHtqay8i12kigbz5zlGQGwoj8Avho46ltDS4+KKld9wGlZXw==
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Saravana Kannan <saravanak@google.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Steen Hegelund <steen.hegelund@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Herve Codina <herve.codina@bootlin.com>, stable@vger.kernel.org
+Subject: [PATCH 1/1] lib/vsprintf: Fix %pfwf when current node refcount == 0
+Date:   Tue, 14 Nov 2023 12:04:56 +0100
+Message-ID: <20231114110456.273844-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mmc: sdhci-pci-gli: Disable LPM during initialization
-Content-Language: en-US
-To:     =?UTF-8?Q?Kornel_Dul=C4=99ba?= <korneld@chromium.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sven van Ashbrook <svenva@google.com>,
-        Jason Lai <jasonlai.genesyslogic@gmail.com>
-Cc:     Victor Shih <victor.shih@genesyslogic.com.tw>,
-        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        =?UTF-8?Q?Stanis=C5=82aw_Kardach?= <skardach@google.com>,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20231109111934.4172565-1-korneld@chromium.org>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <20231109111934.4172565-1-korneld@chromium.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-GND-Sasl: herve.codina@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/11/23 13:19, Kornel Dulęba wrote:
-> To address IO performance commit f9e5b33934ce
-> ("mmc: host: Improve I/O read/write performance for GL9763E")
-> limited LPM negotiation to runtime suspend state.
-> The problem is that it only flips the switch in the runtime PM
-> resume/suspend logic.
-> 
-> Disable LPM negotiation in gl9763e_add_host.
-> This helps in two ways:
-> 1. It was found that the LPM switch stays in the same position after
->    warm reboot. Having it set in init helps with consistency.
-> 2. Disabling LPM during the first runtime resume leaves us susceptible
->    to the performance issue in the time window between boot and the
->    first runtime suspend.
-> 
-> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kornel Dulęba <korneld@chromium.org>
-> ---
->  drivers/mmc/host/sdhci-pci-gli.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-> index d83261e857a5..ce91d1e63a8e 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -220,6 +220,9 @@
->  
->  #define GLI_MAX_TUNING_LOOP 40
->  
-> +static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot,
-> +					      bool enable);
+A refcount issue can appeared in __fwnode_link_del() due to the
+pr_debug() call:
+  WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+  Call Trace:
+  <TASK>
+  ? refcount_warn_saturate+0xe5/0x110
+  ? __warn+0x81/0x130
+  ? refcount_warn_saturate+0xe5/0x110
+  ? report_bug+0x191/0x1c0
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? prb_read_valid+0x1b/0x30
+  ? handle_bug+0x3c/0x80
+  ? exc_invalid_op+0x17/0x70
+  ? asm_exc_invalid_op+0x1a/0x20
+  ? refcount_warn_saturate+0xe5/0x110
+  kobject_get+0x68/0x70
+  of_node_get+0x1e/0x30
+  of_fwnode_get+0x28/0x40
+  fwnode_full_name_string+0x34/0x90
+  fwnode_string+0xdb/0x140
+  vsnprintf+0x17b/0x630
+  va_format.isra.0+0x71/0x130
+  vsnprintf+0x17b/0x630
+  vprintk_store+0x162/0x4d0
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? srso_alias_return_thunk+0x5/0x7f
+  ? try_to_wake_up+0x9c/0x620
+  ? rwsem_mark_wake+0x1b2/0x310
+  vprintk_emit+0xe4/0x2b0
+  _printk+0x5c/0x80
+  __dynamic_pr_debug+0x131/0x160
+  ? srso_alias_return_thunk+0x5/0x7f
+  __fwnode_link_del+0x25/0xa0
+  fwnode_links_purge+0x39/0xb0
+  of_node_release+0xd9/0x180
+  kobject_put+0x7b/0x190
+  ...
 
-Kernel-style is to move the whole function to prevent the need
-for forward declaration.
+Indeed, an fwnode (of_node) is being destroyed and so, of_node_release()
+is called because the of_node refcount reached 0.
+From of_node_release() several function calls are done and lead to
+a pr_debug() calls with %pfwf to print the fwnode full name.
+The issue is not present if we change %pfwf to %pfwP.
 
-> +
->  /* Genesys Logic chipset */
->  static inline void gl9750_wt_on(struct sdhci_host *host)
->  {
-> @@ -1281,6 +1284,9 @@ static int gl9763e_add_host(struct sdhci_pci_slot *slot)
->  	if (ret)
->  		goto cleanup;
->  
-> +	/* Disable LPM negotiation to avoid entering L1 state. */
-> +	gl9763e_set_low_power_negotiation(slot, false);
-> +
->  	return 0;
->  
->  cleanup:
-> @@ -1323,7 +1329,6 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
->  	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
->  }
->  
-> -#ifdef CONFIG_PM
->  static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
->  {
->  	struct pci_dev *pdev = slot->chip->pdev;
-> @@ -1349,6 +1354,7 @@ static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool
->  	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
->  }
->  
-> +#ifdef CONFIG_PM
->  static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
->  {
->  	struct sdhci_pci_slot *slot = chip->slots[0];
+To print the full name, %pfwf iterates over the current node and its
+parents and obtain/drop a reference to all nodes involved.
+
+In order to allow to print the full name (%pfwf) of a node while it is
+being destroyed, do not obtain/drop a reference to this current node.
+
+Fixes: a92eb7621b9f ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ lib/vsprintf.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index afb88b24fa74..74ef229c2783 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -2108,8 +2108,8 @@ char *fwnode_full_name_string(struct fwnode_handle *fwnode, char *buf,
+ {
+ 	int depth;
+ 
+-	/* Loop starting from the root node to the current node. */
+-	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
++	/* Loop starting from the root node to the parent of current node. */
++	for (depth = fwnode_count_parents(fwnode); depth > 0; depth--) {
+ 		struct fwnode_handle *__fwnode =
+ 			fwnode_get_nth_parent(fwnode, depth);
+ 
+@@ -2121,6 +2121,16 @@ char *fwnode_full_name_string(struct fwnode_handle *fwnode, char *buf,
+ 		fwnode_handle_put(__fwnode);
+ 	}
+ 
++	/* Handle current node without calling fwnode_handle_{get,put}().
++	 * This allows to print the full node name while the current node is
++	 * being destroyed (ie print from a function called because of
++	 * refcount == 0) without any refcount issues.
++	 */
++	buf = string(buf, end, fwnode_get_name_prefix(fwnode),
++		     default_str_spec);
++	buf = string(buf, end, fwnode_get_name(fwnode),
++		     default_str_spec);
++
+ 	return buf;
+ }
+ 
+-- 
+2.41.0
 
