@@ -2,122 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC21C7EB68E
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 19:43:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FCA97EB902
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 22:57:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233896AbjKNSnn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 13:43:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35562 "EHLO
+        id S234115AbjKNV5T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 16:57:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjKNSnn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 13:43:43 -0500
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2082ECC;
-        Tue, 14 Nov 2023 10:43:40 -0800 (PST)
-Received: by mail-oi1-x22e.google.com with SMTP id 5614622812f47-3b6c31e604cso3600393b6e.2;
-        Tue, 14 Nov 2023 10:43:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699987419; x=1700592219; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=iad1M7sTlxmoH5/Gz+DQ7dI9dCA8jhAGqNXduqEs6bo=;
-        b=Qgd4PSIAU6ZL/6b7ELPOhZ8QxtHywJnhZe0b8NpNrxH5K4Lxv/zx6z5whEoUipPGmv
-         kpmweA1T6DPnvnjmC13iz1FULNZhfBSMf54vj/vhGwubz4bdgOd/BXuiwe6am3IdoOrn
-         Tnvn7wVjcRReZ7WZy/7cXMA87Z0thnCxWvMmYitW9dutvupZIBDJ9NMQMlAVySaZBpNb
-         +roKSWPbe8fCwOA/vUCaFsvOUqv0AdxIrd71J36DKayRPPcg5BQe5DTv5/yISXPGoDsF
-         qCCWbKGEa5fxe4M3VRj7l3rBYlt0Ihlf3SSTkyNElVL8titV65+NgTOCe/fmylI4bbRB
-         KRLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699987419; x=1700592219;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iad1M7sTlxmoH5/Gz+DQ7dI9dCA8jhAGqNXduqEs6bo=;
-        b=fdRFVbFn/A7vcBTB7DXJN9goOOSObSF6Jn26xwlvtgGyk1i04cv+SEeyeyE9qQE7L5
-         Sk+83agVGyYei7+JwFFOyfb6gUdNGIcKTdJvmAoxb71T5aAXzVdyngPQUPKkBQ2MQfRw
-         xYVyd7+EbJzekRPEsc+4pJ1ybNSncFurx3dFb47svUfZOxEG4MgLgqFx+oF8WUOmOYJK
-         FMMtvZeuM2zfwk+Muo4K1DvDqt+hnhNVwof4Ti48e7/MhRoKK7ldkvsurL8TMvFXs/Yk
-         negehR54GFVYtqBUwgaqVWGyV/RvzMcujEsW67iDE7AE3HVKwQP8cxrzdKxCzV54sPn8
-         Bmsg==
-X-Gm-Message-State: AOJu0Yx9vS60JEH7STlAoQ+AJO273YAJXYgqM41R5PMkm4LqYAJ5/9ZN
-        9rTusgTQQyKGJXnbHZQiwo4=
-X-Google-Smtp-Source: AGHT+IH98vlzW4/W9fI0+WeMmjyz/fdNutPArPXFhZ5iM81GrHnw6IYD0fyPYRqcN6w9w9NBy4yOGg==
-X-Received: by 2002:a05:6870:3d99:b0:1e9:8780:a0e with SMTP id lm25-20020a0568703d9900b001e987800a0emr14899288oab.28.1699987419384;
-        Tue, 14 Nov 2023 10:43:39 -0800 (PST)
-Received: from neuromancer. ([75.28.21.198])
-        by smtp.gmail.com with ESMTPSA id ec21-20020a0568708c1500b001e5ad4b2f65sm1470312oab.19.2023.11.14.10.43.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Nov 2023 10:43:38 -0800 (PST)
-Message-ID: <6553bfda.050a0220.b2675.7cce@mx.google.com>
-X-Google-Original-Message-ID: <ZVO/2ZR/bzbmbiVv@neuromancer.>
-Date:   Tue, 14 Nov 2023 12:43:37 -0600
-From:   Chris Morgan <macroalpha82@gmail.com>
-To:     Benjamin Bara <bbara93@gmail.com>
-Cc:     benjamin.bara@skidata.com, dmitry.osipenko@collabora.com,
-        heiko@sntech.de, jonathanh@nvidia.com, lee@kernel.org,
-        linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-tegra@vger.kernel.org, max.schwarz@online.de, nm@ti.com,
-        peterz@infradead.org, rafael.j.wysocki@intel.com,
-        richard.leitner@linux.dev, stable@vger.kernel.org,
-        treding@nvidia.com, wsa+renesas@sang-engineering.com,
-        wsa@kernel.org
-Subject: Re: [PATCH v7 2/5] i2c: core: run atomic i2c xfer when !preemptible
-References: <655238b2.050a0220.209e.4ad5@mx.google.com>
- <20231113154826.2856145-1-bbara93@gmail.com>
+        with ESMTP id S233920AbjKNV5S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 16:57:18 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B93E3;
+        Tue, 14 Nov 2023 13:57:14 -0800 (PST)
+Date:   Tue, 14 Nov 2023 21:57:12 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1699999033;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZyNm6zjsHnLhgpddgvEBkRYkAW72R/W124on/N7HXhQ=;
+        b=RXqACAOycE+0B7DF0wNmMg1GIBxrOKNSMruSmAtkxpoiLhimNsrHVBqMwQ4GKqL98nCfYu
+        ZYaf2QxRi5EF7nhZwWfKIwJhASh2pTL328aqQXCzS8Q86Dd0lQd/vQuRqv3tqE+KOQssO7
+        oZed/4x6E11Jf6tSef2htk27w07W9prVy5hZnfoG3loHIV+7xuYOdxxPiy3SWr3OYMn03v
+        u04z9z8kHnaKtbrV1FiXrVY9ejQDdWrhrV/o9ypUL3LJshFNbnI4IcWrezKHieCt0upRTy
+        yyKqx0wvmZhjO+qwJk0PemSO2DLPKLtPOB5XwDLEAmgBiVWZnm5w0EHxc+Kjlg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1699999033;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZyNm6zjsHnLhgpddgvEBkRYkAW72R/W124on/N7HXhQ=;
+        b=2A+xYwJBgsmiTPqhY0xQDQLlo59Vo7phk2vpAAyUlTIWmriAAoikwD+lOcSvARC+RB6/Gu
+        RW7nCU7NM5w+k0DQ==
+From:   "tip-bot2 for Johannes Weiner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/urgent] sched: psi: fix unprivileged polling against cgroups
+Cc:     Luca Boccassi <bluca@debian.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org,
+        #@tip-bot2.tec.linutronix.de, 6.5+@tip-bot2.tec.linutronix.de,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231026164114.2488682-1-hannes@cmpxchg.org>
+References: <20231026164114.2488682-1-hannes@cmpxchg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231113154826.2856145-1-bbara93@gmail.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <169999903275.391.5317186908629148143.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 13, 2023 at 04:48:26PM +0100, Benjamin Bara wrote:
-> Hi!
-> 
-> Thanks for testing and the feedback!
-> 
-> On Mon, 13 Nov 2023 at 15:54, Chris Morgan <macroalpha82@gmail.com> wrote:
-> > I can confirm I no longer get any of the errors with this patch. Tested
-> > on both an Anbernic RG353P (RK3566 with an RK817 PMIC) and an Odroid
-> > Go Advance (RK3326 with an RK817 PMIC). The device appears to shut
-> > down consistently again and I no longer see these messages in my dmesg
-> > log when I shut down.
-> 
-> Just to make sure: Are you compiling with CONFIG_PREEMPTION (and
-> therefore CONFIG_PREEMPT_COUNT)?
-> 
-> If yes, could you please also test the following patch? Because I am not
-> sure yet how polling can be false in a "polling required" situation,
-> meaning .master_xfer() is called instead of .master_xfer_atomic() (while
-> your test shows that irq_disabled() is true, which is basically done
-> with !preemptible()). The patch should test the other way round: if the
-> situation is found, force an atomic transfer instead.
-> 
-> Thank you!
-> 
-> diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
-> index a044ca0c35a1..6e3e8433018f 100644
-> --- a/drivers/i2c/busses/i2c-rk3x.c
-> +++ b/drivers/i2c/busses/i2c-rk3x.c
-> @@ -1131,6 +1131,10 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
->  static int rk3x_i2c_xfer(struct i2c_adapter *adap,
->                          struct i2c_msg *msgs, int num)
->  {
-> +       if (irqs_disabled()) {
-> +               WARN_ONCE(1, "Landed in non-atomic handler with disabled IRQs");
-> +               return rk3x_i2c_xfer_common(adap, msgs, num, true);
-> +       }
->         return rk3x_i2c_xfer_common(adap, msgs, num, false);
->  }
-> 
+The following commit has been merged into the sched/urgent branch of tip:
 
-I have CONFIG_PREEMPT_VOLUNTARY=y but CONFIG_PREEMPTION is not set.
+Commit-ID:     8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69
+Gitweb:        https://git.kernel.org/tip/8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69
+Author:        Johannes Weiner <hannes@cmpxchg.org>
+AuthorDate:    Thu, 26 Oct 2023 12:41:14 -04:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 14 Nov 2023 22:27:00 +01:00
 
-Thank you.
+sched: psi: fix unprivileged polling against cgroups
+
+519fabc7aaba ("psi: remove 500ms min window size limitation for
+triggers") breaks unprivileged psi polling on cgroups.
+
+Historically, we had a privilege check for polling in the open() of a
+pressure file in /proc, but were erroneously missing it for the open()
+of cgroup pressure files.
+
+When unprivileged polling was introduced in d82caa273565 ("sched/psi:
+Allow unprivileged polling of N*2s period"), it needed to filter
+privileges depending on the exact polling parameters, and as such
+moved the CAP_SYS_RESOURCE check from the proc open() callback to
+psi_trigger_create(). Both the proc files as well as cgroup files go
+through this during write(). This implicitly added the missing check
+for privileges required for HT polling for cgroups.
+
+When 519fabc7aaba ("psi: remove 500ms min window size limitation for
+triggers") followed right after to remove further restrictions on the
+RT polling window, it incorrectly assumed the cgroup privilege check
+was still missing and added it to the cgroup open(), mirroring what we
+used to do for proc files in the past.
+
+As a result, unprivileged poll requests that would be supported now
+get rejected when opening the cgroup pressure file for writing.
+
+Remove the cgroup open() check. psi_trigger_create() handles it.
+
+Fixes: 519fabc7aaba ("psi: remove 500ms min window size limitation for triggers")
+Reported-by: Luca Boccassi <bluca@debian.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Luca Boccassi <bluca@debian.org>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org # 6.5+
+Link: https://lore.kernel.org/r/20231026164114.2488682-1-hannes@cmpxchg.org
+---
+ kernel/cgroup/cgroup.c | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 1d5b9de..4b9ff41 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3885,14 +3885,6 @@ static __poll_t cgroup_pressure_poll(struct kernfs_open_file *of,
+ 	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
+ }
+ 
+-static int cgroup_pressure_open(struct kernfs_open_file *of)
+-{
+-	if (of->file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
+-		return -EPERM;
+-
+-	return 0;
+-}
+-
+ static void cgroup_pressure_release(struct kernfs_open_file *of)
+ {
+ 	struct cgroup_file_ctx *ctx = of->priv;
+@@ -5299,7 +5291,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "io.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IO]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_io_pressure_show,
+ 		.write = cgroup_io_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5308,7 +5299,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "memory.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_MEM]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_memory_pressure_show,
+ 		.write = cgroup_memory_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5317,7 +5307,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "cpu.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_CPU]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_cpu_pressure_show,
+ 		.write = cgroup_cpu_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5327,7 +5316,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "irq.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IRQ]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_irq_pressure_show,
+ 		.write = cgroup_irq_pressure_write,
+ 		.poll = cgroup_pressure_poll,
