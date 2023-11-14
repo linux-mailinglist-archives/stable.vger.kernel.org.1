@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 767CD7EB32A
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 16:12:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E399F7EB333
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 16:13:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233485AbjKNPMP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 10:12:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
+        id S233538AbjKNPNt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 10:13:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231697AbjKNPMO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 10:12:14 -0500
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE15116;
-        Tue, 14 Nov 2023 07:12:09 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0DB941C000F;
-        Tue, 14 Nov 2023 15:12:06 +0000 (UTC)
+        with ESMTP id S233518AbjKNPNs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 10:13:48 -0500
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44809E3;
+        Tue, 14 Nov 2023 07:13:45 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 82C5920007;
+        Tue, 14 Nov 2023 15:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1699974728;
+        t=1699974823;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=4t9RfhMfPasAV/8o1yb+W8h0NYYNv+iy1sxIy2vgOdE=;
-        b=bbJNkHU/eoryXTuKg7N/zosxXWrbkys7E6ttT5QXI80bKNUYbVm+WmXivZ3WYkWBEtB6U5
-        uoEErM/aVZZ7wjQNeR9qUOs0YPAHQqzbIKr7OA8NV/VT0TkwyWNlq6f6pyRnrb+xyzeROv
-        I0VZh4Xo6+1NmcMxA+T3C+TCHU5GqGHM9u/vhi5Y7H85Vqp24QUjKxCFsfz5rGmJEY1W4J
-        ecyAZxSl3b1oAs5cN7yJpY9/IgrIkY4biaterVcWdYxVnwkNst6CYBOvq4HzjIGAT42suY
-        4eUnw2z1OlolASFLXpeUhmZKXkIIy0CjnliZMzBGl+qc+R15+p/1k8/4T3J/eg==
-Date:   Tue, 14 Nov 2023 16:12:05 +0100
+        bh=zIcfcJYo9Q7ijv30KQH5KiYGvf5xWIQo8n+CJ3Rxw+g=;
+        b=aUuZEWbRx1iLY38fnY9G+BloSdQqrYYOwWrdbra7rWGe+i+EZmP/MqEMKX6tqHOtJ0pkuS
+        PfVbI7T2VhBfZTqiSrermTIDO/qvxd4jSKWm8DfocPlKXHt2+1u2Jshl0nLw1pwBedrrxe
+        X436bGzAp85vZjVDN8avAJ54YTk2921mi8Obl1b4QfBalmy/RjZqAgfiucnpxhJVerTqUv
+        H/5FCFkkMUwUmXw0dQ9I8sALC8Ox9qepAyp1GNevSxjmqifa50XIg6EaZAq/SR2J0AhbTL
+        ckX1xVsCyOFgGcgYRNhv0ifguU/4djzTzWvivgo+u9kKIO7dXdgjPFbEj/PQsw==
+Date:   Tue, 14 Nov 2023 16:13:41 +0100
 From:   Herve Codina <herve.codina@bootlin.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     Saravana Kannan <saravanak@google.com>,
         Petr Mladek <pmladek@suse.com>,
         Steven Rostedt <rostedt@goodmis.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Rasmus Villemoes <linux@rasmusvillemoes.dk>,
         Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         linux-kernel@vger.kernel.org,
         Allan Nielsen <allan.nielsen@microchip.com>,
@@ -46,10 +46,10 @@ Cc:     Saravana Kannan <saravanak@google.com>,
         stable@vger.kernel.org
 Subject: Re: [PATCH v2 1/1] lib/vsprintf: Fix %pfwf when current node
  refcount == 0
-Message-ID: <20231114161205.07cadeb7@bootlin.com>
-In-Reply-To: <ZVOIfXV8al5hiMQD@kekkonen.localdomain>
+Message-ID: <20231114161341.2651d393@bootlin.com>
+In-Reply-To: <ZVOLV008PaKFXRy9@smile.fi.intel.com>
 References: <20231114143558.356259-1-herve.codina@bootlin.com>
-        <ZVOIfXV8al5hiMQD@kekkonen.localdomain>
+        <ZVOLV008PaKFXRy9@smile.fi.intel.com>
 Organization: Bootlin
 X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
@@ -58,31 +58,38 @@ Content-Transfer-Encoding: 8bit
 X-GND-Sasl: herve.codina@bootlin.com
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Sakari,
+Hi Andy,
 
-On Tue, 14 Nov 2023 14:47:25 +0000
-Sakari Ailus <sakari.ailus@linux.intel.com> wrote:
+On Tue, 14 Nov 2023 16:59:35 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
 [...]
 
+> 
+> One nit-pick below, otherwise
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+> ...
+> 
+> >  	/* Loop starting from the root node to the current node. */
+> >  	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
+> > -		struct fwnode_handle *__fwnode =
+> > -			fwnode_get_nth_parent(fwnode, depth);
+> > +		/*
 > > +		 * Only get a reference for other nodes (ie parents node).  
 > 
-> "i.e."
-
-Will be changed in the next iteration.
-
+> "parent's node" (doesn't look right)? Or "parent nodes"?
 > 
-> With that,
-> 
-> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+Will be changed to "parent nodes" in the next iteration.
 
 Best regards,
 Hervé
