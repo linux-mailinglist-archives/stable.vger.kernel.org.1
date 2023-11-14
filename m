@@ -2,95 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 741A87EAB1C
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 08:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE7867EAB62
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 09:13:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232234AbjKNH6g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 02:58:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53024 "EHLO
+        id S232272AbjKNINN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 03:13:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjKNH6f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 02:58:35 -0500
-X-Greylist: delayed 554 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 13 Nov 2023 23:58:31 PST
-Received: from mail.bugwerft.de (mail.bugwerft.de [46.23.86.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BC86619B;
-        Mon, 13 Nov 2023 23:58:31 -0800 (PST)
-Received: from hq-00595.fritz.box (unknown [178.19.214.146])
-        by mail.bugwerft.de (Postfix) with ESMTPSA id 05DF928071D;
-        Tue, 14 Nov 2023 07:49:15 +0000 (UTC)
-From:   Daniel Mack <daniel@zonque.org>
-To:     gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        lech.perczak@camlingroup.com, u.kleine-koenig@pengutronix.de
-Cc:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Daniel Mack <daniel@zonque.org>,
-        Maxim Popov <maxim.snafu@gmail.com>, stable@vger.kernel.org
-Subject: [PATCH] serial: sc16is7xx: address RX timeout interrupt errata
-Date:   Tue, 14 Nov 2023 08:49:04 +0100
-Message-ID: <20231114074904.239458-1-daniel@zonque.org>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S232259AbjKNINN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 03:13:13 -0500
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D38E182;
+        Tue, 14 Nov 2023 00:13:07 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E137A1BF209;
+        Tue, 14 Nov 2023 08:13:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1699949586;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZdNblzkd8F7iiAV5Qi3t38lgqoePxjurhUeqg9MBO/k=;
+        b=hc7uwVIXgWs6Z3zi3h5HjploxX2lsNJSxN+seHqwKtsJJ+uUgZAiBnStvTNjr6hQOobTNS
+        Y2E90a4lclhzFlY3fwd1Y6YoiHd54zvxCc5xhbdPI1ZmSkMgTlnFqxeN4KN98a5o9UB48x
+        1gbCMwCbvvXo7iqZHvCCLlvjlEnvN1zQ5CynNfR7s1r5wUDTaZomf69xN8B+KdmumQjNvC
+        KtPTxcCR3LHsmpQ3I4zD5TOK9v6oIe4yLICTJ/fw+f82gw0PXya2gv6GyFsJ325G8J6Daq
+        axlCn4s9XsI0CvoXZngsVpavEGmS5Nz4J6c3nqSHvEUHICHaXdp9Fse11yan/A==
+Date:   Tue, 14 Nov 2023 09:13:02 +0100
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Ronald Monthero <debug.penguin32@gmail.com>
+Cc:     andriy.shevchenko@linux.intel.com, richard@nod.at, vigneshr@ti.com,
+        heiko@sntech.de, martin.blumenstingl@googlemail.com,
+        paul@crapouillou.net, robh@kernel.org,
+        u.kleine-koenig@pengutronix.de, AVKrasnov@sberdevices.ru,
+        r.czerwinski@pengutronix.de, jaimeliao.tw@gmail.com,
+        linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Roger Quadros <rogerq@kernel.org>,
+        Thierry Reding <treding@nvidia.com>
+Subject: Re: [PATCH v3] mtd: rawnand: Increment IFC_TIMEOUT_MSECS for nand
+ controller response
+Message-ID: <20231114091302.1f865d66@xps-13>
+In-Reply-To: <20231113173251.623268-1-debug.penguin32@gmail.com>
+References: <ZVJJAReXiEVc35HZ@smile.fi.intel.com>
+        <20231113173251.623268-1-debug.penguin32@gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This devices has a silicon bug that makes it report a timeout interrupt
-but no data in FIFO.
+Hi Ronald,
 
-The datasheet states the following in the errata section 18.1.4:
+debug.penguin32@gmail.com wrote on Tue, 14 Nov 2023 03:32:49 +1000:
 
-  "If the host reads the receive FIFO at the at the same time as a
-  time-out interrupt condition happens, the host might read 0xCC
-  (time-out) in the Interrupt Indication Register (IIR), but bit 0
-  of the Line Status Register (LSR) is not set (means there is not
-  data in the receive FIFO)."
+> Under heavy load it is likely that the controller is done
+> with its own task but the thread unlocking the wait is not
+> scheduled in time. Increasing IFC_TIMEOUT_MSECS allows the
+> controller to respond within allowable timeslice of 1 sec.
+>=20
+> fsl,ifc-nand 7e800000.nand: Controller is not responding
+>=20
+> [<804b2047>] (nand_get_device) from [<804b5335>] (nand_write_oob+0x1b/0x4=
+a)
+> [<804b5335>] (nand_write_oob) from [<804a3585>] (mtd_write+0x41/0x5c)
+> [<804a3585>] (mtd_write) from [<804c1d47>] (ubi_io_write+0x17f/0x22c)
+> [<804c1d47>] (ubi_io_write) from [<804c047b>] (ubi_eba_write_leb+0x5b/0x1=
+d0)
+>=20
+> Cc: stable@vger.kernel.org
 
-When this happens, the loop in sc16is7xx_irq() will run forever,
-which effectively blocks the i2c bus and breaks the functionality
-of the UART.
+I believe the Fixes tag is the latest missing piece?
 
-From the information above, it is assumed that when the bug is
-triggered, the FIFO does in fact have payload in its buffer, but the
-fill level reporting is off-by-one. Hence this patch fixes the issue
-by reading one byte from the FIFO when that condition is detected.
+> Signed-off-by: Ronald Monthero <debug.penguin32@gmail.com>
+> ---
+>  drivers/mtd/nand/raw/fsl_ifc_nand.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/mtd/nand/raw/fsl_ifc_nand.c b/drivers/mtd/nand/raw/f=
+sl_ifc_nand.c
+> index 20bb1e0cb5eb..f0e2318ce088 100644
+> --- a/drivers/mtd/nand/raw/fsl_ifc_nand.c
+> +++ b/drivers/mtd/nand/raw/fsl_ifc_nand.c
+> @@ -21,7 +21,7 @@
+> =20
+>  #define ERR_BYTE		0xFF /* Value returned for read
+>  					bytes when read failed	*/
+> -#define IFC_TIMEOUT_MSECS	500  /* Maximum number of mSecs to wait
+> +#define IFC_TIMEOUT_MSECS	1000 /* Maximum timeout to wait
+>  					for IFC NAND Machine	*/
+> =20
+>  struct fsl_ifc_ctrl;
 
-This clears the interrupt and hence breaks the polling loop.
 
-Signed-off-by: Daniel Mack <daniel@zonque.org>
-Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/tty/serial/sc16is7xx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 289ca7d4e566..76f76e510ed1 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -765,6 +765,18 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
- 		case SC16IS7XX_IIR_RTOI_SRC:
- 		case SC16IS7XX_IIR_XOFFI_SRC:
- 			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
-+
-+			/*
-+			 * There is a silicon bug that makes the chip report a
-+			 * time-out interrupt but no data in the FIFO. This is
-+			 * described in errata section 18.1.4.
-+			 *
-+			 * When this happens, read one byte from the FIFO to
-+			 * clear the interrupt.
-+			 */
-+			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
-+				rxlen = 1;
-+
- 			if (rxlen)
- 				sc16is7xx_handle_rx(port, rxlen, iir);
- 			break;
--- 
-2.41.0
-
+Thanks,
+Miqu=C3=A8l
