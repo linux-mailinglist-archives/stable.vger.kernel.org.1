@@ -2,168 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FCA97EB902
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 22:57:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D577EBA38
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 00:30:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234115AbjKNV5T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 16:57:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
+        id S230364AbjKNXam (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 18:30:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233920AbjKNV5S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 16:57:18 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B93E3;
-        Tue, 14 Nov 2023 13:57:14 -0800 (PST)
-Date:   Tue, 14 Nov 2023 21:57:12 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1699999033;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZyNm6zjsHnLhgpddgvEBkRYkAW72R/W124on/N7HXhQ=;
-        b=RXqACAOycE+0B7DF0wNmMg1GIBxrOKNSMruSmAtkxpoiLhimNsrHVBqMwQ4GKqL98nCfYu
-        ZYaf2QxRi5EF7nhZwWfKIwJhASh2pTL328aqQXCzS8Q86Dd0lQd/vQuRqv3tqE+KOQssO7
-        oZed/4x6E11Jf6tSef2htk27w07W9prVy5hZnfoG3loHIV+7xuYOdxxPiy3SWr3OYMn03v
-        u04z9z8kHnaKtbrV1FiXrVY9ejQDdWrhrV/o9ypUL3LJshFNbnI4IcWrezKHieCt0upRTy
-        yyKqx0wvmZhjO+qwJk0PemSO2DLPKLtPOB5XwDLEAmgBiVWZnm5w0EHxc+Kjlg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1699999033;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZyNm6zjsHnLhgpddgvEBkRYkAW72R/W124on/N7HXhQ=;
-        b=2A+xYwJBgsmiTPqhY0xQDQLlo59Vo7phk2vpAAyUlTIWmriAAoikwD+lOcSvARC+RB6/Gu
-        RW7nCU7NM5w+k0DQ==
-From:   "tip-bot2 for Johannes Weiner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched: psi: fix unprivileged polling against cgroups
-Cc:     Luca Boccassi <bluca@debian.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org,
-        #@tip-bot2.tec.linutronix.de, 6.5+@tip-bot2.tec.linutronix.de,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231026164114.2488682-1-hannes@cmpxchg.org>
-References: <20231026164114.2488682-1-hannes@cmpxchg.org>
-MIME-Version: 1.0
-Message-ID: <169999903275.391.5317186908629148143.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229796AbjKNXal (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 18:30:41 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01062D6;
+        Tue, 14 Nov 2023 15:30:37 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4CAC433C7;
+        Tue, 14 Nov 2023 23:30:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1700004637;
+        bh=WVvPbwWzMGMDE4mFnX/HWM7Bq0MAxL2n7slMfJSeaCE=;
+        h=Date:To:From:Subject:From;
+        b=J3YSDP+gvbUlv3qtJZ2qhs/eF5efKcbMSCUodD1BLxkCzlLNa1XbGzBJaeWruXiNx
+         M/Q01d4IXiZ1FIBIu8oC34wwU32OUgX2MprwcCupkev41JJxYI27PcXTGFA30Eu/9l
+         FV0s9nD7WTry2DbRicmbMTwE24MdeK+S/+UuS38U=
+Date:   Tue, 14 Nov 2023 15:30:36 -0800
+To:     mm-commits@vger.kernel.org, trix@redhat.com,
+        stable@vger.kernel.org, riel@surriel.com, ndesaulniers@google.com,
+        nathan@kernel.org, muchun.song@linux.dev, eadavis@qq.com,
+        mike.kravetz@oracle.com, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + hugetlb-fix-null-ptr-deref-in-hugetlb_vma_lock_write.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231114233037.8D4CAC433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
 
-Commit-ID:     8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69
-Gitweb:        https://git.kernel.org/tip/8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69
-Author:        Johannes Weiner <hannes@cmpxchg.org>
-AuthorDate:    Thu, 26 Oct 2023 12:41:14 -04:00
-Committer:     Peter Zijlstra <peterz@infradead.org>
-CommitterDate: Tue, 14 Nov 2023 22:27:00 +01:00
+The patch titled
+     Subject: hugetlb: fix null-ptr-deref in hugetlb_vma_lock_write
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     hugetlb-fix-null-ptr-deref-in-hugetlb_vma_lock_write.patch
 
-sched: psi: fix unprivileged polling against cgroups
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/hugetlb-fix-null-ptr-deref-in-hugetlb_vma_lock_write.patch
 
-519fabc7aaba ("psi: remove 500ms min window size limitation for
-triggers") breaks unprivileged psi polling on cgroups.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Historically, we had a privilege check for polling in the open() of a
-pressure file in /proc, but were erroneously missing it for the open()
-of cgroup pressure files.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-When unprivileged polling was introduced in d82caa273565 ("sched/psi:
-Allow unprivileged polling of N*2s period"), it needed to filter
-privileges depending on the exact polling parameters, and as such
-moved the CAP_SYS_RESOURCE check from the proc open() callback to
-psi_trigger_create(). Both the proc files as well as cgroup files go
-through this during write(). This implicitly added the missing check
-for privileges required for HT polling for cgroups.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-When 519fabc7aaba ("psi: remove 500ms min window size limitation for
-triggers") followed right after to remove further restrictions on the
-RT polling window, it incorrectly assumed the cgroup privilege check
-was still missing and added it to the cgroup open(), mirroring what we
-used to do for proc files in the past.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-As a result, unprivileged poll requests that would be supported now
-get rejected when opening the cgroup pressure file for writing.
+------------------------------------------------------
+From: Mike Kravetz <mike.kravetz@oracle.com>
+Subject: hugetlb: fix null-ptr-deref in hugetlb_vma_lock_write
+Date: Mon, 13 Nov 2023 17:20:33 -0800
 
-Remove the cgroup open() check. psi_trigger_create() handles it.
+The routine __vma_private_lock tests for the existence of a reserve map
+associated with a private hugetlb mapping.  A pointer to the reserve map
+is in vma->vm_private_data.  __vma_private_lock was checking the pointer
+for NULL.  However, it is possible that the low bits of the pointer could
+be used as flags.  In such instances, vm_private_data is not NULL and not
+a valid pointer.  This results in the null-ptr-deref reported by syzbot:
 
-Fixes: 519fabc7aaba ("psi: remove 500ms min window size limitation for triggers")
-Reported-by: Luca Boccassi <bluca@debian.org>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Luca Boccassi <bluca@debian.org>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Cc: stable@vger.kernel.org # 6.5+
-Link: https://lore.kernel.org/r/20231026164114.2488682-1-hannes@cmpxchg.org
+general protection fault, probably for non-canonical address 0xdffffc000000001d:
+ 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x00000000000000e8-0x00000000000000ef]
+CPU: 0 PID: 5048 Comm: syz-executor139 Not tainted 6.6.0-rc7-syzkaller-00142-g88
+8cf78c29e2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 1
+0/09/2023
+RIP: 0010:__lock_acquire+0x109/0x5de0 kernel/locking/lockdep.c:5004
+...
+Call Trace:
+ <TASK>
+ lock_acquire kernel/locking/lockdep.c:5753 [inline]
+ lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5718
+ down_write+0x93/0x200 kernel/locking/rwsem.c:1573
+ hugetlb_vma_lock_write mm/hugetlb.c:300 [inline]
+ hugetlb_vma_lock_write+0xae/0x100 mm/hugetlb.c:291
+ __hugetlb_zap_begin+0x1e9/0x2b0 mm/hugetlb.c:5447
+ hugetlb_zap_begin include/linux/hugetlb.h:258 [inline]
+ unmap_vmas+0x2f4/0x470 mm/memory.c:1733
+ exit_mmap+0x1ad/0xa60 mm/mmap.c:3230
+ __mmput+0x12a/0x4d0 kernel/fork.c:1349
+ mmput+0x62/0x70 kernel/fork.c:1371
+ exit_mm kernel/exit.c:567 [inline]
+ do_exit+0x9ad/0x2a20 kernel/exit.c:861
+ __do_sys_exit kernel/exit.c:991 [inline]
+ __se_sys_exit kernel/exit.c:989 [inline]
+ __x64_sys_exit+0x42/0x50 kernel/exit.c:989
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Mask off low bit flags before checking for NULL pointer.  In addition, the
+reserve map only 'belongs' to the OWNER (parent in parent/child
+relationships) so also check for the OWNER flag.
+
+Link: https://lkml.kernel.org/r/20231114012033.259600-1-mike.kravetz@oracle.com
+Reported-by: syzbot+6ada951e7c0f7bc8a71e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/00000000000078d1e00608d7878b@google.com/
+Fixes: bf4916922c60 ("hugetlbfs: extend hugetlb_vma_lock to private VMAs")
+Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Cc: Edward Adam Davis <eadavis@qq.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Tom Rix <trix@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- kernel/cgroup/cgroup.c | 12 ------------
- 1 file changed, 12 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 1d5b9de..4b9ff41 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -3885,14 +3885,6 @@ static __poll_t cgroup_pressure_poll(struct kernfs_open_file *of,
- 	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
+ include/linux/hugetlb.h |    5 +----
+ mm/hugetlb.c            |    7 +++++++
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+--- a/include/linux/hugetlb.h~hugetlb-fix-null-ptr-deref-in-hugetlb_vma_lock_write
++++ a/include/linux/hugetlb.h
+@@ -1268,10 +1268,7 @@ static inline bool __vma_shareable_lock(
+ 	return (vma->vm_flags & VM_MAYSHARE) && vma->vm_private_data;
  }
  
--static int cgroup_pressure_open(struct kernfs_open_file *of)
+-static inline bool __vma_private_lock(struct vm_area_struct *vma)
 -{
--	if (of->file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
--		return -EPERM;
--
--	return 0;
+-	return (!(vma->vm_flags & VM_MAYSHARE)) && vma->vm_private_data;
 -}
--
- static void cgroup_pressure_release(struct kernfs_open_file *of)
++bool __vma_private_lock(struct vm_area_struct *vma);
+ 
+ /*
+  * Safe version of huge_pte_offset() to check the locks.  See comments
+--- a/mm/hugetlb.c~hugetlb-fix-null-ptr-deref-in-hugetlb_vma_lock_write
++++ a/mm/hugetlb.c
+@@ -1182,6 +1182,13 @@ static int is_vma_resv_set(struct vm_are
+ 	return (get_vma_private_data(vma) & flag) != 0;
+ }
+ 
++bool __vma_private_lock(struct vm_area_struct *vma)
++{
++	return !(vma->vm_flags & VM_MAYSHARE) &&
++		get_vma_private_data(vma) & ~HPAGE_RESV_MASK &&
++		is_vma_resv_set(vma, HPAGE_RESV_OWNER);
++}
++
+ void hugetlb_dup_vma_private(struct vm_area_struct *vma)
  {
- 	struct cgroup_file_ctx *ctx = of->priv;
-@@ -5299,7 +5291,6 @@ static struct cftype cgroup_psi_files[] = {
- 	{
- 		.name = "io.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IO]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_io_pressure_show,
- 		.write = cgroup_io_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5308,7 +5299,6 @@ static struct cftype cgroup_psi_files[] = {
- 	{
- 		.name = "memory.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_MEM]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_memory_pressure_show,
- 		.write = cgroup_memory_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5317,7 +5307,6 @@ static struct cftype cgroup_psi_files[] = {
- 	{
- 		.name = "cpu.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_CPU]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_cpu_pressure_show,
- 		.write = cgroup_cpu_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5327,7 +5316,6 @@ static struct cftype cgroup_psi_files[] = {
- 	{
- 		.name = "irq.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IRQ]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_irq_pressure_show,
- 		.write = cgroup_irq_pressure_write,
- 		.poll = cgroup_pressure_poll,
+ 	VM_BUG_ON_VMA(!is_vm_hugetlb_page(vma), vma);
+_
+
+Patches currently in -mm which might be from mike.kravetz@oracle.com are
+
+hugetlb-fix-null-ptr-deref-in-hugetlb_vma_lock_write.patch
+
