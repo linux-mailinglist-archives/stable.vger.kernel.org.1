@@ -2,77 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBEEB7EB0DF
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 14:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC05E7EB14C
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 14:56:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232889AbjKNN2z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 08:28:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38234 "EHLO
+        id S232079AbjKNN4m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 08:56:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49412 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231612AbjKNN2w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 08:28:52 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7E91B5;
-        Tue, 14 Nov 2023 05:28:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699968529; x=1731504529;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=imjIYLKBTVSlegQE2rvCKcNc9nXKA3MpxHpU4ufHEXw=;
-  b=fqRC0isIKWZo5Y/maw6XIBM2IUGdec9N8wTSJcV3uQtBf070mpuDAElT
-   Gg5Noswke+1MIw0Bh2OLqFzfDtJSluwToVmzwUIXY/Mrt+p6nBoJqw9rQ
-   mPUnWnISr/cne3XXvMJS0b0xouW73M7r7S4r2PyCY+lhb3JF5pgsh/i68
-   MYrFskXA0QpzdhqqW6H9ueEVfOPOrWR7CHD+XWDMIvSeB6bDggLwKA49d
-   55niFY7PKd4o1k/benHpPricHYECHhfnhTIFapytekIe8tKbph29fnTOf
-   /bwsDKC9oO5+onOB83IUojpIcK6YQQQ6oCYpAkLMFc8ZfMZvsDKWAgf72
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="3758997"
-X-IronPort-AV: E=Sophos;i="6.03,302,1694761200"; 
-   d="scan'208";a="3758997"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 05:28:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="908360728"
-X-IronPort-AV: E=Sophos;i="6.03,302,1694761200"; 
-   d="scan'208";a="908360728"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 05:28:45 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97-RC3)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1r2tT7-0000000Dp4R-3ayb;
-        Tue, 14 Nov 2023 15:28:41 +0200
-Date:   Tue, 14 Nov 2023 15:28:41 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Saravana Kannan <saravanak@google.com>,
-        Petr Mladek <pmladek@suse.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        with ESMTP id S232040AbjKNN4j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 08:56:39 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E195D4B;
+        Tue, 14 Nov 2023 05:56:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7492C433CB;
+        Tue, 14 Nov 2023 13:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699970193;
+        bh=FQzhhHnHVLuWZguWtCeMQCQce7lbuXpiz5kGYt0gjTI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=n1pE7bt2zjsr5fCQayJMtmeTKpYw9ejeIOJCj/heI2mhqOc4YBsxFuhsLK+Z0XG+t
+         0QKJTmjGJ4PaHrBdPzL0hZcCIk7JFunIlKryWjb7YTLRiCvwqoswcUDcuU7YBv0L+H
+         sTlTAotjjcfJksXzZkXrnv/X3RdErT7VeA9i59wGYjUzn3jWk+D9dpdpGXuJLNdTFJ
+         3O4FlL+vzkOq/eNVeLSwpLf7Of4OtRj4G3mIr2e3K0Ka6SdSmihQHkZvLiLChsBsh0
+         1FzXuFEbjsvyJnvt7aOiWo6qfWrq/w1BDy1RM1BGa9gSZDy1WHd9SUKWL1mF1iz12e
+         XoivxJP+BzVfg==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1r2tu2-0008PP-24;
+        Tue, 14 Nov 2023 14:56:30 +0100
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Nirmal Patel <nirmal.patel@linux.intel.com>,
+        Jonathan Derrick <jonathan.derrick@linux.dev>,
+        linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
         linux-kernel@vger.kernel.org,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Steen Hegelund <steen.hegelund@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] lib/vsprintf: Fix %pfwf when current node refcount
- == 0
-Message-ID: <ZVN2Ce46vSTTpE6U@smile.fi.intel.com>
-References: <20231114110456.273844-1-herve.codina@bootlin.com>
- <ZVNyT6qTw6mpy6BY@smile.fi.intel.com>
- <20231114141934.1b0d44e2@bootlin.com>
- <ZVN1z5zuCRhVQ2Kw@smile.fi.intel.com>
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
+        Michael Bottini <michael.a.bottini@linux.intel.com>,
+        "David E . Box" <david.e.box@linux.intel.com>
+Subject: [PATCH 1/6] PCI/ASPM: Add locked helper for enabling link state
+Date:   Tue, 14 Nov 2023 14:55:48 +0100
+Message-ID: <20231114135553.32301-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231114135553.32301-1-johan+linaro@kernel.org>
+References: <20231114135553.32301-1-johan+linaro@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZVN1z5zuCRhVQ2Kw@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,50 +64,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Nov 14, 2023 at 03:27:43PM +0200, Andy Shevchenko wrote:
-> On Tue, Nov 14, 2023 at 02:19:34PM +0100, Herve Codina wrote:
-> > On Tue, 14 Nov 2023 15:12:47 +0200
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > > On Tue, Nov 14, 2023 at 12:04:56PM +0100, Herve Codina wrote:
-> > > > A refcount issue can appeared in __fwnode_link_del() due to the
-> > > > pr_debug() call:  
+Add a helper for enabling link states that can be used in contexts where
+a pci_bus_sem read lock is already held (e.g. from pci_walk_bus()).
 
----8<---
+This helper will be used to fix a couple of potential deadlocks where
+the current helper is called with the lock already held, hence the CC
+stable tag.
 
-> > > >   WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
-> > > >   Call Trace:
+Fixes: f492edb40b54 ("PCI: vmd: Add quirk to configure PCIe ASPM and LTR")
+Cc: stable@vger.kernel.org	# 6.3
+Cc: Michael Bottini <michael.a.bottini@linux.intel.com>
+Cc: David E. Box <david.e.box@linux.intel.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/pci/pcie/aspm.c | 53 +++++++++++++++++++++++++++++++----------
+ include/linux/pci.h     |  3 +++
+ 2 files changed, 43 insertions(+), 13 deletions(-)
 
-> > > >   ? refcount_warn_saturate+0xe5/0x110
-> 
-> 	...
-
-These are actually not needed as duplicating WARNING above.
-
-> > > >   of_node_get+0x1e/0x30
-> > > >   of_fwnode_get+0x28/0x40
-> > > >   fwnode_full_name_string+0x34/0x90
-> > > >   fwnode_string+0xdb/0x140
-> 	...
-> 
-> > > >   vsnprintf+0x17b/0x630
-> 	...
-> > > >   __fwnode_link_del+0x25/0xa0
-> > > >   fwnode_links_purge+0x39/0xb0
-> > > >   of_node_release+0xd9/0x180
-> 	...
-
----8<---
-
-> > > Please, do not put so many unrelated lines of backtrace in the commit message.
-> > > Leave only the important ones (the Submitting Patches document suggests some
-> > > like ~3-5 lines only).
-> > 
-> > Ok, I will remove some of them.
-> 
-> Thanks (my suggestion is above).
-
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 50b04ae5c394..8cf8cc2d6bba 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1109,17 +1109,7 @@ int pci_disable_link_state(struct pci_dev *pdev, int state)
+ }
+ EXPORT_SYMBOL(pci_disable_link_state);
+ 
+-/**
+- * pci_enable_link_state - Clear and set the default device link state so that
+- * the link may be allowed to enter the specified states. Note that if the
+- * BIOS didn't grant ASPM control to the OS, this does nothing because we can't
+- * touch the LNKCTL register. Also note that this does not enable states
+- * disabled by pci_disable_link_state(). Return 0 or a negative errno.
+- *
+- * @pdev: PCI device
+- * @state: Mask of ASPM link states to enable
+- */
+-int pci_enable_link_state(struct pci_dev *pdev, int state)
++static int __pci_enable_link_state(struct pci_dev *pdev, int state, bool locked)
+ {
+ 	struct pcie_link_state *link = pcie_aspm_get_link(pdev);
+ 
+@@ -1136,7 +1126,8 @@ int pci_enable_link_state(struct pci_dev *pdev, int state)
+ 		return -EPERM;
+ 	}
+ 
+-	down_read(&pci_bus_sem);
++	if (!locked)
++		down_read(&pci_bus_sem);
+ 	mutex_lock(&aspm_lock);
+ 	link->aspm_default = 0;
+ 	if (state & PCIE_LINK_STATE_L0S)
+@@ -1157,12 +1148,48 @@ int pci_enable_link_state(struct pci_dev *pdev, int state)
+ 	link->clkpm_default = (state & PCIE_LINK_STATE_CLKPM) ? 1 : 0;
+ 	pcie_set_clkpm(link, policy_to_clkpm_state(link));
+ 	mutex_unlock(&aspm_lock);
+-	up_read(&pci_bus_sem);
++	if (!locked)
++		up_read(&pci_bus_sem);
+ 
+ 	return 0;
+ }
++
++/**
++ * pci_enable_link_state - Clear and set the default device link state so that
++ * the link may be allowed to enter the specified states. Note that if the
++ * BIOS didn't grant ASPM control to the OS, this does nothing because we can't
++ * touch the LNKCTL register. Also note that this does not enable states
++ * disabled by pci_disable_link_state(). Return 0 or a negative errno.
++ *
++ * @pdev: PCI device
++ * @state: Mask of ASPM link states to enable
++ */
++int pci_enable_link_state(struct pci_dev *pdev, int state)
++{
++	return __pci_enable_link_state(pdev, state, false);
++}
+ EXPORT_SYMBOL(pci_enable_link_state);
+ 
++/**
++ * pci_enable_link_state - Clear and set the default device link state so that
++ * the link may be allowed to enter the specified states. Note that if the
++ * BIOS didn't grant ASPM control to the OS, this does nothing because we can't
++ * touch the LNKCTL register. Also note that this does not enable states
++ * disabled by pci_disable_link_state(). Return 0 or a negative errno.
++ *
++ * @pdev: PCI device
++ * @state: Mask of ASPM link states to enable
++ *
++ * Context: Caller holds pci_bus_sem read lock.
++ */
++int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
++{
++	lockdep_assert_held_read(&pci_bus_sem);
++
++	return __pci_enable_link_state(pdev, state, true);
++}
++EXPORT_SYMBOL(pci_enable_link_state_locked);
++
+ static int pcie_aspm_set_policy(const char *val,
+ 				const struct kernel_param *kp)
+ {
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 60ca768bc867..dea043bc1e38 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1829,6 +1829,7 @@ extern bool pcie_ports_native;
+ int pci_disable_link_state(struct pci_dev *pdev, int state);
+ int pci_disable_link_state_locked(struct pci_dev *pdev, int state);
+ int pci_enable_link_state(struct pci_dev *pdev, int state);
++int pci_enable_link_state_locked(struct pci_dev *pdev, int state);
+ void pcie_no_aspm(void);
+ bool pcie_aspm_support_enabled(void);
+ bool pcie_aspm_enabled(struct pci_dev *pdev);
+@@ -1839,6 +1840,8 @@ static inline int pci_disable_link_state_locked(struct pci_dev *pdev, int state)
+ { return 0; }
+ static inline int pci_enable_link_state(struct pci_dev *pdev, int state)
+ { return 0; }
++static inline int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
++{ return 0; }
+ static inline void pcie_no_aspm(void) { }
+ static inline bool pcie_aspm_support_enabled(void) { return false; }
+ static inline bool pcie_aspm_enabled(struct pci_dev *pdev) { return false; }
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.41.0
 
