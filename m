@@ -2,129 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F2B7EB29E
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 15:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17A137EB2BE
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 15:47:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231872AbjKNOlL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 09:41:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45142 "EHLO
+        id S233302AbjKNOrh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 09:47:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231214AbjKNOlL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 09:41:11 -0500
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 014ED1A5;
-        Tue, 14 Nov 2023 06:41:06 -0800 (PST)
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3AEEeLYo032438;
-        Tue, 14 Nov 2023 15:40:49 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        message-id:date:mime-version:subject:to:cc:references:from
-        :in-reply-to:content-type:content-transfer-encoding; s=
-        selector1; bh=UFmkMOdBwtqRubSgJ1ZELCpM6rhS83undY4oyEx9SLc=; b=TQ
-        sXN7L1HvLdUkivHrkQDz2IOE+hIelaKbF2Rusyxm8EmBrKx3emMrgcirZCVUDjos
-        6/umuvjaEi+bvTGDnC3YOY4ULGR3SvXl95XZ3UqpCHnobzlcM95tob6zrfU/Qv1y
-        tEzW2PC7lt/lNvm3jpbCHaTW25jwPYWqPAom90iWyd0bEtJ/lnB8p9KI3BcA7MPY
-        ab4eDo8n4r42QqXYZCYXaaWVcZ6FvbU5GUh/HZddPVpGnmER36na0I+16Q/BCzd2
-        pL89X1fZ4pB8yHjXQ7tA8qUCoJ99W3MFBZt03KusjedP27IhXDAS2OG2LL1kV7VG
-        nzTrOI79ZweYP2EzIzTA==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3uam249ufg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Nov 2023 15:40:49 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 853A8100053;
-        Tue, 14 Nov 2023 15:40:47 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4FE1021860B;
-        Tue, 14 Nov 2023 15:40:47 +0100 (CET)
-Received: from [10.129.166.186] (10.129.166.186) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 14 Nov
- 2023 15:40:46 +0100
-Message-ID: <572eb512-6cc6-45a6-acea-fcd4c5af2678@foss.st.com>
-Date:   Tue, 14 Nov 2023 15:40:46 +0100
+        with ESMTP id S231697AbjKNOrg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 09:47:36 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76D94CA;
+        Tue, 14 Nov 2023 06:47:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699973254; x=1731509254;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GiTo2oNKnQgB8DobzT7dE9XMXi3HGjrub1UPBLDMX/g=;
+  b=c242ZyIul8sBVmnb+sLuaowENsF72Wbez9QyClprVcz/Nbp/ozrHZudG
+   34/SVyopQ/9PtrYsqoKpQxFrhC0u0GVJc6arJ5ZHBqyLOo53K9GtdD4kq
+   UQBImwcnBfUvcQ2m2rZ93lA3vdMdU3z7kaxLJg4hy2jv3yf8CS6AFYOSt
+   U1nZ/rGJ98AMoDjzcySAICq/qtnXSogi/8DNB4Wx2S/323z0HiXbCJfYD
+   nySzEcGrkUIYtfOZZ65dAkJt57jZHaPX4IEFKoRz4iZ36Uwd1gyG3h0j9
+   lec/zAeV9cgZlRA1Wwn6GR2ehAPIv5Qny0KPOdvTFF4FCSSeDire5i4xL
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="12210151"
+X-IronPort-AV: E=Sophos;i="6.03,302,1694761200"; 
+   d="scan'208";a="12210151"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 06:47:33 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="741110362"
+X-IronPort-AV: E=Sophos;i="6.03,302,1694761200"; 
+   d="scan'208";a="741110362"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 06:47:29 -0800
+Received: from kekkonen.localdomain (localhost [127.0.0.1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id E4C3C11FB5E;
+        Tue, 14 Nov 2023 16:47:25 +0200 (EET)
+Date:   Tue, 14 Nov 2023 14:47:25 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Herve Codina <herve.codina@bootlin.com>
+Cc:     Saravana Kannan <saravanak@google.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-kernel@vger.kernel.org,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Steen Hegelund <steen.hegelund@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] lib/vsprintf: Fix %pfwf when current node
+ refcount == 0
+Message-ID: <ZVOIfXV8al5hiMQD@kekkonen.localdomain>
+References: <20231114143558.356259-1-herve.codina@bootlin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: i2c: st-mipid02: correct format propagation
-Content-Language: en-US
-To:     Alain Volmat <alain.volmat@foss.st.com>,
-        Sylvain Petinot <sylvain.petinot@foss.st.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>
-CC:     <stable@vger.kernel.org>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        <linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20231113145731.89796-1-alain.volmat@foss.st.com>
-From:   Benjamin Mugnier <benjamin.mugnier@foss.st.com>
-In-Reply-To: <20231113145731.89796-1-alain.volmat@foss.st.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.129.166.186]
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-14_14,2023-11-09_01,2023-05-22_02
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231114143558.356259-1-herve.codina@bootlin.com>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello Alain,
+Hi Herve,
 
-Thanks a lot !
-
-On 11/13/23 15:57, Alain Volmat wrote:
-> Use a copy of the struct v4l2_subdev_format when propagating
-> format from the sink to source pad in order to avoid impacting the
-> sink format returned to the application.
+On Tue, Nov 14, 2023 at 03:35:58PM +0100, Herve Codina wrote:
+> A refcount issue can appeared in __fwnode_link_del() due to the
+> pr_debug() call:
+>   WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+>   Call Trace:
+>   <TASK>
+>   ...
+>   of_node_get+0x1e/0x30
+>   of_fwnode_get+0x28/0x40
+>   fwnode_full_name_string+0x34/0x90
+>   fwnode_string+0xdb/0x140
+>   ...
+>   vsnprintf+0x17b/0x630
+>   ...
+>   __fwnode_link_del+0x25/0xa0
+>   fwnode_links_purge+0x39/0xb0
+>   of_node_release+0xd9/0x180
+>   ...
 > 
-> Thanks to Jacopo Mondi for pointing the issue.
-
-Reviewed-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
-
-> Fixes: 6c01e6f3f27b ("media: st-mipid02: Propagate format from sink to source pad")
-> Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+> Indeed, an fwnode (of_node) is being destroyed and so, of_node_release()
+> is called because the of_node refcount reached 0.
+> From of_node_release() several function calls are done and lead to
+> a pr_debug() calls with %pfwf to print the fwnode full name.
+> The issue is not present if we change %pfwf to %pfwP.
+> 
+> To print the full name, %pfwf iterates over the current node and its
+> parents and obtain/drop a reference to all nodes involved.
+> 
+> In order to allow to print the full name (%pfwf) of a node while it is
+> being destroyed, do not obtain/drop a reference to this current node.
+> 
+> Fixes: a92eb7621b9f ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
 > Cc: stable@vger.kernel.org
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
->  drivers/media/i2c/st-mipid02.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+> Changes v1 -> v2
+>   - Avoid handling current node out of the loop. Instead obtain/drop references
+>     in the loop based on the depth value.
+>   - Remove some of the backtrace lines in the commit log.
 > 
-> diff --git a/drivers/media/i2c/st-mipid02.c b/drivers/media/i2c/st-mipid02.c
-> index fa27638edc07..dab14787116b 100644
-> --- a/drivers/media/i2c/st-mipid02.c
-> +++ b/drivers/media/i2c/st-mipid02.c
-> @@ -770,6 +770,7 @@ static void mipid02_set_fmt_sink(struct v4l2_subdev *sd,
->  				 struct v4l2_subdev_format *format)
->  {
->  	struct mipid02_dev *bridge = to_mipid02_dev(sd);
-> +	struct v4l2_subdev_format source_fmt;
->  	struct v4l2_mbus_framefmt *fmt;
+>  lib/vsprintf.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+> index afb88b24fa74..633f5481ac17 100644
+> --- a/lib/vsprintf.c
+> +++ b/lib/vsprintf.c
+> @@ -2110,15 +2110,20 @@ char *fwnode_full_name_string(struct fwnode_handle *fwnode, char *buf,
 >  
->  	format->format.code = get_fmt_code(format->format.code);
-> @@ -781,8 +782,12 @@ static void mipid02_set_fmt_sink(struct v4l2_subdev *sd,
+>  	/* Loop starting from the root node to the current node. */
+>  	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
+> -		struct fwnode_handle *__fwnode =
+> -			fwnode_get_nth_parent(fwnode, depth);
+> +		/*
+> +		 * Only get a reference for other nodes (ie parents node).
+
+"i.e."
+
+With that,
+
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+
+> +		 * fwnode refcount may be 0 here.
+> +		 */
+> +		struct fwnode_handle *__fwnode = depth ?
+> +			fwnode_get_nth_parent(fwnode, depth) : fwnode;
 >  
->  	*fmt = format->format;
+>  		buf = string(buf, end, fwnode_get_name_prefix(__fwnode),
+>  			     default_str_spec);
+>  		buf = string(buf, end, fwnode_get_name(__fwnode),
+>  			     default_str_spec);
 >  
-> -	/* Propagate the format change to the source pad */
-> -	mipid02_set_fmt_source(sd, sd_state, format);
-> +	/*
-> +	 * Propagate the format change to the source pad, taking
-> +	 * care not to update the format pointer given back to user
-> +	 */
-> +	source_fmt = *format;
-> +	mipid02_set_fmt_source(sd, sd_state, &source_fmt);
->  }
+> -		fwnode_handle_put(__fwnode);
+> +		if (depth)
+> +			fwnode_handle_put(__fwnode);
+>  	}
 >  
->  static int mipid02_set_fmt(struct v4l2_subdev *sd,
+>  	return buf;
 
 -- 
 Regards,
 
-Benjamin
+Sakari Ailus
