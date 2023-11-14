@@ -2,70 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C1C7EAC27
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 09:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3F2E7EAC2E
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 09:56:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232168AbjKNIyt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 03:54:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56910 "EHLO
+        id S232151AbjKNI4D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 03:56:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231975AbjKNIyt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 03:54:49 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36AFA198;
-        Tue, 14 Nov 2023 00:54:46 -0800 (PST)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AE80wsF012282;
-        Tue, 14 Nov 2023 08:54:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=CRJ/HrsvJNkj7YfUMUc4rdohDdOTF/7x5sAxrZCU40Y=;
- b=gPcndvcSvA9Vpc+32jKZk9A8YpAIFsceRs1J8bWvdhH0SeOqxQSrY5ORompkOLj7YnVQ
- jb/Y+bsigctzlAcWoPx7GeorA2voGuB0utC4qIWt5PldKwpOR/hCBpt75QQw0SFqiUJ5
- omuDOsGqHLv9OU7R57g7rQEvdPyfjm5y4BsbE8ELOaZAzk4uhIETyNj+ex4uiJUSS/+m
- sSNk6hTPnjdq2EffRwU9RtEpiifSqaZtgzdqSe9zFP4D8lGpYdAiFiZ3orsYkE5sd3r8
- PiWe3R3NH8ui3tLhU7SrQ1xoWokNRTJLS50buKJreMDCB4czMrUVA1QNdTDV6CD4QmdB cg== 
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ubusws2yn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Nov 2023 08:54:44 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AE8siru022957
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Nov 2023 08:54:44 GMT
-Received: from aiquny2-gv.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Tue, 14 Nov 2023 00:53:15 -0800
-From:   Maria Yu <quic_aiquny@quicinc.com>
-To:     <linus.walleij@linaro.org>
-CC:     Maria Yu <quic_aiquny@quicinc.com>, <linux-gpio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] pinctrl: avoid reload of p state in interation
-Date:   Tue, 14 Nov 2023 16:52:58 +0800
-Message-ID: <20231114085258.2378-1-quic_aiquny@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S232224AbjKNI4C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 03:56:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68690198
+        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 00:55:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1699952158;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=U2eptL0/hRZAJ5UVmQrsn8paC3yYwq6Vrl06QgAw1qU=;
+        b=P820N7b/ffULunS0DhYiwscCj6WdLma7Ma8bCfkBFqjA0kO5oTeVd0HXZeEq1J+D2lt/6v
+        gsUgmZ5Wgc4IZJ0MQ50uBDK6lcqHnMy7FfAA27UH/61b0e8T9Q27A9+ZflZSeSusAgYGRC
+        Ur70eDdMvCJ5EsvmFV+foLb7xxNXdDE=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-124-E60Ihx4bPJuP0jmerF99KA-1; Tue, 14 Nov 2023 03:55:56 -0500
+X-MC-Unique: E60Ihx4bPJuP0jmerF99KA-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-408534c3ec7so35210415e9.1
+        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 00:55:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699952155; x=1700556955;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=U2eptL0/hRZAJ5UVmQrsn8paC3yYwq6Vrl06QgAw1qU=;
+        b=XGDQ8gJ3rOVITst8574m8jerO7U0vPuAhN+u1cBxRinxns4WwZHgY5EJoobXOWKcoB
+         c5kGfyf4+/cGTNNVC8YrZ1PRDJLBxns0izEDgAfTUSGD/bjYaQH85UsTNQnIzBzZ8GoG
+         GDqI9SflH4rCeEFfwKPlcpRYeyj/ikU/bufj4VL3e1Lt/R6EHpg+Y+9Rz0Ygdj6rkyeI
+         TLeUJ+zcwYdRDcEh9VhurJH/SvNfSZsHBBe25tcHmaYZLgEYGi0FWvlcIo//dH3n5Rx+
+         lICgZzG4wEnJBB5U2cFV4drxd3sER/fN7/7xnWJbt0OpnsL9Amee7P8otXpMnGiEv1W3
+         K65w==
+X-Gm-Message-State: AOJu0YwnGiHLjGU67DtGj93MvTmbX0pI1z48sSIhtb70nQwLGzS/FCoz
+        d0LrruXzL72MqtTa3WbJEqOPuUCHssig0yHeXw2Mc49yXfkQTEN8fOYj7SwlAIhmtc7fOnBWNuX
+        AMzN4sKEw+9DCON4S
+X-Received: by 2002:a05:600c:4689:b0:406:53f1:d629 with SMTP id p9-20020a05600c468900b0040653f1d629mr7066885wmo.5.1699952155646;
+        Tue, 14 Nov 2023 00:55:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHwmxzArCE1yT7c6VWtUi4CeGvspYKMMRsTRuOyn603I9zaKES8gBzQS1aSNYvHBK4R3G7DMw==
+X-Received: by 2002:a05:600c:4689:b0:406:53f1:d629 with SMTP id p9-20020a05600c468900b0040653f1d629mr7066871wmo.5.1699952155285;
+        Tue, 14 Nov 2023 00:55:55 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id y7-20020a1c4b07000000b003fe1fe56202sm10557897wma.33.2023.11.14.00.55.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Nov 2023 00:55:54 -0800 (PST)
+Message-ID: <bafd23a9-81d4-4d3b-9fd3-10461cba6b89@redhat.com>
+Date:   Tue, 14 Nov 2023 09:55:53 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Jvofzohzn_Ms_XO186REUnyPMNLA3LCL
-X-Proofpoint-ORIG-GUID: Jvofzohzn_Ms_XO186REUnyPMNLA3LCL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-14_07,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 clxscore=1011 mlxlogscore=738
- impostorscore=0 adultscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311140068
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: Mozilla Thunderbird
+Subject: Re: Incomplete stable drm/ast backport - screen freeze on boot
+Content-Language: en-US
+To:     Sasha Levin <sashal@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Cc:     Keno Fischer <keno@juliahub.com>, stable@vger.kernel.org,
+        Greg KH <gregkh@linuxfoundation.org>, airlied@redhat.com,
+        dri-devel@lists.freedesktop.org, regressions@lists.linux.dev
+References: <CABV8kRwx=92ntPW155ef=72z6gtS_NPQ9bRD=R1q_hx1p7wy=g@mail.gmail.com>
+ <32a25774-440c-4de3-8836-01d46718b4f8@redhat.com>
+ <9dc39636-ff41-44d7-96cb-f954008bfc9d@suse.de> <ZVJQxS6h_K73fMfQ@sashalap>
+From:   Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <ZVJQxS6h_K73fMfQ@sashalap>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,42 +84,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When in the list_for_each_entry interation, reload of p->state->settings
-with a local setting from old_state will makes the list interation in a
-infite loop.
+On 13/11/2023 17:37, Sasha Levin wrote:
+> On Mon, Nov 13, 2023 at 10:49:01AM +0100, Thomas Zimmermann wrote:
+>> (cc: gregkh)
+>>
+>> Hi Jocelyn
+>>
+>> Am 13.11.23 um 10:36 schrieb Jocelyn Falempe:
+>>> On 13/11/2023 09:34, Keno Fischer wrote:
+>>>> Greetings,
+>>>>
+>>>> When connected to a remote machine via the BMC KVM functionality,
+>>>> I am experiencing screen freezes on boot when using 6.5 stable,
+>>>> but not master.
+>>>>
+>>>> The BMC on the machine in question is an ASpeed AST2600.
+>>>> A quick bisect shows the problematic commit to be 2fb9667
+>>>> ("drm/ast: report connection status on Display Port.").
+>>>> This is commit f81bb0ac upstream.
+>>>>
+>>>> I believe the problem is that the previous commit in the series
+>>>> e329cb5 ("drm/ast: Add BMC virtual connector")
+>>>> was not backported to the stable branch.
+>>>> As a consequence, it appears that the more accurate DP state detection
+>>>> is causing the kernel to believe that no display is connected,
+>>>> even when the BMC's virtual display is in fact in use.
+>>>> A cherry-pick of e329cb5 onto the stable branch resolves the issue.
+>>>
+>>> Yes, you're right this two patches must be backported together.
+>>>
+>>> I'm sorry I didn't pay enough attention, that only one of the two was 
+>>> picked up for the stable branch.
+>>>
+>>> Is it possible to backport e329cb5 to the stable branch, or should I 
+>>> push it to drm-misc-fixes ?
+>>
+>> I think stable, which is in cc, will pick up commit e329cb5 
+>> semi-automatically now. Otherwise, maybe ping gregkh in a few days 
+>> about it.
+> 
+> I thikn it would be more appropriate to revert 2fb9667, as e329cb5
+> doesn't look like -stable material. I'll go ahead and do that.
+> 
+Ok, that's the best thing to do, as Thomas also found that userspace can 
+be confused by the new BMC virtual connector, so it's safer to revert.
 
-Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
----
- drivers/pinctrl/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Thanks,
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index 1fa89be29b8f..f2977eb65522 100644
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1262,17 +1262,17 @@ static void pinctrl_link_add(struct pinctrl_dev *pctldev,
- static int pinctrl_commit_state(struct pinctrl *p, struct pinctrl_state *state)
- {
- 	struct pinctrl_setting *setting, *setting2;
--	struct pinctrl_state *old_state = p->state;
-+	struct pinctrl_state *old_state = READ_ONCE(p->state);
- 	int ret;
- 
--	if (p->state) {
-+	if (old_state) {
- 		/*
- 		 * For each pinmux setting in the old state, forget SW's record
- 		 * of mux owner for that pingroup. Any pingroups which are
- 		 * still owned by the new state will be re-acquired by the call
- 		 * to pinmux_enable_setting() in the loop below.
- 		 */
--		list_for_each_entry(setting, &p->state->settings, node) {
-+		list_for_each_entry(setting, &old_state->settings, node) {
- 			if (setting->type != PIN_MAP_TYPE_MUX_GROUP)
- 				continue;
- 			pinmux_disable_setting(setting);
-
-base-commit: 9bacdd8996c77c42ca004440be610692275ff9d0
 -- 
-2.17.1
+
+Jocelyn
 
