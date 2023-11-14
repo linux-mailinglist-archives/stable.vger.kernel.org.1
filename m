@@ -2,81 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EBE67EAAC5
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 08:10:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2457EAACF
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 08:17:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjKNHKk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 02:10:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47882 "EHLO
+        id S230451AbjKNHRi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 02:17:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjKNHKj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 02:10:39 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF8CE194
-        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 23:10:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699945836; x=1731481836;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Wsd1dNobSgH5+Vj4kvT0DqHCzxu1TzV1I8J+rJSJoZM=;
-  b=h8x2Ox1WYcw+bjkSLrOr/wEyUGm5RnpLkBAhzM50rK17pG9urlZ+pqYj
-   7JzbMiXU93ANtKAlFHSjlYoPtVGEF0mFIcffgXDNpiKsa203eh+kf8/WG
-   IK1DPfYb8A9KkkeXyFzEHAmb4uk0p2Yc2SxLPuL0kfUNsOTHhqxpdYh6z
-   tuODz95tw4e9o3bXhW7ewOujEIUBGlJ5/xUvnGdNU8sH3jAaxdtEvwq0w
-   166AwCXtcpFCBXaHXar09jaYyC9nTpoQiTAWO5MX6t782lSlqo+tywziN
-   X8m/BNpUpfmO2XMb+RSbYCIKETidsW5JGNeoGPLm7ujUUgoOsoYBm/Hlk
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="380995764"
-X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; 
-   d="scan'208";a="380995764"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2023 23:10:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; 
-   d="scan'208";a="12704609"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 13 Nov 2023 23:10:35 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1r2nZA-000CzG-2j;
-        Tue, 14 Nov 2023 07:10:32 +0000
-Date:   Tue, 14 Nov 2023 15:10:03 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Hongchen Zhang <zhanghongchen@loongson.cn>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] PM: hibernate: use acquire/release ordering when
- compress/decompress image
-Message-ID: <ZVMdS0CPNHC3lMhL@a0c8cbd5f24d>
+        with ESMTP id S229580AbjKNHRi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 02:17:38 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332FE18D;
+        Mon, 13 Nov 2023 23:17:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F83AC433C7;
+        Tue, 14 Nov 2023 07:17:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699946254;
+        bh=+4kSS2cqW5ZV1rlUePkSMz5J6w5P2YeUyYN7VwsA6kQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=mcXD9sWhg1oF72RJY/959llE/tvISFPr+2WfofYm3m3oKO+2p5SxNmb9gXqCaGQQz
+         Pbc87hA717014dq07liKmSVat76mbxrnGNQ/pFQ2jkt5atJ/zK3qdwCKaU8iHp4SCt
+         gYY4BbDtD/mp87pDGOuZNAsQJIrx9YmvwYlh5klAHrge8l0ZYlyZUh3wO+JfSeqjJw
+         cmCC1QWkjFuuM9/iGXglSRUe+iGw9iD1YRqllYa4hifHN0363u8nl9N3jWnOpaq9nh
+         crCOJDfZpAcOYVmPJrWYJF0iciXPF+WzLxdeZWwX3QZ3gPTHJRUhrMRPS1KWTL/RaR
+         /GSSWyaMmS1cw==
+Date:   Tue, 14 Nov 2023 15:17:20 +0800
+From:   Peter Chen <peter.chen@kernel.org>
+To:     Pawel Laszczak <pawell@cadence.com>
+Cc:     gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: cdnsp: Fix deadlock issue during using NCM gadget
+Message-ID: <20231114071720.GA64573@nchen-desktop>
+References: <20231108093125.224963-1-pawell@cadence.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231114070553.1568212-1-zhanghongchen@loongson.cn>
+In-Reply-To: <20231108093125.224963-1-pawell@cadence.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On 23-11-08 10:31:25, Pawel Laszczak wrote:
+> The interrupt service routine registered for the gadget is a primary
+> handler which mask the interrupt source and a threaded handler which
+> handles the source of the interrupt. Since the threaded handler is
+> voluntary threaded, the IRQ-core does not disable bottom halves before
+> invoke the handler like it does for the forced-threaded handler.
+> 
+> Due to changes in networking it became visible that a network gadget's
+> completions handler may schedule a softirq which remains unprocessed.
+> The gadget's completion handler is usually invoked either in hard-IRQ or
+> soft-IRQ context. In this context it is enough to just raise the softirq
+> because the softirq itself will be handled once that context is left.
+> In the case of the voluntary threaded handler, there is nothing that
+> will process pending softirqs. Which means it remain queued until
+> another random interrupt (on this CPU) fires and handles it on its exit
+> path or another thread locks and unlocks a lock with the bh suffix.
+> Worst case is that the CPU goes idle and the NOHZ complains about
+> unhandled softirqs.
+> 
+> Disable bottom halves before acquiring the lock (and disabling
+> interrupts) and enable them after dropping the lock. This ensures that
+> any pending softirqs will handled right away.
+> 
+> cc: <stable@vger.kernel.org>
+> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
 
-Thanks for your patch.
+Acked-by: Peter Chen <peter.chen@kernel.org>
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Peter
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] PM: hibernate: use acquire/release ordering when compress/decompress image
-Link: https://lore.kernel.org/stable/20231114070553.1568212-1-zhanghongchen%40loongson.cn
+> ---
+>  drivers/usb/cdns3/cdnsp-ring.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
+> index 07f6068342d4..275a6a2fa671 100644
+> --- a/drivers/usb/cdns3/cdnsp-ring.c
+> +++ b/drivers/usb/cdns3/cdnsp-ring.c
+> @@ -1529,6 +1529,7 @@ irqreturn_t cdnsp_thread_irq_handler(int irq, void *data)
+>  	unsigned long flags;
+>  	int counter = 0;
+>  
+> +	local_bh_disable();
+>  	spin_lock_irqsave(&pdev->lock, flags);
+>  
+>  	if (pdev->cdnsp_state & (CDNSP_STATE_HALTED | CDNSP_STATE_DYING)) {
+> @@ -1541,6 +1542,7 @@ irqreturn_t cdnsp_thread_irq_handler(int irq, void *data)
+>  			cdnsp_died(pdev);
+>  
+>  		spin_unlock_irqrestore(&pdev->lock, flags);
+> +		local_bh_enable();
+>  		return IRQ_HANDLED;
+>  	}
+>  
+> @@ -1557,6 +1559,7 @@ irqreturn_t cdnsp_thread_irq_handler(int irq, void *data)
+>  	cdnsp_update_erst_dequeue(pdev, event_ring_deq, 1);
+>  
+>  	spin_unlock_irqrestore(&pdev->lock, flags);
+> +	local_bh_enable();
+>  
+>  	return IRQ_HANDLED;
+>  }
+> -- 
+> 2.37.2
+> 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
-
-
+Thanks,
+Peter Chen
