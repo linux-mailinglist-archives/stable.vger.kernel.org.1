@@ -2,134 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A01F17EB20B
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 15:23:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F389A7EB259
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 15:37:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232285AbjKNOXl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 09:23:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50132 "EHLO
+        id S233554AbjKNOgy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 09:36:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230074AbjKNOXk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 09:23:40 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550DDCA
-        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 06:23:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699971817; x=1731507817;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=RFjXrnDWh/GfkSTw3CQFmrkYOoh0zJlNiAsI7U8PUzg=;
-  b=Yd8EhFMQNAgjHq/YEFNK3k/xQxtSDpcRNAm/IU0NG1P5uvNHovsKzbVM
-   vdssdGaXMlALhuG3sv3tW56TwaoKiSRVMC4TnG8MDA0KQ0XMcmVygPebo
-   Q68nm30diITK5Og5Qtuwj6q8DzKHfuCxer5zZDttVzME/VSg4vwpaNDMw
-   TIfQx4G6NgMmGSJxnSvJgS/jsZ90QSLf9MS/g56cb4ik6ZOQaKiJanP/0
-   x7SCKix3We0uG7JQOyP95ckINA+X2KwXO7o5uvFGs69GKSMH0tA/f3ruN
-   O43vslVFZl3g5PAmAkAqUyGJmog17t5KatOjrrQwC8lBpNZiIgOgnh1Uw
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="370007647"
-X-IronPort-AV: E=Sophos;i="6.03,302,1694761200"; 
-   d="scan'208";a="370007647"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 06:23:36 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="758188201"
-X-IronPort-AV: E=Sophos;i="6.03,302,1694761200"; 
-   d="scan'208";a="758188201"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga007.jf.intel.com with SMTP; 14 Nov 2023 06:23:34 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 14 Nov 2023 16:23:33 +0200
-From:   Ville Syrjala <ville.syrjala@linux.intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     stable@vger.kernel.org
-Subject: [PATCH] drm/i915: Also check for VGA converter in eDP probe
-Date:   Tue, 14 Nov 2023 16:23:33 +0200
-Message-ID: <20231114142333.15799-1-ville.syrjala@linux.intel.com>
+        with ESMTP id S233548AbjKNOgZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 09:36:25 -0500
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A31E310CE;
+        Tue, 14 Nov 2023 06:36:02 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id C8742240002;
+        Tue, 14 Nov 2023 14:35:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1699972561;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=2K1mbcUA++OLwr4dR6O4Gp4Y1DTPQD4iQtrtg8iFg2o=;
+        b=GHqnYtg8T4cVJRnGe93qe/5ni27eMDmGi3R9vt9cWVZa2wwLeZArrgmiaUdSjF7YxSMLFt
+        blMt+5d8D5y/hSViLw/CLj0GNEZhD0y3jHUOTl4saf2JmJlQV359BfIgu76pXnXVYzc+2S
+        tT6A4XYIomBR34ZVVy9AnLF09FN77TUWCDrbqe1HhbADq+IFK59sw8WzybjVGHQXe82A4P
+        u+B4lQ1z/2uPRCV1N+mzMz5RqL/bMov7PZ+WOylCaV++7+vFCFERMqGWO+4Q0Un2lMmwe9
+        ojjEkKCAyzK3D4SeDApVoa+BO19ZFHPNqIsHHzeEXtuavzbTHTq2YBxPdSkQ2A==
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Saravana Kannan <saravanak@google.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Steen Hegelund <steen.hegelund@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Herve Codina <herve.codina@bootlin.com>, stable@vger.kernel.org
+Subject: [PATCH v2 1/1] lib/vsprintf: Fix %pfwf when current node refcount == 0
+Date:   Tue, 14 Nov 2023 15:35:58 +0100
+Message-ID: <20231114143558.356259-1-herve.codina@bootlin.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-GND-Sasl: herve.codina@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+A refcount issue can appeared in __fwnode_link_del() due to the
+pr_debug() call:
+  WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+  Call Trace:
+  <TASK>
+  ...
+  of_node_get+0x1e/0x30
+  of_fwnode_get+0x28/0x40
+  fwnode_full_name_string+0x34/0x90
+  fwnode_string+0xdb/0x140
+  ...
+  vsnprintf+0x17b/0x630
+  ...
+  __fwnode_link_del+0x25/0xa0
+  fwnode_links_purge+0x39/0xb0
+  of_node_release+0xd9/0x180
+  ...
 
-Unfortunately even the HPD based detection added in
-commit cfe5bdfb27fa ("drm/i915: Check HPD live state during eDP probe")
-fails to detect that the VBT's eDP/DDI-A is a ghost on
-Asus B360M-A (CFL+CNP). On that board eDP/DDI-A has its HPD
-asserted despite nothing being actually connected there :(
-The straps/fuses also indicate that the eDP port is present.
+Indeed, an fwnode (of_node) is being destroyed and so, of_node_release()
+is called because the of_node refcount reached 0.
+From of_node_release() several function calls are done and lead to
+a pr_debug() calls with %pfwf to print the fwnode full name.
+The issue is not present if we change %pfwf to %pfwP.
 
-So if one boots with a VGA monitor connected the eDP probe will
-mistake the DP->VGA converter hooked to DDI-E for an eDP panel
-on DDI-A.
+To print the full name, %pfwf iterates over the current node and its
+parents and obtain/drop a reference to all nodes involved.
 
-As a last resort check what kind of DP device we've detected,
-and if it looks like a DP->VGA converter then conclude that
-the eDP port should be ignored.
+In order to allow to print the full name (%pfwf) of a node while it is
+being destroyed, do not obtain/drop a reference to this current node.
 
+Fixes: a92eb7621b9f ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
 Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9636
-Fixes: cfe5bdfb27fa ("drm/i915: Check HPD live state during eDP probe")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 28 +++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+Changes v1 -> v2
+  - Avoid handling current node out of the loop. Instead obtain/drop references
+    in the loop based on the depth value.
+  - Remove some of the backtrace lines in the commit log.
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 54bd0bffa9f0..14ee05fabd05 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -6277,8 +6277,7 @@ static bool intel_edp_init_connector(struct intel_dp *intel_dp,
- 	 * (eg. Acer Chromebook C710), so we'll check it only if multiple
- 	 * ports are attempting to use the same AUX CH, according to VBT.
- 	 */
--	if (intel_bios_dp_has_shared_aux_ch(encoder->devdata) &&
--	    !intel_digital_port_connected(encoder)) {
-+	if (intel_bios_dp_has_shared_aux_ch(encoder->devdata)) {
- 		/*
- 		 * If this fails, presume the DPCD answer came
- 		 * from some other port using the same AUX CH.
-@@ -6286,10 +6285,27 @@ static bool intel_edp_init_connector(struct intel_dp *intel_dp,
- 		 * FIXME maybe cleaner to check this before the
- 		 * DPCD read? Would need sort out the VDD handling...
- 		 */
--		drm_info(&dev_priv->drm,
--			 "[ENCODER:%d:%s] HPD is down, disabling eDP\n",
--			 encoder->base.base.id, encoder->base.name);
--		goto out_vdd_off;
-+		if (!intel_digital_port_connected(encoder)) {
-+			drm_info(&dev_priv->drm,
-+				 "[ENCODER:%d:%s] HPD is down, disabling eDP\n",
-+				 encoder->base.base.id, encoder->base.name);
-+			goto out_vdd_off;
-+		}
-+
+ lib/vsprintf.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index afb88b24fa74..633f5481ac17 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -2110,15 +2110,20 @@ char *fwnode_full_name_string(struct fwnode_handle *fwnode, char *buf,
+ 
+ 	/* Loop starting from the root node to the current node. */
+ 	for (depth = fwnode_count_parents(fwnode); depth >= 0; depth--) {
+-		struct fwnode_handle *__fwnode =
+-			fwnode_get_nth_parent(fwnode, depth);
 +		/*
-+		 * Unfortunately even the HPD based detection fails on
-+		 * eg. Asus B360M-A (CFL+CNP), so as a last resort fall
-+		 * back to checking for a VGA branch device. Only do this
-+		 * on known affected platforms to minimize false positives.
++		 * Only get a reference for other nodes (ie parents node).
++		 * fwnode refcount may be 0 here.
 +		 */
-+		if (DISPLAY_VER(dev_priv) == 9 && drm_dp_is_branch(intel_dp->dpcd) &&
-+		    (intel_dp->dpcd[DP_DOWNSTREAMPORT_PRESENT] & DP_DWN_STRM_PORT_TYPE_MASK) ==
-+		    DP_DWN_STRM_PORT_TYPE_ANALOG) {
-+			drm_info(&dev_priv->drm,
-+				 "[ENCODER:%d:%s] VGA converter detected, disabling eDP\n",
-+				 encoder->base.base.id, encoder->base.name);
-+			goto out_vdd_off;
-+		}
++		struct fwnode_handle *__fwnode = depth ?
++			fwnode_get_nth_parent(fwnode, depth) : fwnode;
+ 
+ 		buf = string(buf, end, fwnode_get_name_prefix(__fwnode),
+ 			     default_str_spec);
+ 		buf = string(buf, end, fwnode_get_name(__fwnode),
+ 			     default_str_spec);
+ 
+-		fwnode_handle_put(__fwnode);
++		if (depth)
++			fwnode_handle_put(__fwnode);
  	}
  
- 	mutex_lock(&dev_priv->drm.mode_config.mutex);
+ 	return buf;
 -- 
 2.41.0
 
