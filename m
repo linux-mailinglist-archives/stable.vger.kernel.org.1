@@ -2,53 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3736A7EAAD3
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 08:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61FEB7EAB0C
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 08:46:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231317AbjKNHUo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 02:20:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60636 "EHLO
+        id S232238AbjKNHq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 02:46:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjKNHUn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 02:20:43 -0500
+        with ESMTP id S229566AbjKNHq5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 02:46:57 -0500
 Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E8D618D;
-        Mon, 13 Nov 2023 23:20:38 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 83D37240008;
-        Tue, 14 Nov 2023 07:20:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 740401A3;
+        Mon, 13 Nov 2023 23:46:54 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id B9A7824000A;
+        Tue, 14 Nov 2023 07:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1699946436;
+        t=1699948013;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=q9ADHb71md8VO01SCio/dgLW3EC2SFLm2+cMwvUX1NQ=;
-        b=mQXbfSemr4ksSWTwx+j5PNXvlBOhrgoRE0qJVIdDqjtztgLmPH8rskqeT6T4r0cKVQvbSK
-        bACDfNjAj8w78aoVVYHkpzRL65DUy/XYHzl3D/93hfpamjA6sEmd9gAg3XRgSSMupfR5jM
-        UA3pMUXOqSsc1Ozmj6n7Eopn5VqI8mHOwMxQ+XC4zuvlNwL68A0M6sgs7PpnoTvfv3lsFb
-        u5aPxzber++38P6ww9iFuI98i7fb71qbO3iEem4lw0S78LFaCe3uvWOXoS4/kQDuSQ3mlg
-        YDmQ8dMUrlvMN/TccDJxxTHUUskZZSLwcvQ0X48jXOhqqmW2xdZISY3t4QTvaQ==
-Date:   Tue, 14 Nov 2023 08:20:35 +0100
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=WSqWkMKT4hlIo0Hft0JXkPwNJp2PZekuBZnXLftRgw4=;
+        b=OuRD1zr1JHlFhd/s9EKNWu1YgcODmlldoi8th8WmxXzC253V98Yxh3AguSHjJruVVZYzny
+        Nvdyl+hxOQtnqcjJnXIV79evSLByXrnpHRnD1kQPLBI/wSaiG55j1VNODZ9xaTwhqjZg8a
+        BgZmDSVD71zK/zPt+xfBd9XFOBtZeNXgtm/t2iVfvKbp9OgdHuPWcI13pXTY4d0ShrBYMM
+        b6LpCKb/Pi1DCVeYpCMZ7eDor0HMEib3tSFOCQSJagJ25amfJuXfZG9ygOO/jiCkWkls98
+        4J2JYU9A1TApE9/imXNWDu1Hjvy9eTxDBooyLIG9ei6syummlWk0q7lzkeRurA==
 From:   Herve Codina <herve.codina@bootlin.com>
-To:     Saravana Kannan <saravanak@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org,
+        Saravana Kannan <saravanak@google.com>
+Cc:     linux-kernel@vger.kernel.org,
         Allan Nielsen <allan.nielsen@microchip.com>,
         Horatiu Vultur <horatiu.vultur@microchip.com>,
         Steen Hegelund <steen.hegelund@microchip.com>,
         Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] driver core: Keep the supplier fwnode consistent
- with the device
-Message-ID: <20231114082035.64aa8d58@bootlin.com>
-In-Reply-To: <CAGETcx8-iXbWkRyVT3s4XkmQii2CSysSLedDLWn0oNLQLPM3ow@mail.gmail.com>
-References: <20231113133044.55257-1-herve.codina@bootlin.com>
-        <CAGETcx8-iXbWkRyVT3s4XkmQii2CSysSLedDLWn0oNLQLPM3ow@mail.gmail.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+        Herve Codina <herve.codina@bootlin.com>, stable@vger.kernel.org
+Subject: [PATCH v3 1/1] driver core: Keep the supplier fwnode consistent with the device
+Date:   Tue, 14 Nov 2023 08:46:32 +0100
+Message-ID: <20231114074632.192858-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: herve.codina@bootlin.com
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -61,29 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Saravana,
+The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
+fwnode's consumer links") introduces the possibility to use the
+supplier's parent device instead of the supplier itself.
+In that case the supplier fwnode used is not updated and is no more
+consistent with the supplier device used.
 
-On Mon, 13 Nov 2023 12:09:43 -0800
-Saravana Kannan <saravanak@google.com> wrote:
+Use the fwnode consistent with the supplier device when checking flags.
 
-> On Mon, Nov 13, 2023 at 5:30 AM Herve Codina <herve.codina@bootlin.com> wrote:
-> >
-> > The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
-> > fwnode's consumer links") introduces the possibility to use the
-> > supplier's parent device instead of the supplier itself.
-> > In that case the supplier fwnode used is not updated and is no more
-> > consistent with the supplier device used.  
-> 
-> Looks like you missed this comment from my previous reply.
-> 
-> Nack. It's easier to debug when you know what supplier you were
-> pointing to in DT that triggered the creation of the device link.
-> 
-> It can get confusing real quick otherwise.
+Fixes: 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child fwnode's consumer links")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+Changes v2 -> v3:
+  Do not update the supplier handle in order to keep the original handle
+  for debug traces.
 
-Sorry,
-In the next iteration, I will keep the original supplier handle for
-debug prints.
+Changes v1 -> v2:
+  Remove sup_handle check and related pr_debug() call as sup_handle cannot be
+  invalid if sup_dev is valid.
 
-Regards,
-Hervé
+ drivers/base/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 4d8b315c48a1..440b52ec027f 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -2082,7 +2082,7 @@ static int fw_devlink_create_devlink(struct device *con,
+ 		 * supplier device indefinitely.
+ 		 */
+ 		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
+-		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
++		    sup_dev->fwnode->flags & FWNODE_FLAG_INITIALIZED) {
+ 			dev_dbg(con,
+ 				"Not linking %pfwf - dev might never probe\n",
+ 				sup_handle);
+-- 
+2.41.0
+
