@@ -2,145 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 533337EB20C
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 15:24:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A01F17EB20B
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 15:23:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230074AbjKNOYk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 09:24:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34364 "EHLO
+        id S232285AbjKNOXl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 09:23:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233311AbjKNOKn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 09:10:43 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2269AAD;
-        Tue, 14 Nov 2023 06:10:39 -0800 (PST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AEE5ANZ027348;
-        Tue, 14 Nov 2023 14:10:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=aDw8Z+QQY/5SnbCPtGUQ11LbrC1Pxu4VuTPuWqU6a7U=;
- b=f1W1DeYc1ueL8PlzS9zDmk4wUWfqdlxetdnrcQcbf5WFjKx2JFJmq8OmU1lfXtWtDgu3
- CK3ZE2/IwMGTRKA0rBw4GK0LYq6MDgKwYO7363E4qzikxqn8exlr08P6CbQ3hu8MTS3N
- fw1MBX6gVpG8grMuHuT3CBLCvWH94xuhKyxRSBfHEzoadVh/+hy/1PstETDy52xbFxbT
- BWrS/KRweNGKcGj0b6Qbw9gvtEfBIWCOmLdBdQt/hZJEBjIEw9bgAryv4BQanM0VGSZo
- 1sIoTxKT+oytox09861b9O8flGQzZNWsUgNKktU/7cIYSsdWjoAvfaIwiL8GBkQVy9NI Rw== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ucabgrb8g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Nov 2023 14:10:37 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AEBN6Eq014683;
-        Tue, 14 Nov 2023 14:10:35 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uamay8emv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Nov 2023 14:10:35 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-        by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AEEAYXK50462980
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Nov 2023 14:10:34 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C93F05804E;
-        Tue, 14 Nov 2023 14:10:34 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 168815803F;
-        Tue, 14 Nov 2023 14:10:34 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 14 Nov 2023 14:10:33 +0000 (GMT)
-From:   Stefan Berger <stefanb@linux.ibm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     zohar@linux.ibm.com, gregkh@linuxfoundation.org,
-        initramfs@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>,
-        stable@vger.kernel.org, Rob Landley <rob@landley.net>
-Subject: [PATCH v2] rootfs: Fix support for rootfstype= when root= is given
-Date:   Tue, 14 Nov 2023 09:10:30 -0500
-Message-ID: <20231114141030.219729-1-stefanb@linux.ibm.com>
+        with ESMTP id S230074AbjKNOXk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 09:23:40 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550DDCA
+        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 06:23:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699971817; x=1731507817;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RFjXrnDWh/GfkSTw3CQFmrkYOoh0zJlNiAsI7U8PUzg=;
+  b=Yd8EhFMQNAgjHq/YEFNK3k/xQxtSDpcRNAm/IU0NG1P5uvNHovsKzbVM
+   vdssdGaXMlALhuG3sv3tW56TwaoKiSRVMC4TnG8MDA0KQ0XMcmVygPebo
+   Q68nm30diITK5Og5Qtuwj6q8DzKHfuCxer5zZDttVzME/VSg4vwpaNDMw
+   TIfQx4G6NgMmGSJxnSvJgS/jsZ90QSLf9MS/g56cb4ik6ZOQaKiJanP/0
+   x7SCKix3We0uG7JQOyP95ckINA+X2KwXO7o5uvFGs69GKSMH0tA/f3ruN
+   O43vslVFZl3g5PAmAkAqUyGJmog17t5KatOjrrQwC8lBpNZiIgOgnh1Uw
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="370007647"
+X-IronPort-AV: E=Sophos;i="6.03,302,1694761200"; 
+   d="scan'208";a="370007647"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 06:23:36 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="758188201"
+X-IronPort-AV: E=Sophos;i="6.03,302,1694761200"; 
+   d="scan'208";a="758188201"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orsmga007.jf.intel.com with SMTP; 14 Nov 2023 06:23:34 -0800
+Received: by stinkbox (sSMTP sendmail emulation); Tue, 14 Nov 2023 16:23:33 +0200
+From:   Ville Syrjala <ville.syrjala@linux.intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     stable@vger.kernel.org
+Subject: [PATCH] drm/i915: Also check for VGA converter in eDP probe
+Date:   Tue, 14 Nov 2023 16:23:33 +0200
+Message-ID: <20231114142333.15799-1-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KBORmMS8h6xjVPFvofXK5OwButrnbcdg
-X-Proofpoint-ORIG-GUID: KBORmMS8h6xjVPFvofXK5OwButrnbcdg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-14_13,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
- bulkscore=0 adultscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311140109
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
-  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
-  line.
+Unfortunately even the HPD based detection added in
+commit cfe5bdfb27fa ("drm/i915: Check HPD live state during eDP probe")
+fails to detect that the VBT's eDP/DDI-A is a ghost on
+Asus B360M-A (CFL+CNP). On that board eDP/DDI-A has its HPD
+asserted despite nothing being actually connected there :(
+The straps/fuses also indicate that the eDP port is present.
 
-This currently does not work when root= is provided since then
-saved_root_name contains a string and initfstype= is ignored. Therefore,
-ramfs is currently always chosen when root= is provided.
+So if one boots with a VGA monitor connected the eDP probe will
+mistake the DP->VGA converter hooked to DDI-E for an eDP panel
+on DDI-A.
 
-The current behavior for rootfs's filesystem is:
+As a last resort check what kind of DP device we've detected,
+and if it looks like a DP->VGA converter then conclude that
+the eDP port should be ignored.
 
-   root=       | initfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs
-   unspecified | tmpfs       | tmpfs
-   unspecified | ramfs       | ramfs
-    provided   | ignored     | ramfs
-
-initfstype= should be respected regardless whether root= is given,
-as shown below:
-
-   root=       | initfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs  (as before)
-   unspecified | tmpfs       | tmpfs  (as before)
-   unspecified | ramfs       | ramfs  (as before)
-    provided   | unspecified | ramfs  (compatibility with before)
-    provided   | tmpfs       | tmpfs  (new)
-    provided   | ramfs       | ramfs  (new)
-
-This table represents the new behavior.
-
-Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root=  specified")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-Signed-off-by: Rob Landley <rob@landley.net>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9636
+Fixes: cfe5bdfb27fa ("drm/i915: Check HPD live state during eDP probe")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- init/do_mounts.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 28 +++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/init/do_mounts.c b/init/do_mounts.c
-index 5fdef94f0864..279ad28bf4fb 100644
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -510,7 +510,10 @@ struct file_system_type rootfs_fs_type = {
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 54bd0bffa9f0..14ee05fabd05 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -6277,8 +6277,7 @@ static bool intel_edp_init_connector(struct intel_dp *intel_dp,
+ 	 * (eg. Acer Chromebook C710), so we'll check it only if multiple
+ 	 * ports are attempting to use the same AUX CH, according to VBT.
+ 	 */
+-	if (intel_bios_dp_has_shared_aux_ch(encoder->devdata) &&
+-	    !intel_digital_port_connected(encoder)) {
++	if (intel_bios_dp_has_shared_aux_ch(encoder->devdata)) {
+ 		/*
+ 		 * If this fails, presume the DPCD answer came
+ 		 * from some other port using the same AUX CH.
+@@ -6286,10 +6285,27 @@ static bool intel_edp_init_connector(struct intel_dp *intel_dp,
+ 		 * FIXME maybe cleaner to check this before the
+ 		 * DPCD read? Would need sort out the VDD handling...
+ 		 */
+-		drm_info(&dev_priv->drm,
+-			 "[ENCODER:%d:%s] HPD is down, disabling eDP\n",
+-			 encoder->base.base.id, encoder->base.name);
+-		goto out_vdd_off;
++		if (!intel_digital_port_connected(encoder)) {
++			drm_info(&dev_priv->drm,
++				 "[ENCODER:%d:%s] HPD is down, disabling eDP\n",
++				 encoder->base.base.id, encoder->base.name);
++			goto out_vdd_off;
++		}
++
++		/*
++		 * Unfortunately even the HPD based detection fails on
++		 * eg. Asus B360M-A (CFL+CNP), so as a last resort fall
++		 * back to checking for a VGA branch device. Only do this
++		 * on known affected platforms to minimize false positives.
++		 */
++		if (DISPLAY_VER(dev_priv) == 9 && drm_dp_is_branch(intel_dp->dpcd) &&
++		    (intel_dp->dpcd[DP_DOWNSTREAMPORT_PRESENT] & DP_DWN_STRM_PORT_TYPE_MASK) ==
++		    DP_DWN_STRM_PORT_TYPE_ANALOG) {
++			drm_info(&dev_priv->drm,
++				 "[ENCODER:%d:%s] VGA converter detected, disabling eDP\n",
++				 encoder->base.base.id, encoder->base.name);
++			goto out_vdd_off;
++		}
+ 	}
  
- void __init init_rootfs(void)
- {
--	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
--		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
--		is_tmpfs = true;
-+	if (IS_ENABLED(CONFIG_TMPFS)) {
-+		if (!saved_root_name[0] && !root_fs_names)
-+			is_tmpfs = true;
-+		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
-+			is_tmpfs = true;
-+	}
- }
+ 	mutex_lock(&dev_priv->drm.mode_config.mutex);
 -- 
 2.41.0
 
