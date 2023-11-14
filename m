@@ -2,204 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B7BD7EAD97
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 11:08:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5697EADF0
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 11:26:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232282AbjKNKIP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 05:08:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59994 "EHLO
+        id S229607AbjKNK0h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 05:26:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230411AbjKNKIO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 05:08:14 -0500
-Received: from mx.kernkonzept.com (serv1.kernkonzept.com [IPv6:2a01:4f8:1c1c:b490::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1D0E19E;
-        Tue, 14 Nov 2023 02:08:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kernkonzept.com; s=mx1; h=Cc:To:In-Reply-To:References:Message-Id:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-        Reply-To:Content-ID:Content-Description;
-        bh=yHgv5IBYwVg9IetpTlbJF+51/fhwpJWv33OEEqG+teg=; b=eKsnWCnc1ymT2nYgpQ4N5mP2Ts
-        vzX2Vs5Jao1r1uvsVkAO0srNqEyTGx3hAj3YK2bz2DWTzkDgEFjXjM/D+YdTt6BpzDBhbuXfChCzB
-        eBy9Ukx3B13rnp8It6u8JC/wgY733XetB+gFrpHGnoBeaChuwn2dvoqkaaz7UsurzfgrltyiN3BeF
-        U1NT0u8+DoihyjbDJVtVW2kZXKuMvCvPws5CxnBBj3os+2oJwBOblL31S9N4e2UDv4GkAOMKlo5FW
-        IpwlpwJi5iy2cDohjP8NwsbPmZaL+tY+hTsE+ynht5S8fuzswxXEf9orS3jwGV1ltfRtNwSAcJwdL
-        F1H+Z9fw==;
-Received: from [10.22.3.24] (helo=serv1.dd1.int.kernkonzept.com)
-        by mx.kernkonzept.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.96)
-        id 1r2qL0-0050az-0B;
-        Tue, 14 Nov 2023 11:08:06 +0100
-From:   Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Date:   Tue, 14 Nov 2023 11:07:43 +0100
-Subject: [PATCH v3 1/3] cpufreq: qcom-nvmem: Enable virtual power domain
- devices
+        with ESMTP id S229441AbjKNK0g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 05:26:36 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4292883;
+        Tue, 14 Nov 2023 02:26:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699957593; x=1731493593;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=zwarH7arzcy5tlAYIhd5KTccW/23+URY4RVmEqL6/kc=;
+  b=jsqe4cRA97bTIuM5Lv6hxjlO8CdyD2lOlO46QYykB7H8WlydCZZYEtrR
+   11jdh4rBqFPtxIgdby6+Nmbzs16+sAoV7bemcTx0q+2IRnBC2M6Gz2TOG
+   zM9ohEWUUExns3ONvmtpbyua1YmfH2nLnT5d5sVy1spgzAFs2LjDWba/2
+   eiVd0mY43opOn6KtbHMJSZZ+p99jG/NaTcrCR5j3SDu8yDpdUYgjWEBIS
+   IrXcwRrXi1qombI5KXcrr/lVaP42mSyuwg1mxGs/f8Cyiact3Zf5KIcGB
+   KTk/o+MjSdf9ygwHJcZKov6I99sT2yICt70gaMNEKz5kco3OmByA65stG
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="3686984"
+X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; 
+   d="scan'208";a="3686984"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 02:26:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10893"; a="855240153"
+X-IronPort-AV: E=Sophos;i="6.03,301,1694761200"; 
+   d="scan'208";a="855240153"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.39.179])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Nov 2023 02:26:29 -0800
+Message-ID: <fc7ac047-e604-4a1a-a850-de1d44189565@intel.com>
+Date:   Tue, 14 Nov 2023 12:26:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mmc: sdhci-pci-gli: Disable LPM during initialization
+Content-Language: en-US
+To:     Sven van Ashbrook <svenva@chromium.org>,
+        =?UTF-8?Q?Kornel_Dul=C4=99ba?= <korneld@chromium.org>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Jason Lai <jasonlai.genesyslogic@gmail.com>,
+        Victor Shih <victor.shih@genesyslogic.com.tw>,
+        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+        =?UTF-8?Q?Stanis=C5=82aw_Kardach?= <skardach@google.com>,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        stable@vger.kernel.org, Rafael J Wysocki <rafael@kernel.org>
+References: <20231109111934.4172565-1-korneld@chromium.org>
+ <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
+ <ZU3pTY0qbA6cDB7f@google.com>
+ <CAG-rBiiXPzcMndhvT=vV7W--6i0O+26hgMcHL3wbCyKrnw6LsQ@mail.gmail.com>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <CAG-rBiiXPzcMndhvT=vV7W--6i0O+26hgMcHL3wbCyKrnw6LsQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231114-msm8909-cpufreq-v3-1-926097a6e5c1@kernkonzept.com>
-References: <20231114-msm8909-cpufreq-v3-0-926097a6e5c1@kernkonzept.com>
-In-Reply-To: <20231114-msm8909-cpufreq-v3-0-926097a6e5c1@kernkonzept.com>
-To:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
-        Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-        stable@vger.kernel.org
-X-Mailer: b4 0.12.4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The genpd core caches performance state votes from devices that are
-runtime suspended as of commit 3c5a272202c2 ("PM: domains: Improve
-runtime PM performance state handling"). They get applied once the
-device becomes active again.
+On 10/11/23 18:58, Sven van Ashbrook wrote:
+> There's something happening in this driver that doesn't
+> make much sense to me.
+> 
+> According to the pm runtime docs [1] the initial runtime pm
+> status of all devices is 'suspended'. Which I presume, means:
+> if the driver doesn't use any of the pm_runtime_*() functions
+> to tell the core "actually, I am active after probe", then the
+> device remains suspended until explicitly going active, at which
+> point the runtime_resume() callback is invoked.
+> 
+> That's the theory. In practice, what do I see on a device
+> containing this bridge?
+> Intel SoC <-> PCIe bus <-> gl9763e bridge <-> eMMC bus <-> eMMC drive
+> 
+> at probe() (does not exist in this driver so I stubbed it):
+> [ 0.601542] runtime pm is enabled = 1 (disable_depth == 0)
+> [ 0.601552] runtime pm is active = 2 (usage_count)
+> 
+> at probe_slot():
+> [ 0.602024] runtime pm is enabled = 1
+> [ 0.602027] runtime pm is active = 2
+> 
+> At add_host():
+> [ 0.602804] runtime pm is enabled = 1
+> [ 0.602809] runtime pm is active = 3
+> 
+> It looks like:
+> - nowhere does the gl9763e driver inform runtime pm it's active
 
-To attach the power domains needed by qcom-cpufreq-nvmem the OPP core
-calls genpd_dev_pm_attach_by_id(). This results in "virtual" dummy
-devices that use runtime PM only to control the enable and performance
-state for the attached power domain.
+PCI subsystem does it in pci_pm_init()
 
-However, at the moment nothing ever resumes the virtual devices created
-for qcom-cpufreq-nvmem. They remain permanently runtime suspended. This
-means that performance state votes made during cpufreq scaling get
-always cached and never applied to the hardware.
+> - the device is active in probe(), probe_slot() and add_host()
+> - the runtime_resume() callback did not get called before
+> probe(), probe_slot(), or add_host().
+> 
+> Why is the runtime_resume() callback not invoked?
 
-Fix this by enabling the devices after attaching them.
+Most drivers expect the device to be active at probe().  How it
+gets that way is up to the bus.  Note, the driver may call 
+pm_runtime_set_active() but that doesn't call runtime_resume().
 
-Without this fix performance states votes are silently ignored, and the
-CPU/CPR voltage is never adjusted. This has been broken since 5.14 but
-for some reason no one noticed this on QCS404 so far.
+> Does the driver have a runtime_pm misconfiguration issue here?
 
-Cc: stable@vger.kernel.org
-Fixes: 1cb8339ca225 ("cpufreq: qcom: Add support for qcs404 on nvmem driver")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
----
- drivers/cpufreq/qcom-cpufreq-nvmem.c | 46 +++++++++++++++++++++++++++++++++---
- 1 file changed, 43 insertions(+), 3 deletions(-)
+No
 
-diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-index 6355a39418c5..d239a45ed497 100644
---- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
-+++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
-@@ -25,6 +25,7 @@
- #include <linux/platform_device.h>
- #include <linux/pm_domain.h>
- #include <linux/pm_opp.h>
-+#include <linux/pm_runtime.h>
- #include <linux/slab.h>
- #include <linux/soc/qcom/smem.h>
- 
-@@ -55,6 +56,7 @@ struct qcom_cpufreq_match_data {
- 
- struct qcom_cpufreq_drv_cpu {
- 	int opp_token;
-+	struct device **virt_devs;
- };
- 
- struct qcom_cpufreq_drv {
-@@ -424,6 +426,18 @@ static const struct qcom_cpufreq_match_data match_data_ipq8074 = {
- 	.get_version = qcom_cpufreq_ipq8074_name_version,
- };
- 
-+static void qcom_cpufreq_put_virt_devs(struct qcom_cpufreq_drv *drv, unsigned int cpu)
-+{
-+	const char * const *name = drv->data->genpd_names;
-+	int i;
-+
-+	if (!drv->cpus[cpu].virt_devs)
-+		return;
-+
-+	for (i = 0; *name; i++, name++)
-+		pm_runtime_put(drv->cpus[cpu].virt_devs[i]);
-+}
-+
- static int qcom_cpufreq_probe(struct platform_device *pdev)
- {
- 	struct qcom_cpufreq_drv *drv;
-@@ -478,6 +492,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
- 	of_node_put(np);
- 
- 	for_each_possible_cpu(cpu) {
-+		struct device **virt_devs = NULL;
- 		struct dev_pm_opp_config config = {
- 			.supported_hw = NULL,
- 		};
-@@ -498,7 +513,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
- 
- 		if (drv->data->genpd_names) {
- 			config.genpd_names = drv->data->genpd_names;
--			config.virt_devs = NULL;
-+			config.virt_devs = &virt_devs;
- 		}
- 
- 		if (config.supported_hw || config.genpd_names) {
-@@ -509,6 +524,27 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
- 				goto free_opp;
- 			}
- 		}
-+
-+		if (virt_devs) {
-+			const char * const *name = config.genpd_names;
-+			int i, j;
-+
-+			for (i = 0; *name; i++, name++) {
-+				ret = pm_runtime_resume_and_get(virt_devs[i]);
-+				if (ret) {
-+					dev_err(cpu_dev, "failed to resume %s: %d\n",
-+						*name, ret);
-+
-+					/* Rollback previous PM runtime calls */
-+					name = config.genpd_names;
-+					for (j = 0; *name && j < i; j++, name++)
-+						pm_runtime_put(virt_devs[j]);
-+
-+					goto free_opp;
-+				}
-+			}
-+			drv->cpus[cpu].virt_devs = virt_devs;
-+		}
- 	}
- 
- 	cpufreq_dt_pdev = platform_device_register_simple("cpufreq-dt", -1,
-@@ -522,8 +558,10 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
- 	dev_err(cpu_dev, "Failed to register platform device\n");
- 
- free_opp:
--	for_each_possible_cpu(cpu)
-+	for_each_possible_cpu(cpu) {
-+		qcom_cpufreq_put_virt_devs(drv, cpu);
- 		dev_pm_opp_clear_config(drv->cpus[cpu].opp_token);
-+	}
- 	return ret;
- }
- 
-@@ -534,8 +572,10 @@ static void qcom_cpufreq_remove(struct platform_device *pdev)
- 
- 	platform_device_unregister(cpufreq_dt_pdev);
- 
--	for_each_possible_cpu(cpu)
-+	for_each_possible_cpu(cpu) {
-+		qcom_cpufreq_put_virt_devs(drv, cpu);
- 		dev_pm_opp_clear_config(drv->cpus[cpu].opp_token);
-+	}
- }
- 
- static struct platform_driver qcom_cpufreq_driver = {
-
--- 
-2.39.2
+> 
+> Perhaps Rafael could clarify?
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/power/runtime_pm.rst?h=v6.6.1#n563
 
