@@ -2,94 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61FEB7EAB0C
-	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 08:46:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 741A87EAB1C
+	for <lists+stable@lfdr.de>; Tue, 14 Nov 2023 08:58:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232238AbjKNHq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 02:46:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33284 "EHLO
+        id S232234AbjKNH6g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 14 Nov 2023 02:58:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjKNHq5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 02:46:57 -0500
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 740401A3;
-        Mon, 13 Nov 2023 23:46:54 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id B9A7824000A;
-        Tue, 14 Nov 2023 07:46:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1699948013;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=WSqWkMKT4hlIo0Hft0JXkPwNJp2PZekuBZnXLftRgw4=;
-        b=OuRD1zr1JHlFhd/s9EKNWu1YgcODmlldoi8th8WmxXzC253V98Yxh3AguSHjJruVVZYzny
-        Nvdyl+hxOQtnqcjJnXIV79evSLByXrnpHRnD1kQPLBI/wSaiG55j1VNODZ9xaTwhqjZg8a
-        BgZmDSVD71zK/zPt+xfBd9XFOBtZeNXgtm/t2iVfvKbp9OgdHuPWcI13pXTY4d0ShrBYMM
-        b6LpCKb/Pi1DCVeYpCMZ7eDor0HMEib3tSFOCQSJagJ25amfJuXfZG9ygOO/jiCkWkls98
-        4J2JYU9A1TApE9/imXNWDu1Hjvy9eTxDBooyLIG9ei6syummlWk0q7lzkeRurA==
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Saravana Kannan <saravanak@google.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Steen Hegelund <steen.hegelund@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Herve Codina <herve.codina@bootlin.com>, stable@vger.kernel.org
-Subject: [PATCH v3 1/1] driver core: Keep the supplier fwnode consistent with the device
-Date:   Tue, 14 Nov 2023 08:46:32 +0100
-Message-ID: <20231114074632.192858-1-herve.codina@bootlin.com>
+        with ESMTP id S229566AbjKNH6f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 02:58:35 -0500
+X-Greylist: delayed 554 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 13 Nov 2023 23:58:31 PST
+Received: from mail.bugwerft.de (mail.bugwerft.de [46.23.86.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BC86619B;
+        Mon, 13 Nov 2023 23:58:31 -0800 (PST)
+Received: from hq-00595.fritz.box (unknown [178.19.214.146])
+        by mail.bugwerft.de (Postfix) with ESMTPSA id 05DF928071D;
+        Tue, 14 Nov 2023 07:49:15 +0000 (UTC)
+From:   Daniel Mack <daniel@zonque.org>
+To:     gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        lech.perczak@camlingroup.com, u.kleine-koenig@pengutronix.de
+Cc:     linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Daniel Mack <daniel@zonque.org>,
+        Maxim Popov <maxim.snafu@gmail.com>, stable@vger.kernel.org
+Subject: [PATCH] serial: sc16is7xx: address RX timeout interrupt errata
+Date:   Tue, 14 Nov 2023 08:49:04 +0100
+Message-ID: <20231114074904.239458-1-daniel@zonque.org>
 X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The commit 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child
-fwnode's consumer links") introduces the possibility to use the
-supplier's parent device instead of the supplier itself.
-In that case the supplier fwnode used is not updated and is no more
-consistent with the supplier device used.
+This devices has a silicon bug that makes it report a timeout interrupt
+but no data in FIFO.
 
-Use the fwnode consistent with the supplier device when checking flags.
+The datasheet states the following in the errata section 18.1.4:
 
-Fixes: 3a2dbc510c43 ("driver core: fw_devlink: Don't purge child fwnode's consumer links")
+  "If the host reads the receive FIFO at the at the same time as a
+  time-out interrupt condition happens, the host might read 0xCC
+  (time-out) in the Interrupt Indication Register (IIR), but bit 0
+  of the Line Status Register (LSR) is not set (means there is not
+  data in the receive FIFO)."
+
+When this happens, the loop in sc16is7xx_irq() will run forever,
+which effectively blocks the i2c bus and breaks the functionality
+of the UART.
+
+From the information above, it is assumed that when the bug is
+triggered, the FIFO does in fact have payload in its buffer, but the
+fill level reporting is off-by-one. Hence this patch fixes the issue
+by reading one byte from the FIFO when that condition is detected.
+
+This clears the interrupt and hence breaks the polling loop.
+
+Signed-off-by: Daniel Mack <daniel@zonque.org>
+Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 ---
-Changes v2 -> v3:
-  Do not update the supplier handle in order to keep the original handle
-  for debug traces.
+ drivers/tty/serial/sc16is7xx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Changes v1 -> v2:
-  Remove sup_handle check and related pr_debug() call as sup_handle cannot be
-  invalid if sup_dev is valid.
-
- drivers/base/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 4d8b315c48a1..440b52ec027f 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -2082,7 +2082,7 @@ static int fw_devlink_create_devlink(struct device *con,
- 		 * supplier device indefinitely.
- 		 */
- 		if (sup_dev->links.status == DL_DEV_NO_DRIVER &&
--		    sup_handle->flags & FWNODE_FLAG_INITIALIZED) {
-+		    sup_dev->fwnode->flags & FWNODE_FLAG_INITIALIZED) {
- 			dev_dbg(con,
- 				"Not linking %pfwf - dev might never probe\n",
- 				sup_handle);
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 289ca7d4e566..76f76e510ed1 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -765,6 +765,18 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+ 		case SC16IS7XX_IIR_RTOI_SRC:
+ 		case SC16IS7XX_IIR_XOFFI_SRC:
+ 			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
++
++			/*
++			 * There is a silicon bug that makes the chip report a
++			 * time-out interrupt but no data in the FIFO. This is
++			 * described in errata section 18.1.4.
++			 *
++			 * When this happens, read one byte from the FIFO to
++			 * clear the interrupt.
++			 */
++			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
++				rxlen = 1;
++
+ 			if (rxlen)
+ 				sc16is7xx_handle_rx(port, rxlen, iir);
+ 			break;
 -- 
 2.41.0
 
