@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 214CB7ECDE3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BF1A7ECB72
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234700AbjKOTjA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36774 "EHLO
+        id S232825AbjKOTWY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:22:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234750AbjKOTi6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:58 -0500
+        with ESMTP id S233131AbjKOTWV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8779D9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C205C433C9;
-        Wed, 15 Nov 2023 19:38:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 815E4D4D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B84C433C7;
+        Wed, 15 Nov 2023 19:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077135;
-        bh=Uf+FDlyKw7gXZ/xm5B4bbH/tVH0fnjdWU314ZI31Vog=;
+        s=korg; t=1700076135;
+        bh=VuFE0uo692cbzb1ZHbv9uuKJFA+3QleseRPV+YE4n80=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LfVV6KMwdqXnTaRD7KVtcfsT3a0apBMxhpHZOIUgwdeLq7PrsX9yVq7rU2TJGJpSD
-         wcmzrxGaCMzAgxjENmUQ2HGPn5+qzaQ6eN/WixnHKgod5gEBGhnS2MGsAtFVZV/f9Y
-         MjU05KXWzxPDc7dazXM8AYv2Ni6a1QaCOb1FJcAA=
+        b=XT5eMoDQIXlRkaRKX9cdNAwcpaGfdY6jVPTqNagj2BwOAAAJcKE3xq4AgsWGKIIgY
+         ipLvjPvTBRJr7SYT8tSY0oynj3iMgpxA7v1k/n90rpm5hzjZGVB6PCue8vAWPMhh/l
+         GWL5jifloQrs4pHrn/GXWYpzJFet2XjHCV6Qa3A8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 135/603] wifi: mac80211: Fix setting vif links
+        patches@lists.linux.dev, MeiChia Chiu <meichia.chiu@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 096/550] wifi: mt76: mt7915: fix beamforming availability check
 Date:   Wed, 15 Nov 2023 14:11:20 -0500
-Message-ID: <20231115191622.599054389@linuxfoundation.org>
+Message-ID: <20231115191607.377591229@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: MeiChia Chiu <meichia.chiu@mediatek.com>
 
-[ Upstream commit e7182c4e6bbeafa272612e6c06fa92b42ad107ad ]
+[ Upstream commit ced1a0b8f3944e44e7f4eb3772dea1bada25d38a ]
 
-When setting the interface links, ignore the change iff both the
-valid links and the dormant links did not change. This is needed
-to support cases where the valid links didn't change but the dormant
-links did.
+Without this patch, when ap sets the tx stream number to 2,
+ap won't send any beamforming packet.
 
-Fixes: 6d543b34dbcf ("wifi: mac80211: Support disabled links during association")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230928172905.0357b6306587.I7dbfec347949b629fea680d246a650d6207ff217@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: f89f297aef28 ("mt76: mt7915: fix txbf starec TLV issues")
+Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/link.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 6148208b320e3..16cbaea93fc32 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -195,7 +195,7 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 4116434a8b313..9a8b8356254b5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -1012,13 +1012,13 @@ mt7915_is_ebf_supported(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			struct ieee80211_sta *sta, bool bfee)
+ {
+ 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+-	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
++	int sts = hweight16(phy->mt76->chainmask);
  
- 	memset(to_free, 0, sizeof(links));
+ 	if (vif->type != NL80211_IFTYPE_STATION &&
+ 	    vif->type != NL80211_IFTYPE_AP)
+ 		return false;
  
--	if (old_links == new_links)
-+	if (old_links == new_links && dormant_links == sdata->vif.dormant_links)
- 		return 0;
+-	if (!bfee && tx_ant < 2)
++	if (!bfee && sts < 2)
+ 		return false;
  
- 	/* if there were no old links, need to clear the pointers to deflink */
+ 	if (sta->deflink.he_cap.has_he) {
 -- 
 2.42.0
 
