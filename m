@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A587ECFF5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D36F7ECDE5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235466AbjKOTv6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36874 "EHLO
+        id S234696AbjKOTi7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235464AbjKOTv5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:57 -0500
+        with ESMTP id S234720AbjKOTi5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0746ED43
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A57F9C433CA;
-        Wed, 15 Nov 2023 19:51:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29312D43
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:54 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD38C433C8;
+        Wed, 15 Nov 2023 19:38:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077911;
-        bh=pG2ITld3UQLG43pBbuGcrZD4YPMJ13sStMlb8li8GHk=;
+        s=korg; t=1700077133;
+        bh=r0w8Vs4pqUOsOk5l1i9wd7PTLDfawRaqt2N9bkULmSk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2QSbng0Idh0M2Xtx+nod2GeM92oF2dVpVrAgIG4LDViggBHWJ1HflQKY2SWxy6ZCm
-         jPQ+Ny9k1CJQrR23cd75ndwID2npurTan7gT9LHdA8Z5yTlt6ATR6nldXtkfH+wGUI
-         zJ+x7T7068WECxj3fMRBO+GQzQG4ttuSZd198+Nw=
+        b=GgvlO61QBnEhTmYCJOf/Qnx9NkB4xccSoh20SV8aze9PirUIpqpV9Qb47zVLwkf3z
+         RioBegyP3x423+kh2Tm9y8viX8DdW0u2jJhhg2/8XyHcLbLT0aQ+LcZAiJrrIBgfjd
+         746KJ8SCRohYlkvyn8vQ6oZiNAsAFTL8K7yuOC0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+0c8ce1da0ac31abbadcd@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 571/603] virtio/vsock: Fix uninit-value in virtio_transport_recv_pkt()
+        patches@lists.linux.dev, Erik Kurzinger <ekurzinger@nvidia.com>,
+        Simon Ser <contact@emersion.fr>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 532/550] drm/syncobj: fix DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE
 Date:   Wed, 15 Nov 2023 14:18:36 -0500
-Message-ID: <20231115191651.031685492@linuxfoundation.org>
+Message-ID: <20231115191637.812855223@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,108 +50,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Erik Kurzinger <ekurzinger@nvidia.com>
 
-[ Upstream commit 34c4effacfc329aeca5635a69fd9e0f6c90b4101 ]
+[ Upstream commit 101c9f637efa1655f55876644d4439e552267527 ]
 
-KMSAN reported the following uninit-value access issue:
+If DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT is invoked with the
+DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE flag set but no fence has yet been
+submitted for the given timeline point the call will fail immediately
+with EINVAL. This does not match the intended behavior where the call
+should wait until the fence has been submitted (or the timeout expires).
 
-=====================================================
-BUG: KMSAN: uninit-value in virtio_transport_recv_pkt+0x1dfb/0x26a0 net/vmw_vsock/virtio_transport_common.c:1421
- virtio_transport_recv_pkt+0x1dfb/0x26a0 net/vmw_vsock/virtio_transport_common.c:1421
- vsock_loopback_work+0x3bb/0x5a0 net/vmw_vsock/vsock_loopback.c:120
- process_one_work kernel/workqueue.c:2630 [inline]
- process_scheduled_works+0xff6/0x1e60 kernel/workqueue.c:2703
- worker_thread+0xeca/0x14d0 kernel/workqueue.c:2784
- kthread+0x3cc/0x520 kernel/kthread.c:388
- ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+The following small example program illustrates the issue. It should
+wait for 5 seconds and then print ETIME, but instead it terminates right
+away after printing EINVAL.
 
-Uninit was stored to memory at:
- virtio_transport_space_update net/vmw_vsock/virtio_transport_common.c:1274 [inline]
- virtio_transport_recv_pkt+0x1ee8/0x26a0 net/vmw_vsock/virtio_transport_common.c:1415
- vsock_loopback_work+0x3bb/0x5a0 net/vmw_vsock/vsock_loopback.c:120
- process_one_work kernel/workqueue.c:2630 [inline]
- process_scheduled_works+0xff6/0x1e60 kernel/workqueue.c:2703
- worker_thread+0xeca/0x14d0 kernel/workqueue.c:2784
- kthread+0x3cc/0x520 kernel/kthread.c:388
- ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+  #include <stdio.h>
+  #include <fcntl.h>
+  #include <time.h>
+  #include <errno.h>
+  #include <xf86drm.h>
+  int main(void)
+  {
+      int fd = open("/dev/dri/card0", O_RDWR);
+      uint32_t syncobj;
+      drmSyncobjCreate(fd, 0, &syncobj);
+      struct timespec ts;
+      clock_gettime(CLOCK_MONOTONIC, &ts);
+      uint64_t point = 1;
+      if (drmSyncobjTimelineWait(fd, &syncobj, &point, 1,
+                                 ts.tv_sec * 1000000000 + ts.tv_nsec + 5000000000, // 5s
+                                 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE, NULL)) {
+          printf("drmSyncobjTimelineWait failed %d\n", errno);
+      }
+  }
 
-Uninit was created at:
- slab_post_alloc_hook+0x105/0xad0 mm/slab.h:767
- slab_alloc_node mm/slub.c:3478 [inline]
- kmem_cache_alloc_node+0x5a2/0xaf0 mm/slub.c:3523
- kmalloc_reserve+0x13c/0x4a0 net/core/skbuff.c:559
- __alloc_skb+0x2fd/0x770 net/core/skbuff.c:650
- alloc_skb include/linux/skbuff.h:1286 [inline]
- virtio_vsock_alloc_skb include/linux/virtio_vsock.h:66 [inline]
- virtio_transport_alloc_skb+0x90/0x11e0 net/vmw_vsock/virtio_transport_common.c:58
- virtio_transport_reset_no_sock net/vmw_vsock/virtio_transport_common.c:957 [inline]
- virtio_transport_recv_pkt+0x1279/0x26a0 net/vmw_vsock/virtio_transport_common.c:1387
- vsock_loopback_work+0x3bb/0x5a0 net/vmw_vsock/vsock_loopback.c:120
- process_one_work kernel/workqueue.c:2630 [inline]
- process_scheduled_works+0xff6/0x1e60 kernel/workqueue.c:2703
- worker_thread+0xeca/0x14d0 kernel/workqueue.c:2784
- kthread+0x3cc/0x520 kernel/kthread.c:388
- ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
-
-CPU: 1 PID: 10664 Comm: kworker/1:5 Not tainted 6.6.0-rc3-00146-g9f3ebbef746f #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
-Workqueue: vsock-loopback vsock_loopback_work
-=====================================================
-
-The following simple reproducer can cause the issue described above:
-
-int main(void)
-{
-  int sock;
-  struct sockaddr_vm addr = {
-    .svm_family = AF_VSOCK,
-    .svm_cid = VMADDR_CID_ANY,
-    .svm_port = 1234,
-  };
-
-  sock = socket(AF_VSOCK, SOCK_STREAM, 0);
-  connect(sock, (struct sockaddr *)&addr, sizeof(addr));
-  return 0;
-}
-
-This issue occurs because the `buf_alloc` and `fwd_cnt` fields of the
-`struct virtio_vsock_hdr` are not initialized when a new skb is allocated
-in `virtio_transport_init_hdr()`. This patch resolves the issue by
-initializing these fields during allocation.
-
-Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
-Reported-and-tested-by: syzbot+0c8ce1da0ac31abbadcd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0c8ce1da0ac31abbadcd
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/20231104150531.257952-1-syoshida@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
+Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
+Reviewed by: Simon Ser <contact@emersion.fd>
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Link: https://patchwork.freedesktop.org/patch/msgid/1fac96f1-2f3f-f9f9-4eb0-340f27a8f6c0@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/vmw_vsock/virtio_transport_common.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/drm_syncobj.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index eb1465d506ef3..8bc272b6003bb 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -68,6 +68,8 @@ virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *info,
- 	hdr->dst_port	= cpu_to_le32(dst_port);
- 	hdr->flags	= cpu_to_le32(info->flags);
- 	hdr->len	= cpu_to_le32(len);
-+	hdr->buf_alloc	= cpu_to_le32(0);
-+	hdr->fwd_cnt	= cpu_to_le32(0);
- 
- 	if (info->msg && len > 0) {
- 		payload = skb_put(skb, len);
+diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
+index e592c5da70cee..da0145bc104a8 100644
+--- a/drivers/gpu/drm/drm_syncobj.c
++++ b/drivers/gpu/drm/drm_syncobj.c
+@@ -1015,7 +1015,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
+ 		fence = drm_syncobj_fence_get(syncobjs[i]);
+ 		if (!fence || dma_fence_chain_find_seqno(&fence, points[i])) {
+ 			dma_fence_put(fence);
+-			if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
++			if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
++				     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
+ 				continue;
+ 			} else {
+ 				timeout = -EINVAL;
 -- 
 2.42.0
 
