@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD707ED1C3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4D1F7ED1AE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:04:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344240AbjKOUFF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:05:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45882 "EHLO
+        id S1344273AbjKOUEa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:04:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344342AbjKOUFC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:05:02 -0500
+        with ESMTP id S1344260AbjKOUE3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:04:29 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD9F1B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8DBC433C7;
-        Wed, 15 Nov 2023 20:04:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 270FFB8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B20FC433CD;
+        Wed, 15 Nov 2023 20:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078698;
-        bh=fSm2iHDpSPYKyKD2T7z8bjaGdLMsLH112r5hFcq01+Y=;
+        s=korg; t=1700078665;
+        bh=WxeX3xrxNYArzdkonNI6YtB6FyUvqpj0ygKZjH+YFz0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZBQVqJTBkxRrdGiUZKjl53Pqc7rxCFvWgJFOI4HhTjte6+qaW1vICSatPdg5JSZiA
-         4hX/S8q8926DJ7srVg66DpM06vudNhVc1D7WLEqDLmdbFvXfQCfnk5rU7nYJJdFltc
-         piGohWuh4GDiZsQDnkEnrZXqN2MiKXBEPwupG1nI=
+        b=2qCJcSPwwBtLeYi8xr7aWmwR9lpkp4ndG1UMt1tKtVkZwqI9RXk1xhdnIPehU5aTy
+         j5dGvZgYMCLnzAN8T7feIa1m+gg/1fJVtD4uUBRQj8or+QPWKA8gtiKkqTlr8mqRR3
+         s8tCEPjROSUc8D05YXn0ozF262CnIR28OYWcpW7M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
-        GUO Zihua <guozihua@huawei.com>,
+        patches@lists.linux.dev, Jia-Ju Bai <baijiaju@buaa.edu.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 25/45] tty: tty_jobctrl: fix pid memleak in disassociate_ctty()
-Date:   Wed, 15 Nov 2023 14:33:02 -0500
-Message-ID: <20231115191421.083206415@linuxfoundation.org>
+Subject: [PATCH 4.14 26/45] usb: dwc2: fix possible NULL pointer dereference caused by driver concurrency
+Date:   Wed, 15 Nov 2023 14:33:03 -0500
+Message-ID: <20231115191421.148564705@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191419.641552204@linuxfoundation.org>
 References: <20231115191419.641552204@linuxfoundation.org>
@@ -54,115 +53,66 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Jia-Ju Bai <baijiaju@buaa.edu.cn>
 
-[ Upstream commit 11e7f27b79757b6586645d87b95d5b78375ecdfc ]
+[ Upstream commit ef307bc6ef04e8c1ea843231db58e3afaafa9fa6 ]
 
-There is a pid leakage:
-------------------------------
-unreferenced object 0xffff88810c181940 (size 224):
-  comm "sshd", pid 8191, jiffies 4294946950 (age 524.570s)
-  hex dump (first 32 bytes):
-    01 00 00 00 00 00 00 00 00 00 00 00 ad 4e ad de  .............N..
-    ff ff ff ff 6b 6b 6b 6b ff ff ff ff ff ff ff ff  ....kkkk........
-  backtrace:
-    [<ffffffff814774e6>] kmem_cache_alloc+0x5c6/0x9b0
-    [<ffffffff81177342>] alloc_pid+0x72/0x570
-    [<ffffffff81140ac4>] copy_process+0x1374/0x2470
-    [<ffffffff81141d77>] kernel_clone+0xb7/0x900
-    [<ffffffff81142645>] __se_sys_clone+0x85/0xb0
-    [<ffffffff8114269b>] __x64_sys_clone+0x2b/0x30
-    [<ffffffff83965a72>] do_syscall_64+0x32/0x80
-    [<ffffffff83a00085>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
+In _dwc2_hcd_urb_enqueue(), "urb->hcpriv = NULL" is executed without
+holding the lock "hsotg->lock". In _dwc2_hcd_urb_dequeue():
 
-It turns out that there is a race condition between disassociate_ctty() and
-tty_signal_session_leader(), which caused this leakage.
+    spin_lock_irqsave(&hsotg->lock, flags);
+    ...
+	if (!urb->hcpriv) {
+		dev_dbg(hsotg->dev, "## urb->hcpriv is NULL ##\n");
+		goto out;
+	}
+    rc = dwc2_hcd_urb_dequeue(hsotg, urb->hcpriv); // Use urb->hcpriv
+    ...
+out:
+    spin_unlock_irqrestore(&hsotg->lock, flags);
 
-The pid memleak is triggered by the following race:
-task[sshd]                     task[bash]
------------------------        -----------------------
-                               disassociate_ctty();
-                               spin_lock_irq(&current->sighand->siglock);
-                               put_pid(current->signal->tty_old_pgrp);
-                               current->signal->tty_old_pgrp = NULL;
-                               tty = tty_kref_get(current->signal->tty);
-                               spin_unlock_irq(&current->sighand->siglock);
-tty_vhangup();
-tty_lock(tty);
-...
-tty_signal_session_leader();
-spin_lock_irq(&p->sighand->siglock);
-...
-if (tty->ctrl.pgrp) //tty->ctrl.pgrp is not NULL
-p->signal->tty_old_pgrp = get_pid(tty->ctrl.pgrp); //An extra get
-spin_unlock_irq(&p->sighand->siglock);
-...
-tty_unlock(tty);
-                               if (tty) {
-                                   tty_lock(tty);
-                                   ...
-                                   put_pid(tty->ctrl.pgrp);
-                                   tty->ctrl.pgrp = NULL; //It's too late
-                                   ...
-                                   tty_unlock(tty);
-                               }
+When _dwc2_hcd_urb_enqueue() and _dwc2_hcd_urb_dequeue() are
+concurrently executed, the NULL check of "urb->hcpriv" can be executed
+before "urb->hcpriv = NULL". After urb->hcpriv is NULL, it can be used
+in the function call to dwc2_hcd_urb_dequeue(), which can cause a NULL
+pointer dereference.
 
-The issue is believed to be introduced by commit c8bcd9c5be24 ("tty:
-Fix ->session locking") who moves the unlock of siglock in
-disassociate_ctty() above "if (tty)", making a small window allowing
-tty_signal_session_leader() to kick in. It can be easily reproduced by
-adding a delay before "if (tty)" and at the entrance of
-tty_signal_session_leader().
+This possible bug is found by an experimental static analysis tool
+developed by myself. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency
+bugs including data races and atomicity violations. The above possible
+bug is reported, when my tool analyzes the source code of Linux 6.5.
 
-To fix this issue, we move "put_pid(current->signal->tty_old_pgrp)" after
-"tty->ctrl.pgrp = NULL".
+To fix this possible bug, "urb->hcpriv = NULL" should be executed with
+holding the lock "hsotg->lock". After using this patch, my tool never
+reports the possible bug, with the kernelconfiguration allyesconfig for
+x86_64. Because I have no associated hardware, I cannot test the patch
+in runtime testing, and just verify it according to the code logic.
 
-Fixes: c8bcd9c5be24 ("tty: Fix ->session locking")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Co-developed-by: GUO Zihua <guozihua@huawei.com>
-Signed-off-by: GUO Zihua <guozihua@huawei.com>
-Link: https://lore.kernel.org/r/20230831023329.165737-1-yiyang13@huawei.com
+Fixes: 33ad261aa62b ("usb: dwc2: host: spinlock urb_enqueue")
+Signed-off-by: Jia-Ju Bai <baijiaju@buaa.edu.cn>
+Link: https://lore.kernel.org/r/20230926024404.832096-1-baijiaju@buaa.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_jobctrl.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/usb/dwc2/hcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/tty_jobctrl.c b/drivers/tty/tty_jobctrl.c
-index b71e61e79c5a3..29b3957f329c6 100644
---- a/drivers/tty/tty_jobctrl.c
-+++ b/drivers/tty/tty_jobctrl.c
-@@ -289,12 +289,7 @@ void disassociate_ctty(int on_exit)
- 		return;
- 	}
- 
--	spin_lock_irq(&current->sighand->siglock);
--	put_pid(current->signal->tty_old_pgrp);
--	current->signal->tty_old_pgrp = NULL;
--	tty = tty_kref_get(current->signal->tty);
--	spin_unlock_irq(&current->sighand->siglock);
--
-+	tty = get_current_tty();
- 	if (tty) {
- 		unsigned long flags;
- 
-@@ -309,6 +304,16 @@ void disassociate_ctty(int on_exit)
- 		tty_kref_put(tty);
- 	}
- 
-+	/* If tty->ctrl.pgrp is not NULL, it may be assigned to
-+	 * current->signal->tty_old_pgrp in a race condition, and
-+	 * cause pid memleak. Release current->signal->tty_old_pgrp
-+	 * after tty->ctrl.pgrp set to NULL.
-+	 */
-+	spin_lock_irq(&current->sighand->siglock);
-+	put_pid(current->signal->tty_old_pgrp);
-+	current->signal->tty_old_pgrp = NULL;
-+	spin_unlock_irq(&current->sighand->siglock);
-+
- 	/* Now clear signal->tty under the lock */
- 	read_lock(&tasklist_lock);
- 	session_clear_tty(task_session(current));
+diff --git a/drivers/usb/dwc2/hcd.c b/drivers/usb/dwc2/hcd.c
+index 50ec2cd36db0a..6d2060377dc4a 100644
+--- a/drivers/usb/dwc2/hcd.c
++++ b/drivers/usb/dwc2/hcd.c
+@@ -4842,8 +4842,8 @@ static int _dwc2_hcd_urb_enqueue(struct usb_hcd *hcd, struct urb *urb,
+ 	if (qh_allocated && qh->channel && qh->channel->qh == qh)
+ 		qh->channel->qh = NULL;
+ fail2:
+-	spin_unlock_irqrestore(&hsotg->lock, flags);
+ 	urb->hcpriv = NULL;
++	spin_unlock_irqrestore(&hsotg->lock, flags);
+ 	kfree(qtd);
+ 	qtd = NULL;
+ fail1:
 -- 
 2.42.0
 
