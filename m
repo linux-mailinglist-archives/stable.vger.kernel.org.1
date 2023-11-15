@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7F2F7ECDB1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1322A7ECFC3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234605AbjKOThu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:37:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36056 "EHLO
+        id S235400AbjKOTuk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:50:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234619AbjKOTht (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:49 -0500
+        with ESMTP id S235406AbjKOTui (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6971A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3F9C433C8;
-        Wed, 15 Nov 2023 19:37:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72F87B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7953C433CA;
+        Wed, 15 Nov 2023 19:50:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077065;
-        bh=b4z2N3MXhsapvaByRlIWGDnmiU4ihedCTFvGFfErWDM=;
+        s=korg; t=1700077835;
+        bh=j2KEYlzgfsJLKEDidkXcwtZld7EuNwgX8LhJKFKsl2w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rhpQMrUFhYMdBpYKtUbH+YfD2CHE4/pKNuzi7tW2IoVEtmI3vhypnvK8YEiNXIrZI
-         5XHRKtLVn68Uf6j0Q52HmmYYo1LnWFwCz2jzv9IfbH4NQ4jzaDsuB6gLn2LDEDpBnJ
-         gdOMpAQhSp9M8jhEGBX32bwwRNKFqhb0q+SVOnqM=
+        b=foRQAhi55ILQBaDKuJs3ve58AvleV6xRO7ORcYk+jHFHa1zjPjD/cAZFA/cHjBFSC
+         kJ0pVNVt3o1JI2uNOsZ/jAEb3B65dAr7ypsywPjsgOm+UcnkbrbwV1HmKOm79p0veh
+         UIn1bUxpA76O1dwv+o32xqrPhzSHlqUv1C7viTEk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
-        Chris Mi <chrism@mellanox.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        NeilBrown <neilb@suse.de>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Jian Shen <shenjian15@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 510/550] Fix termination state for idr_for_each_entry_ul()
+Subject: [PATCH 6.6 549/603] net: page_pool: add missing free_percpu when page_pool_init fail
 Date:   Wed, 15 Nov 2023 14:18:14 -0500
-Message-ID: <20231115191636.276791127@linuxfoundation.org>
+Message-ID: <20231115191649.722516978@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,66 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit e8ae8ad479e2d037daa33756e5e72850a7bd37a9 ]
+[ Upstream commit 8ffbd1669ed1d58939d6e878dffaa2f60bf961a4 ]
 
-The comment for idr_for_each_entry_ul() states
+When ptr_ring_init() returns failure in page_pool_init(), free_percpu()
+is not called to free pool->recycle_stats, which may cause memory
+leak.
 
-  after normal termination @entry is left with the value NULL
-
-This is not correct in the case where UINT_MAX has an entry in the idr.
-In that case @entry will be non-NULL after termination.
-No current code depends on the documentation being correct, but to
-save future code we should fix it.
-
-Also fix idr_for_each_entry_continue_ul().  While this is not documented
-as leaving @entry as NULL, the mellanox driver appears to depend on
-it doing so.  So make that explicit in the documentation as well as in
-the code.
-
-Fixes: e33d2b74d805 ("idr: fix overflow case for idr_for_each_entry_ul()")
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Chris Mi <chrism@mellanox.com>
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: ad6fa1e1ab1b ("page_pool: Add recycle stats")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Yunsheng Lin <linyunsheng@huawei.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Link: https://lore.kernel.org/r/20231030091256.2915394-1-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/idr.h | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/core/page_pool.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/idr.h b/include/linux/idr.h
-index a0dce14090a9e..da5f5fa4a3a6a 100644
---- a/include/linux/idr.h
-+++ b/include/linux/idr.h
-@@ -200,7 +200,7 @@ static inline void idr_preload_end(void)
-  */
- #define idr_for_each_entry_ul(idr, entry, tmp, id)			\
- 	for (tmp = 0, id = 0;						\
--	     tmp <= id && ((entry) = idr_get_next_ul(idr, &(id))) != NULL; \
-+	     ((entry) = tmp <= id ? idr_get_next_ul(idr, &(id)) : NULL) != NULL; \
- 	     tmp = id, ++id)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 77cb75e63aca1..31f923e7b5c40 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -221,8 +221,12 @@ static int page_pool_init(struct page_pool *pool,
+ 		return -ENOMEM;
+ #endif
  
- /**
-@@ -224,10 +224,12 @@ static inline void idr_preload_end(void)
-  * @id: Entry ID.
-  *
-  * Continue to iterate over entries, continuing after the current position.
-+ * After normal termination @entry is left with the value NULL.  This
-+ * is convenient for a "not found" value.
-  */
- #define idr_for_each_entry_continue_ul(idr, entry, tmp, id)		\
- 	for (tmp = id;							\
--	     tmp <= id && ((entry) = idr_get_next_ul(idr, &(id))) != NULL; \
-+	     ((entry) = tmp <= id ? idr_get_next_ul(idr, &(id)) : NULL) != NULL; \
- 	     tmp = id, ++id)
+-	if (ptr_ring_init(&pool->ring, ring_qsize, GFP_KERNEL) < 0)
++	if (ptr_ring_init(&pool->ring, ring_qsize, GFP_KERNEL) < 0) {
++#ifdef CONFIG_PAGE_POOL_STATS
++		free_percpu(pool->recycle_stats);
++#endif
+ 		return -ENOMEM;
++	}
  
- /*
+ 	atomic_set(&pool->pages_state_release_cnt, 0);
+ 
 -- 
 2.42.0
 
