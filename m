@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A59B7ECD38
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A136A7ECD44
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234379AbjKOTfI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60080 "EHLO
+        id S234416AbjKOTf1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:35:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234374AbjKOTfI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:08 -0500
+        with ESMTP id S234404AbjKOTf1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96CE019F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158B5C433C9;
-        Wed, 15 Nov 2023 19:35:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584AB9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D281FC433C9;
+        Wed, 15 Nov 2023 19:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076904;
-        bh=ZK7W2LK4RnayVyMvXCSsnGQkeOrAyNGdqzcQNU1f2NU=;
+        s=korg; t=1700076923;
+        bh=Z1gXX4IisZDWAO4QkV4Z9RdZNXG1KLy1aIH8xmvo3HY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DLclPL+DIvd+v1a38rK7ayWigqBrYsKbZSTsIElcTln4GpwNPDsQNj7R0CZmdi05k
-         cwK0EiDxi7Oc7d3UpgZ4ai2/ARXqze/JRC9tzV2cZzNhQFCJ2fiCO1rrxtJjTURqHQ
-         NZo6MUL66iOkqxciQIrplVEge7Z1f2B1VvJl4MDs=
+        b=pUbdA9Nx5LOrlrwL3MOB5Q87mesob4oP8onkWuXJ8AzwkpmW2a86SPfxcglFPblOc
+         cB168EFdhCJ9LACjRz2lvKCxuLZMTjP+KPlWMIQLC29DC6Y/bTiMaqqtSTJGW7P7Wi
+         +cLplY6LgH+EVQmfTTLhYmJYe61DbhfNzpjirSP4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Leon Hwang <hffilwlqm@gmail.com>,
+        patches@lists.linux.dev,
         Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        Leon Hwang <hffilwlqm@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/603] selftests/bpf: Correct map_fd to data_fd in tailcalls
-Date:   Wed, 15 Nov 2023 14:09:54 -0500
-Message-ID: <20231115191616.555227294@linuxfoundation.org>
+Subject: [PATCH 6.6 050/603] bpf, x64: Fix tailcall infinite loop
+Date:   Wed, 15 Nov 2023 14:09:55 -0500
+Message-ID: <20231115191616.618205764@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -57,117 +58,163 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Leon Hwang <hffilwlqm@gmail.com>
 
-[ Upstream commit 96daa9874211d5497aa70fa409b67afc29f0cb86 ]
+[ Upstream commit 2b5dcb31a19a2e0acd869b12c9db9b2d696ef544 ]
 
-Get and check data_fd. It should not check map_fd again.
+>From commit ebf7d1f508a73871 ("bpf, x64: rework pro/epilogue and tailcall
+handling in JIT"), the tailcall on x64 works better than before.
 
-Meanwhile, correct some 'return' to 'goto out'.
+>From commit e411901c0b775a3a ("bpf: allow for tailcalls in BPF subprograms
+for x64 JIT"), tailcall is able to run in BPF subprograms on x64.
 
-Thank the suggestion from Maciej in "bpf, x64: Fix tailcall infinite
-loop"[0] discussions.
+>From commit 5b92a28aae4dd0f8 ("bpf: Support attaching tracing BPF program
+to other BPF programs"), BPF program is able to trace other BPF programs.
 
-[0] https://lore.kernel.org/bpf/e496aef8-1f80-0f8e-dcdd-25a8c300319a@gmail.com/T/#m7d3b601066ba66400d436b7e7579b2df4a101033
+How about combining them all together?
 
-Fixes: 79d49ba048ec ("bpf, testing: Add various tail call test cases")
-Fixes: 3b0379111197 ("selftests/bpf: Add tailcall_bpf2bpf tests")
-Fixes: 5e0b0a4c52d3 ("selftests/bpf: Test tail call counting with bpf2bpf and data on stack")
-Signed-off-by: Leon Hwang <hffilwlqm@gmail.com>
+1. FENTRY/FEXIT on a BPF subprogram.
+2. A tailcall runs in the BPF subprogram.
+3. The tailcall calls the subprogram's caller.
+
+As a result, a tailcall infinite loop comes up. And the loop would halt
+the machine.
+
+As we know, in tail call context, the tail_call_cnt propagates by stack
+and rax register between BPF subprograms. So do in trampolines.
+
+Fixes: ebf7d1f508a7 ("bpf, x64: rework pro/epilogue and tailcall handling in JIT")
+Fixes: e411901c0b77 ("bpf: allow for tailcalls in BPF subprograms for x64 JIT")
 Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20230906154256.95461-1-hffilwlqm@gmail.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Leon Hwang <hffilwlqm@gmail.com>
+Link: https://lore.kernel.org/r/20230912150442.2009-3-hffilwlqm@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/tailcalls.c      | 32 +++++++++----------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ arch/x86/net/bpf_jit_comp.c | 28 ++++++++++++++++++++++------
+ include/linux/bpf.h         |  5 +++++
+ kernel/bpf/trampoline.c     |  4 ++--
+ kernel/bpf/verifier.c       |  3 +++
+ 4 files changed, 32 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tailcalls.c b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-index 58fe2c586ed76..09c189761926c 100644
---- a/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-@@ -271,11 +271,11 @@ static void test_tailcall_count(const char *which)
+diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
+index a5930042139d3..52f36c48c1b9e 100644
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -1018,6 +1018,10 @@ static void emit_shiftx(u8 **pprog, u32 dst_reg, u8 src_reg, bool is64, u8 op)
  
- 	data_map = bpf_object__find_map_by_name(obj, "tailcall.bss");
- 	if (CHECK_FAIL(!data_map || !bpf_map__is_internal(data_map)))
--		return;
-+		goto out;
+ #define INSN_SZ_DIFF (((addrs[i] - addrs[i - 1]) - (prog - temp)))
  
- 	data_fd = bpf_map__fd(data_map);
--	if (CHECK_FAIL(map_fd < 0))
--		return;
-+	if (CHECK_FAIL(data_fd < 0))
-+		goto out;
++/* mov rax, qword ptr [rbp - rounded_stack_depth - 8] */
++#define RESTORE_TAIL_CALL_CNT(stack)				\
++	EMIT3_off32(0x48, 0x8B, 0x85, -round_up(stack, 8) - 8)
++
+ static int do_jit(struct bpf_prog *bpf_prog, int *addrs, u8 *image, u8 *rw_image,
+ 		  int oldproglen, struct jit_context *ctx, bool jmp_padding)
+ {
+@@ -1623,9 +1627,7 @@ st:			if (is_imm8(insn->off))
  
- 	i = 0;
- 	err = bpf_map_lookup_elem(data_fd, &i, &val);
-@@ -352,11 +352,11 @@ static void test_tailcall_4(void)
+ 			func = (u8 *) __bpf_call_base + imm32;
+ 			if (tail_call_reachable) {
+-				/* mov rax, qword ptr [rbp - rounded_stack_depth - 8] */
+-				EMIT3_off32(0x48, 0x8B, 0x85,
+-					    -round_up(bpf_prog->aux->stack_depth, 8) - 8);
++				RESTORE_TAIL_CALL_CNT(bpf_prog->aux->stack_depth);
+ 				if (!imm32)
+ 					return -EINVAL;
+ 				offs = 7 + x86_call_depth_emit_accounting(&prog, func);
+@@ -2400,6 +2402,7 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image, void *i
+ 	 *                     [ ...        ]
+ 	 *                     [ stack_arg2 ]
+ 	 * RBP - arg_stack_off [ stack_arg1 ]
++	 * RSP                 [ tail_call_cnt ] BPF_TRAMP_F_TAIL_CALL_CTX
+ 	 */
  
- 	data_map = bpf_object__find_map_by_name(obj, "tailcall.bss");
- 	if (CHECK_FAIL(!data_map || !bpf_map__is_internal(data_map)))
--		return;
-+		goto out;
+ 	/* room for return value of orig_call or fentry prog */
+@@ -2464,6 +2467,8 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image, void *i
+ 	else
+ 		/* sub rsp, stack_size */
+ 		EMIT4(0x48, 0x83, 0xEC, stack_size);
++	if (flags & BPF_TRAMP_F_TAIL_CALL_CTX)
++		EMIT1(0x50);		/* push rax */
+ 	/* mov QWORD PTR [rbp - rbx_off], rbx */
+ 	emit_stx(&prog, BPF_DW, BPF_REG_FP, BPF_REG_6, -rbx_off);
  
- 	data_fd = bpf_map__fd(data_map);
--	if (CHECK_FAIL(map_fd < 0))
--		return;
-+	if (CHECK_FAIL(data_fd < 0))
-+		goto out;
+@@ -2516,9 +2521,15 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image, void *i
+ 		restore_regs(m, &prog, regs_off);
+ 		save_args(m, &prog, arg_stack_off, true);
  
- 	for (i = 0; i < bpf_map__max_entries(prog_array); i++) {
- 		snprintf(prog_name, sizeof(prog_name), "classifier_%d", i);
-@@ -442,11 +442,11 @@ static void test_tailcall_5(void)
++		if (flags & BPF_TRAMP_F_TAIL_CALL_CTX)
++			/* Before calling the original function, restore the
++			 * tail_call_cnt from stack to rax.
++			 */
++			RESTORE_TAIL_CALL_CNT(stack_size);
++
+ 		if (flags & BPF_TRAMP_F_ORIG_STACK) {
+-			emit_ldx(&prog, BPF_DW, BPF_REG_0, BPF_REG_FP, 8);
+-			EMIT2(0xff, 0xd0); /* call *rax */
++			emit_ldx(&prog, BPF_DW, BPF_REG_6, BPF_REG_FP, 8);
++			EMIT2(0xff, 0xd3); /* call *rbx */
+ 		} else {
+ 			/* call original function */
+ 			if (emit_rsb_call(&prog, orig_call, prog)) {
+@@ -2569,7 +2580,12 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image, void *i
+ 			ret = -EINVAL;
+ 			goto cleanup;
+ 		}
+-	}
++	} else if (flags & BPF_TRAMP_F_TAIL_CALL_CTX)
++		/* Before running the original function, restore the
++		 * tail_call_cnt from stack to rax.
++		 */
++		RESTORE_TAIL_CALL_CNT(stack_size);
++
+ 	/* restore return value of orig_call or fentry prog back into RAX */
+ 	if (save_ret)
+ 		emit_ldx(&prog, BPF_DW, BPF_REG_0, BPF_REG_FP, -8);
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 49f8b691496c4..76055186d6248 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1029,6 +1029,11 @@ struct btf_func_model {
+  */
+ #define BPF_TRAMP_F_SHARE_IPMODIFY	BIT(6)
  
- 	data_map = bpf_object__find_map_by_name(obj, "tailcall.bss");
- 	if (CHECK_FAIL(!data_map || !bpf_map__is_internal(data_map)))
--		return;
-+		goto out;
- 
- 	data_fd = bpf_map__fd(data_map);
--	if (CHECK_FAIL(map_fd < 0))
--		return;
-+	if (CHECK_FAIL(data_fd < 0))
-+		goto out;
- 
- 	for (i = 0; i < bpf_map__max_entries(prog_array); i++) {
- 		snprintf(prog_name, sizeof(prog_name), "classifier_%d", i);
-@@ -631,11 +631,11 @@ static void test_tailcall_bpf2bpf_2(void)
- 
- 	data_map = bpf_object__find_map_by_name(obj, "tailcall.bss");
- 	if (CHECK_FAIL(!data_map || !bpf_map__is_internal(data_map)))
--		return;
-+		goto out;
- 
- 	data_fd = bpf_map__fd(data_map);
--	if (CHECK_FAIL(map_fd < 0))
--		return;
-+	if (CHECK_FAIL(data_fd < 0))
-+		goto out;
- 
- 	i = 0;
- 	err = bpf_map_lookup_elem(data_fd, &i, &val);
-@@ -805,11 +805,11 @@ static void test_tailcall_bpf2bpf_4(bool noise)
- 
- 	data_map = bpf_object__find_map_by_name(obj, "tailcall.bss");
- 	if (CHECK_FAIL(!data_map || !bpf_map__is_internal(data_map)))
--		return;
-+		goto out;
- 
- 	data_fd = bpf_map__fd(data_map);
--	if (CHECK_FAIL(map_fd < 0))
--		return;
-+	if (CHECK_FAIL(data_fd < 0))
-+		goto out;
- 
- 	i = 0;
- 	val.noise = noise;
-@@ -872,7 +872,7 @@ static void test_tailcall_bpf2bpf_6(void)
- 	ASSERT_EQ(topts.retval, 0, "tailcall retval");
- 
- 	data_fd = bpf_map__fd(obj->maps.bss);
--	if (!ASSERT_GE(map_fd, 0, "bss map fd"))
-+	if (!ASSERT_GE(data_fd, 0, "bss map fd"))
++/* Indicate that current trampoline is in a tail call context. Then, it has to
++ * cache and restore tail_call_cnt to avoid infinite tail call loop.
++ */
++#define BPF_TRAMP_F_TAIL_CALL_CTX	BIT(7)
++
+ /* Each call __bpf_prog_enter + call bpf_func + call __bpf_prog_exit is ~50
+  * bytes on x86.
+  */
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index 53ff50cac61ea..e97aeda3a86b5 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -415,8 +415,8 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
  		goto out;
+ 	}
  
- 	i = 0;
+-	/* clear all bits except SHARE_IPMODIFY */
+-	tr->flags &= BPF_TRAMP_F_SHARE_IPMODIFY;
++	/* clear all bits except SHARE_IPMODIFY and TAIL_CALL_CTX */
++	tr->flags &= (BPF_TRAMP_F_SHARE_IPMODIFY | BPF_TRAMP_F_TAIL_CALL_CTX);
+ 
+ 	if (tlinks[BPF_TRAMP_FEXIT].nr_links ||
+ 	    tlinks[BPF_TRAMP_MODIFY_RETURN].nr_links) {
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 873ade146f3de..9f180ae74e492 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -19641,6 +19641,9 @@ static int check_attach_btf_id(struct bpf_verifier_env *env)
+ 	if (!tr)
+ 		return -ENOMEM;
+ 
++	if (tgt_prog && tgt_prog->aux->tail_call_reachable)
++		tr->flags = BPF_TRAMP_F_TAIL_CALL_CTX;
++
+ 	prog->aux->dst_trampoline = tr;
+ 	return 0;
+ }
 -- 
 2.42.0
 
