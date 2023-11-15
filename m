@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0193C7ED005
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 289A17ED012
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235479AbjKOTwV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:52:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51564 "EHLO
+        id S235488AbjKOTwk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:52:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235476AbjKOTwU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:52:20 -0500
+        with ESMTP id S235489AbjKOTwj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:52:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEAC592
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:52:17 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3978CC43397;
-        Wed, 15 Nov 2023 19:52:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE4A292
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:52:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F58AC433CA;
+        Wed, 15 Nov 2023 19:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077937;
-        bh=k0EtvJYE6lHKRnFXLu0XrR2mM6diEyujEcClYGHFtrA=;
+        s=korg; t=1700077955;
+        bh=wnuvdXMCj7jNG2rtOAMsejSmcqiUrUXfr9WpGI3OW4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lLgeoe3RY9s/a9lJeXD5tAyQVtV9R5LumG3NS0QT9KMrPDrqsSCzTGcy3qdhcOxxV
-         P9/BWLTjColnSSUNt/JvG3OpnYOF3iG+uz/FzVw/1wVbBiw5z3LKagMnfxr/EpFIW1
-         uFpxWF/1rcM8+3szbgu8op3NalzwVa77GdGfRS6U=
+        b=TObX10rGvit6/0bOg5UWDaUfZOReSzli3WldKNY5TkYAjQsUpvHL6OEQIi3ARObhy
+         nS95dRdIIOxwFxvEPOQTEPa67a/RPAwg+c8qiUolVO0/sBEoXZM8HWYSvfV4fLNyGw
+         D73oyRJ4BUByi0zjIuI/m9qo+HvBfQB9MHWFcr8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zev Weiss <zev@bewilderbeest.net>,
-        Thomas Zajic <zlatko@gmx.at>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 001/379] hwmon: (nct6775) Fix incorrect variable reuse in fan_div calculation
-Date:   Wed, 15 Nov 2023 14:21:16 -0500
-Message-ID: <20231115192645.226433010@linuxfoundation.org>
+        patches@lists.linux.dev, Leo Yu-Chi Liang <ycliang@andestech.com>,
+        Chengming Zhou <zhouchengming@bytedance.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 002/379] sched/fair: Fix cfs_rq_is_decayed() on !SMP
+Date:   Wed, 15 Nov 2023 14:21:17 -0500
+Message-ID: <20231115192645.293350733@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -54,63 +56,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zev Weiss <zev@bewilderbeest.net>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-commit 920057ad521dc8669e534736c2a12c14ec9fb2d7 upstream.
+[ Upstream commit c0490bc9bb62d9376f3dd4ec28e03ca0fef97152 ]
 
-In the regmap conversion in commit 4ef2774511dc ("hwmon: (nct6775)
-Convert register access to regmap API") I reused the 'reg' variable
-for all three register reads in the fan speed calculation loop in
-nct6775_update_device(), but failed to notice that the value from the
-first one (data->REG_FAN[i]) is actually used in the call to
-nct6775_select_fan_div() at the end of the loop body.  Since that
-patch the register value passed to nct6775_select_fan_div() has been
-(conditionally) incorrectly clobbered with the value of a different
-register than intended, which has in at least some cases resulted in
-fan speeds being adjusted down to zero.
+We don't need to maintain per-queue leaf_cfs_rq_list on !SMP, since
+it's used for cfs_rq load tracking & balancing on SMP.
 
-Fix this by using dedicated temporaries for the two intermediate
-register reads instead of 'reg'.
+But sched debug interface uses it to print per-cfs_rq stats.
 
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Fixes: 4ef2774511dc ("hwmon: (nct6775) Convert register access to regmap API")
-Reported-by: Thomas Zajic <zlatko@gmx.at>
-Tested-by: Thomas Zajic <zlatko@gmx.at>
-Cc: stable@vger.kernel.org # v5.19+
-Link: https://lore.kernel.org/r/20230929200822.964-2-zev@bewilderbeest.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch fixes the !SMP version of cfs_rq_is_decayed(), so the
+per-queue leaf_cfs_rq_list is also maintained correctly on !SMP,
+to fix the warning in assert_list_leaf_cfs_rq().
+
+Fixes: 0a00a354644e ("sched/fair: Delete useless condition in tg_unthrottle_up()")
+Reported-by: Leo Yu-Chi Liang <ycliang@andestech.com>
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Leo Yu-Chi Liang <ycliang@andestech.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Closes: https://lore.kernel.org/all/ZN87UsqkWcFLDxea@swlinux02/
+Link: https://lore.kernel.org/r/20230913132031.2242151-1-chengming.zhou@linux.dev
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ kernel/sched/fair.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -1528,17 +1528,21 @@ struct nct6775_data *nct6775_update_devi
- 							  data->fan_div[i]);
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 612873ec2197f..65cd5c153216c 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4585,7 +4585,7 @@ static inline void update_misfit_status(struct task_struct *p, struct rq *rq)
  
- 			if (data->has_fan_min & BIT(i)) {
--				err = nct6775_read_value(data, data->REG_FAN_MIN[i], &reg);
-+				u16 tmp;
-+
-+				err = nct6775_read_value(data, data->REG_FAN_MIN[i], &tmp);
- 				if (err)
- 					goto out;
--				data->fan_min[i] = reg;
-+				data->fan_min[i] = tmp;
- 			}
+ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
+ {
+-	return true;
++	return !cfs_rq->nr_running;
+ }
  
- 			if (data->REG_FAN_PULSES[i]) {
--				err = nct6775_read_value(data, data->REG_FAN_PULSES[i], &reg);
-+				u16 tmp;
-+
-+				err = nct6775_read_value(data, data->REG_FAN_PULSES[i], &tmp);
- 				if (err)
- 					goto out;
--				data->fan_pulses[i] = (reg >> data->FAN_PULSE_SHIFT[i]) & 0x03;
-+				data->fan_pulses[i] = (tmp >> data->FAN_PULSE_SHIFT[i]) & 0x03;
- 			}
- 
- 			err = nct6775_select_fan_div(dev, data, i, reg);
+ #define UPDATE_TG	0x0
+-- 
+2.42.0
+
 
 
