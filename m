@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 610A37ECB92
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92F977ED290
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230134AbjKOTXH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39694 "EHLO
+        id S235021AbjKOTk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:40:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbjKOTXH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:07 -0500
+        with ESMTP id S234978AbjKOTkx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B29EC19D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E98C433C7;
-        Wed, 15 Nov 2023 19:23:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A27BD48
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CA9C433C7;
+        Wed, 15 Nov 2023 19:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076183;
-        bh=iEVRlnKVm2e3tqHeRl7OVftXfOW0RqloIKzQ+ffkow8=;
+        s=korg; t=1700077249;
+        bh=vr/dtO8NJszeUCyuE3bm4hi3vjdDfzfxedQSLADWtAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WVBY6P9pxm7+njwpwGpwlzxE5AirFllmTi7FPOkcP7lWcxEJNNUVqpqcaqKWnWYNA
-         JWfMxjHUpDUJDIqCD6pzHCxxushnHr7hh35ohux6ZRsWSjHAl+7UmB85TwX9hE1N0H
-         HsknvX4dlT+KC8COD4+aXk0c1W74cn7vlVvb9dFs=
+        b=GcU7Rxl4SUQnx36/LnQrVmT4t4Q6C0x8dq8MpR2QABqegYkiPJNvCC/qBYjpljd/R
+         OoOfVx7omA1B5p6fHsohFdxZwtvZYHjSiwAzXIyznO2Lf7y5qV7GCGg2knKztLlmu6
+         O12yYyM87ogaXXpxpZmnJmQ0rqxC/r5RtnsuHCME=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rotem Saado <rotem.saado@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 128/550] wifi: iwlwifi: yoyo: swap cdb and jacket bits values
+Subject: [PATCH 6.6 167/603] regulator: mt6358: Fail probe on unknown chip ID
 Date:   Wed, 15 Nov 2023 14:11:52 -0500
-Message-ID: <20231115191609.561122048@linuxfoundation.org>
+Message-ID: <20231115191624.755079708@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rotem Saado <rotem.saado@intel.com>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 65008777b9dcd2002414ddb2c2158293a6e2fd6f ]
+[ Upstream commit 7442edec72bc657e6ce38ae01de9f10e55decfaa ]
 
-The bits are wrong, the jacket bit should be 5 and cdb bit 4.
-Fix it.
+The MT6358 and MT6366 PMICs, and likely many others from MediaTek, have
+a chip ID register, making the chip semi-discoverable.
 
-Fixes: 1f171f4f1437 ("iwlwifi: Add support for getting rf id with blank otp")
-Signed-off-by: Rotem Saado <rotem.saado@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231004123422.356d8dacda2f.I349ab888b43a11baa2453a1d6978a6a703e422f0@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The driver currently supports two PMICs and expects to be probed on one
+or the other. It does not account for incorrect mfd driver entries or
+device trees. While these should not happen, if they do, it could be
+catastrophic for the device. The driver should be sure the hardware is
+what it expects.
+
+Make the driver fail to probe if the chip ID presented is not a known
+one.
+
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: f0e3c6261af1 ("regulator: mt6366: Add support for MT6366 regulator")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230913082919.1631287-2-wenst@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-prph.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/regulator/mt6358-regulator.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-index 6dd381ff0f9e7..2a63968b0e55b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-prph.h
-@@ -348,8 +348,8 @@
- #define RFIC_REG_RD			0xAD0470
- #define WFPM_CTRL_REG			0xA03030
- #define WFPM_OTP_CFG1_ADDR		0x00a03098
--#define WFPM_OTP_CFG1_IS_JACKET_BIT	BIT(4)
--#define WFPM_OTP_CFG1_IS_CDB_BIT	BIT(5)
-+#define WFPM_OTP_CFG1_IS_JACKET_BIT	BIT(5)
-+#define WFPM_OTP_CFG1_IS_CDB_BIT	BIT(4)
- #define WFPM_OTP_BZ_BNJ_JACKET_BIT	5
- #define WFPM_OTP_BZ_BNJ_CDB_BIT		4
- #define WFPM_OTP_CFG1_IS_JACKET(_val)   (((_val) & 0x00000020) >> WFPM_OTP_BZ_BNJ_JACKET_BIT)
+diff --git a/drivers/regulator/mt6358-regulator.c b/drivers/regulator/mt6358-regulator.c
+index 65fbd95f1dbb0..4ca8fbf4b3e2e 100644
+--- a/drivers/regulator/mt6358-regulator.c
++++ b/drivers/regulator/mt6358-regulator.c
+@@ -688,12 +688,18 @@ static int mt6358_regulator_probe(struct platform_device *pdev)
+ 	const struct mt6358_regulator_info *mt6358_info;
+ 	int i, max_regulator, ret;
+ 
+-	if (mt6397->chip_id == MT6366_CHIP_ID) {
+-		max_regulator = MT6366_MAX_REGULATOR;
+-		mt6358_info = mt6366_regulators;
+-	} else {
++	switch (mt6397->chip_id) {
++	case MT6358_CHIP_ID:
+ 		max_regulator = MT6358_MAX_REGULATOR;
+ 		mt6358_info = mt6358_regulators;
++		break;
++	case MT6366_CHIP_ID:
++		max_regulator = MT6366_MAX_REGULATOR;
++		mt6358_info = mt6366_regulators;
++		break;
++	default:
++		dev_err(&pdev->dev, "unsupported chip ID: %d\n", mt6397->chip_id);
++		return -EINVAL;
+ 	}
+ 
+ 	ret = mt6358_sync_vcn33_setting(&pdev->dev);
 -- 
 2.42.0
 
