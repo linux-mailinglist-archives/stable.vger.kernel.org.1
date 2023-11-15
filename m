@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C28C7ED324
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61CF07ED4CB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233704AbjKOUq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:46:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36176 "EHLO
+        id S1344840AbjKOU7K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233680AbjKOUq0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:26 -0500
+        with ESMTP id S1344750AbjKOU6A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD374BC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3083EC433C7;
-        Wed, 15 Nov 2023 20:46:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CF5E1BEA
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B7EC4E765;
+        Wed, 15 Nov 2023 20:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081182;
-        bh=8JVZBlAIfDDgam422cNFAA/nmpNz+nzxDQsr6N5vxts=;
+        s=korg; t=1700081527;
+        bh=WyVVfF0CTGbq29/CQQwAa3k0TH0qInGTuP9v7PhmfZ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VKfMRP2J+/Idd+iEsxmhX8lF3+qgpDhN0ug1VA9LgftmYD9xbZnevRn5NXz8Zr38Q
-         xQV7QbkhV4jLIBcG9GynBAP+pC4k8KtMx1uu3mzsHfwRiqN8w3hVy3esQZtLcaBr1Q
-         IUstQBbvRes6v0U0t36eoCytbvrV8uXPwW9xRW8Q=
+        b=rsdVBSH1e3dveIMiHxDkvV3aKacXa8MNEv6f70KdC8sQ7m8aHJdeIzM2q+I1OtWsX
+         QYVWQvShl6KNHafue/PMaNf6DgvmEnwg2IDKhbu/m5gjDlyhC78/bGKGc2h4CrWMoG
+         Ob75X1ZUV37/OSzqxRdoqsTe9MKlz4GxMNhRphD0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev,
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 88/88] btrfs: use u64 for buffer sizes in the tree search ioctls
+Subject: [PATCH 5.15 208/244] regmap: prevent noinc writes from clobbering cache
 Date:   Wed, 15 Nov 2023 15:36:40 -0500
-Message-ID: <20231115191431.338512411@linuxfoundation.org>
+Message-ID: <20231115203600.841012292@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +51,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
 
-[ Upstream commit dec96fc2dcb59723e041416b8dc53e011b4bfc2e ]
+[ Upstream commit 984a4afdc87a1fc226fd657b1cd8255c13d3fc1a ]
 
-In the tree search v2 ioctl we use the type size_t, which is an unsigned
-long, to track the buffer size in the local variable 'buf_size'. An
-unsigned long is 32 bits wide on a 32 bits architecture. The buffer size
-defined in struct btrfs_ioctl_search_args_v2 is a u64, so when we later
-try to copy the local variable 'buf_size' to the argument struct, when
-the search returns -EOVERFLOW, we copy only 32 bits which will be a
-problem on big endian systems.
+Currently, noinc writes are cached as if they were standard incrementing
+writes, overwriting unrelated register values in the cache. Instead, we
+want to cache the last value written to the register, as is done in the
+accelerated noinc handler (regmap_noinc_readwrite).
 
-Fix this by using a u64 type for the buffer sizes, not only at
-btrfs_ioctl_tree_search_v2(), but also everywhere down the call chain
-so that we can use the u64 at btrfs_ioctl_tree_search_v2().
-
-Fixes: cc68a8a5a433 ("btrfs: new ioctl TREE_SEARCH_V2")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/linux-btrfs/ce6f4bd6-9453-4ffe-ba00-cee35495e10f@moroto.mountain/
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: cdf6b11daa77 ("regmap: Add regmap_noinc_write API")
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Link: https://lore.kernel.org/r/20231101142926.2722603-2-ben.wolsieffer@hefring.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ioctl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/base/regmap/regmap.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index e3f18edc1afee..23beabb489231 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -2045,7 +2045,7 @@ static noinline int key_in_sk(struct btrfs_key *key,
- static noinline int copy_to_sk(struct btrfs_path *path,
- 			       struct btrfs_key *key,
- 			       struct btrfs_ioctl_search_key *sk,
--			       size_t *buf_size,
-+			       u64 *buf_size,
- 			       char __user *ubuf,
- 			       unsigned long *sk_offset,
- 			       int *num_found)
-@@ -2177,7 +2177,7 @@ static noinline int copy_to_sk(struct btrfs_path *path,
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index 617d51a278497..7621b54975b57 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1683,17 +1683,19 @@ static int _regmap_raw_write_impl(struct regmap *map, unsigned int reg,
+ 	}
  
- static noinline int search_ioctl(struct inode *inode,
- 				 struct btrfs_ioctl_search_key *sk,
--				 size_t *buf_size,
-+				 u64 *buf_size,
- 				 char __user *ubuf)
- {
- 	struct btrfs_fs_info *info = btrfs_sb(inode->i_sb);
-@@ -2249,7 +2249,7 @@ static noinline int btrfs_ioctl_tree_search(struct file *file,
- 	struct btrfs_ioctl_search_key sk;
- 	struct inode *inode;
- 	int ret;
--	size_t buf_size;
-+	u64 buf_size;
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
-@@ -2283,8 +2283,8 @@ static noinline int btrfs_ioctl_tree_search_v2(struct file *file,
- 	struct btrfs_ioctl_search_args_v2 args;
- 	struct inode *inode;
- 	int ret;
--	size_t buf_size;
--	const size_t buf_limit = SZ_16M;
-+	u64 buf_size;
-+	const u64 buf_limit = SZ_16M;
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
+ 	if (!map->cache_bypass && map->format.parse_val) {
+-		unsigned int ival;
++		unsigned int ival, offset;
+ 		int val_bytes = map->format.val_bytes;
+-		for (i = 0; i < val_len / val_bytes; i++) {
+-			ival = map->format.parse_val(val + (i * val_bytes));
+-			ret = regcache_write(map,
+-					     reg + regmap_get_offset(map, i),
+-					     ival);
++
++		/* Cache the last written value for noinc writes */
++		i = noinc ? val_len - val_bytes : 0;
++		for (; i < val_len; i += val_bytes) {
++			ival = map->format.parse_val(val + i);
++			offset = noinc ? 0 : regmap_get_offset(map, i / val_bytes);
++			ret = regcache_write(map, reg + offset, ival);
+ 			if (ret) {
+ 				dev_err(map->dev,
+ 					"Error in caching of register: %x ret: %d\n",
+-					reg + regmap_get_offset(map, i), ret);
++					reg + offset, ret);
+ 				return ret;
+ 			}
+ 		}
 -- 
 2.42.0
 
