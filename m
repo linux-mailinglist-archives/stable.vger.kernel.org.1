@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F29E7ECBBF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 976BF7ECE2E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232638AbjKOTYO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
+        id S234811AbjKOTlY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232682AbjKOTYN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:13 -0500
+        with ESMTP id S234550AbjKOTlX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0FBA1A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26444C433C7;
-        Wed, 15 Nov 2023 19:24:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2208F9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BA9C433C9;
+        Wed, 15 Nov 2023 19:41:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076249;
-        bh=2awpdp4IHSsIjcXoy9CpMAVVde5yVXaiWHSJzi94nJQ=;
+        s=korg; t=1700077279;
+        bh=5APF602aEnRmbU+dzmemREZIMaEP5ceTR5Co0e9Sxyg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h+KLnu9/1v14OlO1MJZV8GEF5GA3n9ltSCAC0QEuHUrpKGNOu3CFWSDzwLKXLJwwE
-         5twrrWkA7VEj1oh+Sh5+DvD82P/J9kuRIVWFqdjAfXeJjl3z+qWVlg3fRDU3wm1wfq
-         8tu+in9RrP/NDnDBo5v8XgSYMB0w4uKee1Q3QN7c=
+        b=HIvmS2Se3hMf7PzG9RxK2AG58oGY491fZw+v0uZQxbEGm9Om/aqc6nLPkwSFiGiYM
+         4KrKMzcSY/CbTK1NayGAtGOntHOiRxgEgd5MnbsKJzgree51CGrC45A3MF+6s5nEkK
+         p3E5FNqjB9mN0TJ6u7Bj4/pCtdM2c252fTco21JQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 145/550] ACPI: sysfs: Fix create_pnp_modalias() and create_of_modalias()
-Date:   Wed, 15 Nov 2023 14:12:09 -0500
-Message-ID: <20231115191610.748007761@linuxfoundation.org>
+Subject: [PATCH 6.6 185/603] clk: npcm7xx: Fix incorrect kfree
+Date:   Wed, 15 Nov 2023 14:12:10 -0500
+Message-ID: <20231115191626.045131715@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,64 +52,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
 
-[ Upstream commit 48cf49d31994ff97b33c4044e618560ec84d35fb ]
+[ Upstream commit bbc5080bef4a245106aa8e8d424ba8847ca7c0ca ]
 
-snprintf() does not return negative values on error.
+The corresponding allocation is:
 
-To know if the buffer was too small, the returned value needs to be
-compared with the length of the passed buffer. If it is greater or
-equal, the output has been truncated, so add checks for the truncation
-to create_pnp_modalias() and create_of_modalias(). Also make them
-return -ENOMEM in that case, as they already do that elsewhere.
+> npcm7xx_clk_data = kzalloc(struct_size(npcm7xx_clk_data, hws,
+> 			     NPCM7XX_NUM_CLOCKS), GFP_KERNEL);
 
-Moreover, the remaining size of the buffer used by snprintf() needs to
-be updated after the first write to avoid out-of-bounds access as
-already done correctly in create_pnp_modalias(), but not in
-create_of_modalias(), so change the latter accordingly.
+... so, kfree should be applied to npcm7xx_clk_data, not
+npcm7xx_clk_data->hws.
 
-Fixes: 8765c5ba1949 ("ACPI / scan: Rework modalias creation when "compatible" is present")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-[ rjw: Merge two patches into one, combine changelogs, add subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: fcfd14369856 ("clk: npcm7xx: add clock controller")
+Signed-off-by: Jonathan Neuschäfer <j.neuschaefer@gmx.net>
+Link: https://lore.kernel.org/r/20230923133127.1815621-1-j.neuschaefer@gmx.net
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/device_sysfs.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/clk/clk-npcm7xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-index b9bbf07461992..a34d8578b3da6 100644
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -158,8 +158,8 @@ static int create_pnp_modalias(const struct acpi_device *acpi_dev, char *modalia
- 		return 0;
+diff --git a/drivers/clk/clk-npcm7xx.c b/drivers/clk/clk-npcm7xx.c
+index e319cfa51a8a3..030186def9c69 100644
+--- a/drivers/clk/clk-npcm7xx.c
++++ b/drivers/clk/clk-npcm7xx.c
+@@ -510,7 +510,7 @@ static void __init npcm7xx_clk_init(struct device_node *clk_np)
+ 	return;
  
- 	len = snprintf(modalias, size, "acpi:");
--	if (len <= 0)
--		return len;
-+	if (len >= size)
-+		return -ENOMEM;
- 
- 	size -= len;
- 
-@@ -212,8 +212,10 @@ static int create_of_modalias(const struct acpi_device *acpi_dev, char *modalias
- 	len = snprintf(modalias, size, "of:N%sT", (char *)buf.pointer);
- 	ACPI_FREE(buf.pointer);
- 
--	if (len <= 0)
--		return len;
-+	if (len >= size)
-+		return -ENOMEM;
-+
-+	size -= len;
- 
- 	of_compatible = acpi_dev->data.of_compatible;
- 	if (of_compatible->type == ACPI_TYPE_PACKAGE) {
+ npcm7xx_init_fail:
+-	kfree(npcm7xx_clk_data->hws);
++	kfree(npcm7xx_clk_data);
+ npcm7xx_init_np_err:
+ 	iounmap(clk_base);
+ npcm7xx_init_error:
 -- 
 2.42.0
 
