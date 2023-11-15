@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3FAB7ED540
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68BD17ED36F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:52:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235607AbjKOVCy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:02:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47788 "EHLO
+        id S233739AbjKOUwi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:52:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235606AbjKOVCg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:02:36 -0500
+        with ESMTP id S233760AbjKOUwi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:52:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51D231BDB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:02:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33FFBC4E776;
-        Wed, 15 Nov 2023 20:52:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D0B7B0
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:52:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A451DC4E778;
+        Wed, 15 Nov 2023 20:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081552;
-        bh=rf2bAOSgdAY9GtCzCQG1+nYUcNAVQ9dcW/DJ4kJTNzA=;
+        s=korg; t=1700081554;
+        bh=DWpzQuL1rd7OqJflUBbMSxdNxJ4arIUZwRshB8NV9sk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NWNvv9qZ0actDQc2oUOXN8h39jjyEnKVzrazhksnJBnnOcu2TgDCzAbNqLrDyOm2C
-         vp2mLR0/P96YPzBDiFUcQARL1DgC2UXRYEt4EqrkpRmcjUjAy353WDzFXC/6681sv1
-         XqtxR/Vpo8/R0B+Qa+4p6AJQmu8ZVrz9K04xyGlk=
+        b=yf3h8Fd0eBjGGeuhBT1jf9Xt+pycjTB7l4klevbFNwt+e1cty5mkGfsQsKpA11DaA
+         DBH8c3vAf1RRBBUNi1gRNCd+OZ4mUvUQ45L/rzT+gNWOiWRXBlY7zNW4Jf8SOKXkzd
+         QBL0c4V5fGKUwxXepQEknheqz3MTd1JziX6vFuf8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ira Weiny <ira.weiny@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
+        patches@lists.linux.dev,
+        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 196/244] cxl/mem: Fix shutdown order
-Date:   Wed, 15 Nov 2023 15:36:28 -0500
-Message-ID: <20231115203600.156064434@linuxfoundation.org>
+Subject: [PATCH 5.15 197/244] rtc: pcf85363: fix wrong mask/val parameters in regmap_update_bits call
+Date:   Wed, 15 Nov 2023 15:36:29 -0500
+Message-ID: <20231115203600.214193040@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -57,82 +55,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 88d3917f82ed4215a2154432c26de1480a61b209 ]
+[ Upstream commit 2be36c09b6b07306be33519e1aa70d2e2a2161bb ]
 
-Ira reports that removing cxl_mock_mem causes a crash with the following
-trace:
+The current implementation passes PIN_IO_INTA_OUT (2) as a mask and
+PIN_IO_INTAPM (GENMASK(1, 0)) as a value.
+Swap the variables to assign mask and value the right way.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000044
- [..]
- RIP: 0010:cxl_region_decode_reset+0x7f/0x180 [cxl_core]
- [..]
- Call Trace:
-  <TASK>
-  cxl_region_detach+0xe8/0x210 [cxl_core]
-  cxl_decoder_kill_region+0x27/0x40 [cxl_core]
-  cxld_unregister+0x29/0x40 [cxl_core]
-  devres_release_all+0xb8/0x110
-  device_unbind_cleanup+0xe/0x70
-  device_release_driver_internal+0x1d2/0x210
-  bus_remove_device+0xd7/0x150
-  device_del+0x155/0x3e0
-  device_unregister+0x13/0x60
-  devm_release_action+0x4d/0x90
-  ? __pfx_unregister_port+0x10/0x10 [cxl_core]
-  delete_endpoint+0x121/0x130 [cxl_core]
-  devres_release_all+0xb8/0x110
-  device_unbind_cleanup+0xe/0x70
-  device_release_driver_internal+0x1d2/0x210
-  bus_remove_device+0xd7/0x150
-  device_del+0x155/0x3e0
-  ? lock_release+0x142/0x290
-  cdev_device_del+0x15/0x50
-  cxl_memdev_unregister+0x54/0x70 [cxl_core]
+This error was first introduced with the alarm support. For better or
+worse it worked as expected because 0x02 was applied as a mask to 0x03,
+resulting 0x02 anyway. This will of course not work for any other value.
 
-This crash is due to the clearing out the cxl_memdev's driver context
-(@cxlds) before the subsystem is done with it. This is ultimately due to
-the region(s), that this memdev is a member, being torn down and expecting
-to be able to de-reference @cxlds, like here:
-
-static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
-...
-                if (cxlds->rcd)
-                        goto endpoint_reset;
-...
-
-Fix it by keeping the driver context valid until memdev-device
-unregistration, and subsequently the entire stack of related
-dependencies, unwinds.
-
-Fixes: 9cc238c7a526 ("cxl/pci: Introduce cdevm_file_operations")
-Reported-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Tested-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: e5aac267a10a ("rtc: pcf85363: add alarm support")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20231013-topic-pcf85363_regmap_update_bits-v1-1-c454f016f71f@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/memdev.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/rtc/rtc-pcf85363.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cxl/core/memdev.c
-+++ b/drivers/cxl/core/memdev.c
-@@ -139,10 +139,9 @@ static void cxl_memdev_unregister(void *
- 	struct cdev *cdev = &cxlmd->cdev;
- 	const struct cdevm_file_operations *cdevm_fops;
- 
-+	cdev_device_del(&cxlmd->cdev, dev);
- 	cdevm_fops = container_of(cdev->ops, typeof(*cdevm_fops), fops);
- 	cdevm_fops->shutdown(dev);
--
--	cdev_device_del(&cxlmd->cdev, dev);
- 	put_device(dev);
- }
- 
+diff --git a/drivers/rtc/rtc-pcf85363.c b/drivers/rtc/rtc-pcf85363.c
+index bb3e9ba75f6c6..80e3839e1e86a 100644
+--- a/drivers/rtc/rtc-pcf85363.c
++++ b/drivers/rtc/rtc-pcf85363.c
+@@ -403,7 +403,7 @@ static int pcf85363_probe(struct i2c_client *client,
+ 	if (client->irq > 0) {
+ 		regmap_write(pcf85363->regmap, CTRL_FLAGS, 0);
+ 		regmap_update_bits(pcf85363->regmap, CTRL_PIN_IO,
+-				   PIN_IO_INTA_OUT, PIN_IO_INTAPM);
++				   PIN_IO_INTAPM, PIN_IO_INTA_OUT);
+ 		ret = devm_request_threaded_irq(&client->dev, client->irq,
+ 						NULL, pcf85363_rtc_handle_irq,
+ 						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+-- 
+2.42.0
+
 
 
