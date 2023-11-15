@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29DB67ED4E8
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E46F77ED2E1
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344764AbjKOU7f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:59:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37050 "EHLO
+        id S233588AbjKOUo7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344644AbjKOU6J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:09 -0500
+        with ESMTP id S233569AbjKOUo4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:56 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57486D6B
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1236C4AF7D;
-        Wed, 15 Nov 2023 20:50:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F591BE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925E0C433C7;
+        Wed, 15 Nov 2023 20:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081433;
-        bh=0Vzj/7KOE3NjaAmJ/UWSlwCdegw6uWxnEP3591vR7+U=;
+        s=korg; t=1700081089;
+        bh=eePPhFKE6qjMNARFH+QqqmoMBKyM82jrSnc70FSAtKA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WE3gVCzfZZezfDl33vliZen50b4JWO0aQG34w7ZZddLb6izGXUWYnY2kf9VBsvlr6
-         hlHZbJqc2GVVq5LYbqia7jHpPCCFEaVuC0dRqyFYNuzwBRLzF+3ofK+Uq0qZytQ9ML
-         W2/HBDVr0dwYOS2HVdntuK78G7951RKaZ34ffQ7w=
+        b=gnudR14tzm4olxIHB9BSP6EBQiA8+B/zfzv+BIeJZrJdc2GA4YkgJwdYDXMLZXRYJ
+         Te2/NylI4qFeaYU9fnVNa59C5BvLWS92AdHb8WLDz0SU27cmEZXEcxW+XUqVfmXzVh
+         zoAyiWQpMynwQeQQfg0AvCCBJ4AlAjNJSpe722iM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 151/244] HID: logitech-hidpp: Remove HIDPP_QUIRK_NO_HIDINPUT quirk
-Date:   Wed, 15 Nov 2023 15:35:43 -0500
-Message-ID: <20231115203557.396990987@linuxfoundation.org>
+Subject: [PATCH 4.19 32/88] ARM: dts: qcom: mdm9615: populate vsdcc fixed regulator
+Date:   Wed, 15 Nov 2023 15:35:44 -0500
+Message-ID: <20231115191428.073714224@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,71 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Nocera <hadess@hadess.net>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d83956c8855c6c2ed4bd16cec4a5083d63df17e4 ]
+[ Upstream commit 09f8ee81b6da5f76de8b83c8bfc4475b54e101e0 ]
 
-HIDPP_QUIRK_NO_HIDINPUT isn't used by any devices but still happens to
-work as HIDPP_QUIRK_DELAYED_INIT is defined to the same value. Remove
-HIDPP_QUIRK_NO_HIDINPUT and use HIDPP_QUIRK_DELAYED_INIT everywhere
-instead.
+Fixed regulator put under "regulators" node will not be populated,
+unless simple-bus or something similar is used.  Drop the "regulators"
+wrapper node to fix this.
 
-Tested on a T650 which requires that quirk, and a number of unifying and
-Bluetooth devices that don't.
-
-Signed-off-by: Bastien Nocera <hadess@hadess.net>
-Link: https://lore.kernel.org/r/20230125121723.3122-2-hadess@hadess.net
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Stable-dep-of: 11ca0322a419 ("HID: logitech-hidpp: Don't restart IO, instead defer hid_connect() only")
+Fixes: 2c5e596524e7 ("ARM: dts: Add MDM9615 dtsi")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230924183914.51414-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/qcom-mdm9615.dtsi | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 7681a3fa67dab..a716c6f3bfb58 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -63,7 +63,7 @@ MODULE_PARM_DESC(disable_tap_to_click,
- /* bits 2..20 are reserved for classes */
- /* #define HIDPP_QUIRK_CONNECT_EVENTS		BIT(21) disabled */
- #define HIDPP_QUIRK_WTP_PHYSICAL_BUTTONS	BIT(22)
--#define HIDPP_QUIRK_NO_HIDINPUT			BIT(23)
-+#define HIDPP_QUIRK_DELAYED_INIT		BIT(23)
- #define HIDPP_QUIRK_FORCE_OUTPUT_REPORTS	BIT(24)
- #define HIDPP_QUIRK_UNIFYING			BIT(25)
- #define HIDPP_QUIRK_HI_RES_SCROLL_1P0		BIT(26)
-@@ -82,8 +82,6 @@ MODULE_PARM_DESC(disable_tap_to_click,
- 					 HIDPP_QUIRK_HI_RES_SCROLL_X2120 | \
- 					 HIDPP_QUIRK_HI_RES_SCROLL_X2121)
+diff --git a/arch/arm/boot/dts/qcom-mdm9615.dtsi b/arch/arm/boot/dts/qcom-mdm9615.dtsi
+index c852b69229c97..26d49f35331b8 100644
+--- a/arch/arm/boot/dts/qcom-mdm9615.dtsi
++++ b/arch/arm/boot/dts/qcom-mdm9615.dtsi
+@@ -82,14 +82,12 @@ cxo_board {
+ 		};
+ 	};
  
--#define HIDPP_QUIRK_DELAYED_INIT		HIDPP_QUIRK_NO_HIDINPUT
--
- #define HIDPP_CAPABILITY_HIDPP10_BATTERY	BIT(0)
- #define HIDPP_CAPABILITY_HIDPP20_BATTERY	BIT(1)
- #define HIDPP_CAPABILITY_BATTERY_MILEAGE	BIT(2)
-@@ -3988,7 +3986,7 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
- 	if (hidpp->quirks & HIDPP_QUIRK_HI_RES_SCROLL)
- 		hi_res_scroll_enable(hidpp);
+-	regulators {
+-		vsdcc_fixed: vsdcc-regulator {
+-			compatible = "regulator-fixed";
+-			regulator-name = "SDCC Power";
+-			regulator-min-microvolt = <2700000>;
+-			regulator-max-microvolt = <2700000>;
+-			regulator-always-on;
+-		};
++	vsdcc_fixed: vsdcc-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "SDCC Power";
++		regulator-min-microvolt = <2700000>;
++		regulator-max-microvolt = <2700000>;
++		regulator-always-on;
+ 	};
  
--	if (!(hidpp->quirks & HIDPP_QUIRK_NO_HIDINPUT) || hidpp->delayed_input)
-+	if (!(hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT) || hidpp->delayed_input)
- 		/* if the input nodes are already created, we can stop now */
- 		return;
- 
-@@ -4221,7 +4219,7 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 		hid_hw_close(hdev);
- 		hid_hw_stop(hdev);
- 
--		if (hidpp->quirks & HIDPP_QUIRK_NO_HIDINPUT)
-+		if (hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT)
- 			connect_mask &= ~HID_CONNECT_HIDINPUT;
- 
- 		/* Now export the actual inputs and hidraw nodes to the world */
+ 	soc: soc {
 -- 
 2.42.0
 
