@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 148367ECE6E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0099E7ED294
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235104AbjKOTnE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42932 "EHLO
+        id S233252AbjKOUmm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235098AbjKOTnD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:03 -0500
+        with ESMTP id S233385AbjKOTZk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:40 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8931E9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3F1C433C8;
-        Wed, 15 Nov 2023 19:42:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CE351B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:37 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89B9C433CA;
+        Wed, 15 Nov 2023 19:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077380;
-        bh=PLIO7P/dQ9Z7YorPb8mM4ThOiDn1fhaJEHPFaQCb+Eo=;
+        s=korg; t=1700076337;
+        bh=cPnsWrvbDtkdpA7+MkpKo8oSEZjzdGCT1V0nmaIvPgU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lDT/Z3Q410F/3wffyc/CydqCJN6d/BuJcg6DZCK/HvDQMI/is8hy5OGXFS2IaOOVU
-         ohM+89GiQMEGpfvkkStKFuOOzP0Kd30S7Y2UxSxtXR+zyxrSXAjmaaC7KNQ4aSRzGe
-         cDh3c5J0wch0Iajk2KCyNMj/badyP0XntBixdzj0=
+        b=MeXXGg2KDYfh1bNQTDQldOh7Sr14WMkQEjMgZtQsRwa1DetvpDuAMS+OFZiV2RfEa
+         Fhv4R8FapoaeHKPUyOkYUwDubdDamuEBDovVzV/Aox31m5TVUrhrJHUGMXUW8m3gwR
+         R65e4n5iTl4sj5fOm5iQ7DGZQJMOSJtamLmjCGDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Philip Yang <Philip.Yang@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/603] drm/amdgpu: Increase IH soft ring size for GFX v9.4.3 dGPU
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 202/550] drm: bridge: samsung-dsim: Initialize ULPS EXIT for i.MX8M DSIM
 Date:   Wed, 15 Nov 2023 14:13:06 -0500
-Message-ID: <20231115191629.886661988@linuxfoundation.org>
+Message-ID: <20231115191614.777048604@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,43 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit bcfb9cee61207b80f37663ffa08c135657a27ad5 ]
+[ Upstream commit 192948f6a923bedf461b4aa09e70a25cfb8a6041 ]
 
-On GFX v9.4.3 dGPU, applications have random timeout failure when XNACK
-on, dmesg log has "amdgpu: IH soft ring buffer overflow 0x900, 0x900",
-because dGPU mode has 272 cam entries. After increasing IH soft ring
-to 512 entries, no more IH soft ring overflow message and application
-passed.
+The ULPS EXIT is initialized to 0xaf in downstream BSP as well as older
+revisions of this patchset, in newer revisions of the DSIM patchset it
+was left out and set to 0. Fix it.
 
-Fixes: bf80d34b6c58 ("drm/amdgpu: Increase soft IH ring size")
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 4d562c70c4dc ("drm: bridge: samsung-dsim: Add i.MX8M Mini/Nano support")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230709134827.449185-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h | 2 +-
+ drivers/gpu/drm/bridge/samsung-dsim.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
-index 6c6184f0dbc17..508f02eb0cf8f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
-@@ -28,7 +28,7 @@
- #define AMDGPU_IH_MAX_NUM_IVS	32
- 
- #define IH_RING_SIZE	(256 * 1024)
--#define IH_SW_RING_SIZE	(8 * 1024)	/* enough for 256 CAM entries */
-+#define IH_SW_RING_SIZE	(16 * 1024)	/* enough for 512 CAM entries */
- 
- struct amdgpu_device;
- struct amdgpu_iv_entry;
+diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
+index 9e253af69c7a1..76be9dc0693f6 100644
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -384,7 +384,7 @@ static const unsigned int imx8mm_dsim_reg_values[] = {
+ 	[RESET_TYPE] = DSIM_SWRST,
+ 	[PLL_TIMER] = 500,
+ 	[STOP_STATE_CNT] = 0xf,
+-	[PHYCTRL_ULPS_EXIT] = 0,
++	[PHYCTRL_ULPS_EXIT] = DSIM_PHYCTRL_ULPS_EXIT(0xaf),
+ 	[PHYCTRL_VREG_LP] = 0,
+ 	[PHYCTRL_SLEW_UP] = 0,
+ 	[PHYTIMING_LPX] = DSIM_PHYTIMING_LPX(0x06),
 -- 
 2.42.0
 
