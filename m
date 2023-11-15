@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8A5C7ED59A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DFF57ED2E3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235071AbjKOVHr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37372 "EHLO
+        id S233597AbjKOUpD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235053AbjKOVH0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
+        with ESMTP id S233616AbjKOUo5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D63A10DA
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B02C4E663;
-        Wed, 15 Nov 2023 20:50:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F871D73
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9898AC433C7;
+        Wed, 15 Nov 2023 20:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081438;
-        bh=i1aPZbys+JVrjJyHuQ/kqoqGqbS8p76yaHIoKYrdjMo=;
+        s=korg; t=1700081092;
+        bh=Fj+GyhErlQrMIRjTUqL+lBRe9M0uKfuLu8Ob+Vs+Z0A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cj9B4z1hSV2ZVeJSbOjo1x6jT4nb+nX19+E0LfjdmZG7qfoaQipoXC+g2wEXkzm6Y
-         GmKMlOetFIm39lIUnxIblB1jH+nUXCDRsoY/J/fMjprlNIMMNamOrAFdh38ltlQiNw
-         Wkaq1ECzi1jLchtzuC6DBE02g6mG1QQj0ImluSaQ=
+        b=g7Mr+lR2z3yiEiTSFN8r7W8kOg6SD77u1Q8RUkHPDdnreNWWgfSHfQ3gDHWQN6hXB
+         qvpGfUIbPXnzlV6KXG0KIFgQ/xZJxd1fgUapTVUKNke3F18WbhAg2PAMNYnnzOsyvf
+         fyPvQ7LRnc6PQuHctMBxi8OV1CEgW+aBugX/MA1c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Benjamin Tissoires <bentiss@kernel.org>,
+        patches@lists.linux.dev,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 153/244] HID: logitech-hidpp: Revert "Dont restart communication if not necessary"
-Date:   Wed, 15 Nov 2023 15:35:45 -0500
-Message-ID: <20231115203557.520863583@linuxfoundation.org>
+Subject: [PATCH 4.19 34/88] clk: scmi: Free scmi_clk allocated when the clocks with invalid info are skipped
+Date:   Wed, 15 Nov 2023 15:35:46 -0500
+Message-ID: <20231115191428.221512557@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,130 +53,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 55bf70362ffc4ddd7c8745e2fe880edac00e4aff ]
+[ Upstream commit 3537a75e73f3420614a358d0c8b390ea483cc87d ]
 
-Commit 91cf9a98ae41 ("HID: logitech-hidpp: make .probe usbhid capable")
-makes hidpp_probe() first call hid_hw_start(hdev, 0) to allow IO
-without connecting any hid subdrivers (hid-input, hidraw).
+Add the missing devm_kfree() when we skip the clocks with invalid or
+missing information from the firmware.
 
-This is done to allow to retrieve the device's name and serial number
-and store these in hdev->name and hdev->uniq.
-
-Then later on IO was stopped and started again with hid_hw_start(hdev,
-HID_CONNECT_DEFAULT) connecting hid-input and hidraw after the name
-and serial number have been setup.
-
-Commit 498ba2069035 ("HID: logitech-hidpp: Don't restart communication
-if not necessary") changed the probe() code to only do the start with
-a 0 connect-mask + restart later for unifying devices.
-
-But for non unifying devices hdev->name and hdev->uniq are updated too.
-So this change re-introduces the problem for which the start with
-a 0 connect-mask + restart later behavior was introduced.
-
-The previous patch in this series changes the unifying path to instead of
-restarting IO only call hid_connect() later. This avoids possible issues
-with restarting IO seen on non unifying devices.
-
-Revert the change to limit the restart behavior to unifying devices to
-fix hdev->name changing after userspace facing devices have already been
-registered.
-
-This series has been tested on the following devices:
-Logitech Bluetooth Laser Travel Mouse (bluetooth, HID++ 1.0)
-Logitech M720 Triathlon (bluetooth, HID++ 4.5)
-Logitech M720 Triathlon (unifying, HID++ 4.5)
-Logitech K400 Pro (unifying, HID++ 4.1)
-Logitech K270 (eQUAD nano Lite, HID++ 2.0)
-Logitech M185 (eQUAD nano Lite, HID++ 4.5)
-Logitech LX501 keyboard (27 Mhz, HID++ builtin scroll-wheel, HID++ 1.0)
-Logitech M-RAZ105 mouse (27 Mhz, HID++ extra mouse buttons, HID++ 1.0)
-
-And by bentiss:
-Logitech Touchpad T650 (unifying)
-Logitech Touchpad T651 (bluetooth)
-Logitech MX Master 3B (BLE)
-Logitech G403 (plain USB / Gaming receiver)
-
-Fixes: 498ba2069035 ("HID: logitech-hidpp: Don't restart communication if not necessary")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231010102029.111003-3-hdegoede@redhat.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Cc: Cristian Marussi <cristian.marussi@arm.com>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org
+Fixes: 6d6a1d82eaef ("clk: add support for clocks provided by SCMI")
+Link: https://lore.kernel.org/r/20231004193600.66232-1-sudeep.holla@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ drivers/clk/clk-scmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 907f45dfef4c1..f7d6927f95076 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4089,7 +4089,6 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	bool connected;
- 	unsigned int connect_mask = HID_CONNECT_DEFAULT;
- 	struct hidpp_ff_private_data data;
--	bool will_restart = false;
+diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
+index c65d30bba7005..9d9eed597617b 100644
+--- a/drivers/clk/clk-scmi.c
++++ b/drivers/clk/clk-scmi.c
+@@ -170,6 +170,7 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
+ 		sclk->info = handle->clk_ops->info_get(handle, idx);
+ 		if (!sclk->info) {
+ 			dev_dbg(dev, "invalid clock info for idx %d\n", idx);
++			devm_kfree(dev, sclk);
+ 			continue;
+ 		}
  
- 	/* report_fixup needs drvdata to be set before we call hid_parse */
- 	hidpp = devm_kzalloc(&hdev->dev, sizeof(*hidpp), GFP_KERNEL);
-@@ -4140,10 +4139,6 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 			return ret;
- 	}
- 
--	if (hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT ||
--	    hidpp->quirks & HIDPP_QUIRK_UNIFYING)
--		will_restart = true;
--
- 	INIT_WORK(&hidpp->work, delayed_work_cb);
- 	mutex_init(&hidpp->send_mutex);
- 	init_waitqueue_head(&hidpp->wait);
-@@ -4160,7 +4155,7 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	 * name and serial number and store these in hdev->name and hdev->uniq,
- 	 * before the hid-input and hidraw drivers expose these to userspace.
- 	 */
--	ret = hid_hw_start(hdev, will_restart ? 0 : connect_mask);
-+	ret = hid_hw_start(hdev, 0);
- 	if (ret) {
- 		hid_err(hdev, "hw start failed\n");
- 		goto hid_hw_start_fail;
-@@ -4199,7 +4194,6 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 			hidpp->wireless_feature_index = 0;
- 		else if (ret)
- 			goto hid_hw_init_fail;
--		ret = 0;
- 	}
- 
- 	if (connected && (hidpp->quirks & HIDPP_QUIRK_CLASS_WTP)) {
-@@ -4215,16 +4209,14 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	schedule_work(&hidpp->work);
- 	flush_work(&hidpp->work);
- 
--	if (will_restart) {
--		if (hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT)
--			connect_mask &= ~HID_CONNECT_HIDINPUT;
-+	if (hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT)
-+		connect_mask &= ~HID_CONNECT_HIDINPUT;
- 
--		/* Now export the actual inputs and hidraw nodes to the world */
--		ret = hid_connect(hdev, connect_mask);
--		if (ret) {
--			hid_err(hdev, "%s:hid_connect returned error %d\n", __func__, ret);
--			goto hid_hw_init_fail;
--		}
-+	/* Now export the actual inputs and hidraw nodes to the world */
-+	ret = hid_connect(hdev, connect_mask);
-+	if (ret) {
-+		hid_err(hdev, "%s:hid_connect returned error %d\n", __func__, ret);
-+		goto hid_hw_init_fail;
- 	}
- 
- 	if (hidpp->quirks & HIDPP_QUIRK_CLASS_G920) {
 -- 
 2.42.0
 
