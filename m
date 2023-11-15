@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83AD17ECBB2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 543C17ECE28
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232572AbjKOTXy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57256 "EHLO
+        id S234225AbjKOTlP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232489AbjKOTXw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:52 -0500
+        with ESMTP id S234829AbjKOTlH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D69B2A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5873BC433CC;
-        Wed, 15 Nov 2023 19:23:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FE719E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DD8C433C7;
+        Wed, 15 Nov 2023 19:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076229;
-        bh=m0t2pxsYyzaTWXboVfD6xJZLmOxTVYStpJh+Wr5Ba/A=;
+        s=korg; t=1700077264;
+        bh=Zkc7Pn24bmRt/hGZQnai+UlS7hosdLXQkPv2FQQyiNM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BVr5YqWj/MqwoQeVYxL/OpFw2L5rU8Bob42KiyJkajbQeBkn/NQDSgYvYXmN+JtDN
-         wSVGRyP7jxEUE2+8/P2u+g/06azivkweEeytw63ewptsSEmn6RG1zhciXj9ia3WiSu
-         TrxrA0Zo8WmrdVECQAcWUKnttJJcTGCbgwCA5WKE=
+        b=Em7UxpXcDYC+f19FhYflU9bMqLiNOMpoxxIhhYL7/yqIQAPhHcenBGBusFbKyZFK5
+         IYuGI+FmRBCiDHYldtZ6mfZIFxzOYjo6l+74Z+fLQcLrMmm0/SFpFjrFj9YIxik19/
+         7kGuValr4oobrXgp22HA+RP7huz8fPVpITNdSn2c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        patches@lists.linux.dev,
+        Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 157/550] clk: qcom: mmcc-msm8998: Fix the SMMU GDSC
+Subject: [PATCH 6.6 196/603] clk: qcom: ipq5018: drop the CLK_SET_RATE_PARENT flag from GPLL clocks
 Date:   Wed, 15 Nov 2023 14:12:21 -0500
-Message-ID: <20231115191611.577156825@linuxfoundation.org>
+Message-ID: <20231115191626.814589298@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +52,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
 
-[ Upstream commit 1fc62c8347397faf4e18249e88ecd4470c0a5357 ]
+[ Upstream commit 01a5e4c6731ab6b4b74822661d296f8893fc1230 ]
 
-The SMMU GDSC doesn't have to be ALWAYS-ON and shouldn't feature the
-HW_CTRL flag (it's separate from hw_ctrl_addr).  In addition to that,
-it should feature a cxc entry for bimc_smmu_axi_clk and be marked as
-votable.
+GPLL clock rates are fixed and shouldn't be scaled based on the
+request from dependent clocks. Doing so will result in the unexpected
+behaviour. So drop the CLK_SET_RATE_PARENT flag from the GPLL clocks.
 
-Fix all of these issues.
+----
+Changes in V2:
+	- New patch
 
-Fixes: d14b15b5931c ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-5-ba1b1fd9ee75@linaro.org
+Fixes: e3fdbef1bab8 ("clk: qcom: Add Global Clock controller (GCC) driver for IPQ5018")
+Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-3-c8ceb1a37680@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8998.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-ipq5018.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
-index 9b98e0fb8b914..7b1d105afbd8c 100644
---- a/drivers/clk/qcom/mmcc-msm8998.c
-+++ b/drivers/clk/qcom/mmcc-msm8998.c
-@@ -2628,11 +2628,13 @@ static struct gdsc camss_cpp_gdsc = {
- static struct gdsc bimc_smmu_gdsc = {
- 	.gdscr = 0xe020,
- 	.gds_hw_ctrl = 0xe024,
-+	.cxcs = (unsigned int []){ 0xe008 },
-+	.cxc_count = 1,
- 	.pd = {
- 		.name = "bimc_smmu",
+diff --git a/drivers/clk/qcom/gcc-ipq5018.c b/drivers/clk/qcom/gcc-ipq5018.c
+index 19dc2b71cacf0..2a3c0659b7008 100644
+--- a/drivers/clk/qcom/gcc-ipq5018.c
++++ b/drivers/clk/qcom/gcc-ipq5018.c
+@@ -128,7 +128,6 @@ static struct clk_alpha_pll_postdiv gpll0 = {
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
  	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = HW_CTRL | ALWAYS_ON,
-+	.flags = VOTABLE,
  };
  
- static struct clk_regmap *mmcc_msm8998_clocks[] = {
+@@ -143,7 +142,6 @@ static struct clk_alpha_pll_postdiv gpll2 = {
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -158,7 +156,6 @@ static struct clk_alpha_pll_postdiv gpll4 = {
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
 -- 
 2.42.0
 
