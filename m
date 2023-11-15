@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77CE17ED4B3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF90E7ED31A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344607AbjKOU6y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52926 "EHLO
+        id S233616AbjKOUqP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344716AbjKOU5p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:45 -0500
+        with ESMTP id S233695AbjKOUqN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D438C1BC8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CA8C4E685;
-        Wed, 15 Nov 2023 20:51:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8212D192
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03B97C433C8;
+        Wed, 15 Nov 2023 20:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081472;
-        bh=GiylPyVnmBsiZjcFQ05Sq5LHLx708sHexwX2Xw1WYrg=;
+        s=korg; t=1700081169;
+        bh=BUCyxH5T6W9Sk56fsOyiYxbpvFJdBXcOIDM1cGKDi+M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y2276GuKneQGLS4QFfJ+bktqOLxP2+bPXW88lMMVkUGhDJFxqpWQR9Wy6e4maCqUn
-         4+s1K49bHVFCaYX50QaZfU2d00LW7fwa7wb9OlWh+oMESG4LcAls2cks2AnDrkedDk
-         1ijQ2kBhlMYa2zG5bHB8iengLvJHg6GQR40+rWI8=
+        b=ZYcNG4s4zXV1m9kHqPzxRplCCwNpgQrGPe/woMFKZzP+2gyeiYeOgAf9EQv/Kmiau
+         9Hx/Bkny2Ue0KkVgl9DaT+djLfrTfIwEdNrjaKoH2vtnpF6jXeS5VaNb1WLpNedZAZ
+         XGxcTN3UKIE8IjI7/K6Zfd0/mUNvjZRZe9J1Mjis=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jia-Ju Bai <baijiaju@buaa.edu.cn>,
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 175/244] usb: dwc2: fix possible NULL pointer dereference caused by driver concurrency
+Subject: [PATCH 4.19 55/88] misc: st_core: Do not call kfree_skb() under spin_lock_irqsave()
 Date:   Wed, 15 Nov 2023 15:36:07 -0500
-Message-ID: <20231115203558.870998193@linuxfoundation.org>
+Message-ID: <20231115191429.461060022@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,70 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia-Ju Bai <baijiaju@buaa.edu.cn>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit ef307bc6ef04e8c1ea843231db58e3afaafa9fa6 ]
+[ Upstream commit 4d08c3d12b61022501989f9f071514d2d6f77c47 ]
 
-In _dwc2_hcd_urb_enqueue(), "urb->hcpriv = NULL" is executed without
-holding the lock "hsotg->lock". In _dwc2_hcd_urb_dequeue():
+It is not allowed to call kfree_skb() from hardware interrupt
+context or with hardware interrupts being disabled.
+So replace kfree_skb() with dev_kfree_skb_irq() under
+spin_lock_irqsave(). Compile tested only.
 
-    spin_lock_irqsave(&hsotg->lock, flags);
-    ...
-	if (!urb->hcpriv) {
-		dev_dbg(hsotg->dev, "## urb->hcpriv is NULL ##\n");
-		goto out;
-	}
-    rc = dwc2_hcd_urb_dequeue(hsotg, urb->hcpriv); // Use urb->hcpriv
-    ...
-out:
-    spin_unlock_irqrestore(&hsotg->lock, flags);
-
-When _dwc2_hcd_urb_enqueue() and _dwc2_hcd_urb_dequeue() are
-concurrently executed, the NULL check of "urb->hcpriv" can be executed
-before "urb->hcpriv = NULL". After urb->hcpriv is NULL, it can be used
-in the function call to dwc2_hcd_urb_dequeue(), which can cause a NULL
-pointer dereference.
-
-This possible bug is found by an experimental static analysis tool
-developed by myself. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency
-bugs including data races and atomicity violations. The above possible
-bug is reported, when my tool analyzes the source code of Linux 6.5.
-
-To fix this possible bug, "urb->hcpriv = NULL" should be executed with
-holding the lock "hsotg->lock". After using this patch, my tool never
-reports the possible bug, with the kernelconfiguration allyesconfig for
-x86_64. Because I have no associated hardware, I cannot test the patch
-in runtime testing, and just verify it according to the code logic.
-
-Fixes: 33ad261aa62b ("usb: dwc2: host: spinlock urb_enqueue")
-Signed-off-by: Jia-Ju Bai <baijiaju@buaa.edu.cn>
-Link: https://lore.kernel.org/r/20230926024404.832096-1-baijiaju@buaa.edu.cn
+Fixes: 53618cc1e51e ("Staging: sources for ST core")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20230823035020.1281892-1-ruanjinjie@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/hcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/ti-st/st_core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/dwc2/hcd.c b/drivers/usb/dwc2/hcd.c
-index 82322696b903b..d17a1dd6d0d93 100644
---- a/drivers/usb/dwc2/hcd.c
-+++ b/drivers/usb/dwc2/hcd.c
-@@ -4802,8 +4802,8 @@ static int _dwc2_hcd_urb_enqueue(struct usb_hcd *hcd, struct urb *urb,
- 	if (qh_allocated && qh->channel && qh->channel->qh == qh)
- 		qh->channel->qh = NULL;
- fail2:
--	spin_unlock_irqrestore(&hsotg->lock, flags);
- 	urb->hcpriv = NULL;
-+	spin_unlock_irqrestore(&hsotg->lock, flags);
- 	kfree(qtd);
- fail1:
- 	if (qh_allocated) {
+diff --git a/drivers/misc/ti-st/st_core.c b/drivers/misc/ti-st/st_core.c
+index eda8d407be287..e5fbd61f69c8e 100644
+--- a/drivers/misc/ti-st/st_core.c
++++ b/drivers/misc/ti-st/st_core.c
+@@ -28,6 +28,7 @@
+ #include <linux/skbuff.h>
+ 
+ #include <linux/ti_wilink_st.h>
++#include <linux/netdevice.h>
+ 
+ extern void st_kim_recv(void *, const unsigned char *, long);
+ void st_int_recv(void *, const unsigned char *, long);
+@@ -436,7 +437,7 @@ static void st_int_enqueue(struct st_data_s *st_gdata, struct sk_buff *skb)
+ 	case ST_LL_AWAKE_TO_ASLEEP:
+ 		pr_err("ST LL is illegal state(%ld),"
+ 			   "purging received skb.", st_ll_getstate(st_gdata));
+-		kfree_skb(skb);
++		dev_kfree_skb_irq(skb);
+ 		break;
+ 	case ST_LL_ASLEEP:
+ 		skb_queue_tail(&st_gdata->tx_waitq, skb);
+@@ -445,7 +446,7 @@ static void st_int_enqueue(struct st_data_s *st_gdata, struct sk_buff *skb)
+ 	default:
+ 		pr_err("ST LL is illegal state(%ld),"
+ 			   "purging received skb.", st_ll_getstate(st_gdata));
+-		kfree_skb(skb);
++		dev_kfree_skb_irq(skb);
+ 		break;
+ 	}
+ 
+@@ -499,7 +500,7 @@ void st_tx_wakeup(struct st_data_s *st_data)
+ 				spin_unlock_irqrestore(&st_data->lock, flags);
+ 				break;
+ 			}
+-			kfree_skb(skb);
++			dev_kfree_skb_irq(skb);
+ 			spin_unlock_irqrestore(&st_data->lock, flags);
+ 		}
+ 		/* if wake-up is set in another context- restart sending */
 -- 
 2.42.0
 
