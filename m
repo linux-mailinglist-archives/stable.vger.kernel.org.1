@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94D0B7ED3D4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C127ED3D5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343530AbjKOUyx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:54:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35912 "EHLO
+        id S235031AbjKOUyy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:54:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343512AbjKOUyw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:52 -0500
+        with ESMTP id S235029AbjKOUyy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E5C4B0
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FF2C4E777;
-        Wed, 15 Nov 2023 20:54:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 093A1B0
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F2BC4E779;
+        Wed, 15 Nov 2023 20:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081688;
-        bh=roFZj5E21jqUOOdHL551S2suWt3sQLUIIRb+3P9ebzA=;
+        s=korg; t=1700081690;
+        bh=tcLd5Opy7KydG1nYP18CRi5BHjI3Jzcep66s3B43ssA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q5rkjLLDYGWGZrOEEQfPWC7YTkWCJyafe/qyw7FC6SyUC1IN4IDaEwpcBtz+D3J/W
-         PXnpWdUijJYgdNlot0VbGrBi5cmvj9giL6fRTFq6+4ZXaMs6w7ICh0GNlzdc51Auuf
-         j2G7YudzgGhOQpjrV7RnrjDyR63L7pu4YoKb+7XQ=
+        b=Eexs57R46xM1+yS7giinwDCDqlcSg9SzFtgp/RwYH6YX738FVI/ooutRBWw8Va7Qq
+         uYFpI1Obmt0+U9rxh7SXD/Q+jXeE85wIN3iZ9ORFjUSh415QL/HllM759Ne6iLBrmb
+         kJfUlwH0HhLwBgmSPqzc3p155GAwvnrDGCSsh598=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Barnab=C3=A1s=20P=C5=91cze?= <pobrn@protonmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/191] platform/x86: wmi: remove unnecessary initializations
-Date:   Wed, 15 Nov 2023 15:45:39 -0500
-Message-ID: <20231115204648.437333374@linuxfoundation.org>
+Subject: [PATCH 5.10 065/191] platform/x86: wmi: Fix opening of char device
+Date:   Wed, 15 Nov 2023 15:45:40 -0500
+Message-ID: <20231115204648.496475637@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -56,89 +55,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Barnabás Pőcze <pobrn@protonmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 43aacf838ef7384d985ef5385ecb0124f8c70007 ]
+[ Upstream commit eba9ac7abab91c8f6d351460239108bef5e7a0b6 ]
 
-Some pointers are initialized when they are defined,
-but they are almost immediately reassigned in the
-following lines. Remove these superfluous assignments.
+Since commit fa1f68db6ca7 ("drivers: misc: pass miscdevice pointer via
+file private data"), the miscdevice stores a pointer to itself inside
+filp->private_data, which means that private_data will not be NULL when
+wmi_char_open() is called. This might cause memory corruption should
+wmi_char_open() be unable to find its driver, something which can
+happen when the associated WMI device is deleted in wmi_free_devices().
 
-Signed-off-by: Barnabás Pőcze <pobrn@protonmail.com>
-Link: https://lore.kernel.org/r/20210904175450.156801-6-pobrn@protonmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Stable-dep-of: eba9ac7abab9 ("platform/x86: wmi: Fix opening of char device")
+Fix the problem by using the miscdevice pointer to retrieve the WMI
+device data associated with a char device using container_of(). This
+also avoids wmi_char_open() picking a wrong WMI device bound to a
+driver with the same name as the original driver.
+
+Fixes: 44b6b7661132 ("platform/x86: wmi: create userspace interface for drivers")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20231020211005.38216-5-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/wmi.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/platform/x86/wmi.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 404fe3cac4cc5..6f8145520bcee 100644
+index 6f8145520bcee..62c673660c9a5 100644
 --- a/drivers/platform/x86/wmi.c
 +++ b/drivers/platform/x86/wmi.c
-@@ -185,7 +185,7 @@ static int get_subobj_info(acpi_handle handle, const char *pathname,
- 
- static acpi_status wmi_method_enable(struct wmi_block *wblock, int enable)
- {
--	struct guid_block *block = NULL;
-+	struct guid_block *block;
- 	char method[5];
- 	acpi_status status;
- 	acpi_handle handle;
-@@ -259,8 +259,8 @@ EXPORT_SYMBOL_GPL(wmi_evaluate_method);
- acpi_status wmidev_evaluate_method(struct wmi_device *wdev, u8 instance,
- 	u32 method_id, const struct acpi_buffer *in, struct acpi_buffer *out)
- {
--	struct guid_block *block = NULL;
--	struct wmi_block *wblock = NULL;
-+	struct guid_block *block;
-+	struct wmi_block *wblock;
- 	acpi_handle handle;
- 	acpi_status status;
- 	struct acpi_object_list input;
-@@ -307,7 +307,7 @@ EXPORT_SYMBOL_GPL(wmidev_evaluate_method);
- static acpi_status __query_block(struct wmi_block *wblock, u8 instance,
- 				 struct acpi_buffer *out)
- {
--	struct guid_block *block = NULL;
-+	struct guid_block *block;
- 	acpi_handle handle;
- 	acpi_status status, wc_status = AE_ERROR;
- 	struct acpi_object_list input;
-@@ -420,8 +420,8 @@ EXPORT_SYMBOL_GPL(wmidev_block_query);
- acpi_status wmi_set_block(const char *guid_string, u8 instance,
- 			  const struct acpi_buffer *in)
- {
--	struct guid_block *block = NULL;
- 	struct wmi_block *wblock = NULL;
-+	struct guid_block *block;
- 	acpi_handle handle;
- 	struct acpi_object_list input;
- 	union acpi_object params[2];
-@@ -821,8 +821,8 @@ static int wmi_dev_match(struct device *dev, struct device_driver *driver)
+@@ -820,21 +820,13 @@ static int wmi_dev_match(struct device *dev, struct device_driver *driver)
+ }
  static int wmi_char_open(struct inode *inode, struct file *filp)
  {
- 	const char *driver_name = filp->f_path.dentry->d_iname;
--	struct wmi_block *wblock = NULL;
--	struct wmi_block *next = NULL;
-+	struct wmi_block *wblock;
-+	struct wmi_block *next;
+-	const char *driver_name = filp->f_path.dentry->d_iname;
+-	struct wmi_block *wblock;
+-	struct wmi_block *next;
+-
+-	list_for_each_entry_safe(wblock, next, &wmi_block_list, list) {
+-		if (!wblock->dev.dev.driver)
+-			continue;
+-		if (strcmp(driver_name, wblock->dev.dev.driver->name) == 0) {
+-			filp->private_data = wblock;
+-			break;
+-		}
+-	}
++	/*
++	 * The miscdevice already stores a pointer to itself
++	 * inside filp->private_data
++	 */
++	struct wmi_block *wblock = container_of(filp->private_data, struct wmi_block, char_dev);
  
- 	list_for_each_entry_safe(wblock, next, &wmi_block_list, list) {
- 		if (!wblock->dev.dev.driver)
-@@ -854,8 +854,8 @@ static long wmi_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 	struct wmi_ioctl_buffer __user *input =
- 		(struct wmi_ioctl_buffer __user *) arg;
- 	struct wmi_block *wblock = filp->private_data;
--	struct wmi_ioctl_buffer *buf = NULL;
--	struct wmi_driver *wdriver = NULL;
-+	struct wmi_ioctl_buffer *buf;
-+	struct wmi_driver *wdriver;
- 	int ret;
+-	if (!filp->private_data)
+-		return -ENODEV;
++	filp->private_data = wblock;
  
- 	if (_IOC_TYPE(cmd) != WMI_IOC)
+ 	return nonseekable_open(inode, filp);
+ }
 -- 
 2.42.0
 
