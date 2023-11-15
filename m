@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E20547ECD43
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0D8A7ECF83
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233807AbjKOTf0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58004 "EHLO
+        id S235335AbjKOTs6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234404AbjKOTfZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:25 -0500
+        with ESMTP id S235331AbjKOTs5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8683A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E49CC433C8;
-        Wed, 15 Nov 2023 19:35:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38BEE1B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:54 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A809C433CC;
+        Wed, 15 Nov 2023 19:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076921;
-        bh=guVRoEQMD75IbyjnJ1f/XPqWAdhUFoX2rzdZwiHVTJs=;
+        s=korg; t=1700077733;
+        bh=gKDUDyx7GdtQrTndpLLM2WR62xeTjTUrLJpKerLqVII=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MZLndVz2A/xXB0+wKJ1ay+Nri4MGwgqObnDnLSjE65/dzpxHl1rCcUF+c5N8jmVce
-         D/FZzLM9SOQjBjJPuthyUAmQh1JUbzWcpyixxgI9dp7VBFGAQgSqXW+o1pHjlgEYM+
-         MQUdZ5B6Q19bJ5i0fL+jcQKJTD8pMFNA5uNwqApQ=
+        b=ZzzhlNgCY+urYQO/PUGc1l19XI5VHS1/cSYQaWR7upzfYN0kSVAs5kIh7i+6Ss5oe
+         TB6O/rRxem76b4xwgK9+w7HcEVBqjx8qSugob9kYj2UYkxGYa63P7bpsSG41iYI8sS
+         zxYL35y+AD1YsJk5dwJm0eWf19nSHL3w5KfHOf0E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Caleb Biggers <caleb.biggers@intel.com>,
-        Perry Taylor <perry.taylor@intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 446/550] perf vendor events intel: Add broadwellde two metrics
+Subject: [PATCH 6.6 485/603] rtla: Fix uninitialized variable found
 Date:   Wed, 15 Nov 2023 14:17:10 -0500
-Message-ID: <20231115191631.727276816@linuxfoundation.org>
+Message-ID: <20231115191645.921384026@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 19a214bffdf7abb8d472895bb944d9c269ab1699 ]
+[ Upstream commit 696444a544ecd6d62c1edc89516b376cefb28929 ]
 
-Add tma_info_system_socket_clks and uncore_freq metrics that require a
-broadwellx style uncore event for UNC_CLOCK.
+Variable found is not being initialized, in the case where the desired
+mount is not found the variable contains garbage. Fix this by initializing
+it to zero.
 
-The associated converter script fix is in:
-https://github.com/intel/perfmon/pull/112
+Link: https://lore.kernel.org/all/20230727150117.627730-1-colin.i.king@gmail.com/
 
-Fixes: 7d124303d620 ("perf vendor events intel: Update broadwell variant events/metrics")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Caleb Biggers <caleb.biggers@intel.com>
-Cc: Perry Taylor <perry.taylor@intel.com>
-Link: https://lore.kernel.org/r/20230926205948.1399594-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: a957cbc02531 ("rtla: Add -C cgroup support")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arch/x86/broadwellde/bdwde-metrics.json          | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/tracing/rtla/src/utils.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/pmu-events/arch/x86/broadwellde/bdwde-metrics.json b/tools/perf/pmu-events/arch/x86/broadwellde/bdwde-metrics.json
-index d0ef46c9bb612..e1f55fcfa0d02 100644
---- a/tools/perf/pmu-events/arch/x86/broadwellde/bdwde-metrics.json
-+++ b/tools/perf/pmu-events/arch/x86/broadwellde/bdwde-metrics.json
-@@ -48,6 +48,12 @@
-         "MetricName": "C7_Pkg_Residency",
-         "ScaleUnit": "100%"
-     },
-+    {
-+        "BriefDescription": "Uncore frequency per die [GHZ]",
-+        "MetricExpr": "tma_info_system_socket_clks / #num_dies / duration_time / 1e9",
-+        "MetricGroup": "SoC",
-+        "MetricName": "UNCORE_FREQ"
-+    },
-     {
-         "BriefDescription": "Percentage of cycles spent in System Management Interrupts.",
-         "MetricExpr": "((msr@aperf@ - cycles) / msr@aperf@ if msr@smi@ > 0 else 0)",
-@@ -690,6 +696,12 @@
-         "MetricGroup": "SMT",
-         "MetricName": "tma_info_system_smt_2t_utilization"
-     },
-+    {
-+        "BriefDescription": "Socket actual clocks when any core is active on that socket",
-+        "MetricExpr": "cbox_0@event\\=0x0@",
-+        "MetricGroup": "SoC",
-+        "MetricName": "tma_info_system_socket_clks"
-+    },
-     {
-         "BriefDescription": "Average Frequency Utilization relative nominal frequency",
-         "MetricExpr": "tma_info_thread_clks / CPU_CLK_UNHALTED.REF_TSC",
+diff --git a/tools/tracing/rtla/src/utils.c b/tools/tracing/rtla/src/utils.c
+index 623a38908ed5b..c769d7b3842c0 100644
+--- a/tools/tracing/rtla/src/utils.c
++++ b/tools/tracing/rtla/src/utils.c
+@@ -538,7 +538,7 @@ static const int find_mount(const char *fs, char *mp, int sizeof_mp)
+ {
+ 	char mount_point[MAX_PATH];
+ 	char type[100];
+-	int found;
++	int found = 0;
+ 	FILE *fp;
+ 
+ 	fp = fopen("/proc/mounts", "r");
 -- 
 2.42.0
 
