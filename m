@@ -2,37 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D7477ECD67
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F917ECD92
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbjKOTgc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
+        id S234571AbjKOThO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234550AbjKOTg1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:27 -0500
+        with ESMTP id S234577AbjKOThN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83BE1AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69287C433C7;
-        Wed, 15 Nov 2023 19:36:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72B451AC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70CDC433C9;
+        Wed, 15 Nov 2023 19:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076983;
-        bh=t666HV+pJT3qQw2Oii6xlE/SnvdYbw+asg8wdV3+fLQ=;
+        s=korg; t=1700077030;
+        bh=8WCY70F3977xVx8b0fBSj7eMqoILcdmhjzOrrZkytSk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vA1AdD+qrwR7ErzXD+vC2tPxkixobD39PecuAfrNHlEJgIep9qg1OC3xE5ENEcOmx
-         y5srWLyj0UVQuQhWSyddG02HhIU01jjTFQBkDbNM4fGhdCPpJUY5QBEMFvdTBGVwZK
-         xVgPgEbxh0X9w4/5BJYI2NPwjr2CnVrFcI5A8Rgo=
+        b=WbzjlFqwf/JJUqUGKTPr5iZL2k7ctMhW+nvl2MNQ9PuPupwPdEyyQtVd6LgPu8RRh
+         esWUfVA7ShYIWl8RLQRQuNA0sq7GrVKn/90R6HGl6rFofneM/XJ81TmzUP/pH/SW5l
+         gRJwAbGNmcJNyEK4JDOKGJVb+VdpkQWBFs0PUIfU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        patches@lists.linux.dev, Pratyush Yadav <p.yadav@ti.com>,
+        Julien Massot <julien.massot@collabora.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Jai Luthra <j-luthra@ti.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 483/550] media: cedrus: Fix clock/reset sequence
-Date:   Wed, 15 Nov 2023 14:17:47 -0500
-Message-ID: <20231115191634.345778230@linuxfoundation.org>
+Subject: [PATCH 6.5 484/550] media: cadence: csi2rx: Unregister v4l2 async notifier
+Date:   Wed, 15 Nov 2023 14:17:48 -0500
+Message-ID: <20231115191634.413083836@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -55,84 +60,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Pratyush Yadav <p.yadav@ti.com>
 
-[ Upstream commit 36fe515c1a3cd5eac148e8a591a82108d92d5522 ]
+[ Upstream commit b2701715301a49b53d05c7d43f3fedc3b8743bfc ]
 
-According to H6 user manual, resets should always be de-asserted before
-clocks are enabled. This is also consistent with vendor driver.
+The notifier is added to the global notifier list when registered. When
+the module is removed, the struct csi2rx_priv in which the notifier is
+embedded, is destroyed. As a result the notifier list has a reference to
+a notifier that no longer exists. This causes invalid memory accesses
+when the list is iterated over. Similar for when the probe fails.
+Unregister and clean up the notifier to avoid this.
 
-Fixes: d5aecd289bab ("media: cedrus: Implement runtime PM")
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Acked-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Fixes: 1fc3b37f34f6 ("media: v4l: cadence: Add Cadence MIPI-CSI2 RX driver")
+
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Tested-by: Julien Massot <julien.massot@collabora.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../staging/media/sunxi/cedrus/cedrus_hw.c    | 24 +++++++++----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/media/platform/cadence/cdns-csi2rx.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-index fa86a658fdc6c..c0d8c8265658b 100644
---- a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-+++ b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-@@ -172,12 +172,12 @@ int cedrus_hw_suspend(struct device *device)
- {
- 	struct cedrus_dev *dev = dev_get_drvdata(device);
- 
--	reset_control_assert(dev->rstc);
--
- 	clk_disable_unprepare(dev->ram_clk);
- 	clk_disable_unprepare(dev->mod_clk);
- 	clk_disable_unprepare(dev->ahb_clk);
- 
-+	reset_control_assert(dev->rstc);
-+
- 	return 0;
- }
- 
-@@ -186,11 +186,18 @@ int cedrus_hw_resume(struct device *device)
- 	struct cedrus_dev *dev = dev_get_drvdata(device);
- 	int ret;
- 
-+	ret = reset_control_reset(dev->rstc);
-+	if (ret) {
-+		dev_err(dev->dev, "Failed to apply reset\n");
-+
-+		return ret;
+diff --git a/drivers/media/platform/cadence/cdns-csi2rx.c b/drivers/media/platform/cadence/cdns-csi2rx.c
+index 9755d1c8ceb9b..ee31c89eb2153 100644
+--- a/drivers/media/platform/cadence/cdns-csi2rx.c
++++ b/drivers/media/platform/cadence/cdns-csi2rx.c
+@@ -404,8 +404,10 @@ static int csi2rx_parse_dt(struct csi2rx_priv *csi2rx)
+ 	asd = v4l2_async_nf_add_fwnode_remote(&csi2rx->notifier, fwh,
+ 					      struct v4l2_async_subdev);
+ 	of_node_put(ep);
+-	if (IS_ERR(asd))
++	if (IS_ERR(asd)) {
++		v4l2_async_nf_cleanup(&csi2rx->notifier);
+ 		return PTR_ERR(asd);
 +	}
-+
- 	ret = clk_prepare_enable(dev->ahb_clk);
- 	if (ret) {
- 		dev_err(dev->dev, "Failed to enable AHB clock\n");
  
--		return ret;
-+		goto err_rst;
- 	}
+ 	csi2rx->notifier.ops = &csi2rx_notifier_ops;
  
- 	ret = clk_prepare_enable(dev->mod_clk);
-@@ -207,21 +214,14 @@ int cedrus_hw_resume(struct device *device)
- 		goto err_mod_clk;
- 	}
- 
--	ret = reset_control_reset(dev->rstc);
--	if (ret) {
--		dev_err(dev->dev, "Failed to apply reset\n");
--
--		goto err_ram_clk;
--	}
--
+@@ -467,6 +469,7 @@ static int csi2rx_probe(struct platform_device *pdev)
  	return 0;
  
--err_ram_clk:
--	clk_disable_unprepare(dev->ram_clk);
- err_mod_clk:
- 	clk_disable_unprepare(dev->mod_clk);
- err_ahb_clk:
- 	clk_disable_unprepare(dev->ahb_clk);
-+err_rst:
-+	reset_control_assert(dev->rstc);
+ err_cleanup:
++	v4l2_async_nf_unregister(&csi2rx->notifier);
+ 	v4l2_async_nf_cleanup(&csi2rx->notifier);
+ err_free_priv:
+ 	kfree(csi2rx);
+@@ -477,6 +480,8 @@ static void csi2rx_remove(struct platform_device *pdev)
+ {
+ 	struct csi2rx_priv *csi2rx = platform_get_drvdata(pdev);
  
- 	return ret;
++	v4l2_async_nf_unregister(&csi2rx->notifier);
++	v4l2_async_nf_cleanup(&csi2rx->notifier);
+ 	v4l2_async_unregister_subdev(&csi2rx->subdev);
+ 	kfree(csi2rx);
  }
 -- 
 2.42.0
