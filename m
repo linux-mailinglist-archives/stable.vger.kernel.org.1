@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B5C07ECE2A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F29E7ECBBF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234010AbjKOTlR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:41:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37898 "EHLO
+        id S232638AbjKOTYO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229678AbjKOTlQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:16 -0500
+        with ESMTP id S232682AbjKOTYN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E223B9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB15C433C7;
-        Wed, 15 Nov 2023 19:41:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0FBA1A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26444C433C7;
+        Wed, 15 Nov 2023 19:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077273;
-        bh=XFj5LeBsG/yBoIEQCjfrDwtrRXgtnei4tjfeAL8DC1g=;
+        s=korg; t=1700076249;
+        bh=2awpdp4IHSsIjcXoy9CpMAVVde5yVXaiWHSJzi94nJQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SpgM4LyNkondU8VQCRDacI2ayqsspsa1xMHCQwu5elCS+fuVRhvLJwjE9YkCL6EuF
-         KrxLPa4R/8aOg5S/rddizoAmai2eoibX2T/hbKchz0nnLRpDkzk1v2Nf4o4bZ611D8
-         xj37Y3wZUfb883T2pbTo1Y2+N9dLssLenv6d0hoc=
+        b=h+KLnu9/1v14OlO1MJZV8GEF5GA3n9ltSCAC0QEuHUrpKGNOu3CFWSDzwLKXLJwwE
+         5twrrWkA7VEj1oh+Sh5+DvD82P/J9kuRIVWFqdjAfXeJjl3z+qWVlg3fRDU3wm1wfq
+         8tu+in9RrP/NDnDBo5v8XgSYMB0w4uKee1Q3QN7c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/603] clk: ti: fix double free in of_ti_divider_clk_setup()
+Subject: [PATCH 6.5 145/550] ACPI: sysfs: Fix create_pnp_modalias() and create_of_modalias()
 Date:   Wed, 15 Nov 2023 14:12:09 -0500
-Message-ID: <20231115191625.967570708@linuxfoundation.org>
+Message-ID: <20231115191610.748007761@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +51,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 7af5b9eadd64c9e02a71f97c45bcdf3b64841f6b ]
+[ Upstream commit 48cf49d31994ff97b33c4044e618560ec84d35fb ]
 
-The "div" pointer is freed in _register_divider() and again in
-of_ti_divider_clk_setup().  Delete the free in _register_divider()
+snprintf() does not return negative values on error.
 
-Fixes: fbbc18591585 ("clk: ti: divider: cleanup _register_divider and ti_clk_get_div_table")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/6d36eeec-6c8a-4f11-a579-aa3cd7c38749@moroto.mountain
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+To know if the buffer was too small, the returned value needs to be
+compared with the length of the passed buffer. If it is greater or
+equal, the output has been truncated, so add checks for the truncation
+to create_pnp_modalias() and create_of_modalias(). Also make them
+return -ENOMEM in that case, as they already do that elsewhere.
+
+Moreover, the remaining size of the buffer used by snprintf() needs to
+be updated after the first write to avoid out-of-bounds access as
+already done correctly in create_pnp_modalias(), but not in
+create_of_modalias(), so change the latter accordingly.
+
+Fixes: 8765c5ba1949 ("ACPI / scan: Rework modalias creation when "compatible" is present")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+[ rjw: Merge two patches into one, combine changelogs, add subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ti/divider.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/acpi/device_sysfs.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/ti/divider.c b/drivers/clk/ti/divider.c
-index 768a1f3398b47..5d5bb123ba949 100644
---- a/drivers/clk/ti/divider.c
-+++ b/drivers/clk/ti/divider.c
-@@ -309,7 +309,6 @@ static struct clk *_register_divider(struct device_node *node,
- 				     u32 flags,
- 				     struct clk_omap_divider *div)
- {
--	struct clk *clk;
- 	struct clk_init_data init;
- 	const char *parent_name;
- 	const char *name;
-@@ -326,12 +325,7 @@ static struct clk *_register_divider(struct device_node *node,
- 	div->hw.init = &init;
+diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+index b9bbf07461992..a34d8578b3da6 100644
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -158,8 +158,8 @@ static int create_pnp_modalias(const struct acpi_device *acpi_dev, char *modalia
+ 		return 0;
  
- 	/* register the clock */
--	clk = of_ti_clk_register(node, &div->hw, name);
--
--	if (IS_ERR(clk))
--		kfree(div);
--
--	return clk;
-+	return of_ti_clk_register(node, &div->hw, name);
- }
+ 	len = snprintf(modalias, size, "acpi:");
+-	if (len <= 0)
+-		return len;
++	if (len >= size)
++		return -ENOMEM;
  
- int ti_clk_parse_divider_data(int *div_table, int num_dividers, int max_div,
+ 	size -= len;
+ 
+@@ -212,8 +212,10 @@ static int create_of_modalias(const struct acpi_device *acpi_dev, char *modalias
+ 	len = snprintf(modalias, size, "of:N%sT", (char *)buf.pointer);
+ 	ACPI_FREE(buf.pointer);
+ 
+-	if (len <= 0)
+-		return len;
++	if (len >= size)
++		return -ENOMEM;
++
++	size -= len;
+ 
+ 	of_compatible = acpi_dev->data.of_compatible;
+ 	if (of_compatible->type == ACPI_TYPE_PACKAGE) {
 -- 
 2.42.0
 
