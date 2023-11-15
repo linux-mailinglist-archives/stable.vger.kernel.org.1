@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF317ECD58
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FD757ECB36
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234440AbjKOTgB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47734 "EHLO
+        id S233067AbjKOTU5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:20:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234475AbjKOTf6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:58 -0500
+        with ESMTP id S232796AbjKOTUt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 688B81B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1774C433CC;
-        Wed, 15 Nov 2023 19:35:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3413A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:42 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AEBFC433C7;
+        Wed, 15 Nov 2023 19:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076955;
-        bh=U10DjcbL2XGDJO7vCSTVmMaMcjZr0AqwDvh10vHydKU=;
+        s=korg; t=1700076042;
+        bh=YnkXmjkRNshYuCCiPjjAvSPbW+GHroJICIiVsXwUczI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sp36/+oClv/JoYbweTG5Qw2lZlIfs43LC5n0Mhct/v1toLoooQaa72Sfhst8uKzJu
-         FUYG0PtOOww4+1KwGamTVljM6Jozg5IfxlBE6b4CGFgo+XbxRBjJXU99tRFVRZ9dNb
-         AoSwLTRr52eoxdSQmBAtmWoNf1r3OwDPKrIrNqH8=
+        b=2AxOCz2Bp6VGI42/d0obqwt7G39h3HC3GG9mUzexieFGYYEFHao6QTAawPmUz2gAI
+         EhOwgpRkRFUCyyi6JhwxY6uPasq6G51UlNUXgzsmcNEgbitn9nnl9g+HKIjJlELJ8A
+         pjslzh8FhbUIW0DS0elMQN8/iq4iSANkuPRRA5j4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sumit Gupta <sumitg@nvidia.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/603] cpufreq: tegra194: fix warning due to missing opp_put
+Subject: [PATCH 6.5 039/550] wifi: mac80211: move radar detect work to wiphy work
 Date:   Wed, 15 Nov 2023 14:10:23 -0500
-Message-ID: <20231115191618.520069104@linuxfoundation.org>
+Message-ID: <20231115191603.420294858@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,60 +51,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit bae8222a6c291dbe58c908dab5c2abd3a75d0d63 ]
+[ Upstream commit 228e4f931b0e630dacca8dd867ddd863aea53913 ]
 
-Fix the warning due to missing dev_pm_opp_put() call and hence
-wrong refcount value. This causes below warning message when
-trying to remove the module.
+Move the radar detect work to wiphy work in order
+to lock the wiphy for it without doing it manually.
 
- Call trace:
-  dev_pm_opp_put_opp_table+0x154/0x15c
-  dev_pm_opp_remove_table+0x34/0xa0
-  _dev_pm_opp_cpumask_remove_table+0x7c/0xbc
-  dev_pm_opp_of_cpumask_remove_table+0x10/0x18
-  tegra194_cpufreq_exit+0x24/0x34 [tegra194_cpufreq]
-  cpufreq_remove_dev+0xa8/0xf8
-  subsys_interface_unregister+0x90/0xe8
-  cpufreq_unregister_driver+0x54/0x9c
-  tegra194_cpufreq_remove+0x18/0x2c [tegra194_cpufreq]
-  platform_remove+0x24/0x74
-  device_remove+0x48/0x78
-  device_release_driver_internal+0xc8/0x160
-  driver_detach+0x4c/0x90
-  bus_remove_driver+0x68/0xb8
-  driver_unregister+0x2c/0x58
-  platform_driver_unregister+0x10/0x18
-  tegra194_ccplex_driver_exit+0x14/0x1e0 [tegra194_cpufreq]
-  __arm64_sys_delete_module+0x184/0x270
-
-Fixes: f41e1442ac5b ("cpufreq: tegra194: add OPP support and set bandwidth")
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-[ Viresh: Add a blank line ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: eadfb54756ae ("wifi: mac80211: move sched-scan stop work to wiphy work")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/tegra194-cpufreq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/ieee80211_i.h | 5 +++--
+ net/mac80211/main.c        | 9 +++++----
+ net/mac80211/util.c        | 7 +++----
+ 3 files changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/cpufreq/tegra194-cpufreq.c b/drivers/cpufreq/tegra194-cpufreq.c
-index 88ef5e57ccd05..386aed3637b4e 100644
---- a/drivers/cpufreq/tegra194-cpufreq.c
-+++ b/drivers/cpufreq/tegra194-cpufreq.c
-@@ -450,6 +450,8 @@ static int tegra_cpufreq_init_cpufreq_table(struct cpufreq_policy *policy,
- 		if (IS_ERR(opp))
- 			continue;
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 2cce9eba6a120..90eda427e9ab8 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1406,7 +1406,7 @@ struct ieee80211_local {
+ 	/* wowlan is enabled -- don't reconfig on resume */
+ 	bool wowlan;
  
-+		dev_pm_opp_put(opp);
-+
- 		ret = dev_pm_opp_enable(cpu_dev, pos->frequency * KHZ);
- 		if (ret < 0)
- 			return ret;
+-	struct work_struct radar_detected_work;
++	struct wiphy_work radar_detected_work;
+ 
+ 	/* number of RX chains the hardware has */
+ 	u8 rx_chains;
+@@ -2568,7 +2568,8 @@ bool ieee80211_is_radar_required(struct ieee80211_local *local);
+ void ieee80211_dfs_cac_timer(unsigned long data);
+ void ieee80211_dfs_cac_timer_work(struct work_struct *work);
+ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local);
+-void ieee80211_dfs_radar_detected_work(struct work_struct *work);
++void ieee80211_dfs_radar_detected_work(struct wiphy *wiphy,
++				       struct wiphy_work *work);
+ int ieee80211_send_action_csa(struct ieee80211_sub_if_data *sdata,
+ 			      struct cfg80211_csa_settings *csa_settings);
+ 
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 24315d7b31263..3bbd66e5a0df0 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -338,7 +338,6 @@ static void ieee80211_restart_work(struct work_struct *work)
+ 	/* wait for scan work complete */
+ 	flush_workqueue(local->workqueue);
+ 	flush_work(&local->sched_scan_stopped_work);
+-	flush_work(&local->radar_detected_work);
+ 
+ 	rtnl_lock();
+ 	/* we might do interface manipulations, so need both */
+@@ -813,8 +812,8 @@ struct ieee80211_hw *ieee80211_alloc_hw_nm(size_t priv_data_len,
+ 
+ 	INIT_WORK(&local->restart_work, ieee80211_restart_work);
+ 
+-	INIT_WORK(&local->radar_detected_work,
+-		  ieee80211_dfs_radar_detected_work);
++	wiphy_work_init(&local->radar_detected_work,
++			ieee80211_dfs_radar_detected_work);
+ 
+ 	INIT_WORK(&local->reconfig_filter, ieee80211_reconfig_filter);
+ 	local->smps_mode = IEEE80211_SMPS_OFF;
+@@ -1482,13 +1481,15 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
+ 	 */
+ 	ieee80211_remove_interfaces(local);
+ 
++	wiphy_lock(local->hw.wiphy);
++	wiphy_work_cancel(local->hw.wiphy, &local->radar_detected_work);
++	wiphy_unlock(local->hw.wiphy);
+ 	rtnl_unlock();
+ 
+ 	cancel_delayed_work_sync(&local->roc_work);
+ 	cancel_work_sync(&local->restart_work);
+ 	cancel_work_sync(&local->reconfig_filter);
+ 	flush_work(&local->sched_scan_stopped_work);
+-	flush_work(&local->radar_detected_work);
+ 
+ 	ieee80211_clear_tx_pending(local);
+ 	rate_control_deinitialize(local);
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index 8a6917cf63cf9..e878b6a27651a 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -4356,7 +4356,8 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
+ 	mutex_unlock(&local->mtx);
+ }
+ 
+-void ieee80211_dfs_radar_detected_work(struct work_struct *work)
++void ieee80211_dfs_radar_detected_work(struct wiphy *wiphy,
++				       struct wiphy_work *work)
+ {
+ 	struct ieee80211_local *local =
+ 		container_of(work, struct ieee80211_local, radar_detected_work);
+@@ -4374,9 +4375,7 @@ void ieee80211_dfs_radar_detected_work(struct work_struct *work)
+ 	}
+ 	mutex_unlock(&local->chanctx_mtx);
+ 
+-	wiphy_lock(local->hw.wiphy);
+ 	ieee80211_dfs_cac_cancel(local);
+-	wiphy_unlock(local->hw.wiphy);
+ 
+ 	if (num_chanctx > 1)
+ 		/* XXX: multi-channel is not supported yet */
+@@ -4391,7 +4390,7 @@ void ieee80211_radar_detected(struct ieee80211_hw *hw)
+ 
+ 	trace_api_radar_detected(local);
+ 
+-	schedule_work(&local->radar_detected_work);
++	wiphy_work_queue(hw->wiphy, &local->radar_detected_work);
+ }
+ EXPORT_SYMBOL(ieee80211_radar_detected);
+ 
 -- 
 2.42.0
 
