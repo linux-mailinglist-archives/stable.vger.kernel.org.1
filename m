@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BB7E7ECBE1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7677ECE70
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233133AbjKOTZF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40190 "EHLO
+        id S235100AbjKOTnH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233168AbjKOTZE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:04 -0500
+        with ESMTP id S235106AbjKOTnG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20687130
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C81C433C8;
-        Wed, 15 Nov 2023 19:25:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D23B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268E9C433C7;
+        Wed, 15 Nov 2023 19:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076300;
-        bh=muiviKrDlQbTsV0ptfVI5EQhHw3hgH0HH9ImB0501JE=;
+        s=korg; t=1700077383;
+        bh=e+0l6ggTHVp0YZCrdsy2eEv9oy0R45HWi3ZuuDEioD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0UjLM7QstZtqmYRbx2yMO7/X7OayBNtsJIrmnQgJ3xodh31zvmxVis/wtTNx/NKZ0
-         11dSCH7NkUqD/T19OyO1OUK8m+OU7Rb/lB4pOrjiwdNbiQGfUrDWbuQpo975vtYh4R
-         AnT18MxCIQ0t1LNX8nCok1ZYKUS+HvfyQLgY/vTU=
+        b=MYZQ+9dxwbmXH6KFb4pCXsAfNYTZzRj26AR2di5so4g2DprV37Cz2F99OyW2SCi8B
+         QzMPhj8wUjrKV4fl1t3PKRKiVHUuDxanU7X14Obi5t8VPjPYMXr47/dPy9XZ2uS6rA
+         DXlIEdrGT82a4+h8DDUlEjNZ3czHNGBqhK/Jnsmo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Marek Vasut <marex@denx.de>, Robert Foss <rfoss@kernel.org>,
+        patches@lists.linux.dev, Philip Yang <Philip.Yang@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 204/550] drm: bridge: samsung-dsim: Fix waiting for empty cmd transfer FIFO on older Exynos
+Subject: [PATCH 6.6 243/603] drm/amdkfd: Remove svm range validated_once flag
 Date:   Wed, 15 Nov 2023 14:13:08 -0500
-Message-ID: <20231115191614.917613539@linuxfoundation.org>
+Message-ID: <20231115191630.035072557@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,85 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 15f389da11257b806da75a070cfa41ca0cc15aae ]
+[ Upstream commit c99b16128082de519975aa147d9da3e40380de67 ]
 
-Samsung DSIM used in older Exynos SoCs (like Exynos 4210, 4x12, 3250)
-doesn't report empty level of packer header FIFO. In case of those SoCs,
-use the old way of waiting for empty command tranfsfer FIFO, removed
-recently by commit 14806c641582 ("drm: bridge: samsung-dsim: Drain command transfer FIFO before transfer").
+The validated_once flag is not used after the prefault was removed, The
+prefault was needed to ensure validate all system memory pages at least
+once before mapping or migrating the range to GPU.
 
-Fixes: 14806c641582 ("drm: bridge: samsung-dsim: Drain command transfer FIFO before transfer")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230809145641.3213210-1-m.szyprowski@samsung.com
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: eb3c357bcb28 ("drm/amdkfd: Handle errors from svm validate and map")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 18 ++++++++++++++++--
- include/drm/bridge/samsung-dsim.h     |  1 +
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 4 +---
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.h | 1 -
+ 2 files changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 76be9dc0693f6..4b3e117ae9008 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -412,6 +412,7 @@ static const struct samsung_dsim_driver_data exynos3_dsi_driver_data = {
- 	.m_min = 41,
- 	.m_max = 125,
- 	.min_freq = 500,
-+	.has_broken_fifoctrl_emptyhdr = 1,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index bb65a99439802..dfc11699e79ab 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1720,10 +1720,8 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
+ 		addr = next;
+ 	}
+ 
+-	if (addr == end) {
+-		prange->validated_once = true;
++	if (addr == end)
+ 		prange->mapped_to_gpu = true;
+-	}
+ 
+ unreserve_out:
+ 	svm_range_unreserve_bos(ctx);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.h b/drivers/gpu/drm/amd/amdkfd/kfd_svm.h
+index 9e668eeefb32d..c216c8dd13c6c 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.h
+@@ -132,7 +132,6 @@ struct svm_range {
+ 	struct list_head		child_list;
+ 	DECLARE_BITMAP(bitmap_access, MAX_GPU_INSTANCE);
+ 	DECLARE_BITMAP(bitmap_aip, MAX_GPU_INSTANCE);
+-	bool				validated_once;
+ 	bool				mapped_to_gpu;
+ 	bool				is_error_flag;
  };
- 
- static const struct samsung_dsim_driver_data exynos4_dsi_driver_data = {
-@@ -428,6 +429,7 @@ static const struct samsung_dsim_driver_data exynos4_dsi_driver_data = {
- 	.m_min = 41,
- 	.m_max = 125,
- 	.min_freq = 500,
-+	.has_broken_fifoctrl_emptyhdr = 1,
- };
- 
- static const struct samsung_dsim_driver_data exynos5_dsi_driver_data = {
-@@ -1009,8 +1011,20 @@ static int samsung_dsim_wait_for_hdr_fifo(struct samsung_dsim *dsi)
- 	do {
- 		u32 reg = samsung_dsim_read(dsi, DSIM_FIFOCTRL_REG);
- 
--		if (reg & DSIM_SFR_HEADER_EMPTY)
--			return 0;
-+		if (!dsi->driver_data->has_broken_fifoctrl_emptyhdr) {
-+			if (reg & DSIM_SFR_HEADER_EMPTY)
-+				return 0;
-+		} else {
-+			if (!(reg & DSIM_SFR_HEADER_FULL)) {
-+				/*
-+				 * Wait a little bit, so the pending data can
-+				 * actually leave the FIFO to avoid overflow.
-+				 */
-+				if (!cond_resched())
-+					usleep_range(950, 1050);
-+				return 0;
-+			}
-+		}
- 
- 		if (!cond_resched())
- 			usleep_range(950, 1050);
-diff --git a/include/drm/bridge/samsung-dsim.h b/include/drm/bridge/samsung-dsim.h
-index 05100e91ecb96..6fc9bb2979e45 100644
---- a/include/drm/bridge/samsung-dsim.h
-+++ b/include/drm/bridge/samsung-dsim.h
-@@ -53,6 +53,7 @@ struct samsung_dsim_driver_data {
- 	unsigned int plltmr_reg;
- 	unsigned int has_freqband:1;
- 	unsigned int has_clklane_stop:1;
-+	unsigned int has_broken_fifoctrl_emptyhdr:1;
- 	unsigned int num_clks;
- 	unsigned int min_freq;
- 	unsigned int max_freq;
 -- 
 2.42.0
 
