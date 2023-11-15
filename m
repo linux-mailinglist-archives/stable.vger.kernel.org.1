@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2922D7ECF18
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A33F7ECC74
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235223AbjKOTqV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57848 "EHLO
+        id S233977AbjKOTad (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235217AbjKOTqU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:20 -0500
+        with ESMTP id S233968AbjKOTac (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABFE1189
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC83C433CB;
-        Wed, 15 Nov 2023 19:46:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A4FF130
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9DBC433C9;
+        Wed, 15 Nov 2023 19:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077576;
-        bh=ZPWBaLOZqeO9HGjslFoOUjADxtNsJNa++Sr+MKmWM6g=;
+        s=korg; t=1700076629;
+        bh=aBR8ibQY5YUmm1RYbqSRG7gIQG78+Buatsb5DTQk45g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uCkQ5GqzRPACOiaVXNl79X2WUqolwfoaUis+KDCQ/PW2aPiJu4QEtDeL6SR0YpIoE
-         ROFq2vshBd1jAN+zp0YJGIoWEWeK0cCP2esT6yhixiXIUn11L15CDDbzpSrqiZonxp
-         D0UIE+CjNhP+5jGTQy0jQIBbX5q6pepUrKV6aWPs=
+        b=FSo2IRneFcZ/zsmuq/PwSa+d8aFgI2wJG7xMkcc9KDQ976uK4CIz+TRc1Pk2Wachp
+         uHYuXErFZYrlk1E5g+ZIE3J85AboJHmYyz2/tDiw++PdoSdMpTKibUNN/eP5S4lBGP
+         I1QtGj9Cjz2K6LyDARPjhbSSqfQHsZUNuO/B4JS4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -33,12 +33,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Avri Altman <avri.altman@wdc.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 387/603] scsi: ufs: core: Leave space for \0 in utf8 desc string
+Subject: [PATCH 6.5 348/550] scsi: ufs: core: Leave space for \0 in utf8 desc string
 Date:   Wed, 15 Nov 2023 14:15:32 -0500
-Message-ID: <20231115191640.014715094@linuxfoundation.org>
+Message-ID: <20231115191624.889409081@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,7 +54,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 8382e8cfa414a..5767642982c13 100644
+index 3349c46e5fa2c..13cd0f1207bf1 100644
 --- a/drivers/ufs/core/ufshcd.c
 +++ b/drivers/ufs/core/ufshcd.c
-@@ -3632,7 +3632,7 @@ int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
+@@ -3665,7 +3665,7 @@ int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
  		 */
  		ret = utf16s_to_utf8s(uc_str->uc,
  				      uc_str->len - QUERY_DESC_HDR_SIZE,
