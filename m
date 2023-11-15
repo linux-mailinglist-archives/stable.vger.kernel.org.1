@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 906117ECE4F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 414357ECBDA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234971AbjKOTmR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58746 "EHLO
+        id S233131AbjKOTYy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234982AbjKOTmP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:15 -0500
+        with ESMTP id S233133AbjKOTYx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7781189
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDA0C433C8;
-        Wed, 15 Nov 2023 19:42:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B1A619E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AADC433C8;
+        Wed, 15 Nov 2023 19:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077332;
-        bh=kc9yp/7Et9KYb4E3jsCtSfgypeyW3eV6b1NlDcUxNJs=;
+        s=korg; t=1700076290;
+        bh=TOQ6nBGXsW9tMJDT0svLKTfHnqXj5vopwCQxCghmi9k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wHMa8iq7MPVyAn1r9xoXFd++I6U3djySbsFOn+pxgMZ3PgjzhRZFo1sbEItkJZnf0
-         PNPeq6By8BPLvSFouyiQY8jLr4N91ujMMpMLM37YsGaVZrqNQNHcmCclUIwU+BTqZH
-         71COiJSX2GCB9jLWzr/mRmvR042muhk/sFKlgOg8=
+        b=DwuEJz3hTgXInJqjeByrZHnEr8o5Mow2BKmQnwHOkpxLod/330hzUo5FHmohu4VRD
+         yawllslwcxI2xLVjO6YlJaywr1cxbdmCAxo4AHyZu6dcIHj5zgZ9zepBeixz3FWxKV
+         XGIzmP5xBwDNXhWjwH8MgmMxpd5jZRXUiuXfibec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        Dipen Patel <dipenp@nvidia.com>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 210/603] hte: tegra: Fix missing error code in tegra_hte_test_probe()
+Subject: [PATCH 6.5 171/550] clk: ralink: mtmips: quiet unused variable warning
 Date:   Wed, 15 Nov 2023 14:12:35 -0500
-Message-ID: <20231115191627.805562037@linuxfoundation.org>
+Message-ID: <20231115191612.559684434@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +53,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 
-[ Upstream commit b7c3ca3553d1de5e86c85636828e186d30cd0628 ]
+[ Upstream commit 619102313466eaf8a6ac188e711f5df749dac6d4 ]
 
-The value of 'ret' is zero when of_hte_req_count() fails to get number
-of entitties to timestamp. And returning success(zero) on this failure
-path is incorrect.
+When CONFIG_OF is disabled then the matching table is not referenced and
+the following warning appears:
 
-Fixes: 9a75a7cd03c9 ("hte: Add Tegra HTE test driver")
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Dipen Patel <dipenp@nvidia.com>
-Signed-off-by: Dipen Patel <dipenp@nvidia.com>
+drivers/clk/ralink/clk-mtmips.c:821:34: warning: unused variable 'mtmips_of_match' [-Wunused-const-variable]
+821 |   static const struct of_device_id mtmips_of_match[] = {
+    |                          ^
+
+There are two match tables in the driver: one for the clock driver and the
+other for the reset driver. The only difference between them is that the
+clock driver uses 'data' and does not have 'ralink,rt2880-reset' compatible.
+Both just can be merged into a single one just by adding the compatible
+'ralink,rt2880-reset' entry to 'mtmips_of_match[]', which will allow it to
+be used for 'mtmips_clk_driver' (which doesn't use the data) as well as for
+'mtmips_clk_init()' (which doesn't need get called for 'ralink,rt2880-reset').
+
+Doing in this way ensures that 'CONFIG_OF' is not disabled anymore so the
+above warning disapears.
+
+Fixes: 6f3b15586eef ("clk: ralink: add clock and reset driver for MTMIPS SoCs")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307242310.CdOnd2py-lkp@intel.com/
+Suggested-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Link: https://lore.kernel.org/r/20230827023932.501102-1-sergio.paracuellos@gmail.com
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hte/hte-tegra194-test.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/clk/ralink/clk-mtmips.c | 20 +++++---------------
+ 1 file changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/hte/hte-tegra194-test.c b/drivers/hte/hte-tegra194-test.c
-index ba37a5efbf820..ab2edff018eb6 100644
---- a/drivers/hte/hte-tegra194-test.c
-+++ b/drivers/hte/hte-tegra194-test.c
-@@ -153,8 +153,10 @@ static int tegra_hte_test_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/clk/ralink/clk-mtmips.c b/drivers/clk/ralink/clk-mtmips.c
+index 1e7991439527a..50a443bf79ecd 100644
+--- a/drivers/clk/ralink/clk-mtmips.c
++++ b/drivers/clk/ralink/clk-mtmips.c
+@@ -821,6 +821,10 @@ static const struct mtmips_clk_data mt76x8_clk_data = {
+ };
  
- 	cnt = of_hte_req_count(hte.pdev);
--	if (cnt < 0)
-+	if (cnt < 0) {
-+		ret = cnt;
- 		goto free_irq;
-+	}
+ static const struct of_device_id mtmips_of_match[] = {
++	{
++		.compatible = "ralink,rt2880-reset",
++		.data = NULL,
++	},
+ 	{
+ 		.compatible = "ralink,rt2880-sysc",
+ 		.data = &rt2880_clk_data,
+@@ -1088,25 +1092,11 @@ static int mtmips_clk_probe(struct platform_device *pdev)
+ 	return 0;
+ }
  
- 	dev_info(&pdev->dev, "Total requested lines:%d\n", cnt);
+-static const struct of_device_id mtmips_clk_of_match[] = {
+-	{ .compatible = "ralink,rt2880-reset" },
+-	{ .compatible = "ralink,rt2880-sysc" },
+-	{ .compatible = "ralink,rt3050-sysc" },
+-	{ .compatible = "ralink,rt3052-sysc" },
+-	{ .compatible = "ralink,rt3352-sysc" },
+-	{ .compatible = "ralink,rt3883-sysc" },
+-	{ .compatible = "ralink,rt5350-sysc" },
+-	{ .compatible = "ralink,mt7620-sysc" },
+-	{ .compatible = "ralink,mt7628-sysc" },
+-	{ .compatible = "ralink,mt7688-sysc" },
+-	{}
+-};
+-
+ static struct platform_driver mtmips_clk_driver = {
+ 	.probe = mtmips_clk_probe,
+ 	.driver = {
+ 		.name = "mtmips-clk",
+-		.of_match_table = mtmips_clk_of_match,
++		.of_match_table = mtmips_of_match,
+ 	},
+ };
  
 -- 
 2.42.0
