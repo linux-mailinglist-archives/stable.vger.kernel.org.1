@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B511C7ECF36
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B344C7ECC92
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235258AbjKOTrE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:47:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35164 "EHLO
+        id S234042AbjKOTbS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:31:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235265AbjKOTrD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:03 -0500
+        with ESMTP id S233251AbjKOTbR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502DAB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77EFC433C9;
-        Wed, 15 Nov 2023 19:46:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21B431A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FA2C433C9;
+        Wed, 15 Nov 2023 19:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077620;
-        bh=fsajHMMaFKnQYJgvp2ZPQ/HXC7VLFxqW/sSGM0B5AUs=;
+        s=korg; t=1700076673;
+        bh=pPHr76ySGRU3x1Lf3CmimTeSHnL+oixnS0W3FADqG20=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vI6K2uteSqzvhn7oglXywCEyCjAuGvoGOGECyfZEE+TXHB94QijwrrOjS7ODZanzU
-         KLENQ1A8zjYobGJ8K8FkWISYt2WoPjxjbIwVdQR5P7+ueaFpa02arR70ZrTmaz5GOT
-         Oh+73SGhbrs4TeNYTbtd7Wld/kI2aInE8QvUD9Xw=
+        b=K70XjFU6sBAv5thulz2gbacld4G8U1QHea9vW9oGWC8ZkYn5NfpwbN5UWFRw2jHnr
+         K65tDkOb14A00x6G1aQ0SgWHMztt+79pks43I+qJqJ+8p1NvBDvjDyrimRjabbU2iR
+         MvuSCLt8FlBRl6HKnrmRbXzwS8u1T6hfjeNKKpG0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 414/603] leds: turris-omnia: Do not use SMBUS calls
-Date:   Wed, 15 Nov 2023 14:15:59 -0500
-Message-ID: <20231115191641.609203062@linuxfoundation.org>
+        Georgia Garcia <georgia.garcia@canonical.com>,
+        John Johansen <john.johansen@canonical.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 376/550] apparmor: fix invalid reference on profile->disconnected
+Date:   Wed, 15 Nov 2023 14:16:00 -0500
+Message-ID: <20231115191626.889656870@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,154 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Georgia Garcia <georgia.garcia@canonical.com>
 
-[ Upstream commit 6de283b96b31b4890e3ee8c86caca2a3a30d1011 ]
+[ Upstream commit 8884ba07786c718771cf7b78cb3024924b27ec2b ]
 
-The leds-turris-omnia driver uses three function for I2C access:
-- i2c_smbus_write_byte_data() and i2c_smbus_read_byte_data(), which
-  cause an emulated SMBUS transfer,
-- i2c_master_send(), which causes an ordinary I2C transfer.
+profile->disconnected was storing an invalid reference to the
+disconnected path. Fix it by duplicating the string using
+aa_unpack_strdup and freeing accordingly.
 
-The Turris Omnia MCU LED controller is not semantically SMBUS, it
-operates as a simple I2C bus. It does not implement any of the SMBUS
-specific features, like PEC, or procedure calls, or anything. Moreover
-the I2C controller driver also does not implement SMBUS, and so the
-emulated SMBUS procedure from drivers/i2c/i2c-core-smbus.c is used for
-the SMBUS calls, which gives an unnecessary overhead.
-
-When I first wrote the driver, I was unaware of these facts, and I
-simply used the first function that worked.
-
-Drop the I2C SMBUS calls and instead use simple I2C transfers.
-
-Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Link: https://lore.kernel.org/r/20230918161104.20860-2-kabel@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 72c8a768641d ("apparmor: allow profiles to provide info to disconnected paths")
+Signed-off-by: Georgia Garcia <georgia.garcia@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-turris-omnia.c | 54 +++++++++++++++++++++++++-------
- 1 file changed, 42 insertions(+), 12 deletions(-)
+ security/apparmor/policy.c        | 1 +
+ security/apparmor/policy_unpack.c | 5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/leds-turris-omnia.c b/drivers/leds/leds-turris-omnia.c
-index b8a95a917cfa4..b13a547e72c49 100644
---- a/drivers/leds/leds-turris-omnia.c
-+++ b/drivers/leds/leds-turris-omnia.c
-@@ -2,7 +2,7 @@
- /*
-  * CZ.NIC's Turris Omnia LEDs driver
-  *
-- * 2020 by Marek Behún <kabel@kernel.org>
-+ * 2020, 2023 by Marek Behún <kabel@kernel.org>
-  */
+diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
+index b38f7b2a5e1d5..ec695a6caac7d 100644
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -255,6 +255,7 @@ void aa_free_profile(struct aa_profile *profile)
  
- #include <linux/i2c.h>
-@@ -41,6 +41,37 @@ struct omnia_leds {
- 	struct omnia_led leds[];
- };
+ 	aa_put_ns(profile->ns);
+ 	kfree_sensitive(profile->rename);
++	kfree_sensitive(profile->disconnected);
  
-+static int omnia_cmd_write_u8(const struct i2c_client *client, u8 cmd, u8 val)
-+{
-+	u8 buf[2] = { cmd, val };
-+
-+	return i2c_master_send(client, buf, sizeof(buf));
-+}
-+
-+static int omnia_cmd_read_u8(const struct i2c_client *client, u8 cmd)
-+{
-+	struct i2c_msg msgs[2];
-+	u8 reply;
-+	int ret;
-+
-+	msgs[0].addr = client->addr;
-+	msgs[0].flags = 0;
-+	msgs[0].len = 1;
-+	msgs[0].buf = &cmd;
-+	msgs[1].addr = client->addr;
-+	msgs[1].flags = I2C_M_RD;
-+	msgs[1].len = 1;
-+	msgs[1].buf = &reply;
-+
-+	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
-+	if (likely(ret == ARRAY_SIZE(msgs)))
-+		return reply;
-+	else if (ret < 0)
-+		return ret;
-+	else
-+		return -EIO;
-+}
-+
- static int omnia_led_brightness_set_blocking(struct led_classdev *cdev,
- 					     enum led_brightness brightness)
- {
-@@ -64,7 +95,7 @@ static int omnia_led_brightness_set_blocking(struct led_classdev *cdev,
- 	if (buf[2] || buf[3] || buf[4])
- 		state |= CMD_LED_STATE_ON;
+ 	free_attachment(&profile->attach);
  
--	ret = i2c_smbus_write_byte_data(leds->client, CMD_LED_STATE, state);
-+	ret = omnia_cmd_write_u8(leds->client, CMD_LED_STATE, state);
- 	if (ret >= 0 && (state & CMD_LED_STATE_ON))
- 		ret = i2c_master_send(leds->client, buf, 5);
- 
-@@ -114,9 +145,9 @@ static int omnia_led_register(struct i2c_client *client, struct omnia_led *led,
- 	cdev->brightness_set_blocking = omnia_led_brightness_set_blocking;
- 
- 	/* put the LED into software mode */
--	ret = i2c_smbus_write_byte_data(client, CMD_LED_MODE,
--					CMD_LED_MODE_LED(led->reg) |
--					CMD_LED_MODE_USER);
-+	ret = omnia_cmd_write_u8(client, CMD_LED_MODE,
-+				 CMD_LED_MODE_LED(led->reg) |
-+				 CMD_LED_MODE_USER);
- 	if (ret < 0) {
- 		dev_err(dev, "Cannot set LED %pOF to software mode: %i\n", np,
- 			ret);
-@@ -124,8 +155,8 @@ static int omnia_led_register(struct i2c_client *client, struct omnia_led *led,
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 694fb7a099624..74bcd0d79fb33 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -804,7 +804,7 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
+ 	const char *info = "failed to unpack profile";
+ 	size_t ns_len;
+ 	struct rhashtable_params params = { 0 };
+-	char *key = NULL;
++	char *key = NULL, *disconnected = NULL;
+ 	struct aa_data *data;
+ 	int error = -EPROTO;
+ 	kernel_cap_t tmpcap;
+@@ -870,7 +870,8 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
  	}
  
- 	/* disable the LED */
--	ret = i2c_smbus_write_byte_data(client, CMD_LED_STATE,
--					CMD_LED_STATE_LED(led->reg));
-+	ret = omnia_cmd_write_u8(client, CMD_LED_STATE,
-+				 CMD_LED_STATE_LED(led->reg));
- 	if (ret < 0) {
- 		dev_err(dev, "Cannot set LED %pOF brightness: %i\n", np, ret);
- 		return ret;
-@@ -158,7 +189,7 @@ static ssize_t brightness_show(struct device *dev, struct device_attribute *a,
- 	struct i2c_client *client = to_i2c_client(dev);
- 	int ret;
+ 	/* disconnected attachment string is optional */
+-	(void) aa_unpack_str(e, &profile->disconnected, "disconnected");
++	(void) aa_unpack_strdup(e, &disconnected, "disconnected");
++	profile->disconnected = disconnected;
  
--	ret = i2c_smbus_read_byte_data(client, CMD_LED_GET_BRIGHTNESS);
-+	ret = omnia_cmd_read_u8(client, CMD_LED_GET_BRIGHTNESS);
- 
- 	if (ret < 0)
- 		return ret;
-@@ -179,8 +210,7 @@ static ssize_t brightness_store(struct device *dev, struct device_attribute *a,
- 	if (brightness > 100)
- 		return -EINVAL;
- 
--	ret = i2c_smbus_write_byte_data(client, CMD_LED_SET_BRIGHTNESS,
--					(u8)brightness);
-+	ret = omnia_cmd_write_u8(client, CMD_LED_SET_BRIGHTNESS, brightness);
- 
- 	return ret < 0 ? ret : count;
- }
-@@ -237,8 +267,8 @@ static void omnia_leds_remove(struct i2c_client *client)
- 	u8 buf[5];
- 
- 	/* put all LEDs into default (HW triggered) mode */
--	i2c_smbus_write_byte_data(client, CMD_LED_MODE,
--				  CMD_LED_MODE_LED(OMNIA_BOARD_LEDS));
-+	omnia_cmd_write_u8(client, CMD_LED_MODE,
-+			   CMD_LED_MODE_LED(OMNIA_BOARD_LEDS));
- 
- 	/* set all LEDs color to [255, 255, 255] */
- 	buf[0] = CMD_LED_COLOR;
+ 	/* per profile debug flags (complain, audit) */
+ 	if (!aa_unpack_nameX(e, AA_STRUCT, "flags")) {
 -- 
 2.42.0
 
