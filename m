@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFB587ECD64
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 012707ECFBA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234485AbjKOTgO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50782 "EHLO
+        id S235389AbjKOTuY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:50:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234549AbjKOTgK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:10 -0500
+        with ESMTP id S235395AbjKOTuX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6EE5A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:06 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7B5C433CA;
-        Wed, 15 Nov 2023 19:36:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C98F3C2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49AAFC433CA;
+        Wed, 15 Nov 2023 19:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076966;
-        bh=8jZW2OZ1XD8GVITkH30x0tImakqCAGrAPm8Z+gSmRPI=;
+        s=korg; t=1700077820;
+        bh=x0mxmuUVa7mWezHxZdhlv7oUnFFD+LfZ/hFI45HqU78=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EDl+Ujg7GXEW6OFg3khJd9wXySbF4CuhMQAYQ57PEacfiqLkC9b/ZyvlWi0WmjTiN
-         6q8Q6FgwfmLlae/MnXyi4vRkqFK1Ab7jAsmlTzkoHZMtXs5QejIwN4iCsT5qasI+Us
-         u6bQWNZfksGoXUtlS2HUGbPkXbLLvPk0QWE/rq0w=
+        b=LMi3hfIrymyZtj7FxRc8QC9brzxUU9yLbzzah+JmcyluQTBfmuT05A7q8Ln6xkc8H
+         O0XZ5RqPHAP12FGf0baeg/FJB6taviBVI7uqjO2dfn/06OHVnQIBoP4I4jHojqW01T
+         39kwDWqkbYWi5VG5Y6rYjYFccoJVqQ7dw/AoyXDY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ming Qian <ming.qian@nxp.com>,
-        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        patches@lists.linux.dev, Katya Orlova <e.orlova@ispras.ru>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 478/550] media: amphion: handle firmware debug message
+Subject: [PATCH 6.6 517/603] media: s3c-camif: Avoid inappropriate kfree()
 Date:   Wed, 15 Nov 2023 14:17:42 -0500
-Message-ID: <20231115191634.002556740@linuxfoundation.org>
+Message-ID: <20231115191647.830572921@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,135 +50,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Katya Orlova <e.orlova@ispras.ru>
 
-[ Upstream commit 6496617b2b06d7004a5cbd53d48f19567d6b018c ]
+[ Upstream commit 61334819aca018c3416ee6c330a08a49c1524fc3 ]
 
-decoder firmware may notify host some debug message,
-it can help analyze the state of the firmware in case of error
+s3c_camif_register_video_node() works with video_device structure stored
+as a field of camif_vp, so it should not be kfreed.
+But there is video_device_release() on error path that do it.
 
-Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: babde1c243b2 ("[media] V4L: Add driver for S3C24XX/S3C64XX SoC series camera interface")
+Signed-off-by: Katya Orlova <e.orlova@ispras.ru>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_defs.h    |  1 +
- drivers/media/platform/amphion/vpu_helpers.c |  1 +
- drivers/media/platform/amphion/vpu_malone.c  |  1 +
- drivers/media/platform/amphion/vpu_msgs.c    | 31 ++++++++++++++++----
- 4 files changed, 29 insertions(+), 5 deletions(-)
+ drivers/media/platform/samsung/s3c-camif/camif-capture.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/platform/amphion/vpu_defs.h
-index 667637eedb5d4..7320852668d64 100644
---- a/drivers/media/platform/amphion/vpu_defs.h
-+++ b/drivers/media/platform/amphion/vpu_defs.h
-@@ -71,6 +71,7 @@ enum {
- 	VPU_MSG_ID_TIMESTAMP_INFO,
- 	VPU_MSG_ID_FIRMWARE_XCPT,
- 	VPU_MSG_ID_PIC_SKIPPED,
-+	VPU_MSG_ID_DBG_MSG,
- };
+diff --git a/drivers/media/platform/samsung/s3c-camif/camif-capture.c b/drivers/media/platform/samsung/s3c-camif/camif-capture.c
+index 76634d242b103..0f5b3845d7b94 100644
+--- a/drivers/media/platform/samsung/s3c-camif/camif-capture.c
++++ b/drivers/media/platform/samsung/s3c-camif/camif-capture.c
+@@ -1133,12 +1133,12 @@ int s3c_camif_register_video_node(struct camif_dev *camif, int idx)
  
- enum VPU_ENC_MEMORY_RESOURSE {
-diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media/platform/amphion/vpu_helpers.c
-index af3b336e5dc32..d12310af9ebce 100644
---- a/drivers/media/platform/amphion/vpu_helpers.c
-+++ b/drivers/media/platform/amphion/vpu_helpers.c
-@@ -489,6 +489,7 @@ const char *vpu_id_name(u32 id)
- 	case VPU_MSG_ID_UNSUPPORTED: return "unsupported";
- 	case VPU_MSG_ID_FIRMWARE_XCPT: return "exception";
- 	case VPU_MSG_ID_PIC_SKIPPED: return "skipped";
-+	case VPU_MSG_ID_DBG_MSG: return "debug msg";
- 	}
- 	return "<unknown>";
+ 	ret = vb2_queue_init(q);
+ 	if (ret)
+-		goto err_vd_rel;
++		return ret;
+ 
+ 	vp->pad.flags = MEDIA_PAD_FL_SINK;
+ 	ret = media_entity_pads_init(&vfd->entity, 1, &vp->pad);
+ 	if (ret)
+-		goto err_vd_rel;
++		return ret;
+ 
+ 	video_set_drvdata(vfd, vp);
+ 
+@@ -1171,8 +1171,6 @@ int s3c_camif_register_video_node(struct camif_dev *camif, int idx)
+ 	v4l2_ctrl_handler_free(&vp->ctrl_handler);
+ err_me_cleanup:
+ 	media_entity_cleanup(&vfd->entity);
+-err_vd_rel:
+-	video_device_release(vfd);
+ 	return ret;
  }
-diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
-index c1d6606ad7e57..46713be69adbd 100644
---- a/drivers/media/platform/amphion/vpu_malone.c
-+++ b/drivers/media/platform/amphion/vpu_malone.c
-@@ -747,6 +747,7 @@ static struct vpu_pair malone_msgs[] = {
- 	{VPU_MSG_ID_UNSUPPORTED, VID_API_EVENT_UNSUPPORTED_STREAM},
- 	{VPU_MSG_ID_FIRMWARE_XCPT, VID_API_EVENT_FIRMWARE_XCPT},
- 	{VPU_MSG_ID_PIC_SKIPPED, VID_API_EVENT_PIC_SKIPPED},
-+	{VPU_MSG_ID_DBG_MSG, VID_API_EVENT_DBG_MSG_DEC},
- };
- 
- static void vpu_malone_pack_fs_alloc(struct vpu_rpc_event *pkt,
-diff --git a/drivers/media/platform/amphion/vpu_msgs.c b/drivers/media/platform/amphion/vpu_msgs.c
-index d0ead051f7d18..b74a407a19f22 100644
---- a/drivers/media/platform/amphion/vpu_msgs.c
-+++ b/drivers/media/platform/amphion/vpu_msgs.c
-@@ -23,6 +23,7 @@
- struct vpu_msg_handler {
- 	u32 id;
- 	void (*done)(struct vpu_inst *inst, struct vpu_rpc_event *pkt);
-+	u32 is_str;
- };
- 
- static void vpu_session_handle_start_done(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
-@@ -154,7 +155,7 @@ static void vpu_session_handle_error(struct vpu_inst *inst, struct vpu_rpc_event
- {
- 	char *str = (char *)pkt->data;
- 
--	if (strlen(str))
-+	if (*str)
- 		dev_err(inst->dev, "instance %d firmware error : %s\n", inst->id, str);
- 	else
- 		dev_err(inst->dev, "instance %d is unsupported stream\n", inst->id);
-@@ -180,6 +181,21 @@ static void vpu_session_handle_pic_skipped(struct vpu_inst *inst, struct vpu_rpc
- 	vpu_inst_unlock(inst);
- }
- 
-+static void vpu_session_handle_dbg_msg(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
-+{
-+	char *str = (char *)pkt->data;
-+
-+	if (*str)
-+		dev_info(inst->dev, "instance %d firmware dbg msg : %s\n", inst->id, str);
-+}
-+
-+static void vpu_terminate_string_msg(struct vpu_rpc_event *pkt)
-+{
-+	if (pkt->hdr.num == ARRAY_SIZE(pkt->data))
-+		pkt->hdr.num--;
-+	pkt->data[pkt->hdr.num] = 0;
-+}
-+
- static struct vpu_msg_handler handlers[] = {
- 	{VPU_MSG_ID_START_DONE, vpu_session_handle_start_done},
- 	{VPU_MSG_ID_STOP_DONE, vpu_session_handle_stop_done},
-@@ -193,9 +209,10 @@ static struct vpu_msg_handler handlers[] = {
- 	{VPU_MSG_ID_PIC_DECODED, vpu_session_handle_pic_decoded},
- 	{VPU_MSG_ID_DEC_DONE, vpu_session_handle_pic_done},
- 	{VPU_MSG_ID_PIC_EOS, vpu_session_handle_eos},
--	{VPU_MSG_ID_UNSUPPORTED, vpu_session_handle_error},
--	{VPU_MSG_ID_FIRMWARE_XCPT, vpu_session_handle_firmware_xcpt},
-+	{VPU_MSG_ID_UNSUPPORTED, vpu_session_handle_error, true},
-+	{VPU_MSG_ID_FIRMWARE_XCPT, vpu_session_handle_firmware_xcpt, true},
- 	{VPU_MSG_ID_PIC_SKIPPED, vpu_session_handle_pic_skipped},
-+	{VPU_MSG_ID_DBG_MSG, vpu_session_handle_dbg_msg, true},
- };
- 
- static int vpu_session_handle_msg(struct vpu_inst *inst, struct vpu_rpc_event *msg)
-@@ -219,8 +236,12 @@ static int vpu_session_handle_msg(struct vpu_inst *inst, struct vpu_rpc_event *m
- 		}
- 	}
- 
--	if (handler && handler->done)
--		handler->done(inst, msg);
-+	if (handler) {
-+		if (handler->is_str)
-+			vpu_terminate_string_msg(msg);
-+		if (handler->done)
-+			handler->done(inst, msg);
-+	}
- 
- 	vpu_response_cmd(inst, msg_id, 1);
  
 -- 
 2.42.0
