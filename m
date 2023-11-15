@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA94B7ECE46
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6087ECBD1
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234946AbjKOTmC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58748 "EHLO
+        id S233027AbjKOTYl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234951AbjKOTmB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:01 -0500
+        with ESMTP id S233082AbjKOTYl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B802B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E112C433C7;
-        Wed, 15 Nov 2023 19:41:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01A8712C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:37 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6FFC433C8;
+        Wed, 15 Nov 2023 19:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077318;
-        bh=5RHtGRYRqp876gK2Z1BS6J5lDvFnMOmNN8Hk2QBHOZM=;
+        s=korg; t=1700076277;
+        bh=QXGl17d/dyPHqww3x56VXUcthuipn9bAbaDaI01JUxk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpLMGponaQIIxVimR9kvO5eXeOA/ImmXTn+KN6lbiZ/t6eFlKstGmIt4kKAc5oT8i
-         HcwEexg6rR6LomC5Oh9G55LdAHfCWlg1ah/3ZtcrAYPOHVrMl4g2Y4bZUdAdJEE/LA
-         qZ23k7EogTjAzi4SlTA+zLbEIk3Bb73jK4CvixVk=
+        b=OlwOKhBmBfxCipBhAKHYI1QBWvWqtV0NcNGTFem7JRmYHvKHZjdRRP5UOnrmjpbdQ
+         CCAJtDz+oTrlb2O/DtTnjqrz7yFdA/3c8v/yGd+i7e1LvpnnmBkMz75gVporbDljjX
+         apmEeBFNrXINBTYCMUwJ5Vh3CNSQ3SlAJII64jec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/603] drm/bridge: lt8912b: Manually disable HPD only if it was enabled
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 188/550] platform/x86: wmi: Fix probe failure when failing to register WMI devices
 Date:   Wed, 15 Nov 2023 14:12:52 -0500
-Message-ID: <20231115191628.897034742@linuxfoundation.org>
+Message-ID: <20231115191613.773286816@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,46 +51,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 6985c5efc4057bc79137807295d84ada3123d051 ]
+[ Upstream commit ed85891a276edaf7a867de0e9acd0837bc3008f2 ]
 
-lt8912b only calls drm_bridge_hpd_enable() if it creates a connector and
-the next bridge has DRM_BRIDGE_OP_HPD set. However, when calling
-drm_bridge_hpd_disable() it misses checking if a connector was created,
-calling drm_bridge_hpd_disable() even if HPD was never enabled. I don't
-see any issues caused by this wrong call, though.
+When a WMI device besides the first one somehow fails to register,
+retval is returned while still containing a negative error code. This
+causes the ACPI device fail to probe, leaving behind zombie WMI devices
+leading to various errors later.
 
-Add the check to avoid wrongly calling drm_bridge_hpd_disable().
+Handle the single error path separately and return 0 unconditionally
+after trying to register all WMI devices to solve the issue. Also
+continue to register WMI devices even if some fail to allocate memory.
 
-Fixes: 3b0a01a6a522 ("drm/bridge: lt8912b: Add hot plug detection")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230804-lt8912b-v1-3-c542692c6a2f@ideasonboard.com
+Fixes: 6ee50aaa9a20 ("platform/x86: wmi: Instantiate all devices before adding them")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20231020211005.38216-4-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/wmi.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-index 2d752e083433f..9ee639e75a1c2 100644
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -587,7 +587,7 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index a78ddd83cda02..7d11ff5bc856c 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -1270,8 +1270,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 	struct wmi_block *wblock, *next;
+ 	union acpi_object *obj;
+ 	acpi_status status;
+-	int retval = 0;
+ 	u32 i, total;
++	int retval;
  
- 	lt8912_hard_power_off(lt);
+ 	status = acpi_evaluate_object(device->handle, "_WDG", NULL, &out);
+ 	if (ACPI_FAILURE(status))
+@@ -1282,8 +1282,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		return -ENXIO;
  
--	if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
-+	if (lt->connector.dev && lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
- 		drm_bridge_hpd_disable(lt->hdmi_port);
+ 	if (obj->type != ACPI_TYPE_BUFFER) {
+-		retval = -ENXIO;
+-		goto out_free_pointer;
++		kfree(obj);
++		return -ENXIO;
+ 	}
+ 
+ 	gblock = (const struct guid_block *)obj->buffer.pointer;
+@@ -1298,8 +1298,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 
+ 		wblock = kzalloc(sizeof(*wblock), GFP_KERNEL);
+ 		if (!wblock) {
+-			retval = -ENOMEM;
+-			break;
++			dev_err(wmi_bus_dev, "Failed to allocate %pUL\n", &gblock[i].guid);
++			continue;
+ 		}
+ 
+ 		wblock->acpi_device = device;
+@@ -1338,9 +1338,9 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		}
+ 	}
+ 
+-out_free_pointer:
+-	kfree(out.pointer);
+-	return retval;
++	kfree(obj);
++
++	return 0;
  }
  
+ /*
 -- 
 2.42.0
 
