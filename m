@@ -2,48 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A597E7ED390
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8CDE7ED39F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234891AbjKOUx1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:53:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36072 "EHLO
+        id S234915AbjKOUxo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:53:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234885AbjKOUxY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:24 -0500
+        with ESMTP id S234968AbjKOUxn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C3DFC1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C481C4E778;
-        Wed, 15 Nov 2023 20:53:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F0D19F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427BEC4E777;
+        Wed, 15 Nov 2023 20:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081600;
-        bh=DzANMoYqeSAvh3deZnCARuxjzAQskL4IaK422nG3KHk=;
+        s=korg; t=1700081619;
+        bh=7GBFe/6xSIy6S1S+t+FOlCw8Po4gf5L5MuYM6Od3evM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q+zroC5T3J/0x2GpWPh0QFkQ3ZHVjwnCZL1HgzakahsIZkQMPaBSGGoHzhtUqekBO
-         VVpA4EbQhy/UsulfXEiGlJc8PQ/mel+rWqowiUaS7ToLgwXaRUOU/gBMl2u84ZbpsA
-         jZDTB6ovrGMLjIOcCFftNPereTM+Z7WS5vAJYxpI=
+        b=AgJWHALGneGCEkgdxO7kWQKpzebGnOvNMhRHP2IIHj3aiOj2jy6qqizGvpNd89fm9
+         Vu9EFZaGAOdd/blFOPRNv/1lmW0v0somZxyY7bFaQimuLXjlKX8SyrZDNTUSkdvW7J
+         KMqbDX8xcIkPeYx8hZZz0N5/vDxs2sOUy3O6Uhh4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-        Christian Brauner <christian@brauner.io>,
-        Matthew Wilcox <willy@infradead.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Laight <David.Laight@ACULAB.COM>, x86@kernel.org,
-        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev,
+        "Qais Yousef (Google)" <qyousef@layalina.io>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 001/191] iov_iter, x86: Be consistent about the __user tag on copy_mc_to_user()
-Date:   Wed, 15 Nov 2023 15:44:36 -0500
-Message-ID: <20231115204644.600507949@linuxfoundation.org>
+Subject: [PATCH 5.10 002/191] sched/uclamp: Ignore (util == 0) optimization in feec() when p_util_max = 0
+Date:   Wed, 15 Nov 2023 15:44:37 -0500
+Message-ID: <20231115204644.666421722@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -66,87 +58,70 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Qais Yousef <qyousef@layalina.io>
 
-[ Upstream commit 066baf92bed934c9fb4bcee97a193f47aa63431c ]
+[ Upstream commit 23c9519def98ee0fa97ea5871535e9b136f522fc ]
 
-copy_mc_to_user() has the destination marked __user on powerpc, but not on
-x86; the latter results in a sparse warning in lib/iov_iter.c.
+find_energy_efficient_cpu() bails out early if effective util of the
+task is 0 as the delta at this point will be zero and there's nothing
+for EAS to do. When uclamp is being used, this could lead to wrong
+decisions when uclamp_max is set to 0. In this case the task is capped
+to performance point 0, but it is actually running and consuming energy
+and we can benefit from EAS energy calculations.
 
-Fix this by applying the tag on x86 too.
+Rework the condition so that it bails out when both util and uclamp_min
+are 0.
 
-Fixes: ec6347bb4339 ("x86, powerpc: Rename memcpy_mcsafe() to copy_mc_to_{user, kernel}()")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20230925120309.1731676-3-dhowells@redhat.com
-cc: Dan Williams <dan.j.williams@intel.com>
-cc: Thomas Gleixner <tglx@linutronix.de>
-cc: Ingo Molnar <mingo@redhat.com>
-cc: Borislav Petkov <bp@alien8.de>
-cc: Dave Hansen <dave.hansen@linux.intel.com>
-cc: "H. Peter Anvin" <hpa@zytor.com>
-cc: Alexander Viro <viro@zeniv.linux.org.uk>
-cc: Jens Axboe <axboe@kernel.dk>
-cc: Christoph Hellwig <hch@lst.de>
-cc: Christian Brauner <christian@brauner.io>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Linus Torvalds <torvalds@linux-foundation.org>
-cc: David Laight <David.Laight@ACULAB.COM>
-cc: x86@kernel.org
-cc: linux-block@vger.kernel.org
-cc: linux-fsdevel@vger.kernel.org
-cc: linux-mm@kvack.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+We can do that without needing to use uclamp_task_util(); remove it.
+
+Fixes: d81304bc6193 ("sched/uclamp: Cater for uclamp in find_energy_efficient_cpu()'s early exit condition")
+Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230916232955.2099394-3-qyousef@layalina.io
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/uaccess.h | 2 +-
- arch/x86/lib/copy_mc.c         | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ kernel/sched/fair.c | 18 +-----------------
+ 1 file changed, 1 insertion(+), 17 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index bb1430283c726..bf2561a5eb581 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -446,7 +446,7 @@ copy_mc_to_kernel(void *to, const void *from, unsigned len);
- #define copy_mc_to_kernel copy_mc_to_kernel
- 
- unsigned long __must_check
--copy_mc_to_user(void *to, const void *from, unsigned len);
-+copy_mc_to_user(void __user *to, const void *from, unsigned len);
- #endif
- 
- /*
-diff --git a/arch/x86/lib/copy_mc.c b/arch/x86/lib/copy_mc.c
-index c13e8c9ee926b..e058ef2d454d0 100644
---- a/arch/x86/lib/copy_mc.c
-+++ b/arch/x86/lib/copy_mc.c
-@@ -74,23 +74,23 @@ unsigned long __must_check copy_mc_to_kernel(void *dst, const void *src, unsigne
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index d53f57ac76094..73a89fbd81be8 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3927,22 +3927,6 @@ static inline unsigned long task_util_est(struct task_struct *p)
+ 	return max(task_util(p), _task_util_est(p));
  }
- EXPORT_SYMBOL_GPL(copy_mc_to_kernel);
  
--unsigned long __must_check copy_mc_to_user(void *dst, const void *src, unsigned len)
-+unsigned long __must_check copy_mc_to_user(void __user *dst, const void *src, unsigned len)
+-#ifdef CONFIG_UCLAMP_TASK
+-static inline unsigned long uclamp_task_util(struct task_struct *p,
+-					     unsigned long uclamp_min,
+-					     unsigned long uclamp_max)
+-{
+-	return clamp(task_util_est(p), uclamp_min, uclamp_max);
+-}
+-#else
+-static inline unsigned long uclamp_task_util(struct task_struct *p,
+-					     unsigned long uclamp_min,
+-					     unsigned long uclamp_max)
+-{
+-	return task_util_est(p);
+-}
+-#endif
+-
+ static inline void util_est_enqueue(struct cfs_rq *cfs_rq,
+ 				    struct task_struct *p)
  {
- 	unsigned long ret;
+@@ -6842,7 +6826,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
+ 		goto fail;
  
- 	if (copy_mc_fragile_enabled) {
- 		__uaccess_begin();
--		ret = copy_mc_fragile(dst, src, len);
-+		ret = copy_mc_fragile((__force void *)dst, src, len);
- 		__uaccess_end();
- 		return ret;
- 	}
+ 	sync_entity_load_avg(&p->se);
+-	if (!uclamp_task_util(p, p_util_min, p_util_max))
++	if (!task_util_est(p) && p_util_min == 0)
+ 		goto unlock;
  
- 	if (static_cpu_has(X86_FEATURE_ERMS)) {
- 		__uaccess_begin();
--		ret = copy_mc_enhanced_fast_string(dst, src, len);
-+		ret = copy_mc_enhanced_fast_string((__force void *)dst, src, len);
- 		__uaccess_end();
- 		return ret;
- 	}
- 
--	return copy_user_generic(dst, src, len);
-+	return copy_user_generic((__force void *)dst, src, len);
- }
+ 	for (; pd; pd = pd->next) {
 -- 
 2.42.0
 
