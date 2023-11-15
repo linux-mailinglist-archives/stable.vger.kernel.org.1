@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6B567ECB81
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFB427ECDF1
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230035AbjKOTWo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:22:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40156 "EHLO
+        id S234753AbjKOTjW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230007AbjKOTWn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:43 -0500
+        with ESMTP id S234721AbjKOTjS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B4D61B6
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF7BC433CB;
-        Wed, 15 Nov 2023 19:22:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A43EA4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EAFC433CD;
+        Wed, 15 Nov 2023 19:39:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076158;
-        bh=EA1cNAXme7rWwGZvnWsnz/DsmUW3MQ43Gv8RuSqv21Q=;
+        s=korg; t=1700077155;
+        bh=K7k8mqqWr57kKNKnsvXHmuLOokPuVllAsnEdTQr7ifQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ev2BkxmAv324HEdneQR+twuMbPpjDw97qmJv0ddlr3hYLMHvSKY/S9jkh3f4st1nc
-         a9C3jxhoLCCfxY2b5e3DCiFwV8a91J9wqjDx8cnvTny/aMlX5lUx2K8AZoUyEjzLj9
-         ZH5zvic2/oXvX6LLcDmiDBAjs9+t9iOSaLZ77I2I=
+        b=CrsG9Jz3nEh9OQsLUZLMps9lFQVHkUVg47a5k9JgEJjr1we9A7J3JL2bdTrf8iVQd
+         gCdRnwB64CM5S0+LnuYsYJMWRgAMnVORgZ4gLQyj7ctLX9va+Sn5v8b7vKj13E//JO
+         TNVA4rSfSCCxrg9Y027OhMu0/AVjeWX0p+0vHS78=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 085/550] wifi: mt76: remove unused error path in mt76_connac_tx_complete_skb
-Date:   Wed, 15 Nov 2023 14:11:09 -0500
-Message-ID: <20231115191606.602762376@linuxfoundation.org>
+        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Stanislav Fomichev <sdf@google.com>,
+        Feng Zhou <zhoufeng.zf@bytedance.com>,
+        KP Singh <kpsingh@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 125/603] bpf: Fix missed rcu read lock in bpf_task_under_cgroup()
+Date:   Wed, 15 Nov 2023 14:11:10 -0500
+Message-ID: <20231115191621.888871255@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,124 +52,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit 832f42699791e7a90e81c15da0ce886b4f8300b8 ]
+[ Upstream commit 29a7e00ffadddd8d68eff311de1bf12ae10687bb ]
 
-The error handling code was added in order to allow tx enqueue to fail after
-calling .tx_prepare_skb. Since this can no longer happen, the error handling
-code is unused.
+When employed within a sleepable program not under RCU protection, the
+use of 'bpf_task_under_cgroup()' may trigger a warning in the kernel log,
+particularly when CONFIG_PROVE_RCU is enabled:
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Stable-dep-of: bde2e77f7626 ("wifi: mt76: mt7996: set correct wcid in txp")
+  [ 1259.662357] WARNING: suspicious RCU usage
+  [ 1259.662358] 6.5.0+ #33 Not tainted
+  [ 1259.662360] -----------------------------
+  [ 1259.662361] include/linux/cgroup.h:423 suspicious rcu_dereference_check() usage!
+
+Other info that might help to debug this:
+
+  [ 1259.662366] rcu_scheduler_active = 2, debug_locks = 1
+  [ 1259.662368] 1 lock held by trace/72954:
+  [ 1259.662369]  #0: ffffffffb5e3eda0 (rcu_read_lock_trace){....}-{0:0}, at: __bpf_prog_enter_sleepable+0x0/0xb0
+
+Stack backtrace:
+
+  [ 1259.662385] CPU: 50 PID: 72954 Comm: trace Kdump: loaded Not tainted 6.5.0+ #33
+  [ 1259.662391] Call Trace:
+  [ 1259.662393]  <TASK>
+  [ 1259.662395]  dump_stack_lvl+0x6e/0x90
+  [ 1259.662401]  dump_stack+0x10/0x20
+  [ 1259.662404]  lockdep_rcu_suspicious+0x163/0x1b0
+  [ 1259.662412]  task_css_set.part.0+0x23/0x30
+  [ 1259.662417]  bpf_task_under_cgroup+0xe7/0xf0
+  [ 1259.662422]  bpf_prog_7fffba481a3bcf88_lsm_run+0x5c/0x93
+  [ 1259.662431]  bpf_trampoline_6442505574+0x60/0x1000
+  [ 1259.662439]  bpf_lsm_bpf+0x5/0x20
+  [ 1259.662443]  ? security_bpf+0x32/0x50
+  [ 1259.662452]  __sys_bpf+0xe6/0xdd0
+  [ 1259.662463]  __x64_sys_bpf+0x1a/0x30
+  [ 1259.662467]  do_syscall_64+0x38/0x90
+  [ 1259.662472]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+  [ 1259.662479] RIP: 0033:0x7f487baf8e29
+  [...]
+  [ 1259.662504]  </TASK>
+
+This issue can be reproduced by executing a straightforward program, as
+demonstrated below:
+
+SEC("lsm.s/bpf")
+int BPF_PROG(lsm_run, int cmd, union bpf_attr *attr, unsigned int size)
+{
+        struct cgroup *cgrp = NULL;
+        struct task_struct *task;
+        int ret = 0;
+
+        if (cmd != BPF_LINK_CREATE)
+                return 0;
+
+        // The cgroup2 should be mounted first
+        cgrp = bpf_cgroup_from_id(1);
+        if (!cgrp)
+                goto out;
+        task = bpf_get_current_task_btf();
+        if (bpf_task_under_cgroup(task, cgrp))
+                ret = -1;
+        bpf_cgroup_release(cgrp);
+
+out:
+        return ret;
+}
+
+After running the program, if you subsequently execute another BPF program,
+you will encounter the warning.
+
+It's worth noting that task_under_cgroup_hierarchy() is also utilized by
+bpf_current_task_under_cgroup(). However, bpf_current_task_under_cgroup()
+doesn't exhibit this issue because it cannot be used in sleepable BPF
+programs.
+
+Fixes: b5ad4cdc46c7 ("bpf: Add bpf_task_under_cgroup() kfunc")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Cc: Feng Zhou <zhoufeng.zf@bytedance.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Link: https://lore.kernel.org/bpf/20231007135945.4306-1-laoar.shao@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/dma.c        |  3 ---
- .../net/wireless/mediatek/mt76/mt7615/pci_mac.c |  2 +-
- .../wireless/mediatek/mt76/mt76_connac_mac.c    | 17 -----------------
- drivers/net/wireless/mediatek/mt76/mt7915/mac.c |  2 +-
- .../net/wireless/mediatek/mt76/mt7921/pci_mac.c |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c |  2 +-
- 6 files changed, 4 insertions(+), 24 deletions(-)
+ kernel/bpf/helpers.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index f539913aadf86..e57ce25f3d816 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -330,9 +330,6 @@ mt76_dma_tx_cleanup_idx(struct mt76_dev *dev, struct mt76_queue *q, int idx,
- 	if (e->txwi == DMA_DUMMY_DATA)
- 		e->txwi = NULL;
- 
--	if (e->skb == DMA_DUMMY_DATA)
--		e->skb = NULL;
--
- 	*prev_e = *e;
- 	memset(e, 0, sizeof(*e));
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 8bd3812fb8df4..68f54e16c7be0 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -2197,7 +2197,12 @@ __bpf_kfunc struct cgroup *bpf_cgroup_from_id(u64 cgid)
+ __bpf_kfunc long bpf_task_under_cgroup(struct task_struct *task,
+ 				       struct cgroup *ancestor)
+ {
+-	return task_under_cgroup_hierarchy(task, ancestor);
++	long ret;
++
++	rcu_read_lock();
++	ret = task_under_cgroup_hierarchy(task, ancestor);
++	rcu_read_unlock();
++	return ret;
  }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-index 0019890fdb784..fbb1181c58ff3 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/pci_mac.c
-@@ -106,7 +106,7 @@ int mt7615_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	else
- 		mt76_connac_write_hw_txp(mdev, tx_info, txp, id);
+ #endif /* CONFIG_CGROUPS */
  
--	tx_info->skb = DMA_DUMMY_DATA;
-+	tx_info->skb = NULL;
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index e415ac5e321f1..a800c071537f8 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -151,23 +151,6 @@ void mt76_connac_tx_complete_skb(struct mt76_dev *mdev,
- 		return;
- 	}
- 
--	/* error path */
--	if (e->skb == DMA_DUMMY_DATA) {
--		struct mt76_connac_txp_common *txp;
--		struct mt76_txwi_cache *t;
--		u16 token;
--
--		txp = mt76_connac_txwi_to_txp(mdev, e->txwi);
--		if (is_mt76_fw_txp(mdev))
--			token = le16_to_cpu(txp->fw.token);
--		else
--			token = le16_to_cpu(txp->hw.msdu_id[0]) &
--				~MT_MSDU_ID_VALID;
--
--		t = mt76_token_put(mdev, token);
--		e->skb = t ? t->skb : NULL;
--	}
--
- 	if (e->skb)
- 		mt76_tx_complete_skb(mdev, e->wcid, e->skb);
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-index 7df8d95fc3fbc..13071df3f6c21 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
-@@ -808,7 +808,7 @@ int mt7915_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 		txp->rept_wds_wcid = cpu_to_le16(wcid->idx);
- 	else
- 		txp->rept_wds_wcid = cpu_to_le16(0x3ff);
--	tx_info->skb = DMA_DUMMY_DATA;
-+	tx_info->skb = NULL;
- 
- 	/* pass partial skb header to fw */
- 	tx_info->buf[1].len = MT_CT_PARSE_LEN;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-index 6053a2556c20c..46f1360fbc59a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci_mac.c
-@@ -48,7 +48,7 @@ int mt7921e_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 	memset(txp, 0, sizeof(struct mt76_connac_hw_txp));
- 	mt76_connac_write_hw_txp(mdev, tx_info, txp, id);
- 
--	tx_info->skb = DMA_DUMMY_DATA;
-+	tx_info->skb = NULL;
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 25c5deb15d213..b18fa4153aeb2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -1172,7 +1172,7 @@ int mt7996_tx_prepare_skb(struct mt76_dev *mdev, void *txwi_ptr,
- 		txp->fw.rept_wds_wcid = cpu_to_le16(wcid->idx);
- 	else
- 		txp->fw.rept_wds_wcid = cpu_to_le16(0xfff);
--	tx_info->skb = DMA_DUMMY_DATA;
-+	tx_info->skb = NULL;
- 
- 	/* pass partial skb header to fw */
- 	tx_info->buf[1].len = MT_CT_PARSE_LEN;
 -- 
 2.42.0
 
