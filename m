@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 027997ECE83
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6DB7ECC0D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235124AbjKOTnh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
+        id S233530AbjKOT0l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:26:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235119AbjKOTng (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:36 -0500
+        with ESMTP id S233891AbjKOT0Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A090AAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:33 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D23C433C8;
-        Wed, 15 Nov 2023 19:43:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9D310EC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04186C433C8;
+        Wed, 15 Nov 2023 19:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077413;
-        bh=AZg+EdaC46onAQS63h0+qroQs6waUqvWN+OGS15aSyY=;
+        s=korg; t=1700076382;
+        bh=S659Bn7qhti+oqr9G2CYozHAhOiLtOQW+xXJYxYkUuo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qW7sdbtTJrYBWv5Vrkj96gk61HKxVT+PqZEQjxI7ZbgwfuOAKy6+JHbfk2MjxVaOt
-         vLWADxQCR7GZniqDWQOYy65nYs70RL0LDQny+SJ8pvy1uW+aHJdKQsLYaoZDfYJJF+
-         4MWkx+a6ED8nlUao5a1t4oKvQV+Od37sIAGtTV/A=
+        b=RyZijaEYKHTmbNmnzEwoqCjMxeaLfLcaFbhzmdvzvPU3yYKqxz7C2eRBzSWuXu6eA
+         qExs3BTxkRRmNmYlOPYV0rbAutkcFQULKUBm+BiC0Yhx3OT+hd7FtMgYezZmwUBYza
+         zKCwV8Ck8hPq6tQQ3LW5b8huu4vT1iR5b4iGya24=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Juergen Gross <jgross@suse.com>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 287/603] arm64: dts: qcom: sm8150: add ref clock to PCIe PHYs
-Date:   Wed, 15 Nov 2023 14:13:52 -0500
-Message-ID: <20231115191633.243152933@linuxfoundation.org>
+Subject: [PATCH 6.5 249/550] xenbus: fix error exit in xenbus_init()
+Date:   Wed, 15 Nov 2023 14:13:53 -0500
+Message-ID: <20231115191617.951304123@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit c204b3709409279ac019f3d374e444bb0b1424f0 ]
+[ Upstream commit 44961b81a9e9059b5c0443643915386db7035227 ]
 
-Follow the rest of the platforms and add "ref" clocks to both PCIe PHYs
-found on the Qualcomm SM8150 platform.
+In case an error occurs in xenbus_init(), xen_store_domain_type should
+be set to XS_UNKNOWN.
 
-Fixes: a1c86c680533 ("arm64: dts: qcom: sm8150: Add PCIe nodes")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230820142035.89903-15-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix one instance where this action is missing.
+
+Fixes: 5b3353949e89 ("xen: add support for initializing xenstore later as HVM domain")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/r/202304200845.w7m4kXZr-lkp@intel.com/
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Link: https://lore.kernel.org/r/20230822091138.4765-1-jgross@suse.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150.dtsi | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/xen/xenbus/xenbus_probe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index 06c53000bb74d..19c6003dca153 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -1893,8 +1893,12 @@ pcie0_phy: phy@1c06000 {
- 			ranges;
- 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
- 				 <&gcc GCC_PCIE_0_CFG_AHB_CLK>,
-+				 <&gcc GCC_PCIE_0_CLKREF_CLK>,
- 				 <&gcc GCC_PCIE0_PHY_REFGEN_CLK>;
--			clock-names = "aux", "cfg_ahb", "refgen";
-+			clock-names = "aux",
-+				      "cfg_ahb",
-+				      "ref",
-+				      "refgen";
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 639bf628389ba..3205e5d724c8c 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -1025,7 +1025,7 @@ static int __init xenbus_init(void)
+ 			if (err < 0) {
+ 				pr_err("xenstore_late_init couldn't bind irq err=%d\n",
+ 				       err);
+-				return err;
++				goto out_error;
+ 			}
  
- 			resets = <&gcc GCC_PCIE_0_PHY_BCR>;
- 			reset-names = "phy";
-@@ -1991,8 +1995,12 @@ pcie1_phy: phy@1c0e000 {
- 			ranges;
- 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
- 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
-+				 <&gcc GCC_PCIE_1_CLKREF_CLK>,
- 				 <&gcc GCC_PCIE1_PHY_REFGEN_CLK>;
--			clock-names = "aux", "cfg_ahb", "refgen";
-+			clock-names = "aux",
-+				      "cfg_ahb",
-+				      "ref",
-+				      "refgen";
- 
- 			resets = <&gcc GCC_PCIE_1_PHY_BCR>;
- 			reset-names = "phy";
+ 			xs_init_irq = err;
 -- 
 2.42.0
 
