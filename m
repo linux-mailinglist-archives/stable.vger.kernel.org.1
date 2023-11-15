@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C9D07ECDCB
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC527ECFD8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234656AbjKOTi3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:38:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53702 "EHLO
+        id S235431AbjKOTvO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234655AbjKOTi2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:28 -0500
+        with ESMTP id S235426AbjKOTvN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC5499E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF92C433CC;
-        Wed, 15 Nov 2023 19:38:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFAC7B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3DBC433C8;
+        Wed, 15 Nov 2023 19:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077105;
-        bh=Ij6/gHl4Jo2LNnCymwtc0eHwrsK4zE7B43SwRFd4zOk=;
+        s=korg; t=1700077869;
+        bh=/QdO7GE7xIfqhbKpnFiitazoqrXDr5i0aYE13leBH9s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rNE7+NHjxBD+YNKn1xLlVLKJVgkvHnHLzcC9lqwuzAgvLM5qZGJgT9bW5wK+aiP/S
-         AiR9Qy9sXgEHkveBpDayqTgXWv9n/aCXnto1QeofqHkONkvaN1YrJiFGXrsgrWCXGH
-         3MzXQaUmzE7g7CR3ibCgTIVetpJtE2fE5c8GlK9U=
+        b=d3DNpiGjr+FgHDeDm187e9aWbEw8xmU2de9AoMo8MclZL/pUrWTZ3+Ifqm1LzHma1
+         Jbu3FzBXYDLcnjGn5pwP+xvgOqHdJS+1NHnxm/ckB73HfTuxuMIsvQfpBNyFyMtKH5
+         5NL2IzpcQih7tzFQ40uFuJjnZE/oUj6XvlcPW4v8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jian Shen <shenjian15@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>,
-        Jiri Pirko <jiri@nvidia.com>,
-        Somnath Kotur <somnath.kotur@broadcom.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
+        Hou Tao <houtao1@huawei.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 506/550] net: page_pool: add missing free_percpu when page_pool_init fail
+Subject: [PATCH 6.6 545/603] bpf: Check map->usercnt after timer->timer is assigned
 Date:   Wed, 15 Nov 2023 14:18:10 -0500
-Message-ID: <20231115191635.994857278@linuxfoundation.org>
+Message-ID: <20231115191649.485403031@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,50 +51,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 8ffbd1669ed1d58939d6e878dffaa2f60bf961a4 ]
+[ Upstream commit fd381ce60a2d79cc967506208085336d3d268ae0 ]
 
-When ptr_ring_init() returns failure in page_pool_init(), free_percpu()
-is not called to free pool->recycle_stats, which may cause memory
-leak.
+When there are concurrent uref release and bpf timer init operations,
+the following sequence diagram is possible. It will break the guarantee
+provided by bpf_timer: bpf_timer will still be alive after userspace
+application releases or unpins the map. It also will lead to kmemleak
+for old kernel version which doesn't release bpf_timer when map is
+released.
 
-Fixes: ad6fa1e1ab1b ("page_pool: Add recycle stats")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Yunsheng Lin <linyunsheng@huawei.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Link: https://lore.kernel.org/r/20231030091256.2915394-1-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+bpf program X:
+
+bpf_timer_init()
+  lock timer->lock
+    read timer->timer as NULL
+    read map->usercnt != 0
+
+                process Y:
+
+                close(map_fd)
+                  // put last uref
+                  bpf_map_put_uref()
+                    atomic_dec_and_test(map->usercnt)
+                      array_map_free_timers()
+                        bpf_timer_cancel_and_free()
+                          // just return
+                          read timer->timer is NULL
+
+    t = bpf_map_kmalloc_node()
+    timer->timer = t
+  unlock timer->lock
+
+Fix the problem by checking map->usercnt after timer->timer is assigned,
+so when there are concurrent uref release and bpf timer init, either
+bpf_timer_cancel_and_free() from uref release reads a no-NULL timer
+or the newly-added atomic64_read() returns a zero usercnt.
+
+Because atomic_dec_and_test(map->usercnt) and READ_ONCE(timer->timer)
+in bpf_timer_cancel_and_free() are not protected by a lock, so add
+a memory barrier to guarantee the order between map->usercnt and
+timer->timer. Also use WRITE_ONCE(timer->timer, x) to match the lockless
+read of timer->timer in bpf_timer_cancel_and_free().
+
+Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
+Closes: https://lore.kernel.org/bpf/CABcoxUaT2k9hWsS1tNgXyoU3E-=PuOgMn737qK984fbFmfYixQ@mail.gmail.com
+Fixes: b00628b1c7d5 ("bpf: Introduce bpf timers.")
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231030063616.1653024-1-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/bpf/helpers.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index a3e12a61d456c..1ed4affd9149f 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -210,8 +210,12 @@ static int page_pool_init(struct page_pool *pool,
- 		return -ENOMEM;
- #endif
- 
--	if (ptr_ring_init(&pool->ring, ring_qsize, GFP_KERNEL) < 0)
-+	if (ptr_ring_init(&pool->ring, ring_qsize, GFP_KERNEL) < 0) {
-+#ifdef CONFIG_PAGE_POOL_STATS
-+		free_percpu(pool->recycle_stats);
-+#endif
- 		return -ENOMEM;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 68f54e16c7be0..607be04db75b9 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -1176,13 +1176,6 @@ BPF_CALL_3(bpf_timer_init, struct bpf_timer_kern *, timer, struct bpf_map *, map
+ 		ret = -EBUSY;
+ 		goto out;
+ 	}
+-	if (!atomic64_read(&map->usercnt)) {
+-		/* maps with timers must be either held by user space
+-		 * or pinned in bpffs.
+-		 */
+-		ret = -EPERM;
+-		goto out;
+-	}
+ 	/* allocate hrtimer via map_kmalloc to use memcg accounting */
+ 	t = bpf_map_kmalloc_node(map, sizeof(*t), GFP_ATOMIC, map->numa_node);
+ 	if (!t) {
+@@ -1195,7 +1188,21 @@ BPF_CALL_3(bpf_timer_init, struct bpf_timer_kern *, timer, struct bpf_map *, map
+ 	rcu_assign_pointer(t->callback_fn, NULL);
+ 	hrtimer_init(&t->timer, clockid, HRTIMER_MODE_REL_SOFT);
+ 	t->timer.function = bpf_timer_cb;
+-	timer->timer = t;
++	WRITE_ONCE(timer->timer, t);
++	/* Guarantee the order between timer->timer and map->usercnt. So
++	 * when there are concurrent uref release and bpf timer init, either
++	 * bpf_timer_cancel_and_free() called by uref release reads a no-NULL
++	 * timer or atomic64_read() below returns a zero usercnt.
++	 */
++	smp_mb();
++	if (!atomic64_read(&map->usercnt)) {
++		/* maps with timers must be either held by user space
++		 * or pinned in bpffs.
++		 */
++		WRITE_ONCE(timer->timer, NULL);
++		kfree(t);
++		ret = -EPERM;
 +	}
- 
- 	atomic_set(&pool->pages_state_release_cnt, 0);
- 
+ out:
+ 	__bpf_spin_unlock_irqrestore(&timer->lock);
+ 	return ret;
+@@ -1370,7 +1377,7 @@ void bpf_timer_cancel_and_free(void *val)
+ 	/* The subsequent bpf_timer_start/cancel() helpers won't be able to use
+ 	 * this timer, since it won't be initialized.
+ 	 */
+-	timer->timer = NULL;
++	WRITE_ONCE(timer->timer, NULL);
+ out:
+ 	__bpf_spin_unlock_irqrestore(&timer->lock);
+ 	if (!t)
 -- 
 2.42.0
 
