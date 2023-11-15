@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18FE57ECD41
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00C5F7ECF94
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234409AbjKOTfY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57946 "EHLO
+        id S235357AbjKOTtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234404AbjKOTfW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:22 -0500
+        with ESMTP id S235351AbjKOTtY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4D6A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4373EC433C9;
-        Wed, 15 Nov 2023 19:35:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DEDEAB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983ACC433C9;
+        Wed, 15 Nov 2023 19:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076918;
-        bh=cZ2/QUFHYBMyn3ISIfk0yEvEcOk/iEXTxfORbIOrk/Q=;
+        s=korg; t=1700077760;
+        bh=JgZ87VhgzRtxSyQNWLaf22R3pcB0m0a/D3kpZ8itLRI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GWCtWiYfBk44Khyj5fbvBH2uCYQY9S3llHpwqoKevP9VBtcAY+UPQ8rZP2XJ8chJX
-         qFDAx5D5OoEypSMCyuXM5yX9LSrjlYZ/EUhMBzAkZVnmZGMVONOc/4PQ1qCSCgcu+o
-         XlWKmvsdLLLauOlhOgEATwxWWxzxYRksQ0GzgJH0=
+        b=MBk6X3AE+4os/R92wDBglCTUYkyPgBtgAHU93uYWEqLF5Sy+2UWSwNXmZgV71DClx
+         4pw5P3r2kCspI1c/VDZcPvTDT06wtwd5EXDJRM5/Qq5K0+InOvFz5xffuAnPz+gY/6
+         DnwQ3hLlTlv2Y48e/M6lMCOfJZ/rp4wvWEgR/BFg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmytro Adamenko <dmytro.adamenko@intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
         Dave Jiang <dave.jiang@intel.com>,
-        Jim Harris <jim.harris@samsung.com>,
+        Ira Weiny <ira.weiny@intel.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 463/550] cxl/region: Use cxl_calc_interleave_pos() for auto-discovery
-Date:   Wed, 15 Nov 2023 14:17:27 -0500
-Message-ID: <20231115191632.959543687@linuxfoundation.org>
+Subject: [PATCH 6.6 503/603] cxl/hdm: Remove broken error path
+Date:   Wed, 15 Nov 2023 14:17:28 -0500
+Message-ID: <20231115191647.011476764@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,209 +52,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 0cf36a85c1408f86a967fb1db721de1b89b9e675 ]
+[ Upstream commit 5d09c63f11f083707b60c8ea0bb420651c47740f ]
 
-For auto-discovered regions the driver must assign each target to
-a valid position in the region interleave set based on the decoder
-topology.
+Dan reports that cxl_decoder_commit() potentially leaks a hold of
+cxl_dpa_rwsem. The potential error case is a "should not" happen
+scenario, turn it into a "can not" happen scenario by adding the error
+check to cxl_port_setup_targets() where other setting validation occurs.
 
-The current implementation fails to parse valid decode topologies,
-as it does not consider the child offset into a parent port. The sort
-put all targets of one port ahead of another port when an interleave
-was expected, causing the region assembly to fail.
-
-Replace the existing relative sort with cxl_calc_interleave_pos() that
-finds the exact position in a region interleave for an endpoint based
-on a walk up the ancestral tree from endpoint to root decoder.
-
-cxl_calc_interleave_pos() was introduced in a prior patch, so the work
-here is to use it in cxl_region_sort_targets().
-
-Remove the obsoleted helper functions from the prior sort.
-
-Testing passes on pre-production hardware with BIOS defined regions
-that natively trigger this autodiscovery path of the region driver.
-Testing passes a CXL unit test using the dev_dbg() calculation test
-(see cxl_region_attach()) across an expanded set of region configs:
-1, 1, 1+1, 1+1+1, 2, 2+2, 2+2+2, 2+2+2+2, 4, 4+4, where each number
-represents the count of endpoints per host bridge.
-
-Fixes: a32320b71f08 ("cxl/region: Add region autodiscovery")
-Reported-by: Dmytro Adamenko <dmytro.adamenko@intel.com>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: http://lore.kernel.org/r/63295673-5d63-4919-b851-3b06d48734c0@moroto.mountain
 Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jim Harris <jim.harris@samsung.com>
-Link: https://lore.kernel.org/r/3946cc55ddc19678733eddc9de2c317749f43f3b.1698263080.git.alison.schofield@intel.com
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 127 +++++---------------------------------
- 1 file changed, 15 insertions(+), 112 deletions(-)
+ drivers/cxl/core/hdm.c    | 19 ++-----------------
+ drivers/cxl/core/region.c |  8 ++++++++
+ 2 files changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 01210e45a21ff..89d24cd71606e 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1475,6 +1475,14 @@ static int cxl_region_attach_auto(struct cxl_region *cxlr,
- 	return 0;
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index 3ad0d39d3d3fa..64e86b786db52 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -575,17 +575,11 @@ static void cxld_set_type(struct cxl_decoder *cxld, u32 *ctrl)
+ 			  CXL_HDM_DECODER0_CTRL_HOSTONLY);
  }
  
-+static int cmp_interleave_pos(const void *a, const void *b)
-+{
-+	struct cxl_endpoint_decoder *cxled_a = *(typeof(cxled_a) *)a;
-+	struct cxl_endpoint_decoder *cxled_b = *(typeof(cxled_b) *)b;
-+
-+	return cxled_a->pos - cxled_b->pos;
-+}
-+
- static struct cxl_port *next_port(struct cxl_port *port)
+-static int cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
++static void cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
  {
- 	if (!port->parent_dport)
-@@ -1605,131 +1613,26 @@ static int cxl_calc_interleave_pos(struct cxl_endpoint_decoder *cxled)
- 	return pos;
+ 	struct cxl_dport **t = &cxlsd->target[0];
+ 	int ways = cxlsd->cxld.interleave_ways;
+ 
+-	if (dev_WARN_ONCE(&cxlsd->cxld.dev,
+-			  ways > 8 || ways > cxlsd->nr_targets,
+-			  "ways: %d overflows targets: %d\n", ways,
+-			  cxlsd->nr_targets))
+-		return -ENXIO;
+-
+ 	*tgt = FIELD_PREP(GENMASK(7, 0), t[0]->port_id);
+ 	if (ways > 1)
+ 		*tgt |= FIELD_PREP(GENMASK(15, 8), t[1]->port_id);
+@@ -601,8 +595,6 @@ static int cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
+ 		*tgt |= FIELD_PREP(GENMASK_ULL(55, 48), t[6]->port_id);
+ 	if (ways > 7)
+ 		*tgt |= FIELD_PREP(GENMASK_ULL(63, 56), t[7]->port_id);
+-
+-	return 0;
  }
  
--static void find_positions(const struct cxl_switch_decoder *cxlsd,
--			   const struct cxl_port *iter_a,
--			   const struct cxl_port *iter_b, int *a_pos,
--			   int *b_pos)
--{
--	int i;
--
--	for (i = 0, *a_pos = -1, *b_pos = -1; i < cxlsd->nr_targets; i++) {
--		if (cxlsd->target[i] == iter_a->parent_dport)
--			*a_pos = i;
--		else if (cxlsd->target[i] == iter_b->parent_dport)
--			*b_pos = i;
--		if (*a_pos >= 0 && *b_pos >= 0)
--			break;
--	}
--}
--
--static int cmp_decode_pos(const void *a, const void *b)
--{
--	struct cxl_endpoint_decoder *cxled_a = *(typeof(cxled_a) *)a;
--	struct cxl_endpoint_decoder *cxled_b = *(typeof(cxled_b) *)b;
--	struct cxl_memdev *cxlmd_a = cxled_to_memdev(cxled_a);
--	struct cxl_memdev *cxlmd_b = cxled_to_memdev(cxled_b);
--	struct cxl_port *port_a = cxled_to_port(cxled_a);
--	struct cxl_port *port_b = cxled_to_port(cxled_b);
--	struct cxl_port *iter_a, *iter_b, *port = NULL;
--	struct cxl_switch_decoder *cxlsd;
--	struct device *dev;
--	int a_pos, b_pos;
--	unsigned int seq;
--
--	/* Exit early if any prior sorting failed */
--	if (cxled_a->pos < 0 || cxled_b->pos < 0)
--		return 0;
--
--	/*
--	 * Walk up the hierarchy to find a shared port, find the decoder that
--	 * maps the range, compare the relative position of those dport
--	 * mappings.
--	 */
--	for (iter_a = port_a; iter_a; iter_a = next_port(iter_a)) {
--		struct cxl_port *next_a, *next_b;
--
--		next_a = next_port(iter_a);
--		if (!next_a)
--			break;
--
--		for (iter_b = port_b; iter_b; iter_b = next_port(iter_b)) {
--			next_b = next_port(iter_b);
--			if (next_a != next_b)
--				continue;
--			port = next_a;
--			break;
+ /*
+@@ -689,13 +681,7 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
+ 		void __iomem *tl_lo = hdm + CXL_HDM_DECODER0_TL_LOW(id);
+ 		u64 targets;
+ 
+-		rc = cxlsd_set_targets(cxlsd, &targets);
+-		if (rc) {
+-			dev_dbg(&port->dev, "%s: target configuration error\n",
+-				dev_name(&cxld->dev));
+-			goto err;
 -		}
 -
--		if (port)
--			break;
--	}
--
--	if (!port) {
--		dev_err(cxlmd_a->dev.parent,
--			"failed to find shared port with %s\n",
--			dev_name(cxlmd_b->dev.parent));
--		goto err;
--	}
--
--	dev = device_find_child(&port->dev, &cxled_a->cxld.hpa_range,
--				match_switch_decoder_by_range);
--	if (!dev) {
--		struct range *range = &cxled_a->cxld.hpa_range;
--
--		dev_err(port->uport_dev,
--			"failed to find decoder that maps %#llx-%#llx\n",
--			range->start, range->end);
--		goto err;
--	}
--
--	cxlsd = to_cxl_switch_decoder(dev);
--	do {
--		seq = read_seqbegin(&cxlsd->target_lock);
--		find_positions(cxlsd, iter_a, iter_b, &a_pos, &b_pos);
--	} while (read_seqretry(&cxlsd->target_lock, seq));
--
--	put_device(dev);
--
--	if (a_pos < 0 || b_pos < 0) {
--		dev_err(port->uport_dev,
--			"failed to find shared decoder for %s and %s\n",
--			dev_name(cxlmd_a->dev.parent),
--			dev_name(cxlmd_b->dev.parent));
--		goto err;
--	}
--
--	dev_dbg(port->uport_dev, "%s comes %s %s\n",
--		dev_name(cxlmd_a->dev.parent),
--		a_pos - b_pos < 0 ? "before" : "after",
--		dev_name(cxlmd_b->dev.parent));
--
--	return a_pos - b_pos;
++		cxlsd_set_targets(cxlsd, &targets);
+ 		writel(upper_32_bits(targets), tl_hi);
+ 		writel(lower_32_bits(targets), tl_lo);
+ 	} else {
+@@ -713,7 +699,6 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
+ 
+ 	port->commit_end++;
+ 	rc = cxld_await_commit(hdm, cxld->id);
 -err:
--	cxled_a->pos = -1;
--	return 0;
--}
--
- static int cxl_region_sort_targets(struct cxl_region *cxlr)
- {
- 	struct cxl_region_params *p = &cxlr->params;
- 	int i, rc = 0;
- 
--	sort(p->targets, p->nr_targets, sizeof(p->targets[0]), cmp_decode_pos,
--	     NULL);
--
- 	for (i = 0; i < p->nr_targets; i++) {
- 		struct cxl_endpoint_decoder *cxled = p->targets[i];
- 
-+		cxled->pos = cxl_calc_interleave_pos(cxled);
- 		/*
--		 * Record that sorting failed, but still continue to restore
--		 * cxled->pos with its ->targets[] position so that follow-on
--		 * code paths can reliably do p->targets[cxled->pos] to
--		 * self-reference their entry.
-+		 * Record that sorting failed, but still continue to calc
-+		 * cxled->pos so that follow-on code paths can reliably
-+		 * do p->targets[cxled->pos] to self-reference their entry.
- 		 */
- 		if (cxled->pos < 0)
- 			rc = -ENXIO;
--		cxled->pos = i;
+ 	if (rc) {
+ 		dev_dbg(&port->dev, "%s: error %d committing decoder\n",
+ 			dev_name(&cxld->dev), rc);
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index d1f513800c10d..85c0881fba442 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1189,6 +1189,14 @@ static int cxl_port_setup_targets(struct cxl_port *port,
+ 		return rc;
  	}
-+	/* Keep the cxlr target list in interleave position order */
-+	sort(p->targets, p->nr_targets, sizeof(p->targets[0]),
-+	     cmp_interleave_pos, NULL);
  
- 	dev_dbg(&cxlr->dev, "region sort %s\n", rc ? "failed" : "successful");
- 	return rc;
++	if (iw > 8 || iw > cxlsd->nr_targets) {
++		dev_dbg(&cxlr->dev,
++			"%s:%s:%s: ways: %d overflows targets: %d\n",
++			dev_name(port->uport_dev), dev_name(&port->dev),
++			dev_name(&cxld->dev), iw, cxlsd->nr_targets);
++		return -ENXIO;
++	}
++
+ 	if (test_bit(CXL_REGION_F_AUTO, &cxlr->flags)) {
+ 		if (cxld->interleave_ways != iw ||
+ 		    cxld->interleave_granularity != ig ||
 -- 
 2.42.0
 
