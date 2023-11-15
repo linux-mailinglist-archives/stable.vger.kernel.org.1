@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECAEF7ECEE8
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0B0B7ECC56
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:29:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235164AbjKOTpE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51680 "EHLO
+        id S233866AbjKOT3n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:29:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235180AbjKOTpD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:03 -0500
+        with ESMTP id S233646AbjKOT3n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:29:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1969BB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7F0C433C8;
-        Wed, 15 Nov 2023 19:44:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91729A1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DFDC433C7;
+        Wed, 15 Nov 2023 19:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077499;
-        bh=4M1cDiXhpZx7PqVu20dAoEe3o7DWPe5bt3kjJHS9ja4=;
+        s=korg; t=1700076580;
+        bh=nQP5/eyI9fkJkxWrnMF2JJ8QGC+ebHJEjy9xvZ0feY8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FoGf12hXvJPEMQa3JerEA/5Oga/48r2IbPAaxoLaS9kHjWxm0PHiUP6h81J3yBZ4n
-         rcvz+tgiDHsW7ikPeyb+l4hyXvhx2pqonTiCVoR5SbIRSHb5LTgTgp+hnCX2Hmri6c
-         msGGc+/1tzef58hcBVQyluHWq4urbnV90kQ2+QZU=
+        b=Dh1JcJmVB1YK9QX96mpGTSC9Vr/+/dTGW7pFtI0DSJzXsQ2303laZiKhNC7/0HGU0
+         EdcsF3O99y4fMjs+7Xt9B47xXLpdYz/gd60l4ybhxntbkeX48zzL6/dE00g1QJXhVa
+         WrG9aqnQ5pc3bHMWJvqXPY36ajZ12REDbVJ6GcHs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Simon Ser <contact@emersion.fr>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 340/603] crypto: ccp - Fix DBC sample application error handling
+Subject: [PATCH 6.5 301/550] soc: qcom: pmic_glink: fix connector type to be DisplayPort
 Date:   Wed, 15 Nov 2023 14:14:45 -0500
-Message-ID: <20231115191637.063642829@linuxfoundation.org>
+Message-ID: <20231115191621.677057605@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,98 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 70f242c1933e9e881c13c31640bb6d56e8b7e738 ]
+[ Upstream commit f86955f2b1ff9fbc7ae4f6595112b2f896885366 ]
 
-The sample application was taking values from ioctl() and treating
-those as the error codes to present to a user.
+As it was pointed out by Simon Ser, the DRM_MODE_CONNECTOR_USB connector
+is reserved for the GUD devices. Other drivers (i915, amdgpu) use
+DRM_MODE_CONNECTOR_DisplayPort even if the DP stream is handled by the
+USB-C altmode. While we are still working on implementing the proper way
+to let userspace know that the DP is wrapped into USB-C, change
+connector type to be DRM_MODE_CONNECTOR_DisplayPort.
 
-This is incorrect when ret is non-zero, the error is stored to `errno`.
-Use this value instead.
-
-Fixes: f40d42f116cf ("crypto: ccp - Add a sample python script for Dynamic Boost Control")
-Fixes: febe3ed3222f ("crypto: ccp - Add a sample library for ioctl use")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+Cc: Simon Ser <contact@emersion.fr>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Acked-by: Simon Ser <contact@emersion.fr>
+Link: https://lore.kernel.org/r/20231010225229.77027-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/crypto/ccp/dbc.c  | 16 ++++++++--------
- tools/crypto/ccp/dbc.py |  3 +--
- 2 files changed, 9 insertions(+), 10 deletions(-)
+ drivers/soc/qcom/pmic_glink_altmode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/crypto/ccp/dbc.c b/tools/crypto/ccp/dbc.c
-index 37e813175642f..7774e981849fa 100644
---- a/tools/crypto/ccp/dbc.c
-+++ b/tools/crypto/ccp/dbc.c
-@@ -8,6 +8,7 @@
-  */
+diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+index df48fbea4b686..178778b1373b1 100644
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -416,7 +416,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 		alt_port->bridge.funcs = &pmic_glink_altmode_bridge_funcs;
+ 		alt_port->bridge.of_node = to_of_node(fwnode);
+ 		alt_port->bridge.ops = DRM_BRIDGE_OP_HPD;
+-		alt_port->bridge.type = DRM_MODE_CONNECTOR_USB;
++		alt_port->bridge.type = DRM_MODE_CONNECTOR_DisplayPort;
  
- #include <assert.h>
-+#include <errno.h>
- #include <string.h>
- #include <sys/ioctl.h>
- 
-@@ -22,16 +23,14 @@ int get_nonce(int fd, void *nonce_out, void *signature)
- 	struct dbc_user_nonce tmp = {
- 		.auth_needed = !!signature,
- 	};
--	int ret;
- 
- 	assert(nonce_out);
- 
- 	if (signature)
- 		memcpy(tmp.signature, signature, sizeof(tmp.signature));
- 
--	ret = ioctl(fd, DBCIOCNONCE, &tmp);
--	if (ret)
--		return ret;
-+	if (ioctl(fd, DBCIOCNONCE, &tmp))
-+		return errno;
- 	memcpy(nonce_out, tmp.nonce, sizeof(tmp.nonce));
- 
- 	return 0;
-@@ -47,7 +46,9 @@ int set_uid(int fd, __u8 *uid, __u8 *signature)
- 	memcpy(tmp.uid, uid, sizeof(tmp.uid));
- 	memcpy(tmp.signature, signature, sizeof(tmp.signature));
- 
--	return ioctl(fd, DBCIOCUID, &tmp);
-+	if (ioctl(fd, DBCIOCUID, &tmp))
-+		return errno;
-+	return 0;
- }
- 
- int process_param(int fd, int msg_index, __u8 *signature, int *data)
-@@ -63,9 +64,8 @@ int process_param(int fd, int msg_index, __u8 *signature, int *data)
- 
- 	memcpy(tmp.signature, signature, sizeof(tmp.signature));
- 
--	ret = ioctl(fd, DBCIOCPARAM, &tmp);
--	if (ret)
--		return ret;
-+	if (ioctl(fd, DBCIOCPARAM, &tmp))
-+		return errno;
- 
- 	*data = tmp.param;
- 	return 0;
-diff --git a/tools/crypto/ccp/dbc.py b/tools/crypto/ccp/dbc.py
-index 3f6a825ffc9e4..3956efe7537ac 100644
---- a/tools/crypto/ccp/dbc.py
-+++ b/tools/crypto/ccp/dbc.py
-@@ -27,8 +27,7 @@ lib = ctypes.CDLL("./dbc_library.so", mode=ctypes.RTLD_GLOBAL)
- 
- 
- def handle_error(code):
--    val = code * -1
--    raise OSError(val, os.strerror(val))
-+    raise OSError(code, os.strerror(code))
- 
- 
- def get_nonce(device, signature):
+ 		ret = devm_drm_bridge_add(dev, &alt_port->bridge);
+ 		if (ret)
 -- 
 2.42.0
 
