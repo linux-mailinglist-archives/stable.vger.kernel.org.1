@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E47F7ED4D7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 498987ED30B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344648AbjKOU7V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:59:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36904 "EHLO
+        id S233544AbjKOUpz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344774AbjKOU6D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:03 -0500
+        with ESMTP id S233676AbjKOUpv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7FFF1BFD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD2CC4E757;
-        Wed, 15 Nov 2023 20:51:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31789192
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8496AC433C9;
+        Wed, 15 Nov 2023 20:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081505;
-        bh=Wfd+xFFE58phzT9DwvF46SYxKVYZJ2HmeS7xY9RV2Ig=;
+        s=korg; t=1700081147;
+        bh=+v67EQd3ORipB2uyaYc+haLmf5mFR1ts5u+xISWY/T8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1uzXezxfMT7lusUI/ego5B8ClAuqnyD+sTZTMB20P01uhtZka8yhAEhwsWuQ2j5Sq
-         MEMHe68zNqa39Clc26ag88jgi0qP9siVMoE24ac/SKjnETTmX5+wSu3hqII6BAW098
-         Wa2ygPbBFFTDx4u/7fQ8H5s8FGciDi+SVsKazm90=
+        b=Zc9gdH+e0x35b5qZOem/2pzVrIIwGHnxptDISYRlK7lucQYD3t1x1jH7tMnT4sVgF
+         C0llUS4JWmcbggUnzOkn+7W88T1OOdPeSJ+epYKtE2cqYnEsze5bCoAqphKC4noAAK
+         xWNjTeSapR5XNnIc+p+dcq9KfowQb2gGhQbb44Qs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
-        GUO Zihua <guozihua@huawei.com>,
+        patches@lists.linux.dev, Rogan Dawes <rogan@dawes.za.net>,
+        Fabio Estevam <festevam@denx.de>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/244] tty: tty_jobctrl: fix pid memleak in disassociate_ctty()
+Subject: [PATCH 4.19 49/88] leds: pwm: Dont disable the PWM when the LED should be off
 Date:   Wed, 15 Nov 2023 15:36:01 -0500
-Message-ID: <20231115203558.493099783@linuxfoundation.org>
+Message-ID: <20231115191429.111255414@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,119 +53,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 11e7f27b79757b6586645d87b95d5b78375ecdfc ]
+[ Upstream commit 76fe464c8e64e71b2e4af11edeef0e5d85eeb6aa ]
 
-There is a pid leakage:
-------------------------------
-unreferenced object 0xffff88810c181940 (size 224):
-  comm "sshd", pid 8191, jiffies 4294946950 (age 524.570s)
-  hex dump (first 32 bytes):
-    01 00 00 00 00 00 00 00 00 00 00 00 ad 4e ad de  .............N..
-    ff ff ff ff 6b 6b 6b 6b ff ff ff ff ff ff ff ff  ....kkkk........
-  backtrace:
-    [<ffffffff814774e6>] kmem_cache_alloc+0x5c6/0x9b0
-    [<ffffffff81177342>] alloc_pid+0x72/0x570
-    [<ffffffff81140ac4>] copy_process+0x1374/0x2470
-    [<ffffffff81141d77>] kernel_clone+0xb7/0x900
-    [<ffffffff81142645>] __se_sys_clone+0x85/0xb0
-    [<ffffffff8114269b>] __x64_sys_clone+0x2b/0x30
-    [<ffffffff83965a72>] do_syscall_64+0x32/0x80
-    [<ffffffff83a00085>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
+Disabling a PWM (i.e. calling pwm_apply_state with .enabled = false)
+gives no guarantees what the PWM output does. It might freeze where it
+currently is, or go in a High-Z state or drive the active or inactive
+state, it might even continue to toggle.
 
-It turns out that there is a race condition between disassociate_ctty() and
-tty_signal_session_leader(), which caused this leakage.
+To ensure that the LED gets really disabled, don't disable the PWM even
+when .duty_cycle is zero.
 
-The pid memleak is triggered by the following race:
-task[sshd]                     task[bash]
------------------------        -----------------------
-                               disassociate_ctty();
-                               spin_lock_irq(&current->sighand->siglock);
-                               put_pid(current->signal->tty_old_pgrp);
-                               current->signal->tty_old_pgrp = NULL;
-                               tty = tty_kref_get(current->signal->tty);
-                               spin_unlock_irq(&current->sighand->siglock);
-tty_vhangup();
-tty_lock(tty);
-...
-tty_signal_session_leader();
-spin_lock_irq(&p->sighand->siglock);
-...
-if (tty->ctrl.pgrp) //tty->ctrl.pgrp is not NULL
-p->signal->tty_old_pgrp = get_pid(tty->ctrl.pgrp); //An extra get
-spin_unlock_irq(&p->sighand->siglock);
-...
-tty_unlock(tty);
-                               if (tty) {
-                                   tty_lock(tty);
-                                   ...
-                                   put_pid(tty->ctrl.pgrp);
-                                   tty->ctrl.pgrp = NULL; //It's too late
-                                   ...
-                                   tty_unlock(tty);
-                               }
+This fixes disabling a leds-pwm LED on i.MX28. The PWM on this SoC is
+one of those that freezes its output on disable, so if you disable an
+LED that is full on, it stays on. If you disable a LED with half
+brightness it goes off in 50% of the cases and full on in the other 50%.
 
-The issue is believed to be introduced by commit c8bcd9c5be24 ("tty:
-Fix ->session locking") who moves the unlock of siglock in
-disassociate_ctty() above "if (tty)", making a small window allowing
-tty_signal_session_leader() to kick in. It can be easily reproduced by
-adding a delay before "if (tty)" and at the entrance of
-tty_signal_session_leader().
-
-To fix this issue, we move "put_pid(current->signal->tty_old_pgrp)" after
-"tty->ctrl.pgrp = NULL".
-
-Fixes: c8bcd9c5be24 ("tty: Fix ->session locking")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Co-developed-by: GUO Zihua <guozihua@huawei.com>
-Signed-off-by: GUO Zihua <guozihua@huawei.com>
-Link: https://lore.kernel.org/r/20230831023329.165737-1-yiyang13@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 41c42ff5dbe2 ("leds: simple driver for pwm driven LEDs")
+Reported-by: Rogan Dawes <rogan@dawes.za.net>
+Reported-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Fabio Estevam <festevam@denx.de>
+Link: https://lore.kernel.org/r/20230922192834.1695727-1-u.kleine-koenig@pengutronix.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_jobctrl.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/leds/leds-pwm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/tty_jobctrl.c b/drivers/tty/tty_jobctrl.c
-index 80b86a7992b50..8ede78488c5b0 100644
---- a/drivers/tty/tty_jobctrl.c
-+++ b/drivers/tty/tty_jobctrl.c
-@@ -300,12 +300,7 @@ void disassociate_ctty(int on_exit)
- 		return;
- 	}
+diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
+index 16c78df7a7632..107e635cac245 100644
+--- a/drivers/leds/leds-pwm.c
++++ b/drivers/leds/leds-pwm.c
+@@ -49,7 +49,7 @@ static int led_pwm_set(struct led_classdev *led_cdev,
+ 		duty = led_dat->pwmstate.period - duty;
  
--	spin_lock_irq(&current->sighand->siglock);
--	put_pid(current->signal->tty_old_pgrp);
--	current->signal->tty_old_pgrp = NULL;
--	tty = tty_kref_get(current->signal->tty);
--	spin_unlock_irq(&current->sighand->siglock);
--
-+	tty = get_current_tty();
- 	if (tty) {
- 		unsigned long flags;
+ 	led_dat->pwmstate.duty_cycle = duty;
+-	led_dat->pwmstate.enabled = duty > 0;
++	led_dat->pwmstate.enabled = true;
+ 	return pwm_apply_state(led_dat->pwm, &led_dat->pwmstate);
+ }
  
-@@ -320,6 +315,16 @@ void disassociate_ctty(int on_exit)
- 		tty_kref_put(tty);
- 	}
- 
-+	/* If tty->ctrl.pgrp is not NULL, it may be assigned to
-+	 * current->signal->tty_old_pgrp in a race condition, and
-+	 * cause pid memleak. Release current->signal->tty_old_pgrp
-+	 * after tty->ctrl.pgrp set to NULL.
-+	 */
-+	spin_lock_irq(&current->sighand->siglock);
-+	put_pid(current->signal->tty_old_pgrp);
-+	current->signal->tty_old_pgrp = NULL;
-+	spin_unlock_irq(&current->sighand->siglock);
-+
- 	/* Now clear signal->tty under the lock */
- 	read_lock(&tasklist_lock);
- 	session_clear_tty(task_session(current));
 -- 
 2.42.0
 
