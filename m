@@ -2,82 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5862C7ED5F0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:21:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D487B7ED622
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:35:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233582AbjKOVV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:21:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38546 "EHLO
+        id S232919AbjKOVfd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:35:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229912AbjKOVV6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:21:58 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77CED92;
-        Wed, 15 Nov 2023 13:21:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1700083312; x=1700688112; i=rwarsow@gmx.de;
-        bh=99Alm4btTapJyIk2kAvPcyVCjpKTkJABGOaRccLIHog=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=egy/EoJJtcs4rusrrR/p4UUnHESbeRl93xUXpSJF5FyWax/Ri2gOzAnz+PEH3wGX
-         df85xqsAAPriC+oHbmK1sZwRN5yIBitWnO2qFGIUWSFL+UgeFj961FY4YcFvGA0Ef
-         uHmh7y7Dj5expJI5CQs/yu4QjFzELszmIOq7d1N8vr+c/FN5+TL8C9LGzl0y5/t3B
-         EkOi+dhcj8NADZqjKhoNzRCKP4IJrY55QmbD+u9Lx0lp2sjpjVxpOY640jdiVd+MG
-         1h+tjHEK3HIelChcdlgb5wkmDb2wUHwqq7RK3IqmubwgxQDDM1I2dSOBFT5boZmsn
-         5RN5sk5QTYSEQec/lA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([92.116.253.47]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBm1U-1rDFDo0jUq-00C9jL; Wed, 15
- Nov 2023 22:21:52 +0100
-Message-ID: <7aca5d3c-a66a-4594-a958-fd0b8a8280db@gmx.de>
-Date:   Wed, 15 Nov 2023 22:21:51 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From:   Ronald Warsow <rwarsow@gmx.de>
+        with ESMTP id S235612AbjKOVfc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:35:32 -0500
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A96B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:35:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=UL8lENppiEaSbeKPLUW4prwK1t4QPwKLtXNCJov895c=;
+        t=1700084127; x=1701293727; b=wJXxxiNMSeIAb8KFyzovaAuy46jtwmAjyBVivDAFOY1z23J
+        Tm8O2P/1AnINdaTMTQ74pi84wNmPgPcj2ZUdU9Z45BgNFBwKdqq+rZ3Dl/Gk1uCafBbLc+qKIXwL+
+        wtXo7XtNz+PqcqdQFecbEdId3gphRdxEwuufeMxsVtThufgzmdiAyWoO0B8aT7U1RxBUG6ganWAno
+        cPiRVUhYIG342Aq9hAa60eSy/qmTDZ/OQHGcLrOoUx2wpzpySYki7a3yy8MxpxijK9hNXy9hK+Txr
+        vG1hMWGLMcbHvrh1kiZtPSUZU8sPFwZUPdsu+rzZJ9k11Y0d+y7Ai40g4JIVmvXA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.97)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1r3NXR-00000009QHB-3AcP;
+        Wed, 15 Nov 2023 22:35:09 +0100
+Message-ID: <173d2adc744a2878544c14c3960765587bd96521.camel@sipsolutions.net>
+Subject: Re: [PATCH 5.10 010/191] wifi: iwlwifi: Use FW rate for non-data
+ frames
+From:   Johannes Berg <johannes@sipsolutions.net>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.6 000/603] 6.6.2-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:K0YQYCMnrStGjOdkIoHUZJ6U8uaeHsxYQtvyPc/81zyvq/EPNWa
- mtgOgGSPVn2Qh5PkDTZuXP2HKxEtdfchRZksdUL7VfXuF2AJ6sLM5wo3aH/Pw9Ad61KQUBP
- QOHjAxJICIDwCRPFiWqdIz4STru/AZ+N+e12p8+++Yk5uSVhQ8emRCRRbJ5ThbOGbLzt1Lr
- 7mHPQiyt8gb6LBQqHePeQ==
-UI-OutboundReport: notjunk:1;M01:P0:KZkr6LsblHc=;+wPb7oEMlK6626HJ5a51zsGMQ3d
- RGWXChUIiq1gWanHrKZps4WL6JmdmopGpUO/ZHJOVX8Vuq8DrfLwctOsoBvlrMYnme7z/Tb2O
- WUDI8u6sCbJH1FnTGbUvHzSpoZfU8nShZ4iCzA1pr3j/yd66yfO5o7Bjp/bj4IZ5Pu05r6ZIr
- zrYkw3X83S1UXuwYeNuWFVAJ5XigO8CLXQBV2KvJKdzUWhIehqXeq5fpjibrCKxtGNUbfn8CT
- paE99EqO3QUQtQbK9mtMAytEbEmaXqJla74oDEKx3NrxfhgSlna8Co0Psa9OaDSnS0lvhpYTS
- V9EW+4dcVfirZ1coJ43SMiFJbCMirsheTHlj/oGkXbhCLGwiyxdhflZguJLwLSV17DXBd+pa/
- ACfnYB/EJZH5XSfmZd2CSlGlbcwNC2Nu29VI2HTP9BCLUz3vFtb+UFdA9DLmJQH4i3cnk14+B
- pD3kagna/JIoUURS6g+BrCc5Pqo73WjF5wwt9LudWYd+5DV6dH4gV58sj1ufZFAHKOy3uoK1/
- 3Xj22ctny4eqHACiRqh3tueiDCpr2PY1qF8k+BX3dQPtO/lQ8y4DQYNZjo7cAQNIPDJQVVW7C
- qWkdMHnXPvIi0APNm4HzF0PAR+LLn/3h5vLOXSPYMfBBZOPYRVHSPwD2RRaO0Avh1CPl0Ah6H
- z5Exhl6iyUxu+mJ9fVnIdlbbmmio8+tWeIk/ODKnw2eTOzXHZjh0D5B+HnZgiWImBzR2SYnAB
- MtzEUagb78kYAa/QIhRq3ChLH66B5aQ4O6wk1BfllQEO+UuQERm7pis+0I3k2TZPWEnGj/q9C
- Din7E4RQDGEUc91yaX7uPh9ly/qXL8koyUoRXBG0zd2o762qtjhukUGzGgZ5aWxoi/kSiDs+C
- k0ZWx68uFsQ2qR8yUasuQOLTHbbOcD+W3IDX4ifgz9ZkfcRpM1uxeLDzFb+HsVdbYzUxNSjSt
- 3iEh+Q==
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Cc:     "patches@lists.linux.dev" <patches@lists.linux.dev>,
+        "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+        "Greenman, Gregory" <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Date:   Wed, 15 Nov 2023 22:35:08 +0100
+In-Reply-To: <20231115204645.129133114@linuxfoundation.org>
+References: <20231115204644.490636297@linuxfoundation.org>
+         <20231115204645.129133114@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+On Wed, 2023-11-15 at 20:44 +0000, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me kn=
+ow.
+>=20
 
-6.6.2-rc1
+I wouldn't backport this patch anywhere.
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake: i5-11400)
+First of all, it's only _required_ for real WiFi7 operation, which isn't
+supported in any of these old kernels. Secondly, it introduced a
+regression wrt. the rates used by the firmware, which, while not that
+important, caused some folks to complain.
 
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
-
+johannes
