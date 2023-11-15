@@ -2,41 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C04C7ECD11
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2316D7ECF7C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234337AbjKOTeR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:34:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
+        id S235328AbjKOTsr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234353AbjKOTeJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:09 -0500
+        with ESMTP id S235333AbjKOTsq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1013010D0
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:05 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 887B7C433C9;
-        Wed, 15 Nov 2023 19:34:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B9D819F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E12C433C9;
+        Wed, 15 Nov 2023 19:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076844;
-        bh=vq++JM1X9NAeCqXgzkRrPM703Cm0/klG/JvgEuHkTUQ=;
+        s=korg; t=1700077722;
+        bh=eSV5cUpXIqcLG0TwO9IE/IWJvbj2DyeE4gVF2uk9SuQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PQwIvukDUa67cgW0SgIy+BYc7joNL2JT/Tr174JAxBCrqaGKv0I9JnIBWFV6t5fFO
-         DSKipjJ8waRJsUryK0C6TzWMwUCjO0B0Jh9GLyOA+5gRnjpXkXXlLe2A/UfQgWJFiJ
-         JEvrzEJtQxR5LpX3Dg14iI4ay85YcPqINdSM2weA=
+        b=tVrhU9U8quXq16uo3f0E9lcIgDJwS8SaS+b71i1zhzFeIDNyA6RFWjakFXFE6hU0z
+         mgBXQXZ1+84ca8WDhrPxjcieoLM1b4O9FjOEnfglKtx91B1R+WcBVa34PA1GqTmBP1
+         w8fWTbh8cxFauy29njWBadX+tqdgi+4/CHGTrKYs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
+        Ravi Bangoria <ravi.bangoria@amd.com>,
+        Sandipan Das <sandipan.das@amd.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        German Gomez <german.gomez@arm.com>,
+        James Clark <james.clark@arm.com>,
+        Nick Terrell <terrelln@fb.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Changbin Du <changbin.du@huawei.com>,
+        liuwenyu <liuwenyu7@huawei.com>,
+        Yang Jihong <yangjihong1@huawei.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>, Song Liu <song@kernel.org>,
+        Leo Yan <leo.yan@linaro.org>, Kajol Jain <kjain@linux.ibm.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Liam Howlett <liam.howlett@oracle.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 440/550] xhci: Loosen RPM as default policy to cover for AMD xHC 1.1
+Subject: [PATCH 6.6 479/603] perf machine: Avoid out of bounds LBR memory read
 Date:   Wed, 15 Nov 2023 14:17:04 -0500
-Message-ID: <20231115191631.305373300@linuxfoundation.org>
+Message-ID: <20231115191645.564480003@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +70,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 4baf1218150985ee3ab0a27220456a1f027ea0ac ]
+[ Upstream commit ab8ce150781d326c6bfbe1e09f175ffde1186f80 ]
 
-The AMD USB host controller (1022:43f7) isn't going into PCI D3 by default
-without anything connected. This is because the policy that was introduced
-by commit a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all
-xHC 1.2 or later devices") only covered 1.2 or later.
+Running perf top with address sanitizer and "--call-graph=lbr" fails
+due to reading sample 0 when no samples exist. Add a guard to prevent
+this.
 
-The 1.1 specification also has the same requirement as the 1.2
-specification for D3 support. So expand the runtime PM as default policy
-to all AMD 1.1 devices as well.
-
-Fixes: a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all xHC 1.2 or later devices")
-Link: https://composter.com.ua/documents/xHCI_Specification_for_USB.pdf
-Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20231019102924.2797346-15-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e2b23483eb1d ("perf machine: Factor out lbr_callchain_add_lbr_ip()")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Sandipan Das <sandipan.das@amd.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Nick Terrell <terrelln@fb.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Changbin Du <changbin.du@huawei.com>
+Cc: liuwenyu <liuwenyu7@huawei.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Yanteng Si <siyanteng@loongson.cn>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20231024222353.3024098-3-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/perf/util/machine.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index b9ae5c2a25275..bde43cef8846c 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -535,6 +535,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
- 	/* xHC spec requires PCI devices to support D3hot and D3cold */
- 	if (xhci->hci_version >= 0x120)
- 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
-+	else if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version >= 0x110)
-+		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index 88f31b3a63acb..e6a8d758f6fe4 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -2624,16 +2624,18 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
+ 		save_lbr_cursor_node(thread, cursor, i);
+ 	}
  
- 	if (xhci->quirks & XHCI_RESET_ON_RESUME)
- 		xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
+-	/* Add LBR ip from first entries.to */
+-	ip = entries[0].to;
+-	flags = &entries[0].flags;
+-	*branch_from = entries[0].from;
+-	err = add_callchain_ip(thread, cursor, parent,
+-			       root_al, &cpumode, ip,
+-			       true, flags, NULL,
+-			       *branch_from);
+-	if (err)
+-		return err;
++	if (lbr_nr > 0) {
++		/* Add LBR ip from first entries.to */
++		ip = entries[0].to;
++		flags = &entries[0].flags;
++		*branch_from = entries[0].from;
++		err = add_callchain_ip(thread, cursor, parent,
++				root_al, &cpumode, ip,
++				true, flags, NULL,
++				*branch_from);
++		if (err)
++			return err;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.42.0
 
