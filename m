@@ -2,36 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB777ED09B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C327ED09D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343890AbjKOT4l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:56:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35380 "EHLO
+        id S1343566AbjKOT4o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:56:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343914AbjKOT4Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:24 -0500
+        with ESMTP id S1343925AbjKOT4Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB94D6F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929C7C433D9;
-        Wed, 15 Nov 2023 19:56:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC8D1BC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBE2C433C9;
+        Wed, 15 Nov 2023 19:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078178;
-        bh=xCUXEEKQfE/8OvlAZDzBr4OM4F+soT1Ms29oX+IUT4s=;
+        s=korg; t=1700078180;
+        bh=z7YemTzDMc4buqWbl/msP0VagCSUIkdi360AiGJO75w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hg16G0NawEb94oNYO/sOGG2n2NyyiXTAwTEYcpqiL/1oq0IIu7fIF2oleSwnRXWNH
-         1aMbhEaz5U3EvrHneF7ido7Vwex87ZbtudgyLNRr0X9c8tYJ1r+Z1QK+FZDZ++KSzB
-         04la+xqU8csI0+6D8iKvx999R2Jo3QY9MgiGNjqo=
+        b=TGh0iRgxxzDnGGXrTT1dhLb4nVjFqNIs6GqBWSZV1PP0lFa5k+CS2ZVSdD+wEFHB3
+         eqWJEPuLRaqsvq0kr4n9TByRCpnBvozx2qCbgnqsIywfLINRNttyQFoC5/EMhPibl7
+         batgFkUDQ1n2v4cq6M937iNExsROL8M7Kzeu4Z3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        David Heidelberg <david@ixit.cz>,
+        Douglas Anderson <dianders@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/379] ARM: dts: renesas: blanche: Fix typo in GP_11_2 pin name
-Date:   Wed, 15 Nov 2023 14:23:54 -0500
-Message-ID: <20231115192654.515585520@linuxfoundation.org>
+Subject: [PATCH 6.1 160/379] arm64: dts: qcom: sdm845: cheza doesnt support LMh node
+Date:   Wed, 15 Nov 2023 14:23:55 -0500
+Message-ID: <20231115192654.574985341@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -54,37 +58,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: David Heidelberg <david@ixit.cz>
 
-[ Upstream commit edc6ef026fe69154bb6b70dd6e7f278cfd7d6919 ]
+[ Upstream commit 197ae69d1caedb3203e0b189a39efb820675fd5c ]
 
-On blanche, the GPIO keyboard fails to probe with:
+Cheza firmware doesn't allow controlling LMh from the operating system.
 
-    sh-pfc e6060000.pinctrl: could not map pin config for "GP_11_02"
-
-Fix this by correcting the name for this pin to "GP_11_2".
-
-Fixes: 1f27fedead91eb60 ("ARM: dts: blanche: Configure pull-up for SOFT_SW and SW25 GPIO keys")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/203128eca2261ffc33b83637818dd39c488f42b0.1693408326.git.geert+renesas@glider.be
+Fixes: 36c6581214c4 ("arm64: dts: qcom: sdm845: Add support for LMh node")
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230912071205.11502-2-david@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/r8a7792-blanche.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm/boot/dts/r8a7792-blanche.dts b/arch/arm/boot/dts/r8a7792-blanche.dts
-index c66de9dd12dfc..6a83923aa4612 100644
---- a/arch/arm/boot/dts/r8a7792-blanche.dts
-+++ b/arch/arm/boot/dts/r8a7792-blanche.dts
-@@ -239,7 +239,7 @@ du1_pins: du1 {
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi b/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
+index b5f11fbcc3004..a5c0c788969fb 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
+@@ -145,6 +145,10 @@ panel_in_edp: endpoint {
  	};
+ };
  
- 	keyboard_pins: keyboard {
--		pins = "GP_3_10", "GP_3_11", "GP_3_12", "GP_3_15", "GP_11_02";
-+		pins = "GP_3_10", "GP_3_11", "GP_3_12", "GP_3_15", "GP_11_2";
- 		bias-pull-up;
- 	};
++&cpufreq_hw {
++	/delete-property/ interrupts-extended; /* reference to lmh_cluster[01] */
++};
++
+ &psci {
+ 	/delete-node/ cpu0;
+ 	/delete-node/ cpu1;
+@@ -277,6 +281,14 @@ &BIG_CPU_SLEEP_1
+ 			   &CLUSTER_SLEEP_0>;
+ };
  
++&lmh_cluster0 {
++	status = "disabled";
++};
++
++&lmh_cluster1 {
++	status = "disabled";
++};
++
+ /*
+  * Reserved memory changes
+  *
 -- 
 2.42.0
 
