@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F977ECEE3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B11307ECC44
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235187AbjKOTpB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46582 "EHLO
+        id S233845AbjKOT1s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235189AbjKOTo7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:59 -0500
+        with ESMTP id S233824AbjKOT1r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959061BC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16828C433C8;
-        Wed, 15 Nov 2023 19:44:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96FFC1A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CC3C433CB;
+        Wed, 15 Nov 2023 19:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077495;
-        bh=ot7m9S4fe6d8Xk8ohVBWQH9ICRy7i8ARfAmVzMJU3Kc=;
+        s=korg; t=1700076463;
+        bh=zJWjHQaIZye4mP1AcMrE2pBIk04GIs1VCLWIobUOvOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fM4+0ngowynEIDR5wPKNoubpB7GcZJDbudmQZH4MOO/XkfJ4L8g9kTjraxp59+fy2
-         +wISYhe8RIUWJTFX2wkZIxJSD+QPayDCyKGYUSIncPjVdsCRDKEf8/eLuxg8UW+c7v
-         uD9InrtMwLarw4RnfsRR5g1H91Az9DxObwyilXjs=
+        b=i0jNwYfJdUAtVkSWVO3r1Fvzhd/Efj5PUyexljdE8XXBx+UV/WwLI8mMlD2N+Piq7
+         nD0AgYXUyunGML/nrNj1R/haaCcl8orj6DZOvAqIYAI4NXfd4DjPs7j5rW/CtIta+Y
+         U8zE/AnFCTlw6pQC+0zqKMP16fxLV2TQCJi+d2K8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sumit Gupta <sumitg@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Rae Moar <rmoar@google.com>, David Gow <davidgow@google.com>,
+        kernel test robot <lkp@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 320/603] firmware: tegra: Add suspend hook and reset BPMP IPC early on resume
-Date:   Wed, 15 Nov 2023 14:14:25 -0500
-Message-ID: <20231115191635.647098262@linuxfoundation.org>
+Subject: [PATCH 6.5 282/550] kunit: test: Fix the possible memory leak in executor_test
+Date:   Wed, 15 Nov 2023 14:14:26 -0500
+Message-ID: <20231115191620.338190864@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,142 +52,232 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit ea608a01d4ee66f8b51070e623f9adb8684c0dd4 ]
+[ Upstream commit 8040345fdae4cb256c5d981f91ae0f22bea8adcc ]
 
-Add suspend hook and a 'suspended' field in the 'struct tegra_bpmp'
-to mark if BPMP is suspended. Also, add a 'flags' field in the
-'struct tegra_bpmp_message' whose 'TEGRA_BPMP_MESSAGE_RESET' bit can be
-set from the Tegra MC driver to signal that the reset of BPMP IPC
-channels is required before sending MRQ to the BPMP FW. Together both
-the fields allow us to handle any requests that might be sent too soon
-as they can cause hang during system resume.
+When CONFIG_KUNIT_ALL_TESTS=y, making CONFIG_DEBUG_KMEMLEAK=y and
+CONFIG_DEBUG_KMEMLEAK_AUTO_SCAN=y, the below memory leak is detected.
 
-One case where we see BPMP requests being sent before the BPMP driver
-has resumed is the memory bandwidth requests which are triggered by
-onlining the CPUs during system resume. The CPUs are onlined before the
-BPMP has resumed and we need to reset the BPMP IPC channels to handle
-these requests.
+If kunit_filter_suites() succeeds, not only copy but also filtered_suite
+and filtered_suite->test_cases should be freed.
 
-The additional check for 'flags' is done to avoid any un-intended BPMP
-IPC reset if the tegra_bpmp_transfer*() API gets called during suspend
-sequence after the BPMP driver is suspended.
+So as Rae suggested, to avoid the suite set never be freed when
+KUNIT_ASSERT_EQ() fails and exits after kunit_filter_suites() succeeds,
+update kfree_at_end() func to free_suite_set_at_end() to use
+kunit_free_suite_set() to free them as kunit_module_exit() and
+kunit_run_all_tests() do it. As the second arg got of
+free_suite_set_at_end() is a local variable, copy it for free to avoid
+wild-memory-access. After applying this patch, the following memory leak
+is never detected.
 
-Fixes: f41e1442ac5b ("cpufreq: tegra194: add OPP support and set bandwidth")
-Co-developed-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+unreferenced object 0xffff8881001de400 (size 1024):
+  comm "kunit_try_catch", pid 1396, jiffies 4294720452 (age 932.801s)
+  hex dump (first 32 bytes):
+    73 75 69 74 65 32 00 00 00 00 00 00 00 00 00 00  suite2..........
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff817db753>] __kmalloc_node_track_caller+0x53/0x150
+    [<ffffffff817bd242>] kmemdup+0x22/0x50
+    [<ffffffff829e961d>] kunit_filter_suites+0x44d/0xcc0
+    [<ffffffff829eb69f>] filter_suites_test+0x12f/0x360
+    [<ffffffff829e802a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+    [<ffffffff81236fc6>] kthread+0x2b6/0x380
+    [<ffffffff81096afd>] ret_from_fork+0x2d/0x70
+    [<ffffffff81003511>] ret_from_fork_asm+0x11/0x20
+unreferenced object 0xffff8881052cd388 (size 192):
+  comm "kunit_try_catch", pid 1396, jiffies 4294720452 (age 932.801s)
+  hex dump (first 32 bytes):
+    a0 85 9e 82 ff ff ff ff 80 cd 7c 84 ff ff ff ff  ..........|.....
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff817dbad2>] __kmalloc+0x52/0x150
+    [<ffffffff829e9651>] kunit_filter_suites+0x481/0xcc0
+    [<ffffffff829eb69f>] filter_suites_test+0x12f/0x360
+    [<ffffffff829e802a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+    [<ffffffff81236fc6>] kthread+0x2b6/0x380
+    [<ffffffff81096afd>] ret_from_fork+0x2d/0x70
+    [<ffffffff81003511>] ret_from_fork_asm+0x11/0x20
+
+unreferenced object 0xffff888100da8400 (size 1024):
+  comm "kunit_try_catch", pid 1398, jiffies 4294720454 (age 781.945s)
+  hex dump (first 32 bytes):
+    73 75 69 74 65 32 00 00 00 00 00 00 00 00 00 00  suite2..........
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff817db753>] __kmalloc_node_track_caller+0x53/0x150
+    [<ffffffff817bd242>] kmemdup+0x22/0x50
+    [<ffffffff829e961d>] kunit_filter_suites+0x44d/0xcc0
+    [<ffffffff829eb13f>] filter_suites_test_glob_test+0x12f/0x560
+    [<ffffffff829e802a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+    [<ffffffff81236fc6>] kthread+0x2b6/0x380
+    [<ffffffff81096afd>] ret_from_fork+0x2d/0x70
+    [<ffffffff81003511>] ret_from_fork_asm+0x11/0x20
+unreferenced object 0xffff888105117878 (size 96):
+  comm "kunit_try_catch", pid 1398, jiffies 4294720454 (age 781.945s)
+  hex dump (first 32 bytes):
+    a0 85 9e 82 ff ff ff ff a0 ac 7c 84 ff ff ff ff  ..........|.....
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff817dbad2>] __kmalloc+0x52/0x150
+    [<ffffffff829e9651>] kunit_filter_suites+0x481/0xcc0
+    [<ffffffff829eb13f>] filter_suites_test_glob_test+0x12f/0x560
+    [<ffffffff829e802a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+    [<ffffffff81236fc6>] kthread+0x2b6/0x380
+    [<ffffffff81096afd>] ret_from_fork+0x2d/0x70
+    [<ffffffff81003511>] ret_from_fork_asm+0x11/0x20
+unreferenced object 0xffff888102c31c00 (size 1024):
+  comm "kunit_try_catch", pid 1404, jiffies 4294720460 (age 781.948s)
+  hex dump (first 32 bytes):
+    6e 6f 72 6d 61 6c 5f 73 75 69 74 65 00 00 00 00  normal_suite....
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff817db753>] __kmalloc_node_track_caller+0x53/0x150
+    [<ffffffff817bd242>] kmemdup+0x22/0x50
+    [<ffffffff829ecf17>] kunit_filter_attr_tests+0xf7/0x860
+    [<ffffffff829e99ff>] kunit_filter_suites+0x82f/0xcc0
+    [<ffffffff829ea975>] filter_attr_test+0x195/0x5f0
+    [<ffffffff829e802a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+    [<ffffffff81236fc6>] kthread+0x2b6/0x380
+    [<ffffffff81096afd>] ret_from_fork+0x2d/0x70
+    [<ffffffff81003511>] ret_from_fork_asm+0x11/0x20
+unreferenced object 0xffff8881052cd250 (size 192):
+  comm "kunit_try_catch", pid 1404, jiffies 4294720460 (age 781.948s)
+  hex dump (first 32 bytes):
+    a0 85 9e 82 ff ff ff ff 00 a9 7c 84 ff ff ff ff  ..........|.....
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff817dbad2>] __kmalloc+0x52/0x150
+    [<ffffffff829ecfc1>] kunit_filter_attr_tests+0x1a1/0x860
+    [<ffffffff829e99ff>] kunit_filter_suites+0x82f/0xcc0
+    [<ffffffff829ea975>] filter_attr_test+0x195/0x5f0
+    [<ffffffff829e802a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+    [<ffffffff81236fc6>] kthread+0x2b6/0x380
+    [<ffffffff81096afd>] ret_from_fork+0x2d/0x70
+    [<ffffffff81003511>] ret_from_fork_asm+0x11/0x20
+unreferenced object 0xffff888104f4e400 (size 1024):
+  comm "kunit_try_catch", pid 1408, jiffies 4294720464 (age 781.944s)
+  hex dump (first 32 bytes):
+    73 75 69 74 65 00 00 00 00 00 00 00 00 00 00 00  suite...........
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffffffff817db753>] __kmalloc_node_track_caller+0x53/0x150
+    [<ffffffff817bd242>] kmemdup+0x22/0x50
+    [<ffffffff829ecf17>] kunit_filter_attr_tests+0xf7/0x860
+    [<ffffffff829e99ff>] kunit_filter_suites+0x82f/0xcc0
+    [<ffffffff829e9fc3>] filter_attr_skip_test+0x133/0x6e0
+    [<ffffffff829e802a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+    [<ffffffff81236fc6>] kthread+0x2b6/0x380
+    [<ffffffff81096afd>] ret_from_fork+0x2d/0x70
+    [<ffffffff81003511>] ret_from_fork_asm+0x11/0x20
+unreferenced object 0xffff8881052cc620 (size 192):
+  comm "kunit_try_catch", pid 1408, jiffies 4294720464 (age 781.944s)
+  hex dump (first 32 bytes):
+    a0 85 9e 82 ff ff ff ff c0 a8 7c 84 ff ff ff ff  ..........|.....
+    00 00 00 00 00 00 00 00 02 00 00 00 02 00 00 00  ................
+  backtrace:
+    [<ffffffff817dbad2>] __kmalloc+0x52/0x150
+    [<ffffffff829ecfc1>] kunit_filter_attr_tests+0x1a1/0x860
+    [<ffffffff829e99ff>] kunit_filter_suites+0x82f/0xcc0
+    [<ffffffff829e9fc3>] filter_attr_skip_test+0x133/0x6e0
+    [<ffffffff829e802a>] kunit_generic_run_threadfn_adapter+0x4a/0x90
+    [<ffffffff81236fc6>] kthread+0x2b6/0x380
+    [<ffffffff81096afd>] ret_from_fork+0x2d/0x70
+    [<ffffffff81003511>] ret_from_fork_asm+0x11/0x20
+
+Fixes: e5857d396f35 ("kunit: flatten kunit_suite*** to kunit_suite** in .kunit_test_suites")
+Fixes: 76066f93f1df ("kunit: add tests for filtering attributes")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Rae Moar <rmoar@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Suggested-by: David Gow <davidgow@google.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309142251.uJ8saAZv-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202309270433.wGmFRGjd-lkp@intel.com/
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/tegra/bpmp.c | 30 ++++++++++++++++++++++++++++++
- include/soc/tegra/bpmp.h      |  6 ++++++
- 2 files changed, 36 insertions(+)
+ lib/kunit/executor_test.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/firmware/tegra/bpmp.c b/drivers/firmware/tegra/bpmp.c
-index 51d062e0c3f12..c1590d3aa9cb7 100644
---- a/drivers/firmware/tegra/bpmp.c
-+++ b/drivers/firmware/tegra/bpmp.c
-@@ -313,6 +313,8 @@ static ssize_t tegra_bpmp_channel_write(struct tegra_bpmp_channel *channel,
- 	return __tegra_bpmp_channel_write(channel, mrq, flags, data, size);
- }
+diff --git a/lib/kunit/executor_test.c b/lib/kunit/executor_test.c
+index ce6749af374de..d3ee0fefa8f99 100644
+--- a/lib/kunit/executor_test.c
++++ b/lib/kunit/executor_test.c
+@@ -8,7 +8,7 @@
  
-+static int __maybe_unused tegra_bpmp_resume(struct device *dev);
-+
- int tegra_bpmp_transfer_atomic(struct tegra_bpmp *bpmp,
- 			       struct tegra_bpmp_message *msg)
- {
-@@ -325,6 +327,14 @@ int tegra_bpmp_transfer_atomic(struct tegra_bpmp *bpmp,
- 	if (!tegra_bpmp_message_valid(msg))
- 		return -EINVAL;
+ #include <kunit/test.h>
  
-+	if (bpmp->suspended) {
-+		/* Reset BPMP IPC channels during resume based on flags passed */
-+		if (msg->flags & TEGRA_BPMP_MESSAGE_RESET)
-+			tegra_bpmp_resume(bpmp->dev);
-+		else
-+			return -EAGAIN;
-+	}
-+
- 	channel = bpmp->tx_channel;
+-static void kfree_at_end(struct kunit *test, const void *to_free);
++static void free_suite_set_at_end(struct kunit *test, const void *to_free);
+ static struct kunit_suite *alloc_fake_suite(struct kunit *test,
+ 					    const char *suite_name,
+ 					    struct kunit_case *test_cases);
+@@ -53,7 +53,7 @@ static void filter_suites_test(struct kunit *test)
+ 	got = kunit_filter_suites(&suite_set, "suite2", &err);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, got.start);
+ 	KUNIT_ASSERT_EQ(test, err, 0);
+-	kfree_at_end(test, got.start);
++	free_suite_set_at_end(test, &got);
  
- 	spin_lock(&bpmp->atomic_tx_lock);
-@@ -364,6 +374,14 @@ int tegra_bpmp_transfer(struct tegra_bpmp *bpmp,
- 	if (!tegra_bpmp_message_valid(msg))
- 		return -EINVAL;
+ 	/* Validate we just have suite2 */
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, got.start[0]);
+@@ -77,7 +77,7 @@ static void filter_suites_test_glob_test(struct kunit *test)
+ 	got = kunit_filter_suites(&suite_set, "suite2.test2", &err);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, got.start);
+ 	KUNIT_ASSERT_EQ(test, err, 0);
+-	kfree_at_end(test, got.start);
++	free_suite_set_at_end(test, &got);
  
-+	if (bpmp->suspended) {
-+		/* Reset BPMP IPC channels during resume based on flags passed */
-+		if (msg->flags & TEGRA_BPMP_MESSAGE_RESET)
-+			tegra_bpmp_resume(bpmp->dev);
-+		else
-+			return -EAGAIN;
-+	}
-+
- 	channel = tegra_bpmp_write_threaded(bpmp, msg->mrq, msg->tx.data,
- 					    msg->tx.size);
- 	if (IS_ERR(channel))
-@@ -796,10 +814,21 @@ static int tegra_bpmp_probe(struct platform_device *pdev)
- 	return err;
- }
+ 	/* Validate we just have suite2 */
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, got.start[0]);
+@@ -102,7 +102,7 @@ static void filter_suites_to_empty_test(struct kunit *test)
  
-+static int __maybe_unused tegra_bpmp_suspend(struct device *dev)
+ 	got = kunit_filter_suites(&suite_set, "not_found", &err);
+ 	KUNIT_ASSERT_EQ(test, err, 0);
+-	kfree_at_end(test, got.start); /* just in case */
++	free_suite_set_at_end(test, &got); /* just in case */
+ 
+ 	KUNIT_EXPECT_PTR_EQ_MSG(test, got.start, got.end,
+ 				"should be empty to indicate no match");
+@@ -125,18 +125,26 @@ kunit_test_suites(&executor_test_suite);
+ 
+ /* Test helpers */
+ 
+-/* Use the resource API to register a call to kfree(to_free).
++static void free_suite_set(void *suite_set)
 +{
-+	struct tegra_bpmp *bpmp = dev_get_drvdata(dev);
-+
-+	bpmp->suspended = true;
-+
-+	return 0;
++	kunit_free_suite_set(*(struct kunit_suite_set *)suite_set);
++	kfree(suite_set);
 +}
 +
- static int __maybe_unused tegra_bpmp_resume(struct device *dev)
++/* Use the resource API to register a call to free_suite_set.
+  * Since we never actually use the resource, it's safe to use on const data.
+  */
+-static void kfree_at_end(struct kunit *test, const void *to_free)
++static void free_suite_set_at_end(struct kunit *test, const void *to_free)
  {
- 	struct tegra_bpmp *bpmp = dev_get_drvdata(dev);
- 
-+	bpmp->suspended = false;
+-	/* kfree() handles NULL already, but avoid allocating a no-op cleanup. */
+-	if (IS_ERR_OR_NULL(to_free))
++	struct kunit_suite_set *free;
 +
- 	if (bpmp->soc->ops->resume)
- 		return bpmp->soc->ops->resume(bpmp);
- 	else
-@@ -807,6 +836,7 @@ static int __maybe_unused tegra_bpmp_resume(struct device *dev)
++	if (!((struct kunit_suite_set *)to_free)->start)
+ 		return;
+ 
+-	kunit_add_action(test,
+-			(kunit_action_t *)kfree,
+-			(void *)to_free);
++	free = kzalloc(sizeof(struct kunit_suite_set), GFP_KERNEL);
++	*free = *(struct kunit_suite_set *)to_free;
++
++	kunit_add_action(test, free_suite_set, (void *)free);
  }
  
- static const struct dev_pm_ops tegra_bpmp_pm_ops = {
-+	.suspend_noirq = tegra_bpmp_suspend,
- 	.resume_noirq = tegra_bpmp_resume,
- };
- 
-diff --git a/include/soc/tegra/bpmp.h b/include/soc/tegra/bpmp.h
-index 5842e38bb2880..f5e4ac5b8cce8 100644
---- a/include/soc/tegra/bpmp.h
-+++ b/include/soc/tegra/bpmp.h
-@@ -102,8 +102,12 @@ struct tegra_bpmp {
- #ifdef CONFIG_DEBUG_FS
- 	struct dentry *debugfs_mirror;
- #endif
-+
-+	bool suspended;
- };
- 
-+#define TEGRA_BPMP_MESSAGE_RESET BIT(0)
-+
- struct tegra_bpmp_message {
- 	unsigned int mrq;
- 
-@@ -117,6 +121,8 @@ struct tegra_bpmp_message {
- 		size_t size;
- 		int ret;
- 	} rx;
-+
-+	unsigned long flags;
- };
- 
- #if IS_ENABLED(CONFIG_TEGRA_BPMP)
+ static struct kunit_suite *alloc_fake_suite(struct kunit *test,
 -- 
 2.42.0
 
