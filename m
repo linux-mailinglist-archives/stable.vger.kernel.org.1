@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276967ECF9F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C5BD7ECD53
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235366AbjKOTtk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:49:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38812 "EHLO
+        id S234438AbjKOTfx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:35:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235362AbjKOTtj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:39 -0500
+        with ESMTP id S234451AbjKOTfw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCE02189
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60469C433C9;
-        Wed, 15 Nov 2023 19:49:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE58B1A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24385C433C8;
+        Wed, 15 Nov 2023 19:35:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077776;
-        bh=zrKEJ99fP2vSRe2rxacLDFijLA9I/5b1iptXxpHRwEI=;
+        s=korg; t=1700076948;
+        bh=DhyQSvxc4YtT1+fivXFGQRzQSAEiBuRH+oI+kDTPXqI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ygwg8QPKPC8RbhxBLMuCFJnAnhR2TzFPPNa6ilfQfpduzbpULvJfqKib7K2Q8gj9+
-         ljlQyFjIRQyyz1GfGWWyNVMdV2u2TN29dPzSgidia1iltu1ZXsN/mXI/+DW1OB2rFK
-         7dc32PN1foAF0Y7cXJmrsHoFGiCCLP6EpvV5lZgg=
+        b=AOgylS5wTJndxSmymcBlPHw7fNR4AF0V9+c6twsD2g4BU5Q/BPfjFgPeosJp3A/cK
+         bJHzsMID2lPWj6c2reXCHv8wYpBCX8/0V/LD04e2cs2tdsIaR0mDXWEv6lDYgdkGk+
+         sj+xjb4ASMw8y6yJOkMwyAWhAKtqyPk531HgVKQM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Benjamin Gaignard <benjamin.gaignard@collabora.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 512/603] media: i2c: max9286: Fix some redundant of_node_put() calls
+Subject: [PATCH 6.5 473/550] media: verisilicon: Do not enable G2 postproc downscale if source is narrower than destination
 Date:   Wed, 15 Nov 2023 14:17:37 -0500
-Message-ID: <20231115191647.540095351@linuxfoundation.org>
+Message-ID: <20231115191633.653710525@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,52 +51,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 0822315e46b400f611cba1193456ee6a5dc3e41d ]
+[ Upstream commit 6e481d52d363218a3e6feb31694da74b38b30fad ]
 
-This is odd to have a of_node_put() just after a for_each_child_of_node()
-or a for_each_endpoint_of_node() loop. It should already be called
-during the last iteration.
+In case of encoded input VP9 data width that is not multiple of macroblock
+size, which is 16 (e.g. 1080x1920 frames, where 1080 is multiple of 8), the
+width is padded to be a multiple of macroblock size (for 1080x1920 frames,
+that is 1088x1920).
 
-Remove these calls.
+The hantro_postproc_g2_enable() checks whether the encoded data width is
+equal to decoded frame width, and if not, enables down-scale mode. For a
+frame where input is 1080x1920 and output is 1088x1920, this is incorrect
+as no down-scale happens, the frame is only padded. Enabling the down-scale
+mode in this case results in corrupted frames.
 
-Fixes: 66d8c9d2422d ("media: i2c: Add MAX9286 driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fix this by adjusting the check to test whether encoded data width is
+greater than decoded frame width, and only in that case enable the
+down-scale mode.
+
+To generate input test data to trigger this bug, use e.g.:
+$ gst-launch-1.0 videotestsrc ! video/x-raw,width=272,height=256,format=I420 ! \
+                 vp9enc ! matroskamux ! filesink location=/tmp/test.vp9
+To trigger the bug upon decoding (note that the NV12 must be forced, as
+that assures the output data would pass the G2 postproc):
+$ gst-launch-1.0 filesrc location=/tmp/test.vp9 ! matroskademux ! vp9parse ! \
+                 v4l2slvp9dec ! video/x-raw,format=NV12 ! videoconvert ! fbdevsink
+
+Fixes: 79c987de8b35 ("media: hantro: Use post processor scaling capacities")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/max9286.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/media/platform/verisilicon/hantro_postproc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/max9286.c b/drivers/media/i2c/max9286.c
-index be84ff1e2b170..fc1cf196ef015 100644
---- a/drivers/media/i2c/max9286.c
-+++ b/drivers/media/i2c/max9286.c
-@@ -1449,7 +1449,6 @@ static int max9286_parse_dt(struct max9286_priv *priv)
+diff --git a/drivers/media/platform/verisilicon/hantro_postproc.c b/drivers/media/platform/verisilicon/hantro_postproc.c
+index 0224ff68ab3fc..64d6fb852ae9b 100644
+--- a/drivers/media/platform/verisilicon/hantro_postproc.c
++++ b/drivers/media/platform/verisilicon/hantro_postproc.c
+@@ -107,7 +107,7 @@ static void hantro_postproc_g1_enable(struct hantro_ctx *ctx)
  
- 		i2c_mux_mask |= BIT(id);
- 	}
--	of_node_put(node);
- 	of_node_put(i2c_mux);
+ static int down_scale_factor(struct hantro_ctx *ctx)
+ {
+-	if (ctx->src_fmt.width == ctx->dst_fmt.width)
++	if (ctx->src_fmt.width <= ctx->dst_fmt.width)
+ 		return 0;
  
- 	/* Parse the endpoints */
-@@ -1513,7 +1512,6 @@ static int max9286_parse_dt(struct max9286_priv *priv)
- 		priv->source_mask |= BIT(ep.port);
- 		priv->nsources++;
- 	}
--	of_node_put(node);
- 
- 	of_property_read_u32(dev->of_node, "maxim,bus-width", &priv->bus_width);
- 	switch (priv->bus_width) {
+ 	return DIV_ROUND_CLOSEST(ctx->src_fmt.width, ctx->dst_fmt.width);
 -- 
 2.42.0
 
