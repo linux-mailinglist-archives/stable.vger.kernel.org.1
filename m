@@ -2,49 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CDB17ECF57
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA5637ECCC1
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235287AbjKOTr4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:47:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49746 "EHLO
+        id S234128AbjKOTc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235296AbjKOTrz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:55 -0500
+        with ESMTP id S234150AbjKOTcX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5233819E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A926FC433C8;
-        Wed, 15 Nov 2023 19:47:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C2D12C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C161C433C7;
+        Wed, 15 Nov 2023 19:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077671;
-        bh=pjS4QVKdlXYarndFwJDNbeAUkO1d+AvmWKUN60TUzXc=;
+        s=korg; t=1700076738;
+        bh=dYwC4wQrc704SnDeZUYp6YFyrzEB1t6K9L4DRGfZpOg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L3guoxFXdKId5kNFk2H4HstVT2EcDogdNPY0VJXzHsYJqeX1aWIQmjwdfoCodYu3Y
-         eAvBzwo6outB1nSTO1Ojyoba3r/x2s+IyFwjlo3DDQQzJoh9v8v23JsEt1cQW3Qj/X
-         4kExas/EfW1ME6OZ9+18mKvRx0oHnwkL/Uvyctxs=
+        b=yn7vwxCSziGXGsx52W83mLQ+dv3OWpCPRxD4Zb3iYIBm1pqcggQkqSib4dsrYpoRW
+         zZwu8zlSnFCaCb2l51eHgQGv/zlTpMAfNHcF3tn1DTyrl2lZ1c0P52bsYK/nPgwBGd
+         ehDyyFXXnutbAtk2y/OOptwMD/kiNeK09i/d6m3k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        syzbot+ebd7072191e2eddd7d6e@syzkaller.appspotmail.com,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 424/603] perf kwork: Set ordered_events to true in struct perf_tool
+Subject: [PATCH 6.5 385/550] f2fs: fix to drop meta_inodes page cache in f2fs_put_super()
 Date:   Wed, 15 Nov 2023 14:16:09 -0500
-Message-ID: <20231115191642.164125426@linuxfoundation.org>
+Message-ID: <20231115191627.538138753@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 0c526579a4b2b6ecd540472f2e34c2850cf70f76 ]
+[ Upstream commit a4639380bbe66172df329f8b54aa7d2e943f0f64 ]
 
-'perf kwork' processes data based on timestamps and needs to sort events.
+syzbot reports a kernel bug as below:
 
-Fixes: f98919ec4fccdacf ("perf kwork: Implement 'report' subcommand")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Link: https://lore.kernel.org/r/20230812084917.169338-4-yangjihong1@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+F2FS-fs (loop1): detect filesystem reference count leak during umount, type: 10, count: 1
+kernel BUG at fs/f2fs/super.c:1639!
+CPU: 0 PID: 15451 Comm: syz-executor.1 Not tainted 6.5.0-syzkaller-09338-ge0152e7481c6 #0
+RIP: 0010:f2fs_put_super+0xce1/0xed0 fs/f2fs/super.c:1639
+Call Trace:
+ generic_shutdown_super+0x161/0x3c0 fs/super.c:693
+ kill_block_super+0x3b/0x70 fs/super.c:1646
+ kill_f2fs_super+0x2b7/0x3d0 fs/f2fs/super.c:4879
+ deactivate_locked_super+0x9a/0x170 fs/super.c:481
+ deactivate_super+0xde/0x100 fs/super.c:514
+ cleanup_mnt+0x222/0x3d0 fs/namespace.c:1254
+ task_work_run+0x14d/0x240 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+ exit_to_user_mode_prepare+0x210/0x240 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
+ syscall_exit_to_user_mode+0x1d/0x60 kernel/entry/common.c:296
+ do_syscall_64+0x44/0xb0 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+In f2fs_put_super(), it tries to do sanity check on dirty and IO
+reference count of f2fs, once there is any reference count leak,
+it will trigger panic.
+
+The root case is, during f2fs_put_super(), if there is any IO error
+in f2fs_wait_on_all_pages(), we missed to truncate meta_inode's page
+cache later, result in panic, fix this case.
+
+Fixes: 20872584b8c0 ("f2fs: fix to drop all dirty meta/node pages during umount()")
+Reported-by: syzbot+ebd7072191e2eddd7d6e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000a14f020604a62a98@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-kwork.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/f2fs/super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-kwork.c b/tools/perf/builtin-kwork.c
-index 73b5dc099a8ae..de2fbb7c56c32 100644
---- a/tools/perf/builtin-kwork.c
-+++ b/tools/perf/builtin-kwork.c
-@@ -1694,9 +1694,10 @@ int cmd_kwork(int argc, const char **argv)
- 	static struct perf_kwork kwork = {
- 		.class_list          = LIST_HEAD_INIT(kwork.class_list),
- 		.tool = {
--			.mmap    = perf_event__process_mmap,
--			.mmap2   = perf_event__process_mmap2,
--			.sample  = perf_kwork__process_tracepoint_sample,
-+			.mmap		= perf_event__process_mmap,
-+			.mmap2		= perf_event__process_mmap2,
-+			.sample		= perf_kwork__process_tracepoint_sample,
-+			.ordered_events = true,
- 		},
- 		.atom_page_list      = LIST_HEAD_INIT(kwork.atom_page_list),
- 		.sort_list           = LIST_HEAD_INIT(kwork.sort_list),
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 68895be6407f0..c03a73ff36e79 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1662,7 +1662,7 @@ static void f2fs_put_super(struct super_block *sb)
+ 
+ 	f2fs_wait_on_all_pages(sbi, F2FS_WB_CP_DATA);
+ 
+-	if (err) {
++	if (err || f2fs_cp_error(sbi)) {
+ 		truncate_inode_pages_final(NODE_MAPPING(sbi));
+ 		truncate_inode_pages_final(META_MAPPING(sbi));
+ 	}
 -- 
 2.42.0
 
