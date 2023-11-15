@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A85B17ECAE4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF0EE7ECAE7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:00:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229883AbjKOTAD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:00:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52722 "EHLO
+        id S231537AbjKOTAI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:00:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229726AbjKOTAC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:00:02 -0500
+        with ESMTP id S229726AbjKOTAE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:00:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70967C7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 10:59:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9060C433C7;
-        Wed, 15 Nov 2023 18:59:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01191CC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:00:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D60C433C9;
+        Wed, 15 Nov 2023 19:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700074799;
-        bh=cP74eDRtg0eqwVrST4F4chz0IRGlblfKC1j4JIqiVNY=;
+        s=korg; t=1700074800;
+        bh=mrtwWqUwAHXq2vOMK7nRt3sBqf2mMHNSmtFQlXL1phA=;
         h=Subject:To:Cc:From:Date:From;
-        b=MlOoP4LmljelqYLlsLMgJR/YeSBWF0STG+7J/3PQPX9sEPGJ8k33anCUfgRbrnvfC
-         aixPQISotlBA8O/Ke5xPDnfAvq32yQZELMee6Yoew5GQdy0QvG5X1l0IXvUIJQXIKv
-         9RcXt1CyluEMa/OeICxlLYqR1IxcZUJZHnh+8vTU=
-Subject: FAILED: patch "[PATCH] Revert "drm/amd: Disable S/G for APUs when 64GB or more host" failed to apply to 6.5-stable tree
+        b=KDialRY6mVBB+hIuvqDqJ/IdRYmiAWE6Pjv+esM+T4tHoHG/9d07UIrFKTzA8rTbI
+         x2XRnJiXN4xbOPUTnm7NLywZEM0uv51Gy2VW5VDbLw3pN4RB3k712v5MioilKxBLbI
+         z5dHgWzf9SIqas8Vk/5dWR0EhCNIXxnAk0DVsefo=
+Subject: FAILED: patch "[PATCH] Revert "drm/amd: Disable S/G for APUs when 64GB or more host" failed to apply to 6.1-stable tree
 To:     hamza.mahfooz@amd.com, alexander.deucher@amd.com,
         harry.wentland@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 15 Nov 2023 13:59:55 -0500
-Message-ID: <2023111555-tingling-prideful-0e1f@gregkh>
+Date:   Wed, 15 Nov 2023 13:59:56 -0500
+Message-ID: <2023111556-crummy-pretended-3a7a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,23 +44,28 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 601c63ad8e551b2282e94f0a81779e9ae5c8100e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023111555-tingling-prideful-0e1f@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023111556-crummy-pretended-3a7a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 601c63ad8e55 ("Revert "drm/amd: Disable S/G for APUs when 64GB or more host memory"")
+70e64c4d522b ("drm/amd: Disable S/G for APUs when 64GB or more host memory")
+5d1eb4c4c872 ("drm/amd: Move helper for dynamic speed switch check out of smu13")
+c2e3f5b571c5 ("drm/amd/pm: conditionally disable pcie lane/speed switching for SMU13")
+9df88c8104e1 ("drm/amd/pm: share the code around SMU13 pcie parameters update")
+bf0207e17270 ("drm/amdgpu: add S/G display parameter")
 
 thanks,
 
