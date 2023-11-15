@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4061B7ECCA5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 881C47ECF48
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234051AbjKOTbp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:31:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49808 "EHLO
+        id S235276AbjKOTrf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:47:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234057AbjKOTbo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:44 -0500
+        with ESMTP id S235279AbjKOTre (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F318512C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792A2C433C7;
-        Wed, 15 Nov 2023 19:31:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7769FB8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF052C433C8;
+        Wed, 15 Nov 2023 19:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076700;
-        bh=VsEcYVVGBhlJhxpYZ+sclyVoGw66Ptr93Y1gzgTMTAU=;
+        s=korg; t=1700077650;
+        bh=b27ozrtTBe+7qAT97L76t/PYQ4xrWxtFOX0OMKaNFyI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tpx4v2xvfVjIG+9fvMKeR1UgD+dmFswTuIs/M3mqvSn8fAHUFf8q6OGoytKWEcm1Q
-         Zt4hE+bvqN//ykkTXSelEJsn3sTzs3HPr018HUbtZsKgqf0W3feaOK0u7+lm0GNQWL
-         WmeKchlRAM4JBNINjlVrgd0/tUvrFNNTd2I0kSbg=
+        b=KfPgKxUlbCfjZyGT1Kd/BScEkRUImhLKLhCFaxUEq26pisQLdyfWZ3ZKRVz1Kv0x4
+         PoOheaN4l98FSoQeWo3arUFm5s7+qA7N3r0TA1tsDAKiNYm6mciXe9Iq3SrB9fwigi
+         I9eIL0ETuf2JRFXxeoVp+uoNv8TPlokzMxzTTatA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,12 +30,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Song Liu <song@kernel.org>, Hao Luo <haoluo@google.com>,
         bpf@vger.kernel.org, Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 394/550] perf record: Fix BTF type checks in the off-cpu profiling
-Date:   Wed, 15 Nov 2023 14:16:18 -0500
-Message-ID: <20231115191628.150882613@linuxfoundation.org>
+Subject: [PATCH 6.6 434/603] perf record: Fix BTF type checks in the off-cpu profiling
+Date:   Wed, 15 Nov 2023 14:16:19 -0500
+Message-ID: <20231115191642.865449745@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,7 +51,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
