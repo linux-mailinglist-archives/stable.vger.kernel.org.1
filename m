@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7404E7ED11D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:59:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81A5D7ED128
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:59:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344023AbjKOT7d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:59:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48610 "EHLO
+        id S1344043AbjKOT7s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:59:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344024AbjKOT7b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:59:31 -0500
+        with ESMTP id S1344047AbjKOT7q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:59:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AC8819E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:59:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BFFC433C8;
-        Wed, 15 Nov 2023 19:59:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F2CA194
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:59:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5317CC433C9;
+        Wed, 15 Nov 2023 19:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078365;
-        bh=+jWkjjjyVtbJqWjVHu9a0OznOunAC9LTWbJXXqWhc+E=;
+        s=korg; t=1700078382;
+        bh=vtZpYbrFix4JgEwJv6sOZS7If3PasYocbVaxjYA/qr8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tDuM0TPYWihVBjJLxF9A3eoUDJeB83Q8V53WvhSmNlRiyS0U5tpiAh/W1xgn1lJ9A
-         x4X7z8HvnqlcAcrtdZXPWPovvKswOcZt+kosbL8/0hHmOfxFhs9BUUxUy/oeN1hpTz
-         xHMr1KAEmtA7R6nBpG9KTLds4IbDb2GHaFBRsW08=
+        b=I6pzH92byyoiQg8B2YjddbLx2/RcyAnWKABFhLTb9lVEbqNZajBsxjMF/zi/LsfQ1
+         CV2FBnZnPo0PYtyApMDp0jXMOIoK5bRAGAthVelNWgQaZkCzybKCWgObKsiFZAhTWb
+         efSqVn6qxQxuOLC4gvPLNFCBcf7ZooSEFgpiOH6I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 271/379] dmaengine: ti: edma: handle irq_of_parse_and_map() errors
-Date:   Wed, 15 Nov 2023 14:25:46 -0500
-Message-ID: <20231115192701.159075829@linuxfoundation.org>
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 272/379] misc: st_core: Do not call kfree_skb() under spin_lock_irqsave()
+Date:   Wed, 15 Nov 2023 14:25:47 -0500
+Message-ID: <20231115192701.219095286@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -54,46 +53,63 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 14f6d317913f634920a640e9047aa2e66f5bdcb7 ]
+[ Upstream commit 4d08c3d12b61022501989f9f071514d2d6f77c47 ]
 
-Zero is not a valid IRQ for in-kernel code and the irq_of_parse_and_map()
-function returns zero on error.  So this check for valid IRQs should only
-accept values > 0.
+It is not allowed to call kfree_skb() from hardware interrupt
+context or with hardware interrupts being disabled.
+So replace kfree_skb() with dev_kfree_skb_irq() under
+spin_lock_irqsave(). Compile tested only.
 
-Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/f15cb6a7-8449-4f79-98b6-34072f04edbc@moroto.mountain
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 53618cc1e51e ("Staging: sources for ST core")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://lore.kernel.org/r/20230823035020.1281892-1-ruanjinjie@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/edma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/ti-st/st_core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index fa06d7e6d8e38..7ec6e5d728b03 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -2410,7 +2410,7 @@ static int edma_probe(struct platform_device *pdev)
- 	if (irq < 0 && node)
- 		irq = irq_of_parse_and_map(node, 0);
+diff --git a/drivers/misc/ti-st/st_core.c b/drivers/misc/ti-st/st_core.c
+index 7f6976a9f508b..48e0f8377e659 100644
+--- a/drivers/misc/ti-st/st_core.c
++++ b/drivers/misc/ti-st/st_core.c
+@@ -15,6 +15,7 @@
+ #include <linux/skbuff.h>
  
--	if (irq >= 0) {
-+	if (irq > 0) {
- 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccint",
- 					  dev_name(dev));
- 		ret = devm_request_irq(dev, irq, dma_irq_handler, 0, irq_name,
-@@ -2426,7 +2426,7 @@ static int edma_probe(struct platform_device *pdev)
- 	if (irq < 0 && node)
- 		irq = irq_of_parse_and_map(node, 2);
+ #include <linux/ti_wilink_st.h>
++#include <linux/netdevice.h>
  
--	if (irq >= 0) {
-+	if (irq > 0) {
- 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccerrint",
- 					  dev_name(dev));
- 		ret = devm_request_irq(dev, irq, dma_ccerr_handler, 0, irq_name,
+ extern void st_kim_recv(void *, const unsigned char *, long);
+ void st_int_recv(void *, const unsigned char *, long);
+@@ -435,7 +436,7 @@ static void st_int_enqueue(struct st_data_s *st_gdata, struct sk_buff *skb)
+ 	case ST_LL_AWAKE_TO_ASLEEP:
+ 		pr_err("ST LL is illegal state(%ld),"
+ 			   "purging received skb.", st_ll_getstate(st_gdata));
+-		kfree_skb(skb);
++		dev_kfree_skb_irq(skb);
+ 		break;
+ 	case ST_LL_ASLEEP:
+ 		skb_queue_tail(&st_gdata->tx_waitq, skb);
+@@ -444,7 +445,7 @@ static void st_int_enqueue(struct st_data_s *st_gdata, struct sk_buff *skb)
+ 	default:
+ 		pr_err("ST LL is illegal state(%ld),"
+ 			   "purging received skb.", st_ll_getstate(st_gdata));
+-		kfree_skb(skb);
++		dev_kfree_skb_irq(skb);
+ 		break;
+ 	}
+ 
+@@ -498,7 +499,7 @@ void st_tx_wakeup(struct st_data_s *st_data)
+ 				spin_unlock_irqrestore(&st_data->lock, flags);
+ 				break;
+ 			}
+-			kfree_skb(skb);
++			dev_kfree_skb_irq(skb);
+ 			spin_unlock_irqrestore(&st_data->lock, flags);
+ 		}
+ 		/* if wake-up is set in another context- restart sending */
 -- 
 2.42.0
 
