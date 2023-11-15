@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F6E37ED32E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F42F7ED592
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233715AbjKOUqv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:46:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47960 "EHLO
+        id S235600AbjKOVHk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233713AbjKOUqj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:39 -0500
+        with ESMTP id S235623AbjKOVH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B62512C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4068C433C8;
-        Wed, 15 Nov 2023 20:46:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3661A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6652C4E75E;
+        Wed, 15 Nov 2023 20:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081194;
-        bh=7jAszeaE4u1SycSgASFnbIcv20YRrymSmYuMN/8ArN0=;
+        s=korg; t=1700081518;
+        bh=ufKb8br7FIJvULBAQyIJQvdTd9aqavU6jNI3qSxdyyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HyXV67N3iOgAHrxhD+2ZKLxVNQf56bRZPZ1PhJBAgrvEY4xI06zBoGnfsun7rYiG6
-         MiDk91xlxHDXqJKGZdbZjlM6X1ScoOovo88tJsJAF13I021pAm4br8kSOO/1l74UM9
-         W1ZqG/KQqJWWJAmacIjE41zBdkFFRfSlHVoiROGQ=
+        b=f+wDrpZAj2ieIvW7Ln2CsdIeoDYoMYAiiq/vAfyRxmY6yN5zrzDgWKxTA9JyvI+C6
+         qBqbk9P/18DD2oj9CtfP4mFRE1+1Qd6b+kKagP9cYWEYrQBX/GbrtN2tZ7gFi9dAGk
+         cMWOV5Tn8XSlHx4fx2jmt32QcXPm8uETxxqoIc5M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <zenczykowski@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Katya Orlova <e.orlova@ispras.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 83/88] netfilter: xt_recent: fix (increase) ipv6 literal buffer length
+Subject: [PATCH 5.15 203/244] media: s3c-camif: Avoid inappropriate kfree()
 Date:   Wed, 15 Nov 2023 15:36:35 -0500
-Message-ID: <20231115191431.039658201@linuxfoundation.org>
+Message-ID: <20231115203600.536742221@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,48 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Żenczykowski <zenczykowski@gmail.com>
+From: Katya Orlova <e.orlova@ispras.ru>
 
-[ Upstream commit 7b308feb4fd2d1c06919445c65c8fbf8e9fd1781 ]
+[ Upstream commit 61334819aca018c3416ee6c330a08a49c1524fc3 ]
 
-in6_pton() supports 'low-32-bit dot-decimal representation'
-(this is useful with DNS64/NAT64 networks for example):
+s3c_camif_register_video_node() works with video_device structure stored
+as a field of camif_vp, so it should not be kfreed.
+But there is video_device_release() on error path that do it.
 
-  # echo +aaaa:bbbb:cccc:dddd:eeee:ffff:1.2.3.4 > /proc/self/net/xt_recent/DEFAULT
-  # cat /proc/self/net/xt_recent/DEFAULT
-  src=aaaa:bbbb:cccc:dddd:eeee:ffff:0102:0304 ttl: 0 last_seen: 9733848829 oldest_pkt: 1 9733848829
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-but the provided buffer is too short:
-
-  # echo +aaaa:bbbb:cccc:dddd:eeee:ffff:255.255.255.255 > /proc/self/net/xt_recent/DEFAULT
-  -bash: echo: write error: Invalid argument
-
-Fixes: 079aa88fe717 ("netfilter: xt_recent: IPv6 support")
-Signed-off-by: Maciej Żenczykowski <zenczykowski@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: babde1c243b2 ("[media] V4L: Add driver for S3C24XX/S3C64XX SoC series camera interface")
+Signed-off-by: Katya Orlova <e.orlova@ispras.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_recent.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/s3c-camif/camif-capture.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/xt_recent.c b/net/netfilter/xt_recent.c
-index cb58bc7ae30d3..2dbf92346a7e5 100644
---- a/net/netfilter/xt_recent.c
-+++ b/net/netfilter/xt_recent.c
-@@ -566,7 +566,7 @@ recent_mt_proc_write(struct file *file, const char __user *input,
- {
- 	struct recent_table *t = PDE_DATA(file_inode(file));
- 	struct recent_entry *e;
--	char buf[sizeof("+b335:1d35:1e55:dead:c0de:1715:5afe:c0de")];
-+	char buf[sizeof("+b335:1d35:1e55:dead:c0de:1715:255.255.255.255")];
- 	const char *c = buf;
- 	union nf_inet_addr addr = {};
- 	u_int16_t family;
+diff --git a/drivers/media/platform/s3c-camif/camif-capture.c b/drivers/media/platform/s3c-camif/camif-capture.c
+index 140854ab4dd8c..d6b7fbd49a5cc 100644
+--- a/drivers/media/platform/s3c-camif/camif-capture.c
++++ b/drivers/media/platform/s3c-camif/camif-capture.c
+@@ -1132,12 +1132,12 @@ int s3c_camif_register_video_node(struct camif_dev *camif, int idx)
+ 
+ 	ret = vb2_queue_init(q);
+ 	if (ret)
+-		goto err_vd_rel;
++		return ret;
+ 
+ 	vp->pad.flags = MEDIA_PAD_FL_SINK;
+ 	ret = media_entity_pads_init(&vfd->entity, 1, &vp->pad);
+ 	if (ret)
+-		goto err_vd_rel;
++		return ret;
+ 
+ 	video_set_drvdata(vfd, vp);
+ 
+@@ -1170,8 +1170,6 @@ int s3c_camif_register_video_node(struct camif_dev *camif, int idx)
+ 	v4l2_ctrl_handler_free(&vp->ctrl_handler);
+ err_me_cleanup:
+ 	media_entity_cleanup(&vfd->entity);
+-err_vd_rel:
+-	video_device_release(vfd);
+ 	return ret;
+ }
+ 
 -- 
 2.42.0
 
