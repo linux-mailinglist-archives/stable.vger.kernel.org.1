@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1DDF7ECDE6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBD3E7ECFF7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234697AbjKOTjF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40674 "EHLO
+        id S235478AbjKOTwB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:52:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234721AbjKOTjD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:03 -0500
+        with ESMTP id S235471AbjKOTv7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E194B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6ED3C433C7;
-        Wed, 15 Nov 2023 19:38:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4503E1BF
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9055C433C7;
+        Wed, 15 Nov 2023 19:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077140;
-        bh=A22YEgDeCpTTqQrOEOWzRps+pTmid77ukvkt7oQcfDI=;
+        s=korg; t=1700077915;
+        bh=a22SUQ8wImYMMRTMDqGSZUu9nKLgDYHBkSDDnpRM2rs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SGWbnqQo5eyjEcDhhT0I/xH6002fMJ29wAmJFCX+J/MUUgcGlkQ0Ze1zWvYfc+vP6
-         9f1KsOpIXhM0nV+4G+os7lgBagXfG9AJ+F8FzvCcHLCIHKHcN5AaoJVepZNdakHpNy
-         VLSXewQd9FJ7p97FU5i3JDixiBQ1f2Bchwjs1h8I=
+        b=M4ALnclknHy7XfrOVp4LXReWyVPSg7nudiOr/P0tlRDoYc/QdsXNBYlrYb/TNTFft
+         XogxOq9KlkvHiJupjBVfAYsKJRbrxQIitV8QhmQ7hAE2YAlh6ZITZSGlLnCO/snH7+
+         arVgT3hnaSAhbi/4h0Qjz5z4T4frSBUN7WnDINlU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerome Brunet <jbrunet@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Roman Bacik <roman.bacik@broadcom.com>,
+        Ray Jui <ray.jui@broadcom.com>, Wolfram Sang <wsa@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 534/550] ASoC: hdmi-codec: register hpd callback on component probe
+Subject: [PATCH 6.6 573/603] i2c: iproc: handle invalid slave state
 Date:   Wed, 15 Nov 2023 14:18:38 -0500
-Message-ID: <20231115191637.957323642@linuxfoundation.org>
+Message-ID: <20231115191651.149302898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,87 +50,202 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Roman Bacik <roman.bacik@broadcom.com>
 
-[ Upstream commit 15be353d55f9e12e34f9a819f51eb41fdef5eda8 ]
+[ Upstream commit ba15a14399c262f91ce30c19fcbdc952262dd1be ]
 
-The HDMI hotplug callback to the hdmi-codec is currently registered when
-jack is set.
+Add the code to handle an invalid state when both bits S_RX_EVENT
+(indicating a transaction) and S_START_BUSY (indicating the end
+of transaction - transition of START_BUSY from 1 to 0) are set in
+the interrupt status register during a slave read.
 
-The hotplug not only serves to report the ASoC jack state but also to get
-the ELD. It should be registered when the component probes instead, so it
-does not depend on the card driver registering a jack for the HDMI to
-properly report the ELD.
-
-Fixes: 25ce4f2b3593 ("ASoC: hdmi-codec: Get ELD in before reporting plugged event")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20231106104013.704356-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Roman Bacik <roman.bacik@broadcom.com>
+Fixes: 1ca1b4516088 ("i2c: iproc: handle Master aborted error")
+Acked-by: Ray Jui <ray.jui@broadcom.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hdmi-codec.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/i2c/busses/i2c-bcm-iproc.c | 133 ++++++++++++++++-------------
+ 1 file changed, 75 insertions(+), 58 deletions(-)
 
-diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
-index d661bc9255f92..91e0b635fb82c 100644
---- a/sound/soc/codecs/hdmi-codec.c
-+++ b/sound/soc/codecs/hdmi-codec.c
-@@ -895,18 +895,13 @@ static int hdmi_codec_set_jack(struct snd_soc_component *component,
- 			       void *data)
+diff --git a/drivers/i2c/busses/i2c-bcm-iproc.c b/drivers/i2c/busses/i2c-bcm-iproc.c
+index 51aab662050b1..e905734c26a04 100644
+--- a/drivers/i2c/busses/i2c-bcm-iproc.c
++++ b/drivers/i2c/busses/i2c-bcm-iproc.c
+@@ -316,26 +316,44 @@ static void bcm_iproc_i2c_slave_init(
+ 	iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+ }
+ 
+-static void bcm_iproc_i2c_check_slave_status(
+-	struct bcm_iproc_i2c_dev *iproc_i2c)
++static bool bcm_iproc_i2c_check_slave_status
++	(struct bcm_iproc_i2c_dev *iproc_i2c, u32 status)
  {
- 	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
--	int ret = -ENOTSUPP;
+ 	u32 val;
++	bool recover = false;
  
- 	if (hcp->hcd.ops->hook_plugged_cb) {
- 		hcp->jack = jack;
--		ret = hcp->hcd.ops->hook_plugged_cb(component->dev->parent,
--						    hcp->hcd.data,
--						    plugged_cb,
--						    component->dev);
--		if (ret)
--			hcp->jack = NULL;
-+		return 0;
- 	}
--	return ret;
-+
-+	return -ENOTSUPP;
- }
- 
- static int hdmi_dai_spdif_probe(struct snd_soc_dai *dai)
-@@ -982,6 +977,21 @@ static int hdmi_of_xlate_dai_id(struct snd_soc_component *component,
- 	return ret;
- }
- 
-+static int hdmi_probe(struct snd_soc_component *component)
-+{
-+	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
-+	int ret = 0;
-+
-+	if (hcp->hcd.ops->hook_plugged_cb) {
-+		ret = hcp->hcd.ops->hook_plugged_cb(component->dev->parent,
-+						    hcp->hcd.data,
-+						    plugged_cb,
-+						    component->dev);
+-	val = iproc_i2c_rd_reg(iproc_i2c, S_CMD_OFFSET);
+-	/* status is valid only when START_BUSY is cleared after it was set */
+-	if (val & BIT(S_CMD_START_BUSY_SHIFT))
+-		return;
++	/* check slave transmit status only if slave is transmitting */
++	if (!iproc_i2c->slave_rx_only) {
++		val = iproc_i2c_rd_reg(iproc_i2c, S_CMD_OFFSET);
++		/* status is valid only when START_BUSY is cleared */
++		if (!(val & BIT(S_CMD_START_BUSY_SHIFT))) {
++			val = (val >> S_CMD_STATUS_SHIFT) & S_CMD_STATUS_MASK;
++			if (val == S_CMD_STATUS_TIMEOUT ||
++			    val == S_CMD_STATUS_MASTER_ABORT) {
++				dev_warn(iproc_i2c->device,
++					 (val == S_CMD_STATUS_TIMEOUT) ?
++					 "slave random stretch time timeout\n" :
++					 "Master aborted read transaction\n");
++				recover = true;
++			}
++		}
 +	}
 +
-+	return ret;
-+}
++	/* RX_EVENT is not valid when START_BUSY is set */
++	if ((status & BIT(IS_S_RX_EVENT_SHIFT)) &&
++	    (status & BIT(IS_S_START_BUSY_SHIFT))) {
++		dev_warn(iproc_i2c->device, "Slave aborted read transaction\n");
++		recover = true;
++	}
+ 
+-	val = (val >> S_CMD_STATUS_SHIFT) & S_CMD_STATUS_MASK;
+-	if (val == S_CMD_STATUS_TIMEOUT || val == S_CMD_STATUS_MASTER_ABORT) {
+-		dev_err(iproc_i2c->device, (val == S_CMD_STATUS_TIMEOUT) ?
+-			"slave random stretch time timeout\n" :
+-			"Master aborted read transaction\n");
++	if (recover) {
+ 		/* re-initialize i2c for recovery */
+ 		bcm_iproc_i2c_enable_disable(iproc_i2c, false);
+ 		bcm_iproc_i2c_slave_init(iproc_i2c, true);
+ 		bcm_iproc_i2c_enable_disable(iproc_i2c, true);
+ 	}
 +
- static void hdmi_remove(struct snd_soc_component *component)
- {
- 	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
-@@ -992,6 +1002,7 @@ static void hdmi_remove(struct snd_soc_component *component)
++	return recover;
  }
  
- static const struct snd_soc_component_driver hdmi_driver = {
-+	.probe			= hdmi_probe,
- 	.remove			= hdmi_remove,
- 	.dapm_widgets		= hdmi_widgets,
- 	.num_dapm_widgets	= ARRAY_SIZE(hdmi_widgets),
+ static void bcm_iproc_i2c_slave_read(struct bcm_iproc_i2c_dev *iproc_i2c)
+@@ -420,48 +438,6 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
+ 	u32 val;
+ 	u8 value;
+ 
+-	/*
+-	 * Slave events in case of master-write, master-write-read and,
+-	 * master-read
+-	 *
+-	 * Master-write     : only IS_S_RX_EVENT_SHIFT event
+-	 * Master-write-read: both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
+-	 *                    events
+-	 * Master-read      : both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
+-	 *                    events or only IS_S_RD_EVENT_SHIFT
+-	 *
+-	 * iproc has a slave rx fifo size of 64 bytes. Rx fifo full interrupt
+-	 * (IS_S_RX_FIFO_FULL_SHIFT) will be generated when RX fifo becomes
+-	 * full. This can happen if Master issues write requests of more than
+-	 * 64 bytes.
+-	 */
+-	if (status & BIT(IS_S_RX_EVENT_SHIFT) ||
+-	    status & BIT(IS_S_RD_EVENT_SHIFT) ||
+-	    status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
+-		/* disable slave interrupts */
+-		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
+-		val &= ~iproc_i2c->slave_int_mask;
+-		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+-
+-		if (status & BIT(IS_S_RD_EVENT_SHIFT))
+-			/* Master-write-read request */
+-			iproc_i2c->slave_rx_only = false;
+-		else
+-			/* Master-write request only */
+-			iproc_i2c->slave_rx_only = true;
+-
+-		/* schedule tasklet to read data later */
+-		tasklet_schedule(&iproc_i2c->slave_rx_tasklet);
+-
+-		/*
+-		 * clear only IS_S_RX_EVENT_SHIFT and
+-		 * IS_S_RX_FIFO_FULL_SHIFT interrupt.
+-		 */
+-		val = BIT(IS_S_RX_EVENT_SHIFT);
+-		if (status & BIT(IS_S_RX_FIFO_FULL_SHIFT))
+-			val |= BIT(IS_S_RX_FIFO_FULL_SHIFT);
+-		iproc_i2c_wr_reg(iproc_i2c, IS_OFFSET, val);
+-	}
+ 
+ 	if (status & BIT(IS_S_TX_UNDERRUN_SHIFT)) {
+ 		iproc_i2c->tx_underrun++;
+@@ -493,8 +469,9 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
+ 		 * less than PKT_LENGTH bytes were output on the SMBUS
+ 		 */
+ 		iproc_i2c->slave_int_mask &= ~BIT(IE_S_TX_UNDERRUN_SHIFT);
+-		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET,
+-				 iproc_i2c->slave_int_mask);
++		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
++		val &= ~BIT(IE_S_TX_UNDERRUN_SHIFT);
++		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+ 
+ 		/* End of SMBUS for Master Read */
+ 		val = BIT(S_TX_WR_STATUS_SHIFT);
+@@ -515,9 +492,49 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
+ 				 BIT(IS_S_START_BUSY_SHIFT));
+ 	}
+ 
+-	/* check slave transmit status only if slave is transmitting */
+-	if (!iproc_i2c->slave_rx_only)
+-		bcm_iproc_i2c_check_slave_status(iproc_i2c);
++	/* if the controller has been reset, immediately return from the ISR */
++	if (bcm_iproc_i2c_check_slave_status(iproc_i2c, status))
++		return true;
++
++	/*
++	 * Slave events in case of master-write, master-write-read and,
++	 * master-read
++	 *
++	 * Master-write     : only IS_S_RX_EVENT_SHIFT event
++	 * Master-write-read: both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
++	 *                    events
++	 * Master-read      : both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
++	 *                    events or only IS_S_RD_EVENT_SHIFT
++	 *
++	 * iproc has a slave rx fifo size of 64 bytes. Rx fifo full interrupt
++	 * (IS_S_RX_FIFO_FULL_SHIFT) will be generated when RX fifo becomes
++	 * full. This can happen if Master issues write requests of more than
++	 * 64 bytes.
++	 */
++	if (status & BIT(IS_S_RX_EVENT_SHIFT) ||
++	    status & BIT(IS_S_RD_EVENT_SHIFT) ||
++	    status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
++		/* disable slave interrupts */
++		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
++		val &= ~iproc_i2c->slave_int_mask;
++		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
++
++		if (status & BIT(IS_S_RD_EVENT_SHIFT))
++			/* Master-write-read request */
++			iproc_i2c->slave_rx_only = false;
++		else
++			/* Master-write request only */
++			iproc_i2c->slave_rx_only = true;
++
++		/* schedule tasklet to read data later */
++		tasklet_schedule(&iproc_i2c->slave_rx_tasklet);
++
++		/* clear IS_S_RX_FIFO_FULL_SHIFT interrupt */
++		if (status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
++			val = BIT(IS_S_RX_FIFO_FULL_SHIFT);
++			iproc_i2c_wr_reg(iproc_i2c, IS_OFFSET, val);
++		}
++	}
+ 
+ 	return true;
+ }
 -- 
 2.42.0
 
