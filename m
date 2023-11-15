@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3570E7ED303
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F3587ED4BC
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233622AbjKOUpt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59912 "EHLO
+        id S1344587AbjKOU7A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233677AbjKOUpk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:40 -0500
+        with ESMTP id S1344733AbjKOU5s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C55D1B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FDEC433CA;
-        Wed, 15 Nov 2023 20:45:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8BC71BDA
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C95C4E688;
+        Wed, 15 Nov 2023 20:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081132;
-        bh=smXJW1NNB5+3nRHIcN6q89vbl2v/USnDTVWMrT5+GMo=;
+        s=korg; t=1700081477;
+        bh=URFerkjftjb9bbkpsZmmtbECGdFt0+f9qIJxfUKwa0Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fkIHohmipLPjhIrHtDEtnNypdqND0sduYHX5bpnJLdjLvzpKoDp8/2RGcALYUs9pD
-         Qg3SdXC5vopMp75LAgRAvSK8LO3udmZ0Y4tgJ4idPFEny9iGoC1Q2f91SVUNzVRi4/
-         /PHTuZsZsbigq+gf2paGXzK1BV6JwO6b24w842AI=
+        b=K1YSeyQxbI8d8kQphcUeg6mZW4TKIaKJL/wgtrqzC5GMhPj9rxOmoShGY2YwBJjoY
+         2r3WfZsswCg10MjbOfUNe1+Csmxmslh2E87A8EhlJCXaxy/2DXEfXZJWPoPsNPP5s+
+         x5KwRVUFCh84VV2ESPTxOkAhHiF42zsx3mU9xd5c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 58/88] tools: iio: iio_generic_buffer ensure alignment
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 178/244] dmaengine: ti: edma: handle irq_of_parse_and_map() errors
 Date:   Wed, 15 Nov 2023 15:36:10 -0500
-Message-ID: <20231115191429.630415666@linuxfoundation.org>
+Message-ID: <20231115203559.071885323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 2d3dff577dd0ea8fe9637a13822f7603c4a881c8 ]
+[ Upstream commit 14f6d317913f634920a640e9047aa2e66f5bdcb7 ]
 
-The iio_generic_buffer can return garbage values when the total size of
-scan data is not a multiple of the largest element in the scan. This can be
-demonstrated by reading a scan, consisting, for example of one 4-byte and
-one 2-byte element, where the 4-byte element is first in the buffer.
+Zero is not a valid IRQ for in-kernel code and the irq_of_parse_and_map()
+function returns zero on error.  So this check for valid IRQs should only
+accept values > 0.
 
-The IIO generic buffer code does not take into account the last two
-padding bytes that are needed to ensure that the 4-byte data for next
-scan is correctly aligned.
-
-Add the padding bytes required to align the next sample with the scan size.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: e58537ccce73 ("staging: iio: update example application.")
-Link: https://lore.kernel.org/r/ZRvlm4ktNLu+qmlf@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/f15cb6a7-8449-4f79-98b6-34072f04edbc@moroto.mountain
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_generic_buffer.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/dma/ti/edma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 8360605f01db8..ca9f33fa51c9f 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -56,9 +56,12 @@ enum autochan {
- static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
- {
- 	unsigned int bytes = 0;
--	int i = 0;
-+	int i = 0, max = 0;
-+	unsigned int misalignment;
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index 35d81bd857f11..a1adc8d91fd8d 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -2459,7 +2459,7 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq < 0 && node)
+ 		irq = irq_of_parse_and_map(node, 0);
  
- 	while (i < num_channels) {
-+		if (channels[i].bytes > max)
-+			max = channels[i].bytes;
- 		if (bytes % channels[i].bytes == 0)
- 			channels[i].location = bytes;
- 		else
-@@ -68,6 +71,14 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
- 		bytes = channels[i].location + channels[i].bytes;
- 		i++;
- 	}
-+	/*
-+	 * We want the data in next sample to also be properly aligned so
-+	 * we'll add padding at the end if needed. Adding padding only
-+	 * works for channel data which size is 2^n bytes.
-+	 */
-+	misalignment = bytes % max;
-+	if (misalignment)
-+		bytes += max - misalignment;
+-	if (irq >= 0) {
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccint",
+ 					  dev_name(dev));
+ 		ret = devm_request_irq(dev, irq, dma_irq_handler, 0, irq_name,
+@@ -2475,7 +2475,7 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq < 0 && node)
+ 		irq = irq_of_parse_and_map(node, 2);
  
- 	return bytes;
- }
+-	if (irq >= 0) {
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccerrint",
+ 					  dev_name(dev));
+ 		ret = devm_request_irq(dev, irq, dma_ccerr_handler, 0, irq_name,
 -- 
 2.42.0
 
