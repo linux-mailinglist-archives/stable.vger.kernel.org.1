@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFEDD7ED13B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7404E7ED11D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:59:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344076AbjKOUAP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:00:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33582 "EHLO
+        id S1344023AbjKOT7d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:59:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344107AbjKOUAM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:12 -0500
+        with ESMTP id S1344024AbjKOT7b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:59:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2F11A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:00:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDA8C433C8;
-        Wed, 15 Nov 2023 20:00:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AC8819E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:59:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BFFC433C8;
+        Wed, 15 Nov 2023 19:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078408;
-        bh=KTiPfex45eBREzWwkt8SqIXr7NSYm28DL9TXwKVKEfI=;
+        s=korg; t=1700078365;
+        bh=+jWkjjjyVtbJqWjVHu9a0OznOunAC9LTWbJXXqWhc+E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0a4dLjgYvKgYcI3ureN1HhtVNylO5JlAlw1gdrqx8KJ2I07OKDXra46za7CvshQeT
-         VFN8SlTEadlu5pDdeZ2v5rAtYF00u5z3xcea4HgVNUhJiRqLgHkcSqW+aI7i919+mx
-         vA8vT2YHsNIhaViNCN6jkAp6edOwzQg28/XLIfyA=
+        b=tDuM0TPYWihVBjJLxF9A3eoUDJeB83Q8V53WvhSmNlRiyS0U5tpiAh/W1xgn1lJ9A
+         x4X7z8HvnqlcAcrtdZXPWPovvKswOcZt+kosbL8/0hHmOfxFhs9BUUxUy/oeN1hpTz
+         xHMr1KAEmtA7R6nBpG9KTLds4IbDb2GHaFBRsW08=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 270/379] usb: chipidea: Simplify Tegra DMA alignment code
-Date:   Wed, 15 Nov 2023 14:25:45 -0500
-Message-ID: <20231115192701.105855689@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 271/379] dmaengine: ti: edma: handle irq_of_parse_and_map() errors
+Date:   Wed, 15 Nov 2023 14:25:46 -0500
+Message-ID: <20231115192701.159075829@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -39,7 +39,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,133 +54,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 2ae61a2562c0d1720545b0845829a65fb6a9c2c6 ]
+[ Upstream commit 14f6d317913f634920a640e9047aa2e66f5bdcb7 ]
 
-The USB host on Tegra3 works with 32-bit alignment. Previous code tried
-to align the buffer, but it did align the wrapper struct instead, so
-the buffer was at a constant offset of 8 bytes (two pointers) from
-expected alignment.  Since kmalloc() guarantees at least 8-byte
-alignment already, the alignment-extending is removed.
+Zero is not a valid IRQ for in-kernel code and the irq_of_parse_and_map()
+function returns zero on error.  So this check for valid IRQs should only
+accept values > 0.
 
-Fixes: fc53d5279094 ("usb: chipidea: tegra: Support host mode")
-Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Link: https://lore.kernel.org/r/a0d917d492b1f91ee0019e68b8e8bca9c585393f.1695934946.git.mirq-linux@rere.qmqm.pl
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/f15cb6a7-8449-4f79-98b6-34072f04edbc@moroto.mountain
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/host.c | 45 +++++++++++++++----------------------
- 1 file changed, 18 insertions(+), 27 deletions(-)
+ drivers/dma/ti/edma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/chipidea/host.c b/drivers/usb/chipidea/host.c
-index fae4b2f9b9b21..34bbdfadd66f3 100644
---- a/drivers/usb/chipidea/host.c
-+++ b/drivers/usb/chipidea/host.c
-@@ -30,8 +30,7 @@ struct ehci_ci_priv {
- };
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index fa06d7e6d8e38..7ec6e5d728b03 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -2410,7 +2410,7 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq < 0 && node)
+ 		irq = irq_of_parse_and_map(node, 0);
  
- struct ci_hdrc_dma_aligned_buffer {
--	void *kmalloc_ptr;
--	void *old_xfer_buffer;
-+	void *original_buffer;
- 	u8 data[];
- };
+-	if (irq >= 0) {
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccint",
+ 					  dev_name(dev));
+ 		ret = devm_request_irq(dev, irq, dma_irq_handler, 0, irq_name,
+@@ -2426,7 +2426,7 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq < 0 && node)
+ 		irq = irq_of_parse_and_map(node, 2);
  
-@@ -380,60 +379,52 @@ static int ci_ehci_bus_suspend(struct usb_hcd *hcd)
- 	return 0;
- }
- 
--static void ci_hdrc_free_dma_aligned_buffer(struct urb *urb)
-+static void ci_hdrc_free_dma_aligned_buffer(struct urb *urb, bool copy_back)
- {
- 	struct ci_hdrc_dma_aligned_buffer *temp;
--	size_t length;
- 
- 	if (!(urb->transfer_flags & URB_ALIGNED_TEMP_BUFFER))
- 		return;
-+	urb->transfer_flags &= ~URB_ALIGNED_TEMP_BUFFER;
- 
- 	temp = container_of(urb->transfer_buffer,
- 			    struct ci_hdrc_dma_aligned_buffer, data);
-+	urb->transfer_buffer = temp->original_buffer;
-+
-+	if (copy_back && usb_urb_dir_in(urb)) {
-+		size_t length;
- 
--	if (usb_urb_dir_in(urb)) {
- 		if (usb_pipeisoc(urb->pipe))
- 			length = urb->transfer_buffer_length;
- 		else
- 			length = urb->actual_length;
- 
--		memcpy(temp->old_xfer_buffer, temp->data, length);
-+		memcpy(temp->original_buffer, temp->data, length);
- 	}
--	urb->transfer_buffer = temp->old_xfer_buffer;
--	kfree(temp->kmalloc_ptr);
- 
--	urb->transfer_flags &= ~URB_ALIGNED_TEMP_BUFFER;
-+	kfree(temp);
- }
- 
- static int ci_hdrc_alloc_dma_aligned_buffer(struct urb *urb, gfp_t mem_flags)
- {
--	struct ci_hdrc_dma_aligned_buffer *temp, *kmalloc_ptr;
--	const unsigned int ci_hdrc_usb_dma_align = 32;
--	size_t kmalloc_size;
-+	struct ci_hdrc_dma_aligned_buffer *temp;
- 
- 	if (urb->num_sgs || urb->sg || urb->transfer_buffer_length == 0)
- 		return 0;
--	if (!((uintptr_t)urb->transfer_buffer & (ci_hdrc_usb_dma_align - 1)) && !(urb->transfer_buffer_length & 3))
-+	if (IS_ALIGNED((uintptr_t)urb->transfer_buffer, 4)
-+	    && IS_ALIGNED(urb->transfer_buffer_length, 4))
- 		return 0;
- 
--	/* Allocate a buffer with enough padding for alignment */
--	kmalloc_size = ALIGN(urb->transfer_buffer_length, 4) +
--		       sizeof(struct ci_hdrc_dma_aligned_buffer) +
--		       ci_hdrc_usb_dma_align - 1;
--
--	kmalloc_ptr = kmalloc(kmalloc_size, mem_flags);
--	if (!kmalloc_ptr)
-+	temp = kmalloc(sizeof(*temp) + ALIGN(urb->transfer_buffer_length, 4), mem_flags);
-+	if (!temp)
- 		return -ENOMEM;
- 
--	/* Position our struct dma_aligned_buffer such that data is aligned */
--	temp = PTR_ALIGN(kmalloc_ptr + 1, ci_hdrc_usb_dma_align) - 1;
--	temp->kmalloc_ptr = kmalloc_ptr;
--	temp->old_xfer_buffer = urb->transfer_buffer;
- 	if (usb_urb_dir_out(urb))
- 		memcpy(temp->data, urb->transfer_buffer,
- 		       urb->transfer_buffer_length);
--	urb->transfer_buffer = temp->data;
- 
-+	temp->original_buffer = urb->transfer_buffer;
-+	urb->transfer_buffer = temp->data;
- 	urb->transfer_flags |= URB_ALIGNED_TEMP_BUFFER;
- 
- 	return 0;
-@@ -450,7 +441,7 @@ static int ci_hdrc_map_urb_for_dma(struct usb_hcd *hcd, struct urb *urb,
- 
- 	ret = usb_hcd_map_urb_for_dma(hcd, urb, mem_flags);
- 	if (ret)
--		ci_hdrc_free_dma_aligned_buffer(urb);
-+		ci_hdrc_free_dma_aligned_buffer(urb, false);
- 
- 	return ret;
- }
-@@ -458,7 +449,7 @@ static int ci_hdrc_map_urb_for_dma(struct usb_hcd *hcd, struct urb *urb,
- static void ci_hdrc_unmap_urb_for_dma(struct usb_hcd *hcd, struct urb *urb)
- {
- 	usb_hcd_unmap_urb_for_dma(hcd, urb);
--	ci_hdrc_free_dma_aligned_buffer(urb);
-+	ci_hdrc_free_dma_aligned_buffer(urb, true);
- }
- 
- int ci_hdrc_host_init(struct ci_hdrc *ci)
+-	if (irq >= 0) {
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccerrint",
+ 					  dev_name(dev));
+ 		ret = devm_request_irq(dev, irq, dma_ccerr_handler, 0, irq_name,
 -- 
 2.42.0
 
