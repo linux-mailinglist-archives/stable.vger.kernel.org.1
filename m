@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 876BF7ECE38
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC3A37ECBC5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234821AbjKOTlj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:41:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36698 "EHLO
+        id S232716AbjKOTYW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234929AbjKOTli (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:38 -0500
+        with ESMTP id S232706AbjKOTYW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84DDF189
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5B0C433C9;
-        Wed, 15 Nov 2023 19:41:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17E3119D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EABDC433C8;
+        Wed, 15 Nov 2023 19:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077295;
-        bh=Kc9XiUrTLV81auMzpX64UP9Eo4VNUGTv/c5mzaFHtzg=;
+        s=korg; t=1700076258;
+        bh=GdCZ6pXPpGqHfp4fZrQcT06qjKISCI+LQAB975t2Quo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DW4kmPmbHY0QhaoQtrWF4wcZG5SfIkaGuPp5hru5kAoNc+oKG5bhPywfgYTQSvGZl
-         3emoD9A+qM8TjYKoTVu3Z4C0f+UK2VnM9FvzkI8EsYbKQrNsAN5a93rkyl0dgWpI/i
-         LiaL5Jq+oO9xBejLr8rjRw42LUANtgiA6Neyla9I=
+        b=EyKnmGt6n0bPw0X8DCyfPJAyzymU633OL3sNoZXdn7V5d4pMZE02/oOY5MzbZyKzU
+         IrS8NMwvlcD4CpMT/g5816c0ReDPWclxh1y5v1eSWf5FYng7hJluJwjveXPl2++EwV
+         W8KwOo1qepFW4jJTCr5Ym2Tn/NgOFvf7nbpCVsxI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Marek Vasut <marex@denx.de>, Robert Foss <rfoss@kernel.org>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 216/603] drm: bridge: samsung-dsim: Fix waiting for empty cmd transfer FIFO on older Exynos
+Subject: [PATCH 6.5 177/550] clk: mediatek: clk-mt6797: Add check for mtk_alloc_clk_data
 Date:   Wed, 15 Nov 2023 14:12:41 -0500
-Message-ID: <20231115191628.235677581@linuxfoundation.org>
+Message-ID: <20231115191612.999048113@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,85 +52,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 15f389da11257b806da75a070cfa41ca0cc15aae ]
+[ Upstream commit 606f6366a35a3329545e38129804d65ef26ed7d2 ]
 
-Samsung DSIM used in older Exynos SoCs (like Exynos 4210, 4x12, 3250)
-doesn't report empty level of packer header FIFO. In case of those SoCs,
-use the old way of waiting for empty command tranfsfer FIFO, removed
-recently by commit 14806c641582 ("drm: bridge: samsung-dsim: Drain command transfer FIFO before transfer").
+Add the check for the return value of mtk_alloc_clk_data() in order to
+avoid NULL pointer dereference.
 
-Fixes: 14806c641582 ("drm: bridge: samsung-dsim: Drain command transfer FIFO before transfer")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230809145641.3213210-1-m.szyprowski@samsung.com
+Fixes: 96596aa06628 ("clk: mediatek: add clk support for MT6797")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230912093407.21505-3-jiasheng@iscas.ac.cn
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 18 ++++++++++++++++--
- include/drm/bridge/samsung-dsim.h     |  1 +
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ drivers/clk/mediatek/clk-mt6797.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 6f2ca74238d14..19bdb32dbc9aa 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -413,6 +413,7 @@ static const struct samsung_dsim_driver_data exynos3_dsi_driver_data = {
- 	.m_min = 41,
- 	.m_max = 125,
- 	.min_freq = 500,
-+	.has_broken_fifoctrl_emptyhdr = 1,
- };
+diff --git a/drivers/clk/mediatek/clk-mt6797.c b/drivers/clk/mediatek/clk-mt6797.c
+index 4c87c0348e5f4..d8303d5efc7fe 100644
+--- a/drivers/clk/mediatek/clk-mt6797.c
++++ b/drivers/clk/mediatek/clk-mt6797.c
+@@ -392,6 +392,8 @@ static int mtk_topckgen_init(struct platform_device *pdev)
+ 		return PTR_ERR(base);
  
- static const struct samsung_dsim_driver_data exynos4_dsi_driver_data = {
-@@ -429,6 +430,7 @@ static const struct samsung_dsim_driver_data exynos4_dsi_driver_data = {
- 	.m_min = 41,
- 	.m_max = 125,
- 	.min_freq = 500,
-+	.has_broken_fifoctrl_emptyhdr = 1,
- };
+ 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR);
++	if (!clk_data)
++		return -ENOMEM;
  
- static const struct samsung_dsim_driver_data exynos5_dsi_driver_data = {
-@@ -1010,8 +1012,20 @@ static int samsung_dsim_wait_for_hdr_fifo(struct samsung_dsim *dsi)
- 	do {
- 		u32 reg = samsung_dsim_read(dsi, DSIM_FIFOCTRL_REG);
+ 	mtk_clk_register_factors(top_fixed_divs, ARRAY_SIZE(top_fixed_divs),
+ 				 clk_data);
+@@ -547,6 +549,8 @@ static void mtk_infrasys_init_early(struct device_node *node)
  
--		if (reg & DSIM_SFR_HEADER_EMPTY)
--			return 0;
-+		if (!dsi->driver_data->has_broken_fifoctrl_emptyhdr) {
-+			if (reg & DSIM_SFR_HEADER_EMPTY)
-+				return 0;
-+		} else {
-+			if (!(reg & DSIM_SFR_HEADER_FULL)) {
-+				/*
-+				 * Wait a little bit, so the pending data can
-+				 * actually leave the FIFO to avoid overflow.
-+				 */
-+				if (!cond_resched())
-+					usleep_range(950, 1050);
-+				return 0;
-+			}
-+		}
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return;
  
- 		if (!cond_resched())
- 			usleep_range(950, 1050);
-diff --git a/include/drm/bridge/samsung-dsim.h b/include/drm/bridge/samsung-dsim.h
-index 05100e91ecb96..6fc9bb2979e45 100644
---- a/include/drm/bridge/samsung-dsim.h
-+++ b/include/drm/bridge/samsung-dsim.h
-@@ -53,6 +53,7 @@ struct samsung_dsim_driver_data {
- 	unsigned int plltmr_reg;
- 	unsigned int has_freqband:1;
- 	unsigned int has_clklane_stop:1;
-+	unsigned int has_broken_fifoctrl_emptyhdr:1;
- 	unsigned int num_clks;
- 	unsigned int min_freq;
- 	unsigned int max_freq;
+ 		for (i = 0; i < CLK_INFRA_NR; i++)
+ 			infra_clk_data->hws[i] = ERR_PTR(-EPROBE_DEFER);
+@@ -572,6 +576,8 @@ static int mtk_infrasys_init(struct platform_device *pdev)
+ 
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return -ENOMEM;
+ 	} else {
+ 		for (i = 0; i < CLK_INFRA_NR; i++) {
+ 			if (infra_clk_data->hws[i] == ERR_PTR(-EPROBE_DEFER))
 -- 
 2.42.0
 
