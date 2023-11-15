@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A80F27ED441
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC37F7ED4EB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235077AbjKOU5b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
+        id S1344803AbjKOU7g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235568AbjKOU5Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:24 -0500
+        with ESMTP id S1344705AbjKOU6J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612A21AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A357C4E778;
-        Wed, 15 Nov 2023 20:57:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 784D71FD5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF90C32787;
+        Wed, 15 Nov 2023 20:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081839;
-        bh=uN+ySpwOhxBhsRMuvpL1zj5pi4oGXZpJ4yLmTWzA0S4=;
+        s=korg; t=1700081841;
+        bh=RZoFvYBIoi3oWaTSCAK7fu6Df5l4ULCoshICXAWtab0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nP8oO9FkHx96wE6naK6EBo5rU/H91KYgQpJ6Zn20AlrbJ0LPk0KvUIfwWhpGK6sj3
-         j6wrhVBu5uhfe5Hdz8hGTFBD77UIq78eoGlZ8XViPfyyV4/30bYe0Sa/hbQkxKIJts
-         txzcSuRzUXGVjB5juk2UifA/CSAqNGEdLufhB76o=
+        b=EFHy0vYrDmiIXE4xvzurLJLZxqlEAcPBY9ZuIxN0V5tOkA0skp3RHEst0RqBIBu0W
+         RKG/8rVzxa4aMZAgSSOGNMZjtk0t4bYPziWhbceH5FDqRRlJzo/vYEuBPbYTyv0gAR
+         uf7HTxMWin5RGIOJN8/8HJfMjzXQ0rYaZeLoDLo4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/191] dmaengine: pxa_dma: Remove an erroneous BUG_ON() in pxad_free_desc()
-Date:   Wed, 15 Nov 2023 15:46:49 -0500
-Message-ID: <20231115204652.564607320@linuxfoundation.org>
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 135/191] f2fs: fix to initialize map.m_pblk in f2fs_precache_extents()
+Date:   Wed, 15 Nov 2023 15:46:50 -0500
+Message-ID: <20231115204652.626544460@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -54,41 +54,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 83c761f568733277ce1f7eb9dc9e890649c29a8c ]
+[ Upstream commit 8b07c1fb0f1ad139373c8253f2fad8bc43fab07d ]
 
-If pxad_alloc_desc() fails on the first dma_pool_alloc() call, then
-sw_desc->nb_desc is zero.
-In such a case pxad_free_desc() is called and it will BUG_ON().
+Otherwise, it may print random physical block address in tracepoint
+of f2fs_map_blocks() as below:
 
-Remove this erroneous BUG_ON().
+f2fs_map_blocks: dev = (253,16), ino = 2297, file offset = 0, start blkaddr = 0xa356c421, len = 0x0, flags = 0
 
-It is also useless, because if "sw_desc->nb_desc == 0", then, on the first
-iteration of the for loop, i is -1 and the loop will not be executed.
-(both i and sw_desc->nb_desc are 'int')
-
-Fixes: a57e16cf0333 ("dmaengine: pxa: add pxa dmaengine driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/c8fc5563c9593c914fde41f0f7d1489a21b45a9a.1696676782.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/pxa_dma.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/f2fs/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
-index 68d9d60c051d9..9ce75ff9fa1cc 100644
---- a/drivers/dma/pxa_dma.c
-+++ b/drivers/dma/pxa_dma.c
-@@ -723,7 +723,6 @@ static void pxad_free_desc(struct virt_dma_desc *vd)
- 	dma_addr_t dma;
- 	struct pxad_desc_sw *sw_desc = to_pxad_sw_desc(vd);
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 6e91be5b8c30f..4e6b93f167589 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3315,6 +3315,7 @@ int f2fs_precache_extents(struct inode *inode)
+ 		return -EOPNOTSUPP;
  
--	BUG_ON(sw_desc->nb_desc == 0);
- 	for (i = sw_desc->nb_desc - 1; i >= 0; i--) {
- 		if (i > 0)
- 			dma = sw_desc->hw_desc[i - 1]->ddadr;
+ 	map.m_lblk = 0;
++	map.m_pblk = 0;
+ 	map.m_next_pgofs = NULL;
+ 	map.m_next_extent = &m_next_extent;
+ 	map.m_seg_type = NO_CHECK_TYPE;
 -- 
 2.42.0
 
