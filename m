@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF1707ED4A6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 039277ED2D2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344885AbjKOU6q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36972 "EHLO
+        id S233403AbjKOUog (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344703AbjKOU5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:44 -0500
+        with ESMTP id S233492AbjKOUog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6855019B0
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65464C36AF0;
-        Wed, 15 Nov 2023 20:49:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FBF0125
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86162C433C7;
+        Wed, 15 Nov 2023 20:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081387;
-        bh=SFbW8EqXKoevyEApsjN0/7tqxJ3eaWiu0Up0P5EW69E=;
+        s=korg; t=1700081071;
+        bh=FEElsma4a6VmbKraRQhOVhD1DjHzD+pqzrLXAkSuGw4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HcC7VI2EfzVAyKIDreb+grLyVkvIWWfEDyV1ZiQ2sW4R77wrkTIq2m7cYDIwwdNTf
-         lIRCZgGc8Dco94ZoDORWTTzdmf/Q7gxN24FGKWiiFDQVE+NwIrJUhMAVX83jRd2I6R
-         alr1mmk6knWRSvCh7Hhp36Mq1xeccZXB2q2WDu48=
+        b=KJ9OcRDtCGqAysYvqGGH02pUinxPq4crab6qRX5CATKrQJEHvKhAdvOb984Go2PvP
+         sI4ciXxXrlFS/yqG2+AEc9f+93MTNhHVEzGJoysUWsIOuiu/tkx50JHDq6dzkNy62w
+         ZOkQC6xckfhnAFhyR+Ok18qsCXWRW60MOBS1Ycpo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fabio Estevam <festevam@denx.de>,
-        Mirela Rabulea <mirela.rabulea@nxp.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Neal Cardwell <ncardwell@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/244] arm64: dts: imx8qm-ss-img: Fix jpegenc compatible entry
-Date:   Wed, 15 Nov 2023 15:35:15 -0500
-Message-ID: <20231115203555.751963583@linuxfoundation.org>
+Subject: [PATCH 4.19 04/88] tcp_metrics: add missing barriers on delete
+Date:   Wed, 15 Nov 2023 15:35:16 -0500
+Message-ID: <20231115191426.451031144@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 1d33cd614d89b0ec024d25ec45acf4632211b5a7 ]
+[ Upstream commit cbc3a153222805d65f821e10f4f78b6afce06f86 ]
 
-The first compatible entry for the jpegenc should be 'nxp,imx8qm-jpgenc'.
+When removing an item from RCU protected list, we must prevent
+store-tearing, using rcu_assign_pointer() or WRITE_ONCE().
 
-Change it accordingly to fix the following schema warning:
-
-imx8qm-apalis-eval.dtb: jpegenc@58450000: compatible: 'oneOf' conditional failed, one must be fixed:
-	'nxp,imx8qm-jpgdec' is not one of ['nxp,imx8qxp-jpgdec', 'nxp,imx8qxp-jpgenc']
-	'nxp,imx8qm-jpgenc' was expected
-	'nxp,imx8qxp-jpgdec' was expected
-
-Fixes: 5bb279171afc ("arm64: dts: imx8: Add jpeg encoder/decoder nodes")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Mirela Rabulea <mirela.rabulea@nxp.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 04f721c671656 ("tcp_metrics: Rewrite tcp_metrics_flush_all")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_metrics.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-index 7764b4146e0ab..2bbdacb1313f9 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-@@ -8,5 +8,5 @@ &jpegdec {
- };
- 
- &jpegenc {
--	compatible = "nxp,imx8qm-jpgdec", "nxp,imx8qxp-jpgenc";
-+	compatible = "nxp,imx8qm-jpgenc", "nxp,imx8qxp-jpgenc";
- };
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 7bbd9125b5000..9ad4258cfcbcc 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -913,7 +913,7 @@ static void tcp_metrics_flush_all(struct net *net)
+ 			match = net ? net_eq(tm_net(tm), net) :
+ 				!refcount_read(&tm_net(tm)->count);
+ 			if (match) {
+-				*pp = tm->tcpm_next;
++				rcu_assign_pointer(*pp, tm->tcpm_next);
+ 				kfree_rcu(tm, rcu_head);
+ 			} else {
+ 				pp = &tm->tcpm_next;
+@@ -954,7 +954,7 @@ static int tcp_metrics_nl_cmd_del(struct sk_buff *skb, struct genl_info *info)
+ 		if (addr_same(&tm->tcpm_daddr, &daddr) &&
+ 		    (!src || addr_same(&tm->tcpm_saddr, &saddr)) &&
+ 		    net_eq(tm_net(tm), net)) {
+-			*pp = tm->tcpm_next;
++			rcu_assign_pointer(*pp, tm->tcpm_next);
+ 			kfree_rcu(tm, rcu_head);
+ 			found = true;
+ 		} else {
 -- 
 2.42.0
 
