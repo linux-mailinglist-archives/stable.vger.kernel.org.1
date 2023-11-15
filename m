@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDE2F7ED6D2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:03:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40E007ED6D3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:03:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344357AbjKOWDq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 17:03:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35030 "EHLO
+        id S1344235AbjKOWDr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 17:03:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344324AbjKOWDp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:03:45 -0500
+        with ESMTP id S1344358AbjKOWDr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:03:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CE9E19B
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:03:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98A69C433CA;
-        Wed, 15 Nov 2023 22:03:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7679C12C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:03:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA85EC433CC;
+        Wed, 15 Nov 2023 22:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085821;
-        bh=hh/8ClTiS4SnQVHPFtNWZj7MMNTEZ6dNXY1vaN6VeL8=;
+        s=korg; t=1700085823;
+        bh=3ZG/wb566jKAgLyakaHndACoD82k9bDyut+NX17MdRw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yozIYdh3I7llqNDreJfgVeCaOZXah8xfsM5e7F2n0nEYgy0GTeG23WmoxSvKFyR+5
-         kDNXpiSofGZBk9WFsWtYnCzIH0DkcgW26mtYrYLjHxMK7fnzo2ifAZ0CVeRqPxNzQk
-         of3IXCQcdDb3hrEh3peTNtNWel0efl7VtnIg05Rw=
+        b=zZOVTF4dpAX/f3dvuWU8J+Joc3ZFKZGJYLN+dGD0giDnjdQGqoEc8ACIrtX6R7yjg
+         FHQYiLgDqsU+Nr8wJl0BXWJGYkxcVoxWz2z2Vmx0WlCidLDjPWFixvHzJKTAWoE/+K
+         EatagWI//3QuSgudvZ4rUxJ9vrzqUT4uuTX1OYs8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Rui <rui.zhang@intel.com>,
-        kernel test robot <lkp@intel.com>,
-        Guenter Roeck <linux@roeck-us.net>,
+        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/119] hwmon: (coretemp) Fix potentially truncated sysfs attribute name
-Date:   Wed, 15 Nov 2023 17:00:28 -0500
-Message-ID: <20231115220133.806628686@linuxfoundation.org>
+Subject: [PATCH 5.4 039/119] drm/rockchip: vop: Fix reset of state in duplicate state crtc funcs
+Date:   Wed, 15 Nov 2023 17:00:29 -0500
+Message-ID: <20231115220133.833559327@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
 References: <20231115220132.607437515@linuxfoundation.org>
@@ -55,57 +55,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit bbfff736d30e5283ad09e748caff979d75ddef7f ]
+[ Upstream commit 13fc28804bf10ca0b7bce3efbba95c534836d7ca ]
 
-When build with W=1 and "-Werror=format-truncation", below error is
-observed in coretemp driver,
+struct rockchip_crtc_state members such as output_type, output_bpc and
+enable_afbc is always reset to zero in the atomic_duplicate_state crtc
+funcs.
 
-   drivers/hwmon/coretemp.c: In function 'create_core_data':
->> drivers/hwmon/coretemp.c:393:34: error: '%s' directive output may be truncated writing likely 5 or more bytes into a region of size between 3 and 13 [-Werror=format-truncation=]
-     393 |                          "temp%d_%s", attr_no, suffixes[i]);
-         |                                  ^~
-   drivers/hwmon/coretemp.c:393:26: note: assuming directive output of 5 bytes
-     393 |                          "temp%d_%s", attr_no, suffixes[i]);
-         |                          ^~~~~~~~~~~
-   drivers/hwmon/coretemp.c:392:17: note: 'snprintf' output 7 or more bytes (assuming 22) into a destination of size 19
-     392 |                 snprintf(tdata->attr_name[i], CORETEMP_NAME_LENGTH,
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     393 |                          "temp%d_%s", attr_no, suffixes[i]);
-         |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   cc1: all warnings being treated as errors
+Fix this by using kmemdup on the subclass rockchip_crtc_state struct.
 
-Given that
-1. '%d' could take 10 charactors,
-2. '%s' could take 10 charactors ("crit_alarm"),
-3. "temp", "_" and the NULL terminator take 6 charactors,
-fix the problem by increasing CORETEMP_NAME_LENGTH to 28.
-
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310200443.iD3tUbbK-lkp@intel.com/
-Link: https://lore.kernel.org/r/20231025122316.836400-1-rui.zhang@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 4e257d9eee23 ("drm/rockchip: get rid of rockchip_drm_crtc_mode_config")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230621223311.2239547-2-jonas@kwiboo.se
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/coretemp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index e232f44f6c9ac..0eabad3449617 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -41,7 +41,7 @@ MODULE_PARM_DESC(tjmax, "TjMax value in degrees Celsius");
- #define PKG_SYSFS_ATTR_NO	1	/* Sysfs attribute for package temp */
- #define BASE_SYSFS_ATTR_NO	2	/* Sysfs Base attr no for coretemp */
- #define NUM_REAL_CORES		128	/* Number of Real cores per cpu */
--#define CORETEMP_NAME_LENGTH	19	/* String Length of attrs */
-+#define CORETEMP_NAME_LENGTH	28	/* String Length of attrs */
- #define MAX_CORE_ATTRS		4	/* Maximum no of basic attrs */
- #define TOTAL_ATTRS		(MAX_CORE_ATTRS + 1)
- #define MAX_CORE_DATA		(NUM_REAL_CORES + BASE_SYSFS_ATTR_NO)
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index 1795adbd81d38..52a4b6277188e 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1291,7 +1291,8 @@ static struct drm_crtc_state *vop_crtc_duplicate_state(struct drm_crtc *crtc)
+ 	if (WARN_ON(!crtc->state))
+ 		return NULL;
+ 
+-	rockchip_state = kzalloc(sizeof(*rockchip_state), GFP_KERNEL);
++	rockchip_state = kmemdup(to_rockchip_crtc_state(crtc->state),
++				 sizeof(*rockchip_state), GFP_KERNEL);
+ 	if (!rockchip_state)
+ 		return NULL;
+ 
 -- 
 2.42.0
 
