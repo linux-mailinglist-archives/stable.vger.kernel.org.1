@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70CD27ECB75
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D1177ECDEA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233121AbjKOTW2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:22:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50268 "EHLO
+        id S234704AbjKOTjK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232988AbjKOTW0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:26 -0500
+        with ESMTP id S234709AbjKOTjJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB26D4A
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DA1C433C7;
-        Wed, 15 Nov 2023 19:22:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC261A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15642C433C7;
+        Wed, 15 Nov 2023 19:39:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076140;
-        bh=zTTaYBASHSCTQuWJN18FtGZL+j4gw0YWH74yLC5htZM=;
+        s=korg; t=1700077146;
+        bh=3fCUFfTDUZ5Kb3kBcLwYBsQLPJ8E+19XnvylWo7Avbc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CI7o4pOQmnSVy83f/W8mG8Gz1cqWUWcx1qTZ5hnUvnxg132mWzv8AvVieGW7DAUjF
-         AuWAAKaic18jB2CMW3PWJiDBa60A5ZINfVSc1SdbBo5BFKsytaTlIP0Zhl63F7hIOU
-         w2JNv1FeQnUOt63jC6K/HCpL4PQRGjEOErLzPVPw=
+        b=FGgqNr5ketz8Sn3SbwZVyxxw0YO0qZcgrx37MNkgkNT/wVRIs7bS7iHZHxtLH62uP
+         OZpKoR1U5Azn5VPnpCovr4Za2lmjUhth6UNZmBBlCapVCuoo99A0tabjOynNGtFn74
+         BqqJEiQUfVTDO8GC2rnO7jY4gk0kKvT93W6phjwI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Neal Cardwell <ncardwell@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 099/550] tcp_metrics: properly set tp->snd_ssthresh in tcp_init_metrics()
+Subject: [PATCH 6.6 138/603] wifi: iwlwifi: mvm: Fix key flags for IGTK on AP interface
 Date:   Wed, 15 Nov 2023 14:11:23 -0500
-Message-ID: <20231115191607.577149756@linuxfoundation.org>
+Message-ID: <20231115191622.754603837@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 081480014a64a69d901f8ef1ffdd56d6085cf87e ]
+[ Upstream commit 8f9a791a8edd87fa64b35037d9c3bce89a1b8d21 ]
 
-We need to set tp->snd_ssthresh to TCP_INFINITE_SSTHRESH
-in the case tcp_get_metrics() fails for some reason.
+When an IGTK is installed for an AP interface, there is no station
+associated with it. However, the MFP flag must be set for the installed
+key as otherwise the FW wouldn't use it.
 
-Fixes: 9ad7c049f0f7 ("tcp: RFC2988bis + taking RTT sample from 3WHS for the passive open side")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fix the security key flag to set the MFP flag also when the AP is
+an AP interface and the key index matches that of an IGTK.
+
+Fixes: 5c75a208c244 ("wifi: iwlwifi: mvm: support new key API")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231011130030.f67005e2d4d2.I6832c6e87f3c79fff00689eb10a3a30810e1ee83@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 61c573a72db63..5a08dc46a1130 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -470,6 +470,10 @@ void tcp_init_metrics(struct sock *sk)
- 	u32 val, crtt = 0; /* cached RTT scaled by 8 */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+index f498206470410..ea3e9e9c6e26c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+@@ -96,7 +96,12 @@ u32 iwl_mvm_get_sec_flags(struct iwl_mvm *mvm,
+ 	if (!sta && vif->type == NL80211_IFTYPE_STATION)
+ 		sta = mvmvif->ap_sta;
  
- 	sk_dst_confirm(sk);
-+	/* ssthresh may have been reduced unnecessarily during.
-+	 * 3WHS. Restore it back to its initial default.
+-	if (!IS_ERR_OR_NULL(sta) && sta->mfp)
++	/* Set the MFP flag also for an AP interface where the key is an IGTK
++	 * key as in such a case the station would always be NULL
 +	 */
-+	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
- 	if (!dst)
- 		goto reset;
++	if ((!IS_ERR_OR_NULL(sta) && sta->mfp) ||
++	    (vif->type == NL80211_IFTYPE_AP &&
++	     (keyconf->keyidx == 4 || keyconf->keyidx == 5)))
+ 		flags |= IWL_SEC_KEY_FLAG_MFP;
  
-@@ -489,11 +493,6 @@ void tcp_init_metrics(struct sock *sk)
- 		tp->snd_ssthresh = val;
- 		if (tp->snd_ssthresh > tp->snd_cwnd_clamp)
- 			tp->snd_ssthresh = tp->snd_cwnd_clamp;
--	} else {
--		/* ssthresh may have been reduced unnecessarily during.
--		 * 3WHS. Restore it back to its initial default.
--		 */
--		tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
- 	}
- 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
- 	if (val && tp->reordering != val)
+ 	return flags;
 -- 
 2.42.0
 
