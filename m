@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 921837ECD7F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABA047ECD85
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234541AbjKOTg4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35782 "EHLO
+        id S234556AbjKOThA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234533AbjKOTgz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:55 -0500
+        with ESMTP id S234513AbjKOTg7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDDE3CE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4EEC433C8;
-        Wed, 15 Nov 2023 19:36:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85041B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CA8C4339A;
+        Wed, 15 Nov 2023 19:36:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077011;
-        bh=FatftiWne3pzLLbJ2sk9b8xD10JoMrawrwkgKxTWusk=;
+        s=korg; t=1700077016;
+        bh=X7NAyUK1qyBYY04wcpCYzznOoMZsYJWfHo1BNYeVHL0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SOZIf8kysT3awwqUHYxLrgj2XPkWaWghXfI9+qRvoH/VwsO1KOxRh/VVUYVeotI0/
-         NpkZXFN+HkwIkf3ztUeXP9FIG2R4I1IX8xGHcg9YMxwpFS5qpaSFBvb6vdM2gjbowG
-         6mO0K1UXHITmj769d5UiUOqoqUk7Cn00g94b5o08=
+        b=cNTZrCxVo9uYQpK4DOwf9ngXzBgwoC8j7XD/XODOxeESg0nr3K3Vj2gqcP+bESjqe
+         WTw8yJ0VFPcHH+YwQO9OeTMkb39hkZluFhReIQ9zHU1UMhWaBe+7CJp2U+ixINZAtd
+         7BUOCdCfC19aT0z4zj13hfZ6HuCvvbqLmkp+Dl5Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 492/550] drm/amdgpu/gfx10,11: use memcpy_to/fromio for MQDs
-Date:   Wed, 15 Nov 2023 14:17:56 -0500
-Message-ID: <20231115191634.988735107@linuxfoundation.org>
+        alexey.klimov@linaro.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 493/550] drm/amdgpu: dont put MQDs in VRAM on ARM | ARM64
+Date:   Wed, 15 Nov 2023 14:17:57 -0500
+Message-ID: <20231115191635.059338091@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -58,120 +58,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit b3c942bb6c32a8ddc1d52ee6bc24b8cf732dddf4 ]
+[ Upstream commit ba0fb4b48c19a2d2380fc16ca4af236a0871d279 ]
 
-Since they were moved to VRAM, we need to use the IO
-variants of memcpy.
+Issues were reported with commit 1cfb4d612127
+("drm/amdgpu: put MQDs in VRAM") on an ADLINK Ampere
+Altra Developer Platform (AVA developer platform).
 
+Various ARM systems seem to have problems related
+to PCIe and MMIO access.  In this case, I'm not sure
+if this is specific to the ADLINK platform or ARM
+in general.  Seems to be some coherency issue with
+VRAM.  For now, just don't put MQDs in VRAM on ARM.
+
+Link: https://lists.freedesktop.org/archives/amd-gfx/2023-October/100453.html
 Fixes: 1cfb4d612127 ("drm/amdgpu: put MQDs in VRAM")
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: alexey.klimov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 12 ++++++------
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 12 ++++++------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index f743bf2c92877..ec84d8bb6a213 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -6466,11 +6466,11 @@ static int gfx_v10_0_gfx_init_queue(struct amdgpu_ring *ring)
- 		nv_grbm_select(adev, 0, 0, 0, 0);
- 		mutex_unlock(&adev->srbm_mutex);
- 		if (adev->gfx.me.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.me.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.me.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
- 	} else {
- 		/* restore mqd with the backup copy */
- 		if (adev->gfx.me.mqd_backup[mqd_idx])
--			memcpy(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset the ring */
- 		ring->wptr = 0;
- 		*ring->wptr_cpu_addr = 0;
-@@ -6744,7 +6744,7 @@ static int gfx_v10_0_kiq_init_queue(struct amdgpu_ring *ring)
- 	if (amdgpu_in_reset(adev)) { /* for GPU_RESET case */
- 		/* reset MQD to a clean status */
- 		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(*mqd));
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index fd81b04559d49..477bfc813c81b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -383,9 +383,11 @@ int amdgpu_gfx_mqd_sw_init(struct amdgpu_device *adev,
+ 	struct amdgpu_ring *ring = &kiq->ring;
+ 	u32 domain = AMDGPU_GEM_DOMAIN_GTT;
  
- 		/* reset ring buffer */
- 		ring->wptr = 0;
-@@ -6767,7 +6767,7 @@ static int gfx_v10_0_kiq_init_queue(struct amdgpu_ring *ring)
- 		mutex_unlock(&adev->srbm_mutex);
++#if !defined(CONFIG_ARM) && !defined(CONFIG_ARM64)
+ 	/* Only enable on gfx10 and 11 for now to avoid changing behavior on older chips */
+ 	if (adev->ip_versions[GC_HWIP][0] >= IP_VERSION(10, 0, 0))
+ 		domain |= AMDGPU_GEM_DOMAIN_VRAM;
++#endif
  
- 		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(adev->gfx.kiq[0].mqd_backup, mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.kiq[0].mqd_backup, mqd, sizeof(*mqd));
- 	}
- 
- 	return 0;
-@@ -6788,11 +6788,11 @@ static int gfx_v10_0_kcq_init_queue(struct amdgpu_ring *ring)
- 		mutex_unlock(&adev->srbm_mutex);
- 
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
- 	} else {
- 		/* restore MQD to a clean status */
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset ring buffer */
- 		ring->wptr = 0;
- 		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index a82cba884c48f..0b9aa825bc4b3 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -3684,11 +3684,11 @@ static int gfx_v11_0_gfx_init_queue(struct amdgpu_ring *ring)
- 		soc21_grbm_select(adev, 0, 0, 0, 0);
- 		mutex_unlock(&adev->srbm_mutex);
- 		if (adev->gfx.me.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.me.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.me.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
- 	} else {
- 		/* restore mqd with the backup copy */
- 		if (adev->gfx.me.mqd_backup[mqd_idx])
--			memcpy(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset the ring */
- 		ring->wptr = 0;
- 		*ring->wptr_cpu_addr = 0;
-@@ -3977,7 +3977,7 @@ static int gfx_v11_0_kiq_init_queue(struct amdgpu_ring *ring)
- 	if (amdgpu_in_reset(adev)) { /* for GPU_RESET case */
- 		/* reset MQD to a clean status */
- 		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(*mqd));
- 
- 		/* reset ring buffer */
- 		ring->wptr = 0;
-@@ -4000,7 +4000,7 @@ static int gfx_v11_0_kiq_init_queue(struct amdgpu_ring *ring)
- 		mutex_unlock(&adev->srbm_mutex);
- 
- 		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(adev->gfx.kiq[0].mqd_backup, mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.kiq[0].mqd_backup, mqd, sizeof(*mqd));
- 	}
- 
- 	return 0;
-@@ -4021,11 +4021,11 @@ static int gfx_v11_0_kcq_init_queue(struct amdgpu_ring *ring)
- 		mutex_unlock(&adev->srbm_mutex);
- 
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
- 	} else {
- 		/* restore MQD to a clean status */
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset ring buffer */
- 		ring->wptr = 0;
- 		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
+ 	/* create MQD for KIQ */
+ 	if (!adev->enable_mes_kiq && !ring->mqd_obj) {
 -- 
 2.42.0
 
