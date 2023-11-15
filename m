@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CE357ECB5F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ACC67ECDBD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232880AbjKOTVt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42052 "EHLO
+        id S234621AbjKOTiI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232865AbjKOTVs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:48 -0500
+        with ESMTP id S234640AbjKOTiH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84B4D19D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0759CC433CA;
-        Wed, 15 Nov 2023 19:21:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96878B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18538C433C8;
+        Wed, 15 Nov 2023 19:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076105;
-        bh=2JyNz8gFhaWixTbbMCLxdLAYf12LQzSUgyJ2noW2b5E=;
+        s=korg; t=1700077084;
+        bh=1hAv52ARnXmQBL9O2r5lo/zpDZWCqJyJFZh56qKRGs0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SsHuTfAeapbdOw8uU0ypn4Fwl1PPctbG5fWMxY7ksigvMSMAs5yotaUaDhCenyVLu
-         XyI0c7C4U9xUQxVJt1lwFVoK8nN/o1MTNIdsKmA9cUZ+cdLb+wvKyXwF41XU3DTXNx
-         yGyTd1eN01f7QTiDTLvVAbKn9GOHbdHaxjuaqNMs=
+        b=mFEv7/ASwxqaDce786l6cabtQCA5sIuGr8RJ+/guLdfZselGRonhzWeHL3mae0VFc
+         YgvrbKZW+jt8jlERYtytXiYwRFB5KYSCZT/bIyxsu8eFCZS6fFzrIpMOCTFrGBawMB
+         9h01tiie9bpGR5mrP+C9aLesolhKgA84ZX7L6Vws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Xiaoming Zhao <zxm377917@alibaba-inc.com>,
+        Gavin Li <gavinl@nvidia.com>,
+        Heng Qi <hengqi@linux.alibaba.com>,
+        Jason Wang <jasowang@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 079/550] PM: sleep: Fix symbol export for _SIMPLE_ variants of _PM_OPS()
-Date:   Wed, 15 Nov 2023 14:11:03 -0500
-Message-ID: <20231115191606.178508787@linuxfoundation.org>
+Subject: [PATCH 6.6 119/603] virtio-net: fix per queue coalescing parameter setting
+Date:   Wed, 15 Nov 2023 14:11:04 -0500
+Message-ID: <20231115191621.474307902@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,118 +53,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Heng Qi <hengqi@linux.alibaba.com>
 
-[ Upstream commit 8d74f1da776da9b0306630b13a3025214fa44618 ]
+[ Upstream commit bfb2b3609162135625bf96acf5118051cd0d082e ]
 
-Currently EXPORT_*_SIMPLE_DEV_PM_OPS() use EXPORT_*_DEV_PM_OPS() set
-of macros to export dev_pm_ops symbol, which export the symbol in case
-CONFIG_PM=y but don't take CONFIG_PM_SLEEP into consideration.
+When the user sets a non-zero coalescing parameter to 0 for a specific
+virtqueue, it does not work as expected, so let's fix this.
 
-Since _SIMPLE_ variants of _PM_OPS() do not include runtime PM handles
-and are only used in case CONFIG_PM_SLEEP=y, we should not be exporting
-dev_pm_ops symbol for them in case CONFIG_PM_SLEEP=n.
-
-This can be fixed by having two distinct set of export macros for both
-_RUNTIME_ and _SIMPLE_ variants of _PM_OPS(), such that the export of
-dev_pm_ops symbol used in each variant depends on CONFIG_PM and
-CONFIG_PM_SLEEP respectively.
-
-Introduce _DEV_SLEEP_PM_OPS() set of export macros for _SIMPLE_ variants
-of _PM_OPS(), which export dev_pm_ops symbol only in case CONFIG_PM_SLEEP=y
-and discard it otherwise.
-
-Fixes: 34e1ed189fab ("PM: Improve EXPORT_*_DEV_PM_OPS macros")
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Paul Cercueil <paul@crapouillou.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 394bd87764b6 ("virtio_net: support per queue interrupt coalesce command")
+Reported-by: Xiaoming Zhao <zxm377917@alibaba-inc.com>
+Cc: Gavin Li <gavinl@nvidia.com>
+Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pm.h | 43 +++++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 14 deletions(-)
+ drivers/net/virtio_net.c | 36 ++++++++++++++++--------------------
+ 1 file changed, 16 insertions(+), 20 deletions(-)
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index badad7d11f4fd..d305412556f35 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -374,24 +374,39 @@ const struct dev_pm_ops name = { \
- 	RUNTIME_PM_OPS(runtime_suspend_fn, runtime_resume_fn, idle_fn) \
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index d3b976a591c84..4211f28c59dc8 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3296,27 +3296,23 @@ static int virtnet_send_notf_coal_vq_cmds(struct virtnet_info *vi,
+ {
+ 	int err;
+ 
+-	if (ec->rx_coalesce_usecs || ec->rx_max_coalesced_frames) {
+-		err = virtnet_send_ctrl_coal_vq_cmd(vi, rxq2vq(queue),
+-						    ec->rx_coalesce_usecs,
+-						    ec->rx_max_coalesced_frames);
+-		if (err)
+-			return err;
+-		/* Save parameters */
+-		vi->rq[queue].intr_coal.max_usecs = ec->rx_coalesce_usecs;
+-		vi->rq[queue].intr_coal.max_packets = ec->rx_max_coalesced_frames;
+-	}
++	err = virtnet_send_ctrl_coal_vq_cmd(vi, rxq2vq(queue),
++					    ec->rx_coalesce_usecs,
++					    ec->rx_max_coalesced_frames);
++	if (err)
++		return err;
+ 
+-	if (ec->tx_coalesce_usecs || ec->tx_max_coalesced_frames) {
+-		err = virtnet_send_ctrl_coal_vq_cmd(vi, txq2vq(queue),
+-						    ec->tx_coalesce_usecs,
+-						    ec->tx_max_coalesced_frames);
+-		if (err)
+-			return err;
+-		/* Save parameters */
+-		vi->sq[queue].intr_coal.max_usecs = ec->tx_coalesce_usecs;
+-		vi->sq[queue].intr_coal.max_packets = ec->tx_max_coalesced_frames;
+-	}
++	vi->rq[queue].intr_coal.max_usecs = ec->rx_coalesce_usecs;
++	vi->rq[queue].intr_coal.max_packets = ec->rx_max_coalesced_frames;
++
++	err = virtnet_send_ctrl_coal_vq_cmd(vi, txq2vq(queue),
++					    ec->tx_coalesce_usecs,
++					    ec->tx_max_coalesced_frames);
++	if (err)
++		return err;
++
++	vi->sq[queue].intr_coal.max_usecs = ec->tx_coalesce_usecs;
++	vi->sq[queue].intr_coal.max_packets = ec->tx_max_coalesced_frames;
+ 
+ 	return 0;
  }
- 
--#ifdef CONFIG_PM
--#define _EXPORT_DEV_PM_OPS(name, license, ns)				\
-+#define _EXPORT_PM_OPS(name, license, ns)				\
- 	const struct dev_pm_ops name;					\
- 	__EXPORT_SYMBOL(name, license, ns);				\
- 	const struct dev_pm_ops name
--#define EXPORT_PM_FN_GPL(name)		EXPORT_SYMBOL_GPL(name)
--#define EXPORT_PM_FN_NS_GPL(name, ns)	EXPORT_SYMBOL_NS_GPL(name, ns)
--#else
--#define _EXPORT_DEV_PM_OPS(name, license, ns)				\
-+
-+#define _DISCARD_PM_OPS(name, license, ns)				\
- 	static __maybe_unused const struct dev_pm_ops __static_##name
-+
-+#ifdef CONFIG_PM
-+#define _EXPORT_DEV_PM_OPS(name, license, ns)		_EXPORT_PM_OPS(name, license, ns)
-+#define EXPORT_PM_FN_GPL(name)				EXPORT_SYMBOL_GPL(name)
-+#define EXPORT_PM_FN_NS_GPL(name, ns)			EXPORT_SYMBOL_NS_GPL(name, ns)
-+#else
-+#define _EXPORT_DEV_PM_OPS(name, license, ns)		_DISCARD_PM_OPS(name, license, ns)
- #define EXPORT_PM_FN_GPL(name)
- #define EXPORT_PM_FN_NS_GPL(name, ns)
- #endif
- 
--#define EXPORT_DEV_PM_OPS(name) _EXPORT_DEV_PM_OPS(name, "", "")
--#define EXPORT_GPL_DEV_PM_OPS(name) _EXPORT_DEV_PM_OPS(name, "GPL", "")
--#define EXPORT_NS_DEV_PM_OPS(name, ns) _EXPORT_DEV_PM_OPS(name, "", #ns)
--#define EXPORT_NS_GPL_DEV_PM_OPS(name, ns) _EXPORT_DEV_PM_OPS(name, "GPL", #ns)
-+#ifdef CONFIG_PM_SLEEP
-+#define _EXPORT_DEV_SLEEP_PM_OPS(name, license, ns)	_EXPORT_PM_OPS(name, license, ns)
-+#else
-+#define _EXPORT_DEV_SLEEP_PM_OPS(name, license, ns)	_DISCARD_PM_OPS(name, license, ns)
-+#endif
-+
-+#define EXPORT_DEV_PM_OPS(name)				_EXPORT_DEV_PM_OPS(name, "", "")
-+#define EXPORT_GPL_DEV_PM_OPS(name)			_EXPORT_DEV_PM_OPS(name, "GPL", "")
-+#define EXPORT_NS_DEV_PM_OPS(name, ns)			_EXPORT_DEV_PM_OPS(name, "", #ns)
-+#define EXPORT_NS_GPL_DEV_PM_OPS(name, ns)		_EXPORT_DEV_PM_OPS(name, "GPL", #ns)
-+
-+#define EXPORT_DEV_SLEEP_PM_OPS(name)			_EXPORT_DEV_SLEEP_PM_OPS(name, "", "")
-+#define EXPORT_GPL_DEV_SLEEP_PM_OPS(name)		_EXPORT_DEV_SLEEP_PM_OPS(name, "GPL", "")
-+#define EXPORT_NS_DEV_SLEEP_PM_OPS(name, ns)		_EXPORT_DEV_SLEEP_PM_OPS(name, "", #ns)
-+#define EXPORT_NS_GPL_DEV_SLEEP_PM_OPS(name, ns)	_EXPORT_DEV_SLEEP_PM_OPS(name, "GPL", #ns)
- 
- /*
-  * Use this if you want to use the same suspend and resume callbacks for suspend
-@@ -404,19 +419,19 @@ const struct dev_pm_ops name = { \
- 	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
- 
- #define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
--	EXPORT_DEV_PM_OPS(name) = { \
-+	EXPORT_DEV_SLEEP_PM_OPS(name) = { \
- 		SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- 	}
- #define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
--	EXPORT_GPL_DEV_PM_OPS(name) = { \
-+	EXPORT_GPL_DEV_SLEEP_PM_OPS(name) = { \
- 		SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- 	}
- #define EXPORT_NS_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn, ns)	\
--	EXPORT_NS_DEV_PM_OPS(name, ns) = { \
-+	EXPORT_NS_DEV_SLEEP_PM_OPS(name, ns) = { \
- 		SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- 	}
- #define EXPORT_NS_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn, ns)	\
--	EXPORT_NS_GPL_DEV_PM_OPS(name, ns) = { \
-+	EXPORT_NS_GPL_DEV_SLEEP_PM_OPS(name, ns) = { \
- 		SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- 	}
- 
 -- 
 2.42.0
 
