@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 444037ED4A2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 516137ED308
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344697AbjKOU6n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36934 "EHLO
+        id S233661AbjKOUpx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344698AbjKOU5n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:43 -0500
+        with ESMTP id S233698AbjKOUpr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C79DE19A6
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A33EC4E74A;
-        Wed, 15 Nov 2023 20:51:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035251AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A893AC433C8;
+        Wed, 15 Nov 2023 20:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081487;
-        bh=ENSvhSPpf0RiZqnJ67PV8RfSOrFgDr+g94UD0ZLWR3w=;
+        s=korg; t=1700081142;
+        bh=kp75P8aM3/JGQaARbqGbiVscWqgGME45cuxUmbQNskE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AIFhDE4GGUAF9PB9uYqunILxALxlPE0zuDI5WG1dvUKl9gZNym8M7kx2FfAb20BeO
-         thw5wB6A2sLHS5OJtXw+JF4uNEXshTkQidENhGPLYs7XsRmk9TyeEpTUsH+f8Ny9eL
-         k5OcWC8cISKC1xixv+DI7ce7lWZpcBcpnA+H0eX0=
+        b=wE+2oWPejAZIWWKh/3NuTfpT1mMefsJH3xs4/Phd573xraF8XlVeZuQPXCQWNE38w
+         mXLmAm7c+7LFQ3q7dgg14vXGeyHdzfxzo7vUjOdLVOSB5p4SIYvVSqP3F4FlgJarVO
+         d8xj3oiIhCARzNOI349T3M/ChCv4g1h9cjmIxUMQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/244] f2fs: fix to initialize map.m_pblk in f2fs_precache_extents()
-Date:   Wed, 15 Nov 2023 15:36:15 -0500
-Message-ID: <20231115203559.352129571@linuxfoundation.org>
+Subject: [PATCH 4.19 64/88] pcmcia: ds: fix possible name leak in error path in pcmcia_device_add()
+Date:   Wed, 15 Nov 2023 15:36:16 -0500
+Message-ID: <20231115191429.976711869@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 8b07c1fb0f1ad139373c8253f2fad8bc43fab07d ]
+[ Upstream commit 99e1241049a92dd3e9a90a0f91e32ce390133278 ]
 
-Otherwise, it may print random physical block address in tracepoint
-of f2fs_map_blocks() as below:
+Afer commit 1fa5ae857bb1 ("driver core: get rid of struct device's
+bus_id string array"), the name of device is allocated dynamically.
+Therefore, it needs to be freed, which is done by the driver core for
+us once all references to the device are gone. Therefore, move the
+dev_set_name() call immediately before the call device_register(), which
+either succeeds (then the freeing will be done upon subsequent remvoal),
+or puts the reference in the error call. Also, it is not unusual that the
+return value of dev_set_name is not checked.
 
-f2fs_map_blocks: dev = (253,16), ino = 2297, file offset = 0, start blkaddr = 0xa356c421, len = 0x0, flags = 0
-
-Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+[linux@dominikbrodowski.net: simplification, commit message modified]
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pcmcia/ds.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index e1131af0396b9..58fd32db025da 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3210,6 +3210,7 @@ int f2fs_precache_extents(struct inode *inode)
- 		return -EOPNOTSUPP;
+diff --git a/drivers/pcmcia/ds.c b/drivers/pcmcia/ds.c
+index e07bd5249f271..3701887be32e8 100644
+--- a/drivers/pcmcia/ds.c
++++ b/drivers/pcmcia/ds.c
+@@ -521,9 +521,6 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
+ 	/* by default don't allow DMA */
+ 	p_dev->dma_mask = DMA_MASK_NONE;
+ 	p_dev->dev.dma_mask = &p_dev->dma_mask;
+-	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
+-	if (!dev_name(&p_dev->dev))
+-		goto err_free;
+ 	p_dev->devname = kasprintf(GFP_KERNEL, "pcmcia%s", dev_name(&p_dev->dev));
+ 	if (!p_dev->devname)
+ 		goto err_free;
+@@ -581,6 +578,7 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
  
- 	map.m_lblk = 0;
-+	map.m_pblk = 0;
- 	map.m_next_pgofs = NULL;
- 	map.m_next_extent = &m_next_extent;
- 	map.m_seg_type = NO_CHECK_TYPE;
+ 	pcmcia_device_query(p_dev);
+ 
++	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
+ 	if (device_register(&p_dev->dev)) {
+ 		mutex_lock(&s->ops_mutex);
+ 		list_del(&p_dev->socket_device_list);
 -- 
 2.42.0
 
