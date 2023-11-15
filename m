@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33AF77ED373
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:52:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ECCF27ED37E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233870AbjKOUwo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:52:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53016 "EHLO
+        id S234860AbjKOUxC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:53:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233760AbjKOUwo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:52:44 -0500
+        with ESMTP id S234845AbjKOUxB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A4FDB0
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:52:41 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F406BC4E779;
-        Wed, 15 Nov 2023 20:52:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C45E8F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:52:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00581C4E778;
+        Wed, 15 Nov 2023 20:52:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081561;
-        bh=fUmzaVanyzr/sZ1DmCzX3Ku2BHrFftingK5sci9NCtM=;
+        s=korg; t=1700081578;
+        bh=cUHLvjaw99IpVqbmK8DXTzrEdKJX371KA5BlO7x1WSI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sca12VQDsxg3V5IOmsZZwVChfHSIPPawhI8jgm46sAVemBOMyyfOyp9ifWgabxTxX
-         iZ2F7/jVeifpI88mj2k4H4I3OVaae5PzXfO2xz1pv7+4l5XDi8dgN+L3EipV7++IkY
-         +mus0VV4gigtcWJ9KGXZ93gOo/G9vOUqtKRcl+88=
+        b=bUPBJ7R6LagdTuXZpAjlxr3JM643Lsf2bVGaXk5EfuxZfAOXwwoCTx903iakqvOTw
+         J+aUgtVi9t3C0MtivGmKUSgFv8GyUAhqo3GmNFD+yRhY7G2U1WMGYZXzvsNVY1v795
+         7qWoO/QiZi9kPH6H3NkRyzoYF90O77EEChx0/R/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Patrick Thompson <ptf@google.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Matthew Wilcox <willy@infradead.org>,
+        Chris Mi <chrism@mellanox.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        NeilBrown <neilb@suse.de>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 221/244] net: r8169: Disable multicast filter for RTL8168H and RTL8107E
-Date:   Wed, 15 Nov 2023 15:36:53 -0500
-Message-ID: <20231115203601.602664637@linuxfoundation.org>
+Subject: [PATCH 5.15 222/244] Fix termination state for idr_for_each_entry_ul()
+Date:   Wed, 15 Nov 2023 15:36:54 -0500
+Message-ID: <20231115203601.662933794@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -56,41 +57,62 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Patrick Thompson <ptf@google.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df ]
+[ Upstream commit e8ae8ad479e2d037daa33756e5e72850a7bd37a9 ]
 
-RTL8168H and RTL8107E ethernet adapters erroneously filter unicast
-eapol packets unless allmulti is enabled. These devices correspond to
-RTL_GIGA_MAC_VER_46 and VER_48. Add an exception for VER_46 and VER_48
-in the same way that VER_35 has an exception.
+The comment for idr_for_each_entry_ul() states
 
-Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
-Signed-off-by: Patrick Thompson <ptf@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/20231030205031.177855-1-ptf@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  after normal termination @entry is left with the value NULL
+
+This is not correct in the case where UINT_MAX has an entry in the idr.
+In that case @entry will be non-NULL after termination.
+No current code depends on the documentation being correct, but to
+save future code we should fix it.
+
+Also fix idr_for_each_entry_continue_ul().  While this is not documented
+as leaving @entry as NULL, the mellanox driver appears to depend on
+it doing so.  So make that explicit in the documentation as well as in
+the code.
+
+Fixes: e33d2b74d805 ("idr: fix overflow case for idr_for_each_entry_ul()")
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Chris Mi <chrism@mellanox.com>
+Cc: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/idr.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index ab84c623a7c62..2e555eda19a85 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2551,7 +2551,9 @@ static void rtl_set_rx_mode(struct net_device *dev)
- 		rx_mode |= AcceptAllPhys;
- 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
- 		   dev->flags & IFF_ALLMULTI ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
-+		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
-+		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
-+		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
- 		/* accept all multicasts */
- 	} else if (netdev_mc_empty(dev)) {
- 		rx_mode &= ~AcceptMulticast;
+diff --git a/include/linux/idr.h b/include/linux/idr.h
+index a0dce14090a9e..da5f5fa4a3a6a 100644
+--- a/include/linux/idr.h
++++ b/include/linux/idr.h
+@@ -200,7 +200,7 @@ static inline void idr_preload_end(void)
+  */
+ #define idr_for_each_entry_ul(idr, entry, tmp, id)			\
+ 	for (tmp = 0, id = 0;						\
+-	     tmp <= id && ((entry) = idr_get_next_ul(idr, &(id))) != NULL; \
++	     ((entry) = tmp <= id ? idr_get_next_ul(idr, &(id)) : NULL) != NULL; \
+ 	     tmp = id, ++id)
+ 
+ /**
+@@ -224,10 +224,12 @@ static inline void idr_preload_end(void)
+  * @id: Entry ID.
+  *
+  * Continue to iterate over entries, continuing after the current position.
++ * After normal termination @entry is left with the value NULL.  This
++ * is convenient for a "not found" value.
+  */
+ #define idr_for_each_entry_continue_ul(idr, entry, tmp, id)		\
+ 	for (tmp = id;							\
+-	     tmp <= id && ((entry) = idr_get_next_ul(idr, &(id))) != NULL; \
++	     ((entry) = tmp <= id ? idr_get_next_ul(idr, &(id)) : NULL) != NULL; \
+ 	     tmp = id, ++id)
+ 
+ /*
 -- 
 2.42.0
 
