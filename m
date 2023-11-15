@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1629F7ECFFA
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C3EF7ECFFC
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235461AbjKOTwE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:52:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
+        id S235467AbjKOTwG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:52:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235467AbjKOTwC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:52:02 -0500
+        with ESMTP id S235460AbjKOTwG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:52:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1035CC2
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:52:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840E2C433C8;
-        Wed, 15 Nov 2023 19:51:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 011B71A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:52:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786B9C433CA;
+        Wed, 15 Nov 2023 19:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077919;
-        bh=GM5oCnp6ZqXLCwZKSz3r+P1VNV7VySmV0DBJ9WgLLMc=;
+        s=korg; t=1700077922;
+        bh=s2sEODsKRw2rNE/9jt535gTyKPfIU8YkT60hK3rCObY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qn4JP4+Fz96Vt6aJNs7dgm1HqAgPFfH4+1M72WvPAzK+c/FT2gbLH0/vw4KHgG+Vs
-         gWdRiew/ZyCZh03Dcw+dn1CnRE9H9CGlSwTlOfNjz7C2U3ZPb05vKvDvzKB8YDDh+t
-         EAVOEnrLN9Ul1Sdm5Ll+AxZblOdrvKc0nSatO9Eo=
+        b=FfMqeWW53521NibbXPgd/h2ut5AFAn0bqkui5j/RQvQXn5SFyEo1xxlZp3Dlsz4/0
+         gPRZhT/JRpoGtvbS6jtgFhoo+opeYgwZcsG+tjysWa040ac0R7RnZzYqFvneJuqHCx
+         aMThV09sN1cGsUX550SnXTtzDVDXwcIYVAA/3bdc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mukesh Ojha <quic_mojha@quicinc.com>,
-        Yujie Liu <yujie.liu@intel.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        patches@lists.linux.dev, Milian Wolff <milian.wolff@kdab.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 594/603] tracing/kprobes: Fix the order of argument descriptions
-Date:   Wed, 15 Nov 2023 14:18:59 -0500
-Message-ID: <20231115191652.272530075@linuxfoundation.org>
+Subject: [PATCH 6.6 595/603] eventfs: Check for NULL ef in eventfs_set_attr()
+Date:   Wed, 15 Nov 2023 14:19:00 -0500
+Message-ID: <20231115191652.318854666@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -55,43 +54,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yujie Liu <yujie.liu@intel.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit f032c53bea6d2057c14553832d846be2f151cfb2 ]
+The top level events directory dentry does not have a d_fsdata set to a
+eventfs_file pointer. This dentry is still passed to eventfs_set_attr().
+It can not assume that the d_fsdata is set. Check for that.
 
-The order of descriptions should be consistent with the argument list of
-the function, so "kretprobe" should be the second one.
+Link: https://lore.kernel.org/all/20231112104158.6638-1-milian.wolff@kdab.com/
 
-int __kprobe_event_gen_cmd_start(struct dynevent_cmd *cmd, bool kretprobe,
-                                 const char *name, const char *loc, ...)
-
-Link: https://lore.kernel.org/all/20231031041305.3363712-1-yujie.liu@intel.com/
-
-Fixes: 2a588dd1d5d6 ("tracing: Add kprobe event command generation functions")
-Suggested-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Yujie Liu <yujie.liu@intel.com>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: 9aaee3eebc91 ("eventfs: Save ownership and mode")
+Reported-by: Milian Wolff <milian.wolff@kdab.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_kprobe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/tracefs/event_inode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index e834f149695b7..47812aa16bb57 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1020,9 +1020,9 @@ EXPORT_SYMBOL_GPL(kprobe_event_cmd_init);
- /**
-  * __kprobe_event_gen_cmd_start - Generate a kprobe event command from arg list
-  * @cmd: A pointer to the dynevent_cmd struct representing the new event
-+ * @kretprobe: Is this a return probe?
-  * @name: The name of the kprobe event
-  * @loc: The location of the kprobe event
-- * @kretprobe: Is this a return probe?
-  * @...: Variable number of arg (pairs), one pair for each field
-  *
-  * NOTE: Users normally won't want to call this function directly, but
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 5fcfb634fec26..efbdc47c74dcf 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -113,14 +113,14 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
+ 
+ 	mutex_lock(&eventfs_mutex);
+ 	ef = dentry->d_fsdata;
+-	if (ef->is_freed) {
++	if (ef && ef->is_freed) {
+ 		/* Do not allow changes if the event is about to be removed. */
+ 		mutex_unlock(&eventfs_mutex);
+ 		return -ENODEV;
+ 	}
+ 
+ 	ret = simple_setattr(idmap, dentry, iattr);
+-	if (!ret)
++	if (!ret && ef)
+ 		update_attr(ef, iattr);
+ 	mutex_unlock(&eventfs_mutex);
+ 	return ret;
 -- 
 2.42.0
 
