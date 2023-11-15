@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ACA27ECB14
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:19:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D92D47ECD0D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229587AbjKOTUA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:20:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59570 "EHLO
+        id S234335AbjKOTeI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229531AbjKOTT7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:19:59 -0500
+        with ESMTP id S234328AbjKOTd5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D67512C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:19:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5222C433C7;
-        Wed, 15 Nov 2023 19:19:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E3E4D44
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:52 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405A6C433C8;
+        Wed, 15 Nov 2023 19:33:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700075996;
-        bh=Qzk3evVISz2NP+5cMaDJ/Q9CONTa0Mrg5Rt1kFpZI9A=;
+        s=korg; t=1700076832;
+        bh=flthnTuqjZNSdrxAFgHu9HGxUz6t2KEWLGTcz4QosI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W6/KRLLcpB4J+NOjDiwVOkwRDlPbDdqWRAhm5gl0JtzrBWB5KUmrpwClhJnR6+suX
-         Y2wVHWVQiwdUPpMrjPfLaw+08YZzOJzQi/t/XFJpbjx8CTjfLRox6nc8epOYB2JHJ+
-         tYq73dTMAfQ4+ldJMInT52ZGBR0ir/ADWG+6IRJ4=
+        b=MTJaP/vQaPqwcHikLEjV0TIkljKgXjFJrE2K1qOfp44K4fKPMfKtXL6rmoMuszBnW
+         E4LpnVDo+4yajgSky9BYQJDAGhYcQTZoU+9hjGrxEB80JAebTW9OzjDqHAhFMenngm
+         QvgZgotSWTlKDz5s74kp30LFxYuWx6iaOkVlDXVA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zev Weiss <zev@bewilderbeest.net>,
-        Thomas Zajic <zlatko@gmx.at>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.5 001/550] hwmon: (nct6775) Fix incorrect variable reuse in fan_div calculation
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 040/603] wifi: mac80211: move offchannel works to wiphy work
 Date:   Wed, 15 Nov 2023 14:09:45 -0500
-Message-ID: <20231115191600.816263857@linuxfoundation.org>
+Message-ID: <20231115191615.923147202@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,67 +49,203 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zev Weiss <zev@bewilderbeest.net>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 920057ad521dc8669e534736c2a12c14ec9fb2d7 upstream.
+[ Upstream commit 97c19e42b264e6b71a9ff9deea04c19f621805b9 ]
 
-In the regmap conversion in commit 4ef2774511dc ("hwmon: (nct6775)
-Convert register access to regmap API") I reused the 'reg' variable
-for all three register reads in the fan speed calculation loop in
-nct6775_update_device(), but failed to notice that the value from the
-first one (data->REG_FAN[i]) is actually used in the call to
-nct6775_select_fan_div() at the end of the loop body.  Since that
-patch the register value passed to nct6775_select_fan_div() has been
-(conditionally) incorrectly clobbered with the value of a different
-register than intended, which has in at least some cases resulted in
-fan speeds being adjusted down to zero.
+Make the offchannel works wiphy works to have the
+wiphy locked for executing them.
 
-Fix this by using dedicated temporaries for the two intermediate
-register reads instead of 'reg'.
-
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Fixes: 4ef2774511dc ("hwmon: (nct6775) Convert register access to regmap API")
-Reported-by: Thomas Zajic <zlatko@gmx.at>
-Tested-by: Thomas Zajic <zlatko@gmx.at>
-Cc: stable@vger.kernel.org # v5.19+
-Link: https://lore.kernel.org/r/20230929200822.964-2-zev@bewilderbeest.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: eadfb54756ae ("wifi: mac80211: move sched-scan stop work to wiphy work")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/mac80211/ieee80211_i.h |  4 ++--
+ net/mac80211/main.c        |  6 +++---
+ net/mac80211/offchannel.c  | 36 ++++++++++++++++++------------------
+ 3 files changed, 23 insertions(+), 23 deletions(-)
 
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -1581,17 +1581,21 @@ struct nct6775_data *nct6775_update_devi
- 							  data->fan_div[i]);
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 4e98e03e5de64..5321f75d0c6f3 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1583,9 +1583,9 @@ struct ieee80211_local {
+ 	/*
+ 	 * Remain-on-channel support
+ 	 */
+-	struct delayed_work roc_work;
++	struct wiphy_delayed_work roc_work;
+ 	struct list_head roc_list;
+-	struct work_struct hw_roc_start, hw_roc_done;
++	struct wiphy_work hw_roc_start, hw_roc_done;
+ 	unsigned long hw_roc_start_time;
+ 	u64 roc_cookie_counter;
  
- 			if (data->has_fan_min & BIT(i)) {
--				err = nct6775_read_value(data, data->REG_FAN_MIN[i], &reg);
-+				u16 tmp;
-+
-+				err = nct6775_read_value(data, data->REG_FAN_MIN[i], &tmp);
- 				if (err)
- 					goto out;
--				data->fan_min[i] = reg;
-+				data->fan_min[i] = tmp;
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index adb8637a37445..f1cbb7c5d4ac3 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -376,8 +376,8 @@ static void ieee80211_restart_work(struct work_struct *work)
+ 	ieee80211_scan_cancel(local);
+ 
+ 	/* make sure any new ROC will consider local->in_reconfig */
+-	flush_delayed_work(&local->roc_work);
+-	flush_work(&local->hw_roc_done);
++	wiphy_delayed_work_flush(local->hw.wiphy, &local->roc_work);
++	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_done);
+ 
+ 	/* wait for all packet processing to be done */
+ 	synchronize_net();
+@@ -1480,11 +1480,11 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
+ 	ieee80211_remove_interfaces(local);
+ 
+ 	wiphy_lock(local->hw.wiphy);
++	wiphy_delayed_work_cancel(local->hw.wiphy, &local->roc_work);
+ 	wiphy_work_cancel(local->hw.wiphy, &local->radar_detected_work);
+ 	wiphy_unlock(local->hw.wiphy);
+ 	rtnl_unlock();
+ 
+-	cancel_delayed_work_sync(&local->roc_work);
+ 	cancel_work_sync(&local->restart_work);
+ 	cancel_work_sync(&local->reconfig_filter);
+ 	flush_work(&local->sched_scan_stopped_work);
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index cdf991e74ab99..5bedd9cef414d 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -230,7 +230,7 @@ static bool ieee80211_recalc_sw_work(struct ieee80211_local *local,
+ 	if (dur == LONG_MAX)
+ 		return false;
+ 
+-	mod_delayed_work(local->workqueue, &local->roc_work, dur);
++	wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work, dur);
+ 	return true;
+ }
+ 
+@@ -258,7 +258,7 @@ static void ieee80211_handle_roc_started(struct ieee80211_roc_work *roc,
+ 	roc->notified = true;
+ }
+ 
+-static void ieee80211_hw_roc_start(struct work_struct *work)
++static void ieee80211_hw_roc_start(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+ 	struct ieee80211_local *local =
+ 		container_of(work, struct ieee80211_local, hw_roc_start);
+@@ -285,7 +285,7 @@ void ieee80211_ready_on_channel(struct ieee80211_hw *hw)
+ 
+ 	trace_api_ready_on_channel(local);
+ 
+-	ieee80211_queue_work(hw, &local->hw_roc_start);
++	wiphy_work_queue(hw->wiphy, &local->hw_roc_start);
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_ready_on_channel);
+ 
+@@ -338,7 +338,7 @@ static void _ieee80211_start_next_roc(struct ieee80211_local *local)
+ 				tmp->started = true;
+ 				tmp->abort = true;
  			}
+-			ieee80211_queue_work(&local->hw, &local->hw_roc_done);
++			wiphy_work_queue(local->hw.wiphy, &local->hw_roc_done);
+ 			return;
+ 		}
  
- 			if (data->REG_FAN_PULSES[i]) {
--				err = nct6775_read_value(data, data->REG_FAN_PULSES[i], &reg);
-+				u16 tmp;
-+
-+				err = nct6775_read_value(data, data->REG_FAN_PULSES[i], &tmp);
- 				if (err)
- 					goto out;
--				data->fan_pulses[i] = (reg >> data->FAN_PULSE_SHIFT[i]) & 0x03;
-+				data->fan_pulses[i] = (tmp >> data->FAN_PULSE_SHIFT[i]) & 0x03;
- 			}
+@@ -368,8 +368,8 @@ static void _ieee80211_start_next_roc(struct ieee80211_local *local)
+ 			ieee80211_hw_config(local, 0);
+ 		}
  
- 			err = nct6775_select_fan_div(dev, data, i, reg);
+-		ieee80211_queue_delayed_work(&local->hw, &local->roc_work,
+-					     msecs_to_jiffies(min_dur));
++		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work,
++					 msecs_to_jiffies(min_dur));
+ 
+ 		/* tell userspace or send frame(s) */
+ 		list_for_each_entry(tmp, &local->roc_list, list) {
+@@ -407,8 +407,8 @@ void ieee80211_start_next_roc(struct ieee80211_local *local)
+ 		_ieee80211_start_next_roc(local);
+ 	} else {
+ 		/* delay it a bit */
+-		ieee80211_queue_delayed_work(&local->hw, &local->roc_work,
+-					     round_jiffies_relative(HZ/2));
++		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work,
++					 round_jiffies_relative(HZ / 2));
+ 	}
+ }
+ 
+@@ -451,7 +451,7 @@ static void __ieee80211_roc_work(struct ieee80211_local *local)
+ 	}
+ }
+ 
+-static void ieee80211_roc_work(struct work_struct *work)
++static void ieee80211_roc_work(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+ 	struct ieee80211_local *local =
+ 		container_of(work, struct ieee80211_local, roc_work.work);
+@@ -461,7 +461,7 @@ static void ieee80211_roc_work(struct work_struct *work)
+ 	mutex_unlock(&local->mtx);
+ }
+ 
+-static void ieee80211_hw_roc_done(struct work_struct *work)
++static void ieee80211_hw_roc_done(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+ 	struct ieee80211_local *local =
+ 		container_of(work, struct ieee80211_local, hw_roc_done);
+@@ -482,7 +482,7 @@ void ieee80211_remain_on_channel_expired(struct ieee80211_hw *hw)
+ 
+ 	trace_api_remain_on_channel_expired(local);
+ 
+-	ieee80211_queue_work(hw, &local->hw_roc_done);
++	wiphy_work_queue(hw->wiphy, &local->hw_roc_done);
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_remain_on_channel_expired);
+ 
+@@ -586,8 +586,8 @@ static int ieee80211_start_roc_work(struct ieee80211_local *local,
+ 		/* if not HW assist, just queue & schedule work */
+ 		if (!local->ops->remain_on_channel) {
+ 			list_add_tail(&roc->list, &local->roc_list);
+-			ieee80211_queue_delayed_work(&local->hw,
+-						     &local->roc_work, 0);
++			wiphy_delayed_work_queue(local->hw.wiphy,
++						 &local->roc_work, 0);
+ 		} else {
+ 			/* otherwise actually kick it off here
+ 			 * (for error handling)
+@@ -695,7 +695,7 @@ static int ieee80211_cancel_roc(struct ieee80211_local *local,
+ 	if (!cookie)
+ 		return -ENOENT;
+ 
+-	flush_work(&local->hw_roc_start);
++	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_start);
+ 
+ 	mutex_lock(&local->mtx);
+ 	list_for_each_entry_safe(roc, tmp, &local->roc_list, list) {
+@@ -745,7 +745,7 @@ static int ieee80211_cancel_roc(struct ieee80211_local *local,
+ 	} else {
+ 		/* go through work struct to return to the operating channel */
+ 		found->abort = true;
+-		mod_delayed_work(local->workqueue, &local->roc_work, 0);
++		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work, 0);
+ 	}
+ 
+  out_unlock:
+@@ -994,9 +994,9 @@ int ieee80211_mgmt_tx_cancel_wait(struct wiphy *wiphy,
+ 
+ void ieee80211_roc_setup(struct ieee80211_local *local)
+ {
+-	INIT_WORK(&local->hw_roc_start, ieee80211_hw_roc_start);
+-	INIT_WORK(&local->hw_roc_done, ieee80211_hw_roc_done);
+-	INIT_DELAYED_WORK(&local->roc_work, ieee80211_roc_work);
++	wiphy_work_init(&local->hw_roc_start, ieee80211_hw_roc_start);
++	wiphy_work_init(&local->hw_roc_done, ieee80211_hw_roc_done);
++	wiphy_delayed_work_init(&local->roc_work, ieee80211_roc_work);
+ 	INIT_LIST_HEAD(&local->roc_list);
+ }
+ 
+-- 
+2.42.0
+
 
 
