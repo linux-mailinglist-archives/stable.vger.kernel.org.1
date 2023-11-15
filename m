@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DABA07ED6EC
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:04:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DCB37ED6ED
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:04:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344398AbjKOWEY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S1344404AbjKOWEY (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 17:04:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57400 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344404AbjKOWEW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:04:22 -0500
+        with ESMTP id S1344411AbjKOWEX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:04:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70B7712C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:04:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98B2C433C8;
-        Wed, 15 Nov 2023 22:04:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E45BD12C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:04:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69ECBC433C7;
+        Wed, 15 Nov 2023 22:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085859;
-        bh=8VhrD5C2IauGub2va+kGfph2UZZ8LYKxhtUW9zP5Hl8=;
+        s=korg; t=1700085860;
+        bh=ByLhSxQBAmk1AIAOxDSNPm6//oZPNphvywkWLmJ1Rs0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IMqhT56pKXxPycOo4oRBCZroV0uOo/x/mutxkZLbiDJemu4usvRwtd4+ktdiPUxCe
-         KVF+Z5YBwJB7bLlYU7+rGt/7B6buKwpqOXBarkUzrHJxZFAixzUmaMK1j40AyGHo8x
-         9pVxWKiXVONAEEsXQ0wpqLkRb3ncqfqePdbFkIFU=
+        b=N9T93kqdKUdm25JXUILHygNcBeTQ0x31xJyoOIDDBLJXrFZ/FugHG7DPkjBsowJwE
+         30+o1K6qE5i4OKoOTGTXLrDGupSf3GzJvco68zUQtvbP6a21oiMdtlcPyJ+EjTaVUT
+         8lf8T2aqejHkKth/f0CECYiC0CjuPJJl/th+PXM4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        wenxu <wenxu@ucloud.cn>, David Ahern <dsahern@kernel.org>,
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paul Moore <paul@paul-moore.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 101/119] inet: shrink struct flowi_common
-Date:   Wed, 15 Nov 2023 17:01:31 -0500
-Message-ID: <20231115220135.779285373@linuxfoundation.org>
+Subject: [PATCH 5.4 102/119] dccp: Call security_inet_conn_request() after setting IPv4 addresses.
+Date:   Wed, 15 Nov 2023 17:01:32 -0500
+Message-ID: <20231115220135.809433567@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
 References: <20231115220132.607437515@linuxfoundation.org>
@@ -55,42 +55,57 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 1726483b79a72e0150734d5367e4a0238bf8fcff ]
+[ Upstream commit fa2df45af13091f76b89adb84a28f13818d5d631 ]
 
-I am looking at syzbot reports triggering kernel stack overflows
-involving a cascade of ipvlan devices.
+Initially, commit 4237c75c0a35 ("[MLSXFRM]: Auto-labeling of child
+sockets") introduced security_inet_conn_request() in some functions
+where reqsk is allocated.  The hook is added just after the allocation,
+so reqsk's IPv4 remote address was not initialised then.
 
-We can save 8 bytes in struct flowi_common.
+However, SELinux/Smack started to read it in netlbl_req_setattr()
+after the cited commits.
 
-This patch alone will not fix the issue, but is a start.
+This bug was partially fixed by commit 284904aa7946 ("lsm: Relocate
+the IPv4 security_inet_conn_request() hooks").
 
-Fixes: 24ba14406c5c ("route: Add multipath_hash in flowi_common to make user-define hash")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: wenxu <wenxu@ucloud.cn>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20231025141037.3448203-1-edumazet@google.com
+This patch fixes the last bug in DCCPv4.
+
+Fixes: 389fb800ac8b ("netlabel: Label incoming TCP connections correctly in SELinux")
+Fixes: 07feee8f812f ("netlabel: Cleanup the Smack/NetLabel code to fix incoming TCP connections")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/flow.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/dccp/ipv4.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/flow.h b/include/net/flow.h
-index d058e63fb59a3..21e781c74ac51 100644
---- a/include/net/flow.h
-+++ b/include/net/flow.h
-@@ -39,8 +39,8 @@ struct flowi_common {
- #define FLOWI_FLAG_SKIP_NH_OIF		0x04
- 	__u32	flowic_secid;
- 	kuid_t  flowic_uid;
--	struct flowi_tunnel flowic_tun_key;
- 	__u32		flowic_multipath_hash;
-+	struct flowi_tunnel flowic_tun_key;
- };
+diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
+index 249beb41ff89d..944cc34f707d9 100644
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -611,9 +611,6 @@ int dccp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
+ 	if (dccp_parse_options(sk, dreq, skb))
+ 		goto drop_and_free;
  
- union flowi_uli {
+-	if (security_inet_conn_request(sk, skb, req))
+-		goto drop_and_free;
+-
+ 	ireq = inet_rsk(req);
+ 	sk_rcv_saddr_set(req_to_sk(req), ip_hdr(skb)->daddr);
+ 	sk_daddr_set(req_to_sk(req), ip_hdr(skb)->saddr);
+@@ -621,6 +618,9 @@ int dccp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
+ 	ireq->ireq_family = AF_INET;
+ 	ireq->ir_iif = sk->sk_bound_dev_if;
+ 
++	if (security_inet_conn_request(sk, skb, req))
++		goto drop_and_free;
++
+ 	/*
+ 	 * Step 3: Process LISTEN state
+ 	 *
 -- 
 2.42.0
 
