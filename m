@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 730CA7ECDA5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3B0D7ECB3F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234601AbjKOThg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:37:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54728 "EHLO
+        id S232876AbjKOTVX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234595AbjKOThf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:35 -0500
+        with ESMTP id S233159AbjKOTVN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006E99E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791D6C433C8;
-        Wed, 15 Nov 2023 19:37:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D9C8D56
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C78BC433C8;
+        Wed, 15 Nov 2023 19:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077052;
-        bh=+Kcq2xDFG7GMnqQcDgpa7iqGZNNZbgbDPqnYvPZwzWU=;
+        s=korg; t=1700076057;
+        bh=mx991eoDVtKvZrl4Y9OxiM6dudR0VA4jqByf8FWa8ng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ScYFCDoG2JArMe3PbDI6oxmO2UDyOCQ51o9zGzer212WXox83XYo48uSQw8d6NMIA
-         5QKqTXkA42lVNwg+LbaydJp+q6+1la66R6Ei5rIzkOahVpW/HNIX8vJg5jtG7L02I6
-         q7VOyA9q0cmowqzAjHjOgg4nexA52gheARDLvKoY=
+        b=LmfLSG+qcj2UXYgQsHYoHXp4uDUo4m5a6X8P0Dkj76HYGSyWLKurl+94Vco7wjY5l
+         3BsD3o05DhLQ8Rd8mWWpgXeZtTsmGr/fJNAhiyCuiNOyNrciE6MOXxCYzElMqoXHuY
+         34CfbN5zRB/q0sP08pQMmLe4KVo91XGg/eExXrVo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Chiu <chui-hao.chiu@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/603] wifi: mt76: mt7996: fix rx rate report for CBW320-2
+        patches@lists.linux.dev, Andrii Staikov <andrii.staikov@intel.com>,
+        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 048/550] i40e: fix potential memory leaks in i40e_remove()
 Date:   Wed, 15 Nov 2023 14:10:32 -0500
-Message-ID: <20231115191619.154950882@linuxfoundation.org>
+Message-ID: <20231115191604.033253877@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +52,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Andrii Staikov <andrii.staikov@intel.com>
 
-[ Upstream commit 0197923ecf5eb4dbd785f5576040d49611f591a4 ]
+[ Upstream commit 5ca636d927a106780451d957734f02589b972e2b ]
 
-RX vector reports channel bandwidth 320-1 and 320-2 with different
-values. Fix it to correctly report rx rate when using CBW320-2.
+Instead of freeing memory of a single VSI, make sure
+the memory for all VSIs is cleared before releasing VSIs.
+Add releasing of their resources in a loop with the iteration
+number equal to the number of allocated VSIs.
 
-Fixes: 80f5a31d2856 ("wifi: mt76: mt7996: add support for EHT rate report")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 41c445ff0f48 ("i40e: main driver core")
+Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index 269e023e43113..c43839a205088 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -433,7 +433,9 @@ mt7996_mac_fill_rx_rate(struct mt7996_dev *dev,
- 	case IEEE80211_STA_RX_BW_160:
- 		status->bw = RATE_INFO_BW_160;
- 		break;
-+	/* rxv reports bw 320-1 and 320-2 separately */
- 	case IEEE80211_STA_RX_BW_320:
-+	case IEEE80211_STA_RX_BW_320 + 1:
- 		status->bw = RATE_INFO_BW_320;
- 		break;
- 	default:
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index a86bfa3bba74a..fc9ebef70bd9d 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -16324,11 +16324,15 @@ static void i40e_remove(struct pci_dev *pdev)
+ 			i40e_switch_branch_release(pf->veb[i]);
+ 	}
+ 
+-	/* Now we can shutdown the PF's VSI, just before we kill
++	/* Now we can shutdown the PF's VSIs, just before we kill
+ 	 * adminq and hmc.
+ 	 */
+-	if (pf->vsi[pf->lan_vsi])
+-		i40e_vsi_release(pf->vsi[pf->lan_vsi]);
++	for (i = pf->num_alloc_vsi; i--;)
++		if (pf->vsi[i]) {
++			i40e_vsi_close(pf->vsi[i]);
++			i40e_vsi_release(pf->vsi[i]);
++			pf->vsi[i] = NULL;
++		}
+ 
+ 	i40e_cloud_filter_exit(pf);
+ 
 -- 
 2.42.0
 
