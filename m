@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F18757ED07E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91E0E7ED08B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343859AbjKOT4K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:56:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42164 "EHLO
+        id S235594AbjKOTza (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:55:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343914AbjKOT4B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:01 -0500
+        with ESMTP id S235595AbjKOTzZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:55:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82A39D5C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:55:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A0DC433C7;
-        Wed, 15 Nov 2023 19:55:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DF1D4A
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:55:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32459C433C7;
+        Wed, 15 Nov 2023 19:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078152;
-        bh=xH3GlfGol6H+jc03c6nntX6ehRGyqCXu7i5tvC2Xhk4=;
+        s=korg; t=1700078112;
+        bh=PQPskEYGaoW8h9QS8xvHw+rNIZXYqHv6lyiaV6GqIRc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VYjqxgCb7mL9S0A93A0Ab3epztiRKg5NqOqIy+sE7gy8SGSmClZ3Ek1pINvQVjuXb
-         n/+Q+DMmUeZYwaV4qFfwjSwsfLNYFDDyp0mVaPSL2l9IJUzbotW9nNm0qYZxen08rS
-         wEV4rKq41HitjNlFngciEDA28LoKjcapxxUXA6g0=
+        b=x+7rAZXOcFzrJ3hU8IQUK6Ie5VAU9hwF+rPSUyj0IekZWtofs1gV5qSQYKz/7Y4gO
+         WZSbNjGMIoV9j/zN/LX70iitG3FyxbUIzuQjn12QQUqO1aS8Ctzl6rRUz0z2qPbSBu
+         OvSI8OAbUWzJnLHyOF4rV8QVCetUEcGiR3q+iKWY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dragos Bogdan <dragos.bogdan@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
+        patches@lists.linux.dev, Zhang Rui <rui.zhang@intel.com>,
+        kernel test robot <lkp@intel.com>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/379] hwmon: (axi-fan-control) Fix possible NULL pointer dereference
-Date:   Wed, 15 Nov 2023 14:23:03 -0500
-Message-ID: <20231115192651.517663019@linuxfoundation.org>
+Subject: [PATCH 6.1 109/379] hwmon: (coretemp) Fix potentially truncated sysfs attribute name
+Date:   Wed, 15 Nov 2023 14:23:04 -0500
+Message-ID: <20231115192651.577161453@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,72 +55,57 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dragos Bogdan <dragos.bogdan@analog.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 2a5b3370a1d9750eca325292e291c8c7cb8cf2e0 ]
+[ Upstream commit bbfff736d30e5283ad09e748caff979d75ddef7f ]
 
-axi_fan_control_irq_handler(), dependent on the private
-axi_fan_control_data structure, might be called before the hwmon
-device is registered. That will cause an "Unable to handle kernel
-NULL pointer dereference" error.
+When build with W=1 and "-Werror=format-truncation", below error is
+observed in coretemp driver,
 
-Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
-Signed-off-by: Dragos Bogdan <dragos.bogdan@analog.com>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231025132100.649499-1-nuno.sa@analog.com
+   drivers/hwmon/coretemp.c: In function 'create_core_data':
+>> drivers/hwmon/coretemp.c:393:34: error: '%s' directive output may be truncated writing likely 5 or more bytes into a region of size between 3 and 13 [-Werror=format-truncation=]
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                                  ^~
+   drivers/hwmon/coretemp.c:393:26: note: assuming directive output of 5 bytes
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                          ^~~~~~~~~~~
+   drivers/hwmon/coretemp.c:392:17: note: 'snprintf' output 7 or more bytes (assuming 22) into a destination of size 19
+     392 |                 snprintf(tdata->attr_name[i], CORETEMP_NAME_LENGTH,
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: all warnings being treated as errors
+
+Given that
+1. '%d' could take 10 charactors,
+2. '%s' could take 10 charactors ("crit_alarm"),
+3. "temp", "_" and the NULL terminator take 6 charactors,
+fix the problem by increasing CORETEMP_NAME_LENGTH to 28.
+
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310200443.iD3tUbbK-lkp@intel.com/
+Link: https://lore.kernel.org/r/20231025122316.836400-1-rui.zhang@intel.com
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/axi-fan-control.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ drivers/hwmon/coretemp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
-index 6724e0dd30880..25abf28084c96 100644
---- a/drivers/hwmon/axi-fan-control.c
-+++ b/drivers/hwmon/axi-fan-control.c
-@@ -496,6 +496,21 @@ static int axi_fan_control_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
- 
-+	ret = axi_fan_control_init(ctl, pdev->dev.of_node);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Failed to initialize device\n");
-+		return ret;
-+	}
-+
-+	ctl->hdev = devm_hwmon_device_register_with_info(&pdev->dev,
-+							 name,
-+							 ctl,
-+							 &axi_chip_info,
-+							 axi_fan_control_groups);
-+
-+	if (IS_ERR(ctl->hdev))
-+		return PTR_ERR(ctl->hdev);
-+
- 	ctl->irq = platform_get_irq(pdev, 0);
- 	if (ctl->irq < 0)
- 		return ctl->irq;
-@@ -509,19 +524,7 @@ static int axi_fan_control_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	ret = axi_fan_control_init(ctl, pdev->dev.of_node);
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to initialize device\n");
--		return ret;
--	}
--
--	ctl->hdev = devm_hwmon_device_register_with_info(&pdev->dev,
--							 name,
--							 ctl,
--							 &axi_chip_info,
--							 axi_fan_control_groups);
--
--	return PTR_ERR_OR_ZERO(ctl->hdev);
-+	return 0;
- }
- 
- static struct platform_driver axi_fan_control_driver = {
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index baaf8af4cb443..09aab5859fa75 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -41,7 +41,7 @@ MODULE_PARM_DESC(tjmax, "TjMax value in degrees Celsius");
+ #define PKG_SYSFS_ATTR_NO	1	/* Sysfs attribute for package temp */
+ #define BASE_SYSFS_ATTR_NO	2	/* Sysfs Base attr no for coretemp */
+ #define NUM_REAL_CORES		128	/* Number of Real cores per cpu */
+-#define CORETEMP_NAME_LENGTH	19	/* String Length of attrs */
++#define CORETEMP_NAME_LENGTH	28	/* String Length of attrs */
+ #define MAX_CORE_ATTRS		4	/* Maximum no of basic attrs */
+ #define TOTAL_ATTRS		(MAX_CORE_ATTRS + 1)
+ #define MAX_CORE_DATA		(NUM_REAL_CORES + BASE_SYSFS_ATTR_NO)
 -- 
 2.42.0
 
