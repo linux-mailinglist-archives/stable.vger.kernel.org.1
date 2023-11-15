@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 622957ECD87
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D6FD7ECB66
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234533AbjKOThB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:37:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35932 "EHLO
+        id S233014AbjKOTWF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:22:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234525AbjKOThA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:00 -0500
+        with ESMTP id S233109AbjKOTWC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C06D99E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4329DC433CD;
-        Wed, 15 Nov 2023 19:36:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6BF3D49
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A07EC433C9;
+        Wed, 15 Nov 2023 19:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077017;
-        bh=CDa0K3QfELjNjNvLKkCI8JsWo1P/9gcSUjbf3vqde9M=;
+        s=korg; t=1700076118;
+        bh=r2Fj9IcUr1U5M9vRhtHfftfHF1kGthNTTmUqL7xG9o8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nlzXWcEtFJQ6LejF48xsP8NhHfFUQ46M9Kr2HI1TMPXOEu2evznUSxUfDsjGpvkf0
-         kFF8mPtF2mHRPOtZv5IE6Day43TJI7EpUcpSRWbSHZ9gjh8ToZgyBi6nqn5McfCc1g
-         ses8uKYoS8mwpz8hS0WUru9+HlNfQZ99fUieRJs8=
+        b=n2BivWoufG5E/Ttgm3YAL4edgonssS1AiR5MkCgT0ycQfsl8wQ/03RU0yZ1L7Am9+
+         aT+eQGJNVkSmlpMJL8xtroIlrQ60pyu5MEy1QxscfKNjDzQbRH0emhvhzU7xuFDQ44
+         DR1roCEmyL4/lWz48kFDlKI68nyNojTEjs2Oytyo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Neal Cardwell <ncardwell@google.com>,
+        Willem de Bruijn <willemb@google.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/603] tcp_metrics: properly set tp->snd_ssthresh in tcp_init_metrics()
+Subject: [PATCH 6.5 060/550] udp: add missing WRITE_ONCE() around up->encap_rcv
 Date:   Wed, 15 Nov 2023 14:10:44 -0500
-Message-ID: <20231115191620.031088303@linuxfoundation.org>
+Message-ID: <20231115191604.839353508@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 081480014a64a69d901f8ef1ffdd56d6085cf87e ]
+[ Upstream commit 6d5a12eb91224d707f8691dccb40a5719fe5466d ]
 
-We need to set tp->snd_ssthresh to TCP_INFINITE_SSTHRESH
-in the case tcp_get_metrics() fails for some reason.
+UDP_ENCAP_ESPINUDP_NON_IKE setsockopt() writes over up->encap_rcv
+while other cpus read it.
 
-Fixes: 9ad7c049f0f7 ("tcp: RFC2988bis + taking RTT sample from 3WHS for the passive open side")
+Fixes: 067b207b281d ("[UDP]: Cleanup UDP encapsulation code")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Acked-by: Neal Cardwell <ncardwell@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/ipv4/udp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 4bfa2fb27de54..0c03f564878ff 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -470,6 +470,10 @@ void tcp_init_metrics(struct sock *sk)
- 	u32 val, crtt = 0; /* cached RTT scaled by 8 */
- 
- 	sk_dst_confirm(sk);
-+	/* ssthresh may have been reduced unnecessarily during.
-+	 * 3WHS. Restore it back to its initial default.
-+	 */
-+	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
- 	if (!dst)
- 		goto reset;
- 
-@@ -489,11 +493,6 @@ void tcp_init_metrics(struct sock *sk)
- 		tp->snd_ssthresh = val;
- 		if (tp->snd_ssthresh > tp->snd_cwnd_clamp)
- 			tp->snd_ssthresh = tp->snd_cwnd_clamp;
--	} else {
--		/* ssthresh may have been reduced unnecessarily during.
--		 * 3WHS. Restore it back to its initial default.
--		 */
--		tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
- 	}
- 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
- 	if (val && tp->reordering != val)
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index a160fce601acb..a018fb0965806 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -2700,10 +2700,12 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
+ 		case UDP_ENCAP_ESPINUDP_NON_IKE:
+ #if IS_ENABLED(CONFIG_IPV6)
+ 			if (sk->sk_family == AF_INET6)
+-				up->encap_rcv = ipv6_stub->xfrm6_udp_encap_rcv;
++				WRITE_ONCE(up->encap_rcv,
++					   ipv6_stub->xfrm6_udp_encap_rcv);
+ 			else
+ #endif
+-				up->encap_rcv = xfrm4_udp_encap_rcv;
++				WRITE_ONCE(up->encap_rcv,
++					   xfrm4_udp_encap_rcv);
+ #endif
+ 			fallthrough;
+ 		case UDP_ENCAP_L2TPINUDP:
 -- 
 2.42.0
 
