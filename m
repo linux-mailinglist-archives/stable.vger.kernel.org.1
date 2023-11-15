@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00C5F7ECF94
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7FFE7ECD73
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235357AbjKOTtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:49:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36226 "EHLO
+        id S234451AbjKOTgl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235351AbjKOTtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:24 -0500
+        with ESMTP id S234564AbjKOTgi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DEDEAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983ACC433C9;
-        Wed, 15 Nov 2023 19:49:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C98E1AD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D3FC433C7;
+        Wed, 15 Nov 2023 19:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077760;
-        bh=JgZ87VhgzRtxSyQNWLaf22R3pcB0m0a/D3kpZ8itLRI=;
+        s=korg; t=1700076994;
+        bh=b93Dx92s0SjCfe13HMd/eAvselD1++HxnDBzHkhKB1Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MBk6X3AE+4os/R92wDBglCTUYkyPgBtgAHU93uYWEqLF5Sy+2UWSwNXmZgV71DClx
-         4pw5P3r2kCspI1c/VDZcPvTDT06wtwd5EXDJRM5/Qq5K0+InOvFz5xffuAnPz+gY/6
-         DnwQ3hLlTlv2Y48e/M6lMCOfJZ/rp4wvWEgR/BFg=
+        b=yo+ytvlpNdIvez6+RwLbpjBvBEbMykrKC6kYNdY1l7QXoOgfze5SzVZoG/vUPviJO
+         h5xs28OtcriwHcnMpzopGdw2IlRys9FPjQ01ThTzwbM1DrjKOVhnZJumJ6wAKLp7nr
+         JX62W5ywlncV8pUw1dkn9njDPjbLrNJRB3lIlu6c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Dave Jiang <dave.jiang@intel.com>,
+        patches@lists.linux.dev, Li Zhijian <lizhijian@fujitsu.com>,
         Ira Weiny <ira.weiny@intel.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 503/603] cxl/hdm: Remove broken error path
+Subject: [PATCH 6.5 464/550] cxl/region: Fix cxl_region_rwsem lock held when returning to user space
 Date:   Wed, 15 Nov 2023 14:17:28 -0500
-Message-ID: <20231115191647.011476764@linuxfoundation.org>
+Message-ID: <20231115191633.032448299@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,105 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 5d09c63f11f083707b60c8ea0bb420651c47740f ]
+[ Upstream commit 3531b27f1f04a6bc9c95cf00d40efe618d57aa93 ]
 
-Dan reports that cxl_decoder_commit() potentially leaks a hold of
-cxl_dpa_rwsem. The potential error case is a "should not" happen
-scenario, turn it into a "can not" happen scenario by adding the error
-check to cxl_port_setup_targets() where other setting validation occurs.
+Fix a missed "goto out" to unlock on error to cleanup this splat:
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: http://lore.kernel.org/r/63295673-5d63-4919-b851-3b06d48734c0@moroto.mountain
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+    WARNING: lock held when returning to user space!
+    6.6.0-rc3-lizhijian+ #213 Not tainted
+    ------------------------------------------------
+    cxl/673 is leaving the kernel with locks still held!
+    1 lock held by cxl/673:
+     #0: ffffffffa013b9d0 (cxl_region_rwsem){++++}-{3:3}, at: commit_store+0x7d/0x3e0 [cxl_core]
+
+In terms of user visible impact of this bug for backports:
+
+cxl_region_invalidate_memregion() on x86 invokes wbinvd which is a
+problematic instruction for virtualized environments. So, on virtualized
+x86, cxl_region_invalidate_memregion() returns an error. This failure
+case got missed because CXL memory-expander device passthrough is not a
+production use case, and emulation of CXL devices is typically limited
+to kernel development builds with CONFIG_CXL_REGION_INVALIDATION_TEST=y,
+that makes cxl_region_invalidate_memregion() succeed.
+
+In other words, the expected exposure of this bug is limited to CXL
+subsystem development environments using QEMU that neglected
+CONFIG_CXL_REGION_INVALIDATION_TEST=y.
+
+Fixes: d1257d098a5a ("cxl/region: Move cache invalidation before region teardown, and before setup")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
+Link: https://lore.kernel.org/r/20231025085450.2514906-1-lizhijian@fujitsu.com
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/hdm.c    | 19 ++-----------------
- drivers/cxl/core/region.c |  8 ++++++++
- 2 files changed, 10 insertions(+), 17 deletions(-)
+ drivers/cxl/core/region.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index 3ad0d39d3d3fa..64e86b786db52 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -575,17 +575,11 @@ static void cxld_set_type(struct cxl_decoder *cxld, u32 *ctrl)
- 			  CXL_HDM_DECODER0_CTRL_HOSTONLY);
- }
- 
--static int cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
-+static void cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
- {
- 	struct cxl_dport **t = &cxlsd->target[0];
- 	int ways = cxlsd->cxld.interleave_ways;
- 
--	if (dev_WARN_ONCE(&cxlsd->cxld.dev,
--			  ways > 8 || ways > cxlsd->nr_targets,
--			  "ways: %d overflows targets: %d\n", ways,
--			  cxlsd->nr_targets))
--		return -ENXIO;
--
- 	*tgt = FIELD_PREP(GENMASK(7, 0), t[0]->port_id);
- 	if (ways > 1)
- 		*tgt |= FIELD_PREP(GENMASK(15, 8), t[1]->port_id);
-@@ -601,8 +595,6 @@ static int cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
- 		*tgt |= FIELD_PREP(GENMASK_ULL(55, 48), t[6]->port_id);
- 	if (ways > 7)
- 		*tgt |= FIELD_PREP(GENMASK_ULL(63, 56), t[7]->port_id);
--
--	return 0;
- }
- 
- /*
-@@ -689,13 +681,7 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
- 		void __iomem *tl_lo = hdm + CXL_HDM_DECODER0_TL_LOW(id);
- 		u64 targets;
- 
--		rc = cxlsd_set_targets(cxlsd, &targets);
--		if (rc) {
--			dev_dbg(&port->dev, "%s: target configuration error\n",
--				dev_name(&cxld->dev));
--			goto err;
--		}
--
-+		cxlsd_set_targets(cxlsd, &targets);
- 		writel(upper_32_bits(targets), tl_hi);
- 		writel(lower_32_bits(targets), tl_lo);
- 	} else {
-@@ -713,7 +699,6 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
- 
- 	port->commit_end++;
- 	rc = cxld_await_commit(hdm, cxld->id);
--err:
- 	if (rc) {
- 		dev_dbg(&port->dev, "%s: error %d committing decoder\n",
- 			dev_name(&cxld->dev), rc);
 diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index d1f513800c10d..85c0881fba442 100644
+index 89d24cd71606e..7392206eb8699 100644
 --- a/drivers/cxl/core/region.c
 +++ b/drivers/cxl/core/region.c
-@@ -1189,6 +1189,14 @@ static int cxl_port_setup_targets(struct cxl_port *port,
- 		return rc;
- 	}
+@@ -288,7 +288,7 @@ static ssize_t commit_store(struct device *dev, struct device_attribute *attr,
+ 	 */
+ 	rc = cxl_region_invalidate_memregion(cxlr);
+ 	if (rc)
+-		return rc;
++		goto out;
  
-+	if (iw > 8 || iw > cxlsd->nr_targets) {
-+		dev_dbg(&cxlr->dev,
-+			"%s:%s:%s: ways: %d overflows targets: %d\n",
-+			dev_name(port->uport_dev), dev_name(&port->dev),
-+			dev_name(&cxld->dev), iw, cxlsd->nr_targets);
-+		return -ENXIO;
-+	}
-+
- 	if (test_bit(CXL_REGION_F_AUTO, &cxlr->flags)) {
- 		if (cxld->interleave_ways != iw ||
- 		    cxld->interleave_granularity != ig ||
+ 	if (commit) {
+ 		rc = cxl_region_decode_commit(cxlr);
 -- 
 2.42.0
 
