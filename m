@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0207ECD37
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 968597ECB23
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234370AbjKOTfH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60056 "EHLO
+        id S230224AbjKOTUX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:20:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234386AbjKOTfG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:06 -0500
+        with ESMTP id S232755AbjKOTUW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 271EA19E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC03C433C8;
-        Wed, 15 Nov 2023 19:35:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D69A1BF
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:18 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175E5C433C8;
+        Wed, 15 Nov 2023 19:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076902;
-        bh=X5VIC/j24OjmGwzWrVjssXgobUDJ9xHQtXmfR9l0FD4=;
+        s=korg; t=1700076018;
+        bh=qlEIbPSQHe4V67F/5QnoDyBsSala6i1RTtcx7nCkP+I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ihayEt+HHhmNsaNvxI16gcujxeGqVOqefOGN+rl2gl9cW0uXUu0LQN451ioTmUSXc
-         eNnptCg30q5zkPrp6X4XqBdfLRyZLQ7V7fRDVmHe93y2wIJ2yh7BKZuGi6bbN4UV4N
-         FBrfVW+WYhuWvnOx0UgcDMubenTqJTV4yhnEaxkk=
+        b=RrLmAwIiKVD2fc8S3vhgI2youynIga4rTDP/YXiRS82lvK6yfTQsy0P2FPu7WANYe
+         YoVihcFa5isE3yU2Jfo+WaCj4UWr9hNhprKlv6MVP/RIhdwa+4ZvYHaZ7nfqi0WQti
+         +et0X2PLlN9OjG4+zwAuynAxMA7TGhQfKZPWuwUI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Laurent Dufour <ldufour@linux.ibm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Zhang Rui <rui.zhang@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/603] udplite: fix various data-races
+Subject: [PATCH 6.5 023/550] cpu/hotplug: Remove dependancy against cpu_primary_thread_mask
 Date:   Wed, 15 Nov 2023 14:10:07 -0500
-Message-ID: <20231115191617.418833883@linuxfoundation.org>
+Message-ID: <20231115191602.329055517@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,180 +51,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Laurent Dufour <ldufour@linux.ibm.com>
 
-[ Upstream commit 882af43a0fc37e26d85fb0df0c9edd3bed928de4 ]
+[ Upstream commit 7a4dcb4a5de1214c4a59448a759e2e264c2c4473 ]
 
-udp->pcflag, udp->pcslen and udp->pcrlen reads/writes are racy.
+The commit 18415f33e2ac ("cpu/hotplug: Allow "parallel" bringup up to
+CPUHP_BP_KICK_AP_STATE") introduce a dependancy against a global variable
+cpu_primary_thread_mask exported by the X86 code. This variable is only
+used when CONFIG_HOTPLUG_PARALLEL is set.
 
-Move udp->pcflag to udp->udp_flags for atomicity,
-and add READ_ONCE()/WRITE_ONCE() annotations for pcslen and pcrlen.
+Since cpuhp_get_primary_thread_mask() and cpuhp_smt_aware() are only used
+when CONFIG_HOTPLUG_PARALLEL is set, don't define them when it is not set.
 
-Fixes: ba4e58eca8aa ("[NET]: Supporting UDP-Lite (RFC 3828) in Linux")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+No functional change.
+
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://lore.kernel.org/r/20230705145143.40545-2-ldufour@linux.ibm.com
+Stable-dep-of: d91bdd96b55c ("cpu/SMT: Make SMT control more robust against enumeration failures")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h   |  6 ++----
- include/net/udplite.h | 14 +++++++++-----
- net/ipv4/udp.c        | 21 +++++++++++----------
- net/ipv6/udp.c        |  9 +++++----
- 4 files changed, 27 insertions(+), 23 deletions(-)
+ kernel/cpu.c | 24 ++++++++++--------------
+ 1 file changed, 10 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index 58156edec0096..d04188714dca1 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -40,6 +40,8 @@ enum {
- 	UDP_FLAGS_ACCEPT_FRAGLIST,
- 	UDP_FLAGS_ACCEPT_L4,
- 	UDP_FLAGS_ENCAP_ENABLED, /* This socket enabled encap */
-+	UDP_FLAGS_UDPLITE_SEND_CC, /* set via udplite setsockopt */
-+	UDP_FLAGS_UDPLITE_RECV_CC, /* set via udplite setsockopt */
- };
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 9628ae3c2825b..dd59ffeacff2e 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -650,22 +650,8 @@ bool cpu_smt_possible(void)
+ }
+ EXPORT_SYMBOL_GPL(cpu_smt_possible);
  
- struct udp_sock {
-@@ -54,10 +56,6 @@ struct udp_sock {
- 	int		 pending;	/* Any pending frames ? */
- 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
+-static inline bool cpuhp_smt_aware(void)
+-{
+-	return topology_smt_supported();
+-}
+-
+-static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
+-{
+-	return cpu_primary_thread_mask;
+-}
+ #else
+ static inline bool cpu_smt_allowed(unsigned int cpu) { return true; }
+-static inline bool cpuhp_smt_aware(void) { return false; }
+-static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
+-{
+-	return cpu_present_mask;
+-}
+ #endif
  
--/* indicator bits used by pcflag: */
--#define UDPLITE_SEND_CC  0x1  		/* set via udplite setsockopt         */
--#define UDPLITE_RECV_CC  0x2		/* set via udplite setsocktopt        */
--	__u8		 pcflag;        /* marks socket as UDP-Lite if > 0    */
- 	/*
- 	 * Following member retains the information to create a UDP header
- 	 * when the socket is uncorked.
-diff --git a/include/net/udplite.h b/include/net/udplite.h
-index bd33ff2b8f426..786919d29f8de 100644
---- a/include/net/udplite.h
-+++ b/include/net/udplite.h
-@@ -66,14 +66,18 @@ static inline int udplite_checksum_init(struct sk_buff *skb, struct udphdr *uh)
- /* Fast-path computation of checksum. Socket may not be locked. */
- static inline __wsum udplite_csum(struct sk_buff *skb)
- {
--	const struct udp_sock *up = udp_sk(skb->sk);
- 	const int off = skb_transport_offset(skb);
-+	const struct sock *sk = skb->sk;
- 	int len = skb->len - off;
+ static inline enum cpuhp_state
+@@ -1815,6 +1801,16 @@ static int __init parallel_bringup_parse_param(char *arg)
+ }
+ early_param("cpuhp.parallel", parallel_bringup_parse_param);
  
--	if ((up->pcflag & UDPLITE_SEND_CC) && up->pcslen < len) {
--		if (0 < up->pcslen)
--			len = up->pcslen;
--		udp_hdr(skb)->len = htons(up->pcslen);
-+	if (udp_test_bit(UDPLITE_SEND_CC, sk)) {
-+		u16 pcslen = READ_ONCE(udp_sk(sk)->pcslen);
++static inline bool cpuhp_smt_aware(void)
++{
++	return topology_smt_supported();
++}
 +
-+		if (pcslen < len) {
-+			if (pcslen > 0)
-+				len = pcslen;
-+			udp_hdr(skb)->len = htons(pcslen);
-+		}
- 	}
- 	skb->ip_summed = CHECKSUM_NONE;     /* no HW support for checksumming */
- 
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 2eeab4af17a13..c3ff984b63547 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2120,7 +2120,8 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
- 	/*
- 	 * 	UDP-Lite specific tests, ignored on UDP sockets
- 	 */
--	if ((up->pcflag & UDPLITE_RECV_CC)  &&  UDP_SKB_CB(skb)->partial_cov) {
-+	if (udp_test_bit(UDPLITE_RECV_CC, sk) && UDP_SKB_CB(skb)->partial_cov) {
-+		u16 pcrlen = READ_ONCE(up->pcrlen);
- 
- 		/*
- 		 * MIB statistics other than incrementing the error count are
-@@ -2133,7 +2134,7 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
- 		 * delivery of packets with coverage values less than a value
- 		 * provided by the application."
- 		 */
--		if (up->pcrlen == 0) {          /* full coverage was set  */
-+		if (pcrlen == 0) {          /* full coverage was set  */
- 			net_dbg_ratelimited("UDPLite: partial coverage %d while full coverage %d requested\n",
- 					    UDP_SKB_CB(skb)->cscov, skb->len);
- 			goto drop;
-@@ -2144,9 +2145,9 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
- 		 * that it wants x while sender emits packets of smaller size y.
- 		 * Therefore the above ...()->partial_cov statement is essential.
- 		 */
--		if (UDP_SKB_CB(skb)->cscov  <  up->pcrlen) {
-+		if (UDP_SKB_CB(skb)->cscov < pcrlen) {
- 			net_dbg_ratelimited("UDPLite: coverage %d too small, need min %d\n",
--					    UDP_SKB_CB(skb)->cscov, up->pcrlen);
-+					    UDP_SKB_CB(skb)->cscov, pcrlen);
- 			goto drop;
- 		}
- 	}
-@@ -2729,8 +2730,8 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
- 			val = 8;
- 		else if (val > USHRT_MAX)
- 			val = USHRT_MAX;
--		up->pcslen = val;
--		up->pcflag |= UDPLITE_SEND_CC;
-+		WRITE_ONCE(up->pcslen, val);
-+		udp_set_bit(UDPLITE_SEND_CC, sk);
- 		break;
- 
- 	/* The receiver specifies a minimum checksum coverage value. To make
-@@ -2743,8 +2744,8 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
- 			val = 8;
- 		else if (val > USHRT_MAX)
- 			val = USHRT_MAX;
--		up->pcrlen = val;
--		up->pcflag |= UDPLITE_RECV_CC;
-+		WRITE_ONCE(up->pcrlen, val);
-+		udp_set_bit(UDPLITE_RECV_CC, sk);
- 		break;
- 
- 	default:
-@@ -2808,11 +2809,11 @@ int udp_lib_getsockopt(struct sock *sk, int level, int optname,
- 	/* The following two cannot be changed on UDP sockets, the return is
- 	 * always 0 (which corresponds to the full checksum coverage of UDP). */
- 	case UDPLITE_SEND_CSCOV:
--		val = up->pcslen;
-+		val = READ_ONCE(up->pcslen);
- 		break;
- 
- 	case UDPLITE_RECV_CSCOV:
--		val = up->pcrlen;
-+		val = READ_ONCE(up->pcrlen);
- 		break;
- 
- 	default:
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 0e79d189613be..f60ba42954352 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -727,16 +727,17 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
- 	/*
- 	 * UDP-Lite specific tests, ignored on UDP sockets (see net/ipv4/udp.c).
- 	 */
--	if ((up->pcflag & UDPLITE_RECV_CC)  &&  UDP_SKB_CB(skb)->partial_cov) {
-+	if (udp_test_bit(UDPLITE_RECV_CC, sk) && UDP_SKB_CB(skb)->partial_cov) {
-+		u16 pcrlen = READ_ONCE(up->pcrlen);
- 
--		if (up->pcrlen == 0) {          /* full coverage was set  */
-+		if (pcrlen == 0) {          /* full coverage was set  */
- 			net_dbg_ratelimited("UDPLITE6: partial coverage %d while full coverage %d requested\n",
- 					    UDP_SKB_CB(skb)->cscov, skb->len);
- 			goto drop;
- 		}
--		if (UDP_SKB_CB(skb)->cscov  <  up->pcrlen) {
-+		if (UDP_SKB_CB(skb)->cscov < pcrlen) {
- 			net_dbg_ratelimited("UDPLITE6: coverage %d too small, need min %d\n",
--					    UDP_SKB_CB(skb)->cscov, up->pcrlen);
-+					    UDP_SKB_CB(skb)->cscov, pcrlen);
- 			goto drop;
- 		}
- 	}
++static inline const struct cpumask *cpuhp_get_primary_thread_mask(void)
++{
++	return cpu_primary_thread_mask;
++}
++
+ /*
+  * On architectures which have enabled parallel bringup this invokes all BP
+  * prepare states for each of the to be onlined APs first. The last state
 -- 
 2.42.0
 
