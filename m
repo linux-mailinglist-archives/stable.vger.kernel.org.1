@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 720327ECEB0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 868037ECEB3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235159AbjKOTo3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34902 "EHLO
+        id S235155AbjKOTob (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:44:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235152AbjKOTo1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:27 -0500
+        with ESMTP id S235156AbjKOTo3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:29 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC669E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7474EC433C8;
-        Wed, 15 Nov 2023 19:44:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90B2919F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1625AC433C9;
+        Wed, 15 Nov 2023 19:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077464;
-        bh=0Niv9CPXPjY9rwfZsjpckhK25Kvu8wiNtpFl7fGHTpE=;
+        s=korg; t=1700077466;
+        bh=guBa8Bbwm32D3t1uDqXFHRK+NBop4oS4T0HvZr74SNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aYaUy4j3a/fXa5QafCkuuXuVOSZsVph6yzXCEQxH9wUoCh0yBAVBN4BYlyeov++Im
-         CggNRuVaDCDTdiZ/e9Mn0ywGc5CksObzAlsijS0wo4gwmsDMQSpxPGcwIOehCgtC+S
-         jX0/ZNl7MvvTDJa22zfj2KZHz0CtGOsQ8pVX0jp4=
+        b=YsTD48CQPVQDDzUQvIecS8sshRm0TVqczGIwiNmok59EuyzUCCD2cx00fPJgBAEKj
+         c8odEW5uAFWno8q7VMyStjLK2WfWfLYntcP48L6JH4v3nACm3GtpPOxYj19QW9PKQb
+         LZ06Grm8pi0lk+YVcBFJ0pWK3HWSv4VRdwQPLsQU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 294/603] riscv: dts: allwinner: remove address-cells from intc node
-Date:   Wed, 15 Nov 2023 14:13:59 -0500
-Message-ID: <20231115191633.721792303@linuxfoundation.org>
+Subject: [PATCH 6.6 295/603] arm64: dts: qcom: apq8016-sbc: Add missing ADV7533 regulators
+Date:   Wed, 15 Nov 2023 14:14:00 -0500
+Message-ID: <20231115191633.793160578@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -54,39 +55,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Stephan Gerhold <stephan@gerhold.net>
 
-[ Upstream commit 267860b10c67dd396c73a9e6e8103670d78a4c01 ]
+[ Upstream commit 33e9032a1875bb1aee3c68a4540f5a577ff44130 ]
 
-A recent submission [1] from Rob has added additionalProperties: false
-to the interrupt-controller child node of RISC-V cpus, highlighting that
-the D1 DT has been incorrectly using #address-cells since its
-introduction. It has no child nodes, so #address-cells is not needed.
-Remove it.
+Add the missing regulator supplies to the ADV7533 HDMI bridge to fix
+the following dtbs_check warnings. They are all also supplied by
+pm8916_l6 so there is no functional difference.
 
-Fixes: 077e5f4f5528 ("riscv: dts: allwinner: Add the D1/D1s SoC devicetree")
-Link: https://patchwork.kernel.org/project/linux-riscv/patch/20230915201946.4184468-1-robh@kernel.org/ [1]
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://lore.kernel.org/r/20230916-saddling-dastardly-8cf6d1263c24@spud
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+apq8016-sbc.dtb: bridge@39: 'dvdd-supply' is a required property
+apq8016-sbc.dtb: bridge@39: 'pvdd-supply' is a required property
+apq8016-sbc.dtb: bridge@39: 'a2vdd-supply' is a required property
+        from schema display/bridge/adi,adv7533.yaml
+
+Fixes: 28546b095511 ("arm64: dts: apq8016-sbc: Add HDMI display support")
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230922-db410c-adv7533-regulators-v1-1-68aba71e529b@gerhold.net
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi b/arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi
-index 8275630af977d..b8684312593e5 100644
---- a/arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi
-+++ b/arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi
-@@ -30,7 +30,6 @@ cpu0: cpu@0 {
- 			cpu0_intc: interrupt-controller {
- 				compatible = "riscv,cpu-intc";
- 				interrupt-controller;
--				#address-cells = <0>;
- 				#interrupt-cells = <1>;
- 			};
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+index 4f5541e9be0e9..dabe9f42a63ad 100644
+--- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
++++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
+@@ -172,6 +172,9 @@ adv_bridge: bridge@39 {
+ 		pd-gpios = <&tlmm 32 GPIO_ACTIVE_HIGH>;
+ 
+ 		avdd-supply = <&pm8916_l6>;
++		a2vdd-supply = <&pm8916_l6>;
++		dvdd-supply = <&pm8916_l6>;
++		pvdd-supply = <&pm8916_l6>;
+ 		v1p2-supply = <&pm8916_l6>;
+ 		v3p3-supply = <&pm8916_l17>;
+ 
 -- 
 2.42.0
 
