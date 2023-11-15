@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1257A7ECF2B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E717ECC84
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235246AbjKOTqr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55346 "EHLO
+        id S234006AbjKOTbB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:31:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235242AbjKOTqr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:47 -0500
+        with ESMTP id S233999AbjKOTa6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:58 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61B61AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F161C433C7;
-        Wed, 15 Nov 2023 19:46:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3613319D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E88C433C8;
+        Wed, 15 Nov 2023 19:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077603;
-        bh=J2MIBoQSJacSAkojynG0tAxou8mXDwNbPMu3mlLhoVE=;
+        s=korg; t=1700076654;
+        bh=w/XZGq9bhYIPgrukJarEF3dA2q2mPykXei/doswv6z4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lI9YqiAbJheQO6E8ZTl3NHe7ZKpwPyU8mDqBXMdPmQ8QACrWVhL5+IqF5iCQTyMti
-         kQrQZCpR/gHN1r/7JwB4yaVAYV0DM/U13MIY2eHheuiY5fQM+Mt6Vttrj2h3J7Kd5I
-         hp4nK/Up5zTNKDUYNl/EFMTOxCPiZUwYNHHuNA6s=
+        b=yC+HcJeU/1MWUas2kvTUT+3UhFrbwjrGhtn1Zpiub4XfVtyJNuYpEmcEN1KC/A1x9
+         owGh5m0CUfbNMSSSDCtj2Uc10eTGugwvDIJRfQW/i6/FjqR+wc/tpYnL7B/vooOOHS
+         OhnbD/hj9Y4UA1rLPfs7/2hq5+vuJ/2aMUEjM6TI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Damian Muszynski <damian.muszynski@intel.com>,
-        Tero Kristo <tero.kristo@linux.intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Leon Romanovsky <leon@kernel.org>,
+        George Kennedy <george.kennedy@oracle.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 404/603] crypto: qat - fix ring to service map for QAT GEN4
+Subject: [PATCH 6.5 365/550] IB/mlx5: Fix init stage error handling to avoid double free of same QP and UAF
 Date:   Wed, 15 Nov 2023 14:15:49 -0500
-Message-ID: <20231115191640.991662940@linuxfoundation.org>
+Message-ID: <20231115191626.119874629@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,132 +51,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: George Kennedy <george.kennedy@oracle.com>
 
-[ Upstream commit a238487f7965d102794ed9f8aff0b667cd2ae886 ]
+[ Upstream commit 2ef422f063b74adcc4a4a9004b0a87bb55e0a836 ]
 
-The 4xxx drivers hardcode the ring to service mapping. However, when
-additional configurations where added to the driver, the mappings were
-not updated. This implies that an incorrect mapping might be reported
-through pfvf for certain configurations.
+In the unlikely event that workqueue allocation fails and returns NULL in
+mlx5_mkey_cache_init(), delete the call to
+mlx5r_umr_resource_cleanup() (which frees the QP) in
+mlx5_ib_stage_post_ib_reg_umr_init().  This will avoid attempted double
+free of the same QP when __mlx5_ib_add() does its cleanup.
 
-Add an algorithm that computes the correct ring to service mapping based
-on the firmware loaded on the device.
+Resolves a splat:
 
-Fixes: 0cec19c761e5 ("crypto: qat - add support for compression for 4xxx")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Reviewed-by: Tero Kristo <tero.kristo@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+   Syzkaller reported a UAF in ib_destroy_qp_user
+
+   workqueue: Failed to create a rescuer kthread for wq "mkey_cache": -EINTR
+   infiniband mlx5_0: mlx5_mkey_cache_init:981:(pid 1642):
+   failed to create work queue
+   infiniband mlx5_0: mlx5_ib_stage_post_ib_reg_umr_init:4075:(pid 1642):
+   mr cache init failed -12
+   ==================================================================
+   BUG: KASAN: slab-use-after-free in ib_destroy_qp_user (drivers/infiniband/core/verbs.c:2073)
+   Read of size 8 at addr ffff88810da310a8 by task repro_upstream/1642
+
+   Call Trace:
+   <TASK>
+   kasan_report (mm/kasan/report.c:590)
+   ib_destroy_qp_user (drivers/infiniband/core/verbs.c:2073)
+   mlx5r_umr_resource_cleanup (drivers/infiniband/hw/mlx5/umr.c:198)
+   __mlx5_ib_add (drivers/infiniband/hw/mlx5/main.c:4178)
+   mlx5r_probe (drivers/infiniband/hw/mlx5/main.c:4402)
+   ...
+   </TASK>
+
+   Allocated by task 1642:
+   __kmalloc (./include/linux/kasan.h:198 mm/slab_common.c:1026
+   mm/slab_common.c:1039)
+   create_qp (./include/linux/slab.h:603 ./include/linux/slab.h:720
+   ./include/rdma/ib_verbs.h:2795 drivers/infiniband/core/verbs.c:1209)
+   ib_create_qp_kernel (drivers/infiniband/core/verbs.c:1347)
+   mlx5r_umr_resource_init (drivers/infiniband/hw/mlx5/umr.c:164)
+   mlx5_ib_stage_post_ib_reg_umr_init (drivers/infiniband/hw/mlx5/main.c:4070)
+   __mlx5_ib_add (drivers/infiniband/hw/mlx5/main.c:4168)
+   mlx5r_probe (drivers/infiniband/hw/mlx5/main.c:4402)
+   ...
+
+   Freed by task 1642:
+   __kmem_cache_free (mm/slub.c:1826 mm/slub.c:3809 mm/slub.c:3822)
+   ib_destroy_qp_user (drivers/infiniband/core/verbs.c:2112)
+   mlx5r_umr_resource_cleanup (drivers/infiniband/hw/mlx5/umr.c:198)
+   mlx5_ib_stage_post_ib_reg_umr_init (drivers/infiniband/hw/mlx5/main.c:4076
+   drivers/infiniband/hw/mlx5/main.c:4065)
+   __mlx5_ib_add (drivers/infiniband/hw/mlx5/main.c:4168)
+   mlx5r_probe (drivers/infiniband/hw/mlx5/main.c:4402)
+   ...
+
+Fixes: 04876c12c19e ("RDMA/mlx5: Move init and cleanup of UMR to umr.c")
+Link: https://lore.kernel.org/r/1698170518-4006-1-git-send-email-george.kennedy@oracle.com
+Suggested-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/qat/qat_4xxx/adf_4xxx_hw_data.c     | 54 +++++++++++++++++++
- .../intel/qat/qat_common/adf_accel_devices.h  |  1 +
- .../crypto/intel/qat/qat_common/adf_init.c    |  3 ++
- 3 files changed, 58 insertions(+)
+ drivers/infiniband/hw/mlx5/main.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-index 44b732fb80bca..a5691ba0b7244 100644
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-@@ -423,6 +423,59 @@ static const struct adf_fw_config *get_fw_config(struct adf_accel_dev *accel_dev
- 	}
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 666e737371b76..61d892bf6d38b 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -4052,10 +4052,8 @@ static int mlx5_ib_stage_post_ib_reg_umr_init(struct mlx5_ib_dev *dev)
+ 		return ret;
+ 
+ 	ret = mlx5_mkey_cache_init(dev);
+-	if (ret) {
++	if (ret)
+ 		mlx5_ib_warn(dev, "mr cache init failed %d\n", ret);
+-		mlx5r_umr_resource_cleanup(dev);
+-	}
+ 	return ret;
  }
  
-+enum adf_rp_groups {
-+	RP_GROUP_0 = 0,
-+	RP_GROUP_1,
-+	RP_GROUP_COUNT
-+};
-+
-+static u16 get_ring_to_svc_map(struct adf_accel_dev *accel_dev)
-+{
-+	enum adf_cfg_service_type rps[RP_GROUP_COUNT];
-+	const struct adf_fw_config *fw_config;
-+	u16 ring_to_svc_map;
-+	int i, j;
-+
-+	fw_config = get_fw_config(accel_dev);
-+	if (!fw_config)
-+		return 0;
-+
-+	for (i = 0; i < RP_GROUP_COUNT; i++) {
-+		switch (fw_config[i].ae_mask) {
-+		case ADF_AE_GROUP_0:
-+			j = RP_GROUP_0;
-+			break;
-+		case ADF_AE_GROUP_1:
-+			j = RP_GROUP_1;
-+			break;
-+		default:
-+			return 0;
-+		}
-+
-+		switch (fw_config[i].obj) {
-+		case ADF_FW_SYM_OBJ:
-+			rps[j] = SYM;
-+			break;
-+		case ADF_FW_ASYM_OBJ:
-+			rps[j] = ASYM;
-+			break;
-+		case ADF_FW_DC_OBJ:
-+			rps[j] = COMP;
-+			break;
-+		default:
-+			rps[j] = 0;
-+			break;
-+		}
-+	}
-+
-+	ring_to_svc_map = rps[RP_GROUP_0] << ADF_CFG_SERV_RING_PAIR_0_SHIFT |
-+			  rps[RP_GROUP_1] << ADF_CFG_SERV_RING_PAIR_1_SHIFT |
-+			  rps[RP_GROUP_0] << ADF_CFG_SERV_RING_PAIR_2_SHIFT |
-+			  rps[RP_GROUP_1] << ADF_CFG_SERV_RING_PAIR_3_SHIFT;
-+
-+	return ring_to_svc_map;
-+}
-+
- static const char *uof_get_name(struct adf_accel_dev *accel_dev, u32 obj_num,
- 				const char * const fw_objs[], int num_objs)
- {
-@@ -519,6 +572,7 @@ void adf_init_hw_data_4xxx(struct adf_hw_device_data *hw_data, u32 dev_id)
- 	hw_data->uof_get_ae_mask = uof_get_ae_mask;
- 	hw_data->set_msix_rttable = set_msix_default_rttable;
- 	hw_data->set_ssm_wdtimer = adf_gen4_set_ssm_wdtimer;
-+	hw_data->get_ring_to_svc_map = get_ring_to_svc_map;
- 	hw_data->disable_iov = adf_disable_sriov;
- 	hw_data->ring_pair_reset = adf_gen4_ring_pair_reset;
- 	hw_data->enable_pm = adf_gen4_enable_pm;
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-index 1e84ff309ed3b..79d5a1535eda3 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-@@ -182,6 +182,7 @@ struct adf_hw_device_data {
- 	void (*get_arb_info)(struct arb_info *arb_csrs_info);
- 	void (*get_admin_info)(struct admin_info *admin_csrs_info);
- 	enum dev_sku_info (*get_sku)(struct adf_hw_device_data *self);
-+	u16 (*get_ring_to_svc_map)(struct adf_accel_dev *accel_dev);
- 	int (*alloc_irq)(struct adf_accel_dev *accel_dev);
- 	void (*free_irq)(struct adf_accel_dev *accel_dev);
- 	void (*enable_error_correction)(struct adf_accel_dev *accel_dev);
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_init.c b/drivers/crypto/intel/qat/qat_common/adf_init.c
-index 7323a9f1f11c8..0f9e2d59ce385 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_init.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
-@@ -97,6 +97,9 @@ static int adf_dev_init(struct adf_accel_dev *accel_dev)
- 		return -EFAULT;
- 	}
- 
-+	if (hw_data->get_ring_to_svc_map)
-+		hw_data->ring_to_svc_map = hw_data->get_ring_to_svc_map(accel_dev);
-+
- 	if (adf_ae_init(accel_dev)) {
- 		dev_err(&GET_DEV(accel_dev),
- 			"Failed to initialise Acceleration Engine\n");
 -- 
 2.42.0
 
