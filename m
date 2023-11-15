@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5392A7ED6AD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:02:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94FD67ED6AF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:02:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235605AbjKOWCy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 17:02:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53298 "EHLO
+        id S1343757AbjKOWCz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 17:02:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235642AbjKOWCw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:02:52 -0500
+        with ESMTP id S233601AbjKOWCy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:02:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 843A418B
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:02:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07831C433C7;
-        Wed, 15 Nov 2023 22:02:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F2F61AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:02:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85408C433C7;
+        Wed, 15 Nov 2023 22:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085769;
-        bh=6ym71nx10puGlN4WkZ69iK1k0/AVBXcMO+oAd6f6TeQ=;
+        s=korg; t=1700085770;
+        bh=q8r3i9HNQ0fOx7q8y97lS12MgtUXwAH8Q8JTkHuhv/U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zkJ/tk5DBrXxzxcguraqWURg/2o6XtYrpYq8EWgUlkhEQgaFx3eDMTQWhxRORi8IP
-         yIhL1UEukHtcXYW/wbMxWknZM6Ujvg5elf8KiaiXFqh68EXdZ28HcFqHL+Wyn/mF9s
-         WwVhPth6Too2ho0+oUzS0G2cjibgbTWikM8TFsi4=
+        b=o/pp2/Nf2pJL+AmfbJleX8SIJLUPLktd3L2BI0vBzeEuTcPrWyAomuMIjyoUK3rUT
+         JS9xZf8zReAfbIYfziSDk9HzPkMs6CrmT513sPQQ+ioRiB9FGcwVzWCuLOVJQEfKX7
+         EvmplbiXleNcnlG5rTNz8aLiPa/xcDWoQSGFjbLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Heiko Stuebner <heiko@sntech.de>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/119] drm/rockchip: cdn-dp: Fix some error handling paths in cdn_dp_probe()
-Date:   Wed, 15 Nov 2023 17:00:32 -0500
-Message-ID: <20231115220133.933015281@linuxfoundation.org>
+Subject: [PATCH 5.4 043/119] arm64: dts: qcom: sdm845-mtp: fix WiFi configuration
+Date:   Wed, 15 Nov 2023 17:00:33 -0500
+Message-ID: <20231115220133.962809941@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
 References: <20231115220132.607437515@linuxfoundation.org>
@@ -55,58 +55,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 44b968d0d0868b7a9b7a5c64464ada464ff4d532 ]
+[ Upstream commit b33868a52f342d9b1f20aa5bffe40cbd69bd0a4b ]
 
-cdn_dp_audio_codec_init() can fail. So add some error handling.
+Enable the host-cap-8bit quirk on this device. It is required for the
+WiFi to function properly.
 
-If component_add() fails, the previous cdn_dp_audio_codec_init() call
-should be undone, as already done in the remove function.
-
-Fixes: 88582f564692 ("drm/rockchip: cdn-dp: Don't unregister audio dev when unbinding")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/8494a41602fadb7439630921a9779640698f2f9f.1693676045.git.christophe.jaillet@wanadoo.fr
+Fixes: 022bccb840b7 ("arm64: dts: sdm845: Add WCN3990 WLAN module device node")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230826221915.846937-2-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/cdn-dp-core.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-mtp.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-index 2ea672f4420d5..df2656471e31b 100644
---- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-@@ -1147,6 +1147,7 @@ static int cdn_dp_probe(struct platform_device *pdev)
- 	struct cdn_dp_device *dp;
- 	struct extcon_dev *extcon;
- 	struct phy *phy;
-+	int ret;
- 	int i;
- 
- 	dp = devm_kzalloc(dev, sizeof(*dp), GFP_KERNEL);
-@@ -1187,9 +1188,19 @@ static int cdn_dp_probe(struct platform_device *pdev)
- 	mutex_init(&dp->lock);
- 	dev_set_drvdata(dev, dp);
- 
--	cdn_dp_audio_codec_init(dp, dev);
-+	ret = cdn_dp_audio_codec_init(dp, dev);
-+	if (ret)
-+		return ret;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-mtp.dts b/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
+index c57548b7b250a..e5331a81249b1 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
+@@ -468,6 +468,8 @@ &wifi {
+ 	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+ 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+ 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
 +
-+	ret = component_add(dev, &cdn_dp_component_ops);
-+	if (ret)
-+		goto err_audio_deinit;
++	qcom,snoc-host-cap-8bit-quirk;
+ };
  
--	return component_add(dev, &cdn_dp_component_ops);
-+	return 0;
-+
-+err_audio_deinit:
-+	platform_device_unregister(dp->audio_pdev);
-+	return ret;
- }
- 
- static int cdn_dp_remove(struct platform_device *pdev)
+ /* PINCTRL - additions to nodes defined in sdm845.dtsi */
 -- 
 2.42.0
 
