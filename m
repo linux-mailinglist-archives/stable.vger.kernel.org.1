@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FBBD7ECB9F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E64FC7ECE0B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232046AbjKOTX1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59080 "EHLO
+        id S234790AbjKOTkN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:40:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232252AbjKOTX0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:26 -0500
+        with ESMTP id S234787AbjKOTkM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:12 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E8DE1A8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05ABC433C8;
-        Wed, 15 Nov 2023 19:23:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C614D5F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97B4C433D9;
+        Wed, 15 Nov 2023 19:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076203;
-        bh=kJ+6qNT0jO1qXc9kqWug+yt55wNHOH2YOvbMt7C6Iro=;
+        s=korg; t=1700077197;
+        bh=JTBj1IOAvNEx4w2oG2my9L/SV5J1pClmyZ5zXYDWnG8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zdNmuOmpMd/DXTUp/9RHikafLAZddzgsNYpJwhJ0ANtHvDU9ma19GCapB9nk21bSA
-         7Uwc8RxlskTykWjDWWql0yLuvZhMVSx/YxcdJXIkAvVx5umGLTL1m5ULxaAcrTaAxc
-         YS9WzUukV00+xmEEsm+Ec1BkE3d8JdJtNmik1Lis=
+        b=wxu4NqKvB6ssb7x7niSsZFW9jR7/adoi57pN/JV3pALGcpTLQW6CFHqn0uXoCP7fW
+         wdSMi1ToaJyKVR0dbP5kgm3mQLXf8lYgytbQd4EBl+ZHlhEo/UFWEGEIUrkUbQ/vx+
+         ONjZl9X0W9fdSADqv8EExBj8xPoLeXqrxwGPbd1E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Frank Wunderlich <frank-w@public-files.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Markus Schneider-Pargmann <msp@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 116/550] thermal/drivers/mediatek: Fix probe for THERMAL_V2
-Date:   Wed, 15 Nov 2023 14:11:40 -0500
-Message-ID: <20231115191608.731494420@linuxfoundation.org>
+Subject: [PATCH 6.6 156/603] net: add DEV_STATS_READ() helper
+Date:   Wed, 15 Nov 2023 14:11:41 -0500
+Message-ID: <20231115191623.983385463@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Schneider-Pargmann <msp@baylibre.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5055fadfa7e16f2427d5b3c40b2bf563ddfdab22 ]
+[ Upstream commit 0b068c714ca9479d2783cc333fff5bc2d4a6d45c ]
 
-Fix the probe function to call mtk_thermal_release_periodic_ts for
-everything != MTK_THERMAL_V1. This was accidentally changed from V1
-to V2 in the original patch.
+Companion of DEV_STATS_INC() & DEV_STATS_ADD().
 
-Reported-by: Frank Wunderlich <frank-w@public-files.de>
-Closes: https://lore.kernel.org/lkml/B0B3775B-B8D1-4284-814F-4F41EC22F532@public-files.de/
-Reported-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Closes: https://lore.kernel.org/lkml/07a569b9-e691-64ea-dd65-3b49842af33d@linaro.org/
-Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
-Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230918100706.1229239-1-msp@baylibre.com
+This is going to be used in the series.
+
+Use it in macsec_get_stats64().
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ff672b9ffeb3 ("ipvlan: properly track tx_errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/auxadc_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/macsec.c      | 6 +++---
+ include/linux/netdevice.h | 1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
-index f59d36de20a09..677ff04d91ea0 100644
---- a/drivers/thermal/mediatek/auxadc_thermal.c
-+++ b/drivers/thermal/mediatek/auxadc_thermal.c
-@@ -1268,7 +1268,7 @@ static int mtk_thermal_probe(struct platform_device *pdev)
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index c5cd4551c67ca..9663050a852d8 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -3657,9 +3657,9 @@ static void macsec_get_stats64(struct net_device *dev,
  
- 	mtk_thermal_turn_on_buffer(mt, apmixed_base);
+ 	dev_fetch_sw_netstats(s, dev->tstats);
  
--	if (mt->conf->version != MTK_THERMAL_V2)
-+	if (mt->conf->version != MTK_THERMAL_V1)
- 		mtk_thermal_release_periodic_ts(mt, auxadc_base);
+-	s->rx_dropped = atomic_long_read(&dev->stats.__rx_dropped);
+-	s->tx_dropped = atomic_long_read(&dev->stats.__tx_dropped);
+-	s->rx_errors = atomic_long_read(&dev->stats.__rx_errors);
++	s->rx_dropped = DEV_STATS_READ(dev, rx_dropped);
++	s->tx_dropped = DEV_STATS_READ(dev, tx_dropped);
++	s->rx_errors = DEV_STATS_READ(dev, rx_errors);
+ }
  
- 	if (mt->conf->version == MTK_THERMAL_V1)
+ static int macsec_get_iflink(const struct net_device *dev)
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 0896aaa91dd7b..b646609f09c05 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -5214,5 +5214,6 @@ extern struct net_device *blackhole_netdev;
+ #define DEV_STATS_INC(DEV, FIELD) atomic_long_inc(&(DEV)->stats.__##FIELD)
+ #define DEV_STATS_ADD(DEV, FIELD, VAL) 	\
+ 		atomic_long_add((VAL), &(DEV)->stats.__##FIELD)
++#define DEV_STATS_READ(DEV, FIELD) atomic_long_read(&(DEV)->stats.__##FIELD)
+ 
+ #endif	/* _LINUX_NETDEVICE_H */
 -- 
 2.42.0
 
