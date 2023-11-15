@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F1907ECF0E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E62D37ECC61
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235248AbjKOTqI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
+        id S233909AbjKOTaB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235222AbjKOTqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:03 -0500
+        with ESMTP id S233918AbjKOTaB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612C4B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137DDC433CA;
-        Wed, 15 Nov 2023 19:45:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170D012C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F75C433C8;
+        Wed, 15 Nov 2023 19:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077559;
-        bh=qwiXfKx3MeH9N8RZVEfTi6u1h/li+3oGbuhy9fOEBRo=;
+        s=korg; t=1700076597;
+        bh=Wb/uWYqAAkzq9Sn9ZJYtPj4XLsC1Ei8UjD9vyVMobpc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MeE+Z5Kf+gW3lMCpVc7p/GMCTEJ9y2TgK+TPd5q5XHZsS5GzmMhrjLI9aB12podT3
-         qduqE0bGgBP0zAJUTDWPR27WC0SUuUNdAx7WUSso1PDZsCRHwe01OPH2VZQGsb0chM
-         X3ry8XgAj5aJzYxgCTU+qWXdxOPrOVIcN70GmP9U=
+        b=aTzj1OL97cIaV4Jm8SDkrnMPSm89KYRi+h6kaMNVI3ggqBkN07uLyNTA19L6pDyiU
+         96oWXbL8FFN2QUSyUsYettjGNO3kKcXgFl18zjJ3l1QQi78KPY7YJ4Hn0xQkGYAYo+
+         w/aHG30eK3NsV730Vx74vW1BnwlpJ7nCYbUGxXHY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Leon Romanovsky <leon@kernel.org>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 346/603] RDMA/core: Use size_{add,sub,mul}() in calls to struct_size()
+Subject: [PATCH 6.5 307/550] ASoC: cs35l41: Verify PM runtime resume errors in IRQ handler
 Date:   Wed, 15 Nov 2023 14:14:51 -0500
-Message-ID: <20231115191637.465515166@linuxfoundation.org>
+Message-ID: <20231115191622.098785429@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,120 +52,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 81760bedc65194ff38e1e4faefd5f9f0c95c19a4 ]
+[ Upstream commit 9f8948db9849d202dee3570507d3a0642f92d632 ]
 
-If, for any reason, the open-coded arithmetic causes a wraparound,
-the protection that `struct_size()` provides against potential integer
-overflows is defeated. Fix this by hardening calls to `struct_size()`
-with `size_add()`, `size_sub()` and `size_mul()`.
+The interrupt handler invokes pm_runtime_get_sync() without checking the
+returned error code.
 
-Fixes: 467f432a521a ("RDMA/core: Split port and device counter sysfs attributes")
-Fixes: a4676388e2e2 ("RDMA/core: Simplify how the gid_attrs sysfs is created")
-Fixes: e9dd5daf884c ("IB/umad: Refactor code to use cdev_device_add()")
-Fixes: 324e227ea7c9 ("RDMA/device: Add ib_device_get_by_netdev()")
-Fixes: 5aad26a7eac5 ("IB/core: Use struct_size() in kzalloc()")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/ZQdt4NsJFwwOYxUR@work
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Add a proper verification and switch to pm_runtime_resume_and_get(), to
+avoid the need to call pm_runtime_put_noidle() for decrementing the PM
+usage counter before returning from the error condition.
+
+Fixes: f517ba4924ad ("ASoC: cs35l41: Add support for hibernate memory retention mode")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20230907171010.1447274-6-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/device.c   |  2 +-
- drivers/infiniband/core/sa_query.c |  4 +++-
- drivers/infiniband/core/sysfs.c    | 10 +++++-----
- drivers/infiniband/core/user_mad.c |  4 +++-
- 4 files changed, 12 insertions(+), 8 deletions(-)
+ sound/soc/codecs/cs35l41.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
-index a666847bd7143..010718738d04c 100644
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -804,7 +804,7 @@ static int alloc_port_data(struct ib_device *device)
- 	 * empty slots at the beginning.
- 	 */
- 	pdata_rcu = kzalloc(struct_size(pdata_rcu, pdata,
--					rdma_end_port(device) + 1),
-+					size_add(rdma_end_port(device), 1)),
- 			    GFP_KERNEL);
- 	if (!pdata_rcu)
- 		return -ENOMEM;
-diff --git a/drivers/infiniband/core/sa_query.c b/drivers/infiniband/core/sa_query.c
-index 59179cfc20ef9..8175dde60b0a8 100644
---- a/drivers/infiniband/core/sa_query.c
-+++ b/drivers/infiniband/core/sa_query.c
-@@ -2159,7 +2159,9 @@ static int ib_sa_add_one(struct ib_device *device)
- 	s = rdma_start_port(device);
- 	e = rdma_end_port(device);
+diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
+index c9f033d2782d2..abbe82071c1a4 100644
+--- a/sound/soc/codecs/cs35l41.c
++++ b/sound/soc/codecs/cs35l41.c
+@@ -386,10 +386,18 @@ static irqreturn_t cs35l41_irq(int irq, void *data)
+ 	struct cs35l41_private *cs35l41 = data;
+ 	unsigned int status[4] = { 0, 0, 0, 0 };
+ 	unsigned int masks[4] = { 0, 0, 0, 0 };
+-	int ret = IRQ_NONE;
+ 	unsigned int i;
++	int ret;
  
--	sa_dev = kzalloc(struct_size(sa_dev, port, e - s + 1), GFP_KERNEL);
-+	sa_dev = kzalloc(struct_size(sa_dev, port,
-+				     size_add(size_sub(e, s), 1)),
-+			 GFP_KERNEL);
- 	if (!sa_dev)
- 		return -ENOMEM;
+-	pm_runtime_get_sync(cs35l41->dev);
++	ret = pm_runtime_resume_and_get(cs35l41->dev);
++	if (ret < 0) {
++		dev_err(cs35l41->dev,
++			"pm_runtime_resume_and_get failed in %s: %d\n",
++			__func__, ret);
++		return IRQ_NONE;
++	}
++
++	ret = IRQ_NONE;
  
-diff --git a/drivers/infiniband/core/sysfs.c b/drivers/infiniband/core/sysfs.c
-index ee59d73915689..ec5efdc166601 100644
---- a/drivers/infiniband/core/sysfs.c
-+++ b/drivers/infiniband/core/sysfs.c
-@@ -903,7 +903,7 @@ alloc_hw_stats_device(struct ib_device *ibdev)
- 	 * Two extra attribue elements here, one for the lifespan entry and
- 	 * one to NULL terminate the list for the sysfs core code
- 	 */
--	data = kzalloc(struct_size(data, attrs, stats->num_counters + 1),
-+	data = kzalloc(struct_size(data, attrs, size_add(stats->num_counters, 1)),
- 		       GFP_KERNEL);
- 	if (!data)
- 		goto err_free_stats;
-@@ -1009,7 +1009,7 @@ alloc_hw_stats_port(struct ib_port *port, struct attribute_group *group)
- 	 * Two extra attribue elements here, one for the lifespan entry and
- 	 * one to NULL terminate the list for the sysfs core code
- 	 */
--	data = kzalloc(struct_size(data, attrs, stats->num_counters + 1),
-+	data = kzalloc(struct_size(data, attrs, size_add(stats->num_counters, 1)),
- 		       GFP_KERNEL);
- 	if (!data)
- 		goto err_free_stats;
-@@ -1140,7 +1140,7 @@ static int setup_gid_attrs(struct ib_port *port,
- 	int ret;
- 
- 	gid_attr_group = kzalloc(struct_size(gid_attr_group, attrs_list,
--					     attr->gid_tbl_len * 2),
-+					     size_mul(attr->gid_tbl_len, 2)),
- 				 GFP_KERNEL);
- 	if (!gid_attr_group)
- 		return -ENOMEM;
-@@ -1205,8 +1205,8 @@ static struct ib_port *setup_port(struct ib_core_device *coredev, int port_num,
- 	int ret;
- 
- 	p = kvzalloc(struct_size(p, attrs_list,
--				attr->gid_tbl_len + attr->pkey_tbl_len),
--		    GFP_KERNEL);
-+				size_add(attr->gid_tbl_len, attr->pkey_tbl_len)),
-+		     GFP_KERNEL);
- 	if (!p)
- 		return ERR_PTR(-ENOMEM);
- 	p->ibdev = device;
-diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
-index 7e5c33aad1619..f5feca7fa9b9c 100644
---- a/drivers/infiniband/core/user_mad.c
-+++ b/drivers/infiniband/core/user_mad.c
-@@ -1378,7 +1378,9 @@ static int ib_umad_add_one(struct ib_device *device)
- 	s = rdma_start_port(device);
- 	e = rdma_end_port(device);
- 
--	umad_dev = kzalloc(struct_size(umad_dev, ports, e - s + 1), GFP_KERNEL);
-+	umad_dev = kzalloc(struct_size(umad_dev, ports,
-+				       size_add(size_sub(e, s), 1)),
-+			   GFP_KERNEL);
- 	if (!umad_dev)
- 		return -ENOMEM;
- 
+ 	for (i = 0; i < ARRAY_SIZE(status); i++) {
+ 		regmap_read(cs35l41->regmap,
 -- 
 2.42.0
 
