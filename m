@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27E617ED14D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C5CB87ED14C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344109AbjKOUAo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:00:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47268 "EHLO
+        id S1344119AbjKOUAp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:00:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344130AbjKOUAh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:37 -0500
+        with ESMTP id S1344138AbjKOUAj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96459B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:00:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036C8C433C7;
-        Wed, 15 Nov 2023 20:00:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 999C512C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:00:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8446C433C8;
+        Wed, 15 Nov 2023 20:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078434;
-        bh=4n0Sp3541vOtlikAuTQa5M+BGK6jkOWNY92ohkWBxvk=;
+        s=korg; t=1700078436;
+        bh=xFzGg/2qoG+wBBxDkxsEsmaPz1aljulCklI90x1VLx0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EKqqQJGuLg2gOEVq0NDjKsNe+W48Ojgn1nQPKcjgatjZuzkff7hle0QY5IqkunOxK
-         Pju42QmxH0VagufnoWryj1syVCODGOl30myHjjbOj0u2Brh4g0nhPSx3b8FqzCeLoJ
-         FMXiHPSRsEpaJX2rcrM5pT/nNtvZ1qLYn2o1Qv44=
+        b=pyYIG1oyBCuNWQ5gmWUcZq54yKv04pnkL/BJAFkaPp449AqOnd0uZaeZoZzcRUoOq
+         fhEiMSLzOC7xT3tEp0N/xDQrUbTzpyVauzjDNYVCE8KV2kiGjhk0/gbCnzozo5aX3r
+         K7adYHAls/iVx2K+Sn1OqWe21v72peDlRqY5XBfE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiaolei Wang <xiaolei.wang@windriver.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 319/379] media: ov5640: Fix a memory leak when ov5640_probe fails
-Date:   Wed, 15 Nov 2023 14:26:34 -0500
-Message-ID: <20231115192704.024816992@linuxfoundation.org>
+Subject: [PATCH 6.1 320/379] media: bttv: fix use after free error due to btv->timeout timer
+Date:   Wed, 15 Nov 2023 14:26:35 -0500
+Message-ID: <20231115192704.083583374@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,54 +54,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 20290feaaeb76cc719921aad275ccb18662a7c3a ]
+[ Upstream commit bd5b50b329e850d467e7bcc07b2b6bde3752fbda ]
 
-sensor->ctrls.handler is initialized in ov5640_init_controls(),
-so when the sensor is not connected and ov5640_sensor_resume()
-fails, sensor->ctrls.handler should be released, otherwise a
-memory leak will be detected:
+There may be some a race condition between timer function
+bttv_irq_timeout and bttv_remove. The timer is setup in
+probe and there is no timer_delete operation in remove
+function. When it hit kfree btv, the function might still be
+invoked, which will cause use after free bug.
 
-unreferenced object 0xc674ca80 (size 64):
-   comm "swapper/0", pid 1, jiffies 4294938337 (age 204.880s)
-   hex dump (first 32 bytes):
-     80 55 75 c6 80 54 75 c6 00 55 75 c6 80 52 75 c6 .Uu..Tu..Uu..Ru.
-     00 53 75 c6 00 00 00 00 00 00 00 00 00 00 00 00 .Su..........
+This bug is found by static analysis, it may be false positive.
 
-Fixes: 85644a9b37ec ("media: ov5640: Use runtime PM")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fix it by adding del_timer_sync invoking to the remove function.
+
+cpu0                cpu1
+                  bttv_probe
+                    ->timer_setup
+                      ->bttv_set_dma
+                        ->mod_timer;
+bttv_remove
+  ->kfree(btv);
+                  ->bttv_irq_timeout
+                    ->USE btv
+
+Fixes: 162e6376ac58 ("media: pci: Convert timers to use timer_setup()")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov5640.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/pci/bt8xx/bttv-driver.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
-index aa9e5a99fc536..e0019668a8f86 100644
---- a/drivers/media/i2c/ov5640.c
-+++ b/drivers/media/i2c/ov5640.c
-@@ -3909,7 +3909,7 @@ static int ov5640_probe(struct i2c_client *client)
- 	ret = ov5640_sensor_resume(dev);
- 	if (ret) {
- 		dev_err(dev, "failed to power on\n");
--		goto entity_cleanup;
-+		goto free_ctrls;
- 	}
+diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
+index d40b537f4e98b..24ba5729969dc 100644
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -4248,6 +4248,7 @@ static void bttv_remove(struct pci_dev *pci_dev)
  
- 	pm_runtime_set_active(dev);
-@@ -3933,8 +3933,9 @@ static int ov5640_probe(struct i2c_client *client)
- err_pm_runtime:
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
--	v4l2_ctrl_handler_free(&sensor->ctrls.handler);
- 	ov5640_sensor_suspend(dev);
-+free_ctrls:
-+	v4l2_ctrl_handler_free(&sensor->ctrls.handler);
- entity_cleanup:
- 	media_entity_cleanup(&sensor->sd.entity);
- 	mutex_destroy(&sensor->lock);
+ 	/* free resources */
+ 	free_irq(btv->c.pci->irq,btv);
++	del_timer_sync(&btv->timeout);
+ 	iounmap(btv->bt848_mmio);
+ 	release_mem_region(pci_resource_start(btv->c.pci,0),
+ 			   pci_resource_len(btv->c.pci,0));
 -- 
 2.42.0
 
