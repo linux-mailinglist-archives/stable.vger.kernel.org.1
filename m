@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB1587ECC5E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:29:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C357ECEED
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233883AbjKOT35 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:29:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45006 "EHLO
+        id S235180AbjKOTpI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:45:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233909AbjKOT34 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:29:56 -0500
+        with ESMTP id S235186AbjKOTpI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:08 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C2B6130
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:53 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5649C433C8;
-        Wed, 15 Nov 2023 19:29:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1CE9AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D4BC433CB;
+        Wed, 15 Nov 2023 19:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076592;
-        bh=aFEcvjRZD66SxCbTyFSTh8Lit4l7IHXn7pumVzZeQ4Q=;
+        s=korg; t=1700077504;
+        bh=IHDNcExyrDf0QZjRD+IRFeYZlYLTclq0oeyMZI/nhZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PcismriwNzlTq4ShXy7nKpwm8pwl5mGISc/PC39gSKk0I8ADR8FuTAmdG0RMYb3la
-         +l3/9UTzognZOyvoQZJVZiJ5MC1fCD/AcXxVIyDP0fYnrWv9GkpWhCdCbFNYIENahI
-         bwfrvt4XQOzhG6ViQEw9XQF1pLw1VTxofrSS4ZGc=
+        b=gp7lA+AXkNbZPRAERSRvHiAWmmgVYFHdj2pn+qy3+y22yxHKlUN9+1cvmYlspDEt/
+         6JSFjSyZ3mDj2v7+t4yW2Zfl9PO2fn7cc6hW0Vz4Wzmb39DbdQ6YcLVAenZMEso5km
+         sC/sZuds99ZH7ooJbWfnekTryX9FG7OmSGMwNLoY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrea Righi <andrea.righi@canonical.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 304/550] module/decompress: use vmalloc() for gzip decompression workspace
+Subject: [PATCH 6.6 343/603] crypto: hisilicon/hpre - Fix a erroneous check after snprintf()
 Date:   Wed, 15 Nov 2023 14:14:48 -0500
-Message-ID: <20231115191621.886262262@linuxfoundation.org>
+Message-ID: <20231115191637.256689648@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,66 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <andrea.righi@canonical.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 3737df782c740b944912ed93420c57344b1cf864 ]
+[ Upstream commit c977950146720abff14e46d8c53f5638b06a9182 ]
 
-Use a similar approach as commit a419beac4a07 ("module/decompress: use
-vmalloc() for zstd decompression workspace") and replace kmalloc() with
-vmalloc() also for the gzip module decompression workspace.
+This error handling looks really strange.
+Check if the string has been truncated instead.
 
-In this case the workspace is represented by struct inflate_workspace
-that can be fairly large for kmalloc() and it can potentially lead to
-allocation errors on certain systems:
-
-$ pahole inflate_workspace
-struct inflate_workspace {
-	struct inflate_state       inflate_state;        /*     0  9544 */
-	/* --- cacheline 149 boundary (9536 bytes) was 8 bytes ago --- */
-	unsigned char              working_window[32768]; /*  9544 32768 */
-
-	/* size: 42312, cachelines: 662, members: 2 */
-	/* last cacheline: 8 bytes */
-};
-
-Considering that there is no need to use continuous physical memory,
-simply switch to vmalloc() to provide a more reliable in-kernel module
-decompression.
-
-Fixes: b1ae6dc41eaa ("module: add in-kernel support for decompressing")
-Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Fixes: 02ab994635eb ("crypto: hisilicon - Fixed some tiny bugs of HPRE")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module/decompress.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/hisilicon/hpre/hpre_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
-index 87440f714c0ca..4156d59be4408 100644
---- a/kernel/module/decompress.c
-+++ b/kernel/module/decompress.c
-@@ -100,7 +100,7 @@ static ssize_t module_gzip_decompress(struct load_info *info,
- 	s.next_in = buf + gzip_hdr_len;
- 	s.avail_in = size - gzip_hdr_len;
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_main.c b/drivers/crypto/hisilicon/hpre/hpre_main.c
+index 39297ce70f441..db44d889438a6 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_main.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_main.c
+@@ -1033,7 +1033,7 @@ static int hpre_cluster_debugfs_init(struct hisi_qm *qm)
  
--	s.workspace = kmalloc(zlib_inflate_workspacesize(), GFP_KERNEL);
-+	s.workspace = vmalloc(zlib_inflate_workspacesize());
- 	if (!s.workspace)
- 		return -ENOMEM;
+ 	for (i = 0; i < clusters_num; i++) {
+ 		ret = snprintf(buf, HPRE_DBGFS_VAL_MAX_LEN, "cluster%d", i);
+-		if (ret < 0)
++		if (ret >= HPRE_DBGFS_VAL_MAX_LEN)
+ 			return -EINVAL;
+ 		tmp_d = debugfs_create_dir(buf, qm->debug.debug_root);
  
-@@ -138,7 +138,7 @@ static ssize_t module_gzip_decompress(struct load_info *info,
- out_inflate_end:
- 	zlib_inflateEnd(&s);
- out:
--	kfree(s.workspace);
-+	vfree(s.workspace);
- 	return retval;
- }
- #elif defined(CONFIG_MODULE_COMPRESS_XZ)
 -- 
 2.42.0
 
