@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 802437ED4E2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D9E7ED2DC
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344649AbjKOU72 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:59:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36950 "EHLO
+        id S233543AbjKOUou (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344783AbjKOU6F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:05 -0500
+        with ESMTP id S233563AbjKOUos (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D247D4D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5B3C4DE17;
-        Wed, 15 Nov 2023 20:50:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 869D51AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09169C433C8;
+        Wed, 15 Nov 2023 20:44:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081430;
-        bh=6qd6+Rp2U6MIBKrhIMNKAjpx2JiJsU/f9QeMYILeeNY=;
+        s=korg; t=1700081085;
+        bh=C5h9+4ZhUQv//q5g84oixT0xFfk6IeZKewnEuXEO76M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DRF5nN7O7R50IOlV3Er99T6puX72/nAYLpS12ZuTBpF86V3EiVivwQu1+HaU5nTdA
-         yiDmcLvWwQfuywJH7OaSEm+XlnSxEdTMfxHOFvaWgqAR+ZJBDarF2zAiV68rhUf99K
-         M0AjV4El37JGrC9AYKjzhmMAIXC6eFHLpjrNk8KY=
+        b=bJqBWy9Soy+VxI7tw2dEktW5IgoUfp9I0OBaKPJQxsHZsGgZcrWt+5Ami/OGMD6ko
+         VfOQtCaP2TzePi3Gf/7E10TNUQbLqu8aj1GtPehlJk4hvxDZ9UpdndW/aZ/MzSX0Rp
+         F8C2zUwY/QTexAyPYvT4X8d0K12f+7UpU3M+hupY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 149/244] sh: bios: Revive earlyprintk support
+Subject: [PATCH 4.19 29/88] drm/rockchip: vop: Fix reset of state in duplicate state crtc funcs
 Date:   Wed, 15 Nov 2023 15:35:41 -0500
-Message-ID: <20231115203557.277410463@linuxfoundation.org>
+Message-ID: <20231115191427.904862458@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 553f7ac78fbb41b2c93ab9b9d78e42274d27daa9 ]
+[ Upstream commit 13fc28804bf10ca0b7bce3efbba95c534836d7ca ]
 
-The SuperH BIOS earlyprintk code is protected by CONFIG_EARLY_PRINTK.
-However, when this protection was added, it was missed that SuperH no
-longer defines an EARLY_PRINTK config symbol since commit
-e76fe57447e88916 ("sh: Remove old early serial console code V2"), so
-BIOS earlyprintk can no longer be used.
+struct rockchip_crtc_state members such as output_type, output_bpc and
+enable_afbc is always reset to zero in the atomic_duplicate_state crtc
+funcs.
 
-Fix this by reviving the EARLY_PRINTK config symbol.
+Fix this by using kmemdup on the subclass rockchip_crtc_state struct.
 
-Fixes: d0380e6c3c0f6edb ("early_printk: consolidate random copies of identical code")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Link: https://lore.kernel.org/r/c40972dfec3dcc6719808d5df388857360262878.1697708489.git.geert+renesas@glider.be
-Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fixes: 4e257d9eee23 ("drm/rockchip: get rid of rockchip_drm_crtc_mode_config")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230621223311.2239547-2-jonas@kwiboo.se
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/sh/Kconfig.debug | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/sh/Kconfig.debug b/arch/sh/Kconfig.debug
-index c449e7c1b20ff..8bcd6c1431a95 100644
---- a/arch/sh/Kconfig.debug
-+++ b/arch/sh/Kconfig.debug
-@@ -22,6 +22,17 @@ config STACK_DEBUG
- 	  every function call and will therefore incur a major
- 	  performance hit. Most users should say N.
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index 69eb0de9973fb..ea692046be614 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -1091,7 +1091,8 @@ static struct drm_crtc_state *vop_crtc_duplicate_state(struct drm_crtc *crtc)
+ 	if (WARN_ON(!crtc->state))
+ 		return NULL;
  
-+config EARLY_PRINTK
-+	bool "Early printk"
-+	depends on SH_STANDARD_BIOS
-+	help
-+	  Say Y here to redirect kernel printk messages to the serial port
-+	  used by the SH-IPL bootloader, starting very early in the boot
-+	  process and ending when the kernel's serial console is initialised.
-+	  This option is only useful while porting the kernel to a new machine,
-+	  when the kernel may crash or hang before the serial console is
-+	  initialised.  If unsure, say N.
-+
- config 4KSTACKS
- 	bool "Use 4Kb for kernel stacks instead of 8Kb"
- 	depends on DEBUG_KERNEL && (MMU || BROKEN) && !PAGE_SIZE_64KB
+-	rockchip_state = kzalloc(sizeof(*rockchip_state), GFP_KERNEL);
++	rockchip_state = kmemdup(to_rockchip_crtc_state(crtc->state),
++				 sizeof(*rockchip_state), GFP_KERNEL);
+ 	if (!rockchip_state)
+ 		return NULL;
+ 
 -- 
 2.42.0
 
