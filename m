@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 746E47ECBF1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F027ECE65
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233263AbjKOTZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58560 "EHLO
+        id S235090AbjKOTmu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233225AbjKOTZ0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:26 -0500
+        with ESMTP id S235092AbjKOTmu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 624B21AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE92C433C8;
-        Wed, 15 Nov 2023 19:25:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862D71B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ED1C433C8;
+        Wed, 15 Nov 2023 19:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076323;
-        bh=J+s8pBBvsUCD/UojfLI4kSsGfTsbglbqgkmJpfWlH+I=;
+        s=korg; t=1700077366;
+        bh=MgWe6rneltwf3Su+SR9cx85Zvi+FQBRHFQgyoRbRB5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dKX1eSJfZ8/I2S3D1PmYh05A8Py1KaqCIrrr5LkapEbhsKcdYyDii/zAkPwTdzngT
-         WarMsr38u/Bw+30Gk8dwYnlj4l4tb4EgN2qAJhngrLaLRwdw5O9uE4rQjhOP5E97o9
-         r1wmaJMu5E3RZwJgTO84XTEJaIACOTwfkMixzurM=
+        b=uXVFXDUY7L09oVhtFUT2Rc664Ud3jEEyJvw/rB5fzJ++jS6G7cxzrfXZIWs/anBjU
+         nvn4U3QXe9Bv1jMkQmX4tuEc+Hg6uIvCXQLLMAXlaUYpfiLTBVheGL7guyvf8RombT
+         PwO9UyKgGfOwOLfpNrxRqRNe5WF9/3DbQHCi9sDU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Maxim Schwalm <maxim.schwalm@gmail.com>
-Subject: [PATCH 6.5 218/550] drm/bridge: tc358768: Fix bit updates
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 257/603] drm/rockchip: cdn-dp: Fix some error handling paths in cdn_dp_probe()
 Date:   Wed, 15 Nov 2023 14:13:22 -0500
-Message-ID: <20231115191615.846167086@linuxfoundation.org>
+Message-ID: <20231115191631.070398873@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,68 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 66962d5c3c51377b9b90cae35b7e038950438e02 ]
+[ Upstream commit 44b968d0d0868b7a9b7a5c64464ada464ff4d532 ]
 
-The driver has a few places where it does:
+cdn_dp_audio_codec_init() can fail. So add some error handling.
 
-if (thing_is_enabled_in_config)
-	update_thing_bit_in_hw()
+If component_add() fails, the previous cdn_dp_audio_codec_init() call
+should be undone, as already done in the remove function.
 
-This means that if the thing is _not_ enabled, the bit never gets
-cleared. This affects the h/vsyncs and continuous DSI clock bits.
-
-Fix the driver to always update the bit.
-
-Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-4-31725f008a50@ideasonboard.com
+Fixes: 88582f564692 ("drm/rockchip: cdn-dp: Don't unregister audio dev when unbinding")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/8494a41602fadb7439630921a9779640698f2f9f.1693676045.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/rockchip/cdn-dp-core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index bc97a837955ba..b668f77673c3d 100644
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -794,8 +794,8 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 		val |= BIT(i + 1);
- 	tc358768_write(priv, TC358768_HSTXVREGEN, val);
+diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+index a29fbafce3936..3793863c210eb 100644
+--- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
++++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+@@ -1177,6 +1177,7 @@ static int cdn_dp_probe(struct platform_device *pdev)
+ 	struct cdn_dp_device *dp;
+ 	struct extcon_dev *extcon;
+ 	struct phy *phy;
++	int ret;
+ 	int i;
  
--	if (!(mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS))
--		tc358768_write(priv, TC358768_TXOPTIONCNTRL, 0x1);
-+	tc358768_write(priv, TC358768_TXOPTIONCNTRL,
-+		       (mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS) ? 0 : BIT(0));
+ 	dp = devm_kzalloc(dev, sizeof(*dp), GFP_KERNEL);
+@@ -1217,9 +1218,19 @@ static int cdn_dp_probe(struct platform_device *pdev)
+ 	mutex_init(&dp->lock);
+ 	dev_set_drvdata(dev, dp);
  
- 	/* TXTAGOCNT[26:16] RXTASURECNT[10:0] */
- 	val = tc358768_to_ns((lptxcnt + 1) * dsibclk_nsk * 4);
-@@ -861,11 +861,12 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 	tc358768_write(priv, TC358768_DSI_HACT, hact);
- 
- 	/* VSYNC polarity */
--	if (!(mode->flags & DRM_MODE_FLAG_NVSYNC))
--		tc358768_update_bits(priv, TC358768_CONFCTL, BIT(5), BIT(5));
-+	tc358768_update_bits(priv, TC358768_CONFCTL, BIT(5),
-+			     (mode->flags & DRM_MODE_FLAG_PVSYNC) ? BIT(5) : 0);
+-	cdn_dp_audio_codec_init(dp, dev);
++	ret = cdn_dp_audio_codec_init(dp, dev);
++	if (ret)
++		return ret;
 +
- 	/* HSYNC polarity */
--	if (mode->flags & DRM_MODE_FLAG_PHSYNC)
--		tc358768_update_bits(priv, TC358768_PP_MISC, BIT(0), BIT(0));
-+	tc358768_update_bits(priv, TC358768_PP_MISC, BIT(0),
-+			     (mode->flags & DRM_MODE_FLAG_PHSYNC) ? BIT(0) : 0);
++	ret = component_add(dev, &cdn_dp_component_ops);
++	if (ret)
++		goto err_audio_deinit;
  
- 	/* Start DSI Tx */
- 	tc358768_write(priv, TC358768_DSI_START, 0x1);
+-	return component_add(dev, &cdn_dp_component_ops);
++	return 0;
++
++err_audio_deinit:
++	platform_device_unregister(dp->audio_pdev);
++	return ret;
+ }
+ 
+ static void cdn_dp_remove(struct platform_device *pdev)
 -- 
 2.42.0
 
