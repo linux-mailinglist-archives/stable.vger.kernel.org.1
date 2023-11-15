@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD907ECCA9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 373E57ECCAE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234077AbjKOTby (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:31:54 -0500
+        id S234136AbjKOTb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:31:59 -0500
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234090AbjKOTbw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:52 -0500
+        with ESMTP id S234116AbjKOTb4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:56 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD9FE12C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5287BC433C9;
-        Wed, 15 Nov 2023 19:31:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B9861BF
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24FDC433C8;
+        Wed, 15 Nov 2023 19:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076708;
-        bh=0I0ZPZrK+yqL4IQoCuZ6vg9pwTckVAX+ujSpocYxKdU=;
+        s=korg; t=1700076713;
+        bh=5EZKTYGISfa1mgLJpEtiK75GjvMD95aztiPnYtXNed8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lDEwml1sgC7veC8en5IJuPdAsfZ+GWGM2Y0g/6SktbYCruZXPJGzuOuBLlB4kDTFY
-         sq3MV76IKiYSiib9IXIyFF9FhukgDidfd1j8P3rzcQAnTCKEgcBDMPKndwdCwFwEfM
-         53NLup48usHuwnhRZVAnSV1mMkyuLADKk2J6xx/0=
+        b=FdHxA+PFgEqSnMk8gXMQouujSIX1mnPWPqt0xrY3cpC8YkCGpuj2+pk22+zYsPuv4
+         3/ICpZ2ByJusjNpRqZZ9ulfqf59QgtGQm0p4CAWApmFOk66nhT5RFpCRb4ghkL/BTk
+         PK91QmGEqIwztx8OyRZaSUJYZ/rE3UXbfzPpopgI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zev Weiss <zev@bewilderbeest.net>,
-        Thomas Zajic <zlatko@gmx.at>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 001/603] hwmon: (nct6775) Fix incorrect variable reuse in fan_div calculation
-Date:   Wed, 15 Nov 2023 14:09:06 -0500
-Message-ID: <20231115191613.210810188@linuxfoundation.org>
+        patches@lists.linux.dev, Yury Norov <yury.norov@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>, Mel Gorman <mgorman@suse.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 002/603] numa: Generalize numa_map_to_online_node()
+Date:   Wed, 15 Nov 2023 14:09:07 -0500
+Message-ID: <20231115191613.291923126@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -54,63 +54,111 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zev Weiss <zev@bewilderbeest.net>
+From: Yury Norov <yury.norov@gmail.com>
 
-commit 920057ad521dc8669e534736c2a12c14ec9fb2d7 upstream.
+[ Upstream commit b1f099b1cf51d553c510c6c8141c27d9ba7ea1fe ]
 
-In the regmap conversion in commit 4ef2774511dc ("hwmon: (nct6775)
-Convert register access to regmap API") I reused the 'reg' variable
-for all three register reads in the fan speed calculation loop in
-nct6775_update_device(), but failed to notice that the value from the
-first one (data->REG_FAN[i]) is actually used in the call to
-nct6775_select_fan_div() at the end of the loop body.  Since that
-patch the register value passed to nct6775_select_fan_div() has been
-(conditionally) incorrectly clobbered with the value of a different
-register than intended, which has in at least some cases resulted in
-fan speeds being adjusted down to zero.
+The function in fact searches the nearest node for a given one,
+based on a N_ONLINE state. This is a common pattern to search
+for a nearest node.
 
-Fix this by using dedicated temporaries for the two intermediate
-register reads instead of 'reg'.
+This patch converts numa_map_to_online_node() to numa_nearest_node()
+so that others won't need to opencode the logic.
 
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Fixes: 4ef2774511dc ("hwmon: (nct6775) Convert register access to regmap API")
-Reported-by: Thomas Zajic <zlatko@gmx.at>
-Tested-by: Thomas Zajic <zlatko@gmx.at>
-Cc: stable@vger.kernel.org # v5.19+
-Link: https://lore.kernel.org/r/20230929200822.964-2-zev@bewilderbeest.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Link: https://lore.kernel.org/r/20230819141239.287290-2-yury.norov@gmail.com
+Stable-dep-of: 617f2c38cb5c ("sched/topology: Fix sched_numa_find_nth_cpu() in CPU-less case")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/linux/numa.h |  7 +++++--
+ mm/mempolicy.c       | 18 +++++++++++-------
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -1614,17 +1614,21 @@ struct nct6775_data *nct6775_update_devi
- 							  data->fan_div[i]);
+diff --git a/include/linux/numa.h b/include/linux/numa.h
+index 59df211d051fa..fb30a42f0700d 100644
+--- a/include/linux/numa.h
++++ b/include/linux/numa.h
+@@ -25,7 +25,7 @@
+ #include <asm/sparsemem.h>
  
- 			if (data->has_fan_min & BIT(i)) {
--				err = nct6775_read_value(data, data->REG_FAN_MIN[i], &reg);
-+				u16 tmp;
+ /* Generic implementation available */
+-int numa_map_to_online_node(int node);
++int numa_nearest_node(int node, unsigned int state);
+ 
+ #ifndef memory_add_physaddr_to_nid
+ static inline int memory_add_physaddr_to_nid(u64 start)
+@@ -44,10 +44,11 @@ static inline int phys_to_target_node(u64 start)
+ }
+ #endif
+ #else /* !CONFIG_NUMA */
+-static inline int numa_map_to_online_node(int node)
++static inline int numa_nearest_node(int node, unsigned int state)
+ {
+ 	return NUMA_NO_NODE;
+ }
 +
-+				err = nct6775_read_value(data, data->REG_FAN_MIN[i], &tmp);
- 				if (err)
- 					goto out;
--				data->fan_min[i] = reg;
-+				data->fan_min[i] = tmp;
- 			}
+ static inline int memory_add_physaddr_to_nid(u64 start)
+ {
+ 	return 0;
+@@ -58,6 +59,8 @@ static inline int phys_to_target_node(u64 start)
+ }
+ #endif
  
- 			if (data->REG_FAN_PULSES[i]) {
--				err = nct6775_read_value(data, data->REG_FAN_PULSES[i], &reg);
-+				u16 tmp;
++#define numa_map_to_online_node(node) numa_nearest_node(node, N_ONLINE)
 +
-+				err = nct6775_read_value(data, data->REG_FAN_PULSES[i], &tmp);
- 				if (err)
- 					goto out;
--				data->fan_pulses[i] = (reg >> data->FAN_PULSE_SHIFT[i]) & 0x03;
-+				data->fan_pulses[i] = (tmp >> data->FAN_PULSE_SHIFT[i]) & 0x03;
- 			}
+ #ifdef CONFIG_HAVE_ARCH_NODE_DEV_GROUP
+ extern const struct attribute_group arch_node_dev_group;
+ #endif
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index 29ebf1e7898cf..e52e3a0b8f2e6 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -131,22 +131,26 @@ static struct mempolicy default_policy = {
+ static struct mempolicy preferred_node_policy[MAX_NUMNODES];
  
- 			err = nct6775_select_fan_div(dev, data, i, reg);
+ /**
+- * numa_map_to_online_node - Find closest online node
++ * numa_nearest_node - Find nearest node by state
+  * @node: Node id to start the search
++ * @state: State to filter the search
+  *
+- * Lookup the next closest node by distance if @nid is not online.
++ * Lookup the closest node by distance if @nid is not in state.
+  *
+- * Return: this @node if it is online, otherwise the closest node by distance
++ * Return: this @node if it is in state, otherwise the closest node by distance
+  */
+-int numa_map_to_online_node(int node)
++int numa_nearest_node(int node, unsigned int state)
+ {
+ 	int min_dist = INT_MAX, dist, n, min_node;
+ 
+-	if (node == NUMA_NO_NODE || node_online(node))
++	if (state >= NR_NODE_STATES)
++		return -EINVAL;
++
++	if (node == NUMA_NO_NODE || node_state(node, state))
+ 		return node;
+ 
+ 	min_node = node;
+-	for_each_online_node(n) {
++	for_each_node_state(n, state) {
+ 		dist = node_distance(node, n);
+ 		if (dist < min_dist) {
+ 			min_dist = dist;
+@@ -156,7 +160,7 @@ int numa_map_to_online_node(int node)
+ 
+ 	return min_node;
+ }
+-EXPORT_SYMBOL_GPL(numa_map_to_online_node);
++EXPORT_SYMBOL_GPL(numa_nearest_node);
+ 
+ struct mempolicy *get_task_policy(struct task_struct *p)
+ {
+-- 
+2.42.0
+
 
 
