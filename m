@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1577A7ED48C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A4C37ED2FB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344875AbjKOU6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34674 "EHLO
+        id S233574AbjKOUp1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235572AbjKOU5k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:40 -0500
+        with ESMTP id S233613AbjKOUp0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13CFB1739
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43240C4AF7A;
-        Wed, 15 Nov 2023 20:50:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ECD81BC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C467C433C8;
+        Wed, 15 Nov 2023 20:45:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081422;
-        bh=LCYIvIPLo5UTJE+xfmT0R8HGUQrc3xxF6NCOGvMXYRM=;
+        s=korg; t=1700081119;
+        bh=lCa/QPgr0ywpGFisVpuR07WcasRqQ4EEKeo7nBuvvTU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OKlOaxw3ICf38Yv4Vl/Aq14S36YtvfrzdAaLvoiSY9qY61O1dyk4BiyQ7tbzkGkOb
-         d8KhrXZi8qRkaQPg/OuNm+2UBj0cvW56pJlNx/JfJaZM8lKh5F4y1oQ+vzGVbP7gib
-         H9WgLTfxm5PS4C22EF9CwVoBRhtqZ3jU2V6aUq14=
+        b=2apBBhsiRXYjU8oTIVHVzeGmYh/OYIug8E4L8pikd+FudZMzHWExBEJ/eekP3wy+r
+         4drtiQJhX0MvxHwS2/gxnezsjq5EiWT6HfTGKeuaB96ZEdnzhzknSzUJedH8eof6a5
+         87WJD6kjM9cV7HY69hdtsWxkMhFkwjtBn5w61dPU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 145/244] ASoC: fsl: Fix PM disable depth imbalance in fsl_easrc_probe
+Subject: [PATCH 4.19 25/88] platform/x86: wmi: Fix probe failure when failing to register WMI devices
 Date:   Wed, 15 Nov 2023 15:35:37 -0500
-Message-ID: <20231115203557.038801948@linuxfoundation.org>
+Message-ID: <20231115191427.676248519@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,56 +51,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 9e630efb5a4af56fdb15aa10405f5cfd3f5f5b83 ]
+[ Upstream commit ed85891a276edaf7a867de0e9acd0837bc3008f2 ]
 
-The pm_runtime_enable will increase power disable depth. Thus
-a pairing decrement is needed on the error handling path to
-keep it balanced according to context. We fix it by calling
-pm_runtime_disable when error returns.
+When a WMI device besides the first one somehow fails to register,
+retval is returned while still containing a negative error code. This
+causes the ACPI device fail to probe, leaving behind zombie WMI devices
+leading to various errors later.
 
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_C0D62E6D89818179A02A04A0C248F0DDC40A@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Handle the single error path separately and return 0 unconditionally
+after trying to register all WMI devices to solve the issue. Also
+continue to register WMI devices even if some fail to allocate memory.
+
+Fixes: 6ee50aaa9a20 ("platform/x86: wmi: Instantiate all devices before adding them")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20231020211005.38216-4-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/platform/x86/wmi.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index cf0e10d17dbe3..c7ff48208d005 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -1965,17 +1965,21 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 					      &fsl_easrc_dai, 1);
- 	if (ret) {
- 		dev_err(dev, "failed to register ASoC DAI\n");
--		return ret;
-+		goto err_pm_disable;
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 387358af685c5..b9d01a652ede2 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -1131,8 +1131,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 	struct wmi_block *wblock, *next;
+ 	union acpi_object *obj;
+ 	acpi_status status;
+-	int retval = 0;
+ 	u32 i, total;
++	int retval;
+ 
+ 	status = acpi_evaluate_object(device->handle, "_WDG", NULL, &out);
+ 	if (ACPI_FAILURE(status))
+@@ -1143,8 +1143,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		return -ENXIO;
+ 
+ 	if (obj->type != ACPI_TYPE_BUFFER) {
+-		retval = -ENXIO;
+-		goto out_free_pointer;
++		kfree(obj);
++		return -ENXIO;
  	}
  
- 	ret = devm_snd_soc_register_component(dev, &fsl_asrc_component,
- 					      NULL, 0);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register ASoC platform\n");
--		return ret;
-+		goto err_pm_disable;
+ 	gblock = (const struct guid_block *)obj->buffer.pointer;
+@@ -1165,8 +1165,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 
+ 		wblock = kzalloc(sizeof(struct wmi_block), GFP_KERNEL);
+ 		if (!wblock) {
+-			retval = -ENOMEM;
+-			break;
++			dev_err(wmi_bus_dev, "Failed to allocate %pUL\n", &gblock[i].guid);
++			continue;
+ 		}
+ 
+ 		wblock->acpi_device = device;
+@@ -1205,9 +1205,9 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		}
  	}
  
- 	return 0;
+-out_free_pointer:
+-	kfree(out.pointer);
+-	return retval;
++	kfree(obj);
 +
-+err_pm_disable:
-+	pm_runtime_disable(&pdev->dev);
-+	return ret;
++	return 0;
  }
  
- static int fsl_easrc_remove(struct platform_device *pdev)
+ /*
 -- 
 2.42.0
 
