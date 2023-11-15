@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 817487ED2E4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B22C7ED59E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233534AbjKOUpD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46212 "EHLO
+        id S1344781AbjKOVHs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233622AbjKOUo6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:58 -0500
+        with ESMTP id S235630AbjKOVH1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E6B10E5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10EE7C433C9;
-        Wed, 15 Nov 2023 20:44:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9221727
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C0EC4E666;
+        Wed, 15 Nov 2023 20:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081094;
-        bh=IQhJyEEENh7bnQhi5y2xatlsMM7BCN5cAVR2R7s7SGw=;
+        s=korg; t=1700081443;
+        bh=ks4UCa2yUwaX94ZS8PO4Ecd1kbaeVLncGZOFPfp5G48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uQjuaYON3xwdog3+0q6AbvDhTA8s0WPecNoAKgv30QuzinF6cPwfMJCjvs5Es4phQ
-         Taof8QUCV2wYYgNFxGYgRnuBdYvWR+J+5v5xeD/k6TBaaGksnlYPhs8EgBNH9+02ut
-         aHpYz2Zc0ziV5KixN7J2xSljCYBCArSYrpzAvDKs=
+        b=HuVMw+Ink2dB6PDJfLqWMvElsr5I4h7SAIdV73gTHLFnLMPiDYm6Er8hgkcyHnSuG
+         s+pifZdlfbD/JzGkXR8WZSdHVgsroxFG6SoTRvXDEnQZ9kqJvI7xARKjUV4rHM2J3b
+         1zkGrILOUBxuXp4U4yOsJp3+07a1Ugly3/XdCXGM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Timur I. Davletshin" <timur.davletshin@gmail.com>,
-        Jo-Philipp Wich <jo@mein.io>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
+        patches@lists.linux.dev, WangJinchao <wangjinchao@xfusion.com>,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 35/88] hwrng: geode - fix accessing registers
-Date:   Wed, 15 Nov 2023 15:35:47 -0500
-Message-ID: <20231115191428.284200542@linuxfoundation.org>
+Subject: [PATCH 5.15 156/244] padata: Fix refcnt handling in padata_free_shell()
+Date:   Wed, 15 Nov 2023 15:35:48 -0500
+Message-ID: <20231115203557.703274886@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,60 +51,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: WangJinchao <wangjinchao@xfusion.com>
 
-[ Upstream commit 464bd8ec2f06707f3773676a1bd2c64832a3c805 ]
+[ Upstream commit 7ddc21e317b360c3444de3023bcc83b85fabae2f ]
 
-When the membase and pci_dev pointer were moved to a new struct in priv,
-the actual membase users were left untouched, and they started reading
-out arbitrary memory behind the struct instead of registers. This
-unfortunately turned the RNG into a constant number generator, depending
-on the content of what was at that offset.
+In a high-load arm64 environment, the pcrypt_aead01 test in LTP can lead
+to system UAF (Use-After-Free) issues. Due to the lengthy analysis of
+the pcrypt_aead01 function call, I'll describe the problem scenario
+using a simplified model:
 
-To fix this, update geode_rng_data_{read,present}() to also get the
-membase via amd_geode_priv, and properly read from the right addresses
-again.
+Suppose there's a user of padata named `user_function` that adheres to
+the padata requirement of calling `padata_free_shell` after `serial()`
+has been invoked, as demonstrated in the following code:
 
-Fixes: 9f6ec8dc574e ("hwrng: geode - Fix PCI device refcount leak")
-Reported-by: Timur I. Davletshin <timur.davletshin@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217882
-Tested-by: Timur I. Davletshin <timur.davletshin@gmail.com>
-Suggested-by: Jo-Philipp Wich <jo@mein.io>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+```c
+struct request {
+    struct padata_priv padata;
+    struct completion *done;
+};
+
+void parallel(struct padata_priv *padata) {
+    do_something();
+}
+
+void serial(struct padata_priv *padata) {
+    struct request *request = container_of(padata,
+    				struct request,
+				padata);
+    complete(request->done);
+}
+
+void user_function() {
+    DECLARE_COMPLETION(done)
+    padata->parallel = parallel;
+    padata->serial = serial;
+    padata_do_parallel();
+    wait_for_completion(&done);
+    padata_free_shell();
+}
+```
+
+In the corresponding padata.c file, there's the following code:
+
+```c
+static void padata_serial_worker(struct work_struct *serial_work) {
+    ...
+    cnt = 0;
+
+    while (!list_empty(&local_list)) {
+        ...
+        padata->serial(padata);
+        cnt++;
+    }
+
+    local_bh_enable();
+
+    if (refcount_sub_and_test(cnt, &pd->refcnt))
+        padata_free_pd(pd);
+}
+```
+
+Because of the high system load and the accumulation of unexecuted
+softirq at this moment, `local_bh_enable()` in padata takes longer
+to execute than usual. Subsequently, when accessing `pd->refcnt`,
+`pd` has already been released by `padata_free_shell()`, resulting
+in a UAF issue with `pd->refcnt`.
+
+The fix is straightforward: add `refcount_dec_and_test` before calling
+`padata_free_pd` in `padata_free_shell`.
+
+Fixes: 07928d9bfc81 ("padata: Remove broken queue flushing")
+
+Signed-off-by: WangJinchao <wangjinchao@xfusion.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
+Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/geode-rng.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/padata.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/hw_random/geode-rng.c b/drivers/char/hw_random/geode-rng.c
-index 207272979f233..2f8289865ec81 100644
---- a/drivers/char/hw_random/geode-rng.c
-+++ b/drivers/char/hw_random/geode-rng.c
-@@ -58,7 +58,8 @@ struct amd_geode_priv {
- 
- static int geode_rng_data_read(struct hwrng *rng, u32 *data)
+diff --git a/kernel/padata.c b/kernel/padata.c
+index c17f772cc315a..c6025a48fb49e 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -1094,12 +1094,16 @@ EXPORT_SYMBOL(padata_alloc_shell);
+  */
+ void padata_free_shell(struct padata_shell *ps)
  {
--	void __iomem *mem = (void __iomem *)rng->priv;
-+	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
-+	void __iomem *mem = priv->membase;
++	struct parallel_data *pd;
++
+ 	if (!ps)
+ 		return;
  
- 	*data = readl(mem + GEODE_RNG_DATA_REG);
+ 	mutex_lock(&ps->pinst->lock);
+ 	list_del(&ps->list);
+-	padata_free_pd(rcu_dereference_protected(ps->pd, 1));
++	pd = rcu_dereference_protected(ps->pd, 1);
++	if (refcount_dec_and_test(&pd->refcnt))
++		padata_free_pd(pd);
+ 	mutex_unlock(&ps->pinst->lock);
  
-@@ -67,7 +68,8 @@ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
- 
- static int geode_rng_data_present(struct hwrng *rng, int wait)
- {
--	void __iomem *mem = (void __iomem *)rng->priv;
-+	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
-+	void __iomem *mem = priv->membase;
- 	int data, i;
- 
- 	for (i = 0; i < 20; i++) {
+ 	kfree(ps);
 -- 
 2.42.0
 
