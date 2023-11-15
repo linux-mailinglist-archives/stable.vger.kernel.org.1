@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F3667ED30D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EADA7ED4EA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233657AbjKOUp4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37838 "EHLO
+        id S1344644AbjKOU7f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233689AbjKOUpz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:55 -0500
+        with ESMTP id S1344662AbjKOU6J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E63F71AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D13C433C7;
-        Wed, 15 Nov 2023 20:45:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D5B1FD3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C26C4E751;
+        Wed, 15 Nov 2023 20:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081151;
-        bh=fjjiaJRGZWJLDisafsJmQLAWXfc3eDxVb9f/msj1rnE=;
+        s=korg; t=1700081496;
+        bh=QbVmRCccTdX1aGNIC8sYnNRJ+QzXp6YBXqIDCnrPdpI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dHLokBM7dgoeVrm1sp1PwoFjmgeScscT5SizJBoQMLdU94y8HTF/YZKZURdUXIKzb
-         v7np8Y273nUfX/pZhbl7wJdKpIUm32jZ6ApM3WobVUb4NcmqgK9R5xEBW0hGmLS9Ja
-         lCneR904Unk9c3HHxIxnzCA/jEAdOzAtuz4KOsJ4=
+        b=lB6q6EZDUB8Dm6Buc51KIVaWdumz7bmD2mSTawiQpmlETPnjNYUpVTW26T5K5XiDH
+         QowTL3ix5GULxIRYNGW3ob90cYQcjs6PUYiM/YTdLTfuu8p8vjOqvcl9f+K9hMTth1
+         0Q+f4xV7Y0wb/K95SjbllRHhCxltof2Z52LlfcPM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 68/88] pwm: sti: Avoid conditional gotos
+Subject: [PATCH 5.15 188/244] powerpc/imc-pmu: Use the correct spinlock initializer.
 Date:   Wed, 15 Nov 2023 15:36:20 -0500
-Message-ID: <20231115191430.197982388@linuxfoundation.org>
+Message-ID: <20231115203559.619176465@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,92 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thierry Reding <thierry.reding@gmail.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit fd3ae02bb66f091e55f363d32eca7b4039977bf5 ]
+[ Upstream commit 007240d59c11f87ac4f6cfc6a1d116630b6b634c ]
 
-Using gotos for conditional code complicates this code significantly.
-Convert the code to simple conditional blocks to increase readability.
+The macro __SPIN_LOCK_INITIALIZER() is implementation specific. Users
+that desire to initialize a spinlock in a struct must use
+__SPIN_LOCK_UNLOCKED().
 
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Lee Jones <lee.jones@linaro.org>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Stable-dep-of: 2d6812b41e0d ("pwm: sti: Reduce number of allocations and drop usage of chip_data")
+Use __SPIN_LOCK_UNLOCKED() for the spinlock_t in imc_global_refc.
+
+Fixes: 76d588dddc459 ("powerpc/imc-pmu: Fix use of mutex in IRQs disabled section")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230309134831.Nz12nqsU@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-sti.c | 48 ++++++++++++++++++++-----------------------
- 1 file changed, 22 insertions(+), 26 deletions(-)
+ arch/powerpc/perf/imc-pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-sti.c b/drivers/pwm/pwm-sti.c
-index 2b7c31c9d1ab2..f413b41dc69d8 100644
---- a/drivers/pwm/pwm-sti.c
-+++ b/drivers/pwm/pwm-sti.c
-@@ -599,38 +599,34 @@ static int sti_pwm_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
--	if (!cdata->pwm_num_devs)
--		goto skip_pwm;
--
--	pc->pwm_clk = of_clk_get_by_name(dev->of_node, "pwm");
--	if (IS_ERR(pc->pwm_clk)) {
--		dev_err(dev, "failed to get PWM clock\n");
--		return PTR_ERR(pc->pwm_clk);
--	}
-+	if (cdata->pwm_num_devs) {
-+		pc->pwm_clk = of_clk_get_by_name(dev->of_node, "pwm");
-+		if (IS_ERR(pc->pwm_clk)) {
-+			dev_err(dev, "failed to get PWM clock\n");
-+			return PTR_ERR(pc->pwm_clk);
-+		}
- 
--	ret = clk_prepare(pc->pwm_clk);
--	if (ret) {
--		dev_err(dev, "failed to prepare clock\n");
--		return ret;
-+		ret = clk_prepare(pc->pwm_clk);
-+		if (ret) {
-+			dev_err(dev, "failed to prepare clock\n");
-+			return ret;
-+		}
- 	}
- 
--skip_pwm:
--	if (!cdata->cpt_num_devs)
--		goto skip_cpt;
--
--	pc->cpt_clk = of_clk_get_by_name(dev->of_node, "capture");
--	if (IS_ERR(pc->cpt_clk)) {
--		dev_err(dev, "failed to get PWM capture clock\n");
--		return PTR_ERR(pc->cpt_clk);
--	}
-+	if (cdata->cpt_num_devs) {
-+		pc->cpt_clk = of_clk_get_by_name(dev->of_node, "capture");
-+		if (IS_ERR(pc->cpt_clk)) {
-+			dev_err(dev, "failed to get PWM capture clock\n");
-+			return PTR_ERR(pc->cpt_clk);
-+		}
- 
--	ret = clk_prepare(pc->cpt_clk);
--	if (ret) {
--		dev_err(dev, "failed to prepare clock\n");
--		return ret;
-+		ret = clk_prepare(pc->cpt_clk);
-+		if (ret) {
-+			dev_err(dev, "failed to prepare clock\n");
-+			return ret;
-+		}
- 	}
- 
--skip_cpt:
- 	pc->chip.dev = dev;
- 	pc->chip.ops = &sti_pwm_ops;
- 	pc->chip.base = -1;
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index b8a100b9736c7..55a853edc3bea 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -50,7 +50,7 @@ static int trace_imc_mem_size;
+  * core and trace-imc
+  */
+ static struct imc_pmu_ref imc_global_refc = {
+-	.lock = __SPIN_LOCK_INITIALIZER(imc_global_refc.lock),
++	.lock = __SPIN_LOCK_UNLOCKED(imc_global_refc.lock),
+ 	.id = 0,
+ 	.refc = 0,
+ };
 -- 
 2.42.0
 
