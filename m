@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 947A07ECE69
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61CC87ECE8D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234446AbjKOTm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41094 "EHLO
+        id S235125AbjKOTnx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235107AbjKOTm4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:56 -0500
+        with ESMTP id S235132AbjKOTnx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CCD1B6
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:53 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31398C433C8;
-        Wed, 15 Nov 2023 19:42:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CFD1AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0840BC433C7;
+        Wed, 15 Nov 2023 19:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077372;
-        bh=sEI0SMAA/ghzqjjVL4ADxakBvJZ0YSzw6MJhKbnWD/k=;
+        s=korg; t=1700077429;
+        bh=jVnrWrpKQ0l2H+TLLDGhAyfDhSzxH1usQuUuYdiTtZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2j3hRZYCIVhmwDvFyPEBg1TqQVmEz3iqAjxgp0hwUNekfyyoiTI50tH0mGZ4ZAR7k
-         lR7zR+YgFtOD1TSWBsh5TEjIhzOcgmZs77lHVUIywRcWAHlsiDWyGLwi859S2L3ISR
-         xXO0CecD0Frq7jBKtt6D1saS1TG0sb7xrd5AXVlc=
+        b=1rRJ6FQ+Box8Q57pDEBWcKTPDn+CC5KJk8qav4KixcjmOeS1w51YQDOSiU/7cy9hj
+         t+fBhE3sOIYSj/5UcrWtY7DGMIn5rFMsJpZFgBmjqmGycMVsq1DRtsVAsBeAjr9Orx
+         il2fn4WbRHgbThPh4eJfdiOemu33cbQOEfMRcoZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Juergen Gross <jgross@suse.com>,
+        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 261/603] drm/rockchip: Fix type promotion bug in rockchip_gem_iommu_map()
-Date:   Wed, 15 Nov 2023 14:13:26 -0500
-Message-ID: <20231115191631.376859194@linuxfoundation.org>
+Subject: [PATCH 6.6 262/603] xenbus: fix error exit in xenbus_init()
+Date:   Wed, 15 Nov 2023 14:13:27 -0500
+Message-ID: <20231115191631.445487643@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -54,38 +56,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 6471da5ee311d53ef46eebcb7725bc94266cc0cf ]
+[ Upstream commit 44961b81a9e9059b5c0443643915386db7035227 ]
 
-The "ret" variable is declared as ssize_t and it can hold negative error
-codes but the "rk_obj->base.size" variable is type size_t.  This means
-that when we compare them, they are both type promoted to size_t and the
-negative error code becomes a high unsigned value and is treated as
-success.  Add a cast to fix this.
+In case an error occurs in xenbus_init(), xen_store_domain_type should
+be set to XS_UNKNOWN.
 
-Fixes: 38f993b7c59e ("drm/rockchip: Do not use DMA mapping API if attached to IOMMU domain")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/2bfa28b5-145d-4b9e-a18a-98819dd686ce@moroto.mountain
+Fix one instance where this action is missing.
+
+Fixes: 5b3353949e89 ("xen: add support for initializing xenstore later as HVM domain")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Link: https://lore.kernel.org/r/202304200845.w7m4kXZr-lkp@intel.com/
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Link: https://lore.kernel.org/r/20230822091138.4765-1-jgross@suse.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_gem.c | 2 +-
+ drivers/xen/xenbus/xenbus_probe.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-index b8f8b45ebf594..93ed841f5dcea 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-@@ -40,7 +40,7 @@ static int rockchip_gem_iommu_map(struct rockchip_gem_object *rk_obj)
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 639bf628389ba..3205e5d724c8c 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -1025,7 +1025,7 @@ static int __init xenbus_init(void)
+ 			if (err < 0) {
+ 				pr_err("xenstore_late_init couldn't bind irq err=%d\n",
+ 				       err);
+-				return err;
++				goto out_error;
+ 			}
  
- 	ret = iommu_map_sgtable(private->domain, rk_obj->dma_addr, rk_obj->sgt,
- 				prot);
--	if (ret < rk_obj->base.size) {
-+	if (ret < (ssize_t)rk_obj->base.size) {
- 		DRM_ERROR("failed to map buffer: size=%zd request_size=%zd\n",
- 			  ret, rk_obj->base.size);
- 		ret = -ENOMEM;
+ 			xs_init_irq = err;
 -- 
 2.42.0
 
