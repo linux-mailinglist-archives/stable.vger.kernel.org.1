@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76EF67ECFDD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CAC17ECDEC
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235430AbjKOTvV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57856 "EHLO
+        id S234715AbjKOTjP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235426AbjKOTvV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:21 -0500
+        with ESMTP id S234740AbjKOTjO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 857ADC2
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:17 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0673BC433C8;
-        Wed, 15 Nov 2023 19:51:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B5971AD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A24C433CA;
+        Wed, 15 Nov 2023 19:39:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077877;
-        bh=W3H2Lpzkh6OfAI7Zm4TxVynzj9i3iDjMxe51JmR/z18=;
+        s=korg; t=1700077150;
+        bh=GchX+jI0fJdwFtH7pwsnUqt/Jud7PPsN4OlB6yC5h8M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jcn79h0uldNW9LNknGPNgmHi6HYkT2oqdnvClo5hjPkRpk0YFhnbNHM2fa2BESI9v
-         c5wiz31w1bVW3Tpr5OUkdaSKrKsfKh9r3o0VSV0bgUx5wsJpTmWuOqq+5QjxKExZ4j
-         rPRiyzormJIxyTm4JF2UVPHH36nwRvS+UEZI0XL8=
+        b=uhM481fGnr9rhZUa9M3EuD7uKcxOHpVQLbUF1RNnkXPi5UqFFbr4Oloyt36ccGtrO
+         bHd32pIpIcrikGNWEDn9srMcSBp4xtNse1G5yDZo+sZ5y/qaIKnsyy40SbfBW4PxBh
+         UX9QYh/MWCEqPWwX40Fjy4uKRTRWC/xaXOSggyOg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Huhardeaux <tech@tootai.net>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Carl Worth <carl@os.amperecomputing.com>,
+        Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+        Will Deacon <will@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 575/603] netfilter: nat: fix ipv6 nat redirect with mapped and scoped addresses
-Date:   Wed, 15 Nov 2023 14:18:40 -0500
-Message-ID: <20231115191651.268142404@linuxfoundation.org>
+Subject: [PATCH 6.5 537/550] arm64/arm: arm_pmuv3: perf: Dont truncate 64-bit registers
+Date:   Wed, 15 Nov 2023 14:18:41 -0500
+Message-ID: <20231115191638.165643214@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,98 +53,217 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit 80abbe8a8263106fe45a4f293b92b5c74cc9cc8a ]
+[ Upstream commit 403edfa436286b21f5ffe6856ae5b36396e8966c ]
 
-The ipv6 redirect target was derived from the ipv4 one, i.e. its
-identical to a 'dnat' with the first (primary) address assigned to the
-network interface.  The code has been moved around to make it usable
-from nf_tables too, but its still the same as it was back when this
-was added in 2012.
+The driver used to truncate several 64-bit registers such as PMCEID[n]
+registers used to describe whether architectural and microarchitectural
+events in range 0x4000-0x401f exist. Due to discarding the bits, the
+driver made the events invisible, even if they existed.
 
-IPv6, however, has different types of addresses, if the 'wrong' address
-comes first the redirection does not work.
+Moreover, PMCCFILTR and PMCR registers have additional bits in the upper
+32 bits. This patch makes them available although they aren't currently
+used. Finally, functions handling PMXEVCNTR and PMXEVTYPER registers are
+removed as they not being used at all.
 
-In Daniels case, the addresses are:
-  inet6 ::ffff:192 ...
-  inet6 2a01: ...
-
-... so the function attempts to redirect to the mapped address.
-
-Add more checks before the address is deemed correct:
-1. If the packets' daddr is scoped, search for a scoped address too
-2. skip tentative addresses
-3. skip mapped addresses
-
-Use the first address that appears to match our needs.
-
-Reported-by: Daniel Huhardeaux <tech@tootai.net>
-Closes: https://lore.kernel.org/netfilter/71be06b8-6aa0-4cf9-9e0b-e2839b01b22f@tootai.net/
-Fixes: 115e23ac78f8 ("netfilter: ip6tables: add REDIRECT target")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: df29ddf4f04b ("arm64: perf: Abstract system register accesses away")
+Reported-by: Carl Worth <carl@os.amperecomputing.com>
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Acked-by: Will Deacon <will@kernel.org>
+Closes: https://lore.kernel.org/..
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20231102183012.1251410-1-ilkka@os.amperecomputing.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_nat_redirect.c | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ arch/arm/include/asm/arm_pmuv3.h   | 48 ++++++++++++++----------------
+ arch/arm64/include/asm/arm_pmuv3.h | 25 ++++------------
+ drivers/perf/arm_pmuv3.c           |  6 ++--
+ 3 files changed, 31 insertions(+), 48 deletions(-)
 
-diff --git a/net/netfilter/nf_nat_redirect.c b/net/netfilter/nf_nat_redirect.c
-index 6616ba5d0b049..5b37487d9d11f 100644
---- a/net/netfilter/nf_nat_redirect.c
-+++ b/net/netfilter/nf_nat_redirect.c
-@@ -80,6 +80,26 @@ EXPORT_SYMBOL_GPL(nf_nat_redirect_ipv4);
+diff --git a/arch/arm/include/asm/arm_pmuv3.h b/arch/arm/include/asm/arm_pmuv3.h
+index f3cd04ff022df..9590dc0ba1688 100644
+--- a/arch/arm/include/asm/arm_pmuv3.h
++++ b/arch/arm/include/asm/arm_pmuv3.h
+@@ -23,6 +23,8 @@
+ #define PMUSERENR		__ACCESS_CP15(c9,  0, c14, 0)
+ #define PMINTENSET		__ACCESS_CP15(c9,  0, c14, 1)
+ #define PMINTENCLR		__ACCESS_CP15(c9,  0, c14, 2)
++#define PMCEID2			__ACCESS_CP15(c9,  0, c14, 4)
++#define PMCEID3			__ACCESS_CP15(c9,  0, c14, 5)
+ #define PMMIR			__ACCESS_CP15(c9,  0, c14, 6)
+ #define PMCCFILTR		__ACCESS_CP15(c14, 0, c15, 7)
  
- static const struct in6_addr loopback_addr = IN6ADDR_LOOPBACK_INIT;
+@@ -150,21 +152,6 @@ static inline u64 read_pmccntr(void)
+ 	return read_sysreg(PMCCNTR);
+ }
  
-+static bool nf_nat_redirect_ipv6_usable(const struct inet6_ifaddr *ifa, unsigned int scope)
+-static inline void write_pmxevcntr(u32 val)
+-{
+-	write_sysreg(val, PMXEVCNTR);
+-}
+-
+-static inline u32 read_pmxevcntr(void)
+-{
+-	return read_sysreg(PMXEVCNTR);
+-}
+-
+-static inline void write_pmxevtyper(u32 val)
+-{
+-	write_sysreg(val, PMXEVTYPER);
+-}
+-
+ static inline void write_pmcntenset(u32 val)
+ {
+ 	write_sysreg(val, PMCNTENSET);
+@@ -205,16 +192,6 @@ static inline void write_pmuserenr(u32 val)
+ 	write_sysreg(val, PMUSERENR);
+ }
+ 
+-static inline u32 read_pmceid0(void)
+-{
+-	return read_sysreg(PMCEID0);
+-}
+-
+-static inline u32 read_pmceid1(void)
+-{
+-	return read_sysreg(PMCEID1);
+-}
+-
+ static inline void kvm_set_pmu_events(u32 set, struct perf_event_attr *attr) {}
+ static inline void kvm_clr_pmu_events(u32 clr) {}
+ static inline bool kvm_pmu_counter_deferred(struct perf_event_attr *attr)
+@@ -229,6 +206,7 @@ static inline bool kvm_set_pmuserenr(u64 val)
+ 
+ /* PMU Version in DFR Register */
+ #define ARMV8_PMU_DFR_VER_NI        0
++#define ARMV8_PMU_DFR_VER_V3P1      0x4
+ #define ARMV8_PMU_DFR_VER_V3P4      0x5
+ #define ARMV8_PMU_DFR_VER_V3P5      0x6
+ #define ARMV8_PMU_DFR_VER_IMP_DEF   0xF
+@@ -249,4 +227,24 @@ static inline bool is_pmuv3p5(int pmuver)
+ 	return pmuver >= ARMV8_PMU_DFR_VER_V3P5;
+ }
+ 
++static inline u64 read_pmceid0(void)
 +{
-+	unsigned int ifa_addr_type = ipv6_addr_type(&ifa->addr);
++	u64 val = read_sysreg(PMCEID0);
 +
-+	if (ifa_addr_type & IPV6_ADDR_MAPPED)
-+		return false;
++	if (read_pmuver() >= ARMV8_PMU_DFR_VER_V3P1)
++		val |= (u64)read_sysreg(PMCEID2) << 32;
 +
-+	if ((ifa->flags & IFA_F_TENTATIVE) && (!(ifa->flags & IFA_F_OPTIMISTIC)))
-+		return false;
-+
-+	if (scope) {
-+		unsigned int ifa_scope = ifa_addr_type & IPV6_ADDR_SCOPE_MASK;
-+
-+		if (!(scope & ifa_scope))
-+			return false;
-+	}
-+
-+	return true;
++	return val;
 +}
 +
- unsigned int
- nf_nat_redirect_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 		     unsigned int hooknum)
-@@ -89,14 +109,19 @@ nf_nat_redirect_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 	if (hooknum == NF_INET_LOCAL_OUT) {
- 		newdst.in6 = loopback_addr;
- 	} else {
-+		unsigned int scope = ipv6_addr_scope(&ipv6_hdr(skb)->daddr);
- 		struct inet6_dev *idev;
--		struct inet6_ifaddr *ifa;
- 		bool addr = false;
++static inline u64 read_pmceid1(void)
++{
++	u64 val = read_sysreg(PMCEID1);
++
++	if (read_pmuver() >= ARMV8_PMU_DFR_VER_V3P1)
++		val |= (u64)read_sysreg(PMCEID3) << 32;
++
++	return val;
++}
++
+ #endif
+diff --git a/arch/arm64/include/asm/arm_pmuv3.h b/arch/arm64/include/asm/arm_pmuv3.h
+index 18dc2fb3d7b7b..c27404fa4418a 100644
+--- a/arch/arm64/include/asm/arm_pmuv3.h
++++ b/arch/arm64/include/asm/arm_pmuv3.h
+@@ -46,12 +46,12 @@ static inline u32 read_pmuver(void)
+ 			ID_AA64DFR0_EL1_PMUVer_SHIFT);
+ }
  
- 		idev = __in6_dev_get(skb->dev);
- 		if (idev != NULL) {
-+			const struct inet6_ifaddr *ifa;
-+
- 			read_lock_bh(&idev->lock);
- 			list_for_each_entry(ifa, &idev->addr_list, if_list) {
-+				if (!nf_nat_redirect_ipv6_usable(ifa, scope))
-+					continue;
-+
- 				newdst.in6 = ifa->addr;
- 				addr = true;
- 				break;
+-static inline void write_pmcr(u32 val)
++static inline void write_pmcr(u64 val)
+ {
+ 	write_sysreg(val, pmcr_el0);
+ }
+ 
+-static inline u32 read_pmcr(void)
++static inline u64 read_pmcr(void)
+ {
+ 	return read_sysreg(pmcr_el0);
+ }
+@@ -71,21 +71,6 @@ static inline u64 read_pmccntr(void)
+ 	return read_sysreg(pmccntr_el0);
+ }
+ 
+-static inline void write_pmxevcntr(u32 val)
+-{
+-	write_sysreg(val, pmxevcntr_el0);
+-}
+-
+-static inline u32 read_pmxevcntr(void)
+-{
+-	return read_sysreg(pmxevcntr_el0);
+-}
+-
+-static inline void write_pmxevtyper(u32 val)
+-{
+-	write_sysreg(val, pmxevtyper_el0);
+-}
+-
+ static inline void write_pmcntenset(u32 val)
+ {
+ 	write_sysreg(val, pmcntenset_el0);
+@@ -106,7 +91,7 @@ static inline void write_pmintenclr(u32 val)
+ 	write_sysreg(val, pmintenclr_el1);
+ }
+ 
+-static inline void write_pmccfiltr(u32 val)
++static inline void write_pmccfiltr(u64 val)
+ {
+ 	write_sysreg(val, pmccfiltr_el0);
+ }
+@@ -126,12 +111,12 @@ static inline void write_pmuserenr(u32 val)
+ 	write_sysreg(val, pmuserenr_el0);
+ }
+ 
+-static inline u32 read_pmceid0(void)
++static inline u64 read_pmceid0(void)
+ {
+ 	return read_sysreg(pmceid0_el0);
+ }
+ 
+-static inline u32 read_pmceid1(void)
++static inline u64 read_pmceid1(void)
+ {
+ 	return read_sysreg(pmceid1_el0);
+ }
+diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
+index 08b3a1bf0ef62..a50a18e009033 100644
+--- a/drivers/perf/arm_pmuv3.c
++++ b/drivers/perf/arm_pmuv3.c
+@@ -428,12 +428,12 @@ static inline bool armv8pmu_event_is_chained(struct perf_event *event)
+ #define	ARMV8_IDX_TO_COUNTER(x)	\
+ 	(((x) - ARMV8_IDX_COUNTER0) & ARMV8_PMU_COUNTER_MASK)
+ 
+-static inline u32 armv8pmu_pmcr_read(void)
++static inline u64 armv8pmu_pmcr_read(void)
+ {
+ 	return read_pmcr();
+ }
+ 
+-static inline void armv8pmu_pmcr_write(u32 val)
++static inline void armv8pmu_pmcr_write(u64 val)
+ {
+ 	val &= ARMV8_PMU_PMCR_MASK;
+ 	isb();
+@@ -978,7 +978,7 @@ static int armv8pmu_set_event_filter(struct hw_perf_event *event,
+ static void armv8pmu_reset(void *info)
+ {
+ 	struct arm_pmu *cpu_pmu = (struct arm_pmu *)info;
+-	u32 pmcr;
++	u64 pmcr;
+ 
+ 	/* The counter and interrupt enable registers are unknown at reset. */
+ 	armv8pmu_disable_counter(U32_MAX);
 -- 
 2.42.0
 
