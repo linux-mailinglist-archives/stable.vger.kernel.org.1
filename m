@@ -2,39 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95A727ECD13
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B89F7ECF7D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234253AbjKOTeT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:34:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
+        id S235336AbjKOTst (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234310AbjKOTeL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:11 -0500
+        with ESMTP id S235330AbjKOTss (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A401B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A247C433C8;
-        Wed, 15 Nov 2023 19:34:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B874DB9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:44 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E36C433C7;
+        Wed, 15 Nov 2023 19:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076847;
-        bh=2U8ocgwhkTYiwV7V1bPqjlMSQGkMnYhklEyf0Rept/M=;
+        s=korg; t=1700077724;
+        bh=48TVkckcAxvfhl1GcsgwzTraZRyDIe5qGGQYobX/XIo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mgQh4F4k4LEHgi2OPX290/gYs3XJtkY8u5VE1e2hNRGM1fQ+a1v8fcujRRy2QAokP
-         3CtyikeJQjcx1MQV5iBMKqz4Igv0GP3kaqC0bSzW9tB25jNv34bRRMVEkzfWFvyjD/
-         /JT9bIjfbJ7ans0+ky5SN2+dwL8HA4VQpfOc1nmA=
+        b=rv7WbcGNt3ptnx7ZOFMti67PN9y4bhmpJXTgtPOB1SYK778TAWmB+uhdpeQ8XGgdr
+         Rx9ay4+b3Dkt0YdgXtP9Fj7YHOQSDfECn31E4nQrfZp6uSP2d/r3E5V2M6zi+ek/9c
+         e4eXi/ag2bOcSvS3kXblWiEQ21ppQdmDrkTeXvWM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        K Prateek Nayak <kprateek.nayak@amd.com>,
+        Ravi Bangoria <ravi.bangoria@amd.com>,
+        Sandipan Das <sandipan.das@amd.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        German Gomez <german.gomez@arm.com>,
+        James Clark <james.clark@arm.com>,
+        Nick Terrell <terrelln@fb.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Changbin Du <changbin.du@huawei.com>,
+        liuwenyu <liuwenyu7@huawei.com>,
+        Yang Jihong <yangjihong1@huawei.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>, Song Liu <song@kernel.org>,
+        Leo Yan <leo.yan@linaro.org>, Kajol Jain <kjain@linux.ibm.com>,
+        Andi Kleen <ak@linux.intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Yanteng Si <siyanteng@loongson.cn>,
+        Liam Howlett <liam.howlett@oracle.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 441/550] usb: host: xhci-plat: fix possible kernel oops while resuming
+Subject: [PATCH 6.6 480/603] libperf rc_check: Make implicit enabling work for GCC
 Date:   Wed, 15 Nov 2023 14:17:05 -0500
-Message-ID: <20231115191631.372304321@linuxfoundation.org>
+Message-ID: <20231115191645.623414285@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +70,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit a5f928db59519a15e82ecba4ae3e7cbf5a44715a ]
+[ Upstream commit 75265320d290c5f5891f16967b94883676c46705 ]
 
-If this driver enables the xHC clocks while resuming from sleep, it calls
-clk_prepare_enable() without checking for errors and blithely goes on to
-read/write the xHC's registers -- which, with the xHC not being clocked,
-at least on ARM32 usually causes an imprecise external abort exceptions
-which cause kernel oops.  Currently, the chips for which the driver does
-the clock dance on suspend/resume seem to be the Broadcom STB SoCs, based
-on ARM32 CPUs, as it seems...
+Make the implicit REFCOUNT_CHECKING robust to when building with GCC.
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace static
-analysis tool.
-
-Fixes: 8bd954c56197 ("usb: host: xhci-plat: suspend and resume clocks")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20231019102924.2797346-19-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9be6ab181b7b ("libperf rc_check: Enable implicitly with sanitizers")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Sandipan Das <sandipan.das@amd.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Nick Terrell <terrelln@fb.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Changbin Du <changbin.du@huawei.com>
+Cc: liuwenyu <liuwenyu7@huawei.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Yanteng Si <siyanteng@loongson.cn>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20231024222353.3024098-4-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ tools/lib/perf/include/internal/rc_check.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index b26ea7cb4357b..5fabd14e49a03 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -459,23 +459,38 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
- 	int ret;
+diff --git a/tools/lib/perf/include/internal/rc_check.h b/tools/lib/perf/include/internal/rc_check.h
+index d5d771ccdc7b4..e88a6d8a0b0f9 100644
+--- a/tools/lib/perf/include/internal/rc_check.h
++++ b/tools/lib/perf/include/internal/rc_check.h
+@@ -9,8 +9,12 @@
+  * Enable reference count checking implicitly with leak checking, which is
+  * integrated into address sanitizer.
+  */
+-#if defined(LEAK_SANITIZER) || defined(ADDRESS_SANITIZER)
++#if defined(__SANITIZE_ADDRESS__) || defined(LEAK_SANITIZER) || defined(ADDRESS_SANITIZER)
+ #define REFCNT_CHECKING 1
++#elif defined(__has_feature)
++#if __has_feature(address_sanitizer) || __has_feature(leak_sanitizer)
++#define REFCNT_CHECKING 1
++#endif
+ #endif
  
- 	if (!device_may_wakeup(dev) && (xhci->quirks & XHCI_SUSPEND_RESUME_CLKS)) {
--		clk_prepare_enable(xhci->clk);
--		clk_prepare_enable(xhci->reg_clk);
-+		ret = clk_prepare_enable(xhci->clk);
-+		if (ret)
-+			return ret;
-+
-+		ret = clk_prepare_enable(xhci->reg_clk);
-+		if (ret) {
-+			clk_disable_unprepare(xhci->clk);
-+			return ret;
-+		}
- 	}
- 
- 	ret = xhci_priv_resume_quirk(hcd);
- 	if (ret)
--		return ret;
-+		goto disable_clks;
- 
- 	ret = xhci_resume(xhci, PMSG_RESUME);
- 	if (ret)
--		return ret;
-+		goto disable_clks;
- 
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
- 
- 	return 0;
-+
-+disable_clks:
-+	if (!device_may_wakeup(dev) && (xhci->quirks & XHCI_SUSPEND_RESUME_CLKS)) {
-+		clk_disable_unprepare(xhci->clk);
-+		clk_disable_unprepare(xhci->reg_clk);
-+	}
-+
-+	return ret;
- }
- 
- static int __maybe_unused xhci_plat_runtime_suspend(struct device *dev)
+ /*
 -- 
 2.42.0
 
