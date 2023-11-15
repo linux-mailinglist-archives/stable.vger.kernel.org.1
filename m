@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACFC77ECBDF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B4767ECE4C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233158AbjKOTZD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40084 "EHLO
+        id S234974AbjKOTmL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233168AbjKOTZB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:01 -0500
+        with ESMTP id S234971AbjKOTmL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 041CE1A8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E089C433C7;
-        Wed, 15 Nov 2023 19:24:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 264259E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:08 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F60C433C9;
+        Wed, 15 Nov 2023 19:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076297;
-        bh=Ou0GOJmrkwCty6z8gov9b75RgywQd+84u8xXv74Df6Q=;
+        s=korg; t=1700077327;
+        bh=smpZNfv/bGG8HpTkXIWIIL0gtx0Xn3898CDsYeSuzfg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hwSpRzTeykM4bJZxEFh2RWM2gPUXOWRVOuTfiAhk8tSKP+WmIkZVzXT3owo9fpR9h
-         3BbFdWfVFg7sR7jA4802E9atZD0xkROk/jWKw2ELjWnapVYrW4+IgR1g8ENjTvN4G9
-         fhDUi5qaqSuOt0icPnyp2dzDH5j3PgIKkImGZkEw=
+        b=QxIQ9PMgN+wQnSLXx7zw7J6NVoxn53kuEyGAWc3Umkf/X6xpidq4eVEore9DUWKHs
+         nFN+SQDuVJY/wsFQzY1uGo22xe/z66itbaNYdsXLM1K7b3epiRFtgxedvo1GsuYN5H
+         MLzSUG7F3FY0WD67FQ3l5zlDimvNuXnE6EiKOmuk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Nartowicz <deadbeef@nartowicz.co.uk>,
-        Armin Wolf <W_Armin@gmx.de>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 194/550] Revert "hwmon: (sch56xx-common) Add automatic module loading on supported devices"
+        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Robert Foss <rfoss@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Maxim Schwalm <maxim.schwalm@gmail.com>
+Subject: [PATCH 6.6 233/603] drm/bridge: tc358768: Fix bit updates
 Date:   Wed, 15 Nov 2023 14:12:58 -0500
-Message-ID: <20231115191614.218089092@linuxfoundation.org>
+Message-ID: <20231115191629.320043916@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,104 +53,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit d621a46d05107f4e510383d6a38f2160c62d28f7 ]
+[ Upstream commit 66962d5c3c51377b9b90cae35b7e038950438e02 ]
 
-This reverts commit 393935baa45e5ccb9603cf7f9f020ed1bc0915f7.
+The driver has a few places where it does:
 
-As reported by Ian Nartowicz, this and the next patch
-result in a failure to load the driver on Celsius W280.
-While the alternative would be to add the board to the DMI
-override table, it is quite likely that other systems are
-also affected. Revert the offending patches to avoid future
-problems.
+if (thing_is_enabled_in_config)
+	update_thing_bit_in_hw()
 
-Fixes: 393935baa45e ("hwmon: (sch56xx-common) Add automatic module loading on supported devices")
-Reported-by: Ian Nartowicz <deadbeef@nartowicz.co.uk>
-Closes: https://lore.kernel.org/linux-hwmon/20231025192239.3c5389ae@debian.org/T/#t
-Cc: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+This means that if the thing is _not_ enabled, the bit never gets
+cleared. This affects the h/vsyncs and continuous DSI clock bits.
+
+Fix the driver to always update the bit.
+
+Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
+Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
+Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-4-31725f008a50@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sch56xx-common.c | 40 ++--------------------------------
- 1 file changed, 2 insertions(+), 38 deletions(-)
+ drivers/gpu/drm/bridge/tc358768.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hwmon/sch56xx-common.c b/drivers/hwmon/sch56xx-common.c
-index 3ece53adabd62..ac1f725807155 100644
---- a/drivers/hwmon/sch56xx-common.c
-+++ b/drivers/hwmon/sch56xx-common.c
-@@ -7,10 +7,8 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
+index bc97a837955ba..b668f77673c3d 100644
+--- a/drivers/gpu/drm/bridge/tc358768.c
++++ b/drivers/gpu/drm/bridge/tc358768.c
+@@ -794,8 +794,8 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+ 		val |= BIT(i + 1);
+ 	tc358768_write(priv, TC358768_HSTXVREGEN, val);
  
- #include <linux/module.h>
--#include <linux/mod_devicetable.h>
- #include <linux/init.h>
- #include <linux/platform_device.h>
--#include <linux/dmi.h>
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/acpi.h>
-@@ -21,10 +19,7 @@
- #include <linux/slab.h>
- #include "sch56xx-common.h"
+-	if (!(mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS))
+-		tc358768_write(priv, TC358768_TXOPTIONCNTRL, 0x1);
++	tc358768_write(priv, TC358768_TXOPTIONCNTRL,
++		       (mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS) ? 0 : BIT(0));
  
--static bool ignore_dmi;
--module_param(ignore_dmi, bool, 0);
--MODULE_PARM_DESC(ignore_dmi, "Omit DMI check for supported devices (default=0)");
--
-+/* Insmod parameters */
- static bool nowayout = WATCHDOG_NOWAYOUT;
- module_param(nowayout, bool, 0);
- MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
-@@ -523,42 +518,11 @@ static int __init sch56xx_device_add(int address, const char *name)
- 	return PTR_ERR_OR_ZERO(sch56xx_pdev);
- }
+ 	/* TXTAGOCNT[26:16] RXTASURECNT[10:0] */
+ 	val = tc358768_to_ns((lptxcnt + 1) * dsibclk_nsk * 4);
+@@ -861,11 +861,12 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+ 	tc358768_write(priv, TC358768_DSI_HACT, hact);
  
--/* For autoloading only */
--static const struct dmi_system_id sch56xx_dmi_table[] __initconst = {
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
--		},
--	},
--	{ }
--};
--MODULE_DEVICE_TABLE(dmi, sch56xx_dmi_table);
--
- static int __init sch56xx_init(void)
- {
--	const char *name = NULL;
- 	int address;
-+	const char *name = NULL;
+ 	/* VSYNC polarity */
+-	if (!(mode->flags & DRM_MODE_FLAG_NVSYNC))
+-		tc358768_update_bits(priv, TC358768_CONFCTL, BIT(5), BIT(5));
++	tc358768_update_bits(priv, TC358768_CONFCTL, BIT(5),
++			     (mode->flags & DRM_MODE_FLAG_PVSYNC) ? BIT(5) : 0);
++
+ 	/* HSYNC polarity */
+-	if (mode->flags & DRM_MODE_FLAG_PHSYNC)
+-		tc358768_update_bits(priv, TC358768_PP_MISC, BIT(0), BIT(0));
++	tc358768_update_bits(priv, TC358768_PP_MISC, BIT(0),
++			     (mode->flags & DRM_MODE_FLAG_PHSYNC) ? BIT(0) : 0);
  
--	if (!ignore_dmi) {
--		if (!dmi_check_system(sch56xx_dmi_table))
--			return -ENODEV;
--
--		/*
--		 * Some machines like the Esprimo P720 and Esprimo C700 have
--		 * onboard devices named " Antiope"/" Theseus" instead of
--		 * "Antiope"/"Theseus", so we need to check for both.
--		 */
--		if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
--		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
--		    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
--		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
--			return -ENODEV;
--	}
--
--	/*
--	 * Some devices like the Esprimo C700 have both onboard devices,
--	 * so we still have to check manually
--	 */
- 	address = sch56xx_find(0x4e, &name);
- 	if (address < 0)
- 		address = sch56xx_find(0x2e, &name);
+ 	/* Start DSI Tx */
+ 	tc358768_write(priv, TC358768_DSI_START, 0x1);
 -- 
 2.42.0
 
