@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E73F97ECE07
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A117ECB9E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234456AbjKOTkF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:40:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51050 "EHLO
+        id S232289AbjKOTX1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:23:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjKOTkE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:04 -0500
+        with ESMTP id S231374AbjKOTX0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95EC6D4F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FE5C433CA;
-        Wed, 15 Nov 2023 19:39:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF0112C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD58C433C9;
+        Wed, 15 Nov 2023 19:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077190;
-        bh=RALN69McNKmgd7W0NJrnS+XGvpprvSHYFaQ3qblKv3A=;
+        s=korg; t=1700076200;
+        bh=J/neiRJMQfycXOscHVtJ9oY+GArfUJPIh41bdO/pJdQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P1qClOgBD+cCg7WHp2Ybcxhdegwk9YMmixG3E3MvZpEmwcpSQDGYUX246YyMf/JZt
-         BE0P66BcQ+dNwc+FQReRajAz5816p0jZjUBfKmCCtQUB/4vQDlXctl6lVFx6+lW5j5
-         jlUAVMIIm/fJfOU/doF6Xr6UAsy9mNrzQWylSruc=
+        b=fLwhCOgF4FbZ8UyhyxsYu5K8A/+AUOeGaEwlue3Qgpnc34+CM5+YTLeuzUrJCTtnG
+         uSvquJpJ9GlcSE9paKdWg60rbq+bosEZdcQzfCRRarX6LPrO0EKJdhidgJUEvizVbQ
+         au2FQlEjzcIgSofSY4Apw1P3RL0KTRviAtAv0ZMs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/603] mptcp: properly account fastopen data
+Subject: [PATCH 6.5 114/550] thermal: core: prevent potential string overflow
 Date:   Wed, 15 Nov 2023 14:11:38 -0500
-Message-ID: <20231115191623.769180902@linuxfoundation.org>
+Message-ID: <20231115191608.599822323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit bf0e96108fb6707613dd055aff5e98b02b99bb14 ]
+[ Upstream commit c99626092efca3061b387043d4a7399bf75fbdd5 ]
 
-Currently the socket level counter aggregating the received data
-does not take in account the data received via fastopen.
+The dev->id value comes from ida_alloc() so it's a number between zero
+and INT_MAX.  If it's too high then these sprintf()s will overflow.
 
-Address the issue updating the counter as required.
-
-Fixes: 38967f424b5b ("mptcp: track some aggregate data counters")
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231023-send-net-next-20231023-2-v1-2-9dc60939d371@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 203d3d4aa482 ("the generic thermal sysfs driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/fastopen.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/thermal/thermal_core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/fastopen.c b/net/mptcp/fastopen.c
-index bceaab8dd8e46..74698582a2859 100644
---- a/net/mptcp/fastopen.c
-+++ b/net/mptcp/fastopen.c
-@@ -52,6 +52,7 @@ void mptcp_fastopen_subflow_synack_set_params(struct mptcp_subflow_context *subf
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index cc2b5e81c6205..f66d8439ae9de 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -667,7 +667,8 @@ int thermal_zone_bind_cooling_device(struct thermal_zone_device *tz,
+ 	if (result)
+ 		goto release_ida;
  
- 	mptcp_set_owner_r(skb, sk);
- 	__skb_queue_tail(&sk->sk_receive_queue, skb);
-+	mptcp_sk(sk)->bytes_received += skb->len;
+-	sprintf(dev->attr_name, "cdev%d_trip_point", dev->id);
++	snprintf(dev->attr_name, sizeof(dev->attr_name), "cdev%d_trip_point",
++		 dev->id);
+ 	sysfs_attr_init(&dev->attr.attr);
+ 	dev->attr.attr.name = dev->attr_name;
+ 	dev->attr.attr.mode = 0444;
+@@ -676,7 +677,8 @@ int thermal_zone_bind_cooling_device(struct thermal_zone_device *tz,
+ 	if (result)
+ 		goto remove_symbol_link;
  
- 	sk->sk_data_ready(sk);
- 
+-	sprintf(dev->weight_attr_name, "cdev%d_weight", dev->id);
++	snprintf(dev->weight_attr_name, sizeof(dev->weight_attr_name),
++		 "cdev%d_weight", dev->id);
+ 	sysfs_attr_init(&dev->weight_attr.attr);
+ 	dev->weight_attr.attr.name = dev->weight_attr_name;
+ 	dev->weight_attr.attr.mode = S_IWUSR | S_IRUGO;
 -- 
 2.42.0
 
