@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C387ED6FA
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:04:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1E0A7ED706
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:05:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235633AbjKOWEo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 17:04:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
+        id S1344466AbjKOWFB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 17:05:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344425AbjKOWEn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:04:43 -0500
+        with ESMTP id S1344461AbjKOWFA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:05:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4B2195
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:04:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BB5C433C9;
-        Wed, 15 Nov 2023 22:04:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 042321A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:04:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED3AC433C7;
+        Wed, 15 Nov 2023 22:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085880;
-        bh=NbVHU5aTAMqcqo5HWYXtnWfy0MY+iit64pmtuBhATyg=;
+        s=korg; t=1700085897;
+        bh=wknMkkwPBbmuV5KHrv74NUGyDYJAzVS+HQhvPCHmY8w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vNCPmLl7s5GTwxgoyscn/r0OPyeB0e+Lnftsw7AaY9JPXJChKB1HWXC68oTo+MHGS
-         LZfibrV3QhicnqdNQksI23Pj/fICpsCGd2UOHscMhoquDm3K8VF80p7lGIV1Jj16rB
-         H387cPPOHP3KiGQcPDWtCjOhoBAIPI0gXqYSzo78=
+        b=KNr7GC/wTOlpLkPo7uoimYU30Fc9eS0iAbXZFrRC9YrIJ/iwG9xMfc3zwsBjHNlE+
+         wltD2C4Zn9dQTa6jLfXGnwBlktcQplU9a6n40FCdSGqQflGbBCk2V2Iy5/WEaCeqyU
+         aQnlHK1gOz0EOxy9DKreVZZY6M6AdE8zc2KxFZO0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Erik Kurzinger <ekurzinger@nvidia.com>,
-        Simon Ser <contact@emersion.fr>,
+        patches@lists.linux.dev,
+        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+        Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 113/119] drm/syncobj: fix DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE
-Date:   Wed, 15 Nov 2023 17:01:43 -0500
-Message-ID: <20231115220136.178798376@linuxfoundation.org>
+Subject: [PATCH 5.4 114/119] spi: spi-zynq-qspi: add spi-mem to driver kconfig dependencies
+Date:   Wed, 15 Nov 2023 17:01:44 -0500
+Message-ID: <20231115220136.213551526@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
 References: <20231115220132.607437515@linuxfoundation.org>
@@ -54,64 +56,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
+From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
 
-[ Upstream commit 101c9f637efa1655f55876644d4439e552267527 ]
+[ Upstream commit c2ded280a4b1b7bd93e53670528504be08d24967 ]
 
-If DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT is invoked with the
-DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE flag set but no fence has yet been
-submitted for the given timeline point the call will fail immediately
-with EINVAL. This does not match the intended behavior where the call
-should wait until the fence has been submitted (or the timeout expires).
+Zynq QSPI driver has been converted to use spi-mem framework so
+add spi-mem to driver kconfig dependencies.
 
-The following small example program illustrates the issue. It should
-wait for 5 seconds and then print ETIME, but instead it terminates right
-away after printing EINVAL.
-
-  #include <stdio.h>
-  #include <fcntl.h>
-  #include <time.h>
-  #include <errno.h>
-  #include <xf86drm.h>
-  int main(void)
-  {
-      int fd = open("/dev/dri/card0", O_RDWR);
-      uint32_t syncobj;
-      drmSyncobjCreate(fd, 0, &syncobj);
-      struct timespec ts;
-      clock_gettime(CLOCK_MONOTONIC, &ts);
-      uint64_t point = 1;
-      if (drmSyncobjTimelineWait(fd, &syncobj, &point, 1,
-                                 ts.tv_sec * 1000000000 + ts.tv_nsec + 5000000000, // 5s
-                                 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE, NULL)) {
-          printf("drmSyncobjTimelineWait failed %d\n", errno);
-      }
-  }
-
-Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-Reviewed by: Simon Ser <contact@emersion.fd>
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/1fac96f1-2f3f-f9f9-4eb0-340f27a8f6c0@nvidia.com
+Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
+Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/1699037031-702858-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_syncobj.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
-index e558381c4c96e..8b155e3377cfe 100644
---- a/drivers/gpu/drm/drm_syncobj.c
-+++ b/drivers/gpu/drm/drm_syncobj.c
-@@ -921,7 +921,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 		fence = drm_syncobj_fence_get(syncobjs[i]);
- 		if (!fence || dma_fence_chain_find_seqno(&fence, points[i])) {
- 			dma_fence_put(fence);
--			if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
-+			if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+				     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
- 				continue;
- 			} else {
- 				timeout = -EINVAL;
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 5bf7542087776..8570f7386a090 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -865,6 +865,7 @@ config SPI_XTENSA_XTFPGA
+ config SPI_ZYNQ_QSPI
+ 	tristate "Xilinx Zynq QSPI controller"
+ 	depends on ARCH_ZYNQ || COMPILE_TEST
++	depends on SPI_MEM
+ 	help
+ 	  This enables support for the Zynq Quad SPI controller
+ 	  in master mode.
 -- 
 2.42.0
 
