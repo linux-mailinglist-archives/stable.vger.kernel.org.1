@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AF237ED2DF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29DB67ED4E8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233630AbjKOUo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:44:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46108 "EHLO
+        id S1344764AbjKOU7f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233560AbjKOUow (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:52 -0500
+        with ESMTP id S1344644AbjKOU6J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7551AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C71BC433C9;
-        Wed, 15 Nov 2023 20:44:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57486D6B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1236C4AF7D;
+        Wed, 15 Nov 2023 20:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081088;
-        bh=57OiORwxDsFmreiKMlwQmK8KkYMYAJftxLEr8EGcC6s=;
+        s=korg; t=1700081433;
+        bh=0Vzj/7KOE3NjaAmJ/UWSlwCdegw6uWxnEP3591vR7+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rM2TJcogzeCyJw74TznlvzlEmxn9B8z3LxSfqekF1GFxdA94w69JmRzIba799aC5G
-         j2whIQtoLNfmqACkAyGG+r+DuNDztzjVOVjSoAA8Y///pJ3gRwaQ2qAAgzDsGVPm/A
-         7uSciOij0BpNkqtZdVdxaaDwQcC8iib6sBjcX/2A=
+        b=WE3gVCzfZZezfDl33vliZen50b4JWO0aQG34w7ZZddLb6izGXUWYnY2kf9VBsvlr6
+         hlHZbJqc2GVVq5LYbqia7jHpPCCFEaVuC0dRqyFYNuzwBRLzF+3ofK+Uq0qZytQ9ML
+         W2/HBDVr0dwYOS2HVdntuK78G7951RKaZ34ffQ7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 31/88] drm/rockchip: cdn-dp: Fix some error handling paths in cdn_dp_probe()
+Subject: [PATCH 5.15 151/244] HID: logitech-hidpp: Remove HIDPP_QUIRK_NO_HIDINPUT quirk
 Date:   Wed, 15 Nov 2023 15:35:43 -0500
-Message-ID: <20231115191428.019291993@linuxfoundation.org>
+Message-ID: <20231115203557.396990987@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,62 +50,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Bastien Nocera <hadess@hadess.net>
 
-[ Upstream commit 44b968d0d0868b7a9b7a5c64464ada464ff4d532 ]
+[ Upstream commit d83956c8855c6c2ed4bd16cec4a5083d63df17e4 ]
 
-cdn_dp_audio_codec_init() can fail. So add some error handling.
+HIDPP_QUIRK_NO_HIDINPUT isn't used by any devices but still happens to
+work as HIDPP_QUIRK_DELAYED_INIT is defined to the same value. Remove
+HIDPP_QUIRK_NO_HIDINPUT and use HIDPP_QUIRK_DELAYED_INIT everywhere
+instead.
 
-If component_add() fails, the previous cdn_dp_audio_codec_init() call
-should be undone, as already done in the remove function.
+Tested on a T650 which requires that quirk, and a number of unifying and
+Bluetooth devices that don't.
 
-Fixes: 88582f564692 ("drm/rockchip: cdn-dp: Don't unregister audio dev when unbinding")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/8494a41602fadb7439630921a9779640698f2f9f.1693676045.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Bastien Nocera <hadess@hadess.net>
+Link: https://lore.kernel.org/r/20230125121723.3122-2-hadess@hadess.net
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Stable-dep-of: 11ca0322a419 ("HID: logitech-hidpp: Don't restart IO, instead defer hid_connect() only")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/cdn-dp-core.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-index 3f992e5a75c97..579652f8b42b3 100644
---- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-@@ -1156,6 +1156,7 @@ static int cdn_dp_probe(struct platform_device *pdev)
- 	struct cdn_dp_device *dp;
- 	struct extcon_dev *extcon;
- 	struct phy *phy;
-+	int ret;
- 	int i;
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index 7681a3fa67dab..a716c6f3bfb58 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -63,7 +63,7 @@ MODULE_PARM_DESC(disable_tap_to_click,
+ /* bits 2..20 are reserved for classes */
+ /* #define HIDPP_QUIRK_CONNECT_EVENTS		BIT(21) disabled */
+ #define HIDPP_QUIRK_WTP_PHYSICAL_BUTTONS	BIT(22)
+-#define HIDPP_QUIRK_NO_HIDINPUT			BIT(23)
++#define HIDPP_QUIRK_DELAYED_INIT		BIT(23)
+ #define HIDPP_QUIRK_FORCE_OUTPUT_REPORTS	BIT(24)
+ #define HIDPP_QUIRK_UNIFYING			BIT(25)
+ #define HIDPP_QUIRK_HI_RES_SCROLL_1P0		BIT(26)
+@@ -82,8 +82,6 @@ MODULE_PARM_DESC(disable_tap_to_click,
+ 					 HIDPP_QUIRK_HI_RES_SCROLL_X2120 | \
+ 					 HIDPP_QUIRK_HI_RES_SCROLL_X2121)
  
- 	dp = devm_kzalloc(dev, sizeof(*dp), GFP_KERNEL);
-@@ -1196,9 +1197,19 @@ static int cdn_dp_probe(struct platform_device *pdev)
- 	mutex_init(&dp->lock);
- 	dev_set_drvdata(dev, dp);
+-#define HIDPP_QUIRK_DELAYED_INIT		HIDPP_QUIRK_NO_HIDINPUT
+-
+ #define HIDPP_CAPABILITY_HIDPP10_BATTERY	BIT(0)
+ #define HIDPP_CAPABILITY_HIDPP20_BATTERY	BIT(1)
+ #define HIDPP_CAPABILITY_BATTERY_MILEAGE	BIT(2)
+@@ -3988,7 +3986,7 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
+ 	if (hidpp->quirks & HIDPP_QUIRK_HI_RES_SCROLL)
+ 		hi_res_scroll_enable(hidpp);
  
--	cdn_dp_audio_codec_init(dp, dev);
-+	ret = cdn_dp_audio_codec_init(dp, dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = component_add(dev, &cdn_dp_component_ops);
-+	if (ret)
-+		goto err_audio_deinit;
+-	if (!(hidpp->quirks & HIDPP_QUIRK_NO_HIDINPUT) || hidpp->delayed_input)
++	if (!(hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT) || hidpp->delayed_input)
+ 		/* if the input nodes are already created, we can stop now */
+ 		return;
  
--	return component_add(dev, &cdn_dp_component_ops);
-+	return 0;
-+
-+err_audio_deinit:
-+	platform_device_unregister(dp->audio_pdev);
-+	return ret;
- }
+@@ -4221,7 +4219,7 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		hid_hw_close(hdev);
+ 		hid_hw_stop(hdev);
  
- static int cdn_dp_remove(struct platform_device *pdev)
+-		if (hidpp->quirks & HIDPP_QUIRK_NO_HIDINPUT)
++		if (hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT)
+ 			connect_mask &= ~HID_CONNECT_HIDINPUT;
+ 
+ 		/* Now export the actual inputs and hidraw nodes to the world */
 -- 
 2.42.0
 
