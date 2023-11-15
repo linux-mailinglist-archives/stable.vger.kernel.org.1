@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B6367ED641
+	by mail.lfdr.de (Postfix) with ESMTP id 5DE107ED642
 	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:52:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235008AbjKOVwo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S235036AbjKOVwo (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 16:52:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344310AbjKOUzy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:55:54 -0500
+        with ESMTP id S1344381AbjKOUz5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:55:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB76199
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:55:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A495C4E779;
-        Wed, 15 Nov 2023 20:55:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7476B181
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:55:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED677C4E777;
+        Wed, 15 Nov 2023 20:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081749;
-        bh=QEnwXLQwztF6jA1jahiXyugIXdjhFiRfeYpBNxtaSec=;
+        s=korg; t=1700081751;
+        bh=v3Q+t7/dMrKUBseA3XRLYoFrWtbCW+uR7T83EDlsTWQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LPgJxk3k6g1vLCjQQkNbPqi2/bQ19MiUL5KKXPqv8LMmh92nhvrxU29eCsGkdhL7d
-         JX3S0yD1GQz5zAItVpSMsJR3qDa9gHNuHDXlViGVSGYD5HCsEepg+9TH7jYPu0P8f5
-         GQ+5ElDdT2U3vuXIUIrYKqSLy5Uy8KyGuwKoBKDo=
+        b=fmYMQhQARGB4Ytj79GMSW+F/09A4habZAZN+iyezMg4LB3BvF2VeayKI+fwNYuTs5
+         p3yZDpTW1GjdeZG1ANE6sZyIjPDeTNa/ava151+XOELiWM++B6odbehBVP6OfuRqrs
+         zfLeev+v/Qdja9KCkwbxghU0e5uZANBJkgX0lBoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Patrisious Haddad <phaddad@nvidia.com>,
-        Mark Zhang <markzhang@nvidia.com>,
+        patches@lists.linux.dev,
+        Chengchang Tang <tangchengchang@huawei.com>,
+        Junxian Huang <huangjunxian6@hisilicon.com>,
         Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/191] IB/mlx5: Fix rdma counter binding for RAW QP
-Date:   Wed, 15 Nov 2023 15:46:15 -0500
-Message-ID: <20231115204650.572929373@linuxfoundation.org>
+Subject: [PATCH 5.10 101/191] RDMA/hns: Fix uninitialized ucmd in hns_roce_create_qp_common()
+Date:   Wed, 15 Nov 2023 15:46:16 -0500
+Message-ID: <20231115204650.635218080@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -55,74 +56,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit c1336bb4aa5e809a622a87d74311275514086596 ]
+[ Upstream commit c64e9710f9241e38a1c761ed1c1a30854784da66 ]
 
-Previously when we had a RAW QP, we bound a counter to it when it moved
-to INIT state, using the counter context inside RQC.
+ucmd in hns_roce_create_qp_common() are not initialized. But it works fine
+until new member sdb_addr is added to struct hns_roce_ib_create_qp.
 
-But when we try to modify that counter later in RTS state we used
-modify QP which tries to change the counter inside QPC instead of RQC.
+If the user-mode driver uses an old version ABI, then the value of the new
+member will be undefined after ib_copy_from_udata().
 
-Now we correctly modify the counter set_id inside of RQC instead of QPC
-for the RAW QP.
+This patch fixes it by initialize this variable to 0. And the default value
+of the new member sdb_addr will be 0 which is invalid.
 
-Fixes: d14133dd4161 ("IB/mlx5: Support set qp counter")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Zhang <markzhang@nvidia.com>
-Link: https://lore.kernel.org/r/2e5ab6713784a8fe997d19c508187a0dfecf2dfc.1696847964.git.leon@kernel.org
+Fixes: 0425e3e6e0c7 ("RDMA/hns: Support flush cqe for hip08 in kernel space")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20231017125239.164455-3-huangjunxian6@hisilicon.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/qp.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
-index 0c47e3e24b2a4..e3cc856e70e5d 100644
---- a/drivers/infiniband/hw/mlx5/qp.c
-+++ b/drivers/infiniband/hw/mlx5/qp.c
-@@ -3714,6 +3714,30 @@ static unsigned int get_tx_affinity(struct ib_qp *qp,
- 	return tx_affinity;
- }
- 
-+static int __mlx5_ib_qp_set_raw_qp_counter(struct mlx5_ib_qp *qp, u32 set_id,
-+					   struct mlx5_core_dev *mdev)
-+{
-+	struct mlx5_ib_raw_packet_qp *raw_packet_qp = &qp->raw_packet_qp;
-+	struct mlx5_ib_rq *rq = &raw_packet_qp->rq;
-+	u32 in[MLX5_ST_SZ_DW(modify_rq_in)] = {};
-+	void *rqc;
-+
-+	if (!qp->rq.wqe_cnt)
-+		return 0;
-+
-+	MLX5_SET(modify_rq_in, in, rq_state, rq->state);
-+	MLX5_SET(modify_rq_in, in, uid, to_mpd(qp->ibqp.pd)->uid);
-+
-+	rqc = MLX5_ADDR_OF(modify_rq_in, in, ctx);
-+	MLX5_SET(rqc, rqc, state, MLX5_RQC_STATE_RDY);
-+
-+	MLX5_SET64(modify_rq_in, in, modify_bitmask,
-+		   MLX5_MODIFY_RQ_IN_MODIFY_BITMASK_RQ_COUNTER_SET_ID);
-+	MLX5_SET(rqc, rqc, counter_set_id, set_id);
-+
-+	return mlx5_core_modify_rq(mdev, rq->base.mqp.qpn, in);
-+}
-+
- static int __mlx5_ib_qp_set_counter(struct ib_qp *qp,
- 				    struct rdma_counter *counter)
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index c42c6761382d1..d1c07f1f8fe98 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -906,7 +906,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
  {
-@@ -3729,6 +3753,9 @@ static int __mlx5_ib_qp_set_counter(struct ib_qp *qp,
- 	else
- 		set_id = mlx5_ib_get_counters_id(dev, mqp->port - 1);
+ 	struct hns_roce_ib_create_qp_resp resp = {};
+ 	struct ib_device *ibdev = &hr_dev->ib_dev;
+-	struct hns_roce_ib_create_qp ucmd;
++	struct hns_roce_ib_create_qp ucmd = {};
+ 	int ret;
  
-+	if (mqp->type == IB_QPT_RAW_PACKET)
-+		return __mlx5_ib_qp_set_raw_qp_counter(mqp, set_id, dev->mdev);
-+
- 	base = &mqp->trans_qp.base;
- 	MLX5_SET(rts2rts_qp_in, in, opcode, MLX5_CMD_OP_RTS2RTS_QP);
- 	MLX5_SET(rts2rts_qp_in, in, qpn, base->mqp.qpn);
+ 	mutex_init(&hr_qp->mutex);
 -- 
 2.42.0
 
