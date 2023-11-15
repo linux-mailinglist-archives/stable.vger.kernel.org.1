@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC1D7ECF43
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AD4D7ECCC5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235273AbjKOTrY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:47:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58740 "EHLO
+        id S234124AbjKOTcb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235263AbjKOTrX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:23 -0500
+        with ESMTP id S234116AbjKOTc2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB6DAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CF0C433C8;
-        Wed, 15 Nov 2023 19:47:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2465912C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84A83C433C8;
+        Wed, 15 Nov 2023 19:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077640;
-        bh=oH0c10El1rxrQ/qK0byR0n88I8ROsosZruPJprsIXJg=;
+        s=korg; t=1700076744;
+        bh=1vggK7mVspav3/P3O1C5gNAMWQ7UNzapoocGa8Nq26s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cl6HXdD4spILZ8nz552t4ZE6k1YLkwNsAt9IbAVZ6QRTG76NviCKu1UjPWYiA32SB
-         TfyazU7nOTB7ZBKmwBQNhBSedIDbie5FraXM51mlBNZEJgpEjcatonidg9tFOBF+fz
-         Sio/sP7aKC9aZp+GMQPCqVG0o29Jgt0FULz8Ca5A=
+        b=J/lgWwOXuKtdzXbkQ4+caO860LPyZ/FR/sZc9VLpx9vfO6sShbKd8xCybeBa+Q5tG
+         VSuisKjRp7DKIeXHxWuWwervM/VJjndyYwAEYrP2Nf2JQ6Wk7J9il+hJJQ3gnK3vsH
+         VYzB7fX3ZzI8O8ZkhHSoHXQWTOVeh3/DnffLgLy4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+ebd7072191e2eddd7d6e@syzkaller.appspotmail.com,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 428/603] f2fs: fix to drop meta_inodes page cache in f2fs_put_super()
+Subject: [PATCH 6.5 389/550] perf parse-events: Remove ABORT_ON
 Date:   Wed, 15 Nov 2023 14:16:13 -0500
-Message-ID: <20231115191642.453442145@linuxfoundation.org>
+Message-ID: <20231115191627.807355002@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +58,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit a4639380bbe66172df329f8b54aa7d2e943f0f64 ]
+[ Upstream commit 4c11adff675652759a0f0ad2194f4646b5463a42 ]
 
-syzbot reports a kernel bug as below:
+Prefer informative messages rather than none with ABORT_ON. Document
+one failure mode and add an error message for another.
 
-F2FS-fs (loop1): detect filesystem reference count leak during umount, type: 10, count: 1
-kernel BUG at fs/f2fs/super.c:1639!
-CPU: 0 PID: 15451 Comm: syz-executor.1 Not tainted 6.5.0-syzkaller-09338-ge0152e7481c6 #0
-RIP: 0010:f2fs_put_super+0xce1/0xed0 fs/f2fs/super.c:1639
-Call Trace:
- generic_shutdown_super+0x161/0x3c0 fs/super.c:693
- kill_block_super+0x3b/0x70 fs/super.c:1646
- kill_f2fs_super+0x2b7/0x3d0 fs/f2fs/super.c:4879
- deactivate_locked_super+0x9a/0x170 fs/super.c:481
- deactivate_super+0xde/0x100 fs/super.c:514
- cleanup_mnt+0x222/0x3d0 fs/namespace.c:1254
- task_work_run+0x14d/0x240 kernel/task_work.c:179
- resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
- exit_to_user_mode_prepare+0x210/0x240 kernel/entry/common.c:204
- __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
- syscall_exit_to_user_mode+0x1d/0x60 kernel/entry/common.c:296
- do_syscall_64+0x44/0xb0 arch/x86/entry/common.c:86
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-In f2fs_put_super(), it tries to do sanity check on dirty and IO
-reference count of f2fs, once there is any reference count leak,
-it will trigger panic.
-
-The root case is, during f2fs_put_super(), if there is any IO error
-in f2fs_wait_on_all_pages(), we missed to truncate meta_inode's page
-cache later, result in panic, fix this case.
-
-Fixes: 20872584b8c0 ("f2fs: fix to drop all dirty meta/node pages during umount()")
-Reported-by: syzbot+ebd7072191e2eddd7d6e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000a14f020604a62a98@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: bpf@vger.kernel.org
+Link: https://lore.kernel.org/r/20230627181030.95608-14-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: ede72dca45b1 ("perf parse-events: Fix tracepoint name memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/parse-events.y | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 12790bc6e0739..bc303a0522155 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1662,7 +1662,7 @@ static void f2fs_put_super(struct super_block *sb)
+diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
+index 1393c39ebf330..24c9af561cf9d 100644
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -22,12 +22,6 @@
  
- 	f2fs_wait_on_all_pages(sbi, F2FS_WB_CP_DATA);
+ void parse_events_error(YYLTYPE *loc, void *parse_state, void *scanner, char const *msg);
  
--	if (err) {
-+	if (err || f2fs_cp_error(sbi)) {
- 		truncate_inode_pages_final(NODE_MAPPING(sbi));
- 		truncate_inode_pages_final(META_MAPPING(sbi));
- 	}
+-#define ABORT_ON(val) \
+-do { \
+-	if (val) \
+-		YYABORT; \
+-} while (0)
+-
+ #define PE_ABORT(val) \
+ do { \
+ 	if (val == -ENOMEM) \
+@@ -618,7 +612,9 @@ PE_RAW opt_event_config
+ 		YYNOMEM;
+ 	errno = 0;
+ 	num = strtoull($1 + 1, NULL, 16);
+-	ABORT_ON(errno);
++	/* Given the lexer will only give [a-fA-F0-9]+ a failure here should be impossible. */
++	if (errno)
++		YYABORT;
+ 	free($1);
+ 	err = parse_events_add_numeric(_parse_state, list, PERF_TYPE_RAW, num, $2,
+ 				       /*wildcard=*/false);
+@@ -978,7 +974,17 @@ PE_VALUE PE_ARRAY_RANGE PE_VALUE
+ {
+ 	struct parse_events_array array;
+ 
+-	ABORT_ON($3 < $1);
++	if ($3 < $1) {
++		struct parse_events_state *parse_state = _parse_state;
++		struct parse_events_error *error = parse_state->error;
++		char *err_str;
++
++		if (asprintf(&err_str, "Expected '%ld' to be less-than '%ld'", $3, $1) < 0)
++			err_str = NULL;
++
++		parse_events_error__handle(error, @1.first_column, err_str, NULL);
++		YYABORT;
++	}
+ 	array.nr_ranges = 1;
+ 	array.ranges = malloc(sizeof(array.ranges[0]));
+ 	if (!array.ranges)
 -- 
 2.42.0
 
