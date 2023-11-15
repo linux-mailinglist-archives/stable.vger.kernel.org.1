@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A693F7ECBB8
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 419227ECE2C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232633AbjKOTYE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60000 "EHLO
+        id S234685AbjKOTlV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232671AbjKOTYD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:03 -0500
+        with ESMTP id S229678AbjKOTlU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 105AE1B3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4C5C433CA;
-        Wed, 15 Nov 2023 19:23:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF2EA4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606AFC433CA;
+        Wed, 15 Nov 2023 19:41:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076238;
-        bh=fTwskiiQVSbya5DW1ldJ67EZJDYzsbeLviINBwNQFIg=;
+        s=korg; t=1700077276;
+        bh=9Ff9pGsYPSDkA/+7wYcjCJf8rb6VNzL6db2HPrf0r8M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c4sJebWWkNLUvhI69Ua8rteOp5HSNOYBwW/coyUq/SDJp2yJig01ZxjTakXu6EEWU
-         CWJREkytyTUihU03Rzg/zWuD7ts/2pURz2nuE3FVID97uMl+NYH5bBPbRjvdSJgwlk
-         VyLoVLvnlvaF2PHsoldHP3kqswaZY8MmGlwpeGxE=
+        b=wXGVTxBsW3kJt7/SwcAm4+J1exUsA6CuILBPOU45SapDDJvV6ycyQQAvdEgMqrX4x
+         tGTSqxMGs0AR9C9gjRBN5W4Ano3EqrLGl4DYieV8zl/5FQmqzc/ATf51F/LjMWv90V
+         OSdfblKv6ezdGedrwLBEEqautyfSNpHTPRBTO0Tg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dirk Behme <dirk.behme@de.bosch.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Dragos Bogdan <dragos.bogdan@analog.com>,
+        Nuno Sa <nuno.sa@analog.com>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 163/550] clk: renesas: rcar-gen3: Extend SDnH divider table
-Date:   Wed, 15 Nov 2023 14:12:27 -0500
-Message-ID: <20231115191611.997293221@linuxfoundation.org>
+Subject: [PATCH 6.6 203/603] hwmon: (axi-fan-control) Fix possible NULL pointer dereference
+Date:   Wed, 15 Nov 2023 14:12:28 -0500
+Message-ID: <20231115191627.305912536@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,76 +51,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dirk Behme <dirk.behme@de.bosch.com>
+From: Dragos Bogdan <dragos.bogdan@analog.com>
 
-[ Upstream commit d5252d9697a3e7007c741e9c103073868955a304 ]
+[ Upstream commit 2a5b3370a1d9750eca325292e291c8c7cb8cf2e0 ]
 
-The clock dividers might be used with clock stop bit enabled or not.
-Current tables only support recommended values from the datasheet.  This
-might result in warnings like below because no valid clock divider is
-found. Resulting in a 0 divider.
+axi_fan_control_irq_handler(), dependent on the private
+axi_fan_control_data structure, might be called before the hwmon
+device is registered. That will cause an "Unable to handle kernel
+NULL pointer dereference" error.
 
-There are Renesas ARM Trusted Firmware version out there which e.g.
-configure 0x201 (shifted logical right by 2: 0x80) and with this match
-the added { STPnHCK | 0, 1 }:
-
-https://github.com/renesas-rcar/arm-trusted-firmware/blob/rcar_gen3_v2.3/drivers/renesas/rcar/emmc/emmc_init.c#L108
-
-------------[ cut here ]------------
-sd1h: Zero divisor and CLK_DIVIDER_ALLOW_ZERO not set
-WARNING: CPU: 1 PID: 1 at drivers/clk/clk-divider.c:141 divider_recalc_rate+0x48/0x70
-Modules linked in:
-CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.1.52 #1
-Hardware name: Custom board based on r8a7796 (DT)
-pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : divider_recalc_rate+0x48/0x70
-...
-------------[ cut here ]------------
-
-Fixes: bb6d3fa98a41 ("clk: renesas: rcar-gen3: Switch to new SD clock handling")
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
-[wsa: extended the table to 5 entries, added comments, reword commit message a little]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230928080317.28224-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
+Signed-off-by: Dragos Bogdan <dragos.bogdan@analog.com>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20231025132100.649499-1-nuno.sa@analog.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rcar-cpg-lib.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/hwmon/axi-fan-control.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/clk/renesas/rcar-cpg-lib.c b/drivers/clk/renesas/rcar-cpg-lib.c
-index e2e0447de1901..5a15f8788b922 100644
---- a/drivers/clk/renesas/rcar-cpg-lib.c
-+++ b/drivers/clk/renesas/rcar-cpg-lib.c
-@@ -70,8 +70,21 @@ void cpg_simple_notifier_register(struct raw_notifier_head *notifiers,
- #define STPnHCK	BIT(9 - SDnSRCFC_SHIFT)
+diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
+index 5fd136baf1cd3..19b9bf3d75ef9 100644
+--- a/drivers/hwmon/axi-fan-control.c
++++ b/drivers/hwmon/axi-fan-control.c
+@@ -496,6 +496,21 @@ static int axi_fan_control_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
  
- static const struct clk_div_table cpg_sdh_div_table[] = {
-+	/*
-+	 * These values are recommended by the datasheet.  Because they come
-+	 * first, Linux will only use these.
-+	 */
- 	{ 0, 1 }, { 1, 2 }, { STPnHCK | 2, 4 }, { STPnHCK | 3, 8 },
--	{ STPnHCK | 4, 16 }, { 0, 0 },
-+	{ STPnHCK | 4, 16 },
-+	/*
-+	 * These values are not recommended because STPnHCK is wrong.  But they
-+	 * have been seen because of broken firmware.  So, we support reading
-+	 * them but Linux will sanitize them when initializing through
-+	 * recalc_rate.
-+	 */
-+	{ STPnHCK | 0, 1 }, { STPnHCK | 1, 2 },  { 2, 4 }, { 3, 8 }, { 4, 16 },
-+	/* Sentinel */
-+	{ 0, 0 }
- };
++	ret = axi_fan_control_init(ctl, pdev->dev.of_node);
++	if (ret) {
++		dev_err(&pdev->dev, "Failed to initialize device\n");
++		return ret;
++	}
++
++	ctl->hdev = devm_hwmon_device_register_with_info(&pdev->dev,
++							 name,
++							 ctl,
++							 &axi_chip_info,
++							 axi_fan_control_groups);
++
++	if (IS_ERR(ctl->hdev))
++		return PTR_ERR(ctl->hdev);
++
+ 	ctl->irq = platform_get_irq(pdev, 0);
+ 	if (ctl->irq < 0)
+ 		return ctl->irq;
+@@ -509,19 +524,7 @@ static int axi_fan_control_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
  
- struct clk * __init cpg_sdh_clk_register(const char *name,
+-	ret = axi_fan_control_init(ctl, pdev->dev.of_node);
+-	if (ret) {
+-		dev_err(&pdev->dev, "Failed to initialize device\n");
+-		return ret;
+-	}
+-
+-	ctl->hdev = devm_hwmon_device_register_with_info(&pdev->dev,
+-							 name,
+-							 ctl,
+-							 &axi_chip_info,
+-							 axi_fan_control_groups);
+-
+-	return PTR_ERR_OR_ZERO(ctl->hdev);
++	return 0;
+ }
+ 
+ static struct platform_driver axi_fan_control_driver = {
 -- 
 2.42.0
 
