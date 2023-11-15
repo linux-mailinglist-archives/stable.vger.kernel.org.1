@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEC887ECEE0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E36B7ECC3C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235184AbjKOTo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46672 "EHLO
+        id S233793AbjKOT1j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235183AbjKOTo5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:57 -0500
+        with ESMTP id S233833AbjKOT1h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B86AB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4D0C433C9;
-        Wed, 15 Nov 2023 19:44:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40AE919E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CA8C433C9;
+        Wed, 15 Nov 2023 19:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077493;
-        bh=bhi54GEzpEzBNGooHN+np6cR5FwR6jgWsectex5oBOE=;
+        s=korg; t=1700076453;
+        bh=IpC1lItvYSh19oTJw/Ge+IgAkFSyU6Kzf/J6hEe+lTM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2Xm+HQZ7uY9lHxDcMy+IC3lWnTCRtB+nxJChWFYDSJcXbR3Be2xYuxFhSIqbivWT4
-         lXF3pxfgoQJlqdcvyG8Ut7jKmGJbPkti/IzHRdjCRRm93Y3JMQQqh6No23CQa3xOJv
-         J/4JL5jnvGLjjqzUCgogeLPfxgtWeKXouTkTFneU=
+        b=R19CwvMB98MNs5mwh0+TBIsEZqFAS5Pf9h/wtyyoCcQMo/j9tb9Pdnwt4cfSOa5Ps
+         6FXyZ9tihpLONfZDRxhY2ch/tawCZ9xR1KjRpuYBbZZEu1JwDOzL6irSmWB9XXH9lo
+         jC/6h1WVktdGQya569u3aBBg1XPgdYM2xP3gzo8U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Shubhi Garg <shgarg@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 337/603] KEYS: Include linux/errno.h in linux/verification.h
+Subject: [PATCH 6.5 298/550] arm64: tegra: Use correct interrupts for Tegra234 TKE
 Date:   Wed, 15 Nov 2023 14:14:42 -0500
-Message-ID: <20231115191636.849131882@linuxfoundation.org>
+Message-ID: <20231115191621.470764048@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit 0a596b0682a7ce37e26c36629816f105c6459d06 ]
+[ Upstream commit c0b80988eb78d6423249ab530bfbc6b238790a26 ]
 
-Add inclusion of linux/errno.h as otherwise the reference to EINVAL
-may be invalid.
+The shared interrupts 0-9 of the TKE are mapped to interrupts 0-9, but
+shared interrupts 10-15 are mapped to 256-261. Correct the mapping for
+the final 6 interrupts. This prevents the TKE from requesting the RTC
+interrupt (along with several GTE and watchdog interrupts).
 
-Fixes: f3cf4134c5c6 ("bpf: Add bpf_lookup_*_key() and bpf_key_put() kfuncs")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308261414.HKw1Mrip-lkp@intel.com/
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reported-by: Shubhi Garg <shgarg@nvidia.com>
+Fixes: 28d860ed02c2 ("arm64: tegra: Enable native timers on Tegra234")
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/verification.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/verification.h b/include/linux/verification.h
-index f34e50ebcf60a..cb2d47f280910 100644
---- a/include/linux/verification.h
-+++ b/include/linux/verification.h
-@@ -8,6 +8,7 @@
- #ifndef _LINUX_VERIFICATION_H
- #define _LINUX_VERIFICATION_H
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234.dtsi b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+index 0f12a8debd8ae..1a1dd35aff26a 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+@@ -43,12 +43,12 @@ timer@2080000 {
+ 				     <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 256 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 257 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 258 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 259 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 260 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 261 IRQ_TYPE_LEVEL_HIGH>;
+ 			status = "okay";
+ 		};
  
-+#include <linux/errno.h>
- #include <linux/types.h>
- 
- /*
 -- 
 2.42.0
 
