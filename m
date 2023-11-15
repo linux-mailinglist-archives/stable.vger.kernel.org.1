@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1CA7ECB1A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 525A17ECD26
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbjKOTUI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:20:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57824 "EHLO
+        id S234347AbjKOTek (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbjKOTUI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:08 -0500
+        with ESMTP id S234342AbjKOTej (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B49A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:05 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A35B6C433C9;
-        Wed, 15 Nov 2023 19:20:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FEDC1A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90EBC433CB;
+        Wed, 15 Nov 2023 19:34:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076004;
-        bh=WtkCpZS6y3c5vT4jdItF84H9hM2x5j33WCSCBYcObKk=;
+        s=korg; t=1700076875;
+        bh=KVkd7GqzUV5E+ZXDseWzMdjNjmcGRfiOueSrYwJTB24=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n1Ozh9PGT7tq6qlWug6sCypwHHr7NA7ruVtfNx1ydnyQpZJnCPo7yJyPAyQ8Xyag6
-         aOOia3oWSYCOudzCakP6TwuzPX7fEG/TKLdmtlipgheGWIBqg/CQKGbvLZ3JSD2qcs
-         BpCh9xuNlkdYkKPnb0VvX5+fOZyGhsU/SOydG2b0=
+        b=wGOU3lWnyhZECq5PzeY5Te0LwJzZV90MDFijLdc6edmpvMKArrDVTXqcOGjLndCWP
+         z79IfnXWF48Hx9e7M9jc7exGta6opvNum2a5heD/9tj1V88biz23Os/mvXIF7aaKeM
+         ticBS1xZniZiB0MkfCus42Yik5GoM93roLGJBggs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 015/550] x86/srso: Print mitigation for retbleed IBPB case
+Subject: [PATCH 6.6 054/603] udp: move udp->no_check6_tx to udp->udp_flags
 Date:   Wed, 15 Nov 2023 14:09:59 -0500
-Message-ID: <20231115191601.779767302@linuxfoundation.org>
+Message-ID: <20231115191616.857216367@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +52,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit de9f5f7b06a5b7adbfdd8016f011120a4e928add ]
+[ Upstream commit a0002127cd746fcaa182ad3386ef6931c37f3bda ]
 
-When overriding the requested mitigation with IBPB due to retbleed=ibpb,
-print the mitigation in the usual format instead of a custom error
-message.
+syzbot reported that udp->no_check6_tx can be read locklessly.
+Use one atomic bit from udp->udp_flags
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/ec3af919e267773d896c240faf30bfc6a1fd6304.1693889988.git.jpoimboe@kernel.org
-Stable-dep-of: dc6306ad5b0d ("x86/srso: Fix vulnerability reporting for missing microcode")
+Fixes: 1c19448c9ba6 ("net: Make enabling of zero UDP6 csums more restrictive")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/udp.h | 10 +++++-----
+ net/ipv4/udp.c      |  4 ++--
+ net/ipv6/udp.c      |  4 ++--
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 2859a54660a28..d5db0baca2f14 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2425,9 +2425,8 @@ static void __init srso_select_mitigation(void)
+diff --git a/include/linux/udp.h b/include/linux/udp.h
+index 23f0693e0d9cc..e3f2a6c7ac1d1 100644
+--- a/include/linux/udp.h
++++ b/include/linux/udp.h
+@@ -34,6 +34,7 @@ static inline u32 udp_hashfn(const struct net *net, u32 num, u32 mask)
  
- 	if (retbleed_mitigation == RETBLEED_MITIGATION_IBPB) {
- 		if (has_microcode) {
--			pr_err("Retbleed IBPB mitigation enabled, using same for SRSO\n");
- 			srso_mitigation = SRSO_MITIGATION_IBPB;
--			goto pred_cmd;
-+			goto out;
- 		}
- 	}
+ enum {
+ 	UDP_FLAGS_CORK,		/* Cork is required */
++	UDP_FLAGS_NO_CHECK6_TX, /* Send zero UDP6 checksums on TX? */
+ };
  
-@@ -2493,7 +2492,8 @@ static void __init srso_select_mitigation(void)
+ struct udp_sock {
+@@ -47,8 +48,7 @@ struct udp_sock {
+ 
+ 	int		 pending;	/* Any pending frames ? */
+ 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
+-	unsigned char	 no_check6_tx:1,/* Send zero UDP6 checksums on TX? */
+-			 no_check6_rx:1,/* Allow zero UDP6 checksums on RX? */
++	unsigned char	 no_check6_rx:1,/* Allow zero UDP6 checksums on RX? */
+ 			 encap_enabled:1, /* This socket enabled encap
+ 					   * processing; UDP tunnels and
+ 					   * different encapsulation layer set
+@@ -115,7 +115,7 @@ struct udp_sock {
+ 
+ static inline void udp_set_no_check6_tx(struct sock *sk, bool val)
+ {
+-	udp_sk(sk)->no_check6_tx = val;
++	udp_assign_bit(NO_CHECK6_TX, sk, val);
+ }
+ 
+ static inline void udp_set_no_check6_rx(struct sock *sk, bool val)
+@@ -123,9 +123,9 @@ static inline void udp_set_no_check6_rx(struct sock *sk, bool val)
+ 	udp_sk(sk)->no_check6_rx = val;
+ }
+ 
+-static inline bool udp_get_no_check6_tx(struct sock *sk)
++static inline bool udp_get_no_check6_tx(const struct sock *sk)
+ {
+-	return udp_sk(sk)->no_check6_tx;
++	return udp_test_bit(NO_CHECK6_TX, sk);
+ }
+ 
+ static inline bool udp_get_no_check6_rx(struct sock *sk)
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 9709f8a532dc3..0c6998291c99d 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -2694,7 +2694,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
  		break;
- 	}
  
--	pr_info("%s%s\n", srso_strings[srso_mitigation], (has_microcode ? "" : ", no microcode"));
-+out:
-+	pr_info("%s%s\n", srso_strings[srso_mitigation], has_microcode ? "" : ", no microcode");
+ 	case UDP_NO_CHECK6_TX:
+-		up->no_check6_tx = valbool;
++		udp_set_no_check6_tx(sk, valbool);
+ 		break;
  
- pred_cmd:
- 	if ((!boot_cpu_has_bug(X86_BUG_SRSO) || srso_cmd == SRSO_CMD_OFF) &&
+ 	case UDP_NO_CHECK6_RX:
+@@ -2791,7 +2791,7 @@ int udp_lib_getsockopt(struct sock *sk, int level, int optname,
+ 		break;
+ 
+ 	case UDP_NO_CHECK6_TX:
+-		val = up->no_check6_tx;
++		val = udp_get_no_check6_tx(sk);
+ 		break;
+ 
+ 	case UDP_NO_CHECK6_RX:
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 0c6973cd22ce4..469df0ca561f7 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1241,7 +1241,7 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
+ 			kfree_skb(skb);
+ 			return -EINVAL;
+ 		}
+-		if (udp_sk(sk)->no_check6_tx) {
++		if (udp_get_no_check6_tx(sk)) {
+ 			kfree_skb(skb);
+ 			return -EINVAL;
+ 		}
+@@ -1262,7 +1262,7 @@ static int udp_v6_send_skb(struct sk_buff *skb, struct flowi6 *fl6,
+ 
+ 	if (is_udplite)
+ 		csum = udplite_csum(skb);
+-	else if (udp_sk(sk)->no_check6_tx) {   /* UDP csum disabled */
++	else if (udp_get_no_check6_tx(sk)) {   /* UDP csum disabled */
+ 		skb->ip_summed = CHECKSUM_NONE;
+ 		goto send;
+ 	} else if (skb->ip_summed == CHECKSUM_PARTIAL) { /* UDP hardware csum */
 -- 
 2.42.0
 
