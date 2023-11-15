@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76F827ECC97
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2628C7ECF38
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234047AbjKOTbZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:31:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45918 "EHLO
+        id S235260AbjKOTrI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:47:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234030AbjKOTbZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:25 -0500
+        with ESMTP id S235262AbjKOTrH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA271A1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D05BC433C7;
-        Wed, 15 Nov 2023 19:31:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6CDAC2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F34FC433C8;
+        Wed, 15 Nov 2023 19:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076681;
-        bh=trk/1GkdX1gMAe1jw0gTz37ZRrtLLs2as8tqPc5FNqY=;
+        s=korg; t=1700077623;
+        bh=JlUZtKAn8+kLmnLdgWJYXru/z7h9dKCDdZQSzCpwoNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jvpz5nhVbS8b7il8PuH9zkHZLmC85qco74AlND7u1QtMd1/gGFrIwXZ8aUKkURgAN
-         JYc6PxTib45+jInWpQpgbf8PodnV/ehFr4pwtpyaA/tVmnMh0yuQOr4rs3HwVliy/Z
-         rzqd38fJQvEMRcUKbhCatS3uUPYSnn3RtT5XKp8k=
+        b=op1mAMyX6cooQb0NHE/gFmy7AgoxFdL5atsabN80rSVwekBVLIOPzJ/52I94ioz4T
+         Oc7dfpaU4I04iUMaIipmT+vbfVEnEsHinq/qTH0VA0DbqvT7DM+u9KACBpW1+A0x2o
+         Et7oFrtn+PIso/8BwE+UMLN9/4pMixLv1aeM2I7g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Tissoires <bentiss@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Benjamin Tissoires <bentiss@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 355/550] HID: logitech-hidpp: Dont restart IO, instead defer hid_connect() only
-Date:   Wed, 15 Nov 2023 14:15:39 -0500
-Message-ID: <20231115191625.385293628@linuxfoundation.org>
+Subject: [PATCH 6.6 395/603] HID: logitech-hidpp: Move get_wireless_feature_index() check to hidpp_connect_event()
+Date:   Wed, 15 Nov 2023 14:15:40 -0500
+Message-ID: <20231115191640.433251896@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +50,22 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 11ca0322a41920df2b462d2e45b0731e47ff475b ]
+[ Upstream commit ba9de350509504fb748837b71e23d7e84c83d93c ]
 
-Restarting IO causes 2 problems:
+Calling get_wireless_feature_index() from probe() causes
+the wireless_feature_index to only get set for unifying devices which
+are already connected at probe() time. It does not get set for devices
+which connect later.
 
-1. Some devices do not like IO being restarted this was addressed in
-   commit 498ba2069035 ("HID: logitech-hidpp: Don't restart communication
-   if not necessary"), but that change has issues of its own and needs to
-   be reverted.
-
-2. Restarting IO and specifically calling hid_device_io_stop() causes
-   received packets to be missed, which may cause connect-events to
-   get missed.
-
-Restarting IO was introduced in commit 91cf9a98ae41 ("HID: logitech-hidpp:
-make .probe usbhid capable") to allow to retrieve the device's name and
-serial number and store these in hdev->name and hdev->uniq before
-connecting any hid subdrivers (hid-input, hidraw) exporting this info
-to userspace.
-
-But this does not require restarting IO, this merely requires deferring
-calling hid_connect(). Calling hid_hw_start() with a connect-mask of
-0 makes it skip calling hid_connect(), so hidpp_probe() can simply call
-hid_connect() later without needing to restart IO.
-
-Remove the stop + restart of IO and instead just call hid_connect() later
-to avoid the issues caused by restarting IO.
-
-Now that IO is no longer stopped, hid_hw_close() must be called at the end
-of probe() to balance the hid_hw_open() done at the beginning probe().
+Fix this by moving get_wireless_feature_index() to hidpp_connect_event(),
+this does not make a difference for devices connected at probe() since
+probe() will queue the hidpp_connect_event() for those at probe time.
 
 This series has been tested on the following devices:
 Logitech Bluetooth Laser Travel Mouse (bluetooth, HID++ 1.0)
@@ -102,68 +83,66 @@ Logitech Touchpad T651 (bluetooth)
 Logitech MX Master 3B (BLE)
 Logitech G403 (plain USB / Gaming receiver)
 
-Fixes: 498ba2069035 ("HID: logitech-hidpp: Don't restart communication if not necessary")
-Suggested-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 0da0a63b7cba ("HID: logitech-hidpp: Support WirelessDeviceStatus connect events")
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231010102029.111003-2-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20231010102029.111003-4-hdegoede@redhat.com
 Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 08b68f8476dbb..55ca26f7eb438 100644
+index c582d19b11d6c..7bf12ca0eb4a9 100644
 --- a/drivers/hid/hid-logitech-hidpp.c
 +++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4460,8 +4460,10 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 			 hdev->name);
+@@ -1835,15 +1835,14 @@ static int hidpp_battery_get_property(struct power_supply *psy,
+ /* -------------------------------------------------------------------------- */
+ #define HIDPP_PAGE_WIRELESS_DEVICE_STATUS			0x1d4b
  
- 	/*
--	 * Plain USB connections need to actually call start and open
--	 * on the transport driver to allow incoming data.
-+	 * First call hid_hw_start(hdev, 0) to allow IO without connecting any
-+	 * hid subdrivers (hid-input, hidraw). This allows retrieving the dev's
-+	 * name and serial number and store these in hdev->name and hdev->uniq,
-+	 * before the hid-input and hidraw drivers expose these to userspace.
- 	 */
- 	ret = hid_hw_start(hdev, will_restart ? 0 : connect_mask);
- 	if (ret) {
-@@ -4519,19 +4521,14 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	flush_work(&hidpp->work);
+-static int hidpp_set_wireless_feature_index(struct hidpp_device *hidpp)
++static int hidpp_get_wireless_feature_index(struct hidpp_device *hidpp, u8 *feature_index)
+ {
+ 	u8 feature_type;
+ 	int ret;
  
- 	if (will_restart) {
--		/* Reset the HID node state */
--		hid_device_io_stop(hdev);
--		hid_hw_close(hdev);
--		hid_hw_stop(hdev);
--
- 		if (hidpp->quirks & HIDPP_QUIRK_DELAYED_INIT)
- 			connect_mask &= ~HID_CONNECT_HIDINPUT;
+ 	ret = hidpp_root_get_feature(hidpp,
+ 				     HIDPP_PAGE_WIRELESS_DEVICE_STATUS,
+-				     &hidpp->wireless_feature_index,
+-				     &feature_type);
++				     feature_index, &feature_type);
  
- 		/* Now export the actual inputs and hidraw nodes to the world */
--		ret = hid_hw_start(hdev, connect_mask);
-+		ret = hid_connect(hdev, connect_mask);
- 		if (ret) {
--			hid_err(hdev, "%s:hid_hw_start returned error\n", __func__);
--			goto hid_hw_start_fail;
-+			hid_err(hdev, "%s:hid_connect returned error %d\n", __func__, ret);
-+			goto hid_hw_init_fail;
+ 	return ret;
+ }
+@@ -4249,6 +4248,13 @@ static void hidpp_connect_event(struct hidpp_device *hidpp)
  		}
  	}
  
-@@ -4543,6 +4540,11 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 				 ret);
++	if (hidpp->protocol_major >= 2) {
++		u8 feature_index;
++
++		if (!hidpp_get_wireless_feature_index(hidpp, &feature_index))
++			hidpp->wireless_feature_index = feature_index;
++	}
++
+ 	if (hidpp->name == hdev->name && hidpp->protocol_major >= 2) {
+ 		name = hidpp_get_device_name(hidpp);
+ 		if (name) {
+@@ -4493,14 +4499,6 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		hidpp_overwrite_name(hdev);
  	}
  
-+	/*
-+	 * This relies on logi_dj_ll_close() being a no-op so that DJ connection
-+	 * events will still be received.
-+	 */
-+	hid_hw_close(hdev);
- 	return ret;
- 
- hid_hw_init_fail:
+-	if (connected && hidpp->protocol_major >= 2) {
+-		ret = hidpp_set_wireless_feature_index(hidpp);
+-		if (ret == -ENOENT)
+-			hidpp->wireless_feature_index = 0;
+-		else if (ret)
+-			goto hid_hw_init_fail;
+-	}
+-
+ 	if (connected && (hidpp->quirks & HIDPP_QUIRK_CLASS_WTP)) {
+ 		ret = wtp_get_config(hidpp);
+ 		if (ret)
 -- 
 2.42.0
 
