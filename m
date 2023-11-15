@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3FA47ED43D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A80F27ED441
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344584AbjKOU51 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55778 "EHLO
+        id S235077AbjKOU5b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:57:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344581AbjKOU5V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:21 -0500
+        with ESMTP id S235568AbjKOU5Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E919C1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A1FC4E779;
-        Wed, 15 Nov 2023 20:57:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612A21AD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A357C4E778;
+        Wed, 15 Nov 2023 20:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081838;
-        bh=wtV7knZqYv7DpuKVijxOTIstgj2mqn+3RN1ohHz+E+I=;
+        s=korg; t=1700081839;
+        bh=uN+ySpwOhxBhsRMuvpL1zj5pi4oGXZpJ4yLmTWzA0S4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WPrbZyjQ3rfIrqPF2mjoCQYvhV+CAteYuvk6mC3wHDRVismMtZc7P2cCuNxyf0PSk
-         GiJn0g62W9hMFRR/Swa9xm4TicLVWGjk+RO6K7utoBsbvfd2tsV4wobTzaQBe6vysK
-         W6HDiYY8LtdC3eFhCFAUuNcY/rsEzpVaSawXc4UA=
+        b=nP8oO9FkHx96wE6naK6EBo5rU/H91KYgQpJ6Zn20AlrbJ0LPk0KvUIfwWhpGK6sj3
+         j6wrhVBu5uhfe5Hdz8hGTFBD77UIq78eoGlZ8XViPfyyV4/30bYe0Sa/hbQkxKIJts
+         txzcSuRzUXGVjB5juk2UifA/CSAqNGEdLufhB76o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Blixt <jonas.blixt@actia.se>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/191] USB: usbip: fix stub_dev hub disconnect
-Date:   Wed, 15 Nov 2023 15:46:48 -0500
-Message-ID: <20231115204652.505952638@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 134/191] dmaengine: pxa_dma: Remove an erroneous BUG_ON() in pxad_free_desc()
+Date:   Wed, 15 Nov 2023 15:46:49 -0500
+Message-ID: <20231115204652.564607320@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -54,44 +54,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jonas Blixt <jonas.blixt@actia.se>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 97475763484245916735a1aa9a3310a01d46b008 ]
+[ Upstream commit 83c761f568733277ce1f7eb9dc9e890649c29a8c ]
 
-If a hub is disconnected that has device(s) that's attached to the usbip layer
-the disconnect function might fail because it tries to release the port
-on an already disconnected hub.
+If pxad_alloc_desc() fails on the first dma_pool_alloc() call, then
+sw_desc->nb_desc is zero.
+In such a case pxad_free_desc() is called and it will BUG_ON().
 
-Fixes: 6080cd0e9239 ("staging: usbip: claim ports used by shared devices")
-Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20230615092810.1215490-1-jonas.blixt@actia.se
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove this erroneous BUG_ON().
+
+It is also useless, because if "sw_desc->nb_desc == 0", then, on the first
+iteration of the for loop, i is -1 and the loop will not be executed.
+(both i and sw_desc->nb_desc are 'int')
+
+Fixes: a57e16cf0333 ("dmaengine: pxa: add pxa dmaengine driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/c8fc5563c9593c914fde41f0f7d1489a21b45a9a.1696676782.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/stub_dev.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/dma/pxa_dma.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/usbip/stub_dev.c b/drivers/usb/usbip/stub_dev.c
-index 3c6d452e3bf40..4104eea03e806 100644
---- a/drivers/usb/usbip/stub_dev.c
-+++ b/drivers/usb/usbip/stub_dev.c
-@@ -462,8 +462,13 @@ static void stub_disconnect(struct usb_device *udev)
- 	/* release port */
- 	rc = usb_hub_release_port(udev->parent, udev->portnum,
- 				  (struct usb_dev_state *) udev);
--	if (rc) {
--		dev_dbg(&udev->dev, "unable to release port\n");
-+	/*
-+	 * NOTE: If a HUB disconnect triggered disconnect of the down stream
-+	 * device usb_hub_release_port will return -ENODEV so we can safely ignore
-+	 * that error here.
-+	 */
-+	if (rc && (rc != -ENODEV)) {
-+		dev_dbg(&udev->dev, "unable to release port (%i)\n", rc);
- 		return;
- 	}
+diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
+index 68d9d60c051d9..9ce75ff9fa1cc 100644
+--- a/drivers/dma/pxa_dma.c
++++ b/drivers/dma/pxa_dma.c
+@@ -723,7 +723,6 @@ static void pxad_free_desc(struct virt_dma_desc *vd)
+ 	dma_addr_t dma;
+ 	struct pxad_desc_sw *sw_desc = to_pxad_sw_desc(vd);
  
+-	BUG_ON(sw_desc->nb_desc == 0);
+ 	for (i = sw_desc->nb_desc - 1; i >= 0; i--) {
+ 		if (i > 0)
+ 			dma = sw_desc->hw_desc[i - 1]->ddadr;
 -- 
 2.42.0
 
