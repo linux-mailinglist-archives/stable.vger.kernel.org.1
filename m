@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6B6F7ECE02
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F2187ECB94
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234766AbjKOTjw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58464 "EHLO
+        id S230185AbjKOTXL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:23:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjKOTjv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:51 -0500
+        with ESMTP id S230427AbjKOTXK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77131CE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DC7C433CC;
-        Wed, 15 Nov 2023 19:39:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC381A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A171AC433C7;
+        Wed, 15 Nov 2023 19:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077183;
-        bh=dkxPNGPCNErXWoiH6DESwT9n/vM5dMTGP3ic/f13KIw=;
+        s=korg; t=1700076186;
+        bh=WLzQKxpABVmYNV5kmNIJOKt1sjXRh5ZCWxqvwlHsPgQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cZhGoubinI9eR7dKtgg4gkUd/9msLLEE6E0JKGoOCFeErOwHIcjP9j1Lv8QdxIkq0
-         17BDOGUatDa/lLBvAkFYB8Z+iNuu/Sij00r8vxFubjQUhZidgwlqm3alEr6oA13LJm
-         mYQEqAbX0m0aq8cEyLnK/eLtP+LuNtrg40YsfPiE=
+        b=XmCpZgATnB2T5zV+uE4lrLR62OBgQeHJMHAQaTgPZGJXKeqjoUQimQEQxBG9mwa9T
+         bhlv/fhNICJNMo9hdSbBv82snEb+UEETr8X4cb0/14R8AT7gxYdqhQwUVUGCZTvsjV
+         /jFs2elk7bq7riqTZU2OVYaA8vXM69EYJAjklVBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tejun Heo <tj@kernel.org>,
-        Song Liu <song@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Phil Sutter <phil@nwl.cc>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/603] bpf: Fix unnecessary -EBUSY from htab_lock_bucket
+Subject: [PATCH 6.5 112/550] netfilter: nf_tables: Drop pointless memset when dumping rules
 Date:   Wed, 15 Nov 2023 14:11:36 -0500
-Message-ID: <20231115191623.634125282@linuxfoundation.org>
+Message-ID: <20231115191608.455521542@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,80 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit d35381aa73f7e1e8b25f3ed5283287a64d9ddff5 ]
+[ Upstream commit 30fa41a0f6df4c85790cc6499ddc4a926a113bfa ]
 
-htab_lock_bucket uses the following logic to avoid recursion:
+None of the dump callbacks uses netlink_callback::args beyond the first
+element, no need to zero the data.
 
-1. preempt_disable();
-2. check percpu counter htab->map_locked[hash] for recursion;
-   2.1. if map_lock[hash] is already taken, return -BUSY;
-3. raw_spin_lock_irqsave();
-
-However, if an IRQ hits between 2 and 3, BPF programs attached to the IRQ
-logic will not able to access the same hash of the hashtab and get -EBUSY.
-
-This -EBUSY is not really necessary. Fix it by disabling IRQ before
-checking map_locked:
-
-1. preempt_disable();
-2. local_irq_save();
-3. check percpu counter htab->map_locked[hash] for recursion;
-   3.1. if map_lock[hash] is already taken, return -BUSY;
-4. raw_spin_lock().
-
-Similarly, use raw_spin_unlock() and local_irq_restore() in
-htab_unlock_bucket().
-
-Fixes: 20b6cc34ea74 ("bpf: Avoid hashtab deadlock with map_locked")
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/7a9576222aa40b1c84ad3a9ba3e64011d1a04d41.camel@linux.ibm.com
-Link: https://lore.kernel.org/bpf/20231012055741.3375999-1-song@kernel.org
+Fixes: 96518518cc41 ("netfilter: add nftables")
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/hashtab.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index a8c7e1c5abfac..fd8d4b0addfca 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -155,13 +155,15 @@ static inline int htab_lock_bucket(const struct bpf_htab *htab,
- 	hash = hash & min_t(u32, HASHTAB_MAP_LOCK_MASK, htab->n_buckets - 1);
- 
- 	preempt_disable();
-+	local_irq_save(flags);
- 	if (unlikely(__this_cpu_inc_return(*(htab->map_locked[hash])) != 1)) {
- 		__this_cpu_dec(*(htab->map_locked[hash]));
-+		local_irq_restore(flags);
- 		preempt_enable();
- 		return -EBUSY;
- 	}
- 
--	raw_spin_lock_irqsave(&b->raw_lock, flags);
-+	raw_spin_lock(&b->raw_lock);
- 	*pflags = flags;
- 
- 	return 0;
-@@ -172,8 +174,9 @@ static inline void htab_unlock_bucket(const struct bpf_htab *htab,
- 				      unsigned long flags)
- {
- 	hash = hash & min_t(u32, HASHTAB_MAP_LOCK_MASK, htab->n_buckets - 1);
--	raw_spin_unlock_irqrestore(&b->raw_lock, flags);
-+	raw_spin_unlock(&b->raw_lock);
- 	__this_cpu_dec(*(htab->map_locked[hash]));
-+	local_irq_restore(flags);
- 	preempt_enable();
- }
- 
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 6a05bed3cb46d..8776266ba1532 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3465,10 +3465,6 @@ static int __nf_tables_dump_rules(struct sk_buff *skb,
+ 			goto cont_skip;
+ 		if (*idx < s_idx)
+ 			goto cont;
+-		if (*idx > s_idx) {
+-			memset(&cb->args[1], 0,
+-					sizeof(cb->args) - sizeof(cb->args[0]));
+-		}
+ 		if (prule)
+ 			handle = prule->handle;
+ 		else
 -- 
 2.42.0
 
