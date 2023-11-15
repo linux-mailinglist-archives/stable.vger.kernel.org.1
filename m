@@ -2,40 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E1077ECFAF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5EE57ECD7B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235381AbjKOTuH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53244 "EHLO
+        id S234503AbjKOTgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235380AbjKOTuG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:06 -0500
+        with ESMTP id S234469AbjKOTgs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D2D5B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0101C433CB;
-        Wed, 15 Nov 2023 19:50:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69EF112C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9538C433CB;
+        Wed, 15 Nov 2023 19:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077803;
-        bh=clrNvGQ0OkDzN57eFDbZo8t88mli2y7vRj2urczHEEc=;
+        s=korg; t=1700077005;
+        bh=W/cC/sUwkSm6tCDZJrJdFJeIX3brPtNntsGqJhkPfhg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KdWqO6NGEpZEsVa3AGaPyZEsi6pQsRDxwxNVUg0seS4/WWj1C3dUr2u/ntHDE+O0L
-         YygwJjpe+6HNc8E6coBAKjXgWepZOPCUoeAmSSEaN9UqbAUPu25iRgUKyL11VaES4B
-         mueC4XIr1budfVfWnPOA1GGDnoHFSkoeUOKQSizo=
+        b=AZ3TiwqDnqctlyLQN5137CXQ2gfr6TZBdEkCGDt04w7Eef071S5arazPLMX0ZY276
+         HyFPlo0octh8FD+lWauminx9CrYFVZc8pASDUf3roGggXJM7HDN51hBKOFixqcrO7B
+         jbaVpsh33IT3ba6VjJPbIgHmOWCS3Kqww5xQCO74=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunfei Dong <yunfei.dong@mediatek.com>,
-        AngeloGioacchino Del Regno <angelogioacchino@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Srivatsa S. Bhat (VMware)" <srivatsa@csail.mit.edu>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Jacob Pan <jacob.jun.pan@linux.intel.com>,
+        Arjan van de Ven <arjan@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <len.brown@intel.com>,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 529/603] media: mediatek: vcodec: using encoder device to alloc/free encoder memory
+Subject: [PATCH 6.5 490/550] cpupower: fix reference to nonexistent document
 Date:   Wed, 15 Nov 2023 14:17:54 -0500
-Message-ID: <20231115191648.530171138@linuxfoundation.org>
+Message-ID: <20231115191634.838625557@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,153 +60,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunfei Dong <yunfei.dong@mediatek.com>
+From: Vegard Nossum <vegard.nossum@oracle.com>
 
-[ Upstream commit 56c0ac05a31a0bf525fddc300ea997356ad8146f ]
+[ Upstream commit 6feb1a9641197ee630bf43b5c34ea1d9f8b4a0aa ]
 
-Need to use encoder device to allocate/free encoder memory when calling
-mtk_vcodec_mem_alloc/mtk_vcodec_mem_free, or leading to below crash log
-when test encoder with decoder device.
+This file was renamed from .txt to .rst and left a dangling reference.
+Fix it.
 
-pc : dma_alloc_attrs+0x44/0xf4
-lr : mtk_vcodec_mem_alloc+0x50/0xa4 [mtk_vcodec_common]
-sp : ffffffc0209f3990
-x29: ffffffc0209f39a0 x28: ffffff8024102a18 x27: 0000000000000000
-x26: 0000000000000000 x25: ffffffc00c06e2d8 x24: 0000000000000001
-x23: 0000000000000cc0 x22: 0000000000000010 x21: 0000000000000800
-x20: ffffff8024102a18 x19: 0000000000000000 x18: 0000000000000000
-x17: 0000000000000009 x16: ffffffe389736a98 x15: 0000000000000078
-x14: ffffffe389704434 x13: 0000000000000007 x12: ffffffe38a2b2560
-x11: 0000000000000800 x10: 0000000000000004 x9 : ffffffe331f07484
-x8 : 5400e9aef2395000 x7 : 0000000000000000 x6 : 000000000000003f
-x5 : 0000000000000001 x4 : 0000000000000000 x3 : 0000000000000cc0
-x2 : ffffff8024102a18 x1 : 0000000000000800 x0 : 0000000000000010
-Call trace:
- dma_alloc_attrs+0x44/0xf4
- mtk_vcodec_mem_alloc+0x50/0xa4 [mtk_vcodec_common 2819d3d601f3cd06c1f2213ac1b9995134441421]
- h264_enc_set_param+0x27c/0x378 [mtk_vcodec_enc 772cc3d26c254e8cf54079451ef8d930d2eb4404]
- venc_if_set_param+0x4c/0x7c [mtk_vcodec_enc 772cc3d26c254e8cf54079451ef8d930d2eb4404]
- vb2ops_venc_start_streaming+0x1bc/0x328 [mtk_vcodec_enc 772cc3d26c254e8cf54079451ef8d930d2eb4404]
- vb2_start_streaming+0x64/0x12c
- vb2_core_streamon+0x114/0x158
- vb2_streamon+0x38/0x60
- v4l2_m2m_streamon+0x48/0x88
- v4l2_m2m_ioctl_streamon+0x20/0x2c
- v4l_streamon+0x2c/0x38
- __video_do_ioctl+0x2c4/0x3dc
- video_usercopy+0x404/0x934
- video_ioctl2+0x20/0x2c
- v4l2_ioctl+0x54/0x64
- v4l2_compat_ioctl32+0x90/0xa34
- __arm64_compat_sys_ioctl+0x128/0x13c
- invoke_syscall+0x4c/0x108
- el0_svc_common+0x98/0x104
- do_el0_svc_compat+0x28/0x34
- el0_svc_compat+0x2c/0x74
- el0t_32_sync_handler+0xa8/0xcc
- el0t_32_sync+0x194/0x198
-Code: aa0003f6 aa0203f4 aa0103f5 f900
-
-'Fixes: 01abf5fbb081c ("media: mediatek: vcodec: separate struct 'mtk_vcodec_ctx'")'
-Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 151f4e2bdc7a ("docs: power: convert docs to ReST and rename to *.rst")
+Cc: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Srivatsa S. Bhat (VMware) <srivatsa@csail.mit.edu>
+Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Cc: Arjan van de Ven <arjan@linux.intel.com>
+Cc: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: Len Brown <len.brown@intel.com>
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mediatek/vcodec/common/mtk_vcodec_util.c  | 56 +++++++++++++------
- 1 file changed, 40 insertions(+), 16 deletions(-)
+ tools/power/cpupower/man/cpupower-powercap-info.1 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_util.c b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_util.c
-index 908602031fd0e..9ce34a3b5ee67 100644
---- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_util.c
-+++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_util.c
-@@ -47,20 +47,32 @@ EXPORT_SYMBOL(mtk_vcodec_write_vdecsys);
+diff --git a/tools/power/cpupower/man/cpupower-powercap-info.1 b/tools/power/cpupower/man/cpupower-powercap-info.1
+index df3087000efb8..145d6f06fa72d 100644
+--- a/tools/power/cpupower/man/cpupower-powercap-info.1
++++ b/tools/power/cpupower/man/cpupower-powercap-info.1
+@@ -17,7 +17,7 @@ settings of all cores, see cpupower(1) how to choose specific cores.
+ .SH "DOCUMENTATION"
  
- int mtk_vcodec_mem_alloc(void *priv, struct mtk_vcodec_mem *mem)
- {
-+	enum mtk_instance_type inst_type = *((unsigned int *)priv);
-+	struct platform_device *plat_dev;
- 	unsigned long size = mem->size;
--	struct mtk_vcodec_dec_ctx *ctx = priv;
--	struct device *dev = &ctx->dev->plat_dev->dev;
-+	int id;
+ kernel sources:
+-Documentation/power/powercap/powercap.txt
++Documentation/power/powercap/powercap.rst
  
--	mem->va = dma_alloc_coherent(dev, size, &mem->dma_addr, GFP_KERNEL);
-+	if (inst_type == MTK_INST_ENCODER) {
-+		struct mtk_vcodec_enc_ctx *enc_ctx = priv;
-+
-+		plat_dev = enc_ctx->dev->plat_dev;
-+		id = enc_ctx->id;
-+	} else {
-+		struct mtk_vcodec_dec_ctx *dec_ctx = priv;
-+
-+		plat_dev = dec_ctx->dev->plat_dev;
-+		id = dec_ctx->id;
-+	}
-+
-+	mem->va = dma_alloc_coherent(&plat_dev->dev, size, &mem->dma_addr, GFP_KERNEL);
- 	if (!mem->va) {
--		mtk_v4l2_vdec_err(ctx, "%s dma_alloc size=%ld failed!", dev_name(dev), size);
-+		mtk_v4l2_err(plat_dev, "%s dma_alloc size=%ld failed!",
-+			     dev_name(&plat_dev->dev), size);
- 		return -ENOMEM;
- 	}
  
--	mtk_v4l2_vdec_dbg(3, ctx, "[%d]  - va      = %p", ctx->id, mem->va);
--	mtk_v4l2_vdec_dbg(3, ctx, "[%d]  - dma     = 0x%lx", ctx->id,
--			  (unsigned long)mem->dma_addr);
--	mtk_v4l2_vdec_dbg(3, ctx, "[%d]    size = 0x%lx", ctx->id, size);
-+	mtk_v4l2_debug(plat_dev, 3, "[%d] - va = %p dma = 0x%lx size = 0x%lx", id, mem->va,
-+		       (unsigned long)mem->dma_addr, size);
- 
- 	return 0;
- }
-@@ -68,21 +80,33 @@ EXPORT_SYMBOL(mtk_vcodec_mem_alloc);
- 
- void mtk_vcodec_mem_free(void *priv, struct mtk_vcodec_mem *mem)
- {
-+	enum mtk_instance_type inst_type = *((unsigned int *)priv);
-+	struct platform_device *plat_dev;
- 	unsigned long size = mem->size;
--	struct mtk_vcodec_dec_ctx *ctx = priv;
--	struct device *dev = &ctx->dev->plat_dev->dev;
-+	int id;
-+
-+	if (inst_type == MTK_INST_ENCODER) {
-+		struct mtk_vcodec_enc_ctx *enc_ctx = priv;
-+
-+		plat_dev = enc_ctx->dev->plat_dev;
-+		id = enc_ctx->id;
-+	} else {
-+		struct mtk_vcodec_dec_ctx *dec_ctx = priv;
-+
-+		plat_dev = dec_ctx->dev->plat_dev;
-+		id = dec_ctx->id;
-+	}
- 
- 	if (!mem->va) {
--		mtk_v4l2_vdec_err(ctx, "%s dma_free size=%ld failed!", dev_name(dev), size);
-+		mtk_v4l2_err(plat_dev, "%s dma_free size=%ld failed!",
-+			     dev_name(&plat_dev->dev), size);
- 		return;
- 	}
- 
--	mtk_v4l2_vdec_dbg(3, ctx, "[%d]  - va      = %p", ctx->id, mem->va);
--	mtk_v4l2_vdec_dbg(3, ctx, "[%d]  - dma     = 0x%lx", ctx->id,
--			  (unsigned long)mem->dma_addr);
--	mtk_v4l2_vdec_dbg(3, ctx, "[%d]    size = 0x%lx", ctx->id, size);
-+	mtk_v4l2_debug(plat_dev, 3, "[%d] - va = %p dma = 0x%lx size = 0x%lx", id, mem->va,
-+		       (unsigned long)mem->dma_addr, size);
- 
--	dma_free_coherent(dev, size, mem->va, mem->dma_addr);
-+	dma_free_coherent(&plat_dev->dev, size, mem->va, mem->dma_addr);
- 	mem->va = NULL;
- 	mem->dma_addr = 0;
- 	mem->size = 0;
+ .SH "SEE ALSO"
 -- 
 2.42.0
 
