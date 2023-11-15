@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0E897ECC7D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A92237ECF1E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233349AbjKOTat (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52038 "EHLO
+        id S235233AbjKOTq3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:46:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234014AbjKOTar (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:47 -0500
+        with ESMTP id S235232AbjKOTq3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:29 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F2A61AC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:44 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36CDC433C9;
-        Wed, 15 Nov 2023 19:30:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE21B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54841C433C7;
+        Wed, 15 Nov 2023 19:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076643;
-        bh=/xHdzCFtTQvU02azXj9MCQwveNrrxgDyNfO+eUxgZlI=;
+        s=korg; t=1700077585;
+        bh=j+iPLhG9zlGjGxAM4McI+S2VzGYVr2xPPBcAK71oSmo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l0m7d1vE2+L4m+GdPA2C8t3PCDxFSNPmYruCT26s+i/cQ7HZav6CvlWQF/GbMPDQ/
-         ir0cIFphSUk7IqaQI7c4vs1rEFJHk67N5WUndFERpYMnehWOcgn8kOx23esFc7GWxP
-         VjTwfVaS69URJ7T4/LVgDCxW1n161o8l7tHDqZx8=
+        b=v+sq4DdQJWs/zFYmZ9/xbQVQd4/9y3tw4qbZcLAApkb+6ORl1Z20psLxtFaTNhPRv
+         BT0296JWNV0enrJygB8wgjPINyiDd6FsCPiTsbigCcIALjRELmmgXTP+9z1TYAZ17+
+         eFH4VJ5xjJ01/i48riMAQy2Kd4swMzIocy7T2FFc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gou Hao <gouhao@uniontech.com>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 333/550] ext4: move ix sanity check to corrent position
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 372/603] dlm: fix creating multiple node structures
 Date:   Wed, 15 Nov 2023 14:15:17 -0500
-Message-ID: <20231115191623.852548259@linuxfoundation.org>
+Message-ID: <20231115191639.240793641@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,53 +50,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gou Hao <gouhao@uniontech.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit af90a8f4a09ec4a3de20142e37f37205d4687f28 ]
+[ Upstream commit fe9b619e6e94acf0b068fb1a8f658f5a96b8fad7 ]
 
-Check 'ix' before it is used.
+This patch will lookup existing nodes instead of always creating them
+when dlm_midcomms_addr() is called. The idea is here to create midcomms
+nodes when user space getting informed that nodes joins the cluster. This
+is the case when dlm_midcomms_addr() is called, however it can be called
+multiple times by user space to add several address configurations to one
+node e.g. when using SCTP. Those multiple times need to be filtered out
+and we doing that by looking up if the node exists before. Due configfs
+entry it is safe that this function gets only called once at a time.
 
-Fixes: 80e675f906db ("ext4: optimize memmmove lengths in extent/index insertions")
-Signed-off-by: Gou Hao <gouhao@uniontech.com>
-Link: https://lore.kernel.org/r/20230906013341.7199-1-gouhao@uniontech.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 63e711b08160 ("fs: dlm: create midcomms nodes when configure")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/dlm/midcomms.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index e4115d338f101..d97333aa92e99 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1010,6 +1010,11 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
- 		ix = curp->p_idx;
- 	}
+diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
+index f641b36a36db0..455265c6ba53d 100644
+--- a/fs/dlm/midcomms.c
++++ b/fs/dlm/midcomms.c
+@@ -337,13 +337,21 @@ static struct midcomms_node *nodeid2node(int nodeid)
  
-+	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
-+		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
-+		return -EFSCORRUPTED;
+ int dlm_midcomms_addr(int nodeid, struct sockaddr_storage *addr, int len)
+ {
+-	int ret, r = nodeid_hash(nodeid);
++	int ret, idx, r = nodeid_hash(nodeid);
+ 	struct midcomms_node *node;
+ 
+ 	ret = dlm_lowcomms_addr(nodeid, addr, len);
+ 	if (ret)
+ 		return ret;
+ 
++	idx = srcu_read_lock(&nodes_srcu);
++	node = __find_node(nodeid, r);
++	if (node) {
++		srcu_read_unlock(&nodes_srcu, idx);
++		return 0;
 +	}
++	srcu_read_unlock(&nodes_srcu, idx);
 +
- 	len = EXT_LAST_INDEX(curp->p_hdr) - ix + 1;
- 	BUG_ON(len < 0);
- 	if (len > 0) {
-@@ -1019,11 +1024,6 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
- 		memmove(ix + 1, ix, len * sizeof(struct ext4_extent_idx));
- 	}
- 
--	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
--		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
--		return -EFSCORRUPTED;
--	}
--
- 	ix->ei_block = cpu_to_le32(logical);
- 	ext4_idx_store_pblock(ix, ptr);
- 	le16_add_cpu(&curp->p_hdr->eh_entries, 1);
+ 	node = kmalloc(sizeof(*node), GFP_NOFS);
+ 	if (!node)
+ 		return -ENOMEM;
 -- 
 2.42.0
 
