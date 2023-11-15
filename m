@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 911607ECFA1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 697C07ECD2E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235375AbjKOTtp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:49:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
+        id S234353AbjKOTex (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235367AbjKOTto (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:44 -0500
+        with ESMTP id S234363AbjKOTew (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0005212C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BDB4C433C9;
-        Wed, 15 Nov 2023 19:49:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C348F1AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BC1C433CA;
+        Wed, 15 Nov 2023 19:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077779;
-        bh=FC0yMPtCQIq9prt7zhC1F4/oUKt2OIOEisegRInRjdw=;
+        s=korg; t=1700076888;
+        bh=VQkd+TX1bkYUuhxMN2kv3kuKOMlOxogJ04UkM6AOVr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cJuoT2I8SafyFCz3indFMVKfrjJSDvge/c5Xa4N+xb2D38MX9/fBh83JYeMDPH6Kb
-         HXcSe1rgQQQ/0sfmg+oKlNdmR1prTZfhZJ5Ub9wxYtr5WpX+/8RTsnOTCkqySgVwkZ
-         pKNlMzuV2Y4Ww07LHgU0VZIWp0vkfGcNUH44u2Rs=
+        b=1Tjo/5tpmR/HWzsmewne0/jyYCnL590TonbreD+s8gjD3rYFcM+ARpenS5YkBudGF
+         6s5vMlaqFro5v1AsXY4EeExsZTYvx0xrMMnWnyxq+tgyxq3vvQ/0wkcoLPGlLi8+Od
+         Ef/BogaU+iGUiyv5iSDZxemdHPMuAiOK6zNQKSDs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Davidlohr Bueso <dave@stgolabs.net>,
+        patches@lists.linux.dev,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Ira Weiny <ira.weiny@intel.com>,
         Dave Jiang <dave.jiang@intel.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 493/603] cxl/memdev: Fix sanitize vs decoder setup locking
+Subject: [PATCH 6.5 454/550] cxl/pci: Clarify devm host for memdev relative setup
 Date:   Wed, 15 Nov 2023 14:17:18 -0500
-Message-ID: <20231115191646.416112604@linuxfoundation.org>
+Message-ID: <20231115191632.312253554@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,334 +53,148 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 339818380868e34ff2c482db05031bf47a67d609 ]
+[ Upstream commit f29a824b0b6710328a78b018de3c2cfa9db65876 ]
 
-The sanitize operation is destructive and the expectation is that the
-device is unmapped while in progress. The current implementation does a
-lockless check for decoders being active, but then does nothing to
-prevent decoders from racing to be committed. Introduce state tracking
-to resolve this race.
+It is all too easy to get confused about @dev usage in the CXL driver
+stack. Before adding a new cxl_pci_probe() setup operation that has a
+devm lifetime dependent on @cxlds->dev binding, but also references
+@cxlmd->dev, and prints messages, rework the devm_cxl_add_memdev() and
+cxl_memdev_setup_fw_upload() function signatures to make this
+distinction explicit. I.e. pass in the devm context as an @host argument
+rather than infer it from other objects.
 
-This incidentally cleans up unpriveleged userspace from triggering mmio
-read cycles by spinning on reading the 'security/state' attribute. Which
-at a minimum is a waste since the kernel state machine can cache the
-completion result.
+This is in preparation for adding a devm_cxl_sanitize_setup_notifier().
 
-Lastly cxl_mem_sanitize() was mistakenly marked EXPORT_SYMBOL() in the
-original implementation, but an export was never required.
+Note the whitespace fixup near the change of the devm_cxl_add_memdev()
+signature. That uncaught typo originated in the patch that added
+cxl_memdev_security_init().
 
-Fixes: 0c36b6ad436a ("cxl/mbox: Add sanitization handling machinery")
-Cc: Davidlohr Bueso <dave@stgolabs.net>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Stable-dep-of: 5f2da1971446 ("cxl/pci: Fix sanitize notifier setup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/core.h   |  1 +
- drivers/cxl/core/hdm.c    | 19 ++++++++++++++
- drivers/cxl/core/mbox.c   | 55 ++++++++++++++++++++++++++++-----------
- drivers/cxl/core/memdev.c | 43 ++++++++++++------------------
- drivers/cxl/core/port.c   |  6 +++++
- drivers/cxl/core/region.c |  6 -----
- drivers/cxl/cxlmem.h      |  4 ++-
- drivers/cxl/pci.c         |  5 ++++
- 8 files changed, 90 insertions(+), 49 deletions(-)
+ drivers/cxl/core/memdev.c    | 16 ++++++++--------
+ drivers/cxl/cxlmem.h         |  5 +++--
+ drivers/cxl/pci.c            |  4 ++--
+ tools/testing/cxl/test/mem.c |  4 ++--
+ 4 files changed, 15 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index 45e7e044cf4a0..8e5f3d84311e5 100644
---- a/drivers/cxl/core/core.h
-+++ b/drivers/cxl/core/core.h
-@@ -75,6 +75,7 @@ resource_size_t __rcrb_to_component(struct device *dev,
- 				    enum cxl_rcrb which);
- 
- extern struct rw_semaphore cxl_dpa_rwsem;
-+extern struct rw_semaphore cxl_region_rwsem;
- 
- int cxl_memdev_init(void);
- void cxl_memdev_exit(void);
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index 4449b34a80cc9..506c9e14cdf98 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -650,6 +650,25 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
- 		return -EBUSY;
- 	}
- 
-+	/*
-+	 * For endpoint decoders hosted on CXL memory devices that
-+	 * support the sanitize operation, make sure sanitize is not in-flight.
-+	 */
-+	if (is_endpoint_decoder(&cxld->dev)) {
-+		struct cxl_endpoint_decoder *cxled =
-+			to_cxl_endpoint_decoder(&cxld->dev);
-+		struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-+		struct cxl_memdev_state *mds =
-+			to_cxl_memdev_state(cxlmd->cxlds);
-+
-+		if (mds && mds->security.sanitize_active) {
-+			dev_dbg(&cxlmd->dev,
-+				"attempted to commit %s during sanitize\n",
-+				dev_name(&cxld->dev));
-+			return -EBUSY;
-+		}
-+	}
-+
- 	down_read(&cxl_dpa_rwsem);
- 	/* common decoder settings */
- 	ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(cxld->id));
-diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
-index 4df4f614f490e..b91bb98869917 100644
---- a/drivers/cxl/core/mbox.c
-+++ b/drivers/cxl/core/mbox.c
-@@ -1125,20 +1125,7 @@ int cxl_dev_state_identify(struct cxl_memdev_state *mds)
- }
- EXPORT_SYMBOL_NS_GPL(cxl_dev_state_identify, CXL);
- 
--/**
-- * cxl_mem_sanitize() - Send a sanitization command to the device.
-- * @mds: The device data for the operation
-- * @cmd: The specific sanitization command opcode
-- *
-- * Return: 0 if the command was executed successfully, regardless of
-- * whether or not the actual security operation is done in the background,
-- * such as for the Sanitize case.
-- * Error return values can be the result of the mailbox command, -EINVAL
-- * when security requirements are not met or invalid contexts.
-- *
-- * See CXL 3.0 @8.2.9.8.5.1 Sanitize and @8.2.9.8.5.2 Secure Erase.
-- */
--int cxl_mem_sanitize(struct cxl_memdev_state *mds, u16 cmd)
-+static int __cxl_mem_sanitize(struct cxl_memdev_state *mds, u16 cmd)
- {
- 	int rc;
- 	u32 sec_out = 0;
-@@ -1183,7 +1170,45 @@ int cxl_mem_sanitize(struct cxl_memdev_state *mds, u16 cmd)
- 
- 	return 0;
- }
--EXPORT_SYMBOL_NS_GPL(cxl_mem_sanitize, CXL);
-+
-+
-+/**
-+ * cxl_mem_sanitize() - Send a sanitization command to the device.
-+ * @cxlmd: The device for the operation
-+ * @cmd: The specific sanitization command opcode
-+ *
-+ * Return: 0 if the command was executed successfully, regardless of
-+ * whether or not the actual security operation is done in the background,
-+ * such as for the Sanitize case.
-+ * Error return values can be the result of the mailbox command, -EINVAL
-+ * when security requirements are not met or invalid contexts, or -EBUSY
-+ * if the sanitize operation is already in flight.
-+ *
-+ * See CXL 3.0 @8.2.9.8.5.1 Sanitize and @8.2.9.8.5.2 Secure Erase.
-+ */
-+int cxl_mem_sanitize(struct cxl_memdev *cxlmd, u16 cmd)
-+{
-+	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
-+	struct cxl_port  *endpoint;
-+	int rc;
-+
-+	/* synchronize with cxl_mem_probe() and decoder write operations */
-+	device_lock(&cxlmd->dev);
-+	endpoint = cxlmd->endpoint;
-+	down_read(&cxl_region_rwsem);
-+	/*
-+	 * Require an endpoint to be safe otherwise the driver can not
-+	 * be sure that the device is unmapped.
-+	 */
-+	if (endpoint && endpoint->commit_end == -1)
-+		rc = __cxl_mem_sanitize(mds, cmd);
-+	else
-+		rc = -EBUSY;
-+	up_read(&cxl_region_rwsem);
-+	device_unlock(&cxlmd->dev);
-+
-+	return rc;
-+}
- 
- static int add_dpa_res(struct device *dev, struct resource *parent,
- 		       struct resource *res, resource_size_t start,
 diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-index 4c2e24a1a89c2..a02061028b710 100644
+index 6efe4e2a2cf53..63353d9903745 100644
 --- a/drivers/cxl/core/memdev.c
 +++ b/drivers/cxl/core/memdev.c
-@@ -125,13 +125,16 @@ static ssize_t security_state_show(struct device *dev,
- 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
- 	struct cxl_dev_state *cxlds = cxlmd->cxlds;
- 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
--	u64 reg = readq(cxlds->regs.mbox + CXLDEV_MBOX_BG_CMD_STATUS_OFFSET);
--	u32 pct = FIELD_GET(CXLDEV_MBOX_BG_CMD_COMMAND_PCT_MASK, reg);
--	u16 cmd = FIELD_GET(CXLDEV_MBOX_BG_CMD_COMMAND_OPCODE_MASK, reg);
- 	unsigned long state = mds->security.state;
-+	int rc = 0;
+@@ -960,12 +960,12 @@ static const struct fw_upload_ops cxl_memdev_fw_ops = {
+         .cleanup = cxl_fw_cleanup,
+ };
  
--	if (cmd == CXL_MBOX_OP_SANITIZE && pct != 100)
--		return sysfs_emit(buf, "sanitize\n");
-+	/* sync with latest submission state */
-+	mutex_lock(&mds->mbox_mutex);
-+	if (mds->security.sanitize_active)
-+		rc = sysfs_emit(buf, "sanitize\n");
-+	mutex_unlock(&mds->mbox_mutex);
-+	if (rc)
-+		return rc;
- 
- 	if (!(state & CXL_PMEM_SEC_STATE_USER_PASS_SET))
- 		return sysfs_emit(buf, "disabled\n");
-@@ -152,24 +155,17 @@ static ssize_t security_sanitize_store(struct device *dev,
- 				       const char *buf, size_t len)
+-static void devm_cxl_remove_fw_upload(void *fwl)
++static void cxl_remove_fw_upload(void *fwl)
  {
- 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
--	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
--	struct cxl_port *port = cxlmd->endpoint;
- 	bool sanitize;
- 	ssize_t rc;
- 
- 	if (kstrtobool(buf, &sanitize) || !sanitize)
- 		return -EINVAL;
- 
--	if (!port || !is_cxl_endpoint(port))
--		return -EINVAL;
--
--	/* ensure no regions are mapped to this memdev */
--	if (port->commit_end != -1)
--		return -EBUSY;
--
--	rc = cxl_mem_sanitize(mds, CXL_MBOX_OP_SANITIZE);
-+	rc = cxl_mem_sanitize(cxlmd, CXL_MBOX_OP_SANITIZE);
-+	if (rc)
-+		return rc;
- 
--	return rc ? rc : len;
-+	return len;
+ 	firmware_upload_unregister(fwl);
  }
- static struct device_attribute dev_attr_security_sanitize =
- 	__ATTR(sanitize, 0200, NULL, security_sanitize_store);
-@@ -179,24 +175,17 @@ static ssize_t security_erase_store(struct device *dev,
- 				    const char *buf, size_t len)
+ 
+-int cxl_memdev_setup_fw_upload(struct cxl_memdev_state *mds)
++int devm_cxl_setup_fw_upload(struct device *host, struct cxl_memdev_state *mds)
  {
- 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
--	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
--	struct cxl_port *port = cxlmd->endpoint;
- 	ssize_t rc;
- 	bool erase;
- 
- 	if (kstrtobool(buf, &erase) || !erase)
- 		return -EINVAL;
- 
--	if (!port || !is_cxl_endpoint(port))
--		return -EINVAL;
+ 	struct cxl_dev_state *cxlds = &mds->cxlds;
+ 	struct device *dev = &cxlds->cxlmd->dev;
+@@ -978,10 +978,9 @@ int cxl_memdev_setup_fw_upload(struct cxl_memdev_state *mds)
+ 				       &cxl_memdev_fw_ops, mds);
+ 	if (IS_ERR(fwl))
+ 		return PTR_ERR(fwl);
 -
--	/* ensure no regions are mapped to this memdev */
--	if (port->commit_end != -1)
--		return -EBUSY;
--
--	rc = cxl_mem_sanitize(mds, CXL_MBOX_OP_SECURE_ERASE);
-+	rc = cxl_mem_sanitize(cxlmd, CXL_MBOX_OP_SECURE_ERASE);
-+	if (rc)
-+		return rc;
- 
--	return rc ? rc : len;
-+	return len;
+-	return devm_add_action_or_reset(cxlds->dev, devm_cxl_remove_fw_upload, fwl);
++	return devm_add_action_or_reset(host, cxl_remove_fw_upload, fwl);
  }
- static struct device_attribute dev_attr_security_erase =
- 	__ATTR(erase, 0200, NULL, security_erase_store);
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index 7ca01a834e188..5ba606c6e03ff 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -28,6 +28,12 @@
-  * instantiated by the core.
-  */
+-EXPORT_SYMBOL_NS_GPL(cxl_memdev_setup_fw_upload, CXL);
++EXPORT_SYMBOL_NS_GPL(devm_cxl_setup_fw_upload, CXL);
  
-+/*
-+ * All changes to the interleave configuration occur with this lock held
-+ * for write.
-+ */
-+DECLARE_RWSEM(cxl_region_rwsem);
-+
- static DEFINE_IDA(cxl_port_ida);
- static DEFINE_XARRAY(cxl_root_buses);
+ static const struct file_operations cxl_memdev_fops = {
+ 	.owner = THIS_MODULE,
+@@ -1019,9 +1018,10 @@ static int cxl_memdev_security_init(struct cxl_memdev *cxlmd)
+ 	}
  
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 6d63b8798c299..d74bf1b664b6c 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -28,12 +28,6 @@
-  * 3. Decoder targets
-  */
+ 	return devm_add_action_or_reset(cxlds->dev, put_sanitize, mds);
+- }
++}
  
--/*
-- * All changes to the interleave configuration occur with this lock held
-- * for write.
-- */
--static DECLARE_RWSEM(cxl_region_rwsem);
--
- static struct cxl_region *to_cxl_region(struct device *dev);
+-struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds)
++struct cxl_memdev *devm_cxl_add_memdev(struct device *host,
++				       struct cxl_dev_state *cxlds)
+ {
+ 	struct cxl_memdev *cxlmd;
+ 	struct device *dev;
+@@ -1053,7 +1053,7 @@ struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds)
+ 	if (rc)
+ 		goto err;
  
- static ssize_t uuid_show(struct device *dev, struct device_attribute *attr,
+-	rc = devm_add_action_or_reset(cxlds->dev, cxl_memdev_unregister, cxlmd);
++	rc = devm_add_action_or_reset(host, cxl_memdev_unregister, cxlmd);
+ 	if (rc)
+ 		return ERR_PTR(rc);
+ 	return cxlmd;
 diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index fbdee1d637175..6933bc20e76b6 100644
+index 55f00ad17a772..fdb2c8dd98d0f 100644
 --- a/drivers/cxl/cxlmem.h
 +++ b/drivers/cxl/cxlmem.h
-@@ -364,6 +364,7 @@ struct cxl_fw_state {
-  * @state: state of last security operation
-  * @enabled_cmds: All security commands enabled in the CEL
-  * @poll_tmo_secs: polling timeout
-+ * @sanitize_active: sanitize completion pending
-  * @poll_dwork: polling work item
-  * @sanitize_node: sanitation sysfs file to notify
-  */
-@@ -371,6 +372,7 @@ struct cxl_security_state {
- 	unsigned long state;
- 	DECLARE_BITMAP(enabled_cmds, CXL_SEC_ENABLED_MAX);
- 	int poll_tmo_secs;
-+	bool sanitize_active;
- 	struct delayed_work poll_dwork;
- 	struct kernfs_node *sanitize_node;
- };
-@@ -884,7 +886,7 @@ static inline void cxl_mem_active_dec(void)
+@@ -84,9 +84,10 @@ static inline bool is_cxl_endpoint(struct cxl_port *port)
+ 	return is_cxl_memdev(port->uport_dev);
  }
- #endif
  
--int cxl_mem_sanitize(struct cxl_memdev_state *mds, u16 cmd);
-+int cxl_mem_sanitize(struct cxl_memdev *cxlmd, u16 cmd);
- 
- struct cxl_hdm {
- 	struct cxl_component_regs regs;
+-struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds);
++struct cxl_memdev *devm_cxl_add_memdev(struct device *host,
++				       struct cxl_dev_state *cxlds);
+ struct cxl_memdev_state;
+-int cxl_memdev_setup_fw_upload(struct cxl_memdev_state *mds);
++int devm_cxl_setup_fw_upload(struct device *host, struct cxl_memdev_state *mds);
+ int devm_cxl_dpa_reserve(struct cxl_endpoint_decoder *cxled,
+ 			 resource_size_t base, resource_size_t len,
+ 			 resource_size_t skipped);
 diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-index 05f3d14921e6a..33c48370a830c 100644
+index 0ffa62088c6d2..5b22460c51c62 100644
 --- a/drivers/cxl/pci.c
 +++ b/drivers/cxl/pci.c
-@@ -154,6 +154,7 @@ static void cxl_mbox_sanitize_work(struct work_struct *work)
- 		mds->security.poll_tmo_secs = 0;
- 		if (mds->security.sanitize_node)
- 			sysfs_notify_dirent(mds->security.sanitize_node);
-+		mds->security.sanitize_active = false;
+@@ -868,11 +868,11 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (rc)
+ 		return rc;
  
- 		dev_dbg(cxlds->dev, "Sanitization operation ended\n");
- 	} else {
-@@ -292,9 +293,13 @@ static int __cxl_pci_mbox_send_cmd(struct cxl_memdev_state *mds,
- 		 * and allow userspace to poll(2) for completion.
- 		 */
- 		if (mbox_cmd->opcode == CXL_MBOX_OP_SANITIZE) {
-+			if (mds->security.sanitize_active)
-+				return -EBUSY;
-+
- 			/* give first timeout a second */
- 			timeout = 1;
- 			mds->security.poll_tmo_secs = timeout;
-+			mds->security.sanitize_active = true;
- 			schedule_delayed_work(&mds->security.poll_dwork,
- 					      timeout * HZ);
- 			dev_dbg(dev, "Sanitization operation started\n");
+-	cxlmd = devm_cxl_add_memdev(cxlds);
++	cxlmd = devm_cxl_add_memdev(&pdev->dev, cxlds);
+ 	if (IS_ERR(cxlmd))
+ 		return PTR_ERR(cxlmd);
+ 
+-	rc = cxl_memdev_setup_fw_upload(mds);
++	rc = devm_cxl_setup_fw_upload(&pdev->dev, mds);
+ 	if (rc)
+ 		return rc;
+ 
+diff --git a/tools/testing/cxl/test/mem.c b/tools/testing/cxl/test/mem.c
+index 464fc39ed2776..68118c37f0b56 100644
+--- a/tools/testing/cxl/test/mem.c
++++ b/tools/testing/cxl/test/mem.c
+@@ -1450,11 +1450,11 @@ static int cxl_mock_mem_probe(struct platform_device *pdev)
+ 	mdata->mes.mds = mds;
+ 	cxl_mock_add_event_logs(&mdata->mes);
+ 
+-	cxlmd = devm_cxl_add_memdev(cxlds);
++	cxlmd = devm_cxl_add_memdev(&pdev->dev, cxlds);
+ 	if (IS_ERR(cxlmd))
+ 		return PTR_ERR(cxlmd);
+ 
+-	rc = cxl_memdev_setup_fw_upload(mds);
++	rc = devm_cxl_setup_fw_upload(&pdev->dev, mds);
+ 	if (rc)
+ 		return rc;
+ 
 -- 
 2.42.0
 
