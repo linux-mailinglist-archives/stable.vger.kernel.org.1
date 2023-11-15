@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B2027ECFC6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF80A7ECDBA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235405AbjKOTuo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35084 "EHLO
+        id S234641AbjKOTiD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235402AbjKOTun (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:43 -0500
+        with ESMTP id S234630AbjKOTiD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19834AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93996C433CA;
-        Wed, 15 Nov 2023 19:50:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A31161B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBDDC433C8;
+        Wed, 15 Nov 2023 19:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077839;
-        bh=5GmnunJnzW9aJPMTl0PEPgDPmBafPKv9eByQ4sZyG1s=;
+        s=korg; t=1700077079;
+        bh=MzzhIxckxhOQZNnTxd1x+YO/Etk6Lpva8l67bbhKOB8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NudFDCs0E+66w8mEG61te3CgU4M8YX82Cv42xNrD/x5DgSGgQd+T3BdQLpiRbbxu/
-         t75ujNuItXaFLldBrLx6UIiEipeR6fCP4KssQpNt2klmpjlKUPYC8QKhk76cwC9z78
-         /q1UZi3TloCDbAOSZLlo1g3C5mGpmVj55SCXfco8=
+        b=z7L+x9qV5FUXysNslEVx1CeVm3xFXclQ/KGbtnIFl24XLHqp12qkxj0rBxjYC3X/J
+         lrjSOZ/7YHLZiq8M+7PieFqVsdaua3fDSgQK0ctWdQIu+/kbsYhlZENL/7Vmh42HVH
+         RG74PCKaoiRt14ZwgdxCnkelCmXZV3psC7X2R4n8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Patrick Thompson <ptf@google.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, "D. Wythe" <alibuda@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 552/603] net: r8169: Disable multicast filter for RTL8168H and RTL8107E
-Date:   Wed, 15 Nov 2023 14:18:17 -0500
-Message-ID: <20231115191649.906456559@linuxfoundation.org>
+Subject: [PATCH 6.5 514/550] net/smc: fix dangling sock under state SMC_APPFINCLOSEWAIT
+Date:   Wed, 15 Nov 2023 14:18:18 -0500
+Message-ID: <20231115191636.558814617@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +51,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrick Thompson <ptf@google.com>
+From: D. Wythe <alibuda@linux.alibaba.com>
 
-[ Upstream commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df ]
+[ Upstream commit 5211c9729484c923f8d2e06bd29f9322cc42bb8f ]
 
-RTL8168H and RTL8107E ethernet adapters erroneously filter unicast
-eapol packets unless allmulti is enabled. These devices correspond to
-RTL_GIGA_MAC_VER_46 and VER_48. Add an exception for VER_46 and VER_48
-in the same way that VER_35 has an exception.
+Considering scenario:
 
-Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
-Signed-off-by: Patrick Thompson <ptf@google.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/20231030205031.177855-1-ptf@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+				smc_cdc_rx_handler
+__smc_release
+				sock_set_flag
+smc_close_active()
+sock_set_flag
+
+__set_bit(DEAD)			__set_bit(DONE)
+
+Dues to __set_bit is not atomic, the DEAD or DONE might be lost.
+if the DEAD flag lost, the state SMC_CLOSED  will be never be reached
+in smc_close_passive_work:
+
+if (sock_flag(sk, SOCK_DEAD) &&
+	smc_close_sent_any_close(conn)) {
+	sk->sk_state = SMC_CLOSED;
+} else {
+	/* just shutdown, but not yet closed locally */
+	sk->sk_state = SMC_APPFINCLOSEWAIT;
+}
+
+Replace sock_set_flags or __set_bit to set_bit will fix this problem.
+Since set_bit is atomic.
+
+Fixes: b38d732477e4 ("smc: socket closing and linkgroup cleanup")
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/smc/af_smc.c    | 4 ++--
+ net/smc/smc.h       | 5 +++++
+ net/smc/smc_cdc.c   | 2 +-
+ net/smc/smc_close.c | 2 +-
+ 4 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index a987defb575cf..4b8251cdb4363 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2584,7 +2584,9 @@ static void rtl_set_rx_mode(struct net_device *dev)
- 		rx_mode |= AcceptAllPhys;
- 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
- 		   dev->flags & IFF_ALLMULTI ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
-+		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
-+		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
-+		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
- 		/* accept all multicasts */
- 	} else if (netdev_mc_empty(dev)) {
- 		rx_mode &= ~AcceptMulticast;
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index c0e4e587b4994..42d4211b6277e 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -275,7 +275,7 @@ static int __smc_release(struct smc_sock *smc)
+ 
+ 	if (!smc->use_fallback) {
+ 		rc = smc_close_active(smc);
+-		sock_set_flag(sk, SOCK_DEAD);
++		smc_sock_set_flag(sk, SOCK_DEAD);
+ 		sk->sk_shutdown |= SHUTDOWN_MASK;
+ 	} else {
+ 		if (sk->sk_state != SMC_CLOSED) {
+@@ -1722,7 +1722,7 @@ static int smc_clcsock_accept(struct smc_sock *lsmc, struct smc_sock **new_smc)
+ 		if (new_clcsock)
+ 			sock_release(new_clcsock);
+ 		new_sk->sk_state = SMC_CLOSED;
+-		sock_set_flag(new_sk, SOCK_DEAD);
++		smc_sock_set_flag(new_sk, SOCK_DEAD);
+ 		sock_put(new_sk); /* final */
+ 		*new_smc = NULL;
+ 		goto out;
+diff --git a/net/smc/smc.h b/net/smc/smc.h
+index 1f2b912c43d10..8358e96342e7b 100644
+--- a/net/smc/smc.h
++++ b/net/smc/smc.h
+@@ -374,4 +374,9 @@ int smc_nl_dump_hs_limitation(struct sk_buff *skb, struct netlink_callback *cb);
+ int smc_nl_enable_hs_limitation(struct sk_buff *skb, struct genl_info *info);
+ int smc_nl_disable_hs_limitation(struct sk_buff *skb, struct genl_info *info);
+ 
++static inline void smc_sock_set_flag(struct sock *sk, enum sock_flags flag)
++{
++	set_bit(flag, &sk->sk_flags);
++}
++
+ #endif	/* __SMC_H */
+diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
+index 89105e95b4523..01bdb7909a14b 100644
+--- a/net/smc/smc_cdc.c
++++ b/net/smc/smc_cdc.c
+@@ -385,7 +385,7 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
+ 		smc->sk.sk_shutdown |= RCV_SHUTDOWN;
+ 		if (smc->clcsock && smc->clcsock->sk)
+ 			smc->clcsock->sk->sk_shutdown |= RCV_SHUTDOWN;
+-		sock_set_flag(&smc->sk, SOCK_DONE);
++		smc_sock_set_flag(&smc->sk, SOCK_DONE);
+ 		sock_hold(&smc->sk); /* sock_put in close_work */
+ 		if (!queue_work(smc_close_wq, &conn->close_work))
+ 			sock_put(&smc->sk);
+diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
+index dbdf03e8aa5b5..449ef454b53be 100644
+--- a/net/smc/smc_close.c
++++ b/net/smc/smc_close.c
+@@ -173,7 +173,7 @@ void smc_close_active_abort(struct smc_sock *smc)
+ 		break;
+ 	}
+ 
+-	sock_set_flag(sk, SOCK_DEAD);
++	smc_sock_set_flag(sk, SOCK_DEAD);
+ 	sk->sk_state_change(sk);
+ 
+ 	if (release_clcsock) {
 -- 
 2.42.0
 
