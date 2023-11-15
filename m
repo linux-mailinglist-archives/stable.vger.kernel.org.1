@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AEC97ECD42
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BECD7ECB3C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234399AbjKOTfY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57956 "EHLO
+        id S232797AbjKOTVT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234415AbjKOTfX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:23 -0500
+        with ESMTP id S233079AbjKOTU6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:58 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 483A69E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF47CC433C7;
-        Wed, 15 Nov 2023 19:35:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B669D79
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF6FC433C7;
+        Wed, 15 Nov 2023 19:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076919;
-        bh=R28UeHXRiyKX1iaowFuLHFbnYzim7L1dWusmbsutySY=;
+        s=korg; t=1700076052;
+        bh=UnuShsW6exS+uMXW3fo74BT08F+PG0/RYrqsZs9XugM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RCIdo99Lag22vJGp2vVBLg9wIxhTzMg4WjVLLaKal7IMn0mPFO/YB0i+PQynjrFUB
-         XlLoDPm6oVanvAlY0zoZpKLCyI9UDLdNhvsfXIlVO03y6URNQWQbWjSvcc0zz3NlLh
-         MqDDGKd8s+RnVr8jKc4cKUO8wpXfDzf4b+FirDtM=
+        b=PcqcduGSuRgeAebQxZ8y2XU3R2YU21VqTkMgqz22EwqLelsXXjz35Zzg5T7V1BA4M
+         RRJoQ8q6AfAkka7+Id15RoEuHKwb/wF3Y5+uD626YT5s+9t70apGlKwmWTieUU96fU
+         CvN/C/5DW3UGhkDhUJ3jE9syiiTgBuIzsSJFRNFk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Ido Schimmel <idosch@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/603] mlxsw: Use size_mul() in call to struct_size()
+Subject: [PATCH 6.5 028/550] drivers/clocksource/timer-ti-dm: Dont call clk_get_rate() in stop function
 Date:   Wed, 15 Nov 2023 14:10:12 -0500
-Message-ID: <20231115191617.777809700@linuxfoundation.org>
+Message-ID: <20231115191602.687668491@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +52,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
 
-[ Upstream commit e22c6ea025013ae447fe269269753ffec763dde5 ]
+[ Upstream commit 12590d4d0e331d3cb9e6b3494515cd61c8a6624e ]
 
-If, for any reason, the open-coded arithmetic causes a wraparound, the
-protection that `struct_size()` adds against potential integer overflows
-is defeated. Fix this by hardening call to `struct_size()` with `size_mul()`.
+clk_get_rate() might sleep, and that prevents dm-timer based PWM from being
+used from atomic context.
 
-Fixes: 2285ec872d9d ("mlxsw: spectrum_acl_bloom_filter: use struct_size() in kzalloc()")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix that by getting fclk rate in probe() and using a notifier in case rate
+changes.
+
+Fixes: af04aa856e93 ("ARM: OMAP: Move dmtimer driver out of plat-omap to drivers under clocksource")
+Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/1696312220-11550-1-git-send-email-ivo.g.dimitrov.75@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/timer-ti-dm.c | 36 ++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c
-index e2aced7ab4547..95f63fcf4ba1f 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c
-@@ -496,7 +496,7 @@ mlxsw_sp_acl_bf_init(struct mlxsw_sp *mlxsw_sp, unsigned int num_erp_banks)
- 	 * is 2^ACL_MAX_BF_LOG
- 	 */
- 	bf_bank_size = 1 << MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_BF_LOG);
--	bf = kzalloc(struct_size(bf, refcnt, bf_bank_size * num_erp_banks),
-+	bf = kzalloc(struct_size(bf, refcnt, size_mul(bf_bank_size, num_erp_banks)),
- 		     GFP_KERNEL);
- 	if (!bf)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
+index 349236a7ba5ff..2d0bed0877e03 100644
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -141,6 +141,8 @@ struct dmtimer {
+ 	struct platform_device *pdev;
+ 	struct list_head node;
+ 	struct notifier_block nb;
++	struct notifier_block fclk_nb;
++	unsigned long fclk_rate;
+ };
+ 
+ static u32 omap_reserved_systimers;
+@@ -254,8 +256,7 @@ static inline void __omap_dm_timer_enable_posted(struct dmtimer *timer)
+ 	timer->posted = OMAP_TIMER_POSTED;
+ }
+ 
+-static inline void __omap_dm_timer_stop(struct dmtimer *timer,
+-					unsigned long rate)
++static inline void __omap_dm_timer_stop(struct dmtimer *timer)
+ {
+ 	u32 l;
+ 
+@@ -270,7 +271,7 @@ static inline void __omap_dm_timer_stop(struct dmtimer *timer,
+ 		 * Wait for functional clock period x 3.5 to make sure that
+ 		 * timer is stopped
+ 		 */
+-		udelay(3500000 / rate + 1);
++		udelay(3500000 / timer->fclk_rate + 1);
+ #endif
+ 	}
+ 
+@@ -349,6 +350,21 @@ static int omap_timer_context_notifier(struct notifier_block *nb,
+ 	return NOTIFY_OK;
+ }
+ 
++static int omap_timer_fclk_notifier(struct notifier_block *nb,
++				    unsigned long event, void *data)
++{
++	struct clk_notifier_data *clk_data = data;
++	struct dmtimer *timer = container_of(nb, struct dmtimer, fclk_nb);
++
++	switch (event) {
++	case POST_RATE_CHANGE:
++		timer->fclk_rate = clk_data->new_rate;
++		return NOTIFY_OK;
++	default:
++		return NOTIFY_DONE;
++	}
++}
++
+ static int omap_dm_timer_reset(struct dmtimer *timer)
+ {
+ 	u32 l, timeout = 100000;
+@@ -755,7 +771,6 @@ static int omap_dm_timer_stop(struct omap_dm_timer *cookie)
+ {
+ 	struct dmtimer *timer;
+ 	struct device *dev;
+-	unsigned long rate = 0;
+ 
+ 	timer = to_dmtimer(cookie);
+ 	if (unlikely(!timer))
+@@ -763,10 +778,7 @@ static int omap_dm_timer_stop(struct omap_dm_timer *cookie)
+ 
+ 	dev = &timer->pdev->dev;
+ 
+-	if (!timer->omap1)
+-		rate = clk_get_rate(timer->fclk);
+-
+-	__omap_dm_timer_stop(timer, rate);
++	__omap_dm_timer_stop(timer);
+ 
+ 	pm_runtime_put_sync(dev);
+ 
+@@ -1125,6 +1137,14 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
+ 		timer->fclk = devm_clk_get(dev, "fck");
+ 		if (IS_ERR(timer->fclk))
+ 			return PTR_ERR(timer->fclk);
++
++		timer->fclk_nb.notifier_call = omap_timer_fclk_notifier;
++		ret = devm_clk_notifier_register(dev, timer->fclk,
++						 &timer->fclk_nb);
++		if (ret)
++			return ret;
++
++		timer->fclk_rate = clk_get_rate(timer->fclk);
+ 	} else {
+ 		timer->fclk = ERR_PTR(-ENODEV);
+ 	}
 -- 
 2.42.0
 
