@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE0E47ECF3C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0DCC7ECC80
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235267AbjKOTrN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:47:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42256 "EHLO
+        id S234026AbjKOTax (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235268AbjKOTrN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:13 -0500
+        with ESMTP id S233995AbjKOTaw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA7AFB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD34C433C7;
-        Wed, 15 Nov 2023 19:47:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E8E1B1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D6C4C433C7;
+        Wed, 15 Nov 2023 19:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077629;
-        bh=5WX9PJpssMJHJNRLGctKNoPOkL+DnBP6pHZVn1+cFnk=;
+        s=korg; t=1700076648;
+        bh=Pze2o3ga6m3wrb8vVH/PSLKjXBkvGnrqVNWnPCwIsVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YUYI2b6X051UcQFzSUmxKIQalEEwm+WFGbZwWW/0CtHnh+MN/D01cup091PoTsrru
-         kPDvHTeAwvCuzv7IZH4rXxcqEPJIPqzR14F4JRmDGFfwNARCzGTJI9mGcKoWjxspQa
-         hVo9lB20D7XxHIc1v8irdkbZSPm2ptcTfPy6sipE=
+        b=M2dBjEbhoLBvDq3ySAl51WEHnZrIBkVBamwirB5nAUR7FFePiFbQPpr/URd/0/g39
+         oJHleXgSP6AdQpExESMo7ZEchf5IO2hy+VYVieTueR1xkjcC+9akdSG/aW8RsMkwTe
+         EEw4bhwPvyT3NCSn0SpogZiqoemDbAo1kibBK4cQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Herbert Xu <herbert@gondor.apana.org.au>,
         Jarkko Sakkinen <jarkko@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 399/603] certs: Break circular dependency when selftest is modular
-Date:   Wed, 15 Nov 2023 14:15:44 -0500
-Message-ID: <20231115191640.659547000@linuxfoundation.org>
+Subject: [PATCH 6.5 361/550] certs: Break circular dependency when selftest is modular
+Date:   Wed, 15 Nov 2023 14:15:45 -0500
+Message-ID: <20231115191625.833134141@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,7 +50,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
