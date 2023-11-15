@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BCCE7ECB27
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 396AA7ECD0E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjKOTUa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:20:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51868 "EHLO
+        id S234290AbjKOTeM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229564AbjKOTU3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:29 -0500
+        with ESMTP id S234374AbjKOTeH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E0912C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57653C433C8;
-        Wed, 15 Nov 2023 19:20:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB33ED6F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F38C433C9;
+        Wed, 15 Nov 2023 19:34:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076025;
-        bh=mByu1WIWOOxjIjB256VxniQkCiDXU/HE78ewecxc3EM=;
+        s=korg; t=1700076841;
+        bh=j4vKVH82JoWSqYZ0pI2Y+svHhnDCEpd7YyRefZ+b60M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rFodUrYT1E3FKMxl+xxOgsKeyf2wcjD2b4pIL56D9COIB58tpQFXV2f0+nie+SekQ
-         chfmlh4e8JtsFmIGMWgrjjVIceDMRRl56M7qVAAI6N6JNzgIjor+kCAdeeQSmtMw/A
-         qVe160mtn5l7nQ4j45f1LYwqXyn+DMDWjdBfcZlE=
+        b=trSYVebcidAkFrvbklg2m3WHv0NBGSJHK/TVL/kisHqAEL8xFl82Umdcyqy+WuAwP
+         LPU+L6rPuRYB276MMlgHRC0NYyf5Q6NVwRD4oxDYTXebkpCjvrAlHsdrWmjz7dBT19
+         H20DmXD3o7fUR28l2itfUlrGuk2wD62INTn3MvEs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yury Norov <yury.norov@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, Mel Gorman <mgorman@suse.de>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 004/550] sched/topology: Fix sched_numa_find_nth_cpu() in non-NUMA case
+Subject: [PATCH 6.6 043/603] wifi: cfg80211: fix off-by-one in element defrag
 Date:   Wed, 15 Nov 2023 14:09:48 -0500
-Message-ID: <20231115191601.020062279@linuxfoundation.org>
+Message-ID: <20231115191616.141289227@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yury Norov <yury.norov@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 8ab63d418d4339d996f80d02a00dbce0aa3ff972 ]
+[ Upstream commit 43125539fc69c6aa63d34b516939431391bddeac ]
 
-When CONFIG_NUMA is enabled, sched_numa_find_nth_cpu() searches for a
-CPU in sched_domains_numa_masks. The masks includes only online CPUs,
-so effectively offline CPUs are skipped.
+If a fragment is the last element, it's erroneously not
+accepted. Fix that.
 
-When CONFIG_NUMA is disabled, the fallback function should be consistent.
-
-Fixes: cd7f55359c90 ("sched: add sched_numa_find_nth_cpu()")
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Link: https://lore.kernel.org/r/20230819141239.287290-5-yury.norov@gmail.com
+Fixes: f837a653a097 ("wifi: cfg80211: add element defragmentation helper")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230827135854.adca9fbd3317.I6b2df45eb71513f3e48efd196ae3cddec362dc1c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/topology.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/scan.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/topology.h b/include/linux/topology.h
-index fea32377f7c77..52f5850730b3e 100644
---- a/include/linux/topology.h
-+++ b/include/linux/topology.h
-@@ -251,7 +251,7 @@ extern const struct cpumask *sched_numa_hop_mask(unsigned int node, unsigned int
- #else
- static __always_inline int sched_numa_find_nth_cpu(const struct cpumask *cpus, int cpu, int node)
- {
--	return cpumask_nth(cpu, cpus);
-+	return cpumask_nth_and(cpu, cpus, cpu_online_mask);
- }
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 8210a6090ac16..e4cc6209c7b9b 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -2358,8 +2358,8 @@ ssize_t cfg80211_defragment_element(const struct element *elem, const u8 *ies,
  
- static inline const struct cpumask *
+ 	/* elem might be invalid after the memmove */
+ 	next = (void *)(elem->data + elem->datalen);
+-
+ 	elem_datalen = elem->datalen;
++
+ 	if (elem->id == WLAN_EID_EXTENSION) {
+ 		copied = elem->datalen - 1;
+ 		if (copied > data_len)
+@@ -2380,7 +2380,7 @@ ssize_t cfg80211_defragment_element(const struct element *elem, const u8 *ies,
+ 
+ 	for (elem = next;
+ 	     elem->data < ies + ieslen &&
+-		elem->data + elem->datalen < ies + ieslen;
++		elem->data + elem->datalen <= ies + ieslen;
+ 	     elem = next) {
+ 		/* elem might be invalid after the memmove */
+ 		next = (void *)(elem->data + elem->datalen);
 -- 
 2.42.0
 
