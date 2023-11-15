@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B52C87ECFE6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83F477ECDFD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235449AbjKOTvf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42306 "EHLO
+        id S234760AbjKOTjj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235448AbjKOTvf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:35 -0500
+        with ESMTP id S234770AbjKOTji (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDEE71A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F604C433C7;
-        Wed, 15 Nov 2023 19:51:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 742CDA4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1470C433C9;
+        Wed, 15 Nov 2023 19:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077891;
-        bh=hxe2BnyCwPlorQsHX+wHWpx7pYJGctmh4t87CjD+9ho=;
+        s=korg; t=1700077175;
+        bh=qBCPzqFJLgtJxCt/CoZd0Zk9nCyuNkmG3aEjo5OEmzw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H+7edXKHvVb52FJWK2DPx3Q+B/VFJqzxd+UbXyRtHAuIzupjNO+f2HMaSAN+DGHQG
-         wO6MUUYo96sJ5n3zsOWxQjIu9HOLbjHbP2gi8mYve0EXAihAz0W5SlpEz8p1cOhvku
-         f0ynxTXwvzfU/gTYEoXrce1+PviuYuVkhc2620ZU=
+        b=Ra3HEkcvMDTgA5OkClQzUbNoQTOY/m1JptcWUMhJ2qnPSPeryDozCV4aioTLgOCrO
+         bRuRpNX0xKluoOmfcjmLCbcwIun6ZfbChTqO9hL0Ahha+s+ZE24BEG/OUw+5LkBqbh
+         SuqsrBn5FaAr6xsufeWo9vcivMZcEhgcb+UtAGhw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 584/603] ASoC: rt712-sdca: fix speaker route missing issue
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 545/550] io_uring/net: ensure socket is marked connected on connect retry
 Date:   Wed, 15 Nov 2023 14:18:49 -0500
-Message-ID: <20231115191651.755772886@linuxfoundation.org>
+Message-ID: <20231115191638.696418658@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,60 +48,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 1a3b7eab8500a6b923f7b62cc8aa4d832c7dfb3e ]
+commit f8f9ab2d98116e79d220f1d089df7464ad4e026d upstream.
 
-Sometimes the codec probe would be called earlier than the hardware initialization.
-Therefore, the speaker route should be added before the the first_hw_init check.
+io_uring does non-blocking connection attempts, which can yield some
+unexpected results if a connect request is re-attempted by an an
+application. This is equivalent to the following sync syscall sequence:
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Fixes: f3da2ed110e2 ("ASoC: rt1712-sdca: enable pm_runtime in probe,  keep status as 'suspended'")?
-Link: https://lore.kernel.org/r/20231030103644.1787948-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
+connect(sock, &addr, sizeof(addr);
+
+ret == -1 and errno == EINPROGRESS expected here. Now poll for POLLOUT
+on sock, and when that returns, we expect the socket to be connected.
+But if we follow that procedure with:
+
+connect(sock, &addr, sizeof(addr));
+
+you'd expect ret == -1 and errno == EISCONN here, but you actually get
+ret == 0. If we attempt the connection one more time, then we get EISCON
+as expected.
+
+io_uring used to do this, but turns out that bluetooth fails with EBADFD
+if you attempt to re-connect. Also looks like EISCONN _could_ occur with
+this sequence.
+
+Retain the ->in_progress logic, but work-around a potential EISCONN or
+EBADFD error and only in those cases look at the sock_error(). This
+should work in general and avoid the odd sequence of a repeated connect
+request returning success when the socket is already connected.
+
+This is all a side effect of the socket state being in a CONNECTING
+state when we get EINPROGRESS, and only a re-connect or other related
+operation will turn that into CONNECTED.
+
+Cc: stable@vger.kernel.org
+Fixes: 3fb1bd688172 ("io_uring/net: handle -EINPROGRESS correct for IORING_OP_CONNECT")
+Link: https://github.com/axboe/liburing/issues/980
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt712-sdca.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ io_uring/net.c |   24 +++++++++++-------------
+ 1 file changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/sound/soc/codecs/rt712-sdca.c b/sound/soc/codecs/rt712-sdca.c
-index 7077ff6ba1f4b..6954fbe7ec5f3 100644
---- a/sound/soc/codecs/rt712-sdca.c
-+++ b/sound/soc/codecs/rt712-sdca.c
-@@ -963,13 +963,6 @@ static int rt712_sdca_probe(struct snd_soc_component *component)
- 	rt712_sdca_parse_dt(rt712, &rt712->slave->dev);
- 	rt712->component = component;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1461,16 +1461,6 @@ int io_connect(struct io_kiocb *req, uns
+ 	int ret;
+ 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
  
--	if (!rt712->first_hw_init)
--		return 0;
+-	if (connect->in_progress) {
+-		struct socket *socket;
 -
--	ret = pm_runtime_resume(component->dev);
--	if (ret < 0 && ret != -EACCES)
--		return ret;
+-		ret = -ENOTSOCK;
+-		socket = sock_from_file(req->file);
+-		if (socket)
+-			ret = sock_error(socket->sk);
+-		goto out;
+-	}
 -
- 	/* add SPK route */
- 	if (rt712->hw_id != RT712_DEV_ID_713) {
- 		snd_soc_add_component_controls(component,
-@@ -980,6 +973,13 @@ static int rt712_sdca_probe(struct snd_soc_component *component)
- 			rt712_sdca_spk_dapm_routes, ARRAY_SIZE(rt712_sdca_spk_dapm_routes));
+ 	if (req_has_async_data(req)) {
+ 		io = req->async_data;
+ 	} else {
+@@ -1490,9 +1480,7 @@ int io_connect(struct io_kiocb *req, uns
+ 	    && force_nonblock) {
+ 		if (ret == -EINPROGRESS) {
+ 			connect->in_progress = true;
+-			return -EAGAIN;
+-		}
+-		if (ret == -ECONNABORTED) {
++		} else if (ret == -ECONNABORTED) {
+ 			if (connect->seen_econnaborted)
+ 				goto out;
+ 			connect->seen_econnaborted = true;
+@@ -1506,6 +1494,16 @@ int io_connect(struct io_kiocb *req, uns
+ 		memcpy(req->async_data, &__io, sizeof(__io));
+ 		return -EAGAIN;
  	}
- 
-+	if (!rt712->first_hw_init)
-+		return 0;
-+
-+	ret = pm_runtime_resume(component->dev);
-+	if (ret < 0 && ret != -EACCES)
-+		return ret;
-+
- 	return 0;
- }
- 
--- 
-2.42.0
-
++	if (connect->in_progress) {
++		/*
++		 * At least bluetooth will return -EBADFD on a re-connect
++		 * attempt, and it's (supposedly) also valid to get -EISCONN
++		 * which means the previous result is good. For both of these,
++		 * grab the sock_error() and use that for the completion.
++		 */
++		if (ret == -EBADFD || ret == -EISCONN)
++			ret = sock_error(sock_from_file(req->file)->sk);
++	}
+ 	if (ret == -ERESTARTSYS)
+ 		ret = -EINTR;
+ out:
 
 
