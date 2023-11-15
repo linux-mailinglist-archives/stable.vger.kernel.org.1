@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 608E87ED4A8
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BB97ED331
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344574AbjKOU6q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36958 "EHLO
+        id S233711AbjKOUqx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344702AbjKOU5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:44 -0500
+        with ESMTP id S233748AbjKOUqn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0293519A9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B53C433CA;
-        Wed, 15 Nov 2023 20:47:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50A2BD5A
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA280C433C7;
+        Wed, 15 Nov 2023 20:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081224;
-        bh=+oYMtUJbcZApFFLXOm3x+u/sRxhg09sNA6WAAc2UBAc=;
+        s=korg; t=1700081200;
+        bh=bB0Z53as7Zy9bDGgWld0HtHCuWVOX4rrhC9yDuvYtfQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LCk4wj7A0ipYU7bUjY0Q759TSSJoP+7D7huui9RduFNQ/zykgIc2UUUw4lXL5yYeF
-         XSdLrDbbEyYoxOvBHQ4sNv5PDYiXgZMzo3TQD9Y2bbRvR+DuRsMWW2TMHRQd6sMJ6G
-         FTn56Mcxa87uFhXVGS6Ap4nYXoTjwjvQn/zdvpT0=
+        b=CTOLf5stXs/70FFRNsXd96AzCppMboZsOj1FNDAM6j5XaB4H7Bx1fcUEWjoYvZ5P8
+         TjwaPLPyDnz9bu7cInj10He5ut20lzUlqjJTlWt0zKvv/1kedcEoXoozRNNTHac/b2
+         wd6yEG0PLRfxGtZF8otFLFFajKGVvpN9V4I12kBg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
-        Adam Dunlap <acdunlap@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jacob Xu <jacobhxu@google.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 009/244] x86/sev-es: Allow copy_from_kernel_nofault() in earlier boot
-Date:   Wed, 15 Nov 2023 15:33:21 -0500
-Message-ID: <20231115203548.933364739@linuxfoundation.org>
+        patches@lists.linux.dev, Yuntao Wang <ytcoode@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 010/244] x86/boot: Fix incorrect startup_gdt_descr.size
+Date:   Wed, 15 Nov 2023 15:33:22 -0500
+Message-ID: <20231115203548.992188504@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -55,62 +54,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Adam Dunlap <acdunlap@google.com>
+From: Yuntao Wang <ytcoode@gmail.com>
 
-[ Upstream commit f79936545fb122856bd78b189d3c7ee59928c751 ]
+[ Upstream commit 001470fed5959d01faecbd57fcf2f60294da0de1 ]
 
-Previously, if copy_from_kernel_nofault() was called before
-boot_cpu_data.x86_virt_bits was set up, then it would trigger undefined
-behavior due to a shift by 64.
+Since the size value is added to the base address to yield the last valid
+byte address of the GDT, the current size value of startup_gdt_descr is
+incorrect (too large by one), fix it.
 
-This ended up causing boot failures in the latest version of ubuntu2204
-in the gcp project when using SEV-SNP.
+[ mingo: This probably never mattered, because startup_gdt[] is only used
+         in a very controlled fashion - but make it consistent nevertheless. ]
 
-Specifically, this function is called during an early #VC handler which
-is triggered by a CPUID to check if NX is implemented.
-
-Fixes: 1aa9aa8ee517 ("x86/sev-es: Setup GHCB-based boot #VC handler")
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Adam Dunlap <acdunlap@google.com>
+Fixes: 866b556efa12 ("x86/head/64: Install startup GDT")
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Jacob Xu <jacobhxu@google.com>
-Link: https://lore.kernel.org/r/20230912002703.3924521-2-acdunlap@google.com
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20230807084547.217390-1-ytcoode@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/maccess.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ arch/x86/kernel/head64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/maccess.c b/arch/x86/mm/maccess.c
-index 5a53c2cc169cc..6993f026adec9 100644
---- a/arch/x86/mm/maccess.c
-+++ b/arch/x86/mm/maccess.c
-@@ -9,12 +9,21 @@ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
- 	unsigned long vaddr = (unsigned long)unsafe_src;
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 5036104d54707..2375f5f4f763f 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -79,7 +79,7 @@ static struct desc_struct startup_gdt[GDT_ENTRIES] = {
+  * while the kernel still uses a direct mapping.
+  */
+ static struct desc_ptr startup_gdt_descr = {
+-	.size = sizeof(startup_gdt),
++	.size = sizeof(startup_gdt)-1,
+ 	.address = 0,
+ };
  
- 	/*
--	 * Range covering the highest possible canonical userspace address
--	 * as well as non-canonical address range. For the canonical range
--	 * we also need to include the userspace guard page.
-+	 * Do not allow userspace addresses.  This disallows
-+	 * normal userspace and the userspace guard page:
- 	 */
--	return vaddr >= TASK_SIZE_MAX + PAGE_SIZE &&
--	       __is_canonical_address(vaddr, boot_cpu_data.x86_virt_bits);
-+	if (vaddr < TASK_SIZE_MAX + PAGE_SIZE)
-+		return false;
-+
-+	/*
-+	 * Allow everything during early boot before 'x86_virt_bits'
-+	 * is initialized.  Needed for instruction decoding in early
-+	 * exception handlers.
-+	 */
-+	if (!boot_cpu_data.x86_virt_bits)
-+		return true;
-+
-+	return __is_canonical_address(vaddr, boot_cpu_data.x86_virt_bits);
- }
- #else
- bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
 -- 
 2.42.0
 
