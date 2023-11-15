@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5787ECFB5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D20C87ECD8E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235388AbjKOTuQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46972 "EHLO
+        id S234525AbjKOThJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235391AbjKOTuQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:16 -0500
+        with ESMTP id S234563AbjKOThI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:08 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0174512C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6647DC433C8;
-        Wed, 15 Nov 2023 19:50:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDBD4A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:05 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D28C433C7;
+        Wed, 15 Nov 2023 19:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077812;
-        bh=VZCS0V9aPrf2liMVOlm5LGZd0gcoFXo7MRa7dHFW4Iw=;
+        s=korg; t=1700077025;
+        bh=qn6KFiGi5nSBcao6jgaoDfgzM5sbJJL5gczobnxGnTo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Je6Wmgw0leW5kPL73BhxVLtfiQ8RNUIZcIef/gWZEhAUkZcyT8dCJsS2abP3RlQu4
-         yL9CVGtkQDiHuOro1Qqsli6k778Y1fT0kEkCO7ok1FlpNXhXBTYdrp+tDpMwbrtuXo
-         mhAl/OsMLn8yi+3AD9pcZ1FeUuN7LrSrU+TgXayU=
+        b=RwOZva6y+TTdBFke0aOVUrbkBSppui81CXKByrAygZihBpQ0AjjsJ91wOSc1PJKUp
+         CegpE77DxRHQbhmyzVdiKwVNkmwepmtCHMbaqxV4mYd1qPP8Tn2euFj8HkQwAht19K
+         Oz/Ws7w/DWi66uflFZMcZyc3d8HG7t9P7sfYK0BM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 534/603] drm/amdgpu/gfx10,11: use memcpy_to/fromio for MQDs
-Date:   Wed, 15 Nov 2023 14:17:59 -0500
-Message-ID: <20231115191648.830136643@linuxfoundation.org>
+Subject: [PATCH 6.5 496/550] Input: synaptics-rmi4 - fix use after free in rmi_unregister_function()
+Date:   Wed, 15 Nov 2023 14:18:00 -0500
+Message-ID: <20231115191635.295930553@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,126 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b3c942bb6c32a8ddc1d52ee6bc24b8cf732dddf4 ]
+[ Upstream commit eb988e46da2e4eae89f5337e047ce372fe33d5b1 ]
 
-Since they were moved to VRAM, we need to use the IO
-variants of memcpy.
+The put_device() calls rmi_release_function() which frees "fn" so the
+dereference on the next line "fn->num_of_irqs" is a use after free.
+Move the put_device() to the end to fix this.
 
-Fixes: 1cfb4d612127 ("drm/amdgpu: put MQDs in VRAM")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 24d28e4f1271 ("Input: synaptics-rmi4 - convert irq distribution to irq_domain")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/706efd36-7561-42f3-adfa-dd1d0bd4f5a1@moroto.mountain
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 12 ++++++------
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 12 ++++++------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/input/rmi4/rmi_bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 9032d7a24d7cd..306252cd67fd7 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -6457,11 +6457,11 @@ static int gfx_v10_0_gfx_init_queue(struct amdgpu_ring *ring)
- 		nv_grbm_select(adev, 0, 0, 0, 0);
- 		mutex_unlock(&adev->srbm_mutex);
- 		if (adev->gfx.me.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.me.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.me.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
- 	} else {
- 		/* restore mqd with the backup copy */
- 		if (adev->gfx.me.mqd_backup[mqd_idx])
--			memcpy(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset the ring */
- 		ring->wptr = 0;
- 		*ring->wptr_cpu_addr = 0;
-@@ -6735,7 +6735,7 @@ static int gfx_v10_0_kiq_init_queue(struct amdgpu_ring *ring)
- 	if (amdgpu_in_reset(adev)) { /* for GPU_RESET case */
- 		/* reset MQD to a clean status */
- 		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(*mqd));
+diff --git a/drivers/input/rmi4/rmi_bus.c b/drivers/input/rmi4/rmi_bus.c
+index f2e093b0b9982..1b45b1d3077de 100644
+--- a/drivers/input/rmi4/rmi_bus.c
++++ b/drivers/input/rmi4/rmi_bus.c
+@@ -277,11 +277,11 @@ void rmi_unregister_function(struct rmi_function *fn)
  
- 		/* reset ring buffer */
- 		ring->wptr = 0;
-@@ -6758,7 +6758,7 @@ static int gfx_v10_0_kiq_init_queue(struct amdgpu_ring *ring)
- 		mutex_unlock(&adev->srbm_mutex);
+ 	device_del(&fn->dev);
+ 	of_node_put(fn->dev.of_node);
+-	put_device(&fn->dev);
  
- 		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(adev->gfx.kiq[0].mqd_backup, mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.kiq[0].mqd_backup, mqd, sizeof(*mqd));
- 	}
+ 	for (i = 0; i < fn->num_of_irqs; i++)
+ 		irq_dispose_mapping(fn->irq[i]);
  
- 	return 0;
-@@ -6779,11 +6779,11 @@ static int gfx_v10_0_kcq_init_queue(struct amdgpu_ring *ring)
- 		mutex_unlock(&adev->srbm_mutex);
++	put_device(&fn->dev);
+ }
  
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
- 	} else {
- 		/* restore MQD to a clean status */
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset ring buffer */
- 		ring->wptr = 0;
- 		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 762d7a19f1be1..43d066bc5245b 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -3684,11 +3684,11 @@ static int gfx_v11_0_gfx_init_queue(struct amdgpu_ring *ring)
- 		soc21_grbm_select(adev, 0, 0, 0, 0);
- 		mutex_unlock(&adev->srbm_mutex);
- 		if (adev->gfx.me.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.me.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.me.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
- 	} else {
- 		/* restore mqd with the backup copy */
- 		if (adev->gfx.me.mqd_backup[mqd_idx])
--			memcpy(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.me.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset the ring */
- 		ring->wptr = 0;
- 		*ring->wptr_cpu_addr = 0;
-@@ -3977,7 +3977,7 @@ static int gfx_v11_0_kiq_init_queue(struct amdgpu_ring *ring)
- 	if (amdgpu_in_reset(adev)) { /* for GPU_RESET case */
- 		/* reset MQD to a clean status */
- 		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.kiq[0].mqd_backup, sizeof(*mqd));
- 
- 		/* reset ring buffer */
- 		ring->wptr = 0;
-@@ -4000,7 +4000,7 @@ static int gfx_v11_0_kiq_init_queue(struct amdgpu_ring *ring)
- 		mutex_unlock(&adev->srbm_mutex);
- 
- 		if (adev->gfx.kiq[0].mqd_backup)
--			memcpy(adev->gfx.kiq[0].mqd_backup, mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.kiq[0].mqd_backup, mqd, sizeof(*mqd));
- 	}
- 
- 	return 0;
-@@ -4021,11 +4021,11 @@ static int gfx_v11_0_kcq_init_queue(struct amdgpu_ring *ring)
- 		mutex_unlock(&adev->srbm_mutex);
- 
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
-+			memcpy_fromio(adev->gfx.mec.mqd_backup[mqd_idx], mqd, sizeof(*mqd));
- 	} else {
- 		/* restore MQD to a clean status */
- 		if (adev->gfx.mec.mqd_backup[mqd_idx])
--			memcpy(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(*mqd));
-+			memcpy_toio(mqd, adev->gfx.mec.mqd_backup[mqd_idx], sizeof(*mqd));
- 		/* reset ring buffer */
- 		ring->wptr = 0;
- 		atomic64_set((atomic64_t *)ring->wptr_cpu_addr, 0);
+ /**
 -- 
 2.42.0
 
