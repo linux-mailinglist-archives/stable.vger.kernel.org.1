@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA2C07ED086
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD82A7ED05C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:54:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235508AbjKOTz1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:55:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35748 "EHLO
+        id S1343504AbjKOTyd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:54:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343561AbjKOTzM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:55:12 -0500
+        with ESMTP id S1343508AbjKOTyb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:54:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6A3319F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:55:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29256C433C9;
-        Wed, 15 Nov 2023 19:55:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7479919F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:54:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5D3C433C9;
+        Wed, 15 Nov 2023 19:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078109;
-        bh=qRa0GdpTMFbqsliEcWAeID04F9gR6CIYY9D7RbiOB6k=;
+        s=korg; t=1700078068;
+        bh=a612TOYRW2azKnbS8wl/4DxVnm/OfyusJ3aAFE6R79g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mMYpHmlIg+RbPNJeSKR+ceFvi5SLeL18QV7rXhUDwGLI3BTSmQ9mbKyJJx60ZefMF
-         eGIWbhncOXCIgvG4PGrzdIaMFjqc089ouc4uQOhG9BDXniaJua76f4cVF3TLxe363n
-         QH8y/k0ODL/gmAby8Xtt+KO7cMM+UwAsqq1A9ucA=
+        b=DQu8GiJbjV0N8unOtjc5O4lvgrpqx1ndTuoU2gluguN8mBM2qNyL/nQoUpniokOrU
+         9+6rzRaC8KxAfLAtX0lk37qKllSgzp5b2A1uRda4CoHXATUDfB8PQ/plr4dHa3r2fG
+         789MJux9bxIimjYLYcYdDjU4SLbyWjxf3qBfgZyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/379] clk: renesas: rzg2l: Trust value returned by hardware
-Date:   Wed, 15 Nov 2023 14:22:45 -0500
-Message-ID: <20231115192650.455683641@linuxfoundation.org>
+Subject: [PATCH 6.1 091/379] clk: renesas: rzg2l: Use FIELD_GET() for PLL register fields
+Date:   Wed, 15 Nov 2023 14:22:46 -0500
+Message-ID: <20231115192650.515302924@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -57,44 +57,51 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit bf51d3b2d048c312764a55d91d67a85ee5535e31 ]
+[ Upstream commit 72977f07b035e488c3f1928832a1616c6cae7278 ]
 
-The onitial value of the CPG_PL2SDHI_DSEL bits 0..1 or 4..6 is 01b.  The
-hardware user's manual (r01uh0914ej0130-rzg2l-rzg2lc.pdf) specifies that
-setting 0 is prohibited.  Hence rzg2l_cpg_sd_clk_mux_get_parent() should
-just read CPG_PL2SDHI_DSEL, trust the value, and return the proper clock
-parent index based on the value read.
+Use FIELD_GET() for PLL register fields.  This is its purpose.
 
-Fixes: eaff33646f4cb ("clk: renesas: rzg2l: Add SDHI clk mux support")
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230929053915.1530607-5-claudiu.beznea@bp.renesas.com
+Link: https://lore.kernel.org/r/20230912045157.177966-14-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: a2b23159499e ("clk: renesas: rzg2l: Fix computation formula")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index a703a3b35e642..f2fc14f60ca0b 100644
+index f2fc14f60ca0b..917ce62d8c397 100644
 --- a/drivers/clk/renesas/rzg2l-cpg.c
 +++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -242,14 +242,8 @@ static u8 rzg2l_cpg_sd_clk_mux_get_parent(struct clk_hw *hw)
+@@ -11,6 +11,7 @@
+  * Copyright (C) 2015 Renesas Electronics Corp.
+  */
  
- 	val >>= GET_SHIFT(hwdata->conf);
- 	val &= GENMASK(GET_WIDTH(hwdata->conf) - 1, 0);
--	if (val) {
--		val--;
--	} else {
--		/* Prohibited clk source, change it to 533 MHz(reset value) */
--		rzg2l_cpg_sd_clk_mux_set_parent(hw, 0);
--	}
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/clk-provider.h>
+ #include <linux/clk/renesas.h>
+@@ -39,14 +40,13 @@
+ #define WARN_DEBUG(x)	do { } while (0)
+ #endif
  
--	return val;
-+	return val ? val - 1 : 0;
- }
+-#define DIV_RSMASK(v, s, m)	((v >> s) & m)
+ #define GET_SHIFT(val)		((val >> 12) & 0xff)
+ #define GET_WIDTH(val)		((val >> 8) & 0xf)
  
- static const struct clk_ops rzg2l_cpg_sd_clk_mux_ops = {
+-#define KDIV(val)		DIV_RSMASK(val, 16, 0xffff)
+-#define MDIV(val)		DIV_RSMASK(val, 6, 0x3ff)
+-#define PDIV(val)		DIV_RSMASK(val, 0, 0x3f)
+-#define SDIV(val)		DIV_RSMASK(val, 0, 0x7)
++#define KDIV(val)		FIELD_GET(GENMASK(31, 16), val)
++#define MDIV(val)		FIELD_GET(GENMASK(15, 6), val)
++#define PDIV(val)		FIELD_GET(GENMASK(5, 0), val)
++#define SDIV(val)		FIELD_GET(GENMASK(2, 0), val)
+ 
+ #define CLK_ON_R(reg)		(reg)
+ #define CLK_MON_R(reg)		(0x180 + (reg))
 -- 
 2.42.0
 
