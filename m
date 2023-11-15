@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E49877ECEC2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 967C67ECC21
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235173AbjKOTon (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
+        id S233815AbjKOT1J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235162AbjKOToi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:38 -0500
+        with ESMTP id S233802AbjKOT0y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80495189
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EA9C433CA;
-        Wed, 15 Nov 2023 19:44:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCEAD6B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA98C433C8;
+        Wed, 15 Nov 2023 19:26:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077475;
-        bh=nuXPUKF1RZ/qIUhC4NWXIp8Lac7TPkPNMrB9JfP0qxg=;
+        s=korg; t=1700076411;
+        bh=SVqJMIc8DdS5YCkNcag5GVn72zPmdP1bU0ALqA2Qrq4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q8K/oIBv9tVeKHhu4Rx7PU+x6pvdx3RFTLWT3lrv0kkZ50HN6DzTParzXFMBwCvGz
-         OsoG4Jzu7/wi2Um7MroBCg/yLxzksqwaXAzfGK6yAcg5xiMJA+5Vof+7so05wbfE2x
-         12clozoiOdP5je+rfYeBLkyu49YkTbRrYdCzOfM8=
+        b=HBOE70SVut60VQTh70Fl3RDMgMBKrhRiuHj7FMTSt6vIUE93skd5I3RcIFc1fbd75
+         ebgCefOfZqL1e6uw87PSQWVDdTbFQAFEBeHh1RyzCtIQDvXRmp+ELrgA5L7tRIrqiQ
+         R55ictFRu02xHQXuGCar22MBw85iJVLJn1kXSwUU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Rob Clark <robdclark@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 290/603] arm64: dts: qcom: sdx75-idp: align RPMh regulator nodes with bindings
+Subject: [PATCH 6.5 251/550] drm/msm/dsi: use msm_gem_kernel_put to free TX buffer
 Date:   Wed, 15 Nov 2023 14:13:55 -0500
-Message-ID: <20231115191633.455621754@linuxfoundation.org>
+Message-ID: <20231115191618.092850801@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 815ea491460766dbd4b39a3c9904b44b5880c41c ]
+[ Upstream commit 69b321b2c3df4f7e51a9de587e41f324b0b717b0 ]
 
-Device node names should be generic and bindings expect certain pattern
-for RPMh regulator nodes:
+Use exiting function to free the allocated GEM object instead of
+open-coding it. This has a bonus of internally calling
+msm_gem_put_vaddr() to compensate for msm_gem_get_vaddr() in
+msm_get_kernel_new().
 
-  sdx75-idp.dtb: rsc@17a00000: 'pmx75-rpmh-regulators' does not match any of the regexes: '^regulators(-[0-9])?$', 'pinctrl-[0-9]+'
-
-Fixes: 8a2dc39d1043 ("arm64: dts: qcom: sdx75-idp: Add regulator nodes")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230905163103.257412-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 1e29dff00400 ("drm/msm: Add a common function to free kernel buffer objects")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/562239/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdx75-idp.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdx75-idp.dts b/arch/arm64/boot/dts/qcom/sdx75-idp.dts
-index 10d15871f2c48..a14e0650c4a8a 100644
---- a/arch/arm64/boot/dts/qcom/sdx75-idp.dts
-+++ b/arch/arm64/boot/dts/qcom/sdx75-idp.dts
-@@ -44,7 +44,7 @@ vreg_bob_3p3: pmx75-bob {
- };
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 9ac62651eb756..d433552c94f30 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -1150,8 +1150,7 @@ static void dsi_tx_buf_free(struct msm_dsi_host *msm_host)
  
- &apps_rsc {
--	pmx75-rpmh-regulators {
-+	regulators-0 {
- 		compatible = "qcom,pmx75-rpmh-regulators";
- 		qcom,pmic-id = "b";
+ 	priv = dev->dev_private;
+ 	if (msm_host->tx_gem_obj) {
+-		msm_gem_unpin_iova(msm_host->tx_gem_obj, priv->kms->aspace);
+-		drm_gem_object_put(msm_host->tx_gem_obj);
++		msm_gem_kernel_put(msm_host->tx_gem_obj, priv->kms->aspace);
+ 		msm_host->tx_gem_obj = NULL;
+ 	}
  
 -- 
 2.42.0
