@@ -2,41 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 610C37ED0A2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD8D7ED0A3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343935AbjKOT4u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:56:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42206 "EHLO
+        id S1343639AbjKOT4v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:56:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343619AbjKOT4e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:34 -0500
+        with ESMTP id S1343802AbjKOT4g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A99D59
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2F7CC433C8;
-        Wed, 15 Nov 2023 19:56:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C877D6B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48289C433C9;
+        Wed, 15 Nov 2023 19:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078190;
-        bh=XEIxtwtM7WGrB48iUx8OGS60ghU4Lb7dHMxdgfJlmrY=;
+        s=korg; t=1700078191;
+        bh=Kscv+QmhPmtv65OkMe83WPc7M9MdIPpgRKBn9TB7UvI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vj9lAy+6pX6JEBT5iAhakTBhdgBqHKCptyLtGQ8ZaHdrqRhUgpJLnCaZu8UzsvCaW
-         Dl/u+9QOjQeYpT4zjXd3bNG4iNDHoKR0ZGllQF0UqsIii7WVwn9jGt8BSVg5zIqVjH
-         D9I2Bo41bBZ2KCcDQVuDQdNc1kOnpyOCWfy9nsBU=
+        b=TN3+Ng2gWxYnDmRstD3hs7Uf3nhTpdn/eJWPQlTd3Ee12kAXKRIOTRSnxf4+MAzbr
+         3gCjrS4YTZNJ5zrJrhFSk8HNSnIUwh6suICN9chNhnrhFrTRDV2/Kc2QSexYoUBask
+         OIi210sbbjEvpAR5EOjrdWBJLyjIC+yx+VQPIxlY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/379] drm/mediatek: Fix iommu fault during crtc enabling
-Date:   Wed, 15 Nov 2023 14:23:37 -0500
-Message-ID: <20231115192653.518634710@linuxfoundation.org>
+Subject: [PATCH 6.1 143/379] drm/rockchip: cdn-dp: Fix some error handling paths in cdn_dp_probe()
+Date:   Wed, 15 Nov 2023 14:23:38 -0500
+Message-ID: <20231115192653.575670648@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -59,53 +55,58 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 53412dc2905401207f264dc30890f6b9e41524a6 ]
+[ Upstream commit 44b968d0d0868b7a9b7a5c64464ada464ff4d532 ]
 
-The difference between drm_atomic_helper_commit_tail() and
-drm_atomic_helper_commit_tail_rpm() is
-drm_atomic_helper_commit_tail() will commit plane first and
-then enable crtc, drm_atomic_helper_commit_tail_rpm() will
-enable crtc first and then commit plane.
+cdn_dp_audio_codec_init() can fail. So add some error handling.
 
-Before mediatek-drm enables crtc, the power and clk required
-by OVL have not been turned on, so the commit plane cannot be
-committed before crtc is enabled. That means OVL layer should
-not be enabled before crtc is enabled.
-Therefore, the atomic_commit_tail of mediatek-drm is hooked with
-drm_atomic_helper_commit_tail_rpm().
+If component_add() fails, the previous cdn_dp_audio_codec_init() call
+should be undone, as already done in the remove function.
 
-Another reason is that the plane_state of drm_atomic_state is not
-synchronized with the plane_state stored in mtk_crtc during crtc enablng,
-so just set all planes to disabled.
-
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20230809125722.24112-3-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 88582f564692 ("drm/rockchip: cdn-dp: Don't unregister audio dev when unbinding")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/8494a41602fadb7439630921a9779640698f2f9f.1693676045.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/rockchip/cdn-dp-core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-index 14ddfe3a6be77..7fb52a573436e 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-@@ -402,6 +402,9 @@ static int mtk_crtc_ddp_hw_init(struct mtk_drm_crtc *mtk_crtc)
- 		unsigned int local_layer;
+diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+index 8526dda919317..0b33c3a1e6e3b 100644
+--- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
++++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+@@ -1178,6 +1178,7 @@ static int cdn_dp_probe(struct platform_device *pdev)
+ 	struct cdn_dp_device *dp;
+ 	struct extcon_dev *extcon;
+ 	struct phy *phy;
++	int ret;
+ 	int i;
  
- 		plane_state = to_mtk_plane_state(plane->state);
+ 	dp = devm_kzalloc(dev, sizeof(*dp), GFP_KERNEL);
+@@ -1218,9 +1219,19 @@ static int cdn_dp_probe(struct platform_device *pdev)
+ 	mutex_init(&dp->lock);
+ 	dev_set_drvdata(dev, dp);
+ 
+-	cdn_dp_audio_codec_init(dp, dev);
++	ret = cdn_dp_audio_codec_init(dp, dev);
++	if (ret)
++		return ret;
 +
-+		/* should not enable layer before crtc enabled */
-+		plane_state->pending.enable = false;
- 		comp = mtk_drm_ddp_comp_for_plane(crtc, plane, &local_layer);
- 		if (comp)
- 			mtk_ddp_comp_layer_config(comp, local_layer,
++	ret = component_add(dev, &cdn_dp_component_ops);
++	if (ret)
++		goto err_audio_deinit;
+ 
+-	return component_add(dev, &cdn_dp_component_ops);
++	return 0;
++
++err_audio_deinit:
++	platform_device_unregister(dp->audio_pdev);
++	return ret;
+ }
+ 
+ static int cdn_dp_remove(struct platform_device *pdev)
 -- 
 2.42.0
 
