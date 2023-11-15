@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 410437ECFCF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E13497ECDCD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235408AbjKOTu6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36424 "EHLO
+        id S234655AbjKOTie (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235427AbjKOTu5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:57 -0500
+        with ESMTP id S234678AbjKOTid (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 581131BD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEFB7C433C7;
-        Wed, 15 Nov 2023 19:50:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674B1A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD24C433C7;
+        Wed, 15 Nov 2023 19:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077853;
-        bh=Aqaq0Q4isSFE7vO1Yf67vyVjBmQV4w1ISOii1W5qmBQ=;
+        s=korg; t=1700077110;
+        bh=Iej/ocXcfmRX2TGBLuyNzQwlYrKNFZfEdSC2Hb1Rdh0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tnykvEYSv5E53J5EQHUODg18d96sf25mr+ld0YzZnFiR21Y70Tzi9LZAvJDV/FHbR
-         RNqm6aYYwE4DTFPgqzUe5uOBVUaZQ1g819pHREHoAFEWDf601iEgqH5vrI6VjS5Sv/
-         0ZlxdaqdEcqUSDoT7148cU5TKgj6rT0qG1Vt528s=
+        b=TLlefrzQI2JqSUNaL+pvgyIVZR5IzuccXhzATCMuRVHxE+ZrACbMiWOCq09j+Q9O0
+         G3NDDnzHn9aLIFgcNgk2WJ8lCUQH8gz2+c7SV2Ca1YA1AtcN5cViE984C6BFhQvFcL
+         6lpr93VKQCJ84hGAiP2vcgySzG0ZbdlvdjYMvago=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anuj Gupta <anuj20.g@samsung.com>,
-        Kanchan Joshi <joshi.k@samsung.com>,
-        Niklas Cassel <niklas.cassel@wdc.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>,
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Ye Bin <yebin10@huawei.com>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 560/603] nvme: fix error-handling for io_uring nvme-passthrough
+Subject: [PATCH 6.5 521/550] blk-core: use pr_warn_ratelimited() in bio_check_ro()
 Date:   Wed, 15 Nov 2023 14:18:25 -0500
-Message-ID: <20231115191650.389564402@linuxfoundation.org>
+Message-ID: <20231115191637.058998932@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anuj Gupta <anuj20.g@samsung.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 1147dd0503564fa0e03489a039f9e0c748a03db4 ]
+[ Upstream commit 1b0a151c10a6d823f033023b9fdd9af72a89591b ]
 
-Driver may return an error before submitting the command to the device.
-Ensure that such error is propagated up.
+If one of the underlying disks of raid or dm is set to read-only, then
+each io will generate new log, which will cause message storm. This
+environment is indeed problematic, however we can't make sure our
+naive custormer won't do this, hence use pr_warn_ratelimited() to
+prevent message storm in this case.
 
-Fixes: 456cba386e94 ("nvme: wire-up uring-cmd support for io-passthru on char-device.")
-Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
-Signed-off-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Fixes: 57e95e4670d1 ("block: fix and cleanup bio_check_ro")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/r/20231107111247.2157820-1-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ block/blk-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index 747c879e8982b..529b9954d2b8c 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -510,10 +510,13 @@ static enum rq_end_io_ret nvme_uring_cmd_end_io(struct request *req,
- 	struct nvme_uring_cmd_pdu *pdu = nvme_uring_cmd_pdu(ioucmd);
- 
- 	req->bio = pdu->bio;
--	if (nvme_req(req)->flags & NVME_REQ_CANCELLED)
-+	if (nvme_req(req)->flags & NVME_REQ_CANCELLED) {
- 		pdu->nvme_status = -EINTR;
--	else
-+	} else {
- 		pdu->nvme_status = nvme_req(req)->status;
-+		if (!pdu->nvme_status)
-+			pdu->nvme_status = blk_status_to_errno(err);
-+	}
- 	pdu->u.result = le64_to_cpu(nvme_req(req)->result.u64);
- 
- 	/*
+diff --git a/block/blk-core.c b/block/blk-core.c
+index 9866468c72a2a..3e01b4afb90ce 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -500,8 +500,8 @@ static inline void bio_check_ro(struct bio *bio)
+ 	if (op_is_write(bio_op(bio)) && bdev_read_only(bio->bi_bdev)) {
+ 		if (op_is_flush(bio->bi_opf) && !bio_sectors(bio))
+ 			return;
+-		pr_warn("Trying to write to read-only block-device %pg\n",
+-			bio->bi_bdev);
++		pr_warn_ratelimited("Trying to write to read-only block-device %pg\n",
++				    bio->bi_bdev);
+ 		/* Older lvm-tools actually trigger this */
+ 	}
+ }
 -- 
 2.42.0
 
