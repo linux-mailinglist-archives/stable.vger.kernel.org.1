@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B747ECE1B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F24A07ECB98
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234805AbjKOTk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:40:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57034 "EHLO
+        id S230410AbjKOTXR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:23:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234816AbjKOTk2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:28 -0500
+        with ESMTP id S231204AbjKOTXQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 538EA19F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440D0C433C7;
-        Wed, 15 Nov 2023 19:40:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27F5AA4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D39CC433CB;
+        Wed, 15 Nov 2023 19:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077222;
-        bh=IW1V4PK8zJXnTL455FH3ghyeV1a2UTzO4t2wPWtQ3Fs=;
+        s=korg; t=1700076192;
+        bh=xNYMBtgbdPBeoI751MeIS7J3GxXu2qUGRW2D6AV/Qa0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GzltkdGTsaTr4wTubNE+g0AyKlxZ+e/B5dZlBeEB0w6C6QYZFtW8bG3OXW9eHGsOo
-         0iOYFfstL+K3ZBD/ms7JqT6t0fb8MblgebVJJaIspxZUy2MRlwRj6+3jsEfMSVvy/z
-         XviQ+ExjmSSnIICyAKBdO0w/pAE3ECJgDiJ0wUaI=
+        b=we/mqiiu5VMVqRGLzg/BzqccgWovJ3Y0En5kBlxwgqATlvuJVU2oXu6y5kTEA2jcr
+         1HMMzvB/huy0Z6543tiNYeDFYX/4IF7gvHsHR4ZYUCyuXM//9+FCUC6FJbDH8xhm/Z
+         23pEsmUYW4BpJ5hVHMCJd1hU7Fg17QwoW3O6FKag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>, Peng Fan <peng.fan@nxp.com>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/603] clk: imx: imx8mq: correct error handling path
+Subject: [PATCH 6.5 133/550] wifi: iwlwifi: mvm: fix iwl_mvm_mac_flush_sta()
 Date:   Wed, 15 Nov 2023 14:11:57 -0500
-Message-ID: <20231115191625.115805760@linuxfoundation.org>
+Message-ID: <20231115191609.905375365@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,73 +50,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 577ad169966e6e75b10e004389a3f79813e84b5d ]
+[ Upstream commit 43874283ce6c5bd32ac9d30878b2c96a974357cb ]
 
-Avoid memory leak in error handling path. It does not make
-much sense for the SoC without clk driver, to make program behavior
-correct, let's fix it.
+When I implemented iwl_mvm_mac_flush_sta() I completely botched it;
+it basically always happens after the iwl_mvm_sta_pre_rcu_remove()
+call, and that already clears mvm->fw_id_to_mac_id[] entries, so we
+cannot rely on those at iwl_mvm_mac_flush_sta() time. This means it
+never did anything.
 
-Fixes: b80522040cd3 ("clk: imx: Add clock driver for i.MX8MQ CCM")
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202309240551.e46NllPa-lkp@intel.com/
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20231001122618.194498-1-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Fix this by just going through the station IDs and now with the new
+API for iwl_mvm_flush_sta(), call those.
+
+Fixes: a6cc6ccb1c8a ("wifi: iwlwifi: mvm: support new flush_sta method")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231011130030.0b5878e93118.I1093e60163052e7be64d2b01424097cd6a272979@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mq.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 20 +++++++++----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mq.c b/drivers/clk/imx/clk-imx8mq.c
-index 4bd65879fcd34..f70ed231b92d6 100644
---- a/drivers/clk/imx/clk-imx8mq.c
-+++ b/drivers/clk/imx/clk-imx8mq.c
-@@ -288,8 +288,7 @@ static int imx8mq_clocks_probe(struct platform_device *pdev)
- 	void __iomem *base;
- 	int err;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 069aba0e064aa..e2288fd601a6a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -5607,22 +5607,20 @@ void iwl_mvm_mac_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ void iwl_mvm_mac_flush_sta(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta)
+ {
++	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+-	int i;
++	struct iwl_mvm_link_sta *mvm_link_sta;
++	struct ieee80211_link_sta *link_sta;
++	int link_id;
  
--	clk_hw_data = kzalloc(struct_size(clk_hw_data, hws,
--					  IMX8MQ_CLK_END), GFP_KERNEL);
-+	clk_hw_data = devm_kzalloc(dev, struct_size(clk_hw_data, hws, IMX8MQ_CLK_END), GFP_KERNEL);
- 	if (WARN_ON(!clk_hw_data))
- 		return -ENOMEM;
+ 	mutex_lock(&mvm->mutex);
+-	for (i = 0; i < mvm->fw->ucode_capa.num_stations; i++) {
+-		struct iwl_mvm_sta *mvmsta;
+-		struct ieee80211_sta *tmp;
+-
+-		tmp = rcu_dereference_protected(mvm->fw_id_to_mac_id[i],
+-						lockdep_is_held(&mvm->mutex));
+-		if (tmp != sta)
++	for_each_sta_active_link(vif, sta, link_sta, link_id) {
++		mvm_link_sta = rcu_dereference_protected(mvmsta->link[link_id],
++							 lockdep_is_held(&mvm->mutex));
++		if (!mvm_link_sta)
+ 			continue;
  
-@@ -306,10 +305,12 @@ static int imx8mq_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MQ_CLK_EXT4] = imx_get_clk_hw_by_name(np, "clk_ext4");
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mq-anatop");
--	base = of_iomap(np, 0);
-+	base = devm_of_iomap(dev, np, 0, NULL);
- 	of_node_put(np);
--	if (WARN_ON(!base))
--		return -ENOMEM;
-+	if (WARN_ON(IS_ERR(base))) {
-+		err = PTR_ERR(base);
-+		goto unregister_hws;
-+	}
- 
- 	hws[IMX8MQ_ARM_PLL_REF_SEL] = imx_clk_hw_mux("arm_pll_ref_sel", base + 0x28, 16, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
- 	hws[IMX8MQ_GPU_PLL_REF_SEL] = imx_clk_hw_mux("gpu_pll_ref_sel", base + 0x18, 16, 2, pll_ref_sels, ARRAY_SIZE(pll_ref_sels));
-@@ -395,8 +396,10 @@ static int imx8mq_clocks_probe(struct platform_device *pdev)
- 
- 	np = dev->of_node;
- 	base = devm_platform_ioremap_resource(pdev, 0);
--	if (WARN_ON(IS_ERR(base)))
--		return PTR_ERR(base);
-+	if (WARN_ON(IS_ERR(base))) {
-+		err = PTR_ERR(base);
-+		goto unregister_hws;
-+	}
- 
- 	/* CORE */
- 	hws[IMX8MQ_CLK_A53_DIV] = imx8m_clk_hw_composite_core("arm_a53_div", imx8mq_a53_sels, base + 0x8000);
+-		mvmsta = iwl_mvm_sta_from_mac80211(sta);
+-
+-		if (iwl_mvm_flush_sta(mvm, mvmsta->deflink.sta_id,
++		if (iwl_mvm_flush_sta(mvm, mvm_link_sta->sta_id,
+ 				      mvmsta->tfd_queue_msk))
+ 			IWL_ERR(mvm, "flush request fail\n");
+ 	}
 -- 
 2.42.0
 
