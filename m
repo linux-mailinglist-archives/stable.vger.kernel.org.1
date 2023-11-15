@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 846CF7ED44D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E5907ED320
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235592AbjKOU5l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34636 "EHLO
+        id S233690AbjKOUqW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344606AbjKOU51 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:27 -0500
+        with ESMTP id S233680AbjKOUqV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EDB8D5A
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532C4C4E762;
-        Wed, 15 Nov 2023 20:52:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 002AA1B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:17 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D84DC433CA;
+        Wed, 15 Nov 2023 20:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081522;
-        bh=rjJiDCYnbsWYLR9iiodrLYEmsdPrXgUXhhDwPRF9nQQ=;
+        s=korg; t=1700081177;
+        bh=8pORV+CZ63QoHydU8iq/S4tSjBwZRZP7W5T1K39+ceY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uRrciUDzebjcjElppteaQqtby9Kntv2RhgSvGoV3LvEV/Azd9KCNLjvLDrHtFH/YC
-         fbraneW9daGu695HtCdIZQZPSZuUCwBDxhYgVK4C4yKIEEmEBsF3Iq8iHCWieq1vEI
-         5FxQ5mXomMA83h7zPy637kXy3e9x/XqLyJoQfY7A=
+        b=EUdc2X5QnJq5ArNN/qlDdxDw1MgbElscc7ugT72tpecihGvChbJ7XK+zR9M1ECGJ/
+         2143aZG51NtC+9x4gobNBbZE9tLB87WW9hmf0KFpXYxeWV1SadinfryhI88N0OW7E0
+         TkFcuhdkcv8dQaKGqsJSd68YUM2368ZI3WUFo2Ek=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 205/244] media: vidtv: mux: Add check and kfree for kstrdup
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 85/88] fbdev: imsttfb: fix a resource leak in probe
 Date:   Wed, 15 Nov 2023 15:36:37 -0500
-Message-ID: <20231115203600.658692043@linuxfoundation.org>
+Message-ID: <20231115191431.161034459@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,58 +49,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 1fd6eb12642e0c32692924ff359c07de4b781d78 ]
+[ Upstream commit aba6ab57a910ad4b940c2024d15f2cdbf5b7f76b ]
 
-Add check for the return value of kstrdup() and return the error
-if it fails in order to avoid NULL pointer dereference.
-Moreover, use kfree() in the later error handling in order to avoid
-memory leak.
+I've re-written the error handling but the bug is that if init_imstt()
+fails we need to call iounmap(par->cmap_regs).
 
-Fixes: c2f78f0cb294 ("media: vidtv: psi: add a Network Information Table (NIT)")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: c75f5a550610 ("fbdev: imsttfb: Fix use after free bug in imsttfb_probe")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_mux.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/imsttfb.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_mux.c b/drivers/media/test-drivers/vidtv/vidtv_mux.c
-index b51e6a3b8cbeb..f99878eff7ace 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_mux.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_mux.c
-@@ -504,13 +504,16 @@ struct vidtv_mux *vidtv_mux_init(struct dvb_frontend *fe,
- 	m->priv = args->priv;
- 	m->network_id = args->network_id;
- 	m->network_name = kstrdup(args->network_name, GFP_KERNEL);
-+	if (!m->network_name)
-+		goto free_mux_buf;
-+
- 	m->timing.current_jiffies = get_jiffies_64();
+diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
+index 9a9018d143761..30ba79d3dbea4 100644
+--- a/drivers/video/fbdev/imsttfb.c
++++ b/drivers/video/fbdev/imsttfb.c
+@@ -1493,8 +1493,8 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
  
- 	if (args->channels)
- 		m->channels = args->channels;
- 	else
- 		if (vidtv_channels_init(m) < 0)
--			goto free_mux_buf;
-+			goto free_mux_network_name;
+ 	if (!request_mem_region(addr, size, "imsttfb")) {
+ 		printk(KERN_ERR "imsttfb: Can't reserve memory region\n");
+-		framebuffer_release(info);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto release_info;
+ 	}
  
- 	/* will alloc data for pmt_sections after initializing pat */
- 	if (vidtv_channel_si_init(m) < 0)
-@@ -527,6 +530,8 @@ struct vidtv_mux *vidtv_mux_init(struct dvb_frontend *fe,
- 	vidtv_channel_si_destroy(m);
- free_channels:
- 	vidtv_channels_destroy(m);
-+free_mux_network_name:
-+	kfree(m->network_name);
- free_mux_buf:
- 	vfree(m->mux_buf);
- free_mux:
+ 	switch (pdev->device) {
+@@ -1511,36 +1511,39 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 			printk(KERN_INFO "imsttfb: Device 0x%x unknown, "
+ 					 "contact maintainer.\n", pdev->device);
+ 			ret = -ENODEV;
+-			goto error;
++			goto release_mem_region;
+ 	}
+ 
+ 	info->fix.smem_start = addr;
+ 	info->screen_base = (__u8 *)ioremap(addr, par->ramdac == IBM ?
+ 					    0x400000 : 0x800000);
+ 	if (!info->screen_base)
+-		goto error;
++		goto release_mem_region;
+ 	info->fix.mmio_start = addr + 0x800000;
+ 	par->dc_regs = ioremap(addr + 0x800000, 0x1000);
+ 	if (!par->dc_regs)
+-		goto error;
++		goto unmap_screen_base;
+ 	par->cmap_regs_phys = addr + 0x840000;
+ 	par->cmap_regs = (__u8 *)ioremap(addr + 0x840000, 0x1000);
+ 	if (!par->cmap_regs)
+-		goto error;
++		goto unmap_dc_regs;
+ 	info->pseudo_palette = par->palette;
+ 	ret = init_imstt(info);
+ 	if (ret)
+-		goto error;
++		goto unmap_cmap_regs;
+ 
+ 	pci_set_drvdata(pdev, info);
+-	return ret;
++	return 0;
+ 
+-error:
+-	if (par->dc_regs)
+-		iounmap(par->dc_regs);
+-	if (info->screen_base)
+-		iounmap(info->screen_base);
++unmap_cmap_regs:
++	iounmap(par->cmap_regs);
++unmap_dc_regs:
++	iounmap(par->dc_regs);
++unmap_screen_base:
++	iounmap(info->screen_base);
++release_mem_region:
+ 	release_mem_region(addr, size);
++release_info:
+ 	framebuffer_release(info);
+ 	return ret;
+ }
 -- 
 2.42.0
 
