@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D51E7ECD2F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EB4B7ECD31
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234365AbjKOTey (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:34:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37002 "EHLO
+        id S234360AbjKOTe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234360AbjKOTex (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:53 -0500
+        with ESMTP id S234363AbjKOTe5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979481BD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:50 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9B2C433CB;
-        Wed, 15 Nov 2023 19:34:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24E91AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B4EC433CA;
+        Wed, 15 Nov 2023 19:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076890;
-        bh=JahcFFMT8uSVQvwUGYfXfssx8l5yoEs4RkJKGcerbE8=;
+        s=korg; t=1700076893;
+        bh=UfgjBLANxOTETSHcTmncKsYtc4ZAdwO/9iTQEaHLlxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qz2xTbZg8Mq7/Uytv00y1a4dOfamYgkwur3iMYqrrVzspf6D2XPdPTudPIRRnweSI
-         6tR/sHaMh40Pq7RDYwVrweIeMIuUUXyS9YA22tG8p4/2CVnYFnTauAg9uMUWm3RKk2
-         L1cIL7Rv0y7QlcwmqmN7pNhJhj7VGQHL14hbbSRQ=
+        b=Jyr3Ja8fqM3miskz5XqMMWSfUS+q0hpex4Fd6krhvCtmxKTc/RraKit34rpAoh8GN
+         k+djKIQussLAVZ3J3hL1SQ5MubLVgDg7REWOpSX+7KU60JriWb61E/J7+tuJ2kpERw
+         skkylGN8IFkmmVTHkFsHk1cGAtOpP2kHDj50kyLU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Willem de Bruijn <willemb@google.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/603] udp: move udp->accept_udp_{l4|fraglist} to udp->udp_flags
-Date:   Wed, 15 Nov 2023 14:10:03 -0500
-Message-ID: <20231115191617.140663711@linuxfoundation.org>
+Subject: [PATCH 6.6 059/603] udp: lockless UDP_ENCAP_L2TPINUDP / UDP_GRO
+Date:   Wed, 15 Nov 2023 14:10:04 -0500
+Message-ID: <20231115191617.207769195@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -57,9 +57,12 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f5f52f0884a595ff99ab1a608643fe4025fca2d5 ]
+[ Upstream commit ac9a7f4ce5dda1472e8f44096f33066c6ec1a3b4 ]
 
-These are read locklessly, move them to udp_flags to fix data-races.
+Move udp->encap_enabled to udp->udp_flags.
+
+Add udp_test_and_set_bit() helper to allow lockless
+udp_tunnel_encap_enable() implementation.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: Willem de Bruijn <willemb@google.com>
@@ -67,77 +70,137 @@ Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Stable-dep-of: 70a36f571362 ("udp: annotate data-races around udp->encap_type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h | 16 +++++++++-------
- net/ipv4/udp.c      |  2 +-
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ include/linux/udp.h        |  9 ++++-----
+ include/net/udp_tunnel.h   |  9 +++------
+ net/ipv4/udp.c             | 10 +++-------
+ net/ipv4/udp_tunnel_core.c |  2 +-
+ net/ipv6/udp.c             |  2 +-
+ 5 files changed, 12 insertions(+), 20 deletions(-)
 
 diff --git a/include/linux/udp.h b/include/linux/udp.h
-index b344bd2e41fc9..bb2b87adfbea9 100644
+index bb2b87adfbea9..0cf83270a4a28 100644
 --- a/include/linux/udp.h
 +++ b/include/linux/udp.h
-@@ -37,6 +37,8 @@ enum {
- 	UDP_FLAGS_NO_CHECK6_TX, /* Send zero UDP6 checksums on TX? */
- 	UDP_FLAGS_NO_CHECK6_RX, /* Allow zero UDP6 checksums on RX? */
+@@ -39,6 +39,7 @@ enum {
  	UDP_FLAGS_GRO_ENABLED,	/* Request GRO aggregation */
-+	UDP_FLAGS_ACCEPT_FRAGLIST,
-+	UDP_FLAGS_ACCEPT_L4,
+ 	UDP_FLAGS_ACCEPT_FRAGLIST,
+ 	UDP_FLAGS_ACCEPT_L4,
++	UDP_FLAGS_ENCAP_ENABLED, /* This socket enabled encap */
  };
  
  struct udp_sock {
-@@ -50,13 +52,11 @@ struct udp_sock {
+@@ -52,11 +53,7 @@ struct udp_sock {
  
  	int		 pending;	/* Any pending frames ? */
  	__u8		 encap_type;	/* Is this an Encapsulation socket? */
--	unsigned char	 encap_enabled:1, /* This socket enabled encap
-+	unsigned char	 encap_enabled:1; /* This socket enabled encap
- 					   * processing; UDP tunnels and
- 					   * different encapsulation layer set
- 					   * this
- 					   */
--			 accept_udp_l4:1,
--			 accept_udp_fraglist:1;
+-	unsigned char	 encap_enabled:1; /* This socket enabled encap
+-					   * processing; UDP tunnels and
+-					   * different encapsulation layer set
+-					   * this
+-					   */
++
  /* indicator bits used by pcflag: */
  #define UDPLITE_BIT      0x1  		/* set by udplite proto init function */
  #define UDPLITE_SEND_CC  0x2  		/* set via udplite setsockopt         */
-@@ -149,10 +149,12 @@ static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
- 	if (!skb_is_gso(skb))
- 		return false;
- 
--	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 && !udp_sk(sk)->accept_udp_l4)
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+	    !udp_test_bit(ACCEPT_L4, sk))
- 		return true;
- 
--	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST && !udp_sk(sk)->accept_udp_fraglist)
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST &&
-+	    !udp_test_bit(ACCEPT_FRAGLIST, sk))
- 		return true;
- 
- 	return false;
-@@ -160,8 +162,8 @@ static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
- 
- static inline void udp_allow_gso(struct sock *sk)
- {
--	udp_sk(sk)->accept_udp_l4 = 1;
--	udp_sk(sk)->accept_udp_fraglist = 1;
-+	udp_set_bit(ACCEPT_L4, sk);
-+	udp_set_bit(ACCEPT_FRAGLIST, sk);
+@@ -104,6 +101,8 @@ struct udp_sock {
+ 	test_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+ #define udp_set_bit(nr, sk)			\
+ 	set_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
++#define udp_test_and_set_bit(nr, sk)		\
++	test_and_set_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+ #define udp_clear_bit(nr, sk)			\
+ 	clear_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
+ #define udp_assign_bit(nr, sk, val)		\
+diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
+index 0ca9b7a11baf5..29251c3519cf0 100644
+--- a/include/net/udp_tunnel.h
++++ b/include/net/udp_tunnel.h
+@@ -174,16 +174,13 @@ static inline int udp_tunnel_handle_offloads(struct sk_buff *skb, bool udp_csum)
  }
+ #endif
  
- #define udp_portaddr_for_each_entry(__sk, list) \
+-static inline void udp_tunnel_encap_enable(struct socket *sock)
++static inline void udp_tunnel_encap_enable(struct sock *sk)
+ {
+-	struct udp_sock *up = udp_sk(sock->sk);
+-
+-	if (up->encap_enabled)
++	if (udp_test_and_set_bit(ENCAP_ENABLED, sk))
+ 		return;
+ 
+-	up->encap_enabled = 1;
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (sock->sk->sk_family == PF_INET6)
++	if (READ_ONCE(sk->sk_family) == PF_INET6)
+ 		ipv6_stub->udpv6_encap_enable();
+ #endif
+ 	udp_encap_enable();
 diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index db43907b9a3e8..75ba86a87bb62 100644
+index 75ba86a87bb62..637a4faf9aff6 100644
 --- a/net/ipv4/udp.c
 +++ b/net/ipv4/udp.c
-@@ -2716,7 +2716,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
- 		if (valbool)
- 			udp_tunnel_encap_enable(sk->sk_socket);
- 		udp_assign_bit(GRO_ENABLED, sk, valbool);
--		up->accept_udp_l4 = valbool;
-+		udp_assign_bit(ACCEPT_L4, sk, valbool);
- 		release_sock(sk);
+@@ -2618,7 +2618,7 @@ void udp_destroy_sock(struct sock *sk)
+ 			if (encap_destroy)
+ 				encap_destroy(sk);
+ 		}
+-		if (up->encap_enabled)
++		if (udp_test_bit(ENCAP_ENABLED, sk))
+ 			static_branch_dec(&udp_encap_needed_key);
+ 	}
+ }
+@@ -2685,9 +2685,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
+ 			fallthrough;
+ 		case UDP_ENCAP_L2TPINUDP:
+ 			up->encap_type = val;
+-			lock_sock(sk);
+-			udp_tunnel_encap_enable(sk->sk_socket);
+-			release_sock(sk);
++			udp_tunnel_encap_enable(sk);
+ 			break;
+ 		default:
+ 			err = -ENOPROTOOPT;
+@@ -2710,14 +2708,12 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
  		break;
  
+ 	case UDP_GRO:
+-		lock_sock(sk);
+ 
+ 		/* when enabling GRO, accept the related GSO packet type */
+ 		if (valbool)
+-			udp_tunnel_encap_enable(sk->sk_socket);
++			udp_tunnel_encap_enable(sk);
+ 		udp_assign_bit(GRO_ENABLED, sk, valbool);
+ 		udp_assign_bit(ACCEPT_L4, sk, valbool);
+-		release_sock(sk);
+ 		break;
+ 
+ 	/*
+diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
+index 9b18f371af0d4..1e7e4aecdc48a 100644
+--- a/net/ipv4/udp_tunnel_core.c
++++ b/net/ipv4/udp_tunnel_core.c
+@@ -78,7 +78,7 @@ void setup_udp_tunnel_sock(struct net *net, struct socket *sock,
+ 	udp_sk(sk)->gro_receive = cfg->gro_receive;
+ 	udp_sk(sk)->gro_complete = cfg->gro_complete;
+ 
+-	udp_tunnel_encap_enable(sock);
++	udp_tunnel_encap_enable(sk);
+ }
+ EXPORT_SYMBOL_GPL(setup_udp_tunnel_sock);
+ 
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 2c3281879b6df..90688877e9004 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1670,7 +1670,7 @@ void udpv6_destroy_sock(struct sock *sk)
+ 			if (encap_destroy)
+ 				encap_destroy(sk);
+ 		}
+-		if (up->encap_enabled) {
++		if (udp_test_bit(ENCAP_ENABLED, sk)) {
+ 			static_branch_dec(&udpv6_encap_needed_key);
+ 			udp_encap_disable();
+ 		}
 -- 
 2.42.0
 
