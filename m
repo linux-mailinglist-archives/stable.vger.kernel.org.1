@@ -2,35 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6E6E7ED833
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 00:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D9197ED834
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 00:30:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230412AbjKOXaz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 18:30:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60252 "EHLO
+        id S229904AbjKOXa4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 18:30:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233640AbjKOXav (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 18:30:51 -0500
+        with ESMTP id S235054AbjKOXaw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 18:30:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7A7218B;
-        Wed, 15 Nov 2023 15:30:47 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DF2C433C9;
-        Wed, 15 Nov 2023 23:30:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E497198;
+        Wed, 15 Nov 2023 15:30:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6400C433CB;
+        Wed, 15 Nov 2023 23:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1700091047;
-        bh=frawxDI6pFC4U1i3NrbTABbYzQCmAnshlQ2wM5qQOBs=;
+        s=korg; t=1700091048;
+        bh=rr3CR0U/b/jAQxw4XuBWJ+U7nO79yMIcVVO7bvi3L1o=;
         h=Date:To:From:Subject:From;
-        b=1/9fYDpVa9W+fgxzSOTxo6PzMr5nL5sPwswS9x+hjF+AVTIKBMl7vsmXCOqatiQZQ
-         kz0p8gdGu5fvMa0Zdc0GtvJYRUotAJS+hJBjCvVbeLSW5bl6x4xP2wgEj7/Gvc9lRx
-         df9IDvZx+aup5X8dUbFutx1Br0U36Kwa1UrvnxEI=
-Date:   Wed, 15 Nov 2023 15:30:47 -0800
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        stable@vger.kernel.org, shy828301@gmail.com, riel@surriel.com,
-        hannes@cmpxchg.org, david@redhat.com, shr@devkernel.io,
+        b=daVki2TcNz7ef6UBNPweU+6DTOYagp4iSTgXY+mVwVfM9aOQU+thkgv+KM3KjoMlS
+         iqqRIZohDQFbrAYrpERjBqiyW7lD3N62ov9QxC7pFxIyalbiSCwVp+BuM2ZUf7TpLi
+         llKunp5i+V0h7NF38n0zlaOGUQBHiyj2JLWOmc8A=
+Date:   Wed, 15 Nov 2023 15:30:48 -0800
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-fix-for-negative-counter-nr_file_hugepages.patch removed from -mm tree
-Message-Id: <20231115233047.B5DF2C433C9@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-damon-sysfs-check-error-from-damon_sysfs_update_target.patch removed from -mm tree
+Message-Id: <20231115233048.B6400C433CB@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -43,83 +41,60 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm: fix for negative counter: nr_file_hugepages
+     Subject: mm/damon/sysfs: check error from damon_sysfs_update_target()
 has been removed from the -mm tree.  Its filename was
-     mm-fix-for-negative-counter-nr_file_hugepages.patch
+     mm-damon-sysfs-check-error-from-damon_sysfs_update_target.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Stefan Roesch <shr@devkernel.io>
-Subject: mm: fix for negative counter: nr_file_hugepages
-Date: Mon, 6 Nov 2023 10:19:18 -0800
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/sysfs: check error from damon_sysfs_update_target()
+Date: Mon, 6 Nov 2023 23:34:06 +0000
 
-While qualifiying the 6.4 release, the following warning was detected in
-messages:
+Patch series "mm/damon/sysfs: fix unhandled return values".
 
-vmstat_refresh: nr_file_hugepages -15664
+Some of DAMON sysfs interface code is not handling return values from some
+functions.  As a result, confusing user input handling or NULL-dereference
+is possible.  Check those properly.
 
-The warning is caused by the incorrect updating of the NR_FILE_THPS
-counter in the function split_huge_page_to_list.  The if case is checking
-for folio_test_swapbacked, but the else case is missing the check for
-folio_test_pmd_mappable.  The other functions that manipulate the counter
-like __filemap_add_folio and filemap_unaccount_folio have the
-corresponding check.
 
-I have a test case, which reproduces the problem. It can be found here:
-  https://github.com/sroeschus/testcase/blob/main/vmstat_refresh/madv.c
+This patch (of 3):
 
-The test case reproduces on an XFS filesystem. Running the same test
-case on a BTRFS filesystem does not reproduce the problem.
+damon_sysfs_update_target() returns error code for failures, but its
+caller, damon_sysfs_set_targets() is ignoring that.  The update function
+seems making no critical change in case of such failures, but the behavior
+will look like DAMON sysfs is silently ignoring or only partially
+accepting the user input.  Fix it.
 
-AFAIK version 6.1 until 6.6 are affected by this problem.
-
-[akpm@linux-foundation.org: whitespace fix]
-[shr@devkernel.io: test for folio_test_pmd_mappable()]
-  Link: https://lkml.kernel.org/r/20231108171517.2436103-1-shr@devkernel.io
-Link: https://lkml.kernel.org/r/20231106181918.1091043-1-shr@devkernel.io
-Signed-off-by: Stefan Roesch <shr@devkernel.io>
-Co-debugged-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20231106233408.51159-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20231106233408.51159-2-sj@kernel.org
+Fixes: 19467a950b49 ("mm/damon/sysfs: remove requested targets when online-commit inputs")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/huge_memory.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ mm/damon/sysfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/huge_memory.c~mm-fix-for-negative-counter-nr_file_hugepages
-+++ a/mm/huge_memory.c
-@@ -2769,13 +2769,15 @@ int split_huge_page_to_list(struct page
- 			int nr = folio_nr_pages(folio);
+--- a/mm/damon/sysfs.c~mm-damon-sysfs-check-error-from-damon_sysfs_update_target
++++ a/mm/damon/sysfs.c
+@@ -1203,8 +1203,10 @@ static int damon_sysfs_set_targets(struc
  
- 			xas_split(&xas, folio, folio_order(folio));
--			if (folio_test_swapbacked(folio)) {
--				__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS,
--							-nr);
--			} else {
--				__lruvec_stat_mod_folio(folio, NR_FILE_THPS,
--							-nr);
--				filemap_nr_thps_dec(mapping);
-+			if (folio_test_pmd_mappable(folio)) {
-+				if (folio_test_swapbacked(folio)) {
-+					__lruvec_stat_mod_folio(folio,
-+							NR_SHMEM_THPS, -nr);
-+				} else {
-+					__lruvec_stat_mod_folio(folio,
-+							NR_FILE_THPS, -nr);
-+					filemap_nr_thps_dec(mapping);
-+				}
- 			}
- 		}
- 
+ 	damon_for_each_target_safe(t, next, ctx) {
+ 		if (i < sysfs_targets->nr) {
+-			damon_sysfs_update_target(t, ctx,
++			err = damon_sysfs_update_target(t, ctx,
+ 					sysfs_targets->targets_arr[i]);
++			if (err)
++				return err;
+ 		} else {
+ 			if (damon_target_has_pid(ctx))
+ 				put_pid(t->pid);
 _
 
-Patches currently in -mm which might be from shr@devkernel.io are
+Patches currently in -mm which might be from sj@kernel.org are
 
 
