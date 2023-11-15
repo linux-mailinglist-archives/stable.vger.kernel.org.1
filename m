@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38CC57ECBA7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F25507ECE30
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232328AbjKOTXh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53036 "EHLO
+        id S234717AbjKOTl1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232391AbjKOTXg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:36 -0500
+        with ESMTP id S234817AbjKOTl0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CECCFA4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B8BC433C9;
-        Wed, 15 Nov 2023 19:23:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E6FF19F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A90C0C433C7;
+        Wed, 15 Nov 2023 19:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076212;
-        bh=+Ke0U1lnyIlBNJEbjZ24NHVDzvrmcvn8sVySdjhVrZo=;
+        s=korg; t=1700077282;
+        bh=3/E8HS0WNKIlhAwuBuDijYr9WRug5gmTwnsbnh/Rt/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SON/8dNlmV9Ss5e5/Y+UO5QqszBd+/IYHRbrF3LA3xG3GlDaI1NGo7VRhZ8ffss2s
-         40dIUtqZuTXYaTt/QTvOF0p0kCJKI+Oqr7Jg1jnRbI+AzaUd1wvS/7+2aadP4BUG1y
-         KeiGsGFm7g5CILCSGUlxK45/GivdiFozGqEnxaEY=
+        b=dLwk6M0tC+NAuskhLeR5ieZ9SLqn3rn/+XQCQZLLtj29Dk782PaZwG091PLSS95hh
+         KcMFJW63itbFr1rjFf0YEZv6JBzc2TOv5Q0zqY+P6qCoDXonTBgNJx46BPw5dU62Nv
+         +hYGJ0CmwepWOTlS6GxKSNTcH+MOAy7W5bk9AA1U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Wragg <dwragg@cloudflare.com>,
-        Yan Zhai <yan@cloudflare.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 147/550] ipv6: avoid atomic fragment on GSO packets
-Date:   Wed, 15 Nov 2023 14:12:11 -0500
-Message-ID: <20231115191610.897954004@linuxfoundation.org>
+Subject: [PATCH 6.6 187/603] clk: mediatek: clk-mt6779: Add check for mtk_alloc_clk_data
+Date:   Wed, 15 Nov 2023 14:12:12 -0500
+Message-ID: <20231115191626.185757633@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,56 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 03d6c848bfb406e9ef6d9846d759e97beaeea113 ]
+[ Upstream commit 1f57f78fbacf630430bf954e5a84caafdfea30c0 ]
 
-When the ipv6 stack output a GSO packet, if its gso_size is larger than
-dst MTU, then all segments would be fragmented. However, it is possible
-for a GSO packet to have a trailing segment with smaller actual size
-than both gso_size as well as the MTU, which leads to an "atomic
-fragment". Atomic fragments are considered harmful in RFC-8021. An
-Existing report from APNIC also shows that atomic fragments are more
-likely to be dropped even it is equivalent to a no-op [1].
+Add the check for the return value of mtk_alloc_clk_data() in order to
+avoid NULL pointer dereference.
 
-Add an extra check in the GSO slow output path. For each segment from
-the original over-sized packet, if it fits with the path MTU, then avoid
-generating an atomic fragment.
-
-Link: https://www.potaroo.net/presentations/2022-03-01-ipv6-frag.pdf [1]
-Fixes: b210de4f8c97 ("net: ipv6: Validate GSO SKB before finish IPv6 processing")
-Reported-by: David Wragg <dwragg@cloudflare.com>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Link: https://lore.kernel.org/r/90912e3503a242dca0bc36958b11ed03a2696e5e.1698156966.git.yan@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 710774e04861 ("clk: mediatek: Add MT6779 clock support")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230912093407.21505-2-jiasheng@iscas.ac.cn
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-mt6779.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 9270ef7f8e98b..0ac1d4595f0f0 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -162,7 +162,13 @@ ip6_finish_output_gso_slowpath_drop(struct net *net, struct sock *sk,
- 		int err;
+diff --git a/drivers/clk/mediatek/clk-mt6779.c b/drivers/clk/mediatek/clk-mt6779.c
+index 3ee2f5a2319a0..ffedb1fe3c672 100644
+--- a/drivers/clk/mediatek/clk-mt6779.c
++++ b/drivers/clk/mediatek/clk-mt6779.c
+@@ -1217,6 +1217,8 @@ static int clk_mt6779_apmixed_probe(struct platform_device *pdev)
+ 	struct device_node *node = pdev->dev.of_node;
  
- 		skb_mark_not_on_list(segs);
--		err = ip6_fragment(net, sk, segs, ip6_finish_output2);
-+		/* Last GSO segment can be smaller than gso_size (and MTU).
-+		 * Adding a fragment header would produce an "atomic fragment",
-+		 * which is considered harmful (RFC-8021). Avoid that.
-+		 */
-+		err = segs->len > mtu ?
-+			ip6_fragment(net, sk, segs, ip6_finish_output2) :
-+			ip6_finish_output2(net, sk, segs);
- 		if (err && ret == 0)
- 			ret = err;
- 	}
+ 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
++	if (!clk_data)
++		return -ENOMEM;
+ 
+ 	mtk_clk_register_plls(node, plls, ARRAY_SIZE(plls), clk_data);
+ 
+@@ -1237,6 +1239,8 @@ static int clk_mt6779_top_probe(struct platform_device *pdev)
+ 		return PTR_ERR(base);
+ 
+ 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR_CLK);
++	if (!clk_data)
++		return -ENOMEM;
+ 
+ 	mtk_clk_register_fixed_clks(top_fixed_clks, ARRAY_SIZE(top_fixed_clks),
+ 				    clk_data);
 -- 
 2.42.0
 
