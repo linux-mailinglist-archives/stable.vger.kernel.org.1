@@ -2,52 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87E5A7ECF04
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 304907ECC77
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235209AbjKOTps (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44052 "EHLO
+        id S233986AbjKOTai (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235214AbjKOTpr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:47 -0500
+        with ESMTP id S233968AbjKOTah (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9609E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB96C433C9;
-        Wed, 15 Nov 2023 19:45:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3652419E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBCFC433C8;
+        Wed, 15 Nov 2023 19:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077543;
-        bh=wxZFbt3mGikL8lm9atCsG/CB+8Gy996rkmckiSPQ+es=;
+        s=korg; t=1700076633;
+        bh=9S9UmVNEkzz7MPC7epabKj1naUDRltKZx3XtPyKLCo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bhWYK2ND71ViW+jN1DJ4k3YoyE2i5thDNgMSbs2ZpeuSAl/P6B7qIsQkN1Hq/fQ89
-         CXJXanMOqyMLB7anTJPG+6uQ3QMBAIX3xJAkU2sKyEaBmuJ5j8Z7U2DxRykffSwJrX
-         KUqPX7D+zAmaFYNjYEFJCrFE1SSTSYojW8YXOhRY=
+        b=U8v58AK6vtMllkRg+VxJceaOKwsJfCWrT228IQkfREFNZt1Fa/WIcwmE9V0IMe73o
+         D+LTVB51kDtGSKrppPvYa2bW1H/646rmmAF60RcHXNEHf/0SF3TPMKSNVNtntTsA1o
+         uveMfoTCEHuk9T/PL9BXfWFuCzwfZuFGsXWxctxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
-        David Hildenbrand <david@redhat.com>,
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Kees Cook <keescook@chromium.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Ayush Jain <ayush.jain3@amd.com>,
-        Alexey Izbyshev <izbyshev@ispras.ru>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Greg Thelen <gthelen@google.com>,
-        Joey Gouly <joey.gouly@arm.com>, KP Singh <kpsingh@kernel.org>,
         Mark Brown <broonie@kernel.org>,
-        Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
-        Szabolcs Nagy <Szabolcs.Nagy@arm.com>,
-        Topi Miettinen <toiwoton@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 366/603] kselftest: vm: fix mdwes mmap_FIXED test case
+Subject: [PATCH 6.5 327/550] ASoC: SOF: ipc4-topology: Use size_add() in call to struct_size()
 Date:   Wed, 15 Nov 2023 14:15:11 -0500
-Message-ID: <20231115191638.843516689@linuxfoundation.org>
+Message-ID: <20231115191623.431102714@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florent Revest <revest@chromium.org>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit a27e2e2d465e4ed73371974040689ac3e78fe3ee ]
+[ Upstream commit 3746284c233d5cf5f456400e61cd4a46a69c6e8c ]
 
-I checked with the original author, the mmap_FIXED test case wasn't
-properly tested and fails.  Currently, it maps two consecutive (non
-overlapping) pages and expects the second mapping to be denied by MDWE but
-these two pages have nothing to do with each other so MDWE is actually out
-of the picture here.
+If, for any reason, the open-coded arithmetic causes a wraparound,
+the protection that `struct_size()` adds against potential integer
+overflows is defeated. Fix this by hardening call to `struct_size()`
+with `size_add()`.
 
-What the test actually intended to do was to remap a virtual address using
-MAP_FIXED.  However, this operation unmaps the existing mapping and
-creates a new one so the va is backed by a new page and MDWE is again out
-of the picture, all remappings should succeed.
-
-This patch keeps the test case to make it clear that this situation is
-expected to work: MDWE shouldn't block a MAP_FIXED replacement.
-
-Link: https://lkml.kernel.org/r/20230828150858.393570-3-revest@chromium.org
-Fixes: 4cf1fe34fd18 ("kselftest: vm: add tests for memory-deny-write-execute")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Fixes: f9efae954905 ("ASoC: SOF: ipc4-topology: Add support for base config extension")
+Signed-off-by: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Tested-by: Ryan Roberts <ryan.roberts@arm.com>
-Tested-by: Ayush Jain <ayush.jain3@amd.com>
-Cc: Alexey Izbyshev <izbyshev@ispras.ru>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Greg Thelen <gthelen@google.com>
-Cc: Joey Gouly <joey.gouly@arm.com>
-Cc: KP Singh <kpsingh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Szabolcs Nagy <Szabolcs.Nagy@arm.com>
-Cc: Topi Miettinen <toiwoton@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/r/ZQSr15AYJpDpipg6@work
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/mdwe_test.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ sound/soc/sof/ipc4-topology.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/mdwe_test.c b/tools/testing/selftests/mm/mdwe_test.c
-index bc91bef5d254e..0c5e469ae38fa 100644
---- a/tools/testing/selftests/mm/mdwe_test.c
-+++ b/tools/testing/selftests/mm/mdwe_test.c
-@@ -168,13 +168,10 @@ TEST_F(mdwe, mmap_FIXED)
- 	self->p = mmap(NULL, self->size, PROT_READ, self->flags, 0, 0);
- 	ASSERT_NE(self->p, MAP_FAILED);
+diff --git a/sound/soc/sof/ipc4-topology.c b/sound/soc/sof/ipc4-topology.c
+index 8fb6582e568e7..98ed20cafb573 100644
+--- a/sound/soc/sof/ipc4-topology.c
++++ b/sound/soc/sof/ipc4-topology.c
+@@ -882,7 +882,8 @@ static int sof_ipc4_widget_setup_comp_process(struct snd_sof_widget *swidget)
+ 	if (process->init_config == SOF_IPC4_MODULE_INIT_CONFIG_TYPE_BASE_CFG_WITH_EXT) {
+ 		struct sof_ipc4_base_module_cfg_ext *base_cfg_ext;
+ 		u32 ext_size = struct_size(base_cfg_ext, pin_formats,
+-						swidget->num_input_pins + swidget->num_output_pins);
++					   size_add(swidget->num_input_pins,
++						    swidget->num_output_pins));
  
--	p = mmap(self->p + self->size, self->size, PROT_READ | PROT_EXEC,
-+	/* MAP_FIXED unmaps the existing page before mapping which is allowed */
-+	p = mmap(self->p, self->size, PROT_READ | PROT_EXEC,
- 		 self->flags | MAP_FIXED, 0, 0);
--	if (variant->enabled) {
--		EXPECT_EQ(p, MAP_FAILED);
--	} else {
--		EXPECT_EQ(p, self->p);
--	}
-+	EXPECT_EQ(p, self->p);
- }
- 
- TEST_F(mdwe, arm64_BTI)
+ 		base_cfg_ext = kzalloc(ext_size, GFP_KERNEL);
+ 		if (!base_cfg_ext) {
 -- 
 2.42.0
 
