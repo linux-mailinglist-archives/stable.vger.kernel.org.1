@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A93237ECFC2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E166B7ECDAD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235407AbjKOTuj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52466 "EHLO
+        id S234616AbjKOThr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235404AbjKOTuh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:37 -0500
+        with ESMTP id S234612AbjKOThq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C723DB8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:33 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C9BC433C9;
-        Wed, 15 Nov 2023 19:50:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 286A619E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F88DC433C9;
+        Wed, 15 Nov 2023 19:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077833;
-        bh=/tWlHeJ/HyPXEsAQuc8WOP2eotZmWI6BmE8W45/D628=;
+        s=korg; t=1700077062;
+        bh=JNcYm6JhTLVpAmjzCsccVIt8nVhOKOYPLRS6mJXInQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I6xPHX8Iuaw0QbQLgdNq70djvHmxYyjlxaw88H6OG9WdzA+hxNsrF/a6QdmlY5xeW
-         BL0WA2Ed7tgS1rpScCRm76/LyuOktv2TSzLmyw3d1pZ8ubxcp+xh1vE+PZFj5BVO0m
-         teprBEw0Jc1HLQUCjbobJum+UGlEKy/yvAetjOiI=
+        b=2vHX2U1xNRsFalB8jvXAn+Z4OxA5VZcVhRck7Gg0FwgVVB1Isi/NbW6yGlJPqvoHG
+         9lKWWC0NN1zK7NMuSKLb/VM5BA8N5H/IAV8WBwb5ShqcsfM5fmazgZi37JGVituBk5
+         H300CpqPvUMN6OOHIjdRtL2m9jxT9NB119Fxjl8o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
+        patches@lists.linux.dev, Patrick Thompson <ptf@google.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 548/603] octeontx2-pf: Fix holes in error code
+Subject: [PATCH 6.5 509/550] net: r8169: Disable multicast filter for RTL8168H and RTL8107E
 Date:   Wed, 15 Nov 2023 14:18:13 -0500
-Message-ID: <20231115191649.662443320@linuxfoundation.org>
+Message-ID: <20231115191636.204342909@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -43,166 +44,53 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UPPERCASE_50_75 autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Patrick Thompson <ptf@google.com>
 
-[ Upstream commit 7aeeb2cb7a2570bb69a87ad14018b03e06ce5be5 ]
+[ Upstream commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df ]
 
-Error code strings are not getting printed properly
-due to holes. Print error code as well.
+RTL8168H and RTL8107E ethernet adapters erroneously filter unicast
+eapol packets unless allmulti is enabled. These devices correspond to
+RTL_GIGA_MAC_VER_46 and VER_48. Add an exception for VER_46 and VER_48
+in the same way that VER_35 has an exception.
 
-Fixes: 51afe9026d0c ("octeontx2-pf: NIX TX overwrites SQ_CTX_HW_S[SQ_INT]")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20231027021953.1819959-2-rkannoth@marvell.com
+Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
+Signed-off-by: Patrick Thompson <ptf@google.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20231030205031.177855-1-ptf@google.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 80 +++++++++++--------
- 1 file changed, 46 insertions(+), 34 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 6daf4d58c25d6..125fe231702a4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1193,31 +1193,32 @@ static char *nix_mnqerr_e_str[NIX_MNQERR_MAX] = {
- };
- 
- static char *nix_snd_status_e_str[NIX_SND_STATUS_MAX] =  {
--	"NIX_SND_STATUS_GOOD",
--	"NIX_SND_STATUS_SQ_CTX_FAULT",
--	"NIX_SND_STATUS_SQ_CTX_POISON",
--	"NIX_SND_STATUS_SQB_FAULT",
--	"NIX_SND_STATUS_SQB_POISON",
--	"NIX_SND_STATUS_HDR_ERR",
--	"NIX_SND_STATUS_EXT_ERR",
--	"NIX_SND_STATUS_JUMP_FAULT",
--	"NIX_SND_STATUS_JUMP_POISON",
--	"NIX_SND_STATUS_CRC_ERR",
--	"NIX_SND_STATUS_IMM_ERR",
--	"NIX_SND_STATUS_SG_ERR",
--	"NIX_SND_STATUS_MEM_ERR",
--	"NIX_SND_STATUS_INVALID_SUBDC",
--	"NIX_SND_STATUS_SUBDC_ORDER_ERR",
--	"NIX_SND_STATUS_DATA_FAULT",
--	"NIX_SND_STATUS_DATA_POISON",
--	"NIX_SND_STATUS_NPC_DROP_ACTION",
--	"NIX_SND_STATUS_LOCK_VIOL",
--	"NIX_SND_STATUS_NPC_UCAST_CHAN_ERR",
--	"NIX_SND_STATUS_NPC_MCAST_CHAN_ERR",
--	"NIX_SND_STATUS_NPC_MCAST_ABORT",
--	"NIX_SND_STATUS_NPC_VTAG_PTR_ERR",
--	"NIX_SND_STATUS_NPC_VTAG_SIZE_ERR",
--	"NIX_SND_STATUS_SEND_STATS_ERR",
-+	[NIX_SND_STATUS_GOOD] = "NIX_SND_STATUS_GOOD",
-+	[NIX_SND_STATUS_SQ_CTX_FAULT] = "NIX_SND_STATUS_SQ_CTX_FAULT",
-+	[NIX_SND_STATUS_SQ_CTX_POISON] = "NIX_SND_STATUS_SQ_CTX_POISON",
-+	[NIX_SND_STATUS_SQB_FAULT] = "NIX_SND_STATUS_SQB_FAULT",
-+	[NIX_SND_STATUS_SQB_POISON] = "NIX_SND_STATUS_SQB_POISON",
-+	[NIX_SND_STATUS_HDR_ERR] = "NIX_SND_STATUS_HDR_ERR",
-+	[NIX_SND_STATUS_EXT_ERR] = "NIX_SND_STATUS_EXT_ERR",
-+	[NIX_SND_STATUS_JUMP_FAULT] = "NIX_SND_STATUS_JUMP_FAULT",
-+	[NIX_SND_STATUS_JUMP_POISON] = "NIX_SND_STATUS_JUMP_POISON",
-+	[NIX_SND_STATUS_CRC_ERR] = "NIX_SND_STATUS_CRC_ERR",
-+	[NIX_SND_STATUS_IMM_ERR] = "NIX_SND_STATUS_IMM_ERR",
-+	[NIX_SND_STATUS_SG_ERR] = "NIX_SND_STATUS_SG_ERR",
-+	[NIX_SND_STATUS_MEM_ERR] = "NIX_SND_STATUS_MEM_ERR",
-+	[NIX_SND_STATUS_INVALID_SUBDC] = "NIX_SND_STATUS_INVALID_SUBDC",
-+	[NIX_SND_STATUS_SUBDC_ORDER_ERR] = "NIX_SND_STATUS_SUBDC_ORDER_ERR",
-+	[NIX_SND_STATUS_DATA_FAULT] = "NIX_SND_STATUS_DATA_FAULT",
-+	[NIX_SND_STATUS_DATA_POISON] = "NIX_SND_STATUS_DATA_POISON",
-+	[NIX_SND_STATUS_NPC_DROP_ACTION] = "NIX_SND_STATUS_NPC_DROP_ACTION",
-+	[NIX_SND_STATUS_LOCK_VIOL] = "NIX_SND_STATUS_LOCK_VIOL",
-+	[NIX_SND_STATUS_NPC_UCAST_CHAN_ERR] = "NIX_SND_STAT_NPC_UCAST_CHAN_ERR",
-+	[NIX_SND_STATUS_NPC_MCAST_CHAN_ERR] = "NIX_SND_STAT_NPC_MCAST_CHAN_ERR",
-+	[NIX_SND_STATUS_NPC_MCAST_ABORT] = "NIX_SND_STATUS_NPC_MCAST_ABORT",
-+	[NIX_SND_STATUS_NPC_VTAG_PTR_ERR] = "NIX_SND_STATUS_NPC_VTAG_PTR_ERR",
-+	[NIX_SND_STATUS_NPC_VTAG_SIZE_ERR] = "NIX_SND_STATUS_NPC_VTAG_SIZE_ERR",
-+	[NIX_SND_STATUS_SEND_MEM_FAULT] = "NIX_SND_STATUS_SEND_MEM_FAULT",
-+	[NIX_SND_STATUS_SEND_STATS_ERR] = "NIX_SND_STATUS_SEND_STATS_ERR",
- };
- 
- static irqreturn_t otx2_q_intr_handler(int irq, void *data)
-@@ -1238,14 +1239,16 @@ static irqreturn_t otx2_q_intr_handler(int irq, void *data)
- 			continue;
- 
- 		if (val & BIT_ULL(42)) {
--			netdev_err(pf->netdev, "CQ%lld: error reading NIX_LF_CQ_OP_INT, NIX_LF_ERR_INT 0x%llx\n",
-+			netdev_err(pf->netdev,
-+				   "CQ%lld: error reading NIX_LF_CQ_OP_INT, NIX_LF_ERR_INT 0x%llx\n",
- 				   qidx, otx2_read64(pf, NIX_LF_ERR_INT));
- 		} else {
- 			if (val & BIT_ULL(NIX_CQERRINT_DOOR_ERR))
- 				netdev_err(pf->netdev, "CQ%lld: Doorbell error",
- 					   qidx);
- 			if (val & BIT_ULL(NIX_CQERRINT_CQE_FAULT))
--				netdev_err(pf->netdev, "CQ%lld: Memory fault on CQE write to LLC/DRAM",
-+				netdev_err(pf->netdev,
-+					   "CQ%lld: Memory fault on CQE write to LLC/DRAM",
- 					   qidx);
- 		}
- 
-@@ -1272,7 +1275,8 @@ static irqreturn_t otx2_q_intr_handler(int irq, void *data)
- 			     (val & NIX_SQINT_BITS));
- 
- 		if (val & BIT_ULL(42)) {
--			netdev_err(pf->netdev, "SQ%lld: error reading NIX_LF_SQ_OP_INT, NIX_LF_ERR_INT 0x%llx\n",
-+			netdev_err(pf->netdev,
-+				   "SQ%lld: error reading NIX_LF_SQ_OP_INT, NIX_LF_ERR_INT 0x%llx\n",
- 				   qidx, otx2_read64(pf, NIX_LF_ERR_INT));
- 			goto done;
- 		}
-@@ -1282,8 +1286,11 @@ static irqreturn_t otx2_q_intr_handler(int irq, void *data)
- 			goto chk_mnq_err_dbg;
- 
- 		sq_op_err_code = FIELD_GET(GENMASK(7, 0), sq_op_err_dbg);
--		netdev_err(pf->netdev, "SQ%lld: NIX_LF_SQ_OP_ERR_DBG(%llx)  err=%s\n",
--			   qidx, sq_op_err_dbg, nix_sqoperr_e_str[sq_op_err_code]);
-+		netdev_err(pf->netdev,
-+			   "SQ%lld: NIX_LF_SQ_OP_ERR_DBG(0x%llx)  err=%s(%#x)\n",
-+			   qidx, sq_op_err_dbg,
-+			   nix_sqoperr_e_str[sq_op_err_code],
-+			   sq_op_err_code);
- 
- 		otx2_write64(pf, NIX_LF_SQ_OP_ERR_DBG, BIT_ULL(44));
- 
-@@ -1300,16 +1307,21 @@ static irqreturn_t otx2_q_intr_handler(int irq, void *data)
- 			goto chk_snd_err_dbg;
- 
- 		mnq_err_code = FIELD_GET(GENMASK(7, 0), mnq_err_dbg);
--		netdev_err(pf->netdev, "SQ%lld: NIX_LF_MNQ_ERR_DBG(%llx)  err=%s\n",
--			   qidx, mnq_err_dbg,  nix_mnqerr_e_str[mnq_err_code]);
-+		netdev_err(pf->netdev,
-+			   "SQ%lld: NIX_LF_MNQ_ERR_DBG(0x%llx)  err=%s(%#x)\n",
-+			   qidx, mnq_err_dbg,  nix_mnqerr_e_str[mnq_err_code],
-+			   mnq_err_code);
- 		otx2_write64(pf, NIX_LF_MNQ_ERR_DBG, BIT_ULL(44));
- 
- chk_snd_err_dbg:
- 		snd_err_dbg = otx2_read64(pf, NIX_LF_SEND_ERR_DBG);
- 		if (snd_err_dbg & BIT(44)) {
- 			snd_err_code = FIELD_GET(GENMASK(7, 0), snd_err_dbg);
--			netdev_err(pf->netdev, "SQ%lld: NIX_LF_SND_ERR_DBG:0x%llx err=%s\n",
--				   qidx, snd_err_dbg, nix_snd_status_e_str[snd_err_code]);
-+			netdev_err(pf->netdev,
-+				   "SQ%lld: NIX_LF_SND_ERR_DBG:0x%llx err=%s(%#x)\n",
-+				   qidx, snd_err_dbg,
-+				   nix_snd_status_e_str[snd_err_code],
-+				   snd_err_code);
- 			otx2_write64(pf, NIX_LF_SEND_ERR_DBG, BIT_ULL(44));
- 		}
- 
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index a987defb575cf..4b8251cdb4363 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2584,7 +2584,9 @@ static void rtl_set_rx_mode(struct net_device *dev)
+ 		rx_mode |= AcceptAllPhys;
+ 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
+ 		   dev->flags & IFF_ALLMULTI ||
+-		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
++		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
++		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
++		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
+ 		/* accept all multicasts */
+ 	} else if (netdev_mc_empty(dev)) {
+ 		rx_mode &= ~AcceptMulticast;
 -- 
 2.42.0
 
