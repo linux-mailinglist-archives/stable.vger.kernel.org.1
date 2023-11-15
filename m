@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7A07ED4B1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 470BF7ED2ED
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344821AbjKOU6w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36680 "EHLO
+        id S233573AbjKOUpL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344646AbjKOU5p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:45 -0500
+        with ESMTP id S233570AbjKOUpG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD3119B3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68777C4E66C;
-        Wed, 15 Nov 2023 20:50:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3669E5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C4DC433CA;
+        Wed, 15 Nov 2023 20:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081449;
-        bh=W+YScbWoh9s9aP2VTesbZUPaMga53zVNysffT0jc2xo=;
+        s=korg; t=1700081103;
+        bh=aLmioOoyJo3/NmS8cW9d2WAqQA7ViVnuRPX/qYOhXH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uOdSdxIMjmz+VKUR6An18YOzHs1Hry/tJPTZIdyP7eQo0sUZT9geM/mIteLGj8YXx
-         tJ3vAQqmeyW1fVSjxFSOs/fxISsGG5MH9yVozvPwRWyXc8Antxv7CIoHn/fZXolXlq
-         g72UzXnQ8RSb+fSkuBSb0TXvd820C3srKQ0XqZ0Y=
+        b=clRhqGhCaquzY9tT/gYI5S4Gt30JVDTj8HGhVqMagz2RTgs97k9crgsVne1eB1E8R
+         HVR3jvE2IRUHyf+3HgN4lGhNLKck5j1xr//5ULXOk2X4vuaphGjW93pdvj72oM521X
+         JrWySXAVSJ231rr2uvidCbWxND+7AugdeGDX6l+Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 160/244] mfd: core: Ensure disabled devices are skipped without aborting
+        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kursad Oney <kursad.oney@broadcom.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 40/88] ARM: 9321/1: memset: cast the constant byte to unsigned char
 Date:   Wed, 15 Nov 2023 15:35:52 -0500
-Message-ID: <20231115203557.943056910@linuxfoundation.org>
+Message-ID: <20231115191428.600906647@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,79 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Kursad Oney <kursad.oney@broadcom.com>
 
-[ Upstream commit 7ba7bdef4d14e3722e2842da3b48cbadb73e52d6 ]
+[ Upstream commit c0e824661f443b8cab3897006c1bbc69fd0e7bc4 ]
 
-The loop searching for a matching device based on its compatible
-string is aborted when a matching disabled device is found.
-This abort prevents to add devices as soon as one disabled device
-is found.
+memset() description in ISO/IEC 9899:1999 (and elsewhere) says:
 
-Continue searching for an other device instead of aborting on the
-first disabled one fixes the issue.
+	The memset function copies the value of c (converted to an
+	unsigned char) into each of the first n characters of the
+	object pointed to by s.
 
-Fixes: 22380b65dc70 ("mfd: mfd-core: Ensure disabled devices are ignored without error")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/528425d6472176bb1d02d79596b51f8c28a551cc.1692376361.git.christophe.leroy@csgroup.eu
-Signed-off-by: Lee Jones <lee@kernel.org>
+The kernel's arm32 memset does not cast c to unsigned char. This results
+in the following code to produce erroneous output:
+
+	char a[128];
+	memset(a, -128, sizeof(a));
+
+This is because gcc will generally emit the following code before
+it calls memset() :
+
+	mov   r0, r7
+	mvn   r1, #127        ; 0x7f
+	bl    00000000 <memset>
+
+r1 ends up with 0xffffff80 before being used by memset() and the
+'a' array will have -128 once in every four bytes while the other
+bytes will be set incorrectly to -1 like this (printing the first
+8 bytes) :
+
+	test_module: -128 -1 -1 -1
+	test_module: -1 -1 -1 -128
+
+The change here is to 'and' r1 with 255 before it is used.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Kursad Oney <kursad.oney@broadcom.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/mfd-core.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/arm/lib/memset.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
-index 684a011a63968..53ea3fab66a46 100644
---- a/drivers/mfd/mfd-core.c
-+++ b/drivers/mfd/mfd-core.c
-@@ -159,6 +159,7 @@ static int mfd_add_device(struct device *parent, int id,
- 	struct platform_device *pdev;
- 	struct device_node *np = NULL;
- 	struct mfd_of_node_entry *of_entry, *tmp;
-+	bool disabled = false;
- 	int ret = -ENOMEM;
- 	int platform_id;
- 	int r;
-@@ -196,11 +197,10 @@ static int mfd_add_device(struct device *parent, int id,
- 	if (IS_ENABLED(CONFIG_OF) && parent->of_node && cell->of_compatible) {
- 		for_each_child_of_node(parent->of_node, np) {
- 			if (of_device_is_compatible(np, cell->of_compatible)) {
--				/* Ignore 'disabled' devices error free */
-+				/* Skip 'disabled' devices */
- 				if (!of_device_is_available(np)) {
--					of_node_put(np);
--					ret = 0;
--					goto fail_alias;
-+					disabled = true;
-+					continue;
- 				}
- 
- 				ret = mfd_match_of_node_to_dev(pdev, np, cell);
-@@ -210,10 +210,17 @@ static int mfd_add_device(struct device *parent, int id,
- 				if (ret)
- 					goto fail_alias;
- 
--				break;
-+				goto match;
- 			}
- 		}
- 
-+		if (disabled) {
-+			/* Ignore 'disabled' devices error free */
-+			ret = 0;
-+			goto fail_alias;
-+		}
-+
-+match:
- 		if (!pdev->dev.of_node)
- 			pr_warn("%s: Failed to locate of_node [id: %d]\n",
- 				cell->name, platform_id);
+diff --git a/arch/arm/lib/memset.S b/arch/arm/lib/memset.S
+index ed6d35d9cdb5a..a68688f3f3b3d 100644
+--- a/arch/arm/lib/memset.S
++++ b/arch/arm/lib/memset.S
+@@ -19,6 +19,7 @@
+ ENTRY(mmioset)
+ ENTRY(memset)
+ UNWIND( .fnstart         )
++	and	r1, r1, #255		@ cast to unsigned char
+ 	ands	r3, r0, #3		@ 1 unaligned?
+ 	mov	ip, r0			@ preserve r0 as return value
+ 	bne	6f			@ 1
 -- 
 2.42.0
 
