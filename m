@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9DBC7ED140
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30CB57ED141
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344096AbjKOUAV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:00:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48614 "EHLO
+        id S1344091AbjKOUAW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:00:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344009AbjKOUAU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:20 -0500
+        with ESMTP id S1344036AbjKOUAW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB4B812C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:00:17 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E427C433C7;
-        Wed, 15 Nov 2023 20:00:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B37DAF
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:00:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D94C433C8;
+        Wed, 15 Nov 2023 20:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078417;
-        bh=GAmQEaN9XaufFKP2eGwvs8bQiVV1VdAfQZpL7GVjYw8=;
+        s=korg; t=1700078418;
+        bh=xnzLRO9fWgUjSIFDQfGLOUICmzo/1wQpRQssRyR+SxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D6gljK6llOnxAOkOgNtSz63bh7VVRSCX+NUEivMo5HrOiPZWSvLH7Tnf56HJG06mf
-         +LQiCyeDEkEY8f8r0c+fnNZN/iOnVfHVnSmYVUJo93AIwriacMFvfY8RAGAR4sS3nY
-         wGmgLDDU8qDlslca/peK9gbrIRDxRGW6QiVWKhq8=
+        b=SHWc8TViPn9+Iw/CLymDJd8Qq8mQSJ1b0a6q/y+6I+DQl6SoqCL3FgHA8nJjlRTxw
+         Uoqzc6/s5ScWBCIxj7z8VWaPu67VaAQNzOnuGXhp2T9VB18ohvzfEbu2H8L8/nLLcY
+         0W1IKSVd+gK+elynuEYO/0bsOXupys2/8QXgIVUo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
         Dominik Brodowski <linux@dominikbrodowski.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 311/379] pcmcia: cs: fix possible hung task and memory leak pccardd()
-Date:   Wed, 15 Nov 2023 14:26:26 -0500
-Message-ID: <20231115192703.551041081@linuxfoundation.org>
+Subject: [PATCH 6.1 312/379] pcmcia: ds: fix refcount leak in pcmcia_device_add()
+Date:   Wed, 15 Nov 2023 14:26:27 -0500
+Message-ID: <20231115192703.609247277@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -56,39 +56,45 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit e3ea1b4847e49234e691c0d66bf030bd65bb7f2b ]
+[ Upstream commit 402ab979b29126068e0b596b641422ff7490214c ]
 
-If device_register() returns error in pccardd(), it leads two issues:
+As the comment of device_register() says, it should use put_device()
+to give up the reference in the error path. Then, insofar resources
+will be freed in pcmcia_release_dev(), the error path is no longer
+needed. In particular, this means that the (previously missing) dropping
+of the reference to &p_dev->function_config->ref is now handled by
+pcmcia_release_dev().
 
-1. The socket_released has never been completed, it will block
-   pcmcia_unregister_socket(), because of waiting for completion
-   of socket_released.
-2. The device name allocated by dev_set_name() is leaked.
-
-Fix this two issues by calling put_device() when device_register() fails.
-socket_released can be completed in pcmcia_release_socket(), the name can
-be freed in kobject_cleanup().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 360b65b95bae ("[PATCH] pcmcia: make config_t independent, add reference counting")
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+[linux@dominikbrodowski.net: simplification, commit message rewrite]
 Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/cs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pcmcia/ds.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pcmcia/cs.c b/drivers/pcmcia/cs.c
-index f70197154a362..820cce7c8b400 100644
---- a/drivers/pcmcia/cs.c
-+++ b/drivers/pcmcia/cs.c
-@@ -605,6 +605,7 @@ static int pccardd(void *__skt)
- 		dev_warn(&skt->dev, "PCMCIA: unable to register socket\n");
- 		skt->thread = NULL;
- 		complete(&skt->thread_done);
-+		put_device(&skt->dev);
- 		return 0;
- 	}
- 	ret = pccard_sysfs_add_socket(&skt->dev);
+diff --git a/drivers/pcmcia/ds.c b/drivers/pcmcia/ds.c
+index ace133b9f7d45..cce4c432d915e 100644
+--- a/drivers/pcmcia/ds.c
++++ b/drivers/pcmcia/ds.c
+@@ -573,8 +573,14 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
+ 
+ 	pcmcia_device_query(p_dev);
+ 
+-	if (device_register(&p_dev->dev))
+-		goto err_unreg;
++	if (device_register(&p_dev->dev)) {
++		mutex_lock(&s->ops_mutex);
++		list_del(&p_dev->socket_device_list);
++		s->device_count--;
++		mutex_unlock(&s->ops_mutex);
++		put_device(&p_dev->dev);
++		return NULL;
++	}
+ 
+ 	return p_dev;
+ 
 -- 
 2.42.0
 
