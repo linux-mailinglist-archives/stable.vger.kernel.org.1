@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80A827ED296
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1E357ECE73
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233265AbjKOUmn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:42:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55170 "EHLO
+        id S235099AbjKOTnN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233569AbjKOTZt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:49 -0500
+        with ESMTP id S235108AbjKOTnM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:12 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92E8819D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145DAC433C8;
-        Wed, 15 Nov 2023 19:25:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 270F09E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:08 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A07B3C433C9;
+        Wed, 15 Nov 2023 19:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076345;
-        bh=PQnGBKE0Imeb7P4Eb9+CmBEG3s45ZLrA/91qEiZrgf8=;
+        s=korg; t=1700077387;
+        bh=8Xz5mjRyaYbn5XtL98RcVYM128T/xuYwWpRjxl9DExc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lfhc5FRQkDyomBAMfQ7u7LLLCAHEkojWU2kzvhBpWgraHMozqDi6/2Tq+aR/Tugj3
-         Oq6JhYRJCoBfYqLnGKWtMpnaOZod6TRzVtMJ21NCRqPS9c7Nn0BwMOcOkucAKkuPsN
-         OvPZ6AU0NoXB7OvxfPsvdY62BCL726+WL7LzIvb0=
+        b=RJmJfLa0Y+RT4UEbJ8i3xBot7jZ3zlVQbQKb0o+beyM8NOYt+PCqalctm/KKB9uv9
+         +Bj1OmxBnniTyV5J8kbY972XU2O3ebAc35ggBCkFBeVjMhErm74oId9W1zsY7oXTu7
+         tZgM75mAZz29tc6iKsgwh4zNdxNTDa+5RShiK80Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Philip Yang <Philip.Yang@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        James Zhu <james.zhu@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 233/550] drm/amdkfd: Handle errors from svm validate and map
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 272/603] perf/arm-cmn: Fix DTC domain detection
 Date:   Wed, 15 Nov 2023 14:13:37 -0500
-Message-ID: <20231115191616.865315063@linuxfoundation.org>
+Message-ID: <20231115191632.166022452@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,209 +50,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit eb3c357bcb286e89386e89302061fe717fe4e562 ]
+[ Upstream commit e3e73f511c49c741f6309862c2248958ad77bbaa ]
 
-If new range is splited to multiple pranges with max_svm_range_pages
-alignment and added to update_list, svm validate and map should keep
-going after error to make sure prange->mapped_to_gpu flag is up to date
-for the whole range.
+It transpires that dtm_unit_info is another register which got shuffled
+in CMN-700 without me noticing. Fix that in a way which also proactively
+fixes the fragile laziness of its consumer, just in case any further
+fields ever get added alongside dtc_domain.
 
-svm validate and map update set prange->mapped_to_gpu after mapping to
-GPUs successfully, otherwise clear prange->mapped_to_gpu flag (for
-update mapping case) instead of setting error flag, we can remove
-the redundant error flag to simpliy code.
-
-Refactor to remove goto and update prange->mapped_to_gpu flag inside
-svm_range_lock, to guarant we always evict queues or unmap from GPUs if
-there are invalid ranges.
-
-After svm validate and map return error -EAGIN, the caller retry will
-update the mapping for the whole range again.
-
-Fixes: c22b04407097 ("drm/amdkfd: flag added to handle errors from svm validate and map")
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Tested-by: James Zhu <james.zhu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 23760a014417 ("perf/arm-cmn: Add CMN-700 support")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Link: https://lore.kernel.org/r/3076ee83d0554f6939fbb6ee49ab2bdb28d8c7ee.1697824215.git.robin.murphy@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 82 +++++++++++++---------------
- drivers/gpu/drm/amd/amdkfd/kfd_svm.h |  1 -
- 2 files changed, 39 insertions(+), 44 deletions(-)
+ drivers/perf/arm-cmn.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 8cbfe18d16c6e..50f943e04f8a4 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -809,7 +809,7 @@ svm_range_is_same_attrs(struct kfd_process *p, struct svm_range *prange,
- 		}
- 	}
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index 6b50bc5519846..caae2d3e9d3ea 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -112,7 +112,9 @@
  
--	return !prange->is_error_flag;
-+	return true;
+ #define CMN_DTM_PMEVCNTSR		0x240
+ 
+-#define CMN_DTM_UNIT_INFO		0x0910
++#define CMN650_DTM_UNIT_INFO		0x0910
++#define CMN_DTM_UNIT_INFO		0x0960
++#define CMN_DTM_UNIT_INFO_DTC_DOMAIN	GENMASK_ULL(1, 0)
+ 
+ #define CMN_DTM_NUM_COUNTERS		4
+ /* Want more local counters? Why not replicate the whole DTM! Ugh... */
+@@ -2117,6 +2119,16 @@ static int arm_cmn_init_dtcs(struct arm_cmn *cmn)
+ 	return 0;
  }
  
- /**
-@@ -1627,71 +1627,66 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
- 
- 	start = prange->start << PAGE_SHIFT;
- 	end = (prange->last + 1) << PAGE_SHIFT;
--	for (addr = start; addr < end && !r; ) {
-+	for (addr = start; !r && addr < end; ) {
- 		struct hmm_range *hmm_range;
- 		struct vm_area_struct *vma;
--		unsigned long next;
-+		unsigned long next = 0;
- 		unsigned long offset;
- 		unsigned long npages;
- 		bool readonly;
- 
- 		vma = vma_lookup(mm, addr);
--		if (!vma) {
-+		if (vma) {
-+			readonly = !(vma->vm_flags & VM_WRITE);
++static unsigned int arm_cmn_dtc_domain(struct arm_cmn *cmn, void __iomem *xp_region)
++{
++	int offset = CMN_DTM_UNIT_INFO;
 +
-+			next = min(vma->vm_end, end);
-+			npages = (next - addr) >> PAGE_SHIFT;
-+			WRITE_ONCE(p->svms.faulting_task, current);
-+			r = amdgpu_hmm_range_get_pages(&prange->notifier, addr, npages,
-+						       readonly, owner, NULL,
-+						       &hmm_range);
-+			WRITE_ONCE(p->svms.faulting_task, NULL);
-+			if (r) {
-+				pr_debug("failed %d to get svm range pages\n", r);
-+				if (r == -EBUSY)
-+					r = -EAGAIN;
-+			}
-+		} else {
- 			r = -EFAULT;
--			goto unreserve_out;
--		}
--		readonly = !(vma->vm_flags & VM_WRITE);
--
--		next = min(vma->vm_end, end);
--		npages = (next - addr) >> PAGE_SHIFT;
--		WRITE_ONCE(p->svms.faulting_task, current);
--		r = amdgpu_hmm_range_get_pages(&prange->notifier, addr, npages,
--					       readonly, owner, NULL,
--					       &hmm_range);
--		WRITE_ONCE(p->svms.faulting_task, NULL);
--		if (r) {
--			pr_debug("failed %d to get svm range pages\n", r);
--			if (r == -EBUSY)
--				r = -EAGAIN;
--			goto unreserve_out;
- 		}
- 
--		offset = (addr - start) >> PAGE_SHIFT;
--		r = svm_range_dma_map(prange, ctx->bitmap, offset, npages,
--				      hmm_range->hmm_pfns);
--		if (r) {
--			pr_debug("failed %d to dma map range\n", r);
--			goto unreserve_out;
-+		if (!r) {
-+			offset = (addr - start) >> PAGE_SHIFT;
-+			r = svm_range_dma_map(prange, ctx->bitmap, offset, npages,
-+					      hmm_range->hmm_pfns);
-+			if (r)
-+				pr_debug("failed %d to dma map range\n", r);
- 		}
- 
- 		svm_range_lock(prange);
--		if (amdgpu_hmm_range_get_pages_done(hmm_range)) {
-+		if (!r && amdgpu_hmm_range_get_pages_done(hmm_range)) {
- 			pr_debug("hmm update the range, need validate again\n");
- 			r = -EAGAIN;
--			goto unlock_out;
- 		}
--		if (!list_empty(&prange->child_list)) {
++	if (cmn->part == PART_CMN650 || cmn->part == PART_CI700)
++		offset = CMN650_DTM_UNIT_INFO;
 +
-+		if (!r && !list_empty(&prange->child_list)) {
- 			pr_debug("range split by unmap in parallel, validate again\n");
- 			r = -EAGAIN;
--			goto unlock_out;
- 		}
- 
--		r = svm_range_map_to_gpus(prange, offset, npages, readonly,
--					  ctx->bitmap, wait, flush_tlb);
-+		if (!r)
-+			r = svm_range_map_to_gpus(prange, offset, npages, readonly,
-+						  ctx->bitmap, wait, flush_tlb);
++	return FIELD_GET(CMN_DTM_UNIT_INFO_DTC_DOMAIN, readl_relaxed(xp_region + offset));
++}
 +
-+		if (!r && next == end)
-+			prange->mapped_to_gpu = true;
+ static void arm_cmn_init_node_info(struct arm_cmn *cmn, u32 offset, struct arm_cmn_node *node)
+ {
+ 	int level;
+@@ -2248,7 +2260,7 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 		if (cmn->part == PART_CMN600)
+ 			xp->dtc = 0xf;
+ 		else
+-			xp->dtc = 1 << readl_relaxed(xp_region + CMN_DTM_UNIT_INFO);
++			xp->dtc = 1 << arm_cmn_dtc_domain(cmn, xp_region);
  
--unlock_out:
- 		svm_range_unlock(prange);
- 
- 		addr = next;
- 	}
- 
--	if (addr == end)
--		prange->mapped_to_gpu = true;
--
--unreserve_out:
- 	svm_range_unreserve_bos(ctx);
--
--	prange->is_error_flag = !!r;
- 	if (!r)
- 		prange->validate_timestamp = ktime_get_boottime();
- 
-@@ -2057,7 +2052,8 @@ svm_range_add(struct kfd_process *p, uint64_t start, uint64_t size,
- 		next = interval_tree_iter_next(node, start, last);
- 		next_start = min(node->last, last) + 1;
- 
--		if (svm_range_is_same_attrs(p, prange, nattr, attrs)) {
-+		if (svm_range_is_same_attrs(p, prange, nattr, attrs) &&
-+		    prange->mapped_to_gpu) {
- 			/* nothing to do */
- 		} else if (node->start < start || node->last > last) {
- 			/* node intersects the update range and its attributes
-@@ -3470,7 +3466,7 @@ svm_range_set_attr(struct kfd_process *p, struct mm_struct *mm,
- 	struct svm_range *next;
- 	bool update_mapping = false;
- 	bool flush_tlb;
--	int r = 0;
-+	int r, ret = 0;
- 
- 	pr_debug("pasid 0x%x svms 0x%p [0x%llx 0x%llx] pages 0x%llx\n",
- 		 p->pasid, &p->svms, start, start + size - 1, size);
-@@ -3558,7 +3554,7 @@ svm_range_set_attr(struct kfd_process *p, struct mm_struct *mm,
- out_unlock_range:
- 		mutex_unlock(&prange->migrate_mutex);
- 		if (r)
--			break;
-+			ret = r;
- 	}
- 
- 	svm_range_debug_dump(svms);
-@@ -3571,7 +3567,7 @@ svm_range_set_attr(struct kfd_process *p, struct mm_struct *mm,
- 	pr_debug("pasid 0x%x svms 0x%p [0x%llx 0x%llx] done, r=%d\n", p->pasid,
- 		 &p->svms, start, start + size - 1, r);
- 
--	return r;
-+	return ret ? ret : r;
- }
- 
- static int
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.h b/drivers/gpu/drm/amd/amdkfd/kfd_svm.h
-index 21ca57992e054..d2aa8c324c610 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.h
-@@ -133,7 +133,6 @@ struct svm_range {
- 	DECLARE_BITMAP(bitmap_access, MAX_GPU_INSTANCE);
- 	DECLARE_BITMAP(bitmap_aip, MAX_GPU_INSTANCE);
- 	bool				mapped_to_gpu;
--	bool				is_error_flag;
- };
- 
- static inline void svm_range_lock(struct svm_range *prange)
+ 		xp->dtm = dtm - cmn->dtms;
+ 		arm_cmn_init_dtm(dtm++, xp, 0);
 -- 
 2.42.0
 
