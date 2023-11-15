@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C02D7ECEFF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46B847ECC5B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:29:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235201AbjKOTpi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53382 "EHLO
+        id S233903AbjKOT3v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:29:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235206AbjKOTph (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:37 -0500
+        with ESMTP id S233883AbjKOT3v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:29:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E72AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA61C433C8;
-        Wed, 15 Nov 2023 19:45:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A69DA4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC41EC433C8;
+        Wed, 15 Nov 2023 19:29:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077534;
-        bh=3+lOEp0jxulonivkYIWQYELuaYP+PllZ32wmw+TUb9A=;
+        s=korg; t=1700076588;
+        bh=fqHQxeJDQb1i4l1q1xPdJvFlb9Lo/uaeNf7J68ElPeg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZpdlTz+C4ymdzBuCSGrEEXcFg98XmqFaqT1JAnnEPkyEawKeNzIpPwD6FA94E75xB
-         rEi4BF/3fmqAiB0KryODbYz2NV14VzyQF/Dag1iagOxG3F9ITc5deNg9ze2O9FxeoE
-         cgnXKgy/hb+upJfzIlzoB8f8hCdvrbsrzg4F3VTk=
+        b=qzUpSzOvuaY14Ob6piEonooF6nAxnSq9gHhvOTzSXe3zAvcpdiByzJpD9LSt4CW8W
+         NH/TaOP908b0BLvuEoGstRRU+UDEO2ohYprYMm5fQpXx01arRc9Eq2tCI6g/wrlg76
+         jw7bHNKaBF7SKVLs/SMetRs/Y/3NedchuSAa7ZGw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kursad Oney <kursad.oney@broadcom.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        patches@lists.linux.dev, Tomas Glozar <tglozar@redhat.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 362/603] ARM: 9321/1: memset: cast the constant byte to unsigned char
+Subject: [PATCH 6.5 323/550] nd_btt: Make BTT lanes preemptible
 Date:   Wed, 15 Nov 2023 14:15:07 -0500
-Message-ID: <20231115191638.563662012@linuxfoundation.org>
+Message-ID: <20231115191623.158699191@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,65 +51,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kursad Oney <kursad.oney@broadcom.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-[ Upstream commit c0e824661f443b8cab3897006c1bbc69fd0e7bc4 ]
+[ Upstream commit 36c75ce3bd299878fd9b238e9803d3817ddafbf3 ]
 
-memset() description in ISO/IEC 9899:1999 (and elsewhere) says:
+nd_region_acquire_lane uses get_cpu, which disables preemption. This is
+an issue on PREEMPT_RT kernels, since btt_write_pg and also
+nd_region_acquire_lane itself take a spin lock, resulting in BUG:
+sleeping function called from invalid context.
 
-	The memset function copies the value of c (converted to an
-	unsigned char) into each of the first n characters of the
-	object pointed to by s.
+Fix the issue by replacing get_cpu with smp_process_id and
+migrate_disable when needed. This makes BTT operations preemptible, thus
+permitting the use of spin_lock.
 
-The kernel's arm32 memset does not cast c to unsigned char. This results
-in the following code to produce erroneous output:
+BUG example occurring when running ndctl tests on PREEMPT_RT kernel:
 
-	char a[128];
-	memset(a, -128, sizeof(a));
+BUG: sleeping function called from invalid context at
+kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 4903, name:
+libndctl
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+Preemption disabled at:
+[<ffffffffc1313db5>] nd_region_acquire_lane+0x15/0x90 [libnvdimm]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8e/0xb0
+ __might_resched+0x19b/0x250
+ rt_spin_lock+0x4c/0x100
+ ? btt_write_pg+0x2d7/0x500 [nd_btt]
+ btt_write_pg+0x2d7/0x500 [nd_btt]
+ ? local_clock_noinstr+0x9/0xc0
+ btt_submit_bio+0x16d/0x270 [nd_btt]
+ __submit_bio+0x48/0x80
+ __submit_bio_noacct+0x7e/0x1e0
+ submit_bio_wait+0x58/0xb0
+ __blkdev_direct_IO_simple+0x107/0x240
+ ? inode_set_ctime_current+0x51/0x110
+ ? __pfx_submit_bio_wait_endio+0x10/0x10
+ blkdev_write_iter+0x1d8/0x290
+ vfs_write+0x237/0x330
+ ...
+ </TASK>
 
-This is because gcc will generally emit the following code before
-it calls memset() :
-
-	mov   r0, r7
-	mvn   r1, #127        ; 0x7f
-	bl    00000000 <memset>
-
-r1 ends up with 0xffffff80 before being used by memset() and the
-'a' array will have -128 once in every four bytes while the other
-bytes will be set incorrectly to -1 like this (printing the first
-8 bytes) :
-
-	test_module: -128 -1 -1 -1
-	test_module: -1 -1 -1 -128
-
-The change here is to 'and' r1 with 255 before it is used.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Kursad Oney <kursad.oney@broadcom.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 5212e11fde4d ("nd_btt: atomic sector updates")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/lib/memset.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvdimm/region_devs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/lib/memset.S b/arch/arm/lib/memset.S
-index d71ab61430b26..de75ae4d5ab41 100644
---- a/arch/arm/lib/memset.S
-+++ b/arch/arm/lib/memset.S
-@@ -17,6 +17,7 @@ ENTRY(__memset)
- ENTRY(mmioset)
- WEAK(memset)
- UNWIND( .fnstart         )
-+	and	r1, r1, #255		@ cast to unsigned char
- 	ands	r3, r0, #3		@ 1 unaligned?
- 	mov	ip, r0			@ preserve r0 as return value
- 	bne	6f			@ 1
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index 8f134d63af131..3f5cf1a817525 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -938,7 +938,8 @@ unsigned int nd_region_acquire_lane(struct nd_region *nd_region)
+ {
+ 	unsigned int cpu, lane;
+ 
+-	cpu = get_cpu();
++	migrate_disable();
++	cpu = smp_processor_id();
+ 	if (nd_region->num_lanes < nr_cpu_ids) {
+ 		struct nd_percpu_lane *ndl_lock, *ndl_count;
+ 
+@@ -957,16 +958,15 @@ EXPORT_SYMBOL(nd_region_acquire_lane);
+ void nd_region_release_lane(struct nd_region *nd_region, unsigned int lane)
+ {
+ 	if (nd_region->num_lanes < nr_cpu_ids) {
+-		unsigned int cpu = get_cpu();
++		unsigned int cpu = smp_processor_id();
+ 		struct nd_percpu_lane *ndl_lock, *ndl_count;
+ 
+ 		ndl_count = per_cpu_ptr(nd_region->lane, cpu);
+ 		ndl_lock = per_cpu_ptr(nd_region->lane, lane);
+ 		if (--ndl_count->count == 0)
+ 			spin_unlock(&ndl_lock->lock);
+-		put_cpu();
+ 	}
+-	put_cpu();
++	migrate_enable();
+ }
+ EXPORT_SYMBOL(nd_region_release_lane);
+ 
 -- 
 2.42.0
 
