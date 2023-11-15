@@ -2,40 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73ECB7ECE81
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B0E07ECC04
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235118AbjKOTne (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44096 "EHLO
+        id S233906AbjKOT01 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:26:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235119AbjKOTnd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:33 -0500
+        with ESMTP id S233936AbjKOT0L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DFBEB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CE8C433C7;
-        Wed, 15 Nov 2023 19:43:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F17C1A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:08 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CC4C433C8;
+        Wed, 15 Nov 2023 19:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077410;
-        bh=DRLvMXwWHEsmy++5wgz1HtzjS1LJuhRIZ97LSAc7sY8=;
+        s=korg; t=1700076368;
+        bh=AKoCM3z0NPiNfD82F6eua9Y5Ltd2uMNh5X8gJMwyxyA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bjmP0uc5h8X1LZXQh+hcsI2tckY8XO6SpknuUPZVqljCRibIUhTYWkr+0Brh4GhBg
-         5sFS987aLVF9PJFM6ws4+4I3gg7QqOgNgmFxNJh0b2uF+H0GKgCJKS7t15npgzrjZ8
-         X1/QeZetkW1t9ar40lLz4Q68ikfbYcs2QkPqxbAI=
+        b=HFj4Sohbm11TQri+Pgd0ObpH6P/BRsimUz2rGuO49u9xS0yh2h8uD+Brkbs7CLtU2
+         E7+txoEmcVNiFdQcRvaVcb0Wti3ema52B2K3iw+JizjLK8zq/f7Q/jrEhqW9FcelfL
+         PLX+pjpC4duKAONXp61dfBQjWJsmdLh7P9oe7xcI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Richard Acayan <mailingradian@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Mark Rutland <mark.rutland@arm.com>,
+        Bertrand Marquis <bertrand.marquis@arm.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/603] arm64: dts: qcom: sdm670: Fix pdc mapping
-Date:   Wed, 15 Nov 2023 14:13:50 -0500
-Message-ID: <20231115191633.099942287@linuxfoundation.org>
+Subject: [PATCH 6.5 247/550] arm64/arm: xen: enlighten: Fix KPTI checks
+Date:   Wed, 15 Nov 2023 14:13:51 -0500
+Message-ID: <20231115191617.839026656@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +56,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit ad75cda991f7b335d3b2417f82db07680f92648a ]
+[ Upstream commit 20f3b8eafe0ba5d3c69d5011a9b07739e9645132 ]
 
-As pointed out by Richard, I missed a non-continuity in one of the ranges.
-Fix it.
+When KPTI is in use, we cannot register a runstate region as XEN
+requires that this is always a valid VA, which we cannot guarantee. Due
+to this, xen_starting_cpu() must avoid registering each CPU's runstate
+region, and xen_guest_init() must avoid setting up features that depend
+upon it.
 
-Reported-by: Richard Acayan <mailingradian@gmail.com>
-Fixes: b51ee205dc4f ("arm64: dts: qcom: sdm670: Add PDC")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Richard Acayan <mailingradian@gmail.com>
-Link: https://lore.kernel.org/r/20230818-topic-670_pdc_fix-v1-1-1ba025041de7@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+We tried to ensure that in commit:
+
+  f88af7229f6f22ce (" xen/arm: do not setup the runstate info page if kpti is enabled")
+
+... where we added checks for xen_kernel_unmapped_at_usr(), which wraps
+arm64_kernel_unmapped_at_el0() on arm64 and is always false on 32-bit
+arm.
+
+Unfortunately, as xen_guest_init() is an early_initcall, this happens
+before secondary CPUs are booted and arm64 has finalized the
+ARM64_UNMAP_KERNEL_AT_EL0 cpucap which backs
+arm64_kernel_unmapped_at_el0(), and so this can subsequently be set as
+secondary CPUs are onlined. On a big.LITTLE system where the boot CPU
+does not require KPTI but some secondary CPUs do, this will result in
+xen_guest_init() intializing features that depend on the runstate
+region, and xen_starting_cpu() registering the runstate region on some
+CPUs before KPTI is subsequent enabled, resulting the the problems the
+aforementioned commit tried to avoid.
+
+Handle this more robsutly by deferring the initialization of the
+runstate region until secondary CPUs have been initialized and the
+ARM64_UNMAP_KERNEL_AT_EL0 cpucap has been finalized. The per-cpu work is
+moved into a new hotplug starting function which is registered later
+when we're certain that KPTI will not be used.
+
+Fixes: f88af7229f6f ("xen/arm: do not setup the runstate info page if kpti is enabled")
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Bertrand Marquis <bertrand.marquis@arm.com>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Stefano Stabellini <sstabellini@kernel.org>
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm670.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/xen/enlighten.c   | 25 ++++++++++++++++---------
+ include/linux/cpuhotplug.h |  1 +
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm670.dtsi b/arch/arm64/boot/dts/qcom/sdm670.dtsi
-index 84cd2e39266fe..ba2043d67370a 100644
---- a/arch/arm64/boot/dts/qcom/sdm670.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm670.dtsi
-@@ -1328,7 +1328,8 @@ pdc: interrupt-controller@b220000 {
- 			compatible = "qcom,sdm670-pdc", "qcom,pdc";
- 			reg = <0 0x0b220000 0 0x30000>;
- 			qcom,pdc-ranges = <0 480 40>, <41 521 7>, <49 529 4>,
--					  <54 534 24>, <79 559 30>, <115 630 7>;
-+					  <54 534 24>, <79 559 15>, <94 609 15>,
-+					  <115 630 7>;
- 			#interrupt-cells = <2>;
- 			interrupt-parent = <&intc>;
- 			interrupt-controller;
+diff --git a/arch/arm/xen/enlighten.c b/arch/arm/xen/enlighten.c
+index 7d59765aef220..6cdcd39fb0961 100644
+--- a/arch/arm/xen/enlighten.c
++++ b/arch/arm/xen/enlighten.c
+@@ -164,9 +164,6 @@ static int xen_starting_cpu(unsigned int cpu)
+ 	BUG_ON(err);
+ 	per_cpu(xen_vcpu, cpu) = vcpup;
+ 
+-	if (!xen_kernel_unmapped_at_usr())
+-		xen_setup_runstate_info(cpu);
+-
+ after_register_vcpu_info:
+ 	enable_percpu_irq(xen_events_irq, 0);
+ 	return 0;
+@@ -523,9 +520,6 @@ static int __init xen_guest_init(void)
+ 		return -EINVAL;
+ 	}
+ 
+-	if (!xen_kernel_unmapped_at_usr())
+-		xen_time_setup_guest();
+-
+ 	if (xen_initial_domain())
+ 		pvclock_gtod_register_notifier(&xen_pvclock_gtod_notifier);
+ 
+@@ -535,7 +529,13 @@ static int __init xen_guest_init(void)
+ }
+ early_initcall(xen_guest_init);
+ 
+-static int __init xen_pm_init(void)
++static int xen_starting_runstate_cpu(unsigned int cpu)
++{
++	xen_setup_runstate_info(cpu);
++	return 0;
++}
++
++static int __init xen_late_init(void)
+ {
+ 	if (!xen_domain())
+ 		return -ENODEV;
+@@ -548,9 +548,16 @@ static int __init xen_pm_init(void)
+ 		do_settimeofday64(&ts);
+ 	}
+ 
+-	return 0;
++	if (xen_kernel_unmapped_at_usr())
++		return 0;
++
++	xen_time_setup_guest();
++
++	return cpuhp_setup_state(CPUHP_AP_ARM_XEN_RUNSTATE_STARTING,
++				 "arm/xen_runstate:starting",
++				 xen_starting_runstate_cpu, NULL);
+ }
+-late_initcall(xen_pm_init);
++late_initcall(xen_late_init);
+ 
+ 
+ /* empty stubs */
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 25b6e6e6ba6bc..f0231cc66746e 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -190,6 +190,7 @@ enum cpuhp_state {
+ 	/* Must be the last timer callback */
+ 	CPUHP_AP_DUMMY_TIMER_STARTING,
+ 	CPUHP_AP_ARM_XEN_STARTING,
++	CPUHP_AP_ARM_XEN_RUNSTATE_STARTING,
+ 	CPUHP_AP_ARM_CORESIGHT_STARTING,
+ 	CPUHP_AP_ARM_CORESIGHT_CTI_STARTING,
+ 	CPUHP_AP_ARM64_ISNDEP_STARTING,
 -- 
 2.42.0
 
