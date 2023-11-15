@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A95777ED2FD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BC227ED4C8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233621AbjKOUpe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59718 "EHLO
+        id S1344825AbjKOU7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233578AbjKOUpd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:33 -0500
+        with ESMTP id S1344746AbjKOU54 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:56 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C497D4A
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A785BC433CA;
-        Wed, 15 Nov 2023 20:45:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D933A1BDC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E461C4AF75;
+        Wed, 15 Nov 2023 20:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081123;
-        bh=9b/nD4P8CefzkdUK2/WW4OLluZh2dxy1GxYIQ9hBQdQ=;
+        s=korg; t=1700081425;
+        bh=4aTZj3HIGlHREWlOC3pWSaCQrEMg7Ce8FU3eNfHdfpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d9bWvGCZqfu2rbSEoTkQ++5R6AlgGdZGZMUiGL/z3xZoB0gPZ8exjuhSkSxssBXyP
-         wHMfEMa9vOW3OoeFfmQz8pEv+kQjSMHBZL13lokUgju9vYgQMilAH77E/peymcS8ZW
-         SCAfmdQNfYSVA5SvDeEdzikax3Av4UKYd4HnyxUM=
+        b=cBNgMKFcSFKgqpsb7XUKvwsXjdOgugN0HRs32GQhAUBe3b2Thy1dSjkEGo687NAuX
+         GlluF3GBPpI/qTek4XCFLQXDoGRmHiDC/FU4H+TwFrvoem7Q/nnMA9fozGiAWuJiSa
+         aLsl7xR/4VOaZLLUEkq4j2B9kVBp1xdlcb4zvJ6I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        patches@lists.linux.dev, Leon Romanovsky <leonro@nvidia.com>,
+        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 27/88] platform/x86: wmi: Fix opening of char device
+Subject: [PATCH 5.15 147/244] RDMA/hfi1: Workaround truncation compilation error
 Date:   Wed, 15 Nov 2023 15:35:39 -0500
-Message-ID: <20231115191427.792048526@linuxfoundation.org>
+Message-ID: <20231115203557.153455772@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,68 +52,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit eba9ac7abab91c8f6d351460239108bef5e7a0b6 ]
+[ Upstream commit d4b2d165714c0ce8777d5131f6e0aad617b7adc4 ]
 
-Since commit fa1f68db6ca7 ("drivers: misc: pass miscdevice pointer via
-file private data"), the miscdevice stores a pointer to itself inside
-filp->private_data, which means that private_data will not be NULL when
-wmi_char_open() is called. This might cause memory corruption should
-wmi_char_open() be unable to find its driver, something which can
-happen when the associated WMI device is deleted in wmi_free_devices().
+Increase name array to be large enough to overcome the following
+compilation error.
 
-Fix the problem by using the miscdevice pointer to retrieve the WMI
-device data associated with a char device using container_of(). This
-also avoids wmi_char_open() picking a wrong WMI device bound to a
-driver with the same name as the original driver.
+drivers/infiniband/hw/hfi1/efivar.c: In function ‘read_hfi1_efi_var’:
+drivers/infiniband/hw/hfi1/efivar.c:124:44: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  124 |         snprintf(name, sizeof(name), "%s-%s", prefix_name, kind);
+      |                                            ^
+drivers/infiniband/hw/hfi1/efivar.c:124:9: note: ‘snprintf’ output 2 or more bytes (assuming 65) into a destination of size 64
+  124 |         snprintf(name, sizeof(name), "%s-%s", prefix_name, kind);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/infiniband/hw/hfi1/efivar.c:133:52: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  133 |                 snprintf(name, sizeof(name), "%s-%s", prefix_name, kind);
+      |                                                    ^
+drivers/infiniband/hw/hfi1/efivar.c:133:17: note: ‘snprintf’ output 2 or more bytes (assuming 65) into a destination of size 64
+  133 |                 snprintf(name, sizeof(name), "%s-%s", prefix_name, kind);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+cc1: all warnings being treated as errors
+make[6]: *** [scripts/Makefile.build:243: drivers/infiniband/hw/hfi1/efivar.o] Error 1
 
-Fixes: 44b6b7661132 ("platform/x86: wmi: create userspace interface for drivers")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20231020211005.38216-5-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: c03c08d50b3d ("IB/hfi1: Check upper-case EFI variables")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Link: https://lore.kernel.org/r/238fa39a8fd60e87a5ad7e1ca6584fcdf32e9519.1698159993.git.leonro@nvidia.com
+Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/wmi.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ drivers/infiniband/hw/hfi1/efivar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
-index 4b58590596184..136347a195ece 100644
---- a/drivers/platform/x86/wmi.c
-+++ b/drivers/platform/x86/wmi.c
-@@ -793,21 +793,13 @@ static int wmi_dev_match(struct device *dev, struct device_driver *driver)
- }
- static int wmi_char_open(struct inode *inode, struct file *filp)
+diff --git a/drivers/infiniband/hw/hfi1/efivar.c b/drivers/infiniband/hw/hfi1/efivar.c
+index f275dd1abed85..7a3caf2cd9071 100644
+--- a/drivers/infiniband/hw/hfi1/efivar.c
++++ b/drivers/infiniband/hw/hfi1/efivar.c
+@@ -110,7 +110,7 @@ int read_hfi1_efi_var(struct hfi1_devdata *dd, const char *kind,
+ 		      unsigned long *size, void **return_data)
  {
--	const char *driver_name = filp->f_path.dentry->d_iname;
--	struct wmi_block *wblock;
--	struct wmi_block *next;
--
--	list_for_each_entry_safe(wblock, next, &wmi_block_list, list) {
--		if (!wblock->dev.dev.driver)
--			continue;
--		if (strcmp(driver_name, wblock->dev.dev.driver->name) == 0) {
--			filp->private_data = wblock;
--			break;
--		}
--	}
-+	/*
-+	 * The miscdevice already stores a pointer to itself
-+	 * inside filp->private_data
-+	 */
-+	struct wmi_block *wblock = container_of(filp->private_data, struct wmi_block, char_dev);
+ 	char prefix_name[64];
+-	char name[64];
++	char name[128];
+ 	int result;
+ 	int i;
  
--	if (!filp->private_data)
--		return -ENODEV;
-+	filp->private_data = wblock;
- 
- 	return nonseekable_open(inode, filp);
- }
 -- 
 2.42.0
 
