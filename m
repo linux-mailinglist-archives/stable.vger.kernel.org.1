@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A86957ECB21
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03EEA7ECD35
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229778AbjKOTUT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:20:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56762 "EHLO
+        id S234363AbjKOTfE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:35:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230183AbjKOTUS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:18 -0500
+        with ESMTP id S234404AbjKOTfD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E47219D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78F1C433C7;
-        Wed, 15 Nov 2023 19:20:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072D01A5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8192FC433C9;
+        Wed, 15 Nov 2023 19:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076015;
-        bh=CcwMTyA6dPe5NkUz5Kp2A2SUPSad456L819L0ok4IMo=;
+        s=korg; t=1700076899;
+        bh=k0318IaebBo7ANd1rQa4LJBWj9f82L9r/A9E3ZG2nGA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=smQ4M8YMAsjxVNfqWWWUHFudY+BCtYWEAOO4CmekyQ3GtnFb1+Z8u/o4tgDQfMv90
-         3YbjeT0/UthHyRhDQldkkupBRvZuyzlEtFPk+kP5vK4dADddzlXWTc/c7V6n4ToOZE
-         VY6YxfxyNEBn5Syg0kU1tVb8juwwh+xmkOdHp1lY=
+        b=OB6/gIpjIYIKoRYL+MdJMXN4uo6CuXk/Wf4UxtHhC5EuiUyxgsD/jZrfrzkhVnVDo
+         dMLlTCsRPZpXfdb3ai47pBcZ6lEDtOzt1FbeLF9VLl7zoakm1ynwpLTTsH1Negm49v
+         isvxK1+1b3FwNVZn6ouha+MUVYntKg8jVNALvZNs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Hansen <dave.hansen@linux.intel.com>,
-        Adam Dunlap <acdunlap@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jacob Xu <jacobhxu@google.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 021/550] x86/sev-es: Allow copy_from_kernel_nofault() in earlier boot
-Date:   Wed, 15 Nov 2023 14:10:05 -0500
-Message-ID: <20231115191602.183944310@linuxfoundation.org>
+Subject: [PATCH 6.6 061/603] udplite: remove UDPLITE_BIT
+Date:   Wed, 15 Nov 2023 14:10:06 -0500
+Message-ID: <20231115191617.350138957@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,66 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Dunlap <acdunlap@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f79936545fb122856bd78b189d3c7ee59928c751 ]
+[ Upstream commit 729549aa350c56a777bb342941ed4d69b6585769 ]
 
-Previously, if copy_from_kernel_nofault() was called before
-boot_cpu_data.x86_virt_bits was set up, then it would trigger undefined
-behavior due to a shift by 64.
+This flag is set but never read, we can remove it.
 
-This ended up causing boot failures in the latest version of ubuntu2204
-in the gcp project when using SEV-SNP.
-
-Specifically, this function is called during an early #VC handler which
-is triggered by a CPUID to check if NX is implemented.
-
-Fixes: 1aa9aa8ee517 ("x86/sev-es: Setup GHCB-based boot #VC handler")
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Adam Dunlap <acdunlap@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Jacob Xu <jacobhxu@google.com>
-Link: https://lore.kernel.org/r/20230912002703.3924521-2-acdunlap@google.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 882af43a0fc3 ("udplite: fix various data-races")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/maccess.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ include/linux/udp.h | 5 ++---
+ net/ipv4/udplite.c  | 1 -
+ net/ipv6/udplite.c  | 1 -
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/mm/maccess.c b/arch/x86/mm/maccess.c
-index 5a53c2cc169cc..6993f026adec9 100644
---- a/arch/x86/mm/maccess.c
-+++ b/arch/x86/mm/maccess.c
-@@ -9,12 +9,21 @@ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
- 	unsigned long vaddr = (unsigned long)unsafe_src;
+diff --git a/include/linux/udp.h b/include/linux/udp.h
+index 0cf83270a4a28..58156edec0096 100644
+--- a/include/linux/udp.h
++++ b/include/linux/udp.h
+@@ -55,9 +55,8 @@ struct udp_sock {
+ 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
  
+ /* indicator bits used by pcflag: */
+-#define UDPLITE_BIT      0x1  		/* set by udplite proto init function */
+-#define UDPLITE_SEND_CC  0x2  		/* set via udplite setsockopt         */
+-#define UDPLITE_RECV_CC  0x4		/* set via udplite setsocktopt        */
++#define UDPLITE_SEND_CC  0x1  		/* set via udplite setsockopt         */
++#define UDPLITE_RECV_CC  0x2		/* set via udplite setsocktopt        */
+ 	__u8		 pcflag;        /* marks socket as UDP-Lite if > 0    */
  	/*
--	 * Range covering the highest possible canonical userspace address
--	 * as well as non-canonical address range. For the canonical range
--	 * we also need to include the userspace guard page.
-+	 * Do not allow userspace addresses.  This disallows
-+	 * normal userspace and the userspace guard page:
- 	 */
--	return vaddr >= TASK_SIZE_MAX + PAGE_SIZE &&
--	       __is_canonical_address(vaddr, boot_cpu_data.x86_virt_bits);
-+	if (vaddr < TASK_SIZE_MAX + PAGE_SIZE)
-+		return false;
-+
-+	/*
-+	 * Allow everything during early boot before 'x86_virt_bits'
-+	 * is initialized.  Needed for instruction decoding in early
-+	 * exception handlers.
-+	 */
-+	if (!boot_cpu_data.x86_virt_bits)
-+		return true;
-+
-+	return __is_canonical_address(vaddr, boot_cpu_data.x86_virt_bits);
- }
- #else
- bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
+ 	 * Following member retains the information to create a UDP header
+diff --git a/net/ipv4/udplite.c b/net/ipv4/udplite.c
+index 39ecdad1b50ce..af37af3ab727b 100644
+--- a/net/ipv4/udplite.c
++++ b/net/ipv4/udplite.c
+@@ -21,7 +21,6 @@ EXPORT_SYMBOL(udplite_table);
+ static int udplite_sk_init(struct sock *sk)
+ {
+ 	udp_init_sock(sk);
+-	udp_sk(sk)->pcflag = UDPLITE_BIT;
+ 	pr_warn_once("UDP-Lite is deprecated and scheduled to be removed in 2025, "
+ 		     "please contact the netdev mailing list\n");
+ 	return 0;
+diff --git a/net/ipv6/udplite.c b/net/ipv6/udplite.c
+index 267d491e97075..a60bec9b14f14 100644
+--- a/net/ipv6/udplite.c
++++ b/net/ipv6/udplite.c
+@@ -17,7 +17,6 @@
+ static int udplitev6_sk_init(struct sock *sk)
+ {
+ 	udpv6_init_sock(sk);
+-	udp_sk(sk)->pcflag = UDPLITE_BIT;
+ 	pr_warn_once("UDP-Lite is deprecated and scheduled to be removed in 2025, "
+ 		     "please contact the netdev mailing list\n");
+ 	return 0;
 -- 
 2.42.0
 
