@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 197B87ECE10
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC92D7ECE13
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234800AbjKOTkS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:40:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50264 "EHLO
+        id S234783AbjKOTkV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:40:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234680AbjKOTkO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:14 -0500
+        with ESMTP id S234826AbjKOTkQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBCCBD4D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:06 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B350C433C8;
-        Wed, 15 Nov 2023 19:40:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA146D51
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACEBC433CA;
+        Wed, 15 Nov 2023 19:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077206;
-        bh=FB1e2bhvq22Jbb798TsPX96H4+n7qNnA4b+Vc5yc+Ic=;
+        s=korg; t=1700077209;
+        bh=49da5BXOfKK6+TRQtEZoVevxdOJM87R6MzNoN8S7s9A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xB59z/8cOBsgm5JocgNvcGYCLbbFYkTGE/f6GoLPbMzjNnlBpisL2lOuxAs1v9Wbc
-         0/sYgVkDn7GXcsk62L+Tgl193x4RKzAXQ2MJBgGITUQgoCwP+vR/fLJn/qpip3QwZ9
-         PmiZopUN4s+gfrGTmyW2wedBFGS37uxyK/SD2vgY=
+        b=MLaq4OUNeYdBw6N8ARqddzVkTuUY1IsdVU8aK79bKcXPxt1eNO7as5Bt6CqfrE1I+
+         yKLU0v3pKS1r3yEybGDDSVp8Z/IWmEC4tHwUCP34t0bt8A2G4hekMyRPVd8XVfhWvl
+         hBb4I+OSrXMuteZx6/bozG/IOnEA3xg/L2Iugdo0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 541/550] fbdev: fsl-diu-fb: mark wr_reg_wa() static
-Date:   Wed, 15 Nov 2023 14:18:45 -0500
-Message-ID: <20231115191638.431918875@linuxfoundation.org>
+        patches@lists.linux.dev, Mukesh Ojha <quic_mojha@quicinc.com>,
+        Yujie Liu <yujie.liu@intel.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 542/550] tracing/kprobes: Fix the order of argument descriptions
+Date:   Wed, 15 Nov 2023 14:18:46 -0500
+Message-ID: <20231115191638.500845887@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -53,36 +55,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Yujie Liu <yujie.liu@intel.com>
 
-[ Upstream commit a5035c81847430dfa3482807b07325f29e9e8c09 ]
+[ Upstream commit f032c53bea6d2057c14553832d846be2f151cfb2 ]
 
-wr_reg_wa() is not an appropriate name for a global function, and doesn't need
-to be global anyway, so mark it static and avoid the warning:
+The order of descriptions should be consistent with the argument list of
+the function, so "kretprobe" should be the second one.
 
-drivers/video/fbdev/fsl-diu-fb.c:493:6: error: no previous prototype for 'wr_reg_wa' [-Werror=missing-prototypes]
+int __kprobe_event_gen_cmd_start(struct dynevent_cmd *cmd, bool kretprobe,
+                                 const char *name, const char *loc, ...)
 
-Fixes: 0d9dab39fbbe ("powerpc/5121: fsl-diu-fb: fix issue with re-enabling DIU area descriptor")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Link: https://lore.kernel.org/all/20231031041305.3363712-1-yujie.liu@intel.com/
+
+Fixes: 2a588dd1d5d6 ("tracing: Add kprobe event command generation functions")
+Suggested-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Yujie Liu <yujie.liu@intel.com>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/fsl-diu-fb.c | 2 +-
+ kernel/trace/trace_kprobe.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
-index 730a07d23fa92..1075b11863481 100644
---- a/drivers/video/fbdev/fsl-diu-fb.c
-+++ b/drivers/video/fbdev/fsl-diu-fb.c
-@@ -490,7 +490,7 @@ static enum fsl_diu_monitor_port fsl_diu_name_to_port(const char *s)
-  * Workaround for failed writing desc register of planes.
-  * Needed with MPC5121 DIU rev 2.0 silicon.
-  */
--void wr_reg_wa(u32 *reg, u32 val)
-+static void wr_reg_wa(u32 *reg, u32 val)
- {
- 	do {
- 		out_be32(reg, val);
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index c63e25cb9406e..d23b18cbdadd1 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -1019,9 +1019,9 @@ EXPORT_SYMBOL_GPL(kprobe_event_cmd_init);
+ /**
+  * __kprobe_event_gen_cmd_start - Generate a kprobe event command from arg list
+  * @cmd: A pointer to the dynevent_cmd struct representing the new event
++ * @kretprobe: Is this a return probe?
+  * @name: The name of the kprobe event
+  * @loc: The location of the kprobe event
+- * @kretprobe: Is this a return probe?
+  * @...: Variable number of arg (pairs), one pair for each field
+  *
+  * NOTE: Users normally won't want to call this function directly, but
 -- 
 2.42.0
 
