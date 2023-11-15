@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0BAF7EC634
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 15:47:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B0FC7EC64A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 15:50:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234976AbjKOOrb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 09:47:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47048 "EHLO
+        id S1344219AbjKOOuE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 09:50:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234954AbjKOOrb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 09:47:31 -0500
+        with ESMTP id S1344106AbjKOOuD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 09:50:03 -0500
 Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A8DB6;
-        Wed, 15 Nov 2023 06:47:27 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473358E;
+        Wed, 15 Nov 2023 06:50:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
         ; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
         :Date:subject:date:message-id:reply-to;
-        bh=yfv8RLWW8OJj6tqwzcuXfDoEVuCDGTTEEl/uhycqU/w=; b=ePgCLU1vqT8vyT45MEJbB1mbxt
-        YKJR6DLsyQTsAPDfCvg90F5s3hUXwGgxs1LxW4xBm2YkGxppuuJCmBBDCWDUF/z4SoekYxECWgJZT
-        0HDPmPEdAm3eWNT0YGsB/y+KOEyEyPHJPKYhSFKTMWf7noUHSkb6Oj8WFsp2noK5FGPU=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:57814 helo=pettiford)
+        bh=N4nOVNPHN/GNaTgQVzsx/iDuZLO8JZV/hkIdjCBQPKU=; b=hy9smrm8aioCpyQ50Y+b+qF/mR
+        Tv4TUTLXXigyWiu7IyXVdkZ6k63lNhVUYECakrlpBnDmrylv/S6f6hqFfmqsdGZ/jYVBrFzyGCAbB
+        jWRepxP8g91xFM/LH4TbzCaCHruQRiN+bJ4VcF19etJtdomIJIslOwXzFgSGB31J6gp4=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:55162 helo=pettiford)
         by mail.hugovil.com with esmtpa (Exim 4.92)
         (envelope-from <hugo@hugovil.com>)
-        id 1r3HAj-0001dr-Pm; Wed, 15 Nov 2023 09:47:18 -0500
-Date:   Wed, 15 Nov 2023 09:47:17 -0500
+        id 1r3HDF-0001ej-N4; Wed, 15 Nov 2023 09:49:54 -0500
+Date:   Wed, 15 Nov 2023 09:49:53 -0500
 From:   Hugo Villeneuve <hugo@hugovil.com>
 To:     Daniel Mack <daniel@zonque.org>
 Cc:     gregkh@linuxfoundation.org, jirislaby@kernel.org,
         lech.perczak@camlingroup.com, u.kleine-koenig@pengutronix.de,
         linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
         Maxim Popov <maxim.snafu@gmail.com>, stable@vger.kernel.org
-Message-Id: <20231115094717.7541b01ec0c8a7f4006fcae6@hugovil.com>
-In-Reply-To: <140280a6-1948-4630-b10c-8e6a2afec2de@zonque.org>
+Message-Id: <20231115094953.f2a3fee202765c11421b7fb7@hugovil.com>
+In-Reply-To: <20231114074904.239458-1-daniel@zonque.org>
 References: <20231114074904.239458-1-daniel@zonque.org>
-        <20231114102025.d48c0a6ec6c413f274b7680b@hugovil.com>
-        <140280a6-1948-4630-b10c-8e6a2afec2de@zonque.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -56,71 +54,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 14 Nov 2023 16:55:33 +0100
+On Tue, 14 Nov 2023 08:49:04 +0100
 Daniel Mack <daniel@zonque.org> wrote:
 
-> Hi Hugo,
-> 
-> On 11/14/23 16:20, Hugo Villeneuve wrote:
-> > On Tue, 14 Nov 2023 08:49:04 +0100
-> > Daniel Mack <daniel@zonque.org> wrote:
-> >> This devices has a silicon bug that makes it report a timeout interrupt
-> >> but no data in FIFO.
-> >>
-> >> The datasheet states the following in the errata section 18.1.4:
-> >>
-> >>   "If the host reads the receive FIFO at the at the same time as a
-> >>   time-out interrupt condition happens, the host might read 0xCC
-> >>   (time-out) in the Interrupt Indication Register (IIR), but bit 0
-> >>   of the Line Status Register (LSR) is not set (means there is not
-> >>   data in the receive FIFO)."
-> >>
-> >> When this happens, the loop in sc16is7xx_irq() will run forever,
-> >> which effectively blocks the i2c bus and breaks the functionality
-> >> of the UART.
-> >>
-> >> From the information above, it is assumed that when the bug is
-> >> triggered, the FIFO does in fact have payload in its buffer, but the
-> >> fill level reporting is off-by-one. Hence this patch fixes the issue
-> >> by reading one byte from the FIFO when that condition is detected.
-> > 
-> > From what I understand from the errata, when the problem occurs, it
-> > affects bit 0 of the LSR register. I see no mention that it
-> > also affects the RX FIFO level register (SC16IS7XX_RXLVL_REG)?
-> 
-> True, the errata doesn't explicitly mention that, but tests have shown
-> that the RXLVL register is equally affected.
-
 Hi Daniel,
-ok, now it makes more sense if RXLVL is affected.
 
-Have you contacted NXP about this? If not, I suggest you do open a
-support case and let them know about your findings, because it is very
-strange that it is not mentioned in the errata. And doing so may led to
-an updated and better documentation on their side about this errata.
+> This devices has a silicon bug that makes it report a timeout interrupt
 
-And incorporate this new info into your commit log for an eventual
-patch V2.
+devices -> device
 
-Thank you,
+> but no data in FIFO.
+> 
+> The datasheet states the following in the errata section 18.1.4:
+> 
+>   "If the host reads the receive FIFO at the at the same time as a
+
+"at the at the" -> "at the"
+
+Note: I know this error is part of the errata in NXP datasheet.
+
+
+>   time-out interrupt condition happens, the host might read 0xCC
+>   (time-out) in the Interrupt Indication Register (IIR), but bit 0
+>   of the Line Status Register (LSR) is not set (means there is not
+>   data in the receive FIFO)."
+> 
+> When this happens, the loop in sc16is7xx_irq() will run forever,
+> which effectively blocks the i2c bus and breaks the functionality
+
+i2c -> i2c/spi
+
 Hugo.
 
 
-> > LSR[0] would be checked only if we were using polled mode of
-> > operation, but we always use the interrupt mode (IRQ), and therefore I
-> > would say that this errata doesn't apply to this driver, and the
-> > patch is not necessary...
+> of the UART.
 > 
-> Well, it is. We have seen this bug in the wild and extensively
-> stress-tested the patch on dozens of boards for many days. Without this
-> patch, kernels on affected systems would consume a lot of CPU cycles in
-> the interrupt threads and effectively render the I2C bus unusable due to
-> the busy polling.
+> From the information above, it is assumed that when the bug is
+> triggered, the FIFO does in fact have payload in its buffer, but the
+> fill level reporting is off-by-one. Hence this patch fixes the issue
+> by reading one byte from the FIFO when that condition is detected.
 > 
-> With this patch applied, we were no longer able to reproduce the issue.
+> This clears the interrupt and hence breaks the polling loop.
 > 
+> Signed-off-by: Daniel Mack <daniel@zonque.org>
+> Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/tty/serial/sc16is7xx.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> Thanks,
-> Daniel
-> 
+> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> index 289ca7d4e566..76f76e510ed1 100644
+> --- a/drivers/tty/serial/sc16is7xx.c
+> +++ b/drivers/tty/serial/sc16is7xx.c
+> @@ -765,6 +765,18 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+>  		case SC16IS7XX_IIR_RTOI_SRC:
+>  		case SC16IS7XX_IIR_XOFFI_SRC:
+>  			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
+> +
+> +			/*
+> +			 * There is a silicon bug that makes the chip report a
+> +			 * time-out interrupt but no data in the FIFO. This is
+> +			 * described in errata section 18.1.4.
+> +			 *
+> +			 * When this happens, read one byte from the FIFO to
+> +			 * clear the interrupt.
+> +			 */
+> +			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
+> +				rxlen = 1;
+> +
+>  			if (rxlen)
+>  				sc16is7xx_handle_rx(port, rxlen, iir);
+>  			break;
+> -- 
+> 2.41.0
 > 
