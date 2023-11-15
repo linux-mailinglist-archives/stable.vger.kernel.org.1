@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6B907ED30F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7134E7ED372
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:52:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233709AbjKOUp7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37978 "EHLO
+        id S233836AbjKOUwo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:52:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233704AbjKOUp6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:58 -0500
+        with ESMTP id S233760AbjKOUwn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:52:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 293E51BE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A30EC433C7;
-        Wed, 15 Nov 2023 20:45:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13F48B0
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:52:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88971C4E778;
+        Wed, 15 Nov 2023 20:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081154;
-        bh=GFufORipAGPuid5m4wGJd3YX8mOsi8CwcIOhy31RorI=;
+        s=korg; t=1700081559;
+        bh=djBFG7ovNwvXP8vdPStiPtGn/Yy4R3kwTQLdn7nMOC0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nK7uNY9LvRCQY42WmkndCyeCRy5/urE9ngi9ANsNPUJDvk5j2+P3aWPLqrlsmnyGj
-         jYfjgGHZj/lnh9vqgyp/P3CXtRtzOuUog3tZ2Sx4Z1s+Vx6BCZWBe4WjWzSMZ8r0l1
-         vurN+mMnHimbnNYPkWY/VfamEc+AG0k4iTjIhs5o=
+        b=NDFDbTPcFLJQ/neKKbxCmEJZmUf6w+SKEOGY8RHlUXP0/jh9+rij7FaRnjj336/SZ
+         lpLkCQ4we5i3sRWuQdeicCC6YWeJEOvOPKB/Df9X4R8PH5iBWTxXsbdLcaQ/+q7gAz
+         ElAt1wwYcmbc3C1ej8vtbSTbGdu3nVsvhVT7ZFXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 70/88] pwm: brcmstb: Utilize appropriate clock APIs in suspend/resume
+Subject: [PATCH 5.15 190/244] xhci: Loosen RPM as default policy to cover for AMD xHC 1.1
 Date:   Wed, 15 Nov 2023 15:36:22 -0500
-Message-ID: <20231115191430.312357267@linuxfoundation.org>
+Message-ID: <20231115203559.743866051@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,50 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit e9bc4411548aaa738905d37851a0146c16b3bb21 ]
+[ Upstream commit 4baf1218150985ee3ab0a27220456a1f027ea0ac ]
 
-The suspend/resume functions currently utilize
-clk_disable()/clk_enable() respectively which may be no-ops with certain
-clock providers such as SCMI. Fix this to use clk_disable_unprepare()
-and clk_prepare_enable() respectively as we should.
+The AMD USB host controller (1022:43f7) isn't going into PCI D3 by default
+without anything connected. This is because the policy that was introduced
+by commit a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all
+xHC 1.2 or later devices") only covered 1.2 or later.
 
-Fixes: 3a9f5957020f ("pwm: Add Broadcom BCM7038 PWM controller support")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+The 1.1 specification also has the same requirement as the 1.2
+specification for D3 support. So expand the runtime PM as default policy
+to all AMD 1.1 devices as well.
+
+Fixes: a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all xHC 1.2 or later devices")
+Link: https://composter.com.ua/documents/xHCI_Specification_for_USB.pdf
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20231019102924.2797346-15-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-brcmstb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pwm/pwm-brcmstb.c b/drivers/pwm/pwm-brcmstb.c
-index 8063cffa1c960..5d7842a62d594 100644
---- a/drivers/pwm/pwm-brcmstb.c
-+++ b/drivers/pwm/pwm-brcmstb.c
-@@ -307,7 +307,7 @@ static int brcmstb_pwm_suspend(struct device *dev)
- {
- 	struct brcmstb_pwm *p = dev_get_drvdata(dev);
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 29a442b621182..d0223facb92a1 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -349,6 +349,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	/* xHC spec requires PCI devices to support D3hot and D3cold */
+ 	if (xhci->hci_version >= 0x120)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
++	else if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version >= 0x110)
++		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
  
--	clk_disable(p->clk);
-+	clk_disable_unprepare(p->clk);
- 
- 	return 0;
- }
-@@ -316,7 +316,7 @@ static int brcmstb_pwm_resume(struct device *dev)
- {
- 	struct brcmstb_pwm *p = dev_get_drvdata(dev);
- 
--	clk_enable(p->clk);
-+	clk_prepare_enable(p->clk);
- 
- 	return 0;
- }
+ 	if (xhci->quirks & XHCI_RESET_ON_RESUME)
+ 		xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
 -- 
 2.42.0
 
