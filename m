@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 031F37ECEF4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 449CE7ECC35
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235186AbjKOTpV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36804 "EHLO
+        id S233854AbjKOT1Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235199AbjKOTpT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:19 -0500
+        with ESMTP id S233798AbjKOT1R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58D2D9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C876AC433C8;
-        Wed, 15 Nov 2023 19:45:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 670631A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94E7C433C7;
+        Wed, 15 Nov 2023 19:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077516;
-        bh=uQ2KDbkNx3ZDknNRS8CIEbofQJc5yDOEwzExSDyNqXs=;
+        s=korg; t=1700076434;
+        bh=zDgpYyc84xbgD5R02kBiO754h4DlfmYgjdFVAo76QXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R5cRp/6XWyuK6a3Zrb1GA0Cf4abuO9p+HoF24/5JGfhhlCe8sCHnuwsCfUwo1W2lM
-         gE/GHFPeK3E8Dx3tNlv7PKiUa0xeyW1lirS0WmugXRX0l5PvJOhwBH4JMgnRlkUcEy
-         itYtivfhVVUkXr0eAWbusQv6s+8yspZncI6TXsgY=
+        b=FvrSh1KjjY8q8Y9ubQ89mTpD0+J9Ohll3ABf9pFYTzxzEI7OjTjK/a439Tb1cN62B
+         X317Rj8BYawQRsH0q4NnshwesYMJluX5dYDGImKKn4E7ap6/RIV6bbJXUTKNRcuT+p
+         4WVMMNJzjLXPQww3i6yGgdlPi95bEuREBVR1nXl8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Ser <contact@emersion.fr>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 325/603] soc: qcom: pmic_glink: fix connector type to be DisplayPort
+Subject: [PATCH 6.5 286/550] firmware: arm_ffa: Assign the missing IDR allocation ID to the FFA device
 Date:   Wed, 15 Nov 2023 14:14:30 -0500
-Message-ID: <20231115191635.997548588@linuxfoundation.org>
+Message-ID: <20231115191620.612851229@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +49,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit f86955f2b1ff9fbc7ae4f6595112b2f896885366 ]
+[ Upstream commit 7d0bc6360f17ea323ab25939a34857123d7d87e5 ]
 
-As it was pointed out by Simon Ser, the DRM_MODE_CONNECTOR_USB connector
-is reserved for the GUD devices. Other drivers (i915, amdgpu) use
-DRM_MODE_CONNECTOR_DisplayPort even if the DP stream is handled by the
-USB-C altmode. While we are still working on implementing the proper way
-to let userspace know that the DP is wrapped into USB-C, change
-connector type to be DRM_MODE_CONNECTOR_DisplayPort.
+Commit 19b8766459c4 ("firmware: arm_ffa: Fix FFA device names for logical
+partitions") added an ID to the FFA device using ida_alloc() and append
+the same to "arm-ffa" to make up a unique device name. However it missed
+to stash the id value in ffa_dev to help freeing the ID later when the
+device is destroyed.
 
-Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
-Cc: Simon Ser <contact@emersion.fr>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Acked-by: Simon Ser <contact@emersion.fr>
-Link: https://lore.kernel.org/r/20231010225229.77027-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Due to the missing/unassigned ID in FFA device, we get the following
+warning when the FF-A device is unregistered.
+
+  |   ida_free called for id=0 which is not allocated.
+  |   WARNING: CPU: 7 PID: 1 at lib/idr.c:525 ida_free+0x114/0x164
+  |   CPU: 7 PID: 1 Comm: swapper/0 Not tainted 6.6.0-rc4 #209
+  |   pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+  |   pc : ida_free+0x114/0x164
+  |   lr : ida_free+0x114/0x164
+  |   Call trace:
+  |    ida_free+0x114/0x164
+  |    ffa_release_device+0x24/0x3c
+  |    device_release+0x34/0x8c
+  |    kobject_put+0x94/0xf8
+  |    put_device+0x18/0x24
+  |    klist_devices_put+0x14/0x20
+  |    klist_next+0xc8/0x114
+  |    bus_for_each_dev+0xd8/0x144
+  |    arm_ffa_bus_exit+0x30/0x54
+  |    ffa_init+0x68/0x330
+  |    do_one_initcall+0xdc/0x250
+  |    do_initcall_level+0x8c/0xac
+  |    do_initcalls+0x54/0x94
+  |    do_basic_setup+0x1c/0x28
+  |    kernel_init_freeable+0x104/0x170
+  |    kernel_init+0x20/0x1a0
+  |    ret_from_fork+0x10/0x20
+
+Fix the same by actually assigning the ID in the FFA device this time
+for real.
+
+Fixes: 19b8766459c4 ("firmware: arm_ffa: Fix FFA device names for logical partitions")
+Link: https://lore.kernel.org/r/20231003085932.3553985-1-sudeep.holla@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pmic_glink_altmode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/bus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
-index d05e0d6edf493..974c14d1e0bfc 100644
---- a/drivers/soc/qcom/pmic_glink_altmode.c
-+++ b/drivers/soc/qcom/pmic_glink_altmode.c
-@@ -465,7 +465,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
- 		alt_port->bridge.funcs = &pmic_glink_altmode_bridge_funcs;
- 		alt_port->bridge.of_node = to_of_node(fwnode);
- 		alt_port->bridge.ops = DRM_BRIDGE_OP_HPD;
--		alt_port->bridge.type = DRM_MODE_CONNECTOR_USB;
-+		alt_port->bridge.type = DRM_MODE_CONNECTOR_DisplayPort;
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index 2b8bfcd010f5f..7865438b36960 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -193,6 +193,7 @@ struct ffa_device *ffa_device_register(const uuid_t *uuid, int vm_id,
+ 	dev->release = ffa_release_device;
+ 	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
  
- 		ret = devm_drm_bridge_add(dev, &alt_port->bridge);
- 		if (ret)
++	ffa_dev->id = id;
+ 	ffa_dev->vm_id = vm_id;
+ 	ffa_dev->ops = ops;
+ 	uuid_copy(&ffa_dev->uuid, uuid);
 -- 
 2.42.0
 
