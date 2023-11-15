@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 985C97ECBE9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1231E7ECE5D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233201AbjKOTZP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51030 "EHLO
+        id S235061AbjKOTmi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232889AbjKOTZP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:15 -0500
+        with ESMTP id S235062AbjKOTmh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79857A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF3FC433C7;
-        Wed, 15 Nov 2023 19:25:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06FDA189
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38603C433C7;
+        Wed, 15 Nov 2023 19:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076311;
-        bh=K5a2PNo8KqlWuDD3CcElWETGQgftYxvkBKbOiEBXE4g=;
+        s=korg; t=1700077353;
+        bh=7T5TyUKHxv90Dpi3iiIrcPHkYg9+7e7cdx1sds/479o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d+7hGCkRQCv+RKXvn9Lfvc3v28lpxG8ccvqhFiuqb5vqnKksJh4Ej31U0jRAtr9CQ
-         9A30Bf+Kv6zLodKGc33fOxY27tJiIrdHFvMIKDLjQst4ISDq9FfnfCd5ZLjMZ/KVIo
-         Pk9UYVymHpML/TlcSbnJs6SmjrdIGGSKm2axUeTw=
+        b=ncLn8nuNa7zqhRm+pdbPkL6xsoebunm7bQ1kfDOiMAtiVe01NdHaF3nfrbGXeTD4g
+         /7VswFhxDwYgDp+LOcCXNC3QBN4I8UX+MCSA/5DBoBF7M1VM+5b5aGqtkdeGkPwobD
+         844/oB5h+F2HJK0u+WKF/nbaN3WpaQD2AJ4QXta0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 211/550] drm/bridge: lt8912b: Fix bridge_detach
+        patches@lists.linux.dev, Gabriel Krisman Bertazi <krisman@suse.de>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 250/603] io_uring/kbuf: Allow the full buffer id space for provided buffers
 Date:   Wed, 15 Nov 2023 14:13:15 -0500
-Message-ID: <20231115191615.411091409@linuxfoundation.org>
+Message-ID: <20231115191630.553839404@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,84 +49,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit 941882a0e96d245f38116e940912b404b6a93c6f ]
+[ Upstream commit f74c746e476b9dad51448b9a9421aae72b60e25f ]
 
-The driver calls lt8912_bridge_detach() from its lt8912_remove()
-function. As the DRM core detaches bridges automatically, this leads to
-calling lt8912_bridge_detach() twice. The code probably has tried to
-manage the double-call with the 'is_attached' variable, but the driver
-never sets the variable to false, so its of no help.
+nbufs tracks the number of buffers and not the last bgid. In 16-bit, we
+have 2^16 valid buffers, but the check mistakenly rejects the last
+bid. Let's fix it to make the interface consistent with the
+documentation.
 
-Fix the issue by dropping the call to lt8912_bridge_detach() from
-lt8912_remove(), as the DRM core will handle the detach call for us,
-and also drop the useless is_attached field.
-
-Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230804-lt8912b-v1-1-c542692c6a2f@ideasonboard.com
+Fixes: ddf0322db79c ("io_uring: add IORING_OP_PROVIDE_BUFFERS")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://lore.kernel.org/r/20231005000531.30800-3-krisman@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ io_uring/kbuf.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-index 4eaea67fb71c2..0e581f6e3c885 100644
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -45,7 +45,6 @@ struct lt8912 {
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index 74a4f9600642f..f6e5ae026e4be 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -19,12 +19,15 @@
  
- 	u8 data_lanes;
- 	bool is_power_on;
--	bool is_attached;
+ #define BGID_ARRAY	64
+ 
++/* BIDs are addressed by a 16-bit field in a CQE */
++#define MAX_BIDS_PER_BGID (1 << 16)
++
+ struct io_provide_buf {
+ 	struct file			*file;
+ 	__u64				addr;
+ 	__u32				len;
+ 	__u32				bgid;
+-	__u16				nbufs;
++	__u32				nbufs;
+ 	__u16				bid;
  };
  
- static int lt8912_write_init_config(struct lt8912 *lt)
-@@ -575,8 +574,6 @@ static int lt8912_bridge_attach(struct drm_bridge *bridge,
- 	if (ret)
- 		goto error;
+@@ -289,7 +292,7 @@ int io_remove_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 		return -EINVAL;
  
--	lt->is_attached = true;
--
+ 	tmp = READ_ONCE(sqe->fd);
+-	if (!tmp || tmp > USHRT_MAX)
++	if (!tmp || tmp > MAX_BIDS_PER_BGID)
+ 		return -EINVAL;
+ 
+ 	memset(p, 0, sizeof(*p));
+@@ -332,7 +335,7 @@ int io_provide_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
+ 		return -EINVAL;
+ 
+ 	tmp = READ_ONCE(sqe->fd);
+-	if (!tmp || tmp > USHRT_MAX)
++	if (!tmp || tmp > MAX_BIDS_PER_BGID)
+ 		return -E2BIG;
+ 	p->nbufs = tmp;
+ 	p->addr = READ_ONCE(sqe->addr);
+@@ -352,7 +355,7 @@ int io_provide_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
+ 	tmp = READ_ONCE(sqe->off);
+ 	if (tmp > USHRT_MAX)
+ 		return -E2BIG;
+-	if (tmp + p->nbufs > USHRT_MAX)
++	if (tmp + p->nbufs > MAX_BIDS_PER_BGID)
+ 		return -EINVAL;
+ 	p->bid = tmp;
  	return 0;
- 
- error:
-@@ -588,15 +585,13 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
- {
- 	struct lt8912 *lt = bridge_to_lt8912(bridge);
- 
--	if (lt->is_attached) {
--		lt8912_hard_power_off(lt);
-+	lt8912_hard_power_off(lt);
- 
--		if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
--			drm_bridge_hpd_disable(lt->hdmi_port);
-+	if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
-+		drm_bridge_hpd_disable(lt->hdmi_port);
- 
--		drm_connector_unregister(&lt->connector);
--		drm_connector_cleanup(&lt->connector);
--	}
-+	drm_connector_unregister(&lt->connector);
-+	drm_connector_cleanup(&lt->connector);
- }
- 
- static enum drm_connector_status
-@@ -750,7 +745,6 @@ static void lt8912_remove(struct i2c_client *client)
- {
- 	struct lt8912 *lt = i2c_get_clientdata(client);
- 
--	lt8912_bridge_detach(&lt->bridge);
- 	drm_bridge_remove(&lt->bridge);
- 	lt8912_free_i2c(lt);
- 	lt8912_put_dt(lt);
 -- 
 2.42.0
 
