@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98D617ECBDE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9C37ECE2D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233151AbjKOTZB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35406 "EHLO
+        id S229678AbjKOTlX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233168AbjKOTY7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:59 -0500
+        with ESMTP id S234717AbjKOTlW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8267E19F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05455C433C8;
-        Wed, 15 Nov 2023 19:24:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82967B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:18 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F36A0C433C8;
+        Wed, 15 Nov 2023 19:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076296;
-        bh=aN8ObnFRa9S1AYeRcEjCjFX7dntvmtXj+R7uhB9Vql8=;
+        s=korg; t=1700077278;
+        bh=0+ytu81NdarKojl01bVLXYrMa5aLBWuyl5+P6LnV/IY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zx+8jfDohhwxIgarZCSZ1vn/eLOJ5mvmZSQBlPVDY/R1yxEUOiquD3fRnAd/p1NDV
-         qZwHn/koJbuZU4QAT/XlPo8QyBeiUW9/9WvWt83Ms4uVZKIasMo6Z785TC6e30hvEf
-         KfJPlO6x0Fdei7h2ebVGE9V8s9v5htgeVmL4125k=
+        b=M/G0cwjd+ABH9sx0jMO01PPwGM+ZlaTKCtz0X2ecGGCOxPTyFg8tJjBYxW1TwVJmS
+         7+W924eAcaUo1YwH8F7xSslxvYcWv3LxtKXUdByGnUjvO9orW0yXy2Obura8xRIT2z
+         6IDSXAq8FlWZI8uhMvppVflWTQy0q1zZJ9RrXY+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Zhang Rui <rui.zhang@intel.com>,
+        kernel test robot <lkp@intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 165/550] clk: renesas: rzg2l: Lock around writes to mux register
+Subject: [PATCH 6.6 204/603] hwmon: (coretemp) Fix potentially truncated sysfs attribute name
 Date:   Wed, 15 Nov 2023 14:12:29 -0500
-Message-ID: <20231115191612.156716433@linuxfoundation.org>
+Message-ID: <20231115191627.377362829@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,94 +51,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit d2692ed490e680a41401cef879adebcfafb4298f ]
+[ Upstream commit bbfff736d30e5283ad09e748caff979d75ddef7f ]
 
-The SD MUX output (SD0) is further divided by 4 in G2{L,UL}.  The
-divided clock is SD0_DIV4. SD0_DIV4 is registered with
-CLK_SET_RATE_PARENT which means a rate request for it is propagated to
-the MUX and could reach rzg2l_cpg_sd_clk_mux_set_parent() concurrently
-with the users of SD0.
-Add proper locking to avoid concurrent accesses on SD MUX set rate
-registers.
+When build with W=1 and "-Werror=format-truncation", below error is
+observed in coretemp driver,
 
-Fixes: eaff33646f4cb ("clk: renesas: rzg2l: Add SDHI clk mux support")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230929053915.1530607-4-claudiu.beznea@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+   drivers/hwmon/coretemp.c: In function 'create_core_data':
+>> drivers/hwmon/coretemp.c:393:34: error: '%s' directive output may be truncated writing likely 5 or more bytes into a region of size between 3 and 13 [-Werror=format-truncation=]
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                                  ^~
+   drivers/hwmon/coretemp.c:393:26: note: assuming directive output of 5 bytes
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                          ^~~~~~~~~~~
+   drivers/hwmon/coretemp.c:392:17: note: 'snprintf' output 7 or more bytes (assuming 22) into a destination of size 19
+     392 |                 snprintf(tdata->attr_name[i], CORETEMP_NAME_LENGTH,
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: all warnings being treated as errors
+
+Given that
+1. '%d' could take 10 charactors,
+2. '%s' could take 10 charactors ("crit_alarm"),
+3. "temp", "_" and the NULL terminator take 6 charactors,
+fix the problem by increasing CORETEMP_NAME_LENGTH to 28.
+
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310200443.iD3tUbbK-lkp@intel.com/
+Link: https://lore.kernel.org/r/20231025122316.836400-1-rui.zhang@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 23 +++++++++++++----------
- drivers/clk/renesas/rzg2l-cpg.h |  2 +-
- 2 files changed, 14 insertions(+), 11 deletions(-)
+ drivers/hwmon/coretemp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 7245a34d43e0b..7be098315899c 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -196,6 +196,7 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
- 	u32 shift = GET_SHIFT(hwdata->conf);
- 	const u32 clk_src_266 = 2;
- 	u32 msk, val, bitmask;
-+	unsigned long flags;
- 	int ret;
- 
- 	/*
-@@ -211,23 +212,25 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
- 	 */
- 	bitmask = (GENMASK(GET_WIDTH(hwdata->conf) - 1, 0) << shift) << 16;
- 	msk = off ? CPG_CLKSTATUS_SELSDHI1_STS : CPG_CLKSTATUS_SELSDHI0_STS;
-+	spin_lock_irqsave(&priv->rmw_lock, flags);
- 	if (index != clk_src_266) {
- 		writel(bitmask | ((clk_src_266 + 1) << shift), priv->base + off);
- 
--		ret = readl_poll_timeout(priv->base + CPG_CLKSTATUS, val,
--					 !(val & msk), 100,
--					 CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
--		if (ret) {
--			dev_err(priv->dev, "failed to switch clk source\n");
--			return ret;
--		}
-+		ret = readl_poll_timeout_atomic(priv->base + CPG_CLKSTATUS, val,
-+						!(val & msk), 10,
-+						CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
-+		if (ret)
-+			goto unlock;
- 	}
- 
- 	writel(bitmask | ((index + 1) << shift), priv->base + off);
- 
--	ret = readl_poll_timeout(priv->base + CPG_CLKSTATUS, val,
--				 !(val & msk), 100,
--				 CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
-+	ret = readl_poll_timeout_atomic(priv->base + CPG_CLKSTATUS, val,
-+					!(val & msk), 10,
-+					CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
-+unlock:
-+	spin_unlock_irqrestore(&priv->rmw_lock, flags);
-+
- 	if (ret)
- 		dev_err(priv->dev, "failed to switch clk source\n");
- 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.h b/drivers/clk/renesas/rzg2l-cpg.h
-index 6cee9e56acc72..91e9c2569f801 100644
---- a/drivers/clk/renesas/rzg2l-cpg.h
-+++ b/drivers/clk/renesas/rzg2l-cpg.h
-@@ -43,7 +43,7 @@
- #define CPG_CLKSTATUS_SELSDHI0_STS	BIT(28)
- #define CPG_CLKSTATUS_SELSDHI1_STS	BIT(29)
- 
--#define CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US	20000
-+#define CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US	200
- 
- /* n = 0/1/2 for PLL1/4/6 */
- #define CPG_SAMPLL_CLK1(n)	(0x04 + (16 * n))
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index eba94f68585a8..ba82d1e79c131 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -42,7 +42,7 @@ MODULE_PARM_DESC(tjmax, "TjMax value in degrees Celsius");
+ #define PKG_SYSFS_ATTR_NO	1	/* Sysfs attribute for package temp */
+ #define BASE_SYSFS_ATTR_NO	2	/* Sysfs Base attr no for coretemp */
+ #define NUM_REAL_CORES		128	/* Number of Real cores per cpu */
+-#define CORETEMP_NAME_LENGTH	19	/* String Length of attrs */
++#define CORETEMP_NAME_LENGTH	28	/* String Length of attrs */
+ #define MAX_CORE_ATTRS		4	/* Maximum no of basic attrs */
+ #define TOTAL_ATTRS		(MAX_CORE_ATTRS + 1)
+ #define MAX_CORE_DATA		(NUM_REAL_CORES + BASE_SYSFS_ATTR_NO)
 -- 
 2.42.0
 
