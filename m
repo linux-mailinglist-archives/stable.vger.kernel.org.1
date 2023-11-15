@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6736C7ECCE2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F1597ECCE4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234191AbjKOTdL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39890 "EHLO
+        id S234211AbjKOTdO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:33:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234200AbjKOTdK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:10 -0500
+        with ESMTP id S234185AbjKOTdO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6043B1A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8859C433C9;
-        Wed, 15 Nov 2023 19:33:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD0379E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3C2C433C7;
+        Wed, 15 Nov 2023 19:33:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076787;
-        bh=pZxepE3fd1q/n1SH45fODoWXpDthHJ+kmUITCiXmEt4=;
+        s=korg; t=1700076790;
+        bh=b8Up54CDbc4z/zqQZPjNdvtzzSSZUNjuWwz1Qw73QG4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uSiGONtsB71A5xq4GrtWkiLfmNHFocmQ3/SrrcLlIXei8qPAHD6XBeEW6LSexl4k7
-         B3Is4w7YdLCcY0rbV4ilKuKSvgRtF3WPgkPAx7pKSJ0GikqczXu+C1pBNwbXD7D4SS
-         ouhZTQ+UrSwg1NmhB3g/MmLzyyF1j84YhvnWlVBY=
+        b=FDh+i0erRv+KnOEMnOXUGcYyGaLI/AS6JvZVJ0m7iKL0xZPs0SCkuV0So3djJXvFs
+         3hesYnGNSrmkFd4qv/nlsRojr8QGFE73Mwby7P8ftC2QbgjMOSb7WhfyZCfmIkWYj8
+         eDEoaYOzyilxipLGqd9/id18ewyHEV5SCjE/JQKA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yong He <alexyonghe@tencent.com>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Neeraj upadhyay <Neeraj.Upadhyay@amd.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/603] srcu: Fix callbacks acceleration mishandling
-Date:   Wed, 15 Nov 2023 14:09:31 -0500
-Message-ID: <20231115191614.987480827@linuxfoundation.org>
+Subject: [PATCH 6.6 027/603] drivers/clocksource/timer-ti-dm: Dont call clk_get_rate() in stop function
+Date:   Wed, 15 Nov 2023 14:09:32 -0500
+Message-ID: <20231115191615.060468158@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -56,155 +56,115 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
 
-[ Upstream commit 4a8e65b0c348e42107c64381e692e282900be361 ]
+[ Upstream commit 12590d4d0e331d3cb9e6b3494515cd61c8a6624e ]
 
-SRCU callbacks acceleration might fail if the preceding callbacks
-advance also fails. This can happen when the following steps are met:
+clk_get_rate() might sleep, and that prevents dm-timer based PWM from being
+used from atomic context.
 
-1) The RCU_WAIT_TAIL segment has callbacks (say for gp_num 8) and the
-   RCU_NEXT_READY_TAIL also has callbacks (say for gp_num 12).
+Fix that by getting fclk rate in probe() and using a notifier in case rate
+changes.
 
-2) The grace period for RCU_WAIT_TAIL is observed as started but not yet
-   completed so rcu_seq_current() returns 4 + SRCU_STATE_SCAN1 = 5.
-
-3) This value is passed to rcu_segcblist_advance() which can't move
-   any segment forward and fails.
-
-4) srcu_gp_start_if_needed() still proceeds with callback acceleration.
-   But then the call to rcu_seq_snap() observes the grace period for the
-   RCU_WAIT_TAIL segment (gp_num 8) as completed and the subsequent one
-   for the RCU_NEXT_READY_TAIL segment as started
-   (ie: 8 + SRCU_STATE_SCAN1 = 9) so it returns a snapshot of the
-   next grace period, which is 16.
-
-5) The value of 16 is passed to rcu_segcblist_accelerate() but the
-   freshly enqueued callback in RCU_NEXT_TAIL can't move to
-   RCU_NEXT_READY_TAIL which already has callbacks for a previous grace
-   period (gp_num = 12). So acceleration fails.
-
-6) Note in all these steps, srcu_invoke_callbacks() hadn't had a chance
-   to run srcu_invoke_callbacks().
-
-Then some very bad outcome may happen if the following happens:
-
-7) Some other CPU races and starts the grace period number 16 before the
-   CPU handling previous steps had a chance. Therefore srcu_gp_start()
-   isn't called on the latter sdp to fix the acceleration leak from
-   previous steps with a new pair of call to advance/accelerate.
-
-8) The grace period 16 completes and srcu_invoke_callbacks() is finally
-   called. All the callbacks from previous grace periods (8 and 12) are
-   correctly advanced and executed but callbacks in RCU_NEXT_READY_TAIL
-   still remain. Then rcu_segcblist_accelerate() is called with a
-   snaphot of 20.
-
-9) Since nothing started the grace period number 20, callbacks stay
-   unhandled.
-
-This has been reported in real load:
-
-	[3144162.608392] INFO: task kworker/136:12:252684 blocked for more
-	than 122 seconds.
-	[3144162.615986]       Tainted: G           O  K   5.4.203-1-tlinux4-0011.1 #1
-	[3144162.623053] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
-	disables this message.
-	[3144162.631162] kworker/136:12  D    0 252684      2 0x90004000
-	[3144162.631189] Workqueue: kvm-irqfd-cleanup irqfd_shutdown [kvm]
-	[3144162.631192] Call Trace:
-	[3144162.631202]  __schedule+0x2ee/0x660
-	[3144162.631206]  schedule+0x33/0xa0
-	[3144162.631209]  schedule_timeout+0x1c4/0x340
-	[3144162.631214]  ? update_load_avg+0x82/0x660
-	[3144162.631217]  ? raw_spin_rq_lock_nested+0x1f/0x30
-	[3144162.631218]  wait_for_completion+0x119/0x180
-	[3144162.631220]  ? wake_up_q+0x80/0x80
-	[3144162.631224]  __synchronize_srcu.part.19+0x81/0xb0
-	[3144162.631226]  ? __bpf_trace_rcu_utilization+0x10/0x10
-	[3144162.631227]  synchronize_srcu+0x5f/0xc0
-	[3144162.631236]  irqfd_shutdown+0x3c/0xb0 [kvm]
-	[3144162.631239]  ? __schedule+0x2f6/0x660
-	[3144162.631243]  process_one_work+0x19a/0x3a0
-	[3144162.631244]  worker_thread+0x37/0x3a0
-	[3144162.631247]  kthread+0x117/0x140
-	[3144162.631247]  ? process_one_work+0x3a0/0x3a0
-	[3144162.631248]  ? __kthread_cancel_work+0x40/0x40
-	[3144162.631250]  ret_from_fork+0x1f/0x30
-
-Fix this with taking the snapshot for acceleration _before_ the read
-of the current grace period number.
-
-The only side effect of this solution is that callbacks advancing happen
-then _after_ the full barrier in rcu_seq_snap(). This is not a problem
-because that barrier only cares about:
-
-1) Ordering accesses of the update side before call_srcu() so they don't
-   bleed.
-2) See all the accesses prior to the grace period of the current gp_num
-
-The only things callbacks advancing need to be ordered against are
-carried by snp locking.
-
-Reported-by: Yong He <alexyonghe@tencent.com>
-Co-developed-by:: Yong He <alexyonghe@tencent.com>
-Signed-off-by: Yong He <alexyonghe@tencent.com>
-Co-developed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by:  Joel Fernandes (Google) <joel@joelfernandes.org>
-Co-developed-by: Neeraj upadhyay <Neeraj.Upadhyay@amd.com>
-Signed-off-by: Neeraj upadhyay <Neeraj.Upadhyay@amd.com>
-Link: http://lore.kernel.org/CANZk6aR+CqZaqmMWrC2eRRPY12qAZnDZLwLnHZbNi=xXMB401g@mail.gmail.com
-Fixes: da915ad5cf25 ("srcu: Parallelize callback handling")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Fixes: af04aa856e93 ("ARM: OMAP: Move dmtimer driver out of plat-omap to drivers under clocksource")
+Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/1696312220-11550-1-git-send-email-ivo.g.dimitrov.75@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/srcutree.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ drivers/clocksource/timer-ti-dm.c | 36 ++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index 20d7a238d675a..253ed509b6abb 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -1242,10 +1242,37 @@ static unsigned long srcu_gp_start_if_needed(struct srcu_struct *ssp,
- 	spin_lock_irqsave_sdp_contention(sdp, &flags);
- 	if (rhp)
- 		rcu_segcblist_enqueue(&sdp->srcu_cblist, rhp);
-+	/*
-+	 * The snapshot for acceleration must be taken _before_ the read of the
-+	 * current gp sequence used for advancing, otherwise advancing may fail
-+	 * and acceleration may then fail too.
-+	 *
-+	 * This could happen if:
-+	 *
-+	 *  1) The RCU_WAIT_TAIL segment has callbacks (gp_num = X + 4) and the
-+	 *     RCU_NEXT_READY_TAIL also has callbacks (gp_num = X + 8).
-+	 *
-+	 *  2) The grace period for RCU_WAIT_TAIL is seen as started but not
-+	 *     completed so rcu_seq_current() returns X + SRCU_STATE_SCAN1.
-+	 *
-+	 *  3) This value is passed to rcu_segcblist_advance() which can't move
-+	 *     any segment forward and fails.
-+	 *
-+	 *  4) srcu_gp_start_if_needed() still proceeds with callback acceleration.
-+	 *     But then the call to rcu_seq_snap() observes the grace period for the
-+	 *     RCU_WAIT_TAIL segment as completed and the subsequent one for the
-+	 *     RCU_NEXT_READY_TAIL segment as started (ie: X + 4 + SRCU_STATE_SCAN1)
-+	 *     so it returns a snapshot of the next grace period, which is X + 12.
-+	 *
-+	 *  5) The value of X + 12 is passed to rcu_segcblist_accelerate() but the
-+	 *     freshly enqueued callback in RCU_NEXT_TAIL can't move to
-+	 *     RCU_NEXT_READY_TAIL which already has callbacks for a previous grace
-+	 *     period (gp_num = X + 8). So acceleration fails.
-+	 */
-+	s = rcu_seq_snap(&ssp->srcu_sup->srcu_gp_seq);
- 	rcu_segcblist_advance(&sdp->srcu_cblist,
- 			      rcu_seq_current(&ssp->srcu_sup->srcu_gp_seq));
--	s = rcu_seq_snap(&ssp->srcu_sup->srcu_gp_seq);
--	(void)rcu_segcblist_accelerate(&sdp->srcu_cblist, s);
-+	WARN_ON_ONCE(!rcu_segcblist_accelerate(&sdp->srcu_cblist, s) && rhp);
- 	if (ULONG_CMP_LT(sdp->srcu_gp_seq_needed, s)) {
- 		sdp->srcu_gp_seq_needed = s;
- 		needgp = true;
+diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
+index 09ab29cb7f641..5f60f6bd33866 100644
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -140,6 +140,8 @@ struct dmtimer {
+ 	struct platform_device *pdev;
+ 	struct list_head node;
+ 	struct notifier_block nb;
++	struct notifier_block fclk_nb;
++	unsigned long fclk_rate;
+ };
+ 
+ static u32 omap_reserved_systimers;
+@@ -253,8 +255,7 @@ static inline void __omap_dm_timer_enable_posted(struct dmtimer *timer)
+ 	timer->posted = OMAP_TIMER_POSTED;
+ }
+ 
+-static inline void __omap_dm_timer_stop(struct dmtimer *timer,
+-					unsigned long rate)
++static inline void __omap_dm_timer_stop(struct dmtimer *timer)
+ {
+ 	u32 l;
+ 
+@@ -269,7 +270,7 @@ static inline void __omap_dm_timer_stop(struct dmtimer *timer,
+ 		 * Wait for functional clock period x 3.5 to make sure that
+ 		 * timer is stopped
+ 		 */
+-		udelay(3500000 / rate + 1);
++		udelay(3500000 / timer->fclk_rate + 1);
+ #endif
+ 	}
+ 
+@@ -348,6 +349,21 @@ static int omap_timer_context_notifier(struct notifier_block *nb,
+ 	return NOTIFY_OK;
+ }
+ 
++static int omap_timer_fclk_notifier(struct notifier_block *nb,
++				    unsigned long event, void *data)
++{
++	struct clk_notifier_data *clk_data = data;
++	struct dmtimer *timer = container_of(nb, struct dmtimer, fclk_nb);
++
++	switch (event) {
++	case POST_RATE_CHANGE:
++		timer->fclk_rate = clk_data->new_rate;
++		return NOTIFY_OK;
++	default:
++		return NOTIFY_DONE;
++	}
++}
++
+ static int omap_dm_timer_reset(struct dmtimer *timer)
+ {
+ 	u32 l, timeout = 100000;
+@@ -754,7 +770,6 @@ static int omap_dm_timer_stop(struct omap_dm_timer *cookie)
+ {
+ 	struct dmtimer *timer;
+ 	struct device *dev;
+-	unsigned long rate = 0;
+ 
+ 	timer = to_dmtimer(cookie);
+ 	if (unlikely(!timer))
+@@ -762,10 +777,7 @@ static int omap_dm_timer_stop(struct omap_dm_timer *cookie)
+ 
+ 	dev = &timer->pdev->dev;
+ 
+-	if (!timer->omap1)
+-		rate = clk_get_rate(timer->fclk);
+-
+-	__omap_dm_timer_stop(timer, rate);
++	__omap_dm_timer_stop(timer);
+ 
+ 	pm_runtime_put_sync(dev);
+ 
+@@ -1124,6 +1136,14 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
+ 		timer->fclk = devm_clk_get(dev, "fck");
+ 		if (IS_ERR(timer->fclk))
+ 			return PTR_ERR(timer->fclk);
++
++		timer->fclk_nb.notifier_call = omap_timer_fclk_notifier;
++		ret = devm_clk_notifier_register(dev, timer->fclk,
++						 &timer->fclk_nb);
++		if (ret)
++			return ret;
++
++		timer->fclk_rate = clk_get_rate(timer->fclk);
+ 	} else {
+ 		timer->fclk = ERR_PTR(-ENODEV);
+ 	}
 -- 
 2.42.0
 
