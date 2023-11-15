@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94C467ECE96
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06F477ECC1C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235137AbjKOToI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43810 "EHLO
+        id S233635AbjKOT1A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235139AbjKOToH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:07 -0500
+        with ESMTP id S233915AbjKOT0q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96C1DB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185F2C433CB;
-        Wed, 15 Nov 2023 19:44:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C2FCD63
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9269FC433CA;
+        Wed, 15 Nov 2023 19:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077444;
-        bh=UQO9uhItbvo0NvJyZwV1ZbRfRGnMW4zb6DYtIjBW6OU=;
+        s=korg; t=1700076402;
+        bh=/qzDyTHAyVjCRqyNNH3F8mKKI34rG7DxvdGyyGHtsGc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XwYeoKxgzW41Hus7jY657mnw+xV88849TbM+HYzyF7OfsHAJAvH+FqKeYUpB1xdI9
-         V4i57XmINJPSvmn0UeHgO25UFR+5JINRVO2l5p5p+0S4qvLtQECyWSFnKpmkTr2qiO
-         wJCViMVezLvURZzgKgM2BMw9SUDD7TALmEeUrsCk=
+        b=D4UrbVvPzNnDIhWKdeKrXfTw7ueVqdaMA3c0EPD5t2TfsmqTx7RsJROKgyK3CSig5
+         hmp9hgaYV9EmsUluSGwJ/3EBhsUf+baL+oXBtGDK11RAerpAIzvgYOT9zIkLfoXLVv
+         ITm2zPyg0Aq8y4YsqhBFm2oiF9gOOcKR53G4q5sM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wadim Egorov <w.egorov@phytec.de>,
-        Nishanth Menon <nm@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
+        patches@lists.linux.dev,
+        Souradeep Chowdhury <quic_schowdhu@quicinc.com>,
+        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/603] arm64: dts: ti: k3-am625-beagleplay: Fix typo in ramoops reg
-Date:   Wed, 15 Nov 2023 14:14:12 -0500
-Message-ID: <20231115191634.662998871@linuxfoundation.org>
+Subject: [PATCH 6.5 269/550] arm64: dts: qcom: sc7280: drop incorrect EUD port on SoC side
+Date:   Wed, 15 Nov 2023 14:14:13 -0500
+Message-ID: <20231115191619.369712342@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +54,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wadim Egorov <w.egorov@phytec.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 33269ac0b768b07da017df173d52952625c57870 ]
+[ Upstream commit 39c8af78cbefb8c71a5ad1fa088e761ef418f0a0 ]
 
-Seems like the address value of the reg property was mistyped.
-Update reg to 0x9ca00000 to match node's definition.
+Qualcomm Embedded USB Debugger (EUD) second port should point to Type-C
+USB connector.  Such connector was defined directly in root node of
+sc7280.dtsi which is clearly wrong.  SC7280 is a chip, so physically it
+does not have USB Type-C port.  The connector is usually accessible
+through some USB switch or controller.
 
-Fixes: f5a731f0787f ("arm64: dts: ti: Add k3-am625-beagleplay")
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-Reviewed-by: Nishanth Menon <nm@ti.com>
-Link: https://lore.kernel.org/r/20230925151444.1856852-1-w.egorov@phytec.de
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Doug Anderson said that he wasn't ever able to use EUD on Herobrine
+boards, probably because of invalid or missing DTS description - DTS is
+saying EUD is on usb_2 node, which is connected to a USB Hub, not to the
+Type-C port.
+
+Correct the EUD/USB connector topology by removing the top-level fake
+USB connector and EUD port pointing to it, and disabling the incomplete
+EUD device node.
+
+This fixes also dtbs_check warnings:
+
+  sc7280-herobrine-crd.dtb: connector: ports:port@0: 'reg' is a required property
+
+Link: https://lore.kernel.org/all/CAD=FV=Xt26=rBf99mzkAuwwtb2f-jnKtnHaEhXnthz0a5zke4Q@mail.gmail.com/
+Fixes: 9ee402ccfeb1 ("arm64: dts: qcom: sc7280: Fix EUD dt node syntax")
+Cc: Souradeep Chowdhury <quic_schowdhu@quicinc.com>
+Cc: Bhupesh Sharma <bhupesh.sharma@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20230820075626.22600-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
-index 7cfdf562b53bf..2de74428a8bde 100644
---- a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
-@@ -58,7 +58,7 @@ reserved-memory {
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 20231d80c504b..91bb58c6b1a61 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -649,18 +649,6 @@ cpu7_opp_3014mhz: opp-3014400000 {
+ 		};
+ 	};
  
- 		ramoops: ramoops@9ca00000 {
- 			compatible = "ramoops";
--			reg = <0x00 0x9c700000 0x00 0x00100000>;
-+			reg = <0x00 0x9ca00000 0x00 0x00100000>;
- 			record-size = <0x8000>;
- 			console-size = <0x8000>;
- 			ftrace-size = <0x00>;
+-	eud_typec: connector {
+-		compatible = "usb-c-connector";
+-
+-		ports {
+-			port@0 {
+-				con_eud: endpoint {
+-					remote-endpoint = <&eud_con>;
+-				};
+-			};
+-		};
+-	};
+-
+ 	memory@80000000 {
+ 		device_type = "memory";
+ 		/* We expect the bootloader to fill in the size */
+@@ -3625,6 +3613,8 @@ eud: eud@88e0000 {
+ 			      <0 0x88e2000 0 0x1000>;
+ 			interrupts-extended = <&pdc 11 IRQ_TYPE_LEVEL_HIGH>;
+ 
++			status = "disabled";
++
+ 			ports {
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
+@@ -3635,13 +3625,6 @@ eud_ep: endpoint {
+ 						remote-endpoint = <&usb2_role_switch>;
+ 					};
+ 				};
+-
+-				port@1 {
+-					reg = <1>;
+-					eud_con: endpoint {
+-						remote-endpoint = <&con_eud>;
+-					};
+-				};
+ 			};
+ 		};
+ 
 -- 
 2.42.0
 
