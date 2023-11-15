@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC8E7ECC60
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F1907ECF0E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233920AbjKOTaA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45032 "EHLO
+        id S235248AbjKOTqI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:46:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233918AbjKOT37 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:29:59 -0500
+        with ESMTP id S235222AbjKOTqD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB40A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD394C433C9;
-        Wed, 15 Nov 2023 19:29:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 612C4B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137DDC433CA;
+        Wed, 15 Nov 2023 19:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076596;
-        bh=lZKA9Lxahtb42dILcLFx4b0EpD7TTiLS30DKSyiBIT0=;
+        s=korg; t=1700077559;
+        bh=qwiXfKx3MeH9N8RZVEfTi6u1h/li+3oGbuhy9fOEBRo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zgaJDrHRXt8uE67j63Qv+IlIiwX0oMg7SGqr4vYzVuEhT78skjxNqbq5f22Zf9hrB
-         4M9ifJ1oIStrQFYC6ChRDRaDCD3VoOh1trXT2BVMYpUDNnIw2Zr5Yk8nWcCw43qONH
-         1b/NjWvjkWHz7f00fo0QjCy3JJ2pCjyJGoWDm5Ys=
+        b=MeE+Z5Kf+gW3lMCpVc7p/GMCTEJ9y2TgK+TPd5q5XHZsS5GzmMhrjLI9aB12podT3
+         qduqE0bGgBP0zAJUTDWPR27WC0SUuUNdAx7WUSso1PDZsCRHwe01OPH2VZQGsb0chM
+         X3ry8XgAj5aJzYxgCTU+qWXdxOPrOVIcN70GmP9U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 306/550] ASoC: cs35l41: Initialize completion object before requesting IRQ
-Date:   Wed, 15 Nov 2023 14:14:50 -0500
-Message-ID: <20231115191622.027701520@linuxfoundation.org>
+Subject: [PATCH 6.6 346/603] RDMA/core: Use size_{add,sub,mul}() in calls to struct_size()
+Date:   Wed, 15 Nov 2023 14:14:51 -0500
+Message-ID: <20231115191637.465515166@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +51,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 5ad668a9ce83d819701fb7abc1c2236049ec15c2 ]
+[ Upstream commit 81760bedc65194ff38e1e4faefd5f9f0c95c19a4 ]
 
-Technically, an interrupt handler can be called before probe() finishes
-its execution, hence ensure the pll_lock completion object is always
-initialized before being accessed in cs35l41_irq().
+If, for any reason, the open-coded arithmetic causes a wraparound,
+the protection that `struct_size()` provides against potential integer
+overflows is defeated. Fix this by hardening calls to `struct_size()`
+with `size_add()`, `size_sub()` and `size_mul()`.
 
-Fixes: f5030564938b ("ALSA: cs35l41: Add shared boost feature")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20230907171010.1447274-4-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 467f432a521a ("RDMA/core: Split port and device counter sysfs attributes")
+Fixes: a4676388e2e2 ("RDMA/core: Simplify how the gid_attrs sysfs is created")
+Fixes: e9dd5daf884c ("IB/umad: Refactor code to use cdev_device_add()")
+Fixes: 324e227ea7c9 ("RDMA/device: Add ib_device_get_by_netdev()")
+Fixes: 5aad26a7eac5 ("IB/core: Use struct_size() in kzalloc()")
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/ZQdt4NsJFwwOYxUR@work
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l41.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/core/device.c   |  2 +-
+ drivers/infiniband/core/sa_query.c |  4 +++-
+ drivers/infiniband/core/sysfs.c    | 10 +++++-----
+ drivers/infiniband/core/user_mad.c |  4 +++-
+ 4 files changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index 8a879b6f48290..c9f033d2782d2 100644
---- a/sound/soc/codecs/cs35l41.c
-+++ b/sound/soc/codecs/cs35l41.c
-@@ -1283,6 +1283,8 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
- 		regmap_update_bits(cs35l41->regmap, CS35L41_IRQ1_MASK3, CS35L41_INT3_PLL_LOCK_MASK,
- 				   0 << CS35L41_INT3_PLL_LOCK_SHIFT);
+diff --git a/drivers/infiniband/core/device.c b/drivers/infiniband/core/device.c
+index a666847bd7143..010718738d04c 100644
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -804,7 +804,7 @@ static int alloc_port_data(struct ib_device *device)
+ 	 * empty slots at the beginning.
+ 	 */
+ 	pdata_rcu = kzalloc(struct_size(pdata_rcu, pdata,
+-					rdma_end_port(device) + 1),
++					size_add(rdma_end_port(device), 1)),
+ 			    GFP_KERNEL);
+ 	if (!pdata_rcu)
+ 		return -ENOMEM;
+diff --git a/drivers/infiniband/core/sa_query.c b/drivers/infiniband/core/sa_query.c
+index 59179cfc20ef9..8175dde60b0a8 100644
+--- a/drivers/infiniband/core/sa_query.c
++++ b/drivers/infiniband/core/sa_query.c
+@@ -2159,7 +2159,9 @@ static int ib_sa_add_one(struct ib_device *device)
+ 	s = rdma_start_port(device);
+ 	e = rdma_end_port(device);
  
-+	init_completion(&cs35l41->pll_lock);
-+
- 	ret = devm_request_threaded_irq(cs35l41->dev, cs35l41->irq, NULL, cs35l41_irq,
- 					IRQF_ONESHOT | IRQF_SHARED | irq_pol,
- 					"cs35l41", cs35l41);
-@@ -1305,8 +1307,6 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
- 	if (ret < 0)
- 		goto err;
+-	sa_dev = kzalloc(struct_size(sa_dev, port, e - s + 1), GFP_KERNEL);
++	sa_dev = kzalloc(struct_size(sa_dev, port,
++				     size_add(size_sub(e, s), 1)),
++			 GFP_KERNEL);
+ 	if (!sa_dev)
+ 		return -ENOMEM;
  
--	init_completion(&cs35l41->pll_lock);
--
- 	pm_runtime_set_autosuspend_delay(cs35l41->dev, 3000);
- 	pm_runtime_use_autosuspend(cs35l41->dev);
- 	pm_runtime_mark_last_busy(cs35l41->dev);
+diff --git a/drivers/infiniband/core/sysfs.c b/drivers/infiniband/core/sysfs.c
+index ee59d73915689..ec5efdc166601 100644
+--- a/drivers/infiniband/core/sysfs.c
++++ b/drivers/infiniband/core/sysfs.c
+@@ -903,7 +903,7 @@ alloc_hw_stats_device(struct ib_device *ibdev)
+ 	 * Two extra attribue elements here, one for the lifespan entry and
+ 	 * one to NULL terminate the list for the sysfs core code
+ 	 */
+-	data = kzalloc(struct_size(data, attrs, stats->num_counters + 1),
++	data = kzalloc(struct_size(data, attrs, size_add(stats->num_counters, 1)),
+ 		       GFP_KERNEL);
+ 	if (!data)
+ 		goto err_free_stats;
+@@ -1009,7 +1009,7 @@ alloc_hw_stats_port(struct ib_port *port, struct attribute_group *group)
+ 	 * Two extra attribue elements here, one for the lifespan entry and
+ 	 * one to NULL terminate the list for the sysfs core code
+ 	 */
+-	data = kzalloc(struct_size(data, attrs, stats->num_counters + 1),
++	data = kzalloc(struct_size(data, attrs, size_add(stats->num_counters, 1)),
+ 		       GFP_KERNEL);
+ 	if (!data)
+ 		goto err_free_stats;
+@@ -1140,7 +1140,7 @@ static int setup_gid_attrs(struct ib_port *port,
+ 	int ret;
+ 
+ 	gid_attr_group = kzalloc(struct_size(gid_attr_group, attrs_list,
+-					     attr->gid_tbl_len * 2),
++					     size_mul(attr->gid_tbl_len, 2)),
+ 				 GFP_KERNEL);
+ 	if (!gid_attr_group)
+ 		return -ENOMEM;
+@@ -1205,8 +1205,8 @@ static struct ib_port *setup_port(struct ib_core_device *coredev, int port_num,
+ 	int ret;
+ 
+ 	p = kvzalloc(struct_size(p, attrs_list,
+-				attr->gid_tbl_len + attr->pkey_tbl_len),
+-		    GFP_KERNEL);
++				size_add(attr->gid_tbl_len, attr->pkey_tbl_len)),
++		     GFP_KERNEL);
+ 	if (!p)
+ 		return ERR_PTR(-ENOMEM);
+ 	p->ibdev = device;
+diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
+index 7e5c33aad1619..f5feca7fa9b9c 100644
+--- a/drivers/infiniband/core/user_mad.c
++++ b/drivers/infiniband/core/user_mad.c
+@@ -1378,7 +1378,9 @@ static int ib_umad_add_one(struct ib_device *device)
+ 	s = rdma_start_port(device);
+ 	e = rdma_end_port(device);
+ 
+-	umad_dev = kzalloc(struct_size(umad_dev, ports, e - s + 1), GFP_KERNEL);
++	umad_dev = kzalloc(struct_size(umad_dev, ports,
++				       size_add(size_sub(e, s), 1)),
++			   GFP_KERNEL);
+ 	if (!umad_dev)
+ 		return -ENOMEM;
+ 
 -- 
 2.42.0
 
