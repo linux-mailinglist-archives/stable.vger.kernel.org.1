@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DAB177ECCFD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE0A7ECF8C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234228AbjKOTdo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44564 "EHLO
+        id S235342AbjKOTtN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234267AbjKOTdn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:43 -0500
+        with ESMTP id S235348AbjKOTtL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42EE812C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC358C433C8;
-        Wed, 15 Nov 2023 19:33:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72D4C2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:08 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26609C433C7;
+        Wed, 15 Nov 2023 19:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076819;
-        bh=LR7OgexGTdbU/da0YC1V2v0I+rAeOEvCJwpHyngCbfU=;
+        s=korg; t=1700077748;
+        bh=c4YuRie9xhhmW29pwxA6y3tTCO1uESm7C0abb8biDwo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C+Yr5tt7cTnu4LQs/qQCWlE2WHWcidKV3ujSPFl65izVp1iTTGM6wJPk31tUT8ZJD
-         lXFJKAviqqkQVOgLy5qs4kapy5prUlhTK/aTxVwxGHe4J8ODvBw9P/QhKvt+xFQs6G
-         pb9GwmlWN4wshFT02jXSFOdSUbAk0zj5pBD+aTFI=
+        b=PQv0lp4aAg3UIGDncbTnbx5YlEdv+NxDAgFlg24DCzGfRTU0aT5DapSqo7/vGwFfI
+         j0edL4yTKaHAHqItQxji+izZ9opS/r5z4JPu9mie38/sj418rDYBKCK5LUsjiMa8By
+         a2MkI+IqO1KmILZuCjpRc90EJrFkG2eZIPMmc1W4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Gray <bgray@linux.ibm.com>,
+        patches@lists.linux.dev,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 433/550] powerpc/xive: Fix endian conversion size
-Date:   Wed, 15 Nov 2023 14:16:57 -0500
-Message-ID: <20231115191630.782732813@linuxfoundation.org>
+Subject: [PATCH 6.6 473/603] powerpc/imc-pmu: Use the correct spinlock initializer.
+Date:   Wed, 15 Nov 2023 14:16:58 -0500
+Message-ID: <20231115191645.220240634@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit ff7a60ab1e065257a0e467c13b519f4debcd7fcf ]
+[ Upstream commit 007240d59c11f87ac4f6cfc6a1d116630b6b634c ]
 
-Sparse reports a size mismatch in the endian swap. The Opal
-implementation[1] passes the value as a __be64, and the receiving
-variable out_qsize is a u64, so the use of be32_to_cpu() appears to be
-an error.
+The macro __SPIN_LOCK_INITIALIZER() is implementation specific. Users
+that desire to initialize a spinlock in a struct must use
+__SPIN_LOCK_UNLOCKED().
 
-[1]: https://github.com/open-power/skiboot/blob/80e2b1dc73/hw/xive.c#L3854
+Use __SPIN_LOCK_UNLOCKED() for the spinlock_t in imc_global_refc.
 
-Fixes: 88ec6b93c8e7 ("powerpc/xive: add OPAL extensions for the XIVE native exploitation support")
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Fixes: 76d588dddc459 ("powerpc/imc-pmu: Fix use of mutex in IRQs disabled section")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231011053711.93427-2-bgray@linux.ibm.com
+Link: https://msgid.link/20230309134831.Nz12nqsU@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/xive/native.c | 2 +-
+ arch/powerpc/perf/imc-pmu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/sysdev/xive/native.c b/arch/powerpc/sysdev/xive/native.c
-index 9f0af4d795d88..f1c0fa6ece21d 100644
---- a/arch/powerpc/sysdev/xive/native.c
-+++ b/arch/powerpc/sysdev/xive/native.c
-@@ -802,7 +802,7 @@ int xive_native_get_queue_info(u32 vp_id, u32 prio,
- 	if (out_qpage)
- 		*out_qpage = be64_to_cpu(qpage);
- 	if (out_qsize)
--		*out_qsize = be32_to_cpu(qsize);
-+		*out_qsize = be64_to_cpu(qsize);
- 	if (out_qeoi_page)
- 		*out_qeoi_page = be64_to_cpu(qeoi_page);
- 	if (out_escalate_irq)
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index 9d229ef7f86ef..ada817c49b722 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -51,7 +51,7 @@ static int trace_imc_mem_size;
+  * core and trace-imc
+  */
+ static struct imc_pmu_ref imc_global_refc = {
+-	.lock = __SPIN_LOCK_INITIALIZER(imc_global_refc.lock),
++	.lock = __SPIN_LOCK_UNLOCKED(imc_global_refc.lock),
+ 	.id = 0,
+ 	.refc = 0,
+ };
 -- 
 2.42.0
 
