@@ -2,39 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46D8F7ECCE7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A90DD7ECF6D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234213AbjKOTdT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44198 "EHLO
+        id S235321AbjKOTsX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234199AbjKOTdS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:18 -0500
+        with ESMTP id S235316AbjKOTsW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AFF29E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D622CC433C7;
-        Wed, 15 Nov 2023 19:33:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80CE3B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5637C433C7;
+        Wed, 15 Nov 2023 19:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076795;
-        bh=No8Uwu+FaoSBI0KBIowG8QHIgX4W0ASvZcfMRVt8Qtk=;
+        s=korg; t=1700077699;
+        bh=sWalzTKT0Gz8E+OWv9ECaqJ3pQVZQSlVTd1mSBIK/1w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FCaiun4rwiI5grH6EcO1t+1LulAZDHdkI3fctvx2oTOyQgXO0q1CDKM9bAooCCg4R
-         yCpalSTH9immsXmwr82qVU5oT6Qqhrhu9Gq3tjdFpZJFr4+ovY8C6OemwYUGMXSoKN
-         jW7Y4SNgMa3ncLZTclivKK31/pSkEeo1aJDd34z8=
+        b=o/hvoqeLDTSYYw4lmKoPT157RSD3K3zhBvOYjKl8yKBMerSdrbJrbUWx5GxZv5epP
+         6fcUHffZxVZ8rSwcW+9JuCXjfS6dVkcGuaYLuK1EdeGDKZzRhFHPEMY87gRapbqVh8
+         B7+OnnDbUJJSNYVqxrSHnxFJGV5M/zkQdoq7Ihqw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Georgi Djakov <djakov@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 423/550] interconnect: fix error handling in qnoc_probe()
-Date:   Wed, 15 Nov 2023 14:16:47 -0500
-Message-ID: <20231115191630.081331307@linuxfoundation.org>
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Ravi Bangoria <ravi.bangoria@amd.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Yang Jihong <yangjihong1@huawei.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>, llvm@lists.linux.dev,
+        Ming Wang <wangming01@loongson.cn>, Tom Rix <trix@redhat.com>,
+        bpf@vger.kernel.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 463/603] perf mem-events: Avoid uninitialized read
+Date:   Wed, 15 Nov 2023 14:16:48 -0500
+Message-ID: <20231115191644.614925317@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,79 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 273f74a2e7d15a5c216a4a26b84b1563c7092c9d ]
+[ Upstream commit 85f73c377b2ac9988a204b119aebb33ca5c60083 ]
 
-Add missing clk_disable_unprepare() and clk_bulk_disable_unprepare()
-in the error path in qnoc_probe(). And when qcom_icc_qos_set() fails,
-it needs remove nodes and disable clks.
+pmu should be initialized to NULL before perf_pmus__scan loop. Fix and
+shrink the scope of pmu at the same time. Issue detected by clang-tidy.
 
-Fixes: 2e2113c8a64f ("interconnect: qcom: rpm: Handle interface clocks")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Link: https://lore.kernel.org/r/20230803130521.959487-1-yangyingliang@huawei.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Fixes: 5752c20f3787 ("perf mem: Scan all PMUs instead of just core ones")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: llvm@lists.linux.dev
+Cc: Ming Wang <wangming01@loongson.cn>
+Cc: Tom Rix <trix@redhat.com>
+Cc: bpf@vger.kernel.org
+Link: https://lore.kernel.org/r/20231009183920.200859-10-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/icc-rpm.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ tools/perf/util/mem-events.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/qcom/icc-rpm.c b/drivers/interconnect/qcom/icc-rpm.c
-index 6acc7686ed386..f45d48db15440 100644
---- a/drivers/interconnect/qcom/icc-rpm.c
-+++ b/drivers/interconnect/qcom/icc-rpm.c
-@@ -491,7 +491,7 @@ int qnoc_probe(struct platform_device *pdev)
+diff --git a/tools/perf/util/mem-events.c b/tools/perf/util/mem-events.c
+index 39ffe8ceb3809..954b235e12e51 100644
+--- a/tools/perf/util/mem-events.c
++++ b/tools/perf/util/mem-events.c
+@@ -185,7 +185,6 @@ int perf_mem_events__record_args(const char **rec_argv, int *argv_nr,
+ {
+ 	int i = *argv_nr, k = 0;
+ 	struct perf_mem_event *e;
+-	struct perf_pmu *pmu;
  
- 	ret = devm_clk_bulk_get(dev, qp->num_intf_clks, qp->intf_clks);
- 	if (ret)
--		return ret;
-+		goto err_disable_unprepare_clk;
- 
- 	provider = &qp->provider;
- 	provider->dev = dev;
-@@ -506,13 +506,15 @@ int qnoc_probe(struct platform_device *pdev)
- 	/* If this fails, bus accesses will crash the platform! */
- 	ret = clk_bulk_prepare_enable(qp->num_intf_clks, qp->intf_clks);
- 	if (ret)
--		return ret;
-+		goto err_disable_unprepare_clk;
- 
- 	for (i = 0; i < num_nodes; i++) {
- 		size_t j;
- 
- 		node = icc_node_create(qnodes[i]->id);
- 		if (IS_ERR(node)) {
-+			clk_bulk_disable_unprepare(qp->num_intf_clks,
-+						   qp->intf_clks);
- 			ret = PTR_ERR(node);
- 			goto err_remove_nodes;
- 		}
-@@ -528,8 +530,11 @@ int qnoc_probe(struct platform_device *pdev)
- 		if (qnodes[i]->qos.ap_owned &&
- 		    qnodes[i]->qos.qos_mode != NOC_QOS_MODE_INVALID) {
- 			ret = qcom_icc_qos_set(node);
--			if (ret)
--				return ret;
-+			if (ret) {
-+				clk_bulk_disable_unprepare(qp->num_intf_clks,
-+							   qp->intf_clks);
-+				goto err_remove_nodes;
-+			}
- 		}
- 
- 		data->nodes[i] = node;
-@@ -557,6 +562,7 @@ int qnoc_probe(struct platform_device *pdev)
- 	icc_provider_deregister(provider);
- err_remove_nodes:
- 	icc_nodes_remove(provider);
-+err_disable_unprepare_clk:
- 	clk_bulk_disable_unprepare(qp->num_bus_clks, qp->bus_clks);
- 
- 	return ret;
+ 	for (int j = 0; j < PERF_MEM_EVENTS__MAX; j++) {
+ 		e = perf_mem_events__ptr(j);
+@@ -202,6 +201,8 @@ int perf_mem_events__record_args(const char **rec_argv, int *argv_nr,
+ 			rec_argv[i++] = "-e";
+ 			rec_argv[i++] = perf_mem_events__name(j, NULL);
+ 		} else {
++			struct perf_pmu *pmu = NULL;
++
+ 			if (!e->supported) {
+ 				perf_mem_events__print_unsupport_hybrid(e, j);
+ 				return -1;
 -- 
 2.42.0
 
