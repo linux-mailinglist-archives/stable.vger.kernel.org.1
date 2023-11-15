@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83A427ED6B6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:03:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BABF77ED6B7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:03:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343813AbjKOWDL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 17:03:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40102 "EHLO
+        id S1343871AbjKOWDN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 17:03:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235656AbjKOWDH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:03:07 -0500
+        with ESMTP id S235704AbjKOWDI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:03:08 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 294EBD5B
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:03:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CDCC433C8;
-        Wed, 15 Nov 2023 22:02:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A7CD5E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:03:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1908CC433C7;
+        Wed, 15 Nov 2023 22:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085779;
-        bh=DICsJmoCe27W4sDLfdoRMro9v1c+7qAQNbys7XEBbwU=;
+        s=korg; t=1700085781;
+        bh=uL1Nt0PUkwLKCwgxHRA3279Rm8L3ueA5oqk+cS6d/G4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vG75A57b6+OJQw74wY17r5GbRn1OdaqfPV+j72qfJxog7vxnANj4U1ebrojjX+w/M
-         zOyWvTZz5OJw6r2LQo/fbYbbxWYHW+c7okOzAWnSfhSaOVSEEQQO+OnNDeLNxSPQRW
-         x/PyuKwI3cFu63iCnwm5QLaMI4t5enFesc5WiLx4=
+        b=mK/SVaFIdAzgl6WQf21STSKky5I0CsngDV3AcAoZYvee8fpnhdqa8765hhyHQNE1M
+         31PsLhmfzVjz1tirMB+O8aZy3K+c+X+ZSiEpJ9SQnW0MptkcTF5UP9MMRL0WCFt3DB
+         0IADMZup4zaDkUE9maw6l0wN0/fDbiVwy1EIfvao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Dhruva Gole <d-gole@ti.com>,
-        Nishanth Menon <nm@ti.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/119] firmware: ti_sci: Mark driver as non removable
-Date:   Wed, 15 Nov 2023 17:00:39 -0500
-Message-ID: <20231115220134.156020607@linuxfoundation.org>
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 050/119] clk: scmi: Free scmi_clk allocated when the clocks with invalid info are skipped
+Date:   Wed, 15 Nov 2023 17:00:40 -0500
+Message-ID: <20231115220134.183355202@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
 References: <20231115220132.607437515@linuxfoundation.org>
@@ -40,7 +42,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -56,108 +57,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dhruva Gole <d-gole@ti.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 7b7a224b1ba1703583b25a3641ad9798f34d832a ]
+[ Upstream commit 3537a75e73f3420614a358d0c8b390ea483cc87d ]
 
-The TI-SCI message protocol provides a way to communicate between
-various compute processors with a central system controller entity. It
-provides the fundamental device management capability and clock control
-in the SOCs that it's used in.
+Add the missing devm_kfree() when we skip the clocks with invalid or
+missing information from the firmware.
 
-The remove function failed to do all the necessary cleanup if
-there are registered users. Some things are freed however which
-likely results in an oops later on.
-
-Ensure that the driver isn't unbound by suppressing its bind and unbind
-sysfs attributes. As the driver is built-in there is no way to remove
-device once bound.
-
-We can also remove the ti_sci_remove call along with the
-ti_sci_debugfs_destroy as there are no callers for it any longer.
-
-Fixes: aa276781a64a ("firmware: Add basic support for TI System Control Interface (TI-SCI) protocol")
-Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Closes: https://lore.kernel.org/linux-arm-kernel/20230216083908.mvmydic5lpi3ogo7@pengutronix.de/
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20230921091025.133130-1-d-gole@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Cc: Cristian Marussi <cristian.marussi@arm.com>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org
+Fixes: 6d6a1d82eaef ("clk: add support for clocks provided by SCMI")
+Link: https://lore.kernel.org/r/20231004193600.66232-1-sudeep.holla@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/ti_sci.c | 46 +--------------------------------------
- 1 file changed, 1 insertion(+), 45 deletions(-)
+ drivers/clk/clk-scmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index 53cee17d01158..54340869e682a 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -208,19 +208,6 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
- 	return 0;
- }
+diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
+index e3cdb4a282fea..d68de3773eb10 100644
+--- a/drivers/clk/clk-scmi.c
++++ b/drivers/clk/clk-scmi.c
+@@ -170,6 +170,7 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
+ 		sclk->info = handle->clk_ops->info_get(handle, idx);
+ 		if (!sclk->info) {
+ 			dev_dbg(dev, "invalid clock info for idx %d\n", idx);
++			devm_kfree(dev, sclk);
+ 			continue;
+ 		}
  
--/**
-- * ti_sci_debugfs_destroy() - clean up log debug file
-- * @pdev:	platform device pointer
-- * @info:	Pointer to SCI entity information
-- */
--static void ti_sci_debugfs_destroy(struct platform_device *pdev,
--				   struct ti_sci_info *info)
--{
--	if (IS_ERR(info->debug_region))
--		return;
--
--	debugfs_remove(info->d);
--}
- #else /* CONFIG_DEBUG_FS */
- static inline int ti_sci_debugfs_create(struct platform_device *dev,
- 					struct ti_sci_info *info)
-@@ -3527,43 +3514,12 @@ static int ti_sci_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int ti_sci_remove(struct platform_device *pdev)
--{
--	struct ti_sci_info *info;
--	struct device *dev = &pdev->dev;
--	int ret = 0;
--
--	of_platform_depopulate(dev);
--
--	info = platform_get_drvdata(pdev);
--
--	if (info->nb.notifier_call)
--		unregister_restart_handler(&info->nb);
--
--	mutex_lock(&ti_sci_list_mutex);
--	if (info->users)
--		ret = -EBUSY;
--	else
--		list_del(&info->node);
--	mutex_unlock(&ti_sci_list_mutex);
--
--	if (!ret) {
--		ti_sci_debugfs_destroy(pdev, info);
--
--		/* Safe to free channels since no more users */
--		mbox_free_channel(info->chan_tx);
--		mbox_free_channel(info->chan_rx);
--	}
--
--	return ret;
--}
--
- static struct platform_driver ti_sci_driver = {
- 	.probe = ti_sci_probe,
--	.remove = ti_sci_remove,
- 	.driver = {
- 		   .name = "ti-sci",
- 		   .of_match_table = of_match_ptr(ti_sci_of_match),
-+		   .suppress_bind_attrs = true,
- 	},
- };
- module_platform_driver(ti_sci_driver);
 -- 
 2.42.0
 
