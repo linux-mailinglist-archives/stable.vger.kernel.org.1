@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 238A17ECE7B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 440457ECE7C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235116AbjKOTnZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60150 "EHLO
+        id S235115AbjKOTn0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235109AbjKOTnY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:24 -0500
+        with ESMTP id S235114AbjKOTnZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25C4E9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F5E7C433C7;
-        Wed, 15 Nov 2023 19:43:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB8709E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C73DC433CC;
+        Wed, 15 Nov 2023 19:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077400;
-        bh=H6ejcblPbWOmi2yHvRK++lsOd9qUfjl+jCUN8PuBR9o=;
+        s=korg; t=1700077402;
+        bh=NrIwbpt9PY6GJVSpp4BSLGX2+Qcy1e5DhYE8Ux2Yy54=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ANC20XQ6JsLlTLy7whL650zTeiOFYFi08u7NN4DB6QZ3p0XsgJ00mx/25qCuQ6Px8
-         ojLtjgtwo+0ZpkIYg3ohyQet3hPFYHOHJCpwaEDCUmPE+TOWhmjClo3yY1r5tn4Pzy
-         Mc22POHVpvkjj7WE7cCYX3xRm7DQewCEkwgKpLmI=
+        b=CDESKOJy3aHKjmVYiLlQsEVIgWMP5s9whqirJBLuCKLtqkwMaXSf/8OqyhZoFDEqj
+         g3yHRE/KW6V1yUI522VthDrq/393C5g5z2GHXOSB9tnDOdaDCFCGdw5ikDk8jjlFsP
+         aHzlK/XSfuA9CYkIez5ffX7HLvaL9Oq6ZlZhqFWY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 280/603] arm64: dts: qcom: msm8992-libra: drop duplicated reserved memory
-Date:   Wed, 15 Nov 2023 14:13:45 -0500
-Message-ID: <20231115191632.742582391@linuxfoundation.org>
+Subject: [PATCH 6.6 281/603] arm64: dts: qcom: sm6125: Pad APPS IOMMU address to 8 characters
+Date:   Wed, 15 Nov 2023 14:13:46 -0500
+Message-ID: <20231115191632.817508282@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -55,40 +55,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-[ Upstream commit f32096602c19e68fb9bf04b494d13f1190602554 ]
+[ Upstream commit 310cdafc4a56827d1aeda7cc297939034adb8f99 ]
 
-There are two entries for similar reserved memory: qseecom@cb400000 and
-audio@cb400000.  Keep the qseecom as it is longer.
+APPS IOMMU is the only node in sm6125.dtsi that doesn't have its
+address padded to 8 hexadecimals; fix this by prepending a 0.
 
-  Warning (unique_unit_address_if_enabled): /reserved-memory/audio@cb400000: duplicate unit-address (also used in node /reserved-memory/qseecom@cb400000)
-
-Fixes: 69876bc6fd4d ("arm64: dts: qcom: msm8992-libra: Fix the memory map")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230720072048.10093-2-krzysztof.kozlowski@linaro.org
+Fixes: 8ddb4bc3d3b5 ("arm64: dts: qcom: sm6125: Configure APPS SMMU")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Link: https://lore.kernel.org/r/20230723-sm6125-dpu-v4-2-a3f287dd6c07@somainline.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/arm64/boot/dts/qcom/sm6125.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts b/arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts
-index fcca1ba94da69..5fe5de9ceef99 100644
---- a/arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts
-@@ -109,11 +109,6 @@ rmtfs_mem: rmtfs@ca100000 {
- 			qcom,client-id = <1>;
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+index d7c1a40617c64..197f8fed19a29 100644
+--- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
+@@ -1208,7 +1208,7 @@ spmi_bus: spmi@1c40000 {
  
--		audio_mem: audio@cb400000 {
--			reg = <0 0xcb000000 0 0x400000>;
--			no-mem;
--		};
--
- 		qseecom_mem: qseecom@cb400000 {
- 			reg = <0 0xcb400000 0 0x1c00000>;
- 			no-mem;
+ 		apps_smmu: iommu@c600000 {
+ 			compatible = "qcom,sm6125-smmu-500", "qcom,smmu-500", "arm,mmu-500";
+-			reg = <0xc600000 0x80000>;
++			reg = <0x0c600000 0x80000>;
+ 			interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.42.0
 
