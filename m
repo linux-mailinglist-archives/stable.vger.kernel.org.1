@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01A867ED32F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B59177ED5B4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:11:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233713AbjKOUqw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:46:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47994 "EHLO
+        id S235624AbjKOVLh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:11:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233774AbjKOUqk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:40 -0500
+        with ESMTP id S235652AbjKOVLa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:11:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E694D67
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E6BC433C9;
-        Wed, 15 Nov 2023 20:46:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 571BF1BDD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:02:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BBEC4E775;
+        Wed, 15 Nov 2023 20:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081196;
-        bh=Fk/XzqIazh+hOINcM4kgZvOUET4XozTovk35iV4KaOo=;
+        s=korg; t=1700081548;
+        bh=t6DsEiyNoTxVpO/f+BpWwpbIibuOvdYsPNqWwmHxTd4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pNGqv1OyFCgi8dnz8eRVvwKJ+lDH4m+N7xiKxJ4eX39IFsZ41cOqZW0rl9uGJYc0n
-         t5OaCi8lHRO3cd2arCtd5OrQ0ZLhQVbxPWTpqICx7sr0+Z/O50HQBjCTWJJbgBrK4j
-         Ex2y3zfBoBAiQ7VRdNbsGwm+20LjVzlidP53LGTU=
+        b=Dr+l04POwvqvpuAm59nNdgCYQ6hvWBHmgW0/6kzfunCbvYb03Difj7lkS6D1YtNYU
+         ABrRKCuFCIVgkXjxuWLkHKaqbCPSDC00AxosmmvJZS93vaNAkLAxR9kk4O/ggKSzPa
+         V5IlUerHHM5e5YUEFLvAqfDI5fOvAkNwda200PE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Christian Schoenebeck <linux_oss@crudebyte.com>,
+        Hangyu Hua <hbh25y@gmail.com>,
+        Dominique Martinet <asmadeus@codewreck.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 74/88] dccp: Call security_inet_conn_request() after setting IPv4 addresses.
+Subject: [PATCH 5.15 194/244] 9p/net: fix possible memory leak in p9_check_errors()
 Date:   Wed, 15 Nov 2023 15:36:26 -0500
-Message-ID: <20231115191430.534768572@linuxfoundation.org>
+Message-ID: <20231115203600.025230620@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,61 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit fa2df45af13091f76b89adb84a28f13818d5d631 ]
+[ Upstream commit ce07087964208eee2ca2f9ee4a98f8b5d9027fe6 ]
 
-Initially, commit 4237c75c0a35 ("[MLSXFRM]: Auto-labeling of child
-sockets") introduced security_inet_conn_request() in some functions
-where reqsk is allocated.  The hook is added just after the allocation,
-so reqsk's IPv4 remote address was not initialised then.
+When p9pdu_readf() is called with "s?d" attribute, it allocates a pointer
+that will store a string. But when p9pdu_readf() fails while handling "d"
+then this pointer will not be freed in p9_check_errors().
 
-However, SELinux/Smack started to read it in netlbl_req_setattr()
-after the cited commits.
-
-This bug was partially fixed by commit 284904aa7946 ("lsm: Relocate
-the IPv4 security_inet_conn_request() hooks").
-
-This patch fixes the last bug in DCCPv4.
-
-Fixes: 389fb800ac8b ("netlabel: Label incoming TCP connections correctly in SELinux")
-Fixes: 07feee8f812f ("netlabel: Cleanup the Smack/NetLabel code to fix incoming TCP connections")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 51a87c552dfd ("9p: rework client code to use new protocol support functions")
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Message-ID: <20231027030302.11927-1-hbh25y@gmail.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv4.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/9p/client.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
-index 892fbd1f650da..5281ac3260f6f 100644
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -612,9 +612,6 @@ int dccp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
- 	if (dccp_parse_options(sk, dreq, skb))
- 		goto drop_and_free;
+diff --git a/net/9p/client.c b/net/9p/client.c
+index c4c1e44cd7ca3..9fdcaa956c008 100644
+--- a/net/9p/client.c
++++ b/net/9p/client.c
+@@ -520,12 +520,14 @@ static int p9_check_errors(struct p9_client *c, struct p9_req_t *req)
+ 		return 0;
  
--	if (security_inet_conn_request(sk, skb, req))
--		goto drop_and_free;
--
- 	ireq = inet_rsk(req);
- 	sk_rcv_saddr_set(req_to_sk(req), ip_hdr(skb)->daddr);
- 	sk_daddr_set(req_to_sk(req), ip_hdr(skb)->saddr);
-@@ -622,6 +619,9 @@ int dccp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
- 	ireq->ireq_family = AF_INET;
- 	ireq->ir_iif = sk->sk_bound_dev_if;
+ 	if (!p9_is_proto_dotl(c)) {
+-		char *ename;
++		char *ename = NULL;
  
-+	if (security_inet_conn_request(sk, skb, req))
-+		goto drop_and_free;
-+
- 	/*
- 	 * Step 3: Process LISTEN state
- 	 *
+ 		err = p9pdu_readf(&req->rc, c->proto_version, "s?d",
+ 				  &ename, &ecode);
+-		if (err)
++		if (err) {
++			kfree(ename);
+ 			goto out_err;
++		}
+ 
+ 		if (p9_is_proto_dotu(c) && ecode < 512)
+ 			err = -ecode;
 -- 
 2.42.0
 
