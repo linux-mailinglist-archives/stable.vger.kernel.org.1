@@ -2,52 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 612FA7ECC65
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D02BB7ECF1F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233930AbjKOTaH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59288 "EHLO
+        id S235245AbjKOTqd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:46:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233918AbjKOTaH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:07 -0500
+        with ESMTP id S235236AbjKOTqa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35CFF9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D67EC433C7;
-        Wed, 15 Nov 2023 19:30:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B3E189
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223E8C433C7;
+        Wed, 15 Nov 2023 19:46:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076603;
-        bh=ARt+bUw/bVW0CWmqMrN5UqzyrDpfLZVG+a8ixj+RqrQ=;
+        s=korg; t=1700077587;
+        bh=wf8G/1Urj8zwDf8IclRrKdfc6INEEgKR9kH3x5sSiJ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nDccTwjz4mzEhJFC6My5NMYf6ZUY5vj/xFDmDNrO+6O85t4DkCRhvkFBHAbVvdh2+
-         LWexhNPQvYcqNWLjqJ2JdwbyrYtjH+VmICPmGHiktG26NhwAmnbqlRwA/aq+xiMD/e
-         JsikwBF3oXAEngFdDf4XDiGHmtD86x77X4nSKJ/I=
+        b=ubxB/gK/hzLxXsNDLhkS2i5aI6swJpJzbmFsuCfQ7I52sNj85PQ7a8P+srWh2/GX9
+         v2LrGFuCI0ptg2kOuYr7LbfSy6exvKcTGWyKQO2hisvAuImoQeSA2EdZLRGmwyjY0g
+         fvTQEdSgHUbGhcmfq7jNIA1w1sroUacvF7Mk4Wt4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
-        David Hildenbrand <david@redhat.com>,
-        Kees Cook <keescook@chromium.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Ayush Jain <ayush.jain3@amd.com>,
-        Alexey Izbyshev <izbyshev@ispras.ru>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Greg Thelen <gthelen@google.com>,
-        Joey Gouly <joey.gouly@arm.com>, KP Singh <kpsingh@kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
-        Szabolcs Nagy <Szabolcs.Nagy@arm.com>,
-        Topi Miettinen <toiwoton@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 334/550] kselftest: vm: fix mdwes mmap_FIXED test case
+Subject: [PATCH 6.6 373/603] dlm: fix remove member after close call
 Date:   Wed, 15 Nov 2023 14:15:18 -0500
-Message-ID: <20231115191623.922548769@linuxfoundation.org>
+Message-ID: <20231115191639.285854266@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +50,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florent Revest <revest@chromium.org>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit a27e2e2d465e4ed73371974040689ac3e78fe3ee ]
+[ Upstream commit 2776635edc7fcd62e03cb2efb93c31f685887460 ]
 
-I checked with the original author, the mmap_FIXED test case wasn't
-properly tested and fails.  Currently, it maps two consecutive (non
-overlapping) pages and expects the second mapping to be denied by MDWE but
-these two pages have nothing to do with each other so MDWE is actually out
-of the picture here.
+The idea of commit 63e711b08160 ("fs: dlm: create midcomms nodes when
+configure") is to set the midcomms node lifetime when a node joins or
+leaves the cluster. Currently we can hit the following warning:
 
-What the test actually intended to do was to remap a virtual address using
-MAP_FIXED.  However, this operation unmaps the existing mapping and
-creates a new one so the va is backed by a new page and MDWE is again out
-of the picture, all remappings should succeed.
+[10844.611495] ------------[ cut here ]------------
+[10844.615913] WARNING: CPU: 4 PID: 84304 at fs/dlm/midcomms.c:1263
+dlm_midcomms_remove_member+0x13f/0x180 [dlm]
 
-This patch keeps the test case to make it clear that this situation is
-expected to work: MDWE shouldn't block a MAP_FIXED replacement.
+or running in a state where we hit a midcomms node usage count in a
+negative value:
 
-Link: https://lkml.kernel.org/r/20230828150858.393570-3-revest@chromium.org
-Fixes: 4cf1fe34fd18 ("kselftest: vm: add tests for memory-deny-write-execute")
-Signed-off-by: Florent Revest <revest@chromium.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Tested-by: Ryan Roberts <ryan.roberts@arm.com>
-Tested-by: Ayush Jain <ayush.jain3@amd.com>
-Cc: Alexey Izbyshev <izbyshev@ispras.ru>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Greg Thelen <gthelen@google.com>
-Cc: Joey Gouly <joey.gouly@arm.com>
-Cc: KP Singh <kpsingh@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Szabolcs Nagy <Szabolcs.Nagy@arm.com>
-Cc: Topi Miettinen <toiwoton@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[  260.830782] node 2 users dec count -1
+
+The first warning happens when the a specific node does not exists and
+it was probably removed but dlm_midcomms_close() which is called when a
+node leaves the cluster. The second kernel log message is probably in a
+case when dlm_midcomms_addr() is called when a joined the cluster but
+due fencing a node leaved the cluster without getting removed from the
+lockspace. If the node joins the cluster and it was removed from the
+cluster due fencing the first call is to remove the node from lockspaces
+triggered by the user space. In both cases if the node wasn't found or
+the user count is zero, we should ignore any additional midcomms handling
+of dlm_midcomms_remove_member().
+
+Fixes: 63e711b08160 ("fs: dlm: create midcomms nodes when configure")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/mdwe_test.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ fs/dlm/midcomms.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/mdwe_test.c b/tools/testing/selftests/mm/mdwe_test.c
-index bc91bef5d254e..0c5e469ae38fa 100644
---- a/tools/testing/selftests/mm/mdwe_test.c
-+++ b/tools/testing/selftests/mm/mdwe_test.c
-@@ -168,13 +168,10 @@ TEST_F(mdwe, mmap_FIXED)
- 	self->p = mmap(NULL, self->size, PROT_READ, self->flags, 0, 0);
- 	ASSERT_NE(self->p, MAP_FAILED);
+diff --git a/fs/dlm/midcomms.c b/fs/dlm/midcomms.c
+index 455265c6ba53d..4ad71e97cec2a 100644
+--- a/fs/dlm/midcomms.c
++++ b/fs/dlm/midcomms.c
+@@ -1268,12 +1268,23 @@ void dlm_midcomms_remove_member(int nodeid)
  
--	p = mmap(self->p + self->size, self->size, PROT_READ | PROT_EXEC,
-+	/* MAP_FIXED unmaps the existing page before mapping which is allowed */
-+	p = mmap(self->p, self->size, PROT_READ | PROT_EXEC,
- 		 self->flags | MAP_FIXED, 0, 0);
--	if (variant->enabled) {
--		EXPECT_EQ(p, MAP_FAILED);
--	} else {
--		EXPECT_EQ(p, self->p);
--	}
-+	EXPECT_EQ(p, self->p);
- }
+ 	idx = srcu_read_lock(&nodes_srcu);
+ 	node = nodeid2node(nodeid);
+-	if (WARN_ON_ONCE(!node)) {
++	/* in case of dlm_midcomms_close() removes node */
++	if (!node) {
+ 		srcu_read_unlock(&nodes_srcu, idx);
+ 		return;
+ 	}
  
- TEST_F(mdwe, arm64_BTI)
+ 	spin_lock(&node->state_lock);
++	/* case of dlm_midcomms_addr() created node but
++	 * was not added before because dlm_midcomms_close()
++	 * removed the node
++	 */
++	if (!node->users) {
++		spin_unlock(&node->state_lock);
++		srcu_read_unlock(&nodes_srcu, idx);
++		return;
++	}
++
+ 	node->users--;
+ 	pr_debug("node %d users dec count %d\n", nodeid, node->users);
+ 
 -- 
 2.42.0
 
