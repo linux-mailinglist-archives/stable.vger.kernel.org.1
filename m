@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 613837ED479
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45EB87ED2C9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344809AbjKOU6L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52962 "EHLO
+        id S233401AbjKOUoX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344669AbjKOU5i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:38 -0500
+        with ESMTP id S233289AbjKOUoW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB3DD1731
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80FBAC4E680;
-        Wed, 15 Nov 2023 20:51:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5205818D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48AAC433C8;
+        Wed, 15 Nov 2023 20:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081464;
-        bh=Uwhz4T6sNSGDUvtUdsX2l7AJSTXJG5WkaF+Ud6AejCM=;
+        s=korg; t=1700081059;
+        bh=ui8f6+CyM9QIAO1xv0RKDMqhYghe0rT5MrcNL9ijuM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YEvdbWomLZWMAWdSkOkUeujSGDsA0NYZeOgZ+Aar4bntn0IwAPX02VHNSwpysnPQt
-         mo3Oss6YiQNiK2beWFjlNYRoNmpiiTfzn9Rk16hQWrp0ZJt/dcVgzQ7t3FmLwtiF2R
-         3TKYwJqnXkLTvchYvlbAQWGOUfcGuN/FGM8IFZOs=
+        b=ZTnoQadNoEx2pnGm37gzP7yyXCOc5vZSDV46M7ofZ+GD+Wt8p9GLuhVPYmsJ/TElT
+         dyjwaiQn4f6mOSS3XPPSqMsFDGBhKe7FC51cfG1QM8aTljFYK0aMLw5/H7GyH8O1gZ
+         k9b+bxq0DmpBjd7i5qisG3Qiq3aIINKpR6kT2QfA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tomas Glozar <tglozar@redhat.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 133/244] nd_btt: Make BTT lanes preemptible
+Subject: [PATCH 4.19 13/88] ACPI: sysfs: Fix create_pnp_modalias() and create_of_modalias()
 Date:   Wed, 15 Nov 2023 15:35:25 -0500
-Message-ID: <20231115203556.342652207@linuxfoundation.org>
+Message-ID: <20231115191426.978897396@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,96 +51,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 36c75ce3bd299878fd9b238e9803d3817ddafbf3 ]
+[ Upstream commit 48cf49d31994ff97b33c4044e618560ec84d35fb ]
 
-nd_region_acquire_lane uses get_cpu, which disables preemption. This is
-an issue on PREEMPT_RT kernels, since btt_write_pg and also
-nd_region_acquire_lane itself take a spin lock, resulting in BUG:
-sleeping function called from invalid context.
+snprintf() does not return negative values on error.
 
-Fix the issue by replacing get_cpu with smp_process_id and
-migrate_disable when needed. This makes BTT operations preemptible, thus
-permitting the use of spin_lock.
+To know if the buffer was too small, the returned value needs to be
+compared with the length of the passed buffer. If it is greater or
+equal, the output has been truncated, so add checks for the truncation
+to create_pnp_modalias() and create_of_modalias(). Also make them
+return -ENOMEM in that case, as they already do that elsewhere.
 
-BUG example occurring when running ndctl tests on PREEMPT_RT kernel:
+Moreover, the remaining size of the buffer used by snprintf() needs to
+be updated after the first write to avoid out-of-bounds access as
+already done correctly in create_pnp_modalias(), but not in
+create_of_modalias(), so change the latter accordingly.
 
-BUG: sleeping function called from invalid context at
-kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 4903, name:
-libndctl
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-Preemption disabled at:
-[<ffffffffc1313db5>] nd_region_acquire_lane+0x15/0x90 [libnvdimm]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x8e/0xb0
- __might_resched+0x19b/0x250
- rt_spin_lock+0x4c/0x100
- ? btt_write_pg+0x2d7/0x500 [nd_btt]
- btt_write_pg+0x2d7/0x500 [nd_btt]
- ? local_clock_noinstr+0x9/0xc0
- btt_submit_bio+0x16d/0x270 [nd_btt]
- __submit_bio+0x48/0x80
- __submit_bio_noacct+0x7e/0x1e0
- submit_bio_wait+0x58/0xb0
- __blkdev_direct_IO_simple+0x107/0x240
- ? inode_set_ctime_current+0x51/0x110
- ? __pfx_submit_bio_wait_endio+0x10/0x10
- blkdev_write_iter+0x1d8/0x290
- vfs_write+0x237/0x330
- ...
- </TASK>
-
-Fixes: 5212e11fde4d ("nd_btt: atomic sector updates")
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 8765c5ba1949 ("ACPI / scan: Rework modalias creation when "compatible" is present")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+[ rjw: Merge two patches into one, combine changelogs, add subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/region_devs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/acpi/device_sysfs.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index 70ad891a76bae..c2d3343b5596b 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -966,7 +966,8 @@ unsigned int nd_region_acquire_lane(struct nd_region *nd_region)
- {
- 	unsigned int cpu, lane;
+diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
+index f792b149a5745..146be9cdeca5a 100644
+--- a/drivers/acpi/device_sysfs.c
++++ b/drivers/acpi/device_sysfs.c
+@@ -164,8 +164,8 @@ static int create_pnp_modalias(struct acpi_device *acpi_dev, char *modalias,
+ 		return 0;
  
--	cpu = get_cpu();
-+	migrate_disable();
-+	cpu = smp_processor_id();
- 	if (nd_region->num_lanes < nr_cpu_ids) {
- 		struct nd_percpu_lane *ndl_lock, *ndl_count;
+ 	len = snprintf(modalias, size, "acpi:");
+-	if (len <= 0)
+-		return len;
++	if (len >= size)
++		return -ENOMEM;
  
-@@ -985,16 +986,15 @@ EXPORT_SYMBOL(nd_region_acquire_lane);
- void nd_region_release_lane(struct nd_region *nd_region, unsigned int lane)
- {
- 	if (nd_region->num_lanes < nr_cpu_ids) {
--		unsigned int cpu = get_cpu();
-+		unsigned int cpu = smp_processor_id();
- 		struct nd_percpu_lane *ndl_lock, *ndl_count;
+ 	size -= len;
  
- 		ndl_count = per_cpu_ptr(nd_region->lane, cpu);
- 		ndl_lock = per_cpu_ptr(nd_region->lane, lane);
- 		if (--ndl_count->count == 0)
- 			spin_unlock(&ndl_lock->lock);
--		put_cpu();
- 	}
--	put_cpu();
-+	migrate_enable();
- }
- EXPORT_SYMBOL(nd_region_release_lane);
+@@ -218,8 +218,10 @@ static int create_of_modalias(struct acpi_device *acpi_dev, char *modalias,
+ 	len = snprintf(modalias, size, "of:N%sT", (char *)buf.pointer);
+ 	ACPI_FREE(buf.pointer);
  
+-	if (len <= 0)
+-		return len;
++	if (len >= size)
++		return -ENOMEM;
++
++	size -= len;
+ 
+ 	of_compatible = acpi_dev->data.of_compatible;
+ 	if (of_compatible->type == ACPI_TYPE_PACKAGE) {
 -- 
 2.42.0
 
