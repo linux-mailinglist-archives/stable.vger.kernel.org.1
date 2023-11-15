@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D40967ECBFA
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA3817ECE6B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233595AbjKOTZv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58648 "EHLO
+        id S235105AbjKOTnA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233308AbjKOTZf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:35 -0500
+        with ESMTP id S235098AbjKOTm7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7063F1A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E42C433C8;
-        Wed, 15 Nov 2023 19:25:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE03B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29F1FC433C9;
+        Wed, 15 Nov 2023 19:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076332;
-        bh=2OYHN4cpgIzJZeCryhP612pvUgB5xh7eeZPfpuCd82g=;
+        s=korg; t=1700077375;
+        bh=TYIrh6hmpNYcYYtms9VFamxSkGxO5EHKFBPzKvchx/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y/dix27WyXSchZA1MrbUzpL3NvTHnzQoTg32bnUNaLaC2cKYRMaAWiuzAzpg+w4u+
-         gotDHd0fwyLcjlLkbyqM8IRr3Mjwqo1Vej3J5XRp/Rdk9vAYYUl1ZhZH5pTXDHf2v3
-         eSCHoGkh8snoB9k3GfDA4MekJjAOJaIXvTXTOQio=
+        b=msyhw/ncSy7cxBF3J4U6QLB+8PFFPUM8mQYF4iNa+Sn7kOUkeNgZE0iI3CO4J9i6G
+         4931nQJuAdxbo6NANjGAa1h/Nm07buMiZ1QPjoX8M23tOVh9AJf5C7xqb4LvExNzx3
+         itAoECeY9RGq0Slk41rB7oPo5Wq/qBTjqaTogg1M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 199/550] spi: omap2-mcspi: remove redundant dev_err_probe()
+        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Robert Foss <rfoss@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Maxim Schwalm <maxim.schwalm@gmail.com>
+Subject: [PATCH 6.6 238/603] drm/bridge: tc358768: Clean up clock period code
 Date:   Wed, 15 Nov 2023 14:13:03 -0500
-Message-ID: <20231115191614.564630996@linuxfoundation.org>
+Message-ID: <20231115191629.673541778@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +53,177 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Wang <wangzhu9@huawei.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 142c61a5fddeb755c420cb2e23b4bc0c0901308f ]
+[ Upstream commit b3aa7b34924a9ed64cf96899cac4d8ea08cd829e ]
 
-When platform_get_irq() is called, the error message has been printed,
-so it need not to call dev_err_probe() to print error, we remove the
-redundant platform_get_irq().
+The driver defines TC358768_PRECISION as 1000, and uses "nsk" to refer
+to clock periods. The original author does not remember where all this
+came from. Effectively the driver is using picoseconds as the unit for
+clock periods, yet referring to them by "nsk".
 
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Link: https://lore.kernel.org/r/20230801135442.255604-1-wangzhu9@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 2d9f4877988f ("spi: omap2-mcspi: Fix hardcoded reference clock")
+Clean this up by just saying the periods are in picoseconds.
+
+Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
+Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-10-31725f008a50@ideasonboard.com
+Stable-dep-of: f1dabbe64506 ("drm/bridge: tc358768: Fix tc358768_ns_to_cnt()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-omap2-mcspi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/tc358768.c | 60 +++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/spi/spi-omap2-mcspi.c b/drivers/spi/spi-omap2-mcspi.c
-index 8331e247bf5ca..e5cd82eb9e549 100644
---- a/drivers/spi/spi-omap2-mcspi.c
-+++ b/drivers/spi/spi-omap2-mcspi.c
-@@ -1508,10 +1508,8 @@ static int omap2_mcspi_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
+index 0388093f703cc..d1000d1f69f4e 100644
+--- a/drivers/gpu/drm/bridge/tc358768.c
++++ b/drivers/gpu/drm/bridge/tc358768.c
+@@ -15,6 +15,7 @@
+ #include <linux/regmap.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
++#include <linux/units.h>
  
- 	status = platform_get_irq(pdev, 0);
--	if (status < 0) {
--		dev_err_probe(&pdev->dev, status, "no irq resource found\n");
-+	if (status < 0)
- 		goto free_master;
--	}
- 	init_completion(&mcspi->txdone);
- 	status = devm_request_irq(&pdev->dev, status,
- 				  omap2_mcspi_irq_handler, 0, pdev->name,
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_drv.h>
+@@ -627,15 +628,14 @@ static int tc358768_setup_pll(struct tc358768_priv *priv,
+ 	return tc358768_clear_error(priv);
+ }
+ 
+-#define TC358768_PRECISION	1000
+-static u32 tc358768_ns_to_cnt(u32 ns, u32 period_nsk)
++static u32 tc358768_ns_to_cnt(u32 ns, u32 period_ps)
+ {
+-	return (ns * TC358768_PRECISION + period_nsk) / period_nsk;
++	return (ns * 1000 + period_ps) / period_ps;
+ }
+ 
+-static u32 tc358768_to_ns(u32 nsk)
++static u32 tc358768_ps_to_ns(u32 ps)
+ {
+-	return (nsk / TC358768_PRECISION);
++	return ps / 1000;
+ }
+ 
+ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+@@ -646,7 +646,7 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+ 	u32 val, val2, lptxcnt, hact, data_type;
+ 	s32 raw_val;
+ 	const struct drm_display_mode *mode;
+-	u32 hsbyteclk_nsk, dsiclk_nsk, ui_nsk;
++	u32 hsbyteclk_ps, dsiclk_ps, ui_ps;
+ 	u32 dsiclk, hsbyteclk, video_start;
+ 	const u32 internal_delay = 40;
+ 	int ret, i;
+@@ -730,67 +730,65 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+ 		tc358768_write(priv, TC358768_D0W_CNTRL + i * 4, 0x0000);
+ 
+ 	/* DSI Timings */
+-	hsbyteclk_nsk = (u32)div_u64((u64)1000000000 * TC358768_PRECISION,
+-				  hsbyteclk);
+-	dsiclk_nsk = (u32)div_u64((u64)1000000000 * TC358768_PRECISION, dsiclk);
+-	ui_nsk = dsiclk_nsk / 2;
+-	dev_dbg(dev, "dsiclk_nsk: %u\n", dsiclk_nsk);
+-	dev_dbg(dev, "ui_nsk: %u\n", ui_nsk);
+-	dev_dbg(dev, "hsbyteclk_nsk: %u\n", hsbyteclk_nsk);
++	hsbyteclk_ps = (u32)div_u64(PICO, hsbyteclk);
++	dsiclk_ps = (u32)div_u64(PICO, dsiclk);
++	ui_ps = dsiclk_ps / 2;
++	dev_dbg(dev, "dsiclk: %u ps, ui %u ps, hsbyteclk %u ps\n", dsiclk_ps,
++		ui_ps, hsbyteclk_ps);
+ 
+ 	/* LP11 > 100us for D-PHY Rx Init */
+-	val = tc358768_ns_to_cnt(100 * 1000, hsbyteclk_nsk) - 1;
++	val = tc358768_ns_to_cnt(100 * 1000, hsbyteclk_ps) - 1;
+ 	dev_dbg(dev, "LINEINITCNT: %u\n", val);
+ 	tc358768_write(priv, TC358768_LINEINITCNT, val);
+ 
+ 	/* LPTimeCnt > 50ns */
+-	val = tc358768_ns_to_cnt(50, hsbyteclk_nsk) - 1;
++	val = tc358768_ns_to_cnt(50, hsbyteclk_ps) - 1;
+ 	lptxcnt = val;
+ 	dev_dbg(dev, "LPTXTIMECNT: %u\n", val);
+ 	tc358768_write(priv, TC358768_LPTXTIMECNT, val);
+ 
+ 	/* 38ns < TCLK_PREPARE < 95ns */
+-	val = tc358768_ns_to_cnt(65, hsbyteclk_nsk) - 1;
++	val = tc358768_ns_to_cnt(65, hsbyteclk_ps) - 1;
+ 	dev_dbg(dev, "TCLK_PREPARECNT %u\n", val);
+ 	/* TCLK_PREPARE + TCLK_ZERO > 300ns */
+-	val2 = tc358768_ns_to_cnt(300 - tc358768_to_ns(2 * ui_nsk),
+-				  hsbyteclk_nsk) - 2;
++	val2 = tc358768_ns_to_cnt(300 - tc358768_ps_to_ns(2 * ui_ps),
++				  hsbyteclk_ps) - 2;
+ 	dev_dbg(dev, "TCLK_ZEROCNT %u\n", val2);
+ 	val |= val2 << 8;
+ 	tc358768_write(priv, TC358768_TCLK_HEADERCNT, val);
+ 
+ 	/* TCLK_TRAIL > 60ns AND TEOT <= 105 ns + 12*UI */
+-	raw_val = tc358768_ns_to_cnt(60 + tc358768_to_ns(2 * ui_nsk), hsbyteclk_nsk) - 5;
++	raw_val = tc358768_ns_to_cnt(60 + tc358768_ps_to_ns(2 * ui_ps), hsbyteclk_ps) - 5;
+ 	val = clamp(raw_val, 0, 127);
+ 	dev_dbg(dev, "TCLK_TRAILCNT: %u\n", val);
+ 	tc358768_write(priv, TC358768_TCLK_TRAILCNT, val);
+ 
+ 	/* 40ns + 4*UI < THS_PREPARE < 85ns + 6*UI */
+-	val = 50 + tc358768_to_ns(4 * ui_nsk);
+-	val = tc358768_ns_to_cnt(val, hsbyteclk_nsk) - 1;
++	val = 50 + tc358768_ps_to_ns(4 * ui_ps);
++	val = tc358768_ns_to_cnt(val, hsbyteclk_ps) - 1;
+ 	dev_dbg(dev, "THS_PREPARECNT %u\n", val);
+ 	/* THS_PREPARE + THS_ZERO > 145ns + 10*UI */
+-	raw_val = tc358768_ns_to_cnt(145 - tc358768_to_ns(3 * ui_nsk), hsbyteclk_nsk) - 10;
++	raw_val = tc358768_ns_to_cnt(145 - tc358768_ps_to_ns(3 * ui_ps), hsbyteclk_ps) - 10;
+ 	val2 = clamp(raw_val, 0, 127);
+ 	dev_dbg(dev, "THS_ZEROCNT %u\n", val2);
+ 	val |= val2 << 8;
+ 	tc358768_write(priv, TC358768_THS_HEADERCNT, val);
+ 
+ 	/* TWAKEUP > 1ms in lptxcnt steps */
+-	val = tc358768_ns_to_cnt(1020000, hsbyteclk_nsk);
++	val = tc358768_ns_to_cnt(1020000, hsbyteclk_ps);
+ 	val = val / (lptxcnt + 1) - 1;
+ 	dev_dbg(dev, "TWAKEUP: %u\n", val);
+ 	tc358768_write(priv, TC358768_TWAKEUP, val);
+ 
+ 	/* TCLK_POSTCNT > 60ns + 52*UI */
+-	val = tc358768_ns_to_cnt(60 + tc358768_to_ns(52 * ui_nsk),
+-				 hsbyteclk_nsk) - 3;
++	val = tc358768_ns_to_cnt(60 + tc358768_ps_to_ns(52 * ui_ps),
++				 hsbyteclk_ps) - 3;
+ 	dev_dbg(dev, "TCLK_POSTCNT: %u\n", val);
+ 	tc358768_write(priv, TC358768_TCLK_POSTCNT, val);
+ 
+ 	/* max(60ns + 4*UI, 8*UI) < THS_TRAILCNT < 105ns + 12*UI */
+-	raw_val = tc358768_ns_to_cnt(60 + tc358768_to_ns(18 * ui_nsk),
+-				     hsbyteclk_nsk) - 4;
++	raw_val = tc358768_ns_to_cnt(60 + tc358768_ps_to_ns(18 * ui_ps),
++				     hsbyteclk_ps) - 4;
+ 	val = clamp(raw_val, 0, 15);
+ 	dev_dbg(dev, "THS_TRAILCNT: %u\n", val);
+ 	tc358768_write(priv, TC358768_THS_TRAILCNT, val);
+@@ -804,11 +802,11 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+ 		       (mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS) ? 0 : BIT(0));
+ 
+ 	/* TXTAGOCNT[26:16] RXTASURECNT[10:0] */
+-	val = tc358768_to_ns((lptxcnt + 1) * hsbyteclk_nsk * 4);
+-	val = tc358768_ns_to_cnt(val, hsbyteclk_nsk) / 4 - 1;
++	val = tc358768_ps_to_ns((lptxcnt + 1) * hsbyteclk_ps * 4);
++	val = tc358768_ns_to_cnt(val, hsbyteclk_ps) / 4 - 1;
+ 	dev_dbg(dev, "TXTAGOCNT: %u\n", val);
+-	val2 = tc358768_ns_to_cnt(tc358768_to_ns((lptxcnt + 1) * hsbyteclk_nsk),
+-				  hsbyteclk_nsk) - 2;
++	val2 = tc358768_ns_to_cnt(tc358768_ps_to_ns((lptxcnt + 1) * hsbyteclk_ps),
++				  hsbyteclk_ps) - 2;
+ 	dev_dbg(dev, "RXTASURECNT: %u\n", val2);
+ 	val = val << 16 | val2;
+ 	tc358768_write(priv, TC358768_BTACNTRL1, val);
 -- 
 2.42.0
 
