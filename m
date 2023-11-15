@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19A347ECCBE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F707ECCDF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234084AbjKOTc1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:32:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58196 "EHLO
+        id S234197AbjKOTdH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:33:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234149AbjKOTcX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:23 -0500
+        with ESMTP id S234200AbjKOTdG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0015D10C6
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C5DC433C8;
-        Wed, 15 Nov 2023 19:32:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE50A19F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473B6C433C9;
+        Wed, 15 Nov 2023 19:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076735;
-        bh=5iEaMigpw0dkiAILjKDj+DKRJiWpCIrIgQ06h5x8+Gk=;
+        s=korg; t=1700076782;
+        bh=6UR0dRdk32+N3HRzvovPSr+nmuT3JzusE688p8c7kOo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rHUkWSPAbyf8ivzI3EE0VtSEpctamWYOViqAjpPRKgbSS7oPsRg3cf+uto8f0k4Fc
-         VjaD47RNp65JyS0G28r6Xpn6k3/GNp6p1nuQiHJIHd9c3N7YjDzxIukRY5w8gYJ2en
-         0l+u/oMv15eHaQ3AX886Z5Gsn5vpLNOYbizXKsfk=
+        b=MvNABW1d1J3yCZFGfYWiBto9mw/qZ4/x14sX1CissDnpVy/gfrJEtC2F3ZOsDJvWV
+         uRVG0X3216e2S5YX6iTvEsc93LUpDuxIwrTObbVdcN7z39iy40EtSjppnN+nOo3kzk
+         n30Sq1Jx8z1iyXx0ei4+/glPcilWBdtQxPVqjYPM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Georgi Djakov <djakov@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 405/550] f2fs: fix to initialize map.m_pblk in f2fs_precache_extents()
-Date:   Wed, 15 Nov 2023 14:16:29 -0500
-Message-ID: <20231115191628.835693824@linuxfoundation.org>
+Subject: [PATCH 6.5 406/550] interconnect: qcom: qdu1000: Set ACV enable_mask
+Date:   Wed, 15 Nov 2023 14:16:30 -0500
+Message-ID: <20231115191628.900356454@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -54,35 +54,33 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 8b07c1fb0f1ad139373c8253f2fad8bc43fab07d ]
+[ Upstream commit 8517824f0e94d52ab82742106314f0b8875e03c4 ]
 
-Otherwise, it may print random physical block address in tracepoint
-of f2fs_map_blocks() as below:
+ACV expects an enable_mask corresponding to the APPS RSC, fill it in.
 
-f2fs_map_blocks: dev = (253,16), ino = 2297, file offset = 0, start blkaddr = 0xa356c421, len = 0x0, flags = 0
-
-Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 1f51339f7dd0 ("interconnect: qcom: Add QDU1000/QRU1000 interconnect driver")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230811-topic-acv-v2-1-765ad70e539a@linaro.org
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 1 +
+ drivers/interconnect/qcom/qdu1000.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index ea4a094c518f9..e53a429bd4c4c 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -3258,6 +3258,7 @@ int f2fs_precache_extents(struct inode *inode)
- 		return -EOPNOTSUPP;
+diff --git a/drivers/interconnect/qcom/qdu1000.c b/drivers/interconnect/qcom/qdu1000.c
+index a4cf559de2b0b..4725f5f5c6e19 100644
+--- a/drivers/interconnect/qcom/qdu1000.c
++++ b/drivers/interconnect/qcom/qdu1000.c
+@@ -768,6 +768,7 @@ static struct qcom_icc_node xs_sys_tcu_cfg = {
  
- 	map.m_lblk = 0;
-+	map.m_pblk = 0;
- 	map.m_next_pgofs = NULL;
- 	map.m_next_extent = &m_next_extent;
- 	map.m_seg_type = NO_CHECK_TYPE;
+ static struct qcom_icc_bcm bcm_acv = {
+ 	.name = "ACV",
++	.enable_mask = BIT(3),
+ 	.num_nodes = 1,
+ 	.nodes = { &ebi },
+ };
 -- 
 2.42.0
 
