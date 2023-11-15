@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 697C07ECD2E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 43A307ECFA2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234353AbjKOTex (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:34:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36968 "EHLO
+        id S235369AbjKOTtq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234363AbjKOTew (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:52 -0500
+        with ESMTP id S235373AbjKOTto (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C348F1AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48BC1C433CA;
-        Wed, 15 Nov 2023 19:34:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 720C519E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0459C433C8;
+        Wed, 15 Nov 2023 19:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076888;
-        bh=VQkd+TX1bkYUuhxMN2kv3kuKOMlOxogJ04UkM6AOVr0=;
+        s=korg; t=1700077781;
+        bh=z7Z9yZZkftoDIj6SHZQ+ED5/TVcby2v3tAHC1O+Jrpc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1Tjo/5tpmR/HWzsmewne0/jyYCnL590TonbreD+s8gjD3rYFcM+ARpenS5YkBudGF
-         6s5vMlaqFro5v1AsXY4EeExsZTYvx0xrMMnWnyxq+tgyxq3vvQ/0wkcoLPGlLi8+Od
-         Ef/BogaU+iGUiyv5iSDZxemdHPMuAiOK6zNQKSDs=
+        b=juufLhH8K7A2rUpcgQWO3GXuuY4M3YfYL3jU79YUJ9rsQ2IFh54W2tkn2sXMrHUh8
+         Zy2pjyyx4CC416muZqrQbwT0BXmHcR6/sx+YenzRYdRDBvx7IqArtzPRQEYFagqSTH
+         sPJLDPPbk/gI2ARSYKWOtuUBQNLS/Q//eT8+BLc0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Ira Weiny <ira.weiny@intel.com>,
+        patches@lists.linux.dev, Ira Weiny <ira.weiny@intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
         Dave Jiang <dave.jiang@intel.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 454/550] cxl/pci: Clarify devm host for memdev relative setup
-Date:   Wed, 15 Nov 2023 14:17:18 -0500
-Message-ID: <20231115191632.312253554@linuxfoundation.org>
+Subject: [PATCH 6.6 494/603] cxl/mem: Fix shutdown order
+Date:   Wed, 15 Nov 2023 14:17:19 -0500
+Message-ID: <20231115191646.476040124@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,147 +53,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit f29a824b0b6710328a78b018de3c2cfa9db65876 ]
+[ Upstream commit 88d3917f82ed4215a2154432c26de1480a61b209 ]
 
-It is all too easy to get confused about @dev usage in the CXL driver
-stack. Before adding a new cxl_pci_probe() setup operation that has a
-devm lifetime dependent on @cxlds->dev binding, but also references
-@cxlmd->dev, and prints messages, rework the devm_cxl_add_memdev() and
-cxl_memdev_setup_fw_upload() function signatures to make this
-distinction explicit. I.e. pass in the devm context as an @host argument
-rather than infer it from other objects.
+Ira reports that removing cxl_mock_mem causes a crash with the following
+trace:
 
-This is in preparation for adding a devm_cxl_sanitize_setup_notifier().
+ BUG: kernel NULL pointer dereference, address: 0000000000000044
+ [..]
+ RIP: 0010:cxl_region_decode_reset+0x7f/0x180 [cxl_core]
+ [..]
+ Call Trace:
+  <TASK>
+  cxl_region_detach+0xe8/0x210 [cxl_core]
+  cxl_decoder_kill_region+0x27/0x40 [cxl_core]
+  cxld_unregister+0x29/0x40 [cxl_core]
+  devres_release_all+0xb8/0x110
+  device_unbind_cleanup+0xe/0x70
+  device_release_driver_internal+0x1d2/0x210
+  bus_remove_device+0xd7/0x150
+  device_del+0x155/0x3e0
+  device_unregister+0x13/0x60
+  devm_release_action+0x4d/0x90
+  ? __pfx_unregister_port+0x10/0x10 [cxl_core]
+  delete_endpoint+0x121/0x130 [cxl_core]
+  devres_release_all+0xb8/0x110
+  device_unbind_cleanup+0xe/0x70
+  device_release_driver_internal+0x1d2/0x210
+  bus_remove_device+0xd7/0x150
+  device_del+0x155/0x3e0
+  ? lock_release+0x142/0x290
+  cdev_device_del+0x15/0x50
+  cxl_memdev_unregister+0x54/0x70 [cxl_core]
 
-Note the whitespace fixup near the change of the devm_cxl_add_memdev()
-signature. That uncaught typo originated in the patch that added
-cxl_memdev_security_init().
+This crash is due to the clearing out the cxl_memdev's driver context
+(@cxlds) before the subsystem is done with it. This is ultimately due to
+the region(s), that this memdev is a member, being torn down and expecting
+to be able to de-reference @cxlds, like here:
 
+static int cxl_region_decode_reset(struct cxl_region *cxlr, int count)
+...
+                if (cxlds->rcd)
+                        goto endpoint_reset;
+...
+
+Fix it by keeping the driver context valid until memdev-device
+unregistration, and subsequently the entire stack of related
+dependencies, unwinds.
+
+Fixes: 9cc238c7a526 ("cxl/pci: Introduce cdevm_file_operations")
+Reported-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Tested-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 5f2da1971446 ("cxl/pci: Fix sanitize notifier setup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/memdev.c    | 16 ++++++++--------
- drivers/cxl/cxlmem.h         |  5 +++--
- drivers/cxl/pci.c            |  4 ++--
- tools/testing/cxl/test/mem.c |  4 ++--
- 4 files changed, 15 insertions(+), 14 deletions(-)
+ drivers/cxl/core/memdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
-index 6efe4e2a2cf53..63353d9903745 100644
+index a02061028b710..fed9573cf355e 100644
 --- a/drivers/cxl/core/memdev.c
 +++ b/drivers/cxl/core/memdev.c
-@@ -960,12 +960,12 @@ static const struct fw_upload_ops cxl_memdev_fw_ops = {
-         .cleanup = cxl_fw_cleanup,
- };
+@@ -559,8 +559,8 @@ static void cxl_memdev_unregister(void *_cxlmd)
+ 	struct cxl_memdev *cxlmd = _cxlmd;
+ 	struct device *dev = &cxlmd->dev;
  
--static void devm_cxl_remove_fw_upload(void *fwl)
-+static void cxl_remove_fw_upload(void *fwl)
- {
- 	firmware_upload_unregister(fwl);
+-	cxl_memdev_shutdown(dev);
+ 	cdev_device_del(&cxlmd->cdev, dev);
++	cxl_memdev_shutdown(dev);
+ 	put_device(dev);
  }
- 
--int cxl_memdev_setup_fw_upload(struct cxl_memdev_state *mds)
-+int devm_cxl_setup_fw_upload(struct device *host, struct cxl_memdev_state *mds)
- {
- 	struct cxl_dev_state *cxlds = &mds->cxlds;
- 	struct device *dev = &cxlds->cxlmd->dev;
-@@ -978,10 +978,9 @@ int cxl_memdev_setup_fw_upload(struct cxl_memdev_state *mds)
- 				       &cxl_memdev_fw_ops, mds);
- 	if (IS_ERR(fwl))
- 		return PTR_ERR(fwl);
--
--	return devm_add_action_or_reset(cxlds->dev, devm_cxl_remove_fw_upload, fwl);
-+	return devm_add_action_or_reset(host, cxl_remove_fw_upload, fwl);
- }
--EXPORT_SYMBOL_NS_GPL(cxl_memdev_setup_fw_upload, CXL);
-+EXPORT_SYMBOL_NS_GPL(devm_cxl_setup_fw_upload, CXL);
- 
- static const struct file_operations cxl_memdev_fops = {
- 	.owner = THIS_MODULE,
-@@ -1019,9 +1018,10 @@ static int cxl_memdev_security_init(struct cxl_memdev *cxlmd)
- 	}
- 
- 	return devm_add_action_or_reset(cxlds->dev, put_sanitize, mds);
-- }
-+}
- 
--struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds)
-+struct cxl_memdev *devm_cxl_add_memdev(struct device *host,
-+				       struct cxl_dev_state *cxlds)
- {
- 	struct cxl_memdev *cxlmd;
- 	struct device *dev;
-@@ -1053,7 +1053,7 @@ struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds)
- 	if (rc)
- 		goto err;
- 
--	rc = devm_add_action_or_reset(cxlds->dev, cxl_memdev_unregister, cxlmd);
-+	rc = devm_add_action_or_reset(host, cxl_memdev_unregister, cxlmd);
- 	if (rc)
- 		return ERR_PTR(rc);
- 	return cxlmd;
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index 55f00ad17a772..fdb2c8dd98d0f 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -84,9 +84,10 @@ static inline bool is_cxl_endpoint(struct cxl_port *port)
- 	return is_cxl_memdev(port->uport_dev);
- }
- 
--struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds);
-+struct cxl_memdev *devm_cxl_add_memdev(struct device *host,
-+				       struct cxl_dev_state *cxlds);
- struct cxl_memdev_state;
--int cxl_memdev_setup_fw_upload(struct cxl_memdev_state *mds);
-+int devm_cxl_setup_fw_upload(struct device *host, struct cxl_memdev_state *mds);
- int devm_cxl_dpa_reserve(struct cxl_endpoint_decoder *cxled,
- 			 resource_size_t base, resource_size_t len,
- 			 resource_size_t skipped);
-diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-index 0ffa62088c6d2..5b22460c51c62 100644
---- a/drivers/cxl/pci.c
-+++ b/drivers/cxl/pci.c
-@@ -868,11 +868,11 @@ static int cxl_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (rc)
- 		return rc;
- 
--	cxlmd = devm_cxl_add_memdev(cxlds);
-+	cxlmd = devm_cxl_add_memdev(&pdev->dev, cxlds);
- 	if (IS_ERR(cxlmd))
- 		return PTR_ERR(cxlmd);
- 
--	rc = cxl_memdev_setup_fw_upload(mds);
-+	rc = devm_cxl_setup_fw_upload(&pdev->dev, mds);
- 	if (rc)
- 		return rc;
- 
-diff --git a/tools/testing/cxl/test/mem.c b/tools/testing/cxl/test/mem.c
-index 464fc39ed2776..68118c37f0b56 100644
---- a/tools/testing/cxl/test/mem.c
-+++ b/tools/testing/cxl/test/mem.c
-@@ -1450,11 +1450,11 @@ static int cxl_mock_mem_probe(struct platform_device *pdev)
- 	mdata->mes.mds = mds;
- 	cxl_mock_add_event_logs(&mdata->mes);
- 
--	cxlmd = devm_cxl_add_memdev(cxlds);
-+	cxlmd = devm_cxl_add_memdev(&pdev->dev, cxlds);
- 	if (IS_ERR(cxlmd))
- 		return PTR_ERR(cxlmd);
- 
--	rc = cxl_memdev_setup_fw_upload(mds);
-+	rc = devm_cxl_setup_fw_upload(&pdev->dev, mds);
- 	if (rc)
- 		return rc;
  
 -- 
 2.42.0
