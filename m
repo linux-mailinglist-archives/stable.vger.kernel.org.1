@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 101D27ECD65
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F84D7ECFBB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234517AbjKOTgR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50874 "EHLO
+        id S235398AbjKOTu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:50:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234472AbjKOTgO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:14 -0500
+        with ESMTP id S235400AbjKOTu0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D0B1A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 948C8C433C8;
-        Wed, 15 Nov 2023 19:36:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFCA7C2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DC4C433C9;
+        Wed, 15 Nov 2023 19:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076970;
-        bh=TgGA0d7XkXWmWjDGXa+LZG+M75GX+avwMxDQr/1r/8c=;
+        s=korg; t=1700077822;
+        bh=wbe3HjlHzZwBtbfu7npIvLLllsPc7et/aw+rLtQMmjg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P73OO/LWRoVLaolfIQwLbsBRjwbw6EVCTUB22KbvkW8V7wTLiq+yUmL6xhxvZMHzH
-         1lGa205Jc6ApnQLz9PX1bTlDwLzwisB26v1fXAcq960XWJ1nml8xe8k6t1UBFlzGJ9
-         ppGLsn+KHfTny/Gmm6cIT4ud9FPUAH/maKUbaj3w=
+        b=QJq/m0xe92Fw8vN/GSCAjvuxedrg1lPFosGsIJCfEk2/0lOE/45NXBxuL9VC3VhFi
+         RPJz2W0xEvH+V+E+RhUy0ZTzQ3FTjLG25lSUfP6J1MVWocSI+201mJ+uFn8brBdlhU
+         PGhdRV9uDm4SJLbtns+FBYPMrnf+KhtR/b5XuSvg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fei Shao <fshao@chromium.org>,
-        Chen-Yu Tsai <wenst@chromium.org>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 479/550] media: mtk-jpegenc: Fix bug in JPEG encode quality selection
+Subject: [PATCH 6.6 518/603] media: vidtv: psi: Add check for kstrdup
 Date:   Wed, 15 Nov 2023 14:17:43 -0500
-Message-ID: <20231115191634.070209148@linuxfoundation.org>
+Message-ID: <20231115191647.889376323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +50,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fei Shao <fshao@chromium.org>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 0aeccc63f3bc4cfd49dc4893da1409402ee6b295 ]
+[ Upstream commit 76a2c5df6ca8bd8ada45e953b8c72b746f42918d ]
 
-The driver uses the upper-bound approach to decide the target JPEG
-encode quality, but there's a logic bug that if the desired quality is
-higher than what the driver can support, the driver falls back to using
-the worst quality.
+Add check for the return value of kstrdup() and return the error
+if it fails in order to avoid NULL pointer dereference.
 
-Fix the bug by assuming using the best quality in the beginning, and
-with trivial refactor to avoid long lines.
-
-Fixes: 45f13a57d813 ("media: platform: Add jpeg enc feature")
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Fixes: 7a7899f6f58e ("media: vidtv: psi: Implement an Event Information Table (EIT)")
+Fixes: c2f78f0cb294 ("media: vidtv: psi: add a Network Information Table (NIT)")
+Fixes: f90cf6079bf6 ("media: vidtv: add a bridge driver")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_psi.c | 45 +++++++++++++++++---
+ 1 file changed, 40 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-index 244018365b6f1..03ee8f93bd467 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-@@ -127,6 +127,7 @@ void mtk_jpeg_set_enc_params(struct mtk_jpeg_ctx *ctx,  void __iomem *base)
- 	u32 img_stride;
- 	u32 mem_stride;
- 	u32 i, enc_quality;
-+	u32 nr_enc_quality = ARRAY_SIZE(mtk_jpeg_enc_quality);
+diff --git a/drivers/media/test-drivers/vidtv/vidtv_psi.c b/drivers/media/test-drivers/vidtv/vidtv_psi.c
+index ce0b7a6e92dc3..2a51c898c11eb 100644
+--- a/drivers/media/test-drivers/vidtv/vidtv_psi.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_psi.c
+@@ -301,16 +301,29 @@ struct vidtv_psi_desc_service *vidtv_psi_service_desc_init(struct vidtv_psi_desc
  
- 	value = width << 16 | height;
- 	writel(value, base + JPEG_ENC_IMG_SIZE);
-@@ -157,8 +158,8 @@ void mtk_jpeg_set_enc_params(struct mtk_jpeg_ctx *ctx,  void __iomem *base)
- 	writel(img_stride, base + JPEG_ENC_IMG_STRIDE);
- 	writel(mem_stride, base + JPEG_ENC_STRIDE);
+ 	desc->service_name_len = service_name_len;
  
--	enc_quality = mtk_jpeg_enc_quality[0].hardware_value;
--	for (i = 0; i < ARRAY_SIZE(mtk_jpeg_enc_quality); i++) {
-+	enc_quality = mtk_jpeg_enc_quality[nr_enc_quality - 1].hardware_value;
-+	for (i = 0; i < nr_enc_quality; i++) {
- 		if (ctx->enc_quality <= mtk_jpeg_enc_quality[i].quality_param) {
- 			enc_quality = mtk_jpeg_enc_quality[i].hardware_value;
- 			break;
+-	if (service_name && service_name_len)
++	if (service_name && service_name_len) {
+ 		desc->service_name = kstrdup(service_name, GFP_KERNEL);
++		if (!desc->service_name)
++			goto free_desc;
++	}
+ 
+ 	desc->provider_name_len = provider_name_len;
+ 
+-	if (provider_name && provider_name_len)
++	if (provider_name && provider_name_len) {
+ 		desc->provider_name = kstrdup(provider_name, GFP_KERNEL);
++		if (!desc->provider_name)
++			goto free_desc_service_name;
++	}
+ 
+ 	vidtv_psi_desc_chain(head, (struct vidtv_psi_desc *)desc);
+ 	return desc;
++
++free_desc_service_name:
++	if (service_name && service_name_len)
++		kfree(desc->service_name);
++free_desc:
++	kfree(desc);
++	return NULL;
+ }
+ 
+ struct vidtv_psi_desc_registration
+@@ -355,8 +368,13 @@ struct vidtv_psi_desc_network_name
+ 
+ 	desc->length = network_name_len;
+ 
+-	if (network_name && network_name_len)
++	if (network_name && network_name_len) {
+ 		desc->network_name = kstrdup(network_name, GFP_KERNEL);
++		if (!desc->network_name) {
++			kfree(desc);
++			return NULL;
++		}
++	}
+ 
+ 	vidtv_psi_desc_chain(head, (struct vidtv_psi_desc *)desc);
+ 	return desc;
+@@ -442,15 +460,32 @@ struct vidtv_psi_desc_short_event
+ 		iso_language_code = "eng";
+ 
+ 	desc->iso_language_code = kstrdup(iso_language_code, GFP_KERNEL);
++	if (!desc->iso_language_code)
++		goto free_desc;
+ 
+-	if (event_name && event_name_len)
++	if (event_name && event_name_len) {
+ 		desc->event_name = kstrdup(event_name, GFP_KERNEL);
++		if (!desc->event_name)
++			goto free_desc_language_code;
++	}
+ 
+-	if (text && text_len)
++	if (text && text_len) {
+ 		desc->text = kstrdup(text, GFP_KERNEL);
++		if (!desc->text)
++			goto free_desc_event_name;
++	}
+ 
+ 	vidtv_psi_desc_chain(head, (struct vidtv_psi_desc *)desc);
+ 	return desc;
++
++free_desc_event_name:
++	if (event_name && event_name_len)
++		kfree(desc->event_name);
++free_desc_language_code:
++	kfree(desc->iso_language_code);
++free_desc:
++	kfree(desc);
++	return NULL;
+ }
+ 
+ struct vidtv_psi_desc *vidtv_psi_desc_clone(struct vidtv_psi_desc *desc)
 -- 
 2.42.0
 
