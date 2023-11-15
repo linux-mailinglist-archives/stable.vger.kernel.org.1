@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A1577ED59B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC5D07ED2F5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235596AbjKOVHr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37414 "EHLO
+        id S233655AbjKOUpS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235628AbjKOVH1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:27 -0500
+        with ESMTP id S233605AbjKOUpP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:15 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02891D44
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FA1C4E68B;
-        Wed, 15 Nov 2023 20:51:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E431BE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2052BC433CA;
+        Wed, 15 Nov 2023 20:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081484;
-        bh=XBXl/fV1LNGhnb0sNPH3Mj1qknPgkUNeUupqKFRF78w=;
+        s=korg; t=1700081111;
+        bh=QCCkzszfyrEFttnfShUvfKZ/nFbGl4y8Ty7C2OKruIE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xgaB1TeiRR3/bui53eYxWTk4or64f4j1WMLwtQVxNXE7JNtU6JPojbitcZlO89n7P
-         /Db48hHu27Jtu8vKsW9+c4TJJSZBVirP4k7/IeRpnn5rvDM/G2Z//X6jRg9GLj5SAs
-         TJKB0trbkTrBj5UN/5Mck0I+axhCLeMZitBiauwc=
+        b=PScg/ns40kESV7OnlEFSxoxLN3fBiy89xbMk2RtKD5pb1n8/y7+l9tR3AsJxDQS7F
+         si2SotajpLkhHCWBvOGr67gZjGuZefRowJ30/1p7Q+oG5Lxm1Gw0Xxoda/wRGod5/b
+         agax+A7Mj/z9XLIcFn7O7IxgmjGJWbnmtLODf6G0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 164/244] leds: turris-omnia: Do not use SMBUS calls
-Date:   Wed, 15 Nov 2023 15:35:56 -0500
-Message-ID: <20231115203558.185835710@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 45/88] ASoC: ams-delta.c: use component after check
+Date:   Wed, 15 Nov 2023 15:35:57 -0500
+Message-ID: <20231115191428.891651468@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,154 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 6de283b96b31b4890e3ee8c86caca2a3a30d1011 ]
+[ Upstream commit bd0f7498bc9084d8cccc5484cd004b40f314b763 ]
 
-The leds-turris-omnia driver uses three function for I2C access:
-- i2c_smbus_write_byte_data() and i2c_smbus_read_byte_data(), which
-  cause an emulated SMBUS transfer,
-- i2c_master_send(), which causes an ordinary I2C transfer.
+	static void cx81801_close()
+	{
+		...
+(A)		struct snd_soc_dapm_context *dapm = &component->card->dapm;
+		...
+(B)		if (!component)
+			return;
+	}
 
-The Turris Omnia MCU LED controller is not semantically SMBUS, it
-operates as a simple I2C bus. It does not implement any of the SMBUS
-specific features, like PEC, or procedure calls, or anything. Moreover
-the I2C controller driver also does not implement SMBUS, and so the
-emulated SMBUS procedure from drivers/i2c/i2c-core-smbus.c is used for
-the SMBUS calls, which gives an unnecessary overhead.
+(A) uses component before NULL check (B). This patch moves it after (B).
 
-When I first wrote the driver, I was unaware of these facts, and I
-simply used the first function that worked.
-
-Drop the I2C SMBUS calls and instead use simple I2C transfers.
-
-Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Link: https://lore.kernel.org/r/20230918161104.20860-2-kabel@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: d0fdfe34080c ("ASoC: cx20442: replace codec to component")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/3e608474-e99a-4866-ae98-3054a4221f09@moroto.mountain
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/r/87ttqdq623.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-turris-omnia.c | 54 +++++++++++++++++++++++++-------
- 1 file changed, 42 insertions(+), 12 deletions(-)
+ sound/soc/omap/ams-delta.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-turris-omnia.c b/drivers/leds/leds-turris-omnia.c
-index c9e7c467e5acd..ebc6cf3ce3cad 100644
---- a/drivers/leds/leds-turris-omnia.c
-+++ b/drivers/leds/leds-turris-omnia.c
-@@ -2,7 +2,7 @@
- /*
-  * CZ.NIC's Turris Omnia LEDs driver
-  *
-- * 2020 by Marek Behún <kabel@kernel.org>
-+ * 2020, 2023 by Marek Behún <kabel@kernel.org>
-  */
- 
- #include <linux/i2c.h>
-@@ -41,6 +41,37 @@ struct omnia_leds {
- 	struct omnia_led leds[];
- };
- 
-+static int omnia_cmd_write_u8(const struct i2c_client *client, u8 cmd, u8 val)
-+{
-+	u8 buf[2] = { cmd, val };
-+
-+	return i2c_master_send(client, buf, sizeof(buf));
-+}
-+
-+static int omnia_cmd_read_u8(const struct i2c_client *client, u8 cmd)
-+{
-+	struct i2c_msg msgs[2];
-+	u8 reply;
-+	int ret;
-+
-+	msgs[0].addr = client->addr;
-+	msgs[0].flags = 0;
-+	msgs[0].len = 1;
-+	msgs[0].buf = &cmd;
-+	msgs[1].addr = client->addr;
-+	msgs[1].flags = I2C_M_RD;
-+	msgs[1].len = 1;
-+	msgs[1].buf = &reply;
-+
-+	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
-+	if (likely(ret == ARRAY_SIZE(msgs)))
-+		return reply;
-+	else if (ret < 0)
-+		return ret;
-+	else
-+		return -EIO;
-+}
-+
- static int omnia_led_brightness_set_blocking(struct led_classdev *cdev,
- 					     enum led_brightness brightness)
+diff --git a/sound/soc/omap/ams-delta.c b/sound/soc/omap/ams-delta.c
+index 4dce494dfbd3e..ef9fda16ce131 100644
+--- a/sound/soc/omap/ams-delta.c
++++ b/sound/soc/omap/ams-delta.c
+@@ -300,7 +300,7 @@ static int cx81801_open(struct tty_struct *tty)
+ static void cx81801_close(struct tty_struct *tty)
  {
-@@ -64,7 +95,7 @@ static int omnia_led_brightness_set_blocking(struct led_classdev *cdev,
- 	if (buf[2] || buf[3] || buf[4])
- 		state |= CMD_LED_STATE_ON;
+ 	struct snd_soc_component *component = tty->disc_data;
+-	struct snd_soc_dapm_context *dapm = &component->card->dapm;
++	struct snd_soc_dapm_context *dapm;
  
--	ret = i2c_smbus_write_byte_data(leds->client, CMD_LED_STATE, state);
-+	ret = omnia_cmd_write_u8(leds->client, CMD_LED_STATE, state);
- 	if (ret >= 0 && (state & CMD_LED_STATE_ON))
- 		ret = i2c_master_send(leds->client, buf, 5);
+ 	del_timer_sync(&cx81801_timer);
  
-@@ -114,9 +145,9 @@ static int omnia_led_register(struct i2c_client *client, struct omnia_led *led,
- 	cdev->brightness_set_blocking = omnia_led_brightness_set_blocking;
+@@ -312,6 +312,8 @@ static void cx81801_close(struct tty_struct *tty)
  
- 	/* put the LED into software mode */
--	ret = i2c_smbus_write_byte_data(client, CMD_LED_MODE,
--					CMD_LED_MODE_LED(led->reg) |
--					CMD_LED_MODE_USER);
-+	ret = omnia_cmd_write_u8(client, CMD_LED_MODE,
-+				 CMD_LED_MODE_LED(led->reg) |
-+				 CMD_LED_MODE_USER);
- 	if (ret < 0) {
- 		dev_err(dev, "Cannot set LED %pOF to software mode: %i\n", np,
- 			ret);
-@@ -124,8 +155,8 @@ static int omnia_led_register(struct i2c_client *client, struct omnia_led *led,
- 	}
+ 	v253_ops.close(tty);
  
- 	/* disable the LED */
--	ret = i2c_smbus_write_byte_data(client, CMD_LED_STATE,
--					CMD_LED_STATE_LED(led->reg));
-+	ret = omnia_cmd_write_u8(client, CMD_LED_STATE,
-+				 CMD_LED_STATE_LED(led->reg));
- 	if (ret < 0) {
- 		dev_err(dev, "Cannot set LED %pOF brightness: %i\n", np, ret);
- 		return ret;
-@@ -158,7 +189,7 @@ static ssize_t brightness_show(struct device *dev, struct device_attribute *a,
- 	struct i2c_client *client = to_i2c_client(dev);
- 	int ret;
++	dapm = &component->card->dapm;
++
+ 	/* Revert back to default audio input/output constellation */
+ 	snd_soc_dapm_mutex_lock(dapm);
  
--	ret = i2c_smbus_read_byte_data(client, CMD_LED_GET_BRIGHTNESS);
-+	ret = omnia_cmd_read_u8(client, CMD_LED_GET_BRIGHTNESS);
- 
- 	if (ret < 0)
- 		return ret;
-@@ -179,8 +210,7 @@ static ssize_t brightness_store(struct device *dev, struct device_attribute *a,
- 	if (brightness > 100)
- 		return -EINVAL;
- 
--	ret = i2c_smbus_write_byte_data(client, CMD_LED_SET_BRIGHTNESS,
--					(u8)brightness);
-+	ret = omnia_cmd_write_u8(client, CMD_LED_SET_BRIGHTNESS, brightness);
- 
- 	return ret < 0 ? ret : count;
- }
-@@ -241,8 +271,8 @@ static int omnia_leds_remove(struct i2c_client *client)
- 	u8 buf[5];
- 
- 	/* put all LEDs into default (HW triggered) mode */
--	i2c_smbus_write_byte_data(client, CMD_LED_MODE,
--				  CMD_LED_MODE_LED(OMNIA_BOARD_LEDS));
-+	omnia_cmd_write_u8(client, CMD_LED_MODE,
-+			   CMD_LED_MODE_LED(OMNIA_BOARD_LEDS));
- 
- 	/* set all LEDs color to [255, 255, 255] */
- 	buf[0] = CMD_LED_COLOR;
 -- 
 2.42.0
 
