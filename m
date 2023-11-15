@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 641187ED2A9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1D0E7ECBB0
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233463AbjKOUmz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:42:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49612 "EHLO
+        id S232555AbjKOTXu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:23:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235051AbjKOTlD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:03 -0500
+        with ESMTP id S232489AbjKOTXu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8333CE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5F1C433C7;
-        Wed, 15 Nov 2023 19:41:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F52F1AC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C18CC433CB;
+        Wed, 15 Nov 2023 19:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077260;
-        bh=iKPNuT/JE/WqZpMfwtlWVz/1NlP/Yr1H0uuP19Dgu8s=;
+        s=korg; t=1700076226;
+        bh=kZ9+8BOyuuZDLPgsGLYb1sAJMpRj8gDhlPh1isQZQy0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CBHH7N4tCif4ijPb+JOv8x9avYCu0Fvw9D2ddnAAlTEtrr7njS6pcrMdPGy1lMXdZ
-         18EbMwLby9tFvc9ibBa2PlniTWhzE096LL7lh/MZlO0QFn5khRXDP5JrjqlD7hMdiC
-         0eBBgzhrmTwOsbfC8c39f5smS7S0gHWdrJEnzbk4=
+        b=GJ8T3qm/SuWNSqNrX0cJyGcCluuzSs7dNdtywuhJHtnwob/0H7K+VUKpzUJqE2wgC
+         c+0zSXijqWhjNA25px9RWy6Ki612SQxvsy+Klw8VMUlK4r4VLus/QVuLo/A3M66pNZ
+         G+O1TGyoqp/OurRvtbA3lC3oKNoPTsCfnii/jsiE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Kathiravan T <quic_kathirav@quicinc.com>,
-        Varadarajan Narayanan <quic_varada@quicinc.com>,
+        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/603] clk: qcom: apss-ipq-pll: Use stromer plus ops for stromer plus pll
-Date:   Wed, 15 Nov 2023 14:12:19 -0500
-Message-ID: <20231115191626.676895053@linuxfoundation.org>
+Subject: [PATCH 6.5 156/550] clk: qcom: mmcc-msm8998: Dont check halt bit on some branch clks
+Date:   Wed, 15 Nov 2023 14:12:20 -0500
+Message-ID: <20231115191611.510591605@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varadarajan Narayanan <quic_varada@quicinc.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 267e29198436a8cb6770213471f72502c895096a ]
+[ Upstream commit 9906c4140897bbdbff7bb71c6ae67903cb9954ce ]
 
-The set rate and determine rate operations are different between
-Stromer and Stromer Plus PLLs. Since the programming sequence is
-different, the PLLs dont get configured properly and random,
-inexplicable crash/freeze is seen. Hence, use stromer plus ops
-for ipq_pll_stromer_plus.
+Some branch clocks are governed externally and we're only supposed to
+send a request concerning their shutdown, not actually ensure it happens.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Fixes: c7ef7fbb1ccf ("clk: qcom: apss-ipq-pll: add support for IPQ5332")
-Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
-Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
-Link: https://lore.kernel.org/r/c86ecaa23dc4f39650bcf4a3bd54a617a932e4fd.1697781921.git.quic_varada@quicinc.com
+Use the BRANCH_HALT_SKIP define to skip checking the halt bit.
+
+Fixes: d14b15b5931c ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-4-ba1b1fd9ee75@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/apss-ipq-pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/mmcc-msm8998.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
-index e170331858cc1..18c4ffe153d6c 100644
---- a/drivers/clk/qcom/apss-ipq-pll.c
-+++ b/drivers/clk/qcom/apss-ipq-pll.c
-@@ -68,7 +68,7 @@ static struct clk_alpha_pll ipq_pll_stromer_plus = {
- 				.fw_name = "xo",
- 			},
- 			.num_parents = 1,
--			.ops = &clk_alpha_pll_stromer_ops,
-+			.ops = &clk_alpha_pll_stromer_plus_ops,
- 		},
- 	},
- };
+diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
+index 4490594bde69f..9b98e0fb8b914 100644
+--- a/drivers/clk/qcom/mmcc-msm8998.c
++++ b/drivers/clk/qcom/mmcc-msm8998.c
+@@ -2453,6 +2453,7 @@ static struct clk_branch fd_ahb_clk = {
+ 
+ static struct clk_branch mnoc_ahb_clk = {
+ 	.halt_reg = 0x5024,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.clkr = {
+ 		.enable_reg = 0x5024,
+ 		.enable_mask = BIT(0),
+@@ -2468,6 +2469,7 @@ static struct clk_branch mnoc_ahb_clk = {
+ 
+ static struct clk_branch bimc_smmu_ahb_clk = {
+ 	.halt_reg = 0xe004,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0xe004,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
+@@ -2485,6 +2487,7 @@ static struct clk_branch bimc_smmu_ahb_clk = {
+ 
+ static struct clk_branch bimc_smmu_axi_clk = {
+ 	.halt_reg = 0xe008,
++	.halt_check = BRANCH_HALT_SKIP,
+ 	.hwcg_reg = 0xe008,
+ 	.hwcg_bit = 1,
+ 	.clkr = {
 -- 
 2.42.0
 
