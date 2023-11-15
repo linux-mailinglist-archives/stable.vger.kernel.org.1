@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7CDA7ECE48
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B60DF7ECBD3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234951AbjKOTmG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50514 "EHLO
+        id S233083AbjKOTYp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234954AbjKOTmF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:05 -0500
+        with ESMTP id S233101AbjKOTYo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E23711A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60773C433C8;
-        Wed, 15 Nov 2023 19:42:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E6EF1A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B621DC433C8;
+        Wed, 15 Nov 2023 19:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077321;
-        bh=Zz01tjpAsAtKezKZQ0XTTG3d0CtHclSgouwVKSEZubs=;
+        s=korg; t=1700076280;
+        bh=gzp8IU1j+/E8+4UzZzDTY9n0V0QmbePiDVwznL873Qg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sLslY8lsf1gumnl5QyLsZmkNSQQrFjVA9O2LHE5nw0FWZ5n1ssx2h0ErQne3lyin6
-         ctySLtUdSZvd+ZRioa55oueK9FkFYbrEjfT/nujAn0AlalaZLu9XeH7uRZ1hxf2Pdd
-         SBlIAcBNYLgm0zeLF5Z/EhUtYVRU0R6TAdcIADjs=
+        b=GOz0a3GxYtXw2Lz22Koeu/YQmg7lA+ErIcl1Mxs1twnuK5KxIfeI1Nd7fv/WIBd3C
+         U1xRoCffKdZdkpesScsvNNJwf+XRfSoiDHCLLoUdxiTaQn31/fJlke8evzqlYQSMZO
+         GTEEb7bmuqPGMDTdB7WDVkCzjk1MH6YpMp3ghbJg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
+        patches@lists.linux.dev, Abel Vesa <abel.vesa@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/603] drm/ssd130x: Fix screen clearing
+Subject: [PATCH 6.5 190/550] regulator: qcom-rpmh: Fix smps4 regulator for pm8550ve
 Date:   Wed, 15 Nov 2023 14:12:54 -0500
-Message-ID: <20231115191629.047323275@linuxfoundation.org>
+Message-ID: <20231115191613.922966604@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,91 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert@linux-m68k.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 4dbce3d6fea59e1df1d1a35aacea0c186f72107a ]
+[ Upstream commit bc00d9f3813a40bc2d854ae0edab14c6b43a3219 ]
 
-Due to the reuse of buffers, ssd130x_clear_screen() no longers clears
-the screen, but merely redraws the last image that is residing in the
-intermediate buffer.
+The type of the smps4 regulator from pm8550ve is actually FTSMPS525
+medium voltage. So fix it accordingly.
 
-As there is no point in clearing the intermediate buffer and transposing
-an all-black image, fix this by just clearing the HW format buffer, and
-writing it to the panel.
-
-Fixes: 49d7d581ceaf4cf8 ("drm/ssd130x: Don't allocate buffers on each plane update")
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Tested-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/c19cd5a57205597bb38a446c3871092993498f01.1692888745.git.geert@linux-m68k.org
+Fixes: e6e3776d682d ("regulator: qcom-rpmh: Add support for PM8550 regulators")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20231024134626.2364426-1-abel.vesa@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/solomon/ssd130x.c | 47 +++++++++++++++++++++++++------
- 1 file changed, 39 insertions(+), 8 deletions(-)
+ drivers/regulator/qcom-rpmh-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/solomon/ssd130x.c b/drivers/gpu/drm/solomon/ssd130x.c
-index 5a80b228d18ca..78272b1f9d5b1 100644
---- a/drivers/gpu/drm/solomon/ssd130x.c
-+++ b/drivers/gpu/drm/solomon/ssd130x.c
-@@ -553,14 +553,45 @@ static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
- static void ssd130x_clear_screen(struct ssd130x_device *ssd130x,
- 				 struct ssd130x_plane_state *ssd130x_state)
- {
--	struct drm_rect fullscreen = {
--		.x1 = 0,
--		.x2 = ssd130x->width,
--		.y1 = 0,
--		.y2 = ssd130x->height,
--	};
--
--	ssd130x_update_rect(ssd130x, ssd130x_state, &fullscreen);
-+	unsigned int page_height = ssd130x->device_info->page_height;
-+	unsigned int pages = DIV_ROUND_UP(ssd130x->height, page_height);
-+	u8 *data_array = ssd130x_state->data_array;
-+	unsigned int width = ssd130x->width;
-+	int ret, i;
-+
-+	if (!ssd130x->page_address_mode) {
-+		memset(data_array, 0, width * pages);
-+
-+		/* Set address range for horizontal addressing mode */
-+		ret = ssd130x_set_col_range(ssd130x, ssd130x->col_offset, width);
-+		if (ret < 0)
-+			return;
-+
-+		ret = ssd130x_set_page_range(ssd130x, ssd130x->page_offset, pages);
-+		if (ret < 0)
-+			return;
-+
-+		/* Write out update in one go if we aren't using page addressing mode */
-+		ssd130x_write_data(ssd130x, data_array, width * pages);
-+	} else {
-+		/*
-+		 * In page addressing mode, the start address needs to be reset,
-+		 * and each page then needs to be written out separately.
-+		 */
-+		memset(data_array, 0, width);
-+
-+		for (i = 0; i < pages; i++) {
-+			ret = ssd130x_set_page_pos(ssd130x,
-+						   ssd130x->page_offset + i,
-+						   ssd130x->col_offset);
-+			if (ret < 0)
-+				return;
-+
-+			ret = ssd130x_write_data(ssd130x, data_array, width);
-+			if (ret < 0)
-+				return;
-+		}
-+	}
- }
- 
- static int ssd130x_fb_blit_rect(struct drm_plane_state *state,
+diff --git a/drivers/regulator/qcom-rpmh-regulator.c b/drivers/regulator/qcom-rpmh-regulator.c
+index cd077b7c4aff3..9f8fbfae93c7c 100644
+--- a/drivers/regulator/qcom-rpmh-regulator.c
++++ b/drivers/regulator/qcom-rpmh-regulator.c
+@@ -1096,7 +1096,7 @@ static const struct rpmh_vreg_init_data pm8550ve_vreg_data[] = {
+ 	RPMH_VREG("smps1", "smp%s1", &pmic5_ftsmps525_lv, "vdd-s1"),
+ 	RPMH_VREG("smps2", "smp%s2", &pmic5_ftsmps525_lv, "vdd-s2"),
+ 	RPMH_VREG("smps3", "smp%s3", &pmic5_ftsmps525_lv, "vdd-s3"),
+-	RPMH_VREG("smps4", "smp%s4", &pmic5_ftsmps525_lv, "vdd-s4"),
++	RPMH_VREG("smps4", "smp%s4", &pmic5_ftsmps525_mv, "vdd-s4"),
+ 	RPMH_VREG("smps5", "smp%s5", &pmic5_ftsmps525_lv, "vdd-s5"),
+ 	RPMH_VREG("smps6", "smp%s6", &pmic5_ftsmps525_lv, "vdd-s6"),
+ 	RPMH_VREG("smps7", "smp%s7", &pmic5_ftsmps525_lv, "vdd-s7"),
 -- 
 2.42.0
 
