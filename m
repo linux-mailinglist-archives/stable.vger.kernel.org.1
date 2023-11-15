@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACD577ECDF9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B8927ECFE3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234764AbjKOTje (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37928 "EHLO
+        id S235442AbjKOTve (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234762AbjKOTjd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:33 -0500
+        with ESMTP id S235448AbjKOTvd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3297B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:28 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E4EC433C8;
-        Wed, 15 Nov 2023 19:39:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318AC19F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77B1C433C7;
+        Wed, 15 Nov 2023 19:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077168;
-        bh=0G6ZySSTCtWthgmsELYD9Nnrcw0KsgaCtK05bJZ+tEE=;
+        s=korg; t=1700077889;
+        bh=H6hQftsSTXumvtEBkr368elrOUXWAuBqYDh09/6GjaI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gah+w2rD50azqDl2E7Wc3KUv+/AIkyMJpWvWvS8c/JHRW5y3tIhA4ZzBr7ihuE0bA
-         wTmEgw/oRmiwgyz1bs5fci0py32jBEGXk4mi1kdrPocrky9AJrwquI1uBoOK0fOrC5
-         1fobJMzWbF82zrxR1h6wDGJ/3EokSRbJeaX2Odjo=
+        b=2Odg9Rs+A6bo7rSKQbmoMuYhYQ7eaYWDtfbph0O9AM45bmtRvTfFAQHe3I5QreSHO
+         r9TuVUW1MqVVRcxo2GXYf31dLPgHeHt98EpQsOs+IUaV4YXULD98z9mTwzPPJWI9IK
+         qsJZKXXXfOJmYQfQki+XkjK/I/KqNl8L/V8reOLg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 543/550] Revert "drm/ast: report connection status on Display Port."
-Date:   Wed, 15 Nov 2023 14:18:47 -0500
-Message-ID: <20231115191638.562823305@linuxfoundation.org>
+        patches@lists.linux.dev, Erik Kurzinger <ekurzinger@nvidia.com>,
+        Simon Ser <contact@emersion.fr>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 583/603] drm/syncobj: fix DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE
+Date:   Wed, 15 Nov 2023 14:18:48 -0500
+Message-ID: <20231115191651.705918269@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,201 +50,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit f81bb0ac7872893241319ea82504956676ef02fd.
+From: Erik Kurzinger <ekurzinger@nvidia.com>
 
-The commit depends on e329cb53b45d ("drm/ast: Add BMC virtual
-connector") and will cause hangs on boot without that dependency.
+[ Upstream commit 101c9f637efa1655f55876644d4439e552267527 ]
 
+If DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT is invoked with the
+DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE flag set but no fence has yet been
+submitted for the given timeline point the call will fail immediately
+with EINVAL. This does not match the intended behavior where the call
+should wait until the fence has been submitted (or the timeout expires).
+
+The following small example program illustrates the issue. It should
+wait for 5 seconds and then print ETIME, but instead it terminates right
+away after printing EINVAL.
+
+  #include <stdio.h>
+  #include <fcntl.h>
+  #include <time.h>
+  #include <errno.h>
+  #include <xf86drm.h>
+  int main(void)
+  {
+      int fd = open("/dev/dri/card0", O_RDWR);
+      uint32_t syncobj;
+      drmSyncobjCreate(fd, 0, &syncobj);
+      struct timespec ts;
+      clock_gettime(CLOCK_MONOTONIC, &ts);
+      uint64_t point = 1;
+      if (drmSyncobjTimelineWait(fd, &syncobj, &point, 1,
+                                 ts.tv_sec * 1000000000 + ts.tv_nsec + 5000000000, // 5s
+                                 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE, NULL)) {
+          printf("drmSyncobjTimelineWait failed %d\n", errno);
+      }
+  }
+
+Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
+Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
+Reviewed by: Simon Ser <contact@emersion.fd>
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Link: https://patchwork.freedesktop.org/patch/msgid/1fac96f1-2f3f-f9f9-4eb0-340f27a8f6c0@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ast/ast_dp.c    | 11 ----------
- drivers/gpu/drm/ast/ast_dp501.c | 37 +++++++++++----------------------
- drivers/gpu/drm/ast/ast_drv.h   |  2 --
- drivers/gpu/drm/ast/ast_mode.c  | 30 ++------------------------
- 4 files changed, 14 insertions(+), 66 deletions(-)
+ drivers/gpu/drm/drm_syncobj.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/ast/ast_dp.c b/drivers/gpu/drm/ast/ast_dp.c
-index fdd9a493aa9c0..6dc1a09504e13 100644
---- a/drivers/gpu/drm/ast/ast_dp.c
-+++ b/drivers/gpu/drm/ast/ast_dp.c
-@@ -7,17 +7,6 @@
- #include <drm/drm_print.h>
- #include "ast_drv.h"
- 
--bool ast_astdp_is_connected(struct ast_device *ast)
--{
--	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xD1, ASTDP_MCU_FW_EXECUTING))
--		return false;
--	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xDF, ASTDP_HPD))
--		return false;
--	if (!ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xDC, ASTDP_LINK_SUCCESS))
--		return false;
--	return true;
--}
--
- int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata)
- {
- 	struct ast_device *ast = to_ast_device(dev);
-diff --git a/drivers/gpu/drm/ast/ast_dp501.c b/drivers/gpu/drm/ast/ast_dp501.c
-index fa7442b0c2612..1bc35a992369d 100644
---- a/drivers/gpu/drm/ast/ast_dp501.c
-+++ b/drivers/gpu/drm/ast/ast_dp501.c
-@@ -272,9 +272,11 @@ static bool ast_launch_m68k(struct drm_device *dev)
- 	return true;
- }
- 
--bool ast_dp501_is_connected(struct ast_device *ast)
-+bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
- {
--	u32 boot_address, offset, data;
-+	struct ast_device *ast = to_ast_device(dev);
-+	u32 i, boot_address, offset, data;
-+	u32 *pEDIDidx;
- 
- 	if (ast->config_mode == ast_use_p2a) {
- 		boot_address = get_fw_base(ast);
-@@ -290,6 +292,14 @@ bool ast_dp501_is_connected(struct ast_device *ast)
- 		data = ast_mindwm(ast, boot_address + offset);
- 		if (!(data & AST_DP501_PNP_CONNECTED))
- 			return false;
-+
-+		/* Read EDID */
-+		offset = AST_DP501_EDID_DATA;
-+		for (i = 0; i < 128; i += 4) {
-+			data = ast_mindwm(ast, boot_address + offset + i);
-+			pEDIDidx = (u32 *)(ediddata + i);
-+			*pEDIDidx = data;
-+		}
- 	} else {
- 		if (!ast->dp501_fw_buf)
- 			return false;
-@@ -309,30 +319,7 @@ bool ast_dp501_is_connected(struct ast_device *ast)
- 		data = readl(ast->dp501_fw_buf + offset);
- 		if (!(data & AST_DP501_PNP_CONNECTED))
- 			return false;
--	}
--	return true;
--}
--
--bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
--{
--	struct ast_device *ast = to_ast_device(dev);
--	u32 i, boot_address, offset, data;
--	u32 *pEDIDidx;
--
--	if (!ast_dp501_is_connected(ast))
--		return false;
--
--	if (ast->config_mode == ast_use_p2a) {
--		boot_address = get_fw_base(ast);
- 
--		/* Read EDID */
--		offset = AST_DP501_EDID_DATA;
--		for (i = 0; i < 128; i += 4) {
--			data = ast_mindwm(ast, boot_address + offset + i);
--			pEDIDidx = (u32 *)(ediddata + i);
--			*pEDIDidx = data;
--		}
--	} else {
- 		/* Read EDID */
- 		offset = AST_DP501_EDID_DATA;
- 		for (i = 0; i < 128; i += 4) {
-diff --git a/drivers/gpu/drm/ast/ast_drv.h b/drivers/gpu/drm/ast/ast_drv.h
-index 8a0ffa8b5939b..5498a6676f2e8 100644
---- a/drivers/gpu/drm/ast/ast_drv.h
-+++ b/drivers/gpu/drm/ast/ast_drv.h
-@@ -468,7 +468,6 @@ void ast_patch_ahb_2500(struct ast_device *ast);
- /* ast dp501 */
- void ast_set_dp501_video_output(struct drm_device *dev, u8 mode);
- bool ast_backup_fw(struct drm_device *dev, u8 *addr, u32 size);
--bool ast_dp501_is_connected(struct ast_device *ast);
- bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata);
- u8 ast_get_dp501_max_clk(struct drm_device *dev);
- void ast_init_3rdtx(struct drm_device *dev);
-@@ -477,7 +476,6 @@ void ast_init_3rdtx(struct drm_device *dev);
- struct ast_i2c_chan *ast_i2c_create(struct drm_device *dev);
- 
- /* aspeed DP */
--bool ast_astdp_is_connected(struct ast_device *ast);
- int ast_astdp_read_edid(struct drm_device *dev, u8 *ediddata);
- void ast_dp_launch(struct drm_device *dev);
- void ast_dp_power_on_off(struct drm_device *dev, bool no);
-diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
-index 0724516f29737..b3c670af6ef2b 100644
---- a/drivers/gpu/drm/ast/ast_mode.c
-+++ b/drivers/gpu/drm/ast/ast_mode.c
-@@ -1585,20 +1585,8 @@ static int ast_dp501_connector_helper_get_modes(struct drm_connector *connector)
- 	return 0;
- }
- 
--static int ast_dp501_connector_helper_detect_ctx(struct drm_connector *connector,
--						 struct drm_modeset_acquire_ctx *ctx,
--						 bool force)
--{
--	struct ast_device *ast = to_ast_device(connector->dev);
--
--	if (ast_dp501_is_connected(ast))
--		return connector_status_connected;
--	return connector_status_disconnected;
--}
--
- static const struct drm_connector_helper_funcs ast_dp501_connector_helper_funcs = {
- 	.get_modes = ast_dp501_connector_helper_get_modes,
--	.detect_ctx = ast_dp501_connector_helper_detect_ctx,
- };
- 
- static const struct drm_connector_funcs ast_dp501_connector_funcs = {
-@@ -1623,7 +1611,7 @@ static int ast_dp501_connector_init(struct drm_device *dev, struct drm_connector
- 	connector->interlace_allowed = 0;
- 	connector->doublescan_allowed = 0;
- 
--	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
-+	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
- 
- 	return 0;
- }
-@@ -1695,20 +1683,8 @@ static int ast_astdp_connector_helper_get_modes(struct drm_connector *connector)
- 	return 0;
- }
- 
--static int ast_astdp_connector_helper_detect_ctx(struct drm_connector *connector,
--						 struct drm_modeset_acquire_ctx *ctx,
--						 bool force)
--{
--	struct ast_device *ast = to_ast_device(connector->dev);
--
--	if (ast_astdp_is_connected(ast))
--		return connector_status_connected;
--	return connector_status_disconnected;
--}
--
- static const struct drm_connector_helper_funcs ast_astdp_connector_helper_funcs = {
- 	.get_modes = ast_astdp_connector_helper_get_modes,
--	.detect_ctx = ast_astdp_connector_helper_detect_ctx,
- };
- 
- static const struct drm_connector_funcs ast_astdp_connector_funcs = {
-@@ -1733,7 +1709,7 @@ static int ast_astdp_connector_init(struct drm_device *dev, struct drm_connector
- 	connector->interlace_allowed = 0;
- 	connector->doublescan_allowed = 0;
- 
--	connector->polled = DRM_CONNECTOR_POLL_CONNECT | DRM_CONNECTOR_POLL_DISCONNECT;
-+	connector->polled = DRM_CONNECTOR_POLL_CONNECT;
- 
- 	return 0;
- }
-@@ -1872,7 +1848,5 @@ int ast_mode_config_init(struct ast_device *ast)
- 
- 	drm_mode_config_reset(dev);
- 
--	drm_kms_helper_poll_init(dev);
--
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
+index f7003d1ec5ef1..01da6789d0440 100644
+--- a/drivers/gpu/drm/drm_syncobj.c
++++ b/drivers/gpu/drm/drm_syncobj.c
+@@ -1069,7 +1069,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
+ 		fence = drm_syncobj_fence_get(syncobjs[i]);
+ 		if (!fence || dma_fence_chain_find_seqno(&fence, points[i])) {
+ 			dma_fence_put(fence);
+-			if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
++			if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
++				     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
+ 				continue;
+ 			} else {
+ 				timeout = -EINVAL;
 -- 
 2.42.0
 
