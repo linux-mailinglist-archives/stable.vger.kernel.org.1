@@ -2,134 +2,156 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7851F7EC355
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 14:10:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5D797EC362
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 14:16:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343872AbjKONKr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 08:10:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58070 "EHLO
+        id S1343885AbjKONQC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 08:16:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343723AbjKONKq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 08:10:46 -0500
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FECF122;
-        Wed, 15 Nov 2023 05:10:34 -0800 (PST)
-X-UUID: 58b2127a83b811eea33bb35ae8d461a2-20231115
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=C9bLgmSE/bzwUoE9sEirds2nyAgb0y2Jz1sKDbtfvr8=;
-        b=ImLO6QUZ/fgbhGiF9jfSOQES9syW6aYWHftjkMJEloObzBVhMzjzMkhnUbXrS/9RFXM4bHb0sMGcVejSFsFdWaNkWMij0Ch/+GhMVviACReIU6K6r2/czyLIXxh1PVlELqsYZjAlwIHzQQSAZ7zce4Pr3GKkdpkCL1TVC4M/sew=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:5cc5a53f-d050-45f4-ae1e-e6dfa7b82367,IP:0,U
-        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-        N:release,TS:-25
-X-CID-META: VersionHash:364b77b,CLOUDID:c1311860-c89d-4129-91cb-8ebfae4653fc,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULN,TF_CID_SPAM_SNR
-X-UUID: 58b2127a83b811eea33bb35ae8d461a2-20231115
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
-        (envelope-from <peter.wang@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1546601218; Wed, 15 Nov 2023 21:10:28 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 15 Nov 2023 21:10:26 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 15 Nov 2023 21:10:26 +0800
-From:   <peter.wang@mediatek.com>
-To:     <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
-        <avri.altman@wdc.com>, <alim.akhtar@samsung.com>,
-        <jejb@linux.ibm.com>
-CC:     <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-        <peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
-        <alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
-        <chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
-        <powen.kao@mediatek.com>, <qilin.tan@mediatek.com>,
-        <lin.gui@mediatek.com>, <tun-yu.yu@mediatek.com>,
-        <eddie.huang@mediatek.com>, <naomi.chu@mediatek.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2] ufs: core: clear cmd if abort success in mcq mode
-Date:   Wed, 15 Nov 2023 21:10:24 +0800
-Message-ID: <20231115131024.15829-1-peter.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        with ESMTP id S1343875AbjKONQB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 08:16:01 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51CBB120
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:15:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1700054157;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=WdkCfOkpqSODFD3esOEEEI4uePJ2ewc8SQpEyHY/6Ls=;
+        b=NocfwToNlSlM6mAF142By87EbYRZWCj4GUHGUQ5c1ohuh2Da9xSVlMzM199nRbqybpM1OV
+        M/V0otiW1LGRuSOCTpX0tMOFvcX+lj9neMne3cJKQRUD/k/o+SHrrFw9vEonQM4TCK41s0
+        dFOTcPQnr5zjBDmeZZ9DH+6CuU3NO6E=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-660-9-QMkDrAMr23pu91DwCHbw-1; Wed, 15 Nov 2023 08:15:56 -0500
+X-MC-Unique: 9-QMkDrAMr23pu91DwCHbw-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-40a5290e259so20789725e9.2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:15:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700054155; x=1700658955;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WdkCfOkpqSODFD3esOEEEI4uePJ2ewc8SQpEyHY/6Ls=;
+        b=JQzPPwsEsj5p+qgxtUu5lsdAU4834qmoWRdKHIdlMU5xbJU0ysEgwaDl9HDN8mTsEJ
+         a5gEaKDs79NXsxbf68ZKE70GF5ODObs2kYVuajYwlcJP7id6M1OBVnahvhrOzrKGJ+mX
+         JOnETeTV40gcHa53Y7r8g3IhLwv3IgWSWTAVqaPltdIoyH9Jo5yvrpKWRxpCdsNQlYQk
+         CJvogHxcMCV6CP1QfsE4b120D3dVWztb5C07umTTSve8HTSDL09GtYazi4jet2XuvLly
+         FB6LpHJ22Rb9VN/MwDabMa0sGySui4b53ZxuGYopCx1Y3Hnzr2qdghBnHe9YmncdOhkn
+         +EGQ==
+X-Gm-Message-State: AOJu0YzMQXhPt/ncgFNEaXtrl+zqdtz3jZ1PZ5rWZLa83GU6zHWg18Pw
+        mio2HUxEYLXrolxyWIIe7AXSxqM0WH0bSu8emq7LVL6z4KCzJrb4KbUIMdV4OaHVg/l8bKEuPXi
+        BKu54JtxxUmq9xiGQ
+X-Received: by 2002:a05:600c:1d12:b0:40a:4429:a994 with SMTP id l18-20020a05600c1d1200b0040a4429a994mr9334049wms.28.1700054155056;
+        Wed, 15 Nov 2023 05:15:55 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGoWZxbtxmm92MRQ4/GXfrWok30Xz8lAdSnCK8MW1HWy9dYer1O9tD6vbzy8D8AMhy89TPi+g==
+X-Received: by 2002:a05:600c:1d12:b0:40a:4429:a994 with SMTP id l18-20020a05600c1d1200b0040a4429a994mr9334033wms.28.1700054154854;
+        Wed, 15 Nov 2023 05:15:54 -0800 (PST)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id m16-20020a7bca50000000b0040841e79715sm14706785wml.27.2023.11.15.05.15.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Nov 2023 05:15:54 -0800 (PST)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Maxime Ripard <mripard@kernel.org>,
+        Bilal Elmoussaoui <belmouss@redhat.com>,
+        Simon Ser <contact@emersion.fr>,
+        Erico Nunes <nunes.erico@gmail.com>,
+        Pekka Paalanen <pekka.paalanen@collabora.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Sima Vetter <daniel.vetter@ffwll.ch>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        stable@vger.kernel.org,
+        nerdopolis <bluescreen_avenger@verizon.net>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@gmail.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH v2 1/5] drm: Allow drivers to indicate the damage helpers to ignore damage clips
+Date:   Wed, 15 Nov 2023 14:15:40 +0100
+Message-ID: <20231115131549.2191589-2-javierm@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231115131549.2191589-1-javierm@redhat.com>
+References: <20231115131549.2191589-1-javierm@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--10.243600-8.000000
-X-TMASE-MatchedRID: eim6YYjnci0MQLXc2MGSbO7KTDtx8CggCt59Uh3p/NWsafcFLFlU1OhA
-        oL09ZB7k7Oz5SO8AjrR6fWcwarN2OU2VnXMRzIBjMJoQm3jo+mk7pfSjRsD2Og2Y8xyy93kWcam
-        vz988laLcGqNrS/CXVwG2ORx9EyapQq2SOVgDzZ2e7UdJp0QINX0tCKdnhB58x1VpQxNE5Sol1b
-        QZsjoiro6HM5rqDwqtwhyVdat1JJ4YTSC8+eLAsZoa6WdfBq3sGScriA4mVLNnqMsc5IhUrQ==
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--10.243600-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: FCB1E0C5A67EF3923329F8C1EEAB1D739410A2AA11A224C8A64FF2DC537955D42000:8
-X-MTK:  N
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR,UNPARSEABLE_RELAY
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Wang <peter.wang@mediatek.com>
+It allows drivers to set a struct drm_plane_state .ignore_damage_clips in
+their plane's .atomic_check callback, as an indication to damage helpers
+such as drm_atomic_helper_damage_iter_init() that the damage clips should
+be ignored.
 
-In mcq mode, if cmd is pending in device and abort success, response
-will not return from device. So we need clear this cmd right now,
-else command timeout happen and next time use same tag will have
-warning. WARN_ON(lrbp->cmd).
+To be used by drivers that do per-buffer (e.g: virtio-gpu) uploads (rather
+than per-plane uploads), since these type of drivers need to handle buffer
+damages instead of frame damages.
 
-Below is error log:
-<3>[ 2277.447611][T21376] ufshcd-mtk 112b0000.ufshci: ufshcd_try_to_abort_task: cmd pending in the device. tag = 7
-<3>[ 2277.476954][T21376] ufshcd-mtk 112b0000.ufshci: Aborting tag 7 / CDB 0x2a succeeded
-<6>[ 2307.551263][T30974] ufshcd-mtk 112b0000.ufshci: ufshcd_abort: Device abort task at tag 7
-<4>[ 2307.623264][  T327] WARNING: CPU: 5 PID: 327 at source/drivers/ufs/core/ufshcd.c:3021 ufshcd_queuecommand+0x66c/0xe34
+That way, these drivers could force a full plane update if the framebuffer
+attached to a plane's state has changed since the last update (page-flip).
 
-Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Fixes: 01f05940a9a7 ("drm/virtio: Enable fb damage clips property for the primary plane")
+Cc: <stable@vger.kernel.org> # v6.4+
+Reported-by: nerdopolis <bluescreen_avenger@verizon.net>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218115
+Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
- drivers/ufs/core/ufshcd.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 8b1031fb0a44..6aa6f79d7841 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6444,11 +6444,24 @@ static bool ufshcd_abort_one(struct request *rq, void *priv)
- 	struct scsi_device *sdev = cmd->device;
- 	struct Scsi_Host *shost = sdev->host;
- 	struct ufs_hba *hba = shost_priv(shost);
-+	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
-+	struct ufs_hw_queue *hwq;
-+	unsigned long flags;
+Changes in v2:
+- Add a struct drm_plane_state .ignore_damage_clips to set in the plane's
+  .atomic_check, instead of having different helpers (Thomas Zimmermann).
+
+ drivers/gpu/drm/drm_damage_helper.c | 3 ++-
+ include/drm/drm_plane.h             | 8 ++++++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/drm_damage_helper.c b/drivers/gpu/drm/drm_damage_helper.c
+index d8b2955e88fd..afb02aae707b 100644
+--- a/drivers/gpu/drm/drm_damage_helper.c
++++ b/drivers/gpu/drm/drm_damage_helper.c
+@@ -241,7 +241,8 @@ drm_atomic_helper_damage_iter_init(struct drm_atomic_helper_damage_iter *iter,
+ 	iter->plane_src.x2 = (src.x2 >> 16) + !!(src.x2 & 0xFFFF);
+ 	iter->plane_src.y2 = (src.y2 >> 16) + !!(src.y2 & 0xFFFF);
  
- 	*ret = ufshcd_try_to_abort_task(hba, tag);
- 	dev_err(hba->dev, "Aborting tag %d / CDB %#02x %s\n", tag,
- 		hba->lrb[tag].cmd ? hba->lrb[tag].cmd->cmnd[0] : -1,
- 		*ret ? "failed" : "succeeded");
-+
-+	/* Release cmd in mcq mode if abort success */
-+	if (is_mcq_enabled(hba) && (*ret == 0)) {
-+		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
-+		spin_lock_irqsave(&hwq->cq_lock, flags);
-+		if (ufshcd_cmd_inflight(lrbp->cmd))
-+			ufshcd_release_scsi_cmd(hba, lrbp);
-+		spin_unlock_irqrestore(&hwq->cq_lock, flags);
-+	}
-+
- 	return *ret == 0;
- }
+-	if (!iter->clips || !drm_rect_equals(&state->src, &old_state->src)) {
++	if (!iter->clips || state->ignore_damage_clips ||
++	    !drm_rect_equals(&state->src, &old_state->src)) {
+ 		iter->clips = NULL;
+ 		iter->num_clips = 0;
+ 		iter->full_update = true;
+diff --git a/include/drm/drm_plane.h b/include/drm/drm_plane.h
+index 79d62856defb..cc2e8fc35fd2 100644
+--- a/include/drm/drm_plane.h
++++ b/include/drm/drm_plane.h
+@@ -190,6 +190,14 @@ struct drm_plane_state {
+ 	 */
+ 	struct drm_property_blob *fb_damage_clips;
  
++	/**
++	 * @ignore_damage_clips:
++	 *
++	 * Set by drivers to indicate the drm_atomic_helper_damage_iter_init()
++	 * helper that the @fb_damage_clips blob property should be ignored.
++	 */
++	bool ignore_damage_clips;
++
+ 	/**
+ 	 * @src:
+ 	 *
 -- 
-2.18.0
+2.41.0
 
