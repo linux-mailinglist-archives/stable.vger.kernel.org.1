@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 754C07ECD54
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CF317ECD58
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234453AbjKOTfz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47594 "EHLO
+        id S234440AbjKOTgB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234466AbjKOTfy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:54 -0500
+        with ESMTP id S234475AbjKOTf6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:58 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7893A19D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:50 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC97C433C7;
-        Wed, 15 Nov 2023 19:35:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 688B81B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1774C433CC;
+        Wed, 15 Nov 2023 19:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076950;
-        bh=dEnrgTgbUEDjZmg020XVdltHBZoIZEvoPqNhNQArJcw=;
+        s=korg; t=1700076955;
+        bh=U10DjcbL2XGDJO7vCSTVmMaMcjZr0AqwDvh10vHydKU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VJc2LCybT4ly99tSHI+LdvtoSCllwvxxmv9PnR8NPx/g383VA3E5X068kbhCKsWOn
-         Qc/qUjFIDf6nPeF93NzU2Cq3nODJU0PPXa5TUhAQTQIJUfiZG2m25r4ukBllcF4dSH
-         k50K9dO0m2Njmnqs+zNC/Stg6KwYK53/UwMK0+EM=
+        b=sp36/+oClv/JoYbweTG5Qw2lZlIfs43LC5n0Mhct/v1toLoooQaa72Sfhst8uKzJu
+         FUYG0PtOOww4+1KwGamTVljM6Jozg5IfxlBE6b4CGFgo+XbxRBjJXU99tRFVRZ9dNb
+         AoSwLTRr52eoxdSQmBAtmWoNf1r3OwDPKrIrNqH8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Raag Jadav <raag.jadav@intel.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Sumit Gupta <sumitg@nvidia.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/603] PM: sleep: Fix symbol export for _SIMPLE_ variants of _PM_OPS()
-Date:   Wed, 15 Nov 2023 14:10:22 -0500
-Message-ID: <20231115191618.445830151@linuxfoundation.org>
+Subject: [PATCH 6.6 078/603] cpufreq: tegra194: fix warning due to missing opp_put
+Date:   Wed, 15 Nov 2023 14:10:23 -0500
+Message-ID: <20231115191618.520069104@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -55,114 +54,56 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Raag Jadav <raag.jadav@intel.com>
+From: Sumit Gupta <sumitg@nvidia.com>
 
-[ Upstream commit 8d74f1da776da9b0306630b13a3025214fa44618 ]
+[ Upstream commit bae8222a6c291dbe58c908dab5c2abd3a75d0d63 ]
 
-Currently EXPORT_*_SIMPLE_DEV_PM_OPS() use EXPORT_*_DEV_PM_OPS() set
-of macros to export dev_pm_ops symbol, which export the symbol in case
-CONFIG_PM=y but don't take CONFIG_PM_SLEEP into consideration.
+Fix the warning due to missing dev_pm_opp_put() call and hence
+wrong refcount value. This causes below warning message when
+trying to remove the module.
 
-Since _SIMPLE_ variants of _PM_OPS() do not include runtime PM handles
-and are only used in case CONFIG_PM_SLEEP=y, we should not be exporting
-dev_pm_ops symbol for them in case CONFIG_PM_SLEEP=n.
+ Call trace:
+  dev_pm_opp_put_opp_table+0x154/0x15c
+  dev_pm_opp_remove_table+0x34/0xa0
+  _dev_pm_opp_cpumask_remove_table+0x7c/0xbc
+  dev_pm_opp_of_cpumask_remove_table+0x10/0x18
+  tegra194_cpufreq_exit+0x24/0x34 [tegra194_cpufreq]
+  cpufreq_remove_dev+0xa8/0xf8
+  subsys_interface_unregister+0x90/0xe8
+  cpufreq_unregister_driver+0x54/0x9c
+  tegra194_cpufreq_remove+0x18/0x2c [tegra194_cpufreq]
+  platform_remove+0x24/0x74
+  device_remove+0x48/0x78
+  device_release_driver_internal+0xc8/0x160
+  driver_detach+0x4c/0x90
+  bus_remove_driver+0x68/0xb8
+  driver_unregister+0x2c/0x58
+  platform_driver_unregister+0x10/0x18
+  tegra194_ccplex_driver_exit+0x14/0x1e0 [tegra194_cpufreq]
+  __arm64_sys_delete_module+0x184/0x270
 
-This can be fixed by having two distinct set of export macros for both
-_RUNTIME_ and _SIMPLE_ variants of _PM_OPS(), such that the export of
-dev_pm_ops symbol used in each variant depends on CONFIG_PM and
-CONFIG_PM_SLEEP respectively.
-
-Introduce _DEV_SLEEP_PM_OPS() set of export macros for _SIMPLE_ variants
-of _PM_OPS(), which export dev_pm_ops symbol only in case CONFIG_PM_SLEEP=y
-and discard it otherwise.
-
-Fixes: 34e1ed189fab ("PM: Improve EXPORT_*_DEV_PM_OPS macros")
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
-Reviewed-by: Paul Cercueil <paul@crapouillou.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: f41e1442ac5b ("cpufreq: tegra194: add OPP support and set bandwidth")
+Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
+[ Viresh: Add a blank line ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pm.h | 43 +++++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 14 deletions(-)
+ drivers/cpufreq/tegra194-cpufreq.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index 1400c37b29c75..629c1633bbd00 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -374,24 +374,39 @@ const struct dev_pm_ops name = { \
- 	RUNTIME_PM_OPS(runtime_suspend_fn, runtime_resume_fn, idle_fn) \
- }
+diff --git a/drivers/cpufreq/tegra194-cpufreq.c b/drivers/cpufreq/tegra194-cpufreq.c
+index 88ef5e57ccd05..386aed3637b4e 100644
+--- a/drivers/cpufreq/tegra194-cpufreq.c
++++ b/drivers/cpufreq/tegra194-cpufreq.c
+@@ -450,6 +450,8 @@ static int tegra_cpufreq_init_cpufreq_table(struct cpufreq_policy *policy,
+ 		if (IS_ERR(opp))
+ 			continue;
  
--#ifdef CONFIG_PM
--#define _EXPORT_DEV_PM_OPS(name, license, ns)				\
-+#define _EXPORT_PM_OPS(name, license, ns)				\
- 	const struct dev_pm_ops name;					\
- 	__EXPORT_SYMBOL(name, license, ns);				\
- 	const struct dev_pm_ops name
--#define EXPORT_PM_FN_GPL(name)		EXPORT_SYMBOL_GPL(name)
--#define EXPORT_PM_FN_NS_GPL(name, ns)	EXPORT_SYMBOL_NS_GPL(name, ns)
--#else
--#define _EXPORT_DEV_PM_OPS(name, license, ns)				\
++		dev_pm_opp_put(opp);
 +
-+#define _DISCARD_PM_OPS(name, license, ns)				\
- 	static __maybe_unused const struct dev_pm_ops __static_##name
-+
-+#ifdef CONFIG_PM
-+#define _EXPORT_DEV_PM_OPS(name, license, ns)		_EXPORT_PM_OPS(name, license, ns)
-+#define EXPORT_PM_FN_GPL(name)				EXPORT_SYMBOL_GPL(name)
-+#define EXPORT_PM_FN_NS_GPL(name, ns)			EXPORT_SYMBOL_NS_GPL(name, ns)
-+#else
-+#define _EXPORT_DEV_PM_OPS(name, license, ns)		_DISCARD_PM_OPS(name, license, ns)
- #define EXPORT_PM_FN_GPL(name)
- #define EXPORT_PM_FN_NS_GPL(name, ns)
- #endif
- 
--#define EXPORT_DEV_PM_OPS(name) _EXPORT_DEV_PM_OPS(name, "", "")
--#define EXPORT_GPL_DEV_PM_OPS(name) _EXPORT_DEV_PM_OPS(name, "GPL", "")
--#define EXPORT_NS_DEV_PM_OPS(name, ns) _EXPORT_DEV_PM_OPS(name, "", #ns)
--#define EXPORT_NS_GPL_DEV_PM_OPS(name, ns) _EXPORT_DEV_PM_OPS(name, "GPL", #ns)
-+#ifdef CONFIG_PM_SLEEP
-+#define _EXPORT_DEV_SLEEP_PM_OPS(name, license, ns)	_EXPORT_PM_OPS(name, license, ns)
-+#else
-+#define _EXPORT_DEV_SLEEP_PM_OPS(name, license, ns)	_DISCARD_PM_OPS(name, license, ns)
-+#endif
-+
-+#define EXPORT_DEV_PM_OPS(name)				_EXPORT_DEV_PM_OPS(name, "", "")
-+#define EXPORT_GPL_DEV_PM_OPS(name)			_EXPORT_DEV_PM_OPS(name, "GPL", "")
-+#define EXPORT_NS_DEV_PM_OPS(name, ns)			_EXPORT_DEV_PM_OPS(name, "", #ns)
-+#define EXPORT_NS_GPL_DEV_PM_OPS(name, ns)		_EXPORT_DEV_PM_OPS(name, "GPL", #ns)
-+
-+#define EXPORT_DEV_SLEEP_PM_OPS(name)			_EXPORT_DEV_SLEEP_PM_OPS(name, "", "")
-+#define EXPORT_GPL_DEV_SLEEP_PM_OPS(name)		_EXPORT_DEV_SLEEP_PM_OPS(name, "GPL", "")
-+#define EXPORT_NS_DEV_SLEEP_PM_OPS(name, ns)		_EXPORT_DEV_SLEEP_PM_OPS(name, "", #ns)
-+#define EXPORT_NS_GPL_DEV_SLEEP_PM_OPS(name, ns)	_EXPORT_DEV_SLEEP_PM_OPS(name, "GPL", #ns)
- 
- /*
-  * Use this if you want to use the same suspend and resume callbacks for suspend
-@@ -404,19 +419,19 @@ const struct dev_pm_ops name = { \
- 	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
- 
- #define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
--	EXPORT_DEV_PM_OPS(name) = { \
-+	EXPORT_DEV_SLEEP_PM_OPS(name) = { \
- 		SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- 	}
- #define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
--	EXPORT_GPL_DEV_PM_OPS(name) = { \
-+	EXPORT_GPL_DEV_SLEEP_PM_OPS(name) = { \
- 		SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- 	}
- #define EXPORT_NS_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn, ns)	\
--	EXPORT_NS_DEV_PM_OPS(name, ns) = { \
-+	EXPORT_NS_DEV_SLEEP_PM_OPS(name, ns) = { \
- 		SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- 	}
- #define EXPORT_NS_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn, ns)	\
--	EXPORT_NS_GPL_DEV_PM_OPS(name, ns) = { \
-+	EXPORT_NS_GPL_DEV_SLEEP_PM_OPS(name, ns) = { \
- 		SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- 	}
- 
+ 		ret = dev_pm_opp_enable(cpu_dev, pos->frequency * KHZ);
+ 		if (ret < 0)
+ 			return ret;
 -- 
 2.42.0
 
