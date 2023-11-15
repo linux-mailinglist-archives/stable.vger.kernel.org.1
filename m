@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 26BA27ED595
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 538B67ED2F8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344746AbjKOVHm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
+        id S233510AbjKOUpY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234894AbjKOVH0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
+        with ESMTP id S233648AbjKOUpU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3026A10C6
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2433FC4AF78;
-        Wed, 15 Nov 2023 20:50:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 569CBD57
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9276C433C7;
+        Wed, 15 Nov 2023 20:45:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081419;
-        bh=U+9aApnqTq8jIPBLX3KWPVfgqYTEybRY9dlAFBenP2E=;
+        s=korg; t=1700081115;
+        bh=yQXJlVcC7ZHeYK5tslbXpLb5Qq0o1PGcpj07KYeWT5k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CWgkZ4UdlTsgTdE+SfM4nKQLfgXc26Ol8CMije0L76y4oPau2ixkRJWLtmRH0r9oX
-         5ugQAPTNxfSE6+LddpKesq5/P4tYQv4YH5ZIZ3ueen3HdktRkeDg17yYl1/V5Drp8j
-         t1cPkT6T+AQdEmzpzmfdRYp3Kv3o0ujSIPXdKsJQ=
+        b=tnlaDeCCQaKC/94tRAATzLBgKDUwNhWru0E43RIwNFoEGLw2wUH1Xj4/zWXKr5T1j
+         3UMwLwgYn1xkrxgcwHGDwkdDE2TnAXQmOBK6oTBBUUq9NozUMIEd64Zz2+nphUpWeH
+         Cj0BkY47pkefit4EAdE3kxQyJMyUzGy06cLHbaVM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chengchang Tang <tangchengchang@huawei.com>,
-        Junxian Huang <huangjunxian6@hisilicon.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/244] RDMA/hns: Fix signed-unsigned mixed comparisons
+Subject: [PATCH 4.19 23/88] clk: mediatek: clk-mt6797: Add check for mtk_alloc_clk_data
 Date:   Wed, 15 Nov 2023 15:35:35 -0500
-Message-ID: <20231115203556.926581737@linuxfoundation.org>
+Message-ID: <20231115191427.583675663@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +52,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit b5f9efff101b06fd06a5e280a2b00b1335f5f476 ]
+[ Upstream commit 606f6366a35a3329545e38129804d65ef26ed7d2 ]
 
-The ib_mtu_enum_to_int() and uverbs_attr_get_len() may returns a negative
-value. In this case, mixed comparisons of signed and unsigned types will
-throw wrong results.
+Add the check for the return value of mtk_alloc_clk_data() in order to
+avoid NULL pointer dereference.
 
-This patch adds judgement for this situation.
-
-Fixes: 30b707886aeb ("RDMA/hns: Support inline data in extented sge space for RC")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20231017125239.164455-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 96596aa06628 ("clk: mediatek: add clk support for MT6797")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230912093407.21505-3-jiasheng@iscas.ac.cn
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-mt6797.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 4554d3e78b37b..59e1f51022f16 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -244,7 +244,7 @@ static bool check_inl_data_len(struct hns_roce_qp *qp, unsigned int len)
- 	struct hns_roce_dev *hr_dev = to_hr_dev(qp->ibqp.device);
- 	int mtu = ib_mtu_enum_to_int(qp->path_mtu);
+diff --git a/drivers/clk/mediatek/clk-mt6797.c b/drivers/clk/mediatek/clk-mt6797.c
+index 5702bc974ed99..1ee45f32c1d4e 100644
+--- a/drivers/clk/mediatek/clk-mt6797.c
++++ b/drivers/clk/mediatek/clk-mt6797.c
+@@ -396,6 +396,8 @@ static int mtk_topckgen_init(struct platform_device *pdev)
+ 		return PTR_ERR(base);
  
--	if (len > qp->max_inline_data || len > mtu) {
-+	if (mtu < 0 || len > qp->max_inline_data || len > mtu) {
- 		ibdev_err(&hr_dev->ib_dev,
- 			  "invalid length of data, data len = %u, max inline len = %u, path mtu = %d.\n",
- 			  len, qp->max_inline_data, mtu);
+ 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR);
++	if (!clk_data)
++		return -ENOMEM;
+ 
+ 	mtk_clk_register_factors(top_fixed_divs, ARRAY_SIZE(top_fixed_divs),
+ 				 clk_data);
+@@ -554,6 +556,8 @@ static void mtk_infrasys_init_early(struct device_node *node)
+ 
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return;
+ 
+ 		for (i = 0; i < CLK_INFRA_NR; i++)
+ 			infra_clk_data->clks[i] = ERR_PTR(-EPROBE_DEFER);
+@@ -578,6 +582,8 @@ static int mtk_infrasys_init(struct platform_device *pdev)
+ 
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return -ENOMEM;
+ 	} else {
+ 		for (i = 0; i < CLK_INFRA_NR; i++) {
+ 			if (infra_clk_data->clks[i] == ERR_PTR(-EPROBE_DEFER))
 -- 
 2.42.0
 
