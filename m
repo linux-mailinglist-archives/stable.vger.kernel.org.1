@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1806F7ED2E5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 004F57ED476
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233527AbjKOUpE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46152 "EHLO
+        id S1344805AbjKOU6J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:58:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233592AbjKOUpB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:01 -0500
+        with ESMTP id S1344663AbjKOU5i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C18B7D43
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455E7C433C8;
-        Wed, 15 Nov 2023 20:44:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6441734
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884F2C4E664;
+        Wed, 15 Nov 2023 20:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081097;
-        bh=sbJVwXnix2nKPDkPosppvwcdwVszQ/eH4KaLWY8amPA=;
+        s=korg; t=1700081444;
+        bh=2nvLBgJmhv4GlQpD3mKuc4tYTdBQIG8k4jawe2CPpG0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CDloFdc5Q/MItM5cYeibU/V1B3VFh1Zt9ukmIwyrCi8KRdsb2k0r+oevipVKEdhEz
-         7nSi48NlJCwYBkI1I8+exO0XtKAaiIOXz6srbQ0uOdJ0odE7JRUuBykCF7pPPry831
-         nd8BEo0aoNPXTgWa+FYtimTygxZVpbdUs3oc8D7A=
+        b=dLezU1kS/iYMcelzz9LXQIMjQclrzYlzbOeIrcsswsAH8hEQrr2EFXgMLck/vZVer
+         OKP5Eix0rc4TDVWj7G7aX2zKVvyb4iOYgwUeXND3MrgsTyLWSW8GZ+TPMIJKaBjyk3
+         BpY7DwIcSvk4yy4168I+7ZHVkP3ZT9VC7W6Ay8XI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tomas Glozar <tglozar@redhat.com>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
+        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 37/88] nd_btt: Make BTT lanes preemptible
+Subject: [PATCH 5.15 157/244] crypto: qat - fix deadlock in backlog processing
 Date:   Wed, 15 Nov 2023 15:35:49 -0500
-Message-ID: <20231115191428.408798121@linuxfoundation.org>
+Message-ID: <20231115203557.765945503@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,96 +51,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Glozar <tglozar@redhat.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 36c75ce3bd299878fd9b238e9803d3817ddafbf3 ]
+[ Upstream commit 203b01001c4d741205b9c329acddc5193ed56fbd ]
 
-nd_region_acquire_lane uses get_cpu, which disables preemption. This is
-an issue on PREEMPT_RT kernels, since btt_write_pg and also
-nd_region_acquire_lane itself take a spin lock, resulting in BUG:
-sleeping function called from invalid context.
+If a request has the flag CRYPTO_TFM_REQ_MAY_BACKLOG set, the function
+qat_alg_send_message_maybacklog(), enqueues it in a backlog list if
+either (1) there is already at least one request in the backlog list, or
+(2) the HW ring is nearly full or (3) the enqueue to the HW ring fails.
+If an interrupt occurs right before the lock in qat_alg_backlog_req() is
+taken and the backlog queue is being emptied, then there is no request
+in the HW queues that can trigger a subsequent interrupt that can clear
+the backlog queue. In addition subsequent requests are enqueued to the
+backlog list and not sent to the hardware.
 
-Fix the issue by replacing get_cpu with smp_process_id and
-migrate_disable when needed. This makes BTT operations preemptible, thus
-permitting the use of spin_lock.
+Fix it by holding the lock while taking the decision if the request
+needs to be included in the backlog queue or not. This synchronizes the
+flow with the interrupt handler that drains the backlog queue.
 
-BUG example occurring when running ndctl tests on PREEMPT_RT kernel:
+For performance reasons, the logic has been changed to try to enqueue
+first without holding the lock.
 
-BUG: sleeping function called from invalid context at
-kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 4903, name:
-libndctl
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-Preemption disabled at:
-[<ffffffffc1313db5>] nd_region_acquire_lane+0x15/0x90 [libnvdimm]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x8e/0xb0
- __might_resched+0x19b/0x250
- rt_spin_lock+0x4c/0x100
- ? btt_write_pg+0x2d7/0x500 [nd_btt]
- btt_write_pg+0x2d7/0x500 [nd_btt]
- ? local_clock_noinstr+0x9/0xc0
- btt_submit_bio+0x16d/0x270 [nd_btt]
- __submit_bio+0x48/0x80
- __submit_bio_noacct+0x7e/0x1e0
- submit_bio_wait+0x58/0xb0
- __blkdev_direct_IO_simple+0x107/0x240
- ? inode_set_ctime_current+0x51/0x110
- ? __pfx_submit_bio_wait_endio+0x10/0x10
- blkdev_write_iter+0x1d8/0x290
- vfs_write+0x237/0x330
- ...
- </TASK>
-
-Fixes: 5212e11fde4d ("nd_btt: atomic sector updates")
-Signed-off-by: Tomas Glozar <tglozar@redhat.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 386823839732 ("crypto: qat - add backlog mechanism")
+Reported-by: Mikulas Patocka <mpatocka@redhat.com>
+Closes: https://lore.kernel.org/all/af9581e2-58f9-cc19-428f-6f18f1f83d54@redhat.com/T/
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/region_devs.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/qat/qat_common/qat_algs_send.c | 46 ++++++++++---------
+ 1 file changed, 25 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
-index 609fc450522a1..89539a078623c 100644
---- a/drivers/nvdimm/region_devs.c
-+++ b/drivers/nvdimm/region_devs.c
-@@ -947,7 +947,8 @@ unsigned int nd_region_acquire_lane(struct nd_region *nd_region)
- {
- 	unsigned int cpu, lane;
- 
--	cpu = get_cpu();
-+	migrate_disable();
-+	cpu = smp_processor_id();
- 	if (nd_region->num_lanes < nr_cpu_ids) {
- 		struct nd_percpu_lane *ndl_lock, *ndl_count;
- 
-@@ -966,16 +967,15 @@ EXPORT_SYMBOL(nd_region_acquire_lane);
- void nd_region_release_lane(struct nd_region *nd_region, unsigned int lane)
- {
- 	if (nd_region->num_lanes < nr_cpu_ids) {
--		unsigned int cpu = get_cpu();
-+		unsigned int cpu = smp_processor_id();
- 		struct nd_percpu_lane *ndl_lock, *ndl_count;
- 
- 		ndl_count = per_cpu_ptr(nd_region->lane, cpu);
- 		ndl_lock = per_cpu_ptr(nd_region->lane, lane);
- 		if (--ndl_count->count == 0)
- 			spin_unlock(&ndl_lock->lock);
--		put_cpu();
- 	}
--	put_cpu();
-+	migrate_enable();
+diff --git a/drivers/crypto/qat/qat_common/qat_algs_send.c b/drivers/crypto/qat/qat_common/qat_algs_send.c
+index ff5b4347f7831..607ed88f4b197 100644
+--- a/drivers/crypto/qat/qat_common/qat_algs_send.c
++++ b/drivers/crypto/qat/qat_common/qat_algs_send.c
+@@ -39,40 +39,44 @@ void qat_alg_send_backlog(struct qat_instance_backlog *backlog)
+ 	spin_unlock_bh(&backlog->lock);
  }
- EXPORT_SYMBOL(nd_region_release_lane);
  
+-static void qat_alg_backlog_req(struct qat_alg_req *req,
+-				struct qat_instance_backlog *backlog)
+-{
+-	INIT_LIST_HEAD(&req->list);
+-
+-	spin_lock_bh(&backlog->lock);
+-	list_add_tail(&req->list, &backlog->list);
+-	spin_unlock_bh(&backlog->lock);
+-}
+-
+-static int qat_alg_send_message_maybacklog(struct qat_alg_req *req)
++static bool qat_alg_try_enqueue(struct qat_alg_req *req)
+ {
+ 	struct qat_instance_backlog *backlog = req->backlog;
+ 	struct adf_etr_ring_data *tx_ring = req->tx_ring;
+ 	u32 *fw_req = req->fw_req;
+ 
+-	/* If any request is already backlogged, then add to backlog list */
++	/* Check if any request is already backlogged */
+ 	if (!list_empty(&backlog->list))
+-		goto enqueue;
++		return false;
+ 
+-	/* If ring is nearly full, then add to backlog list */
++	/* Check if ring is nearly full */
+ 	if (adf_ring_nearly_full(tx_ring))
+-		goto enqueue;
++		return false;
+ 
+-	/* If adding request to HW ring fails, then add to backlog list */
++	/* Try to enqueue to HW ring */
+ 	if (adf_send_message(tx_ring, fw_req))
+-		goto enqueue;
++		return false;
+ 
+-	return -EINPROGRESS;
++	return true;
++}
+ 
+-enqueue:
+-	qat_alg_backlog_req(req, backlog);
+ 
+-	return -EBUSY;
++static int qat_alg_send_message_maybacklog(struct qat_alg_req *req)
++{
++	struct qat_instance_backlog *backlog = req->backlog;
++	int ret = -EINPROGRESS;
++
++	if (qat_alg_try_enqueue(req))
++		return ret;
++
++	spin_lock_bh(&backlog->lock);
++	if (!qat_alg_try_enqueue(req)) {
++		list_add_tail(&req->list, &backlog->list);
++		ret = -EBUSY;
++	}
++	spin_unlock_bh(&backlog->lock);
++
++	return ret;
+ }
+ 
+ int qat_alg_send_message(struct qat_alg_req *req)
 -- 
 2.42.0
 
