@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D33047ED2F2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A1577ED59B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233610AbjKOUpO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50738 "EHLO
+        id S235596AbjKOVHr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233586AbjKOUpN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:13 -0500
+        with ESMTP id S235628AbjKOVH1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0921E19B
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73550C433C9;
-        Wed, 15 Nov 2023 20:45:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02891D44
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FA1C4E68B;
+        Wed, 15 Nov 2023 20:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081109;
-        bh=QY2I7YZBz13h1tmq5k6Vo1/64boUHtX82z2ZsQmzQFo=;
+        s=korg; t=1700081484;
+        bh=XBXl/fV1LNGhnb0sNPH3Mj1qknPgkUNeUupqKFRF78w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O8Waf5XjkMh8ii4587jFoxwz7Z9AB7h8mJfOdIqHp4Kqw0AwFyXusXNFJKcV8DvIT
-         87/UDwB44eIgNbvnmIpHTsX10kSikkFblxEXWiVzV/hfBaF6uw3yhRJLew5QlJgIBJ
-         EsJ8oLoBHPQ/y6duPJO9Svulvy+IJQCo3uBz6ydM=
+        b=xgaB1TeiRR3/bui53eYxWTk4or64f4j1WMLwtQVxNXE7JNtU6JPojbitcZlO89n7P
+         /Db48hHu27Jtu8vKsW9+c4TJJSZBVirP4k7/IeRpnn5rvDM/G2Z//X6jRg9GLj5SAs
+         TJKB0trbkTrBj5UN/5Mck0I+axhCLeMZitBiauwc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 44/88] ASoC: Intel: Skylake: Fix mem leak when parsing UUIDs fails
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 164/244] leds: turris-omnia: Do not use SMBUS calls
 Date:   Wed, 15 Nov 2023 15:35:56 -0500
-Message-ID: <20231115191428.835743050@linuxfoundation.org>
+Message-ID: <20231115203558.185835710@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,39 +51,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 168d97844a61db302dec76d44406e9d4d7106b8e ]
+[ Upstream commit 6de283b96b31b4890e3ee8c86caca2a3a30d1011 ]
 
-Error path in snd_skl_parse_uuids() shall free last allocated module if
-its instance_id allocation fails.
+The leds-turris-omnia driver uses three function for I2C access:
+- i2c_smbus_write_byte_data() and i2c_smbus_read_byte_data(), which
+  cause an emulated SMBUS transfer,
+- i2c_master_send(), which causes an ordinary I2C transfer.
 
-Fixes: f8e066521192 ("ASoC: Intel: Skylake: Fix uuid_module memory leak in failure case")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20231026082558.1864910-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The Turris Omnia MCU LED controller is not semantically SMBUS, it
+operates as a simple I2C bus. It does not implement any of the SMBUS
+specific features, like PEC, or procedure calls, or anything. Moreover
+the I2C controller driver also does not implement SMBUS, and so the
+emulated SMBUS procedure from drivers/i2c/i2c-core-smbus.c is used for
+the SMBUS calls, which gives an unnecessary overhead.
+
+When I first wrote the driver, I was unaware of these facts, and I
+simply used the first function that worked.
+
+Drop the I2C SMBUS calls and instead use simple I2C transfers.
+
+Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Link: https://lore.kernel.org/r/20230918161104.20860-2-kabel@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/skylake/skl-sst-utils.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/leds/leds-turris-omnia.c | 54 +++++++++++++++++++++++++-------
+ 1 file changed, 42 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/intel/skylake/skl-sst-utils.c b/sound/soc/intel/skylake/skl-sst-utils.c
-index 2ae4056178762..9e1e9bac17905 100644
---- a/sound/soc/intel/skylake/skl-sst-utils.c
-+++ b/sound/soc/intel/skylake/skl-sst-utils.c
-@@ -317,6 +317,7 @@ int snd_skl_parse_uuids(struct sst_dsp *ctx, const struct firmware *fw,
- 		module->instance_id = devm_kzalloc(ctx->dev, size, GFP_KERNEL);
- 		if (!module->instance_id) {
- 			ret = -ENOMEM;
-+			kfree(module);
- 			goto free_uuid_list;
- 		}
+diff --git a/drivers/leds/leds-turris-omnia.c b/drivers/leds/leds-turris-omnia.c
+index c9e7c467e5acd..ebc6cf3ce3cad 100644
+--- a/drivers/leds/leds-turris-omnia.c
++++ b/drivers/leds/leds-turris-omnia.c
+@@ -2,7 +2,7 @@
+ /*
+  * CZ.NIC's Turris Omnia LEDs driver
+  *
+- * 2020 by Marek Behún <kabel@kernel.org>
++ * 2020, 2023 by Marek Behún <kabel@kernel.org>
+  */
  
+ #include <linux/i2c.h>
+@@ -41,6 +41,37 @@ struct omnia_leds {
+ 	struct omnia_led leds[];
+ };
+ 
++static int omnia_cmd_write_u8(const struct i2c_client *client, u8 cmd, u8 val)
++{
++	u8 buf[2] = { cmd, val };
++
++	return i2c_master_send(client, buf, sizeof(buf));
++}
++
++static int omnia_cmd_read_u8(const struct i2c_client *client, u8 cmd)
++{
++	struct i2c_msg msgs[2];
++	u8 reply;
++	int ret;
++
++	msgs[0].addr = client->addr;
++	msgs[0].flags = 0;
++	msgs[0].len = 1;
++	msgs[0].buf = &cmd;
++	msgs[1].addr = client->addr;
++	msgs[1].flags = I2C_M_RD;
++	msgs[1].len = 1;
++	msgs[1].buf = &reply;
++
++	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
++	if (likely(ret == ARRAY_SIZE(msgs)))
++		return reply;
++	else if (ret < 0)
++		return ret;
++	else
++		return -EIO;
++}
++
+ static int omnia_led_brightness_set_blocking(struct led_classdev *cdev,
+ 					     enum led_brightness brightness)
+ {
+@@ -64,7 +95,7 @@ static int omnia_led_brightness_set_blocking(struct led_classdev *cdev,
+ 	if (buf[2] || buf[3] || buf[4])
+ 		state |= CMD_LED_STATE_ON;
+ 
+-	ret = i2c_smbus_write_byte_data(leds->client, CMD_LED_STATE, state);
++	ret = omnia_cmd_write_u8(leds->client, CMD_LED_STATE, state);
+ 	if (ret >= 0 && (state & CMD_LED_STATE_ON))
+ 		ret = i2c_master_send(leds->client, buf, 5);
+ 
+@@ -114,9 +145,9 @@ static int omnia_led_register(struct i2c_client *client, struct omnia_led *led,
+ 	cdev->brightness_set_blocking = omnia_led_brightness_set_blocking;
+ 
+ 	/* put the LED into software mode */
+-	ret = i2c_smbus_write_byte_data(client, CMD_LED_MODE,
+-					CMD_LED_MODE_LED(led->reg) |
+-					CMD_LED_MODE_USER);
++	ret = omnia_cmd_write_u8(client, CMD_LED_MODE,
++				 CMD_LED_MODE_LED(led->reg) |
++				 CMD_LED_MODE_USER);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Cannot set LED %pOF to software mode: %i\n", np,
+ 			ret);
+@@ -124,8 +155,8 @@ static int omnia_led_register(struct i2c_client *client, struct omnia_led *led,
+ 	}
+ 
+ 	/* disable the LED */
+-	ret = i2c_smbus_write_byte_data(client, CMD_LED_STATE,
+-					CMD_LED_STATE_LED(led->reg));
++	ret = omnia_cmd_write_u8(client, CMD_LED_STATE,
++				 CMD_LED_STATE_LED(led->reg));
+ 	if (ret < 0) {
+ 		dev_err(dev, "Cannot set LED %pOF brightness: %i\n", np, ret);
+ 		return ret;
+@@ -158,7 +189,7 @@ static ssize_t brightness_show(struct device *dev, struct device_attribute *a,
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	int ret;
+ 
+-	ret = i2c_smbus_read_byte_data(client, CMD_LED_GET_BRIGHTNESS);
++	ret = omnia_cmd_read_u8(client, CMD_LED_GET_BRIGHTNESS);
+ 
+ 	if (ret < 0)
+ 		return ret;
+@@ -179,8 +210,7 @@ static ssize_t brightness_store(struct device *dev, struct device_attribute *a,
+ 	if (brightness > 100)
+ 		return -EINVAL;
+ 
+-	ret = i2c_smbus_write_byte_data(client, CMD_LED_SET_BRIGHTNESS,
+-					(u8)brightness);
++	ret = omnia_cmd_write_u8(client, CMD_LED_SET_BRIGHTNESS, brightness);
+ 
+ 	return ret < 0 ? ret : count;
+ }
+@@ -241,8 +271,8 @@ static int omnia_leds_remove(struct i2c_client *client)
+ 	u8 buf[5];
+ 
+ 	/* put all LEDs into default (HW triggered) mode */
+-	i2c_smbus_write_byte_data(client, CMD_LED_MODE,
+-				  CMD_LED_MODE_LED(OMNIA_BOARD_LEDS));
++	omnia_cmd_write_u8(client, CMD_LED_MODE,
++			   CMD_LED_MODE_LED(OMNIA_BOARD_LEDS));
+ 
+ 	/* set all LEDs color to [255, 255, 255] */
+ 	buf[0] = CMD_LED_COLOR;
 -- 
 2.42.0
 
