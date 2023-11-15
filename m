@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3E877ECCA1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E45F67ECF46
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234046AbjKOTbl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:31:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50228 "EHLO
+        id S235271AbjKOTr3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:47:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234050AbjKOTbk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:40 -0500
+        with ESMTP id S235263AbjKOTr2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3C61A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFB9C433C7;
-        Wed, 15 Nov 2023 19:31:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AEA1B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF4AC433C8;
+        Wed, 15 Nov 2023 19:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076697;
-        bh=Eho3B012aL8xGKlLzJz+n9xUlnxtbhchHKG0NSDdc6M=;
+        s=korg; t=1700077645;
+        bh=kbFaeUWay3oToHogxlv5UHJ3dUU8d+MqWbN16a2zrLg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1R7zFJNB5yabjBEtRg3YD34VOZA0JX9QShtmQWQEIGFVlHpY8B/Zzu/46gXkMGTAL
-         L5Rxoz8dkJ2oZIFVwbAdCa0Ot+1Sr2myd+wSeR8BzEm89ElAgGlnvviVPH3Kl6D15S
-         tkYMbf/z+wRyfrp5VLSpg1kq+rySyOtGvAmW4AV0=
+        b=azlYBJww431GVWT5rhfwyC/7JIuY4XHEj2BUH+aBaKWrRbJcfhv3vTPKyYUVyhA0q
+         afF6f8q5QK3JEczd2xsHsSFAsDw/tOhgXp/OoU/lLOicHh45YF36vnljB0VigCONEn
+         /EiqyGrVBQuq7Fcn35xqS7lwkg3ZY/46K8BiezGU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
         Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 392/550] livepatch: Fix missing newline character in klp_resolve_symbols()
+Subject: [PATCH 6.6 431/603] livepatch: Fix missing newline character in klp_resolve_symbols()
 Date:   Wed, 15 Nov 2023 14:16:16 -0500
-Message-ID: <20231115191628.017083795@linuxfoundation.org>
+Message-ID: <20231115191642.656104093@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,7 +49,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
