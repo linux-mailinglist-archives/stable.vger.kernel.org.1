@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED2B87ED50B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89DE37ED50D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344714AbjKOU7z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S1344733AbjKOU7z (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 15:59:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36718 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344731AbjKOU65 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:57 -0500
+        with ESMTP id S1344856AbjKOU66 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:58 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F97F1998
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:58:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D83C433C8;
-        Wed, 15 Nov 2023 20:58:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43D3199E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:58:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CEBC433CA;
+        Wed, 15 Nov 2023 20:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081883;
-        bh=QdSL2YWzlOAXSWpBwZu88ONmlkmJz3g1Kw7/qA4o5YA=;
+        s=korg; t=1700081884;
+        bh=C9T6L5p+l321sqi/DwwDw0DwW5FP9HVcH6TvCFomdsU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yJgCRn5hmkMueCI/Je8ot25BdbhmPhdTJlExKAynM0N1ltOasNkeBcJ4AJvYCi7ec
-         R9OiY3y7nRz87gDTiXZjjrV9LfnXqK/OLVhzlde5dyfr8Nerb3rBgX7JX9VbBQRTcK
-         UgZ61ii+lCjg+sTlSIUP1s6tQbzKv8Pm9r8BbFZc=
+        b=PZVVuXPMqldxoJrYnnYCLaA1+XP7x2gj1Vf/XbvN+AuNT9VNPvbGlX1U89qZ9CMjJ
+         GS2WIqyo+4odjubr7tD1IqH1ZGPLAeT3gVHwxQrxN90LF8NuEZ+pZsTCAvrSAU8tF3
+         /RX3nmXaxgZZx6AC8j1/igFd1PhgP5XsNoXFBM4E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Mark Brown <broonie@kernel.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee.jones@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/191] regmap: prevent noinc writes from clobbering cache
-Date:   Wed, 15 Nov 2023 15:47:15 -0500
-Message-ID: <20231115204654.070165227@linuxfoundation.org>
+Subject: [PATCH 5.10 161/191] pwm: sti: Avoid conditional gotos
+Date:   Wed, 15 Nov 2023 15:47:16 -0500
+Message-ID: <20231115204654.124890374@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -40,6 +41,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,55 +57,88 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Thierry Reding <thierry.reding@gmail.com>
 
-[ Upstream commit 984a4afdc87a1fc226fd657b1cd8255c13d3fc1a ]
+[ Upstream commit fd3ae02bb66f091e55f363d32eca7b4039977bf5 ]
 
-Currently, noinc writes are cached as if they were standard incrementing
-writes, overwriting unrelated register values in the cache. Instead, we
-want to cache the last value written to the register, as is done in the
-accelerated noinc handler (regmap_noinc_readwrite).
+Using gotos for conditional code complicates this code significantly.
+Convert the code to simple conditional blocks to increase readability.
 
-Fixes: cdf6b11daa77 ("regmap: Add regmap_noinc_write API")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Link: https://lore.kernel.org/r/20231101142926.2722603-2-ben.wolsieffer@hefring.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Lee Jones <lee.jones@linaro.org>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: 2d6812b41e0d ("pwm: sti: Reduce number of allocations and drop usage of chip_data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/pwm/pwm-sti.c | 48 ++++++++++++++++++++-----------------------
+ 1 file changed, 22 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 3edff8606ac95..7bc603145bd98 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1643,17 +1643,19 @@ static int _regmap_raw_write_impl(struct regmap *map, unsigned int reg,
+diff --git a/drivers/pwm/pwm-sti.c b/drivers/pwm/pwm-sti.c
+index 1508616d794cd..973f76856a508 100644
+--- a/drivers/pwm/pwm-sti.c
++++ b/drivers/pwm/pwm-sti.c
+@@ -593,38 +593,34 @@ static int sti_pwm_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	if (!cdata->pwm_num_devs)
+-		goto skip_pwm;
+-
+-	pc->pwm_clk = of_clk_get_by_name(dev->of_node, "pwm");
+-	if (IS_ERR(pc->pwm_clk)) {
+-		dev_err(dev, "failed to get PWM clock\n");
+-		return PTR_ERR(pc->pwm_clk);
+-	}
++	if (cdata->pwm_num_devs) {
++		pc->pwm_clk = of_clk_get_by_name(dev->of_node, "pwm");
++		if (IS_ERR(pc->pwm_clk)) {
++			dev_err(dev, "failed to get PWM clock\n");
++			return PTR_ERR(pc->pwm_clk);
++		}
+ 
+-	ret = clk_prepare(pc->pwm_clk);
+-	if (ret) {
+-		dev_err(dev, "failed to prepare clock\n");
+-		return ret;
++		ret = clk_prepare(pc->pwm_clk);
++		if (ret) {
++			dev_err(dev, "failed to prepare clock\n");
++			return ret;
++		}
  	}
  
- 	if (!map->cache_bypass && map->format.parse_val) {
--		unsigned int ival;
-+		unsigned int ival, offset;
- 		int val_bytes = map->format.val_bytes;
--		for (i = 0; i < val_len / val_bytes; i++) {
--			ival = map->format.parse_val(val + (i * val_bytes));
--			ret = regcache_write(map,
--					     reg + regmap_get_offset(map, i),
--					     ival);
-+
-+		/* Cache the last written value for noinc writes */
-+		i = noinc ? val_len - val_bytes : 0;
-+		for (; i < val_len; i += val_bytes) {
-+			ival = map->format.parse_val(val + i);
-+			offset = noinc ? 0 : regmap_get_offset(map, i / val_bytes);
-+			ret = regcache_write(map, reg + offset, ival);
- 			if (ret) {
- 				dev_err(map->dev,
- 					"Error in caching of register: %x ret: %d\n",
--					reg + regmap_get_offset(map, i), ret);
-+					reg + offset, ret);
- 				return ret;
- 			}
- 		}
+-skip_pwm:
+-	if (!cdata->cpt_num_devs)
+-		goto skip_cpt;
+-
+-	pc->cpt_clk = of_clk_get_by_name(dev->of_node, "capture");
+-	if (IS_ERR(pc->cpt_clk)) {
+-		dev_err(dev, "failed to get PWM capture clock\n");
+-		return PTR_ERR(pc->cpt_clk);
+-	}
++	if (cdata->cpt_num_devs) {
++		pc->cpt_clk = of_clk_get_by_name(dev->of_node, "capture");
++		if (IS_ERR(pc->cpt_clk)) {
++			dev_err(dev, "failed to get PWM capture clock\n");
++			return PTR_ERR(pc->cpt_clk);
++		}
+ 
+-	ret = clk_prepare(pc->cpt_clk);
+-	if (ret) {
+-		dev_err(dev, "failed to prepare clock\n");
+-		return ret;
++		ret = clk_prepare(pc->cpt_clk);
++		if (ret) {
++			dev_err(dev, "failed to prepare clock\n");
++			return ret;
++		}
+ 	}
+ 
+-skip_cpt:
+ 	pc->chip.dev = dev;
+ 	pc->chip.ops = &sti_pwm_ops;
+ 	pc->chip.base = -1;
 -- 
 2.42.0
 
