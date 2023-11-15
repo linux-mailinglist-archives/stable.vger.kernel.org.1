@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63B907ECC81
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69B847ECF3E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234018AbjKOTa4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39886 "EHLO
+        id S235266AbjKOTrR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:47:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234029AbjKOTay (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:54 -0500
+        with ESMTP id S235271AbjKOTrQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85912D49
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:50 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A63C433C8;
-        Wed, 15 Nov 2023 19:30:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10A91B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85C91C433C7;
+        Wed, 15 Nov 2023 19:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076650;
-        bh=HIHrYZ10IEElxA2qz3NgSwkNu3lh9kFTeKT5uZTn2Us=;
+        s=korg; t=1700077632;
+        bh=zwe0+CodMzYAbXeQ9Zhz7rys6M1lrZtcLd+iEx7SZD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NbPzJCAkPRvSzzBy+gY30Ndeoq7LW+pOM56gyQ0EI5n06yhKaQwWtpYLVp+uNgsYt
-         oiuIoc7MFwVtjIvUS4HWKNfVEeOuxSuf9Hk/pYj0AnRkK/5lCBKicHbisbS3Z1fOvZ
-         ljoVrkqmkKl7F/hcU9EznmZwwnLF5fUJSgvxo/yE=
+        b=VV+gTQt7M9Jd/iZ/QEtgsRKueAl0/xQ1xhEfcWjm7x2ZRS15wASj5154XV3A50U/0
+         wL8cQnuoDLJjPJp5r/P80Q/AfiiHaAKthMjETYSwThNvB1/nh2HhxpG1ddASaMCFly
+         t377Sl3TQr+tFIqIgkizcszaONU9dtqc84Oso6D0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
+        patches@lists.linux.dev, Adam Guerin <adam.guerin@intel.com>,
         Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 362/550] crypto: qat - fix deadlock in backlog processing
+Subject: [PATCH 6.6 401/603] crypto: qat - enable dc chaining service
 Date:   Wed, 15 Nov 2023 14:15:46 -0500
-Message-ID: <20231115191625.907822351@linuxfoundation.org>
+Message-ID: <20231115191640.790141576@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,112 +51,285 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Adam Guerin <adam.guerin@intel.com>
 
-[ Upstream commit 203b01001c4d741205b9c329acddc5193ed56fbd ]
+[ Upstream commit 37b14f2dfa791fd485dbc536f8d1ffe8c6990290 ]
 
-If a request has the flag CRYPTO_TFM_REQ_MAY_BACKLOG set, the function
-qat_alg_send_message_maybacklog(), enqueues it in a backlog list if
-either (1) there is already at least one request in the backlog list, or
-(2) the HW ring is nearly full or (3) the enqueue to the HW ring fails.
-If an interrupt occurs right before the lock in qat_alg_backlog_req() is
-taken and the backlog queue is being emptied, then there is no request
-in the HW queues that can trigger a subsequent interrupt that can clear
-the backlog queue. In addition subsequent requests are enqueued to the
-backlog list and not sent to the hardware.
+QAT GEN4 devices support chained compression operations. These
+allow, with a single request to firmware, to hash then compress
+data.
 
-Fix it by holding the lock while taking the decision if the request
-needs to be included in the backlog queue or not. This synchronizes the
-flow with the interrupt handler that drains the backlog queue.
+Extend the configuration to enable such mode. The cfg_services
+operations in sysfs are extended to allow the string "dcc". When
+selected, the driver downloads to the device both the symmetric
+crypto and the compression firmware images and sends an admin message
+to firmware which enables `chained` operations.
+In addition, it sets the device's capabilities as the combination
+of compression and symmetric crypto capabilities, while excluding
+the ICP_ACCEL_CAPABILITIES_CRYPTO_SYMMETRIC bit to indicate
+that in this mode, symmetric crypto instances are not supported.
 
-For performance reasons, the logic has been changed to try to enqueue
-first without holding the lock.
+When "dcc" is enabled, the device will handle compression requests
+as if the "dc" configuration is loaded ("dcc" is a variation of "dc")
+and the driver will register the acomp algorithms.
 
-Fixes: 386823839732 ("crypto: qat - add backlog mechanism")
-Reported-by: Mikulas Patocka <mpatocka@redhat.com>
-Closes: https://lore.kernel.org/all/af9581e2-58f9-cc19-428f-6f18f1f83d54@redhat.com/T/
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+As for the other extended configurations, "dcc" is only available for
+qat_4xxx devices and the chaining service will be only accessible from
+user space.
+
+Signed-off-by: Adam Guerin <adam.guerin@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: a238487f7965 ("crypto: qat - fix ring to service map for QAT GEN4")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/qat/qat_common/qat_algs_send.c      | 46 ++++++++++---------
- 1 file changed, 25 insertions(+), 21 deletions(-)
+ Documentation/ABI/testing/sysfs-driver-qat    |  2 +
+ .../intel/qat/qat_4xxx/adf_4xxx_hw_data.c     | 29 ++++++++++++++
+ drivers/crypto/intel/qat/qat_4xxx/adf_drv.c   |  1 +
+ .../crypto/intel/qat/qat_common/adf_admin.c   | 39 +++++++++++++++++--
+ .../intel/qat/qat_common/adf_cfg_services.h   |  2 +
+ .../intel/qat/qat_common/adf_cfg_strings.h    |  1 +
+ .../qat/qat_common/icp_qat_fw_init_admin.h    |  1 +
+ 7 files changed, 71 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/qat_algs_send.c b/drivers/crypto/intel/qat/qat_common/qat_algs_send.c
-index bb80455b3e81e..b97b678823a97 100644
---- a/drivers/crypto/intel/qat/qat_common/qat_algs_send.c
-+++ b/drivers/crypto/intel/qat/qat_common/qat_algs_send.c
-@@ -40,40 +40,44 @@ void qat_alg_send_backlog(struct qat_instance_backlog *backlog)
- 	spin_unlock_bh(&backlog->lock);
+diff --git a/Documentation/ABI/testing/sysfs-driver-qat b/Documentation/ABI/testing/sysfs-driver-qat
+index ef6d6c57105ef..96834d103a09e 100644
+--- a/Documentation/ABI/testing/sysfs-driver-qat
++++ b/Documentation/ABI/testing/sysfs-driver-qat
+@@ -29,6 +29,8 @@ Description:	(RW) Reports the current configuration of the QAT device.
+ 		  services
+ 		* asym;sym: identical to sym;asym
+ 		* dc: the device is configured for running compression services
++		* dcc: identical to dc but enables the dc chaining feature,
++		  hash then compression. If this is not required chose dc
+ 		* sym: the device is configured for running symmetric crypto
+ 		  services
+ 		* asym: the device is configured for running asymmetric crypto
+diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
+index cc2285b9f17b4..12b5d18191119 100644
+--- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
++++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
+@@ -76,11 +76,18 @@ static const struct adf_fw_config adf_fw_sym_dc_config[] = {
+ 	{0x100, ADF_FW_ADMIN_OBJ},
+ };
+ 
++static const struct adf_fw_config adf_fw_dcc_config[] = {
++	{0xF0, ADF_FW_DC_OBJ},
++	{0xF, ADF_FW_SYM_OBJ},
++	{0x100, ADF_FW_ADMIN_OBJ},
++};
++
+ static_assert(ARRAY_SIZE(adf_fw_cy_config) == ARRAY_SIZE(adf_fw_dc_config));
+ static_assert(ARRAY_SIZE(adf_fw_cy_config) == ARRAY_SIZE(adf_fw_sym_config));
+ static_assert(ARRAY_SIZE(adf_fw_cy_config) == ARRAY_SIZE(adf_fw_asym_config));
+ static_assert(ARRAY_SIZE(adf_fw_cy_config) == ARRAY_SIZE(adf_fw_asym_dc_config));
+ static_assert(ARRAY_SIZE(adf_fw_cy_config) == ARRAY_SIZE(adf_fw_sym_dc_config));
++static_assert(ARRAY_SIZE(adf_fw_cy_config) == ARRAY_SIZE(adf_fw_dcc_config));
+ 
+ /* Worker thread to service arbiter mappings */
+ static const u32 default_thrd_to_arb_map[ADF_4XXX_MAX_ACCELENGINES] = {
+@@ -95,6 +102,12 @@ static const u32 thrd_to_arb_map_dc[ADF_4XXX_MAX_ACCELENGINES] = {
+ 	0x0
+ };
+ 
++static const u32 thrd_to_arb_map_dcc[ADF_4XXX_MAX_ACCELENGINES] = {
++	0x00000000, 0x00000000, 0x00000000, 0x00000000,
++	0x0000FFFF, 0x0000FFFF, 0x0000FFFF, 0x0000FFFF,
++	0x0
++};
++
+ static struct adf_hw_device_class adf_4xxx_class = {
+ 	.name = ADF_4XXX_DEVICE_NAME,
+ 	.type = DEV_4XXX,
+@@ -189,6 +202,7 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
+ {
+ 	struct pci_dev *pdev = accel_dev->accel_pci_dev.pci_dev;
+ 	u32 capabilities_sym, capabilities_asym, capabilities_dc;
++	u32 capabilities_dcc;
+ 	u32 fusectl1;
+ 
+ 	/* Read accelerator capabilities mask */
+@@ -261,6 +275,14 @@ static u32 get_accel_cap(struct adf_accel_dev *accel_dev)
+ 		return capabilities_sym | capabilities_asym;
+ 	case SVC_DC:
+ 		return capabilities_dc;
++	case SVC_DCC:
++		/*
++		 * Sym capabilities are available for chaining operations,
++		 * but sym crypto instances cannot be supported
++		 */
++		capabilities_dcc = capabilities_dc | capabilities_sym;
++		capabilities_dcc &= ~ICP_ACCEL_CAPABILITIES_CRYPTO_SYMMETRIC;
++		return capabilities_dcc;
+ 	case SVC_SYM:
+ 		return capabilities_sym;
+ 	case SVC_ASYM:
+@@ -286,6 +308,8 @@ static const u32 *adf_get_arbiter_mapping(struct adf_accel_dev *accel_dev)
+ 	switch (get_service_enabled(accel_dev)) {
+ 	case SVC_DC:
+ 		return thrd_to_arb_map_dc;
++	case SVC_DCC:
++		return thrd_to_arb_map_dcc;
+ 	default:
+ 		return default_thrd_to_arb_map;
+ 	}
+@@ -383,6 +407,9 @@ static const char *uof_get_name(struct adf_accel_dev *accel_dev, u32 obj_num,
+ 	case SVC_DC:
+ 		id = adf_fw_dc_config[obj_num].obj;
+ 		break;
++	case SVC_DCC:
++		id = adf_fw_dcc_config[obj_num].obj;
++		break;
+ 	case SVC_SYM:
+ 		id = adf_fw_sym_config[obj_num].obj;
+ 		break;
+@@ -429,6 +456,8 @@ static u32 uof_get_ae_mask(struct adf_accel_dev *accel_dev, u32 obj_num)
+ 		return adf_fw_cy_config[obj_num].ae_mask;
+ 	case SVC_DC:
+ 		return adf_fw_dc_config[obj_num].ae_mask;
++	case SVC_DCC:
++		return adf_fw_dcc_config[obj_num].ae_mask;
+ 	case SVC_CY2:
+ 		return adf_fw_cy_config[obj_num].ae_mask;
+ 	case SVC_SYM:
+diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
+index 204a00a204f2d..90f5c1ca7b8d8 100644
+--- a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
++++ b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
+@@ -279,6 +279,7 @@ int adf_gen4_dev_config(struct adf_accel_dev *accel_dev)
+ 		ret = adf_crypto_dev_config(accel_dev);
+ 		break;
+ 	case SVC_DC:
++	case SVC_DCC:
+ 		ret = adf_comp_dev_config(accel_dev);
+ 		break;
+ 	default:
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_admin.c b/drivers/crypto/intel/qat/qat_common/adf_admin.c
+index ff790823b8686..194d64d4b99a1 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_admin.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_admin.c
+@@ -8,6 +8,7 @@
+ #include <linux/dma-mapping.h>
+ #include "adf_accel_devices.h"
+ #include "adf_common_drv.h"
++#include "adf_cfg.h"
+ #include "adf_heartbeat.h"
+ #include "icp_qat_fw_init_admin.h"
+ 
+@@ -212,6 +213,17 @@ int adf_get_fw_timestamp(struct adf_accel_dev *accel_dev, u64 *timestamp)
+ 	return 0;
  }
  
--static void qat_alg_backlog_req(struct qat_alg_req *req,
--				struct qat_instance_backlog *backlog)
--{
--	INIT_LIST_HEAD(&req->list);
--
--	spin_lock_bh(&backlog->lock);
--	list_add_tail(&req->list, &backlog->list);
--	spin_unlock_bh(&backlog->lock);
--}
--
--static int qat_alg_send_message_maybacklog(struct qat_alg_req *req)
-+static bool qat_alg_try_enqueue(struct qat_alg_req *req)
- {
- 	struct qat_instance_backlog *backlog = req->backlog;
- 	struct adf_etr_ring_data *tx_ring = req->tx_ring;
- 	u32 *fw_req = req->fw_req;
- 
--	/* If any request is already backlogged, then add to backlog list */
-+	/* Check if any request is already backlogged */
- 	if (!list_empty(&backlog->list))
--		goto enqueue;
-+		return false;
- 
--	/* If ring is nearly full, then add to backlog list */
-+	/* Check if ring is nearly full */
- 	if (adf_ring_nearly_full(tx_ring))
--		goto enqueue;
-+		return false;
- 
--	/* If adding request to HW ring fails, then add to backlog list */
-+	/* Try to enqueue to HW ring */
- 	if (adf_send_message(tx_ring, fw_req))
--		goto enqueue;
-+		return false;
- 
--	return -EINPROGRESS;
-+	return true;
-+}
- 
--enqueue:
--	qat_alg_backlog_req(req, backlog);
- 
--	return -EBUSY;
-+static int qat_alg_send_message_maybacklog(struct qat_alg_req *req)
++static int adf_set_chaining(struct adf_accel_dev *accel_dev)
 +{
-+	struct qat_instance_backlog *backlog = req->backlog;
-+	int ret = -EINPROGRESS;
++	u32 ae_mask = GET_HW_DATA(accel_dev)->ae_mask;
++	struct icp_qat_fw_init_admin_resp resp = { };
++	struct icp_qat_fw_init_admin_req req = { };
 +
-+	if (qat_alg_try_enqueue(req))
++	req.cmd_id = ICP_QAT_FW_DC_CHAIN_INIT;
++
++	return adf_send_admin(accel_dev, &req, &resp, ae_mask);
++}
++
+ static int adf_get_dc_capabilities(struct adf_accel_dev *accel_dev,
+ 				   u32 *capabilities)
+ {
+@@ -284,6 +296,19 @@ int adf_send_admin_hb_timer(struct adf_accel_dev *accel_dev, uint32_t ticks)
+ 	return adf_send_admin(accel_dev, &req, &resp, ae_mask);
+ }
+ 
++static bool is_dcc_enabled(struct adf_accel_dev *accel_dev)
++{
++	char services[ADF_CFG_MAX_VAL_LEN_IN_BYTES] = {0};
++	int ret;
++
++	ret = adf_cfg_get_param_value(accel_dev, ADF_GENERAL_SEC,
++				      ADF_SERVICES_ENABLED, services);
++	if (ret)
++		return false;
++
++	return !strcmp(services, "dcc");
++}
++
+ /**
+  * adf_send_admin_init() - Function sends init message to FW
+  * @accel_dev: Pointer to acceleration device.
+@@ -297,6 +322,16 @@ int adf_send_admin_init(struct adf_accel_dev *accel_dev)
+ 	u32 dc_capabilities = 0;
+ 	int ret;
+ 
++	ret = adf_set_fw_constants(accel_dev);
++	if (ret)
 +		return ret;
 +
-+	spin_lock_bh(&backlog->lock);
-+	if (!qat_alg_try_enqueue(req)) {
-+		list_add_tail(&req->list, &backlog->list);
-+		ret = -EBUSY;
++	if (is_dcc_enabled(accel_dev)) {
++		ret = adf_set_chaining(accel_dev);
++		if (ret)
++			return ret;
 +	}
-+	spin_unlock_bh(&backlog->lock);
 +
-+	return ret;
- }
+ 	ret = adf_get_dc_capabilities(accel_dev, &dc_capabilities);
+ 	if (ret) {
+ 		dev_err(&GET_DEV(accel_dev), "Cannot get dc capabilities\n");
+@@ -304,10 +339,6 @@ int adf_send_admin_init(struct adf_accel_dev *accel_dev)
+ 	}
+ 	accel_dev->hw_device->extended_dc_capabilities = dc_capabilities;
  
- int qat_alg_send_message(struct qat_alg_req *req)
+-	ret = adf_set_fw_constants(accel_dev);
+-	if (ret)
+-		return ret;
+-
+ 	return adf_init_ae(accel_dev);
+ }
+ EXPORT_SYMBOL_GPL(adf_send_admin_init);
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg_services.h b/drivers/crypto/intel/qat/qat_common/adf_cfg_services.h
+index 7fcb3b8f148a6..b353d40c5c6d0 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_cfg_services.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_cfg_services.h
+@@ -9,6 +9,7 @@ enum adf_services {
+ 	SVC_CY = 0,
+ 	SVC_CY2,
+ 	SVC_DC,
++	SVC_DCC,
+ 	SVC_SYM,
+ 	SVC_ASYM,
+ 	SVC_DC_ASYM,
+@@ -21,6 +22,7 @@ static const char *const adf_cfg_services[] = {
+ 	[SVC_CY] = ADF_CFG_CY,
+ 	[SVC_CY2] = ADF_CFG_ASYM_SYM,
+ 	[SVC_DC] = ADF_CFG_DC,
++	[SVC_DCC] = ADF_CFG_DCC,
+ 	[SVC_SYM] = ADF_CFG_SYM,
+ 	[SVC_ASYM] = ADF_CFG_ASYM,
+ 	[SVC_DC_ASYM] = ADF_CFG_DC_ASYM,
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_cfg_strings.h b/drivers/crypto/intel/qat/qat_common/adf_cfg_strings.h
+index 6066dc637352c..322b76903a737 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_cfg_strings.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_cfg_strings.h
+@@ -32,6 +32,7 @@
+ #define ADF_CFG_DC_ASYM "dc;asym"
+ #define ADF_CFG_SYM_DC "sym;dc"
+ #define ADF_CFG_DC_SYM "dc;sym"
++#define ADF_CFG_DCC "dcc"
+ #define ADF_SERVICES_ENABLED "ServicesEnabled"
+ #define ADF_PM_IDLE_SUPPORT "PmIdleSupport"
+ #define ADF_ETRMGR_COALESCING_ENABLED "InterruptCoalescingEnabled"
+diff --git a/drivers/crypto/intel/qat/qat_common/icp_qat_fw_init_admin.h b/drivers/crypto/intel/qat/qat_common/icp_qat_fw_init_admin.h
+index 3e968a4bcc9cd..019a6443834e0 100644
+--- a/drivers/crypto/intel/qat/qat_common/icp_qat_fw_init_admin.h
++++ b/drivers/crypto/intel/qat/qat_common/icp_qat_fw_init_admin.h
+@@ -16,6 +16,7 @@ enum icp_qat_fw_init_admin_cmd_id {
+ 	ICP_QAT_FW_HEARTBEAT_SYNC = 7,
+ 	ICP_QAT_FW_HEARTBEAT_GET = 8,
+ 	ICP_QAT_FW_COMP_CAPABILITY_GET = 9,
++	ICP_QAT_FW_DC_CHAIN_INIT = 11,
+ 	ICP_QAT_FW_HEARTBEAT_TIMER_SET = 13,
+ 	ICP_QAT_FW_TIMER_GET = 19,
+ 	ICP_QAT_FW_PM_STATE_CONFIG = 128,
 -- 
 2.42.0
 
