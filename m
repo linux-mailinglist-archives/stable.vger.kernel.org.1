@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D2A7ED0BC
+	by mail.lfdr.de (Postfix) with ESMTP id AA3B67ED0BD
 	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343610AbjKOT5P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S1343597AbjKOT5P (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 14:57:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53380 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343835AbjKOT5M (ORCPT
+        with ESMTP id S1343869AbjKOT5M (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:12 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6197D198
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D142CC433C8;
-        Wed, 15 Nov 2023 19:57:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECEB31A5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7BBC433C9;
+        Wed, 15 Nov 2023 19:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078228;
-        bh=7M8blOyujgf4APoqQq6GAz2LfpzypWzfjjWqgYDy7uA=;
+        s=korg; t=1700078229;
+        bh=+IbEHdbO5EoT5+lDTODWbLuWlW55guikeJldAn0up4g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PMUzIQ8cNKJZy955HxI4IqPM0H6RRIyaCNZ5L0kopVyzLu8ubtTKTDL2STUpIcXfR
-         5+qRCxSQccKrljWuGuvKa6MWj4LXIQ329X43EjQIJyXtYi+MV/MBey/KYm0aU7L98i
-         n3YhNYrFQpwl7d9eWQWm6q0Q1lpShjy+Rmj0fsYY=
+        b=j+CAvQ0J0Ry35UkuzApeiNIcD++czmEjXO0csQptiS07if27BIRSkdDNPBeY3XYrc
+         Ktyez3AWsjNir/4C4rXaCO0GBa/0XwfQ6whpddc1R5kFswXS9MUxfSBgrqeBs+dpJV
+         5Ap3B3dcWYQn0ZFyiF1mKErV1lpqqUnres7ZwXZs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/379] arm64: dts: qcom: sm8350: fix pinctrl for UART18
-Date:   Wed, 15 Nov 2023 14:24:01 -0500
-Message-ID: <20231115192654.933603204@linuxfoundation.org>
+Subject: [PATCH 6.1 167/379] arm64: dts: qcom: sdm845-mtp: fix WiFi configuration
+Date:   Wed, 15 Nov 2023 14:24:02 -0500
+Message-ID: <20231115192654.993606257@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -58,34 +57,33 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c1efa960114f743924b884da098298512a7e9983 ]
+[ Upstream commit b33868a52f342d9b1f20aa5bffe40cbd69bd0a4b ]
 
-On sm8350 QUP18 uses GPIO 68/69, not 58/59. Fix correponding UART18
-pinconf configuraion.
+Enable the host-cap-8bit quirk on this device. It is required for the
+WiFi to function properly.
 
-Fixes: 98374e6925b8 ("arm64: dts: qcom: sm8350: Set up WRAP2 QUPs")
+Fixes: 022bccb840b7 ("arm64: dts: sdm845: Add WCN3990 WLAN module device node")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230825214550.1650938-1-dmitry.baryshkov@linaro.org
+Link: https://lore.kernel.org/r/20230826221915.846937-2-dmitry.baryshkov@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845-mtp.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index b3245b13b2611..793768a2c9e1e 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -1778,7 +1778,7 @@ qup_uart6_default: qup-uart6-default-state {
- 			};
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-mtp.dts b/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
+index de2d10e0315af..64958dee17d8b 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
+@@ -714,6 +714,8 @@ &wifi {
+ 	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+ 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+ 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
++
++	qcom,snoc-host-cap-8bit-quirk;
+ };
  
- 			qup_uart18_default: qup-uart18-default-state {
--				pins = "gpio58", "gpio59";
-+				pins = "gpio68", "gpio69";
- 				function = "qup18";
- 				drive-strength = <2>;
- 				bias-disable;
+ /* PINCTRL - additions to nodes defined in sdm845.dtsi */
 -- 
 2.42.0
 
