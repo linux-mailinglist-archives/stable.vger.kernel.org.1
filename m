@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBB5F7ED59D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B946C7ED31F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344736AbjKOVHs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37424 "EHLO
+        id S233639AbjKOUqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235631AbjKOVH1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:27 -0500
+        with ESMTP id S233700AbjKOUqT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02ECC1723
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8CF2C4E761;
-        Wed, 15 Nov 2023 20:52:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E469125
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AA4C433C7;
+        Wed, 15 Nov 2023 20:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081520;
-        bh=JeliLSHZR4beElzX4NA22BLJAL/9d1DNXg7N9EQUJIg=;
+        s=korg; t=1700081175;
+        bh=MrPFzjV04OIW7J5PY3FAhh618fam7m7ql0+P8JEnOT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sl/kkoI5FPhx37FMgGh3rro3fzkqFQ1HwrXZIeiZNcqmtaZuJHc+mYjVOtWnOF73k
-         mtc2BXR1fvOx6La92ZIPXe+JtR2JTId5+1u5gT5Qkr7i5TjJZAx43ivHgWTJzt8AwP
-         aZJTeuj6R0SR09II4Clx6VszwoVbSjIRDIef2a7w=
+        b=HNbyovIY4bgnWNdNOH/7J1YyV/cZeoWTcJO5CpIHEcUkEjCzOA+bs84DOUYs+Rd/3
+         nMyWkQxq+koc6BP33CDyCD2Fnj2ByxFx0KYw8Zw/IuVCobnmYM+PQIXxcQhnpfuMEc
+         MMtnMilbmXB4RNFppPRyGyiR1ibs0KoN5nwL4ddc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 204/244] media: vidtv: psi: Add check for kstrdup
+Subject: [PATCH 4.19 84/88] fbdev: imsttfb: Fix error path of imsttfb_probe()
 Date:   Wed, 15 Nov 2023 15:36:36 -0500
-Message-ID: <20231115203600.597641657@linuxfoundation.org>
+Message-ID: <20231115191431.095137053@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,113 +49,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 76a2c5df6ca8bd8ada45e953b8c72b746f42918d ]
+[ Upstream commit 518ecb6a209f6ff678aeadf9f2bf870c0982ca85 ]
 
-Add check for the return value of kstrdup() and return the error
-if it fails in order to avoid NULL pointer dereference.
+Release ressources when init_imstt() returns failure.
 
-Fixes: 7a7899f6f58e ("media: vidtv: psi: Implement an Event Information Table (EIT)")
-Fixes: c2f78f0cb294 ("media: vidtv: psi: add a Network Information Table (NIT)")
-Fixes: f90cf6079bf6 ("media: vidtv: add a bridge driver")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Stable-dep-of: aba6ab57a910 ("fbdev: imsttfb: fix a resource leak in probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_psi.c | 45 +++++++++++++++++---
- 1 file changed, 40 insertions(+), 5 deletions(-)
+ drivers/video/fbdev/imsttfb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vidtv/vidtv_psi.c b/drivers/media/test-drivers/vidtv/vidtv_psi.c
-index c11ac8dca73df..988324587c4ed 100644
---- a/drivers/media/test-drivers/vidtv/vidtv_psi.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_psi.c
-@@ -307,16 +307,29 @@ struct vidtv_psi_desc_service *vidtv_psi_service_desc_init(struct vidtv_psi_desc
- 
- 	desc->service_name_len = service_name_len;
- 
--	if (service_name && service_name_len)
-+	if (service_name && service_name_len) {
- 		desc->service_name = kstrdup(service_name, GFP_KERNEL);
-+		if (!desc->service_name)
-+			goto free_desc;
-+	}
- 
- 	desc->provider_name_len = provider_name_len;
- 
--	if (provider_name && provider_name_len)
-+	if (provider_name && provider_name_len) {
- 		desc->provider_name = kstrdup(provider_name, GFP_KERNEL);
-+		if (!desc->provider_name)
-+			goto free_desc_service_name;
-+	}
- 
- 	vidtv_psi_desc_chain(head, (struct vidtv_psi_desc *)desc);
- 	return desc;
+diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
+index 4a3f89b223600..9a9018d143761 100644
+--- a/drivers/video/fbdev/imsttfb.c
++++ b/drivers/video/fbdev/imsttfb.c
+@@ -1529,8 +1529,10 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto error;
+ 	info->pseudo_palette = par->palette;
+ 	ret = init_imstt(info);
+-	if (!ret)
+-		pci_set_drvdata(pdev, info);
++	if (ret)
++		goto error;
 +
-+free_desc_service_name:
-+	if (service_name && service_name_len)
-+		kfree(desc->service_name);
-+free_desc:
-+	kfree(desc);
-+	return NULL;
- }
++	pci_set_drvdata(pdev, info);
+ 	return ret;
  
- struct vidtv_psi_desc_registration
-@@ -361,8 +374,13 @@ struct vidtv_psi_desc_network_name
- 
- 	desc->length = network_name_len;
- 
--	if (network_name && network_name_len)
-+	if (network_name && network_name_len) {
- 		desc->network_name = kstrdup(network_name, GFP_KERNEL);
-+		if (!desc->network_name) {
-+			kfree(desc);
-+			return NULL;
-+		}
-+	}
- 
- 	vidtv_psi_desc_chain(head, (struct vidtv_psi_desc *)desc);
- 	return desc;
-@@ -448,15 +466,32 @@ struct vidtv_psi_desc_short_event
- 		iso_language_code = "eng";
- 
- 	desc->iso_language_code = kstrdup(iso_language_code, GFP_KERNEL);
-+	if (!desc->iso_language_code)
-+		goto free_desc;
- 
--	if (event_name && event_name_len)
-+	if (event_name && event_name_len) {
- 		desc->event_name = kstrdup(event_name, GFP_KERNEL);
-+		if (!desc->event_name)
-+			goto free_desc_language_code;
-+	}
- 
--	if (text && text_len)
-+	if (text && text_len) {
- 		desc->text = kstrdup(text, GFP_KERNEL);
-+		if (!desc->text)
-+			goto free_desc_event_name;
-+	}
- 
- 	vidtv_psi_desc_chain(head, (struct vidtv_psi_desc *)desc);
- 	return desc;
-+
-+free_desc_event_name:
-+	if (event_name && event_name_len)
-+		kfree(desc->event_name);
-+free_desc_language_code:
-+	kfree(desc->iso_language_code);
-+free_desc:
-+	kfree(desc);
-+	return NULL;
- }
- 
- struct vidtv_psi_desc *vidtv_psi_desc_clone(struct vidtv_psi_desc *desc)
+ error:
 -- 
 2.42.0
 
