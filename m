@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C45197ED18A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:02:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 761FD7ED18B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:02:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344204AbjKOUCT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:02:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43108 "EHLO
+        id S1344226AbjKOUCU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:02:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344232AbjKOUCS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:02:18 -0500
+        with ESMTP id S1344218AbjKOUCT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:02:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30390198
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:02:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65CFC433C9;
-        Wed, 15 Nov 2023 20:02:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C8CC2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:02:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4599DC433C7;
+        Wed, 15 Nov 2023 20:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078534;
-        bh=KKhpWBx/SOwwhw7ZUy4Q8XQRS05ah5WQl54cayxTAiU=;
+        s=korg; t=1700078536;
+        bh=abd0pCOQ8MR5U01vbY3QINH20Toq9QFkw/noQfqZGsw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vhjfDwTqDlP5XT4tRiJ7iB1tK6OJt1KelTC+vL/AVhliGO5fUmaZ9EPwC0p+75GlV
-         cDz72qvpv5hDguc5FfJbc0nVuEh7ZpzVdak/7kHXpQZyzx2lEQ067cuDjQIDVfkKh5
-         3x/nLuJO/yL/lyAQwo8NCLFmgT8ul0uu/Or/N72s=
+        b=RN/lEEiWSAwqemhtkBnV4umA8Ra1Vu1IsehZ8J2bibwpYlDKjuSFyELBVwOJ5jFWG
+         wBnpK7p4aWeO3aiPeWavS8mzLLQr4DiwCAQngeN9Aj0Orrx2+zGw7RMbE/5OVTNfOA
+         yd4yB5aN145fR/m/l5vblUoKoVV4RE/lns++BD60=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 357/379] nbd: fix uaf in nbd_open
-Date:   Wed, 15 Nov 2023 14:27:12 -0500
-Message-ID: <20231115192706.278813873@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Ye Bin <yebin10@huawei.com>, Jens Axboe <axboe@kernel.dk>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 358/379] blk-core: use pr_warn_ratelimited() in bio_check_ro()
+Date:   Wed, 15 Nov 2023 14:27:13 -0500
+Message-ID: <20231115192706.337808728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -54,71 +54,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 327462725b0f759f093788dfbcb2f1fd132f956b ]
+[ Upstream commit 1b0a151c10a6d823f033023b9fdd9af72a89591b ]
 
-Commit 4af5f2e03013 ("nbd: use blk_mq_alloc_disk and
-blk_cleanup_disk") cleans up disk by blk_cleanup_disk() and it won't set
-disk->private_data as NULL as before. UAF may be triggered in nbd_open()
-if someone tries to open nbd device right after nbd_put() since nbd has
-been free in nbd_dev_remove().
+If one of the underlying disks of raid or dm is set to read-only, then
+each io will generate new log, which will cause message storm. This
+environment is indeed problematic, however we can't make sure our
+naive custormer won't do this, hence use pr_warn_ratelimited() to
+prevent message storm in this case.
 
-Fix this by implementing ->free_disk and free private data in it.
-
-Fixes: 4af5f2e03013 ("nbd: use blk_mq_alloc_disk and blk_cleanup_disk")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Link: https://lore.kernel.org/r/20231107103435.2074904-1-lilingfeng@huaweicloud.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Fixes: 57e95e4670d1 ("block: fix and cleanup bio_check_ro")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Link: https://lore.kernel.org/r/20231107111247.2157820-1-yukuai1@huaweicloud.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ block/blk-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 7718c81e1dba8..e94d2ff6b1223 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -250,7 +250,6 @@ static void nbd_dev_remove(struct nbd_device *nbd)
- 	struct gendisk *disk = nbd->disk;
- 
- 	del_gendisk(disk);
--	put_disk(disk);
- 	blk_mq_free_tag_set(&nbd->tag_set);
- 
- 	/*
-@@ -261,7 +260,7 @@ static void nbd_dev_remove(struct nbd_device *nbd)
- 	idr_remove(&nbd_index_idr, nbd->index);
- 	mutex_unlock(&nbd_index_mutex);
- 	destroy_workqueue(nbd->recv_workq);
--	kfree(nbd);
-+	put_disk(disk);
+diff --git a/block/blk-core.c b/block/blk-core.c
+index ebb7a1689b261..6eaf2b0ad7cca 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -490,8 +490,8 @@ static inline void bio_check_ro(struct bio *bio)
+ 	if (op_is_write(bio_op(bio)) && bdev_read_only(bio->bi_bdev)) {
+ 		if (op_is_flush(bio->bi_opf) && !bio_sectors(bio))
+ 			return;
+-		pr_warn("Trying to write to read-only block-device %pg\n",
+-			bio->bi_bdev);
++		pr_warn_ratelimited("Trying to write to read-only block-device %pg\n",
++				    bio->bi_bdev);
+ 		/* Older lvm-tools actually trigger this */
+ 	}
  }
- 
- static void nbd_dev_remove_work(struct work_struct *work)
-@@ -1608,6 +1607,13 @@ static void nbd_release(struct gendisk *disk, fmode_t mode)
- 	nbd_put(nbd);
- }
- 
-+static void nbd_free_disk(struct gendisk *disk)
-+{
-+	struct nbd_device *nbd = disk->private_data;
-+
-+	kfree(nbd);
-+}
-+
- static const struct block_device_operations nbd_fops =
- {
- 	.owner =	THIS_MODULE,
-@@ -1615,6 +1621,7 @@ static const struct block_device_operations nbd_fops =
- 	.release =	nbd_release,
- 	.ioctl =	nbd_ioctl,
- 	.compat_ioctl =	nbd_ioctl,
-+	.free_disk =	nbd_free_disk,
- };
- 
- #if IS_ENABLED(CONFIG_DEBUG_FS)
 -- 
 2.42.0
 
