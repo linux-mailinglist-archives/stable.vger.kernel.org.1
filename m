@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F337ED32C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F12217ED58B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233913AbjKOUqt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:46:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48274 "EHLO
+        id S235586AbjKOVHg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234932AbjKOUqh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:37 -0500
+        with ESMTP id S235605AbjKOVH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14535D49
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC23C433C7;
-        Wed, 15 Nov 2023 20:46:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FAA6D7A
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24EB1C4E75D;
+        Wed, 15 Nov 2023 20:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081191;
-        bh=wwxmeBZ+DJf77TODwz06pwUO+XmTYro88MGGhSCrSTo=;
+        s=korg; t=1700081517;
+        bh=beA4sBBNTJlFGdGAN1d+yRgE8j4aGzvPJ03/o58U65Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ha9i0aAGw38rVYI4w/pGLB0CbADEusF7sYbPdhgDMeuyOCi3cIRUyY1aUXou0bOtL
-         lI36WUL6ix1ONtpOTL8d9X7U1jZqRAn5OOcAjb0ASVSQ/KD0GTFuOuVH6+Vb3UUadQ
-         SgoXQ+iyU2RzVBbXi5rZnyjaWYBPlHj3IlBtB1J4=
+        b=diURzp36IKUJvkozammry3h1ur9tWr1aZbZeONHle/LV9r10+F4nYC2H2X6aG1KRC
+         tydGQvKd1LmoYxPiwmiPx3pQOL3TfEMe2K+hcN3ZdWRyGR5mPGcsHoHH7cAsqV2jy9
+         oadgDSQt/W9NQm6rDT0Fptj+0XG4XAZYojkMTNr8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, George Shuklin <george.shuklin@gmail.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 81/88] tg3: power down device only on SYSTEM_POWER_OFF
-Date:   Wed, 15 Nov 2023 15:36:33 -0500
-Message-ID: <20231115191430.926800837@linuxfoundation.org>
+Subject: [PATCH 5.15 202/244] media: bttv: fix use after free error due to btv->timeout timer
+Date:   Wed, 15 Nov 2023 15:36:34 -0500
+Message-ID: <20231115203600.474140307@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shuklin <george.shuklin@gmail.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 9fc3bc7643341dc5be7d269f3d3dbe441d8d7ac3 ]
+[ Upstream commit bd5b50b329e850d467e7bcc07b2b6bde3752fbda ]
 
-Dell R650xs servers hangs on reboot if tg3 driver calls
-tg3_power_down.
+There may be some a race condition between timer function
+bttv_irq_timeout and bttv_remove. The timer is setup in
+probe and there is no timer_delete operation in remove
+function. When it hit kfree btv, the function might still be
+invoked, which will cause use after free bug.
 
-This happens only if network adapters (BCM5720 for R650xs) were
-initialized using SNP (e.g. by booting ipxe.efi).
+This bug is found by static analysis, it may be false positive.
 
-The actual problem is on Dell side, but this fix allows servers
-to come back alive after reboot.
+Fix it by adding del_timer_sync invoking to the remove function.
 
-Signed-off-by: George Shuklin <george.shuklin@gmail.com>
-Fixes: 2ca1c94ce0b6 ("tg3: Disable tg3 device on system reboot to avoid triggering AER")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20231103115029.83273-1-george.shuklin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+cpu0                cpu1
+                  bttv_probe
+                    ->timer_setup
+                      ->bttv_set_dma
+                        ->mod_timer;
+bttv_remove
+  ->kfree(btv);
+                  ->bttv_irq_timeout
+                    ->USE btv
+
+Fixes: 162e6376ac58 ("media: pci: Convert timers to use timer_setup()")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/pci/bt8xx/bttv-driver.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 43b83a3a28049..f0b5c8a4d29f5 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -18217,7 +18217,8 @@ static void tg3_shutdown(struct pci_dev *pdev)
- 	if (netif_running(dev))
- 		dev_close(dev);
+diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
+index 661ebfa7bf3f5..c4bf7b7109ce4 100644
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -4250,6 +4250,7 @@ static void bttv_remove(struct pci_dev *pci_dev)
  
--	tg3_power_down(tp);
-+	if (system_state == SYSTEM_POWER_OFF)
-+		tg3_power_down(tp);
- 
- 	rtnl_unlock();
- 
+ 	/* free resources */
+ 	free_irq(btv->c.pci->irq,btv);
++	del_timer_sync(&btv->timeout);
+ 	iounmap(btv->bt848_mmio);
+ 	release_mem_region(pci_resource_start(btv->c.pci,0),
+ 			   pci_resource_len(btv->c.pci,0));
 -- 
 2.42.0
 
