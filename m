@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 676437ECFC1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97FA67ECDCE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235403AbjKOTug (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52426 "EHLO
+        id S234657AbjKOTif (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235400AbjKOTuf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:35 -0500
+        with ESMTP id S234676AbjKOTic (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2938CB8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1766C433C7;
-        Wed, 15 Nov 2023 19:50:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D05D19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1ACC433C7;
+        Wed, 15 Nov 2023 19:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077831;
-        bh=T65deNt+a3YpCeac5Dk69u0igzVuqECLBdgkiFLxnRo=;
+        s=korg; t=1700077108;
+        bh=OlfyErGyX0odEDUQQka69xXSiHkSfo8f/D8wS6pmKmg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eEQAzEk6HrgIWMqzpdZan5iHVcMKGI+RfExmGhpuS3YJMsh0q5NcU6WI+81SxVk+C
-         n9rqMVWY3quCLKGlmlZ1duFUPrAq3xuGTE5fyH8P+hx3frKSmkmYSd+3fK01Zp3pKb
-         NcX0hwgyRHPc66QBoMTIsULaJyfbNjzKvCleOiEU=
+        b=zmhPmBWH6LY13HTUr/UaPTGVdsCj9zPPXp3mEKsoX+y4W6Mz3EEGNAnBFwb6aZS8Z
+         YFUiyDrmAScJYFR+o5aFIWiHZk+jQYTuCJ0GqLUSymAdhbGKVXy9CtEzWaDixjkBui
+         +PDYUn81lZ9SretVwt+WGjE/oAqyN8ijD2wWOJDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Bharat Bhushan <bbhushan2@marvell.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+        Marc Dionne <marc.dionne@auristor.com>,
+        linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 539/603] watchdog: marvell_gti_wdt: Fix error code in probe()
-Date:   Wed, 15 Nov 2023 14:18:04 -0500
-Message-ID: <20231115191649.124204854@linuxfoundation.org>
+Subject: [PATCH 6.5 501/550] rxrpc: Fix two connection reaping bugs
+Date:   Wed, 15 Nov 2023 14:18:05 -0500
+Message-ID: <20231115191635.652692742@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +51,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 4b2b39f9395bc66c616d8d5a83642950fc3719b1 ]
+[ Upstream commit 61e4a86600029e6e8d468d1fad6b6c749bebed19 ]
 
-This error path accidentally returns success.  Return -EINVAL instead.
+Fix two connection reaping bugs:
 
-Fixes: ef9e7fe2c890 ("Watchdog: Add marvell GTI watchdog driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Bharat Bhushan <bbhushan2@marvell.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/af326fd7-ac71-43a1-b7de-81779b61d242@moroto.mountain
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+ (1) rxrpc_connection_expiry is in units of seconds, so
+     rxrpc_disconnect_call() needs to multiply it by HZ when adding it to
+     jiffies.
+
+ (2) rxrpc_client_conn_reap_timeout() should set RXRPC_CLIENT_REAP_TIMER if
+     local->kill_all_client_conns is clear, not if it is set (in which case
+     we don't need the timer).  Without this, old client connections don't
+     get cleaned up until the local endpoint is cleaned up.
+
+Fixes: 5040011d073d ("rxrpc: Make the local endpoint hold a ref on a connected call")
+Fixes: 0d6bf319bc5a ("rxrpc: Move the client conn cache management to the I/O thread")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/783911.1698364174@warthog.procyon.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/marvell_gti_wdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rxrpc/conn_object.c  | 2 +-
+ net/rxrpc/local_object.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/marvell_gti_wdt.c b/drivers/watchdog/marvell_gti_wdt.c
-index d7eb8286e11ec..1ec1e014ba831 100644
---- a/drivers/watchdog/marvell_gti_wdt.c
-+++ b/drivers/watchdog/marvell_gti_wdt.c
-@@ -271,7 +271,7 @@ static int gti_wdt_probe(struct platform_device *pdev)
- 				   &wdt_idx);
- 	if (!err) {
- 		if (wdt_idx >= priv->data->gti_num_timers)
--			return dev_err_probe(&pdev->dev, err,
-+			return dev_err_probe(&pdev->dev, -EINVAL,
- 				"GTI wdog timer index not valid");
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index ac85d4644a3c3..df8a271948a1c 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -212,7 +212,7 @@ void rxrpc_disconnect_call(struct rxrpc_call *call)
+ 		conn->idle_timestamp = jiffies;
+ 		if (atomic_dec_and_test(&conn->active))
+ 			rxrpc_set_service_reap_timer(conn->rxnet,
+-						     jiffies + rxrpc_connection_expiry);
++						     jiffies + rxrpc_connection_expiry * HZ);
+ 	}
  
- 		priv->wdt_timer_idx = wdt_idx;
+ 	rxrpc_put_call(call, rxrpc_call_put_io_thread);
+diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
+index 7d910aee4f8cb..c553a30e9c838 100644
+--- a/net/rxrpc/local_object.c
++++ b/net/rxrpc/local_object.c
+@@ -87,7 +87,7 @@ static void rxrpc_client_conn_reap_timeout(struct timer_list *timer)
+ 	struct rxrpc_local *local =
+ 		container_of(timer, struct rxrpc_local, client_conn_reap_timer);
+ 
+-	if (local->kill_all_client_conns &&
++	if (!local->kill_all_client_conns &&
+ 	    test_and_set_bit(RXRPC_CLIENT_CONN_REAP_TIMER, &local->client_conn_flags))
+ 		rxrpc_wake_up_io_thread(local);
+ }
 -- 
 2.42.0
 
