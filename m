@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 710CA7ED2D4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D174C7ED453
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233371AbjKOUoj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:44:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60710 "EHLO
+        id S1344718AbjKOU5q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:57:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233494AbjKOUoi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:38 -0500
+        with ESMTP id S1344593AbjKOU53 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:29 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51450125
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CDEC433C7;
-        Wed, 15 Nov 2023 20:44:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9697ED7A
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA31C4AF5E;
+        Wed, 15 Nov 2023 20:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081075;
-        bh=DfW4qEqiujn6IZ2+4+g+Mwjm58Z2oX3aHatvPFFz0o4=;
+        s=korg; t=1700081395;
+        bh=XllklExM9O8rtLTGbS2NHPDhVrKEYTdDCZYuRPYyRYA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FqNF3xO0AoP5MNTFxGSK/01mCRMpZf6uJHWR5COnN+wCUxnA+dhGvpl82NDbdt67v
-         WKWMFshAsdu29gFHv86IAnnedq7aex3d1a0woYnd9WLJufPyz4vtOxwlfqRYkXNDg1
-         Kd3tXhJKQ4SnxUWQepriu/vwGBzGZe90PWfxe6wQ=
+        b=DYGQBdmfXFA9B9DhLO2eOWxtFAIavXILTcE8GUu/TqLq/Cv7uGtIdERhCmOkUc2Cc
+         Ir97UOIVeP9lpuCMmg0BJ8RHmpyxJdI03KuezG4U/dOGLeQwgvZm1IQwTgoDDCRkXO
+         1DtTIi9GPglKhjWsNydsHh/cZPlR+PSBPa/QaqGU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Neal Cardwell <ncardwell@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+        "Wieczor-Retman, Maciej" <maciej.wieczor-retman@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 06/88] tcp_metrics: do not create an entry from tcp_init_metrics()
-Date:   Wed, 15 Nov 2023 15:35:18 -0500
-Message-ID: <20231115191426.580660647@linuxfoundation.org>
+Subject: [PATCH 5.15 127/244] selftests/resctrl: Ensure the benchmark commands fits to its array
+Date:   Wed, 15 Nov 2023 15:35:19 -0500
+Message-ID: <20231115203555.996857475@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,41 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit a135798e6e200ecb2f864cecca6d257ba278370c ]
+[ Upstream commit 4a28c7665c2a1ac0400864eabb0c641e135f61aa ]
 
-tcp_init_metrics() only wants to get metrics if they were
-previously stored in the cache. Creating an entry is adding
-useless costs, especially when tcp_no_metrics_save is set.
+Benchmark command is copied into an array in the stack. The array is
+BENCHMARK_ARGS items long but the command line could try to provide a
+longer command. Argument size is also fixed by BENCHMARK_ARG_SIZE (63
+bytes of space after fitting the terminating \0 character) and user
+could have inputted argument longer than that.
 
-Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Return error in case the benchmark command does not fit to the space
+allocated for it.
+
+Fixes: ecdbb911f22d ("selftests/resctrl: Add MBM test")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: "Wieczor-Retman, Maciej" <maciej.wieczor-retman@intel.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/resctrl_tests.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 7d486295d75f5..60619b1f4acdc 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -474,7 +474,7 @@ void tcp_init_metrics(struct sock *sk)
- 		goto reset;
+diff --git a/tools/testing/selftests/resctrl/resctrl_tests.c b/tools/testing/selftests/resctrl/resctrl_tests.c
+index 3e7cdf1125df4..e9895ebd2a2d0 100644
+--- a/tools/testing/selftests/resctrl/resctrl_tests.c
++++ b/tools/testing/selftests/resctrl/resctrl_tests.c
+@@ -224,9 +224,14 @@ int main(int argc, char **argv)
+ 		return ksft_exit_fail_msg("Not running as root, abort testing.\n");
  
- 	rcu_read_lock();
--	tm = tcp_get_metrics(sk, dst, true);
-+	tm = tcp_get_metrics(sk, dst, false);
- 	if (!tm) {
- 		rcu_read_unlock();
- 		goto reset;
+ 	if (has_ben) {
++		if (argc - ben_ind >= BENCHMARK_ARGS)
++			ksft_exit_fail_msg("Too long benchmark command.\n");
++
+ 		/* Extract benchmark command from command line. */
+ 		for (i = ben_ind; i < argc; i++) {
+ 			benchmark_cmd[i - ben_ind] = benchmark_cmd_area[i];
++			if (strlen(argv[i]) >= BENCHMARK_ARG_SIZE)
++				ksft_exit_fail_msg("Too long benchmark command argument.\n");
+ 			sprintf(benchmark_cmd[i - ben_ind], "%s", argv[i]);
+ 		}
+ 		benchmark_cmd[ben_count] = NULL;
 -- 
 2.42.0
 
