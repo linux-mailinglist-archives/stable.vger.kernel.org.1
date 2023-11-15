@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE0B67ECB3B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A0D27ECD6D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233281AbjKOTVQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59410 "EHLO
+        id S234515AbjKOTgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232990AbjKOTU4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:56 -0500
+        with ESMTP id S234523AbjKOTgU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E0E9D72
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436A1C433C9;
-        Wed, 15 Nov 2023 19:20:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 322FE1A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9ADFC433C9;
+        Wed, 15 Nov 2023 19:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076051;
-        bh=F5D+9lYaunX3WRpLR1lUbYWJC6HPC5dtbqpUxntraJQ=;
+        s=korg; t=1700076975;
+        bh=lAv+zZUYlsIkVchETUIWjUnEZI9rMZvXmO03++338rg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AQLAMzdWPj+VO+rJKwhiqVWr1hisBsMEK144Pd7d7URCaUBR6vlg7YWIjOrL0nNCW
-         CVChQp4Tcj/D9TmyOLbiKt2acD+/gIYAE1b8liLZ+78TCkTfbZnnmZLZOSGXjb1vDW
-         XrL/OHNtPs/MDVhoezfxT5H3hilh/b336/AMYlnQ=
+        b=NoXZpr8hVLmupXo0FHCwJmhwvLVWr5+1eDz6MGs/vVSScZX3V+AnBNWlOoerrhdjL
+         G7zXsgnbGFsbtJAFRrGD8OxYI1rtefPX41XylfJ9RC8VnwlIxP8iNQm2ZIJdSNy/Vb
+         m7uWOI5Gj6bXgXBGSqx+LY0ksWrI79vYrEPsvsfs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 045/550] wifi: mac80211: fix # of MSDU in A-MSDU calculation
+        patches@lists.linux.dev, Howard Hsu <howard-yh.hsu@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 084/603] wifi: mt76: mt7996: fix beamform mcu cmd configuration
 Date:   Wed, 15 Nov 2023 14:10:29 -0500
-Message-ID: <20231115191603.832948054@linuxfoundation.org>
+Message-ID: <20231115191618.941184024@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-[ Upstream commit 428e8976a15f849ad92b1c1e38dda2a684350ff7 ]
+[ Upstream commit d40fd59b7267d2e7722d3edf3935a9a9f03c0115 ]
 
-During my refactoring I wanted to get rid of the switch,
-but replaced it with the wrong calculation. Fix that.
+The bf_num field represents how many bands can support beamform, so set
+the value to 3, and bf_bitmap represents the bitmap of bf_num.
 
-Fixes: 175ad2ec89fe ("wifi: mac80211: limit A-MSDU subframes for client too")
-Reported-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230827135854.51bf1b8b0adb.Iffbd337fdad2b86ae12f5a39c69fb82b517f7486@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 7751f8ba960ee..0c5cc75857e4f 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -2990,7 +2990,7 @@ void ieee80211_sta_set_max_amsdu_subframes(struct sta_info *sta,
- 				   WLAN_EXT_CAPA9_MAX_MSDU_IN_AMSDU_MSB) << 1;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 4a30db49ef33f..4ed1643818980 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3307,8 +3307,8 @@ int mt7996_mcu_set_txbf(struct mt7996_dev *dev, u8 action)
  
- 	if (val)
--		sta->sta.max_amsdu_subframes = 4 << val;
-+		sta->sta.max_amsdu_subframes = 4 << (4 - val);
- }
- 
- #ifdef CONFIG_LOCKDEP
+ 		tlv = mt7996_mcu_add_uni_tlv(skb, action, sizeof(*req_mod_en));
+ 		req_mod_en = (struct bf_mod_en_ctrl *)tlv;
+-		req_mod_en->bf_num = 2;
+-		req_mod_en->bf_bitmap = GENMASK(0, 0);
++		req_mod_en->bf_num = 3;
++		req_mod_en->bf_bitmap = GENMASK(2, 0);
+ 		break;
+ 	}
+ 	default:
 -- 
 2.42.0
 
