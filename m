@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F5F67ED1AC
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:04:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B2B7ED194
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:03:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344272AbjKOUE0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:04:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40596 "EHLO
+        id S1343527AbjKOUDv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:03:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344260AbjKOUE0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:04:26 -0500
+        with ESMTP id S1343951AbjKOUDu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:03:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2AF092
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B93C433C8;
-        Wed, 15 Nov 2023 20:04:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D8D2B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:03:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25AFC433C7;
+        Wed, 15 Nov 2023 20:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078662;
-        bh=43HnX4Nj7M+jZQtO6prwyS/n7GWhbYA5twGoWE6DOwU=;
+        s=korg; t=1700078627;
+        bh=Ly7HXUVp9d6tnXbRKJhxO3q7IJI3s444DSrzBBDtmBw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w6pTFYfojsCy1rQhXjQG3PUCBkUEnEjojSP9kGyeQ10pcorVKvE/7T3odHrQ/+1kh
-         ps1fZqEyPmWYRZhT0mqZ0qHupJ674ZkGE//Qx3PrGJiDOXup2OG9ThykDKvAqouKxT
-         LnV44qHIUlYq01Tlmmx0ugVug/mOvf+axHaN9pKo=
+        b=pvDo/dJZWn8MkgE84bfgyZOfEY2fRRqO9+zlnao3hFqUKUAx/7b3HkxMvt3iwm2GU
+         WYbv1Z65jite2ev5Ywxn94w8+1iwmGK0dj4/mF59A0aaSlTqqLs30l2PMZIeAeEDZ0
+         nD6Fl5l9+BRDmtq34VL0K7Jkpu1bNbxxSoTJ1bwQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 09/45] clk: keystone: pll: fix a couple NULL vs IS_ERR() checks
-Date:   Wed, 15 Nov 2023 14:32:46 -0500
-Message-ID: <20231115191420.220727107@linuxfoundation.org>
+Subject: [PATCH 4.14 10/45] clk: mediatek: clk-mt6797: Add check for mtk_alloc_clk_data
+Date:   Wed, 15 Nov 2023 14:32:47 -0500
+Message-ID: <20231115191420.275130545@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191419.641552204@linuxfoundation.org>
 References: <20231115191419.641552204@linuxfoundation.org>
@@ -54,58 +56,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit a5d14f8b551eb1551c10053653ee8e27f19672fa ]
+[ Upstream commit 606f6366a35a3329545e38129804d65ef26ed7d2 ]
 
-The clk_register_divider() and clk_register_mux() functions returns
-error pointers on error but this code checks for NULL.  Fix that.
+Add the check for the return value of mtk_alloc_clk_data() in order to
+avoid NULL pointer dereference.
 
-Fixes: b9e0d40c0d83 ("clk: keystone: add Keystone PLL clock driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/d9da4c97-0da9-499f-9a21-1f8e3f148dc1@moroto.mountain
+Fixes: 96596aa06628 ("clk: mediatek: add clk support for MT6797")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230912093407.21505-3-jiasheng@iscas.ac.cn
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/keystone/pll.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/clk/mediatek/clk-mt6797.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/clk/keystone/pll.c b/drivers/clk/keystone/pll.c
-index 526694c2a6c97..a75ece5992394 100644
---- a/drivers/clk/keystone/pll.c
-+++ b/drivers/clk/keystone/pll.c
-@@ -285,12 +285,13 @@ static void __init of_pll_div_clk_init(struct device_node *node)
+diff --git a/drivers/clk/mediatek/clk-mt6797.c b/drivers/clk/mediatek/clk-mt6797.c
+index 5702bc974ed99..1ee45f32c1d4e 100644
+--- a/drivers/clk/mediatek/clk-mt6797.c
++++ b/drivers/clk/mediatek/clk-mt6797.c
+@@ -396,6 +396,8 @@ static int mtk_topckgen_init(struct platform_device *pdev)
+ 		return PTR_ERR(base);
  
- 	clk = clk_register_divider(NULL, clk_name, parent_name, 0, reg, shift,
- 				 mask, 0, NULL);
--	if (clk) {
--		of_clk_add_provider(node, of_clk_src_simple_get, clk);
--	} else {
-+	if (IS_ERR(clk)) {
- 		pr_err("%s: error registering divider %s\n", __func__, clk_name);
- 		iounmap(reg);
-+		return;
- 	}
-+
-+	of_clk_add_provider(node, of_clk_src_simple_get, clk);
- }
- CLK_OF_DECLARE(pll_divider_clock, "ti,keystone,pll-divider-clock", of_pll_div_clk_init);
+ 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR);
++	if (!clk_data)
++		return -ENOMEM;
  
-@@ -332,9 +333,11 @@ static void __init of_pll_mux_clk_init(struct device_node *node)
- 	clk = clk_register_mux(NULL, clk_name, (const char **)&parents,
- 				ARRAY_SIZE(parents) , 0, reg, shift, mask,
- 				0, NULL);
--	if (clk)
--		of_clk_add_provider(node, of_clk_src_simple_get, clk);
--	else
-+	if (IS_ERR(clk)) {
- 		pr_err("%s: error registering mux %s\n", __func__, clk_name);
-+		return;
-+	}
-+
-+	of_clk_add_provider(node, of_clk_src_simple_get, clk);
- }
- CLK_OF_DECLARE(pll_mux_clock, "ti,keystone,pll-mux-clock", of_pll_mux_clk_init);
+ 	mtk_clk_register_factors(top_fixed_divs, ARRAY_SIZE(top_fixed_divs),
+ 				 clk_data);
+@@ -554,6 +556,8 @@ static void mtk_infrasys_init_early(struct device_node *node)
+ 
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return;
+ 
+ 		for (i = 0; i < CLK_INFRA_NR; i++)
+ 			infra_clk_data->clks[i] = ERR_PTR(-EPROBE_DEFER);
+@@ -578,6 +582,8 @@ static int mtk_infrasys_init(struct platform_device *pdev)
+ 
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return -ENOMEM;
+ 	} else {
+ 		for (i = 0; i < CLK_INFRA_NR; i++) {
+ 			if (infra_clk_data->clks[i] == ERR_PTR(-EPROBE_DEFER))
 -- 
 2.42.0
 
