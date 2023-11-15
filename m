@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C5BC7ECE41
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B2F57ECE44
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234955AbjKOTlx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:41:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58472 "EHLO
+        id S234948AbjKOTlz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234951AbjKOTlw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:52 -0500
+        with ESMTP id S234954AbjKOTly (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7181FAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB7CC433C9;
-        Wed, 15 Nov 2023 19:41:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CAE1AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA62CC433C8;
+        Wed, 15 Nov 2023 19:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077308;
-        bh=Akpa59Uoz8UBBqApT0zXrvbBI9srNyyo4L8nD4AQrwU=;
+        s=korg; t=1700077311;
+        bh=E1xBuSirc7YgSxmLytE7KQgDeuHqJRbYhDVIbuYJ6xM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R+unlgbLat+n/Bpdk3M+yMxkWIlxthxNGX7utPyr+CB0LHs7Nq9tG1fI9cBvGOnxg
-         /BWh6EVC+DQqfnhP31R6C4BHyrYEdBUdtF8bjcreYbtoX2e9Oz0Vvao6VVGwDn0/cr
-         qx3VLSRQw/eKd8LbBg9xL67d5ebiAW3M7/2zO67g=
+        b=vWRW4oUDf7g6lOES3nWwE3HfL/Otk9+bhFkm+UVF3zrLG04O2iHneh/fMFaUdLTQ4
+         qVRmhik2Hr80i7gd5aywiW1QEsch2PbcapmJUnPq3fmerdg14nguIKxkIOck5MMBdu
+         6NmnLQYa87zlijKnhr59zKfIcp1CFw3wVrVch52U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        Helen Koike <helen.koike@collabora.com>,
-        Jai Luthra <j-luthra@ti.com>,
-        Aradhya Bhatia <a-bhatia1@ti.com>,
+        patches@lists.linux.dev,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
         Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/603] drm: bridge: it66121: Fix invalid connector dereference
-Date:   Wed, 15 Nov 2023 14:12:49 -0500
-Message-ID: <20231115191628.736011042@linuxfoundation.org>
+Subject: [PATCH 6.6 225/603] drm/bridge: lt8912b: Fix bridge_detach
+Date:   Wed, 15 Nov 2023 14:12:50 -0500
+Message-ID: <20231115191628.781528897@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -56,53 +54,80 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit d0375f6858c4ff7244b62b02eb5e93428e1916cd ]
+[ Upstream commit 941882a0e96d245f38116e940912b404b6a93c6f ]
 
-Fix the NULL pointer dereference when no monitor is connected, and the
-sound card is opened from userspace.
+The driver calls lt8912_bridge_detach() from its lt8912_remove()
+function. As the DRM core detaches bridges automatically, this leads to
+calling lt8912_bridge_detach() twice. The code probably has tried to
+manage the double-call with the 'is_attached' variable, but the driver
+never sets the variable to false, so its of no help.
 
-Instead return an empty buffer (of zeroes) as the EDID information to
-the sound framework if there is no connector attached.
+Fix the issue by dropping the call to lt8912_bridge_detach() from
+lt8912_remove(), as the DRM core will handle the detach call for us,
+and also drop the useless is_attached field.
 
-Fixes: e0fd83dbe924 ("drm: bridge: it66121: Add audio support")
-Reported-by: Nishanth Menon <nm@ti.com>
-Closes: https://lore.kernel.org/all/20230825105849.crhon42qndxqif4i@gondola/
-Reviewed-by: Helen Koike <helen.koike@collabora.com>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
 Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230901-it66121_edid-v2-1-aa59605336b9@ti.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20230804-lt8912b-v1-1-c542692c6a2f@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ite-it66121.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
-index 466641c77fe91..fc7f5ec5fb381 100644
---- a/drivers/gpu/drm/bridge/ite-it66121.c
-+++ b/drivers/gpu/drm/bridge/ite-it66121.c
-@@ -1447,10 +1447,14 @@ static int it66121_audio_get_eld(struct device *dev, void *data,
- 	struct it66121_ctx *ctx = dev_get_drvdata(dev);
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index 4eaea67fb71c2..0e581f6e3c885 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -45,7 +45,6 @@ struct lt8912 {
  
- 	mutex_lock(&ctx->lock);
--
--	memcpy(buf, ctx->connector->eld,
--	       min(sizeof(ctx->connector->eld), len));
--
-+	if (!ctx->connector) {
-+		/* Pass en empty ELD if connector not available */
-+		dev_dbg(dev, "No connector present, passing empty EDID data");
-+		memset(buf, 0, len);
-+	} else {
-+		memcpy(buf, ctx->connector->eld,
-+		       min(sizeof(ctx->connector->eld), len));
-+	}
- 	mutex_unlock(&ctx->lock);
+ 	u8 data_lanes;
+ 	bool is_power_on;
+-	bool is_attached;
+ };
  
+ static int lt8912_write_init_config(struct lt8912 *lt)
+@@ -575,8 +574,6 @@ static int lt8912_bridge_attach(struct drm_bridge *bridge,
+ 	if (ret)
+ 		goto error;
+ 
+-	lt->is_attached = true;
+-
  	return 0;
+ 
+ error:
+@@ -588,15 +585,13 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
+ {
+ 	struct lt8912 *lt = bridge_to_lt8912(bridge);
+ 
+-	if (lt->is_attached) {
+-		lt8912_hard_power_off(lt);
++	lt8912_hard_power_off(lt);
+ 
+-		if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
+-			drm_bridge_hpd_disable(lt->hdmi_port);
++	if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
++		drm_bridge_hpd_disable(lt->hdmi_port);
+ 
+-		drm_connector_unregister(&lt->connector);
+-		drm_connector_cleanup(&lt->connector);
+-	}
++	drm_connector_unregister(&lt->connector);
++	drm_connector_cleanup(&lt->connector);
+ }
+ 
+ static enum drm_connector_status
+@@ -750,7 +745,6 @@ static void lt8912_remove(struct i2c_client *client)
+ {
+ 	struct lt8912 *lt = i2c_get_clientdata(client);
+ 
+-	lt8912_bridge_detach(&lt->bridge);
+ 	drm_bridge_remove(&lt->bridge);
+ 	lt8912_free_i2c(lt);
+ 	lt8912_put_dt(lt);
 -- 
 2.42.0
 
