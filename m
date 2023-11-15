@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B4477ED4C7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E37B87ED448
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344601AbjKOU7H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:59:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34468 "EHLO
+        id S235550AbjKOU5g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:57:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344744AbjKOU5z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:55 -0500
+        with ESMTP id S235585AbjKOU50 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F931BDB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705D9C4AF72;
-        Wed, 15 Nov 2023 20:50:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16E1ED51
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA95C32798;
+        Wed, 15 Nov 2023 20:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081414;
-        bh=ZSa7NDY/7UMhlj/6MaDuons0Ugn+C+MmTeyYuiEH1RM=;
+        s=korg; t=1700081374;
+        bh=RH1AYF6ztgznAbcvji+adlhH6ndaZVBSRd95v8C8Y+Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GxqQCHVu4xR1I4rwH9m2MxBlWXXfmwVxIoa04yf4CMWIRCekjv2SnVTRWS10aLILX
-         1zBwAqTbzqCInVhWy80IPr3/Y873SKO0D/DmGVCg313YQtlWJhkqMHqRKCedonUekf
-         C0O7yO/Vl/DTnur2ia0wgwQTkjEYINqyWV6QIpvE=
+        b=TIJaskAiuCw4Eqb5Q2B+VPp1bGHe/+bEPG09jvWOSvb4fmj8HVSIjUERVhirLzXFM
+         HMv63yZFRuQWhtEsKOL8BCQVwteuEevtBQfwL1MzjQSWJvRJ9nDoSc0pzTNGkgBQwd
+         msKkJ8GORhbDcIoCVLwUGpxGFo5uxQo856T62Ihg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 114/244] arm64: dts: qcom: sc7280: Add missing LMH interrupts
-Date:   Wed, 15 Nov 2023 15:35:06 -0500
-Message-ID: <20231115203555.169085178@linuxfoundation.org>
+Subject: [PATCH 5.15 115/244] arm64: dts: qcom: sdm845-mtp: fix WiFi configuration
+Date:   Wed, 15 Nov 2023 15:35:07 -0500
+Message-ID: <20231115203555.226766440@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -54,41 +55,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 3f93d119c9d6e1744d55cd48af764160a1a3aca3 ]
+[ Upstream commit b33868a52f342d9b1f20aa5bffe40cbd69bd0a4b ]
 
-Hook up the interrupts that signal the Limits Management Hardware has
-started some sort of throttling action.
+Enable the host-cap-8bit quirk on this device. It is required for the
+WiFi to function properly.
 
-Fixes: 7dbd121a2c58 ("arm64: dts: qcom: sc7280: Add cpufreq hw node")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811-topic-7280_lmhirq-v1-1-c262b6a25c8f@linaro.org
+Fixes: 022bccb840b7 ("arm64: dts: sdm845: Add WCN3990 WLAN module device node")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230826221915.846937-2-dmitry.baryshkov@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-mtp.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index fb6473a0aa4b3..dc4aab258ff6f 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -1851,6 +1851,14 @@ cpufreq_hw: cpufreq@18591000 {
- 			reg = <0 0x18591000 0 0x1000>,
- 			      <0 0x18592000 0 0x1000>,
- 			      <0 0x18593000 0 0x1000>;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-mtp.dts b/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
+index 52dd7a858231e..cf2fad5bcac1b 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
+@@ -572,6 +572,8 @@ &wifi {
+ 	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
+ 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
+ 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
 +
-+			interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "dcvsh-irq-0",
-+					  "dcvsh-irq-1",
-+					  "dcvsh-irq-2";
-+
- 			clocks = <&rpmhcc RPMH_CXO_CLK>, <&gcc GCC_GPLL0>;
- 			clock-names = "xo", "alternate";
- 			#freq-domain-cells = <1>;
++	qcom,snoc-host-cap-8bit-quirk;
+ };
+ 
+ /* PINCTRL - additions to nodes defined in sdm845.dtsi */
 -- 
 2.42.0
 
