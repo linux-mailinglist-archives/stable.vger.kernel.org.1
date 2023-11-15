@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C15587ED3C9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D3FD7ED3AB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234834AbjKOUyl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:54:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41006 "EHLO
+        id S234924AbjKOUyB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:54:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235051AbjKOUyh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:37 -0500
+        with ESMTP id S234968AbjKOUx5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E057CE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FF5C4E777;
-        Wed, 15 Nov 2023 20:54:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5AA2BD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:54 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662E2C4E77A;
+        Wed, 15 Nov 2023 20:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081673;
-        bh=mMzUglbdLRWB0cDU4Voa8otSNM5W+iW6MUoFEFktfaU=;
+        s=korg; t=1700081634;
+        bh=zYEwUsKKY1kt/EK45R5/V84XiMqwHjhbPjme+9CXL+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v+EZ/7DHjaXD8qjIJdHKZCHRitetl318G+Mh0zESUhiMXAVyKPg9lgbHq1xnd67Pd
-         WfFsR4qQrDL1pP6io9PAb4KgstkdAnKIGsku7eOuyiYp01VbxDzQQUYQ8xH0VD0/GK
-         HLManI60C2ZznbFlXc8DxtEoFZxemeke8IrokHs4=
+        b=pfJq7XdJbsx2DZAOycr1lI9/0kpuQfeJsFLHUwSb+QGihfANxBd6HrzqWah6/TAhz
+         sNl8SPgB0+3N2GGoM1vQ0bfMRE2GRGkAKNRrCVcN89gjiChcwlyA9HGwk39I6NCjbo
+         EcjldYqAe0weCp9UGQ+VhDxpm7vTuDq3EpfHa4/0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -31,9 +31,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Neal Cardwell <ncardwell@google.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 020/191] tcp_metrics: add missing barriers on delete
-Date:   Wed, 15 Nov 2023 15:44:55 -0500
-Message-ID: <20231115204645.741342976@linuxfoundation.org>
+Subject: [PATCH 5.10 021/191] tcp_metrics: properly set tp->snd_ssthresh in tcp_init_metrics()
+Date:   Wed, 15 Nov 2023 15:44:56 -0500
+Message-ID: <20231115204645.803106644@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -58,43 +58,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cbc3a153222805d65f821e10f4f78b6afce06f86 ]
+[ Upstream commit 081480014a64a69d901f8ef1ffdd56d6085cf87e ]
 
-When removing an item from RCU protected list, we must prevent
-store-tearing, using rcu_assign_pointer() or WRITE_ONCE().
+We need to set tp->snd_ssthresh to TCP_INFINITE_SSTHRESH
+in the case tcp_get_metrics() fails for some reason.
 
-Fixes: 04f721c671656 ("tcp_metrics: Rewrite tcp_metrics_flush_all")
+Fixes: 9ad7c049f0f7 ("tcp: RFC2988bis + taking RTT sample from 3WHS for the passive open side")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
 Acked-by: Neal Cardwell <ncardwell@google.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_metrics.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index a707fa1dbcafd..03ab7500f5745 100644
+index 03ab7500f5745..a5d4e69acc05d 100644
 --- a/net/ipv4/tcp_metrics.c
 +++ b/net/ipv4/tcp_metrics.c
-@@ -908,7 +908,7 @@ static void tcp_metrics_flush_all(struct net *net)
- 			match = net ? net_eq(tm_net(tm), net) :
- 				!refcount_read(&tm_net(tm)->count);
- 			if (match) {
--				*pp = tm->tcpm_next;
-+				rcu_assign_pointer(*pp, tm->tcpm_next);
- 				kfree_rcu(tm, rcu_head);
- 			} else {
- 				pp = &tm->tcpm_next;
-@@ -949,7 +949,7 @@ static int tcp_metrics_nl_cmd_del(struct sk_buff *skb, struct genl_info *info)
- 		if (addr_same(&tm->tcpm_daddr, &daddr) &&
- 		    (!src || addr_same(&tm->tcpm_saddr, &saddr)) &&
- 		    net_eq(tm_net(tm), net)) {
--			*pp = tm->tcpm_next;
-+			rcu_assign_pointer(*pp, tm->tcpm_next);
- 			kfree_rcu(tm, rcu_head);
- 			found = true;
- 		} else {
+@@ -470,6 +470,10 @@ void tcp_init_metrics(struct sock *sk)
+ 	u32 val, crtt = 0; /* cached RTT scaled by 8 */
+ 
+ 	sk_dst_confirm(sk);
++	/* ssthresh may have been reduced unnecessarily during.
++	 * 3WHS. Restore it back to its initial default.
++	 */
++	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
+ 	if (!dst)
+ 		goto reset;
+ 
+@@ -489,11 +493,6 @@ void tcp_init_metrics(struct sock *sk)
+ 		tp->snd_ssthresh = val;
+ 		if (tp->snd_ssthresh > tp->snd_cwnd_clamp)
+ 			tp->snd_ssthresh = tp->snd_cwnd_clamp;
+-	} else {
+-		/* ssthresh may have been reduced unnecessarily during.
+-		 * 3WHS. Restore it back to its initial default.
+-		 */
+-		tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
+ 	}
+ 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
+ 	if (val && tp->reordering != val)
 -- 
 2.42.0
 
