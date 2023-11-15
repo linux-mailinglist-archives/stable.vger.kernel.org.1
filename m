@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C4D7ED2AC
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D9627ECBB5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233354AbjKOUm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:42:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49714 "EHLO
+        id S232489AbjKOTX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:23:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235069AbjKOTlM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:12 -0500
+        with ESMTP id S232620AbjKOTX5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F91F19F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E0DC433C8;
-        Wed, 15 Nov 2023 19:41:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2E41A5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:54 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C744C433CB;
+        Wed, 15 Nov 2023 19:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077268;
-        bh=sAxA/0xjBz/YmJLUCwyQHlX/UFuZgUPxia/cg0VsjrQ=;
+        s=korg; t=1700076234;
+        bh=eRQgf/zHMzvEKq4Wcdayyxtw7z6iWf4SuOSAlYR2zOg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XrgaZQ3gBpwLoucS2IneMBJD8YeVMUGGUnrcEKbGK4u5bndqhJhROIUiELump0rKH
-         CgughtnC6lEryfbcSI3/WMdf+pCsQubKonvoomqrOmehF4VD5m4iQOjGxmBe+so2DA
-         rqfmH4aOrlCWa4PuhPOgGe16Oxuc6T0CTEkNMP+k=
+        b=b9j7F3VMHEQOfoJ6NsIp42K9YFF/Nc0s4qsWs6yBAs+hKl5m8hUf8n0p0Fgzc/H+c
+         AdeN9j7HXtP5/9lHnZ1BgfDsqbYn7hj41Cm1kAPlSt7k2Lf9dqdjR4FOaeXC4+JoOt
+         8qHGW4oWZ2S3JbcjCec3UcBcqE3HSrf6ochrSzk8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/603] clk: mediatek: fix double free in mtk_clk_register_pllfh()
+Subject: [PATCH 6.5 160/550] clk: imx: Select MXC_CLK for CLK_IMX8QXP
 Date:   Wed, 15 Nov 2023 14:12:24 -0500
-Message-ID: <20231115191627.030467940@linuxfoundation.org>
+Message-ID: <20231115191611.793556579@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,58 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit bd54ccc0f147019dac38e7841876a7415459b875 ]
+[ Upstream commit 317e69c49b4ceef8aebb47d771498ccb3571bdf9 ]
 
-The mtk_clk_register_pll_ops() currently frees the "pll" parameter.
-The function has two callers, mtk_clk_register_pll() and
-mtk_clk_register_pllfh().  The first one, the _pll() function relies on
-the free, but for the second _pllfh() function it causes a double free
-bug.
+If the i.MX8QXP clock provider is built-in but the MXC_CLK is
+built as module, build fails:
 
-Really the frees should be done in the caller because that's where
-the allocation is.
+aarch64-linux-ld: drivers/clk/imx/clk-imx8-acm.o: in function `imx8_acm_clk_probe':
+clk-imx8-acm.c:(.text+0x3d0): undefined reference to `imx_check_clk_hws'
 
-Fixes: d7964de8a8ea ("clk: mediatek: Add new clock driver to handle FHCTL hardware")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/cd7fa365-28cc-4c34-ac64-6da57c98baa6@moroto.mountain
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fix that by selecting MXC_CLK in case of CLK_IMX8QXP.
+
+Fixes: c2cccb6d0b33 ("clk: imx: add imx8qxp clk driver")
+Closes: https://lore.kernel.org/all/8b77219e-b59e-40f1-96f1-980a0b2debcf@infradead.org/
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-pll.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/mediatek/clk-pll.c b/drivers/clk/mediatek/clk-pll.c
-index a4eca5fd539c8..513ab6b1b3229 100644
---- a/drivers/clk/mediatek/clk-pll.c
-+++ b/drivers/clk/mediatek/clk-pll.c
-@@ -321,10 +321,8 @@ struct clk_hw *mtk_clk_register_pll_ops(struct mtk_clk_pll *pll,
+diff --git a/drivers/clk/imx/Kconfig b/drivers/clk/imx/Kconfig
+index f6b82e0b9703a..db3bca5f4ec9c 100644
+--- a/drivers/clk/imx/Kconfig
++++ b/drivers/clk/imx/Kconfig
+@@ -96,6 +96,7 @@ config CLK_IMX8QXP
+ 	depends on (ARCH_MXC && ARM64) || COMPILE_TEST
+ 	depends on IMX_SCU && HAVE_ARM_SMCCC
+ 	select MXC_CLK_SCU
++	select MXC_CLK
+ 	help
+ 	  Build the driver for IMX8QXP SCU based clocks.
  
- 	ret = clk_hw_register(NULL, &pll->hw);
- 
--	if (ret) {
--		kfree(pll);
-+	if (ret)
- 		return ERR_PTR(ret);
--	}
- 
- 	return &pll->hw;
- }
-@@ -340,6 +338,8 @@ struct clk_hw *mtk_clk_register_pll(const struct mtk_pll_data *data,
- 		return ERR_PTR(-ENOMEM);
- 
- 	hw = mtk_clk_register_pll_ops(pll, data, base, &mtk_pll_ops);
-+	if (IS_ERR(hw))
-+		kfree(pll);
- 
- 	return hw;
- }
 -- 
 2.42.0
 
