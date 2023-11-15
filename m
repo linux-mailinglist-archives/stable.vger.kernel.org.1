@@ -2,37 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83F477ECDFD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1312F7ECFEA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234760AbjKOTjj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38056 "EHLO
+        id S235448AbjKOTvj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjKOTji (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:38 -0500
+        with ESMTP id S235459AbjKOTvi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 742CDA4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1470C433C9;
-        Wed, 15 Nov 2023 19:39:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E098519F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A87C433C7;
+        Wed, 15 Nov 2023 19:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077175;
-        bh=qBCPzqFJLgtJxCt/CoZd0Zk9nCyuNkmG3aEjo5OEmzw=;
+        s=korg; t=1700077894;
+        bh=c0UzMj+zSHxgiyxhgc16PX2qwyRlPKKbGwW+AhFAfUs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ra3HEkcvMDTgA5OkClQzUbNoQTOY/m1JptcWUMhJ2qnPSPeryDozCV4aioTLgOCrO
-         bRuRpNX0xKluoOmfcjmLCbcwIun6ZfbChTqO9hL0Ahha+s+ZE24BEG/OUw+5LkBqbh
-         SuqsrBn5FaAr6xsufeWo9vcivMZcEhgcb+UtAGhw=
+        b=qSxEn5te6GNIEwR0IYx17YVFieZfRCpmOP3uk0Rt8GjUMek7IXxfUgDnbu6/7wCu6
+         49UdVvlh8PdxJxk+X0RfhFirWqaPj23krhP25HVSNWs59YyxPEof62YNEJRSNqEeit
+         wfBshMHgWkJg3nwYEa/hmU8Bu1nV2nXdFqYAwOW0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.5 545/550] io_uring/net: ensure socket is marked connected on connect retry
-Date:   Wed, 15 Nov 2023 14:18:49 -0500
-Message-ID: <20231115191638.696418658@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Eugen Hristev <eugen.hristev@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 585/603] ASoC: mediatek: mt8186_mt6366_rt1019_rt5682s: trivial: fix error messages
+Date:   Wed, 15 Nov 2023 14:18:50 -0500
+Message-ID: <20231115191651.804295225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,99 +53,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Eugen Hristev <eugen.hristev@collabora.com>
 
-commit f8f9ab2d98116e79d220f1d089df7464ad4e026d upstream.
+[ Upstream commit 004fc58edea6f00db9ad07b40b882e8d976f7a54 ]
 
-io_uring does non-blocking connection attempts, which can yield some
-unexpected results if a connect request is re-attempted by an an
-application. This is equivalent to the following sync syscall sequence:
+Property 'playback-codecs' is referenced as 'speaker-codec' in the error
+message, and this can lead to confusion.
+Correct the error message such that the correct property name is
+referenced.
 
-sock = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, IPPROTO_TCP);
-connect(sock, &addr, sizeof(addr);
-
-ret == -1 and errno == EINPROGRESS expected here. Now poll for POLLOUT
-on sock, and when that returns, we expect the socket to be connected.
-But if we follow that procedure with:
-
-connect(sock, &addr, sizeof(addr));
-
-you'd expect ret == -1 and errno == EISCONN here, but you actually get
-ret == 0. If we attempt the connection one more time, then we get EISCON
-as expected.
-
-io_uring used to do this, but turns out that bluetooth fails with EBADFD
-if you attempt to re-connect. Also looks like EISCONN _could_ occur with
-this sequence.
-
-Retain the ->in_progress logic, but work-around a potential EISCONN or
-EBADFD error and only in those cases look at the sock_error(). This
-should work in general and avoid the odd sequence of a repeated connect
-request returning success when the socket is already connected.
-
-This is all a side effect of the socket state being in a CONNECTING
-state when we get EINPROGRESS, and only a re-connect or other related
-operation will turn that into CONNECTED.
-
-Cc: stable@vger.kernel.org
-Fixes: 3fb1bd688172 ("io_uring/net: handle -EINPROGRESS correct for IORING_OP_CONNECT")
-Link: https://github.com/axboe/liburing/issues/980
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0da16e370dd7 ("ASoC: mediatek: mt8186: add machine driver with mt6366, rt1019 and rt5682s")
+Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20231031103139.77395-1-eugen.hristev@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |   24 +++++++++++-------------
- 1 file changed, 11 insertions(+), 13 deletions(-)
+ sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -1461,16 +1461,6 @@ int io_connect(struct io_kiocb *req, uns
- 	int ret;
- 	bool force_nonblock = issue_flags & IO_URING_F_NONBLOCK;
- 
--	if (connect->in_progress) {
--		struct socket *socket;
--
--		ret = -ENOTSOCK;
--		socket = sock_from_file(req->file);
--		if (socket)
--			ret = sock_error(socket->sk);
--		goto out;
--	}
--
- 	if (req_has_async_data(req)) {
- 		io = req->async_data;
- 	} else {
-@@ -1490,9 +1480,7 @@ int io_connect(struct io_kiocb *req, uns
- 	    && force_nonblock) {
- 		if (ret == -EINPROGRESS) {
- 			connect->in_progress = true;
--			return -EAGAIN;
--		}
--		if (ret == -ECONNABORTED) {
-+		} else if (ret == -ECONNABORTED) {
- 			if (connect->seen_econnaborted)
- 				goto out;
- 			connect->seen_econnaborted = true;
-@@ -1506,6 +1494,16 @@ int io_connect(struct io_kiocb *req, uns
- 		memcpy(req->async_data, &__io, sizeof(__io));
- 		return -EAGAIN;
+diff --git a/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c b/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
+index 9c11016f032c2..9777ba89e956c 100644
+--- a/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
++++ b/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
+@@ -1179,7 +1179,7 @@ static int mt8186_mt6366_rt1019_rt5682s_dev_probe(struct platform_device *pdev)
+ 	playback_codec = of_get_child_by_name(pdev->dev.of_node, "playback-codecs");
+ 	if (!playback_codec) {
+ 		ret = -EINVAL;
+-		dev_err_probe(&pdev->dev, ret, "Property 'speaker-codecs' missing or invalid\n");
++		dev_err_probe(&pdev->dev, ret, "Property 'playback-codecs' missing or invalid\n");
+ 		goto err_playback_codec;
  	}
-+	if (connect->in_progress) {
-+		/*
-+		 * At least bluetooth will return -EBADFD on a re-connect
-+		 * attempt, and it's (supposedly) also valid to get -EISCONN
-+		 * which means the previous result is good. For both of these,
-+		 * grab the sock_error() and use that for the completion.
-+		 */
-+		if (ret == -EBADFD || ret == -EISCONN)
-+			ret = sock_error(sock_from_file(req->file)->sk);
-+	}
- 	if (ret == -ERESTARTSYS)
- 		ret = -EINTR;
- out:
+ 
+@@ -1193,7 +1193,7 @@ static int mt8186_mt6366_rt1019_rt5682s_dev_probe(struct platform_device *pdev)
+ 	for_each_card_prelinks(card, i, dai_link) {
+ 		ret = mt8186_mt6366_card_set_be_link(card, dai_link, playback_codec, "I2S3");
+ 		if (ret) {
+-			dev_err_probe(&pdev->dev, ret, "%s set speaker_codec fail\n",
++			dev_err_probe(&pdev->dev, ret, "%s set playback_codec fail\n",
+ 				      dai_link->name);
+ 			goto err_probe;
+ 		}
+-- 
+2.42.0
+
 
 
