@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E8B87ECD6A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7167F7ECF96
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234430AbjKOTge (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50930 "EHLO
+        id S235358AbjKOTt2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234571AbjKOTg2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:28 -0500
+        with ESMTP id S235351AbjKOTt0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F19419E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C33C433CA;
-        Wed, 15 Nov 2023 19:36:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159E4B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D9DC433C8;
+        Wed, 15 Nov 2023 19:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076985;
-        bh=nsBq7CKfzfhothJlu5UCeKLmzatA3FZu1vVmgFX+XjY=;
+        s=korg; t=1700077763;
+        bh=rPVVQ9b84cejJH+C0LREYw1Xdb6GlXxeyMm+Pkytw50=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HsoH2qDJDyFtyKhtXPl5IIioxXGDYxMeJOQcDHsAkDufYxDUxGNGDZNYWZMGwuLuW
-         ZR9XzRBLR7E8Yi96/ao32xpv8xhgoyZd5QGJIH5UhGxqT6NTF3BSHzzLVrCK6j3EG/
-         8Gqr/AIFR/j2IToDVO05sHv/1+pfqdG4M+8kpfFs=
+        b=Kw8UenxPe7LeC4BdQ9sF43Pe2vXFMyxZKIoLAI5ZWBt7uJ4J3MFvFRAU1LSbYqrn5
+         lEVALWWa0RJVv4JPwGntgEfJzoUURFOV0LksDkts7192O8p5ait0ZXyPy2NyVqI4SD
+         bupjSxzGEeo55+kPRy4rxadjBKfGFvWexvi07sxw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Richter <rrichter@amd.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 466/550] cxl/port: Fix @host confusion in cxl_dport_setup_regs()
+Subject: [PATCH 6.6 505/603] pcmcia: ds: fix refcount leak in pcmcia_device_add()
 Date:   Wed, 15 Nov 2023 14:17:30 -0500
-Message-ID: <20231115191633.175705464@linuxfoundation.org>
+Message-ID: <20231115191647.131312786@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,133 +50,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 33d9c987bf8fb68a9292aba7cc4b1711fcb1be4d ]
+[ Upstream commit 402ab979b29126068e0b596b641422ff7490214c ]
 
-commit 5d2ffbe4b81a ("cxl/port: Store the downstream port's Component Register mappings in struct cxl_dport")
+As the comment of device_register() says, it should use put_device()
+to give up the reference in the error path. Then, insofar resources
+will be freed in pcmcia_release_dev(), the error path is no longer
+needed. In particular, this means that the (previously missing) dropping
+of the reference to &p_dev->function_config->ref is now handled by
+pcmcia_release_dev().
 
-...moved the dport component registers from a raw component_reg_phys
-passed in at dport instantiation time to a 'struct cxl_register_map'
-populated with both the component register data *and* the "host" device
-for mapping operations.
-
-While typical CXL switch dports are mapped by their associated 'struct
-cxl_port', an RCH host bridge dport registered by cxl_acpi needs to wait
-until the cxl_mem driver makes the attachment to map the registers. This
-is because there are no intervening 'struct cxl_port' instances between
-the root cxl_port and the endpoint port in an RCH topology.
-
-For now just mark the host as NULL in the RCH dport case until code that
-needs to map the dport registers arrives.
-
-This patch is not flagged for -stable since nothing in the current
-driver uses the dport->comp_map.
-
-Now, I am slightly uneasy that cxl_setup_comp_regs() sets map->host to a
-wrong value and then cxl_dport_setup_regs() fixes it up, but the
-alternatives I came up with are more messy. For example, adding an
-@logdev to 'struct cxl_register_map' that the dev_printk()s can fall
-back to when @host is NULL. I settled on "post-fixup+comment" since it
-is only RCH dports that have this special case where register probing is
-split between a host-bridge RCRB lookup and when cxl_mem_probe() does
-the association of the cxl_memdev and endpoint port.
-
-[moved rename of @comp_map to @reg_map into next patch]
-
-Fixes: 5d2ffbe4b81a ("cxl/port: Store the downstream port's Component Register mappings in struct cxl_dport")
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20231018171713.1883517-4-rrichter@amd.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: 360b65b95bae ("[PATCH] pcmcia: make config_t independent, add reference counting")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+[linux@dominikbrodowski.net: simplification, commit message rewrite]
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/port.c | 43 +++++++++++++++++++++++++++++------------
- 1 file changed, 31 insertions(+), 12 deletions(-)
+ drivers/pcmcia/ds.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index c24cfe2271948..2c6001592fe20 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -722,13 +722,23 @@ static int cxl_port_setup_regs(struct cxl_port *port,
- 				   component_reg_phys);
- }
+diff --git a/drivers/pcmcia/ds.c b/drivers/pcmcia/ds.c
+index d500e5dbbc3f5..c90c68dee1e45 100644
+--- a/drivers/pcmcia/ds.c
++++ b/drivers/pcmcia/ds.c
+@@ -573,8 +573,14 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
  
--static int cxl_dport_setup_regs(struct cxl_dport *dport,
-+static int cxl_dport_setup_regs(struct device *host, struct cxl_dport *dport,
- 				resource_size_t component_reg_phys)
- {
-+	int rc;
-+
- 	if (dev_is_platform(dport->dport_dev))
- 		return 0;
--	return cxl_setup_comp_regs(dport->dport_dev, &dport->comp_map,
--				   component_reg_phys);
-+
-+	/*
-+	 * use @dport->dport_dev for the context for error messages during
-+	 * register probing, and fixup @host after the fact, since @host may be
-+	 * NULL.
-+	 */
-+	rc = cxl_setup_comp_regs(dport->dport_dev, &dport->comp_map,
-+				 component_reg_phys);
-+	dport->comp_map.host = host;
-+	return rc;
- }
+ 	pcmcia_device_query(p_dev);
  
- static struct cxl_port *__devm_cxl_add_port(struct device *host,
-@@ -989,7 +999,16 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
- 	if (!dport)
- 		return ERR_PTR(-ENOMEM);
+-	if (device_register(&p_dev->dev))
+-		goto err_unreg;
++	if (device_register(&p_dev->dev)) {
++		mutex_lock(&s->ops_mutex);
++		list_del(&p_dev->socket_device_list);
++		s->device_count--;
++		mutex_unlock(&s->ops_mutex);
++		put_device(&p_dev->dev);
++		return NULL;
++	}
  
--	if (rcrb != CXL_RESOURCE_NONE) {
-+	dport->dport_dev = dport_dev;
-+	dport->port_id = port_id;
-+	dport->port = port;
-+
-+	if (rcrb == CXL_RESOURCE_NONE) {
-+		rc = cxl_dport_setup_regs(&port->dev, dport,
-+					  component_reg_phys);
-+		if (rc)
-+			return ERR_PTR(rc);
-+	} else {
- 		dport->rcrb.base = rcrb;
- 		component_reg_phys = __rcrb_to_component(dport_dev, &dport->rcrb,
- 							 CXL_RCRB_DOWNSTREAM);
-@@ -998,6 +1017,14 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
- 			return ERR_PTR(-ENXIO);
- 		}
+ 	return p_dev;
  
-+		/*
-+		 * RCH @dport is not ready to map until associated with its
-+		 * memdev
-+		 */
-+		rc = cxl_dport_setup_regs(NULL, dport, component_reg_phys);
-+		if (rc)
-+			return ERR_PTR(rc);
-+
- 		dport->rch = true;
- 	}
- 
-@@ -1005,14 +1032,6 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
- 		dev_dbg(dport_dev, "Component Registers found for dport: %pa\n",
- 			&component_reg_phys);
- 
--	dport->dport_dev = dport_dev;
--	dport->port_id = port_id;
--	dport->port = port;
--
--	rc = cxl_dport_setup_regs(dport, component_reg_phys);
--	if (rc)
--		return ERR_PTR(rc);
--
- 	cond_cxl_root_lock(port);
- 	rc = add_dport(port, dport);
- 	cond_cxl_root_unlock(port);
 -- 
 2.42.0
 
