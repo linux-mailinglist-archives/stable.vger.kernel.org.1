@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECF6C7ED306
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01FF97ED587
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233613AbjKOUpv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45466 "EHLO
+        id S235579AbjKOVHe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233620AbjKOUpp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:45 -0500
+        with ESMTP id S235590AbjKOVHZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B64CC192
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544EFC433C7;
-        Wed, 15 Nov 2023 20:45:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB6D196
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EE8C4E74B;
+        Wed, 15 Nov 2023 20:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081139;
-        bh=P94SfTpQj6fnyaJKyLYkz6zFth775d1o7sqpTMbq2vI=;
+        s=korg; t=1700081485;
+        bh=ss2lifuWG+UAjIlduAH2wIWTLyYl5Z25kObBsdZ0/Sc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jpuDICWtcSqC8Ksvx3lk3G606U1gDe1EHn8Mco18QPAgCU4q1k8FxSytbE9iKuDtc
-         7V+I26cSYjj4GR97FH7O+tXISfIFa5ibIduOy4/UL0kBudte0sQaCgTJAiXfgwxUi2
-         7+SQMfucjQESIuaOWBoHF6Ho9pMNaPqnh852K8P0=
+        b=X42SkkAMcye5vXUbrTbpMEMMcb9+fPQkm0TWn8tmC4vXWS3dJ+6FVj2ZsUat8wCwc
+         E+zWiEd4eE8FSDXeYtwR9t1aRO0JmtJ6Ztz5ge9Td+hBfS/udRp9k12Eo6ViGVWFZ7
+         ShT29Kwn+QyR8SXEWKy2t9JGK5BsCMgY7XPLXmVI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 62/88] pcmcia: cs: fix possible hung task and memory leak pccardd()
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 182/244] dmaengine: pxa_dma: Remove an erroneous BUG_ON() in pxad_free_desc()
 Date:   Wed, 15 Nov 2023 15:36:14 -0500
-Message-ID: <20231115191429.848666847@linuxfoundation.org>
+Message-ID: <20231115203559.302199612@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit e3ea1b4847e49234e691c0d66bf030bd65bb7f2b ]
+[ Upstream commit 83c761f568733277ce1f7eb9dc9e890649c29a8c ]
 
-If device_register() returns error in pccardd(), it leads two issues:
+If pxad_alloc_desc() fails on the first dma_pool_alloc() call, then
+sw_desc->nb_desc is zero.
+In such a case pxad_free_desc() is called and it will BUG_ON().
 
-1. The socket_released has never been completed, it will block
-   pcmcia_unregister_socket(), because of waiting for completion
-   of socket_released.
-2. The device name allocated by dev_set_name() is leaked.
+Remove this erroneous BUG_ON().
 
-Fix this two issues by calling put_device() when device_register() fails.
-socket_released can be completed in pcmcia_release_socket(), the name can
-be freed in kobject_cleanup().
+It is also useless, because if "sw_desc->nb_desc == 0", then, on the first
+iteration of the for loop, i is -1 and the loop will not be executed.
+(both i and sw_desc->nb_desc are 'int')
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Fixes: a57e16cf0333 ("dmaengine: pxa: add pxa dmaengine driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/c8fc5563c9593c914fde41f0f7d1489a21b45a9a.1696676782.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/cs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/dma/pxa_dma.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pcmcia/cs.c b/drivers/pcmcia/cs.c
-index 182e5ef4ab83d..e99ef7b745aeb 100644
---- a/drivers/pcmcia/cs.c
-+++ b/drivers/pcmcia/cs.c
-@@ -608,6 +608,7 @@ static int pccardd(void *__skt)
- 		dev_warn(&skt->dev, "PCMCIA: unable to register socket\n");
- 		skt->thread = NULL;
- 		complete(&skt->thread_done);
-+		put_device(&skt->dev);
- 		return 0;
- 	}
- 	ret = pccard_sysfs_add_socket(&skt->dev);
+diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
+index e613ace79ea83..2731dc27f9d71 100644
+--- a/drivers/dma/pxa_dma.c
++++ b/drivers/dma/pxa_dma.c
+@@ -722,7 +722,6 @@ static void pxad_free_desc(struct virt_dma_desc *vd)
+ 	dma_addr_t dma;
+ 	struct pxad_desc_sw *sw_desc = to_pxad_sw_desc(vd);
+ 
+-	BUG_ON(sw_desc->nb_desc == 0);
+ 	for (i = sw_desc->nb_desc - 1; i >= 0; i--) {
+ 		if (i > 0)
+ 			dma = sw_desc->hw_desc[i - 1]->ddadr;
 -- 
 2.42.0
 
