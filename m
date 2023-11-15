@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF19E7ECE6A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23FA77ECBF8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235097AbjKOTm6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41090 "EHLO
+        id S233295AbjKOTZj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:25:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235094AbjKOTm5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:57 -0500
+        with ESMTP id S233252AbjKOTZe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 235C4B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DBDC433C7;
-        Wed, 15 Nov 2023 19:42:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 000FB1A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4B3C433CA;
+        Wed, 15 Nov 2023 19:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077373;
-        bh=GZI2haIOwFIuqHAP/gwfLHkclO2rFjmUNRZfSUx4830=;
+        s=korg; t=1700076330;
+        bh=iileZQtYK2Yx4isq9wHAg2j9AHY0nIt5jelxtZGMg3w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s7VytITCvxA4kAauKVkZByZthyCbMezLWbs/IH6mHNoM/Fm0sMwumzfiAySWxx+PK
-         lBG5uzwCdN8rPAJeTw+2EkhE8PFMXrCDjx/fD9+IEVF0A7La62rB0s84XPa9GOvkeF
-         pO523SVbpFgP9W+aBRTUlmMXF500frg93sWYwqwA=
+        b=wMgG9DCzczR9jWnuX/ld5/RKAe5HnEIfLWpZV7P2RYRXmuGjypnmKKg3mk8dnDklV
+         I5KgPjD3rKYl6+TiZVWOuhaQbP0FUHXK5yuofj547e1kZpl19sgDgN1Vo+DaLo9i6B
+         /k6ASeCEZKdrYa4Bq/nDszCNU89lAAEY1o7lcKUc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Maxim Schwalm <maxim.schwalm@gmail.com>
-Subject: [PATCH 6.6 237/603] drm/bridge: tc358768: Rename dsibclk to hsbyteclk
+        patches@lists.linux.dev,
+        Lalith Rajendran <lalithkraj@chromium.org>,
+        Tzung-Bi Shih <tzungbi@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 198/550] platform/chrome: cros_ec_lpc: Separate host command and irq disable
 Date:   Wed, 15 Nov 2023 14:13:02 -0500
-Message-ID: <20231115191629.598032484@linuxfoundation.org>
+Message-ID: <20231115191614.496484097@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,190 +51,266 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Lalith Rajendran <lalithkraj@chromium.org>
 
-[ Upstream commit 699cf62a7d4550759f4a50e614b1952f93de4783 ]
+[ Upstream commit 47ea0ddb1f5604ba3496baa19110aec6a3151f2e ]
 
-The Toshiba documentation talks about HSByteClk when referring to the
-DSI HS byte clock, whereas the driver uses 'dsibclk' name. Also, in a
-few places the driver calculates the byte clock from the DSI clock, even
-if the byte clock is already available in a variable.
+Both cros host command and irq disable were moved to suspend
+prepare stage from late suspend recently. This is causing EC
+to report MKBP event timeouts during suspend stress testing.
+When the MKBP event timeouts happen during suspend, subsequent
+wakeup of AP by EC using MKBP doesn't happen properly. Move the
+irq disabling part back to late suspend stage which is a general
+suggestion from the suspend kernel documentaiton to do irq
+disable as late as possible.
 
-To align the driver with the documentation, change the 'dsibclk'
-variable to 'hsbyteclk'. This also make it easier to visually separate
-'dsibclk' and 'dsiclk' variables.
-
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-9-31725f008a50@ideasonboard.com
-Stable-dep-of: f1dabbe64506 ("drm/bridge: tc358768: Fix tc358768_ns_to_cnt()")
+Fixes: 4b9abbc132b8 ("platform/chrome: cros_ec_lpc: Move host command to prepare/complete")
+Signed-off-by: Lalith Rajendran <lalithkraj@chromium.org>
+Link: https://lore.kernel.org/r/20231027160221.v4.1.I1725c3ed27eb7cd9836904e49e8bfa9fb0200a97@changeid
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 48 +++++++++++++++----------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ drivers/platform/chrome/cros_ec.c     | 116 +++++++++++++++++++++-----
+ drivers/platform/chrome/cros_ec.h     |   4 +
+ drivers/platform/chrome/cros_ec_lpc.c |  22 ++++-
+ 3 files changed, 116 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index d909590ab31b8..0388093f703cc 100644
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -604,7 +604,7 @@ static int tc358768_setup_pll(struct tc358768_priv *priv,
+diff --git a/drivers/platform/chrome/cros_ec.c b/drivers/platform/chrome/cros_ec.c
+index 8b79492203825..f61f4c7a7b82b 100644
+--- a/drivers/platform/chrome/cros_ec.c
++++ b/drivers/platform/chrome/cros_ec.c
+@@ -320,17 +320,8 @@ void cros_ec_unregister(struct cros_ec_device *ec_dev)
+ EXPORT_SYMBOL(cros_ec_unregister);
  
- 	dev_dbg(priv->dev, "PLL: refclk %lu, fbd %u, prd %u, frs %u\n",
- 		clk_get_rate(priv->refclk), fbd, prd, frs);
--	dev_dbg(priv->dev, "PLL: pll_clk: %u, DSIClk %u, DSIByteClk %u\n",
-+	dev_dbg(priv->dev, "PLL: pll_clk: %u, DSIClk %u, HSByteClk %u\n",
- 		priv->dsiclk * 2, priv->dsiclk, priv->dsiclk / 4);
- 	dev_dbg(priv->dev, "PLL: pclk %u (panel: %u)\n",
- 		tc358768_pll_to_pclk(priv, priv->dsiclk * 2),
-@@ -646,8 +646,8 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 	u32 val, val2, lptxcnt, hact, data_type;
- 	s32 raw_val;
- 	const struct drm_display_mode *mode;
--	u32 dsibclk_nsk, dsiclk_nsk, ui_nsk;
--	u32 dsiclk, dsibclk, video_start;
-+	u32 hsbyteclk_nsk, dsiclk_nsk, ui_nsk;
-+	u32 dsiclk, hsbyteclk, video_start;
- 	const u32 internal_delay = 40;
- 	int ret, i;
- 	struct videomode vm;
-@@ -678,7 +678,7 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 	drm_display_mode_to_videomode(mode, &vm);
+ #ifdef CONFIG_PM_SLEEP
+-/**
+- * cros_ec_suspend() - Handle a suspend operation for the ChromeOS EC device.
+- * @ec_dev: Device to suspend.
+- *
+- * This can be called by drivers to handle a suspend event.
+- *
+- * Return: 0 on success or negative error code.
+- */
+-int cros_ec_suspend(struct cros_ec_device *ec_dev)
++static void cros_ec_send_suspend_event(struct cros_ec_device *ec_dev)
+ {
+-	struct device *dev = ec_dev->dev;
+ 	int ret;
+ 	u8 sleep_event;
  
- 	dsiclk = priv->dsiclk;
--	dsibclk = dsiclk / 4;
-+	hsbyteclk = dsiclk / 4;
+@@ -342,7 +333,26 @@ int cros_ec_suspend(struct cros_ec_device *ec_dev)
+ 	if (ret < 0)
+ 		dev_dbg(ec_dev->dev, "Error %d sending suspend event to ec\n",
+ 			ret);
++}
  
- 	/* Data Format Control Register */
- 	val = BIT(2) | BIT(1) | BIT(0); /* rdswap_en | dsitx_en | txdt_en */
-@@ -730,67 +730,67 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 		tc358768_write(priv, TC358768_D0W_CNTRL + i * 4, 0x0000);
++/**
++ * cros_ec_suspend_prepare() - Handle a suspend prepare operation for the ChromeOS EC device.
++ * @ec_dev: Device to suspend.
++ *
++ * This can be called by drivers to handle a suspend prepare stage of suspend.
++ *
++ * Return: 0 always.
++ */
++int cros_ec_suspend_prepare(struct cros_ec_device *ec_dev)
++{
++	cros_ec_send_suspend_event(ec_dev);
++	return 0;
++}
++EXPORT_SYMBOL(cros_ec_suspend_prepare);
++
++static void cros_ec_disable_irq(struct cros_ec_device *ec_dev)
++{
++	struct device *dev = ec_dev->dev;
+ 	if (device_may_wakeup(dev))
+ 		ec_dev->wake_enabled = !enable_irq_wake(ec_dev->irq);
+ 	else
+@@ -350,7 +360,35 @@ int cros_ec_suspend(struct cros_ec_device *ec_dev)
  
- 	/* DSI Timings */
--	dsibclk_nsk = (u32)div_u64((u64)1000000000 * TC358768_PRECISION,
--				  dsibclk);
-+	hsbyteclk_nsk = (u32)div_u64((u64)1000000000 * TC358768_PRECISION,
-+				  hsbyteclk);
- 	dsiclk_nsk = (u32)div_u64((u64)1000000000 * TC358768_PRECISION, dsiclk);
- 	ui_nsk = dsiclk_nsk / 2;
- 	dev_dbg(dev, "dsiclk_nsk: %u\n", dsiclk_nsk);
- 	dev_dbg(dev, "ui_nsk: %u\n", ui_nsk);
--	dev_dbg(dev, "dsibclk_nsk: %u\n", dsibclk_nsk);
-+	dev_dbg(dev, "hsbyteclk_nsk: %u\n", hsbyteclk_nsk);
+ 	disable_irq(ec_dev->irq);
+ 	ec_dev->suspended = true;
++}
  
- 	/* LP11 > 100us for D-PHY Rx Init */
--	val = tc358768_ns_to_cnt(100 * 1000, dsibclk_nsk) - 1;
-+	val = tc358768_ns_to_cnt(100 * 1000, hsbyteclk_nsk) - 1;
- 	dev_dbg(dev, "LINEINITCNT: %u\n", val);
- 	tc358768_write(priv, TC358768_LINEINITCNT, val);
++/**
++ * cros_ec_suspend_late() - Handle a suspend late operation for the ChromeOS EC device.
++ * @ec_dev: Device to suspend.
++ *
++ * This can be called by drivers to handle a suspend late stage of suspend.
++ *
++ * Return: 0 always.
++ */
++int cros_ec_suspend_late(struct cros_ec_device *ec_dev)
++{
++	cros_ec_disable_irq(ec_dev);
++	return 0;
++}
++EXPORT_SYMBOL(cros_ec_suspend_late);
++
++/**
++ * cros_ec_suspend() - Handle a suspend operation for the ChromeOS EC device.
++ * @ec_dev: Device to suspend.
++ *
++ * This can be called by drivers to handle a suspend event.
++ *
++ * Return: 0 always.
++ */
++int cros_ec_suspend(struct cros_ec_device *ec_dev)
++{
++	cros_ec_send_suspend_event(ec_dev);
++	cros_ec_disable_irq(ec_dev);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(cros_ec_suspend);
+@@ -369,22 +407,11 @@ static void cros_ec_report_events_during_suspend(struct cros_ec_device *ec_dev)
+ 	}
+ }
  
- 	/* LPTimeCnt > 50ns */
--	val = tc358768_ns_to_cnt(50, dsibclk_nsk) - 1;
-+	val = tc358768_ns_to_cnt(50, hsbyteclk_nsk) - 1;
- 	lptxcnt = val;
- 	dev_dbg(dev, "LPTXTIMECNT: %u\n", val);
- 	tc358768_write(priv, TC358768_LPTXTIMECNT, val);
+-/**
+- * cros_ec_resume() - Handle a resume operation for the ChromeOS EC device.
+- * @ec_dev: Device to resume.
+- *
+- * This can be called by drivers to handle a resume event.
+- *
+- * Return: 0 on success or negative error code.
+- */
+-int cros_ec_resume(struct cros_ec_device *ec_dev)
++static void cros_ec_send_resume_event(struct cros_ec_device *ec_dev)
+ {
+ 	int ret;
+ 	u8 sleep_event;
  
- 	/* 38ns < TCLK_PREPARE < 95ns */
--	val = tc358768_ns_to_cnt(65, dsibclk_nsk) - 1;
-+	val = tc358768_ns_to_cnt(65, hsbyteclk_nsk) - 1;
- 	dev_dbg(dev, "TCLK_PREPARECNT %u\n", val);
- 	/* TCLK_PREPARE + TCLK_ZERO > 300ns */
- 	val2 = tc358768_ns_to_cnt(300 - tc358768_to_ns(2 * ui_nsk),
--				  dsibclk_nsk) - 2;
-+				  hsbyteclk_nsk) - 2;
- 	dev_dbg(dev, "TCLK_ZEROCNT %u\n", val2);
- 	val |= val2 << 8;
- 	tc358768_write(priv, TC358768_TCLK_HEADERCNT, val);
+-	ec_dev->suspended = false;
+-	enable_irq(ec_dev->irq);
+-
+ 	sleep_event = (!IS_ENABLED(CONFIG_ACPI) || pm_suspend_via_firmware()) ?
+ 		      HOST_SLEEP_EVENT_S3_RESUME :
+ 		      HOST_SLEEP_EVENT_S0IX_RESUME;
+@@ -393,6 +420,24 @@ int cros_ec_resume(struct cros_ec_device *ec_dev)
+ 	if (ret < 0)
+ 		dev_dbg(ec_dev->dev, "Error %d sending resume event to ec\n",
+ 			ret);
++}
++
++/**
++ * cros_ec_resume_complete() - Handle a resume complete operation for the ChromeOS EC device.
++ * @ec_dev: Device to resume.
++ *
++ * This can be called by drivers to handle a resume complete stage of resume.
++ */
++void cros_ec_resume_complete(struct cros_ec_device *ec_dev)
++{
++	cros_ec_send_resume_event(ec_dev);
++}
++EXPORT_SYMBOL(cros_ec_resume_complete);
++
++static void cros_ec_enable_irq(struct cros_ec_device *ec_dev)
++{
++	ec_dev->suspended = false;
++	enable_irq(ec_dev->irq);
  
- 	/* TCLK_TRAIL > 60ns AND TEOT <= 105 ns + 12*UI */
--	raw_val = tc358768_ns_to_cnt(60 + tc358768_to_ns(2 * ui_nsk), dsibclk_nsk) - 5;
-+	raw_val = tc358768_ns_to_cnt(60 + tc358768_to_ns(2 * ui_nsk), hsbyteclk_nsk) - 5;
- 	val = clamp(raw_val, 0, 127);
- 	dev_dbg(dev, "TCLK_TRAILCNT: %u\n", val);
- 	tc358768_write(priv, TC358768_TCLK_TRAILCNT, val);
+ 	if (ec_dev->wake_enabled)
+ 		disable_irq_wake(ec_dev->irq);
+@@ -402,8 +447,35 @@ int cros_ec_resume(struct cros_ec_device *ec_dev)
+ 	 * suspend. This way the clients know what to do with them.
+ 	 */
+ 	cros_ec_report_events_during_suspend(ec_dev);
++}
  
- 	/* 40ns + 4*UI < THS_PREPARE < 85ns + 6*UI */
- 	val = 50 + tc358768_to_ns(4 * ui_nsk);
--	val = tc358768_ns_to_cnt(val, dsibclk_nsk) - 1;
-+	val = tc358768_ns_to_cnt(val, hsbyteclk_nsk) - 1;
- 	dev_dbg(dev, "THS_PREPARECNT %u\n", val);
- 	/* THS_PREPARE + THS_ZERO > 145ns + 10*UI */
--	raw_val = tc358768_ns_to_cnt(145 - tc358768_to_ns(3 * ui_nsk), dsibclk_nsk) - 10;
-+	raw_val = tc358768_ns_to_cnt(145 - tc358768_to_ns(3 * ui_nsk), hsbyteclk_nsk) - 10;
- 	val2 = clamp(raw_val, 0, 127);
- 	dev_dbg(dev, "THS_ZEROCNT %u\n", val2);
- 	val |= val2 << 8;
- 	tc358768_write(priv, TC358768_THS_HEADERCNT, val);
++/**
++ * cros_ec_resume_early() - Handle a resume early operation for the ChromeOS EC device.
++ * @ec_dev: Device to resume.
++ *
++ * This can be called by drivers to handle a resume early stage of resume.
++ *
++ * Return: 0 always.
++ */
++int cros_ec_resume_early(struct cros_ec_device *ec_dev)
++{
++	cros_ec_enable_irq(ec_dev);
++	return 0;
++}
++EXPORT_SYMBOL(cros_ec_resume_early);
  
- 	/* TWAKEUP > 1ms in lptxcnt steps */
--	val = tc358768_ns_to_cnt(1020000, dsibclk_nsk);
-+	val = tc358768_ns_to_cnt(1020000, hsbyteclk_nsk);
- 	val = val / (lptxcnt + 1) - 1;
- 	dev_dbg(dev, "TWAKEUP: %u\n", val);
- 	tc358768_write(priv, TC358768_TWAKEUP, val);
++/**
++ * cros_ec_resume() - Handle a resume operation for the ChromeOS EC device.
++ * @ec_dev: Device to resume.
++ *
++ * This can be called by drivers to handle a resume event.
++ *
++ * Return: 0 always.
++ */
++int cros_ec_resume(struct cros_ec_device *ec_dev)
++{
++	cros_ec_enable_irq(ec_dev);
++	cros_ec_send_resume_event(ec_dev);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(cros_ec_resume);
+diff --git a/drivers/platform/chrome/cros_ec.h b/drivers/platform/chrome/cros_ec.h
+index bbca0096868ac..566332f487892 100644
+--- a/drivers/platform/chrome/cros_ec.h
++++ b/drivers/platform/chrome/cros_ec.h
+@@ -14,7 +14,11 @@ int cros_ec_register(struct cros_ec_device *ec_dev);
+ void cros_ec_unregister(struct cros_ec_device *ec_dev);
  
- 	/* TCLK_POSTCNT > 60ns + 52*UI */
- 	val = tc358768_ns_to_cnt(60 + tc358768_to_ns(52 * ui_nsk),
--				 dsibclk_nsk) - 3;
-+				 hsbyteclk_nsk) - 3;
- 	dev_dbg(dev, "TCLK_POSTCNT: %u\n", val);
- 	tc358768_write(priv, TC358768_TCLK_POSTCNT, val);
+ int cros_ec_suspend(struct cros_ec_device *ec_dev);
++int cros_ec_suspend_late(struct cros_ec_device *ec_dev);
++int cros_ec_suspend_prepare(struct cros_ec_device *ec_dev);
+ int cros_ec_resume(struct cros_ec_device *ec_dev);
++int cros_ec_resume_early(struct cros_ec_device *ec_dev);
++void cros_ec_resume_complete(struct cros_ec_device *ec_dev);
  
- 	/* max(60ns + 4*UI, 8*UI) < THS_TRAILCNT < 105ns + 12*UI */
- 	raw_val = tc358768_ns_to_cnt(60 + tc358768_to_ns(18 * ui_nsk),
--				     dsibclk_nsk) - 4;
-+				     hsbyteclk_nsk) - 4;
- 	val = clamp(raw_val, 0, 15);
- 	dev_dbg(dev, "THS_TRAILCNT: %u\n", val);
- 	tc358768_write(priv, TC358768_THS_TRAILCNT, val);
-@@ -804,11 +804,11 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 		       (mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS) ? 0 : BIT(0));
+ irqreturn_t cros_ec_irq_thread(int irq, void *data);
  
- 	/* TXTAGOCNT[26:16] RXTASURECNT[10:0] */
--	val = tc358768_to_ns((lptxcnt + 1) * dsibclk_nsk * 4);
--	val = tc358768_ns_to_cnt(val, dsibclk_nsk) / 4 - 1;
-+	val = tc358768_to_ns((lptxcnt + 1) * hsbyteclk_nsk * 4);
-+	val = tc358768_ns_to_cnt(val, hsbyteclk_nsk) / 4 - 1;
- 	dev_dbg(dev, "TXTAGOCNT: %u\n", val);
--	val2 = tc358768_ns_to_cnt(tc358768_to_ns((lptxcnt + 1) * dsibclk_nsk),
--				  dsibclk_nsk) - 2;
-+	val2 = tc358768_ns_to_cnt(tc358768_to_ns((lptxcnt + 1) * hsbyteclk_nsk),
-+				  hsbyteclk_nsk) - 2;
- 	dev_dbg(dev, "RXTASURECNT: %u\n", val2);
- 	val = val << 16 | val2;
- 	tc358768_write(priv, TC358768_BTACNTRL1, val);
-@@ -831,13 +831,13 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+diff --git a/drivers/platform/chrome/cros_ec_lpc.c b/drivers/platform/chrome/cros_ec_lpc.c
+index 356572452898d..42e1770887fb0 100644
+--- a/drivers/platform/chrome/cros_ec_lpc.c
++++ b/drivers/platform/chrome/cros_ec_lpc.c
+@@ -549,22 +549,36 @@ MODULE_DEVICE_TABLE(dmi, cros_ec_lpc_dmi_table);
+ static int cros_ec_lpc_prepare(struct device *dev)
+ {
+ 	struct cros_ec_device *ec_dev = dev_get_drvdata(dev);
+-
+-	return cros_ec_suspend(ec_dev);
++	return cros_ec_suspend_prepare(ec_dev);
+ }
  
- 		/* hsw * byteclk * ndl / pclk */
- 		val = (u32)div_u64(vm.hsync_len *
--				   ((u64)priv->dsiclk / 4) * priv->dsi_lanes,
-+				   (u64)hsbyteclk * priv->dsi_lanes,
- 				   vm.pixelclock);
- 		tc358768_write(priv, TC358768_DSI_HSW, val);
+ static void cros_ec_lpc_complete(struct device *dev)
+ {
+ 	struct cros_ec_device *ec_dev = dev_get_drvdata(dev);
+-	cros_ec_resume(ec_dev);
++	cros_ec_resume_complete(ec_dev);
++}
++
++static int cros_ec_lpc_suspend_late(struct device *dev)
++{
++	struct cros_ec_device *ec_dev = dev_get_drvdata(dev);
++
++	return cros_ec_suspend_late(ec_dev);
++}
++
++static int cros_ec_lpc_resume_early(struct device *dev)
++{
++	struct cros_ec_device *ec_dev = dev_get_drvdata(dev);
++
++	return cros_ec_resume_early(ec_dev);
+ }
+ #endif
  
- 		/* hbp * byteclk * ndl / pclk */
- 		val = (u32)div_u64(vm.hback_porch *
--				   ((u64)priv->dsiclk / 4) * priv->dsi_lanes,
-+				   (u64)hsbyteclk * priv->dsi_lanes,
- 				   vm.pixelclock);
- 		tc358768_write(priv, TC358768_DSI_HBPR, val);
- 	} else {
-@@ -856,7 +856,7 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+ static const struct dev_pm_ops cros_ec_lpc_pm_ops = {
+ #ifdef CONFIG_PM_SLEEP
+ 	.prepare = cros_ec_lpc_prepare,
+-	.complete = cros_ec_lpc_complete
++	.complete = cros_ec_lpc_complete,
+ #endif
++	SET_LATE_SYSTEM_SLEEP_PM_OPS(cros_ec_lpc_suspend_late, cros_ec_lpc_resume_early)
+ };
  
- 		/* (hsw + hbp) * byteclk * ndl / pclk */
- 		val = (u32)div_u64((vm.hsync_len + vm.hback_porch) *
--				   ((u64)priv->dsiclk / 4) * priv->dsi_lanes,
-+				   (u64)hsbyteclk * priv->dsi_lanes,
- 				   vm.pixelclock);
- 		tc358768_write(priv, TC358768_DSI_HSW, val);
- 
+ static struct platform_driver cros_ec_lpc_driver = {
 -- 
 2.42.0
 
