@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55D367ED18F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:02:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92FF47ED176
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:01:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344218AbjKOUCe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:02:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33528 "EHLO
+        id S1344169AbjKOUBs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:01:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344242AbjKOUCa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:02:30 -0500
+        with ESMTP id S1344174AbjKOUBr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:01:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AE85197
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:02:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB424C433CC;
-        Wed, 15 Nov 2023 20:02:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9092CDD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:01:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1888FC433CA;
+        Wed, 15 Nov 2023 20:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078541;
-        bh=ZSnzh2u25LsA6nKXTOFSlbM4lJXYnVtdqyiVVj04rik=;
+        s=korg; t=1700078503;
+        bh=gu0FWH7G1v6rA8vp4bbL6qXP2eIvoKRpeU3Dg5rrIUk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rdOx+fnvzxWIyAZgYmUvo9thEJr+6DBeOIoLGomHFNmR2vaEUNDrUiTst5MjmK55E
-         1oZi7mAFgEZPtRP6qbPf7h9Ak2QMbBv+iKWlmI/AA7L/GcZHUcvsy3RZf8APL7nf7f
-         tinkKi/1iVt6/PCczu9V4136ebFfjuqV2B3lDnTw=
+        b=XCPxemkgVBmJrQkhRvWupHEgo3Q4Y0X4pn1sV50nkdaxx/z428qOEZmOBnaa5VteR
+         vEBc/ZN630oVg83u0fEJTGmy79yJ7/4OyUEvjo81MNoatSZ/TRO4XpL2ge5t22z1E5
+         8msq9U/2B2ZE0JldxOwJhi8SFNOaI00eN08yOPDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Roman Bacik <roman.bacik@broadcom.com>,
+        Ray Jui <ray.jui@broadcom.com>, Wolfram Sang <wsa@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 361/379] r8169: respect userspace disabling IFF_MULTICAST
-Date:   Wed, 15 Nov 2023 14:27:16 -0500
-Message-ID: <20231115192706.512897891@linuxfoundation.org>
+Subject: [PATCH 6.1 362/379] i2c: iproc: handle invalid slave state
+Date:   Wed, 15 Nov 2023 14:27:17 -0500
+Message-ID: <20231115192706.575332697@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -54,40 +54,198 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Roman Bacik <roman.bacik@broadcom.com>
 
-[ Upstream commit 8999ce4cfc87e61b4143ec2e7b93d8e92e11fa7f ]
+[ Upstream commit ba15a14399c262f91ce30c19fcbdc952262dd1be ]
 
-So far we ignore the setting of IFF_MULTICAST. Fix this and clear bit
-AcceptMulticast if IFF_MULTICAST isn't set.
+Add the code to handle an invalid state when both bits S_RX_EVENT
+(indicating a transaction) and S_START_BUSY (indicating the end
+of transaction - transition of START_BUSY from 1 to 0) are set in
+the interrupt status register during a slave read.
 
-Note: Based on the implementations I've seen it doesn't seem to be 100% clear
-what a driver is supposed to do if IFF_ALLMULTI is set but IFF_MULTICAST
-is not. This patch is based on the understanding that IFF_MULTICAST has
-precedence.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/4a57ba02-d52d-4369-9f14-3565e6c1f7dc@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Roman Bacik <roman.bacik@broadcom.com>
+Fixes: 1ca1b4516088 ("i2c: iproc: handle Master aborted error")
+Acked-by: Ray Jui <ray.jui@broadcom.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-bcm-iproc.c | 133 ++++++++++++++++-------------
+ 1 file changed, 75 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index c56d3538889b6..d14706265d9cb 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2512,6 +2512,8 @@ static void rtl_set_rx_mode(struct net_device *dev)
+diff --git a/drivers/i2c/busses/i2c-bcm-iproc.c b/drivers/i2c/busses/i2c-bcm-iproc.c
+index 30a2a3200bed9..86a080f24d8a2 100644
+--- a/drivers/i2c/busses/i2c-bcm-iproc.c
++++ b/drivers/i2c/busses/i2c-bcm-iproc.c
+@@ -316,26 +316,44 @@ static void bcm_iproc_i2c_slave_init(
+ 	iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+ }
  
- 	if (dev->flags & IFF_PROMISC) {
- 		rx_mode |= AcceptAllPhys;
-+	} else if (!(dev->flags & IFF_MULTICAST)) {
-+		rx_mode &= ~AcceptMulticast;
- 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
- 		   dev->flags & IFF_ALLMULTI ||
- 		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
+-static void bcm_iproc_i2c_check_slave_status(
+-	struct bcm_iproc_i2c_dev *iproc_i2c)
++static bool bcm_iproc_i2c_check_slave_status
++	(struct bcm_iproc_i2c_dev *iproc_i2c, u32 status)
+ {
+ 	u32 val;
++	bool recover = false;
+ 
+-	val = iproc_i2c_rd_reg(iproc_i2c, S_CMD_OFFSET);
+-	/* status is valid only when START_BUSY is cleared after it was set */
+-	if (val & BIT(S_CMD_START_BUSY_SHIFT))
+-		return;
++	/* check slave transmit status only if slave is transmitting */
++	if (!iproc_i2c->slave_rx_only) {
++		val = iproc_i2c_rd_reg(iproc_i2c, S_CMD_OFFSET);
++		/* status is valid only when START_BUSY is cleared */
++		if (!(val & BIT(S_CMD_START_BUSY_SHIFT))) {
++			val = (val >> S_CMD_STATUS_SHIFT) & S_CMD_STATUS_MASK;
++			if (val == S_CMD_STATUS_TIMEOUT ||
++			    val == S_CMD_STATUS_MASTER_ABORT) {
++				dev_warn(iproc_i2c->device,
++					 (val == S_CMD_STATUS_TIMEOUT) ?
++					 "slave random stretch time timeout\n" :
++					 "Master aborted read transaction\n");
++				recover = true;
++			}
++		}
++	}
++
++	/* RX_EVENT is not valid when START_BUSY is set */
++	if ((status & BIT(IS_S_RX_EVENT_SHIFT)) &&
++	    (status & BIT(IS_S_START_BUSY_SHIFT))) {
++		dev_warn(iproc_i2c->device, "Slave aborted read transaction\n");
++		recover = true;
++	}
+ 
+-	val = (val >> S_CMD_STATUS_SHIFT) & S_CMD_STATUS_MASK;
+-	if (val == S_CMD_STATUS_TIMEOUT || val == S_CMD_STATUS_MASTER_ABORT) {
+-		dev_err(iproc_i2c->device, (val == S_CMD_STATUS_TIMEOUT) ?
+-			"slave random stretch time timeout\n" :
+-			"Master aborted read transaction\n");
++	if (recover) {
+ 		/* re-initialize i2c for recovery */
+ 		bcm_iproc_i2c_enable_disable(iproc_i2c, false);
+ 		bcm_iproc_i2c_slave_init(iproc_i2c, true);
+ 		bcm_iproc_i2c_enable_disable(iproc_i2c, true);
+ 	}
++
++	return recover;
+ }
+ 
+ static void bcm_iproc_i2c_slave_read(struct bcm_iproc_i2c_dev *iproc_i2c)
+@@ -420,48 +438,6 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
+ 	u32 val;
+ 	u8 value;
+ 
+-	/*
+-	 * Slave events in case of master-write, master-write-read and,
+-	 * master-read
+-	 *
+-	 * Master-write     : only IS_S_RX_EVENT_SHIFT event
+-	 * Master-write-read: both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
+-	 *                    events
+-	 * Master-read      : both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
+-	 *                    events or only IS_S_RD_EVENT_SHIFT
+-	 *
+-	 * iproc has a slave rx fifo size of 64 bytes. Rx fifo full interrupt
+-	 * (IS_S_RX_FIFO_FULL_SHIFT) will be generated when RX fifo becomes
+-	 * full. This can happen if Master issues write requests of more than
+-	 * 64 bytes.
+-	 */
+-	if (status & BIT(IS_S_RX_EVENT_SHIFT) ||
+-	    status & BIT(IS_S_RD_EVENT_SHIFT) ||
+-	    status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
+-		/* disable slave interrupts */
+-		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
+-		val &= ~iproc_i2c->slave_int_mask;
+-		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+-
+-		if (status & BIT(IS_S_RD_EVENT_SHIFT))
+-			/* Master-write-read request */
+-			iproc_i2c->slave_rx_only = false;
+-		else
+-			/* Master-write request only */
+-			iproc_i2c->slave_rx_only = true;
+-
+-		/* schedule tasklet to read data later */
+-		tasklet_schedule(&iproc_i2c->slave_rx_tasklet);
+-
+-		/*
+-		 * clear only IS_S_RX_EVENT_SHIFT and
+-		 * IS_S_RX_FIFO_FULL_SHIFT interrupt.
+-		 */
+-		val = BIT(IS_S_RX_EVENT_SHIFT);
+-		if (status & BIT(IS_S_RX_FIFO_FULL_SHIFT))
+-			val |= BIT(IS_S_RX_FIFO_FULL_SHIFT);
+-		iproc_i2c_wr_reg(iproc_i2c, IS_OFFSET, val);
+-	}
+ 
+ 	if (status & BIT(IS_S_TX_UNDERRUN_SHIFT)) {
+ 		iproc_i2c->tx_underrun++;
+@@ -493,8 +469,9 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
+ 		 * less than PKT_LENGTH bytes were output on the SMBUS
+ 		 */
+ 		iproc_i2c->slave_int_mask &= ~BIT(IE_S_TX_UNDERRUN_SHIFT);
+-		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET,
+-				 iproc_i2c->slave_int_mask);
++		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
++		val &= ~BIT(IE_S_TX_UNDERRUN_SHIFT);
++		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+ 
+ 		/* End of SMBUS for Master Read */
+ 		val = BIT(S_TX_WR_STATUS_SHIFT);
+@@ -515,9 +492,49 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
+ 				 BIT(IS_S_START_BUSY_SHIFT));
+ 	}
+ 
+-	/* check slave transmit status only if slave is transmitting */
+-	if (!iproc_i2c->slave_rx_only)
+-		bcm_iproc_i2c_check_slave_status(iproc_i2c);
++	/* if the controller has been reset, immediately return from the ISR */
++	if (bcm_iproc_i2c_check_slave_status(iproc_i2c, status))
++		return true;
++
++	/*
++	 * Slave events in case of master-write, master-write-read and,
++	 * master-read
++	 *
++	 * Master-write     : only IS_S_RX_EVENT_SHIFT event
++	 * Master-write-read: both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
++	 *                    events
++	 * Master-read      : both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
++	 *                    events or only IS_S_RD_EVENT_SHIFT
++	 *
++	 * iproc has a slave rx fifo size of 64 bytes. Rx fifo full interrupt
++	 * (IS_S_RX_FIFO_FULL_SHIFT) will be generated when RX fifo becomes
++	 * full. This can happen if Master issues write requests of more than
++	 * 64 bytes.
++	 */
++	if (status & BIT(IS_S_RX_EVENT_SHIFT) ||
++	    status & BIT(IS_S_RD_EVENT_SHIFT) ||
++	    status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
++		/* disable slave interrupts */
++		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
++		val &= ~iproc_i2c->slave_int_mask;
++		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
++
++		if (status & BIT(IS_S_RD_EVENT_SHIFT))
++			/* Master-write-read request */
++			iproc_i2c->slave_rx_only = false;
++		else
++			/* Master-write request only */
++			iproc_i2c->slave_rx_only = true;
++
++		/* schedule tasklet to read data later */
++		tasklet_schedule(&iproc_i2c->slave_rx_tasklet);
++
++		/* clear IS_S_RX_FIFO_FULL_SHIFT interrupt */
++		if (status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
++			val = BIT(IS_S_RX_FIFO_FULL_SHIFT);
++			iproc_i2c_wr_reg(iproc_i2c, IS_OFFSET, val);
++		}
++	}
+ 
+ 	return true;
+ }
 -- 
 2.42.0
 
