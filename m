@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F4B47ECDF2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19F307ECFD3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234721AbjKOTj2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42434 "EHLO
+        id S235420AbjKOTvI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234759AbjKOTj1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:27 -0500
+        with ESMTP id S235426AbjKOTvF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F09C1A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF0FC433C8;
-        Wed, 15 Nov 2023 19:39:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F169512C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A10EC433C8;
+        Wed, 15 Nov 2023 19:51:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077162;
-        bh=kSIji8XtWpXBoqFGG753CTbJsq9QlPD5yuiF0qr1LEw=;
+        s=korg; t=1700077861;
+        bh=8VSbfxyUz40qL+vDBX5IoI299OPQFn6ochjr+m7PxV8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PX8rkqFX61nZfT31gzJqwe2sXocYBc0CxVFT194s8M7y7qSwzbeiuJE+2l1WduvGF
-         AdMTQwKEW6ulXvDK9FeCh1jYVYIs30AFfcFKmU9z/vtjNO1r47YxdcKlMvt0Aezg0L
-         s7RANjgl8iWBAthbpA6zhdVXm6r/FF9eCag9ayik=
+        b=yltCMM+eYUdL6PXcVa1fepZe+jxX3vBjSmvlMwHz0s88/QfLn2vfDdM2pSNY1j2ny
+         GvdA0N91++rLlfuZcN/6o664hSBZ8EEV5wVe8SHHmgV34wL/y8MUzzhOfxyI7lX8wJ
+         lT18NVLGQH3Z1XZ9p2WfJBWzDgd6O7b6HiNQzL1Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roman Bacik <roman.bacik@broadcom.com>,
-        Ray Jui <ray.jui@broadcom.com>, Wolfram Sang <wsa@kernel.org>,
+        patches@lists.linux.dev,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Wojciech Drewek <wojciech.drewek@intel.com>,
+        Aniruddha Paul <aniruddha.paul@intel.com>,
+        Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 525/550] i2c: iproc: handle invalid slave state
+Subject: [PATCH 6.6 564/603] ice: Fix VF-VF filter rules in switchdev mode
 Date:   Wed, 15 Nov 2023 14:18:29 -0500
-Message-ID: <20231115191637.334324391@linuxfoundation.org>
+Message-ID: <20231115191650.622848471@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,202 +54,193 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Bacik <roman.bacik@broadcom.com>
+From: Aniruddha Paul <aniruddha.paul@intel.com>
 
-[ Upstream commit ba15a14399c262f91ce30c19fcbdc952262dd1be ]
+[ Upstream commit 8b3c8c55ccbc02920b0ae6601c66df24f0d833bd ]
 
-Add the code to handle an invalid state when both bits S_RX_EVENT
-(indicating a transaction) and S_START_BUSY (indicating the end
-of transaction - transition of START_BUSY from 1 to 0) are set in
-the interrupt status register during a slave read.
+Any packet leaving VSI i.e VF's VSI is considered as
+egress traffic by HW, thus failing to match the added
+rule.
 
-Signed-off-by: Roman Bacik <roman.bacik@broadcom.com>
-Fixes: 1ca1b4516088 ("i2c: iproc: handle Master aborted error")
-Acked-by: Ray Jui <ray.jui@broadcom.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Mark the direction for redirect rules as below:
+1. VF-VF - Egress
+2. Uplink-VF - Ingress
+3. VF-Uplink - Egress
+4. Link_Partner-Uplink - Ingress
+5. Link_Partner-VF - Ingress
+
+Fixes: 0960a27bd479 ("ice: Add direction metadata")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Aniruddha Paul <aniruddha.paul@intel.com>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-bcm-iproc.c | 133 ++++++++++++++++-------------
- 1 file changed, 75 insertions(+), 58 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_tc_lib.c | 90 ++++++++++++++-------
+ 1 file changed, 62 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-bcm-iproc.c b/drivers/i2c/busses/i2c-bcm-iproc.c
-index 05c80680dff47..68438d4e5d733 100644
---- a/drivers/i2c/busses/i2c-bcm-iproc.c
-+++ b/drivers/i2c/busses/i2c-bcm-iproc.c
-@@ -316,26 +316,44 @@ static void bcm_iproc_i2c_slave_init(
- 	iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+index 37b54db91df27..0e75fc6b3c060 100644
+--- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
+@@ -630,32 +630,61 @@ bool ice_is_tunnel_supported(struct net_device *dev)
+ 	return ice_tc_tun_get_type(dev) != TNL_LAST;
  }
  
--static void bcm_iproc_i2c_check_slave_status(
--	struct bcm_iproc_i2c_dev *iproc_i2c)
-+static bool bcm_iproc_i2c_check_slave_status
-+	(struct bcm_iproc_i2c_dev *iproc_i2c, u32 status)
+-static int
+-ice_eswitch_tc_parse_action(struct ice_tc_flower_fltr *fltr,
+-			    struct flow_action_entry *act)
++static bool ice_tc_is_dev_uplink(struct net_device *dev)
++{
++	return netif_is_ice(dev) || ice_is_tunnel_supported(dev);
++}
++
++static int ice_tc_setup_redirect_action(struct net_device *filter_dev,
++					struct ice_tc_flower_fltr *fltr,
++					struct net_device *target_dev)
  {
- 	u32 val;
-+	bool recover = false;
+ 	struct ice_repr *repr;
  
--	val = iproc_i2c_rd_reg(iproc_i2c, S_CMD_OFFSET);
--	/* status is valid only when START_BUSY is cleared after it was set */
--	if (val & BIT(S_CMD_START_BUSY_SHIFT))
--		return;
-+	/* check slave transmit status only if slave is transmitting */
-+	if (!iproc_i2c->slave_rx_only) {
-+		val = iproc_i2c_rd_reg(iproc_i2c, S_CMD_OFFSET);
-+		/* status is valid only when START_BUSY is cleared */
-+		if (!(val & BIT(S_CMD_START_BUSY_SHIFT))) {
-+			val = (val >> S_CMD_STATUS_SHIFT) & S_CMD_STATUS_MASK;
-+			if (val == S_CMD_STATUS_TIMEOUT ||
-+			    val == S_CMD_STATUS_MASTER_ABORT) {
-+				dev_warn(iproc_i2c->device,
-+					 (val == S_CMD_STATUS_TIMEOUT) ?
-+					 "slave random stretch time timeout\n" :
-+					 "Master aborted read transaction\n");
-+				recover = true;
-+			}
-+		}
++	fltr->action.fltr_act = ICE_FWD_TO_VSI;
++
++	if (ice_is_port_repr_netdev(filter_dev) &&
++	    ice_is_port_repr_netdev(target_dev)) {
++		repr = ice_netdev_to_repr(target_dev);
++
++		fltr->dest_vsi = repr->src_vsi;
++		fltr->direction = ICE_ESWITCH_FLTR_EGRESS;
++	} else if (ice_is_port_repr_netdev(filter_dev) &&
++		   ice_tc_is_dev_uplink(target_dev)) {
++		repr = ice_netdev_to_repr(filter_dev);
++
++		fltr->dest_vsi = repr->src_vsi->back->switchdev.uplink_vsi;
++		fltr->direction = ICE_ESWITCH_FLTR_EGRESS;
++	} else if (ice_tc_is_dev_uplink(filter_dev) &&
++		   ice_is_port_repr_netdev(target_dev)) {
++		repr = ice_netdev_to_repr(target_dev);
++
++		fltr->dest_vsi = repr->src_vsi;
++		fltr->direction = ICE_ESWITCH_FLTR_INGRESS;
++	} else {
++		NL_SET_ERR_MSG_MOD(fltr->extack,
++				   "Unsupported netdevice in switchdev mode");
++		return -EINVAL;
 +	}
 +
-+	/* RX_EVENT is not valid when START_BUSY is set */
-+	if ((status & BIT(IS_S_RX_EVENT_SHIFT)) &&
-+	    (status & BIT(IS_S_START_BUSY_SHIFT))) {
-+		dev_warn(iproc_i2c->device, "Slave aborted read transaction\n");
-+		recover = true;
-+	}
- 
--	val = (val >> S_CMD_STATUS_SHIFT) & S_CMD_STATUS_MASK;
--	if (val == S_CMD_STATUS_TIMEOUT || val == S_CMD_STATUS_MASTER_ABORT) {
--		dev_err(iproc_i2c->device, (val == S_CMD_STATUS_TIMEOUT) ?
--			"slave random stretch time timeout\n" :
--			"Master aborted read transaction\n");
-+	if (recover) {
- 		/* re-initialize i2c for recovery */
- 		bcm_iproc_i2c_enable_disable(iproc_i2c, false);
- 		bcm_iproc_i2c_slave_init(iproc_i2c, true);
- 		bcm_iproc_i2c_enable_disable(iproc_i2c, true);
- 	}
++	return 0;
++}
 +
-+	return recover;
- }
++static int ice_eswitch_tc_parse_action(struct net_device *filter_dev,
++				       struct ice_tc_flower_fltr *fltr,
++				       struct flow_action_entry *act)
++{
++	int err;
++
+ 	switch (act->id) {
+ 	case FLOW_ACTION_DROP:
+ 		fltr->action.fltr_act = ICE_DROP_PACKET;
+ 		break;
  
- static void bcm_iproc_i2c_slave_read(struct bcm_iproc_i2c_dev *iproc_i2c)
-@@ -420,48 +438,6 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
- 	u32 val;
- 	u8 value;
- 
--	/*
--	 * Slave events in case of master-write, master-write-read and,
--	 * master-read
--	 *
--	 * Master-write     : only IS_S_RX_EVENT_SHIFT event
--	 * Master-write-read: both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
--	 *                    events
--	 * Master-read      : both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
--	 *                    events or only IS_S_RD_EVENT_SHIFT
--	 *
--	 * iproc has a slave rx fifo size of 64 bytes. Rx fifo full interrupt
--	 * (IS_S_RX_FIFO_FULL_SHIFT) will be generated when RX fifo becomes
--	 * full. This can happen if Master issues write requests of more than
--	 * 64 bytes.
--	 */
--	if (status & BIT(IS_S_RX_EVENT_SHIFT) ||
--	    status & BIT(IS_S_RD_EVENT_SHIFT) ||
--	    status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
--		/* disable slave interrupts */
--		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
--		val &= ~iproc_i2c->slave_int_mask;
--		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+ 	case FLOW_ACTION_REDIRECT:
+-		fltr->action.fltr_act = ICE_FWD_TO_VSI;
 -
--		if (status & BIT(IS_S_RD_EVENT_SHIFT))
--			/* Master-write-read request */
--			iproc_i2c->slave_rx_only = false;
--		else
--			/* Master-write request only */
--			iproc_i2c->slave_rx_only = true;
+-		if (ice_is_port_repr_netdev(act->dev)) {
+-			repr = ice_netdev_to_repr(act->dev);
 -
--		/* schedule tasklet to read data later */
--		tasklet_schedule(&iproc_i2c->slave_rx_tasklet);
--
--		/*
--		 * clear only IS_S_RX_EVENT_SHIFT and
--		 * IS_S_RX_FIFO_FULL_SHIFT interrupt.
--		 */
--		val = BIT(IS_S_RX_EVENT_SHIFT);
--		if (status & BIT(IS_S_RX_FIFO_FULL_SHIFT))
--			val |= BIT(IS_S_RX_FIFO_FULL_SHIFT);
--		iproc_i2c_wr_reg(iproc_i2c, IS_OFFSET, val);
--	}
+-			fltr->dest_vsi = repr->src_vsi;
+-			fltr->direction = ICE_ESWITCH_FLTR_INGRESS;
+-		} else if (netif_is_ice(act->dev) ||
+-			   ice_is_tunnel_supported(act->dev)) {
+-			fltr->direction = ICE_ESWITCH_FLTR_EGRESS;
+-		} else {
+-			NL_SET_ERR_MSG_MOD(fltr->extack, "Unsupported netdevice in switchdev mode");
+-			return -EINVAL;
+-		}
++		err = ice_tc_setup_redirect_action(filter_dev, fltr, act->dev);
++		if (err)
++			return err;
  
- 	if (status & BIT(IS_S_TX_UNDERRUN_SHIFT)) {
- 		iproc_i2c->tx_underrun++;
-@@ -493,8 +469,9 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
- 		 * less than PKT_LENGTH bytes were output on the SMBUS
- 		 */
- 		iproc_i2c->slave_int_mask &= ~BIT(IE_S_TX_UNDERRUN_SHIFT);
--		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET,
--				 iproc_i2c->slave_int_mask);
-+		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
-+		val &= ~BIT(IE_S_TX_UNDERRUN_SHIFT);
-+		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
+ 		break;
  
- 		/* End of SMBUS for Master Read */
- 		val = BIT(S_TX_WR_STATUS_SHIFT);
-@@ -515,9 +492,49 @@ static bool bcm_iproc_i2c_slave_isr(struct bcm_iproc_i2c_dev *iproc_i2c,
- 				 BIT(IS_S_START_BUSY_SHIFT));
+@@ -696,10 +725,6 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
+ 		goto exit;
  	}
  
--	/* check slave transmit status only if slave is transmitting */
--	if (!iproc_i2c->slave_rx_only)
--		bcm_iproc_i2c_check_slave_status(iproc_i2c);
-+	/* if the controller has been reset, immediately return from the ISR */
-+	if (bcm_iproc_i2c_check_slave_status(iproc_i2c, status))
-+		return true;
-+
-+	/*
-+	 * Slave events in case of master-write, master-write-read and,
-+	 * master-read
-+	 *
-+	 * Master-write     : only IS_S_RX_EVENT_SHIFT event
-+	 * Master-write-read: both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
-+	 *                    events
-+	 * Master-read      : both IS_S_RX_EVENT_SHIFT and IS_S_RD_EVENT_SHIFT
-+	 *                    events or only IS_S_RD_EVENT_SHIFT
-+	 *
-+	 * iproc has a slave rx fifo size of 64 bytes. Rx fifo full interrupt
-+	 * (IS_S_RX_FIFO_FULL_SHIFT) will be generated when RX fifo becomes
-+	 * full. This can happen if Master issues write requests of more than
-+	 * 64 bytes.
-+	 */
-+	if (status & BIT(IS_S_RX_EVENT_SHIFT) ||
-+	    status & BIT(IS_S_RD_EVENT_SHIFT) ||
-+	    status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
-+		/* disable slave interrupts */
-+		val = iproc_i2c_rd_reg(iproc_i2c, IE_OFFSET);
-+		val &= ~iproc_i2c->slave_int_mask;
-+		iproc_i2c_wr_reg(iproc_i2c, IE_OFFSET, val);
-+
-+		if (status & BIT(IS_S_RD_EVENT_SHIFT))
-+			/* Master-write-read request */
-+			iproc_i2c->slave_rx_only = false;
-+		else
-+			/* Master-write request only */
-+			iproc_i2c->slave_rx_only = true;
-+
-+		/* schedule tasklet to read data later */
-+		tasklet_schedule(&iproc_i2c->slave_rx_tasklet);
-+
-+		/* clear IS_S_RX_FIFO_FULL_SHIFT interrupt */
-+		if (status & BIT(IS_S_RX_FIFO_FULL_SHIFT)) {
-+			val = BIT(IS_S_RX_FIFO_FULL_SHIFT);
-+			iproc_i2c_wr_reg(iproc_i2c, IS_OFFSET, val);
-+		}
-+	}
+-	/* egress traffic is always redirect to uplink */
+-	if (fltr->direction == ICE_ESWITCH_FLTR_EGRESS)
+-		fltr->dest_vsi = vsi->back->switchdev.uplink_vsi;
+-
+ 	rule_info.sw_act.fltr_act = fltr->action.fltr_act;
+ 	if (fltr->action.fltr_act != ICE_DROP_PACKET)
+ 		rule_info.sw_act.vsi_handle = fltr->dest_vsi->idx;
+@@ -713,13 +738,21 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
+ 	rule_info.flags_info.act_valid = true;
  
- 	return true;
- }
+ 	if (fltr->direction == ICE_ESWITCH_FLTR_INGRESS) {
++		/* Uplink to VF */
+ 		rule_info.sw_act.flag |= ICE_FLTR_RX;
+ 		rule_info.sw_act.src = hw->pf_id;
+ 		rule_info.flags_info.act = ICE_SINGLE_ACT_LB_ENABLE;
+-	} else {
++	} else if (fltr->direction == ICE_ESWITCH_FLTR_EGRESS &&
++		   fltr->dest_vsi == vsi->back->switchdev.uplink_vsi) {
++		/* VF to Uplink */
+ 		rule_info.sw_act.flag |= ICE_FLTR_TX;
+ 		rule_info.sw_act.src = vsi->idx;
+ 		rule_info.flags_info.act = ICE_SINGLE_ACT_LAN_ENABLE;
++	} else {
++		/* VF to VF */
++		rule_info.sw_act.flag |= ICE_FLTR_TX;
++		rule_info.sw_act.src = vsi->idx;
++		rule_info.flags_info.act = ICE_SINGLE_ACT_LB_ENABLE;
+ 	}
+ 
+ 	/* specify the cookie as filter_rule_id */
+@@ -1745,16 +1778,17 @@ ice_tc_parse_action(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr,
+ 
+ /**
+  * ice_parse_tc_flower_actions - Parse the actions for a TC filter
++ * @filter_dev: Pointer to device on which filter is being added
+  * @vsi: Pointer to VSI
+  * @cls_flower: Pointer to TC flower offload structure
+  * @fltr: Pointer to TC flower filter structure
+  *
+  * Parse the actions for a TC filter
+  */
+-static int
+-ice_parse_tc_flower_actions(struct ice_vsi *vsi,
+-			    struct flow_cls_offload *cls_flower,
+-			    struct ice_tc_flower_fltr *fltr)
++static int ice_parse_tc_flower_actions(struct net_device *filter_dev,
++				       struct ice_vsi *vsi,
++				       struct flow_cls_offload *cls_flower,
++				       struct ice_tc_flower_fltr *fltr)
+ {
+ 	struct flow_rule *rule = flow_cls_offload_flow_rule(cls_flower);
+ 	struct flow_action *flow_action = &rule->action;
+@@ -1769,7 +1803,7 @@ ice_parse_tc_flower_actions(struct ice_vsi *vsi,
+ 
+ 	flow_action_for_each(i, act, flow_action) {
+ 		if (ice_is_eswitch_mode_switchdev(vsi->back))
+-			err = ice_eswitch_tc_parse_action(fltr, act);
++			err = ice_eswitch_tc_parse_action(filter_dev, fltr, act);
+ 		else
+ 			err = ice_tc_parse_action(vsi, fltr, act);
+ 		if (err)
+@@ -1856,7 +1890,7 @@ ice_add_tc_fltr(struct net_device *netdev, struct ice_vsi *vsi,
+ 	if (err < 0)
+ 		goto err;
+ 
+-	err = ice_parse_tc_flower_actions(vsi, f, fltr);
++	err = ice_parse_tc_flower_actions(netdev, vsi, f, fltr);
+ 	if (err < 0)
+ 		goto err;
+ 
 -- 
 2.42.0
 
