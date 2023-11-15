@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 655F27ECC4D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:28:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFBDC7ECF0C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233796AbjKOT2C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:28:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54218 "EHLO
+        id S235243AbjKOTqG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:46:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233898AbjKOT2B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:28:01 -0500
+        with ESMTP id S235244AbjKOTqB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D24E1A8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A6FC433C8;
-        Wed, 15 Nov 2023 19:27:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB244D63
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCC3C433C7;
+        Wed, 15 Nov 2023 19:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076477;
-        bh=VZLK4T4FhtWtFBiy5WFXjbXuzWZ0vJMZQRWPQhSn2fo=;
+        s=korg; t=1700077555;
+        bh=AQiWfGYHhJS6rsPt7ANRCcvV8ggfvuLKoB8pmo0REV0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SCuOzKxWNUhuKD3DQuBj3zyknzqCBr4uMO9WfQ3iMdpGAV7dL1o/GJpnzsgdAIMzk
-         iwVtSgsOP9VllygB5Gx9XBTy+XTm++9sBMID9QLhgQlG88hSEp01onrXGuw2Mlqw49
-         GUc97AOFC0PsFN8XL4tN0US9+9jOa3DP2vQXH5zg=
+        b=wCVCydBa+CknDRPkThAJBJnGH1LhFyV0RdvVLUCfSjA8vI5ikCx6Qv0qvgdQBCBXp
+         tAN9zM1lh6cfQ9zJ2+PUoY2UvvNpevmpTRETvmVGGoZMLct4OalFz2XiPnj1JLYA25
+         P3nKgJPCbXWMWwI0qRPadXRzeGFejIYvF/5vTrLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Timur I. Davletshin" <timur.davletshin@gmail.com>,
-        Jo-Philipp Wich <jo@mein.io>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Tomas Glozar <tglozar@redhat.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 314/550] hwrng: geode - fix accessing registers
-Date:   Wed, 15 Nov 2023 14:14:58 -0500
-Message-ID: <20231115191622.595613707@linuxfoundation.org>
+Subject: [PATCH 6.6 354/603] nd_btt: Make BTT lanes preemptible
+Date:   Wed, 15 Nov 2023 14:14:59 -0500
+Message-ID: <20231115191638.033449420@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,60 +51,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Tomas Glozar <tglozar@redhat.com>
 
-[ Upstream commit 464bd8ec2f06707f3773676a1bd2c64832a3c805 ]
+[ Upstream commit 36c75ce3bd299878fd9b238e9803d3817ddafbf3 ]
 
-When the membase and pci_dev pointer were moved to a new struct in priv,
-the actual membase users were left untouched, and they started reading
-out arbitrary memory behind the struct instead of registers. This
-unfortunately turned the RNG into a constant number generator, depending
-on the content of what was at that offset.
+nd_region_acquire_lane uses get_cpu, which disables preemption. This is
+an issue on PREEMPT_RT kernels, since btt_write_pg and also
+nd_region_acquire_lane itself take a spin lock, resulting in BUG:
+sleeping function called from invalid context.
 
-To fix this, update geode_rng_data_{read,present}() to also get the
-membase via amd_geode_priv, and properly read from the right addresses
-again.
+Fix the issue by replacing get_cpu with smp_process_id and
+migrate_disable when needed. This makes BTT operations preemptible, thus
+permitting the use of spin_lock.
 
-Fixes: 9f6ec8dc574e ("hwrng: geode - Fix PCI device refcount leak")
-Reported-by: Timur I. Davletshin <timur.davletshin@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217882
-Tested-by: Timur I. Davletshin <timur.davletshin@gmail.com>
-Suggested-by: Jo-Philipp Wich <jo@mein.io>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+BUG example occurring when running ndctl tests on PREEMPT_RT kernel:
+
+BUG: sleeping function called from invalid context at
+kernel/locking/spinlock_rt.c:48
+in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 4903, name:
+libndctl
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+Preemption disabled at:
+[<ffffffffc1313db5>] nd_region_acquire_lane+0x15/0x90 [libnvdimm]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x8e/0xb0
+ __might_resched+0x19b/0x250
+ rt_spin_lock+0x4c/0x100
+ ? btt_write_pg+0x2d7/0x500 [nd_btt]
+ btt_write_pg+0x2d7/0x500 [nd_btt]
+ ? local_clock_noinstr+0x9/0xc0
+ btt_submit_bio+0x16d/0x270 [nd_btt]
+ __submit_bio+0x48/0x80
+ __submit_bio_noacct+0x7e/0x1e0
+ submit_bio_wait+0x58/0xb0
+ __blkdev_direct_IO_simple+0x107/0x240
+ ? inode_set_ctime_current+0x51/0x110
+ ? __pfx_submit_bio_wait_endio+0x10/0x10
+ blkdev_write_iter+0x1d8/0x290
+ vfs_write+0x237/0x330
+ ...
+ </TASK>
+
+Fixes: 5212e11fde4d ("nd_btt: atomic sector updates")
+Signed-off-by: Tomas Glozar <tglozar@redhat.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/geode-rng.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/nvdimm/region_devs.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/char/hw_random/geode-rng.c b/drivers/char/hw_random/geode-rng.c
-index 12fbe80918319..159baf00a8675 100644
---- a/drivers/char/hw_random/geode-rng.c
-+++ b/drivers/char/hw_random/geode-rng.c
-@@ -58,7 +58,8 @@ struct amd_geode_priv {
- 
- static int geode_rng_data_read(struct hwrng *rng, u32 *data)
+diff --git a/drivers/nvdimm/region_devs.c b/drivers/nvdimm/region_devs.c
+index 0a81f87f6f6c0..e2f1fb99707fc 100644
+--- a/drivers/nvdimm/region_devs.c
++++ b/drivers/nvdimm/region_devs.c
+@@ -939,7 +939,8 @@ unsigned int nd_region_acquire_lane(struct nd_region *nd_region)
  {
--	void __iomem *mem = (void __iomem *)rng->priv;
-+	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
-+	void __iomem *mem = priv->membase;
+ 	unsigned int cpu, lane;
  
- 	*data = readl(mem + GEODE_RNG_DATA_REG);
+-	cpu = get_cpu();
++	migrate_disable();
++	cpu = smp_processor_id();
+ 	if (nd_region->num_lanes < nr_cpu_ids) {
+ 		struct nd_percpu_lane *ndl_lock, *ndl_count;
  
-@@ -67,7 +68,8 @@ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
- 
- static int geode_rng_data_present(struct hwrng *rng, int wait)
+@@ -958,16 +959,15 @@ EXPORT_SYMBOL(nd_region_acquire_lane);
+ void nd_region_release_lane(struct nd_region *nd_region, unsigned int lane)
  {
--	void __iomem *mem = (void __iomem *)rng->priv;
-+	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
-+	void __iomem *mem = priv->membase;
- 	int data, i;
+ 	if (nd_region->num_lanes < nr_cpu_ids) {
+-		unsigned int cpu = get_cpu();
++		unsigned int cpu = smp_processor_id();
+ 		struct nd_percpu_lane *ndl_lock, *ndl_count;
  
- 	for (i = 0; i < 20; i++) {
+ 		ndl_count = per_cpu_ptr(nd_region->lane, cpu);
+ 		ndl_lock = per_cpu_ptr(nd_region->lane, lane);
+ 		if (--ndl_count->count == 0)
+ 			spin_unlock(&ndl_lock->lock);
+-		put_cpu();
+ 	}
+-	put_cpu();
++	migrate_enable();
+ }
+ EXPORT_SYMBOL(nd_region_release_lane);
+ 
 -- 
 2.42.0
 
