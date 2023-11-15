@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A0EB7ECCB5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50DDB7ECCB7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234141AbjKOTcW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:32:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58196 "EHLO
+        id S234154AbjKOTcX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234161AbjKOTcT (ORCPT
+        with ESMTP id S234116AbjKOTcT (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B78AD41
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C5BC433C7;
-        Wed, 15 Nov 2023 19:32:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E56FD55
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD5FC433C8;
+        Wed, 15 Nov 2023 19:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076721;
-        bh=FXX9J49ZgIuNEinikvoIBseF8qM7464G5en0HGG0QTg=;
+        s=korg; t=1700076724;
+        bh=4/jXY3fcJYyN+HC32/MHQMPHBo1D/ti1DbC1au+SCmU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DuREdTbjAQ+T+vCA0On/Me7KmGHlljBfp99SdBurZWPOSJQsjBcmDgoza3X6iRdki
-         AovnR6kNs//3ij+O8OjTfmasm3q6B9MLWsejYxtSaAHEvX+v2cUGrIZ0ck6YiwkziO
-         wnP6nn927YnpuyTD9X0Tg0RCS2tOcn6kZCz+M6kY=
+        b=Ww/MYWPBioahgWgAAmKXpaICjhj27LK9wRJjjfcLoAb+TGRF9eoXrimcDmKAeymTv
+         yuVgAHstR4SDlr2u9EPMUR4/9eBrVtLXn3Yftj4riMHyISIh/S6Igp18LCAw7gg0wp
+         rVbUbqsbl0WMAmE/nurFfKGN7SI0SYzesV/k6qwo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        patches@lists.linux.dev,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 401/550] misc: st_core: Do not call kfree_skb() under spin_lock_irqsave()
-Date:   Wed, 15 Nov 2023 14:16:25 -0500
-Message-ID: <20231115191628.634511284@linuxfoundation.org>
+Subject: [PATCH 6.5 402/550] tools: iio: iio_generic_buffer ensure alignment
+Date:   Wed, 15 Nov 2023 14:16:26 -0500
+Message-ID: <20231115191628.685379194@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -53,63 +55,63 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit 4d08c3d12b61022501989f9f071514d2d6f77c47 ]
+[ Upstream commit 2d3dff577dd0ea8fe9637a13822f7603c4a881c8 ]
 
-It is not allowed to call kfree_skb() from hardware interrupt
-context or with hardware interrupts being disabled.
-So replace kfree_skb() with dev_kfree_skb_irq() under
-spin_lock_irqsave(). Compile tested only.
+The iio_generic_buffer can return garbage values when the total size of
+scan data is not a multiple of the largest element in the scan. This can be
+demonstrated by reading a scan, consisting, for example of one 4-byte and
+one 2-byte element, where the 4-byte element is first in the buffer.
 
-Fixes: 53618cc1e51e ("Staging: sources for ST core")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20230823035020.1281892-1-ruanjinjie@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The IIO generic buffer code does not take into account the last two
+padding bytes that are needed to ensure that the 4-byte data for next
+scan is correctly aligned.
+
+Add the padding bytes required to align the next sample with the scan size.
+
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Fixes: e58537ccce73 ("staging: iio: update example application.")
+Link: https://lore.kernel.org/r/ZRvlm4ktNLu+qmlf@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/ti-st/st_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/iio/iio_generic_buffer.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/ti-st/st_core.c b/drivers/misc/ti-st/st_core.c
-index 01d2257deea46..1f2542dcba4de 100644
---- a/drivers/misc/ti-st/st_core.c
-+++ b/drivers/misc/ti-st/st_core.c
-@@ -15,6 +15,7 @@
- #include <linux/skbuff.h>
+diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+index 44bbf80f0cfdd..0d0a7a19d6f95 100644
+--- a/tools/iio/iio_generic_buffer.c
++++ b/tools/iio/iio_generic_buffer.c
+@@ -54,9 +54,12 @@ enum autochan {
+ static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
+ {
+ 	unsigned int bytes = 0;
+-	int i = 0;
++	int i = 0, max = 0;
++	unsigned int misalignment;
  
- #include <linux/ti_wilink_st.h>
-+#include <linux/netdevice.h>
- 
- extern void st_kim_recv(void *, const unsigned char *, long);
- void st_int_recv(void *, const unsigned char *, long);
-@@ -435,7 +436,7 @@ static void st_int_enqueue(struct st_data_s *st_gdata, struct sk_buff *skb)
- 	case ST_LL_AWAKE_TO_ASLEEP:
- 		pr_err("ST LL is illegal state(%ld),"
- 			   "purging received skb.", st_ll_getstate(st_gdata));
--		kfree_skb(skb);
-+		dev_kfree_skb_irq(skb);
- 		break;
- 	case ST_LL_ASLEEP:
- 		skb_queue_tail(&st_gdata->tx_waitq, skb);
-@@ -444,7 +445,7 @@ static void st_int_enqueue(struct st_data_s *st_gdata, struct sk_buff *skb)
- 	default:
- 		pr_err("ST LL is illegal state(%ld),"
- 			   "purging received skb.", st_ll_getstate(st_gdata));
--		kfree_skb(skb);
-+		dev_kfree_skb_irq(skb);
- 		break;
+ 	while (i < num_channels) {
++		if (channels[i].bytes > max)
++			max = channels[i].bytes;
+ 		if (bytes % channels[i].bytes == 0)
+ 			channels[i].location = bytes;
+ 		else
+@@ -66,6 +69,14 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
+ 		bytes = channels[i].location + channels[i].bytes;
+ 		i++;
  	}
++	/*
++	 * We want the data in next sample to also be properly aligned so
++	 * we'll add padding at the end if needed. Adding padding only
++	 * works for channel data which size is 2^n bytes.
++	 */
++	misalignment = bytes % max;
++	if (misalignment)
++		bytes += max - misalignment;
  
-@@ -498,7 +499,7 @@ void st_tx_wakeup(struct st_data_s *st_data)
- 				spin_unlock_irqrestore(&st_data->lock, flags);
- 				break;
- 			}
--			kfree_skb(skb);
-+			dev_kfree_skb_irq(skb);
- 			spin_unlock_irqrestore(&st_data->lock, flags);
- 		}
- 		/* if wake-up is set in another context- restart sending */
+ 	return bytes;
+ }
 -- 
 2.42.0
 
