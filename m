@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 923917ECCB4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC6497ECCB6
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234094AbjKOTcV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:32:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35892 "EHLO
+        id S234104AbjKOTcX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234141AbjKOTcD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:03 -0500
+        with ESMTP id S234178AbjKOTcT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CBC11B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3483AC433C9;
-        Wed, 15 Nov 2023 19:31:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 251F2D4B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92041C433CA;
+        Wed, 15 Nov 2023 19:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076719;
-        bh=xzYDLOre1aBVogJc1v1s63FGmUlv7+M2j/UgiRob7D8=;
+        s=korg; t=1700076722;
+        bh=pFrU8VHdAS+jedrk5VSa2ANUOiAgLpwy3CsZ3xX1KMs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xTa0zjqmjJJyyMrVlVWVhADNvfUoTZxzg0GzUaD8iU68To8s34jsiaBGKRF8VyF7V
-         hUil3+Ol/P+lHro6/hc70uNIWeTQaLn3OVMsmUaIwVJjKd+egY+6QTIlJvz1NX+RQH
-         bBANMNwUR6FgJA4K0fBPkeNxk97/SDnRDh884F3o=
+        b=ZySMaza4Gk3/XenoZByHrnjvqkV05Pi5LeITrS5DTT/fl2xsUXX0Fe0WnhOQU8xaE
+         2ESnHbhYdGXeSlwKzY5gL0YTYormMJ4eQhm7rnwNMN1tVoQKnaZdo8NMqeTHmJkbzn
+         2mJ8iceXMWSZEAGXCMlvhNoNAOjI9SlIImr3x1fs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yury Norov <yury.norov@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>, Mel Gorman <mgorman@suse.de>,
+        patches@lists.linux.dev, Leo Yu-Chi Liang <ycliang@andestech.com>,
+        Chengming Zhou <zhouchengming@bytedance.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/603] sched/topology: Fix sched_numa_find_nth_cpu() in non-NUMA case
-Date:   Wed, 15 Nov 2023 14:09:09 -0500
-Message-ID: <20231115191613.425390619@linuxfoundation.org>
+Subject: [PATCH 6.6 005/603] sched/fair: Fix cfs_rq_is_decayed() on !SMP
+Date:   Wed, 15 Nov 2023 14:09:10 -0500
+Message-ID: <20231115191613.495853090@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -54,39 +56,45 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yury Norov <yury.norov@gmail.com>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-[ Upstream commit 8ab63d418d4339d996f80d02a00dbce0aa3ff972 ]
+[ Upstream commit c0490bc9bb62d9376f3dd4ec28e03ca0fef97152 ]
 
-When CONFIG_NUMA is enabled, sched_numa_find_nth_cpu() searches for a
-CPU in sched_domains_numa_masks. The masks includes only online CPUs,
-so effectively offline CPUs are skipped.
+We don't need to maintain per-queue leaf_cfs_rq_list on !SMP, since
+it's used for cfs_rq load tracking & balancing on SMP.
 
-When CONFIG_NUMA is disabled, the fallback function should be consistent.
+But sched debug interface uses it to print per-cfs_rq stats.
 
-Fixes: cd7f55359c90 ("sched: add sched_numa_find_nth_cpu()")
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
+This patch fixes the !SMP version of cfs_rq_is_decayed(), so the
+per-queue leaf_cfs_rq_list is also maintained correctly on !SMP,
+to fix the warning in assert_list_leaf_cfs_rq().
+
+Fixes: 0a00a354644e ("sched/fair: Delete useless condition in tg_unthrottle_up()")
+Reported-by: Leo Yu-Chi Liang <ycliang@andestech.com>
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Link: https://lore.kernel.org/r/20230819141239.287290-5-yury.norov@gmail.com
+Tested-by: Leo Yu-Chi Liang <ycliang@andestech.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+Closes: https://lore.kernel.org/all/ZN87UsqkWcFLDxea@swlinux02/
+Link: https://lore.kernel.org/r/20230913132031.2242151-1-chengming.zhou@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/topology.h | 2 +-
+ kernel/sched/fair.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/topology.h b/include/linux/topology.h
-index fea32377f7c77..52f5850730b3e 100644
---- a/include/linux/topology.h
-+++ b/include/linux/topology.h
-@@ -251,7 +251,7 @@ extern const struct cpumask *sched_numa_hop_mask(unsigned int node, unsigned int
- #else
- static __always_inline int sched_numa_find_nth_cpu(const struct cpumask *cpus, int cpu, int node)
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index df348aa55d3c7..6af1d48d467ed 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -4932,7 +4932,7 @@ static inline void update_misfit_status(struct task_struct *p, struct rq *rq)
+ 
+ static inline bool cfs_rq_is_decayed(struct cfs_rq *cfs_rq)
  {
--	return cpumask_nth(cpu, cpus);
-+	return cpumask_nth_and(cpu, cpus, cpu_online_mask);
+-	return true;
++	return !cfs_rq->nr_running;
  }
  
- static inline const struct cpumask *
+ #define UPDATE_TG	0x0
 -- 
 2.42.0
 
