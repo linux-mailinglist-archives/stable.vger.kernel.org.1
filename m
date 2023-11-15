@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BE237ECB8E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD5A7ED2A3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230203AbjKOTXC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
+        id S233472AbjKOUmw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbjKOTXB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:01 -0500
+        with ESMTP id S234913AbjKOTkr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64191A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686F0C433C7;
-        Wed, 15 Nov 2023 19:22:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0CAAD51
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D46C433C9;
+        Wed, 15 Nov 2023 19:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076177;
-        bh=r9zRy3VQ6cF0XB8FDe2rHzUhGY5L9rxRwynMJJy1gWw=;
+        s=korg; t=1700077243;
+        bh=y6FDSGG7ap8JCePXVY4Edo9TnYNJzWJ8Nb2BplXKjzo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IvCMyURQEtkybvDWXHE/8q5SrVYjfGemk5n/88u1xW4h9o8hPyaKPNxacpVgxHS+9
-         tep/FByc4OmQb/icYBxy4cEz7a3RLbTR+Fm/PR1ZRH8sLMO13dLSyv+bc1aTmM8Jpm
-         ISjepTqqNOSG+BrSAakGxwGzosv66Uz45nkqEbOI=
+        b=CoimNHZNMsb7H+3UCvDT974EA2FmWFdaSZ0WCL4eAURvWHa+zzI61q3+SIG8ghSgu
+         dhkxULy3kBcByLJ+edN7zUed4fW6sQN2W1Z5TqOaYBQ4kNAyFdXZtvHVGlv/ACROtG
+         aait9ofHnxXqiwjHeQhH3LsOmqq74lcjQ/AD0io0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avraham Stern <avraham.stern@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 124/550] wifi: iwlwifi: mvm: fix removing pasn station for responder
-Date:   Wed, 15 Nov 2023 14:11:48 -0500
-Message-ID: <20231115191609.287588192@linuxfoundation.org>
+Subject: [PATCH 6.6 164/603] clk: qcom: mmcc-msm8998: Fix the SMMU GDSC
+Date:   Wed, 15 Nov 2023 14:11:49 -0500
+Message-ID: <20231115191624.541919166@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit ff2687612c21a87a58c76099f3d59f8db376b995 ]
+[ Upstream commit 1fc62c8347397faf4e18249e88ecd4470c0a5357 ]
 
-In case of MLD operation the station should be removed using the
-mld api.
+The SMMU GDSC doesn't have to be ALWAYS-ON and shouldn't feature the
+HW_CTRL flag (it's separate from hw_ctrl_addr).  In addition to that,
+it should feature a cxc entry for bimc_smmu_axi_clk and be marked as
+votable.
 
-Fixes: fd940de72d49 ("wifi: iwlwifi: mvm: FTM responder MLO support")
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230926110319.7eb353abb95c.I2b30be09b99f5a2379956e010bafaa465ff053ba@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix all of these issues.
+
+Fixes: d14b15b5931c ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-5-ba1b1fd9ee75@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/mmcc-msm8998.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-index b49781d1a07a7..10b9219b3bfd3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2022 Intel Corporation
-+ * Copyright (C) 2018-2023 Intel Corporation
-  */
- #include <net/cfg80211.h>
- #include <linux/etherdevice.h>
-@@ -302,7 +302,12 @@ static void iwl_mvm_resp_del_pasn_sta(struct iwl_mvm *mvm,
- 				      struct iwl_mvm_pasn_sta *sta)
- {
- 	list_del(&sta->list);
--	iwl_mvm_rm_sta_id(mvm, vif, sta->int_sta.sta_id);
-+
-+	if (iwl_mvm_has_mld_api(mvm->fw))
-+		iwl_mvm_mld_rm_sta_id(mvm, sta->int_sta.sta_id);
-+	else
-+		iwl_mvm_rm_sta_id(mvm, vif, sta->int_sta.sta_id);
-+
- 	iwl_mvm_dealloc_int_sta(mvm, &sta->int_sta);
- 	kfree(sta);
- }
+diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
+index b0b51adb73a54..1180e48c687ac 100644
+--- a/drivers/clk/qcom/mmcc-msm8998.c
++++ b/drivers/clk/qcom/mmcc-msm8998.c
+@@ -2610,11 +2610,13 @@ static struct gdsc camss_cpp_gdsc = {
+ static struct gdsc bimc_smmu_gdsc = {
+ 	.gdscr = 0xe020,
+ 	.gds_hw_ctrl = 0xe024,
++	.cxcs = (unsigned int []){ 0xe008 },
++	.cxc_count = 1,
+ 	.pd = {
+ 		.name = "bimc_smmu",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL | ALWAYS_ON,
++	.flags = VOTABLE,
+ };
+ 
+ static struct clk_regmap *mmcc_msm8998_clocks[] = {
 -- 
 2.42.0
 
