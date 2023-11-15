@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F418C7ED29B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 172737ECE77
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229490AbjKOUmq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:42:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49918 "EHLO
+        id S235103AbjKOTnS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233692AbjKOTZz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:55 -0500
+        with ESMTP id S235111AbjKOTnR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5C76D5E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B852C433C7;
-        Wed, 15 Nov 2023 19:25:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98CA39E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E8AEC433C7;
+        Wed, 15 Nov 2023 19:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076351;
-        bh=ynVQlHbNvcK0HM5M3fM+dzeiMSEZCtHkuvXQh821lns=;
+        s=korg; t=1700077394;
+        bh=ihucDC2Bd0+lnL4Qh1OYap97t9rylyGzH+eQV70ykYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OKFsnnukYGL7vkvYVWwITNEfwYCTiGQLK6mRdT86ZXqeBegHasgOra2YZb+GIFWio
-         gwoBuoP608ecEl/pOknCDNbzWV5/DbOckmPsJT78hg2Pe0pOkMDSvpqeuIyKVHoa/A
-         z+mCBlKiNd9xIKbbjiEqBHw2hyOZawRZ0ta80XG0=
+        b=GNXH57fP4kZbPZa/D1wkgX0O3aqEytiI4VxjAqq49sBL96ySwHGO3V4/cDdW4kQJA
+         XKcaGzH8kZCKBx9pMfE3LO93JIw/187p5i0nZGo9Gq7KXbk5ufWbjfjTHDvUTSnCIb
+         sg4QO/fq59y/Vh8naZIP6o2+rq/PTh2sHDZfKH9k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        David Heidelberg <david@ixit.cz>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 237/550] drm/amd/display: Bail from dm_check_crtc_cursor if no relevant change
+Subject: [PATCH 6.6 276/603] arm64: dts: qcom: sdm845: Fix PSCI power domain names
 Date:   Wed, 15 Nov 2023 14:13:41 -0500
-Message-ID: <20231115191617.137403688@linuxfoundation.org>
+Message-ID: <20231115191632.468116905@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,87 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michel Dänzer <mdaenzer@redhat.com>
+From: David Heidelberg <david@ixit.cz>
 
-[ Upstream commit bc0b79ce2050aa523c38c96b6d26340a96bfbdca ]
+[ Upstream commit a5f01673d3946e424091e6b8ff274716f9c21454 ]
 
-If no plane was newly enabled or changed scaling, there can be no new
-scaling mismatch with the cursor plane.
+The original commit hasn't been updated according to
+refactoring done in sdm845.dtsi.
 
-By not pulling non-cursor plane states into all atomic commits while
-the cursor plane is enabled, this avoids synchronizing all cursor plane
-changes to vertical blank, which caused the following IGT tests to fail:
-
-kms_cursor_legacy@cursor-vs-flip.*
-kms_cursor_legacy@flip-vs-cursor.*
-
-Fixes: 003048ddf44b ("drm/amd/display: Check all enabled planes in dm_check_crtc_cursor")
-Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: a1ade6cac5a2 ("arm64: dts: qcom: sdm845: Switch PSCI cpu idle states from PC to OSI")
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230912071205.11502-1-david@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 33 ++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index e465e9e56e672..573e27399c790 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -9872,10 +9872,12 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
- 				struct drm_crtc *crtc,
- 				struct drm_crtc_state *new_crtc_state)
- {
--	struct drm_plane *cursor = crtc->cursor, *underlying;
-+	struct drm_plane *cursor = crtc->cursor, *plane, *underlying;
-+	struct drm_plane_state *old_plane_state, *new_plane_state;
- 	struct drm_plane_state *new_cursor_state, *new_underlying_state;
- 	int i;
- 	int cursor_scale_w, cursor_scale_h, underlying_scale_w, underlying_scale_h;
-+	bool any_relevant_change = false;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi b/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
+index f86e7acdfd99f..c118d61f34dec 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
+@@ -144,15 +144,15 @@ panel_in_edp: endpoint {
+ };
  
- 	/* On DCE and DCN there is no dedicated hardware cursor plane. We get a
- 	 * cursor per pipe but it's going to inherit the scaling and
-@@ -9883,6 +9885,35 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
- 	 * blending properties match the underlying planes'.
- 	 */
+ &psci {
+-	/delete-node/ cpu0;
+-	/delete-node/ cpu1;
+-	/delete-node/ cpu2;
+-	/delete-node/ cpu3;
+-	/delete-node/ cpu4;
+-	/delete-node/ cpu5;
+-	/delete-node/ cpu6;
+-	/delete-node/ cpu7;
+-	/delete-node/ cpu-cluster0;
++	/delete-node/ power-domain-cpu0;
++	/delete-node/ power-domain-cpu1;
++	/delete-node/ power-domain-cpu2;
++	/delete-node/ power-domain-cpu3;
++	/delete-node/ power-domain-cpu4;
++	/delete-node/ power-domain-cpu5;
++	/delete-node/ power-domain-cpu6;
++	/delete-node/ power-domain-cpu7;
++	/delete-node/ power-domain-cluster;
+ };
  
-+	/* If no plane was enabled or changed scaling, no need to check again */
-+	for_each_oldnew_plane_in_state(state, plane, old_plane_state, new_plane_state, i) {
-+		int new_scale_w, new_scale_h, old_scale_w, old_scale_h;
+ &cpus {
+@@ -338,6 +338,8 @@ flash@0 {
+ 
+ 
+ &apps_rsc {
++	/delete-property/ power-domains;
 +
-+		if (!new_plane_state || !new_plane_state->fb || new_plane_state->crtc != crtc)
-+			continue;
-+
-+		if (!old_plane_state || !old_plane_state->fb || old_plane_state->crtc != crtc) {
-+			any_relevant_change = true;
-+			break;
-+		}
-+
-+		if (new_plane_state->fb == old_plane_state->fb &&
-+		    new_plane_state->crtc_w == old_plane_state->crtc_w &&
-+		    new_plane_state->crtc_h == old_plane_state->crtc_h)
-+			continue;
-+
-+		dm_get_plane_scale(new_plane_state, &new_scale_w, &new_scale_h);
-+		dm_get_plane_scale(old_plane_state, &old_scale_w, &old_scale_h);
-+
-+		if (new_scale_w != old_scale_w || new_scale_h != old_scale_h) {
-+			any_relevant_change = true;
-+			break;
-+		}
-+	}
-+
-+	if (!any_relevant_change)
-+		return 0;
-+
- 	new_cursor_state = drm_atomic_get_plane_state(state, cursor);
- 	if (IS_ERR(new_cursor_state))
- 		return PTR_ERR(new_cursor_state);
+ 	regulators-0 {
+ 		compatible = "qcom,pm8998-rpmh-regulators";
+ 		qcom,pmic-id = "a";
 -- 
 2.42.0
 
