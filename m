@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B0887ECF3B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FDE67ECC9C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235264AbjKOTrM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:47:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42232 "EHLO
+        id S234052AbjKOTbe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:31:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235263AbjKOTrL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:11 -0500
+        with ESMTP id S234050AbjKOTbd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A529B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35C4C433CB;
-        Wed, 15 Nov 2023 19:47:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E94B3A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3359BC433C9;
+        Wed, 15 Nov 2023 19:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077628;
-        bh=hgQWP0EFKNkVCLJrVpNliBJ4ghd4xqr7/VV0SySA7Oo=;
+        s=korg; t=1700076689;
+        bh=2TeOb49jBXU0GSHksUG5cxdXqZzxZOXzh1t8sQAqcC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zatbASYttKCL417pbPstFGf5X+/kkveiK+5C3IFjRxTe7UaE4E/L1g/WOQu/M2+zP
-         9ApEgjUS8CSnqzy8yrhz3nHWTIcIZfdO06JuSneHDeyqCuTIxJotsAYTjAem7wGNGJ
-         5qu4p+/ONiV7jG7WskSn7+7joGPoAZQM58XESpOU=
+        b=ByrTndlqTMXoUgZnyC+QNrFUElNu6MksAuciTPLWwca3Ork1fxwTH2MYKbSq7C0kh
+         Kp0V8CeJug7xDUot/hElrbZiZu2GKEPqh+ycB+nSkatHe6bNvohFdhdeJgLbJGTS6b
+         UH24VzS/ja1YXQBnEmYOYUj+M23S0hyTgphXPOhE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,12 +30,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Daniel Jordan <daniel.m.jordan@oracle.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 398/603] padata: Fix refcnt handling in padata_free_shell()
-Date:   Wed, 15 Nov 2023 14:15:43 -0500
-Message-ID: <20231115191640.600185662@linuxfoundation.org>
+Subject: [PATCH 6.5 360/550] padata: Fix refcnt handling in padata_free_shell()
+Date:   Wed, 15 Nov 2023 14:15:44 -0500
+Message-ID: <20231115191625.757645992@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,7 +51,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
