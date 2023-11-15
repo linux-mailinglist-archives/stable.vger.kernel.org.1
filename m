@@ -2,38 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9997ECCD5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEA467ECCD7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234178AbjKOTcv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:32:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56690 "EHLO
+        id S234155AbjKOTcy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234182AbjKOTcu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:50 -0500
+        with ESMTP id S234179AbjKOTcx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A2F11B6
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:47 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81314C433C7;
-        Wed, 15 Nov 2023 19:32:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2873B1A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D2DC433C9;
+        Wed, 15 Nov 2023 19:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076766;
-        bh=9BkapJbscFhR15wRZJTh+EqIVqt1IeBG3XsfoeTNCdM=;
+        s=korg; t=1700076769;
+        bh=zm2IymB5UicGTddR+DlRQ7+NOTPhpNDwPkAu6tDGQ3E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nOSHWjkbBFjl9v0VG2x2hxuQSB+qqpqfE64uogOauSk7V3wEmmLJv+epeDh9D0p6i
-         f4xvR6OkTkjVrQjkmBpFsFNmhf5kmr0zGKD1gqYzGexFt3XdUFN16fNHhck77MoHlc
-         jSmdQGVG6FmZ/BWYIkq7IL5gZTnEOtBaeAqzQyjs=
+        b=Vk7K9JCQO88QEWKh9uy3CzLjoj+iZc6JYmUFIdDUwENDmX0YmCRgQSvww5sLncMSV
+         dUkArMIvExrNhA4Xf3d966BQr/boKXGdHKIXMim9nQxYRYGJBpqFrVfZ7FYTmJaHAc
+         jOj0iiPyLEq8oo/KZykXJSqOzahMehiz8froFr/M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Derick Marks <derick.w.marks@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/603] ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window
-Date:   Wed, 15 Nov 2023 14:09:25 -0500
-Message-ID: <20231115191614.570321275@linuxfoundation.org>
+        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
+        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 021/603] cgroup/cpuset: Fix load balance state in update_partition_sd_lb()
+Date:   Wed, 15 Nov 2023 14:09:26 -0500
+Message-ID: <20231115191614.639316907@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -56,71 +53,58 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 8f1004679987302b155f14b966ca6d4335814fcb ]
+[ Upstream commit 6fcdb0183bf024a70abccb0439321c25891c708d ]
 
-Commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
-CFMWS not in SRAT") did not account for the case where the BIOS
-only partially describes a CFMWS Window in the SRAT. That means
-the omitted address ranges, of a partially described CFMWS Window,
-do not get assigned to a NUMA node.
+Commit a86ce68078b2 ("cgroup/cpuset: Extract out CS_CPU_EXCLUSIVE
+& CS_SCHED_LOAD_BALANCE handling") adds a new helper function
+update_partition_sd_lb() to update the load balance state of the
+cpuset. However the new load balance is determined by just looking at
+whether the cpuset is a valid isolated partition root or not.  That is
+not enough if the cpuset is not a valid partition root but its parent
+is in the isolated state (load balance off). Update the function to
+set the new state to be the same as its parent in this case like what
+has been done in commit c8c926200c55 ("cgroup/cpuset: Inherit parent's
+load balance state in v2").
 
-Replace the call to phys_to_target_node() with numa_add_memblks().
-Numa_add_memblks() searches an HPA range for existing memblk(s)
-and extends those memblk(s) to fill the entire CFMWS Window.
-
-Extending the existing memblks is a simple strategy that reuses
-SRAT defined proximity domains from part of a window to fill out
-the entire window, based on the knowledge* that all of a CFMWS
-window is of a similar performance class.
-
-*Note that this heuristic will evolve when CFMWS Windows present
-a wider range of characteristics. The extension of the proximity
-domain, implemented here, is likely a step in developing a more
-sophisticated performance profile in the future.
-
-There is no change in behavior when the SRAT does not describe
-the CFMWS Window at all. In that case, a new NUMA node with a
-single memblk covering the entire CFMWS Window is created.
-
-Fixes: fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
-Reported-by: Derick Marks <derick.w.marks@intel.com>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Tested-by: Derick Marks <derick.w.marks@intel.com>
-Link: https://lore.kernel.org/all/eaa0b7cffb0951a126223eef3cbe7b55b8300ad9.1689018477.git.alison.schofield%40intel.com
+Fixes: a86ce68078b2 ("cgroup/cpuset: Extract out CS_CPU_EXCLUSIVE & CS_SCHED_LOAD_BALANCE handling")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/numa/srat.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ kernel/cgroup/cpuset.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 1f4fc5f8a819d..12f330b0eac01 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -310,11 +310,16 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- 	start = cfmws->base_hpa;
- 	end = cfmws->base_hpa + cfmws->window_size;
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 58ec88efa4f82..4749e0c86c62c 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1304,13 +1304,23 @@ static int update_partition_exclusive(struct cpuset *cs, int new_prs)
+  *
+  * Changing load balance flag will automatically call
+  * rebuild_sched_domains_locked().
++ * This function is for cgroup v2 only.
+  */
+ static void update_partition_sd_lb(struct cpuset *cs, int old_prs)
+ {
+ 	int new_prs = cs->partition_root_state;
+-	bool new_lb = (new_prs != PRS_ISOLATED);
+ 	bool rebuild_domains = (new_prs > 0) || (old_prs > 0);
++	bool new_lb;
  
--	/* Skip if the SRAT already described the NUMA details for this HPA */
--	node = phys_to_target_node(start);
--	if (node != NUMA_NO_NODE)
 +	/*
-+	 * The SRAT may have already described NUMA details for all,
-+	 * or a portion of, this CFMWS HPA range. Extend the memblks
-+	 * found for any portion of the window to cover the entire
-+	 * window.
++	 * If cs is not a valid partition root, the load balance state
++	 * will follow its parent.
 +	 */
-+	if (!numa_fill_memblks(start, end))
- 		return 0;
- 
-+	/* No SRAT description. Create a new node. */
- 	node = acpi_map_pxm_to_node(*fake_pxm);
- 
- 	if (node == NUMA_NO_NODE) {
++	if (new_prs > 0) {
++		new_lb = (new_prs != PRS_ISOLATED);
++	} else {
++		new_lb = is_sched_load_balance(parent_cs(cs));
++	}
+ 	if (new_lb != !!is_sched_load_balance(cs)) {
+ 		rebuild_domains = true;
+ 		if (new_lb)
 -- 
 2.42.0
 
