@@ -2,93 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 195B17EBCFA
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 07:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB477EBD53
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 08:07:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229971AbjKOGT1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 01:19:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57742 "EHLO
+        id S234545AbjKOHHS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 02:07:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229551AbjKOGT0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 01:19:26 -0500
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67192E8
-        for <stable@vger.kernel.org>; Tue, 14 Nov 2023 22:19:23 -0800 (PST)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4SVY0R2gGGz9sjL;
-        Wed, 15 Nov 2023 07:19:19 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=owenh.net; s=MBO0001;
-        t=1700029159;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=0kqsb78qN/a3iPAlXT5iJSYiTM+E0/Epcwz/TQhJRiA=;
-        b=UPy5l5wNUBq0+JjXKb61Qnhcr7gqwmG4Nhh5apUKGyyYSIRfSScd3OaRPRZMC6EUgNDxHk
-        43wSOdEinsWdWAsnbbyUaLH4LyZsiaHITgmwWqfwuGp2DDOFh/w12aFtkanpKa+zQtd+72
-        Izc8OMtSahq1c1Z0avEvOfpViBOdNlpSzwn7hX2OCraYBOSZZs8voJXHDcAsI1Bpazy6hN
-        2cIez+g52P7zZaR3g8A+OVfcaY5JxnzjKXBpuZ8k6ztyCke3FhxxOIHcWlGHfWdPRZp6DF
-        aI1RCajc96jRP6whnzpUFZuuaEliYx0mOleDbU8tJ8eNHOoBpT5FHRXe0CULyA==
-Message-ID: <6b7a71b4-c8a2-46f4-a995-0c63e7745ca3@owenh.net>
-Date:   Wed, 15 Nov 2023 00:19:07 -0600
+        with ESMTP id S229551AbjKOHHR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 02:07:17 -0500
+Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9574EE9;
+        Tue, 14 Nov 2023 23:07:14 -0800 (PST)
+Received: by mail-oo1-xc2c.google.com with SMTP id 006d021491bc7-586753b0ab0so3575729eaf.0;
+        Tue, 14 Nov 2023 23:07:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700032034; x=1700636834; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=DD6loysLm1if0z26gUfJWR92/8dI2bMs4fySErE1LEY=;
+        b=GWViByNOB6QFa47gtiwgot+lcOC2McHU/geONAV6dDG5dydanxRUngS9lLTcRvqAbL
+         FptC+PJNItd/bIMJKjoDsZgP4TGQnx3mVu59RVWeqUd8MTd5GgX4uYFm/TN/gbmhB/ZI
+         4DmlkmODWyveOOem/MmROEr6iBT0BckkTQumj/8Hfs4wox7X0ytCIovPvF+8WnXqBsMN
+         QHALUi5HLt57LsTilQxc2MEwsnBfsFZorKg0dTfs/5/7glwJjg5Dk/7GbWBHtAGcUFZU
+         XJbI13DXnuj1q17N0yYpxVnnKZ4gCq/Rh5aSEjBgCXkpUA7VVDG80BhNBzI4v/4xAw1u
+         DWmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700032034; x=1700636834;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DD6loysLm1if0z26gUfJWR92/8dI2bMs4fySErE1LEY=;
+        b=vpQ0dK19hqAR+xKgOpHh6LmMU9VIM0FO7igVz2NDVF78tT7d1jkI5ZSm/KtuxSMXPN
+         9+rJDtmPq5G3AuDoKclrwDUAt+5PPf1mZR870UiIh3krezSlT/zioegWF5ibW4BVxe7I
+         sy0pYSt+64tWf7AdnUPa9jzoKpshqFrk0sVSzZdiSangNgL6EVs0AoIv2K251LNcO5PI
+         xh8hEj9C0wwpOcb+fD9OT4tn8yGn5J28isi9LwZP0S4mL3e4P9sU6iUrcWt/QDJvyDGQ
+         pWmbW3dRLAY4hL1/NdVz2//eg28CEU9ZeWYjW45DBAtz8x2rURjdjs1fxvD/qYF2vK99
+         W/kw==
+X-Gm-Message-State: AOJu0Yy6tDfgTyUqJy8NlZ5kulmo/ioKpWSqE4LpEwkl3RVpQ51erDhw
+        p4DdfGpqXaxnYGabtrtrgIZ5KjogatcdvUaB2wU=
+X-Google-Smtp-Source: AGHT+IGraImbABbVnYg6Ry57RVFnd3IqKf02szE055lgCefoqqyZvE2zfw+kuPwbsXcgZfPjjXz5Afh8lqooVZbQ9JU=
+X-Received: by 2002:a4a:305e:0:b0:58a:211:acf8 with SMTP id
+ z30-20020a4a305e000000b0058a0211acf8mr10912431ooz.7.1700032033893; Tue, 14
+ Nov 2023 23:07:13 -0800 (PST)
 MIME-Version: 1.0
-Subject: Re: [REGRESSION]: nouveau: Asynchronous wait on fence
-To:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        stable@vger.kernel.org
-Cc:     nouveau@lists.freedesktop.org, Karol Herbst <kherbst@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>,
-        Danilo Krummrich <dakr@redhat.com>,
-        dri-devel@lists.freedesktop.org
-References: <6f027566-c841-4415-bc85-ce11a5832b14@owenh.net>
- <5ecf0eac-a089-4da9-b76e-b45272c98393@leemhuis.info>
-Content-Language: en-US
-From:   "Owen T. Heisler" <writer@owenh.net>
-In-Reply-To: <5ecf0eac-a089-4da9-b76e-b45272c98393@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 4SVY0R2gGGz9sjL
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20231115033459.1228900-1-sashal@kernel.org> <20231115033459.1228900-2-sashal@kernel.org>
+In-Reply-To: <20231115033459.1228900-2-sashal@kernel.org>
+From:   Frediano Ziglio <freddy77@gmail.com>
+Date:   Wed, 15 Nov 2023 07:07:02 +0000
+Message-ID: <CAHt6W4cdQSXbBf4gO_jR-q-Q8SAonNDoQ0f2cO7LsnT__priWA@mail.gmail.com>
+Subject: Re: [Spice-devel] [PATCH AUTOSEL 6.5 2/6] drm/qxl: prevent memory leak
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        daniel@ffwll.ch, dri-devel@lists.freedesktop.org,
+        maarten.lankhorst@linux.intel.com, virtualization@lists.linux.dev,
+        Maxime Ripard <mripard@kernel.org>,
+        Zongmin Zhou <zhouzongmin@kylinos.cn>, kraxel@redhat.com,
+        tzimmermann@suse.de, spice-devel@lists.freedesktop.org,
+        Dave Airlie <airlied@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/31/23 04:18, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 28.10.23 04:46, Owen T. Heisler wrote:
->> #regzbot introduced: d386a4b54607cf6f76e23815c2c9a3abc1d66882
->> #regzbot link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/180
->>
->> ## Problem
->>
->> 1. Connect external display to DVI port on dock and run X with both
->>     displays in use.
->> 2. Wait hours or days.
->> 3. Suddenly the secondary Nvidia-connected display turns off and X stops
->>     responding to keyboard/mouse input. In *some* cases it is possible to
->>     switch to a virtual TTY with Ctrl+Alt+Fn and log in there.
+Il giorno mer 15 nov 2023 alle ore 06:57 Sasha Levin
+<sashal@kernel.org> ha scritto:
+>
+> From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+>
+> [ Upstream commit 0e8b9f258baed25f1c5672613699247c76b007b5 ]
+>
+> The allocated memory for qdev->dumb_heads should be released
+> in qxl_destroy_monitors_object before qxl suspend.
+> otherwise,qxl_create_monitors_object will be called to
 
-> You thus might want to check if the problem occurs with 6.6 -- and
-> ideally also check if reverting the culprit there fixes things for you.
+Minor, typo: otherwise -> Otherwise.
 
-Hi Thorsten and others,
+> reallocate memory for qdev->dumb_heads after qxl resume,
+> it will cause memory leak.
+>
+> Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+> Link: https://lore.kernel.org/r/20230801025309.4049813-1-zhouzongmin@kylinos.cn
+> Reviewed-by: Dave Airlie <airlied@redhat.com>
+> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/gpu/drm/qxl/qxl_display.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/qxl/qxl_display.c b/drivers/gpu/drm/qxl/qxl_display.c
+> index 6492a70e3c396..404b0483bb7cb 100644
+> --- a/drivers/gpu/drm/qxl/qxl_display.c
+> +++ b/drivers/gpu/drm/qxl/qxl_display.c
+> @@ -1229,6 +1229,9 @@ int qxl_destroy_monitors_object(struct qxl_device *qdev)
+>         if (!qdev->monitors_config_bo)
+>                 return 0;
+>
+> +       kfree(qdev->dumb_heads);
+> +       qdev->dumb_heads = NULL;
+> +
+>         qdev->monitors_config = NULL;
+>         qdev->ram_header->monitors_config = 0;
+>
 
-The problem also occurs with v6.6. Here is a decoded kernel log from an 
-untainted kernel:
-
-https://gitlab.freedesktop.org/drm/nouveau/uploads/c120faf09da46f9c74006df9f1d14442/async-wait-on-fence-180.log
-
-The culprit commit does not revert cleanly on v6.6. I have not yet 
-attempted to resolve the conflicts.
-
-I have also updated the bug description at
-<https://gitlab.freedesktop.org/drm/nouveau/-/issues/180>.
-
-Thanks,
-Owen
+Frediano
