@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97AB97ECE8B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DA597ECBFC
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235128AbjKOTnu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43982 "EHLO
+        id S233501AbjKOT0C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:26:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235135AbjKOTnt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:49 -0500
+        with ESMTP id S233509AbjKOTZq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE451A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B402C433C8;
-        Wed, 15 Nov 2023 19:43:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A62B1B6
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:42 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2809DC433C9;
+        Wed, 15 Nov 2023 19:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077425;
-        bh=sUal4L76m3nMwpWFE/qKjav/W8khWLqNIzeASff1caI=;
+        s=korg; t=1700076342;
+        bh=LCdbfv1oWqVcFQX7LQIJBzT/IeHrIgp+W/EgPtY8IZ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=17rE+ovEPbONIbPkcI/2UQg4b3Yhoqa0kEOeT0r+ET17kMUICYT2ANSgZyRFlcKb/
-         h45byqjCIF+zcyI0i7YBMXkBAcEurQ1JuO6AdmylDjnqsCpn3JB3zjuKX0oLojhc0j
-         dFtk4Weu8r3Ksic1LrRTZ4pKrOYAzzdec/Lkiq18=
+        b=uyQjlcZyhPcQKqvq9BhkQIVGEPsolOgH8OQczVfo+w2XcLi9Q1ZrZy0yXDNYaIIZg
+         +YD5rJmytMC7Zqs5j8o5/g3ujiKtMWTLHjUccocZpZlIIhEPJg2gXE3Adco3gKiM8U
+         ByUZzjmf5s5cpzIcSV7pf2YkhgYXR3Fh3O3QHu5o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 270/603] drivers/perf: hisi: use cpuhp_state_remove_instance_nocalls() for hisi_hns3_pmu uninit process
+        patches@lists.linux.dev, Alex Sierra <alex.sierra@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 231/550] drm/amdkfd: retry after EBUSY is returned from hmm_ranges_get_pages
 Date:   Wed, 15 Nov 2023 14:13:35 -0500
-Message-ID: <20231115191632.024679726@linuxfoundation.org>
+Message-ID: <20231115191616.739559575@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Chen <chenhao418@huawei.com>
+From: Alex Sierra <alex.sierra@amd.com>
 
-[ Upstream commit 50b560783f7f71790bcf70e9e9855155fb0af8c1 ]
+[ Upstream commit ebac9414a56a5f7c336db5f5c7cc34713b649407 ]
 
-When tearing down a 'hisi_hns3' PMU, we mistakenly run the CPU hotplug
-callbacks after the device has been unregistered, leading to fireworks
-when we try to execute empty function callbacks within the driver:
+if hmm_range_get_pages returns EBUSY error during
+svm_range_validate_and_map, within the context of a page fault
+interrupt. This should retry through svm_range_restore_pages
+callback. Therefore we treat this as EAGAIN error instead, and defer
+it to restore pages fallback.
 
-  | Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-  | CPU: 0 PID: 15 Comm: cpuhp/0 Tainted: G        W  O      5.12.0-rc4+ #1
-  | Hardware name:  , BIOS KpxxxFPGA 1P B600 V143 04/22/2021
-  | pstate: 80400009 (Nzcv daif +PAN -UAO -TCO BTYPE=--)
-  | pc : perf_pmu_migrate_context+0x98/0x38c
-  | lr : perf_pmu_migrate_context+0x94/0x38c
-  |
-  | Call trace:
-  |  perf_pmu_migrate_context+0x98/0x38c
-  |  hisi_hns3_pmu_offline_cpu+0x104/0x12c [hisi_hns3_pmu]
-
-Use cpuhp_state_remove_instance_nocalls() instead of
-cpuhp_state_remove_instance() so that the notifiers don't execute after
-the PMU device has been unregistered.
-
-Fixes: 66637ab137b4 ("drivers/perf: hisi: add driver for HNS3 PMU")
-Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20231019091352.998964-1-shaojijie@huawei.com
-[will: Rewrote commit message]
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Alex Sierra <alex.sierra@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: eb3c357bcb28 ("drm/amdkfd: Handle errors from svm validate and map")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hns3_pmu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/perf/hisilicon/hns3_pmu.c b/drivers/perf/hisilicon/hns3_pmu.c
-index e0457d84af6b3..16869bf5bf4cc 100644
---- a/drivers/perf/hisilicon/hns3_pmu.c
-+++ b/drivers/perf/hisilicon/hns3_pmu.c
-@@ -1556,8 +1556,8 @@ static int hns3_pmu_init_pmu(struct pci_dev *pdev, struct hns3_pmu *hns3_pmu)
- 	ret = perf_pmu_register(&hns3_pmu->pmu, hns3_pmu->pmu.name, -1);
- 	if (ret) {
- 		pci_err(pdev, "failed to register perf PMU, ret = %d.\n", ret);
--		cpuhp_state_remove_instance(CPUHP_AP_PERF_ARM_HNS3_PMU_ONLINE,
--					    &hns3_pmu->node);
-+		cpuhp_state_remove_instance_nocalls(CPUHP_AP_PERF_ARM_HNS3_PMU_ONLINE,
-+						    &hns3_pmu->node);
- 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index a9b57c66cb7d7..4c1b72194a6f8 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1651,6 +1651,8 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
+ 		WRITE_ONCE(p->svms.faulting_task, NULL);
+ 		if (r) {
+ 			pr_debug("failed %d to get svm range pages\n", r);
++			if (r == -EBUSY)
++				r = -EAGAIN;
+ 			goto unreserve_out;
+ 		}
  
- 	return ret;
-@@ -1568,8 +1568,8 @@ static void hns3_pmu_uninit_pmu(struct pci_dev *pdev)
- 	struct hns3_pmu *hns3_pmu = pci_get_drvdata(pdev);
- 
- 	perf_pmu_unregister(&hns3_pmu->pmu);
--	cpuhp_state_remove_instance(CPUHP_AP_PERF_ARM_HNS3_PMU_ONLINE,
--				    &hns3_pmu->node);
-+	cpuhp_state_remove_instance_nocalls(CPUHP_AP_PERF_ARM_HNS3_PMU_ONLINE,
-+					    &hns3_pmu->node);
- }
- 
- static int hns3_pmu_init_dev(struct pci_dev *pdev)
 -- 
 2.42.0
 
