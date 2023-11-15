@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B8927ECFE3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B152E7ECDFB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235442AbjKOTve (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42260 "EHLO
+        id S234751AbjKOTjg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235448AbjKOTvd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:33 -0500
+        with ESMTP id S234758AbjKOTjf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:35 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 318AC19F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77B1C433C7;
-        Wed, 15 Nov 2023 19:51:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB0D9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3A2C433C8;
+        Wed, 15 Nov 2023 19:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077889;
-        bh=H6hQftsSTXumvtEBkr368elrOUXWAuBqYDh09/6GjaI=;
+        s=korg; t=1700077171;
+        bh=U055PtNhTu723KcX9CRT8ANQYa1Foon/d9Dr128tOJA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2Odg9Rs+A6bo7rSKQbmoMuYhYQ7eaYWDtfbph0O9AM45bmtRvTfFAQHe3I5QreSHO
-         r9TuVUW1MqVVRcxo2GXYf31dLPgHeHt98EpQsOs+IUaV4YXULD98z9mTwzPPJWI9IK
-         qsJZKXXXfOJmYQfQki+XkjK/I/KqNl8L/V8reOLg=
+        b=YdIGBjaX0l1q59kxADySD68ir9KaU9F8NdFswrU0U3/myBbMaZXgWk/1AVgQv4/Gv
+         v8KarTdQsGrR6YwMFRWChCt2HU/B3+2sdnOFAS7oAprKrNcDiaPhqrOwkwqv8hLqfB
+         bM5n80t8DQ3OQsQLtfV8vxxe2/v2OHR4j0Aow7Bg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Erik Kurzinger <ekurzinger@nvidia.com>,
-        Simon Ser <contact@emersion.fr>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 583/603] drm/syncobj: fix DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE
+        patches@lists.linux.dev, Matthieu Baerts <matttbe@kernel.org>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.5 544/550] selftests: mptcp: fix wait_rm_addr/sf parameters
 Date:   Wed, 15 Nov 2023 14:18:48 -0500
-Message-ID: <20231115191651.705918269@linuxfoundation.org>
+Message-ID: <20231115191638.626945001@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,70 +51,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit 101c9f637efa1655f55876644d4439e552267527 ]
+commit 9168ea02b898d3dde98b51e4bd3fb082bd438dab upstream.
 
-If DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT is invoked with the
-DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE flag set but no fence has yet been
-submitted for the given timeline point the call will fail immediately
-with EINVAL. This does not match the intended behavior where the call
-should wait until the fence has been submitted (or the timeout expires).
+The second input parameter of 'wait_rm_addr/sf $1 1' is misused. If it's
+1, wait_rm_addr/sf will never break, and will loop ten times, then
+'wait_rm_addr/sf' equals to 'sleep 1'. This delay time is too long,
+which can sometimes make the tests fail.
 
-The following small example program illustrates the issue. It should
-wait for 5 seconds and then print ETIME, but instead it terminates right
-away after printing EINVAL.
+A better way to use wait_rm_addr/sf is to use rm_addr/sf_count to obtain
+the current value, and then pass into wait_rm_addr/sf.
 
-  #include <stdio.h>
-  #include <fcntl.h>
-  #include <time.h>
-  #include <errno.h>
-  #include <xf86drm.h>
-  int main(void)
-  {
-      int fd = open("/dev/dri/card0", O_RDWR);
-      uint32_t syncobj;
-      drmSyncobjCreate(fd, 0, &syncobj);
-      struct timespec ts;
-      clock_gettime(CLOCK_MONOTONIC, &ts);
-      uint64_t point = 1;
-      if (drmSyncobjTimelineWait(fd, &syncobj, &point, 1,
-                                 ts.tv_sec * 1000000000 + ts.tv_nsec + 5000000000, // 5s
-                                 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE, NULL)) {
-          printf("drmSyncobjTimelineWait failed %d\n", errno);
-      }
-  }
-
-Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-Reviewed by: Simon Ser <contact@emersion.fd>
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/1fac96f1-2f3f-f9f9-4eb0-340f27a8f6c0@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
+Cc: stable@vger.kernel.org
+Suggested-by: Matthieu Baerts <matttbe@kernel.org>
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231025-send-net-next-20231025-v1-2-db8f25f798eb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_syncobj.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
-index f7003d1ec5ef1..01da6789d0440 100644
---- a/drivers/gpu/drm/drm_syncobj.c
-+++ b/drivers/gpu/drm/drm_syncobj.c
-@@ -1069,7 +1069,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 		fence = drm_syncobj_fence_get(syncobjs[i]);
- 		if (!fence || dma_fence_chain_find_seqno(&fence, points[i])) {
- 			dma_fence_put(fence);
--			if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
-+			if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+				     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
- 				continue;
- 			} else {
- 				timeout = -EINVAL;
--- 
-2.42.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3259,6 +3259,7 @@ userspace_pm_rm_sf_addr_ns1()
+ 	local addr=$1
+ 	local id=$2
+ 	local tk sp da dp
++	local cnt_addr cnt_sf
+ 
+ 	tk=$(grep "type:1," "$evts_ns1" |
+ 	     sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q')
+@@ -3268,11 +3269,13 @@ userspace_pm_rm_sf_addr_ns1()
+ 	     sed -n 's/.*\(daddr6:\)\([0-9a-f:.]*\).*$/\2/p;q')
+ 	dp=$(grep "type:10" "$evts_ns1" |
+ 	     sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q')
++	cnt_addr=$(rm_addr_count ${ns1})
++	cnt_sf=$(rm_sf_count ${ns1})
+ 	ip netns exec $ns1 ./pm_nl_ctl rem token $tk id $id
+ 	ip netns exec $ns1 ./pm_nl_ctl dsf lip "::ffff:$addr" \
+ 				lport $sp rip $da rport $dp token $tk
+-	wait_rm_addr $ns1 1
+-	wait_rm_sf $ns1 1
++	wait_rm_addr $ns1 "${cnt_addr}"
++	wait_rm_sf $ns1 "${cnt_sf}"
+ }
+ 
+ userspace_pm_add_sf()
+@@ -3294,17 +3297,20 @@ userspace_pm_rm_sf_addr_ns2()
+ 	local addr=$1
+ 	local id=$2
+ 	local tk da dp sp
++	local cnt_addr cnt_sf
+ 
+ 	tk=$(sed -n 's/.*\(token:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
+ 	da=$(sed -n 's/.*\(daddr4:\)\([0-9.]*\).*$/\2/p;q' "$evts_ns2")
+ 	dp=$(sed -n 's/.*\(dport:\)\([[:digit:]]*\).*$/\2/p;q' "$evts_ns2")
+ 	sp=$(grep "type:10" "$evts_ns2" |
+ 	     sed -n 's/.*\(sport:\)\([[:digit:]]*\).*$/\2/p;q')
++	cnt_addr=$(rm_addr_count ${ns2})
++	cnt_sf=$(rm_sf_count ${ns2})
+ 	ip netns exec $ns2 ./pm_nl_ctl rem token $tk id $id
+ 	ip netns exec $ns2 ./pm_nl_ctl dsf lip $addr lport $sp \
+ 				rip $da rport $dp token $tk
+-	wait_rm_addr $ns2 1
+-	wait_rm_sf $ns2 1
++	wait_rm_addr $ns2 "${cnt_addr}"
++	wait_rm_sf $ns2 "${cnt_sf}"
+ }
+ 
+ userspace_tests()
 
 
