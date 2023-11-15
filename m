@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 092647ECE85
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E49877ECEC2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235119AbjKOTnl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
+        id S235173AbjKOTon (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:44:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235123AbjKOTnk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:40 -0500
+        with ESMTP id S235162AbjKOToi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F04D019E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AF3C433C7;
-        Wed, 15 Nov 2023 19:43:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80495189
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03EA9C433CA;
+        Wed, 15 Nov 2023 19:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077416;
-        bh=t/gQQKA3GRhj5aZyO4MvysrdXtAiDawNCW3f7CDlirg=;
+        s=korg; t=1700077475;
+        bh=nuXPUKF1RZ/qIUhC4NWXIp8Lac7TPkPNMrB9JfP0qxg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PM0ykTwzEcplgIxzwtfSDPfbH3MjgIfVBOAxpoXQP1HLDYNFy7SWVJ2piXkXWhCoC
-         FuhQDUk6WgHbPBhVvyboepKaBsVCpi8gjcZNPiby/KWpZE7VCvWvIJx+/6OGcVxcr6
-         QGeav1nU4BoUbuJHH/ttML2XbgWHOUvcfFNtLsUI=
+        b=q8K/oIBv9tVeKHhu4Rx7PU+x6pvdx3RFTLWT3lrv0kkZ50HN6DzTParzXFMBwCvGz
+         OsoG4Jzu7/wi2Um7MroBCg/yLxzksqwaXAzfGK6yAcg5xiMJA+5Vof+7so05wbfE2x
+         12clozoiOdP5je+rfYeBLkyu49YkTbRrYdCzOfM8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 289/603] arm64: dts: qcom: sdm845-mtp: fix WiFi configuration
-Date:   Wed, 15 Nov 2023 14:13:54 -0500
-Message-ID: <20231115191633.384943757@linuxfoundation.org>
+Subject: [PATCH 6.6 290/603] arm64: dts: qcom: sdx75-idp: align RPMh regulator nodes with bindings
+Date:   Wed, 15 Nov 2023 14:13:55 -0500
+Message-ID: <20231115191633.455621754@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -55,35 +56,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit b33868a52f342d9b1f20aa5bffe40cbd69bd0a4b ]
+[ Upstream commit 815ea491460766dbd4b39a3c9904b44b5880c41c ]
 
-Enable the host-cap-8bit quirk on this device. It is required for the
-WiFi to function properly.
+Device node names should be generic and bindings expect certain pattern
+for RPMh regulator nodes:
 
-Fixes: 022bccb840b7 ("arm64: dts: sdm845: Add WCN3990 WLAN module device node")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230826221915.846937-2-dmitry.baryshkov@linaro.org
+  sdx75-idp.dtb: rsc@17a00000: 'pmx75-rpmh-regulators' does not match any of the regexes: '^regulators(-[0-9])?$', 'pinctrl-[0-9]+'
+
+Fixes: 8a2dc39d1043 ("arm64: dts: qcom: sdx75-idp: Add regulator nodes")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230905163103.257412-1-krzysztof.kozlowski@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-mtp.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/qcom/sdx75-idp.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-mtp.dts b/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
-index b3c27a5247429..1516113391edc 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm845-mtp.dts
-@@ -716,6 +716,8 @@ &wifi {
- 	vdd-1.8-xo-supply = <&vreg_l7a_1p8>;
- 	vdd-1.3-rfa-supply = <&vreg_l17a_1p3>;
- 	vdd-3.3-ch0-supply = <&vreg_l25a_3p3>;
-+
-+	qcom,snoc-host-cap-8bit-quirk;
+diff --git a/arch/arm64/boot/dts/qcom/sdx75-idp.dts b/arch/arm64/boot/dts/qcom/sdx75-idp.dts
+index 10d15871f2c48..a14e0650c4a8a 100644
+--- a/arch/arm64/boot/dts/qcom/sdx75-idp.dts
++++ b/arch/arm64/boot/dts/qcom/sdx75-idp.dts
+@@ -44,7 +44,7 @@ vreg_bob_3p3: pmx75-bob {
  };
  
- /* PINCTRL - additions to nodes defined in sdm845.dtsi */
+ &apps_rsc {
+-	pmx75-rpmh-regulators {
++	regulators-0 {
+ 		compatible = "qcom,pmx75-rpmh-regulators";
+ 		qcom,pmic-id = "b";
+ 
 -- 
 2.42.0
 
