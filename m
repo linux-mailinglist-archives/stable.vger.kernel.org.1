@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 122637ECBEB
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2409D7ECBF4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233218AbjKOTZT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51130 "EHLO
+        id S233293AbjKOTZe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:25:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233225AbjKOTZR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:17 -0500
+        with ESMTP id S233252AbjKOTZb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E1C91A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:14 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04449C433C7;
-        Wed, 15 Nov 2023 19:25:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0AB51AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7276EC433CB;
+        Wed, 15 Nov 2023 19:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076314;
-        bh=Xtiov/AD0I4+BKplENJX14OwZ6UomLTHq8CW6TKlfmk=;
+        s=korg; t=1700076327;
+        bh=sO3xe0MdfaCpWxPOK1IjoKdN6lY17ZOBHLat45SKsUM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HByICNqsbe6p6o//AZj5jvogRwvJG44KeyHkEcJyiMFHYDgzLRuZmnx7IZcfGDe9J
-         gLwwOU3hYcs0qI1XUENvteodxl+o7utJYUjqVxGdiy9q94bYL2vNAgPUUftI/S5UV0
-         6b48LnAFp9odqJ2/hMJyYw9frlr+l6LUN/z8oxQI=
+        b=lOsRpc07//HlPhvGylXWYe+pupRoP4hwGNba9KbrACsi6mIV78Zt0OwxY4oN0Fxkk
+         8/r4C+g95qTZwG5Qgu4/Q4ZpEFc+iT15tLv1SrZEtEWwl/mKNn13rMf3eiEJdpNAug
+         gTGZH0T59qnAaL3qIl6iWoi+3B7v842fIucSpbIg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 195/550] hwmon: (sch5627) Use bit macros when accessing the control register
-Date:   Wed, 15 Nov 2023 14:12:59 -0500
-Message-ID: <20231115191614.286297907@linuxfoundation.org>
+Subject: [PATCH 6.5 196/550] hwmon: (sch5627) Disallow write access if virtual registers are locked
+Date:   Wed, 15 Nov 2023 14:13:00 -0500
+Message-ID: <20231115191614.363999250@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -56,72 +56,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 7f0b28e0653f36b51542d25dd54ed312c397ecfc ]
+[ Upstream commit 7da8a635436029957c5350da3acf51d78ed64071 ]
 
-Use bit macros then accessing SCH5627_REG_CTRL, so that people
-do not need to look at the datasheet to find out what each bit
-does.
+When the lock bit inside SCH5627_REG_CTRL is set, then the virtual
+registers become read-only until the next power cycle.
+Disallow write access to those registers in such a case.
 
 Tested on a Fujitsu Esprimo P720.
 
+Fixes: aa9f833dfc12 ("hwmon: (sch5627) Add pwmX_auto_channels_temp support")
 Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20230907052639.16491-2-W_Armin@gmx.de
+Link: https://lore.kernel.org/r/20230907052639.16491-3-W_Armin@gmx.de
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 7da8a6354360 ("hwmon: (sch5627) Disallow write access if virtual registers are locked")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sch5627.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/hwmon/sch5627.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
-index 1bbda3b05532e..0eefb8c0aef25 100644
+index 0eefb8c0aef25..bf408e35e2c32 100644
 --- a/drivers/hwmon/sch5627.c
 +++ b/drivers/hwmon/sch5627.c
-@@ -6,6 +6,7 @@
- 
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/bits.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
- #include <linux/init.h>
-@@ -32,6 +33,9 @@
- #define SCH5627_REG_PRIMARY_ID		0x3f
+@@ -34,6 +34,7 @@
  #define SCH5627_REG_CTRL		0x40
  
-+#define SCH5627_CTRL_START		BIT(0)
-+#define SCH5627_CTRL_VBAT		BIT(4)
-+
+ #define SCH5627_CTRL_START		BIT(0)
++#define SCH5627_CTRL_LOCK		BIT(1)
+ #define SCH5627_CTRL_VBAT		BIT(4)
+ 
  #define SCH5627_NO_TEMPS		8
- #define SCH5627_NO_FANS			4
- #define SCH5627_NO_IN			5
-@@ -147,7 +151,8 @@ static int sch5627_update_in(struct sch5627_data *data)
+@@ -231,6 +232,14 @@ static int reg_to_rpm(u16 reg)
+ static umode_t sch5627_is_visible(const void *drvdata, enum hwmon_sensor_types type, u32 attr,
+ 				  int channel)
+ {
++	const struct sch5627_data *data = drvdata;
++
++	/* Once the lock bit is set, the virtual registers become read-only
++	 * until the next power cycle.
++	 */
++	if (data->control & SCH5627_CTRL_LOCK)
++		return 0444;
++
+ 	if (type == hwmon_pwm && attr == hwmon_pwm_auto_channels_temp)
+ 		return 0644;
  
- 	/* Trigger a Vbat voltage measurement every 5 minutes */
- 	if (time_after(jiffies, data->last_battery + 300 * HZ)) {
--		sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL, data->control | 0x10);
-+		sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL,
-+					  data->control | SCH5627_CTRL_VBAT);
- 		data->last_battery = jiffies;
- 	}
- 
-@@ -483,14 +488,13 @@ static int sch5627_probe(struct platform_device *pdev)
- 		return val;
- 
- 	data->control = val;
--	if (!(data->control & 0x01)) {
-+	if (!(data->control & SCH5627_CTRL_START)) {
- 		pr_err("hardware monitoring not enabled\n");
- 		return -ENODEV;
- 	}
- 	/* Trigger a Vbat voltage measurement, so that we get a valid reading
- 	   the first time we read Vbat */
--	sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL,
--				  data->control | 0x10);
-+	sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL, data->control | SCH5627_CTRL_VBAT);
- 	data->last_battery = jiffies;
- 
- 	/*
 -- 
 2.42.0
 
