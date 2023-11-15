@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 228507ECB4D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 712BC7ECD3E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232913AbjKOTVh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41998 "EHLO
+        id S234391AbjKOTfS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:35:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232884AbjKOTVX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:23 -0500
+        with ESMTP id S234396AbjKOTfR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADB521B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5973C433CA;
-        Wed, 15 Nov 2023 19:21:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC7D4130
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A0AAC433C9;
+        Wed, 15 Nov 2023 19:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076079;
-        bh=6xd0LZZ3dDEtlyJKd9qI/iysLNaGFjsRWD2l8QF5nec=;
+        s=korg; t=1700076913;
+        bh=yQ6RDszFdVtbqTh8YZ+L72Yhp0oeBloY8G+HGqmFjmU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IQjlbqNcSMcjFPxh59IaL7myk64JhB7ydV5946styOfFLFSsT2npg3RmqK04K/ZSN
-         2VgzMY0+BKEwU8ycaT9JhbvhSFN0XybTPIVsF5ruCSBzGZJuNiyKgx3vql1ZGGXX1o
-         JWdOGaYLtl+PpuschJEYWNoW8Gryj66R7jMQoUO0=
+        b=2HHMuFxXIpNJsaUl6wMTj7nZoXNXWkJaEE4aZoHGk63Nw1tpp8iLp53pLqnnwDK7I
+         PCzi0vbdCr1A1aXCx/e5H8Bsu3UQBf9LS/neK6wH5FKHMwGutAgFBThbpnSW1sufXW
+         tbU1S2/9yPLM3IVuoqHM2iJx3/FONANEyYSN2la0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Juergen Gross <jgross@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sohil Mehta <sohil.mehta@intel.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Zhang Rui <rui.zhang@intel.com>,
+        patches@lists.linux.dev, Dave Marchevsky <davemarchevsky@fb.com>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 026/550] x86/apic: Fake primary thread mask for XEN/PV
+Subject: [PATCH 6.6 065/603] bpf: Fix kfunc callback register type handling
 Date:   Wed, 15 Nov 2023 14:10:10 -0500
-Message-ID: <20231115191602.535505989@linuxfoundation.org>
+Message-ID: <20231115191617.655617653@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,88 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 965e05ff8af98c44f9937366715c512000373164 ]
+[ Upstream commit 06d686f771ddc27a8554cd8f5b22e071040dc90e ]
 
-The SMT control mechanism got added as speculation attack vector
-mitigation. The implemented logic relies on the primary thread mask to
-be set up properly.
+The kfunc code to handle KF_ARG_PTR_TO_CALLBACK does not check the reg
+type before using reg->subprogno. This can accidently permit invalid
+pointers from being passed into callback helpers (e.g. silently from
+different paths). Likewise, reg->subprogno from the per-register type
+union may not be meaningful either. We need to reject any other type
+except PTR_TO_FUNC.
 
-This turns out to be an issue with XEN/PV guests because their CPU hotplug
-mechanics do not enumerate APICs and therefore the mask is never correctly
-populated.
-
-This went unnoticed so far because by chance XEN/PV ends up with
-smp_num_siblings == 2. So cpu_smt_control stays at its default value
-CPU_SMT_ENABLED and the primary thread mask is never evaluated in the
-context of CPU hotplug.
-
-This stopped "working" with the upcoming overhaul of the topology
-evaluation which legitimately provides a fake topology for XEN/PV. That
-sets smp_num_siblings to 1, which causes the core CPU hot-plug core to
-refuse to bring up the APs.
-
-This happens because cpu_smt_control is set to CPU_SMT_NOT_SUPPORTED which
-causes cpu_bootable() to evaluate the unpopulated primary thread mask with
-the conclusion that all non-boot CPUs are not valid to be plugged.
-
-The core code has already been made more robust against this kind of fail,
-but the primary thread mask really wants to be populated to avoid other
-issues all over the place.
-
-Just fake the mask by pretending that all XEN/PV vCPUs are primary threads,
-which is consistent because all of XEN/PVs topology is fake or non-existent.
-
-Fixes: 6a4d2657e048 ("x86/smp: Provide topology_is_primary_thread()")
-Fixes: f54d4434c281 ("x86/apic: Provide cpu_primary_thread mask")
-Reported-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Juergen Gross <jgross@suse.com>
-Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-Tested-by: Michael Kelley <mikelley@microsoft.com>
-Tested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Zhang Rui <rui.zhang@intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230814085112.210011520@linutronix.de
+Acked-by: Dave Marchevsky <davemarchevsky@fb.com>
+Fixes: 5d92ddc3de1b ("bpf: Add callback validation to kfunc verifier logic")
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230912233214.1518551-14-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/apic.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index af49e24b46a43..7e0c7fbdc7d08 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -36,6 +36,8 @@
- #include <linux/smp.h>
- #include <linux/mm.h>
- 
-+#include <xen/xen.h>
-+
- #include <asm/trace/irq_vectors.h>
- #include <asm/irq_remapping.h>
- #include <asm/pc-conf-reg.h>
-@@ -2408,6 +2410,15 @@ static int __init smp_init_primary_thread_mask(void)
- {
- 	unsigned int cpu;
- 
-+	/*
-+	 * XEN/PV provides either none or useless topology information.
-+	 * Pretend that all vCPUs are primary threads.
-+	 */
-+	if (xen_pv_domain()) {
-+		cpumask_copy(&__cpu_primary_thread_mask, cpu_possible_mask);
-+		return 0;
-+	}
-+
- 	for (cpu = 0; cpu < nr_logical_cpuids; cpu++)
- 		cpu_mark_primary_thread(cpu, cpuid_to_apicid[cpu]);
- 	return 0;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 9f180ae74e492..82c9e5c470319 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -11202,6 +11202,10 @@ static int check_kfunc_args(struct bpf_verifier_env *env, struct bpf_kfunc_call_
+ 			break;
+ 		}
+ 		case KF_ARG_PTR_TO_CALLBACK:
++			if (reg->type != PTR_TO_FUNC) {
++				verbose(env, "arg%d expected pointer to func\n", i);
++				return -EINVAL;
++			}
+ 			meta->subprogno = reg->subprogno;
+ 			break;
+ 		case KF_ARG_PTR_TO_REFCOUNTED_KPTR:
 -- 
 2.42.0
 
