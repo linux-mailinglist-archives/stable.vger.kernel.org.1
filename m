@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6CA57ECAE1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 19:59:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A85B17ECAE4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:00:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbjKOTAB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:00:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34932 "EHLO
+        id S229883AbjKOTAD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:00:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbjKOTAA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:00:00 -0500
+        with ESMTP id S229726AbjKOTAC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:00:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DD73FA
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 10:59:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECB2C43397;
-        Wed, 15 Nov 2023 18:59:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70967C7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 10:59:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9060C433C7;
+        Wed, 15 Nov 2023 18:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700074796;
-        bh=zHtKjTpCfDDHb9mDTsrsf/yWfBsi9tqKccjhkm7LKvk=;
+        s=korg; t=1700074799;
+        bh=cP74eDRtg0eqwVrST4F4chz0IRGlblfKC1j4JIqiVNY=;
         h=Subject:To:Cc:From:Date:From;
-        b=q5l3O5cuPFJfUpoRbeSjMXG/Esj7J5GjJ0/fgbr3QbiOKrDy0/7/r/eWqtFiykIj6
-         TIKDWmoxxAoy8XQNR1efQn6IBl0gTng5ONM6Je2y4YZF3KO3n054wdy1FIDTqeE4p2
-         eJvo2WdZcdRfcQRX9welELfu1sDcutuC4RHOvC3w=
-Subject: FAILED: patch "[PATCH] Revert "drm/amd: Disable S/G for APUs when 64GB or more host" failed to apply to 6.6-stable tree
+        b=MlOoP4LmljelqYLlsLMgJR/YeSBWF0STG+7J/3PQPX9sEPGJ8k33anCUfgRbrnvfC
+         aixPQISotlBA8O/Ke5xPDnfAvq32yQZELMee6Yoew5GQdy0QvG5X1l0IXvUIJQXIKv
+         9RcXt1CyluEMa/OeICxlLYqR1IxcZUJZHnh+8vTU=
+Subject: FAILED: patch "[PATCH] Revert "drm/amd: Disable S/G for APUs when 64GB or more host" failed to apply to 6.5-stable tree
 To:     hamza.mahfooz@amd.com, alexander.deucher@amd.com,
         harry.wentland@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 15 Nov 2023 13:59:54 -0500
-Message-ID: <2023111553-rally-affection-0d9c@gregkh>
+Date:   Wed, 15 Nov 2023 13:59:55 -0500
+Message-ID: <2023111555-tingling-prideful-0e1f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
 git cherry-pick -x 601c63ad8e551b2282e94f0a81779e9ae5c8100e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023111553-rally-affection-0d9c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023111555-tingling-prideful-0e1f@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
