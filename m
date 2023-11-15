@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBBB57ECDC3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F02977ECFCB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234642AbjKOTiR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:38:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57930 "EHLO
+        id S235402AbjKOTux (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:50:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233771AbjKOTiQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:16 -0500
+        with ESMTP id S235416AbjKOTuv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A719E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D49DC433C7;
-        Wed, 15 Nov 2023 19:38:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7ECE1A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D6CC433CA;
+        Wed, 15 Nov 2023 19:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077093;
-        bh=Pyui8IfOjJ1FqzjrbtaJA+dcmdHBiGU6wP92GZ37Af4=;
+        s=korg; t=1700077847;
+        bh=oR6tk5m1g7iKe9f6EcZAdyum7ODPPUvLBw+jMhvk4Ew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gf148zLLmn5YQ1kUDh0Cx62gDsYcN67HNnR+wWNmsfurzU5UWRxKY2e7xgAvQ5YUK
-         qMeKMxMOkEVZeoSwIHHW6K8cKY6PJdM01IwsnyvXaWd7H+5b/TvFoTGpDqVDQE0QXU
-         WNHcY5jdpUQdW4P0ghdsc+2aiuaqocszkSDm6+kc=
+        b=tbgiQQjaoKHnyneK1t1wxfy3Vp+010St1mb3dNEzqTm+j7N++GarB5tmu//Qa7EDN
+         N9SKcsq7+/hWUV9x+7kexqKuWuLkIfcV0rYKVMsb8KK60Alw4jzx5Ho9xPV8kYsuhf
+         ciYWb6JaSoYRAsJ5UNNcqe8CzglCHoQeSMoU9oHI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev, "D. Wythe" <alibuda@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 518/550] riscv: boot: Fix creation of loader.bin
+Subject: [PATCH 6.6 557/603] net/smc: fix dangling sock under state SMC_APPFINCLOSEWAIT
 Date:   Wed, 15 Nov 2023 14:18:22 -0500
-Message-ID: <20231115191636.849126408@linuxfoundation.org>
+Message-ID: <20231115191650.216277833@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,46 +51,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: D. Wythe <alibuda@linux.alibaba.com>
 
-[ Upstream commit 57a4542cb7c9baa1509c3366b57a08d75b212ead ]
+[ Upstream commit 5211c9729484c923f8d2e06bd29f9322cc42bb8f ]
 
-When flashing loader.bin for K210 using kflash:
+Considering scenario:
 
-    [ERROR] This is an ELF file and cannot be programmed to flash directly: arch/riscv/boot/loader.bin
+				smc_cdc_rx_handler
+__smc_release
+				sock_set_flag
+smc_close_active()
+sock_set_flag
 
-Before, loader.bin relied on "OBJCOPYFLAGS := -O binary" in the main
-RISC-V Makefile to create a boot image with the right format.  With this
-removed, the image is now created in the wrong (ELF) format.
+__set_bit(DEAD)			__set_bit(DONE)
 
-Fix this by adding an explicit rule.
+Dues to __set_bit is not atomic, the DEAD or DONE might be lost.
+if the DEAD flag lost, the state SMC_CLOSED  will be never be reached
+in smc_close_passive_work:
 
-Fixes: 505b02957e74f0c5 ("riscv: Remove duplicate objcopy flag")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/1086025809583809538dfecaa899892218f44e7e.1698159066.git.geert+renesas@glider.be
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+if (sock_flag(sk, SOCK_DEAD) &&
+	smc_close_sent_any_close(conn)) {
+	sk->sk_state = SMC_CLOSED;
+} else {
+	/* just shutdown, but not yet closed locally */
+	sk->sk_state = SMC_APPFINCLOSEWAIT;
+}
+
+Replace sock_set_flags or __set_bit to set_bit will fix this problem.
+Since set_bit is atomic.
+
+Fixes: b38d732477e4 ("smc: socket closing and linkgroup cleanup")
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ net/smc/af_smc.c    | 4 ++--
+ net/smc/smc.h       | 5 +++++
+ net/smc/smc_cdc.c   | 2 +-
+ net/smc/smc_close.c | 2 +-
+ 4 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
-index 22b13947bd131..8e7fc0edf21d3 100644
---- a/arch/riscv/boot/Makefile
-+++ b/arch/riscv/boot/Makefile
-@@ -17,6 +17,7 @@
- KCOV_INSTRUMENT := n
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 35ddebae88941..4c047e0e1625e 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -275,7 +275,7 @@ static int __smc_release(struct smc_sock *smc)
  
- OBJCOPYFLAGS_Image :=-O binary -R .note -R .note.gnu.build-id -R .comment -S
-+OBJCOPYFLAGS_loader.bin :=-O binary
- OBJCOPYFLAGS_xipImage :=-O binary -R .note -R .note.gnu.build-id -R .comment -S
+ 	if (!smc->use_fallback) {
+ 		rc = smc_close_active(smc);
+-		sock_set_flag(sk, SOCK_DEAD);
++		smc_sock_set_flag(sk, SOCK_DEAD);
+ 		sk->sk_shutdown |= SHUTDOWN_MASK;
+ 	} else {
+ 		if (sk->sk_state != SMC_CLOSED) {
+@@ -1743,7 +1743,7 @@ static int smc_clcsock_accept(struct smc_sock *lsmc, struct smc_sock **new_smc)
+ 		if (new_clcsock)
+ 			sock_release(new_clcsock);
+ 		new_sk->sk_state = SMC_CLOSED;
+-		sock_set_flag(new_sk, SOCK_DEAD);
++		smc_sock_set_flag(new_sk, SOCK_DEAD);
+ 		sock_put(new_sk); /* final */
+ 		*new_smc = NULL;
+ 		goto out;
+diff --git a/net/smc/smc.h b/net/smc/smc.h
+index 24745fde4ac26..e377980b84145 100644
+--- a/net/smc/smc.h
++++ b/net/smc/smc.h
+@@ -377,4 +377,9 @@ int smc_nl_dump_hs_limitation(struct sk_buff *skb, struct netlink_callback *cb);
+ int smc_nl_enable_hs_limitation(struct sk_buff *skb, struct genl_info *info);
+ int smc_nl_disable_hs_limitation(struct sk_buff *skb, struct genl_info *info);
  
- targets := Image Image.* loader loader.o loader.lds loader.bin
++static inline void smc_sock_set_flag(struct sock *sk, enum sock_flags flag)
++{
++	set_bit(flag, &sk->sk_flags);
++}
++
+ #endif	/* __SMC_H */
+diff --git a/net/smc/smc_cdc.c b/net/smc/smc_cdc.c
+index 89105e95b4523..01bdb7909a14b 100644
+--- a/net/smc/smc_cdc.c
++++ b/net/smc/smc_cdc.c
+@@ -385,7 +385,7 @@ static void smc_cdc_msg_recv_action(struct smc_sock *smc,
+ 		smc->sk.sk_shutdown |= RCV_SHUTDOWN;
+ 		if (smc->clcsock && smc->clcsock->sk)
+ 			smc->clcsock->sk->sk_shutdown |= RCV_SHUTDOWN;
+-		sock_set_flag(&smc->sk, SOCK_DONE);
++		smc_sock_set_flag(&smc->sk, SOCK_DONE);
+ 		sock_hold(&smc->sk); /* sock_put in close_work */
+ 		if (!queue_work(smc_close_wq, &conn->close_work))
+ 			sock_put(&smc->sk);
+diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
+index dbdf03e8aa5b5..449ef454b53be 100644
+--- a/net/smc/smc_close.c
++++ b/net/smc/smc_close.c
+@@ -173,7 +173,7 @@ void smc_close_active_abort(struct smc_sock *smc)
+ 		break;
+ 	}
+ 
+-	sock_set_flag(sk, SOCK_DEAD);
++	smc_sock_set_flag(sk, SOCK_DEAD);
+ 	sk->sk_state_change(sk);
+ 
+ 	if (release_clcsock) {
 -- 
 2.42.0
 
