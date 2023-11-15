@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A42D7ECCE6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53DE77ECCE9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234200AbjKOTdR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44170 "EHLO
+        id S234221AbjKOTdU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:33:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234208AbjKOTdQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:16 -0500
+        with ESMTP id S234199AbjKOTdT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A92D89E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F005C433C8;
-        Wed, 15 Nov 2023 19:33:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1DF09E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66300C433C7;
+        Wed, 15 Nov 2023 19:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076793;
-        bh=ga4+0RJaU1HcWqu5H6VdVP7YrqORA2yaikhGFDXMvhY=;
+        s=korg; t=1700076796;
+        bh=8JxoHUs2puu2QzUJNOS7zBcHFnLXtI9jPdD/V3Jgvc8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SxT2bw0E2zPUEvmu5e+eteG7x78XAXR+TzVKHh07xJNeHF4m1vF+rZ1qXWNcvRXCm
-         R7VoWSfx45CXcQF8Sp8EcarIj6G0Tc8DzETq2OL9J8yIVEGFAPNYhWxaTT95Z50cHi
-         uW+Uwb8RbDWPXheNVidY4SEMyzMO+xoM08DRVL+k=
+        b=iyX8e3Ao7weKOOGdUcemN2ALXthyqSZOP+iGggR9sV8Ahc5IhtsL3uSY8ZShXhwXs
+         lBF5rCrMp8lEqsWQRVqdyV6ngn2SMhhTTN+RIJT4Cxg+LcF4ndlkq43b5UawMJEYpw
+         U1FEe8ezWqY/OqAKPzENNThfS+AqSFRbsg5J7csE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Mason <clm@fb.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/603] x86/nmi: Fix out-of-order NMI nesting checks & false positive warning
-Date:   Wed, 15 Nov 2023 14:09:33 -0500
-Message-ID: <20231115191615.127377651@linuxfoundation.org>
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Kees Cook <keescook@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 029/603] pstore/platform: Add check for kstrdup
+Date:   Wed, 15 Nov 2023 14:09:34 -0500
+Message-ID: <20231115191615.191850186@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -57,98 +54,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit f44075ecafb726830e63d33fbca29413149eeeb8 ]
+[ Upstream commit a19d48f7c5d57c0f0405a7d4334d1d38fe9d3c1c ]
 
-The ->idt_seq and ->recv_jiffies variables added by:
+Add check for the return value of kstrdup() and return the error
+if it fails in order to avoid NULL pointer dereference.
 
-  1a3ea611fc10 ("x86/nmi: Accumulate NMI-progress evidence in exc_nmi()")
-
-... place the exit-time check of the bottom bit of ->idt_seq after the
-this_cpu_dec_return() that re-enables NMI nesting.  This can result in
-the following sequence of events on a given CPU in kernels built with
-CONFIG_NMI_CHECK_CPU=y:
-
-  o   An NMI arrives, and ->idt_seq is incremented to an odd number.
-      In addition, nmi_state is set to NMI_EXECUTING==1.
-
-  o   The NMI is processed.
-
-  o   The this_cpu_dec_return(nmi_state) zeroes nmi_state and returns
-      NMI_EXECUTING==1, thus opting out of the "goto nmi_restart".
-
-  o   Another NMI arrives and ->idt_seq is incremented to an even
-      number, triggering the warning.  But all is just fine, at least
-      assuming we don't get so many closely spaced NMIs that the stack
-      overflows or some such.
-
-Experience on the fleet indicates that the MTBF of this false positive
-is about 70 years.  Or, for those who are not quite that patient, the
-MTBF appears to be about one per week per 4,000 systems.
-
-Fix this false-positive warning by moving the "nmi_restart" label before
-the initial ->idt_seq increment/check and moving the this_cpu_dec_return()
-to follow the final ->idt_seq increment/check.  This way, all nested NMIs
-that get past the NMI_NOT_RUNNING check get a clean ->idt_seq slate.
-And if they don't get past that check, they will set nmi_state to
-NMI_LATCHED, which will cause the this_cpu_dec_return(nmi_state)
-to restart.
-
-Fixes: 1a3ea611fc10 ("x86/nmi: Accumulate NMI-progress evidence in exc_nmi()")
-Reported-by: Chris Mason <clm@fb.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/0cbff831-6e3d-431c-9830-ee65ee7787ff@paulmck-laptop
+Fixes: 563ca40ddf40 ("pstore/platform: Switch pstore_info::name to const")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230623022706.32125-1-jiasheng@iscas.ac.cn
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/nmi.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/pstore/platform.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index a0c551846b35f..4766b6bed4439 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -507,12 +507,13 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
- 	}
- 	this_cpu_write(nmi_state, NMI_EXECUTING);
- 	this_cpu_write(nmi_cr2, read_cr2());
+diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
+index e5bca9a004ccc..03425928d2fb3 100644
+--- a/fs/pstore/platform.c
++++ b/fs/pstore/platform.c
+@@ -464,6 +464,8 @@ static int pstore_write_user_compat(struct pstore_record *record,
+  */
+ int pstore_register(struct pstore_info *psi)
+ {
++	char *new_backend;
 +
-+nmi_restart:
- 	if (IS_ENABLED(CONFIG_NMI_CHECK_CPU)) {
- 		WRITE_ONCE(nsp->idt_seq, nsp->idt_seq + 1);
- 		WARN_ON_ONCE(!(nsp->idt_seq & 0x1));
- 		WRITE_ONCE(nsp->recv_jiffies, jiffies);
+ 	if (backend && strcmp(backend, psi->name)) {
+ 		pr_warn("backend '%s' already in use: ignoring '%s'\n",
+ 			backend, psi->name);
+@@ -484,11 +486,16 @@ int pstore_register(struct pstore_info *psi)
+ 		return -EINVAL;
  	}
--nmi_restart:
  
- 	/*
- 	 * Needs to happen before DR7 is accessed, because the hypervisor can
-@@ -548,16 +549,16 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
- 
- 	if (unlikely(this_cpu_read(nmi_cr2) != read_cr2()))
- 		write_cr2(this_cpu_read(nmi_cr2));
--	if (this_cpu_dec_return(nmi_state))
--		goto nmi_restart;
--
--	if (user_mode(regs))
--		mds_user_clear_cpu_buffers();
- 	if (IS_ENABLED(CONFIG_NMI_CHECK_CPU)) {
- 		WRITE_ONCE(nsp->idt_seq, nsp->idt_seq + 1);
- 		WARN_ON_ONCE(nsp->idt_seq & 0x1);
- 		WRITE_ONCE(nsp->recv_jiffies, jiffies);
- 	}
-+	if (this_cpu_dec_return(nmi_state))
-+		goto nmi_restart;
++	new_backend = kstrdup(psi->name, GFP_KERNEL);
++	if (!new_backend)
++		return -ENOMEM;
 +
-+	if (user_mode(regs))
-+		mds_user_clear_cpu_buffers();
- }
+ 	mutex_lock(&psinfo_lock);
+ 	if (psinfo) {
+ 		pr_warn("backend '%s' already loaded: ignoring '%s'\n",
+ 			psinfo->name, psi->name);
+ 		mutex_unlock(&psinfo_lock);
++		kfree(new_backend);
+ 		return -EBUSY;
+ 	}
  
- #if IS_ENABLED(CONFIG_KVM_INTEL)
+@@ -521,7 +528,7 @@ int pstore_register(struct pstore_info *psi)
+ 	 * Update the module parameter backend, so it is visible
+ 	 * through /sys/module/pstore/parameters/backend
+ 	 */
+-	backend = kstrdup(psi->name, GFP_KERNEL);
++	backend = new_backend;
+ 
+ 	pr_info("Registered %s as persistent store backend\n", psi->name);
+ 
 -- 
 2.42.0
 
