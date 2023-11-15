@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B96007ED478
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14AC97ED2CD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344722AbjKOU6L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52950 "EHLO
+        id S233289AbjKOUo1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344665AbjKOU5i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:38 -0500
+        with ESMTP id S233397AbjKOUo1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB4D91732
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CE7C4E66F;
-        Wed, 15 Nov 2023 20:50:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1442BA1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8331EC433CB;
+        Wed, 15 Nov 2023 20:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081452;
-        bh=JI1r07HKb0TDr8Ow4KZGgSJYr/hEMzubjh8xGMpp1P8=;
+        s=korg; t=1700081063;
+        bh=PlDC62aCitP3QQ1extpDCwIPg0+W6l5axIiX+I6GbRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HEy7p5J3jcPtHUpdRAfx9DPxzWIyQhAgB24KGuagdl0FXLRNpm5pX/2qpko7c1gpl
-         g8c+YHAh69DrMzkVnY7JPnY6G8GsfYCNoCuT7EUFvh4M8g0jSCGLafEieWxSuHzBoY
-         /aOpvJHqTFUSIlo0F79nOK1qIEUCXENkhBcoA4O4=
+        b=T8Ac8q0rIyUbgVJFTTACUpXTuefFiFBurqr6Vae9j3r82OABGpQIxvkT57hD1gCUY
+         hFXHPvLKRUohxfevIGtmLEjR2COHVG0UsYRbybkFUTI4cWXU/1RJV+y/yD9Y+x7GWz
+         pl+5YniW/YbgSxQWNxFcRKwvUEBoQcF0e4PCBAdQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Damian Muszynski <damian.muszynski@intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 136/244] crypto: qat - increase size of buffers
+Subject: [PATCH 4.19 16/88] macsec: use DEV_STATS_INC()
 Date:   Wed, 15 Nov 2023 15:35:28 -0500
-Message-ID: <20231115203556.516867920@linuxfoundation.org>
+Message-ID: <20231115191427.145735642@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,71 +52,148 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4e4e2ed22d505c5bacf65c6a39bfb6d120d24785 ]
+[ Upstream commit 32d0a49d36a2a306c2e47fe5659361e424f0ed3f ]
 
-Increase the size of the buffers used for composing the names used for
-the transport debugfs entries and the vector name to avoid a potential
-truncation.
+syzbot/KCSAN reported data-races in macsec whenever dev->stats fields
+are updated.
 
-This resolves the following errors when compiling the driver with W=1
-and KCFLAGS=-Werror on GCC 12.3.1:
+It appears all of these updates can happen from multiple cpus.
 
-    drivers/crypto/intel/qat/qat_common/adf_transport_debug.c: In function ‘adf_ring_debugfs_add’:
-    drivers/crypto/intel/qat/qat_common/adf_transport_debug.c:100:60: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-    drivers/crypto/intel/qat/qat_common/adf_isr.c: In function ‘adf_isr_resource_alloc’:
-    drivers/crypto/intel/qat/qat_common/adf_isr.c:197:47: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size between 0 and 5 [-Werror=format-truncation=]
+Adopt SMP safe DEV_STATS_INC() to update dev->stats fields.
 
-Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ff672b9ffeb3 ("ipvlan: properly track tx_errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_common/adf_accel_devices.h   | 2 +-
- drivers/crypto/qat/qat_common/adf_transport_debug.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/macsec.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/crypto/qat/qat_common/adf_accel_devices.h b/drivers/crypto/qat/qat_common/adf_accel_devices.h
-index 580566cfcb04c..3bb67b22edd6e 100644
---- a/drivers/crypto/qat/qat_common/adf_accel_devices.h
-+++ b/drivers/crypto/qat/qat_common/adf_accel_devices.h
-@@ -24,7 +24,7 @@
- #define ADF_PCI_MAX_BARS 3
- #define ADF_DEVICE_NAME_LENGTH 32
- #define ADF_ETR_MAX_RINGS_PER_BANK 16
--#define ADF_MAX_MSIX_VECTOR_NAME 16
-+#define ADF_MAX_MSIX_VECTOR_NAME 48
- #define ADF_DEVICE_NAME_PREFIX "qat_"
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 73b1be3450f14..e22d336679d12 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -830,7 +830,7 @@ static bool macsec_post_decrypt(struct sk_buff *skb, struct macsec_secy *secy, u
+ 		u64_stats_update_begin(&rxsc_stats->syncp);
+ 		rxsc_stats->stats.InPktsLate++;
+ 		u64_stats_update_end(&rxsc_stats->syncp);
+-		secy->netdev->stats.rx_dropped++;
++		DEV_STATS_INC(secy->netdev, rx_dropped);
+ 		return false;
+ 	}
  
- enum adf_accel_capabilities {
-diff --git a/drivers/crypto/qat/qat_common/adf_transport_debug.c b/drivers/crypto/qat/qat_common/adf_transport_debug.c
-index e69e5907f5950..006867f410bd3 100644
---- a/drivers/crypto/qat/qat_common/adf_transport_debug.c
-+++ b/drivers/crypto/qat/qat_common/adf_transport_debug.c
-@@ -90,7 +90,7 @@ DEFINE_SEQ_ATTRIBUTE(adf_ring_debug);
- int adf_ring_debugfs_add(struct adf_etr_ring_data *ring, const char *name)
- {
- 	struct adf_etr_ring_debug_entry *ring_debug;
--	char entry_name[8];
-+	char entry_name[16];
+@@ -854,7 +854,7 @@ static bool macsec_post_decrypt(struct sk_buff *skb, struct macsec_secy *secy, u
+ 			rxsc_stats->stats.InPktsNotValid++;
+ 			u64_stats_update_end(&rxsc_stats->syncp);
+ 			this_cpu_inc(rx_sa->stats->InPktsNotValid);
+-			secy->netdev->stats.rx_errors++;
++			DEV_STATS_INC(secy->netdev, rx_errors);
+ 			return false;
+ 		}
  
- 	ring_debug = kzalloc(sizeof(*ring_debug), GFP_KERNEL);
- 	if (!ring_debug)
-@@ -192,7 +192,7 @@ int adf_bank_debugfs_add(struct adf_etr_bank_data *bank)
- {
- 	struct adf_accel_dev *accel_dev = bank->accel_dev;
- 	struct dentry *parent = accel_dev->transport->debug;
--	char name[8];
-+	char name[16];
+@@ -1084,7 +1084,7 @@ static void handle_not_macsec(struct sk_buff *skb)
+ 			u64_stats_update_begin(&secy_stats->syncp);
+ 			secy_stats->stats.InPktsNoTag++;
+ 			u64_stats_update_end(&secy_stats->syncp);
+-			macsec->secy.netdev->stats.rx_dropped++;
++			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
+ 			continue;
+ 		}
  
- 	snprintf(name, sizeof(name), "bank_%02d", bank->bank_number);
- 	bank->bank_debug_dir = debugfs_create_dir(name, parent);
+@@ -1195,7 +1195,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 		u64_stats_update_begin(&secy_stats->syncp);
+ 		secy_stats->stats.InPktsBadTag++;
+ 		u64_stats_update_end(&secy_stats->syncp);
+-		secy->netdev->stats.rx_errors++;
++		DEV_STATS_INC(secy->netdev, rx_errors);
+ 		goto drop_nosa;
+ 	}
+ 
+@@ -1212,7 +1212,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 			u64_stats_update_begin(&rxsc_stats->syncp);
+ 			rxsc_stats->stats.InPktsNotUsingSA++;
+ 			u64_stats_update_end(&rxsc_stats->syncp);
+-			secy->netdev->stats.rx_errors++;
++			DEV_STATS_INC(secy->netdev, rx_errors);
+ 			if (active_rx_sa)
+ 				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
+ 			goto drop_nosa;
+@@ -1243,7 +1243,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 			u64_stats_update_begin(&rxsc_stats->syncp);
+ 			rxsc_stats->stats.InPktsLate++;
+ 			u64_stats_update_end(&rxsc_stats->syncp);
+-			macsec->secy.netdev->stats.rx_dropped++;
++			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
+ 			goto drop;
+ 		}
+ 	}
+@@ -1284,7 +1284,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 	if (ret == NET_RX_SUCCESS)
+ 		count_rx(dev, len);
+ 	else
+-		macsec->secy.netdev->stats.rx_dropped++;
++		DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
+ 
+ 	rcu_read_unlock();
+ 
+@@ -1321,7 +1321,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 			u64_stats_update_begin(&secy_stats->syncp);
+ 			secy_stats->stats.InPktsNoSCI++;
+ 			u64_stats_update_end(&secy_stats->syncp);
+-			macsec->secy.netdev->stats.rx_errors++;
++			DEV_STATS_INC(macsec->secy.netdev, rx_errors);
+ 			continue;
+ 		}
+ 
+@@ -1340,7 +1340,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
+ 			secy_stats->stats.InPktsUnknownSCI++;
+ 			u64_stats_update_end(&secy_stats->syncp);
+ 		} else {
+-			macsec->secy.netdev->stats.rx_dropped++;
++			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
+ 		}
+ 	}
+ 
+@@ -2772,7 +2772,7 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
+ 
+ 	if (!secy->operational) {
+ 		kfree_skb(skb);
+-		dev->stats.tx_dropped++;
++		DEV_STATS_INC(dev, tx_dropped);
+ 		return NETDEV_TX_OK;
+ 	}
+ 
+@@ -2780,7 +2780,7 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
+ 	skb = macsec_encrypt(skb, dev);
+ 	if (IS_ERR(skb)) {
+ 		if (PTR_ERR(skb) != -EINPROGRESS)
+-			dev->stats.tx_dropped++;
++			DEV_STATS_INC(dev, tx_dropped);
+ 		return NETDEV_TX_OK;
+ 	}
+ 
+@@ -2999,9 +2999,9 @@ static void macsec_get_stats64(struct net_device *dev,
+ 		s->tx_bytes   += tmp.tx_bytes;
+ 	}
+ 
+-	s->rx_dropped = dev->stats.rx_dropped;
+-	s->tx_dropped = dev->stats.tx_dropped;
+-	s->rx_errors = dev->stats.rx_errors;
++	s->rx_dropped = atomic_long_read(&dev->stats.__rx_dropped);
++	s->tx_dropped = atomic_long_read(&dev->stats.__tx_dropped);
++	s->rx_errors = atomic_long_read(&dev->stats.__rx_errors);
+ }
+ 
+ static int macsec_get_iflink(const struct net_device *dev)
 -- 
 2.42.0
 
