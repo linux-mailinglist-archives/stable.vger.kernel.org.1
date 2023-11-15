@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B34B67ECBBE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B5C07ECE2A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232691AbjKOTYM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60234 "EHLO
+        id S234010AbjKOTlR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232638AbjKOTYL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:11 -0500
+        with ESMTP id S229678AbjKOTlQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419A119D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C09C433CA;
-        Wed, 15 Nov 2023 19:24:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E223B9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB15C433C7;
+        Wed, 15 Nov 2023 19:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076247;
-        bh=TcY6NoWief80AUfbn8lAvMXxenBBZ1+Xtt6imWkE3pM=;
+        s=korg; t=1700077273;
+        bh=XFj5LeBsG/yBoIEQCjfrDwtrRXgtnei4tjfeAL8DC1g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eO7jYWzfgz/H751zc4mlugjmGpYrRfDyNrHIDwxRfXGxndy+gcHlCeSd8N5WoAkod
-         d1kxi+kY8wDSCHBwW6HjOfyiT5F6uGHcLfqfyNJC7qR5E62SOzsATkk4jbxFT6iKXM
-         3hW23fmsPZf2OdHdg9coF2jJP9Q/IztSCo3olb4g=
+        b=SpgM4LyNkondU8VQCRDacI2ayqsspsa1xMHCQwu5elCS+fuVRhvLJwjE9YkCL6EuF
+         KrxLPa4R/8aOg5S/rddizoAmai2eoibX2T/hbKchz0nnLRpDkzk1v2Nf4o4bZ611D8
+         xj37Y3wZUfb883T2pbTo1Y2+N9dLssLenv6d0hoc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tejun Heo <tj@kernel.org>,
-        Song Liu <song@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 144/550] bpf: Fix unnecessary -EBUSY from htab_lock_bucket
-Date:   Wed, 15 Nov 2023 14:12:08 -0500
-Message-ID: <20231115191610.679262571@linuxfoundation.org>
+Subject: [PATCH 6.6 184/603] clk: ti: fix double free in of_ti_divider_clk_setup()
+Date:   Wed, 15 Nov 2023 14:12:09 -0500
+Message-ID: <20231115191625.967570708@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,80 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d35381aa73f7e1e8b25f3ed5283287a64d9ddff5 ]
+[ Upstream commit 7af5b9eadd64c9e02a71f97c45bcdf3b64841f6b ]
 
-htab_lock_bucket uses the following logic to avoid recursion:
+The "div" pointer is freed in _register_divider() and again in
+of_ti_divider_clk_setup().  Delete the free in _register_divider()
 
-1. preempt_disable();
-2. check percpu counter htab->map_locked[hash] for recursion;
-   2.1. if map_lock[hash] is already taken, return -BUSY;
-3. raw_spin_lock_irqsave();
-
-However, if an IRQ hits between 2 and 3, BPF programs attached to the IRQ
-logic will not able to access the same hash of the hashtab and get -EBUSY.
-
-This -EBUSY is not really necessary. Fix it by disabling IRQ before
-checking map_locked:
-
-1. preempt_disable();
-2. local_irq_save();
-3. check percpu counter htab->map_locked[hash] for recursion;
-   3.1. if map_lock[hash] is already taken, return -BUSY;
-4. raw_spin_lock().
-
-Similarly, use raw_spin_unlock() and local_irq_restore() in
-htab_unlock_bucket().
-
-Fixes: 20b6cc34ea74 ("bpf: Avoid hashtab deadlock with map_locked")
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/7a9576222aa40b1c84ad3a9ba3e64011d1a04d41.camel@linux.ibm.com
-Link: https://lore.kernel.org/bpf/20231012055741.3375999-1-song@kernel.org
+Fixes: fbbc18591585 ("clk: ti: divider: cleanup _register_divider and ti_clk_get_div_table")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/6d36eeec-6c8a-4f11-a579-aa3cd7c38749@moroto.mountain
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/hashtab.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/clk/ti/divider.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
-index 56d3da7d0bc66..e209e748a8e05 100644
---- a/kernel/bpf/hashtab.c
-+++ b/kernel/bpf/hashtab.c
-@@ -155,13 +155,15 @@ static inline int htab_lock_bucket(const struct bpf_htab *htab,
- 	hash = hash & min_t(u32, HASHTAB_MAP_LOCK_MASK, htab->n_buckets - 1);
- 
- 	preempt_disable();
-+	local_irq_save(flags);
- 	if (unlikely(__this_cpu_inc_return(*(htab->map_locked[hash])) != 1)) {
- 		__this_cpu_dec(*(htab->map_locked[hash]));
-+		local_irq_restore(flags);
- 		preempt_enable();
- 		return -EBUSY;
- 	}
- 
--	raw_spin_lock_irqsave(&b->raw_lock, flags);
-+	raw_spin_lock(&b->raw_lock);
- 	*pflags = flags;
- 
- 	return 0;
-@@ -172,8 +174,9 @@ static inline void htab_unlock_bucket(const struct bpf_htab *htab,
- 				      unsigned long flags)
+diff --git a/drivers/clk/ti/divider.c b/drivers/clk/ti/divider.c
+index 768a1f3398b47..5d5bb123ba949 100644
+--- a/drivers/clk/ti/divider.c
++++ b/drivers/clk/ti/divider.c
+@@ -309,7 +309,6 @@ static struct clk *_register_divider(struct device_node *node,
+ 				     u32 flags,
+ 				     struct clk_omap_divider *div)
  {
- 	hash = hash & min_t(u32, HASHTAB_MAP_LOCK_MASK, htab->n_buckets - 1);
--	raw_spin_unlock_irqrestore(&b->raw_lock, flags);
-+	raw_spin_unlock(&b->raw_lock);
- 	__this_cpu_dec(*(htab->map_locked[hash]));
-+	local_irq_restore(flags);
- 	preempt_enable();
+-	struct clk *clk;
+ 	struct clk_init_data init;
+ 	const char *parent_name;
+ 	const char *name;
+@@ -326,12 +325,7 @@ static struct clk *_register_divider(struct device_node *node,
+ 	div->hw.init = &init;
+ 
+ 	/* register the clock */
+-	clk = of_ti_clk_register(node, &div->hw, name);
+-
+-	if (IS_ERR(clk))
+-		kfree(div);
+-
+-	return clk;
++	return of_ti_clk_register(node, &div->hw, name);
  }
  
+ int ti_clk_parse_divider_data(int *div_table, int num_dividers, int max_div,
 -- 
 2.42.0
 
