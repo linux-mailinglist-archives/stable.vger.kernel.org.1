@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FEA87ED0AE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98A0D7ED0B4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343853AbjKOT4x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:56:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35340 "EHLO
+        id S1343897AbjKOT5G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343875AbjKOT4k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:40 -0500
+        with ESMTP id S235676AbjKOT45 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:57 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46A710D0
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A87C433C7;
-        Wed, 15 Nov 2023 19:56:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E10FCD67
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C8EC433C7;
+        Wed, 15 Nov 2023 19:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078196;
-        bh=tTRCpSbl/BdUkqM/hugkp+0KWXZ6E4nagQC+Qn1Ycj8=;
+        s=korg; t=1700078213;
+        bh=oMwKW0mmGTHE/6Sf5c+6dlSNMf3bJ6Vs0z2/7BzaHsw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vQL4rz9elKnVFR12tq7d/+Uikv6GsH1A+Lx4ewdxqHUePl+z+tXGVvo1S7UxkI3kf
-         7k3gESnoMJDDL0wz42uI3lD0Sf0HcaUlvuxlcyoza/KRO0kwr0+R4m3phHmJRRRXv3
-         MnqEsOgpPVWdeahflI2IJFSQjnA5mXZm3W9Eb4kM=
+        b=dkTOGWUaOK7fOGbBBLNX7W3KI6yFpf/nC1O+4Qtj3JGjvdGydqY1yYnbRBt32a5Wn
+         SBY4h+oEAZsYaPnr/Kivj0k0n1wtyoa/kilfOhDZK5ASwlbv+TpIXcy6kTY6ZDE+pY
+         ffGX/DO1eZhlOEsoogTPJVn1Rcf3TjCQblN26EwQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/379] arm64: dts: qcom: msm8992-libra: drop duplicated reserved memory
-Date:   Wed, 15 Nov 2023 14:23:58 -0500
-Message-ID: <20231115192654.750073227@linuxfoundation.org>
+Subject: [PATCH 6.1 164/379] arm64: dts: qcom: sc7280: Add missing LMH interrupts
+Date:   Wed, 15 Nov 2023 14:23:59 -0500
+Message-ID: <20231115192654.811563279@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,40 +54,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit f32096602c19e68fb9bf04b494d13f1190602554 ]
+[ Upstream commit 3f93d119c9d6e1744d55cd48af764160a1a3aca3 ]
 
-There are two entries for similar reserved memory: qseecom@cb400000 and
-audio@cb400000.  Keep the qseecom as it is longer.
+Hook up the interrupts that signal the Limits Management Hardware has
+started some sort of throttling action.
 
-  Warning (unique_unit_address_if_enabled): /reserved-memory/audio@cb400000: duplicate unit-address (also used in node /reserved-memory/qseecom@cb400000)
-
-Fixes: 69876bc6fd4d ("arm64: dts: qcom: msm8992-libra: Fix the memory map")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230720072048.10093-2-krzysztof.kozlowski@linaro.org
+Fixes: 7dbd121a2c58 ("arm64: dts: qcom: sc7280: Add cpufreq hw node")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230811-topic-7280_lmhirq-v1-1-c262b6a25c8f@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts | 5 -----
- 1 file changed, 5 deletions(-)
+ arch/arm64/boot/dts/qcom/sc7280.dtsi | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts b/arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts
-index 3ab0ad14e8704..95eab1f379229 100644
---- a/arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8992-xiaomi-libra.dts
-@@ -109,11 +109,6 @@ rmtfs_mem: rmtfs@ca100000 {
- 			qcom,client-id = <1>;
- 		};
- 
--		audio_mem: audio@cb400000 {
--			reg = <0 0xcb000000 0 0x400000>;
--			no-mem;
--		};
--
- 		qseecom_mem: qseecom@cb400000 {
- 			reg = <0 0xcb400000 0 0x1c00000>;
- 			no-mem;
+diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+index 409dad617a27c..aea356c63b9a3 100644
+--- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
+@@ -5338,6 +5338,14 @@ cpufreq_hw: cpufreq@18591000 {
+ 			reg = <0 0x18591000 0 0x1000>,
+ 			      <0 0x18592000 0 0x1000>,
+ 			      <0 0x18593000 0 0x1000>;
++
++			interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
++			interrupt-names = "dcvsh-irq-0",
++					  "dcvsh-irq-1",
++					  "dcvsh-irq-2";
++
+ 			clocks = <&rpmhcc RPMH_CXO_CLK>, <&gcc GCC_GPLL0>;
+ 			clock-names = "xo", "alternate";
+ 			#freq-domain-cells = <1>;
 -- 
 2.42.0
 
