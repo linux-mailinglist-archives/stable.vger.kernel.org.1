@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F1597ECCE4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A42D7ECCE6
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234211AbjKOTdO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44126 "EHLO
+        id S234200AbjKOTdR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:33:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234185AbjKOTdO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:14 -0500
+        with ESMTP id S234208AbjKOTdQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD0379E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3C2C433C7;
-        Wed, 15 Nov 2023 19:33:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A92D89E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F005C433C8;
+        Wed, 15 Nov 2023 19:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076790;
-        bh=b8Up54CDbc4z/zqQZPjNdvtzzSSZUNjuWwz1Qw73QG4=;
+        s=korg; t=1700076793;
+        bh=ga4+0RJaU1HcWqu5H6VdVP7YrqORA2yaikhGFDXMvhY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FDh+i0erRv+KnOEMnOXUGcYyGaLI/AS6JvZVJ0m7iKL0xZPs0SCkuV0So3djJXvFs
-         3hesYnGNSrmkFd4qv/nlsRojr8QGFE73Mwby7P8ftC2QbgjMOSb7WhfyZCfmIkWYj8
-         eDEoaYOzyilxipLGqd9/id18ewyHEV5SCjE/JQKA=
+        b=SxT2bw0E2zPUEvmu5e+eteG7x78XAXR+TzVKHh07xJNeHF4m1vF+rZ1qXWNcvRXCm
+         R7VoWSfx45CXcQF8Sp8EcarIj6G0Tc8DzETq2OL9J8yIVEGFAPNYhWxaTT95Z50cHi
+         uW+Uwb8RbDWPXheNVidY4SEMyzMO+xoM08DRVL+k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/603] drivers/clocksource/timer-ti-dm: Dont call clk_get_rate() in stop function
-Date:   Wed, 15 Nov 2023 14:09:32 -0500
-Message-ID: <20231115191615.060468158@linuxfoundation.org>
+        patches@lists.linux.dev, Chris Mason <clm@fb.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 028/603] x86/nmi: Fix out-of-order NMI nesting checks & false positive warning
+Date:   Wed, 15 Nov 2023 14:09:33 -0500
+Message-ID: <20231115191615.127377651@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -56,115 +57,98 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 12590d4d0e331d3cb9e6b3494515cd61c8a6624e ]
+[ Upstream commit f44075ecafb726830e63d33fbca29413149eeeb8 ]
 
-clk_get_rate() might sleep, and that prevents dm-timer based PWM from being
-used from atomic context.
+The ->idt_seq and ->recv_jiffies variables added by:
 
-Fix that by getting fclk rate in probe() and using a notifier in case rate
-changes.
+  1a3ea611fc10 ("x86/nmi: Accumulate NMI-progress evidence in exc_nmi()")
 
-Fixes: af04aa856e93 ("ARM: OMAP: Move dmtimer driver out of plat-omap to drivers under clocksource")
-Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/1696312220-11550-1-git-send-email-ivo.g.dimitrov.75@gmail.com
+... place the exit-time check of the bottom bit of ->idt_seq after the
+this_cpu_dec_return() that re-enables NMI nesting.  This can result in
+the following sequence of events on a given CPU in kernels built with
+CONFIG_NMI_CHECK_CPU=y:
+
+  o   An NMI arrives, and ->idt_seq is incremented to an odd number.
+      In addition, nmi_state is set to NMI_EXECUTING==1.
+
+  o   The NMI is processed.
+
+  o   The this_cpu_dec_return(nmi_state) zeroes nmi_state and returns
+      NMI_EXECUTING==1, thus opting out of the "goto nmi_restart".
+
+  o   Another NMI arrives and ->idt_seq is incremented to an even
+      number, triggering the warning.  But all is just fine, at least
+      assuming we don't get so many closely spaced NMIs that the stack
+      overflows or some such.
+
+Experience on the fleet indicates that the MTBF of this false positive
+is about 70 years.  Or, for those who are not quite that patient, the
+MTBF appears to be about one per week per 4,000 systems.
+
+Fix this false-positive warning by moving the "nmi_restart" label before
+the initial ->idt_seq increment/check and moving the this_cpu_dec_return()
+to follow the final ->idt_seq increment/check.  This way, all nested NMIs
+that get past the NMI_NOT_RUNNING check get a clean ->idt_seq slate.
+And if they don't get past that check, they will set nmi_state to
+NMI_LATCHED, which will cause the this_cpu_dec_return(nmi_state)
+to restart.
+
+Fixes: 1a3ea611fc10 ("x86/nmi: Accumulate NMI-progress evidence in exc_nmi()")
+Reported-by: Chris Mason <clm@fb.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/0cbff831-6e3d-431c-9830-ee65ee7787ff@paulmck-laptop
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-ti-dm.c | 36 ++++++++++++++++++++++++-------
- 1 file changed, 28 insertions(+), 8 deletions(-)
+ arch/x86/kernel/nmi.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clocksource/timer-ti-dm.c b/drivers/clocksource/timer-ti-dm.c
-index 09ab29cb7f641..5f60f6bd33866 100644
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -140,6 +140,8 @@ struct dmtimer {
- 	struct platform_device *pdev;
- 	struct list_head node;
- 	struct notifier_block nb;
-+	struct notifier_block fclk_nb;
-+	unsigned long fclk_rate;
- };
- 
- static u32 omap_reserved_systimers;
-@@ -253,8 +255,7 @@ static inline void __omap_dm_timer_enable_posted(struct dmtimer *timer)
- 	timer->posted = OMAP_TIMER_POSTED;
- }
- 
--static inline void __omap_dm_timer_stop(struct dmtimer *timer,
--					unsigned long rate)
-+static inline void __omap_dm_timer_stop(struct dmtimer *timer)
- {
- 	u32 l;
- 
-@@ -269,7 +270,7 @@ static inline void __omap_dm_timer_stop(struct dmtimer *timer,
- 		 * Wait for functional clock period x 3.5 to make sure that
- 		 * timer is stopped
- 		 */
--		udelay(3500000 / rate + 1);
-+		udelay(3500000 / timer->fclk_rate + 1);
- #endif
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index a0c551846b35f..4766b6bed4439 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -507,12 +507,13 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
  	}
- 
-@@ -348,6 +349,21 @@ static int omap_timer_context_notifier(struct notifier_block *nb,
- 	return NOTIFY_OK;
- }
- 
-+static int omap_timer_fclk_notifier(struct notifier_block *nb,
-+				    unsigned long event, void *data)
-+{
-+	struct clk_notifier_data *clk_data = data;
-+	struct dmtimer *timer = container_of(nb, struct dmtimer, fclk_nb);
+ 	this_cpu_write(nmi_state, NMI_EXECUTING);
+ 	this_cpu_write(nmi_cr2, read_cr2());
 +
-+	switch (event) {
-+	case POST_RATE_CHANGE:
-+		timer->fclk_rate = clk_data->new_rate;
-+		return NOTIFY_OK;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+}
-+
- static int omap_dm_timer_reset(struct dmtimer *timer)
- {
- 	u32 l, timeout = 100000;
-@@ -754,7 +770,6 @@ static int omap_dm_timer_stop(struct omap_dm_timer *cookie)
- {
- 	struct dmtimer *timer;
- 	struct device *dev;
--	unsigned long rate = 0;
++nmi_restart:
+ 	if (IS_ENABLED(CONFIG_NMI_CHECK_CPU)) {
+ 		WRITE_ONCE(nsp->idt_seq, nsp->idt_seq + 1);
+ 		WARN_ON_ONCE(!(nsp->idt_seq & 0x1));
+ 		WRITE_ONCE(nsp->recv_jiffies, jiffies);
+ 	}
+-nmi_restart:
  
- 	timer = to_dmtimer(cookie);
- 	if (unlikely(!timer))
-@@ -762,10 +777,7 @@ static int omap_dm_timer_stop(struct omap_dm_timer *cookie)
+ 	/*
+ 	 * Needs to happen before DR7 is accessed, because the hypervisor can
+@@ -548,16 +549,16 @@ DEFINE_IDTENTRY_RAW(exc_nmi)
  
- 	dev = &timer->pdev->dev;
- 
--	if (!timer->omap1)
--		rate = clk_get_rate(timer->fclk);
+ 	if (unlikely(this_cpu_read(nmi_cr2) != read_cr2()))
+ 		write_cr2(this_cpu_read(nmi_cr2));
+-	if (this_cpu_dec_return(nmi_state))
+-		goto nmi_restart;
 -
--	__omap_dm_timer_stop(timer, rate);
-+	__omap_dm_timer_stop(timer);
- 
- 	pm_runtime_put_sync(dev);
- 
-@@ -1124,6 +1136,14 @@ static int omap_dm_timer_probe(struct platform_device *pdev)
- 		timer->fclk = devm_clk_get(dev, "fck");
- 		if (IS_ERR(timer->fclk))
- 			return PTR_ERR(timer->fclk);
-+
-+		timer->fclk_nb.notifier_call = omap_timer_fclk_notifier;
-+		ret = devm_clk_notifier_register(dev, timer->fclk,
-+						 &timer->fclk_nb);
-+		if (ret)
-+			return ret;
-+
-+		timer->fclk_rate = clk_get_rate(timer->fclk);
- 	} else {
- 		timer->fclk = ERR_PTR(-ENODEV);
+-	if (user_mode(regs))
+-		mds_user_clear_cpu_buffers();
+ 	if (IS_ENABLED(CONFIG_NMI_CHECK_CPU)) {
+ 		WRITE_ONCE(nsp->idt_seq, nsp->idt_seq + 1);
+ 		WARN_ON_ONCE(nsp->idt_seq & 0x1);
+ 		WRITE_ONCE(nsp->recv_jiffies, jiffies);
  	}
++	if (this_cpu_dec_return(nmi_state))
++		goto nmi_restart;
++
++	if (user_mode(regs))
++		mds_user_clear_cpu_buffers();
+ }
+ 
+ #if IS_ENABLED(CONFIG_KVM_INTEL)
 -- 
 2.42.0
 
