@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 174A17ED187
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:02:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 923537ED190
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:02:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344189AbjKOUCP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:02:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43010 "EHLO
+        id S1344230AbjKOUCg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:02:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344218AbjKOUCO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:02:14 -0500
+        with ESMTP id S1344232AbjKOUCc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:02:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D417DD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:02:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22253C433C7;
-        Wed, 15 Nov 2023 20:02:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D001BF
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:02:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15D4C433C8;
+        Wed, 15 Nov 2023 20:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078530;
-        bh=/3zG2MbA0KxxV8A7pzgRWbK+ksin+eYTGVR7N7bcXao=;
+        s=korg; t=1700078545;
+        bh=UY3VUl2vFgYCcFYLv8vVWHxTR9Ime6yzMxpiHzfaRJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PLxZa0oZ79rcpvkOxEK1R1MUxBGAb1EDijrTTKlQs4+SSVg6V0Amu+ohAP2PE3b+M
-         7RVfi9DEGrqSB0byxOb/Opj/Mih0GLW+EUTCDEygAJSfbv2U02KGLLTYjTpDuQYDTp
-         13a+bridPkQvEuBLonLZBWBx3xhNXcDphd1Mdaak=
+        b=fQL1bvSDN9scY3W57tRQxFaffH9ElgjRJaZP5mUMWElQbqZ98KgnRAr737TisdOfJ
+         xIxUVEpqaroTv3MwmE4Dw91mcnjDyRdc4gY17Rhmr+0JReksK1b6VTzly1HpQw4kva
+         SSK0c8xHbDN0zz5xfoJLXONTLdk/T+ooBTfyT3yc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dominique Martinet <dominique.martinet@atmark-techno.com>,
-        Alex Fetters <Alex.Fetters@garmin.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 378/379] Revert "mmc: core: Capture correct oemid-bits for eMMC cards"
-Date:   Wed, 15 Nov 2023 14:27:33 -0500
-Message-ID: <20231115192707.513931120@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 379/379] btrfs: use u64 for buffer sizes in the tree search ioctls
+Date:   Wed, 15 Nov 2023 14:27:34 -0500
+Message-ID: <20231115192707.573217107@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -56,43 +55,77 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 421b605edb1ce611dee06cf6fd9a1c1f2fd85ad0 upstream.
+[ Upstream commit dec96fc2dcb59723e041416b8dc53e011b4bfc2e ]
 
-This reverts commit 84ee19bffc9306128cd0f1c650e89767079efeff.
+In the tree search v2 ioctl we use the type size_t, which is an unsigned
+long, to track the buffer size in the local variable 'buf_size'. An
+unsigned long is 32 bits wide on a 32 bits architecture. The buffer size
+defined in struct btrfs_ioctl_search_args_v2 is a u64, so when we later
+try to copy the local variable 'buf_size' to the argument struct, when
+the search returns -EOVERFLOW, we copy only 32 bits which will be a
+problem on big endian systems.
 
-The commit above made quirks with an OEMID fail to be applied, as they
-were checking card->cid.oemid for the full 16 bits defined in MMC_FIXUP
-macros but the field would only contain the bottom 8 bits.
+Fix this by using a u64 type for the buffer sizes, not only at
+btrfs_ioctl_tree_search_v2(), but also everywhere down the call chain
+so that we can use the u64 at btrfs_ioctl_tree_search_v2().
 
-eMMC v5.1A might have bogus values in OEMID's higher bits so another fix
-will be made, but it has been decided to revert this until that is ready.
-
-Fixes: 84ee19bffc93 ("mmc: core: Capture correct oemid-bits for eMMC cards")
-Link: https://lkml.kernel.org/r/ZToJsSLHr8RnuTHz@codewreck.org
-Link: https://lkml.kernel.org/r/CAPDyKFqkKibcXnwjnhc3+W1iJBHLeqQ9BpcZrSwhW2u9K2oUtg@mail.gmail.com
-Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Cc: stable@vger.kernel.org
-Cc: Alex Fetters <Alex.Fetters@garmin.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103004220.1666641-1-asmadeus@codewreck.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cc68a8a5a433 ("btrfs: new ioctl TREE_SEARCH_V2")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/linux-btrfs/ce6f4bd6-9453-4ffe-ba00-cee35495e10f@moroto.mountain/
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/mmc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/ioctl.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -104,7 +104,7 @@ static int mmc_decode_cid(struct mmc_car
- 	case 3: /* MMC v3.1 - v3.3 */
- 	case 4: /* MMC v4 */
- 		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
--		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 8);
-+		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
- 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
- 		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
- 		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 9474265ee7ea3..e015e1e025b6e 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -2420,7 +2420,7 @@ static noinline int key_in_sk(struct btrfs_key *key,
+ static noinline int copy_to_sk(struct btrfs_path *path,
+ 			       struct btrfs_key *key,
+ 			       struct btrfs_ioctl_search_key *sk,
+-			       size_t *buf_size,
++			       u64 *buf_size,
+ 			       char __user *ubuf,
+ 			       unsigned long *sk_offset,
+ 			       int *num_found)
+@@ -2552,7 +2552,7 @@ static noinline int copy_to_sk(struct btrfs_path *path,
+ 
+ static noinline int search_ioctl(struct inode *inode,
+ 				 struct btrfs_ioctl_search_key *sk,
+-				 size_t *buf_size,
++				 u64 *buf_size,
+ 				 char __user *ubuf)
+ {
+ 	struct btrfs_fs_info *info = btrfs_sb(inode->i_sb);
+@@ -2625,7 +2625,7 @@ static noinline int btrfs_ioctl_tree_search(struct inode *inode,
+ 	struct btrfs_ioctl_search_args __user *uargs = argp;
+ 	struct btrfs_ioctl_search_key sk;
+ 	int ret;
+-	size_t buf_size;
++	u64 buf_size;
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+@@ -2655,8 +2655,8 @@ static noinline int btrfs_ioctl_tree_search_v2(struct inode *inode,
+ 	struct btrfs_ioctl_search_args_v2 __user *uarg = argp;
+ 	struct btrfs_ioctl_search_args_v2 args;
+ 	int ret;
+-	size_t buf_size;
+-	const size_t buf_limit = SZ_16M;
++	u64 buf_size;
++	const u64 buf_limit = SZ_16M;
+ 
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+-- 
+2.42.0
+
 
 
