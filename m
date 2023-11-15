@@ -2,59 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E17347ED450
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 639A87ED312
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344639AbjKOU5o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34428 "EHLO
+        id S233689AbjKOUqE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344610AbjKOU53 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:29 -0500
+        with ESMTP id S233651AbjKOUqD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78929D5D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 581F4C4E766;
-        Wed, 15 Nov 2023 20:52:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE882A1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C81FC433CC;
+        Wed, 15 Nov 2023 20:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081530;
-        bh=CwlplymFscvSx4zMfr8ymK4Lpk3u9bzi2gT7nP+52M4=;
+        s=korg; t=1700081159;
+        bh=KcJ7ktbo5CYu0nBNEAxoQzNPhnARemC+3GGm+QAc1lM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JpPOyX2J4DlA4OO4Yih/xRqw/2x/6tK9FfP7Z2ZoFxejaMckGt+rcIhMOV0LG0jzb
-         WxdWWO8RWIua/NnrtyV6AHL1SIO1yD6gP2MsV0puNYPSvZdLNqAbl8VD5Eg7OBQNw/
-         eOT0NgoLdjrGOJvpF8PfBCddPSSSZ0vM2srUzEqQ=
+        b=JaS1EW9XI3GPwH58Cj7WwkyESqY9Nz0ridDca1jz0ShG7GZ7tbU+9eUwYobeZ/FiB
+         yyjI/S2ZK/4Z59Xs9FGanTfoLSRPfB4oiLTHHTyb19w9bwMOEXfbYd4VnChNBa8Dqu
+         +2C2m8PjJ889DVhfbEcGDpxZM/ThhVB1KEikWQgU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        K Prateek Nayak <kprateek.nayak@amd.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        German Gomez <german.gomez@arm.com>,
-        James Clark <james.clark@arm.com>,
-        Nick Terrell <terrelln@fb.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Changbin Du <changbin.du@huawei.com>,
-        liuwenyu <liuwenyu7@huawei.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>, Song Liu <song@kernel.org>,
-        Leo Yan <leo.yan@linaro.org>, Kajol Jain <kjain@linux.ibm.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Liam Howlett <liam.howlett@oracle.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 192/244] perf machine: Avoid out of bounds LBR memory read
-Date:   Wed, 15 Nov 2023 15:36:24 -0500
-Message-ID: <20231115203559.884610855@linuxfoundation.org>
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+5138ca807af9d2b42574@syzkaller.appspotmail.com,
+        syzbot+9425c47dccbcb4c17d51@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 73/88] tipc: Change nla_policy for bearer-related names to NLA_NUL_STRING
+Date:   Wed, 15 Nov 2023 15:36:25 -0500
+Message-ID: <20231115191430.482252154@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,82 +52,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit ab8ce150781d326c6bfbe1e09f175ffde1186f80 ]
+[ Upstream commit 19b3f72a41a8751e26bffc093bb7e1cef29ad579 ]
 
-Running perf top with address sanitizer and "--call-graph=lbr" fails
-due to reading sample 0 when no samples exist. Add a guard to prevent
-this.
+syzbot reported the following uninit-value access issue [1]:
 
-Fixes: e2b23483eb1d ("perf machine: Factor out lbr_callchain_add_lbr_ip()")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Nick Terrell <terrelln@fb.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Changbin Du <changbin.du@huawei.com>
-Cc: liuwenyu <liuwenyu7@huawei.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Yanteng Si <siyanteng@loongson.cn>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20231024222353.3024098-3-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+=====================================================
+BUG: KMSAN: uninit-value in strlen lib/string.c:418 [inline]
+BUG: KMSAN: uninit-value in strstr+0xb8/0x2f0 lib/string.c:756
+ strlen lib/string.c:418 [inline]
+ strstr+0xb8/0x2f0 lib/string.c:756
+ tipc_nl_node_reset_link_stats+0x3ea/0xb50 net/tipc/node.c:2595
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:971 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1051 [inline]
+ genl_rcv_msg+0x11ec/0x1290 net/netlink/genetlink.c:1066
+ netlink_rcv_skb+0x371/0x650 net/netlink/af_netlink.c:2545
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1075
+ netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
+ netlink_unicast+0xf47/0x1250 net/netlink/af_netlink.c:1368
+ netlink_sendmsg+0x1238/0x13d0 net/netlink/af_netlink.c:1910
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ sock_sendmsg net/socket.c:753 [inline]
+ ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2541
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2595
+ __sys_sendmsg net/socket.c:2624 [inline]
+ __do_sys_sendmsg net/socket.c:2633 [inline]
+ __se_sys_sendmsg net/socket.c:2631 [inline]
+ __x64_sys_sendmsg+0x307/0x490 net/socket.c:2631
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was created at:
+ slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
+ slab_alloc_node mm/slub.c:3478 [inline]
+ kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
+ kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:559
+ __alloc_skb+0x318/0x740 net/core/skbuff.c:650
+ alloc_skb include/linux/skbuff.h:1286 [inline]
+ netlink_alloc_large_skb net/netlink/af_netlink.c:1214 [inline]
+ netlink_sendmsg+0xb34/0x13d0 net/netlink/af_netlink.c:1885
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ sock_sendmsg net/socket.c:753 [inline]
+ ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2541
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2595
+ __sys_sendmsg net/socket.c:2624 [inline]
+ __do_sys_sendmsg net/socket.c:2633 [inline]
+ __se_sys_sendmsg net/socket.c:2631 [inline]
+ __x64_sys_sendmsg+0x307/0x490 net/socket.c:2631
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+TIPC bearer-related names including link names must be null-terminated
+strings. If a link name which is not null-terminated is passed through
+netlink, strstr() and similar functions can cause buffer overrun. This
+causes the above issue.
+
+This patch changes the nla_policy for bearer-related names from NLA_STRING
+to NLA_NUL_STRING. This resolves the issue by ensuring that only
+null-terminated strings are accepted as bearer-related names.
+
+syzbot reported similar uninit-value issue related to bearer names [2]. The
+root cause of this issue is that a non-null-terminated bearer name was
+passed. This patch also resolved this issue.
+
+Fixes: 7be57fc69184 ("tipc: add link get/dump to new netlink api")
+Fixes: 0655f6a8635b ("tipc: add bearer disable/enable to new netlink api")
+Reported-and-tested-by: syzbot+5138ca807af9d2b42574@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5138ca807af9d2b42574 [1]
+Reported-and-tested-by: syzbot+9425c47dccbcb4c17d51@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9425c47dccbcb4c17d51 [2]
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231030075540.3784537-1-syoshida@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/machine.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ net/tipc/netlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 55a041329990c..a0df9d24b2cb4 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -2437,16 +2437,18 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
- 		save_lbr_cursor_node(thread, cursor, i);
- 	}
+diff --git a/net/tipc/netlink.c b/net/tipc/netlink.c
+index 9b36163d951eb..bf11d57ef3aea 100644
+--- a/net/tipc/netlink.c
++++ b/net/tipc/netlink.c
+@@ -87,7 +87,7 @@ const struct nla_policy tipc_nl_net_policy[TIPC_NLA_NET_MAX + 1] = {
  
--	/* Add LBR ip from first entries.to */
--	ip = entries[0].to;
--	flags = &entries[0].flags;
--	*branch_from = entries[0].from;
--	err = add_callchain_ip(thread, cursor, parent,
--			       root_al, &cpumode, ip,
--			       true, flags, NULL,
--			       *branch_from);
--	if (err)
--		return err;
-+	if (lbr_nr > 0) {
-+		/* Add LBR ip from first entries.to */
-+		ip = entries[0].to;
-+		flags = &entries[0].flags;
-+		*branch_from = entries[0].from;
-+		err = add_callchain_ip(thread, cursor, parent,
-+				root_al, &cpumode, ip,
-+				true, flags, NULL,
-+				*branch_from);
-+		if (err)
-+			return err;
-+	}
+ const struct nla_policy tipc_nl_link_policy[TIPC_NLA_LINK_MAX + 1] = {
+ 	[TIPC_NLA_LINK_UNSPEC]		= { .type = NLA_UNSPEC },
+-	[TIPC_NLA_LINK_NAME]		= { .type = NLA_STRING,
++	[TIPC_NLA_LINK_NAME]		= { .type = NLA_NUL_STRING,
+ 					    .len = TIPC_MAX_LINK_NAME },
+ 	[TIPC_NLA_LINK_MTU]		= { .type = NLA_U32 },
+ 	[TIPC_NLA_LINK_BROADCAST]	= { .type = NLA_FLAG },
+@@ -116,7 +116,7 @@ const struct nla_policy tipc_nl_prop_policy[TIPC_NLA_PROP_MAX + 1] = {
  
- 	return 0;
- }
+ const struct nla_policy tipc_nl_bearer_policy[TIPC_NLA_BEARER_MAX + 1]	= {
+ 	[TIPC_NLA_BEARER_UNSPEC]	= { .type = NLA_UNSPEC },
+-	[TIPC_NLA_BEARER_NAME]		= { .type = NLA_STRING,
++	[TIPC_NLA_BEARER_NAME]		= { .type = NLA_NUL_STRING,
+ 					    .len = TIPC_MAX_BEARER_NAME },
+ 	[TIPC_NLA_BEARER_PROP]		= { .type = NLA_NESTED },
+ 	[TIPC_NLA_BEARER_DOMAIN]	= { .type = NLA_U32 }
 -- 
 2.42.0
 
