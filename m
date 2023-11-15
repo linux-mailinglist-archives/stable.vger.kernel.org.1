@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4B957ED3E1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:55:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E09C7ED649
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:52:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343512AbjKOUzL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:55:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41302 "EHLO
+        id S234972AbjKOVws (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:52:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343538AbjKOUzJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:55:09 -0500
+        with ESMTP id S1343656AbjKOU4H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:56:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772A98F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:55:06 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EACC4E777;
-        Wed, 15 Nov 2023 20:55:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B55E3B0
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:56:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6DDC4E778;
+        Wed, 15 Nov 2023 20:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081706;
-        bh=A9GpDK50iJ/U/yAiBjg0Yu0leIA1xxKW6WsCrP2n9yU=;
+        s=korg; t=1700081763;
+        bh=R/AoS85NAGfsZA52M+0ikJo4qNwYKk3wD8VxiYJI7To=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oL763vZDkUVjPSo8mArzZMbl1jlIgggMVs2rkLSKsGWuYj8oRLEiOjxr6XKPVyCyJ
-         UNG2MJ+fqGcu+n2mP4PEsphGQq1bayLdkNZtGqp7sCue4gULKBd6tvG7Vb9HH9FcB5
-         tNLzqRHAkuzvWeEx0xup1ZKf6JX4MIoIIlVDr7eU=
+        b=YJeYaIwSQYFlPt7f/1s2UduUt3EgcloRStKbkt5FD7y2i0lej8Gi9KGP0+6y3OS5r
+         iafczKOW0wNwn2Gctyw6cM36s25cgvycmaSwC91zEqAYQj1xdrx5apNhB20KoRgwOz
+         F4l3da3ezS4E2Uv/kv6ugZcWu7km2Y1bF+vmcYgg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Maxim Schwalm <maxim.schwalm@gmail.com>
-Subject: [PATCH 5.10 074/191] drm/bridge: tc358768: Fix bit updates
-Date:   Wed, 15 Nov 2023 15:45:49 -0500
-Message-ID: <20231115204649.039440630@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 075/191] drm/mediatek: Fix iommu fault during crtc enabling
+Date:   Wed, 15 Nov 2023 15:45:50 -0500
+Message-ID: <20231115204649.097162373@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -57,64 +59,53 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 66962d5c3c51377b9b90cae35b7e038950438e02 ]
+[ Upstream commit 53412dc2905401207f264dc30890f6b9e41524a6 ]
 
-The driver has a few places where it does:
+The difference between drm_atomic_helper_commit_tail() and
+drm_atomic_helper_commit_tail_rpm() is
+drm_atomic_helper_commit_tail() will commit plane first and
+then enable crtc, drm_atomic_helper_commit_tail_rpm() will
+enable crtc first and then commit plane.
 
-if (thing_is_enabled_in_config)
-	update_thing_bit_in_hw()
+Before mediatek-drm enables crtc, the power and clk required
+by OVL have not been turned on, so the commit plane cannot be
+committed before crtc is enabled. That means OVL layer should
+not be enabled before crtc is enabled.
+Therefore, the atomic_commit_tail of mediatek-drm is hooked with
+drm_atomic_helper_commit_tail_rpm().
 
-This means that if the thing is _not_ enabled, the bit never gets
-cleared. This affects the h/vsyncs and continuous DSI clock bits.
+Another reason is that the plane_state of drm_atomic_state is not
+synchronized with the plane_state stored in mtk_crtc during crtc enablng,
+so just set all planes to disabled.
 
-Fix the driver to always update the bit.
-
-Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-4-31725f008a50@ideasonboard.com
+Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20230809125722.24112-3-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index 8f7460f011aea..48dab19f3e236 100644
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -785,8 +785,8 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 		val |= BIT(i + 1);
- 	tc358768_write(priv, TC358768_HSTXVREGEN, val);
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index e83b1c406b96a..cc3cb5b63d444 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -320,6 +320,9 @@ static int mtk_crtc_ddp_hw_init(struct mtk_drm_crtc *mtk_crtc)
+ 		unsigned int local_layer;
  
--	if (!(mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS))
--		tc358768_write(priv, TC358768_TXOPTIONCNTRL, 0x1);
-+	tc358768_write(priv, TC358768_TXOPTIONCNTRL,
-+		       (mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS) ? 0 : BIT(0));
- 
- 	/* TXTAGOCNT[26:16] RXTASURECNT[10:0] */
- 	val = tc358768_to_ns((lptxcnt + 1) * dsibclk_nsk * 4);
-@@ -822,11 +822,12 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 	tc358768_write(priv, TC358768_DSI_HACT, hact);
- 
- 	/* VSYNC polarity */
--	if (!(mode->flags & DRM_MODE_FLAG_NVSYNC))
--		tc358768_update_bits(priv, TC358768_CONFCTL, BIT(5), BIT(5));
-+	tc358768_update_bits(priv, TC358768_CONFCTL, BIT(5),
-+			     (mode->flags & DRM_MODE_FLAG_PVSYNC) ? BIT(5) : 0);
+ 		plane_state = to_mtk_plane_state(plane->state);
 +
- 	/* HSYNC polarity */
--	if (mode->flags & DRM_MODE_FLAG_PHSYNC)
--		tc358768_update_bits(priv, TC358768_PP_MISC, BIT(0), BIT(0));
-+	tc358768_update_bits(priv, TC358768_PP_MISC, BIT(0),
-+			     (mode->flags & DRM_MODE_FLAG_PHSYNC) ? BIT(0) : 0);
- 
- 	/* Start DSI Tx */
- 	tc358768_write(priv, TC358768_DSI_START, 0x1);
++		/* should not enable layer before crtc enabled */
++		plane_state->pending.enable = false;
+ 		comp = mtk_drm_ddp_comp_for_plane(crtc, plane, &local_layer);
+ 		if (comp)
+ 			mtk_ddp_comp_layer_config(comp, local_layer,
 -- 
 2.42.0
 
