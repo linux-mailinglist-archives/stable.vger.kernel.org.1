@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1C707ED0C3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE5517ED0CE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343533AbjKOT5X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:57:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39578 "EHLO
+        id S1343845AbjKOT5l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343627AbjKOT5X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:23 -0500
+        with ESMTP id S1343864AbjKOT5k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:40 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A33181A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7C3C433C7;
-        Wed, 15 Nov 2023 19:57:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E159197
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DA0C433C7;
+        Wed, 15 Nov 2023 19:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078239;
-        bh=u2ahk3sS4hkb0XTR0SrLd9spFIeUkTKmWY/HJxZnyUc=;
+        s=korg; t=1700078256;
+        bh=JYHa/R+d8nGsNUyGeI2PeUPEYMvFLMZM/iLysQMJBRg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LInZAcDEjreS7CUYRIZtfxPkxQDnSuQpWF5+JB+bqds4SDO+VJTvuH49QRO+T4x40
-         g1lkoUXy+VUql0VKrtm9Qd+E/fEr5VsuvhsF0Z1aT4Pto2e9CVZDW4QH57s6tSxZIV
-         xCQmq3a0OpGITCRVQ8AL7wSGy08oiEGFTo6rcsqE=
+        b=sZ9GcJJr5T1wlmIeO/C9GWL/B9dmbrC5G+6TJ3330JUKWw6PlKu0cGzV8tyTZY34m
+         UEdRANBx92/5hxZCQiGXzqk6hVU5Uho3s1m3bwX4je4J9TbDYBmw+epTi2y3BLACQr
+         jTm9rubNoT8dv69l7oHBj0ThDBabpxU9T4UGd8GI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/379] KEYS: Include linux/errno.h in linux/verification.h
-Date:   Wed, 15 Nov 2023 14:24:25 -0500
-Message-ID: <20231115192656.341193846@linuxfoundation.org>
+Subject: [PATCH 6.1 191/379] crypto: hisilicon/hpre - Fix a erroneous check after snprintf()
+Date:   Wed, 15 Nov 2023 14:24:26 -0500
+Message-ID: <20231115192656.401347788@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -54,34 +55,34 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 0a596b0682a7ce37e26c36629816f105c6459d06 ]
+[ Upstream commit c977950146720abff14e46d8c53f5638b06a9182 ]
 
-Add inclusion of linux/errno.h as otherwise the reference to EINVAL
-may be invalid.
+This error handling looks really strange.
+Check if the string has been truncated instead.
 
-Fixes: f3cf4134c5c6 ("bpf: Add bpf_lookup_*_key() and bpf_key_put() kfuncs")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308261414.HKw1Mrip-lkp@intel.com/
+Fixes: 02ab994635eb ("crypto: hisilicon - Fixed some tiny bugs of HPRE")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/verification.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/hisilicon/hpre/hpre_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/verification.h b/include/linux/verification.h
-index f34e50ebcf60a..cb2d47f280910 100644
---- a/include/linux/verification.h
-+++ b/include/linux/verification.h
-@@ -8,6 +8,7 @@
- #ifndef _LINUX_VERIFICATION_H
- #define _LINUX_VERIFICATION_H
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_main.c b/drivers/crypto/hisilicon/hpre/hpre_main.c
+index baf1faec7046f..2a4418f781a3f 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_main.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_main.c
+@@ -1031,7 +1031,7 @@ static int hpre_cluster_debugfs_init(struct hisi_qm *qm)
  
-+#include <linux/errno.h>
- #include <linux/types.h>
+ 	for (i = 0; i < clusters_num; i++) {
+ 		ret = snprintf(buf, HPRE_DBGFS_VAL_MAX_LEN, "cluster%d", i);
+-		if (ret < 0)
++		if (ret >= HPRE_DBGFS_VAL_MAX_LEN)
+ 			return -EINVAL;
+ 		tmp_d = debugfs_create_dir(buf, qm->debug.debug_root);
  
- /*
 -- 
 2.42.0
 
