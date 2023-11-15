@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 381D87ECBCB
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0412E7ECE3F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232740AbjKOTYc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56542 "EHLO
+        id S234945AbjKOTls (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232731AbjKOTYb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:31 -0500
+        with ESMTP id S234941AbjKOTls (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 459AA12C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:28 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D428C433C9;
-        Wed, 15 Nov 2023 19:24:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C701A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBD8C433C8;
+        Wed, 15 Nov 2023 19:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076267;
-        bh=zs+fsk/04UpO9kRwf5jaIyZKhofjQ3GdOJ2peZjcNP8=;
+        s=korg; t=1700077304;
+        bh=2ZMcWtzxThI/ArDoxZExktNS5ApXLhbxFxSAA1YUS90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nLBOirfmDDD0hI+lswsXYQwvaPVd2hmy4N+pwgRKuwts3rNSnd849DQrYIU2AUmaj
-         9sj643s7+x4yT+QWKkM6dM9b48zmD3mHSVhn0FyvD2Asg7miFAGf2O9ChOwLEYcTCR
-         jVIQY4WjPY9yIuM82CzLgmDvosFqQOlqCW08ydV8=
+        b=oTSalcJBZOLQnfpQR3sn0MVi68uRPgOwZt3AAYSVDWQv4V886d9jVy5/88fnqATLi
+         YTnyeinSu1Cr+vjo234APsFKIg6ECrhlxe6L3x2rYJzUanhM3MrhCGX9QjXNAGWDtm
+         OpdWeFsQDFpR2tG0pIXoKW/O5Kl/wNr9qYj9IxsE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Kathiravan T <quic_kathirav@quicinc.com>,
-        Varadarajan Narayanan <quic_varada@quicinc.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 183/550] clk: qcom: apss-ipq-pll: Use stromer plus ops for stromer plus pll
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 6.6 222/603] drm/radeon: possible buffer overflow
 Date:   Wed, 15 Nov 2023 14:12:47 -0500
-Message-ID: <20231115191613.410198898@linuxfoundation.org>
+Message-ID: <20231115191628.634718352@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varadarajan Narayanan <quic_varada@quicinc.com>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-[ Upstream commit 267e29198436a8cb6770213471f72502c895096a ]
+[ Upstream commit dd05484f99d16715a88eedfca363828ef9a4c2d4 ]
 
-The set rate and determine rate operations are different between
-Stromer and Stromer Plus PLLs. Since the programming sequence is
-different, the PLLs dont get configured properly and random,
-inexplicable crash/freeze is seen. Hence, use stromer plus ops
-for ipq_pll_stromer_plus.
+Buffer 'afmt_status' of size 6 could overflow, since index 'afmt_idx' is
+checked after access.
 
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Fixes: c7ef7fbb1ccf ("clk: qcom: apss-ipq-pll: add support for IPQ5332")
-Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
-Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
-Link: https://lore.kernel.org/r/c86ecaa23dc4f39650bcf4a3bd54a617a932e4fd.1697781921.git.quic_varada@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 5cc4e5fc293b ("drm/radeon: Cleanup HDMI audio interrupt handling for evergreen")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/apss-ipq-pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/evergreen.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
-index ce28d882ee785..f44be99999ec0 100644
---- a/drivers/clk/qcom/apss-ipq-pll.c
-+++ b/drivers/clk/qcom/apss-ipq-pll.c
-@@ -68,7 +68,7 @@ static struct clk_alpha_pll ipq_pll_stromer_plus = {
- 				.fw_name = "xo",
- 			},
- 			.num_parents = 1,
--			.ops = &clk_alpha_pll_stromer_ops,
-+			.ops = &clk_alpha_pll_stromer_plus_ops,
- 		},
- 	},
- };
+diff --git a/drivers/gpu/drm/radeon/evergreen.c b/drivers/gpu/drm/radeon/evergreen.c
+index 4f06356d9ce2e..f0ae087be914e 100644
+--- a/drivers/gpu/drm/radeon/evergreen.c
++++ b/drivers/gpu/drm/radeon/evergreen.c
+@@ -4821,14 +4821,15 @@ int evergreen_irq_process(struct radeon_device *rdev)
+ 			break;
+ 		case 44: /* hdmi */
+ 			afmt_idx = src_data;
+-			if (!(afmt_status[afmt_idx] & AFMT_AZ_FORMAT_WTRIG))
+-				DRM_DEBUG("IH: IH event w/o asserted irq bit?\n");
+-
+ 			if (afmt_idx > 5) {
+ 				DRM_ERROR("Unhandled interrupt: %d %d\n",
+ 					  src_id, src_data);
+ 				break;
+ 			}
++
++			if (!(afmt_status[afmt_idx] & AFMT_AZ_FORMAT_WTRIG))
++				DRM_DEBUG("IH: IH event w/o asserted irq bit?\n");
++
+ 			afmt_status[afmt_idx] &= ~AFMT_AZ_FORMAT_WTRIG;
+ 			queue_hdmi = true;
+ 			DRM_DEBUG("IH: HDMI%d\n", afmt_idx + 1);
 -- 
 2.42.0
 
