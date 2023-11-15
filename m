@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F96A7ECF8D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 560517ECD04
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235350AbjKOTtO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:49:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
+        id S234288AbjKOTd4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:33:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235347AbjKOTtN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:13 -0500
+        with ESMTP id S234253AbjKOTdx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F80B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC274C433C8;
-        Wed, 15 Nov 2023 19:49:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9AF7D50
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF99C433CB;
+        Wed, 15 Nov 2023 19:33:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077749;
-        bh=ctZtkCOMYx87arsnCZzSBtJPXuZzwh5uF8nAoiufaIM=;
+        s=korg; t=1700076827;
+        bh=aSVZ+nM7adp1LikfrvSUtI1w0VX755YI60BMNDa8eqo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2e8xy1njLe1EP240yUfdAXQldOenLFSK86AwuTMXN2ITjuT75jqPHmS2Udu/ny7/g
-         XsfOtoZcP2YOO+lABVufx0MmylEiP3DSTpwDRG3Y6jh3iVWa/OdBr/GH1htS8Q+Usl
-         K9kNsKPfObyJhzpAwVvBFGlvy8oMxnMPfCu63Cv4=
+        b=0MuTK3aUVRG2BLI51rLegnk0r7yjbGbz78lH5IQlPYHHxGlQWi+d0d0s6OZ7F6l4q
+         XrKIVW+Uz3KhwhdieXwYz1xnyzjx+DxON/KvjTXv56dEBg4gleTole5kIRBUv4vkVi
+         ncy+LB8axQ38nfGeC5VriqifOLduU4a6oGbytC/k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Yufen <wangyufen@huawei.com>,
-        "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Thomas Richter <tmricht@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ian Rogers <irogers@google.com>, gor@linux.ibm.com,
+        hca@linux.ibm.com, sumanthk@linux.ibm.com, svens@linux.ibm.com,
+        Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 474/603] powerpc/pseries: fix potential memory leak in init_cpu_associativity()
+Subject: [PATCH 6.5 435/550] perf trace: Use the right bpf_probe_read(_str) variant for reading user data
 Date:   Wed, 15 Nov 2023 14:16:59 -0500
-Message-ID: <20231115191645.277819273@linuxfoundation.org>
+Message-ID: <20231115191630.926834605@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +54,173 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Yufen <wangyufen@huawei.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 95f1a128cd728a7257d78e868f1f5a145fc43736 ]
+[ Upstream commit 5069211e2f0b47e75119805e23ae6352d871e263 ]
 
-If the vcpu_associativity alloc memory successfully but the
-pcpu_associativity fails to alloc memory, the vcpu_associativity
-memory leaks.
+Perf test case 111 Check open filename arg using perf trace + vfs_getname
+fails on s390. This is caused by a failing function
+bpf_probe_read() in file util/bpf_skel/augmented_raw_syscalls.bpf.c.
 
-Fixes: d62c8deeb6e6 ("powerpc/pseries: Provide vcpu dispatch statistics")
-Signed-off-by: Wang Yufen <wangyufen@huawei.com>
-Reviewed-by: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/1671003983-10794-1-git-send-email-wangyufen@huawei.com
+The root cause is the lookup by address. Function bpf_probe_read()
+is used. This function works only for architectures
+with ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE.
+
+On s390 is not possible to determine from the address to which
+address space the address belongs to (user or kernel space).
+
+Replace bpf_probe_read() by bpf_probe_read_kernel()
+and bpf_probe_read_str() by bpf_probe_read_user_str() to
+explicity specify the address space the address refers to.
+
+Output before:
+ # ./perf trace -eopen,openat -- touch /tmp/111
+ libbpf: prog 'sys_enter': BPF program load failed: Invalid argument
+ libbpf: prog 'sys_enter': -- BEGIN PROG LOAD LOG --
+ reg type unsupported for arg#0 function sys_enter#75
+ 0: R1=ctx(off=0,imm=0) R10=fp0
+ ; int sys_enter(struct syscall_enter_args *args)
+ 0: (bf) r6 = r1           ; R1=ctx(off=0,imm=0) R6_w=ctx(off=0,imm=0)
+ ; return bpf_get_current_pid_tgid();
+ 1: (85) call bpf_get_current_pid_tgid#14      ; R0_w=scalar()
+ 2: (63) *(u32 *)(r10 -8) = r0 ; R0_w=scalar() R10=fp0 fp-8=????mmmm
+ 3: (bf) r2 = r10              ; R2_w=fp0 R10=fp0
+ ;
+ .....
+ lines deleted here
+ .....
+ 23: (bf) r3 = r6              ; R3_w=ctx(off=0,imm=0) R6=ctx(off=0,imm=0)
+ 24: (85) call bpf_probe_read#4
+ unknown func bpf_probe_read#4
+ processed 23 insns (limit 1000000) max_states_per_insn 0 \
+	 total_states 2 peak_states 2 mark_read 2
+ -- END PROG LOAD LOG --
+ libbpf: prog 'sys_enter': failed to load: -22
+ libbpf: failed to load object 'augmented_raw_syscalls_bpf'
+ libbpf: failed to load BPF skeleton 'augmented_raw_syscalls_bpf': -22
+ ....
+
+Output after:
+ # ./perf test -Fv 111
+ 111: Check open filename arg using perf trace + vfs_getname          :
+ --- start ---
+     1.085 ( 0.011 ms): touch/320753 openat(dfd: CWD, filename: \
+	"/tmp/temporary_file.SWH85", \
+	flags: CREAT|NOCTTY|NONBLOCK|WRONLY, mode: IRUGO|IWUGO) = 3
+ ---- end ----
+ Check open filename arg using perf trace + vfs_getname: Ok
+ #
+
+Test with the sleep command shows:
+Output before:
+ # ./perf trace -e *sleep sleep 1.234567890
+     0.000 (1234.681 ms): sleep/63114 clock_nanosleep(rqtp: \
+         { .tv_sec: 0, .tv_nsec: 0 }, rmtp: 0x3ffe0979720) = 0
+ #
+
+Output after:
+ # ./perf trace -e *sleep sleep 1.234567890
+     0.000 (1234.686 ms): sleep/64277 clock_nanosleep(rqtp: \
+         { .tv_sec: 1, .tv_nsec: 234567890 }, rmtp: 0x3fff3df9ea0) = 0
+ #
+
+Fixes: 14e4b9f4289a ("perf trace: Raw augmented syscalls fix libbpf 1.0+ compatibility")
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Co-developed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: gor@linux.ibm.com
+Cc: hca@linux.ibm.com
+Cc: sumanthk@linux.ibm.com
+Cc: svens@linux.ibm.com
+Link: https://lore.kernel.org/r/20231019082642.3286650-1-tmricht@linux.ibm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/lpar.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/examples/bpf/augmented_raw_syscalls.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index f2cb62148f36f..d4d6de0628b05 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -526,8 +526,10 @@ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
+diff --git a/tools/perf/examples/bpf/augmented_raw_syscalls.c b/tools/perf/examples/bpf/augmented_raw_syscalls.c
+index 9a03189d33d38..74fa9e642b424 100644
+--- a/tools/perf/examples/bpf/augmented_raw_syscalls.c
++++ b/tools/perf/examples/bpf/augmented_raw_syscalls.c
+@@ -147,7 +147,7 @@ static inline
+ unsigned int augmented_arg__read_str(struct augmented_arg *augmented_arg, const void *arg, unsigned int arg_len)
+ {
+ 	unsigned int augmented_len = sizeof(*augmented_arg);
+-	int string_len = bpf_probe_read_str(&augmented_arg->value, arg_len, arg);
++	int string_len = bpf_probe_read_user_str(&augmented_arg->value, arg_len, arg);
  
- 	if (cmd) {
- 		rc = init_cpu_associativity();
--		if (rc)
-+		if (rc) {
-+			destroy_cpu_associativity();
- 			goto out;
-+		}
+ 	augmented_arg->size = augmented_arg->err = 0;
+ 	/*
+@@ -196,7 +196,7 @@ int sys_enter_connect(struct syscall_enter_args *args)
+ 	if (socklen > sizeof(augmented_args->saddr))
+ 		socklen = sizeof(augmented_args->saddr);
  
- 		for_each_possible_cpu(cpu) {
- 			disp = per_cpu_ptr(&vcpu_disp_data, cpu);
+-	bpf_probe_read(&augmented_args->saddr, socklen, sockaddr_arg);
++	bpf_probe_read_user(&augmented_args->saddr, socklen, sockaddr_arg);
+ 
+ 	return augmented__output(args, augmented_args, len + socklen);
+ }
+@@ -215,7 +215,7 @@ int sys_enter_sendto(struct syscall_enter_args *args)
+ 	if (socklen > sizeof(augmented_args->saddr))
+ 		socklen = sizeof(augmented_args->saddr);
+ 
+-	bpf_probe_read(&augmented_args->saddr, socklen, sockaddr_arg);
++	bpf_probe_read_user(&augmented_args->saddr, socklen, sockaddr_arg);
+ 
+ 	return augmented__output(args, augmented_args, len + socklen);
+ }
+@@ -305,7 +305,7 @@ int sys_enter_perf_event_open(struct syscall_enter_args *args)
+         if (augmented_args == NULL)
+ 		goto failure;
+ 
+-	if (bpf_probe_read(&augmented_args->__data, sizeof(*attr), attr) < 0)
++	if (bpf_probe_read_user(&augmented_args->__data, sizeof(*attr), attr) < 0)
+ 		goto failure;
+ 
+ 	attr_read = (const struct perf_event_attr_size *)augmented_args->__data;
+@@ -319,7 +319,7 @@ int sys_enter_perf_event_open(struct syscall_enter_args *args)
+                 goto failure;
+ 
+ 	// Now that we read attr->size and tested it against the size limits, read it completely
+-	if (bpf_probe_read(&augmented_args->__data, size, attr) < 0)
++	if (bpf_probe_read_user(&augmented_args->__data, size, attr) < 0)
+ 		goto failure;
+ 
+ 	return augmented__output(args, augmented_args, len + size);
+@@ -341,7 +341,7 @@ int sys_enter_clock_nanosleep(struct syscall_enter_args *args)
+ 	if (size > sizeof(augmented_args->__data))
+                 goto failure;
+ 
+-	bpf_probe_read(&augmented_args->__data, size, rqtp_arg);
++	bpf_probe_read_user(&augmented_args->__data, size, rqtp_arg);
+ 
+ 	return augmented__output(args, augmented_args, len + size);
+ failure:
+@@ -380,7 +380,7 @@ int sys_enter(struct syscall_enter_args *args)
+ 	if (augmented_args == NULL)
+ 		return 1;
+ 
+-	bpf_probe_read(&augmented_args->args, sizeof(augmented_args->args), args);
++	bpf_probe_read_kernel(&augmented_args->args, sizeof(augmented_args->args), args);
+ 
+ 	/*
+ 	 * Jump to syscall specific augmenter, even if the default one,
+@@ -401,7 +401,7 @@ int sys_exit(struct syscall_exit_args *args)
+ 	if (pid_filter__has(&pids_filtered, getpid()))
+ 		return 0;
+ 
+-	bpf_probe_read(&exit_args, sizeof(exit_args), args);
++	bpf_probe_read_kernel(&exit_args, sizeof(exit_args), args);
+ 	/*
+ 	 * Jump to syscall specific return augmenter, even if the default one,
+ 	 * "!raw_syscalls:unaugmented" that will just return 1 to return the
 -- 
 2.42.0
 
