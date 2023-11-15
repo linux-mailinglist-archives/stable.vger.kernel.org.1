@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 400537ECEC9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E6FF7ECECB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235162AbjKOToq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38718 "EHLO
+        id S235163AbjKOTor (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:44:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235163AbjKOTon (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:43 -0500
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2066.outbound.protection.outlook.com [40.107.96.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8B5AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:36 -0800 (PST)
+        with ESMTP id S235176AbjKOToo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:44 -0500
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2077.outbound.protection.outlook.com [40.107.212.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 905951B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:39 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Us0r6Ri3n+PjsVophuTr4hCUB3d/Dvqwv1+3oB5i+3XCmvpke0I6dKldA9sVOpyoPha7Sjk1oNYLNRiV6pvzpXAkRE3vRh/yCb9wowq4oNguY36TodCpEPJcy65EPjRulmH7jcZx/5qK8oXp7wgL7JXL5s4gkz4P7x9a4cktN77H0cbouGDsd///lg+gn5JtlAwSDXw9xS8S0cfREfFot6/eNGkzcrv6f2gOQLyNpXHnddzLb2LKZsKP2FowiFYMJsCtspIcFNZUW0MifrB6Tb3Kh4jNIygpytO3NeK441Pm89H2a2duFm/D4b62cd5w2TSpnjyuCleybArWZr/APA==
+ b=kWSrC/SJ1DZ0yxTKuRyb9DRMNyHtzRsC59SUi3+3Cbn0NxjOj1CcfaH5DNPDRXpYf+5gvTF2YiZbcC5dVqpHP8y/pDIKVXqDJokY6vT4NDh3w53NScdM7KsT1p9+0NDf7EaBQltnkagyli1AZbZMQIIGn2msYJfR0zCLZ+KWj8XHtskH9VcO88Qt/QX2XrWPN4Ivl59evZurAhfLWNZvGutC3hFicljh/TxIoZhRUkyNF/lgFMlVjLgE8SLWbwhckueJqa01HFsikJH9Tv1YAWfbuU6zjaE5e0G0fQinrccvLquuN3b+XJy8eEts+RN4HxTSEc/uihyJi3KH7AocOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wVXEJcoS0NeS0GwHYHY8H8tu3MHwnf/cAllOEJhQFvE=;
- b=Jpt6L3qJO1JIm19rMcq6ljqCeVhJByJbKUOxObvdCd79IXe7xi0PhZHhlRWoFO+neNKD//C4F2BJtnKmVvjEs92fhgXMThX2TgemeBZA0AaOZ8FA5kBKT8jf0ZHoBp6F65ZwUPYXVio3Bg9Ed1+sfzs5LyZyRupwijA8GAuW5KGcXaMoec4XJxtRfF6Dg1y9oOda46V8YjC2Sen/MB4hpAFI5cKhotot1hTU5pmEbxoD+6DeYIr+ibocTHpaMg8UGsmGx2MeEfGLH/w54+/onSAOqx4qwMkY1ZpgrAWJaGbvcPHLJGxgggwzF+XZRnZ/4gwnGYZ2jCZk86IjtId8+Q==
+ bh=Ohmphher/PFdFR0NnbiojqZNzgJavFLU3vu/Tde4KbE=;
+ b=R5jc19qAadRMygGZ8NNnmnYiP0996GJdfHSSF8uQtPoC5w9S/KY+LAWaPxFTOw7FJ40WCJU0uQJSl4iSupy9bSLk0QLERvnnKCWTDaZzCNeV7A7OeJROhOKvyc6g2+H94vHITqFwTbygtyd2VUuZSC9Cfcg4/OwdD3do5VbtIn2ShR2PGvOI2PpYtG6j/kE7uCf6QUrmBPAUStBZJK6Nab7C7Zb6nquFHK0gUVm/jZKNvpEEKrciF70aKef4VdJriek5Gx7Xt2nWziM09Am2C1s8Nz5KuXJCyw0HrwXxyZ1wQgckbAoJik9tyWRQyTJS+0zoZeUHNJa0t6rENY9ahQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wVXEJcoS0NeS0GwHYHY8H8tu3MHwnf/cAllOEJhQFvE=;
- b=vmZdSa3oai9UtrvtPlN23hpke9JRx1GHOUli0AgTVBjJaj4JnLsc2w3RCp+NSGWhjY2qQCJ2GDyeZ+0wSvepQQC87M2Ayad8VVNnA8IYnI2lJFhbVBu8qEtEhstfycvS7AiU0owMUKQ2dSrXWQRHikK5T80OUGW+VLEoJbqxZ/4=
-Received: from BL1PR13CA0097.namprd13.prod.outlook.com (2603:10b6:208:2b9::12)
- by PH0PR12MB7096.namprd12.prod.outlook.com (2603:10b6:510:21d::16) with
+ bh=Ohmphher/PFdFR0NnbiojqZNzgJavFLU3vu/Tde4KbE=;
+ b=faj7H+zMm6PdWkwjQNFibvg9JcOg2I6jKXTrHgcqMB7vtjYRnawcLTJv+QE6/cnvOywzkHrPymwgjmRSw9rFXQFNhgC3fwPgzBIHW9RdwzR4mgW7NAjEf/QKNhNhqr7kcdjM0WH+EPhAU601BSdagZJXhP1ZKrfQ/k3AcPdiEb4=
+Received: from BL1PR13CA0259.namprd13.prod.outlook.com (2603:10b6:208:2ba::24)
+ by MN2PR12MB4518.namprd12.prod.outlook.com (2603:10b6:208:266::19) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.19; Wed, 15 Nov
- 2023 19:44:34 +0000
-Received: from BL6PEPF0001AB71.namprd02.prod.outlook.com
- (2603:10b6:208:2b9:cafe::73) by BL1PR13CA0097.outlook.office365.com
- (2603:10b6:208:2b9::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.17; Wed, 15 Nov
+ 2023 19:44:35 +0000
+Received: from BL6PEPF0001AB75.namprd02.prod.outlook.com
+ (2603:10b6:208:2ba:cafe::37) by BL1PR13CA0259.outlook.office365.com
+ (2603:10b6:208:2ba::24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7002.18 via Frontend
- Transport; Wed, 15 Nov 2023 19:44:33 +0000
+ Transport; Wed, 15 Nov 2023 19:44:35 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -46,13 +46,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL6PEPF0001AB71.mail.protection.outlook.com (10.167.242.164) with Microsoft
+ BL6PEPF0001AB75.mail.protection.outlook.com (10.167.242.168) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7002.13 via Frontend Transport; Wed, 15 Nov 2023 19:44:33 +0000
+ 15.20.7002.20 via Frontend Transport; Wed, 15 Nov 2023 19:44:35 +0000
 Received: from hamza-pc.localhost (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Wed, 15 Nov
- 2023 13:44:28 -0600
+ 2023 13:44:34 -0600
 From:   Hamza Mahfooz <hamza.mahfooz@amd.com>
 To:     <amd-gfx@lists.freedesktop.org>
 CC:     <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
@@ -60,12 +60,12 @@ CC:     <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
         <roman.li@amd.com>, <wayne.lin@amd.com>, <stylon.wang@amd.com>,
         <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
         <hersenxs.wu@amd.com>, <jerry.zuo@amd.com>,
-        Camille Cho <camille.cho@amd.com>, <stable@vger.kernel.org>,
-        Krunoslav Kovac <krunoslav.kovac@amd.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        <stable@vger.kernel.org>, Syed Hassan <syed.hassan@amd.com>,
         Hamza Mahfooz <hamza.mahfooz@amd.com>
-Subject: [PATCH 18/35] drm/amd/display: Simplify brightness initialization
-Date:   Wed, 15 Nov 2023 14:40:31 -0500
-Message-ID: <20231115194332.39469-19-hamza.mahfooz@amd.com>
+Subject: [PATCH 23/35] drm/amd/display: Remove min_dst_y_next_start check for Z8
+Date:   Wed, 15 Nov 2023 14:40:36 -0500
+Message-ID: <20231115194332.39469-24-hamza.mahfooz@amd.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231115194332.39469-1-hamza.mahfooz@amd.com>
 References: <20231115194332.39469-1-hamza.mahfooz@amd.com>
@@ -77,23 +77,23 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB71:EE_|PH0PR12MB7096:EE_
-X-MS-Office365-Filtering-Correlation-Id: d768075f-82b3-4d57-0d2f-08dbe6134aba
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB75:EE_|MN2PR12MB4518:EE_
+X-MS-Office365-Filtering-Correlation-Id: 243d83ad-16ba-4266-2c6c-08dbe6134bfe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kvgTGCsYC96ZsFksQln09JBYo1LFjYQoQEDPEX0oNeXuDWxn5uNgNL6H0myBCYKABrBvgGxd7YMzfIwKprUkwesTPoKURPeW1Sw8CDz8CkX03MR7utLb9eUS567E3nUvETaNHz8LwzcTiwNuOmIP/D2Q1Dm9HCBPU1xHgqXVJPczOg2dSyglzMgSGg2F/x5NTCd8MuIUWcfN0RzJQrMndxDpDvwJgZNrWdeo+iWTEcob9wIHJ4h+szt8brFPx99Ik5jQ1IHhNAlRNUgOoArPsjqAbxbez2NEgYhnJCM88xiWEtv+z+lw2Vm13PziYvHw33P8/bgvJJ2iRq/tchgg4Vypwt0IaMpjrAA/O1Zaeq+vEJdTNaf4zBFQWTwj7EQOxIwsCmOWY64KVka/zgdxqHy1UXDKLynOpuB1T+kdE4ABVno6aMXzf91IAvM8QcNwa7PbwKGSJY9BcoczWI606q/Ks3ZxQcvCN1fsvshE3DBkrGTbB5HAaRGfOXSMY/nkj0NK9BwDg6/tk1vYJ5+bkGegrom0pnPVv4Tca+MzlG7kUle2q5ktZ/+NFxuJIwWPMfNOaXz9ogfXIFRVKct1LYMgXO1i3e8hLzGtSED9wBqWEGKK5dPFKq/PwgSGXMNMC2NlD/o7RRkkB3ZDtI8OJdeg4O/PpvCGM+i52C59LJRlGpErJnt+OcpvSelk0+MB/XdmDZsku97U24j93UJDg+5CQ+TehUJZ/ajHcGx5uXZjErBvyYQ5/9YB0ILO0dv5N6Xwhmyxqa1nUK6pUOGRzzrGD/9iRYMmxrA2J0u35nZND9CnRMsWoKnedN2HX5yg
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(39860400002)(396003)(376002)(136003)(230922051799003)(1800799009)(82310400011)(186009)(64100799003)(451199024)(40470700004)(46966006)(36840700001)(70206006)(478600001)(6666004)(1076003)(70586007)(426003)(2906002)(41300700001)(26005)(44832011)(2616005)(54906003)(8676002)(336012)(4326008)(6916009)(8936002)(316002)(5660300002)(81166007)(36860700001)(82740400003)(83380400001)(47076005)(36756003)(86362001)(356005)(16526019)(40460700003)(40480700001)(16060500005)(36900700001);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam-Message-Info: 4r397hLGhxD+8Qg/QoeymUlqoIyLxS+AqLT+QtcCwnPqnQqxSySj/RELSFofqtJ8DkgH1Acc0XHBtfcBh5VL1F6d0jvXKXC6GHL41DNOFufGNGcNjUyJyO8k/3pSXnAoeIokcvYIlN0CW0/CsSikSJxkm3IJYxw+2T80hw+QHtFSscwzA2MyYj32VxwAn7x2dq/NLSZ8qb8xWP3TJ5aTgmK/iqxfeUXiFDIskDL/8tes4AtI15sfTW0BjtOWtuD8OfTANJRWM973E6XRlcBQbK/MEWE7iL0pWZ60cu/PWEd2Eq+nHf1dZkA33v6LLhQwQhYrDY5hfdCJCwAKB1gnQbUyWq+xEb3QJYqN9UTjOcBssIyCF3ZkCl5Mgrazp6KfxutGMocGkHXCOJiZysZ0+M2fv1/cV8AmEbDuJvvtZBHvKsZbjTIaSOjwGhZa4rF6hWVUigmkd6kdtOvNKxx3DHQRlpydsrpYX4fy7BinLQ4sDiSwr9WcQ7cjE3gn7nEURIh0442H2PLsPAlMzjH6rP9UrglWP26IfGJfYcEyitxVHpxklrSd805k+8ystqCudwZcxwaXuTbDTFE24ZJblnsOyfrzYuKpqgY7HRa7qxRFnlddy7yk4vTS+YHV45UZpJBNBD7Su63GMR32iBv1BUa82TSELvDbpGIaev0CeImS3hxnu5EG6F04/LRm/bucJLrcpHOpw1XbAba8hvfLey4YsRmoNk4TRO1bnZyMlGICv8W8bB/FX+fYGMWbfXZjiG/olYmmppKfGsQV4RKn/UccakFKSPES0KOJJdNhpdXSV8i9iXZv1m17/Hb3Qa7C
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(346002)(39860400002)(396003)(136003)(230922051799003)(82310400011)(1800799009)(186009)(64100799003)(451199024)(36840700001)(40470700004)(46966006)(36860700001)(41300700001)(2616005)(1076003)(44832011)(83380400001)(16526019)(8936002)(4326008)(8676002)(426003)(47076005)(26005)(336012)(2906002)(478600001)(40480700001)(356005)(81166007)(5660300002)(82740400003)(316002)(70586007)(6916009)(54906003)(70206006)(36756003)(86362001)(40460700003)(16060500005)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2023 19:44:33.4281
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Nov 2023 19:44:35.6304
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d768075f-82b3-4d57-0d2f-08dbe6134aba
+X-MS-Exchange-CrossTenant-Network-Message-Id: 243d83ad-16ba-4266-2c6c-08dbe6134bfe
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB71.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB75.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7096
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4518
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
@@ -104,139 +104,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Camille Cho <camille.cho@amd.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
 [Why]
-Remove the brightness cache in DC. It uses a single value to represent
-the brightness for both SDR and HDR mode. This leads to flash in HDR
-on/off. It also unconditionally programs brightness as in HDR mode. This
-may introduce garbage on SDR mode in miniLED panel.
+Flickering occurs on DRR supported panels when engaged in DRR due to
+min_dst_y_next becoming larger than the frame size itself.
 
 [How]
-Simplify the initialization flow by removing the DC cache and taking
-what panel has as default. Expand the mechanism for PWM to DPCD Aux to
-restore cached brightness value generally.
+In general, we should be able to enter Z8 when this is engaged but it
+might be a net power loss even if the calculation wasn't bugged.
+
+Don't support enabling Z8 during the DRR region.
 
 Cc: stable@vger.kernel.org # 6.1+
-Reviewed-by: Krunoslav Kovac <krunoslav.kovac@amd.com>
+Reviewed-by: Syed Hassan <syed.hassan@amd.com>
 Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Camille Cho <camille.cho@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/dc.h              |  1 -
- drivers/gpu/drm/amd/display/dc/dc_types.h        |  4 ----
- .../gpu/drm/amd/display/dc/link/link_detection.c |  2 +-
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c  |  3 +--
- .../dc/link/protocols/link_edp_panel_control.c   | 16 +++-------------
- .../dc/link/protocols/link_edp_panel_control.h   |  1 -
- 6 files changed, 5 insertions(+), 22 deletions(-)
+ .../gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c  | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index 42ae3edd9015..85fa77d623f4 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -1610,7 +1610,6 @@ struct dc_link {
- 	enum edp_revision edp_revision;
- 	union dpcd_sink_ext_caps dpcd_sink_ext_caps;
- 
--	struct backlight_settings backlight_settings;
- 	struct psr_settings psr_settings;
- 
- 	struct replay_settings replay_settings;
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
-index 4a60d2c47686..a2f6c994a2a9 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
-@@ -991,10 +991,6 @@ struct link_mst_stream_allocation_table {
- 	struct link_mst_stream_allocation stream_allocations[MAX_CONTROLLER_NUM];
- };
- 
--struct backlight_settings {
--	uint32_t backlight_millinits;
--};
--
- /* PSR feature flags */
- struct psr_settings {
- 	bool psr_feature_enabled;		// PSR is supported by sink
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-index f2fe523f914f..24153b0df503 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -879,7 +879,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
- 			(link->dpcd_sink_ext_caps.bits.oled == 1)) {
- 			dpcd_set_source_specific_data(link);
- 			msleep(post_oui_delay);
--			set_cached_brightness_aux(link);
-+			set_default_brightness_aux(link);
- 		}
- 
- 		return true;
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index 34a4a8c0e18c..f8e01ca09d96 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -2142,8 +2142,7 @@ static enum dc_status enable_link_dp(struct dc_state *state,
- 	if (link->dpcd_sink_ext_caps.bits.oled == 1 ||
- 		link->dpcd_sink_ext_caps.bits.sdr_aux_backlight_control == 1 ||
- 		link->dpcd_sink_ext_caps.bits.hdr_aux_backlight_control == 1) {
--		set_cached_brightness_aux(link);
--
-+		set_default_brightness_aux(link);
- 		if (link->dpcd_sink_ext_caps.bits.oled == 1)
- 			msleep(bl_oled_enable_delay);
- 		edp_backlight_enable_aux(link, true);
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-index fdeb8dff5485..ac0fa88b52a0 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-@@ -170,7 +170,6 @@ bool edp_set_backlight_level_nits(struct dc_link *link,
- 	*(uint32_t *)&dpcd_backlight_set.backlight_level_millinits = backlight_millinits;
- 	*(uint16_t *)&dpcd_backlight_set.backlight_transition_time_ms = (uint16_t)transition_time_in_ms;
- 
--	link->backlight_settings.backlight_millinits = backlight_millinits;
- 
- 	if (!link->dpcd_caps.panel_luminance_control) {
- 		if (core_link_write_dpcd(link, DP_SOURCE_BACKLIGHT_LEVEL,
-@@ -288,9 +287,9 @@ bool set_default_brightness_aux(struct dc_link *link)
- 	if (link && link->dpcd_sink_ext_caps.bits.oled == 1) {
- 		if (!read_default_bl_aux(link, &default_backlight))
- 			default_backlight = 150000;
--		// if < 1 nits or > 5000, it might be wrong readback
--		if (default_backlight < 1000 || default_backlight > 5000000)
--			default_backlight = 150000; //
-+		// if > 5000, it might be wrong readback
-+		if (default_backlight > 5000000)
-+			default_backlight = 150000;
- 
- 		return edp_set_backlight_level_nits(link, true,
- 				default_backlight, 0);
-@@ -298,15 +297,6 @@ bool set_default_brightness_aux(struct dc_link *link)
- 	return false;
- }
- 
--bool set_cached_brightness_aux(struct dc_link *link)
--{
--	if (link->backlight_settings.backlight_millinits)
--		return edp_set_backlight_level_nits(link, true,
--						    link->backlight_settings.backlight_millinits, 0);
--	else
--		return set_default_brightness_aux(link);
--	return false;
--}
- bool edp_is_ilr_optimization_enabled(struct dc_link *link)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+index 7fc8b18096ba..ec77b2b41ba3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -950,10 +950,8 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
  {
- 	if (link->dpcd_caps.edp_supported_link_rates_count == 0 || !link->panel_config.ilr.optimize_edp_link_rate)
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
-index 39526bd40178..b7493ff4fcee 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
-@@ -30,7 +30,6 @@
- enum dp_panel_mode dp_get_panel_mode(struct dc_link *link);
- void dp_set_panel_mode(struct dc_link *link, enum dp_panel_mode panel_mode);
- bool set_default_brightness_aux(struct dc_link *link);
--bool set_cached_brightness_aux(struct dc_link *link);
- void edp_panel_backlight_power_on(struct dc_link *link, bool wait_for_hpd);
- int edp_get_backlight_level(const struct dc_link *link);
- bool edp_get_backlight_level_nits(struct dc_link *link,
+ 	int plane_count;
+ 	int i;
+-	unsigned int min_dst_y_next_start_us;
+ 
+ 	plane_count = 0;
+-	min_dst_y_next_start_us = 0;
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		if (context->res_ctx.pipe_ctx[i].plane_state)
+ 			plane_count++;
+@@ -975,26 +973,15 @@ static enum dcn_zstate_support_state  decide_zstate_support(struct dc *dc, struc
+ 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
+ 		struct dc_link *link = context->streams[0]->sink->link;
+ 		struct dc_stream_status *stream_status = &context->stream_status[0];
+-		struct dc_stream_state *current_stream = context->streams[0];
+ 		int minmum_z8_residency = dc->debug.minimum_z8_residency_time > 0 ? dc->debug.minimum_z8_residency_time : 1000;
+ 		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > (double)minmum_z8_residency;
+ 		bool is_pwrseq0 = link->link_index == 0;
+-		bool isFreesyncVideo;
+-
+-		isFreesyncVideo = current_stream->adjust.v_total_min == current_stream->adjust.v_total_max;
+-		isFreesyncVideo = isFreesyncVideo && current_stream->timing.v_total < current_stream->adjust.v_total_min;
+-		for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-			if (context->res_ctx.pipe_ctx[i].stream == current_stream && isFreesyncVideo) {
+-				min_dst_y_next_start_us = context->res_ctx.pipe_ctx[i].dlg_regs.min_dst_y_next_start_us;
+-				break;
+-			}
+-		}
+ 
+ 		/* Don't support multi-plane configurations */
+ 		if (stream_status->plane_count > 1)
+ 			return DCN_ZSTATE_SUPPORT_DISALLOW;
+ 
+-		if (is_pwrseq0 && (context->bw_ctx.dml.vba.StutterPeriod > 5000.0 || min_dst_y_next_start_us > 5000))
++		if (is_pwrseq0 && context->bw_ctx.dml.vba.StutterPeriod > 5000.0)
+ 			return DCN_ZSTATE_SUPPORT_ALLOW;
+ 		else if (is_pwrseq0 && link->psr_settings.psr_version == DC_PSR_VERSION_1 && !link->panel_config.psr.disable_psr)
+ 			return allow_z8 ? DCN_ZSTATE_SUPPORT_ALLOW_Z8_Z10_ONLY : DCN_ZSTATE_SUPPORT_ALLOW_Z10_ONLY;
 -- 
 2.42.0
 
