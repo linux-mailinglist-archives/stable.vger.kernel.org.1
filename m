@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 004F57ED476
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C70007ED2E7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344805AbjKOU6J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34420 "EHLO
+        id S233552AbjKOUpF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344663AbjKOU5i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:38 -0500
+        with ESMTP id S233558AbjKOUpC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB6441734
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 884F2C4E664;
-        Wed, 15 Nov 2023 20:50:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4532ED44
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F4FC433CA;
+        Wed, 15 Nov 2023 20:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081444;
-        bh=2nvLBgJmhv4GlQpD3mKuc4tYTdBQIG8k4jawe2CPpG0=;
+        s=korg; t=1700081098;
+        bh=EvU1VQxTaSwmcNZeibo4DHlVN1LyxG3Qy2CFZtVTGLs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dLezU1kS/iYMcelzz9LXQIMjQclrzYlzbOeIrcsswsAH8hEQrr2EFXgMLck/vZVer
-         OKP5Eix0rc4TDVWj7G7aX2zKVvyb4iOYgwUeXND3MrgsTyLWSW8GZ+TPMIJKaBjyk3
-         BpY7DwIcSvk4yy4168I+7ZHVkP3ZT9VC7W6Ay8XI=
+        b=h0Hm5QIPXzdNlnoWk8E7JKXLqTk4jNoT+rH6V1PZejYJaJn5HODvQfOEIHes1kZnZ
+         iHLyvwvSTEph38gJ5xilAaECOdBCnj1jGINoK752fGnuq2UCIVfgWV+zYh8ogfoiSk
+         j3pt5k9X8LdB/UoD0uvogkSDTYz/n2QYd5vDZRr8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 157/244] crypto: qat - fix deadlock in backlog processing
-Date:   Wed, 15 Nov 2023 15:35:49 -0500
-Message-ID: <20231115203557.765945503@linuxfoundation.org>
+        patches@lists.linux.dev, Eudean Sun <eudean@arista.com>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        =?UTF-8?q?S=C3=A9bastien=20Szymanski?= 
+        <sebastien.szymanski@armadeus.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 38/88] HID: cp2112: Use irqchip template
+Date:   Wed, 15 Nov 2023 15:35:50 -0500
+Message-ID: <20231115191428.473308282@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,112 +54,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 203b01001c4d741205b9c329acddc5193ed56fbd ]
+[ Upstream commit 6bfa31756ae905e23050ee10a3b4d3d435122c97 ]
 
-If a request has the flag CRYPTO_TFM_REQ_MAY_BACKLOG set, the function
-qat_alg_send_message_maybacklog(), enqueues it in a backlog list if
-either (1) there is already at least one request in the backlog list, or
-(2) the HW ring is nearly full or (3) the enqueue to the HW ring fails.
-If an interrupt occurs right before the lock in qat_alg_backlog_req() is
-taken and the backlog queue is being emptied, then there is no request
-in the HW queues that can trigger a subsequent interrupt that can clear
-the backlog queue. In addition subsequent requests are enqueued to the
-backlog list and not sent to the hardware.
+This makes the driver use the irqchip template to assign
+properties to the gpio_irq_chip instead of using the
+explicit calls to gpiochip_irqchip_add(). The irqchip is
+instead added while adding the gpiochip.
 
-Fix it by holding the lock while taking the decision if the request
-needs to be included in the backlog queue or not. This synchronizes the
-flow with the interrupt handler that drains the backlog queue.
-
-For performance reasons, the logic has been changed to try to enqueue
-first without holding the lock.
-
-Fixes: 386823839732 ("crypto: qat - add backlog mechanism")
-Reported-by: Mikulas Patocka <mpatocka@redhat.com>
-Closes: https://lore.kernel.org/all/af9581e2-58f9-cc19-428f-6f18f1f83d54@redhat.com/T/
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Eudean Sun <eudean@arista.com>
+Cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Cc: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Stable-dep-of: e3c2d2d144c0 ("hid: cp2112: Fix duplicate workqueue initialization")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_common/qat_algs_send.c | 46 ++++++++++---------
- 1 file changed, 25 insertions(+), 21 deletions(-)
+ drivers/hid/hid-cp2112.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/crypto/qat/qat_common/qat_algs_send.c b/drivers/crypto/qat/qat_common/qat_algs_send.c
-index ff5b4347f7831..607ed88f4b197 100644
---- a/drivers/crypto/qat/qat_common/qat_algs_send.c
-+++ b/drivers/crypto/qat/qat_common/qat_algs_send.c
-@@ -39,40 +39,44 @@ void qat_alg_send_backlog(struct qat_instance_backlog *backlog)
- 	spin_unlock_bh(&backlog->lock);
- }
+diff --git a/drivers/hid/hid-cp2112.c b/drivers/hid/hid-cp2112.c
+index 637a7ce281c61..875fd8b2eec23 100644
+--- a/drivers/hid/hid-cp2112.c
++++ b/drivers/hid/hid-cp2112.c
+@@ -1245,6 +1245,7 @@ static int cp2112_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	struct cp2112_device *dev;
+ 	u8 buf[3];
+ 	struct cp2112_smbus_config_report config;
++	struct gpio_irq_chip *girq;
+ 	int ret;
  
--static void qat_alg_backlog_req(struct qat_alg_req *req,
--				struct qat_instance_backlog *backlog)
--{
--	INIT_LIST_HEAD(&req->list);
+ 	dev = devm_kzalloc(&hdev->dev, sizeof(*dev), GFP_KERNEL);
+@@ -1348,6 +1349,15 @@ static int cp2112_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	dev->gc.can_sleep		= 1;
+ 	dev->gc.parent			= &hdev->dev;
+ 
++	girq = &dev->gc.irq;
++	girq->chip = &cp2112_gpio_irqchip;
++	/* The event comes from the outside so no parent handler */
++	girq->parent_handler = NULL;
++	girq->num_parents = 0;
++	girq->parents = NULL;
++	girq->default_type = IRQ_TYPE_NONE;
++	girq->handler = handle_simple_irq;
++
+ 	ret = gpiochip_add_data(&dev->gc, dev);
+ 	if (ret < 0) {
+ 		hid_err(hdev, "error registering gpio chip\n");
+@@ -1363,17 +1373,8 @@ static int cp2112_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	chmod_sysfs_attrs(hdev);
+ 	hid_hw_power(hdev, PM_HINT_NORMAL);
+ 
+-	ret = gpiochip_irqchip_add(&dev->gc, &cp2112_gpio_irqchip, 0,
+-				   handle_simple_irq, IRQ_TYPE_NONE);
+-	if (ret) {
+-		dev_err(dev->gc.parent, "failed to add IRQ chip\n");
+-		goto err_sysfs_remove;
+-	}
 -
--	spin_lock_bh(&backlog->lock);
--	list_add_tail(&req->list, &backlog->list);
--	spin_unlock_bh(&backlog->lock);
--}
--
--static int qat_alg_send_message_maybacklog(struct qat_alg_req *req)
-+static bool qat_alg_try_enqueue(struct qat_alg_req *req)
- {
- 	struct qat_instance_backlog *backlog = req->backlog;
- 	struct adf_etr_ring_data *tx_ring = req->tx_ring;
- 	u32 *fw_req = req->fw_req;
+ 	return ret;
  
--	/* If any request is already backlogged, then add to backlog list */
-+	/* Check if any request is already backlogged */
- 	if (!list_empty(&backlog->list))
--		goto enqueue;
-+		return false;
- 
--	/* If ring is nearly full, then add to backlog list */
-+	/* Check if ring is nearly full */
- 	if (adf_ring_nearly_full(tx_ring))
--		goto enqueue;
-+		return false;
- 
--	/* If adding request to HW ring fails, then add to backlog list */
-+	/* Try to enqueue to HW ring */
- 	if (adf_send_message(tx_ring, fw_req))
--		goto enqueue;
-+		return false;
- 
--	return -EINPROGRESS;
-+	return true;
-+}
- 
--enqueue:
--	qat_alg_backlog_req(req, backlog);
- 
--	return -EBUSY;
-+static int qat_alg_send_message_maybacklog(struct qat_alg_req *req)
-+{
-+	struct qat_instance_backlog *backlog = req->backlog;
-+	int ret = -EINPROGRESS;
-+
-+	if (qat_alg_try_enqueue(req))
-+		return ret;
-+
-+	spin_lock_bh(&backlog->lock);
-+	if (!qat_alg_try_enqueue(req)) {
-+		list_add_tail(&req->list, &backlog->list);
-+		ret = -EBUSY;
-+	}
-+	spin_unlock_bh(&backlog->lock);
-+
-+	return ret;
- }
- 
- int qat_alg_send_message(struct qat_alg_req *req)
+-err_sysfs_remove:
+-	sysfs_remove_group(&hdev->dev.kobj, &cp2112_attr_group);
+ err_gpiochip_remove:
+ 	gpiochip_remove(&dev->gc);
+ err_free_i2c:
 -- 
 2.42.0
 
