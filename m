@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E9827ECE5B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E6817ECBE8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235001AbjKOTmg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
+        id S233190AbjKOTZN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:25:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234998AbjKOTmf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:35 -0500
+        with ESMTP id S233195AbjKOTZM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:12 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39ADCB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6FDC433C7;
-        Wed, 15 Nov 2023 19:42:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A1CA12C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE09C433C7;
+        Wed, 15 Nov 2023 19:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077351;
-        bh=RumSlBOevKKVh//2rQReFcuQ1nfkjFX/2MFZOzPGF6s=;
+        s=korg; t=1700076309;
+        bh=sE2VckVyZCkeixyQbVhO/TTEXJnHAzgK2No1LNKUNrY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ySVcqd8MPG58wqyQzF0ceA0wDtYgT7lc+8aImBqnwjA2Id60cQp5ZWnr56Lho5AW9
-         yqx5FXI/wC1zNu9gQ3a0JhdCT57aAdUzQ40g48m+rAmRaJ0t8HWFa9aH1EWJIAzvv8
-         5xOMicWARcj7k5WWZQnfXiRTyOf0l5Sgn/OOK0mA=
+        b=WKupsgYGhagBkImaSUSJbhaIuYjIgt0rIQARE6faXJqscaXzGoYjZRLy4gZSG2rQM
+         +jF+Pee8U+F62yLULxbkeRnH8Tn3szTHl0alvZx7xf9UiXpyUk0wuNGzTu42SWG5sO
+         kUwmhiFYgrdKs7ndAOmMtlVrjcZuKwjTa9jqwFDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gabriel Krisman Bertazi <krisman@suse.de>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 249/603] io_uring/kbuf: Fix check of BID wrapping in provided buffers
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        Helen Koike <helen.koike@collabora.com>,
+        Jai Luthra <j-luthra@ti.com>,
+        Aradhya Bhatia <a-bhatia1@ti.com>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 210/550] drm: bridge: it66121: Fix invalid connector dereference
 Date:   Wed, 15 Nov 2023 14:13:14 -0500
-Message-ID: <20231115191630.485868658@linuxfoundation.org>
+Message-ID: <20231115191615.339440825@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,44 +52,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit ab69838e7c75b0edb699c1a8f42752b30333c46f ]
+[ Upstream commit d0375f6858c4ff7244b62b02eb5e93428e1916cd ]
 
-Commit 3851d25c75ed0 ("io_uring: check for rollover of buffer ID when
-providing buffers") introduced a check to prevent wrapping the BID
-counter when sqe->off is provided, but it's off-by-one too
-restrictive, rejecting the last possible BID (65534).
+Fix the NULL pointer dereference when no monitor is connected, and the
+sound card is opened from userspace.
 
-i.e., the following fails with -EINVAL.
+Instead return an empty buffer (of zeroes) as the EDID information to
+the sound framework if there is no connector attached.
 
-     io_uring_prep_provide_buffers(sqe, addr, size, 0xFFFF, 0, 0);
-
-Fixes: 3851d25c75ed ("io_uring: check for rollover of buffer ID when providing buffers")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Link: https://lore.kernel.org/r/20231005000531.30800-2-krisman@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: e0fd83dbe924 ("drm: bridge: it66121: Add audio support")
+Reported-by: Nishanth Menon <nm@ti.com>
+Closes: https://lore.kernel.org/all/20230825105849.crhon42qndxqif4i@gondola/
+Reviewed-by: Helen Koike <helen.koike@collabora.com>
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Tested-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230901-it66121_edid-v2-1-aa59605336b9@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ite-it66121.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index 9123138aa9f48..74a4f9600642f 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -352,7 +352,7 @@ int io_provide_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
- 	tmp = READ_ONCE(sqe->off);
- 	if (tmp > USHRT_MAX)
- 		return -E2BIG;
--	if (tmp + p->nbufs >= USHRT_MAX)
-+	if (tmp + p->nbufs > USHRT_MAX)
- 		return -EINVAL;
- 	p->bid = tmp;
+diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
+index 466641c77fe91..fc7f5ec5fb381 100644
+--- a/drivers/gpu/drm/bridge/ite-it66121.c
++++ b/drivers/gpu/drm/bridge/ite-it66121.c
+@@ -1447,10 +1447,14 @@ static int it66121_audio_get_eld(struct device *dev, void *data,
+ 	struct it66121_ctx *ctx = dev_get_drvdata(dev);
+ 
+ 	mutex_lock(&ctx->lock);
+-
+-	memcpy(buf, ctx->connector->eld,
+-	       min(sizeof(ctx->connector->eld), len));
+-
++	if (!ctx->connector) {
++		/* Pass en empty ELD if connector not available */
++		dev_dbg(dev, "No connector present, passing empty EDID data");
++		memset(buf, 0, len);
++	} else {
++		memcpy(buf, ctx->connector->eld,
++		       min(sizeof(ctx->connector->eld), len));
++	}
+ 	mutex_unlock(&ctx->lock);
+ 
  	return 0;
 -- 
 2.42.0
