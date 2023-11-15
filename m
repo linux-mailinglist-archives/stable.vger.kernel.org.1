@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C307ECE8F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7AE77ECC11
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235134AbjKOTn4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40700 "EHLO
+        id S233924AbjKOT0r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:26:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235132AbjKOTn4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:56 -0500
+        with ESMTP id S233977AbjKOT0c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73A761AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14CFC433C7;
-        Wed, 15 Nov 2023 19:43:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 080BED56
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CC0C433C7;
+        Wed, 15 Nov 2023 19:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077432;
-        bh=mT0LBlORao+FWIAoB4Oqkg5okfUqN+7L+DDv+GG8bAE=;
+        s=korg; t=1700076388;
+        bh=mKJB6wgoKI96AfRhjgDItfS4HE6Vj887+8S2Z/0I0zE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2okFEU84oxx4F8PNzzgf5Eg3nKjyfXVh9fuUMQqGpBgybuD0sPhal1CwY2ewNI3FS
-         4D7qyec3xarhYG6BgCjz+4c3Yq/HTDGpOy+ZLJoXm703V60fKDHrf4/NMPItkNW0cb
-         5H4QV4h2gH4avpesU73u4ksE95e2UaO3FHgTJpHQ=
+        b=CJ3sQuLDyZbMdMdgJ0P7cLch1HqEETYhPsUAUJffbWgkW/ZNNYDwJg03Pd6eDYfUF
+         cIhOVhZkHRaSPmcfj7ZizgHcwmZkFo614inWPqv/XlLmhDIY6SxLk7iUSXdQl4QZoh
+         MMfmLdPnv2caA+R193Rw/pcFvKL69rOOLNKDxY/w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Rae Moar <rmoar@google.com>, David Gow <davidgow@google.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        David Heidelberg <david@ixit.cz>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Abel Vesa <abel.vesa@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 300/603] kunit: Fix the wrong kfree of copy for kunit_filter_suites()
+Subject: [PATCH 6.5 261/550] arm64: dts: qcom: sdm845: Fix PSCI power domain names
 Date:   Wed, 15 Nov 2023 14:14:05 -0500
-Message-ID: <20231115191634.147506354@linuxfoundation.org>
+Message-ID: <20231115191618.803610561@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +55,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: David Heidelberg <david@ixit.cz>
 
-[ Upstream commit e44679515a7b803cf0143dc9de3d2ecbe907f939 ]
+[ Upstream commit a5f01673d3946e424091e6b8ff274716f9c21454 ]
 
-If the outer layer for loop is iterated more than once and it fails not
-in the first iteration, the copy pointer has been moved. So it should free
-the original copy's backup copy_start.
+The original commit hasn't been updated according to
+refactoring done in sdm845.dtsi.
 
-Fixes: abbf73816b6f ("kunit: fix possible memory leak in kunit_filter_suites()")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Rae Moar <rmoar@google.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: a1ade6cac5a2 ("arm64: dts: qcom: sdm845: Switch PSCI cpu idle states from PC to OSI")
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230912071205.11502-1-david@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/executor.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
-index a037a46fae5ea..9358ed2df8395 100644
---- a/lib/kunit/executor.c
-+++ b/lib/kunit/executor.c
-@@ -243,7 +243,7 @@ kunit_filter_suites(const struct kunit_suite_set *suite_set,
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi b/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
+index 1ce413263b7f9..617be27e79523 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-cheza.dtsi
+@@ -144,15 +144,15 @@ panel_in_edp: endpoint {
+ };
  
- free_copy:
- 	if (*err)
--		kfree(copy);
-+		kfree(copy_start);
+ &psci {
+-	/delete-node/ cpu0;
+-	/delete-node/ cpu1;
+-	/delete-node/ cpu2;
+-	/delete-node/ cpu3;
+-	/delete-node/ cpu4;
+-	/delete-node/ cpu5;
+-	/delete-node/ cpu6;
+-	/delete-node/ cpu7;
+-	/delete-node/ cpu-cluster0;
++	/delete-node/ power-domain-cpu0;
++	/delete-node/ power-domain-cpu1;
++	/delete-node/ power-domain-cpu2;
++	/delete-node/ power-domain-cpu3;
++	/delete-node/ power-domain-cpu4;
++	/delete-node/ power-domain-cpu5;
++	/delete-node/ power-domain-cpu6;
++	/delete-node/ power-domain-cpu7;
++	/delete-node/ power-domain-cluster;
+ };
  
- 	return filtered;
- }
+ &cpus {
+@@ -338,6 +338,8 @@ flash@0 {
+ 
+ 
+ &apps_rsc {
++	/delete-property/ power-domains;
++
+ 	regulators-0 {
+ 		compatible = "qcom,pm8998-rpmh-regulators";
+ 		qcom,pmic-id = "a";
 -- 
 2.42.0
 
