@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D23687ECD96
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E36787ECB4F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234590AbjKOThU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:37:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50880 "EHLO
+        id S232932AbjKOTVi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234580AbjKOThT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:19 -0500
+        with ESMTP id S232996AbjKOTV2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB81A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D836CC433C7;
-        Wed, 15 Nov 2023 19:37:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69DE7D5A
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E82C433CA;
+        Wed, 15 Nov 2023 19:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077035;
-        bh=8Nf+yxLKR5RGWkbhyhDx3ypvhulMEoyKboU9oS36InY=;
+        s=korg; t=1700076082;
+        bh=8HWTpNQWzEkyRCShSQIunINInjS9k7A/CWRZkP9k04k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2H3Ns98g5BXF8NKsPmRfFDxxpK3ljQSoGUj0NAh39cF9K38laqkCICq8nXtMYfNtL
-         fkkJOI+2hSP8dsozacO50Ku47YtgP5/8F+GO98qmJ9dQLTe/B2PAX/oYV2G9oYOGn6
-         8TpnxRnibzG4H8rDgGZixkGJ/9xucNEkmxmGiBJw=
+        b=NQs4h9YYYDnyL5XVJbwnwR5O7zeCrCeaQAmzL9Es2YQGFVahnxL8LqI0ocGZf5W7O
+         TjKwLUUTxskDwg9K2UgG9zRIZ9UJmNG3hZMTAkbMRez82ld5vj+8xJJ2SohGwVoRoV
+         hYIqz/jjiItgeO3owvaCZzRY1PCSfwAo7DMxOJek=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
-        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/603] can: etas_es58x: rework the version check logic to silence -Wformat-truncation
+Subject: [PATCH 6.5 065/550] udplite: fix various data-races
 Date:   Wed, 15 Nov 2023 14:10:49 -0500
-Message-ID: <20231115191620.400204221@linuxfoundation.org>
+Message-ID: <20231115191605.193103857@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,245 +51,180 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 107e6f6fe6f38577baecf0e01f517c8607a3a625 ]
+[ Upstream commit 882af43a0fc37e26d85fb0df0c9edd3bed928de4 ]
 
-Following [1], es58x_devlink.c now triggers the following
-format-truncation GCC warnings:
+udp->pcflag, udp->pcslen and udp->pcrlen reads/writes are racy.
 
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c: In function ‘es58x_devlink_info_get’:
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:201:41: warning: ‘%02u’ directive output may be truncated writing between 2 and 3 bytes into a region of size between 1 and 3 [-Wformat-truncation=]
-    201 |   snprintf(buf, sizeof(buf), "%02u.%02u.%02u",
-        |                                         ^~~~
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:201:30: note: directive argument in the range [0, 255]
-    201 |   snprintf(buf, sizeof(buf), "%02u.%02u.%02u",
-        |                              ^~~~~~~~~~~~~~~~
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:201:3: note: ‘snprintf’ output between 9 and 12 bytes into a destination of size 9
-    201 |   snprintf(buf, sizeof(buf), "%02u.%02u.%02u",
-        |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    202 |     fw_ver->major, fw_ver->minor, fw_ver->revision);
-        |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:211:41: warning: ‘%02u’ directive output may be truncated writing between 2 and 3 bytes into a region of size between 1 and 3 [-Wformat-truncation=]
-    211 |   snprintf(buf, sizeof(buf), "%02u.%02u.%02u",
-        |                                         ^~~~
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:211:30: note: directive argument in the range [0, 255]
-    211 |   snprintf(buf, sizeof(buf), "%02u.%02u.%02u",
-        |                              ^~~~~~~~~~~~~~~~
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:211:3: note: ‘snprintf’ output between 9 and 12 bytes into a destination of size 9
-    211 |   snprintf(buf, sizeof(buf), "%02u.%02u.%02u",
-        |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    212 |     bl_ver->major, bl_ver->minor, bl_ver->revision);
-        |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:221:38: warning: ‘%03u’ directive output may be truncated writing between 3 and 5 bytes into a region of size between 2 and 4 [-Wformat-truncation=]
-    221 |   snprintf(buf, sizeof(buf), "%c%03u/%03u",
-        |                                      ^~~~
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:221:30: note: directive argument in the range [0, 65535]
-    221 |   snprintf(buf, sizeof(buf), "%c%03u/%03u",
-        |                              ^~~~~~~~~~~~~
-  drivers/net/can/usb/etas_es58x/es58x_devlink.c:221:3: note: ‘snprintf’ output between 9 and 13 bytes into a destination of size 9
-    221 |   snprintf(buf, sizeof(buf), "%c%03u/%03u",
-        |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    222 |     hw_rev->letter, hw_rev->major, hw_rev->minor);
-        |     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Move udp->pcflag to udp->udp_flags for atomicity,
+and add READ_ONCE()/WRITE_ONCE() annotations for pcslen and pcrlen.
 
-This is not an actual bug because the sscanf() parsing makes sure that
-the u8 are only two digits long and the u16 only three digits long.
-Thus below declaration:
-
-	char buf[max(sizeof("xx.xx.xx"), sizeof("axxx/xxx"))];
-
-allocates just what is needed to represent either of the versions.
-
-This warning was known but ignored because, at the time of writing,
--Wformat-truncation was not present in the kernel, not even at W=3 [2].
-
-One way to silence this warning is to check the range of all sub
-version numbers are valid: [0, 99] for u8 and range [0, 999] for u16.
-
-The module already has a logic which considers that when all the sub
-version numbers are zero, the version number is not set. Note that not
-having access to the device specification, this was an arbitrary
-decision. This logic can thus be removed in favor of global check that
-would cover both cases:
-
-  - the version number is not set (parsing failed)
-  - the version number is not valid (paranoiac check to please gcc)
-
-Before starting to parse the product info string, set the version
-sub-numbers to the maximum unsigned integer thus violating the
-definitions of struct es58x_sw_version or struct es58x_hw_revision.
-
-Then, rework the es58x_sw_version_is_set() and
-es58x_hw_revision_is_set() functions: remove the check that the
-sub-numbers are non zero and replace it by a check that they fit in
-the expected number of digits. This done, rename the functions to
-reflect the change and rewrite the documentation. While doing so, also
-add a description of the return value.
-
-Finally, the previous version only checked that
-&es58x_hw_revision.letter was not the null character. Replace this
-check by an alphanumeric character check to make sure that we never
-return a special character or a non-printable one and update the
-documentation of struct es58x_hw_revision accordingly.
-
-All those extra checks are paranoid but have the merit to silence the
-newly introduced W=1 format-truncation warning [1].
-
-[1] commit 6d4ab2e97dcf ("extrawarn: enable format and stringop overflow warnings in W=1")
-Link: https://git.kernel.org/torvalds/c/6d4ab2e97dcf
-
-[2] https://lore.kernel.org/all/CAMZ6Rq+K+6gbaZ35SOJcR9qQaTJ7KR0jW=XoDKFkobjhj8CHhw@mail.gmail.com/
-
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Closes: https://lore.kernel.org/linux-can/20230914-carrousel-wrecker-720a08e173e9-mkl@pengutronix.de/
-Fixes: 9f06631c3f1f ("can: etas_es58x: export product information through devlink_ops::info_get()")
-Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/all/20230924110914.183898-2-mailhol.vincent@wanadoo.fr
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: ba4e58eca8aa ("[NET]: Supporting UDP-Lite (RFC 3828) in Linux")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/etas_es58x/es58x_core.h   |  6 +-
- .../net/can/usb/etas_es58x/es58x_devlink.c    | 57 +++++++++++++------
- 2 files changed, 42 insertions(+), 21 deletions(-)
+ include/linux/udp.h   |  6 ++----
+ include/net/udplite.h | 14 +++++++++-----
+ net/ipv4/udp.c        | 21 +++++++++++----------
+ net/ipv6/udp.c        |  9 +++++----
+ 4 files changed, 27 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.h b/drivers/net/can/usb/etas_es58x/es58x_core.h
-index c1ba1a4e8857b..2e183bdeedd72 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_core.h
-+++ b/drivers/net/can/usb/etas_es58x/es58x_core.h
-@@ -378,13 +378,13 @@ struct es58x_sw_version {
+diff --git a/include/linux/udp.h b/include/linux/udp.h
+index 58156edec0096..d04188714dca1 100644
+--- a/include/linux/udp.h
++++ b/include/linux/udp.h
+@@ -40,6 +40,8 @@ enum {
+ 	UDP_FLAGS_ACCEPT_FRAGLIST,
+ 	UDP_FLAGS_ACCEPT_L4,
+ 	UDP_FLAGS_ENCAP_ENABLED, /* This socket enabled encap */
++	UDP_FLAGS_UDPLITE_SEND_CC, /* set via udplite setsockopt */
++	UDP_FLAGS_UDPLITE_RECV_CC, /* set via udplite setsockopt */
+ };
  
- /**
-  * struct es58x_hw_revision - Hardware revision number.
-- * @letter: Revision letter.
-+ * @letter: Revision letter, an alphanumeric character.
-  * @major: Version major number, represented on three digits.
-  * @minor: Version minor number, represented on three digits.
-  *
-  * The hardware revision uses its own format: "axxx/xxx" where 'a' is
-- * a letter and 'x' a digit. It can be retrieved from the product
-- * information string.
-+ * an alphanumeric character and 'x' a digit. It can be retrieved from
-+ * the product information string.
-  */
- struct es58x_hw_revision {
- 	char letter;
-diff --git a/drivers/net/can/usb/etas_es58x/es58x_devlink.c b/drivers/net/can/usb/etas_es58x/es58x_devlink.c
-index 9fba29e2f57c6..635edeb8f68cd 100644
---- a/drivers/net/can/usb/etas_es58x/es58x_devlink.c
-+++ b/drivers/net/can/usb/etas_es58x/es58x_devlink.c
-@@ -125,14 +125,28 @@ static int es58x_parse_hw_rev(struct es58x_device *es58x_dev,
-  * firmware version, the bootloader version and the hardware
-  * revision.
-  *
-- * If the function fails, simply emit a log message and continue
-- * because product information is not critical for the driver to
-- * operate.
-+ * If the function fails, set the version or revision to an invalid
-+ * value and emit an informal message. Continue probing because the
-+ * product information is not critical for the driver to operate.
-  */
- void es58x_parse_product_info(struct es58x_device *es58x_dev)
+ struct udp_sock {
+@@ -54,10 +56,6 @@ struct udp_sock {
+ 	int		 pending;	/* Any pending frames ? */
+ 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
+ 
+-/* indicator bits used by pcflag: */
+-#define UDPLITE_SEND_CC  0x1  		/* set via udplite setsockopt         */
+-#define UDPLITE_RECV_CC  0x2		/* set via udplite setsocktopt        */
+-	__u8		 pcflag;        /* marks socket as UDP-Lite if > 0    */
+ 	/*
+ 	 * Following member retains the information to create a UDP header
+ 	 * when the socket is uncorked.
+diff --git a/include/net/udplite.h b/include/net/udplite.h
+index 299c14ce2bb94..dd60b51364837 100644
+--- a/include/net/udplite.h
++++ b/include/net/udplite.h
+@@ -66,14 +66,18 @@ static inline int udplite_checksum_init(struct sk_buff *skb, struct udphdr *uh)
+ /* Fast-path computation of checksum. Socket may not be locked. */
+ static inline __wsum udplite_csum(struct sk_buff *skb)
  {
-+	static const struct es58x_sw_version sw_version_not_set = {
-+		.major = -1,
-+		.minor = -1,
-+		.revision = -1,
-+	};
-+	static const struct es58x_hw_revision hw_revision_not_set = {
-+		.letter = '\0',
-+		.major = -1,
-+		.minor = -1,
-+	};
- 	char *prod_info;
+-	const struct udp_sock *up = udp_sk(skb->sk);
+ 	const int off = skb_transport_offset(skb);
++	const struct sock *sk = skb->sk;
+ 	int len = skb->len - off;
  
-+	es58x_dev->firmware_version = sw_version_not_set;
-+	es58x_dev->bootloader_version = sw_version_not_set;
-+	es58x_dev->hardware_revision = hw_revision_not_set;
+-	if ((up->pcflag & UDPLITE_SEND_CC) && up->pcslen < len) {
+-		if (0 < up->pcslen)
+-			len = up->pcslen;
+-		udp_hdr(skb)->len = htons(up->pcslen);
++	if (udp_test_bit(UDPLITE_SEND_CC, sk)) {
++		u16 pcslen = READ_ONCE(udp_sk(sk)->pcslen);
 +
- 	prod_info = usb_cache_string(es58x_dev->udev, ES58X_PROD_INFO_IDX);
- 	if (!prod_info) {
- 		dev_warn(es58x_dev->dev,
-@@ -150,29 +164,36 @@ void es58x_parse_product_info(struct es58x_device *es58x_dev)
- }
- 
- /**
-- * es58x_sw_version_is_set() - Check if the version is a valid number.
-+ * es58x_sw_version_is_valid() - Check if the version is a valid number.
-  * @sw_ver: Version number of either the firmware or the bootloader.
-  *
-- * If &es58x_sw_version.major, &es58x_sw_version.minor and
-- * &es58x_sw_version.revision are all zero, the product string could
-- * not be parsed and the version number is invalid.
-+ * If any of the software version sub-numbers do not fit on two
-+ * digits, the version is invalid, most probably because the product
-+ * string could not be parsed.
-+ *
-+ * Return: @true if the software version is valid, @false otherwise.
-  */
--static inline bool es58x_sw_version_is_set(struct es58x_sw_version *sw_ver)
-+static inline bool es58x_sw_version_is_valid(struct es58x_sw_version *sw_ver)
- {
--	return sw_ver->major || sw_ver->minor || sw_ver->revision;
-+	return sw_ver->major < 100 && sw_ver->minor < 100 &&
-+		sw_ver->revision < 100;
- }
- 
- /**
-- * es58x_hw_revision_is_set() - Check if the revision is a valid number.
-+ * es58x_hw_revision_is_valid() - Check if the revision is a valid number.
-  * @hw_rev: Revision number of the hardware.
-  *
-- * If &es58x_hw_revision.letter is the null character, the product
-- * string could not be parsed and the hardware revision number is
-- * invalid.
-+ * If &es58x_hw_revision.letter is not a alphanumeric character or if
-+ * any of the hardware revision sub-numbers do not fit on three
-+ * digits, the revision is invalid, most probably because the product
-+ * string could not be parsed.
-+ *
-+ * Return: @true if the hardware revision is valid, @false otherwise.
-  */
--static inline bool es58x_hw_revision_is_set(struct es58x_hw_revision *hw_rev)
-+static inline bool es58x_hw_revision_is_valid(struct es58x_hw_revision *hw_rev)
- {
--	return hw_rev->letter != '\0';
-+	return isalnum(hw_rev->letter) && hw_rev->major < 1000 &&
-+		hw_rev->minor < 1000;
- }
- 
- /**
-@@ -197,7 +218,7 @@ static int es58x_devlink_info_get(struct devlink *devlink,
- 	char buf[max(sizeof("xx.xx.xx"), sizeof("axxx/xxx"))];
- 	int ret = 0;
- 
--	if (es58x_sw_version_is_set(fw_ver)) {
-+	if (es58x_sw_version_is_valid(fw_ver)) {
- 		snprintf(buf, sizeof(buf), "%02u.%02u.%02u",
- 			 fw_ver->major, fw_ver->minor, fw_ver->revision);
- 		ret = devlink_info_version_running_put(req,
-@@ -207,7 +228,7 @@ static int es58x_devlink_info_get(struct devlink *devlink,
- 			return ret;
++		if (pcslen < len) {
++			if (pcslen > 0)
++				len = pcslen;
++			udp_hdr(skb)->len = htons(pcslen);
++		}
  	}
+ 	skb->ip_summed = CHECKSUM_NONE;     /* no HW support for checksumming */
  
--	if (es58x_sw_version_is_set(bl_ver)) {
-+	if (es58x_sw_version_is_valid(bl_ver)) {
- 		snprintf(buf, sizeof(buf), "%02u.%02u.%02u",
- 			 bl_ver->major, bl_ver->minor, bl_ver->revision);
- 		ret = devlink_info_version_running_put(req,
-@@ -217,7 +238,7 @@ static int es58x_devlink_info_get(struct devlink *devlink,
- 			return ret;
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index be0370a64cc15..f712ff61beb8a 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -2149,7 +2149,8 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 	/*
+ 	 * 	UDP-Lite specific tests, ignored on UDP sockets
+ 	 */
+-	if ((up->pcflag & UDPLITE_RECV_CC)  &&  UDP_SKB_CB(skb)->partial_cov) {
++	if (udp_test_bit(UDPLITE_RECV_CC, sk) && UDP_SKB_CB(skb)->partial_cov) {
++		u16 pcrlen = READ_ONCE(up->pcrlen);
+ 
+ 		/*
+ 		 * MIB statistics other than incrementing the error count are
+@@ -2162,7 +2163,7 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 		 * delivery of packets with coverage values less than a value
+ 		 * provided by the application."
+ 		 */
+-		if (up->pcrlen == 0) {          /* full coverage was set  */
++		if (pcrlen == 0) {          /* full coverage was set  */
+ 			net_dbg_ratelimited("UDPLite: partial coverage %d while full coverage %d requested\n",
+ 					    UDP_SKB_CB(skb)->cscov, skb->len);
+ 			goto drop;
+@@ -2173,9 +2174,9 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 		 * that it wants x while sender emits packets of smaller size y.
+ 		 * Therefore the above ...()->partial_cov statement is essential.
+ 		 */
+-		if (UDP_SKB_CB(skb)->cscov  <  up->pcrlen) {
++		if (UDP_SKB_CB(skb)->cscov < pcrlen) {
+ 			net_dbg_ratelimited("UDPLite: coverage %d too small, need min %d\n",
+-					    UDP_SKB_CB(skb)->cscov, up->pcrlen);
++					    UDP_SKB_CB(skb)->cscov, pcrlen);
+ 			goto drop;
+ 		}
  	}
+@@ -2754,8 +2755,8 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
+ 			val = 8;
+ 		else if (val > USHRT_MAX)
+ 			val = USHRT_MAX;
+-		up->pcslen = val;
+-		up->pcflag |= UDPLITE_SEND_CC;
++		WRITE_ONCE(up->pcslen, val);
++		udp_set_bit(UDPLITE_SEND_CC, sk);
+ 		break;
  
--	if (es58x_hw_revision_is_set(hw_rev)) {
-+	if (es58x_hw_revision_is_valid(hw_rev)) {
- 		snprintf(buf, sizeof(buf), "%c%03u/%03u",
- 			 hw_rev->letter, hw_rev->major, hw_rev->minor);
- 		ret = devlink_info_version_fixed_put(req,
+ 	/* The receiver specifies a minimum checksum coverage value. To make
+@@ -2768,8 +2769,8 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
+ 			val = 8;
+ 		else if (val > USHRT_MAX)
+ 			val = USHRT_MAX;
+-		up->pcrlen = val;
+-		up->pcflag |= UDPLITE_RECV_CC;
++		WRITE_ONCE(up->pcrlen, val);
++		udp_set_bit(UDPLITE_RECV_CC, sk);
+ 		break;
+ 
+ 	default:
+@@ -2833,11 +2834,11 @@ int udp_lib_getsockopt(struct sock *sk, int level, int optname,
+ 	/* The following two cannot be changed on UDP sockets, the return is
+ 	 * always 0 (which corresponds to the full checksum coverage of UDP). */
+ 	case UDPLITE_SEND_CSCOV:
+-		val = up->pcslen;
++		val = READ_ONCE(up->pcslen);
+ 		break;
+ 
+ 	case UDPLITE_RECV_CSCOV:
+-		val = up->pcrlen;
++		val = READ_ONCE(up->pcrlen);
+ 		break;
+ 
+ 	default:
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 9988160ca4a76..8d79642ae45dd 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -760,16 +760,17 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 	/*
+ 	 * UDP-Lite specific tests, ignored on UDP sockets (see net/ipv4/udp.c).
+ 	 */
+-	if ((up->pcflag & UDPLITE_RECV_CC)  &&  UDP_SKB_CB(skb)->partial_cov) {
++	if (udp_test_bit(UDPLITE_RECV_CC, sk) && UDP_SKB_CB(skb)->partial_cov) {
++		u16 pcrlen = READ_ONCE(up->pcrlen);
+ 
+-		if (up->pcrlen == 0) {          /* full coverage was set  */
++		if (pcrlen == 0) {          /* full coverage was set  */
+ 			net_dbg_ratelimited("UDPLITE6: partial coverage %d while full coverage %d requested\n",
+ 					    UDP_SKB_CB(skb)->cscov, skb->len);
+ 			goto drop;
+ 		}
+-		if (UDP_SKB_CB(skb)->cscov  <  up->pcrlen) {
++		if (UDP_SKB_CB(skb)->cscov < pcrlen) {
+ 			net_dbg_ratelimited("UDPLITE6: coverage %d too small, need min %d\n",
+-					    UDP_SKB_CB(skb)->cscov, up->pcrlen);
++					    UDP_SKB_CB(skb)->cscov, pcrlen);
+ 			goto drop;
+ 		}
+ 	}
 -- 
 2.42.0
 
