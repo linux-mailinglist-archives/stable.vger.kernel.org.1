@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C92287ECF7B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28BE17ECD0B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235320AbjKOTsr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:48:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50122 "EHLO
+        id S234308AbjKOTeL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235331AbjKOTso (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:44 -0500
+        with ESMTP id S234362AbjKOTeH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 755B2189
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:41 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E551CC433CA;
-        Wed, 15 Nov 2023 19:48:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 459A1D5B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C26C433C8;
+        Wed, 15 Nov 2023 19:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077721;
-        bh=KSJXqv1FS9yiChj4cY92BFCvHgg1krgaQOWSOnpS4OE=;
+        s=korg; t=1700076839;
+        bh=1EBJgdcDxL1AnR85Vj/En1qUdlQIaV32hC+DMluLIrw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PQG17sDn9YfRfNw87DM+Cx+iI0jJMgOA7lYggQv7XZfTgThQuiHQJMT7oKrRPnkz8
-         +mGRoCSFLiJZXAEdGj2Ra9ETooaF93RNLcr1RLpkR2GfCRP9vW6ngsJ+dASVRVJxME
-         XQgbszoza8OHS6InnjzSRvJ9l/Y7T3rtICIPL3J8=
+        b=yYj0JXTaFpbof3oWP6YZHBpEznGH5+hLmYgz9g07HKy4RfWDEZeAtaBtCsNe4Fqg3
+         xhCX6gsuaytN9mTtbUP8IlIAZuQKR5lZLiwzjUKxtqoPRdTc8lL39HlNEp2f39ueOv
+         21gFT/+IWIdSRY2uJzldFID5P7QUUk1fl6ycRgaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sachin Sant <sachinp@linux.ibm.com>,
-        Aditya Gupta <adityag@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Disha Goel <disgoel@linux.vnet.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Disha Goel <disgoel@linux.ibm.com>, maddy@linux.ibm.com,
+        Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 478/603] powerpc/vmcore: Add MMU information to vmcoreinfo
+Subject: [PATCH 6.5 439/550] perf vendor events: Update PMC used in PM_RUN_INST_CMPL event for power10 platform
 Date:   Wed, 15 Nov 2023 14:17:03 -0500
-Message-ID: <20231115191645.508387063@linuxfoundation.org>
+Message-ID: <20231115191631.232970173@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,75 +53,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 36e826b568e412f61d68fedc02a67b4d8b7583cc ]
+[ Upstream commit 3f8b6e5b11192dacb721d2d28ea4589917f5e822 ]
 
-Since below commit, address mapping for vmemmap has changed for Radix
-MMU, where address mapping is stored in kernel page table itself,
-instead of earlier used 'vmemmap_list'.
+The CPI_STALL_RATIO metric group can be used to present the high
+level CPI stall breakdown metrics in powerpc, which will show:
 
-    commit 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use
-    a different vmemmap handling function")
+- DISPATCH_STALL_CPI ( Dispatch stall cycles per insn )
+- ISSUE_STALL_CPI ( Issue stall cycles per insn )
+- EXECUTION_STALL_CPI ( Execution stall cycles per insn )
+- COMPLETION_STALL_CPI ( Completion stall cycles per insn )
 
-Hence with upstream kernel, in case of Radix MMU, makedumpfile fails
-to do address translation for vmemmap addresses, as it depended on
-vmemmap_list, which can now be empty.
+Commit cf26e043c2a9 ("perf vendor events power10: Add JSON
+metric events to present CPI stall cycles in powerpc)" which added
+the CPI_STALL_RATIO metric group, also modified
+the PMC value used in PM_RUN_INST_CMPL event from PMC4 to PMC5,
+to avoid multiplexing of events.
+But that got revert in recent changes. Fix this issue by changing
+back the PMC value used in PM_RUN_INST_CMPL to PMC5.
 
-While fixing the address translation in makedumpfile, it was identified
-that currently makedumpfile cannot distinguish between Hash MMU and
-Radix MMU, unless VMLINUX is passed with -x flag to makedumpfile. And
-hence fails to assign offsets and shifts correctly (such as in L4 to
-PGDIR offset calculation in makedumpfile).
+Result with the fix:
 
-For getting the MMU, makedumpfile uses `cur_cpu_spec.mmu_features`.
+ ./perf stat --metric-no-group -M CPI_STALL_RATIO <workload>
 
-Add `cur_cpu_spec` symbol and offset of `mmu_features` in the `cpu_spec`
-struct, to VMCOREINFO, so that makedumpfile can assign the offsets
-correctly, without needing a VMLINUX.
+ Performance counter stats for 'workload':
 
-Also, even along with `cur_cpu_spec->mmu_features` makedumpfile has to
-depend on the 'MMU_FTR_TYPE_RADIX' flag in mmu_features, implying kernel
-developers need to be cautious of changes to 'MMU_FTR_*' defines.
+        68,745,426      PM_CMPL_STALL                    #     0.21 COMPLETION_STALL_CPI
+         7,692,827      PM_ISSUE_STALL                   #     0.02 ISSUE_STALL_CPI
+       322,638,223      PM_RUN_INST_CMPL                 #     0.05 DISPATCH_STALL_CPI
+                                                  #     0.48 EXECUTION_STALL_CPI
+        16,858,553      PM_DISP_STALL_CYC
+       153,880,133      PM_EXEC_STALL
 
-A more stable approach was suggested in the below thread by contributors:
- https://lore.kernel.org/linuxppc-dev/20230920105706.853626-1-adityag@linux.ibm.com/
+       0.089774592 seconds time elapsed
 
-The suggestion was to add whether 'RADIX_MMU' is enabled in vmcoreinfo
+"--metric-no-group" is used for forcing PM_RUN_INST_CMPL to be scheduled
+in all group for more accuracy.
 
-This patch also implements the suggestion, by adding 'RADIX_MMU' in
-vmcoreinfo, which makedumpfile can use to get whether the crashed system
-had RADIX MMU (in which case 'NUMBER(RADIX_MMU)=1') or not (in which
-case 'NUMBER(RADIX_MMU)=0')
-
-Fixes: 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use a different vmemmap handling function")
-Reported-by: Sachin Sant <sachinp@linux.ibm.com>
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231023072612.50874-1-adityag@linux.ibm.com
+Fixes: 7d473f475b2a ("perf vendor events: Move JSON/events to appropriate files for power10 platform")
+Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Tested-by: Disha Goel<disgoel@linux.ibm.com>
+Cc: maddy@linux.ibm.com
+Link: https://lore.kernel.org/r/20231016143110.244255-1-kjain@linux.ibm.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/perf/pmu-events/arch/powerpc/power10/pmc.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index de64c79629912..005269ac3244c 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -74,6 +74,9 @@ void arch_crash_save_vmcoreinfo(void)
- 	VMCOREINFO_STRUCT_SIZE(mmu_psize_def);
- 	VMCOREINFO_OFFSET(mmu_psize_def, shift);
- #endif
-+	VMCOREINFO_SYMBOL(cur_cpu_spec);
-+	VMCOREINFO_OFFSET(cpu_spec, mmu_features);
-+	vmcoreinfo_append_str("NUMBER(RADIX_MMU)=%d\n", early_radix_enabled());
- 	vmcoreinfo_append_str("KERNELOFFSET=%lx\n", kaslr_offset());
- }
- 
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/pmc.json b/tools/perf/pmu-events/arch/powerpc/power10/pmc.json
+index 0a2bf56ee7c10..1c44f0120505e 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/pmc.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/pmc.json
+@@ -190,7 +190,7 @@
+     "BriefDescription": "Threshold counter exceeded a value of 128."
+   },
+   {
+-    "EventCode": "0x400FA",
++    "EventCode": "0x500FA",
+     "EventName": "PM_RUN_INST_CMPL",
+     "BriefDescription": "PowerPC instruction completed while the run latch is set."
+   }
 -- 
 2.42.0
 
