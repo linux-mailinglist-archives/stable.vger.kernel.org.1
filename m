@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E986D7ED1B7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:04:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8D37ED1B9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:04:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344239AbjKOUEo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S1344280AbjKOUEo (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 15:04:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53830 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344317AbjKOUEl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:04:41 -0500
+        with ESMTP id S1344287AbjKOUEm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:04:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D7E19F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2996C433C9;
-        Wed, 15 Nov 2023 20:04:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F04C5D44
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FC0C433C9;
+        Wed, 15 Nov 2023 20:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078677;
-        bh=63bSL+9TP1jS59sodFJ6Y3en5iCkYkNfhzTkXs38ghg=;
+        s=korg; t=1700078678;
+        bh=7an9wsqKQ5/ZGl0pB6dlIVHq9C0agPnlbZLTyr1VH8U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qvvomgO88jx3NGZUklteX8u5jMkI2mrkFbMFjRJXPidU6Tbc8hmh9wTICuGddcTus
-         dnNUK1+nv+5zzkyUyG0KOV2aS5HhExL28JCXr8aIQQWLwkC7bMi7N9Zj3+TfhaOrII
-         yev4mc15cDjLrK5lvo1nPCXDTDVqYwloGhby52pU=
+        b=OC8llqP41rQc9yDEbis6JQqlfxCn21s/V2BSD5qwKbE1zl+DttOwuv+d70/ULaC1W
+         q+YXZPgGlEkH/J31zA7Rzt9EH5TR6BtYD2o33hef9RpJivfBvWaR0Myhq01Gm+ubDQ
+         ossjnoQ506QuXovW5AQfmHi9i6SvvAw6C5Wr/mUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, George Shuklin <george.shuklin@gmail.com>,
-        Pavan Chebbi <pavan.chebbi@broadcom.com>,
-        Michael Chan <michael.chan@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <zenczykowski@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 41/45] tg3: power down device only on SYSTEM_POWER_OFF
-Date:   Wed, 15 Nov 2023 14:33:18 -0500
-Message-ID: <20231115191421.993227845@linuxfoundation.org>
+Subject: [PATCH 4.14 42/45] netfilter: xt_recent: fix (increase) ipv6 literal buffer length
+Date:   Wed, 15 Nov 2023 14:33:19 -0500
+Message-ID: <20231115191422.039952643@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191419.641552204@linuxfoundation.org>
 References: <20231115191419.641552204@linuxfoundation.org>
@@ -41,6 +41,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -56,44 +57,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: George Shuklin <george.shuklin@gmail.com>
+From: Maciej Żenczykowski <zenczykowski@gmail.com>
 
-[ Upstream commit 9fc3bc7643341dc5be7d269f3d3dbe441d8d7ac3 ]
+[ Upstream commit 7b308feb4fd2d1c06919445c65c8fbf8e9fd1781 ]
 
-Dell R650xs servers hangs on reboot if tg3 driver calls
-tg3_power_down.
+in6_pton() supports 'low-32-bit dot-decimal representation'
+(this is useful with DNS64/NAT64 networks for example):
 
-This happens only if network adapters (BCM5720 for R650xs) were
-initialized using SNP (e.g. by booting ipxe.efi).
+  # echo +aaaa:bbbb:cccc:dddd:eeee:ffff:1.2.3.4 > /proc/self/net/xt_recent/DEFAULT
+  # cat /proc/self/net/xt_recent/DEFAULT
+  src=aaaa:bbbb:cccc:dddd:eeee:ffff:0102:0304 ttl: 0 last_seen: 9733848829 oldest_pkt: 1 9733848829
 
-The actual problem is on Dell side, but this fix allows servers
-to come back alive after reboot.
+but the provided buffer is too short:
 
-Signed-off-by: George Shuklin <george.shuklin@gmail.com>
-Fixes: 2ca1c94ce0b6 ("tg3: Disable tg3 device on system reboot to avoid triggering AER")
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20231103115029.83273-1-george.shuklin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  # echo +aaaa:bbbb:cccc:dddd:eeee:ffff:255.255.255.255 > /proc/self/net/xt_recent/DEFAULT
+  -bash: echo: write error: Invalid argument
+
+Fixes: 079aa88fe717 ("netfilter: xt_recent: IPv6 support")
+Signed-off-by: Maciej Żenczykowski <zenczykowski@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/xt_recent.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index bc046153edee4..fa89d71336c6a 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -18167,7 +18167,8 @@ static void tg3_shutdown(struct pci_dev *pdev)
- 	if (netif_running(dev))
- 		dev_close(dev);
- 
--	tg3_power_down(tp);
-+	if (system_state == SYSTEM_POWER_OFF)
-+		tg3_power_down(tp);
- 
- 	rtnl_unlock();
- 
+diff --git a/net/netfilter/xt_recent.c b/net/netfilter/xt_recent.c
+index cafbddf844d62..a2462351f9c41 100644
+--- a/net/netfilter/xt_recent.c
++++ b/net/netfilter/xt_recent.c
+@@ -566,7 +566,7 @@ recent_mt_proc_write(struct file *file, const char __user *input,
+ {
+ 	struct recent_table *t = PDE_DATA(file_inode(file));
+ 	struct recent_entry *e;
+-	char buf[sizeof("+b335:1d35:1e55:dead:c0de:1715:5afe:c0de")];
++	char buf[sizeof("+b335:1d35:1e55:dead:c0de:1715:255.255.255.255")];
+ 	const char *c = buf;
+ 	union nf_inet_addr addr = {};
+ 	u_int16_t family;
 -- 
 2.42.0
 
