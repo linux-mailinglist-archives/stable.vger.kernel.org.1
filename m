@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B64EB7ECD28
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B074E7ECB1B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234343AbjKOTeo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:34:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53028 "EHLO
+        id S230213AbjKOTUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:20:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234351AbjKOTen (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:43 -0500
+        with ESMTP id S229993AbjKOTUK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5C1130
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F758C433C8;
-        Wed, 15 Nov 2023 19:34:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0A8419D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CB6C433C9;
+        Wed, 15 Nov 2023 19:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076879;
-        bh=Vb0o629es5sfJm1uXrlX3Mphs54iiTNlEQ79CUtLSAw=;
+        s=korg; t=1700076006;
+        bh=dVELUsXjyWQk4z9Y6AxuZpqVf1555dnHMIoIGDSyz/I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FnKZMczqU6e48+Y/TuUYP0DoOmAtvRKcQDuRDirfWQVvs8gkx2OdYDBHHAtEa/gaQ
-         HkqsDt2Fl3C7CT3SR9vUKiX6fYPpTc1JjpX0BaeeHxaa//to+v+pEMLi+0JD9+cw8e
-         74UiEOIc0Y2RQ+mrduZjL2rn52qiJdrBpywF4/e8=
+        b=tw+GY8MmA58okXB8lRz2o+NnQW8ZEpGvFhXzKyqmeXDpVcfRjC8KSj1NF93e2Vjxz
+         tNGQ/FObidZgefYKpBQK0Spgb7GwxlPWTPcj2irxwjONUXX16iOAByJpZzAPU2MiVf
+         n4ZW3BPKH2+0mJ0qinJANBC3vFfrku7gWDktrkEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/603] udp: move udp->no_check6_rx to udp->udp_flags
+Subject: [PATCH 6.5 016/550] x86/srso: Fix vulnerability reporting for missing microcode
 Date:   Wed, 15 Nov 2023 14:10:00 -0500
-Message-ID: <20231115191616.926940856@linuxfoundation.org>
+Message-ID: <20231115191601.849583283@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,125 +51,179 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit bcbc1b1de884647aa0318bf74eb7f293d72a1e40 ]
+[ Upstream commit dc6306ad5b0dda040baf1fde3cfd458e6abfc4da ]
 
-syzbot reported that udp->no_check6_rx can be read locklessly.
-Use one atomic bit from udp->udp_flags.
+The SRSO default safe-ret mitigation is reported as "mitigated" even if
+microcode hasn't been updated.  That's wrong because userspace may still
+be vulnerable to SRSO attacks due to IBPB not flushing branch type
+predictions.
 
-Fixes: 1c19448c9ba6 ("net: Make enabling of zero UDP6 csums more restrictive")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Report the safe-ret + !microcode case as vulnerable.
+
+Also report the microcode-only case as vulnerable as it leaves the
+kernel open to attacks.
+
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/a8a14f97d1b0e03ec255c81637afdf4cf0ae9c99.1693889988.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h | 10 +++++-----
- net/ipv4/udp.c      |  4 ++--
- net/ipv6/udp.c      |  6 +++---
- 3 files changed, 10 insertions(+), 10 deletions(-)
+ Documentation/admin-guide/hw-vuln/srso.rst | 24 ++++++++++-----
+ arch/x86/kernel/cpu/bugs.c                 | 36 +++++++++++++---------
+ 2 files changed, 39 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index e3f2a6c7ac1d1..8d4c3835b1b21 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -35,6 +35,7 @@ static inline u32 udp_hashfn(const struct net *net, u32 num, u32 mask)
- enum {
- 	UDP_FLAGS_CORK,		/* Cork is required */
- 	UDP_FLAGS_NO_CHECK6_TX, /* Send zero UDP6 checksums on TX? */
-+	UDP_FLAGS_NO_CHECK6_RX, /* Allow zero UDP6 checksums on RX? */
+diff --git a/Documentation/admin-guide/hw-vuln/srso.rst b/Documentation/admin-guide/hw-vuln/srso.rst
+index b6cfb51cb0b46..e715bfc09879a 100644
+--- a/Documentation/admin-guide/hw-vuln/srso.rst
++++ b/Documentation/admin-guide/hw-vuln/srso.rst
+@@ -46,12 +46,22 @@ The possible values in this file are:
+ 
+    The processor is not vulnerable
+ 
+- * 'Vulnerable: no microcode':
++* 'Vulnerable':
++
++   The processor is vulnerable and no mitigations have been applied.
++
++ * 'Vulnerable: No microcode':
+ 
+    The processor is vulnerable, no microcode extending IBPB
+    functionality to address the vulnerability has been applied.
+ 
+- * 'Mitigation: microcode':
++ * 'Vulnerable: Safe RET, no microcode':
++
++   The "Safe RET" mitigation (see below) has been applied to protect the
++   kernel, but the IBPB-extending microcode has not been applied.  User
++   space tasks may still be vulnerable.
++
++ * 'Vulnerable: Microcode, no safe RET':
+ 
+    Extended IBPB functionality microcode patch has been applied. It does
+    not address User->Kernel and Guest->Host transitions protection but it
+@@ -72,11 +82,11 @@ The possible values in this file are:
+ 
+    (spec_rstack_overflow=microcode)
+ 
+- * 'Mitigation: safe RET':
++ * 'Mitigation: Safe RET':
+ 
+-   Software-only mitigation. It complements the extended IBPB microcode
+-   patch functionality by addressing User->Kernel and Guest->Host
+-   transitions protection.
++   Combined microcode/software mitigation. It complements the
++   extended IBPB microcode patch functionality by addressing
++   User->Kernel and Guest->Host transitions protection.
+ 
+    Selected by default or by spec_rstack_overflow=safe-ret
+ 
+@@ -129,7 +139,7 @@ an indrect branch prediction barrier after having applied the required
+ microcode patch for one's system. This mitigation comes also at
+ a performance cost.
+ 
+-Mitigation: safe RET
++Mitigation: Safe RET
+ --------------------
+ 
+ The mitigation works by ensuring all RET instructions speculate to
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index d5db0baca2f14..a55a3864df1c9 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2353,6 +2353,8 @@ early_param("l1tf", l1tf_cmdline);
+ 
+ enum srso_mitigation {
+ 	SRSO_MITIGATION_NONE,
++	SRSO_MITIGATION_UCODE_NEEDED,
++	SRSO_MITIGATION_SAFE_RET_UCODE_NEEDED,
+ 	SRSO_MITIGATION_MICROCODE,
+ 	SRSO_MITIGATION_SAFE_RET,
+ 	SRSO_MITIGATION_IBPB,
+@@ -2368,11 +2370,13 @@ enum srso_mitigation_cmd {
  };
  
- struct udp_sock {
-@@ -48,8 +49,7 @@ struct udp_sock {
+ static const char * const srso_strings[] = {
+-	[SRSO_MITIGATION_NONE]           = "Vulnerable",
+-	[SRSO_MITIGATION_MICROCODE]      = "Mitigation: microcode",
+-	[SRSO_MITIGATION_SAFE_RET]	 = "Mitigation: safe RET",
+-	[SRSO_MITIGATION_IBPB]		 = "Mitigation: IBPB",
+-	[SRSO_MITIGATION_IBPB_ON_VMEXIT] = "Mitigation: IBPB on VMEXIT only"
++	[SRSO_MITIGATION_NONE]			= "Vulnerable",
++	[SRSO_MITIGATION_UCODE_NEEDED]		= "Vulnerable: No microcode",
++	[SRSO_MITIGATION_SAFE_RET_UCODE_NEEDED]	= "Vulnerable: Safe RET, no microcode",
++	[SRSO_MITIGATION_MICROCODE]		= "Vulnerable: Microcode, no safe RET",
++	[SRSO_MITIGATION_SAFE_RET]		= "Mitigation: Safe RET",
++	[SRSO_MITIGATION_IBPB]			= "Mitigation: IBPB",
++	[SRSO_MITIGATION_IBPB_ON_VMEXIT]	= "Mitigation: IBPB on VMEXIT only"
+ };
  
- 	int		 pending;	/* Any pending frames ? */
- 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
--	unsigned char	 no_check6_rx:1,/* Allow zero UDP6 checksums on RX? */
--			 encap_enabled:1, /* This socket enabled encap
-+	unsigned char	 encap_enabled:1, /* This socket enabled encap
- 					   * processing; UDP tunnels and
- 					   * different encapsulation layer set
- 					   * this
-@@ -120,7 +120,7 @@ static inline void udp_set_no_check6_tx(struct sock *sk, bool val)
+ static enum srso_mitigation srso_mitigation __ro_after_init = SRSO_MITIGATION_NONE;
+@@ -2409,10 +2413,7 @@ static void __init srso_select_mitigation(void)
+ 	if (!boot_cpu_has_bug(X86_BUG_SRSO) || cpu_mitigations_off())
+ 		goto pred_cmd;
  
- static inline void udp_set_no_check6_rx(struct sock *sk, bool val)
- {
--	udp_sk(sk)->no_check6_rx = val;
-+	udp_assign_bit(NO_CHECK6_RX, sk, val);
- }
- 
- static inline bool udp_get_no_check6_tx(const struct sock *sk)
-@@ -128,9 +128,9 @@ static inline bool udp_get_no_check6_tx(const struct sock *sk)
- 	return udp_test_bit(NO_CHECK6_TX, sk);
- }
- 
--static inline bool udp_get_no_check6_rx(struct sock *sk)
-+static inline bool udp_get_no_check6_rx(const struct sock *sk)
- {
--	return udp_sk(sk)->no_check6_rx;
-+	return udp_test_bit(NO_CHECK6_RX, sk);
- }
- 
- static inline void udp_cmsg_recv(struct msghdr *msg, struct sock *sk,
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 0c6998291c99d..cb32826a1db20 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2698,7 +2698,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
- 		break;
- 
- 	case UDP_NO_CHECK6_RX:
--		up->no_check6_rx = valbool;
-+		udp_set_no_check6_rx(sk, valbool);
- 		break;
- 
- 	case UDP_SEGMENT:
-@@ -2795,7 +2795,7 @@ int udp_lib_getsockopt(struct sock *sk, int level, int optname,
- 		break;
- 
- 	case UDP_NO_CHECK6_RX:
--		val = up->no_check6_rx;
-+		val = udp_get_no_check6_rx(sk);
- 		break;
- 
- 	case UDP_SEGMENT:
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 469df0ca561f7..6e1ea3029260e 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -858,7 +858,7 @@ static int __udp6_lib_mcast_deliver(struct net *net, struct sk_buff *skb,
- 		/* If zero checksum and no_check is not on for
- 		 * the socket then skip it.
- 		 */
--		if (!uh->check && !udp_sk(sk)->no_check6_rx)
-+		if (!uh->check && !udp_get_no_check6_rx(sk))
- 			continue;
- 		if (!first) {
- 			first = sk;
-@@ -980,7 +980,7 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 		if (unlikely(rcu_dereference(sk->sk_rx_dst) != dst))
- 			udp6_sk_rx_dst_set(sk, dst);
- 
--		if (!uh->check && !udp_sk(sk)->no_check6_rx) {
-+		if (!uh->check && !udp_get_no_check6_rx(sk)) {
- 			if (refcounted)
- 				sock_put(sk);
- 			goto report_csum_error;
-@@ -1002,7 +1002,7 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 	/* Unicast */
- 	sk = __udp6_lib_lookup_skb(skb, uh->source, uh->dest, udptable);
- 	if (sk) {
--		if (!uh->check && !udp_sk(sk)->no_check6_rx)
-+		if (!uh->check && !udp_get_no_check6_rx(sk))
- 			goto report_csum_error;
- 		return udp6_unicast_rcv_skb(sk, skb, uh);
+-	if (!has_microcode) {
+-		pr_warn("IBPB-extending microcode not applied!\n");
+-		pr_warn(SRSO_NOTICE);
+-	} else {
++	if (has_microcode) {
+ 		/*
+ 		 * Zen1/2 with SMT off aren't vulnerable after the right
+ 		 * IBPB microcode has been applied.
+@@ -2428,6 +2429,12 @@ static void __init srso_select_mitigation(void)
+ 			srso_mitigation = SRSO_MITIGATION_IBPB;
+ 			goto out;
+ 		}
++	} else {
++		pr_warn("IBPB-extending microcode not applied!\n");
++		pr_warn(SRSO_NOTICE);
++
++		/* may be overwritten by SRSO_CMD_SAFE_RET below */
++		srso_mitigation = SRSO_MITIGATION_UCODE_NEEDED;
  	}
+ 
+ 	switch (srso_cmd) {
+@@ -2457,7 +2464,10 @@ static void __init srso_select_mitigation(void)
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO);
+ 				x86_return_thunk = srso_return_thunk;
+ 			}
+-			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
++			if (has_microcode)
++				srso_mitigation = SRSO_MITIGATION_SAFE_RET;
++			else
++				srso_mitigation = SRSO_MITIGATION_SAFE_RET_UCODE_NEEDED;
+ 		} else {
+ 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
+ 			goto pred_cmd;
+@@ -2493,7 +2503,7 @@ static void __init srso_select_mitigation(void)
+ 	}
+ 
+ out:
+-	pr_info("%s%s\n", srso_strings[srso_mitigation], has_microcode ? "" : ", no microcode");
++	pr_info("%s\n", srso_strings[srso_mitigation]);
+ 
+ pred_cmd:
+ 	if ((!boot_cpu_has_bug(X86_BUG_SRSO) || srso_cmd == SRSO_CMD_OFF) &&
+@@ -2704,9 +2714,7 @@ static ssize_t srso_show_state(char *buf)
+ 	if (boot_cpu_has(X86_FEATURE_SRSO_NO))
+ 		return sysfs_emit(buf, "Mitigation: SMT disabled\n");
+ 
+-	return sysfs_emit(buf, "%s%s\n",
+-			  srso_strings[srso_mitigation],
+-			  boot_cpu_has(X86_FEATURE_IBPB_BRTYPE) ? "" : ", no microcode");
++	return sysfs_emit(buf, "%s\n", srso_strings[srso_mitigation]);
+ }
+ 
+ static ssize_t gds_show_state(char *buf)
 -- 
 2.42.0
 
