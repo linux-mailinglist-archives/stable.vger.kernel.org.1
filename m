@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98C4C7ED577
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4497ED501
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235578AbjKOVHZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37296 "EHLO
+        id S1344747AbjKOU7t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233800AbjKOVHX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:23 -0500
+        with ESMTP id S1344857AbjKOU6W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 702DC195
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB648C4167E;
-        Wed, 15 Nov 2023 20:57:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A7951FF3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959ABC433CA;
+        Wed, 15 Nov 2023 20:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081851;
-        bh=xtoxR1bHKX5QlR+dKy2B6pWh3I6XYH9j7M1mBYYT+jw=;
+        s=korg; t=1700081868;
+        bh=YqYjxw9Or1EZo3lmx4zl1bvF8hpK6KuamPLRQgO5LHw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=szfq3JLt2hn+Hnz1/7vy64rAkajA75rPA227VVR8hoVGNesiBEoN8N6pcyaZ1PWLb
-         0LZYjwpwLiQ1uLX/yxQ8IRjDvPWT5kkOyZ1TPOrlQU5G6ciKRATKLSMMNj0t/FniwG
-         7FOJRvc2MvlIsGrjuvm5sujeNYXityNWn+3/frUk=
+        b=MxwVP3m3iaAjlV1r4kCc8afGkT6Nqf52CcH69giy44K9twlmC+T4+G1x3FlHIloMy
+         WL+6xIOgiH4qXxUfXzrqYlSzPAEDXjlypApGle9HddfyfJAil5cuqDc/F9yhh5jjnb
+         epn8B3jM2wfpWkkMd3xICCitPxsVdJCsxHFfhUYw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 158/191] media: cedrus: Fix clock/reset sequence
-Date:   Wed, 15 Nov 2023 15:47:13 -0500
-Message-ID: <20231115204653.957280295@linuxfoundation.org>
+Subject: [PATCH 5.10 159/191] media: dvb-usb-v2: af9035: fix missing unlock
+Date:   Wed, 15 Nov 2023 15:47:14 -0500
+Message-ID: <20231115204654.014100448@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -55,85 +53,65 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 36fe515c1a3cd5eac148e8a591a82108d92d5522 ]
+[ Upstream commit f31b2cb85f0ee165d78e1c43f6d69f82cc3b2145 ]
 
-According to H6 user manual, resets should always be de-asserted before
-clocks are enabled. This is also consistent with vendor driver.
+Instead of returning an error, goto the mutex unlock at
+the end of the function.
 
-Fixes: d5aecd289bab ("media: cedrus: Implement runtime PM")
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Acked-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Fixes smatch warning:
+
+drivers/media/usb/dvb-usb-v2/af9035.c:467 af9035_i2c_master_xfer() warn: inconsistent returns '&d->i2c_mutex'.
+  Locked on  : 326,387
+  Unlocked on: 465,467
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 7bf744f2de0a ("media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer")
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../staging/media/sunxi/cedrus/cedrus_hw.c    | 24 +++++++++----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/media/usb/dvb-usb-v2/af9035.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-index bcf050a04ffc4..e782731f0a6a4 100644
---- a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-+++ b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
-@@ -145,12 +145,12 @@ int cedrus_hw_suspend(struct device *device)
- {
- 	struct cedrus_dev *dev = dev_get_drvdata(device);
- 
--	reset_control_assert(dev->rstc);
--
- 	clk_disable_unprepare(dev->ram_clk);
- 	clk_disable_unprepare(dev->mod_clk);
- 	clk_disable_unprepare(dev->ahb_clk);
- 
-+	reset_control_assert(dev->rstc);
-+
- 	return 0;
- }
- 
-@@ -159,11 +159,18 @@ int cedrus_hw_resume(struct device *device)
- 	struct cedrus_dev *dev = dev_get_drvdata(device);
- 	int ret;
- 
-+	ret = reset_control_reset(dev->rstc);
-+	if (ret) {
-+		dev_err(dev->dev, "Failed to apply reset\n");
-+
-+		return ret;
-+	}
-+
- 	ret = clk_prepare_enable(dev->ahb_clk);
- 	if (ret) {
- 		dev_err(dev->dev, "Failed to enable AHB clock\n");
- 
--		return ret;
-+		goto err_rst;
+diff --git a/drivers/media/usb/dvb-usb-v2/af9035.c b/drivers/media/usb/dvb-usb-v2/af9035.c
+index 8cbaab9a60844..f0bc3e060ab8d 100644
+--- a/drivers/media/usb/dvb-usb-v2/af9035.c
++++ b/drivers/media/usb/dvb-usb-v2/af9035.c
+@@ -322,8 +322,10 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
+-			if (msg[0].len < 3 || msg[1].len < 1)
+-				return -EOPNOTSUPP;
++			if (msg[0].len < 3 || msg[1].len < 1) {
++				ret = -EOPNOTSUPP;
++				goto unlock;
++			}
+ 			/* demod access via firmware interface */
+ 			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
+@@ -383,8 +385,10 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
+-			if (msg[0].len < 3)
+-				return -EOPNOTSUPP;
++			if (msg[0].len < 3) {
++				ret = -EOPNOTSUPP;
++				goto unlock;
++			}
+ 			/* demod access via firmware interface */
+ 			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
+@@ -459,6 +463,7 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 		ret = -EOPNOTSUPP;
  	}
  
- 	ret = clk_prepare_enable(dev->mod_clk);
-@@ -180,21 +187,14 @@ int cedrus_hw_resume(struct device *device)
- 		goto err_mod_clk;
- 	}
++unlock:
+ 	mutex_unlock(&d->i2c_mutex);
  
--	ret = reset_control_reset(dev->rstc);
--	if (ret) {
--		dev_err(dev->dev, "Failed to apply reset\n");
--
--		goto err_ram_clk;
--	}
--
- 	return 0;
- 
--err_ram_clk:
--	clk_disable_unprepare(dev->ram_clk);
- err_mod_clk:
- 	clk_disable_unprepare(dev->mod_clk);
- err_ahb_clk:
- 	clk_disable_unprepare(dev->ahb_clk);
-+err_rst:
-+	reset_control_assert(dev->rstc);
- 
- 	return ret;
- }
+ 	if (ret < 0)
 -- 
 2.42.0
 
