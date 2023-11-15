@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AE847ECC49
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D6757ECF07
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233852AbjKOT15 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:27:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33274 "EHLO
+        id S235220AbjKOTpy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:45:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233878AbjKOT14 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:56 -0500
+        with ESMTP id S235214AbjKOTpv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6EFA1BD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DDDC433C8;
-        Wed, 15 Nov 2023 19:27:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57A4D1B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F95C433C8;
+        Wed, 15 Nov 2023 19:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076471;
-        bh=eh1bWmoANyz79YhE5xdaAmDHSrANpUa8h3rMfxMU47A=;
+        s=korg; t=1700077548;
+        bh=/FqpEpsKxq6NfIbLo65JZvKXkMc6HH4QZi2wS7mR3/w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1EHfEZCBCZP4PCN4HsryySKfMhBREUaf2M09KyCxMACXGkPD6doOvDuuljI6dC11A
-         hY0703Gxwmb+yLA3gRNpR9DCD+3gvhRgIGxleckCZLPCZjNVlYeLcpkxouFcoL4xfl
-         WY+SAjcT3gcjMeDfy5p3F4NeV1myLNx/oV6M8cn0=
+        b=tYxebBCGB3/ITQppgdBAVTc//3VjDQHbXIyLlpchLiISrEJhJMIyXoXfKOElPM88G
+         VGx7Q7Jd0+q3bEXO1yhxqW69o0cF1QVaTQPPH3yRQ8d1UwLbcuyF73wBGhxiDM6YPB
+         0by6MG8NgZ0LSxnYJC4xeKuBMEbI7UWpD82VSkbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Adam Guerin <adam.guerin@intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 310/550] ALSA: hda: cs35l41: Undo runtime PM changes at driver exit time
+Subject: [PATCH 6.6 349/603] crypto: qat - fix unregistration of crypto algorithms
 Date:   Wed, 15 Nov 2023 14:14:54 -0500
-Message-ID: <20231115191622.312785923@linuxfoundation.org>
+Message-ID: <20231115191637.675535581@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +52,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 85a1bf86fac0c195929768b4e92c78cad107523b ]
+[ Upstream commit 9b2f33a1bfcda90b857431a764c9c8f9a412bbe5 ]
 
-According to the documentation, drivers are responsible for undoing at
-removal time all runtime PM changes done during probing.
+The function adf_dev_init(), through the subsystem qat_crypto, populates
+the list of list of crypto instances accel_dev->crypto_list.
+If the list of instances is not empty, the function adf_dev_start() will
+then call qat_algs_registers() and qat_asym_algs_register() to register
+the crypto algorithms into the crypto framework.
 
-Hence, add the missing calls to pm_runtime_dont_use_autosuspend(), which
-are necessary for undoing pm_runtime_use_autosuspend().
+If any of the functions in adf_dev_start() fail, the caller of such
+function, in the error path calls adf_dev_down() which in turn call
+adf_dev_stop() and adf_dev_shutdown(), see for example the function
+state_store in adf_sriov.c.
+However, if the registration of crypto algorithms is not done,
+adf_dev_stop() will try to unregister the algorithms regardless.
+This might cause the counter active_devs in qat_algs.c and
+qat_asym_algs.c to get to a negative value.
 
-Fixes: 1873ebd30cc8 ("ALSA: hda: cs35l41: Support Hibernation during Suspend")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20230907171010.1447274-11-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add a new state, ADF_STATUS_CRYPTO_ALGS_REGISTERED, which tracks if the
+crypto algorithms are registered into the crypto framework. Then use
+this to unregister the algorithms if such flag is set. This ensures that
+the crypto algorithms are only unregistered if previously registered.
+
+Fixes: d8cba25d2c68 ("crypto: qat - Intel(R) QAT driver framework")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Adam Guerin <adam.guerin@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l41_hda.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/intel/qat/qat_common/adf_common_drv.h | 1 +
+ drivers/crypto/intel/qat/qat_common/adf_init.c       | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
-index f9ce8567d068f..297ba795c71b9 100644
---- a/sound/pci/hda/cs35l41_hda.c
-+++ b/sound/pci/hda/cs35l41_hda.c
-@@ -1547,6 +1547,7 @@ int cs35l41_hda_probe(struct device *dev, const char *device_name, int id, int i
- 	return 0;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
+index 673b5044c62a5..ed640cb37616b 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_common_drv.h
+@@ -25,6 +25,7 @@
+ #define ADF_STATUS_AE_STARTED 6
+ #define ADF_STATUS_PF_RUNNING 7
+ #define ADF_STATUS_IRQ_ALLOCATED 8
++#define ADF_STATUS_CRYPTO_ALGS_REGISTERED 9
  
- err_pm:
-+	pm_runtime_dont_use_autosuspend(cs35l41->dev);
- 	pm_runtime_disable(cs35l41->dev);
- 	pm_runtime_put_noidle(cs35l41->dev);
+ enum adf_dev_reset_mode {
+ 	ADF_DEV_RESET_ASYNC = 0,
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_init.c b/drivers/crypto/intel/qat/qat_common/adf_init.c
+index 35aef5e8fc386..ef8623f81fa33 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_init.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
+@@ -231,6 +231,7 @@ static int adf_dev_start(struct adf_accel_dev *accel_dev)
+ 		clear_bit(ADF_STATUS_STARTED, &accel_dev->status);
+ 		return -EFAULT;
+ 	}
++	set_bit(ADF_STATUS_CRYPTO_ALGS_REGISTERED, &accel_dev->status);
  
-@@ -1565,6 +1566,7 @@ void cs35l41_hda_remove(struct device *dev)
- 	struct cs35l41_hda *cs35l41 = dev_get_drvdata(dev);
+ 	if (!list_empty(&accel_dev->compression_list) && qat_comp_algs_register()) {
+ 		dev_err(&GET_DEV(accel_dev),
+@@ -272,10 +273,12 @@ static void adf_dev_stop(struct adf_accel_dev *accel_dev)
+ 	clear_bit(ADF_STATUS_STARTING, &accel_dev->status);
+ 	clear_bit(ADF_STATUS_STARTED, &accel_dev->status);
  
- 	pm_runtime_get_sync(cs35l41->dev);
-+	pm_runtime_dont_use_autosuspend(cs35l41->dev);
- 	pm_runtime_disable(cs35l41->dev);
+-	if (!list_empty(&accel_dev->crypto_list)) {
++	if (!list_empty(&accel_dev->crypto_list) &&
++	    test_bit(ADF_STATUS_CRYPTO_ALGS_REGISTERED, &accel_dev->status)) {
+ 		qat_algs_unregister();
+ 		qat_asym_algs_unregister();
+ 	}
++	clear_bit(ADF_STATUS_CRYPTO_ALGS_REGISTERED, &accel_dev->status);
  
- 	if (cs35l41->halo_initialized)
+ 	if (!list_empty(&accel_dev->compression_list))
+ 		qat_comp_algs_unregister();
 -- 
 2.42.0
 
