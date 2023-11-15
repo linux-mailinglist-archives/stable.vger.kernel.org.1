@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3E27ED493
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E98A7ED30C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344616AbjKOU6b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36898 "EHLO
+        id S233677AbjKOUp4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344618AbjKOU5n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:43 -0500
+        with ESMTP id S233657AbjKOUpx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7783D199C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D95EC4E74F;
-        Wed, 15 Nov 2023 20:51:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6415E18D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D352DC433CB;
+        Wed, 15 Nov 2023 20:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081492;
-        bh=VMx68yJ/33dnvpJfhi4JEEPzirf0BwV7xBWNOYHAz2A=;
+        s=korg; t=1700081150;
+        bh=nsipOlt9tjgy4kpRbr9tRbUxybzjInrVmsdTD/+RBss=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tCe/5pVe1FBWFAjDOltZnQqsIh4ObVRRRsbiUcs3LdmPhgXZlHQWgL613RawXVLQE
-         c+Qm8zqql7WW08Z6ZO4UGL4LzMdfm52B0HKLXArXHPwvMXHmodNoJl0DV2TgVDTuZx
-         +k9dNEmnawQYkiIQXQ6ITX1yS10AcvQ5VBwhCszU=
+        b=cBECeIuIls4Yf+YcijBJix7opi3SbzPSSryQJ6hxEnsGAYyqil8robg58B3UDnB7N
+         sQvkD2gCngsrcZGet9b/mqLB/CZqTBX8wnLwOnMCASRuuphVXPGiQ0Qq7zPdrzpaG8
+         2ASdOg5G5AtczwH/Hv2qCIHAX0g3ipgFQVX2w1bU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 186/244] powerpc/40x: Remove stale PTE_ATOMIC_UPDATES macro
-Date:   Wed, 15 Nov 2023 15:36:18 -0500
-Message-ID: <20231115203559.502688022@linuxfoundation.org>
+Subject: [PATCH 4.19 67/88] media: dvb-usb-v2: af9035: fix missing unlock
+Date:   Wed, 15 Nov 2023 15:36:19 -0500
+Message-ID: <20231115191430.151500977@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +49,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit cc8ee288f484a2a59c01ccd4d8a417d6ed3466e3 ]
+[ Upstream commit f31b2cb85f0ee165d78e1c43f6d69f82cc3b2145 ]
 
-40x TLB handlers were reworked by commit 2c74e2586bb9 ("powerpc/40x:
-Rework 40x PTE access and TLB miss") to not require PTE_ATOMIC_UPDATES
-anymore.
+Instead of returning an error, goto the mutex unlock at
+the end of the function.
 
-Then commit 4e1df545e2fa ("powerpc/pgtable: Drop PTE_ATOMIC_UPDATES")
-removed all code related to PTE_ATOMIC_UPDATES.
+Fixes smatch warning:
 
-Remove left over PTE_ATOMIC_UPDATES macro.
+drivers/media/usb/dvb-usb-v2/af9035.c:467 af9035_i2c_master_xfer() warn: inconsistent returns '&d->i2c_mutex'.
+  Locked on  : 326,387
+  Unlocked on: 465,467
 
-Fixes: 2c74e2586bb9 ("powerpc/40x: Rework 40x PTE access and TLB miss")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/f061db5857fcd748f84a6707aad01754686ce97e.1695659959.git.christophe.leroy@csgroup.eu
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 7bf744f2de0a ("media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer")
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/nohash/32/pte-40x.h | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/media/usb/dvb-usb-v2/af9035.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-40x.h b/arch/powerpc/include/asm/nohash/32/pte-40x.h
-index 2d3153cfc0d79..acf61242e85bf 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-40x.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-40x.h
-@@ -69,9 +69,6 @@
+diff --git a/drivers/media/usb/dvb-usb-v2/af9035.c b/drivers/media/usb/dvb-usb-v2/af9035.c
+index 8a83f27875ec9..2ed29a99fee1e 100644
+--- a/drivers/media/usb/dvb-usb-v2/af9035.c
++++ b/drivers/media/usb/dvb-usb-v2/af9035.c
+@@ -337,8 +337,10 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
+-			if (msg[0].len < 3 || msg[1].len < 1)
+-				return -EOPNOTSUPP;
++			if (msg[0].len < 3 || msg[1].len < 1) {
++				ret = -EOPNOTSUPP;
++				goto unlock;
++			}
+ 			/* demod access via firmware interface */
+ 			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
+@@ -398,8 +400,10 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
+-			if (msg[0].len < 3)
+-				return -EOPNOTSUPP;
++			if (msg[0].len < 3) {
++				ret = -EOPNOTSUPP;
++				goto unlock;
++			}
+ 			/* demod access via firmware interface */
+ 			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
+@@ -474,6 +478,7 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 		ret = -EOPNOTSUPP;
+ 	}
  
- #define _PTE_NONE_MASK	0
++unlock:
+ 	mutex_unlock(&d->i2c_mutex);
  
--/* Until my rework is finished, 40x still needs atomic PTE updates */
--#define PTE_ATOMIC_UPDATES	1
--
- #define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED)
- #define _PAGE_BASE	(_PAGE_BASE_NC)
- 
+ 	if (ret < 0)
 -- 
 2.42.0
 
