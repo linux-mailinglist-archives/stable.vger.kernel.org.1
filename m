@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35CBA7ED139
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CC337ED133
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344073AbjKOUAD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:00:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53840 "EHLO
+        id S1344064AbjKOUAE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:00:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344085AbjKOUAA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:00 -0500
+        with ESMTP id S1344081AbjKOUAC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A03341BD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:59:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6DDC433C8;
-        Wed, 15 Nov 2023 19:59:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13AD6197
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:59:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9AFC433C9;
+        Wed, 15 Nov 2023 19:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078397;
-        bh=aw2797pnghKVaAK/cNZsglUOftMQ9zF98ViIvtasYeQ=;
+        s=korg; t=1700078398;
+        bh=+jO5MYGRyEUrHrE9v/71/uID5dp2GA2i/r/vrYoqEAc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p4Gd7KtmPuhQNrAOmcNZszyNIwhkZF0fCuemXFUdk0u5TcJC4Jtefv62vVZ9bFidI
-         UQCdBKrFWgxz/pE+2eNgvgrbSZ9AWM976MdHly1w/KQHZ5nnz+IGpmjN9hUBazHKln
-         Rq6j2AZ/CKKOln1YRGIjCBlU6YV7mjJIUyi219DA=
+        b=wKqg1pklQ6EbKZUZ+YB+hWfECr1nVfv+PS599CNR9CZpNKAy7/OvUKSbomYU9t7gV
+         vv3XGGH7oBrqMxUnrGUctsNc7bY6Kb8t7PQT9ZO0uavKxOX6xc6Z1gODP4gwM++tHa
+         YWNTt0qM+glvGfjuw1N1H6Vwh4MWt8akY5xPvi5E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Jonas Blixt <jonas.blixt@actia.se>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 273/379] tools: iio: iio_generic_buffer ensure alignment
-Date:   Wed, 15 Nov 2023 14:25:48 -0500
-Message-ID: <20231115192701.269632054@linuxfoundation.org>
+Subject: [PATCH 6.1 274/379] USB: usbip: fix stub_dev hub disconnect
+Date:   Wed, 15 Nov 2023 14:25:49 -0500
+Message-ID: <20231115192701.323865754@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,63 +54,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Matti Vaittinen <mazziesaccount@gmail.com>
+From: Jonas Blixt <jonas.blixt@actia.se>
 
-[ Upstream commit 2d3dff577dd0ea8fe9637a13822f7603c4a881c8 ]
+[ Upstream commit 97475763484245916735a1aa9a3310a01d46b008 ]
 
-The iio_generic_buffer can return garbage values when the total size of
-scan data is not a multiple of the largest element in the scan. This can be
-demonstrated by reading a scan, consisting, for example of one 4-byte and
-one 2-byte element, where the 4-byte element is first in the buffer.
+If a hub is disconnected that has device(s) that's attached to the usbip layer
+the disconnect function might fail because it tries to release the port
+on an already disconnected hub.
 
-The IIO generic buffer code does not take into account the last two
-padding bytes that are needed to ensure that the 4-byte data for next
-scan is correctly aligned.
-
-Add the padding bytes required to align the next sample with the scan size.
-
-Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Fixes: e58537ccce73 ("staging: iio: update example application.")
-Link: https://lore.kernel.org/r/ZRvlm4ktNLu+qmlf@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 6080cd0e9239 ("staging: usbip: claim ports used by shared devices")
+Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230615092810.1215490-1-jonas.blixt@actia.se
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_generic_buffer.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/usb/usbip/stub_dev.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 44bbf80f0cfdd..0d0a7a19d6f95 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -54,9 +54,12 @@ enum autochan {
- static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
- {
- 	unsigned int bytes = 0;
--	int i = 0;
-+	int i = 0, max = 0;
-+	unsigned int misalignment;
- 
- 	while (i < num_channels) {
-+		if (channels[i].bytes > max)
-+			max = channels[i].bytes;
- 		if (bytes % channels[i].bytes == 0)
- 			channels[i].location = bytes;
- 		else
-@@ -66,6 +69,14 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
- 		bytes = channels[i].location + channels[i].bytes;
- 		i++;
- 	}
+diff --git a/drivers/usb/usbip/stub_dev.c b/drivers/usb/usbip/stub_dev.c
+index 3c6d452e3bf40..4104eea03e806 100644
+--- a/drivers/usb/usbip/stub_dev.c
++++ b/drivers/usb/usbip/stub_dev.c
+@@ -462,8 +462,13 @@ static void stub_disconnect(struct usb_device *udev)
+ 	/* release port */
+ 	rc = usb_hub_release_port(udev->parent, udev->portnum,
+ 				  (struct usb_dev_state *) udev);
+-	if (rc) {
+-		dev_dbg(&udev->dev, "unable to release port\n");
 +	/*
-+	 * We want the data in next sample to also be properly aligned so
-+	 * we'll add padding at the end if needed. Adding padding only
-+	 * works for channel data which size is 2^n bytes.
++	 * NOTE: If a HUB disconnect triggered disconnect of the down stream
++	 * device usb_hub_release_port will return -ENODEV so we can safely ignore
++	 * that error here.
 +	 */
-+	misalignment = bytes % max;
-+	if (misalignment)
-+		bytes += max - misalignment;
++	if (rc && (rc != -ENODEV)) {
++		dev_dbg(&udev->dev, "unable to release port (%i)\n", rc);
+ 		return;
+ 	}
  
- 	return bytes;
- }
 -- 
 2.42.0
 
