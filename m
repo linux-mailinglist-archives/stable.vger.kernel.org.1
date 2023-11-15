@@ -2,106 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 304157EC6D2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 16:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00F097EC6E4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 16:13:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344364AbjKOPMg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 10:12:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36206 "EHLO
+        id S1344416AbjKOPNb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 10:13:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343952AbjKOPMg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 10:12:36 -0500
-Received: from mail.bugwerft.de (mail.bugwerft.de [46.23.86.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4210818A;
-        Wed, 15 Nov 2023 07:12:32 -0800 (PST)
-Received: from [192.168.178.97] (pd95ef485.dip0.t-ipconnect.de [217.94.244.133])
-        by mail.bugwerft.de (Postfix) with ESMTPSA id 1FB5228157A;
-        Wed, 15 Nov 2023 15:12:31 +0000 (UTC)
-Message-ID: <beb4421c-c012-4833-abf8-f2780bcc43db@zonque.org>
-Date:   Wed, 15 Nov 2023 16:12:30 +0100
+        with ESMTP id S1344409AbjKOPNa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 10:13:30 -0500
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A00098;
+        Wed, 15 Nov 2023 07:13:27 -0800 (PST)
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AFE4g2h017281;
+        Wed, 15 Nov 2023 15:13:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2023-03-30;
+ bh=jyDtzjiRA41HQpEbPCZGjyaytaZes/PnKBEdOJnA+6s=;
+ b=eCTe7BYQG34Wv3ifVRkRPjyiv7MV8kPIlHsJlhiBG1cWhZSufM4jMAmihcFKbeAGl4jg
+ t5RQhqHjNZstLB25ChP9SaByr/I4z7fGmK+I30EwigaJ7yXp+VMrcr+AO/r6F0OLUCGc
+ C7EpDn+CUjetsjaZmfTTKC9OhVd3qwIRuImEvbaoB+ZZo96NCvYXDVPFtxbIbF07tzM0
+ oDLuN26gCpEdgIuAZZjQAuwHK9yjlKOrST8u4wxwrpBRe3EfJLs7s1/0uVeC4Dz5ykFr
+ 4GqkkfrT25brQxa0af/hVE8Ic7tdNc0EY6b7cuTBYb7NnqJ1yyrOUYNk11Kb8VqGff7N rQ== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ua2strr7e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Nov 2023 15:13:13 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3AFF4iCA003911;
+        Wed, 15 Nov 2023 15:13:11 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3uaxj40897-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Nov 2023 15:13:11 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AFFD8SV011253;
+        Wed, 15 Nov 2023 15:13:10 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3uaxj4085x-5;
+        Wed, 15 Nov 2023 15:13:10 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     stanley.chu@mediatek.com, linux-scsi@vger.kernel.org,
+        avri.altman@wdc.com, alim.akhtar@samsung.com, jejb@linux.ibm.com,
+        peter.wang@mediatek.com
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
+        chun-hung.wu@mediatek.com, alice.chao@mediatek.com,
+        cc.chou@mediatek.com, chaotian.jing@mediatek.com,
+        jiajie.hao@mediatek.com, powen.kao@mediatek.com,
+        qilin.tan@mediatek.com, lin.gui@mediatek.com,
+        tun-yu.yu@mediatek.com, eddie.huang@mediatek.com,
+        naomi.chu@mediatek.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] ufs: core: fix racing issue between ufshcd_mcq_abort and ISR
+Date:   Wed, 15 Nov 2023 10:13:03 -0500
+Message-Id: <170006111392.506874.14169694579430411833.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20231106075117.8995-1-peter.wang@mediatek.com>
+References: <20231106075117.8995-1-peter.wang@mediatek.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] serial: sc16is7xx: address RX timeout interrupt errata
-Content-Language: en-US
-To:     Hugo Villeneuve <hugo@hugovil.com>
-Cc:     Lech Perczak <lech.perczak@camlingroup.com>,
-        gregkh@linuxfoundation.org, jirislaby@kernel.org,
-        u.kleine-koenig@pengutronix.de, linux-serial@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Maxim Popov <maxim.snafu@gmail.com>,
-        stable@vger.kernel.org
-References: <20231114074904.239458-1-daniel@zonque.org>
- <20231114102025.d48c0a6ec6c413f274b7680b@hugovil.com>
- <140280a6-1948-4630-b10c-8e6a2afec2de@zonque.org>
- <3fac7d72-0a1b-4d93-9245-a0f8af1240a6@camlingroup.com>
- <ecc90a62-7cfa-45c9-9f6c-188e2c8ac50f@zonque.org>
- <20231115100121.5c926d4eb6d3abb02234887d@hugovil.com>
-From:   Daniel Mack <daniel@zonque.org>
-In-Reply-To: <20231115100121.5c926d4eb6d3abb02234887d@hugovil.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-15_13,2023-11-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
+ mlxlogscore=756 mlxscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311150115
+X-Proofpoint-GUID: l1LmW0E1INyKXeC4nRpQVlhFvJ1l8L1_
+X-Proofpoint-ORIG-GUID: l1LmW0E1INyKXeC4nRpQVlhFvJ1l8L1_
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Hugo,
+On Mon, 06 Nov 2023 15:51:17 +0800, peter.wang@mediatek.com wrote:
 
-On 11/15/23 16:01, Hugo Villeneuve wrote:
-> On Wed, 15 Nov 2023 12:22:10 +0100
-> Daniel Mack <daniel@zonque.org> wrote:
-> Hi Daniel,
+> If command timeout happen and cq complete irq raise at the same time,
+> ufshcd_mcq_abort null the lprb->cmd and NULL poiner KE in ISR.
+> Below is error log.
 > 
->> The bug has hit us on production units and when it does, sc16is7xx_irq()
->> would spin forever because sc16is7xx_port_irq() keeps seeing an
->> interrupt in the IIR register that is not cleared because the driver
->> does not call into sc16is7xx_handle_rx() unless the RXLVL register
->> reports at least one byte in the FIFO.
+> ufshcd_abort: Device abort task at tag 18
+> Unable to handle kernel NULL pointer dereference at virtual address
+> 0000000000000108
+> pc : [0xffffffe27ef867ac] scsi_dma_unmap+0xc/0x44
+> lr : [0xffffffe27f1b898c] ufshcd_release_scsi_cmd+0x24/0x114
 > 
-> I would suggest that you replace the second paragraph or your original
-> commit message with this, it better explains what is the problem.
+> [...]
 
-Good idea, will do.
+Applied to 6.7/scsi-fixes, thanks!
 
-> Also, when the problem happens, you say that "the fill level reporting
-> is off-by-one", so doest it mean that RXLVL can sometimes be non-zero
-> when the bug occurs?
+[1/1] ufs: core: fix racing issue between ufshcd_mcq_abort and ISR
+      https://git.kernel.org/mkp/scsi/c/27900d7119c4
 
-Maybe, but if that happens we would read one byte too less, which
-doesn't harm as we would get another interrupt later to handle the rest.
-The problematic case is when we don't read any data at all even though
-there is something in the FIFO, and the interrupt suggested that as well.
-
->> Note that this issue might only occur in revision E of the silicon. And
-> 
-> Is this just a supposition or based on NXP info or some actual tests?
-
-Well, the datasheet states "Errata for Rev. E added 12 August 2011", and
-as "Revision E" does not seem to refer to a datasheet version, it will
-most likely be about the silicon revision. And another assumption is
-that the issue would fixed in subsequent versions of the chip, in case
-there are any at all.
-
-FTR, this is the document I'm looking at:
-
-  https://www.nxp.com/docs/en/data-sheet/SC16IS752_SC16IS762.pdf
-
->> there seems to be now way to read the revision code through I2C, so I
->> guess you won't be able to figure out easily whether your chip is affected.
->>
->> Let me know if I can provide more information.
-> 
-> I have a board with two SC16IS752IPW using SPI interface, but I don't
-> know (yet) what is the revision. I will try to determine it if possible,
-> although I do not see any info on that in the datasheet.
-> 
-> I will also try to reproduce the issue, and test your patch.
-
-Great, thanks!
-
-
-Best regards,
-Daniel
+-- 
+Martin K. Petersen	Oracle Linux Engineering
