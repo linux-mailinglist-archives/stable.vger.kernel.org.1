@@ -2,38 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCA3F7ED09E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D7C77ED09F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343540AbjKOT4p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S235434AbjKOT4p (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 14:56:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60452 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343607AbjKOT40 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:26 -0500
+        with ESMTP id S235591AbjKOT42 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F90D40
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A79C433C7;
-        Wed, 15 Nov 2023 19:56:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5581E1A5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF35AC433C7;
+        Wed, 15 Nov 2023 19:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078183;
-        bh=a6ZUvgsT/GgsR8QCUrFxa2GoPBO2NaVJcns3GBXBCes=;
+        s=korg; t=1700078184;
+        bh=LoOsZO7kiJj3CfheIMNGqINKAhquKSxH67kqJOJ/GQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vcjLMzWQ5a9dSKA1emjiMSeUjwwsr0ZALiIXpG3ep9sjfgygARRfypTxWK0ko7XU7
-         63X1Zbtt1SVThpG/rZ0T9P3bJZr271THzps+pws5VLMa32QVrn1WPxFXsnSXwqexuT
-         b2Z+G9X2aS+votr0ArncNwxFc0y3Jjm5CTLxaJFI=
+        b=RavQ76YoHOrlE+BSzIP6thh185OCei4VKSuw+rBX6xYeID+8M0Qd983kmw8klZpOT
+         iH0XTlaa223afo/PW8YBkJ+2HFKMJ1wRSH1Z90Xnu3VUIMLhfBFg3r2dRqVbIrUhMI
+         QocHO8rU1LNqYzoMNrevRUeQFUnZ4LX2JEhd+Yfs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/379] drm/amd/display: Bail from dm_check_crtc_cursor if no relevant change
-Date:   Wed, 15 Nov 2023 14:23:33 -0500
-Message-ID: <20231115192653.287790215@linuxfoundation.org>
+        patches@lists.linux.dev, Gabriel Krisman Bertazi <krisman@suse.de>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/379] io_uring/kbuf: Fix check of BID wrapping in provided buffers
+Date:   Wed, 15 Nov 2023 14:23:34 -0500
+Message-ID: <20231115192653.346676307@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -41,7 +38,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -57,83 +53,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Michel Dänzer <mdaenzer@redhat.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit bc0b79ce2050aa523c38c96b6d26340a96bfbdca ]
+[ Upstream commit ab69838e7c75b0edb699c1a8f42752b30333c46f ]
 
-If no plane was newly enabled or changed scaling, there can be no new
-scaling mismatch with the cursor plane.
+Commit 3851d25c75ed0 ("io_uring: check for rollover of buffer ID when
+providing buffers") introduced a check to prevent wrapping the BID
+counter when sqe->off is provided, but it's off-by-one too
+restrictive, rejecting the last possible BID (65534).
 
-By not pulling non-cursor plane states into all atomic commits while
-the cursor plane is enabled, this avoids synchronizing all cursor plane
-changes to vertical blank, which caused the following IGT tests to fail:
+i.e., the following fails with -EINVAL.
 
-kms_cursor_legacy@cursor-vs-flip.*
-kms_cursor_legacy@flip-vs-cursor.*
+     io_uring_prep_provide_buffers(sqe, addr, size, 0xFFFF, 0, 0);
 
-Fixes: 003048ddf44b ("drm/amd/display: Check all enabled planes in dm_check_crtc_cursor")
-Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 3851d25c75ed ("io_uring: check for rollover of buffer ID when providing buffers")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://lore.kernel.org/r/20231005000531.30800-2-krisman@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 33 ++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ io_uring/kbuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 73db46b9e3e1a..42e266e074d1d 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -9641,10 +9641,12 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
- 				struct drm_crtc *crtc,
- 				struct drm_crtc_state *new_crtc_state)
- {
--	struct drm_plane *cursor = crtc->cursor, *underlying;
-+	struct drm_plane *cursor = crtc->cursor, *plane, *underlying;
-+	struct drm_plane_state *old_plane_state, *new_plane_state;
- 	struct drm_plane_state *new_cursor_state, *new_underlying_state;
- 	int i;
- 	int cursor_scale_w, cursor_scale_h, underlying_scale_w, underlying_scale_h;
-+	bool any_relevant_change = false;
- 
- 	/* On DCE and DCN there is no dedicated hardware cursor plane. We get a
- 	 * cursor per pipe but it's going to inherit the scaling and
-@@ -9652,6 +9654,35 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
- 	 * blending properties match the underlying planes'.
- 	 */
- 
-+	/* If no plane was enabled or changed scaling, no need to check again */
-+	for_each_oldnew_plane_in_state(state, plane, old_plane_state, new_plane_state, i) {
-+		int new_scale_w, new_scale_h, old_scale_w, old_scale_h;
-+
-+		if (!new_plane_state || !new_plane_state->fb || new_plane_state->crtc != crtc)
-+			continue;
-+
-+		if (!old_plane_state || !old_plane_state->fb || old_plane_state->crtc != crtc) {
-+			any_relevant_change = true;
-+			break;
-+		}
-+
-+		if (new_plane_state->fb == old_plane_state->fb &&
-+		    new_plane_state->crtc_w == old_plane_state->crtc_w &&
-+		    new_plane_state->crtc_h == old_plane_state->crtc_h)
-+			continue;
-+
-+		dm_get_plane_scale(new_plane_state, &new_scale_w, &new_scale_h);
-+		dm_get_plane_scale(old_plane_state, &old_scale_w, &old_scale_h);
-+
-+		if (new_scale_w != old_scale_w || new_scale_h != old_scale_h) {
-+			any_relevant_change = true;
-+			break;
-+		}
-+	}
-+
-+	if (!any_relevant_change)
-+		return 0;
-+
- 	new_cursor_state = drm_atomic_get_plane_state(state, cursor);
- 	if (IS_ERR(new_cursor_state))
- 		return PTR_ERR(new_cursor_state);
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index acc37e5a6d4e1..e45602b02a9f1 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -347,7 +347,7 @@ int io_provide_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
+ 	tmp = READ_ONCE(sqe->off);
+ 	if (tmp > USHRT_MAX)
+ 		return -E2BIG;
+-	if (tmp + p->nbufs >= USHRT_MAX)
++	if (tmp + p->nbufs > USHRT_MAX)
+ 		return -EINVAL;
+ 	p->bid = tmp;
+ 	return 0;
 -- 
 2.42.0
 
