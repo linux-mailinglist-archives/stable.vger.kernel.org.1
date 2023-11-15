@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB8637ECE35
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D15CD7ECBBD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234827AbjKOTle (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:41:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36548 "EHLO
+        id S232665AbjKOTYK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234821AbjKOTld (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:33 -0500
+        with ESMTP id S232691AbjKOTYK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F86CE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A743C433C7;
-        Wed, 15 Nov 2023 19:41:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D497F1A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E67C433C7;
+        Wed, 15 Nov 2023 19:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077290;
-        bh=nbcBkzwfZTJQcQv5o4Sqg6H6NaSU3NEF7ltTWCuTt4w=;
+        s=korg; t=1700076246;
+        bh=GR6B7O/lkZIQ8pPHG2BKV3BD+L4wH1RwRR7yrKyDzD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WcrywimpXNiO/kg2yd3AEPvC4cPcfscBakLD57TYIPiOZUDUYnlE0mrpC7udNZQxP
-         wWnFgmeQIgtoh6RCpsdguEOCfbmaEO8OFjqvEHlGt0tMjuuDGIr90TpYN9O7YTrYyd
-         h0+oCvj+JCALFyL/uwrSigGoojEAJj57sepuJbtQ=
+        b=PpKxT2sMHCXT4Y2PuyeZGyvFAUHBoHOPKXub8C//MLfEgD/I/KD4kglfgdYlWYAey
+         O524OVutzOcakfuux2O7znXEdTZl/sU0f8G3uFFu/o5C3x9WSuHm4Hn4WOtEFA2oTn
+         55OEh+02OAJkHtYJpd7ieG2IUMzmSFXhgtERAWTo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/603] clk: ralink: mtmips: quiet unused variable warning
+Subject: [PATCH 6.5 143/550] Bluetooth: hci_sync: Fix Opcode prints in bt_dev_dbg/err
 Date:   Wed, 15 Nov 2023 14:12:07 -0500
-Message-ID: <20231115191625.833159278@linuxfoundation.org>
+Message-ID: <20231115191610.608419969@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,87 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+From: Marcel Ziswiler <marcel.ziswiler@toradex.com>
 
-[ Upstream commit 619102313466eaf8a6ac188e711f5df749dac6d4 ]
+[ Upstream commit 530886897c789cf77c9a0d4a7cc5549f0768b5f8 ]
 
-When CONFIG_OF is disabled then the matching table is not referenced and
-the following warning appears:
+Printed Opcodes may be missing leading zeros:
 
-drivers/clk/ralink/clk-mtmips.c:821:34: warning: unused variable 'mtmips_of_match' [-Wunused-const-variable]
-821 |   static const struct of_device_id mtmips_of_match[] = {
-    |                          ^
+	Bluetooth: hci0: Opcode 0x c03 failed: -110
 
-There are two match tables in the driver: one for the clock driver and the
-other for the reset driver. The only difference between them is that the
-clock driver uses 'data' and does not have 'ralink,rt2880-reset' compatible.
-Both just can be merged into a single one just by adding the compatible
-'ralink,rt2880-reset' entry to 'mtmips_of_match[]', which will allow it to
-be used for 'mtmips_clk_driver' (which doesn't use the data) as well as for
-'mtmips_clk_init()' (which doesn't need get called for 'ralink,rt2880-reset').
+Fix this by always printing leading zeros:
 
-Doing in this way ensures that 'CONFIG_OF' is not disabled anymore so the
-above warning disapears.
+	Bluetooth: hci0: Opcode 0x0c03 failed: -110
 
-Fixes: 6f3b15586eef ("clk: ralink: add clock and reset driver for MTMIPS SoCs")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202307242310.CdOnd2py-lkp@intel.com/
-Suggested-by: Arnd Bergmann <arnd@kernel.org>
-Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Link: https://lore.kernel.org/r/20230827023932.501102-1-sergio.paracuellos@gmail.com
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: d0b137062b2d ("Bluetooth: hci_sync: Rework init stages")
+Fixes: 6a98e3836fa2 ("Bluetooth: Add helper for serialized HCI command execution")
+Signed-off-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/ralink/clk-mtmips.c | 20 +++++---------------
- 1 file changed, 5 insertions(+), 15 deletions(-)
+ net/bluetooth/hci_sync.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/ralink/clk-mtmips.c b/drivers/clk/ralink/clk-mtmips.c
-index 1e7991439527a..50a443bf79ecd 100644
---- a/drivers/clk/ralink/clk-mtmips.c
-+++ b/drivers/clk/ralink/clk-mtmips.c
-@@ -821,6 +821,10 @@ static const struct mtmips_clk_data mt76x8_clk_data = {
- };
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 92a6921a161f2..9b073bf2ba088 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -151,7 +151,7 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 	struct sk_buff *skb;
+ 	int err = 0;
  
- static const struct of_device_id mtmips_of_match[] = {
-+	{
-+		.compatible = "ralink,rt2880-reset",
-+		.data = NULL,
-+	},
- 	{
- 		.compatible = "ralink,rt2880-sysc",
- 		.data = &rt2880_clk_data,
-@@ -1088,25 +1092,11 @@ static int mtmips_clk_probe(struct platform_device *pdev)
- 	return 0;
- }
+-	bt_dev_dbg(hdev, "Opcode 0x%4x", opcode);
++	bt_dev_dbg(hdev, "Opcode 0x%4.4x", opcode);
  
--static const struct of_device_id mtmips_clk_of_match[] = {
--	{ .compatible = "ralink,rt2880-reset" },
--	{ .compatible = "ralink,rt2880-sysc" },
--	{ .compatible = "ralink,rt3050-sysc" },
--	{ .compatible = "ralink,rt3052-sysc" },
--	{ .compatible = "ralink,rt3352-sysc" },
--	{ .compatible = "ralink,rt3883-sysc" },
--	{ .compatible = "ralink,rt5350-sysc" },
--	{ .compatible = "ralink,mt7620-sysc" },
--	{ .compatible = "ralink,mt7628-sysc" },
--	{ .compatible = "ralink,mt7688-sysc" },
--	{}
--};
--
- static struct platform_driver mtmips_clk_driver = {
- 	.probe = mtmips_clk_probe,
- 	.driver = {
- 		.name = "mtmips-clk",
--		.of_match_table = mtmips_clk_of_match,
-+		.of_match_table = mtmips_of_match,
- 	},
- };
+ 	hci_req_init(&req, hdev);
  
+@@ -247,7 +247,7 @@ int __hci_cmd_sync_status_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+ 	skb = __hci_cmd_sync_sk(hdev, opcode, plen, param, event, timeout, sk);
+ 	if (IS_ERR(skb)) {
+ 		if (!event)
+-			bt_dev_err(hdev, "Opcode 0x%4x failed: %ld", opcode,
++			bt_dev_err(hdev, "Opcode 0x%4.4x failed: %ld", opcode,
+ 				   PTR_ERR(skb));
+ 		return PTR_ERR(skb);
+ 	}
 -- 
 2.42.0
 
