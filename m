@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 167787ED37D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3442C7ED37F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234853AbjKOUxA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:53:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42932 "EHLO
+        id S234858AbjKOUxD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:53:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234845AbjKOUw7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:52:59 -0500
+        with ESMTP id S234845AbjKOUxD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C2F98F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:52:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87985C4E777;
-        Wed, 15 Nov 2023 20:52:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E2B7BC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9974EC4E77D;
+        Wed, 15 Nov 2023 20:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081576;
-        bh=7y6Dk8/fF4eAh+9pY8az+cNQY44omaEQvkEMQ0FrGpA=;
+        s=korg; t=1700081579;
+        bh=7KfGgvzJhBPcl7hO/Fk5C1Dm9VJi7m4iK4QAzx7RjIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RPp1C8iEtrBLHR0GF4vswNvyLK+C78fcolsjLAlaatOxbMaKcTzEn7N+Lk3+MRe6k
-         ZniHtZTr1VXXQQv/kGC6qryNZoO8ae5EcDiT/JtBY5c2+wVtb4yTXgsBqW14n75DNf
-         yABgxqCanOYVq+jTH7Pjb4fVBvQFsn/7FkrLu3M0=
+        b=VJVPn7X7eLp28gJhVglrbvhd2S5vZv2vys4zkYUzHl0NtJDlX1GTJNmyvht9DAx75
+         ZD1vHSO1DF8reLdDasW5DrNpJTJmL0CIOXz5g7h6eODtyHPC0n6hqx6akh0TJz0Ha8
+         dzcPEWSisxzvpkkM3I99qUzhqLgH6o/o0pXbuyXM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 239/244] fbdev: imsttfb: Fix error path of imsttfb_probe()
-Date:   Wed, 15 Nov 2023 15:37:11 -0500
-Message-ID: <20231115203602.667140582@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 240/244] fbdev: imsttfb: fix a resource leak in probe
+Date:   Wed, 15 Nov 2023 15:37:12 -0500
+Message-ID: <20231115203602.726679777@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -53,36 +53,87 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 518ecb6a209f6ff678aeadf9f2bf870c0982ca85 ]
+[ Upstream commit aba6ab57a910ad4b940c2024d15f2cdbf5b7f76b ]
 
-Release ressources when init_imstt() returns failure.
+I've re-written the error handling but the bug is that if init_imstt()
+fails we need to call iounmap(par->cmap_regs).
 
+Fixes: c75f5a550610 ("fbdev: imsttfb: Fix use after free bug in imsttfb_probe")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Signed-off-by: Helge Deller <deller@gmx.de>
-Stable-dep-of: aba6ab57a910 ("fbdev: imsttfb: fix a resource leak in probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imsttfb.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/imsttfb.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
 diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
-index 1b2fb8ed76237..876ddf05e133a 100644
+index 876ddf05e133a..e559c844436bd 100644
 --- a/drivers/video/fbdev/imsttfb.c
 +++ b/drivers/video/fbdev/imsttfb.c
-@@ -1525,8 +1525,10 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto error;
+@@ -1489,8 +1489,8 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 
+ 	if (!request_mem_region(addr, size, "imsttfb")) {
+ 		printk(KERN_ERR "imsttfb: Can't reserve memory region\n");
+-		framebuffer_release(info);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto release_info;
+ 	}
+ 
+ 	switch (pdev->device) {
+@@ -1507,36 +1507,39 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 			printk(KERN_INFO "imsttfb: Device 0x%x unknown, "
+ 					 "contact maintainer.\n", pdev->device);
+ 			ret = -ENODEV;
+-			goto error;
++			goto release_mem_region;
+ 	}
+ 
+ 	info->fix.smem_start = addr;
+ 	info->screen_base = (__u8 *)ioremap(addr, par->ramdac == IBM ?
+ 					    0x400000 : 0x800000);
+ 	if (!info->screen_base)
+-		goto error;
++		goto release_mem_region;
+ 	info->fix.mmio_start = addr + 0x800000;
+ 	par->dc_regs = ioremap(addr + 0x800000, 0x1000);
+ 	if (!par->dc_regs)
+-		goto error;
++		goto unmap_screen_base;
+ 	par->cmap_regs_phys = addr + 0x840000;
+ 	par->cmap_regs = (__u8 *)ioremap(addr + 0x840000, 0x1000);
+ 	if (!par->cmap_regs)
+-		goto error;
++		goto unmap_dc_regs;
  	info->pseudo_palette = par->palette;
  	ret = init_imstt(info);
--	if (!ret)
--		pci_set_drvdata(pdev, info);
-+	if (ret)
-+		goto error;
-+
-+	pci_set_drvdata(pdev, info);
- 	return ret;
+ 	if (ret)
+-		goto error;
++		goto unmap_cmap_regs;
  
- error:
+ 	pci_set_drvdata(pdev, info);
+-	return ret;
++	return 0;
+ 
+-error:
+-	if (par->dc_regs)
+-		iounmap(par->dc_regs);
+-	if (info->screen_base)
+-		iounmap(info->screen_base);
++unmap_cmap_regs:
++	iounmap(par->cmap_regs);
++unmap_dc_regs:
++	iounmap(par->dc_regs);
++unmap_screen_base:
++	iounmap(info->screen_base);
++release_mem_region:
+ 	release_mem_region(addr, size);
++release_info:
+ 	framebuffer_release(info);
+ 	return ret;
+ }
 -- 
 2.42.0
 
