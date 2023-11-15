@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A93537ECF97
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E7527ECD70
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235355AbjKOTt3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:49:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36316 "EHLO
+        id S234523AbjKOTgg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235351AbjKOTt2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:28 -0500
+        with ESMTP id S234533AbjKOTgc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EDEFAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C8BC433C7;
-        Wed, 15 Nov 2023 19:49:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF06DD48
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54378C433C7;
+        Wed, 15 Nov 2023 19:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077765;
-        bh=oPR8XdtPd7msRPGNkhs0Ups+84oG9FlJn+j4+Y2QqPs=;
+        s=korg; t=1700076988;
+        bh=7OsUxh6DjLXytMpuZ88EXUE2Dbd/so9o2J6vKHFY8Z0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Srh4xvDrAUVf4m8ScTJYsMMRixxTVL8OLDqh0JIoK9pvgQLiQidxzHqeRcipjlbPu
-         M7oe9KhQJYBsJILCkaLRsxX1InNz5sYDRHRkP3fuq7DgQZmz01AQ076uOcKeZq+Ki5
-         N8AtCnFDceLO0EqYiEt0+1ToyoZCcBHtwiK0GOfo=
+        b=hVCsAkW9XmHQSN/AIvnSzCAwIp8y+JwNkSdE0BzkWMuOHFL+9t6W3oo9VwT5k/Ob+
+         XOsJGtT/jvAT6jZnA9FRXRoS/vhgsZrWE/NEtd7w8iyYq8XqRSH5Qhou2gHtb6zbtQ
+         6iblG0I1+RBr144ARf7a3XfmdajIFSoxXyeBpt1c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 506/603] pcmcia: ds: fix possible name leak in error path in pcmcia_device_add()
+Subject: [PATCH 6.5 467/550] cxl/hdm: Remove broken error path
 Date:   Wed, 15 Nov 2023 14:17:31 -0500
-Message-ID: <20231115191647.185796981@linuxfoundation.org>
+Message-ID: <20231115191633.243358540@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +52,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 99e1241049a92dd3e9a90a0f91e32ce390133278 ]
+[ Upstream commit 5d09c63f11f083707b60c8ea0bb420651c47740f ]
 
-Afer commit 1fa5ae857bb1 ("driver core: get rid of struct device's
-bus_id string array"), the name of device is allocated dynamically.
-Therefore, it needs to be freed, which is done by the driver core for
-us once all references to the device are gone. Therefore, move the
-dev_set_name() call immediately before the call device_register(), which
-either succeeds (then the freeing will be done upon subsequent remvoal),
-or puts the reference in the error call. Also, it is not unusual that the
-return value of dev_set_name is not checked.
+Dan reports that cxl_decoder_commit() potentially leaks a hold of
+cxl_dpa_rwsem. The potential error case is a "should not" happen
+scenario, turn it into a "can not" happen scenario by adding the error
+check to cxl_port_setup_targets() where other setting validation occurs.
 
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-[linux@dominikbrodowski.net: simplification, commit message modified]
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: http://lore.kernel.org/r/63295673-5d63-4919-b851-3b06d48734c0@moroto.mountain
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 176baefb2eb5 ("cxl/hdm: Commit decoder state to hardware")
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/ds.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/cxl/core/hdm.c    | 19 ++-----------------
+ drivers/cxl/core/region.c |  8 ++++++++
+ 2 files changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/pcmcia/ds.c b/drivers/pcmcia/ds.c
-index c90c68dee1e45..b4b8363d1de21 100644
---- a/drivers/pcmcia/ds.c
-+++ b/drivers/pcmcia/ds.c
-@@ -513,9 +513,6 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
- 	/* by default don't allow DMA */
- 	p_dev->dma_mask = 0;
- 	p_dev->dev.dma_mask = &p_dev->dma_mask;
--	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
--	if (!dev_name(&p_dev->dev))
--		goto err_free;
- 	p_dev->devname = kasprintf(GFP_KERNEL, "pcmcia%s", dev_name(&p_dev->dev));
- 	if (!p_dev->devname)
- 		goto err_free;
-@@ -573,6 +570,7 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index 3ad0d39d3d3fa..64e86b786db52 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -575,17 +575,11 @@ static void cxld_set_type(struct cxl_decoder *cxld, u32 *ctrl)
+ 			  CXL_HDM_DECODER0_CTRL_HOSTONLY);
+ }
  
- 	pcmcia_device_query(p_dev);
+-static int cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
++static void cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
+ {
+ 	struct cxl_dport **t = &cxlsd->target[0];
+ 	int ways = cxlsd->cxld.interleave_ways;
  
-+	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
- 	if (device_register(&p_dev->dev)) {
- 		mutex_lock(&s->ops_mutex);
- 		list_del(&p_dev->socket_device_list);
+-	if (dev_WARN_ONCE(&cxlsd->cxld.dev,
+-			  ways > 8 || ways > cxlsd->nr_targets,
+-			  "ways: %d overflows targets: %d\n", ways,
+-			  cxlsd->nr_targets))
+-		return -ENXIO;
+-
+ 	*tgt = FIELD_PREP(GENMASK(7, 0), t[0]->port_id);
+ 	if (ways > 1)
+ 		*tgt |= FIELD_PREP(GENMASK(15, 8), t[1]->port_id);
+@@ -601,8 +595,6 @@ static int cxlsd_set_targets(struct cxl_switch_decoder *cxlsd, u64 *tgt)
+ 		*tgt |= FIELD_PREP(GENMASK_ULL(55, 48), t[6]->port_id);
+ 	if (ways > 7)
+ 		*tgt |= FIELD_PREP(GENMASK_ULL(63, 56), t[7]->port_id);
+-
+-	return 0;
+ }
+ 
+ /*
+@@ -689,13 +681,7 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
+ 		void __iomem *tl_lo = hdm + CXL_HDM_DECODER0_TL_LOW(id);
+ 		u64 targets;
+ 
+-		rc = cxlsd_set_targets(cxlsd, &targets);
+-		if (rc) {
+-			dev_dbg(&port->dev, "%s: target configuration error\n",
+-				dev_name(&cxld->dev));
+-			goto err;
+-		}
+-
++		cxlsd_set_targets(cxlsd, &targets);
+ 		writel(upper_32_bits(targets), tl_hi);
+ 		writel(lower_32_bits(targets), tl_lo);
+ 	} else {
+@@ -713,7 +699,6 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
+ 
+ 	port->commit_end++;
+ 	rc = cxld_await_commit(hdm, cxld->id);
+-err:
+ 	if (rc) {
+ 		dev_dbg(&port->dev, "%s: error %d committing decoder\n",
+ 			dev_name(&cxld->dev), rc);
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 7392206eb8699..a25f5deb3de51 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1190,6 +1190,14 @@ static int cxl_port_setup_targets(struct cxl_port *port,
+ 		return rc;
+ 	}
+ 
++	if (iw > 8 || iw > cxlsd->nr_targets) {
++		dev_dbg(&cxlr->dev,
++			"%s:%s:%s: ways: %d overflows targets: %d\n",
++			dev_name(port->uport_dev), dev_name(&port->dev),
++			dev_name(&cxld->dev), iw, cxlsd->nr_targets);
++		return -ENXIO;
++	}
++
+ 	if (test_bit(CXL_REGION_F_AUTO, &cxlr->flags)) {
+ 		if (cxld->interleave_ways != iw ||
+ 		    cxld->interleave_granularity != ig ||
 -- 
 2.42.0
 
