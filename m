@@ -2,40 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B22C7ED59E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA92A7ED2E9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344781AbjKOVHs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37426 "EHLO
+        id S233569AbjKOUpG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235630AbjKOVH1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:27 -0500
+        with ESMTP id S233580AbjKOUo7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C9221727
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C0EC4E666;
-        Wed, 15 Nov 2023 20:50:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54E0C1AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF3DC433C8;
+        Wed, 15 Nov 2023 20:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081443;
-        bh=ks4UCa2yUwaX94ZS8PO4Ecd1kbaeVLncGZOFPfp5G48=;
+        s=korg; t=1700081095;
+        bh=SndGfGahLPO5WuLXyoWY4uu3z9nYk5vadnWI1okKXPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HuVMw+Ink2dB6PDJfLqWMvElsr5I4h7SAIdV73gTHLFnLMPiDYm6Er8hgkcyHnSuG
-         s+pifZdlfbD/JzGkXR8WZSdHVgsroxFG6SoTRvXDEnQZ9kqJvI7xARKjUV4rHM2J3b
-         1zkGrILOUBxuXp4U4yOsJp3+07a1Ugly3/XdCXGM=
+        b=VyHUzVyrsLaqc94v/IB8zkM+JmjBCv0Nn0IBgTTZko3n6k9mFahv2ETWcnIYgtYPu
+         Wh4EpN0oFwiUZvxbNySTI6gMc4z5LND8PH+mHkAREYcRGSnHnUPNK3g89IWxngZb/8
+         adE4qZrzSrTeLrzwZatQ9zjo43DwDeybkjDlHG1A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, WangJinchao <wangjinchao@xfusion.com>,
-        Daniel Jordan <daniel.m.jordan@oracle.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 156/244] padata: Fix refcnt handling in padata_free_shell()
+Subject: [PATCH 4.19 36/88] sched/rt: Provide migrate_disable/enable() inlines
 Date:   Wed, 15 Nov 2023 15:35:48 -0500
-Message-ID: <20231115203557.703274886@linuxfoundation.org>
+Message-ID: <20231115191428.349184183@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,112 +57,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangJinchao <wangjinchao@xfusion.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 7ddc21e317b360c3444de3023bcc83b85fabae2f ]
+[ Upstream commit 66630058e56b26b3a9cf2625e250a8c592dd0207 ]
 
-In a high-load arm64 environment, the pcrypt_aead01 test in LTP can lead
-to system UAF (Use-After-Free) issues. Due to the lengthy analysis of
-the pcrypt_aead01 function call, I'll describe the problem scenario
-using a simplified model:
+Code which solely needs to prevent migration of a task uses
+preempt_disable()/enable() pairs. This is the only reliable way to do so
+as setting the task affinity to a single CPU can be undone by a
+setaffinity operation from a different task/process.
 
-Suppose there's a user of padata named `user_function` that adheres to
-the padata requirement of calling `padata_free_shell` after `serial()`
-has been invoked, as demonstrated in the following code:
+RT provides a seperate migrate_disable/enable() mechanism which does not
+disable preemption to achieve the semantic requirements of a (almost) fully
+preemptible kernel.
 
-```c
-struct request {
-    struct padata_priv padata;
-    struct completion *done;
-};
+As it is unclear from looking at a given code path whether the intention is
+to disable preemption or migration, introduce migrate_disable/enable()
+inline functions which can be used to annotate code which merely needs to
+disable migration. Map them to preempt_disable/enable() for now. The RT
+substitution will be provided later.
 
-void parallel(struct padata_priv *padata) {
-    do_something();
-}
+Code which is annotated that way documents that it has no requirement to
+protect against reentrancy of a preempting task. Either this is not
+required at all or the call sites are already serialized by other means.
 
-void serial(struct padata_priv *padata) {
-    struct request *request = container_of(padata,
-    				struct request,
-				padata);
-    complete(request->done);
-}
-
-void user_function() {
-    DECLARE_COMPLETION(done)
-    padata->parallel = parallel;
-    padata->serial = serial;
-    padata_do_parallel();
-    wait_for_completion(&done);
-    padata_free_shell();
-}
-```
-
-In the corresponding padata.c file, there's the following code:
-
-```c
-static void padata_serial_worker(struct work_struct *serial_work) {
-    ...
-    cnt = 0;
-
-    while (!list_empty(&local_list)) {
-        ...
-        padata->serial(padata);
-        cnt++;
-    }
-
-    local_bh_enable();
-
-    if (refcount_sub_and_test(cnt, &pd->refcnt))
-        padata_free_pd(pd);
-}
-```
-
-Because of the high system load and the accumulation of unexecuted
-softirq at this moment, `local_bh_enable()` in padata takes longer
-to execute than usual. Subsequently, when accessing `pd->refcnt`,
-`pd` has already been released by `padata_free_shell()`, resulting
-in a UAF issue with `pd->refcnt`.
-
-The fix is straightforward: add `refcount_dec_and_test` before calling
-`padata_free_pd` in `padata_free_shell`.
-
-Fixes: 07928d9bfc81 ("padata: Remove broken queue flushing")
-
-Signed-off-by: WangJinchao <wangjinchao@xfusion.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Acked-by: Daniel Jordan <daniel.m.jordan@oracle.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/878slclv1u.fsf@nanos.tec.linutronix.de
+Stable-dep-of: 36c75ce3bd29 ("nd_btt: Make BTT lanes preemptible")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/padata.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/linux/preempt.h | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/kernel/padata.c b/kernel/padata.c
-index c17f772cc315a..c6025a48fb49e 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -1094,12 +1094,16 @@ EXPORT_SYMBOL(padata_alloc_shell);
-  */
- void padata_free_shell(struct padata_shell *ps)
- {
-+	struct parallel_data *pd;
+diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+index c01813c3fbe93..abeec72b4d359 100644
+--- a/include/linux/preempt.h
++++ b/include/linux/preempt.h
+@@ -325,4 +325,34 @@ static inline void preempt_notifier_init(struct preempt_notifier *notifier,
+ 
+ #endif
+ 
++/**
++ * migrate_disable - Prevent migration of the current task
++ *
++ * Maps to preempt_disable() which also disables preemption. Use
++ * migrate_disable() to annotate that the intent is to prevent migration,
++ * but not necessarily preemption.
++ *
++ * Can be invoked nested like preempt_disable() and needs the corresponding
++ * number of migrate_enable() invocations.
++ */
++static __always_inline void migrate_disable(void)
++{
++	preempt_disable();
++}
 +
- 	if (!ps)
- 		return;
- 
- 	mutex_lock(&ps->pinst->lock);
- 	list_del(&ps->list);
--	padata_free_pd(rcu_dereference_protected(ps->pd, 1));
-+	pd = rcu_dereference_protected(ps->pd, 1);
-+	if (refcount_dec_and_test(&pd->refcnt))
-+		padata_free_pd(pd);
- 	mutex_unlock(&ps->pinst->lock);
- 
- 	kfree(ps);
++/**
++ * migrate_enable - Allow migration of the current task
++ *
++ * Counterpart to migrate_disable().
++ *
++ * As migrate_disable() can be invoked nested, only the outermost invocation
++ * reenables migration.
++ *
++ * Currently mapped to preempt_enable().
++ */
++static __always_inline void migrate_enable(void)
++{
++	preempt_enable();
++}
++
+ #endif /* __LINUX_PREEMPT_H */
 -- 
 2.42.0
 
