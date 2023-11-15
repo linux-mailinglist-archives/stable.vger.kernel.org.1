@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E95A97ECFAD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC0567ECD77
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235382AbjKOTuE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53196 "EHLO
+        id S234487AbjKOTgo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235376AbjKOTuD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:03 -0500
+        with ESMTP id S234527AbjKOTgm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51BE31A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A81C433C7;
-        Wed, 15 Nov 2023 19:49:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D350A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D710C433C9;
+        Wed, 15 Nov 2023 19:36:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077799;
-        bh=a8AEcAvbEs7v68bcI3ia5douVYlNNWJnCPMMLHumwPo=;
+        s=korg; t=1700076999;
+        bh=AtmYpjL8XIuA/v80xdbqZ/SaSq0pBSLK90SiwFDQg+A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZljXxfvSwKSR7qLdY14v0WGFk1pDKjr7bCtZ686nE0fJmE5YcfPWqM+vKPAZ0X53+
-         OtPMYBdgpYQl/puq0fgzVobedBhiUylKDLet6VRWrVlwEWs4bQWz5Ys1i2OOFtfbcq
-         vumE3L4tCBc+f6Mc0hwCpiBNY42UmqQbeWvTaz7Q=
+        b=sl8sE8LpmUmusLTv3CM106xF9chOKvDnuRCn8EJ1wxVlAdBQMBFq+159jMkOYHLhm
+         Cixc+1ObWq/sbiUk3N3ELikcMkVM0Kj2uPCJ+WEZrhFxnRNGxZ287ch2lWSzCzvaX0
+         LSUCVN3DAULzcGdZnqMwQj/zcS5jhkYT+ATEQBzI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Irui Wang <irui.wang@mediatek.com>,
+        patches@lists.linux.dev, Moudy Ho <moudy.ho@mediatek.com>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 527/603] media: mediatek: vcodec: Handle invalid encoder vsi
+Subject: [PATCH 6.5 488/550] media: platform: mtk-mdp3: fix uninitialized variable in mdp_path_config()
 Date:   Wed, 15 Nov 2023 14:17:52 -0500
-Message-ID: <20231115191648.410183857@linuxfoundation.org>
+Message-ID: <20231115191634.700937499@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +52,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Irui Wang <irui.wang@mediatek.com>
+From: Moudy Ho <moudy.ho@mediatek.com>
 
-[ Upstream commit 19e2e01f30b5d2b448b5db097130486ea95af36f ]
+[ Upstream commit 2a76e7679b594ea3e1b3b7fb6c3d67158114020d ]
 
-Handle invalid encoder vsi in vpu_enc_init to ensure the encoder
-vsi is valid for future use.
+Fix the build warnings that were detected by the linux-media
+build scripts tool:
 
-Fixes: 1972e32431ed ("media: mediatek: vcodec: Fix possible invalid memory access for encoder")
+drivers/media/platform/mediatek/mdp3/mtk-mdp3-cmdq.c:
+	In function 'mdp_path_config.isra':
+drivers/media/platform/mediatek/mdp3/mtk-mdp3-cmdq.c:
+	warning: 'ctx' may be used uninitialized [-Wmaybe-uninitialized]
+      |                    out = CFG_COMP(MT8195, ctx->param, outputs[0]);
+      |                                           ~~~^~~~~~~
+drivers/media/platform/mediatek/mdp3/mtk-img-ipi.h: note:
+	in definition of macro 'CFG_COMP'
+      |         (IS_ERR_OR_NULL(comp) ? 0 : _CFG_COMP(plat, comp, mem))
+      |                         ^~~~
+drivers/media/platform/mediatek/mdp3/mtk-mdp3-cmdq.c:
+	note: 'ctx' was declared here
+      |         struct mdp_comp_ctx *ctx;
+      |
 
-Signed-off-by: Irui Wang <irui.wang@mediatek.com>
+Fixes: 61890ccaefaf ("media: platform: mtk-mdp3: add MediaTek MDP3 driver")
+Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/platform/mediatek/mdp3/mtk-mdp3-cmdq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-index ae6290d28f8e9..84ad1cc6ad171 100644
---- a/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/encoder/venc_vpu_if.c
-@@ -154,6 +154,11 @@ int vpu_enc_init(struct venc_vpu_inst *vpu)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-cmdq.c b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-cmdq.c
+index 3177592490bee..6adac857a4779 100644
+--- a/drivers/media/platform/mediatek/mdp3/mtk-mdp3-cmdq.c
++++ b/drivers/media/platform/mediatek/mdp3/mtk-mdp3-cmdq.c
+@@ -261,11 +261,11 @@ static int mdp_path_config(struct mdp_dev *mdp, struct mdp_cmdq_cmd *cmd,
+ 		const struct v4l2_rect *compose;
+ 		u32 out = 0;
  
-+	if (IS_ERR_OR_NULL(vpu->vsi)) {
-+		mtk_venc_err(vpu->ctx, "invalid venc vsi");
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
++		ctx = &path->comps[index];
+ 		if (CFG_CHECK(MT8183, p_id))
+ 			out = CFG_COMP(MT8183, ctx->param, outputs[0]);
  
+ 		compose = path->composes[out];
+-		ctx = &path->comps[index];
+ 		ret = call_op(ctx, config_frame, cmd, compose);
+ 		if (ret)
+ 			return ret;
 -- 
 2.42.0
 
