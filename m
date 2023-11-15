@@ -2,40 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 059097ECCBD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D49587ECCF5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234140AbjKOTc1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:32:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58150 "EHLO
+        id S234270AbjKOTdf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:33:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234146AbjKOTcV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:21 -0500
+        with ESMTP id S234226AbjKOTda (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7641DD79
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:14 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7F5C433C7;
-        Wed, 15 Nov 2023 19:32:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED02B9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72749C433C8;
+        Wed, 15 Nov 2023 19:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076734;
-        bh=JfYTFWHtS9kWmH67GLdZYTYyh72uPqCw4YqzfyuX1JY=;
+        s=korg; t=1700076807;
+        bh=qEGEOlliKdR+zWxudznqumfRxM5bVRW/i+XFhM/I2B8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M76TdqSoQgev/NiX9nhSQuYw3p5NKHt3Y3x16RZncjjMKqokf/DllA72BHHZqKR1b
-         DOGPuZoNlv8QwxPHAlveh64YeIthHLeC0nGdWLkxclfEdGQ9dNrq9VTam8DSrLE6zg
-         YEs8mNERhU6d83vw1jlUoNm7C2pw02PFxtE9ePnA=
+        b=cmk7TxnVCd9acSmGck0BtfrE0pScOqTDJeXaX8GFLVY32//aQFNCSlJ6yCIO3YPnI
+         LO3/wVrH4m0XGiENMu9FJ1doyniAJMP1RLBM57qvz3ZvfIHs6i/vRnLZAhfPxSaCH8
+         lJ8EvvxLnwpZH6k+Ui93C1ly9u2tlR3wbhM96P00=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Qais Yousef (Google)" <qyousef@layalina.io>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev, Aaron Plattner <aplattner@nvidia.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 008/603] sched/uclamp: Ignore (util == 0) optimization in feec() when p_util_max = 0
-Date:   Wed, 15 Nov 2023 14:09:13 -0500
-Message-ID: <20231115191613.711485441@linuxfoundation.org>
+Subject: [PATCH 6.6 009/603] objtool: Propagate early errors
+Date:   Wed, 15 Nov 2023 14:09:14 -0500
+Message-ID: <20231115191613.783469044@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -58,70 +54,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Qais Yousef <qyousef@layalina.io>
+From: Aaron Plattner <aplattner@nvidia.com>
 
-[ Upstream commit 23c9519def98ee0fa97ea5871535e9b136f522fc ]
+[ Upstream commit e959c279d391c10b35ce300fb4b0fe3b98e86bd2 ]
 
-find_energy_efficient_cpu() bails out early if effective util of the
-task is 0 as the delta at this point will be zero and there's nothing
-for EAS to do. When uclamp is being used, this could lead to wrong
-decisions when uclamp_max is set to 0. In this case the task is capped
-to performance point 0, but it is actually running and consuming energy
-and we can benefit from EAS energy calculations.
+If objtool runs into a problem that causes it to exit early, the overall
+tool still returns a status code of 0, which causes the build to
+continue as if nothing went wrong.
 
-Rework the condition so that it bails out when both util and uclamp_min
-are 0.
+Note this only affects early errors, as later errors are still ignored
+by check().
 
-We can do that without needing to use uclamp_task_util(); remove it.
-
-Fixes: d81304bc6193 ("sched/uclamp: Cater for uclamp in find_energy_efficient_cpu()'s early exit condition")
-Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230916232955.2099394-3-qyousef@layalina.io
+Fixes: b51277eb9775 ("objtool: Ditch subcommands")
+Signed-off-by: Aaron Plattner <aplattner@nvidia.com>
+Link: https://lore.kernel.org/r/cb6a28832d24b2ebfafd26da9abb95f874c83045.1696355111.git.aplattner@nvidia.com
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ tools/objtool/objtool.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index a60b5d0edd039..4dee83c82ac33 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -4626,22 +4626,6 @@ static inline unsigned long task_util_est(struct task_struct *p)
- 	return max(task_util(p), _task_util_est(p));
- }
+diff --git a/tools/objtool/objtool.c b/tools/objtool/objtool.c
+index c54f7235c5d94..f40febdd6e36a 100644
+--- a/tools/objtool/objtool.c
++++ b/tools/objtool/objtool.c
+@@ -146,7 +146,5 @@ int main(int argc, const char **argv)
+ 	exec_cmd_init("objtool", UNUSED, UNUSED, UNUSED);
+ 	pager_init(UNUSED);
  
--#ifdef CONFIG_UCLAMP_TASK
--static inline unsigned long uclamp_task_util(struct task_struct *p,
--					     unsigned long uclamp_min,
--					     unsigned long uclamp_max)
--{
--	return clamp(task_util_est(p), uclamp_min, uclamp_max);
--}
--#else
--static inline unsigned long uclamp_task_util(struct task_struct *p,
--					     unsigned long uclamp_min,
--					     unsigned long uclamp_max)
--{
--	return task_util_est(p);
--}
--#endif
+-	objtool_run(argc, argv);
 -
- static inline void util_est_enqueue(struct cfs_rq *cfs_rq,
- 				    struct task_struct *p)
- {
-@@ -7756,7 +7740,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 	target = prev_cpu;
- 
- 	sync_entity_load_avg(&p->se);
--	if (!uclamp_task_util(p, p_util_min, p_util_max))
-+	if (!task_util_est(p) && p_util_min == 0)
- 		goto unlock;
- 
- 	eenv_task_busy_time(&eenv, p, prev_cpu);
+-	return 0;
++	return objtool_run(argc, argv);
+ }
 -- 
 2.42.0
 
