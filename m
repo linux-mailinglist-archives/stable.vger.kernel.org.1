@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDC567ECFB9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A9197ECD5E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235392AbjKOTuW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48620 "EHLO
+        id S234493AbjKOTgM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235389AbjKOTuW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:22 -0500
+        with ESMTP id S234487AbjKOTgH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4925CAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10AFC433C8;
-        Wed, 15 Nov 2023 19:50:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF4FAD42
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C0BC433C8;
+        Wed, 15 Nov 2023 19:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077819;
-        bh=JvUmh1bc8nUrH1AKsZ+Rxce85jgesCu02nklXhBR/Ac=;
+        s=korg; t=1700076963;
+        bh=e0seoj7LTsnn1L6AY6pD90UrieCXGqQDd8Ra2LUyiUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fFDQxlhIG5wOjExjMxYFjhIGAAUnxxVKBWD3EQ6TgqElYmLiCBkMMEPMQP9ynUHSS
-         wnZrJcRRJzn6slnmUoVGcwtZF7sKex2nhsvrd+1byLXbJa0Z0wK65nDZKNHwyKgJdt
-         j2okFhFpfyxVy5i2QmdloNLgyj2WFdKG/fKBlo34=
+        b=hu0RL/TPD99OtUAHE8Ax1O+6kYB/QeO248RZ+Xfnr4Z6q/INYp76iZ/Q1oJGI5xKI
+         ykW840A0E53s6IAyHB+L1OFIBS5yPCy9k1O2P+vlRFhLy8+gXu1SCQPEupXLn0yLvR
+         VSsZtfASe9Ug/fun7LF/8SgbuYRY/P45VPXwC32U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fei Shao <fshao@chromium.org>,
-        Chen-Yu Tsai <wenst@chromium.org>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 516/603] media: mtk-jpegenc: Fix bug in JPEG encode quality selection
+Subject: [PATCH 6.5 477/550] media: bttv: fix use after free error due to btv->timeout timer
 Date:   Wed, 15 Nov 2023 14:17:41 -0500
-Message-ID: <20231115191647.772944597@linuxfoundation.org>
+Message-ID: <20231115191633.933186961@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fei Shao <fshao@chromium.org>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 0aeccc63f3bc4cfd49dc4893da1409402ee6b295 ]
+[ Upstream commit bd5b50b329e850d467e7bcc07b2b6bde3752fbda ]
 
-The driver uses the upper-bound approach to decide the target JPEG
-encode quality, but there's a logic bug that if the desired quality is
-higher than what the driver can support, the driver falls back to using
-the worst quality.
+There may be some a race condition between timer function
+bttv_irq_timeout and bttv_remove. The timer is setup in
+probe and there is no timer_delete operation in remove
+function. When it hit kfree btv, the function might still be
+invoked, which will cause use after free bug.
 
-Fix the bug by assuming using the best quality in the beginning, and
-with trivial refactor to avoid long lines.
+This bug is found by static analysis, it may be false positive.
 
-Fixes: 45f13a57d813 ("media: platform: Add jpeg enc feature")
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Fix it by adding del_timer_sync invoking to the remove function.
+
+cpu0                cpu1
+                  bttv_probe
+                    ->timer_setup
+                      ->bttv_set_dma
+                        ->mod_timer;
+bttv_remove
+  ->kfree(btv);
+                  ->bttv_irq_timeout
+                    ->USE btv
+
+Fixes: 162e6376ac58 ("media: pci: Convert timers to use timer_setup()")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/pci/bt8xx/bttv-driver.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-index 2bbc48c7402ca..f8fa3b841ccfb 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_enc_hw.c
-@@ -127,6 +127,7 @@ void mtk_jpeg_set_enc_params(struct mtk_jpeg_ctx *ctx,  void __iomem *base)
- 	u32 img_stride;
- 	u32 mem_stride;
- 	u32 i, enc_quality;
-+	u32 nr_enc_quality = ARRAY_SIZE(mtk_jpeg_enc_quality);
+diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
+index 734f02b91aa31..a50cae25b5463 100644
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -3830,6 +3830,7 @@ static void bttv_remove(struct pci_dev *pci_dev)
  
- 	value = width << 16 | height;
- 	writel(value, base + JPEG_ENC_IMG_SIZE);
-@@ -157,8 +158,8 @@ void mtk_jpeg_set_enc_params(struct mtk_jpeg_ctx *ctx,  void __iomem *base)
- 	writel(img_stride, base + JPEG_ENC_IMG_STRIDE);
- 	writel(mem_stride, base + JPEG_ENC_STRIDE);
- 
--	enc_quality = mtk_jpeg_enc_quality[0].hardware_value;
--	for (i = 0; i < ARRAY_SIZE(mtk_jpeg_enc_quality); i++) {
-+	enc_quality = mtk_jpeg_enc_quality[nr_enc_quality - 1].hardware_value;
-+	for (i = 0; i < nr_enc_quality; i++) {
- 		if (ctx->enc_quality <= mtk_jpeg_enc_quality[i].quality_param) {
- 			enc_quality = mtk_jpeg_enc_quality[i].hardware_value;
- 			break;
+ 	/* free resources */
+ 	free_irq(btv->c.pci->irq,btv);
++	del_timer_sync(&btv->timeout);
+ 	iounmap(btv->bt848_mmio);
+ 	release_mem_region(pci_resource_start(btv->c.pci,0),
+ 			   pci_resource_len(btv->c.pci,0));
 -- 
 2.42.0
 
