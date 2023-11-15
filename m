@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 491867ECB1C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E67127ECD2A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229993AbjKOTUL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:20:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57890 "EHLO
+        id S234357AbjKOTer (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229818AbjKOTUL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:11 -0500
+        with ESMTP id S234370AbjKOTeq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F7A81AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A9EC433CA;
-        Wed, 15 Nov 2023 19:20:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB13C1AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:42 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F90C433C9;
+        Wed, 15 Nov 2023 19:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076007;
-        bh=Li7PmcsSzntZTC7y1prR1HxEhXzvAT0j156ourM+XbE=;
+        s=korg; t=1700076882;
+        bh=Di1t5ziuomQN17ancCnvB30ekUL9FFR+YHcGjrCbAKI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ln7AuecUzrVhvI6CZS0du6AHEzaDKs0YbbIBXq0lorydIC4CTBwQoOeEXqlUXRnvD
-         8GnUr/50jvmKR/rugWn/1DpezentCWTzlAVF+NRP/vFYeW0KPzkWA9B4uKkVKk6I4D
-         g0oda05NFoyviKHbe0gPUw4qmRn420jA5u+urg0Q=
+        b=yu8MHuYnsPj+BU6nTVezdDVpFDdKaZhZI7paaR4sfV0ksz6QjyOq6pA8wVO+9vdm0
+         WJ7dYvmTPE9FWSn7URuLDxoJiVZpntx1DsXfd+YNDgFpHZJZcs+fqOFiZtmENNCHWq
+         HJPYpMaotpYebz4Vp6cuAhxv8pvxDJan6X10I2Yw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 017/550] x86/srso: Fix unret validation dependencies
+Subject: [PATCH 6.6 056/603] udp: move udp->gro_enabled to udp->udp_flags
 Date:   Wed, 15 Nov 2023 14:10:01 -0500
-Message-ID: <20231115191601.914453821@linuxfoundation.org>
+Message-ID: <20231115191616.997904567@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,82 +52,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit eeb9f34df065f42f0c9195b322ba6df420c9fc92 ]
+[ Upstream commit e1dc0615c6b08ef36414f08c011965b8fb56198b ]
 
-CONFIG_CPU_SRSO isn't dependent on CONFIG_CPU_UNRET_ENTRY (AMD
-Retbleed), so the two features are independently configurable.  Fix
-several issues for the (presumably rare) case where CONFIG_CPU_SRSO is
-enabled but CONFIG_CPU_UNRET_ENTRY isn't.
+syzbot reported that udp->gro_enabled can be read locklessly.
+Use one atomic bit from udp->udp_flags.
 
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/299fb7740174d0f2335e91c58af0e9c242b4bac1.1693889988.git.jpoimboe@kernel.org
+Fixes: e20cf8d3f1f7 ("udp: implement GRO for plain UDP sockets.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h | 4 ++--
- include/linux/objtool.h              | 3 ++-
- scripts/Makefile.vmlinux_o           | 3 ++-
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ include/linux/udp.h    | 2 +-
+ net/ipv4/udp.c         | 6 +++---
+ net/ipv4/udp_offload.c | 4 ++--
+ net/ipv6/udp.c         | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index c55cc243592e9..197ff4f4d1ceb 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -271,7 +271,7 @@
- .Lskip_rsb_\@:
- .endm
+diff --git a/include/linux/udp.h b/include/linux/udp.h
+index 8d4c3835b1b21..b344bd2e41fc9 100644
+--- a/include/linux/udp.h
++++ b/include/linux/udp.h
+@@ -36,6 +36,7 @@ enum {
+ 	UDP_FLAGS_CORK,		/* Cork is required */
+ 	UDP_FLAGS_NO_CHECK6_TX, /* Send zero UDP6 checksums on TX? */
+ 	UDP_FLAGS_NO_CHECK6_RX, /* Allow zero UDP6 checksums on RX? */
++	UDP_FLAGS_GRO_ENABLED,	/* Request GRO aggregation */
+ };
  
--#ifdef CONFIG_CPU_UNRET_ENTRY
-+#if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO)
- #define CALL_UNTRAIN_RET	"call entry_untrain_ret"
- #else
- #define CALL_UNTRAIN_RET	""
-@@ -312,7 +312,7 @@
+ struct udp_sock {
+@@ -54,7 +55,6 @@ struct udp_sock {
+ 					   * different encapsulation layer set
+ 					   * this
+ 					   */
+-			 gro_enabled:1,	/* Request GRO aggregation */
+ 			 accept_udp_l4:1,
+ 			 accept_udp_fraglist:1;
+ /* indicator bits used by pcflag: */
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index cb32826a1db20..1debc10a0f029 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1868,7 +1868,7 @@ int udp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len, int flags,
+ 						      (struct sockaddr *)sin);
+ 	}
  
- .macro UNTRAIN_RET_FROM_CALL
- #if defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_IBPB_ENTRY) || \
--	defined(CONFIG_CALL_DEPTH_TRACKING)
-+	defined(CONFIG_CALL_DEPTH_TRACKING) || defined(CONFIG_CPU_SRSO)
- 	VALIDATE_UNRET_END
- 	ALTERNATIVE_3 "",						\
- 		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
-diff --git a/include/linux/objtool.h b/include/linux/objtool.h
-index 03f82c2c2ebf6..b5440e7da55bf 100644
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -130,7 +130,8 @@
-  * it will be ignored.
-  */
- .macro VALIDATE_UNRET_BEGIN
--#if defined(CONFIG_NOINSTR_VALIDATION) && defined(CONFIG_CPU_UNRET_ENTRY)
-+#if defined(CONFIG_NOINSTR_VALIDATION) && \
-+	(defined(CONFIG_CPU_UNRET_ENTRY) || defined(CONFIG_CPU_SRSO))
- .Lhere_\@:
- 	.pushsection .discard.validate_unret
- 	.long	.Lhere_\@ - .
-diff --git a/scripts/Makefile.vmlinux_o b/scripts/Makefile.vmlinux_o
-index 0edfdb40364b8..25b3b587d37c0 100644
---- a/scripts/Makefile.vmlinux_o
-+++ b/scripts/Makefile.vmlinux_o
-@@ -37,7 +37,8 @@ objtool-enabled := $(or $(delay-objtool),$(CONFIG_NOINSTR_VALIDATION))
+-	if (udp_sk(sk)->gro_enabled)
++	if (udp_test_bit(GRO_ENABLED, sk))
+ 		udp_cmsg_recv(msg, sk, skb);
  
- vmlinux-objtool-args-$(delay-objtool)			+= $(objtool-args-y)
- vmlinux-objtool-args-$(CONFIG_GCOV_KERNEL)		+= --no-unreachable
--vmlinux-objtool-args-$(CONFIG_NOINSTR_VALIDATION)	+= --noinstr $(if $(CONFIG_CPU_UNRET_ENTRY), --unret)
-+vmlinux-objtool-args-$(CONFIG_NOINSTR_VALIDATION)	+= --noinstr \
-+							   $(if $(or $(CONFIG_CPU_UNRET_ENTRY),$(CONFIG_CPU_SRSO)), --unret)
+ 	if (inet_cmsg_flags(inet))
+@@ -2713,7 +2713,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
+ 		/* when enabling GRO, accept the related GSO packet type */
+ 		if (valbool)
+ 			udp_tunnel_encap_enable(sk->sk_socket);
+-		up->gro_enabled = valbool;
++		udp_assign_bit(GRO_ENABLED, sk, valbool);
+ 		up->accept_udp_l4 = valbool;
+ 		release_sock(sk);
+ 		break;
+@@ -2803,7 +2803,7 @@ int udp_lib_getsockopt(struct sock *sk, int level, int optname,
+ 		break;
  
- objtool-args = $(vmlinux-objtool-args-y) --link
+ 	case UDP_GRO:
+-		val = up->gro_enabled;
++		val = udp_test_bit(GRO_ENABLED, sk);
+ 		break;
  
+ 	/* The following two cannot be changed on UDP sockets, the return is
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 0f46b3c2e4ac5..6c95d28d0c4a7 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -557,10 +557,10 @@ struct sk_buff *udp_gro_receive(struct list_head *head, struct sk_buff *skb,
+ 	NAPI_GRO_CB(skb)->is_flist = 0;
+ 	if (!sk || !udp_sk(sk)->gro_receive) {
+ 		if (skb->dev->features & NETIF_F_GRO_FRAGLIST)
+-			NAPI_GRO_CB(skb)->is_flist = sk ? !udp_sk(sk)->gro_enabled : 1;
++			NAPI_GRO_CB(skb)->is_flist = sk ? !udp_test_bit(GRO_ENABLED, sk) : 1;
+ 
+ 		if ((!sk && (skb->dev->features & NETIF_F_GRO_UDP_FWD)) ||
+-		    (sk && udp_sk(sk)->gro_enabled) || NAPI_GRO_CB(skb)->is_flist)
++		    (sk && udp_test_bit(GRO_ENABLED, sk)) || NAPI_GRO_CB(skb)->is_flist)
+ 			return call_gro_receive(udp_gro_receive_segment, head, skb);
+ 
+ 		/* no GRO, be sure flush the current packet */
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 6e1ea3029260e..2c3281879b6df 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -413,7 +413,7 @@ int udpv6_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
+ 						      (struct sockaddr *)sin6);
+ 	}
+ 
+-	if (udp_sk(sk)->gro_enabled)
++	if (udp_test_bit(GRO_ENABLED, sk))
+ 		udp_cmsg_recv(msg, sk, skb);
+ 
+ 	if (np->rxopt.all)
 -- 
 2.42.0
 
