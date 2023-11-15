@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B4B17ECFDA
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F7977ECDAB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235432AbjKOTvS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57780 "EHLO
+        id S234611AbjKOThn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235433AbjKOTvQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:16 -0500
+        with ESMTP id S234605AbjKOThm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32FD9B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90573C433CB;
-        Wed, 15 Nov 2023 19:51:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5175F9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C11CC433C8;
+        Wed, 15 Nov 2023 19:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077872;
-        bh=pAZhK8KMHeHmlCizMlxOMolYrR6L8Vn5PVHgfI83W+E=;
+        s=korg; t=1700077059;
+        bh=Sv7UZtcd2O65gKOOGeUbkfCze14UAAZnwG4v7hh9koc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yqY5RJymo9g02hrEHxWZTEwaDCjFa6bV0Q0dAE91FpxWIl3IGLVAzfZwyHbBut506
-         y6SeOEzibtSUMw/EOXcdpn7zVUrMMI8hnNsx9W0OpEVmo+3YgCPKyPKJAZ98qIsGLx
-         wevnfw2fUt4QMtpWCWPr3/B13c0QpWPMaLxmjf0A=
+        b=zJ585b1NLuzCrIIFQvJydVPgmOOKKxVkfuw/fOwTyyYMp3nvKMypI37tZhEk2wXSj
+         nzsIzujEicaIjFzC4jMs2CCDmYfkjlbCI2IYfRXuPfTCTjuU9Xakx7vgmkY10ggeR3
+         itGRS5nYWGWaOddpJrgDYHoMQ3KsdLUnhm1x6ySs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Paul Moore <paul@paul-moore.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 547/603] octeontx2-pf: Fix error codes
+Subject: [PATCH 6.5 508/550] dccp/tcp: Call security_inet_conn_request() after setting IPv6 addresses.
 Date:   Wed, 15 Nov 2023 14:18:12 -0500
-Message-ID: <20231115191649.603354859@linuxfoundation.org>
+Message-ID: <20231115191636.136447038@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +51,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 96b9a68d1a6e4f889d453874c9e359aa720b520f ]
+[ Upstream commit 23be1e0e2a83a8543214d2599a31d9a2185a796b ]
 
-Some of error codes were wrong. Fix the same.
+Initially, commit 4237c75c0a35 ("[MLSXFRM]: Auto-labeling of child
+sockets") introduced security_inet_conn_request() in some functions
+where reqsk is allocated.  The hook is added just after the allocation,
+so reqsk's IPv6 remote address was not initialised then.
 
-Fixes: 51afe9026d0c ("octeontx2-pf: NIX TX overwrites SQ_CTX_HW_S[SQ_INT]")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20231027021953.1819959-1-rkannoth@marvell.com
+However, SELinux/Smack started to read it in netlbl_req_setattr()
+after commit e1adea927080 ("calipso: Allow request sockets to be
+relabelled by the lsm.").
+
+Commit 284904aa7946 ("lsm: Relocate the IPv4 security_inet_conn_request()
+hooks") fixed that kind of issue only in TCPv4 because IPv6 labeling was
+not supported at that time.  Finally, the same issue was introduced again
+in IPv6.
+
+Let's apply the same fix on DCCPv6 and TCPv6.
+
+Fixes: e1adea927080 ("calipso: Allow request sockets to be relabelled by the lsm.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/nic/otx2_struct.h       | 34 +++++++++----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ net/dccp/ipv6.c       | 6 +++---
+ net/ipv6/syncookies.c | 7 ++++---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
-index fa37b9f312cae..4e5899d8fa2e6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
-@@ -318,23 +318,23 @@ enum nix_snd_status_e {
- 	NIX_SND_STATUS_EXT_ERR = 0x6,
- 	NIX_SND_STATUS_JUMP_FAULT = 0x7,
- 	NIX_SND_STATUS_JUMP_POISON = 0x8,
--	NIX_SND_STATUS_CRC_ERR = 0x9,
--	NIX_SND_STATUS_IMM_ERR = 0x10,
--	NIX_SND_STATUS_SG_ERR = 0x11,
--	NIX_SND_STATUS_MEM_ERR = 0x12,
--	NIX_SND_STATUS_INVALID_SUBDC = 0x13,
--	NIX_SND_STATUS_SUBDC_ORDER_ERR = 0x14,
--	NIX_SND_STATUS_DATA_FAULT = 0x15,
--	NIX_SND_STATUS_DATA_POISON = 0x16,
--	NIX_SND_STATUS_NPC_DROP_ACTION = 0x17,
--	NIX_SND_STATUS_LOCK_VIOL = 0x18,
--	NIX_SND_STATUS_NPC_UCAST_CHAN_ERR = 0x19,
--	NIX_SND_STATUS_NPC_MCAST_CHAN_ERR = 0x20,
--	NIX_SND_STATUS_NPC_MCAST_ABORT = 0x21,
--	NIX_SND_STATUS_NPC_VTAG_PTR_ERR = 0x22,
--	NIX_SND_STATUS_NPC_VTAG_SIZE_ERR = 0x23,
--	NIX_SND_STATUS_SEND_MEM_FAULT = 0x24,
--	NIX_SND_STATUS_SEND_STATS_ERR = 0x25,
-+	NIX_SND_STATUS_CRC_ERR = 0x10,
-+	NIX_SND_STATUS_IMM_ERR = 0x11,
-+	NIX_SND_STATUS_SG_ERR = 0x12,
-+	NIX_SND_STATUS_MEM_ERR = 0x13,
-+	NIX_SND_STATUS_INVALID_SUBDC = 0x14,
-+	NIX_SND_STATUS_SUBDC_ORDER_ERR = 0x15,
-+	NIX_SND_STATUS_DATA_FAULT = 0x16,
-+	NIX_SND_STATUS_DATA_POISON = 0x17,
-+	NIX_SND_STATUS_NPC_DROP_ACTION = 0x20,
-+	NIX_SND_STATUS_LOCK_VIOL = 0x21,
-+	NIX_SND_STATUS_NPC_UCAST_CHAN_ERR = 0x22,
-+	NIX_SND_STATUS_NPC_MCAST_CHAN_ERR = 0x23,
-+	NIX_SND_STATUS_NPC_MCAST_ABORT = 0x24,
-+	NIX_SND_STATUS_NPC_VTAG_PTR_ERR = 0x25,
-+	NIX_SND_STATUS_NPC_VTAG_SIZE_ERR = 0x26,
-+	NIX_SND_STATUS_SEND_MEM_FAULT = 0x27,
-+	NIX_SND_STATUS_SEND_STATS_ERR = 0x28,
- 	NIX_SND_STATUS_MAX,
- };
+diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
+index c693a570682fb..6f5a556f4f6d7 100644
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -360,15 +360,15 @@ static int dccp_v6_conn_request(struct sock *sk, struct sk_buff *skb)
+ 	if (dccp_parse_options(sk, dreq, skb))
+ 		goto drop_and_free;
  
+-	if (security_inet_conn_request(sk, skb, req))
+-		goto drop_and_free;
+-
+ 	ireq = inet_rsk(req);
+ 	ireq->ir_v6_rmt_addr = ipv6_hdr(skb)->saddr;
+ 	ireq->ir_v6_loc_addr = ipv6_hdr(skb)->daddr;
+ 	ireq->ireq_family = AF_INET6;
+ 	ireq->ir_mark = inet_request_mark(sk, skb);
+ 
++	if (security_inet_conn_request(sk, skb, req))
++		goto drop_and_free;
++
+ 	if (ipv6_opt_accepted(sk, skb, IP6CB(skb)) ||
+ 	    np->rxopt.bits.rxinfo || np->rxopt.bits.rxoinfo ||
+ 	    np->rxopt.bits.rxhlim || np->rxopt.bits.rxohlim) {
+diff --git a/net/ipv6/syncookies.c b/net/ipv6/syncookies.c
+index 5014aa6634527..8698b49dfc8de 100644
+--- a/net/ipv6/syncookies.c
++++ b/net/ipv6/syncookies.c
+@@ -180,14 +180,15 @@ struct sock *cookie_v6_check(struct sock *sk, struct sk_buff *skb)
+ 	treq = tcp_rsk(req);
+ 	treq->tfo_listener = false;
+ 
+-	if (security_inet_conn_request(sk, skb, req))
+-		goto out_free;
+-
+ 	req->mss = mss;
+ 	ireq->ir_rmt_port = th->source;
+ 	ireq->ir_num = ntohs(th->dest);
+ 	ireq->ir_v6_rmt_addr = ipv6_hdr(skb)->saddr;
+ 	ireq->ir_v6_loc_addr = ipv6_hdr(skb)->daddr;
++
++	if (security_inet_conn_request(sk, skb, req))
++		goto out_free;
++
+ 	if (ipv6_opt_accepted(sk, skb, &TCP_SKB_CB(skb)->header.h6) ||
+ 	    np->rxopt.bits.rxinfo || np->rxopt.bits.rxoinfo ||
+ 	    np->rxopt.bits.rxhlim || np->rxopt.bits.rxohlim) {
 -- 
 2.42.0
 
