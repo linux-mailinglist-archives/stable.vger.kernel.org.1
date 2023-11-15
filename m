@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F027ECE65
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 708027ECE66
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235090AbjKOTmu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
+        id S235095AbjKOTmv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235092AbjKOTmu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:50 -0500
+        with ESMTP id S235089AbjKOTmv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862D71B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ED1C433C8;
-        Wed, 15 Nov 2023 19:42:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2104AB9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3F1C433CA;
+        Wed, 15 Nov 2023 19:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077366;
-        bh=MgWe6rneltwf3Su+SR9cx85Zvi+FQBRHFQgyoRbRB5s=;
+        s=korg; t=1700077367;
+        bh=8K/Dhpb5JBIXpa7MXT5yZY9rz/JrSL2PfJxSEt++L84=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uXVFXDUY7L09oVhtFUT2Rc664Ud3jEEyJvw/rB5fzJ++jS6G7cxzrfXZIWs/anBjU
-         nvn4U3QXe9Bv1jMkQmX4tuEc+Hg6uIvCXQLLMAXlaUYpfiLTBVheGL7guyvf8RombT
-         PwO9UyKgGfOwOLfpNrxRqRNe5WF9/3DbQHCi9sDU=
+        b=IoulNXqnlDgpXzFFz+OVOuy/fq597HiWuSLbohN574KgAdMNIcWkymTh3j2K2vDlv
+         S0A+haXUZwddSqSFVkME526/6gEYmA94UkaFPqJ5KvvTN++9rk0H6rcHG/4YCvIOzQ
+         XKa6nbgR4KqPsGxhpJi05j4cMhbZKmxI0OyE/FZM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev, Johnny Liu <johnliu@nvidia.com>,
+        Mikko Perttunen <mperttunen@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 257/603] drm/rockchip: cdn-dp: Fix some error handling paths in cdn_dp_probe()
-Date:   Wed, 15 Nov 2023 14:13:22 -0500
-Message-ID: <20231115191631.070398873@linuxfoundation.org>
+Subject: [PATCH 6.6 258/603] gpu: host1x: Correct allocated size for contexts
+Date:   Wed, 15 Nov 2023 14:13:23 -0500
+Message-ID: <20231115191631.156917911@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -55,58 +55,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Johnny Liu <johnliu@nvidia.com>
 
-[ Upstream commit 44b968d0d0868b7a9b7a5c64464ada464ff4d532 ]
+[ Upstream commit e889a311f74f4ae8bd40755a2c58d02e1c684fef ]
 
-cdn_dp_audio_codec_init() can fail. So add some error handling.
+Original implementation over allocates the memory size for the
+contexts list. The size of memory for the contexts list is based
+on the number of iommu groups specified in the device tree.
 
-If component_add() fails, the previous cdn_dp_audio_codec_init() call
-should be undone, as already done in the remove function.
-
-Fixes: 88582f564692 ("drm/rockchip: cdn-dp: Don't unregister audio dev when unbinding")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/8494a41602fadb7439630921a9779640698f2f9f.1693676045.git.christophe.jaillet@wanadoo.fr
+Fixes: 8aa5bcb61612 ("gpu: host1x: Add context device management code")
+Signed-off-by: Johnny Liu <johnliu@nvidia.com>
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230901115910.701518-1-cyndis@kapsi.fi
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/cdn-dp-core.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/host1x/context.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-index a29fbafce3936..3793863c210eb 100644
---- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
-+++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
-@@ -1177,6 +1177,7 @@ static int cdn_dp_probe(struct platform_device *pdev)
- 	struct cdn_dp_device *dp;
- 	struct extcon_dev *extcon;
- 	struct phy *phy;
-+	int ret;
- 	int i;
+diff --git a/drivers/gpu/host1x/context.c b/drivers/gpu/host1x/context.c
+index a3f336edd991b..955c971c528d4 100644
+--- a/drivers/gpu/host1x/context.c
++++ b/drivers/gpu/host1x/context.c
+@@ -34,10 +34,10 @@ int host1x_memory_context_list_init(struct host1x *host1x)
+ 	if (err < 0)
+ 		return 0;
  
- 	dp = devm_kzalloc(dev, sizeof(*dp), GFP_KERNEL);
-@@ -1217,9 +1218,19 @@ static int cdn_dp_probe(struct platform_device *pdev)
- 	mutex_init(&dp->lock);
- 	dev_set_drvdata(dev, dp);
+-	cdl->devs = kcalloc(err, sizeof(*cdl->devs), GFP_KERNEL);
++	cdl->len = err / 4;
++	cdl->devs = kcalloc(cdl->len, sizeof(*cdl->devs), GFP_KERNEL);
+ 	if (!cdl->devs)
+ 		return -ENOMEM;
+-	cdl->len = err / 4;
  
--	cdn_dp_audio_codec_init(dp, dev);
-+	ret = cdn_dp_audio_codec_init(dp, dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = component_add(dev, &cdn_dp_component_ops);
-+	if (ret)
-+		goto err_audio_deinit;
- 
--	return component_add(dev, &cdn_dp_component_ops);
-+	return 0;
-+
-+err_audio_deinit:
-+	platform_device_unregister(dp->audio_pdev);
-+	return ret;
- }
- 
- static void cdn_dp_remove(struct platform_device *pdev)
+ 	for (i = 0; i < cdl->len; i++) {
+ 		ctx = &cdl->devs[i];
 -- 
 2.42.0
 
