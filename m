@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 459BD7ED031
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:53:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1340D7ED02D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:53:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235444AbjKOTxZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:53:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56376 "EHLO
+        id S235517AbjKOTx1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:53:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235517AbjKOTxY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:53:24 -0500
+        with ESMTP id S235518AbjKOTx0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:53:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2C52B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:53:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3630AC433C8;
-        Wed, 15 Nov 2023 19:53:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B9D8B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:53:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E907C433C7;
+        Wed, 15 Nov 2023 19:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078001;
-        bh=2Cxi9yr1LIxF8U9OBZkVCxqyRLXlx2ZnQ/AmyjHN7LI=;
+        s=korg; t=1700078002;
+        bh=vYO1N231E5QibUNQoPTbPUEIV+xkr4X/0fcrw40SNLE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OhTCISRQVqgj2GJWWrVQWU5UmW9CSD+ZTAFgbVaR0clCfQ+QuVtWsvFHrDo/QyViS
-         il4+5dMnHycpuq32fUTHerWAOPwM41EOtppmep/AA4RxA1cv/JxAWwVKVfzOXTLqKf
-         vWSEbbXrBGISuV5XitcX7H5O4OsmeiaLyz8tv+H0=
+        b=Z4iBGKW+ZcMT+L6cGSFeooT26Q42x2ZVEJKQrmU8Wxb4SX67ERcSElKnxBX7Y0oGT
+         YmLrjh21mxBwNc12yl/1ojR7K2v+FHdB8aO3IWum81SMqkGkh5UUFIRqY3Nf6IaaRZ
+         BP6InrDJuZSOARwqJEJH9dgXFPw+GHPpDD1tlbL4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -31,9 +31,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Neal Cardwell <ncardwell@google.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/379] tcp_metrics: properly set tp->snd_ssthresh in tcp_init_metrics()
-Date:   Wed, 15 Nov 2023 14:22:03 -0500
-Message-ID: <20231115192647.999709753@linuxfoundation.org>
+Subject: [PATCH 6.1 049/379] tcp_metrics: do not create an entry from tcp_init_metrics()
+Date:   Wed, 15 Nov 2023 14:22:04 -0500
+Message-ID: <20231115192648.066425720@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -58,48 +58,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 081480014a64a69d901f8ef1ffdd56d6085cf87e ]
+[ Upstream commit a135798e6e200ecb2f864cecca6d257ba278370c ]
 
-We need to set tp->snd_ssthresh to TCP_INFINITE_SSTHRESH
-in the case tcp_get_metrics() fails for some reason.
+tcp_init_metrics() only wants to get metrics if they were
+previously stored in the cache. Creating an entry is adding
+useless costs, especially when tcp_no_metrics_save is set.
 
-Fixes: 9ad7c049f0f7 ("tcp: RFC2988bis + taking RTT sample from 3WHS for the passive open side")
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
 Acked-by: Neal Cardwell <ncardwell@google.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_metrics.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 61c573a72db63..5a08dc46a1130 100644
+index 5a08dc46a1130..a7364ff8b558d 100644
 --- a/net/ipv4/tcp_metrics.c
 +++ b/net/ipv4/tcp_metrics.c
-@@ -470,6 +470,10 @@ void tcp_init_metrics(struct sock *sk)
- 	u32 val, crtt = 0; /* cached RTT scaled by 8 */
- 
- 	sk_dst_confirm(sk);
-+	/* ssthresh may have been reduced unnecessarily during.
-+	 * 3WHS. Restore it back to its initial default.
-+	 */
-+	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
- 	if (!dst)
+@@ -478,7 +478,7 @@ void tcp_init_metrics(struct sock *sk)
  		goto reset;
  
-@@ -489,11 +493,6 @@ void tcp_init_metrics(struct sock *sk)
- 		tp->snd_ssthresh = val;
- 		if (tp->snd_ssthresh > tp->snd_cwnd_clamp)
- 			tp->snd_ssthresh = tp->snd_cwnd_clamp;
--	} else {
--		/* ssthresh may have been reduced unnecessarily during.
--		 * 3WHS. Restore it back to its initial default.
--		 */
--		tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
- 	}
- 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
- 	if (val && tp->reordering != val)
+ 	rcu_read_lock();
+-	tm = tcp_get_metrics(sk, dst, true);
++	tm = tcp_get_metrics(sk, dst, false);
+ 	if (!tm) {
+ 		rcu_read_unlock();
+ 		goto reset;
 -- 
 2.42.0
 
