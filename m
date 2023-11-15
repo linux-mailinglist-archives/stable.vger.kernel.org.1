@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E157ECFEB
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 116CB7ECE01
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235451AbjKOTvl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42438 "EHLO
+        id S234199AbjKOTjs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235454AbjKOTvk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:40 -0500
+        with ESMTP id S234762AbjKOTjr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75015B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC854C433C8;
-        Wed, 15 Nov 2023 19:51:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE43CA4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52262C433C9;
+        Wed, 15 Nov 2023 19:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077896;
-        bh=HTh6NiZ8+lp3HgyDDkgxevS9wEafWZO9huGWoqmKTzg=;
+        s=korg; t=1700077181;
+        bh=t8GkKASzv2aBcJqErHTPWY1hYZJMzT4aWKYOpsDxegc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UHpswcxMEpwi0kP/HB6Z+5G1TzJV56VdfcSCkrr5R3/j3ShnZQQPskKL7Ls8mZTWN
-         Cz4pZFUwf/GvidR+gIiFZexJ87eP6/j6yXpoVI3lnk6PGYPw5NOM3c4Hdt/nXDCwm2
-         Sbs8qUG3HnNWBlgyC+I4LdFBxMZ7gZ4GBXlJWBPY=
+        b=SfUcUL9EvSTggTyR5jd/qdq82YstI0R2QdhvWKDy4xBX0w6MM7BHOz29ieRMooNne
+         TY72WYVokjl703xke0E7Jrd+pEsJ02Q0MUC4s55lDmw1Gmr7gGa6xwXdJxg/Pac1sV
+         A1qkJV7ZYqTnlu3VufwWPmPuuOEXgtHGtmc9lYX4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerome Brunet <jbrunet@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 586/603] ASoC: hdmi-codec: register hpd callback on component probe
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.5 547/550] Revert "PCI/ASPM: Disable only ASPM_STATE_L1 when driver, disables L1"
 Date:   Wed, 15 Nov 2023 14:18:51 -0500
-Message-ID: <20231115191651.854461283@linuxfoundation.org>
+Message-ID: <20231115191638.839517037@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,89 +49,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 15be353d55f9e12e34f9a819f51eb41fdef5eda8 ]
+commit 3cb4f534bac010258b2688395c2f13459a932be9 upstream.
 
-The HDMI hotplug callback to the hdmi-codec is currently registered when
-jack is set.
+This reverts commit fb097dcd5a28c0a2325632405c76a66777a6bed9.
 
-The hotplug not only serves to report the ASoC jack state but also to get
-the ELD. It should be registered when the component probes instead, so it
-does not depend on the card driver registering a jack for the HDMI to
-properly report the ELD.
+After fb097dcd5a28 ("PCI/ASPM: Disable only ASPM_STATE_L1 when driver
+disables L1"), disabling L1 via pci_disable_link_state(PCIE_LINK_STATE_L1),
+then enabling one substate, e.g., L1.1, via sysfs actually enables *all*
+the substates.
 
-Fixes: 25ce4f2b3593 ("ASoC: hdmi-codec: Get ELD in before reporting plugged event")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20231106104013.704356-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example, r8169 disables L1 because of hardware issues on a number of
+systems, which implicitly disables the L1.1 and L1.2 substates.
+
+On some systems, L1 and L1.1 work fine, but L1.2 causes missed rx packets.
+Enabling L1.1 via the sysfs "aspm_l1_1" attribute unexpectedly enables L1.2
+as well as L1.1.
+
+After fb097dcd5a28, pci_disable_link_state(PCIE_LINK_STATE_L1) adds only
+ASPM_L1 (but not any of the L1.x substates) to the "aspm_disable" mask:
+
+  --- Before fb097dcd5a28
+  +++ After fb097dcd5a28
+
+  # r8169 disables L1:
+    pci_disable_link_state(PCIE_LINK_STATE_L1)
+  -   disable |= ASPM_L1 | ASPM_L1_1 | ASPM_L1_2 | ...  # disable L1, L1.x
+  +   disable |= ASPM_L1                                # disable L1 only
+
+  # write "1" to sysfs "aspm_l1_1" attribute:
+    l1_1_aspm
+      aspm_attr_store_common(state = ASPM_L1_1)
+        disable &= ~ASPM_L1_1              # enable L1.1
+        if (state & (ASPM_L1_1 | ...))     # if enabling any substate
+          disable &= ~ASPM_L1              # enable L1
+
+  # final state:
+  - disable = ASPM_L1_2 | ...              # L1, L1.1 enabled; L1.2 disabled
+  + disable = 0                            # L1, L1.1, L1.2 all enabled
+
+Enabling an L1.x substate removes the substate and L1 from the
+"aspm_disable" mask.  After fb097dcd5a28, the substates were not added to
+the mask when disabling L1, so enabling one substate implicitly enables all
+of them.
+
+Revert fb097dcd5a28 so enabling one substate doesn't enable the others.
+
+Link: https://lore.kernel.org/r/c75931ac-7208-4200-9ca1-821629cf5e28@gmail.com
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+[bhelgaas: work through example in commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/hdmi-codec.c | 27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/pci/pcie/aspm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
-index 09eef6042aad6..20da1eaa4f1c7 100644
---- a/sound/soc/codecs/hdmi-codec.c
-+++ b/sound/soc/codecs/hdmi-codec.c
-@@ -877,18 +877,13 @@ static int hdmi_codec_set_jack(struct snd_soc_component *component,
- 			       void *data)
- {
- 	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
--	int ret = -ENOTSUPP;
- 
- 	if (hcp->hcd.ops->hook_plugged_cb) {
- 		hcp->jack = jack;
--		ret = hcp->hcd.ops->hook_plugged_cb(component->dev->parent,
--						    hcp->hcd.data,
--						    plugged_cb,
--						    component->dev);
--		if (ret)
--			hcp->jack = NULL;
-+		return 0;
- 	}
--	return ret;
-+
-+	return -ENOTSUPP;
- }
- 
- static int hdmi_dai_spdif_probe(struct snd_soc_dai *dai)
-@@ -982,6 +977,21 @@ static int hdmi_of_xlate_dai_id(struct snd_soc_component *component,
- 	return ret;
- }
- 
-+static int hdmi_probe(struct snd_soc_component *component)
-+{
-+	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
-+	int ret = 0;
-+
-+	if (hcp->hcd.ops->hook_plugged_cb) {
-+		ret = hcp->hcd.ops->hook_plugged_cb(component->dev->parent,
-+						    hcp->hcd.data,
-+						    plugged_cb,
-+						    component->dev);
-+	}
-+
-+	return ret;
-+}
-+
- static void hdmi_remove(struct snd_soc_component *component)
- {
- 	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
-@@ -992,6 +1002,7 @@ static void hdmi_remove(struct snd_soc_component *component)
- }
- 
- static const struct snd_soc_component_driver hdmi_driver = {
-+	.probe			= hdmi_probe,
- 	.remove			= hdmi_remove,
- 	.dapm_widgets		= hdmi_widgets,
- 	.num_dapm_widgets	= ARRAY_SIZE(hdmi_widgets),
--- 
-2.42.0
-
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1059,7 +1059,8 @@ static int __pci_disable_link_state(stru
+ 	if (state & PCIE_LINK_STATE_L0S)
+ 		link->aspm_disable |= ASPM_STATE_L0S;
+ 	if (state & PCIE_LINK_STATE_L1)
+-		link->aspm_disable |= ASPM_STATE_L1;
++		/* L1 PM substates require L1 */
++		link->aspm_disable |= ASPM_STATE_L1 | ASPM_STATE_L1SS;
+ 	if (state & PCIE_LINK_STATE_L1_1)
+ 		link->aspm_disable |= ASPM_STATE_L1_1;
+ 	if (state & PCIE_LINK_STATE_L1_2)
 
 
