@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C17737ECDA8
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B4B17ECFDA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234600AbjKOThk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:37:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54794 "EHLO
+        id S235432AbjKOTvS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234605AbjKOThj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:39 -0500
+        with ESMTP id S235433AbjKOTvQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B99A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 958C5C433C8;
-        Wed, 15 Nov 2023 19:37:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32FD9B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90573C433CB;
+        Wed, 15 Nov 2023 19:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077055;
-        bh=GAc6Qa6IIdGi7Qb4ID/1Vr1fhLCuV3FSRdA5mpSb1o4=;
+        s=korg; t=1700077872;
+        bh=pAZhK8KMHeHmlCizMlxOMolYrR6L8Vn5PVHgfI83W+E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oh6iJKabwCB1vdS+ppeaMbPM8OAi3RdIPLX8nS/M0UJg552pEih5WV86DytyPjmfj
-         qX3qMB4sNlRgywdCFyDQwbd0YTPLA5sGCdy8TrwrZH2rmGsynuCgyx+9iKBubTs51H
-         0qruazusRaV8J0IO+n/W6p3cWfMCsOQGTLVYPxZU=
+        b=yqY5RJymo9g02hrEHxWZTEwaDCjFa6bV0Q0dAE91FpxWIl3IGLVAzfZwyHbBut506
+         y6SeOEzibtSUMw/EOXcdpn7zVUrMMI8hnNsx9W0OpEVmo+3YgCPKyPKJAZ98qIsGLx
+         wevnfw2fUt4QMtpWCWPr3/B13c0QpWPMaLxmjf0A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paul Moore <paul@paul-moore.com>,
+        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
+        Wojciech Drewek <wojciech.drewek@intel.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 507/550] dccp: Call security_inet_conn_request() after setting IPv4 addresses.
-Date:   Wed, 15 Nov 2023 14:18:11 -0500
-Message-ID: <20231115191636.068895449@linuxfoundation.org>
+Subject: [PATCH 6.6 547/603] octeontx2-pf: Fix error codes
+Date:   Wed, 15 Nov 2023 14:18:12 -0500
+Message-ID: <20231115191649.603354859@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,61 +51,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ratheesh Kannoth <rkannoth@marvell.com>
 
-[ Upstream commit fa2df45af13091f76b89adb84a28f13818d5d631 ]
+[ Upstream commit 96b9a68d1a6e4f889d453874c9e359aa720b520f ]
 
-Initially, commit 4237c75c0a35 ("[MLSXFRM]: Auto-labeling of child
-sockets") introduced security_inet_conn_request() in some functions
-where reqsk is allocated.  The hook is added just after the allocation,
-so reqsk's IPv4 remote address was not initialised then.
+Some of error codes were wrong. Fix the same.
 
-However, SELinux/Smack started to read it in netlbl_req_setattr()
-after the cited commits.
-
-This bug was partially fixed by commit 284904aa7946 ("lsm: Relocate
-the IPv4 security_inet_conn_request() hooks").
-
-This patch fixes the last bug in DCCPv4.
-
-Fixes: 389fb800ac8b ("netlabel: Label incoming TCP connections correctly in SELinux")
-Fixes: 07feee8f812f ("netlabel: Cleanup the Smack/NetLabel code to fix incoming TCP connections")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
+Fixes: 51afe9026d0c ("octeontx2-pf: NIX TX overwrites SQ_CTX_HW_S[SQ_INT]")
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://lore.kernel.org/r/20231027021953.1819959-1-rkannoth@marvell.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv4.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../marvell/octeontx2/nic/otx2_struct.h       | 34 +++++++++----------
+ 1 file changed, 17 insertions(+), 17 deletions(-)
 
-diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
-index fa14eef8f0688..dc874d7503f4a 100644
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -630,9 +630,6 @@ int dccp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
- 	if (dccp_parse_options(sk, dreq, skb))
- 		goto drop_and_free;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
+index fa37b9f312cae..4e5899d8fa2e6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
+@@ -318,23 +318,23 @@ enum nix_snd_status_e {
+ 	NIX_SND_STATUS_EXT_ERR = 0x6,
+ 	NIX_SND_STATUS_JUMP_FAULT = 0x7,
+ 	NIX_SND_STATUS_JUMP_POISON = 0x8,
+-	NIX_SND_STATUS_CRC_ERR = 0x9,
+-	NIX_SND_STATUS_IMM_ERR = 0x10,
+-	NIX_SND_STATUS_SG_ERR = 0x11,
+-	NIX_SND_STATUS_MEM_ERR = 0x12,
+-	NIX_SND_STATUS_INVALID_SUBDC = 0x13,
+-	NIX_SND_STATUS_SUBDC_ORDER_ERR = 0x14,
+-	NIX_SND_STATUS_DATA_FAULT = 0x15,
+-	NIX_SND_STATUS_DATA_POISON = 0x16,
+-	NIX_SND_STATUS_NPC_DROP_ACTION = 0x17,
+-	NIX_SND_STATUS_LOCK_VIOL = 0x18,
+-	NIX_SND_STATUS_NPC_UCAST_CHAN_ERR = 0x19,
+-	NIX_SND_STATUS_NPC_MCAST_CHAN_ERR = 0x20,
+-	NIX_SND_STATUS_NPC_MCAST_ABORT = 0x21,
+-	NIX_SND_STATUS_NPC_VTAG_PTR_ERR = 0x22,
+-	NIX_SND_STATUS_NPC_VTAG_SIZE_ERR = 0x23,
+-	NIX_SND_STATUS_SEND_MEM_FAULT = 0x24,
+-	NIX_SND_STATUS_SEND_STATS_ERR = 0x25,
++	NIX_SND_STATUS_CRC_ERR = 0x10,
++	NIX_SND_STATUS_IMM_ERR = 0x11,
++	NIX_SND_STATUS_SG_ERR = 0x12,
++	NIX_SND_STATUS_MEM_ERR = 0x13,
++	NIX_SND_STATUS_INVALID_SUBDC = 0x14,
++	NIX_SND_STATUS_SUBDC_ORDER_ERR = 0x15,
++	NIX_SND_STATUS_DATA_FAULT = 0x16,
++	NIX_SND_STATUS_DATA_POISON = 0x17,
++	NIX_SND_STATUS_NPC_DROP_ACTION = 0x20,
++	NIX_SND_STATUS_LOCK_VIOL = 0x21,
++	NIX_SND_STATUS_NPC_UCAST_CHAN_ERR = 0x22,
++	NIX_SND_STATUS_NPC_MCAST_CHAN_ERR = 0x23,
++	NIX_SND_STATUS_NPC_MCAST_ABORT = 0x24,
++	NIX_SND_STATUS_NPC_VTAG_PTR_ERR = 0x25,
++	NIX_SND_STATUS_NPC_VTAG_SIZE_ERR = 0x26,
++	NIX_SND_STATUS_SEND_MEM_FAULT = 0x27,
++	NIX_SND_STATUS_SEND_STATS_ERR = 0x28,
+ 	NIX_SND_STATUS_MAX,
+ };
  
--	if (security_inet_conn_request(sk, skb, req))
--		goto drop_and_free;
--
- 	ireq = inet_rsk(req);
- 	sk_rcv_saddr_set(req_to_sk(req), ip_hdr(skb)->daddr);
- 	sk_daddr_set(req_to_sk(req), ip_hdr(skb)->saddr);
-@@ -640,6 +637,9 @@ int dccp_v4_conn_request(struct sock *sk, struct sk_buff *skb)
- 	ireq->ireq_family = AF_INET;
- 	ireq->ir_iif = READ_ONCE(sk->sk_bound_dev_if);
- 
-+	if (security_inet_conn_request(sk, skb, req))
-+		goto drop_and_free;
-+
- 	/*
- 	 * Step 3: Process LISTEN state
- 	 *
 -- 
 2.42.0
 
