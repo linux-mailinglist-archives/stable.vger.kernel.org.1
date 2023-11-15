@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C05F17ECDE2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1DDF7ECDE6
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234701AbjKOTjB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36802 "EHLO
+        id S234697AbjKOTjF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234697AbjKOTjA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:00 -0500
+        with ESMTP id S234721AbjKOTjD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C7CB1A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970D5C433C9;
-        Wed, 15 Nov 2023 19:38:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E194B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6ED3C433C7;
+        Wed, 15 Nov 2023 19:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077136;
-        bh=xI+7tFkSYAtJlhcP0SGG+uwhja77vTBnzOzD4qYqU5o=;
+        s=korg; t=1700077140;
+        bh=A22YEgDeCpTTqQrOEOWzRps+pTmid77ukvkt7oQcfDI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1wesuLtMfaQisEEPnLRqZb751yDrnLT+4RrpoMMNdLoyIQxvD5Fi8Y6TYgTzFfA5p
-         voBbkEGFl/oJbJu5Ln+lH1pwqOLpDdnK2dreb5fey4FEfRYI4PTpprpEgM1pCQv47W
-         yMtaohgW5e4pzCW1P6C59XDEOqBK03OD38aCyWT4=
+        b=SGWbnqQo5eyjEcDhhT0I/xH6002fMJ29wAmJFCX+J/MUUgcGlkQ0Ze1zWvYfc+vP6
+         9f1KsOpIXhM0nV+4G+os7lgBagXfG9AJ+F8FzvCcHLCIHKHcN5AaoJVepZNdakHpNy
+         VLSXewQd9FJ7p97FU5i3JDixiBQ1f2Bchwjs1h8I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Eugen Hristev <eugen.hristev@collabora.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
+        patches@lists.linux.dev, Jerome Brunet <jbrunet@baylibre.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 533/550] ASoC: mediatek: mt8186_mt6366_rt1019_rt5682s: trivial: fix error messages
-Date:   Wed, 15 Nov 2023 14:18:37 -0500
-Message-ID: <20231115191637.888273603@linuxfoundation.org>
+Subject: [PATCH 6.5 534/550] ASoC: hdmi-codec: register hpd callback on component probe
+Date:   Wed, 15 Nov 2023 14:18:38 -0500
+Message-ID: <20231115191637.957323642@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -57,47 +54,83 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Jerome Brunet <jbrunet@baylibre.com>
 
-[ Upstream commit 004fc58edea6f00db9ad07b40b882e8d976f7a54 ]
+[ Upstream commit 15be353d55f9e12e34f9a819f51eb41fdef5eda8 ]
 
-Property 'playback-codecs' is referenced as 'speaker-codec' in the error
-message, and this can lead to confusion.
-Correct the error message such that the correct property name is
-referenced.
+The HDMI hotplug callback to the hdmi-codec is currently registered when
+jack is set.
 
-Fixes: 0da16e370dd7 ("ASoC: mediatek: mt8186: add machine driver with mt6366, rt1019 and rt5682s")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20231031103139.77395-1-eugen.hristev@collabora.com
+The hotplug not only serves to report the ASoC jack state but also to get
+the ELD. It should be registered when the component probes instead, so it
+does not depend on the card driver registering a jack for the HDMI to
+properly report the ELD.
+
+Fixes: 25ce4f2b3593 ("ASoC: hdmi-codec: Get ELD in before reporting plugged event")
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Link: https://lore.kernel.org/r/20231106104013.704356-1-jbrunet@baylibre.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/hdmi-codec.c | 27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c b/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
-index 9c11016f032c2..9777ba89e956c 100644
---- a/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
-+++ b/sound/soc/mediatek/mt8186/mt8186-mt6366-rt1019-rt5682s.c
-@@ -1179,7 +1179,7 @@ static int mt8186_mt6366_rt1019_rt5682s_dev_probe(struct platform_device *pdev)
- 	playback_codec = of_get_child_by_name(pdev->dev.of_node, "playback-codecs");
- 	if (!playback_codec) {
- 		ret = -EINVAL;
--		dev_err_probe(&pdev->dev, ret, "Property 'speaker-codecs' missing or invalid\n");
-+		dev_err_probe(&pdev->dev, ret, "Property 'playback-codecs' missing or invalid\n");
- 		goto err_playback_codec;
- 	}
+diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
+index d661bc9255f92..91e0b635fb82c 100644
+--- a/sound/soc/codecs/hdmi-codec.c
++++ b/sound/soc/codecs/hdmi-codec.c
+@@ -895,18 +895,13 @@ static int hdmi_codec_set_jack(struct snd_soc_component *component,
+ 			       void *data)
+ {
+ 	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
+-	int ret = -ENOTSUPP;
  
-@@ -1193,7 +1193,7 @@ static int mt8186_mt6366_rt1019_rt5682s_dev_probe(struct platform_device *pdev)
- 	for_each_card_prelinks(card, i, dai_link) {
- 		ret = mt8186_mt6366_card_set_be_link(card, dai_link, playback_codec, "I2S3");
- 		if (ret) {
--			dev_err_probe(&pdev->dev, ret, "%s set speaker_codec fail\n",
-+			dev_err_probe(&pdev->dev, ret, "%s set playback_codec fail\n",
- 				      dai_link->name);
- 			goto err_probe;
- 		}
+ 	if (hcp->hcd.ops->hook_plugged_cb) {
+ 		hcp->jack = jack;
+-		ret = hcp->hcd.ops->hook_plugged_cb(component->dev->parent,
+-						    hcp->hcd.data,
+-						    plugged_cb,
+-						    component->dev);
+-		if (ret)
+-			hcp->jack = NULL;
++		return 0;
+ 	}
+-	return ret;
++
++	return -ENOTSUPP;
+ }
+ 
+ static int hdmi_dai_spdif_probe(struct snd_soc_dai *dai)
+@@ -982,6 +977,21 @@ static int hdmi_of_xlate_dai_id(struct snd_soc_component *component,
+ 	return ret;
+ }
+ 
++static int hdmi_probe(struct snd_soc_component *component)
++{
++	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
++	int ret = 0;
++
++	if (hcp->hcd.ops->hook_plugged_cb) {
++		ret = hcp->hcd.ops->hook_plugged_cb(component->dev->parent,
++						    hcp->hcd.data,
++						    plugged_cb,
++						    component->dev);
++	}
++
++	return ret;
++}
++
+ static void hdmi_remove(struct snd_soc_component *component)
+ {
+ 	struct hdmi_codec_priv *hcp = snd_soc_component_get_drvdata(component);
+@@ -992,6 +1002,7 @@ static void hdmi_remove(struct snd_soc_component *component)
+ }
+ 
+ static const struct snd_soc_component_driver hdmi_driver = {
++	.probe			= hdmi_probe,
+ 	.remove			= hdmi_remove,
+ 	.dapm_widgets		= hdmi_widgets,
+ 	.num_dapm_widgets	= ARRAY_SIZE(hdmi_widgets),
 -- 
 2.42.0
 
