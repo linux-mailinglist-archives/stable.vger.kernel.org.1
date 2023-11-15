@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AF457ECBEC
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9887ECE5F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232889AbjKOTZU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51166 "EHLO
+        id S235085AbjKOTmk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233240AbjKOTZT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:19 -0500
+        with ESMTP id S234998AbjKOTmj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E00B219D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60C2EC433C8;
-        Wed, 15 Nov 2023 19:25:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2D6919E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA16C433C8;
+        Wed, 15 Nov 2023 19:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076315;
-        bh=Obyl9zUnrL5WsasC3SmZjzA8vP/qAng/cwQB9NVk5Oc=;
+        s=korg; t=1700077356;
+        bh=SaLMGvnbJbMBnU/74Ae6Jm2Kp7qbWQd9XHcRhXLXEy8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vWvD6gVICmBnxGwZ46l7gYW9Xsc1eUkYvPbIrb8CwQeHo51ClZv20XOZVUGSIgUXA
-         dCmp5UxQRDBimvNYmNtzHOt1tJxX9ONxBH/o3fW8Raa3K3J5SN7T7SviRMNaICeZAm
-         D8mCUtlRFWg09rbfzq2WNp5/r080xE9uX4H+pDQY=
+        b=P7WxYfbQHKp1LgF8mA9GdSrwgNggQbSUqKJKUprRtC/+Vs/vnXw81aT1+aUxURAbb
+         ZIJKGnWgk0KLZijkMSz130Qq8RjXFfPXDSOiYf8Y9qX54C6ulMFBaR3g+HWF9rcyNA
+         I1F5Bp6gMQL7k7FGJm7ooPP3nkVU03b8zDRZl8Zo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 213/550] drm/bridge: lt8912b: Manually disable HPD only if it was enabled
+        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 252/603] drm/mediatek: Fix iommu fault by swapping FBs after updating plane state
 Date:   Wed, 15 Nov 2023 14:13:17 -0500
-Message-ID: <20231115191615.561975695@linuxfoundation.org>
+Message-ID: <20231115191630.706503085@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 6985c5efc4057bc79137807295d84ada3123d051 ]
+[ Upstream commit 3ec71e05ae6e7f46512e568ed81c92be589003dd ]
 
-lt8912b only calls drm_bridge_hpd_enable() if it creates a connector and
-the next bridge has DRM_BRIDGE_OP_HPD set. However, when calling
-drm_bridge_hpd_disable() it misses checking if a connector was created,
-calling drm_bridge_hpd_disable() even if HPD was never enabled. I don't
-see any issues caused by this wrong call, though.
+According to the comment in drm_atomic_helper_async_commit(),
+we should make sure FBs have been swapped, so that cleanups in the
+new_state performs a cleanup in the old FB.
 
-Add the check to avoid wrongly calling drm_bridge_hpd_disable().
+So we should move swapping FBs after calling mtk_plane_update_new_state(),
+to avoid using the old FB which could be freed.
 
-Fixes: 3b0a01a6a522 ("drm/bridge: lt8912b: Add hot plug detection")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230804-lt8912b-v1-3-c542692c6a2f@ideasonboard.com
+Fixes: 1a64a7aff8da ("drm/mediatek: Fix cursor plane no update")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20230809125722.24112-2-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c | 2 +-
+ drivers/gpu/drm/mediatek/mtk_drm_plane.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-index 2d752e083433f..9ee639e75a1c2 100644
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -587,7 +587,7 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_plane.c b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
+index 5acb03b7c6fe5..ddc9355b06d51 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_plane.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
+@@ -227,9 +227,9 @@ static void mtk_plane_atomic_async_update(struct drm_plane *plane,
+ 	plane->state->src_y = new_state->src_y;
+ 	plane->state->src_h = new_state->src_h;
+ 	plane->state->src_w = new_state->src_w;
+-	swap(plane->state->fb, new_state->fb);
  
- 	lt8912_hard_power_off(lt);
- 
--	if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
-+	if (lt->connector.dev && lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
- 		drm_bridge_hpd_disable(lt->hdmi_port);
- }
- 
+ 	mtk_plane_update_new_state(new_state, new_plane_state);
++	swap(plane->state->fb, new_state->fb);
+ 	wmb(); /* Make sure the above parameters are set before update */
+ 	new_plane_state->pending.async_dirty = true;
+ 	mtk_drm_crtc_async_update(new_state->crtc, plane, state);
 -- 
 2.42.0
 
