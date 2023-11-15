@@ -2,39 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 981817ECF41
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA4477ECCC3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235270AbjKOTrV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:47:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42414 "EHLO
+        id S234090AbjKOTca (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235263AbjKOTrU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:20 -0500
+        with ESMTP id S234100AbjKOTcZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A02AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:17 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE6AC433C7;
-        Wed, 15 Nov 2023 19:47:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E76191A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D8BC433C7;
+        Wed, 15 Nov 2023 19:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077637;
-        bh=dJCSkS9B4JFtvNXif94u+qsHCxPD+7+oZ4s3MCdSYO8=;
+        s=korg; t=1700076741;
+        bh=rAsmqsTaQIAgAUi/vKnMBZhkAEWhtoD02GWkqmUksj0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aEldTvIH+OdZBqvRuQwjisRNX5yEMiNFt+V8I9QIbmRxBHSv4D08eZI6lwFR/UEsl
-         UeS9YaqbW/GZMbCxp6owtJ8bNZO15LrGbSWzjhBJqkznUrKzgawwtMxT3VnQ0Nrl9E
-         kB3suXKn0I60HTTIRtQCPd983Jy9UQ7dDbNEGR1w=
+        b=r4KpT/beXeJLGNQXs/g4gmKq1TtmgyMbxx8Q+3lenAxvQnVJaDlLXklxuoQDn+pd9
+         CWiRMSWqW8yDNoxMqqTNyMMXZLLVT+9hrXfbJHO8Dq0+xmql9J90yvBDhJAYsENM9a
+         j2rde08plZnAuR0sfFWTE0tGVkRaYIiWLqPOQKmI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 426/603] f2fs: compress: fix to avoid use-after-free on dic
+Subject: [PATCH 6.5 387/550] perf parse-events: Remove unused PE_PMU_EVENT_FAKE token
 Date:   Wed, 15 Nov 2023 14:16:11 -0500
-Message-ID: <20231115191642.306139129@linuxfoundation.org>
+Message-ID: <20231115191627.668324833@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +58,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit b0327c84e91a0f4f0abced8cb83ec86a7083f086 ]
+[ Upstream commit 84efbdb7fb8e0844a3f9c67a6bdcc89db1012e1c ]
 
-Call trace:
- __memcpy+0x128/0x250
- f2fs_read_multi_pages+0x940/0xf7c
- f2fs_mpage_readpages+0x5a8/0x624
- f2fs_readahead+0x5c/0x110
- page_cache_ra_unbounded+0x1b8/0x590
- do_sync_mmap_readahead+0x1dc/0x2e4
- filemap_fault+0x254/0xa8c
- f2fs_filemap_fault+0x2c/0x104
- __do_fault+0x7c/0x238
- do_handle_mm_fault+0x11bc/0x2d14
- do_mem_abort+0x3a8/0x1004
- el0_da+0x3c/0xa0
- el0t_64_sync_handler+0xc4/0xec
- el0t_64_sync+0x1b4/0x1b8
+Removed by commit 70c90e4a6b2f ("perf parse-events: Avoid scanning
+PMUs before parsing").
 
-In f2fs_read_multi_pages(), once f2fs_decompress_cluster() was called if
-we hit cached page in compress_inode's cache, dic may be released, it needs
-break the loop rather than continuing it, in order to avoid accessing
-invalid dic pointer.
-
-Fixes: 6ce19aff0b8c ("f2fs: compress: add compress_inode to cache compressed blocks")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: bpf@vger.kernel.org
+Link: https://lore.kernel.org/r/20230627181030.95608-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: ede72dca45b1 ("perf parse-events: Fix tracepoint name memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/perf/util/parse-events.y | 42 ++--------------------------------
+ 1 file changed, 2 insertions(+), 40 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 3f33e14dc7f81..1ac34eb49a0e8 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -2344,8 +2344,10 @@ int f2fs_read_multi_pages(struct compress_ctx *cc, struct bio **bio_ret,
- 		f2fs_wait_on_block_writeback(inode, blkaddr);
+diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
+index c590cf7f02a45..43557f20d0989 100644
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -70,7 +70,7 @@ static void free_list_evsel(struct list_head* list_evsel)
+ %token PE_LEGACY_CACHE
+ %token PE_PREFIX_MEM PE_PREFIX_RAW PE_PREFIX_GROUP
+ %token PE_ERROR
+-%token PE_KERNEL_PMU_EVENT PE_PMU_EVENT_FAKE
++%token PE_KERNEL_PMU_EVENT
+ %token PE_ARRAY_ALL PE_ARRAY_RANGE
+ %token PE_DRV_CFG_TERM
+ %token PE_TERM_HW
+@@ -88,7 +88,7 @@ static void free_list_evsel(struct list_head* list_evsel)
+ %type <str> PE_MODIFIER_EVENT
+ %type <str> PE_MODIFIER_BP
+ %type <str> PE_EVENT_NAME
+-%type <str> PE_KERNEL_PMU_EVENT PE_PMU_EVENT_FAKE
++%type <str> PE_KERNEL_PMU_EVENT
+ %type <str> PE_DRV_CFG_TERM
+ %type <str> name_or_raw name_or_legacy
+ %destructor { free ($$); } <str>
+@@ -421,44 +421,6 @@ PE_KERNEL_PMU_EVENT opt_pmu_config
+ 		YYABORT;
+ 	$$ = list;
+ }
+-|
+-PE_PMU_EVENT_FAKE sep_dc
+-{
+-	struct list_head *list;
+-	int err;
+-
+-	list = alloc_list();
+-	if (!list)
+-		YYABORT;
+-
+-	err = parse_events_add_pmu(_parse_state, list, $1, /*head_config=*/NULL,
+-				   /*auto_merge_stats=*/false);
+-	free($1);
+-	if (err < 0) {
+-		free(list);
+-		YYABORT;
+-	}
+-	$$ = list;
+-}
+-|
+-PE_PMU_EVENT_FAKE opt_pmu_config
+-{
+-	struct list_head *list;
+-	int err;
+-
+-	list = alloc_list();
+-	if (!list)
+-		YYABORT;
+-
+-	err = parse_events_add_pmu(_parse_state, list, $1, $2, /*auto_merge_stats=*/false);
+-	free($1);
+-	parse_events_terms__delete($2);
+-	if (err < 0) {
+-		free(list);
+-		YYABORT;
+-	}
+-	$$ = list;
+-}
  
- 		if (f2fs_load_compressed_page(sbi, page, blkaddr)) {
--			if (atomic_dec_and_test(&dic->remaining_pages))
-+			if (atomic_dec_and_test(&dic->remaining_pages)) {
- 				f2fs_decompress_cluster(dic, true);
-+				break;
-+			}
- 			continue;
- 		}
- 
+ value_sym:
+ PE_VALUE_SYM_HW
 -- 
 2.42.0
 
