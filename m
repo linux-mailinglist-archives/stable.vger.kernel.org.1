@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A3C7ED6F8
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57C387ED6FA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:04:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344414AbjKOWEl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 17:04:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49198 "EHLO
+        id S235633AbjKOWEo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 17:04:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344426AbjKOWEk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:04:40 -0500
+        with ESMTP id S1344425AbjKOWEn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:04:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27772197
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:04:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D09BC433C8;
-        Wed, 15 Nov 2023 22:04:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E4B2195
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:04:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BB5C433C9;
+        Wed, 15 Nov 2023 22:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085876;
-        bh=h5jGd/wm3xLDMk2ATgRDiKqKQ0SpGU0YB32r6EIMkAw=;
+        s=korg; t=1700085880;
+        bh=NbVHU5aTAMqcqo5HWYXtnWfy0MY+iit64pmtuBhATyg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=biPs719EOeLfnKx3hVx9nXh+qeTJubIiEWfAga/nnLLatC2zeu2JuWYFZicnhp6vp
-         6uTaZIbQCVyF4Vh3N8CmGbWhwc8H6k+d13sGGbMCmwDwWaa3rzt6/8af7iCAjijof5
-         QJTxGlCsUkK4OmkwVIaRigJf7mOYKl1s1WQBWI0Y=
+        b=vNCPmLl7s5GTwxgoyscn/r0OPyeB0e+Lnftsw7AaY9JPXJChKB1HWXC68oTo+MHGS
+         LZfibrV3QhicnqdNQksI23Pj/fICpsCGd2UOHscMhoquDm3K8VF80p7lGIV1Jj16rB
+         H387cPPOHP3KiGQcPDWtCjOhoBAIPI0gXqYSzo78=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Huhardeaux <tech@tootai.net>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Erik Kurzinger <ekurzinger@nvidia.com>,
+        Simon Ser <contact@emersion.fr>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/119] netfilter: nat: fix ipv6 nat redirect with mapped and scoped addresses
-Date:   Wed, 15 Nov 2023 17:01:42 -0500
-Message-ID: <20231115220136.139745397@linuxfoundation.org>
+Subject: [PATCH 5.4 113/119] drm/syncobj: fix DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE
+Date:   Wed, 15 Nov 2023 17:01:43 -0500
+Message-ID: <20231115220136.178798376@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
 References: <20231115220132.607437515@linuxfoundation.org>
@@ -55,94 +54,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Erik Kurzinger <ekurzinger@nvidia.com>
 
-[ Upstream commit 80abbe8a8263106fe45a4f293b92b5c74cc9cc8a ]
+[ Upstream commit 101c9f637efa1655f55876644d4439e552267527 ]
 
-The ipv6 redirect target was derived from the ipv4 one, i.e. its
-identical to a 'dnat' with the first (primary) address assigned to the
-network interface.  The code has been moved around to make it usable
-from nf_tables too, but its still the same as it was back when this
-was added in 2012.
+If DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT is invoked with the
+DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE flag set but no fence has yet been
+submitted for the given timeline point the call will fail immediately
+with EINVAL. This does not match the intended behavior where the call
+should wait until the fence has been submitted (or the timeout expires).
 
-IPv6, however, has different types of addresses, if the 'wrong' address
-comes first the redirection does not work.
+The following small example program illustrates the issue. It should
+wait for 5 seconds and then print ETIME, but instead it terminates right
+away after printing EINVAL.
 
-In Daniels case, the addresses are:
-  inet6 ::ffff:192 ...
-  inet6 2a01: ...
+  #include <stdio.h>
+  #include <fcntl.h>
+  #include <time.h>
+  #include <errno.h>
+  #include <xf86drm.h>
+  int main(void)
+  {
+      int fd = open("/dev/dri/card0", O_RDWR);
+      uint32_t syncobj;
+      drmSyncobjCreate(fd, 0, &syncobj);
+      struct timespec ts;
+      clock_gettime(CLOCK_MONOTONIC, &ts);
+      uint64_t point = 1;
+      if (drmSyncobjTimelineWait(fd, &syncobj, &point, 1,
+                                 ts.tv_sec * 1000000000 + ts.tv_nsec + 5000000000, // 5s
+                                 DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE, NULL)) {
+          printf("drmSyncobjTimelineWait failed %d\n", errno);
+      }
+  }
 
-... so the function attempts to redirect to the mapped address.
-
-Add more checks before the address is deemed correct:
-1. If the packets' daddr is scoped, search for a scoped address too
-2. skip tentative addresses
-3. skip mapped addresses
-
-Use the first address that appears to match our needs.
-
-Reported-by: Daniel Huhardeaux <tech@tootai.net>
-Closes: https://lore.kernel.org/netfilter/71be06b8-6aa0-4cf9-9e0b-e2839b01b22f@tootai.net/
-Fixes: 115e23ac78f8 ("netfilter: ip6tables: add REDIRECT target")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
+Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
+Reviewed by: Simon Ser <contact@emersion.fd>
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Link: https://patchwork.freedesktop.org/patch/msgid/1fac96f1-2f3f-f9f9-4eb0-340f27a8f6c0@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_nat_redirect.c | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_syncobj.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_nat_redirect.c b/net/netfilter/nf_nat_redirect.c
-index 6616ba5d0b049..5b37487d9d11f 100644
---- a/net/netfilter/nf_nat_redirect.c
-+++ b/net/netfilter/nf_nat_redirect.c
-@@ -80,6 +80,26 @@ EXPORT_SYMBOL_GPL(nf_nat_redirect_ipv4);
- 
- static const struct in6_addr loopback_addr = IN6ADDR_LOOPBACK_INIT;
- 
-+static bool nf_nat_redirect_ipv6_usable(const struct inet6_ifaddr *ifa, unsigned int scope)
-+{
-+	unsigned int ifa_addr_type = ipv6_addr_type(&ifa->addr);
-+
-+	if (ifa_addr_type & IPV6_ADDR_MAPPED)
-+		return false;
-+
-+	if ((ifa->flags & IFA_F_TENTATIVE) && (!(ifa->flags & IFA_F_OPTIMISTIC)))
-+		return false;
-+
-+	if (scope) {
-+		unsigned int ifa_scope = ifa_addr_type & IPV6_ADDR_SCOPE_MASK;
-+
-+		if (!(scope & ifa_scope))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- unsigned int
- nf_nat_redirect_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 		     unsigned int hooknum)
-@@ -89,14 +109,19 @@ nf_nat_redirect_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 	if (hooknum == NF_INET_LOCAL_OUT) {
- 		newdst.in6 = loopback_addr;
- 	} else {
-+		unsigned int scope = ipv6_addr_scope(&ipv6_hdr(skb)->daddr);
- 		struct inet6_dev *idev;
--		struct inet6_ifaddr *ifa;
- 		bool addr = false;
- 
- 		idev = __in6_dev_get(skb->dev);
- 		if (idev != NULL) {
-+			const struct inet6_ifaddr *ifa;
-+
- 			read_lock_bh(&idev->lock);
- 			list_for_each_entry(ifa, &idev->addr_list, if_list) {
-+				if (!nf_nat_redirect_ipv6_usable(ifa, scope))
-+					continue;
-+
- 				newdst.in6 = ifa->addr;
- 				addr = true;
- 				break;
+diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
+index e558381c4c96e..8b155e3377cfe 100644
+--- a/drivers/gpu/drm/drm_syncobj.c
++++ b/drivers/gpu/drm/drm_syncobj.c
+@@ -921,7 +921,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
+ 		fence = drm_syncobj_fence_get(syncobjs[i]);
+ 		if (!fence || dma_fence_chain_find_seqno(&fence, points[i])) {
+ 			dma_fence_put(fence);
+-			if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
++			if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
++				     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
+ 				continue;
+ 			} else {
+ 				timeout = -EINVAL;
 -- 
 2.42.0
 
