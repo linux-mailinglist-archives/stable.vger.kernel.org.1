@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04A177ECC66
+	by mail.lfdr.de (Postfix) with ESMTP id A1ECC7ECC67
 	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233936AbjKOTaK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59328 "EHLO
+        id S233940AbjKOTaL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233939AbjKOTaJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:09 -0500
+        with ESMTP id S233918AbjKOTaK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C6B130
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:06 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9BDC433C8;
-        Wed, 15 Nov 2023 19:30:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7714C9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CFDC433C7;
+        Wed, 15 Nov 2023 19:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076605;
-        bh=vSaNYjhgH+ybuevXhuDXiqx3yqUSqjbD2thZOhJK09c=;
+        s=korg; t=1700076607;
+        bh=+PEr+LndLYXOn2B3hbYAB2FLmKD1Y7E6BgB5p3ArbUg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H0P+U/Wc+10jPibVsvU3j+qouizUcAmjwwVKzWnEHbu/jz8yTA3knd6hDN8QJDURd
-         JJ4XgDVNKVKazTS5sF8Jcx2lKfD8dwDykIjzyfocJqWrtrSUZ0yRt7TxP3FX39X6R6
-         yq3hQCyi+h00kM7kKJRj6BJEOTz1pnZsy4j/rNlQ=
+        b=0yeDS8Se5/pGDfpeQ+ey618qLx3qhWMlpPdYRhervz6pLTHYogD1gjmfxGHYOfOsm
+         uDtFsI2iL7MIaWqsPA4z3s8IudGysiiIqAiYd19d0b/uTOvFvri3tqwy6eec6XZVvC
+         vNT6za80vMV/JtG8b66UYQoeB0/2EBPVgGmR+Cek=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 335/550] ASoC: fsl: mpc5200_dma.c: Fix warning of Function parameter or member not described
-Date:   Wed, 15 Nov 2023 14:15:19 -0500
-Message-ID: <20231115191623.989188347@linuxfoundation.org>
+        patches@lists.linux.dev, Aisheng Dong <aisheng.dong@nxp.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 336/550] backlight: pwm_bl: Disable PWM on shutdown, suspend and remove
+Date:   Wed, 15 Nov 2023 14:15:20 -0500
+Message-ID: <20231115191624.056264327@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -40,6 +41,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,42 +57,88 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 4a221b2e3340f4a3c2b414c46c846a26c6caf820 ]
+[ Upstream commit 40da4737717b252fd01d92ff38d3b95a491167cc ]
 
-This patch fixes the warnings of "Function parameter or member 'xxx'
-not described".
+Since commit 00e7e698bff1 ("backlight: pwm_bl: Configure pwm only once
+per backlight toggle") calling pwm_backlight_power_off() doesn't disable
+the PWM any more. However this is necessary to suspend because PWM
+drivers usually refuse to suspend if they are still enabled.
 
->> sound/soc/fsl/mpc5200_dma.c:116: warning: Function parameter or member 'component' not described in 'psc_dma_trigger'
-   sound/soc/fsl/mpc5200_dma.c:116: warning: Function parameter or member 'substream' not described in 'psc_dma_trigger'
-   sound/soc/fsl/mpc5200_dma.c:116: warning: Function parameter or member 'cmd' not described in 'psc_dma_trigger'
+Also adapt shutdown and remove callbacks to disable the PWM for similar
+reasons.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310061914.jJuekdHs-lkp@intel.com/
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Fixes: 6d1048bc1152 ("ASoC: fsl: mpc5200_dma: remove snd_pcm_ops")
-Link: https://lore.kernel.org/r/87il7fcqm8.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 00e7e698bff1 ("backlight: pwm_bl: Configure pwm only once per backlight toggle")
+Reported-by: Aisheng Dong <aisheng.dong@nxp.com>
+Tested-by: Aisheng Dong <aisheng.dong@nxp.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://lore.kernel.org/r/20231009093223.227286-1-u.kleine-koenig@pengutronix.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/mpc5200_dma.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/video/backlight/pwm_bl.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/sound/soc/fsl/mpc5200_dma.c b/sound/soc/fsl/mpc5200_dma.c
-index 9014978100207..3f7ccae3f6b1a 100644
---- a/sound/soc/fsl/mpc5200_dma.c
-+++ b/sound/soc/fsl/mpc5200_dma.c
-@@ -100,6 +100,9 @@ static irqreturn_t psc_dma_bcom_irq(int irq, void *_psc_dma_stream)
+diff --git a/drivers/video/backlight/pwm_bl.c b/drivers/video/backlight/pwm_bl.c
+index a51fbab963680..289bd9ce4d36d 100644
+--- a/drivers/video/backlight/pwm_bl.c
++++ b/drivers/video/backlight/pwm_bl.c
+@@ -626,9 +626,14 @@ static void pwm_backlight_remove(struct platform_device *pdev)
+ {
+ 	struct backlight_device *bl = platform_get_drvdata(pdev);
+ 	struct pwm_bl_data *pb = bl_get_data(bl);
++	struct pwm_state state;
  
- /**
-  * psc_dma_trigger: start and stop the DMA transfer.
-+ * @component: triggered component
-+ * @substream: triggered substream
-+ * @cmd: triggered command
-  *
-  * This function is called by ALSA to start, stop, pause, and resume the DMA
-  * transfer of data.
+ 	backlight_device_unregister(bl);
+ 	pwm_backlight_power_off(pb);
++	pwm_get_state(pb->pwm, &state);
++	state.duty_cycle = 0;
++	state.enabled = false;
++	pwm_apply_state(pb->pwm, &state);
+ 
+ 	if (pb->exit)
+ 		pb->exit(&pdev->dev);
+@@ -638,8 +643,13 @@ static void pwm_backlight_shutdown(struct platform_device *pdev)
+ {
+ 	struct backlight_device *bl = platform_get_drvdata(pdev);
+ 	struct pwm_bl_data *pb = bl_get_data(bl);
++	struct pwm_state state;
+ 
+ 	pwm_backlight_power_off(pb);
++	pwm_get_state(pb->pwm, &state);
++	state.duty_cycle = 0;
++	state.enabled = false;
++	pwm_apply_state(pb->pwm, &state);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+@@ -647,12 +657,24 @@ static int pwm_backlight_suspend(struct device *dev)
+ {
+ 	struct backlight_device *bl = dev_get_drvdata(dev);
+ 	struct pwm_bl_data *pb = bl_get_data(bl);
++	struct pwm_state state;
+ 
+ 	if (pb->notify)
+ 		pb->notify(pb->dev, 0);
+ 
+ 	pwm_backlight_power_off(pb);
+ 
++	/*
++	 * Note that disabling the PWM doesn't guarantee that the output stays
++	 * at its inactive state. However without the PWM disabled, the PWM
++	 * driver refuses to suspend. So disable here even though this might
++	 * enable the backlight on poorly designed boards.
++	 */
++	pwm_get_state(pb->pwm, &state);
++	state.duty_cycle = 0;
++	state.enabled = false;
++	pwm_apply_state(pb->pwm, &state);
++
+ 	if (pb->notify_after)
+ 		pb->notify_after(pb->dev, 0);
+ 
 -- 
 2.42.0
 
