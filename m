@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 825A97ED3DE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9687ED3DF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:55:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235041AbjKOUzH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:55:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41176 "EHLO
+        id S235045AbjKOUzI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:55:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235053AbjKOUzF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:55:05 -0500
+        with ESMTP id S235050AbjKOUzG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:55:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04C8C11D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:55:02 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D26C4E778;
-        Wed, 15 Nov 2023 20:55:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C21FB7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:55:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7604C4E777;
+        Wed, 15 Nov 2023 20:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081701;
-        bh=zUQ3+QZUVWyL3UM/4h5Y1qdpSmRdKaIAIBbdHtot2Sw=;
+        s=korg; t=1700081703;
+        bh=3E5Y/WsEn/o6vGQzRUG00z2+xN8W4GLrGQkJpaVXeT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vKOkic3yEEzNx18bM2qmR3acse7ufh2zFM5fokei75q1Qe3LPicTDdhGdHx+FcpiJ
-         Kib/pN2j0QzBVzz/Osn3ni9fBhJDqO/hgxmQX/QCZGwBmf57cf1DhvpS0/bvYULJaQ
-         5ZxAHzk1gzvpqGN2pjoyY6x8RKO86u15vJvltsXA=
+        b=o+W4c/cR4YksweUYDoh2uj0/jbEr1yhbOot+F3nBhmK7jOe57SH9qooAnD5yJIjzy
+         bcEOAfYxKH+U8ZfSQBmS3H2M2ob7L62QoIywKnpb9fIggY2DIWixwbaYaJuiwCvvxT
+         fCSdHu4daArUMzeQ5CBEw4ENUz+7Da8+UGS58+ho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Robert Foss <rfoss@kernel.org>,
         Sasha Levin <sashal@kernel.org>,
-        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Subject: [PATCH 5.10 071/191] drm/radeon: possible buffer overflow
-Date:   Wed, 15 Nov 2023 15:45:46 -0500
-Message-ID: <20231115204648.859741326@linuxfoundation.org>
+        Maxim Schwalm <maxim.schwalm@gmail.com>
+Subject: [PATCH 5.10 072/191] drm/bridge: tc358768: Fix use of uninitialized variable
+Date:   Wed, 15 Nov 2023 15:45:47 -0500
+Message-ID: <20231115204648.922214043@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -56,45 +57,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit dd05484f99d16715a88eedfca363828ef9a4c2d4 ]
+[ Upstream commit a2d9036615f0adfa5b0a46bb2ce42ef1d9a04fbe ]
 
-Buffer 'afmt_status' of size 6 could overflow, since index 'afmt_idx' is
-checked after access.
+smatch reports:
 
-Fixes: 5cc4e5fc293b ("drm/radeon: Cleanup HDMI audio interrupt handling for evergreen")
-Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+drivers/gpu/drm/bridge/tc358768.c:223 tc358768_update_bits() error: uninitialized symbol 'orig'.
+
+Fix this by bailing out from tc358768_update_bits() if the
+tc358768_read() produces an error.
+
+Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
+Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
+Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-2-31725f008a50@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/evergreen.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/tc358768.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/radeon/evergreen.c b/drivers/gpu/drm/radeon/evergreen.c
-index 14d90dc376e71..061ef6c008592 100644
---- a/drivers/gpu/drm/radeon/evergreen.c
-+++ b/drivers/gpu/drm/radeon/evergreen.c
-@@ -4819,14 +4819,15 @@ int evergreen_irq_process(struct radeon_device *rdev)
- 			break;
- 		case 44: /* hdmi */
- 			afmt_idx = src_data;
--			if (!(afmt_status[afmt_idx] & AFMT_AZ_FORMAT_WTRIG))
--				DRM_DEBUG("IH: IH event w/o asserted irq bit?\n");
--
- 			if (afmt_idx > 5) {
- 				DRM_ERROR("Unhandled interrupt: %d %d\n",
- 					  src_id, src_data);
- 				break;
- 			}
+diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
+index b4a69b2104514..a5e7afa5e6275 100644
+--- a/drivers/gpu/drm/bridge/tc358768.c
++++ b/drivers/gpu/drm/bridge/tc358768.c
+@@ -217,6 +217,10 @@ static void tc358768_update_bits(struct tc358768_priv *priv, u32 reg, u32 mask,
+ 	u32 tmp, orig;
+ 
+ 	tc358768_read(priv, reg, &orig);
 +
-+			if (!(afmt_status[afmt_idx] & AFMT_AZ_FORMAT_WTRIG))
-+				DRM_DEBUG("IH: IH event w/o asserted irq bit?\n");
++	if (priv->error)
++		return;
 +
- 			afmt_status[afmt_idx] &= ~AFMT_AZ_FORMAT_WTRIG;
- 			queue_hdmi = true;
- 			DRM_DEBUG("IH: HDMI%d\n", afmt_idx + 1);
+ 	tmp = orig & ~mask;
+ 	tmp |= val & mask;
+ 	if (tmp != orig)
 -- 
 2.42.0
 
