@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2C5D7ECD3F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 402967ECF93
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234396AbjKOTfT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44546 "EHLO
+        id S235353AbjKOTtY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234404AbjKOTfT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:19 -0500
+        with ESMTP id S235357AbjKOTtX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A9E130
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB85AC433CB;
-        Wed, 15 Nov 2023 19:35:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE2E612C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326F9C433CA;
+        Wed, 15 Nov 2023 19:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076915;
-        bh=hIgM5YpSxYnYCGRDlrI2I99J7bRoqIjhYHyyE4Bos+U=;
+        s=korg; t=1700077759;
+        bh=727VTOS0kx8bbtt5RVTJzG8AywArWKjPKSqa5lqH8qo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FpG+IiFRFeGYqoJcSQqpiPaWPm5IuQf197eeNoE8MQYWFPC+0AN0klvbqAMYb8kow
-         3q1uO1PudrCzJhPVeYzV9Q2LfBnNf9rrPqj2aSJsT1CqZ61A4B3HkzzmQjMTcjEx+r
-         5UJgZQABpShhXvO945rq42YmuznZXi/DEKLBHAOE=
+        b=elS6bajypsYqmTeTMDma0KaXG/MpuTt6NhDbYgZAXI7syoZNB6HTzAsBQtd8ahuRD
+         BEapAhtF1x4t2S/LIcYqii5rFUubnonNacaHCKq7tDPfNZupahXrPl7llH76yTmNjU
+         TbKtoHpiVKjeQbD7u/Cix03Ao/mgd/MUhi340WL8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alison Schofield <alison.schofield@intel.com>,
+        patches@lists.linux.dev, Robert Richter <rrichter@amd.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 462/550] cxl/region: Calculate a target position in a region interleave
-Date:   Wed, 15 Nov 2023 14:17:26 -0500
-Message-ID: <20231115191632.894664523@linuxfoundation.org>
+Subject: [PATCH 6.6 502/603] cxl/port: Fix @host confusion in cxl_dport_setup_regs()
+Date:   Wed, 15 Nov 2023 14:17:27 -0500
+Message-ID: <20231115191646.951259757@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,198 +51,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit a3e00c964fb943934af916f48f0dd43b5110c866 ]
+[ Upstream commit 33d9c987bf8fb68a9292aba7cc4b1711fcb1be4d ]
 
-Introduce a calculation to find a target's position in a region
-interleave. Perform a self-test of the calculation on user-defined
-regions.
+commit 5d2ffbe4b81a ("cxl/port: Store the downstream port's Component Register mappings in struct cxl_dport")
 
-The region driver uses the kernel sort() function to put region
-targets in relative order. Positions are assigned based on each
-target's index in that sorted list. That relative sort doesn't
-consider the offset of a port into its parent port which causes
-some auto-discovered regions to fail creation. In one failure case,
-a 2 + 2 config (2 host bridges each with 2 endpoints), the sort
-puts all the targets of one port ahead of another port when they
-were expected to be interleaved.
+...moved the dport component registers from a raw component_reg_phys
+passed in at dport instantiation time to a 'struct cxl_register_map'
+populated with both the component register data *and* the "host" device
+for mapping operations.
 
-In preparation for repairing the autodiscovery region assembly,
-introduce a new method for discovering a target position in the
-region interleave.
+While typical CXL switch dports are mapped by their associated 'struct
+cxl_port', an RCH host bridge dport registered by cxl_acpi needs to wait
+until the cxl_mem driver makes the attachment to map the registers. This
+is because there are no intervening 'struct cxl_port' instances between
+the root cxl_port and the endpoint port in an RCH topology.
 
-cxl_calc_interleave_pos() adds a method to find the target position by
-ascending from an endpoint to a root decoder. The calculation starts
-with the endpoint's local position and position in the parent port. It
-traverses towards the root decoder and examines both position and ways
-in order to allow the position to be refined all the way to the root
-decoder.
+For now just mark the host as NULL in the RCH dport case until code that
+needs to map the dport registers arrives.
 
-This calculation: position = position * parent_ways + parent_pos;
-applied iteratively yields the correct position.
+This patch is not flagged for -stable since nothing in the current
+driver uses the dport->comp_map.
 
-Include a self-test that exercises this new position calculation against
-every successfully configured user-defined region.
+Now, I am slightly uneasy that cxl_setup_comp_regs() sets map->host to a
+wrong value and then cxl_dport_setup_regs() fixes it up, but the
+alternatives I came up with are more messy. For example, adding an
+@logdev to 'struct cxl_register_map' that the dev_printk()s can fall
+back to when @host is NULL. I settled on "post-fixup+comment" since it
+is only RCH dports that have this special case where register probing is
+split between a host-bridge RCRB lookup and when cxl_mem_probe() does
+the association of the cxl_memdev and endpoint port.
 
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://lore.kernel.org/r/0ac32c75cf81dd8b86bf07d70ff139d33c2300bc.1698263080.git.alison.schofield@intel.com
+[moved rename of @comp_map to @reg_map into next patch]
+
+Fixes: 5d2ffbe4b81a ("cxl/port: Store the downstream port's Component Register mappings in struct cxl_dport")
+Signed-off-by: Robert Richter <rrichter@amd.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lore.kernel.org/r/20231018171713.1883517-4-rrichter@amd.com
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 0cf36a85c140 ("cxl/region: Use cxl_calc_interleave_pos() for auto-discovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 127 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 127 insertions(+)
+ drivers/cxl/core/port.c | 43 +++++++++++++++++++++++++++++------------
+ 1 file changed, 31 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 123474d6c475a..01210e45a21ff 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1498,6 +1498,113 @@ static int match_switch_decoder_by_range(struct device *dev, void *data)
- 	return (r1->start == r2->start && r1->end == r2->end);
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index c24cfe2271948..2c6001592fe20 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -722,13 +722,23 @@ static int cxl_port_setup_regs(struct cxl_port *port,
+ 				   component_reg_phys);
  }
  
-+static int find_pos_and_ways(struct cxl_port *port, struct range *range,
-+			     int *pos, int *ways)
-+{
-+	struct cxl_switch_decoder *cxlsd;
-+	struct cxl_port *parent;
-+	struct device *dev;
-+	int rc = -ENXIO;
-+
-+	parent = next_port(port);
-+	if (!parent)
-+		return rc;
-+
-+	dev = device_find_child(&parent->dev, range,
-+				match_switch_decoder_by_range);
-+	if (!dev) {
-+		dev_err(port->uport_dev,
-+			"failed to find decoder mapping %#llx-%#llx\n",
-+			range->start, range->end);
-+		return rc;
-+	}
-+	cxlsd = to_cxl_switch_decoder(dev);
-+	*ways = cxlsd->cxld.interleave_ways;
-+
-+	for (int i = 0; i < *ways; i++) {
-+		if (cxlsd->target[i] == port->parent_dport) {
-+			*pos = i;
-+			rc = 0;
-+			break;
-+		}
-+	}
-+	put_device(dev);
-+
-+	return rc;
-+}
-+
-+/**
-+ * cxl_calc_interleave_pos() - calculate an endpoint position in a region
-+ * @cxled: endpoint decoder member of given region
-+ *
-+ * The endpoint position is calculated by traversing the topology from
-+ * the endpoint to the root decoder and iteratively applying this
-+ * calculation:
-+ *
-+ *    position = position * parent_ways + parent_pos;
-+ *
-+ * ...where @position is inferred from switch and root decoder target lists.
-+ *
-+ * Return: position >= 0 on success
-+ *	   -ENXIO on failure
-+ */
-+static int cxl_calc_interleave_pos(struct cxl_endpoint_decoder *cxled)
-+{
-+	struct cxl_port *iter, *port = cxled_to_port(cxled);
-+	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-+	struct range *range = &cxled->cxld.hpa_range;
-+	int parent_ways = 0, parent_pos = 0, pos = 0;
+-static int cxl_dport_setup_regs(struct cxl_dport *dport,
++static int cxl_dport_setup_regs(struct device *host, struct cxl_dport *dport,
+ 				resource_size_t component_reg_phys)
+ {
 +	int rc;
 +
+ 	if (dev_is_platform(dport->dport_dev))
+ 		return 0;
+-	return cxl_setup_comp_regs(dport->dport_dev, &dport->comp_map,
+-				   component_reg_phys);
++
 +	/*
-+	 * Example: the expected interleave order of the 4-way region shown
-+	 * below is: mem0, mem2, mem1, mem3
-+	 *
-+	 *		  root_port
-+	 *                 /      \
-+	 *      host_bridge_0    host_bridge_1
-+	 *        |    |           |    |
-+	 *       mem0 mem1        mem2 mem3
-+	 *
-+	 * In the example the calculator will iterate twice. The first iteration
-+	 * uses the mem position in the host-bridge and the ways of the host-
-+	 * bridge to generate the first, or local, position. The second
-+	 * iteration uses the host-bridge position in the root_port and the ways
-+	 * of the root_port to refine the position.
-+	 *
-+	 * A trace of the calculation per endpoint looks like this:
-+	 * mem0: pos = 0 * 2 + 0    mem2: pos = 0 * 2 + 0
-+	 *       pos = 0 * 2 + 0          pos = 0 * 2 + 1
-+	 *       pos: 0                   pos: 1
-+	 *
-+	 * mem1: pos = 0 * 2 + 1    mem3: pos = 0 * 2 + 1
-+	 *       pos = 1 * 2 + 0          pos = 1 * 2 + 1
-+	 *       pos: 2                   pos = 3
-+	 *
-+	 * Note that while this example is simple, the method applies to more
-+	 * complex topologies, including those with switches.
++	 * use @dport->dport_dev for the context for error messages during
++	 * register probing, and fixup @host after the fact, since @host may be
++	 * NULL.
 +	 */
++	rc = cxl_setup_comp_regs(dport->dport_dev, &dport->comp_map,
++				 component_reg_phys);
++	dport->comp_map.host = host;
++	return rc;
+ }
+ 
+ static struct cxl_port *__devm_cxl_add_port(struct device *host,
+@@ -989,7 +999,16 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
+ 	if (!dport)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	if (rcrb != CXL_RESOURCE_NONE) {
++	dport->dport_dev = dport_dev;
++	dport->port_id = port_id;
++	dport->port = port;
 +
-+	/* Iterate from endpoint to root_port refining the position */
-+	for (iter = port; iter; iter = next_port(iter)) {
-+		if (is_cxl_root(iter))
-+			break;
-+
-+		rc = find_pos_and_ways(iter, range, &parent_pos, &parent_ways);
++	if (rcrb == CXL_RESOURCE_NONE) {
++		rc = cxl_dport_setup_regs(&port->dev, dport,
++					  component_reg_phys);
 +		if (rc)
-+			return rc;
-+
-+		pos = pos * parent_ways + parent_pos;
-+	}
-+
-+	dev_dbg(&cxlmd->dev,
-+		"decoder:%s parent:%s port:%s range:%#llx-%#llx pos:%d\n",
-+		dev_name(&cxled->cxld.dev), dev_name(cxlmd->dev.parent),
-+		dev_name(&port->dev), range->start, range->end, pos);
-+
-+	return pos;
-+}
-+
- static void find_positions(const struct cxl_switch_decoder *cxlsd,
- 			   const struct cxl_port *iter_a,
- 			   const struct cxl_port *iter_b, int *a_pos,
-@@ -1761,6 +1868,26 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		.end = p->res->end,
- 	};
++			return ERR_PTR(rc);
++	} else {
+ 		dport->rcrb.base = rcrb;
+ 		component_reg_phys = __rcrb_to_component(dport_dev, &dport->rcrb,
+ 							 CXL_RCRB_DOWNSTREAM);
+@@ -998,6 +1017,14 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
+ 			return ERR_PTR(-ENXIO);
+ 		}
  
-+	if (p->nr_targets != p->interleave_ways)
-+		return 0;
++		/*
++		 * RCH @dport is not ready to map until associated with its
++		 * memdev
++		 */
++		rc = cxl_dport_setup_regs(NULL, dport, component_reg_phys);
++		if (rc)
++			return ERR_PTR(rc);
 +
-+	/*
-+	 * Test the auto-discovery position calculator function
-+	 * against this successfully created user-defined region.
-+	 * A fail message here means that this interleave config
-+	 * will fail when presented as CXL_REGION_F_AUTO.
-+	 */
-+	for (int i = 0; i < p->nr_targets; i++) {
-+		struct cxl_endpoint_decoder *cxled = p->targets[i];
-+		int test_pos;
-+
-+		test_pos = cxl_calc_interleave_pos(cxled);
-+		dev_dbg(&cxled->cxld.dev,
-+			"Test cxl_calc_interleave_pos(): %s test_pos:%d cxled->pos:%d\n",
-+			(test_pos == cxled->pos) ? "success" : "fail",
-+			test_pos, cxled->pos);
-+	}
-+
- 	return 0;
+ 		dport->rch = true;
+ 	}
  
- err_decrement:
+@@ -1005,14 +1032,6 @@ __devm_cxl_add_dport(struct cxl_port *port, struct device *dport_dev,
+ 		dev_dbg(dport_dev, "Component Registers found for dport: %pa\n",
+ 			&component_reg_phys);
+ 
+-	dport->dport_dev = dport_dev;
+-	dport->port_id = port_id;
+-	dport->port = port;
+-
+-	rc = cxl_dport_setup_regs(dport, component_reg_phys);
+-	if (rc)
+-		return ERR_PTR(rc);
+-
+ 	cond_cxl_root_lock(port);
+ 	rc = add_dport(port, dport);
+ 	cond_cxl_root_unlock(port);
 -- 
 2.42.0
 
