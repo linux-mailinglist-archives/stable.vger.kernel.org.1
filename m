@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C937ECD4C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1FBF7ECB4C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234426AbjKOTfl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49880 "EHLO
+        id S232902AbjKOTVh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59324 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234440AbjKOTfj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:39 -0500
+        with ESMTP id S232844AbjKOTVW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:22 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2947019E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F0CC433C8;
-        Wed, 15 Nov 2023 19:35:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0112ED4A
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:17 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E35C433C7;
+        Wed, 15 Nov 2023 19:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076935;
-        bh=xNphWY4pnYBG6cOvTHL/NQlB9y719hbvUUH1ZATFHw0=;
+        s=korg; t=1700076077;
+        bh=y9DmejM8tT3Ne9GDbNhqORxDf6w6LFRQZtxg12V57mc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tcnnJfdE91a56jCsQTMnCwfQdg/fQgkVQMX6FBzXzAyQJLREOIqD/otA/Oog3npDW
-         GQFK4NrksTxei26SfGPD18yVlIAnIoeNJTx7r7ain8R6o6y2l9aOaZ8LmPAtlZJw0P
-         Pmr7SuViybpirZAeGVhvrmJxcXOGKs46A786NJJ0=
+        b=xSPNZ0jg3eO4JemGilYkL1lf06KfoUVsNJ7OQJHKgDY4atxJpj2FwUlIikm/SpYJP
+         He4CoVmSJYmC2QoYiqnlffptiOa41kAAM1VMZEyCjHr8Vb6rZ41eKGV/MlVMp+B+m0
+         oq40NU/mxiS/xj6O9+5hsVa8lLI/zXQA9XBcN69o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/603] wifi: rtw88: debug: Fix the NULL vs IS_ERR() bug for debugfs_create_file()
-Date:   Wed, 15 Nov 2023 14:10:18 -0500
-Message-ID: <20231115191618.160955591@linuxfoundation.org>
+        patches@lists.linux.dev, Wendy Wang <wendy.wang@intel.com>,
+        Chen Yu <yu.c.chen@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 035/550] genirq/matrix: Exclude managed interrupts in irq_matrix_allocated()
+Date:   Wed, 15 Nov 2023 14:10:19 -0500
+Message-ID: <20231115191603.142484607@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +51,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit 74f7957c9b1b95553faaf146a2553e023a9d1720 ]
+[ Upstream commit a0b0bad10587ae2948a7c36ca4ffc206007fbcf3 ]
 
-Since debugfs_create_file() return ERR_PTR and never return NULL, so use
-IS_ERR() to check it instead of checking NULL.
+When a CPU is about to be offlined, x86 validates that all active
+interrupts which are targeted to this CPU can be migrated to the remaining
+online CPUs. If not, the offline operation is aborted.
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230919050651.962694-1-ruanjinjie@huawei.com
+The validation uses irq_matrix_allocated() to retrieve the number of
+vectors which are allocated on the outgoing CPU. The returned number of
+allocated vectors includes also vectors which are associated to managed
+interrupts.
+
+That's overaccounting because managed interrupts are:
+
+  - not migrated when the affinity mask of the interrupt targets only
+    the outgoing CPU
+
+  - migrated to another CPU, but in that case the vector is already
+    pre-allocated on the potential target CPUs and must not be taken into
+    account.
+
+As a consequence the check whether the remaining online CPUs have enough
+capacity for migrating the allocated vectors from the outgoing CPU might
+fail incorrectly.
+
+Let irq_matrix_allocated() return only the number of allocated non-managed
+interrupts to make this validation check correct.
+
+[ tglx: Amend changelog and fixup kernel-doc comment ]
+
+Fixes: 2f75d9e1c905 ("genirq: Implement bitmap matrix allocator")
+Reported-by: Wendy Wang <wendy.wang@intel.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231020072522.557846-1-yu.c.chen@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/irq/matrix.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index f8ba133baff06..35bc37a3c469d 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -1233,9 +1233,9 @@ static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
- #define rtw_debugfs_add_core(name, mode, fopname, parent)		\
- 	do {								\
- 		rtw_debug_priv_ ##name.rtwdev = rtwdev;			\
--		if (!debugfs_create_file(#name, mode,			\
-+		if (IS_ERR(debugfs_create_file(#name, mode,		\
- 					 parent, &rtw_debug_priv_ ##name,\
--					 &file_ops_ ##fopname))		\
-+					 &file_ops_ ##fopname)))	\
- 			pr_debug("Unable to initialize debugfs:%s\n",	\
- 			       #name);					\
- 	} while (0)
+diff --git a/kernel/irq/matrix.c b/kernel/irq/matrix.c
+index 1698e77645acf..75d0ae490e29c 100644
+--- a/kernel/irq/matrix.c
++++ b/kernel/irq/matrix.c
+@@ -466,16 +466,16 @@ unsigned int irq_matrix_reserved(struct irq_matrix *m)
+ }
+ 
+ /**
+- * irq_matrix_allocated - Get the number of allocated irqs on the local cpu
++ * irq_matrix_allocated - Get the number of allocated non-managed irqs on the local CPU
+  * @m:		Pointer to the matrix to search
+  *
+- * This returns number of allocated irqs
++ * This returns number of allocated non-managed interrupts.
+  */
+ unsigned int irq_matrix_allocated(struct irq_matrix *m)
+ {
+ 	struct cpumap *cm = this_cpu_ptr(m->maps);
+ 
+-	return cm->allocated;
++	return cm->allocated - cm->managed_allocated;
+ }
+ 
+ #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
 -- 
 2.42.0
 
