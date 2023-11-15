@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F0457ECD4D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6A207ECF9C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234431AbjKOTfn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49880 "EHLO
+        id S235364AbjKOTtf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234466AbjKOTfk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:40 -0500
+        with ESMTP id S235362AbjKOTtf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:35 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D51A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19097C433CB;
-        Wed, 15 Nov 2023 19:35:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5D3BB8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EFBC433C8;
+        Wed, 15 Nov 2023 19:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076937;
-        bh=pKh2wC9R5ZjTzbzpfGes6RWw2IWzBZnUzhBzV3+TMjI=;
+        s=korg; t=1700077771;
+        bh=oF5TE4kTv5qriQGwsKG+4GK2fGCx30DBLxloLAkmV6Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MezefZHd904Wfz1VSB4E8yr3ecdaDqXFxw959wYw+tIRo3+J0F2jNNwOTTP7NLP2U
-         VRuo7XMW2VHIN0VlasNyhZhHeW1tkUOUHxNrMVz58Z7gN5nk8rkDUiLke9nr7V1/L9
-         c/5qXeAoCW40wNoPddH+mxUAl0sq7ftSwXPEIxvM=
+        b=OSw3QYoHtlOIBWvVpP9A2KNdYBp/9wbkeFzhG2SjYMRTfjN3YgY+7niVFEtLH1sll
+         dyf54isMrONq35nAeJaX0arOXqvibOz6mWsDFKVxPDBxQ0yEgERrmgPPVpYivrr2m1
+         LqAjAyp9DwPO9JbckwHoufs82VsPIhUShcqENIlg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 470/550] pcmcia: ds: fix possible name leak in error path in pcmcia_device_add()
+Subject: [PATCH 6.6 509/603] media: verisilicon: Do not enable G2 postproc downscale if source is narrower than destination
 Date:   Wed, 15 Nov 2023 14:17:34 -0500
-Message-ID: <20231115191633.454082448@linuxfoundation.org>
+Message-ID: <20231115191647.363366205@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +51,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 99e1241049a92dd3e9a90a0f91e32ce390133278 ]
+[ Upstream commit 6e481d52d363218a3e6feb31694da74b38b30fad ]
 
-Afer commit 1fa5ae857bb1 ("driver core: get rid of struct device's
-bus_id string array"), the name of device is allocated dynamically.
-Therefore, it needs to be freed, which is done by the driver core for
-us once all references to the device are gone. Therefore, move the
-dev_set_name() call immediately before the call device_register(), which
-either succeeds (then the freeing will be done upon subsequent remvoal),
-or puts the reference in the error call. Also, it is not unusual that the
-return value of dev_set_name is not checked.
+In case of encoded input VP9 data width that is not multiple of macroblock
+size, which is 16 (e.g. 1080x1920 frames, where 1080 is multiple of 8), the
+width is padded to be a multiple of macroblock size (for 1080x1920 frames,
+that is 1088x1920).
 
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-[linux@dominikbrodowski.net: simplification, commit message modified]
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+The hantro_postproc_g2_enable() checks whether the encoded data width is
+equal to decoded frame width, and if not, enables down-scale mode. For a
+frame where input is 1080x1920 and output is 1088x1920, this is incorrect
+as no down-scale happens, the frame is only padded. Enabling the down-scale
+mode in this case results in corrupted frames.
+
+Fix this by adjusting the check to test whether encoded data width is
+greater than decoded frame width, and only in that case enable the
+down-scale mode.
+
+To generate input test data to trigger this bug, use e.g.:
+$ gst-launch-1.0 videotestsrc ! video/x-raw,width=272,height=256,format=I420 ! \
+                 vp9enc ! matroskamux ! filesink location=/tmp/test.vp9
+To trigger the bug upon decoding (note that the NV12 must be forced, as
+that assures the output data would pass the G2 postproc):
+$ gst-launch-1.0 filesrc location=/tmp/test.vp9 ! matroskademux ! vp9parse ! \
+                 v4l2slvp9dec ! video/x-raw,format=NV12 ! videoconvert ! fbdevsink
+
+Fixes: 79c987de8b35 ("media: hantro: Use post processor scaling capacities")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/ds.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/platform/verisilicon/hantro_postproc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pcmcia/ds.c b/drivers/pcmcia/ds.c
-index c90c68dee1e45..b4b8363d1de21 100644
---- a/drivers/pcmcia/ds.c
-+++ b/drivers/pcmcia/ds.c
-@@ -513,9 +513,6 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
- 	/* by default don't allow DMA */
- 	p_dev->dma_mask = 0;
- 	p_dev->dev.dma_mask = &p_dev->dma_mask;
--	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
--	if (!dev_name(&p_dev->dev))
--		goto err_free;
- 	p_dev->devname = kasprintf(GFP_KERNEL, "pcmcia%s", dev_name(&p_dev->dev));
- 	if (!p_dev->devname)
- 		goto err_free;
-@@ -573,6 +570,7 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
+diff --git a/drivers/media/platform/verisilicon/hantro_postproc.c b/drivers/media/platform/verisilicon/hantro_postproc.c
+index 0224ff68ab3fc..64d6fb852ae9b 100644
+--- a/drivers/media/platform/verisilicon/hantro_postproc.c
++++ b/drivers/media/platform/verisilicon/hantro_postproc.c
+@@ -107,7 +107,7 @@ static void hantro_postproc_g1_enable(struct hantro_ctx *ctx)
  
- 	pcmcia_device_query(p_dev);
+ static int down_scale_factor(struct hantro_ctx *ctx)
+ {
+-	if (ctx->src_fmt.width == ctx->dst_fmt.width)
++	if (ctx->src_fmt.width <= ctx->dst_fmt.width)
+ 		return 0;
  
-+	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
- 	if (device_register(&p_dev->dev)) {
- 		mutex_lock(&s->ops_mutex);
- 		list_del(&p_dev->socket_device_list);
+ 	return DIV_ROUND_CLOSEST(ctx->src_fmt.width, ctx->dst_fmt.width);
 -- 
 2.42.0
 
