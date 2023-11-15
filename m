@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A136A7ECD44
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FC767ECB16
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234416AbjKOTf1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58006 "EHLO
+        id S229630AbjKOTUE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:20:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234404AbjKOTf1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:27 -0500
+        with ESMTP id S229531AbjKOTUD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 584AB9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D281FC433C9;
-        Wed, 15 Nov 2023 19:35:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 556A9A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:19:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB1AC433C8;
+        Wed, 15 Nov 2023 19:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076923;
-        bh=Z1gXX4IisZDWAO4QkV4Z9RdZNXG1KLy1aIH8xmvo3HY=;
+        s=korg; t=1700075999;
+        bh=L75SWlQBSMBPztsQeotk7+nraBMyr6HBlkshToP56eA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pUbdA9Nx5LOrlrwL3MOB5Q87mesob4oP8onkWuXJ8AzwkpmW2a86SPfxcglFPblOc
-         cB168EFdhCJ9LACjRz2lvKCxuLZMTjP+KPlWMIQLC29DC6Y/bTiMaqqtSTJGW7P7Wi
-         +cLplY6LgH+EVQmfTTLhYmJYe61DbhfNzpjirSP4=
+        b=CoxinjcZBZkvw2Io3lRzMllvjzbdUfwxMVW/QpNzqOb4Y53nhyhAJ63HpNfvDp8pn
+         eYLrc5/0UYqr2wE3I/1ymHxq+9uTIz6JppjctdFG3UabVMid3FF1XT9DtZz7Wu1zz1
+         Y492JDbTH1bwO296lSTlrWW2dGv58i4X6qt8nIKQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Leon Hwang <hffilwlqm@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/603] bpf, x64: Fix tailcall infinite loop
+Subject: [PATCH 6.5 011/550] nfsd: Handle EOPENSTALE correctly in the filecache
 Date:   Wed, 15 Nov 2023 14:09:55 -0500
-Message-ID: <20231115191616.618205764@linuxfoundation.org>
+Message-ID: <20231115191601.496725932@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,169 +52,233 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <hffilwlqm@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 2b5dcb31a19a2e0acd869b12c9db9b2d696ef544 ]
+[ Upstream commit d59b3515ab021e010fdc58a8f445ea62dd2f7f4c ]
 
->From commit ebf7d1f508a73871 ("bpf, x64: rework pro/epilogue and tailcall
-handling in JIT"), the tailcall on x64 works better than before.
+The nfsd_open code handles EOPENSTALE correctly, by retrying the call to
+fh_verify() and __nfsd_open(). However the filecache just drops the
+error on the floor, and immediately returns nfserr_stale to the caller.
 
->From commit e411901c0b775a3a ("bpf: allow for tailcalls in BPF subprograms
-for x64 JIT"), tailcall is able to run in BPF subprograms on x64.
+This patch ensures that we propagate the EOPENSTALE code back to
+nfsd_file_do_acquire, and that we handle it correctly.
 
->From commit 5b92a28aae4dd0f8 ("bpf: Support attaching tracing BPF program
-to other BPF programs"), BPF program is able to trace other BPF programs.
-
-How about combining them all together?
-
-1. FENTRY/FEXIT on a BPF subprogram.
-2. A tailcall runs in the BPF subprogram.
-3. The tailcall calls the subprogram's caller.
-
-As a result, a tailcall infinite loop comes up. And the loop would halt
-the machine.
-
-As we know, in tail call context, the tail_call_cnt propagates by stack
-and rax register between BPF subprograms. So do in trampolines.
-
-Fixes: ebf7d1f508a7 ("bpf, x64: rework pro/epilogue and tailcall handling in JIT")
-Fixes: e411901c0b77 ("bpf: allow for tailcalls in BPF subprograms for x64 JIT")
-Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Leon Hwang <hffilwlqm@gmail.com>
-Link: https://lore.kernel.org/r/20230912150442.2009-3-hffilwlqm@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 65294c1f2c5e ("nfsd: add a new struct file caching facility to nfsd")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Message-Id: <20230911183027.11372-1-trond.myklebust@hammerspace.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/net/bpf_jit_comp.c | 28 ++++++++++++++++++++++------
- include/linux/bpf.h         |  5 +++++
- kernel/bpf/trampoline.c     |  4 ++--
- kernel/bpf/verifier.c       |  3 +++
- 4 files changed, 32 insertions(+), 8 deletions(-)
+ fs/nfsd/filecache.c | 27 +++++++++++++++++++--------
+ fs/nfsd/vfs.c       | 28 +++++++++++++---------------
+ fs/nfsd/vfs.h       |  4 ++--
+ 3 files changed, 34 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index a5930042139d3..52f36c48c1b9e 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -1018,6 +1018,10 @@ static void emit_shiftx(u8 **pprog, u32 dst_reg, u8 src_reg, bool is64, u8 op)
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index ee9c923192e08..07bf219f9ae48 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -989,22 +989,21 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 	unsigned char need = may_flags & NFSD_FILE_MAY_MASK;
+ 	struct net *net = SVC_NET(rqstp);
+ 	struct nfsd_file *new, *nf;
+-	const struct cred *cred;
++	bool stale_retry = true;
+ 	bool open_retry = true;
+ 	struct inode *inode;
+ 	__be32 status;
+ 	int ret;
  
- #define INSN_SZ_DIFF (((addrs[i] - addrs[i - 1]) - (prog - temp)))
++retry:
+ 	status = fh_verify(rqstp, fhp, S_IFREG,
+ 				may_flags|NFSD_MAY_OWNER_OVERRIDE);
+ 	if (status != nfs_ok)
+ 		return status;
+ 	inode = d_inode(fhp->fh_dentry);
+-	cred = get_current_cred();
  
-+/* mov rax, qword ptr [rbp - rounded_stack_depth - 8] */
-+#define RESTORE_TAIL_CALL_CNT(stack)				\
-+	EMIT3_off32(0x48, 0x8B, 0x85, -round_up(stack, 8) - 8)
-+
- static int do_jit(struct bpf_prog *bpf_prog, int *addrs, u8 *image, u8 *rw_image,
- 		  int oldproglen, struct jit_context *ctx, bool jmp_padding)
- {
-@@ -1623,9 +1627,7 @@ st:			if (is_imm8(insn->off))
+-retry:
+ 	rcu_read_lock();
+-	nf = nfsd_file_lookup_locked(net, cred, inode, need, want_gc);
++	nf = nfsd_file_lookup_locked(net, current_cred(), inode, need, want_gc);
+ 	rcu_read_unlock();
  
- 			func = (u8 *) __bpf_call_base + imm32;
- 			if (tail_call_reachable) {
--				/* mov rax, qword ptr [rbp - rounded_stack_depth - 8] */
--				EMIT3_off32(0x48, 0x8B, 0x85,
--					    -round_up(bpf_prog->aux->stack_depth, 8) - 8);
-+				RESTORE_TAIL_CALL_CNT(bpf_prog->aux->stack_depth);
- 				if (!imm32)
- 					return -EINVAL;
- 				offs = 7 + x86_call_depth_emit_accounting(&prog, func);
-@@ -2400,6 +2402,7 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image, void *i
- 	 *                     [ ...        ]
- 	 *                     [ stack_arg2 ]
- 	 * RBP - arg_stack_off [ stack_arg1 ]
-+	 * RSP                 [ tail_call_cnt ] BPF_TRAMP_F_TAIL_CALL_CTX
- 	 */
+ 	if (nf) {
+@@ -1026,7 +1025,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
  
- 	/* room for return value of orig_call or fentry prog */
-@@ -2464,6 +2467,8 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image, void *i
- 	else
- 		/* sub rsp, stack_size */
- 		EMIT4(0x48, 0x83, 0xEC, stack_size);
-+	if (flags & BPF_TRAMP_F_TAIL_CALL_CTX)
-+		EMIT1(0x50);		/* push rax */
- 	/* mov QWORD PTR [rbp - rbx_off], rbx */
- 	emit_stx(&prog, BPF_DW, BPF_REG_FP, BPF_REG_6, -rbx_off);
- 
-@@ -2516,9 +2521,15 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image, void *i
- 		restore_regs(m, &prog, regs_off);
- 		save_args(m, &prog, arg_stack_off, true);
- 
-+		if (flags & BPF_TRAMP_F_TAIL_CALL_CTX)
-+			/* Before calling the original function, restore the
-+			 * tail_call_cnt from stack to rax.
-+			 */
-+			RESTORE_TAIL_CALL_CNT(stack_size);
-+
- 		if (flags & BPF_TRAMP_F_ORIG_STACK) {
--			emit_ldx(&prog, BPF_DW, BPF_REG_0, BPF_REG_FP, 8);
--			EMIT2(0xff, 0xd0); /* call *rax */
-+			emit_ldx(&prog, BPF_DW, BPF_REG_6, BPF_REG_FP, 8);
-+			EMIT2(0xff, 0xd3); /* call *rbx */
- 		} else {
- 			/* call original function */
- 			if (emit_rsb_call(&prog, orig_call, prog)) {
-@@ -2569,7 +2580,12 @@ int arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *image, void *i
- 			ret = -EINVAL;
- 			goto cleanup;
+ 	rcu_read_lock();
+ 	spin_lock(&inode->i_lock);
+-	nf = nfsd_file_lookup_locked(net, cred, inode, need, want_gc);
++	nf = nfsd_file_lookup_locked(net, current_cred(), inode, need, want_gc);
+ 	if (unlikely(nf)) {
+ 		spin_unlock(&inode->i_lock);
+ 		rcu_read_unlock();
+@@ -1058,6 +1057,7 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			goto construction_err;
  		}
--	}
-+	} else if (flags & BPF_TRAMP_F_TAIL_CALL_CTX)
-+		/* Before running the original function, restore the
-+		 * tail_call_cnt from stack to rax.
-+		 */
-+		RESTORE_TAIL_CALL_CNT(stack_size);
-+
- 	/* restore return value of orig_call or fentry prog back into RAX */
- 	if (save_ret)
- 		emit_ldx(&prog, BPF_DW, BPF_REG_0, BPF_REG_FP, -8);
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 49f8b691496c4..76055186d6248 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1029,6 +1029,11 @@ struct btf_func_model {
-  */
- #define BPF_TRAMP_F_SHARE_IPMODIFY	BIT(6)
+ 		open_retry = false;
++		fh_put(fhp);
+ 		goto retry;
+ 	}
+ 	this_cpu_inc(nfsd_file_cache_hits);
+@@ -1074,7 +1074,6 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 		nfsd_file_check_write_error(nf);
+ 		*pnf = nf;
+ 	}
+-	put_cred(cred);
+ 	trace_nfsd_file_acquire(rqstp, inode, may_flags, nf, status);
+ 	return status;
  
-+/* Indicate that current trampoline is in a tail call context. Then, it has to
-+ * cache and restore tail_call_cnt to avoid infinite tail call loop.
-+ */
-+#define BPF_TRAMP_F_TAIL_CALL_CTX	BIT(7)
-+
- /* Each call __bpf_prog_enter + call bpf_func + call __bpf_prog_exit is ~50
-  * bytes on x86.
+@@ -1088,8 +1087,20 @@ nfsd_file_do_acquire(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 			status = nfs_ok;
+ 			trace_nfsd_file_opened(nf, status);
+ 		} else {
+-			status = nfsd_open_verified(rqstp, fhp, may_flags,
+-						    &nf->nf_file);
++			ret = nfsd_open_verified(rqstp, fhp, may_flags,
++						 &nf->nf_file);
++			if (ret == -EOPENSTALE && stale_retry) {
++				stale_retry = false;
++				nfsd_file_unhash(nf);
++				clear_and_wake_up_bit(NFSD_FILE_PENDING,
++						      &nf->nf_flags);
++				if (refcount_dec_and_test(&nf->nf_ref))
++					nfsd_file_free(nf);
++				nf = NULL;
++				fh_put(fhp);
++				goto retry;
++			}
++			status = nfserrno(ret);
+ 			trace_nfsd_file_open(nf, status);
+ 		}
+ 	} else
+diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
+index c7fdc19b0d5f7..4aa421d1efbfd 100644
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -823,7 +823,7 @@ int nfsd_open_break_lease(struct inode *inode, int access)
+  * and additional flags.
+  * N.B. After this call fhp needs an fh_put
   */
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index 53ff50cac61ea..e97aeda3a86b5 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -415,8 +415,8 @@ static int bpf_trampoline_update(struct bpf_trampoline *tr, bool lock_direct_mut
+-static __be32
++static int
+ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
+ 			int may_flags, struct file **filp)
+ {
+@@ -831,14 +831,12 @@ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
+ 	struct inode	*inode;
+ 	struct file	*file;
+ 	int		flags = O_RDONLY|O_LARGEFILE;
+-	__be32		err;
+-	int		host_err = 0;
++	int		host_err = -EPERM;
+ 
+ 	path.mnt = fhp->fh_export->ex_path.mnt;
+ 	path.dentry = fhp->fh_dentry;
+ 	inode = d_inode(path.dentry);
+ 
+-	err = nfserr_perm;
+ 	if (IS_APPEND(inode) && (may_flags & NFSD_MAY_WRITE))
  		goto out;
+ 
+@@ -847,7 +845,7 @@ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
+ 
+ 	host_err = nfsd_open_break_lease(inode, may_flags);
+ 	if (host_err) /* NOMEM or WOULDBLOCK */
+-		goto out_nfserr;
++		goto out;
+ 
+ 	if (may_flags & NFSD_MAY_WRITE) {
+ 		if (may_flags & NFSD_MAY_READ)
+@@ -859,13 +857,13 @@ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
+ 	file = dentry_open(&path, flags, current_cred());
+ 	if (IS_ERR(file)) {
+ 		host_err = PTR_ERR(file);
+-		goto out_nfserr;
++		goto out;
  	}
  
--	/* clear all bits except SHARE_IPMODIFY */
--	tr->flags &= BPF_TRAMP_F_SHARE_IPMODIFY;
-+	/* clear all bits except SHARE_IPMODIFY and TAIL_CALL_CTX */
-+	tr->flags &= (BPF_TRAMP_F_SHARE_IPMODIFY | BPF_TRAMP_F_TAIL_CALL_CTX);
+ 	host_err = ima_file_check(file, may_flags);
+ 	if (host_err) {
+ 		fput(file);
+-		goto out_nfserr;
++		goto out;
+ 	}
  
- 	if (tlinks[BPF_TRAMP_FEXIT].nr_links ||
- 	    tlinks[BPF_TRAMP_MODIFY_RETURN].nr_links) {
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 873ade146f3de..9f180ae74e492 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -19641,6 +19641,9 @@ static int check_attach_btf_id(struct bpf_verifier_env *env)
- 	if (!tr)
- 		return -ENOMEM;
+ 	if (may_flags & NFSD_MAY_64BIT_COOKIE)
+@@ -874,10 +872,8 @@ __nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
+ 		file->f_mode |= FMODE_32BITHASH;
  
-+	if (tgt_prog && tgt_prog->aux->tail_call_reachable)
-+		tr->flags = BPF_TRAMP_F_TAIL_CALL_CTX;
-+
- 	prog->aux->dst_trampoline = tr;
- 	return 0;
+ 	*filp = file;
+-out_nfserr:
+-	err = nfserrno(host_err);
+ out:
+-	return err;
++	return host_err;
  }
+ 
+ __be32
+@@ -885,6 +881,7 @@ nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
+ 		int may_flags, struct file **filp)
+ {
+ 	__be32 err;
++	int host_err;
+ 	bool retried = false;
+ 
+ 	validate_process_creds();
+@@ -904,12 +901,13 @@ nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
+ retry:
+ 	err = fh_verify(rqstp, fhp, type, may_flags);
+ 	if (!err) {
+-		err = __nfsd_open(rqstp, fhp, type, may_flags, filp);
+-		if (err == nfserr_stale && !retried) {
++		host_err = __nfsd_open(rqstp, fhp, type, may_flags, filp);
++		if (host_err == -EOPENSTALE && !retried) {
+ 			retried = true;
+ 			fh_put(fhp);
+ 			goto retry;
+ 		}
++		err = nfserrno(host_err);
+ 	}
+ 	validate_process_creds();
+ 	return err;
+@@ -922,13 +920,13 @@ nfsd_open(struct svc_rqst *rqstp, struct svc_fh *fhp, umode_t type,
+  * @may_flags: internal permission flags
+  * @filp: OUT: open "struct file *"
+  *
+- * Returns an nfsstat value in network byte order.
++ * Returns zero on success, or a negative errno value.
+  */
+-__be32
++int
+ nfsd_open_verified(struct svc_rqst *rqstp, struct svc_fh *fhp, int may_flags,
+ 		   struct file **filp)
+ {
+-	__be32 err;
++	int err;
+ 
+ 	validate_process_creds();
+ 	err = __nfsd_open(rqstp, fhp, S_IFREG, may_flags, filp);
+diff --git a/fs/nfsd/vfs.h b/fs/nfsd/vfs.h
+index a6890ea7b765b..e3c29596f4df1 100644
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -104,8 +104,8 @@ __be32		nfsd_setxattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ int 		nfsd_open_break_lease(struct inode *, int);
+ __be32		nfsd_open(struct svc_rqst *, struct svc_fh *, umode_t,
+ 				int, struct file **);
+-__be32		nfsd_open_verified(struct svc_rqst *, struct svc_fh *,
+-				int, struct file **);
++int		nfsd_open_verified(struct svc_rqst *rqstp, struct svc_fh *fhp,
++				   int may_flags, struct file **filp);
+ __be32		nfsd_splice_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
+ 				struct file *file, loff_t offset,
+ 				unsigned long *count,
 -- 
 2.42.0
 
