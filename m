@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 653757ECE74
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48C2B7ED299
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235108AbjKOTnN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54506 "EHLO
+        id S233317AbjKOUmo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235112AbjKOTnM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:12 -0500
+        with ESMTP id S233593AbjKOTZu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F5E01A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17473C433C7;
-        Wed, 15 Nov 2023 19:43:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 281571AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3A4C433C7;
+        Wed, 15 Nov 2023 19:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077389;
-        bh=7RzA+4TXwLo2D6JOzRMINGSfBhQuioo1HUXUxsm2YzU=;
+        s=korg; t=1700076346;
+        bh=3oUvPTzSQPCA2Dnpx5H3RRXJ4gzbe3tu5kvWOdqWaXs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rUxjHmRQnSuDeSfOPerMAUk8YUZQ6oO732lN3rZP14Gp6ugZsPO18ZrchSZOyOvdw
-         YUr215zPtQ2+IZ5o+CovKEehQjnatEt9MlvbF15IiSqKu/CBnFhs0nG4GjSSJfjue4
-         NxoC7sFvZ4YPo6Jd7F00VO0s1ZKcqyPLXk/yFMhE=
+        b=iPXzGE6ypTzrCp0kOAAIJcUQ5pwWm6x8c+dMJ7IUXUkXNL0KAbDNVE8Zgrf3qRc27
+         mMkjeGAihv6q98GtQLJLZFem/nxkbTgt/RmGQrrT+mSSe0ByXARpTEw9KrVG1dWTOS
+         vQpXIyr4W8fR1f0LVVu1oBlZUHPFF1Z2y/6PMyDU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yicong Yang <yangyicong@hisilicon.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/603] drivers/perf: hisi_pcie: Check the type first in pmu::event_init()
+        patches@lists.linux.dev, Cong Liu <liucong2@kylinos.cn>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 234/550] drm/amd/display: Fix null pointer dereference in error message
 Date:   Wed, 15 Nov 2023 14:13:38 -0500
-Message-ID: <20231115191632.241817763@linuxfoundation.org>
+Message-ID: <20231115191616.931662814@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,55 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Cong Liu <liucong2@kylinos.cn>
 
-[ Upstream commit 6d7d51e88e21c0af1ca96a3617afef334bfeffcf ]
+[ Upstream commit 0c3601a2fbfb265ce283651480e30c8e60459112 ]
 
-Check whether the event type matches the PMU type firstly in
-pmu::event_init() before touching the event. Otherwise we'll
-change the events of others and lead to incorrect results.
-Since in perf_init_event() we may call every pmu's event_init()
-in a certain case, we should not modify the event if it's not
-ours.
+This patch fixes a null pointer dereference in the error message that is
+printed when the Display Core (DC) fails to initialize. The original
+message includes the DC version number, which is undefined if the DC is
+not initialized.
 
-Fixes: 8404b0fbc7fb ("drivers/perf: hisi: Add driver for HiSilicon PCIe PMU")
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20231024092954.42297-2-yangyicong@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 9788d087caff ("drm/amd/display: improve the message printed when loading DC")
+Signed-off-by: Cong Liu <liucong2@kylinos.cn>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hisi_pcie_pmu.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/perf/hisilicon/hisi_pcie_pmu.c b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-index 5a00adb2de8c9..051efffc44c82 100644
---- a/drivers/perf/hisilicon/hisi_pcie_pmu.c
-+++ b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-@@ -353,6 +353,10 @@ static int hisi_pcie_pmu_event_init(struct perf_event *event)
- 	struct hisi_pcie_pmu *pcie_pmu = to_pcie_pmu(event->pmu);
- 	struct hw_perf_event *hwc = &event->hw;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index c9959bd8147db..83d670f0d199b 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1690,8 +1690,7 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
+ 		DRM_INFO("Display Core v%s initialized on %s\n", DC_VER,
+ 			 dce_version_to_string(adev->dm.dc->ctx->dce_version));
+ 	} else {
+-		DRM_INFO("Display Core v%s failed to initialize on %s\n", DC_VER,
+-			 dce_version_to_string(adev->dm.dc->ctx->dce_version));
++		DRM_INFO("Display Core failed to initialize with v%s!\n", DC_VER);
+ 		goto error;
+ 	}
  
-+	/* Check the type first before going on, otherwise it's not our event */
-+	if (event->attr.type != event->pmu->type)
-+		return -ENOENT;
-+
- 	event->cpu = pcie_pmu->on_cpu;
- 
- 	if (EXT_COUNTER_IS_USED(hisi_pcie_get_event(event)))
-@@ -360,9 +364,6 @@ static int hisi_pcie_pmu_event_init(struct perf_event *event)
- 	else
- 		hwc->event_base = HISI_PCIE_CNT;
- 
--	if (event->attr.type != event->pmu->type)
--		return -ENOENT;
--
- 	/* Sampling is not supported. */
- 	if (is_sampling_event(event) || event->attach_state & PERF_ATTACH_TASK)
- 		return -EOPNOTSUPP;
 -- 
 2.42.0
 
