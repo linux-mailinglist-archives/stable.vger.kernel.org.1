@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B51E37ECB67
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9557C7ECD89
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233036AbjKOTWG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:22:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52610 "EHLO
+        id S234573AbjKOThE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233133AbjKOTWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:03 -0500
+        with ESMTP id S234525AbjKOThD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563F0D4F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFBF1C433C7;
-        Wed, 15 Nov 2023 19:21:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3D49E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A81C433CD;
+        Wed, 15 Nov 2023 19:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076119;
-        bh=1w6+ibA35lBm8TOcC5xvLJIrSFcyihneC3wBDIiEasc=;
+        s=korg; t=1700077020;
+        bh=wCHBeoBoUWQNpbKP0opNLw3LR1797lRHy9sCa9cV4mE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qkO306fqTZfYM3AOFstfoiG98gkWjaInyOqZiOmIJV8Td1ibKXPpv67uPIDCKRNVA
-         E2ZbHN5XRv444W0BVRx2wjDUHELAhg8RYsdaTVVQDEOUQPcJWGe2eL9+Wf6Nl/5gSk
-         tY/PahRNklz+yfk4vR1zqnSMkXyUTQaQrI9Qq1HM=
+        b=X8G0bs2iP0M2hpXrxeQEBJZr+4LYywPCfP7hQs+V7xrkY6NHAfyqpZjhZ5O0Uf/B1
+         o4kJ20aU51WzlGhWHrl+BeboVlPjCkGxI/wOEFAlcQFeyetYgrOXU7DkKESpE6Kp7A
+         n2G7OcpOxWq2NKk7GGNCJjamnDD5UaPuFpV6VfcE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Neal Cardwell <ncardwell@google.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 061/550] udp: move udp->accept_udp_{l4|fraglist} to udp->udp_flags
+Subject: [PATCH 6.6 100/603] tcp_metrics: do not create an entry from tcp_init_metrics()
 Date:   Wed, 15 Nov 2023 14:10:45 -0500
-Message-ID: <20231115191604.917232009@linuxfoundation.org>
+Message-ID: <20231115191620.103753747@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,93 +52,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f5f52f0884a595ff99ab1a608643fe4025fca2d5 ]
+[ Upstream commit a135798e6e200ecb2f864cecca6d257ba278370c ]
 
-These are read locklessly, move them to udp_flags to fix data-races.
+tcp_init_metrics() only wants to get metrics if they were
+previously stored in the cache. Creating an entry is adding
+useless costs, especially when tcp_no_metrics_save is set.
 
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Acked-by: Neal Cardwell <ncardwell@google.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 70a36f571362 ("udp: annotate data-races around udp->encap_type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h | 16 +++++++++-------
- net/ipv4/udp.c      |  2 +-
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ net/ipv4/tcp_metrics.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index b344bd2e41fc9..bb2b87adfbea9 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -37,6 +37,8 @@ enum {
- 	UDP_FLAGS_NO_CHECK6_TX, /* Send zero UDP6 checksums on TX? */
- 	UDP_FLAGS_NO_CHECK6_RX, /* Allow zero UDP6 checksums on RX? */
- 	UDP_FLAGS_GRO_ENABLED,	/* Request GRO aggregation */
-+	UDP_FLAGS_ACCEPT_FRAGLIST,
-+	UDP_FLAGS_ACCEPT_L4,
- };
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 0c03f564878ff..7aca12c59c184 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -478,7 +478,7 @@ void tcp_init_metrics(struct sock *sk)
+ 		goto reset;
  
- struct udp_sock {
-@@ -50,13 +52,11 @@ struct udp_sock {
- 
- 	int		 pending;	/* Any pending frames ? */
- 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
--	unsigned char	 encap_enabled:1, /* This socket enabled encap
-+	unsigned char	 encap_enabled:1; /* This socket enabled encap
- 					   * processing; UDP tunnels and
- 					   * different encapsulation layer set
- 					   * this
- 					   */
--			 accept_udp_l4:1,
--			 accept_udp_fraglist:1;
- /* indicator bits used by pcflag: */
- #define UDPLITE_BIT      0x1  		/* set by udplite proto init function */
- #define UDPLITE_SEND_CC  0x2  		/* set via udplite setsockopt         */
-@@ -149,10 +149,12 @@ static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
- 	if (!skb_is_gso(skb))
- 		return false;
- 
--	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 && !udp_sk(sk)->accept_udp_l4)
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+	    !udp_test_bit(ACCEPT_L4, sk))
- 		return true;
- 
--	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST && !udp_sk(sk)->accept_udp_fraglist)
-+	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST &&
-+	    !udp_test_bit(ACCEPT_FRAGLIST, sk))
- 		return true;
- 
- 	return false;
-@@ -160,8 +162,8 @@ static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
- 
- static inline void udp_allow_gso(struct sock *sk)
- {
--	udp_sk(sk)->accept_udp_l4 = 1;
--	udp_sk(sk)->accept_udp_fraglist = 1;
-+	udp_set_bit(ACCEPT_L4, sk);
-+	udp_set_bit(ACCEPT_FRAGLIST, sk);
- }
- 
- #define udp_portaddr_for_each_entry(__sk, list) \
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index a018fb0965806..a2eb4921d2440 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2741,7 +2741,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
- 		if (valbool)
- 			udp_tunnel_encap_enable(sk->sk_socket);
- 		udp_assign_bit(GRO_ENABLED, sk, valbool);
--		up->accept_udp_l4 = valbool;
-+		udp_assign_bit(ACCEPT_L4, sk, valbool);
- 		release_sock(sk);
- 		break;
- 
+ 	rcu_read_lock();
+-	tm = tcp_get_metrics(sk, dst, true);
++	tm = tcp_get_metrics(sk, dst, false);
+ 	if (!tm) {
+ 		rcu_read_unlock();
+ 		goto reset;
 -- 
 2.42.0
 
