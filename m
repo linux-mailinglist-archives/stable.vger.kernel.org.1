@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12BA17ED2F9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 625267ED590
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233605AbjKOUpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43706 "EHLO
+        id S1344778AbjKOVHj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233664AbjKOUpV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:21 -0500
+        with ESMTP id S235612AbjKOVH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4502DD4A
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:17 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6E2C433C9;
-        Wed, 15 Nov 2023 20:45:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5267710E5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C446EC4AF79;
+        Wed, 15 Nov 2023 20:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081117;
-        bh=qAPKoUKUjdYn20A5y1Lhfg8kvZt8A74FBwHlZfOoQxE=;
+        s=korg; t=1700081421;
+        bh=LyFM/4hQrz2/Cxd5k4TK5q21wYlLfg+/2dBlIlDc1PY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YD2nSWxIS33soREJmGOIEESWqlKdrlHmy6aa3F4pgvercF2SogGo4J1NIymV1t6Sb
-         Tu/9Iuiq+uaoIxZtahC5Wm8LFjqr7pCqZzA7OOpLmo/r1WfJ2tQnL6LJh9GOwBNnLn
-         YnowQ4so6M4hTXIn7VenxbAvLapyFy/xtssN1HFA=
+        b=eSCGfQejqnxBQbopGuDzSpTB94x6xpPdc72yo/Arm+QjD75Y1rFUYjcioAqLlVXJ3
+         CXyRvcOvrhqLYwEEig0DqIJk//DLjeSs0efzhst43UKZwQZy41iC4Smn4fPjNuiezn
+         /DP87J3wbsRNqh9O78pz69pUFuqSsA5DbASzKZf0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Markus Schneider-Pargmann <msp@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Luoyouming <luoyouming@huawei.com>,
+        Junxian Huang <huangjunxian6@hisilicon.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 24/88] clk: mediatek: clk-mt2701: Add check for mtk_alloc_clk_data
+Subject: [PATCH 5.15 144/244] RDMA/hns: The UD mode can only be configured with DCQCN
 Date:   Wed, 15 Nov 2023 15:35:36 -0500
-Message-ID: <20231115191427.629120978@linuxfoundation.org>
+Message-ID: <20231115203556.983265404@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,68 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Luoyouming <luoyouming@huawei.com>
 
-[ Upstream commit 0d6e24b422a2166a9297a8286ff2e6ab9a5e8cd3 ]
+[ Upstream commit 27c5fd271d8b8730fc0bb1b6cae953ad7808a874 ]
 
-Add the check for the return value of mtk_alloc_clk_data() in order to
-avoid NULL pointer dereference.
+Due to hardware limitations, only DCQCN is supported for UD. Therefore, the
+default algorithm for UD is set to DCQCN.
 
-Fixes: e9862118272a ("clk: mediatek: Add MT2701 clock support")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230901024658.23405-1-jiasheng@iscas.ac.cn
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: f91696f2f053 ("RDMA/hns: Support congestion control type selection according to the FW")
+Signed-off-by: Luoyouming <luoyouming@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20231017125239.164455-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt2701.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mt2701.c b/drivers/clk/mediatek/clk-mt2701.c
-index 4dda8988b2f09..00e52a94e34fd 100644
---- a/drivers/clk/mediatek/clk-mt2701.c
-+++ b/drivers/clk/mediatek/clk-mt2701.c
-@@ -688,6 +688,8 @@ static int mtk_topckgen_init(struct platform_device *pdev)
- 		return PTR_ERR(base);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 59e1f51022f16..f034021f3adc1 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -4556,6 +4556,9 @@ static int check_cong_type(struct ib_qp *ibqp,
+ {
+ 	struct hns_roce_dev *hr_dev = to_hr_dev(ibqp->device);
  
- 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR);
-+	if (!clk_data)
-+		return -ENOMEM;
- 
- 	mtk_clk_register_fixed_clks(top_fixed_clks, ARRAY_SIZE(top_fixed_clks),
- 								clk_data);
-@@ -755,6 +757,8 @@ static void __init mtk_infrasys_init_early(struct device_node *node)
- 
- 	if (!infra_clk_data) {
- 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
-+		if (!infra_clk_data)
-+			return;
- 
- 		for (i = 0; i < CLK_INFRA_NR; i++)
- 			infra_clk_data->clks[i] = ERR_PTR(-EPROBE_DEFER);
-@@ -781,6 +785,8 @@ static int mtk_infrasys_init(struct platform_device *pdev)
- 
- 	if (!infra_clk_data) {
- 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
-+		if (!infra_clk_data)
-+			return -ENOMEM;
- 	} else {
- 		for (i = 0; i < CLK_INFRA_NR; i++) {
- 			if (infra_clk_data->clks[i] == ERR_PTR(-EPROBE_DEFER))
-@@ -909,6 +915,8 @@ static int mtk_pericfg_init(struct platform_device *pdev)
- 		return PTR_ERR(base);
- 
- 	clk_data = mtk_alloc_clk_data(CLK_PERI_NR);
-+	if (!clk_data)
-+		return -ENOMEM;
- 
- 	mtk_clk_register_gates(node, peri_clks, ARRAY_SIZE(peri_clks),
- 						clk_data);
++	if (ibqp->qp_type == IB_QPT_UD)
++		hr_dev->caps.cong_type = CONG_TYPE_DCQCN;
++
+ 	/* different congestion types match different configurations */
+ 	switch (hr_dev->caps.cong_type) {
+ 	case CONG_TYPE_DCQCN:
 -- 
 2.42.0
 
