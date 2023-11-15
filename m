@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 595F57ECC15
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C44727ECE94
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233308AbjKOT05 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:26:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39996 "EHLO
+        id S235131AbjKOToF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:44:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233305AbjKOT0k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:40 -0500
+        with ESMTP id S235137AbjKOToE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E1ABD5C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88937C433C9;
-        Wed, 15 Nov 2023 19:26:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F29CE189
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B84C433C8;
+        Wed, 15 Nov 2023 19:44:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076396;
-        bh=3DiZLQa/hgXFj4phstTErLDyO3H9cb6C2CUJnviu4Js=;
+        s=korg; t=1700077440;
+        bh=qaAjU3tlNlVi7J5tZqIgk9oTfkDzu2Q58eJGEML/Y0Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NA3D2G/LMddKo+HKQ7F7VCClrHvda/p5tylaXQm2nnC/gyyhUeSwG1VZ+xa74w7fj
-         iG+wcNV/MEsr6xn+POayNA1vVVJ84jRJTCZUKMgVhwu/+6oFfo+i6bd5l2SFvfNUpO
-         7gjezngxgcROXkhyxflJMhHAKLFwrs70nPoSmgik=
+        b=BhoR+cnt7OiDJ6L5HylIKWnw1g5l0fBlYt0xlfPQGZR1+vg1JIPFi2QN45YmiRcYw
+         KEgqXbeA21S/SwzR9ZfJUl4rLVp9qI9CHlYQ7iEF5IyC4bPrs91S4zRrHoxAtIH+Lj
+         axA/u/NYomk1/ECNYbm41RmDo0jAcVyNBiEnmHNc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Rob Herring <robh+dt@kernel.org>,
+        Siddharth Vadapalli <s-vadapalli@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 266/550] arm64: dts: qcom: sm6125: Pad APPS IOMMU address to 8 characters
+Subject: [PATCH 6.6 305/603] arm64: dts: ti: k3-j721s2-evm-gesi: Specify base dtb for overlay file
 Date:   Wed, 15 Nov 2023 14:14:10 -0500
-Message-ID: <20231115191619.157471916@linuxfoundation.org>
+Message-ID: <20231115191634.514331440@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marijn Suijten <marijn.suijten@somainline.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 310cdafc4a56827d1aeda7cc297939034adb8f99 ]
+[ Upstream commit 35be6ac964450687ab39b846d65ee1cb2a352280 ]
 
-APPS IOMMU is the only node in sm6125.dtsi that doesn't have its
-address padded to 8 hexadecimals; fix this by prepending a 0.
+Specify the base dtb file k3-j721s2-common-proc-board.dtb on which the
+k3-j721s2-evm-gesi-exp-board.dtbo overlay has to be applied. Name the
+resulting dtb as k3-j721s2-evm.dtb.
 
-Fixes: 8ddb4bc3d3b5 ("arm64: dts: qcom: sm6125: Configure APPS SMMU")
-Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
-Link: https://lore.kernel.org/r/20230723-sm6125-dpu-v4-2-a3f287dd6c07@somainline.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: cac04e27f093 ("arm64: dts: ti: k3-j721s2: Add overlay to enable main CPSW2G with GESI")
+Reported-by: Rob Herring <robh+dt@kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20230912043308.20629-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6125.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6125.dtsi b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-index a596baa6ce3eb..367a083786e07 100644
---- a/arch/arm64/boot/dts/qcom/sm6125.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6125.dtsi
-@@ -1204,7 +1204,7 @@ spmi_bus: spmi@1c40000 {
+diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
+index e7b8e2e7f083d..51dab9499cd0b 100644
+--- a/arch/arm64/boot/dts/ti/Makefile
++++ b/arch/arm64/boot/dts/ti/Makefile
+@@ -66,6 +66,8 @@ dtb-$(CONFIG_ARCH_K3) += k3-j721e-sk.dtb
+ dtb-$(CONFIG_ARCH_K3) += k3-am68-sk-base-board.dtb
+ dtb-$(CONFIG_ARCH_K3) += k3-j721s2-common-proc-board.dtb
+ dtb-$(CONFIG_ARCH_K3) += k3-j721s2-evm-gesi-exp-board.dtbo
++k3-j721s2-evm-dtbs := k3-j721s2-common-proc-board.dtb k3-j721s2-evm-gesi-exp-board.dtbo
++dtb-$(CONFIG_ARCH_K3) += k3-j721s2-evm.dtb
  
- 		apps_smmu: iommu@c600000 {
- 			compatible = "qcom,sm6125-smmu-500", "qcom,smmu-500", "arm,mmu-500";
--			reg = <0xc600000 0x80000>;
-+			reg = <0x0c600000 0x80000>;
- 			interrupts = <GIC_SPI 81 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 88 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 89 IRQ_TYPE_LEVEL_HIGH>,
+ # Boards with J784s4 SoC
+ dtb-$(CONFIG_ARCH_K3) += k3-am69-sk.dtb
 -- 
 2.42.0
 
