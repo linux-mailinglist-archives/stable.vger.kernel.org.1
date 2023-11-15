@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03EEA7ECD35
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D4CE7ECB22
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234363AbjKOTfE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
+        id S230183AbjKOTUV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:20:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234404AbjKOTfD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:03 -0500
+        with ESMTP id S230224AbjKOTUU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072D01A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8192FC433C9;
-        Wed, 15 Nov 2023 19:34:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D2419D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BA3C433C7;
+        Wed, 15 Nov 2023 19:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076899;
-        bh=k0318IaebBo7ANd1rQa4LJBWj9f82L9r/A9E3ZG2nGA=;
+        s=korg; t=1700076016;
+        bh=xEbEB0tcpiHBUS11aEAmBltaCJvgoGWyTJCzqcbp7UU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OB6/gIpjIYIKoRYL+MdJMXN4uo6CuXk/Wf4UxtHhC5EuiUyxgsD/jZrfrzkhVnVDo
-         dMLlTCsRPZpXfdb3ai47pBcZ6lEDtOzt1FbeLF9VLl7zoakm1ynwpLTTsH1Negm49v
-         isvxK1+1b3FwNVZn6ouha+MUVYntKg8jVNALvZNs=
+        b=vyq34RUMGNH8t7IodAI4Gxb9cRw4q7GeWtc7AcH1yfZqukuQ9k6IsxI7mL9qLGnUE
+         Oyv1SHBVNKZ1cZ8tb+vgXSDih7Rq1vLSDHYC0kwBz/sW0QoCXOKf7t0H6sVBd+2+x7
+         4oukC+/+GR2dEOYLgTAVGegxxAe3sJsBDiq7SlyI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/603] udplite: remove UDPLITE_BIT
+        patches@lists.linux.dev, Yuntao Wang <ytcoode@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 022/550] x86/boot: Fix incorrect startup_gdt_descr.size
 Date:   Wed, 15 Nov 2023 14:10:06 -0500
-Message-ID: <20231115191617.350138957@linuxfoundation.org>
+Message-ID: <20231115191602.263579370@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yuntao Wang <ytcoode@gmail.com>
 
-[ Upstream commit 729549aa350c56a777bb342941ed4d69b6585769 ]
+[ Upstream commit 001470fed5959d01faecbd57fcf2f60294da0de1 ]
 
-This flag is set but never read, we can remove it.
+Since the size value is added to the base address to yield the last valid
+byte address of the GDT, the current size value of startup_gdt_descr is
+incorrect (too large by one), fix it.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 882af43a0fc3 ("udplite: fix various data-races")
+[ mingo: This probably never mattered, because startup_gdt[] is only used
+         in a very controlled fashion - but make it consistent nevertheless. ]
+
+Fixes: 866b556efa12 ("x86/head/64: Install startup GDT")
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Link: https://lore.kernel.org/r/20230807084547.217390-1-ytcoode@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h | 5 ++---
- net/ipv4/udplite.c  | 1 -
- net/ipv6/udplite.c  | 1 -
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ arch/x86/kernel/head64.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index 0cf83270a4a28..58156edec0096 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -55,9 +55,8 @@ struct udp_sock {
- 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
+diff --git a/arch/x86/kernel/head64.c b/arch/x86/kernel/head64.c
+index 49f7629b17f73..bbc21798df10e 100644
+--- a/arch/x86/kernel/head64.c
++++ b/arch/x86/kernel/head64.c
+@@ -80,7 +80,7 @@ static struct desc_struct startup_gdt[GDT_ENTRIES] = {
+  * while the kernel still uses a direct mapping.
+  */
+ static struct desc_ptr startup_gdt_descr = {
+-	.size = sizeof(startup_gdt),
++	.size = sizeof(startup_gdt)-1,
+ 	.address = 0,
+ };
  
- /* indicator bits used by pcflag: */
--#define UDPLITE_BIT      0x1  		/* set by udplite proto init function */
--#define UDPLITE_SEND_CC  0x2  		/* set via udplite setsockopt         */
--#define UDPLITE_RECV_CC  0x4		/* set via udplite setsocktopt        */
-+#define UDPLITE_SEND_CC  0x1  		/* set via udplite setsockopt         */
-+#define UDPLITE_RECV_CC  0x2		/* set via udplite setsocktopt        */
- 	__u8		 pcflag;        /* marks socket as UDP-Lite if > 0    */
- 	/*
- 	 * Following member retains the information to create a UDP header
-diff --git a/net/ipv4/udplite.c b/net/ipv4/udplite.c
-index 39ecdad1b50ce..af37af3ab727b 100644
---- a/net/ipv4/udplite.c
-+++ b/net/ipv4/udplite.c
-@@ -21,7 +21,6 @@ EXPORT_SYMBOL(udplite_table);
- static int udplite_sk_init(struct sock *sk)
- {
- 	udp_init_sock(sk);
--	udp_sk(sk)->pcflag = UDPLITE_BIT;
- 	pr_warn_once("UDP-Lite is deprecated and scheduled to be removed in 2025, "
- 		     "please contact the netdev mailing list\n");
- 	return 0;
-diff --git a/net/ipv6/udplite.c b/net/ipv6/udplite.c
-index 267d491e97075..a60bec9b14f14 100644
---- a/net/ipv6/udplite.c
-+++ b/net/ipv6/udplite.c
-@@ -17,7 +17,6 @@
- static int udplitev6_sk_init(struct sock *sk)
- {
- 	udpv6_init_sock(sk);
--	udp_sk(sk)->pcflag = UDPLITE_BIT;
- 	pr_warn_once("UDP-Lite is deprecated and scheduled to be removed in 2025, "
- 		     "please contact the netdev mailing list\n");
- 	return 0;
 -- 
 2.42.0
 
