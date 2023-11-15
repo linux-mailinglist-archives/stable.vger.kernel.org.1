@@ -2,35 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DB167ED46D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DE0F7ED4C2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344696AbjKOU6E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34606 "EHLO
+        id S1344814AbjKOU7E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344657AbjKOU5h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:37 -0500
+        with ESMTP id S1344651AbjKOU5v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A76061A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D567BC4E759;
-        Wed, 15 Nov 2023 20:51:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D53FB1BCA
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A842CC4E75A;
+        Wed, 15 Nov 2023 20:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081507;
-        bh=/1sNiiJo/bCH9YuXmuRJJn1K90AYcdTW2flwHlBY9jc=;
+        s=korg; t=1700081508;
+        bh=afgH8ug/BvbIXVPoC/dddxzwpcgIFT7bsJpk92+Xw/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p6vSrsJny3BNF58mrHsAZZeeCBu6XNmjO8TXSFVhL5QNvKwiVA2y+XorZQSYYs8ne
-         rTuHrYz6y43GlQK9Va8tfri7WRWw2JyM12UVYQrhtjvOzFlBLBjuFNByEZvC5mJCGl
-         WDZOpBtP69u7jsxP5gIKkMWtRCsyipl8HRnulg7I=
+        b=TpmQHHHAi2wmdRRddVPiNd7CZEvNHCr7So6l0q+29MDxA25kAD1JOvy9wxvR1iJLW
+         XWqzq7EuisBfZ1w8vl3DlESsKA3eC0AjEyFfuPfZeaBFNQEoAgekGuRAxuUV+u3QHB
+         mKA/8gIDE4DhJHDYtTpQqEmgnGnRjv6Nj/6X5snQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
-        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 170/244] livepatch: Fix missing newline character in klp_resolve_symbols()
-Date:   Wed, 15 Nov 2023 15:36:02 -0500
-Message-ID: <20231115203558.549557951@linuxfoundation.org>
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Alexey Bayduraev <alexey.v.bayduraev@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@linaro.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 171/244] perf evlist: Add evlist__add_dummy_on_all_cpus()
+Date:   Wed, 15 Nov 2023 15:36:03 -0500
+Message-ID: <20231115203558.606641228@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -53,36 +58,104 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 67e18e132f0fd738f8c8cac3aa1420312073f795 ]
+[ Upstream commit 126d68fdcabed8c2ca5ffaba785add93ef722da8 ]
 
-Without the newline character, the log may not be printed immediately
-after the error occurs.
+Add evlist__add_dummy_on_all_cpus() to enable creating a system-wide dummy
+event that sets up the system-wide maps before map propagation.
 
-Fixes: ca376a937486 ("livepatch: Prevent module-specific KLP rela sections from referencing vmlinux symbols")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Link: https://lore.kernel.org/r/20230914072644.4098857-1-zhengyejian1@huawei.com
+For convenience, add evlist__add_aux_dummy() so that the logic can be used
+whether or not the event needs to be system-wide.
+
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Alexey Bayduraev <alexey.v.bayduraev@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Link: https://lore.kernel.org/r/20220524075436.29144-6-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: f9cdeb58a9cf ("perf evlist: Avoid frequency mode for the dummy event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/livepatch/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/evlist.c | 45 ++++++++++++++++++++++++++++++++++++++++
+ tools/perf/util/evlist.h |  5 +++++
+ 2 files changed, 50 insertions(+)
 
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index c0789383807b9..147ed154ebc77 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -244,7 +244,7 @@ static int klp_resolve_symbols(Elf_Shdr *sechdrs, const char *strtab,
- 		 * symbols are exported and normal relas can be used instead.
- 		 */
- 		if (!sec_vmlinux && sym_vmlinux) {
--			pr_err("invalid access to vmlinux symbol '%s' from module-specific livepatch relocation section",
-+			pr_err("invalid access to vmlinux symbol '%s' from module-specific livepatch relocation section\n",
- 			       sym_name);
- 			return -EINVAL;
- 		}
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index 39d294f6c3218..a75cdcf381308 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -258,6 +258,51 @@ int evlist__add_dummy(struct evlist *evlist)
+ 	return 0;
+ }
+ 
++static void evlist__add_on_all_cpus(struct evlist *evlist, struct evsel *evsel)
++{
++	evsel->core.system_wide = true;
++
++	/*
++	 * All CPUs.
++	 *
++	 * Note perf_event_open() does not accept CPUs that are not online, so
++	 * in fact this CPU list will include only all online CPUs.
++	 */
++	perf_cpu_map__put(evsel->core.own_cpus);
++	evsel->core.own_cpus = perf_cpu_map__new(NULL);
++	perf_cpu_map__put(evsel->core.cpus);
++	evsel->core.cpus = perf_cpu_map__get(evsel->core.own_cpus);
++
++	/* No threads */
++	perf_thread_map__put(evsel->core.threads);
++	evsel->core.threads = perf_thread_map__new_dummy();
++
++	evlist__add(evlist, evsel);
++}
++
++struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide)
++{
++	struct evsel *evsel = evlist__dummy_event(evlist);
++
++	if (!evsel)
++		return NULL;
++
++	evsel->core.attr.exclude_kernel = 1;
++	evsel->core.attr.exclude_guest = 1;
++	evsel->core.attr.exclude_hv = 1;
++	evsel->core.attr.freq = 0;
++	evsel->core.attr.sample_period = 1;
++	evsel->no_aux_samples = true;
++	evsel->name = strdup("dummy:u");
++
++	if (system_wide)
++		evlist__add_on_all_cpus(evlist, evsel);
++	else
++		evlist__add(evlist, evsel);
++
++	return evsel;
++}
++
+ static int evlist__add_attrs(struct evlist *evlist, struct perf_event_attr *attrs, size_t nr_attrs)
+ {
+ 	struct evsel *evsel, *n;
+diff --git a/tools/perf/util/evlist.h b/tools/perf/util/evlist.h
+index ec177f783ee67..decf5c944adba 100644
+--- a/tools/perf/util/evlist.h
++++ b/tools/perf/util/evlist.h
+@@ -112,6 +112,11 @@ int __evlist__add_default_attrs(struct evlist *evlist,
+ int arch_evlist__add_default_attrs(struct evlist *evlist);
+ 
+ int evlist__add_dummy(struct evlist *evlist);
++struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide);
++static inline struct evsel *evlist__add_dummy_on_all_cpus(struct evlist *evlist)
++{
++	return evlist__add_aux_dummy(evlist, true);
++}
+ 
+ int evlist__add_sb_event(struct evlist *evlist, struct perf_event_attr *attr,
+ 			 evsel__sb_cb_t cb, void *data);
 -- 
 2.42.0
 
