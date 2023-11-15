@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2F47ED2EB
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22D687ED589
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233580AbjKOUpI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46202 "EHLO
+        id S1344188AbjKOVHf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233574AbjKOUpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:04 -0500
+        with ESMTP id S235596AbjKOVH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6D2A1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410ABC433C9;
-        Wed, 15 Nov 2023 20:45:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBBCFB7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E54C4E67C;
+        Wed, 15 Nov 2023 20:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081100;
-        bh=wj6k97fiFFNcM62uGwytbJ8C5ZMPLyKRXadCrA5Vo2E=;
+        s=korg; t=1700081460;
+        bh=H2b86YXl7+loXzuHGh0UNH7+gXXcnx8O/o0p1ttTRKI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=itNSJVzLptB8Hxfmp5awbSl24b7QQBrcvN+K6o9Z9a97ItrVjmQJX0R3qGzloPUg/
-         rFdaXNIR1xlzXXxnjQtZ8wY2P9B8tGsmo87Q0B4cCq1skGs2KVaG2tJPDClqv83FbW
-         8jKRAKVizkyq9sAnUw7xahIxtKv4UCsZAfcXmIIQ=
+        b=Qup0xAUZwvJEtJqxJh6XqIZIAg8YJWvpHK2eMPUd3U5xXL1FViWGLgxnA/1Iy6NLL
+         e1E9qFTnmuzJV2L6jjZJgJkfup4bPiKQG/1zg3uQtreIcSnOFQFhl9I/ItAsj4VaqW
+         DK4/GCIcmJ84MWdLv3LEpbfcf/cy7SzLSehmWOAA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Patrisious Haddad <phaddad@nvidia.com>,
+        Mark Zhang <markzhang@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 21/88] clk: keystone: pll: fix a couple NULL vs IS_ERR() checks
+Subject: [PATCH 5.15 141/244] IB/mlx5: Fix rdma counter binding for RAW QP
 Date:   Wed, 15 Nov 2023 15:35:33 -0500
-Message-ID: <20231115191427.458822273@linuxfoundation.org>
+Message-ID: <20231115203556.810069367@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,62 +51,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit a5d14f8b551eb1551c10053653ee8e27f19672fa ]
+[ Upstream commit c1336bb4aa5e809a622a87d74311275514086596 ]
 
-The clk_register_divider() and clk_register_mux() functions returns
-error pointers on error but this code checks for NULL.  Fix that.
+Previously when we had a RAW QP, we bound a counter to it when it moved
+to INIT state, using the counter context inside RQC.
 
-Fixes: b9e0d40c0d83 ("clk: keystone: add Keystone PLL clock driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/d9da4c97-0da9-499f-9a21-1f8e3f148dc1@moroto.mountain
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+But when we try to modify that counter later in RTS state we used
+modify QP which tries to change the counter inside QPC instead of RQC.
+
+Now we correctly modify the counter set_id inside of RQC instead of QPC
+for the RAW QP.
+
+Fixes: d14133dd4161 ("IB/mlx5: Support set qp counter")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/2e5ab6713784a8fe997d19c508187a0dfecf2dfc.1696847964.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/keystone/pll.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/infiniband/hw/mlx5/qp.c | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/drivers/clk/keystone/pll.c b/drivers/clk/keystone/pll.c
-index 526694c2a6c97..a75ece5992394 100644
---- a/drivers/clk/keystone/pll.c
-+++ b/drivers/clk/keystone/pll.c
-@@ -285,12 +285,13 @@ static void __init of_pll_div_clk_init(struct device_node *node)
- 
- 	clk = clk_register_divider(NULL, clk_name, parent_name, 0, reg, shift,
- 				 mask, 0, NULL);
--	if (clk) {
--		of_clk_add_provider(node, of_clk_src_simple_get, clk);
--	} else {
-+	if (IS_ERR(clk)) {
- 		pr_err("%s: error registering divider %s\n", __func__, clk_name);
- 		iounmap(reg);
-+		return;
- 	}
-+
-+	of_clk_add_provider(node, of_clk_src_simple_get, clk);
+diff --git a/drivers/infiniband/hw/mlx5/qp.c b/drivers/infiniband/hw/mlx5/qp.c
+index 1080daf3a546f..d4b5ce37c2cbd 100644
+--- a/drivers/infiniband/hw/mlx5/qp.c
++++ b/drivers/infiniband/hw/mlx5/qp.c
+@@ -3955,6 +3955,30 @@ static unsigned int get_tx_affinity(struct ib_qp *qp,
+ 	return tx_affinity;
  }
- CLK_OF_DECLARE(pll_divider_clock, "ti,keystone,pll-divider-clock", of_pll_div_clk_init);
  
-@@ -332,9 +333,11 @@ static void __init of_pll_mux_clk_init(struct device_node *node)
- 	clk = clk_register_mux(NULL, clk_name, (const char **)&parents,
- 				ARRAY_SIZE(parents) , 0, reg, shift, mask,
- 				0, NULL);
--	if (clk)
--		of_clk_add_provider(node, of_clk_src_simple_get, clk);
--	else
-+	if (IS_ERR(clk)) {
- 		pr_err("%s: error registering mux %s\n", __func__, clk_name);
-+		return;
-+	}
++static int __mlx5_ib_qp_set_raw_qp_counter(struct mlx5_ib_qp *qp, u32 set_id,
++					   struct mlx5_core_dev *mdev)
++{
++	struct mlx5_ib_raw_packet_qp *raw_packet_qp = &qp->raw_packet_qp;
++	struct mlx5_ib_rq *rq = &raw_packet_qp->rq;
++	u32 in[MLX5_ST_SZ_DW(modify_rq_in)] = {};
++	void *rqc;
 +
-+	of_clk_add_provider(node, of_clk_src_simple_get, clk);
- }
- CLK_OF_DECLARE(pll_mux_clock, "ti,keystone,pll-mux-clock", of_pll_mux_clk_init);
++	if (!qp->rq.wqe_cnt)
++		return 0;
++
++	MLX5_SET(modify_rq_in, in, rq_state, rq->state);
++	MLX5_SET(modify_rq_in, in, uid, to_mpd(qp->ibqp.pd)->uid);
++
++	rqc = MLX5_ADDR_OF(modify_rq_in, in, ctx);
++	MLX5_SET(rqc, rqc, state, MLX5_RQC_STATE_RDY);
++
++	MLX5_SET64(modify_rq_in, in, modify_bitmask,
++		   MLX5_MODIFY_RQ_IN_MODIFY_BITMASK_RQ_COUNTER_SET_ID);
++	MLX5_SET(rqc, rqc, counter_set_id, set_id);
++
++	return mlx5_core_modify_rq(mdev, rq->base.mqp.qpn, in);
++}
++
+ static int __mlx5_ib_qp_set_counter(struct ib_qp *qp,
+ 				    struct rdma_counter *counter)
+ {
+@@ -3970,6 +3994,9 @@ static int __mlx5_ib_qp_set_counter(struct ib_qp *qp,
+ 	else
+ 		set_id = mlx5_ib_get_counters_id(dev, mqp->port - 1);
+ 
++	if (mqp->type == IB_QPT_RAW_PACKET)
++		return __mlx5_ib_qp_set_raw_qp_counter(mqp, set_id, dev->mdev);
++
+ 	base = &mqp->trans_qp.base;
+ 	MLX5_SET(rts2rts_qp_in, in, opcode, MLX5_CMD_OP_RTS2RTS_QP);
+ 	MLX5_SET(rts2rts_qp_in, in, qpn, base->mqp.qpn);
 -- 
 2.42.0
 
