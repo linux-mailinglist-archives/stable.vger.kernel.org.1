@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E6ED7ECBBA
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CA1A7ED2A0
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232620AbjKOTYI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60124 "EHLO
+        id S233374AbjKOUmt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232678AbjKOTYH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:07 -0500
+        with ESMTP id S234858AbjKOTkl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B2711AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0904CC433CC;
-        Wed, 15 Nov 2023 19:24:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 344991729
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:37 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BFEC433C9;
+        Wed, 15 Nov 2023 19:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076243;
-        bh=xAIrYRXspAFaU60KZ3yKh/KxKBQBNTppEqK6Z28pUYU=;
+        s=korg; t=1700077236;
+        bh=jrJUT2NshPAfo/GySlB202AiIWyDDakqP7ItitQniHY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xj2UWom8KCw0m/QWPRMicdAHkTyW3irGPGX+zJNIr249+x9VNAL4A0NMQGz48MPli
-         vpAJt5er3pSilWHhk2dpyiy1tEc1ptBdLEUOyJC03In/EABYDz1M+iss6ZlMqwkZlR
-         j9OWgfYp+TzjfThUMn9daH5malx2ofuINJLMn3qc=
+        b=EyO1398vqFctDRpJrTW8mwOAxdd9Dq00q8EDzowl2B+Cee94scYtTQYQgiPzYmNL/
+         Uyt2w5LfvSlVvC4OQCQ0LLwnD2gXhsnx6/0fp/0L2JNmJ3q7x745yIZxCZaBgHcjci
+         kp2WrfbgXpBdXb97v94RhyqWrKYyGZzHWSYMlrtQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Iulia Tanasescu <iulia.tanasescu@nxp.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 141/550] Bluetooth: ISO: Pass BIG encryption info through QoS
+Subject: [PATCH 6.6 180/603] clk: linux/clk-provider.h: fix kernel-doc warnings and typos
 Date:   Wed, 15 Nov 2023 14:12:05 -0500
-Message-ID: <20231115191610.465728455@linuxfoundation.org>
+Message-ID: <20231115191625.702120178@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,282 +51,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 1d11d70d1f6b23e7d3fc00396c17b90b876162a4 ]
+[ Upstream commit 84aefafe6b294041b7fa0757414c4a29c1bdeea2 ]
 
-This enables a broadcast sink to be informed if the PA
-it has synced with is associated with an encrypted BIG,
-by retrieving the socket QoS and checking the encryption
-field.
+Fix spelling of "Structure".
 
-After PA sync has been successfully established and the
-first BIGInfo advertising report is received, a new hcon
-is added and notified to the ISO layer. The ISO layer
-sets the encryption field of the socket and hcon QoS
-according to the encryption parameter of the BIGInfo
-advertising report event.
+Fix multiple kernel-doc warnings:
 
-After that, the userspace is woken up, and the QoS of the
-new PA sync socket can be read, to inspect the encryption
-field and follow up accordingly.
+clk-provider.h:269: warning: Function parameter or member 'recalc_rate' not described in 'clk_ops'
+clk-provider.h:468: warning: Function parameter or member 'parent_data' not described in 'clk_hw_register_fixed_rate_with_accuracy_parent_data'
+clk-provider.h:468: warning: Excess function parameter 'parent_name' description in 'clk_hw_register_fixed_rate_with_accuracy_parent_data'
+clk-provider.h:482: warning: Function parameter or member 'parent_data' not described in 'clk_hw_register_fixed_rate_parent_accuracy'
+clk-provider.h:482: warning: Excess function parameter 'parent_name' description in 'clk_hw_register_fixed_rate_parent_accuracy'
+clk-provider.h:687: warning: Function parameter or member 'flags' not described in 'clk_divider'
+clk-provider.h:1164: warning: Function parameter or member 'flags' not described in 'clk_fractional_divider'
+clk-provider.h:1164: warning: Function parameter or member 'approximation' not described in 'clk_fractional_divider'
+clk-provider.h:1213: warning: Function parameter or member 'flags' not described in 'clk_multiplier'
 
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 181a42edddf5 ("Bluetooth: Make handle of hci_conn be unique")
+Fixes: 9fba738a53dd ("clk: add duty cycle support")
+Fixes: b2476490ef11 ("clk: introduce the common clock framework")
+Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
+Fixes: f5290d8e4f0c ("clk: asm9260: use parent index to link the reference clock")
+Fixes: 9d9f78ed9af0 ("clk: basic clock hardware types")
+Fixes: e2d0e90fae82 ("clk: new basic clk type for fractional divider")
+Fixes: f2e0a53271a4 ("clk: Add a basic multiplier clock")
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org
+Link: https://lore.kernel.org/r/20230930221428.18463-1-rdunlap@infradead.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci.h      |  3 ++
- include/net/bluetooth/hci_core.h | 25 ++++++++++++++-
- net/bluetooth/hci_conn.c         |  1 +
- net/bluetooth/hci_event.c        | 54 +++++++++++++++++++++++---------
- net/bluetooth/iso.c              | 19 ++++++++---
- 5 files changed, 82 insertions(+), 20 deletions(-)
+ include/linux/clk-provider.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 3ff822ebb3a47..1788aeedecf5a 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -1,6 +1,7 @@
- /*
-    BlueZ - Bluetooth protocol stack for Linux
-    Copyright (C) 2000-2001 Qualcomm Incorporated
-+   Copyright 2023 NXP
+diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
+index ec32ec58c59f7..ace3a4ce2fc98 100644
+--- a/include/linux/clk-provider.h
++++ b/include/linux/clk-provider.h
+@@ -74,7 +74,7 @@ void clk_hw_forward_rate_request(const struct clk_hw *core,
+ 				 unsigned long parent_rate);
  
-    Written 2000,2001 by Maxim Krasnyansky <maxk@qualcomm.com>
- 
-@@ -672,6 +673,8 @@ enum {
- #define HCI_TX_POWER_INVALID	127
- #define HCI_RSSI_INVALID	127
- 
-+#define HCI_SYNC_HANDLE_INVALID	0xffff
-+
- #define HCI_ROLE_MASTER		0x00
- #define HCI_ROLE_SLAVE		0x01
- 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 032c05998345d..0a3f98481b0fe 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1315,7 +1315,7 @@ static inline struct hci_conn *hci_conn_hash_lookup_big_any_dst(struct hci_dev *
- }
- 
- static inline struct hci_conn *
--hci_conn_hash_lookup_pa_sync(struct hci_dev *hdev, __u8 big)
-+hci_conn_hash_lookup_pa_sync_big_handle(struct hci_dev *hdev, __u8 big)
- {
- 	struct hci_conn_hash *h = &hdev->conn_hash;
- 	struct hci_conn  *c;
-@@ -1337,6 +1337,29 @@ hci_conn_hash_lookup_pa_sync(struct hci_dev *hdev, __u8 big)
- 	return NULL;
- }
- 
-+static inline struct hci_conn *
-+hci_conn_hash_lookup_pa_sync_handle(struct hci_dev *hdev, __u16 sync_handle)
-+{
-+	struct hci_conn_hash *h = &hdev->conn_hash;
-+	struct hci_conn  *c;
-+
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(c, &h->list, list) {
-+		if (c->type != ISO_LINK ||
-+			!test_bit(HCI_CONN_PA_SYNC, &c->flags))
-+			continue;
-+
-+		if (c->sync_handle == sync_handle) {
-+			rcu_read_unlock();
-+			return c;
-+		}
-+	}
-+	rcu_read_unlock();
-+
-+	return NULL;
-+}
-+
- static inline struct hci_conn *hci_conn_hash_lookup_state(struct hci_dev *hdev,
- 							__u8 type, __u16 state)
- {
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index c3da326615931..7cad9665360cf 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -975,6 +975,7 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 	conn->rssi = HCI_RSSI_INVALID;
- 	conn->tx_power = HCI_TX_POWER_INVALID;
- 	conn->max_tx_power = HCI_TX_POWER_INVALID;
-+	conn->sync_handle = HCI_SYNC_HANDLE_INVALID;
- 
- 	set_bit(HCI_CONN_POWER_SAVE, &conn->flags);
- 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 97d589178eb78..5a23dd251cb2e 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6578,7 +6578,7 @@ static void hci_le_pa_sync_estabilished_evt(struct hci_dev *hdev, void *data,
- 	struct hci_ev_le_pa_sync_established *ev = data;
- 	int mask = hdev->link_mode;
- 	__u8 flags = 0;
--	struct hci_conn *bis;
-+	struct hci_conn *pa_sync;
- 
- 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
- 
-@@ -6595,20 +6595,19 @@ static void hci_le_pa_sync_estabilished_evt(struct hci_dev *hdev, void *data,
- 	if (!(flags & HCI_PROTO_DEFER))
- 		goto unlock;
- 
--	/* Add connection to indicate the PA sync event */
--	bis = hci_conn_add(hdev, ISO_LINK, BDADDR_ANY,
--			   HCI_ROLE_SLAVE);
-+	if (ev->status) {
-+		/* Add connection to indicate the failed PA sync event */
-+		pa_sync = hci_conn_add(hdev, ISO_LINK, BDADDR_ANY,
-+				       HCI_ROLE_SLAVE);
- 
--	if (!bis)
--		goto unlock;
-+		if (!pa_sync)
-+			goto unlock;
- 
--	if (ev->status)
--		set_bit(HCI_CONN_PA_SYNC_FAILED, &bis->flags);
--	else
--		set_bit(HCI_CONN_PA_SYNC, &bis->flags);
-+		set_bit(HCI_CONN_PA_SYNC_FAILED, &pa_sync->flags);
- 
--	/* Notify connection to iso layer */
--	hci_connect_cfm(bis, ev->status);
-+		/* Notify iso layer */
-+		hci_connect_cfm(pa_sync, ev->status);
-+	}
- 
- unlock:
- 	hci_dev_unlock(hdev);
-@@ -7082,7 +7081,7 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
- 	hci_dev_lock(hdev);
- 
- 	if (!ev->status) {
--		pa_sync = hci_conn_hash_lookup_pa_sync(hdev, ev->handle);
-+		pa_sync = hci_conn_hash_lookup_pa_sync_big_handle(hdev, ev->handle);
- 		if (pa_sync)
- 			/* Also mark the BIG sync established event on the
- 			 * associated PA sync hcon
-@@ -7143,15 +7142,42 @@ static void hci_le_big_info_adv_report_evt(struct hci_dev *hdev, void *data,
- 	struct hci_evt_le_big_info_adv_report *ev = data;
- 	int mask = hdev->link_mode;
- 	__u8 flags = 0;
-+	struct hci_conn *pa_sync;
- 
- 	bt_dev_dbg(hdev, "sync_handle 0x%4.4x", le16_to_cpu(ev->sync_handle));
- 
- 	hci_dev_lock(hdev);
- 
- 	mask |= hci_proto_connect_ind(hdev, BDADDR_ANY, ISO_LINK, &flags);
--	if (!(mask & HCI_LM_ACCEPT))
-+	if (!(mask & HCI_LM_ACCEPT)) {
- 		hci_le_pa_term_sync(hdev, ev->sync_handle);
-+		goto unlock;
-+	}
- 
-+	if (!(flags & HCI_PROTO_DEFER))
-+		goto unlock;
-+
-+	pa_sync = hci_conn_hash_lookup_pa_sync_handle
-+			(hdev,
-+			le16_to_cpu(ev->sync_handle));
-+
-+	if (pa_sync)
-+		goto unlock;
-+
-+	/* Add connection to indicate the PA sync event */
-+	pa_sync = hci_conn_add(hdev, ISO_LINK, BDADDR_ANY,
-+			       HCI_ROLE_SLAVE);
-+
-+	if (!pa_sync)
-+		goto unlock;
-+
-+	pa_sync->sync_handle = le16_to_cpu(ev->sync_handle);
-+	set_bit(HCI_CONN_PA_SYNC, &pa_sync->flags);
-+
-+	/* Notify iso layer */
-+	hci_connect_cfm(pa_sync, 0x00);
-+
-+unlock:
- 	hci_dev_unlock(hdev);
- }
- 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 4689f94e4da81..9433a273b4fc2 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -77,6 +77,7 @@ static struct bt_iso_qos default_qos;
- static bool check_ucast_qos(struct bt_iso_qos *qos);
- static bool check_bcast_qos(struct bt_iso_qos *qos);
- static bool iso_match_sid(struct sock *sk, void *data);
-+static bool iso_match_sync_handle(struct sock *sk, void *data);
- static void iso_sock_disconn(struct sock *sk);
- 
- /* ---- ISO timers ---- */
-@@ -1222,7 +1223,6 @@ static int iso_sock_recvmsg(struct socket *sock, struct msghdr *msg,
- 			    test_bit(HCI_CONN_PA_SYNC, &pi->conn->hcon->flags)) {
- 				iso_conn_big_sync(sk);
- 				sk->sk_state = BT_LISTEN;
--				set_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags);
- 			} else {
- 				iso_conn_defer_accept(pi->conn->hcon);
- 				sk->sk_state = BT_CONFIG;
-@@ -1580,6 +1580,7 @@ static void iso_conn_ready(struct iso_conn *conn)
- 	struct sock *sk = conn->sk;
- 	struct hci_ev_le_big_sync_estabilished *ev = NULL;
- 	struct hci_ev_le_pa_sync_established *ev2 = NULL;
-+	struct hci_evt_le_big_info_adv_report *ev3 = NULL;
- 	struct hci_conn *hcon;
- 
- 	BT_DBG("conn %p", conn);
-@@ -1604,14 +1605,20 @@ static void iso_conn_ready(struct iso_conn *conn)
- 				parent = iso_get_sock_listen(&hcon->src,
- 							     &hcon->dst,
- 							     iso_match_big, ev);
--		} else if (test_bit(HCI_CONN_PA_SYNC, &hcon->flags) ||
--				test_bit(HCI_CONN_PA_SYNC_FAILED, &hcon->flags)) {
-+		} else if (test_bit(HCI_CONN_PA_SYNC_FAILED, &hcon->flags)) {
- 			ev2 = hci_recv_event_data(hcon->hdev,
- 						  HCI_EV_LE_PA_SYNC_ESTABLISHED);
- 			if (ev2)
- 				parent = iso_get_sock_listen(&hcon->src,
- 							     &hcon->dst,
- 							     iso_match_sid, ev2);
-+		} else if (test_bit(HCI_CONN_PA_SYNC, &hcon->flags)) {
-+			ev3 = hci_recv_event_data(hcon->hdev,
-+						  HCI_EVT_LE_BIG_INFO_ADV_REPORT);
-+			if (ev3)
-+				parent = iso_get_sock_listen(&hcon->src,
-+							     &hcon->dst,
-+							     iso_match_sync_handle, ev3);
- 		}
- 
- 		if (!parent)
-@@ -1651,11 +1658,13 @@ static void iso_conn_ready(struct iso_conn *conn)
- 			hcon->sync_handle = iso_pi(parent)->sync_handle;
- 		}
- 
--		if (ev2 && !ev2->status) {
--			iso_pi(sk)->sync_handle = iso_pi(parent)->sync_handle;
-+		if (ev3) {
- 			iso_pi(sk)->qos = iso_pi(parent)->qos;
-+			iso_pi(sk)->qos.bcast.encryption = ev3->encryption;
-+			hcon->iso_qos = iso_pi(sk)->qos;
- 			iso_pi(sk)->bc_num_bis = iso_pi(parent)->bc_num_bis;
- 			memcpy(iso_pi(sk)->bc_bis, iso_pi(parent)->bc_bis, ISO_MAX_NUM_BIS);
-+			set_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags);
- 		}
- 
- 		bacpy(&iso_pi(sk)->dst, &hcon->dst);
+ /**
+- * struct clk_duty - Struture encoding the duty cycle ratio of a clock
++ * struct clk_duty - Structure encoding the duty cycle ratio of a clock
+  *
+  * @num:	Numerator of the duty cycle ratio
+  * @den:	Denominator of the duty cycle ratio
+@@ -129,7 +129,7 @@ struct clk_duty {
+  * @restore_context: Restore the context of the clock after a restoration
+  *		of power.
+  *
+- * @recalc_rate	Recalculate the rate of this clock, by querying hardware. The
++ * @recalc_rate: Recalculate the rate of this clock, by querying hardware. The
+  *		parent rate is an input parameter.  It is up to the caller to
+  *		ensure that the prepare_mutex is held across this call. If the
+  *		driver cannot figure out a rate for this clock, it must return
+@@ -456,7 +456,7 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
+  * clock with the clock framework
+  * @dev: device that is registering this clock
+  * @name: name of this clock
+- * @parent_name: name of clock's parent
++ * @parent_data: name of clock's parent
+  * @flags: framework-specific flags
+  * @fixed_rate: non-adjustable clock rate
+  * @fixed_accuracy: non-adjustable clock accuracy
+@@ -471,7 +471,7 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
+  * the clock framework
+  * @dev: device that is registering this clock
+  * @name: name of this clock
+- * @parent_name: name of clock's parent
++ * @parent_data: name of clock's parent
+  * @flags: framework-specific flags
+  * @fixed_rate: non-adjustable clock rate
+  */
+@@ -649,7 +649,7 @@ struct clk_div_table {
+  * Clock with an adjustable divider affecting its output frequency.  Implements
+  * .recalc_rate, .set_rate and .round_rate
+  *
+- * Flags:
++ * @flags:
+  * CLK_DIVIDER_ONE_BASED - by default the divisor is the value read from the
+  *	register plus one.  If CLK_DIVIDER_ONE_BASED is set then the divider is
+  *	the raw value read from the register, with the value of zero considered
+@@ -1130,11 +1130,12 @@ struct clk_hw *clk_hw_register_fixed_factor_parent_hw(struct device *dev,
+  * @mwidth:	width of the numerator bit field
+  * @nshift:	shift to the denominator bit field
+  * @nwidth:	width of the denominator bit field
++ * @approximation: clk driver's callback for calculating the divider clock
+  * @lock:	register lock
+  *
+  * Clock with adjustable fractional divider affecting its output frequency.
+  *
+- * Flags:
++ * @flags:
+  * CLK_FRAC_DIVIDER_ZERO_BASED - by default the numerator and denominator
+  *	is the value read from the register. If CLK_FRAC_DIVIDER_ZERO_BASED
+  *	is set then the numerator and denominator are both the value read
+@@ -1191,7 +1192,7 @@ void clk_hw_unregister_fractional_divider(struct clk_hw *hw);
+  * Clock with an adjustable multiplier affecting its output frequency.
+  * Implements .recalc_rate, .set_rate and .round_rate
+  *
+- * Flags:
++ * @flags:
+  * CLK_MULTIPLIER_ZERO_BYPASS - By default, the multiplier is the value read
+  *	from the register, with 0 being a valid value effectively
+  *	zeroing the output clock rate. If CLK_MULTIPLIER_ZERO_BYPASS is
 -- 
 2.42.0
 
