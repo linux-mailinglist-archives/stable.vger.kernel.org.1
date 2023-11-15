@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8CDE7ED39F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E18AB7ED3A0
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234915AbjKOUxo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:53:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
+        id S234916AbjKOUxq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:53:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234968AbjKOUxn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:43 -0500
+        with ESMTP id S234920AbjKOUxo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F0D19F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427BEC4E777;
-        Wed, 15 Nov 2023 20:53:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D4388F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00DD1C4E778;
+        Wed, 15 Nov 2023 20:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081619;
-        bh=7GBFe/6xSIy6S1S+t+FOlCw8Po4gf5L5MuYM6Od3evM=;
+        s=korg; t=1700081621;
+        bh=govtWMQ90NxFoGHKRZKkn7n1fHZSDCiRhu3CSc9S/IE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AgJWHALGneGCEkgdxO7kWQKpzebGnOvNMhRHP2IIHj3aiOj2jy6qqizGvpNd89fm9
-         Vu9EFZaGAOdd/blFOPRNv/1lmW0v0somZxyY7bFaQimuLXjlKX8SyrZDNTUSkdvW7J
-         KMqbDX8xcIkPeYx8hZZz0N5/vDxs2sOUy3O6Uhh4=
+        b=uAQkKMhyVEN+SOTAYRGSt1/CldeOP1JCc1xy98XKezHmRDw/8j8YBSDFmB9iKHH0H
+         ab5fq8Zn1N6iIG/02wzOFu/5NHKFNJsfCQQ5wuLbpJNoZg5eumcb4Y7lZDBBlEeRDX
+         pmY6knf7Y0ESvvFGFpSLvOJyY6WiRr1U8u7fTR0E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Qais Yousef (Google)" <qyousef@layalina.io>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev, Reuben Hawkins <reubenhwk@gmail.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/191] sched/uclamp: Ignore (util == 0) optimization in feec() when p_util_max = 0
-Date:   Wed, 15 Nov 2023 15:44:37 -0500
-Message-ID: <20231115204644.666421722@linuxfoundation.org>
+Subject: [PATCH 5.10 003/191] vfs: fix readahead(2) on block devices
+Date:   Wed, 15 Nov 2023 15:44:38 -0500
+Message-ID: <20231115204644.729037771@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -58,70 +55,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Qais Yousef <qyousef@layalina.io>
+From: Reuben Hawkins <reubenhwk@gmail.com>
 
-[ Upstream commit 23c9519def98ee0fa97ea5871535e9b136f522fc ]
+[ Upstream commit 7116c0af4b8414b2f19fdb366eea213cbd9d91c2 ]
 
-find_energy_efficient_cpu() bails out early if effective util of the
-task is 0 as the delta at this point will be zero and there's nothing
-for EAS to do. When uclamp is being used, this could lead to wrong
-decisions when uclamp_max is set to 0. In this case the task is capped
-to performance point 0, but it is actually running and consuming energy
-and we can benefit from EAS energy calculations.
+Readahead was factored to call generic_fadvise.  That refactor added an
+S_ISREG restriction which broke readahead on block devices.
 
-Rework the condition so that it bails out when both util and uclamp_min
-are 0.
+In addition to S_ISREG, this change checks S_ISBLK to fix block device
+readahead.  There is no change in behavior with any file type besides block
+devices in this change.
 
-We can do that without needing to use uclamp_task_util(); remove it.
-
-Fixes: d81304bc6193 ("sched/uclamp: Cater for uclamp in find_energy_efficient_cpu()'s early exit condition")
-Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230916232955.2099394-3-qyousef@layalina.io
+Fixes: 3d8f7615319b ("vfs: implement readahead(2) using POSIX_FADV_WILLNEED")
+Signed-off-by: Reuben Hawkins <reubenhwk@gmail.com>
+Link: https://lore.kernel.org/r/20231003015704.2415-1-reubenhwk@gmail.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ mm/readahead.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index d53f57ac76094..73a89fbd81be8 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -3927,22 +3927,6 @@ static inline unsigned long task_util_est(struct task_struct *p)
- 	return max(task_util(p), _task_util_est(p));
- }
+diff --git a/mm/readahead.c b/mm/readahead.c
+index c5b0457415bef..d30bcf4bc63be 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -625,7 +625,8 @@ ssize_t ksys_readahead(int fd, loff_t offset, size_t count)
+ 	 */
+ 	ret = -EINVAL;
+ 	if (!f.file->f_mapping || !f.file->f_mapping->a_ops ||
+-	    !S_ISREG(file_inode(f.file)->i_mode))
++	    (!S_ISREG(file_inode(f.file)->i_mode) &&
++	    !S_ISBLK(file_inode(f.file)->i_mode)))
+ 		goto out;
  
--#ifdef CONFIG_UCLAMP_TASK
--static inline unsigned long uclamp_task_util(struct task_struct *p,
--					     unsigned long uclamp_min,
--					     unsigned long uclamp_max)
--{
--	return clamp(task_util_est(p), uclamp_min, uclamp_max);
--}
--#else
--static inline unsigned long uclamp_task_util(struct task_struct *p,
--					     unsigned long uclamp_min,
--					     unsigned long uclamp_max)
--{
--	return task_util_est(p);
--}
--#endif
--
- static inline void util_est_enqueue(struct cfs_rq *cfs_rq,
- 				    struct task_struct *p)
- {
-@@ -6842,7 +6826,7 @@ static int find_energy_efficient_cpu(struct task_struct *p, int prev_cpu)
- 		goto fail;
- 
- 	sync_entity_load_avg(&p->se);
--	if (!uclamp_task_util(p, p_util_min, p_util_max))
-+	if (!task_util_est(p) && p_util_min == 0)
- 		goto unlock;
- 
- 	for (; pd; pd = pd->next) {
+ 	ret = vfs_fadvise(f.file, offset, count, POSIX_FADV_WILLNEED);
 -- 
 2.42.0
 
