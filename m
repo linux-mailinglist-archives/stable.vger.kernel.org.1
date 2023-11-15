@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B39987ECADE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 19:59:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14DD67ECADF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 19:59:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229504AbjKOS7x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 13:59:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34750 "EHLO
+        id S229484AbjKOS7z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 13:59:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229505AbjKOS7w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 13:59:52 -0500
+        with ESMTP id S229505AbjKOS7y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 13:59:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CE61A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 10:59:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD35C433C7;
-        Wed, 15 Nov 2023 18:59:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA19FA
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 10:59:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C97C433C9;
+        Wed, 15 Nov 2023 18:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700074788;
-        bh=Sou11nwX0oc7DoBbbQiUuW8KOWf1rWkdSgUwEBZiX4E=;
+        s=korg; t=1700074790;
+        bh=y5kvFIXLmZ6QEUM4h8ojPkIzSIBaxAbjBDPs2sNBAzI=;
         h=Subject:To:Cc:From:Date:From;
-        b=A21dgv4+nyQiv7HHhp6GvMOGvuR7ScqC5WFqo2BT0J0aydQoEfxyq2Fk2+mP/ojho
-         jqdm+qkY+OSY3AUwTlLf0tD/l/ZmyQ9BS3kHuZg4pz+DVUzVTHgKjcTkTZOY2U8Noc
-         LLYCg97yEjlAO0YyKns6UD8MavVczp7521ZxshFk=
-Subject: FAILED: patch "[PATCH] Revert "drm/amd/display: Remove v_startup workaround for" failed to apply to 6.6-stable tree
+        b=O9U08xR8K9rDNKcTXniUQ6cy/A8ZEsdMmBpbhZaP3E4KNjRWGxHMf0BUFO8yY5Oyq
+         KTMrRjDlTrVbdTM+t9XDuX3XrPNJq7JDHtnTXDqtQavhSH2jsxlzngbtdTaf+MHcHh
+         p7fWnXEigEom8qSKv5NPvnsmAR6Ha6upD216fN90=
+Subject: FAILED: patch "[PATCH] Revert "drm/amd/display: Remove v_startup workaround for" failed to apply to 6.5-stable tree
 To:     hamza.mahfooz@amd.com, alexander.deucher@amd.com,
         harry.wentland@amd.com, jerry.zuo@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 15 Nov 2023 13:59:45 -0500
-Message-ID: <2023111545-lather-aftermath-a46a@gregkh>
+Date:   Wed, 15 Nov 2023 13:59:46 -0500
+Message-ID: <2023111546-lankiness-ruckus-6ae3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
 git cherry-pick -x 63461ea3fb403be0d040be3c88e621b55672e26a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023111545-lather-aftermath-a46a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023111546-lankiness-ruckus-6ae3@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
