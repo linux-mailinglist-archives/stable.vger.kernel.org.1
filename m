@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DB827ED461
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC7917ED43F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344641AbjKOU5z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34728 "EHLO
+        id S1344638AbjKOU5a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:57:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344642AbjKOU5a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:30 -0500
+        with ESMTP id S235086AbjKOU5Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A85D79
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D216FC43215;
-        Wed, 15 Nov 2023 20:47:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D021A5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEC2C43140;
+        Wed, 15 Nov 2023 20:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081261;
-        bh=mvGiVC4+p13OZ/4e1dHqzsFZ5fbQeP8dnz1dRI4o6gc=;
+        s=korg; t=1700081262;
+        bh=TTJOqkna18m+vmBl4AGzNfBvjihUyxD2SOn2O0CogcQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IqqD68KdxY6+Hu6P4pfBNPgEGggo5Axd8tOHtZZohXCmDjVW4i+xUrvGpYQoZSLll
-         GQSz5dGMNhc0WSZt/x2MQUU7vF9VSqiHtabwz9rFZF9kJmriktiZUH3hggGVpvgdu4
-         WDg6o3g7I9HERaL0ev5CU4cVULRhrUyIMvWsQQkc=
+        b=iSI/qRBvS0OFr3SJ4K2DTM6ZTZ825aPVkfQrQj5m4EtjFlPY1OVkVrU49PnblQJb8
+         JLolXZG8jygqX/R1cuVZxcIu6PDkjgvN6OyECrsvEmnJd+8x9c7zecEd2aw6AjRA3y
+         59UbqW3cRRFfZ/k0l9xb1SXQux75KNFcEL/Lovdw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Geoff Levand <geoff@infradead.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/244] net: spider_net: Use size_add() in call to struct_size()
-Date:   Wed, 15 Nov 2023 15:33:34 -0500
-Message-ID: <20231115203549.696352973@linuxfoundation.org>
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 023/244] wifi: rtw88: debug: Fix the NULL vs IS_ERR() bug for debugfs_create_file()
+Date:   Wed, 15 Nov 2023 15:33:35 -0500
+Message-ID: <20231115203549.760761377@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -57,38 +54,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 0201409079b975e46cc40e8bdff4bd61329ee10f ]
+[ Upstream commit 74f7957c9b1b95553faaf146a2553e023a9d1720 ]
 
-If, for any reason, the open-coded arithmetic causes a wraparound,
-the protection that `struct_size()` adds against potential integer
-overflows is defeated. Fix this by hardening call to `struct_size()`
-with `size_add()`.
+Since debugfs_create_file() return ERR_PTR and never return NULL, so use
+IS_ERR() to check it instead of checking NULL.
 
-Fixes: 3f1071ec39f7 ("net: spider_net: Use struct_size() helper")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Geoff Levand <geoff@infradead.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230919050651.962694-1-ruanjinjie@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/toshiba/spider_net.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/toshiba/spider_net.c b/drivers/net/ethernet/toshiba/spider_net.c
-index 66d4e024d11e9..f62fbb1087a9e 100644
---- a/drivers/net/ethernet/toshiba/spider_net.c
-+++ b/drivers/net/ethernet/toshiba/spider_net.c
-@@ -2332,7 +2332,7 @@ spider_net_alloc_card(void)
- 	struct spider_net_card *card;
- 
- 	netdev = alloc_etherdev(struct_size(card, darray,
--					    tx_descriptors + rx_descriptors));
-+					    size_add(tx_descriptors, rx_descriptors)));
- 	if (!netdev)
- 		return NULL;
- 
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index dfd52cff5d02f..1cc2b7b948044 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -1061,9 +1061,9 @@ static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
+ #define rtw_debugfs_add_core(name, mode, fopname, parent)		\
+ 	do {								\
+ 		rtw_debug_priv_ ##name.rtwdev = rtwdev;			\
+-		if (!debugfs_create_file(#name, mode,			\
++		if (IS_ERR(debugfs_create_file(#name, mode,		\
+ 					 parent, &rtw_debug_priv_ ##name,\
+-					 &file_ops_ ##fopname))		\
++					 &file_ops_ ##fopname)))	\
+ 			pr_debug("Unable to initialize debugfs:%s\n",	\
+ 			       #name);					\
+ 	} while (0)
 -- 
 2.42.0
 
