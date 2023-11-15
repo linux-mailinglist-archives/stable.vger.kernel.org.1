@@ -2,70 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47E737EC01A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 11:06:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A62D47EBFFA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 11:06:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234866AbjKOJ7F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 04:59:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47690 "EHLO
+        id S234987AbjKOKAK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 05:00:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234852AbjKOJ7E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 04:59:04 -0500
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF9BB11C;
-        Wed, 15 Nov 2023 01:58:59 -0800 (PST)
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AF97QW7010206;
-        Wed, 15 Nov 2023 09:58:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-type; s=qcppdkim1;
- bh=GLwXmtvMjTXbDM2nrBNbYXCfGPprVUbImDq/3p/gXHw=;
- b=AIPNsjcAFSJJ3IGhVEtFcsbDJvAR3B/2YZL7aNtMmPmoenYArHvnh1g38/huWqH89Jsn
- pCng7ay0mjNRMzyBD/7mWWHKq5JAyUCV+rHoT6wVCbQYtvoOPMUtptUnELWKnkx6Bc5H
- vcTEU2pAxR8DrZMZLNhY9/fC6aWgtM82m8UN7TBgnOPdjdaMbgfCjJ+RkcmkX+R0qK7N
- 1f7ttsQqUmiEDNbuO11nRAcrsRe4JBvygt8ss4QRjNv4KvPDoYFBFkaqj1SEN5zAlITy
- ivyay1Zrx/bTqjdM5lJSb5N90hObF74WRy8rSjp/Pu0ni8IMAdG7Sp9guvOLwkEFUQbB Xw== 
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ucfka9hdr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Nov 2023 09:58:50 +0000
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-        by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AF9woR1005753
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Nov 2023 09:58:50 GMT
-Received: from aiquny2-gv.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Wed, 15 Nov 2023 01:58:44 -0800
-From:   Maria Yu <quic_aiquny@quicinc.com>
-To:     <linux@armlinux.org.uk>, <ardb@kernel.org>, <mhiramat@kernel.org>
-CC:     Maria Yu <quic_aiquny@quicinc.com>, <kernel@quicinc.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_lijuang@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2 1/1] ARM: kprobes: Explicitly reserve r7 for local variables
-Date:   Wed, 15 Nov 2023 17:58:30 +0800
-Message-ID: <20231115095830.20607-1-quic_aiquny@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S234995AbjKOJ7o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 04:59:44 -0500
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C020ED43
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 01:59:10 -0800 (PST)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d9fe0a598d8so6553772276.2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 01:59:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700042350; x=1700647150; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yMYbJ2pYyOF1bQRIseaOIgNKpTkxL2DUlV+Adcdxow0=;
+        b=RrLiRV+F5TKUSeWyyD7BgqiwEFAcdNAMot6tUi/wm3wOKKCKwfGMUhPMWaupE0GsEt
+         W2TxZgIrnh5k0frUnB+6eeWdjQ2He1h6RfE52T9eMJ7mtInxw0YQh49M3/OaKUshio0k
+         2r1GKhIsuH3SWEo90k4hauylgWU24iWkYF5YIYjB1ps7C8/2j/9YxvigGj5rszOoqza2
+         olbx6Y23QAVEbwWF7ejTot7wwrUZYWUQq67l+dIUOBGOfPXbXxQjATAAYLXz2Xko6w97
+         ma519hHrtQjGjQhbAWd6KUHFtb9IINh0ocVWnMRvKdan6TvNAaenVN7WYIJ2Yw89ESUJ
+         rh7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700042350; x=1700647150;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yMYbJ2pYyOF1bQRIseaOIgNKpTkxL2DUlV+Adcdxow0=;
+        b=hHZI25Iayb+LROJbc03jIM3nadANYje4gpAiLai1eWI6Sf0RkiBlGiiQRF19aMCsAI
+         x9j71lEcaEI6xdKDuPWJx9R1F2rlTbpOKXZdqm8zlkYhg6mNu6TqEJgVRRGVGgFEFNA1
+         H16/SvfTCj2cOwKkdjPm8xtVY1fTp/7fgr+QP83lB2leeVki67W0UYLm56N3pZlPJtjC
+         5lEDmnrraKz7Fomkf/1+wQstMyOMXlfg5cX9eF+3QT87W1cg7AWt+J5NracNTKgx8tYd
+         QbE7xLrePjOTbUbhE8H57L/9GZr+7L0sNBn/MZyZyRmSoXhU3iP30j8A1NyAFLePxpC1
+         crLw==
+X-Gm-Message-State: AOJu0Yys4s7OvzPo79L6kKwfAe0Wv/SZkyVlcf2mwcSHTmn7nwPqRv8i
+        2ImLG7vYyi3fzeWD4RQjGoiV6Fb4yokjSSSRKpItxg==
+X-Google-Smtp-Source: AGHT+IFIi2V7s4Jk14pZAM7pqhWmLZYA7ebEMthP/5WmyIYDlMdlE/vDv+mOO97GJHHKq2nsoZVf3yhHI/ZXUDn1P7M=
+X-Received: by 2002:a25:3d81:0:b0:da3:b814:2500 with SMTP id
+ k123-20020a253d81000000b00da3b8142500mr11637353yba.18.1700042349793; Wed, 15
+ Nov 2023 01:59:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: CnoBJsaifzwKBk2Ab9I793wa8RzQnEcq
-X-Proofpoint-GUID: CnoBJsaifzwKBk2Ab9I793wa8RzQnEcq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-15_07,2023-11-14_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 clxscore=1011 spamscore=0 bulkscore=0
- phishscore=0 mlxscore=0 mlxlogscore=334 priorityscore=1501 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311150075
+References: <20231115010906.35357-1-quic_aiquny@quicinc.com>
+In-Reply-To: <20231115010906.35357-1-quic_aiquny@quicinc.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 15 Nov 2023 10:58:58 +0100
+Message-ID: <CACRpkdbmw=goFFiSYOC4_ybiHiiBJJqmVv2Gh=v5nuTnQ1Z1Gg@mail.gmail.com>
+Subject: Re: [PATCH v2] pinctrl: avoid reload of p state in list iteration
+To:     Maria Yu <quic_aiquny@quicinc.com>
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel@quicinc.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -74,68 +68,27 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Registers r7 is removed in clobber list, so compiler may choose r7 for
-local variables usage, while r7 will be actually updated by the inline asm
-code. This caused the runtime behavior wrong.
-While those kind of reserved registers cannot be set to clobber list
-because of error like "inline asm clobber list contains reserved
-registers".
-Explicitly reserve r7 by adding attribute no-omit-frame-pointer for needed
-function, then in T32 asm code r7 is used as a frame pointer and is not
-available for use as a general-purpose register.
-Note that "no-omit-frame-pointer" will make the code size a little bigger
-to store the stack frame pointer. So limited to needed functions can have
-the less impact than the full source file.
+Hi Maria,
 
-Fixes: dd12e97f3c72 ("ARM: kprobes: treat R7 as the frame pointer register in Thumb2 builds")
-Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
-Cc: stable@vger.kernel.org
----
- arch/arm/probes/kprobes/actions-thumb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+On Wed, Nov 15, 2023 at 2:13=E2=80=AFAM Maria Yu <quic_aiquny@quicinc.com> =
+wrote:
 
-diff --git a/arch/arm/probes/kprobes/actions-thumb.c b/arch/arm/probes/kprobes/actions-thumb.c
-index 51624fc263fc..c2fdaf9f6dba 100644
---- a/arch/arm/probes/kprobes/actions-thumb.c
-+++ b/arch/arm/probes/kprobes/actions-thumb.c
-@@ -438,7 +438,7 @@ t16_simulate_branch(probes_opcode_t insn,
- 	regs->ARM_pc = pc + (offset * 2);
- }
- 
--static unsigned long __kprobes
-+static unsigned long __kprobes __attribute__((optimize("no-omit-frame-pointer")))
- t16_emulate_loregs(probes_opcode_t insn,
- 		   struct arch_probes_insn *asi, struct pt_regs *regs)
- {
-@@ -521,7 +521,7 @@ t16_decode_hiregs(probes_opcode_t insn, struct arch_probes_insn *asi,
- 	return INSN_GOOD;
- }
- 
--static void __kprobes
-+static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
- t16_emulate_push(probes_opcode_t insn,
- 		struct arch_probes_insn *asi, struct pt_regs *regs)
- {
-@@ -557,7 +557,7 @@ t16_decode_push(probes_opcode_t insn, struct arch_probes_insn *asi,
- 	return INSN_GOOD;
- }
- 
--static void __kprobes
-+static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
- t16_emulate_pop_nopc(probes_opcode_t insn,
- 		struct arch_probes_insn *asi, struct pt_regs *regs)
- {
-@@ -576,7 +576,7 @@ t16_emulate_pop_nopc(probes_opcode_t insn,
- 		);
- }
- 
--static void __kprobes
-+static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
- t16_emulate_pop_pc(probes_opcode_t insn,
- 		struct arch_probes_insn *asi, struct pt_regs *regs)
- {
+> When in the list_for_each_entry iteration, reload of p->state->settings
+> with a local setting from old_state will makes the list iteration in a
+> infinite loop.
+> The typical issue happened, it will frequently have printk message like:
+>   "not freeing pin xx (xxx) as part of deactivating group xxx - it is
+> already used for some other setting".
+> This is a compiler-dependent problem, one instance was got using Clang
+> version 10.0 plus arm64 architecture.
+>
+> Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
+> Cc: stable@vger.kernel.org
 
-base-commit: 9bacdd8996c77c42ca004440be610692275ff9d0
--- 
-2.17.1
+Thanks, very much to the point.
 
+Can you please send a v3 and add the info Andy requested too,
+and I will apply it!
+
+Yours,
+Linus Walleij
