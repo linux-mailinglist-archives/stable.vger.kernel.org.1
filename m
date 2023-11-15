@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D6E47ECC34
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 175DB7ECECD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233495AbjKOT10 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:27:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39996 "EHLO
+        id S235156AbjKOTor (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:44:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233852AbjKOT1V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:21 -0500
+        with ESMTP id S235175AbjKOToo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E73EFD4B
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E7EC433C7;
-        Wed, 15 Nov 2023 19:27:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB9279E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2CDC433C7;
+        Wed, 15 Nov 2023 19:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076438;
-        bh=zS2VXQyLd2X24Tg3aLf2k8P3zoEnBB0ZCLJIJCFZeKA=;
+        s=korg; t=1700077480;
+        bh=ZivbbkPgetW8pQM5R0D3o6HS7OtH6Lh9KKJWN6VXTdk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DZMaf5EQWS9ACNzlXB7keBejbECuhe5E00CeDQ7CvYffi6U80sRO+OxdlQsy5ddlf
-         mpmijrHn21LtHemtIRdK38lrKuJLmH0Ye8fYuVcSW4V5HOokyMyerzTKCgj2ujpBRV
-         t/8zFbqewfP3YYfRckSVZE+PMrB5qA+XUoKXEnIs=
+        b=AibM6F/cMFUlMlky9dlH5L8lAczp45VAzgS73ZHansW8AFkXEG+Stw63SboLS+btn
+         GqK/L9cnRzvxjggo/GG1674JjVzrEGFZbqzX3zGr+xwJbhSsSkqYZcffvPyvtbpd5b
+         wTXX/mO+oynLGKgKtq6gbe50QzcbkId47nQbsKgI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 289/550] clk: scmi: Free scmi_clk allocated when the clocks with invalid info are skipped
-Date:   Wed, 15 Nov 2023 14:14:33 -0500
-Message-ID: <20231115191620.826499154@linuxfoundation.org>
+Subject: [PATCH 6.6 329/603] ASoC: cs35l41: Handle mdsync_down reg write errors
+Date:   Wed, 15 Nov 2023 14:14:34 -0500
+Message-ID: <20231115191636.274712767@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 3537a75e73f3420614a358d0c8b390ea483cc87d ]
+[ Upstream commit a9a3f54a23d844971c274f352500dddeadb4412c ]
 
-Add the missing devm_kfree() when we skip the clocks with invalid or
-missing information from the firmware.
+The return code of regmap_multi_reg_write() call related to "MDSYNC
+down" sequence is shadowed by the subsequent
+wait_for_completion_timeout() invocation, which is expected to time
+timeout in case the write operation failed.
 
-Cc: Cristian Marussi <cristian.marussi@arm.com>
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org
-Fixes: 6d6a1d82eaef ("clk: add support for clocks provided by SCMI")
-Link: https://lore.kernel.org/r/20231004193600.66232-1-sudeep.holla@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Let cs35l41_global_enable() return the correct error code instead of
+-ETIMEDOUT.
+
+Fixes: f5030564938b ("ALSA: cs35l41: Add shared boost feature")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20230907171010.1447274-2-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-scmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/cs35l41-lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
-index 2c7a830ce3080..fdec715c9ba9b 100644
---- a/drivers/clk/clk-scmi.c
-+++ b/drivers/clk/clk-scmi.c
-@@ -213,6 +213,7 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
- 		sclk->info = scmi_proto_clk_ops->info_get(ph, idx);
- 		if (!sclk->info) {
- 			dev_dbg(dev, "invalid clock info for idx %d\n", idx);
-+			devm_kfree(dev, sclk);
- 			continue;
- 		}
+diff --git a/sound/soc/codecs/cs35l41-lib.c b/sound/soc/codecs/cs35l41-lib.c
+index 4ec306cd2f476..a018f1d984286 100644
+--- a/sound/soc/codecs/cs35l41-lib.c
++++ b/sound/soc/codecs/cs35l41-lib.c
+@@ -1243,7 +1243,7 @@ int cs35l41_global_enable(struct device *dev, struct regmap *regmap, enum cs35l4
+ 		cs35l41_mdsync_down_seq[2].def = pwr_ctrl1;
+ 		ret = regmap_multi_reg_write(regmap, cs35l41_mdsync_down_seq,
+ 					     ARRAY_SIZE(cs35l41_mdsync_down_seq));
+-		if (!enable)
++		if (ret || !enable)
+ 			break;
  
+ 		if (!pll_lock)
 -- 
 2.42.0
 
