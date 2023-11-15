@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D131B7ECE95
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3CF17ECC1A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235138AbjKOToG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43764 "EHLO
+        id S233511AbjKOT07 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:26:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235137AbjKOToF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:05 -0500
+        with ESMTP id S233895AbjKOT0o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8E3B9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:02 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2195BC433C9;
-        Wed, 15 Nov 2023 19:44:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E5BD5B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17EEAC433C9;
+        Wed, 15 Nov 2023 19:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077442;
-        bh=ivsrO8l6VrxlU3LbH80zt9xK0DnvHHvls1aCcKTQaI4=;
+        s=korg; t=1700076401;
+        bh=iwpeJ8JJhgsfVucosI/GXyy+U/mB6O8xoS+jQIPUUkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2MBtiJiIR5ZZucV2/98AwnD3OPUN2LgzdWbMU9Bg6v3vrdQonOwMK8FXv+PBmwodi
-         /YrI00qI5Xw5neBR+ex00/FTfa1Zi/qIitNPC3KW29oqjanC+BGyr5SwICtx4iE/mu
-         AfnEdScULzyd48Dih6BF/ix/UUtdl9zOGr6Ushzw=
+        b=Y2izEPa8COF1uA9emidJ1MiwZAHyCI2DFF4j3xreLlx6Vlr0tG/mv21BjT1wRVvHc
+         fkBqFPnC0/stJC4uEKqRnzeUhJanCA0HsTiepkJ7JPSUtIbpMPrkXL6GIgJn7gPQgA
+         rzxDHeer2cwmpJ5K6OsC3+GKB0maFwuEo8DaiqHk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 306/603] arm64: dts: ti: verdin-am62: disable MIPI DSI bridge
-Date:   Wed, 15 Nov 2023 14:14:11 -0500
-Message-ID: <20231115191634.587665448@linuxfoundation.org>
+Subject: [PATCH 6.5 268/550] arm64: dts: qcom: qrb2210-rb1: Swap UART index
+Date:   Wed, 15 Nov 2023 14:14:12 -0500
+Message-ID: <20231115191619.297054580@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 664e2852aa9142193c2e241327631f032b966742 ]
+[ Upstream commit 973c015facabcbd320063648010942c51992c1a1 ]
 
-Keep the DPI to MIPI-DSI bridge disabled in the SoM dtsi file.
+Newer RB1 board revisions have a debug UART on QUP0. Sadly, it looks
+like even when ordering one in retail, customers receive prototype
+boards with "Enginering Sample" written on them.
 
-The display chain is not wholly described in the device tree file, on
-Verdin product family the displays are additional accessories that are
-configured/enabled using DT overlays.
+Use QUP4 for UART to make all known RB1 boards boot.
 
-With this enabled we have issues when a display is enabled on
-TIDSS port1 (LVDS) and port0 (DSI) is not used.
-
-Fixes: 9e77200356ba ("arm64: dts: ti: verdin-am62: Add DSI display support")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20230922123003.25002-1-francesco@dolcini.it
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Fixes: e18771961336 ("arm64: dts: qcom: Add initial QTI RB1 device tree")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230906-topic-rb1_features_sans_icc-v1-1-e92ce6fbde16@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-index 40992e7e4c308..5db52f2372534 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-verdin.dtsi
-@@ -1061,6 +1061,7 @@ dsi_bridge: dsi@e {
- 		vddc-supply = <&reg_1v2_dsi>;
- 		vddmipi-supply = <&reg_1v2_dsi>;
- 		vddio-supply = <&reg_1v8_dsi>;
-+		status = "disabled";
+diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+index ef36160932890..7eca89dc46aae 100644
+--- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
++++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+@@ -13,7 +13,7 @@ / {
+ 	compatible = "qcom,qrb2210-rb1", "qcom,qrb2210", "qcom,qcm2290";
  
- 		dsi_bridge_ports: ports {
- 			#address-cells = <1>;
+ 	aliases {
+-		serial0 = &uart0;
++		serial0 = &uart4;
+ 		sdhc1 = &sdhc_1;
+ 		sdhc2 = &sdhc_2;
+ 	};
+@@ -94,7 +94,7 @@ key_volp_n: key-volp-n-state {
+ };
+ 
+ /* UART connected to the Micro-USB port via a FTDI chip */
+-&uart0 {
++&uart4 {
+ 	compatible = "qcom,geni-debug-uart";
+ 	status = "okay";
+ };
 -- 
 2.42.0
 
