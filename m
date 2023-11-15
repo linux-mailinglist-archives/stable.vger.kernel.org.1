@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 515187ECCE3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EA777ECF6F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234222AbjKOTdN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44052 "EHLO
+        id S235318AbjKOTsV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234199AbjKOTdM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:12 -0500
+        with ESMTP id S235319AbjKOTsT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBA9A130
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEABC433C8;
-        Wed, 15 Nov 2023 19:33:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7188F1A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8ED7C433C8;
+        Wed, 15 Nov 2023 19:48:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076788;
-        bh=AvItDFSTUVAFS2Ed7EBKQ2NPSRbbGgUfHfyrXbnog54=;
+        s=korg; t=1700077696;
+        bh=Ap3SjNM2P8aBDHmJWzhgWIp8eFxAlNp+YG0L7H8QhuM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PdKU8NQsTzXcs9Wf5xxBAoPanQkkcxsU/xas67MIUS1tgPWPUyDSjEeHWj87GwP6U
-         EJ91n5dr7aXUYBll5NvANa+7Cm9ApmlJiJ3vTfwKPRwWB4GOwH4Qg12wL51tLsegJZ
-         NqnE0dS8mfeRHeHjQL1TIkgQAVmr7Sxrh6rQo2Os=
+        b=yVYibxJXkyV4jJPlLb0d1J4Srpu1Ivg3DlMBVf/uT9trhx2py73oQMCwKTQur1JKG
+         RjQRIwgKhNUcZe3qhlfaDN12PLdBgj6ysEa8F2D/yWty0Sl5iC2Yu6tIKf7MX0/QUc
+         swaKCP0sWYX6tx2plGOyY7twsdU5ZCx7+t7OboQ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
+        patches@lists.linux.dev,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ian Rogers <irogers@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 421/550] interconnect: qcom: sm8350: Set ACV enable_mask
-Date:   Wed, 15 Nov 2023 14:16:45 -0500
-Message-ID: <20231115191629.944113716@linuxfoundation.org>
+Subject: [PATCH 6.6 461/603] perf build: Add missing comment about NO_LIBTRACEEVENT=1
+Date:   Wed, 15 Nov 2023 14:16:46 -0500
+Message-ID: <20231115191644.498060462@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,37 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit df1b8356a80ab47a7623e08facf36fe434ea9722 ]
+[ Upstream commit c1783ddfb62420c44cdf4672dad2046f056c624b ]
 
-ACV expects an enable_mask corresponding to the APPS RSC, fill it in.
+By default perf will fail the build if the development files for
+libtraceevent are not available.
 
-Fixes: d26a56674497 ("interconnect: qcom: Add SM8350 interconnect provider driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811-topic-acv-v2-11-765ad70e539a@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+To build perf without libtraceevent support, disabling several features
+such as 'perf trace', one needs to add NO_LIBTRACEVENT=1 to the make
+command line.
+
+Add the missing comments about that to the tools/perf/Makefile.perf
+file, just like all the other such command line toggles.
+
+Fixes: 378ef0f5d9d7f465 ("perf build: Use libtraceevent from the system")
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reviewed-by: Ian Rogers <irogers@google.com>
+Link: https://lore.kernel.org/r/ZR6+MhXtLnv6ow6E@kernel.org
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sm8350.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/Makefile.perf | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/interconnect/qcom/sm8350.c b/drivers/interconnect/qcom/sm8350.c
-index 1959208409396..e6e2dcf4574d8 100644
---- a/drivers/interconnect/qcom/sm8350.c
-+++ b/drivers/interconnect/qcom/sm8350.c
-@@ -167,6 +167,7 @@ DEFINE_QNODE(qns_mem_noc_sf_disp, SM8350_SLAVE_MNOC_SF_MEM_NOC_DISP, 2, 32, SM83
- 
- static struct qcom_icc_bcm bcm_acv = {
- 	.name = "ACV",
-+	.enable_mask = BIT(3),
- 	.keepalive = false,
- 	.num_nodes = 1,
- 	.nodes = { &ebi },
+diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
+index 37af6df7b978d..86569f230e60d 100644
+--- a/tools/perf/Makefile.perf
++++ b/tools/perf/Makefile.perf
+@@ -69,6 +69,10 @@ include ../scripts/utilities.mak
+ # Define NO_LIBDW_DWARF_UNWIND if you do not want libdw support
+ # for dwarf backtrace post unwind.
+ #
++# Define NO_LIBTRACEEVENT=1 if you don't want libtraceevent to be linked,
++# this will remove multiple features and tools, such as 'perf trace',
++# that need it to read tracefs event format files, etc.
++#
+ # Define NO_PERF_READ_VDSO32 if you do not want to build perf-read-vdso32
+ # for reading the 32-bit compatibility VDSO in 64-bit mode
+ #
 -- 
 2.42.0
 
