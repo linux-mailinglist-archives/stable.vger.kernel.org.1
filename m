@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 544467ED4AB
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B24007ED4C0
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344706AbjKOU6u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36604 "EHLO
+        id S1344660AbjKOU7C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344704AbjKOU5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:44 -0500
+        with ESMTP id S1344592AbjKOU5u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 672F319AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 685F7C3279A;
-        Wed, 15 Nov 2023 20:49:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E53F1BCE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC623C3279C;
+        Wed, 15 Nov 2023 20:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081377;
-        bh=g2ehPUx8rBitvX8gSx/z5mBO+jte4xX7rEpsDmf11Po=;
+        s=korg; t=1700081379;
+        bh=864w5sKVnQgrrZbqQtxkAi2WIhULNdmgGqGAjorV0ig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YsmDBjqaAVOGw3RQvrC2rn4kO1v6l+WVe6bvqSsCGmE2dZ/uotq+kJDCkCvBp30Qw
-         eRNtlGyH+SPJ6f4BoX9HyzeAsx06U74P4W5Ll23uDxM0N3pDDC4WKMW/X3gTwXmf2S
-         wi1nRf1BXojKlkDJOi2iXzeEEI4nBs1jANkUPCYE=
+        b=itN2XkedW5D5YaZhk7oNd0OpwRTDZAYetp/97quZ/I1uSvnglQvCVQpbLBdDqa3I2
+         R0CYnu0WIQeZpO6YUNJqN2EvCgc8dRln+Ww6QDzpnhB3b+qMR7kj76jykEyzc553rq
+         b4K9SuWoGdHob8HGkAVf0JRldGutl+gzKB78lUsA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 117/244] arm64: dts: qcom: apq8016-sbc: Add missing ADV7533 regulators
-Date:   Wed, 15 Nov 2023 15:35:09 -0500
-Message-ID: <20231115203555.340963284@linuxfoundation.org>
+Subject: [PATCH 5.15 118/244] ARM: dts: qcom: mdm9615: populate vsdcc fixed regulator
+Date:   Wed, 15 Nov 2023 15:35:10 -0500
+Message-ID: <20231115203555.416406284@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -55,43 +56,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 33e9032a1875bb1aee3c68a4540f5a577ff44130 ]
+[ Upstream commit 09f8ee81b6da5f76de8b83c8bfc4475b54e101e0 ]
 
-Add the missing regulator supplies to the ADV7533 HDMI bridge to fix
-the following dtbs_check warnings. They are all also supplied by
-pm8916_l6 so there is no functional difference.
+Fixed regulator put under "regulators" node will not be populated,
+unless simple-bus or something similar is used.  Drop the "regulators"
+wrapper node to fix this.
 
-apq8016-sbc.dtb: bridge@39: 'dvdd-supply' is a required property
-apq8016-sbc.dtb: bridge@39: 'pvdd-supply' is a required property
-apq8016-sbc.dtb: bridge@39: 'a2vdd-supply' is a required property
-        from schema display/bridge/adi,adv7533.yaml
-
-Fixes: 28546b095511 ("arm64: dts: apq8016-sbc: Add HDMI display support")
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Fixes: 2c5e596524e7 ("ARM: dts: Add MDM9615 dtsi")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230922-db410c-adv7533-regulators-v1-1-68aba71e529b@gerhold.net
+Link: https://lore.kernel.org/r/20230924183914.51414-3-krzysztof.kozlowski@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm/boot/dts/qcom-mdm9615.dtsi | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-index ad4c2ccec63ee..0153be6d2a2b1 100644
---- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-@@ -190,6 +190,9 @@ adv_bridge: bridge@39 {
- 		pd-gpios = <&msmgpio 32 GPIO_ACTIVE_HIGH>;
+diff --git a/arch/arm/boot/dts/qcom-mdm9615.dtsi b/arch/arm/boot/dts/qcom-mdm9615.dtsi
+index ad9b52d53ef9b..982f3c3921965 100644
+--- a/arch/arm/boot/dts/qcom-mdm9615.dtsi
++++ b/arch/arm/boot/dts/qcom-mdm9615.dtsi
+@@ -82,14 +82,12 @@ cxo_board {
+ 		};
+ 	};
  
- 		avdd-supply = <&pm8916_l6>;
-+		a2vdd-supply = <&pm8916_l6>;
-+		dvdd-supply = <&pm8916_l6>;
-+		pvdd-supply = <&pm8916_l6>;
- 		v1p2-supply = <&pm8916_l6>;
- 		v3p3-supply = <&pm8916_l17>;
+-	regulators {
+-		vsdcc_fixed: vsdcc-regulator {
+-			compatible = "regulator-fixed";
+-			regulator-name = "SDCC Power";
+-			regulator-min-microvolt = <2700000>;
+-			regulator-max-microvolt = <2700000>;
+-			regulator-always-on;
+-		};
++	vsdcc_fixed: vsdcc-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "SDCC Power";
++		regulator-min-microvolt = <2700000>;
++		regulator-max-microvolt = <2700000>;
++		regulator-always-on;
+ 	};
  
+ 	soc: soc {
 -- 
 2.42.0
 
