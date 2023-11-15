@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B4F37ECC2A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 027997ECE83
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233517AbjKOT1W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:27:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46908 "EHLO
+        id S235124AbjKOTnh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233830AbjKOT1M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:12 -0500
+        with ESMTP id S235119AbjKOTng (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54C461A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACEEC433C8;
-        Wed, 15 Nov 2023 19:27:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A090AAB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D23C433C8;
+        Wed, 15 Nov 2023 19:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076428;
-        bh=6YCE/orUhamx5V+5GXhTm6S338T3uAOt//kExa+/16I=;
+        s=korg; t=1700077413;
+        bh=AZg+EdaC46onAQS63h0+qroQs6waUqvWN+OGS15aSyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xP8WnydbfKmyBA9luE1vrvQXINz5AEiQopX3W0wXF2Ii6u+8QGSGSM7Z4IlMpw1A4
-         1pFqThPvSCUDYLpGbOQRJy75Vbq61C/7ro66M8lr1L5kZEsUJD7Z8VSeH8qWPPSWHt
-         AqyKnY42+9Sf+y+d2Vh7dwqbpwedVeAj/In4pQv4=
+        b=qW7sdbtTJrYBWv5Vrkj96gk61HKxVT+PqZEQjxI7ZbgwfuOAKy6+JHbfk2MjxVaOt
+         vLWADxQCR7GZniqDWQOYy65nYs70RL0LDQny+SJ8pvy1uW+aHJdKQsLYaoZDfYJJF+
+         4MWkx+a6ED8nlUao5a1t4oKvQV+Od37sIAGtTV/A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 248/550] drm/rockchip: Fix type promotion bug in rockchip_gem_iommu_map()
+Subject: [PATCH 6.6 287/603] arm64: dts: qcom: sm8150: add ref clock to PCIe PHYs
 Date:   Wed, 15 Nov 2023 14:13:52 -0500
-Message-ID: <20231115191617.887134283@linuxfoundation.org>
+Message-ID: <20231115191633.243152933@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 6471da5ee311d53ef46eebcb7725bc94266cc0cf ]
+[ Upstream commit c204b3709409279ac019f3d374e444bb0b1424f0 ]
 
-The "ret" variable is declared as ssize_t and it can hold negative error
-codes but the "rk_obj->base.size" variable is type size_t.  This means
-that when we compare them, they are both type promoted to size_t and the
-negative error code becomes a high unsigned value and is treated as
-success.  Add a cast to fix this.
+Follow the rest of the platforms and add "ref" clocks to both PCIe PHYs
+found on the Qualcomm SM8150 platform.
 
-Fixes: 38f993b7c59e ("drm/rockchip: Do not use DMA mapping API if attached to IOMMU domain")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/2bfa28b5-145d-4b9e-a18a-98819dd686ce@moroto.mountain
+Fixes: a1c86c680533 ("arm64: dts: qcom: sm8150: Add PCIe nodes")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230820142035.89903-15-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_gem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8150.dtsi | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-index b8f8b45ebf594..93ed841f5dcea 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_gem.c
-@@ -40,7 +40,7 @@ static int rockchip_gem_iommu_map(struct rockchip_gem_object *rk_obj)
+diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+index 06c53000bb74d..19c6003dca153 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -1893,8 +1893,12 @@ pcie0_phy: phy@1c06000 {
+ 			ranges;
+ 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
+ 				 <&gcc GCC_PCIE_0_CFG_AHB_CLK>,
++				 <&gcc GCC_PCIE_0_CLKREF_CLK>,
+ 				 <&gcc GCC_PCIE0_PHY_REFGEN_CLK>;
+-			clock-names = "aux", "cfg_ahb", "refgen";
++			clock-names = "aux",
++				      "cfg_ahb",
++				      "ref",
++				      "refgen";
  
- 	ret = iommu_map_sgtable(private->domain, rk_obj->dma_addr, rk_obj->sgt,
- 				prot);
--	if (ret < rk_obj->base.size) {
-+	if (ret < (ssize_t)rk_obj->base.size) {
- 		DRM_ERROR("failed to map buffer: size=%zd request_size=%zd\n",
- 			  ret, rk_obj->base.size);
- 		ret = -ENOMEM;
+ 			resets = <&gcc GCC_PCIE_0_PHY_BCR>;
+ 			reset-names = "phy";
+@@ -1991,8 +1995,12 @@ pcie1_phy: phy@1c0e000 {
+ 			ranges;
+ 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
+ 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
++				 <&gcc GCC_PCIE_1_CLKREF_CLK>,
+ 				 <&gcc GCC_PCIE1_PHY_REFGEN_CLK>;
+-			clock-names = "aux", "cfg_ahb", "refgen";
++			clock-names = "aux",
++				      "cfg_ahb",
++				      "ref",
++				      "refgen";
+ 
+ 			resets = <&gcc GCC_PCIE_1_PHY_BCR>;
+ 			reset-names = "phy";
 -- 
 2.42.0
 
