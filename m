@@ -2,36 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E13497ECDCD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B527ECDE9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234655AbjKOTie (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:38:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57120 "EHLO
+        id S234712AbjKOTjJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234678AbjKOTid (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:33 -0500
+        with ESMTP id S234734AbjKOTjI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:08 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674B1A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD24C433C7;
-        Wed, 15 Nov 2023 19:38:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB8A9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:05 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869BDC433C8;
+        Wed, 15 Nov 2023 19:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077110;
-        bh=Iej/ocXcfmRX2TGBLuyNzQwlYrKNFZfEdSC2Hb1Rdh0=;
+        s=korg; t=1700077144;
+        bh=xtYCGKIIz+gXerS1GWwdKHB626nPCCDn9CV2ODfuOB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TLlefrzQI2JqSUNaL+pvgyIVZR5IzuccXhzATCMuRVHxE+ZrACbMiWOCq09j+Q9O0
-         G3NDDnzHn9aLIFgcNgk2WJ8lCUQH8gz2+c7SV2Ca1YA1AtcN5cViE984C6BFhQvFcL
-         6lpr93VKQCJ84hGAiP2vcgySzG0ZbdlvdjYMvago=
+        b=qlPN4c1tZKwZjiHi4sYdPpS6JOOKiVb8IMFQVQeLtrhixHlAfUkH13v3Wua2sWi5k
+         CXERXKeki43q6YhxDjbCjDuR3BLyVMq37rpH4uN/BWTlymACugZ2V9OKHrXIKpfqLT
+         Z4ZRTlKnrXf7BO7ItzwyU9j8foiSvNi1ZY44w/0c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Ye Bin <yebin10@huawei.com>, Jens Axboe <axboe@kernel.dk>,
+        patches@lists.linux.dev, Daan De Meyer <daan.j.demeyer@gmail.com>,
+        Luigi Leonardi <luigi.leonardi@outlook.com>,
+        Filippo Storniolo <f.storniolo95@gmail.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 521/550] blk-core: use pr_warn_ratelimited() in bio_check_ro()
-Date:   Wed, 15 Nov 2023 14:18:25 -0500
-Message-ID: <20231115191637.058998932@linuxfoundation.org>
+Subject: [PATCH 6.5 522/550] vsock/virtio: remove socket from connected/bound list on shutdown
+Date:   Wed, 15 Nov 2023 14:18:26 -0500
+Message-ID: <20231115191637.118598066@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -54,41 +57,73 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Filippo Storniolo <f.storniolo95@gmail.com>
 
-[ Upstream commit 1b0a151c10a6d823f033023b9fdd9af72a89591b ]
+[ Upstream commit 3a5cc90a4d1756072619fe511d07621bdef7f120 ]
 
-If one of the underlying disks of raid or dm is set to read-only, then
-each io will generate new log, which will cause message storm. This
-environment is indeed problematic, however we can't make sure our
-naive custormer won't do this, hence use pr_warn_ratelimited() to
-prevent message storm in this case.
+If the same remote peer, using the same port, tries to connect
+to a server on a listening port more than once, the server will
+reject the connection, causing a "connection reset by peer"
+error on the remote peer. This is due to the presence of a
+dangling socket from a previous connection in both the connected
+and bound socket lists.
+The inconsistency of the above lists only occurs when the remote
+peer disconnects and the server remains active.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Fixes: 57e95e4670d1 ("block: fix and cleanup bio_check_ro")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Link: https://lore.kernel.org/r/20231107111247.2157820-1-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This bug does not occur when the server socket is closed:
+virtio_transport_release() will eventually schedule a call to
+virtio_transport_do_close() and the latter will remove the socket
+from the bound and connected socket lists and clear the sk_buff.
+
+However, virtio_transport_do_close() will only perform the above
+actions if it has been scheduled, and this will not happen
+if the server is processing the shutdown message from a remote peer.
+
+To fix this, introduce a call to vsock_remove_sock()
+when the server is handling a client disconnect.
+This is to remove the socket from the bound and connected socket
+lists without clearing the sk_buff.
+
+Fixes: 06a8fc78367d ("VSOCK: Introduce virtio_vsock_common.ko")
+Reported-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+Tested-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+Co-developed-by: Luigi Leonardi <luigi.leonardi@outlook.com>
+Signed-off-by: Luigi Leonardi <luigi.leonardi@outlook.com>
+Signed-off-by: Filippo Storniolo <f.storniolo95@gmail.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 9866468c72a2a..3e01b4afb90ce 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -500,8 +500,8 @@ static inline void bio_check_ro(struct bio *bio)
- 	if (op_is_write(bio_op(bio)) && bdev_read_only(bio->bi_bdev)) {
- 		if (op_is_flush(bio->bi_opf) && !bio_sectors(bio))
- 			return;
--		pr_warn("Trying to write to read-only block-device %pg\n",
--			bio->bi_bdev);
-+		pr_warn_ratelimited("Trying to write to read-only block-device %pg\n",
-+				    bio->bi_bdev);
- 		/* Older lvm-tools actually trigger this */
- 	}
- }
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index b769fc2589315..f5ea654ca659b 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1150,11 +1150,17 @@ virtio_transport_recv_connected(struct sock *sk,
+ 			vsk->peer_shutdown |= RCV_SHUTDOWN;
+ 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_SEND)
+ 			vsk->peer_shutdown |= SEND_SHUTDOWN;
+-		if (vsk->peer_shutdown == SHUTDOWN_MASK &&
+-		    vsock_stream_has_data(vsk) <= 0 &&
+-		    !sock_flag(sk, SOCK_DONE)) {
+-			(void)virtio_transport_reset(vsk, NULL);
+-			virtio_transport_do_close(vsk, true);
++		if (vsk->peer_shutdown == SHUTDOWN_MASK) {
++			if (vsock_stream_has_data(vsk) <= 0 && !sock_flag(sk, SOCK_DONE)) {
++				(void)virtio_transport_reset(vsk, NULL);
++				virtio_transport_do_close(vsk, true);
++			}
++			/* Remove this socket anyway because the remote peer sent
++			 * the shutdown. This way a new connection will succeed
++			 * if the remote peer uses the same source port,
++			 * even if the old socket is still unreleased, but now disconnected.
++			 */
++			vsock_remove_sock(vsk);
+ 		}
+ 		if (le32_to_cpu(virtio_vsock_hdr(skb)->flags))
+ 			sk->sk_state_change(sk);
 -- 
 2.42.0
 
