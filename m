@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC8227ED0F2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:58:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F29AB7ED11B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:59:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343949AbjKOT6e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:58:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41708 "EHLO
+        id S1343996AbjKOT7c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:59:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343941AbjKOT6b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:58:31 -0500
+        with ESMTP id S1344036AbjKOT71 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:59:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9824FB8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:58:28 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DCEC433C7;
-        Wed, 15 Nov 2023 19:58:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D5F7AF
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:59:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC9BC433C7;
+        Wed, 15 Nov 2023 19:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078308;
-        bh=+6+7xztNpMmX6144DxLo3Vabhd8PfDSR78YsYv9Yy4s=;
+        s=korg; t=1700078364;
+        bh=lktR4Azq16bUmOIYoiPzoAoZRZ7JCaTp3teotlPvpGU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mTIBwAoK6EPBbeO0X2jM7gCFuP6+0ITWzjBUBrQnFBKqrNPa5LSYvu0VgIeOWtM9P
-         zfNMW1Xzqj1qRBoUYhKt1AOspdPrfuYQvD3faKvFL9Xttrt0L/ujNZa6stMVoGH5t8
-         82bWUvb19vwLWoANetpgSFCCTs+EjOuM+hy0YXsE=
+        b=QOXhtszjvEBnUsqBs5qj1iL9haW7Ni3H/+V10C+mRGwjcKzOpzhsBcfZy3WvmNV0g
+         D+04RNEYIHb1dpPEgqZEAca31Vk0s5OYJIRyBKgmE3Gcp1o+iS80TFz0rNfiv4h6G6
+         dTcgaORhOR3h8rZqTGU2j6ZcDYQaN7REwgkyeSCQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 242/379] mfd: dln2: Fix double put in dln2_probe
-Date:   Wed, 15 Nov 2023 14:25:17 -0500
-Message-ID: <20231115192659.451085175@linuxfoundation.org>
+        patches@lists.linux.dev, Fabien Parent <fparent@baylibre.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Rob Herring <robh@kernel.org>, Lee Jones <lee@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 243/379] dt-bindings: mfd: mt6397: Add binding for MT6357
+Date:   Wed, 15 Nov 2023 14:25:18 -0500
+Message-ID: <20231115192659.506746374@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -53,35 +55,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Fabien Parent <fparent@baylibre.com>
 
-[ Upstream commit 759c409bc5fc496cbc22cd0b392d3cbb0c0e23eb ]
+[ Upstream commit 118ee241c423636c03527eada8f672301514751e ]
 
-The dln2_free() already contains usb_put_dev(). Therefore,
-the redundant usb_put_dev() before dln2_free() may lead to
-a double free.
+Add binding documentation for the MT6357 PMIC.
 
-Fixes: 96da8f148396 ("mfd: dln2: Fix memory leak in dln2_probe()")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230925024134.9683-1-dinghao.liu@zju.edu.cn
+Signed-off-by: Fabien Parent <fparent@baylibre.com>
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Acked-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20221005-mt6357-support-v3-1-7e0bd7c315b2@baylibre.com
+Stable-dep-of: 61fdd1f1d2c1 ("dt-bindings: mfd: mt6397: Split out compatible for MediaTek MT6366 PMIC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/dln2.c | 1 -
- 1 file changed, 1 deletion(-)
+ Documentation/devicetree/bindings/mfd/mt6397.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/dln2.c b/drivers/mfd/dln2.c
-index c3149729cec2e..6cd0b0c752d6e 100644
---- a/drivers/mfd/dln2.c
-+++ b/drivers/mfd/dln2.c
-@@ -827,7 +827,6 @@ static int dln2_probe(struct usb_interface *interface,
- 	dln2_stop_rx_urbs(dln2);
- 
- out_free:
--	usb_put_dev(dln2->usb_dev);
- 	dln2_free(dln2);
- 
- 	return ret;
+diff --git a/Documentation/devicetree/bindings/mfd/mt6397.txt b/Documentation/devicetree/bindings/mfd/mt6397.txt
+index 0088442efca1a..518986c44880f 100644
+--- a/Documentation/devicetree/bindings/mfd/mt6397.txt
++++ b/Documentation/devicetree/bindings/mfd/mt6397.txt
+@@ -21,6 +21,7 @@ Required properties:
+ compatible:
+ 	"mediatek,mt6323" for PMIC MT6323
+ 	"mediatek,mt6331" for PMIC MT6331 and MT6332
++	"mediatek,mt6357" for PMIC MT6357
+ 	"mediatek,mt6358" for PMIC MT6358 and MT6366
+ 	"mediatek,mt6359" for PMIC MT6359
+ 	"mediatek,mt6397" for PMIC MT6397
 -- 
 2.42.0
 
