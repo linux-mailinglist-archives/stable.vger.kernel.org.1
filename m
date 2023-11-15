@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC8177ED370
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C2977ED329
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233766AbjKOUwk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:52:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59048 "EHLO
+        id S233881AbjKOUqr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233760AbjKOUwk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:52:40 -0500
+        with ESMTP id S234919AbjKOUqg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E9CB0
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:52:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B860C4E778;
-        Wed, 15 Nov 2023 20:52:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BED019D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E7DC433C8;
+        Wed, 15 Nov 2023 20:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081556;
-        bh=6FHaO75tUTVFcogaCQ0QhctPSddRlv7s7a1bwVlijME=;
+        s=korg; t=1700081188;
+        bh=mGArqo7pK38Twhafrd1USJ8tq4vdrWCzrcs4wbDzttc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NwO9hj1i4jNLY7XDDkWZLQobjqoZckitRwum0nYAj4QbJUEoh3eUTtp7v6v2yq5j5
-         XXrBdlSw0hT+ECIC62KzQGhF/L7CpAU0fKnk7XJ49Xm9gc3+9KxLotqmTB50Cw66pQ
-         L89j4YouAS/iKI2ZOJAchqMzB5lQ8lWF3eGIrzZY=
+        b=UsGTq6DpJI0frpH3IxHk8JLmoGmKSgDA0V6udC1/rzh+mXmIXiUH46KSNMFhZj0YT
+         rVmjilQNE+XajGtSf6Od51j27YDNnESgW2X8+yWYJxwYZxGQUmmt/RBwL0VIjpUKdf
+         sLJufCwhJ8k3TiyIbNeJRWsT2bg7mk1stMW4esdA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
+        patches@lists.linux.dev, Karsten Graul <kgraul@linux.ibm.com>,
+        Ursula Braun <ubraun@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 198/244] pcmcia: cs: fix possible hung task and memory leak pccardd()
-Date:   Wed, 15 Nov 2023 15:36:30 -0500
-Message-ID: <20231115203600.268805772@linuxfoundation.org>
+Subject: [PATCH 4.19 79/88] net/smc: wait for pending work before clcsock release_sock
+Date:   Wed, 15 Nov 2023 15:36:31 -0500
+Message-ID: <20231115191430.830506616@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +51,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Karsten Graul <kgraul@linux.ibm.com>
 
-[ Upstream commit e3ea1b4847e49234e691c0d66bf030bd65bb7f2b ]
+[ Upstream commit fd57770dd198f5b2ddd5b9e6bf282cf98d63adb9 ]
 
-If device_register() returns error in pccardd(), it leads two issues:
+When the clcsock is already released using sock_release() and a pending
+smc_listen_work accesses the clcsock than that will fail. Solve this
+by canceling and waiting for the work to complete first. Because the
+work holds the sock_lock it must make sure that the lock is not hold
+before the new helper smc_clcsock_release() is invoked. And before the
+smc_listen_work starts working check if the parent listen socket is
+still valid, otherwise stop the work early.
 
-1. The socket_released has never been completed, it will block
-   pcmcia_unregister_socket(), because of waiting for completion
-   of socket_released.
-2. The device name allocated by dev_set_name() is leaked.
-
-Fix this two issues by calling put_device() when device_register() fails.
-socket_released can be completed in pcmcia_release_socket(), the name can
-be freed in kobject_cleanup().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Signed-off-by: Karsten Graul <kgraul@linux.ibm.com>
+Signed-off-by: Ursula Braun <ubraun@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 5211c9729484 ("net/smc: fix dangling sock under state SMC_APPFINCLOSEWAIT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/cs.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/smc/af_smc.c    | 14 ++++++++------
+ net/smc/smc_close.c | 25 +++++++++++++++++++++----
+ net/smc/smc_close.h |  1 +
+ 3 files changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pcmcia/cs.c b/drivers/pcmcia/cs.c
-index f70197154a362..820cce7c8b400 100644
---- a/drivers/pcmcia/cs.c
-+++ b/drivers/pcmcia/cs.c
-@@ -605,6 +605,7 @@ static int pccardd(void *__skt)
- 		dev_warn(&skt->dev, "PCMCIA: unable to register socket\n");
- 		skt->thread = NULL;
- 		complete(&skt->thread_done);
-+		put_device(&skt->dev);
- 		return 0;
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 6f342f6cc4876..6b30bec54b624 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -158,10 +158,9 @@ static int smc_release(struct socket *sock)
+ 
+ 	if (sk->sk_state == SMC_CLOSED) {
+ 		if (smc->clcsock) {
+-			mutex_lock(&smc->clcsock_release_lock);
+-			sock_release(smc->clcsock);
+-			smc->clcsock = NULL;
+-			mutex_unlock(&smc->clcsock_release_lock);
++			release_sock(sk);
++			smc_clcsock_release(smc);
++			lock_sock(sk);
+ 		}
+ 		if (!smc->use_fallback)
+ 			smc_conn_free(&smc->conn);
+@@ -1014,13 +1013,13 @@ static void smc_listen_out(struct smc_sock *new_smc)
+ 	struct smc_sock *lsmc = new_smc->listen_smc;
+ 	struct sock *newsmcsk = &new_smc->sk;
+ 
+-	lock_sock_nested(&lsmc->sk, SINGLE_DEPTH_NESTING);
+ 	if (lsmc->sk.sk_state == SMC_LISTEN) {
++		lock_sock_nested(&lsmc->sk, SINGLE_DEPTH_NESTING);
+ 		smc_accept_enqueue(&lsmc->sk, newsmcsk);
++		release_sock(&lsmc->sk);
+ 	} else { /* no longer listening */
+ 		smc_close_non_accepted(newsmcsk);
  	}
- 	ret = pccard_sysfs_add_socket(&skt->dev);
+-	release_sock(&lsmc->sk);
+ 
+ 	/* Wake up accept */
+ 	lsmc->sk.sk_data_ready(&lsmc->sk);
+@@ -1216,6 +1215,9 @@ static void smc_listen_work(struct work_struct *work)
+ 	int rc = 0;
+ 	u8 ibport;
+ 
++	if (new_smc->listen_smc->sk.sk_state != SMC_LISTEN)
++		return smc_listen_out_err(new_smc);
++
+ 	if (new_smc->use_fallback) {
+ 		smc_listen_out_connected(new_smc);
+ 		return;
+diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
+index 3e7858793d485..cac0773f5ebd9 100644
+--- a/net/smc/smc_close.c
++++ b/net/smc/smc_close.c
+@@ -21,6 +21,22 @@
+ 
+ #define SMC_CLOSE_WAIT_LISTEN_CLCSOCK_TIME	(5 * HZ)
+ 
++/* release the clcsock that is assigned to the smc_sock */
++void smc_clcsock_release(struct smc_sock *smc)
++{
++	struct socket *tcp;
++
++	if (smc->listen_smc && current_work() != &smc->smc_listen_work)
++		cancel_work_sync(&smc->smc_listen_work);
++	mutex_lock(&smc->clcsock_release_lock);
++	if (smc->clcsock) {
++		tcp = smc->clcsock;
++		smc->clcsock = NULL;
++		sock_release(tcp);
++	}
++	mutex_unlock(&smc->clcsock_release_lock);
++}
++
+ static void smc_close_cleanup_listen(struct sock *parent)
+ {
+ 	struct sock *sk;
+@@ -331,6 +347,7 @@ static void smc_close_passive_work(struct work_struct *work)
+ 						   close_work);
+ 	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
+ 	struct smc_cdc_conn_state_flags *rxflags;
++	bool release_clcsock = false;
+ 	struct sock *sk = &smc->sk;
+ 	int old_state;
+ 
+@@ -417,13 +434,13 @@ static void smc_close_passive_work(struct work_struct *work)
+ 		if ((sk->sk_state == SMC_CLOSED) &&
+ 		    (sock_flag(sk, SOCK_DEAD) || !sk->sk_socket)) {
+ 			smc_conn_free(conn);
+-			if (smc->clcsock) {
+-				sock_release(smc->clcsock);
+-				smc->clcsock = NULL;
+-			}
++			if (smc->clcsock)
++				release_clcsock = true;
+ 		}
+ 	}
+ 	release_sock(sk);
++	if (release_clcsock)
++		smc_clcsock_release(smc);
+ 	sock_put(sk); /* sock_hold done by schedulers of close_work */
+ }
+ 
+diff --git a/net/smc/smc_close.h b/net/smc/smc_close.h
+index 19eb6a211c23c..e0e3b5df25d24 100644
+--- a/net/smc/smc_close.h
++++ b/net/smc/smc_close.h
+@@ -23,5 +23,6 @@ void smc_close_wake_tx_prepared(struct smc_sock *smc);
+ int smc_close_active(struct smc_sock *smc);
+ int smc_close_shutdown_write(struct smc_sock *smc);
+ void smc_close_init(struct smc_sock *smc);
++void smc_clcsock_release(struct smc_sock *smc);
+ 
+ #endif /* SMC_CLOSE_H */
 -- 
 2.42.0
 
