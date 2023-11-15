@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 469C27ECCF1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D38217ECCC9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234220AbjKOTd2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42110 "EHLO
+        id S234116AbjKOTcd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234247AbjKOTd1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:27 -0500
+        with ESMTP id S234130AbjKOTcd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C782919F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE33C433C8;
-        Wed, 15 Nov 2023 19:33:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E38A619D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 699FEC433C9;
+        Wed, 15 Nov 2023 19:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076804;
-        bh=kBM8S+hkiOR6ufgsbqaZIiSa0YfSTtYvMteNrxXrc9s=;
+        s=korg; t=1700076749;
+        bh=5JgNTko6sZqvoVOm+hgo11kXd6X4Ih2njO1Oku4gyaI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xHFRhvvKZ929/TPuWBXfnv9BonI3ZtKIzu6FhMMeEyqXRh63H5rs0KayaRa9Qdi6J
-         1LjkigSRmPLxTsLoeQUF8zU578KQ9FvYVxSuxn6OgZznnbEpj5wdevlKD8tVRU53/W
-         6GGVlsWfUK0brkVOScmvLhz6kSiBoWlSixtOCg5Q=
+        b=mzFEeQVMcyCjMifKYrFsbRRLi/RLTum7RZYps33ne1ilRDCqpPwgcHcGHHsEs8tAU
+         xu2rPgg3QLpc4oB1d1Epjp5IaU11nPey3bpbTjuhv/XO/YWhJHHUynJ5VRYoRo0lRH
+         9jhjnb5E8Xk96EXzGILqd8vhMHP1B4VDyetoign8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ingo Molnar <mingo@kernel.org>,
         "Borislav Petkov (AMD)" <bp@alien8.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/603] x86/srso: Fix SBPB enablement for (possible) future fixed HW
-Date:   Wed, 15 Nov 2023 14:09:19 -0500
-Message-ID: <20231115191614.146451947@linuxfoundation.org>
+Subject: [PATCH 6.6 015/603] x86/srso: Print mitigation for retbleed IBPB case
+Date:   Wed, 15 Nov 2023 14:09:20 -0500
+Message-ID: <20231115191614.218136460@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -57,35 +57,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 1d1142ac51307145dbb256ac3535a1d43a1c9800 ]
+[ Upstream commit de9f5f7b06a5b7adbfdd8016f011120a4e928add ]
 
-Make the SBPB check more robust against the (possible) case where future
-HW has SRSO fixed but doesn't have the SRSO_NO bit set.
+When overriding the requested mitigation with IBPB due to retbleed=ibpb,
+print the mitigation in the usual format instead of a custom error
+message.
 
-Fixes: 1b5277c0ea0b ("x86/srso: Add SRSO_NO support")
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/cee5050db750b391c9f35f5334f8ff40e66c01b9.1693889988.git.jpoimboe@kernel.org
+Link: https://lore.kernel.org/r/ec3af919e267773d896c240faf30bfc6a1fd6304.1693889988.git.jpoimboe@kernel.org
+Stable-dep-of: dc6306ad5b0d ("x86/srso: Fix vulnerability reporting for missing microcode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/bugs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/bugs.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 10499bcd4e396..2859a54660a28 100644
+index 2859a54660a28..d5db0baca2f14 100644
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -2496,7 +2496,7 @@ static void __init srso_select_mitigation(void)
- 	pr_info("%s%s\n", srso_strings[srso_mitigation], (has_microcode ? "" : ", no microcode"));
+@@ -2425,9 +2425,8 @@ static void __init srso_select_mitigation(void)
+ 
+ 	if (retbleed_mitigation == RETBLEED_MITIGATION_IBPB) {
+ 		if (has_microcode) {
+-			pr_err("Retbleed IBPB mitigation enabled, using same for SRSO\n");
+ 			srso_mitigation = SRSO_MITIGATION_IBPB;
+-			goto pred_cmd;
++			goto out;
+ 		}
+ 	}
+ 
+@@ -2493,7 +2492,8 @@ static void __init srso_select_mitigation(void)
+ 		break;
+ 	}
+ 
+-	pr_info("%s%s\n", srso_strings[srso_mitigation], (has_microcode ? "" : ", no microcode"));
++out:
++	pr_info("%s%s\n", srso_strings[srso_mitigation], has_microcode ? "" : ", no microcode");
  
  pred_cmd:
--	if ((boot_cpu_has(X86_FEATURE_SRSO_NO) || srso_cmd == SRSO_CMD_OFF) &&
-+	if ((!boot_cpu_has_bug(X86_BUG_SRSO) || srso_cmd == SRSO_CMD_OFF) &&
- 	     boot_cpu_has(X86_FEATURE_SBPB))
- 		x86_pred_cmd = PRED_CMD_SBPB;
- }
+ 	if ((!boot_cpu_has_bug(X86_BUG_SRSO) || srso_cmd == SRSO_CMD_OFF) &&
 -- 
 2.42.0
 
