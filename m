@@ -2,38 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149CA7ED0FE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:58:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6DB97ED109
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:59:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343945AbjKOT6r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:58:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43872 "EHLO
+        id S1344008AbjKOT7I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:59:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343954AbjKOT6q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:58:46 -0500
+        with ESMTP id S1343990AbjKOT7E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:59:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E0B12C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:58:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BDDC433C9;
-        Wed, 15 Nov 2023 19:58:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54BB21B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:59:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDBE0C433C7;
+        Wed, 15 Nov 2023 19:58:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078322;
-        bh=L3dzfqIUCFJGgcHtN7w5TwIjpIhAbxMVVgPp/OzjXjs=;
+        s=korg; t=1700078340;
+        bh=5brVm0JqFvw1aakABO0yKl25kWZdjh6UeF4PJKhfCaw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gHP0mBz1Llfs1dtbixrWXQ8hXeN8+ljwxfIG46eQ3QnBXt5KXQq4D7Vax/uAoYo7u
-         0+K9X75bIWIeZTwP4FeqP45EuCJ91s612GJPCKvAw40iboQdIRrkTJolqODbmHvex7
-         CjVqa4q1GlaaElcf10mimU+xekYJw0ZPmkeyeWzI=
+        b=LnGpBMGcFyv0oqwFdpkpJi9QQVXXVnSKKF/UhV8FPfFN/m1SCdGzn72WNPoCzd/RH
+         zQESCzBEbVoOJeonS91dR7lI3WxmIVcuS2MSWfnuLALOKuzVZOT+1PFaaVIM2P4U1x
+         xlGZn0mhEonUmNYc3x07Nx0d1e0fGa7NXWdlKu8k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
         Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/379] dt-bindings: mfd: mt6397: Split out compatible for MediaTek MT6366 PMIC
-Date:   Wed, 15 Nov 2023 14:25:19 -0500
-Message-ID: <20231115192659.569372416@linuxfoundation.org>
+Subject: [PATCH 6.1 245/379] mfd: arizona-spi: Set pdata.hpdet_channel for ACPI enumerated devs
+Date:   Wed, 15 Nov 2023 14:25:20 -0500
+Message-ID: <20231115192659.630270337@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -56,55 +53,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 61fdd1f1d2c183ec256527d16d75e75c3582af82 ]
+[ Upstream commit 831d1af85133e1763d41e20414912d9a1058ea72 ]
 
-The MT6366 PMIC is mostly, but not fully, compatible with MT6358. It has
-a different set of regulators. Specifically, it lacks the camera related
-VCAM* LDOs and VLDO28, but has additional VM18, VMDDR, and VSRAM_CORE LDOs.
+Commit 9e86b2ad4c11 changed the channel used for HPDET detection
+(headphones vs lineout detection) from being hardcoded to
+ARIZONA_ACCDET_MODE_HPL (HP left channel) to it being configurable
+through arizona_pdata.hpdet_channel the DT/OF parsing added for
+filling arizona_pdata on devicetree platforms ensures that
+arizona_pdata.hpdet_channel gets set to ARIZONA_ACCDET_MODE_HPL
+when not specified in the devicetree-node.
 
-The PMICs contain a chip ID register that can be used to detect which
-exact model is preset, so it is possible to share a common base
-compatible string.
+But on ACPI platforms where arizona_pdata is filled by
+arizona_spi_acpi_probe() arizona_pdata.hpdet_channel was not
+getting set, causing it to default to 0 aka ARIZONA_ACCDET_MODE_MIC.
 
-Add a separate compatible for the MT6366 PMIC, with a fallback to the
-MT6358 PMIC.
+This causes headphones to get misdetected as line-out on some models.
+Fix this by setting hpdet_channel = ARIZONA_ACCDET_MODE_HPL.
 
-Fixes: 49be16305587 ("dt-bindings: mfd: Add compatible for the MediaTek MT6366 PMIC")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230928085537.3246669-2-wenst@chromium.org
+Fixes: e933836744a2 ("mfd: arizona: Add support for ACPI enumeration of WM5102 connected over SPI")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231014205414.59415-1-hdegoede@redhat.com
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/mfd/mt6397.txt | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mfd/arizona-spi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/mfd/mt6397.txt b/Documentation/devicetree/bindings/mfd/mt6397.txt
-index 518986c44880f..8f9784af92d6e 100644
---- a/Documentation/devicetree/bindings/mfd/mt6397.txt
-+++ b/Documentation/devicetree/bindings/mfd/mt6397.txt
-@@ -22,8 +22,9 @@ compatible:
- 	"mediatek,mt6323" for PMIC MT6323
- 	"mediatek,mt6331" for PMIC MT6331 and MT6332
- 	"mediatek,mt6357" for PMIC MT6357
--	"mediatek,mt6358" for PMIC MT6358 and MT6366
-+	"mediatek,mt6358" for PMIC MT6358
- 	"mediatek,mt6359" for PMIC MT6359
-+	"mediatek,mt6366", "mediatek,mt6358" for PMIC MT6366
- 	"mediatek,mt6397" for PMIC MT6397
+diff --git a/drivers/mfd/arizona-spi.c b/drivers/mfd/arizona-spi.c
+index 5c4af05ed0440..3f83a77ce69e7 100644
+--- a/drivers/mfd/arizona-spi.c
++++ b/drivers/mfd/arizona-spi.c
+@@ -159,6 +159,9 @@ static int arizona_spi_acpi_probe(struct arizona *arizona)
+ 	arizona->pdata.micd_ranges = arizona_micd_aosp_ranges;
+ 	arizona->pdata.num_micd_ranges = ARRAY_SIZE(arizona_micd_aosp_ranges);
  
- Optional subnodes:
-@@ -40,6 +41,7 @@ Optional subnodes:
- 		- compatible: "mediatek,mt6323-regulator"
- 	see ../regulator/mt6323-regulator.txt
- 		- compatible: "mediatek,mt6358-regulator"
-+		- compatible: "mediatek,mt6366-regulator", "mediatek-mt6358-regulator"
- 	see ../regulator/mt6358-regulator.txt
- 		- compatible: "mediatek,mt6397-regulator"
- 	see ../regulator/mt6397-regulator.txt
++	/* Use left headphone speaker for HP vs line-out detection */
++	arizona->pdata.hpdet_channel = ARIZONA_ACCDET_MODE_HPL;
++
+ 	return 0;
+ }
+ 
 -- 
 2.42.0
 
