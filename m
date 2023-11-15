@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 224F97ECF7E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1508E7ECD17
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235330AbjKOTsu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:48:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50206 "EHLO
+        id S234081AbjKOTeX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235335AbjKOTst (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:49 -0500
+        with ESMTP id S234351AbjKOTeS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BB9E1A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93427C433C8;
-        Wed, 15 Nov 2023 19:48:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F0AD4F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7FAC433CA;
+        Wed, 15 Nov 2023 19:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077725;
-        bh=kZt1AQCQjJJ8OtKy0EmoNwHXYLMX49cOzk7WDY20Z70=;
+        s=korg; t=1700076851;
+        bh=Cuwi7abaXMgv18UKcjttTm2UaJSj910kyNbcEPZOykQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g3rZUYT3rffG6FzNsbslWeRV1b+9k9IMPig0+VTy9xTz6lTnZPo+nx6DT3mKDiLaM
-         zyvfdNsRbOGSbxQ7JnVs2I1XsLANYnJ4Je6YLOY+7LIxHLkCaHEOh4fLcBAmp51oIL
-         S1DVpDUYLbAw6cn0WuDhlSAkJf6nVerULIFkTaYg=
+        b=RbugiNuAbCuMtnAicpbrk/Uk02FBsJ5FPxQmfX8iBxiIW2rtL6hsGptfNwK0bJBNK
+         97GBpmBnViaRsvuuUJQuI2yMi2bmEQElIIskr4ZTE/a5cJNlqzKr/ZC72yTqtZ/cdW
+         zw6UPBr5ft2mv1Uqj9LiN8CN208EyYlxfRluYSjo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,12 +49,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Paolo Bonzini <pbonzini@redhat.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 481/603] perf hist: Add missing puts to hist__account_cycles
+Subject: [PATCH 6.5 442/550] perf machine: Avoid out of bounds LBR memory read
 Date:   Wed, 15 Nov 2023 14:17:06 -0500
-Message-ID: <20231115191645.682476419@linuxfoundation.org>
+Message-ID: <20231115191631.447835310@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,19 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit c1149037f65bcf0334886180ebe3d5efcf214912 ]
+[ Upstream commit ab8ce150781d326c6bfbe1e09f175ffde1186f80 ]
 
-Caught using reference count checking on perf top with
-"--call-graph=lbr". After this no memory leaks were detected.
+Running perf top with address sanitizer and "--call-graph=lbr" fails
+due to reading sample 0 when no samples exist. Add a guard to prevent
+this.
 
-Fixes: 57849998e2cd ("perf report: Add processing for cycle histograms")
+Fixes: e2b23483eb1d ("perf machine: Factor out lbr_callchain_add_lbr_ip()")
 Signed-off-by: Ian Rogers <irogers@google.com>
 Cc: K Prateek Nayak <kprateek.nayak@amd.com>
 Cc: Ravi Bangoria <ravi.bangoria@amd.com>
@@ -105,48 +106,46 @@ Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Cc: Yanteng Si <siyanteng@loongson.cn>
 Cc: Liam Howlett <liam.howlett@oracle.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20231024222353.3024098-6-irogers@google.com
+Link: https://lore.kernel.org/r/20231024222353.3024098-3-irogers@google.com
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hist.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ tools/perf/util/machine.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index 3dc8a4968beb9..ac8c0ef48a7f3 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -2676,8 +2676,6 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 
- 	/* If we have branch cycles always annotate them. */
- 	if (bs && bs->nr && entries[0].flags.cycles) {
--		int i;
--
- 		bi = sample__resolve_bstack(sample, al);
- 		if (bi) {
- 			struct addr_map_symbol *prev = NULL;
-@@ -2692,7 +2690,7 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 			 * Note that perf stores branches reversed from
- 			 * program order!
- 			 */
--			for (i = bs->nr - 1; i >= 0; i--) {
-+			for (int i = bs->nr - 1; i >= 0; i--) {
- 				addr_map_symbol__account_cycles(&bi[i].from,
- 					nonany_branch_mode ? NULL : prev,
- 					bi[i].flags.cycles);
-@@ -2701,6 +2699,12 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 				if (total_cycles)
- 					*total_cycles += bi[i].flags.cycles;
- 			}
-+			for (unsigned int i = 0; i < bs->nr; i++) {
-+				map__put(bi[i].to.ms.map);
-+				maps__put(bi[i].to.ms.maps);
-+				map__put(bi[i].from.ms.map);
-+				maps__put(bi[i].from.ms.maps);
-+			}
- 			free(bi);
- 		}
+diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+index f4cb41ee23cdb..fdab969e44b12 100644
+--- a/tools/perf/util/machine.c
++++ b/tools/perf/util/machine.c
+@@ -2622,16 +2622,18 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
+ 		save_lbr_cursor_node(thread, cursor, i);
  	}
+ 
+-	/* Add LBR ip from first entries.to */
+-	ip = entries[0].to;
+-	flags = &entries[0].flags;
+-	*branch_from = entries[0].from;
+-	err = add_callchain_ip(thread, cursor, parent,
+-			       root_al, &cpumode, ip,
+-			       true, flags, NULL,
+-			       *branch_from);
+-	if (err)
+-		return err;
++	if (lbr_nr > 0) {
++		/* Add LBR ip from first entries.to */
++		ip = entries[0].to;
++		flags = &entries[0].flags;
++		*branch_from = entries[0].from;
++		err = add_callchain_ip(thread, cursor, parent,
++				root_al, &cpumode, ip,
++				true, flags, NULL,
++				*branch_from);
++		if (err)
++			return err;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.42.0
 
