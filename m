@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 350157ECD19
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E9E337ECF77
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234275AbjKOTeY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:34:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32810 "EHLO
+        id S235324AbjKOTsj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234310AbjKOTeV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:21 -0500
+        with ESMTP id S235323AbjKOTsi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DC6E1A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3C4C433C7;
-        Wed, 15 Nov 2023 19:34:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36CB3B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF91C433C9;
+        Wed, 15 Nov 2023 19:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076857;
-        bh=2TKgKqpermnSBfoojWtpHr/18cPHZBHJtiEBwC8MUDA=;
+        s=korg; t=1700077714;
+        bh=wuJwWBH0llu+W9MsnWQYTZOODXu0dxoS3/V/2osjiOc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SdovYrpwDxFcT67yL2bVpxtc7uKYGqU3kxqxh+I/sSGggneusofLC32R3zx53VGKL
-         C27pKWSdWGR4iaQpB7oenQK+HNDuio/20sS++mB3nKIyLo3fzn9Xf3h3MRaca0dAQo
-         PaxYNz1lugAeBzd9XusFDt8ffkuSmAJEyxMM4gfs=
+        b=azmMyKggGHZWT8hl2rU6CYxFo2BfrnGOwC4dpRJUAFRbxK106BiBqML2M4gOmzM67
+         q+6rcy0++G11xj4jyy2C+CaYHvqZ4QTz/NJ4E9rqt0l7reeSCoCxtX1Jzz5/LGYEWc
+         WmOGK2qAmZ/ffZWA9ZHVr9g/rVsE7Eq7kqj+sK0U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>, llvm@lists.linux.dev,
-        Ming Wang <wangming01@loongson.cn>, Tom Rix <trix@redhat.com>,
-        bpf@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 427/550] perf mem-events: Avoid uninitialized read
+        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
+        =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 466/603] modpost: fix ishtp MODULE_DEVICE_TABLE built on big-endian host
 Date:   Wed, 15 Nov 2023 14:16:51 -0500
-Message-ID: <20231115191630.366920613@linuxfoundation.org>
+Message-ID: <20231115191644.797003664@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -57,58 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 85f73c377b2ac9988a204b119aebb33ca5c60083 ]
+[ Upstream commit ac96a15a0f0c8812a3aaa587b871cd5527f6d736 ]
 
-pmu should be initialized to NULL before perf_pmus__scan loop. Fix and
-shrink the scope of pmu at the same time. Issue detected by clang-tidy.
+When MODULE_DEVICE_TABLE(ishtp, ) is built on a host with a different
+endianness from the target architecture, it results in an incorrect
+MODULE_ALIAS().
 
-Fixes: 5752c20f3787 ("perf mem: Scan all PMUs instead of just core ones")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: llvm@lists.linux.dev
-Cc: Ming Wang <wangming01@loongson.cn>
-Cc: Tom Rix <trix@redhat.com>
-Cc: bpf@vger.kernel.org
-Link: https://lore.kernel.org/r/20231009183920.200859-10-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+For example, see a case where drivers/platform/x86/intel/ishtp_eclite.c
+is built as a module for x86.
+
+If you build it on a little-endian host, you will get the correct
+MODULE_ALIAS:
+
+    $ grep MODULE_ALIAS drivers/platform/x86/intel/ishtp_eclite.mod.c
+    MODULE_ALIAS("ishtp:{6A19CC4B-D760-4DE3-B14D-F25EBD0FBCD9}");
+
+However, if you build it on a big-endian host, you will get a wrong
+MODULE_ALIAS:
+
+    $ grep MODULE_ALIAS drivers/platform/x86/intel/ishtp_eclite.mod.c
+    MODULE_ALIAS("ishtp:{BD0FBCD9-F25E-B14D-4DE3-D7606A19CC4B}");
+
+This issue has been unnoticed because the x86 kernel is most likely built
+natively on an x86 host.
+
+The guid field must not be reversed because guid_t is an array of __u8.
+
+Fixes: fa443bc3c1e4 ("HID: intel-ish-hid: add support for MODULE_DEVICE_TABLE()")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Thomas Weißschuh <linux@weissschuh.net>
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/mem-events.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/mod/file2alias.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/mem-events.c b/tools/perf/util/mem-events.c
-index 39ffe8ceb3809..954b235e12e51 100644
---- a/tools/perf/util/mem-events.c
-+++ b/tools/perf/util/mem-events.c
-@@ -185,7 +185,6 @@ int perf_mem_events__record_args(const char **rec_argv, int *argv_nr,
+diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
+index 70bf6a2f585ce..6583b36dbe694 100644
+--- a/scripts/mod/file2alias.c
++++ b/scripts/mod/file2alias.c
+@@ -1401,10 +1401,10 @@ static int do_mhi_ep_entry(const char *filename, void *symval, char *alias)
+ /* Looks like: ishtp:{guid} */
+ static int do_ishtp_entry(const char *filename, void *symval, char *alias)
  {
- 	int i = *argv_nr, k = 0;
- 	struct perf_mem_event *e;
--	struct perf_pmu *pmu;
+-	DEF_FIELD(symval, ishtp_device_id, guid);
++	DEF_FIELD_ADDR(symval, ishtp_device_id, guid);
  
- 	for (int j = 0; j < PERF_MEM_EVENTS__MAX; j++) {
- 		e = perf_mem_events__ptr(j);
-@@ -202,6 +201,8 @@ int perf_mem_events__record_args(const char **rec_argv, int *argv_nr,
- 			rec_argv[i++] = "-e";
- 			rec_argv[i++] = perf_mem_events__name(j, NULL);
- 		} else {
-+			struct perf_pmu *pmu = NULL;
-+
- 			if (!e->supported) {
- 				perf_mem_events__print_unsupport_hybrid(e, j);
- 				return -1;
+ 	strcpy(alias, ISHTP_MODULE_PREFIX "{");
+-	add_guid(alias, guid);
++	add_guid(alias, *guid);
+ 	strcat(alias, "}");
+ 
+ 	return 1;
 -- 
 2.42.0
 
