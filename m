@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A9B17ECD3D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 528DB7ECF91
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234236AbjKOTfQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44474 "EHLO
+        id S235347AbjKOTtV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234399AbjKOTfQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:16 -0500
+        with ESMTP id S235356AbjKOTtU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E699E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CF3C433CB;
-        Wed, 15 Nov 2023 19:35:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE4D21A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332E6C433C7;
+        Wed, 15 Nov 2023 19:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076912;
-        bh=uFJ6GuqmcdjuTVWVgdRNaACkxgvVqALSkVH5uWCkPYg=;
+        s=korg; t=1700077756;
+        bh=aQ8HkF5w3sM3ld6bh7oNnXWG3EmPGoju/Qrt2zSziMI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JrM3zpm1nQN0mB41m/vBkA034SIVhtuzSR1l7KNsWVGla4tqrpM/QfjDEDbvZOlKn
-         HPOgv5qtiiyr/+V9B6M2e9Zte9NcFy9sg0kAfcUSePjLr5h/gomKsB2RX9+vFo37S3
-         KFYjvX/rxfe3zdBx/mu86R75Iz6GAhaJ2kFBTpso=
+        b=VyGGFlEtTa9R7dAdb/BM/tgsnvOPpmy/pfMfW8DD6cog+KpwLL7Fl7h4F0GCL/N8Z
+         tt0jvhWWtpTUGTmlNGXaf9FXoPXuGkHmF4BCfJUSU7MUkm1/PtRLom0J2c6MpebGRr
+         hvzYNkaRNOJ6xZWb9qVT8NvqkGO5pdg28jK06vAA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alison Schofield <alison.schofield@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Jim Harris <jim.harris@samsung.com>,
+        patches@lists.linux.dev, Li Zhijian <lizhijian@fujitsu.com>,
+        Ira Weiny <ira.weiny@intel.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 461/550] cxl/region: Prepare the decoder match range helper for reuse
+Subject: [PATCH 6.6 500/603] cxl/region: Fix cxl_region_rwsem lock held when returning to user space
 Date:   Wed, 15 Nov 2023 14:17:25 -0500
-Message-ID: <20231115191632.828983598@linuxfoundation.org>
+Message-ID: <20231115191646.834748707@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,100 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Li Zhijian <lizhijian@fujitsu.com>
 
-[ Upstream commit 1110581412c7a223439bb3ecdcdd9f4432e08231 ]
+[ Upstream commit 3531b27f1f04a6bc9c95cf00d40efe618d57aa93 ]
 
-match_decoder_by_range() and decoder_match_range() both determine
-if an HPA range matches a decoder. The first does it for root
-decoders and the second one operates on switch decoders.
+Fix a missed "goto out" to unlock on error to cleanup this splat:
 
-Tidy these up with clear naming and make the switch helper more
-like the root decoder helper in style and functionality. Make it
-take the actual range, rather than an endpoint decoder from which
-it extracts the range. Require an exact match on switch decoders,
-because unlike a root decoder that maps an entire region, Linux
-only supports 1:1 mapping of switch to endpoint decoders. Note that
-root-decoders are a super-set of switch-decoders and the range they
-cover is a super-set of a region, hence the use of range_contains() for
-that case.
+    WARNING: lock held when returning to user space!
+    6.6.0-rc3-lizhijian+ #213 Not tainted
+    ------------------------------------------------
+    cxl/673 is leaving the kernel with locks still held!
+    1 lock held by cxl/673:
+     #0: ffffffffa013b9d0 (cxl_region_rwsem){++++}-{3:3}, at: commit_store+0x7d/0x3e0 [cxl_core]
 
-Aside from aesthetics and maintainability, this is in preparation
-for reuse.
+In terms of user visible impact of this bug for backports:
 
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Jim Harris <jim.harris@samsung.com>
-Link: https://lore.kernel.org/r/011b1f498e1758bb8df17c5951be00bd8d489e3b.1698263080.git.alison.schofield@intel.com
-[djbw: fixup root decoder vs switch decoder range checks]
+cxl_region_invalidate_memregion() on x86 invokes wbinvd which is a
+problematic instruction for virtualized environments. So, on virtualized
+x86, cxl_region_invalidate_memregion() returns an error. This failure
+case got missed because CXL memory-expander device passthrough is not a
+production use case, and emulation of CXL devices is typically limited
+to kernel development builds with CONFIG_CXL_REGION_INVALIDATION_TEST=y,
+that makes cxl_region_invalidate_memregion() succeed.
+
+In other words, the expected exposure of this bug is limited to CXL
+subsystem development environments using QEMU that neglected
+CONFIG_CXL_REGION_INVALIDATION_TEST=y.
+
+Fixes: d1257d098a5a ("cxl/region: Move cache invalidation before region teardown, and before setup")
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Link: https://lore.kernel.org/r/20231025085450.2514906-1-lizhijian@fujitsu.com
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 0cf36a85c140 ("cxl/region: Use cxl_calc_interleave_pos() for auto-discovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/cxl/core/region.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 8394cd96e1869..123474d6c475a 100644
+index 644032cd680e4..d1f513800c10d 100644
 --- a/drivers/cxl/core/region.c
 +++ b/drivers/cxl/core/region.c
-@@ -1482,16 +1482,20 @@ static struct cxl_port *next_port(struct cxl_port *port)
- 	return port->parent_dport->port;
- }
+@@ -288,7 +288,7 @@ static ssize_t commit_store(struct device *dev, struct device_attribute *attr,
+ 	 */
+ 	rc = cxl_region_invalidate_memregion(cxlr);
+ 	if (rc)
+-		return rc;
++		goto out;
  
--static int decoder_match_range(struct device *dev, void *data)
-+static int match_switch_decoder_by_range(struct device *dev, void *data)
- {
--	struct cxl_endpoint_decoder *cxled = data;
- 	struct cxl_switch_decoder *cxlsd;
-+	struct range *r1, *r2 = data;
- 
- 	if (!is_switch_decoder(dev))
- 		return 0;
- 
- 	cxlsd = to_cxl_switch_decoder(dev);
--	return range_contains(&cxlsd->cxld.hpa_range, &cxled->cxld.hpa_range);
-+	r1 = &cxlsd->cxld.hpa_range;
-+
-+	if (is_root_decoder(dev))
-+		return range_contains(r1, r2);
-+	return (r1->start == r2->start && r1->end == r2->end);
- }
- 
- static void find_positions(const struct cxl_switch_decoder *cxlsd,
-@@ -1560,7 +1564,8 @@ static int cmp_decode_pos(const void *a, const void *b)
- 		goto err;
- 	}
- 
--	dev = device_find_child(&port->dev, cxled_a, decoder_match_range);
-+	dev = device_find_child(&port->dev, &cxled_a->cxld.hpa_range,
-+				match_switch_decoder_by_range);
- 	if (!dev) {
- 		struct range *range = &cxled_a->cxld.hpa_range;
- 
-@@ -2691,7 +2696,7 @@ static int devm_cxl_add_dax_region(struct cxl_region *cxlr)
- 	return rc;
- }
- 
--static int match_decoder_by_range(struct device *dev, void *data)
-+static int match_root_decoder_by_range(struct device *dev, void *data)
- {
- 	struct range *r1, *r2 = data;
- 	struct cxl_root_decoder *cxlrd;
-@@ -2822,7 +2827,7 @@ int cxl_add_to_region(struct cxl_port *root, struct cxl_endpoint_decoder *cxled)
- 	int rc;
- 
- 	cxlrd_dev = device_find_child(&root->dev, &cxld->hpa_range,
--				      match_decoder_by_range);
-+				      match_root_decoder_by_range);
- 	if (!cxlrd_dev) {
- 		dev_err(cxlmd->dev.parent,
- 			"%s:%s no CXL window for range %#llx:%#llx\n",
+ 	if (commit) {
+ 		rc = cxl_region_decode_commit(cxlr);
 -- 
 2.42.0
 
