@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3608F7ECE87
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C467ECC07
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235130AbjKOTnp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43778 "EHLO
+        id S233780AbjKOT0e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:26:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235126AbjKOTno (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:44 -0500
+        with ESMTP id S233786AbjKOT0R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1286C12C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88571C433C8;
-        Wed, 15 Nov 2023 19:43:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C6EDD4B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104A2C433CA;
+        Wed, 15 Nov 2023 19:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077419;
-        bh=dn1Wi//SA5lGj/mE0z3JumjGwj+3KWOCwUfCj7GTc/o=;
+        s=korg; t=1700076374;
+        bh=6zy5ygfmEZBaau4gMmIqcckRB1BYiYtakFe5zWja6cw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=caQ7u82Ef5eFnFWVAiYt+76x1Jj4OJJmVQyKaNPPZcCelmyxZ1HnreB1vUiV2vOGg
-         GFVTBEoljpv6D0P1fwlkfR83hr/Q7syMslBavgfR+WDkk9Dn8ksFNrZD95neQ1rmhj
-         QX+a5XbKxFb7+9qtTj88jcERiNGaXA+cbcKVfpQk=
+        b=OVSNMaelR7oedkhRbyxERFFU4+yIa136sfymenRv8vExirC2ThosAWAjlJE5o73gB
+         HdHBQIpYfPtPNy9f6qp7qLY/5br5CoKOU+/RjzCY6+w6jH3kFZ6jWCcjIh2uE0QmqX
+         FV06yHHEuy/vsRhYXLjt9Ypcdwkyg50iej5qd5rY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Rob Clark <robdclark@chromium.org>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/603] drm/msm/dsi: use msm_gem_kernel_put to free TX buffer
+Subject: [PATCH 6.5 227/550] drm/tve200: Convert to platform remove callback returning void
 Date:   Wed, 15 Nov 2023 14:13:31 -0500
-Message-ID: <20231115191631.729941137@linuxfoundation.org>
+Message-ID: <20231115191616.498410404@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,42 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 69b321b2c3df4f7e51a9de587e41f324b0b717b0 ]
+[ Upstream commit e2fd3192e267dcb01f5de5baa221677c349de828 ]
 
-Use exiting function to free the allocated GEM object instead of
-open-coding it. This has a bonus of internally calling
-msm_gem_put_vaddr() to compensate for msm_gem_get_vaddr() in
-msm_get_kernel_new().
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-Fixes: 1e29dff00400 ("drm/msm: Add a common function to free kernel buffer objects")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/562239/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230507162616.1368908-51-u.kleine-koenig@pengutronix.de
+Stable-dep-of: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdown/remove time for misc drivers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/tve200/tve200_drv.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index 3d6fb708dc223..2395d5a586189 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -1157,8 +1157,7 @@ static void dsi_tx_buf_free(struct msm_dsi_host *msm_host)
+diff --git a/drivers/gpu/drm/tve200/tve200_drv.c b/drivers/gpu/drm/tve200/tve200_drv.c
+index 40b1168ad671f..984aa8f0a5427 100644
+--- a/drivers/gpu/drm/tve200/tve200_drv.c
++++ b/drivers/gpu/drm/tve200/tve200_drv.c
+@@ -236,7 +236,7 @@ static int tve200_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	priv = dev->dev_private;
- 	if (msm_host->tx_gem_obj) {
--		msm_gem_unpin_iova(msm_host->tx_gem_obj, priv->kms->aspace);
--		drm_gem_object_put(msm_host->tx_gem_obj);
-+		msm_gem_kernel_put(msm_host->tx_gem_obj, priv->kms->aspace);
- 		msm_host->tx_gem_obj = NULL;
- 	}
+-static int tve200_remove(struct platform_device *pdev)
++static void tve200_remove(struct platform_device *pdev)
+ {
+ 	struct drm_device *drm = platform_get_drvdata(pdev);
+ 	struct tve200_drm_dev_private *priv = drm->dev_private;
+@@ -247,8 +247,6 @@ static int tve200_remove(struct platform_device *pdev)
+ 	drm_mode_config_cleanup(drm);
+ 	clk_disable_unprepare(priv->pclk);
+ 	drm_dev_put(drm);
+-
+-	return 0;
+ }
+ 
+ static const struct of_device_id tve200_of_match[] = {
+@@ -264,7 +262,7 @@ static struct platform_driver tve200_driver = {
+ 		.of_match_table = of_match_ptr(tve200_of_match),
+ 	},
+ 	.probe = tve200_probe,
+-	.remove = tve200_remove,
++	.remove_new = tve200_remove,
+ };
+ drm_module_platform_driver(tve200_driver);
  
 -- 
 2.42.0
