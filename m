@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8007ECBAE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 641187ED2A9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232408AbjKOTXt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55904 "EHLO
+        id S233463AbjKOUmz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232572AbjKOTXs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:48 -0500
+        with ESMTP id S235051AbjKOTlD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EA071AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EE6C433CA;
-        Wed, 15 Nov 2023 19:23:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8333CE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5F1C433C7;
+        Wed, 15 Nov 2023 19:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076224;
-        bh=k8jU+qNIFcXbcEodNZN6HPtXANJ+oF4G10v+co4lYJA=;
+        s=korg; t=1700077260;
+        bh=iKPNuT/JE/WqZpMfwtlWVz/1NlP/Yr1H0uuP19Dgu8s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PEoYKursX816V8U+a8xyJS/Xu3OJTzEC5pIq4bCXtAEWPPJFOwysJMf5jswlFCbxw
-         4152tBujV7bteYGzJ4/ispLdCsvjiQzRmu+aIoHNuHnRBaHNfzlEEvduSEdaqUP8xr
-         bygBIyzkXqBEEflCTaP1dTgenF+Oi99a/86G/nV8=
+        b=CBHH7N4tCif4ijPb+JOv8x9avYCu0Fvw9D2ddnAAlTEtrr7njS6pcrMdPGy1lMXdZ
+         18EbMwLby9tFvc9ibBa2PlniTWhzE096LL7lh/MZlO0QFn5khRXDP5JrjqlD7hMdiC
+         0eBBgzhrmTwOsbfC8c39f5smS7S0gHWdrJEnzbk4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Devi Priya <quic_devipriy@quicinc.com>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Kathiravan T <quic_kathirav@quicinc.com>,
+        Varadarajan Narayanan <quic_varada@quicinc.com>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 155/550] clk: qcom: clk-rcg2: Fix clock rate overflow for high parent frequencies
+Subject: [PATCH 6.6 194/603] clk: qcom: apss-ipq-pll: Use stromer plus ops for stromer plus pll
 Date:   Wed, 15 Nov 2023 14:12:19 -0500
-Message-ID: <20231115191611.447319061@linuxfoundation.org>
+Message-ID: <20231115191626.676895053@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devi Priya <quic_devipriy@quicinc.com>
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-[ Upstream commit f7b7d30158cff246667273bd2a62fc93ee0725d2 ]
+[ Upstream commit 267e29198436a8cb6770213471f72502c895096a ]
 
-If the parent clock rate is greater than unsigned long max/2 then
-integer overflow happens when calculating the clock rate on 32-bit systems.
-As RCG2 uses half integer dividers, the clock rate is first being
-multiplied by 2 which will overflow the unsigned long max value.
-Hence, replace the common pattern of doing 64-bit multiplication
-and then a do_div() call with simpler mult_frac call.
+The set rate and determine rate operations are different between
+Stromer and Stromer Plus PLLs. Since the programming sequence is
+different, the PLLs dont get configured properly and random,
+inexplicable crash/freeze is seen. Hence, use stromer plus ops
+for ipq_pll_stromer_plus.
 
-Fixes: bcd61c0f535a ("clk: qcom: Add support for root clock generators (RCGs)")
-Signed-off-by: Devi Priya <quic_devipriy@quicinc.com>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Link: https://lore.kernel.org/r/20230901073640.4973-1-quic_devipriy@quicinc.com
-[bjorn: Also drop unnecessary {} around single statements]
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: c7ef7fbb1ccf ("clk: qcom: apss-ipq-pll: add support for IPQ5332")
+Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+Link: https://lore.kernel.org/r/c86ecaa23dc4f39650bcf4a3bd54a617a932e4fd.1697781921.git.quic_varada@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-rcg2.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/clk/qcom/apss-ipq-pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
-index e22baf3a7112a..5183c74b074f8 100644
---- a/drivers/clk/qcom/clk-rcg2.c
-+++ b/drivers/clk/qcom/clk-rcg2.c
-@@ -158,17 +158,11 @@ static int clk_rcg2_set_parent(struct clk_hw *hw, u8 index)
- static unsigned long
- calc_rate(unsigned long rate, u32 m, u32 n, u32 mode, u32 hid_div)
- {
--	if (hid_div) {
--		rate *= 2;
--		rate /= hid_div + 1;
--	}
-+	if (hid_div)
-+		rate = mult_frac(rate, 2, hid_div + 1);
- 
--	if (mode) {
--		u64 tmp = rate;
--		tmp *= m;
--		do_div(tmp, n);
--		rate = tmp;
--	}
-+	if (mode)
-+		rate = mult_frac(rate, m, n);
- 
- 	return rate;
- }
+diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
+index e170331858cc1..18c4ffe153d6c 100644
+--- a/drivers/clk/qcom/apss-ipq-pll.c
++++ b/drivers/clk/qcom/apss-ipq-pll.c
+@@ -68,7 +68,7 @@ static struct clk_alpha_pll ipq_pll_stromer_plus = {
+ 				.fw_name = "xo",
+ 			},
+ 			.num_parents = 1,
+-			.ops = &clk_alpha_pll_stromer_ops,
++			.ops = &clk_alpha_pll_stromer_plus_ops,
+ 		},
+ 	},
+ };
 -- 
 2.42.0
 
