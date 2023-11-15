@@ -2,68 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 509087EC386
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 14:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 599057EC3E0
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 14:38:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343863AbjKONYv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 08:24:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46274 "EHLO
+        id S1343943AbjKONiJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 08:38:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343875AbjKONYv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 08:24:51 -0500
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEEF911D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:24:46 -0800 (PST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6b20577ef7bso5897683b3a.3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:24:46 -0800 (PST)
+        with ESMTP id S1343884AbjKONiI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 08:38:08 -0500
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E30AC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:38:05 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6c32a20d5dbso6136601b3a.1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:38:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700054686; x=1700659486; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700055484; x=1700660284; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=x96AVEv6UONzBBQS5GjRuvTl7XVqZhd55B3I7Ao3M3o=;
-        b=eYddM4i5tY9ejvSTkmrg60950pU+h7CQxmFYuCeRZiQjpL7Xq1gepCYC5K/UL7mKfO
-         EQQixU18pSbXzmTgB+9WAhtSMUdYJHa2zt5PSKKvHHkY2TuWziDuqsQq2YN3Zhw2onXq
-         unPJcycCdmOSHN0hCsg22b0j28XhVJp2Io457+baLNzNmWZAvZrVAWUewFGIBIH9oL9z
-         Q18bDKH/027MUGHUYHS6nYX15anCa7Mr4YGdaYowplN1qfbrVn7mY3verU17nqK+ObTb
-         +FPCdlBmtKd0HbE4B6ZS0ka0TJUomTNMGnkLg5pMxlVFMMVhsZRDlgl+rI/bPp0Tht59
-         V8lw==
+        bh=CrsYaKKbTSvv3yYYDxxBQ5gBHMdaq+SEPI4iuWR1A9E=;
+        b=KUV1kGAShwAWqoimpO8ixi6/TCoW2Z8IMvq29I9LJ1q7OBDCKFF9R/vi2wbxEfgWLc
+         xQW9MQAUGl0X5pRZnRVqH4sQlg69Qi7zTaXJXhwu8zK4L2tKKj37GKe2xweVOaHFU5s9
+         ZIkSjAR2FY74rz/uyzGuFA06BSh7OEczliXerGQMxIHIRuVBh/3KUH7S1bRS9okWvlJM
+         SykZ2chINZLjuUKEAfeHQ06lj2CBdUYIaUjrXbOQSARz4JKsegMBe2k1oLABctPZ9T5E
+         40AWflwLBdA1iyhubrM09sUapINTsCTJji1VrJTmPKXKZXjk9FBDnP61dsiJpR/9fLr4
+         ShZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700054686; x=1700659486;
+        d=1e100.net; s=20230601; t=1700055484; x=1700660284;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=x96AVEv6UONzBBQS5GjRuvTl7XVqZhd55B3I7Ao3M3o=;
-        b=Xg5MtBSm5xhOqktL1eslwKKgGXJVFw8YsWvL5SmFAcYyzLuO3Sh6j5kqOGwbgXogTg
-         QZc5ukLl2ahZTSm5rMB86Q5rKzNdfpjPmyDCyTDiPDNLlLklbz3sMPRjKkF/X9jugcSu
-         VC/SYVgXbo2Opz2Fo/TaBTXQrvTpH/bOgdGNjcsGHAW/PE2+vR+fQ0/85OX3AqLwU2Dp
-         MHbQ4FH+qEg+5oX8i0wROZJtLepErNihcqQCysRH3wMLfXdHjKkuAwxKrchL08W0Jtz2
-         gvWUD3NFWOfeTNBecn9hH4JpeTE4847qBTW19XtE2weFPZ2Nd8/mqCo/cyNjjZGRSK72
-         HfVg==
-X-Gm-Message-State: AOJu0Yxe1mNJQVyBWJ/wqxsvaJ2iHJKcXT3olKhaCmUk4zAPzSFXTtNE
-        9CwarvYxMNdEQg7UBOmUPGYbmQwlkEHiQ/+Q8HgdAQ==
-X-Google-Smtp-Source: AGHT+IHfkohyJwUdTAGB0n8pA5qyCsGbrg9YqVlYrIxj20gm+GYL1CRfqPLy6S0KwQeQJZaqQJGu+w==
-X-Received: by 2002:a05:6a21:9995:b0:186:251f:733f with SMTP id ve21-20020a056a21999500b00186251f733fmr10368870pzb.41.1700054685747;
-        Wed, 15 Nov 2023 05:24:45 -0800 (PST)
+        bh=CrsYaKKbTSvv3yYYDxxBQ5gBHMdaq+SEPI4iuWR1A9E=;
+        b=Wx+ImtCdwPucH1J652K8nu2c+k3LL9Hs29cenF2GIpiYJG/0t0sC99DIbDKupyVrtF
+         umWwqNIfPyZyV8tiefg7S6r+aUAb07ZGI8oElxlgH0/TAVoCO8LPWJESu1bQxbw9meMR
+         BhYRqZ6jSZ1uGadD1jeN0N5xRTs5EacGmEt+HPamJ4b/cQPlBIGap8i4lAiz/4BxDU37
+         lAyy+N0oKzTXhjAyawH+Y51Age2VpOlllmd+NoNhQnlGyN+LlDAz1ZqEAv4urpo/+zd4
+         z19Buy3tRSg4tsI1Gg0MD43gwHLYID/nHtkmuAuS415sjGAsPFSnLCdHPU1uJ1MsB2Ne
+         ssNQ==
+X-Gm-Message-State: AOJu0YxAPEwwiEcTbcNiHu7SSD/GZkb+So0LZ8xVrgEeT7LRyU4MtXZx
+        B3Df3b+silhq9DX7Loi591m1G2fhGpC1BmA0qNIxtA==
+X-Google-Smtp-Source: AGHT+IGYIajgvCKvkNjR/SjY6C8euAVQU73qhaq5RSdy3jsgqalZ6KMZ2O3EW0ZFd0VE31YV+gJCOA==
+X-Received: by 2002:a05:6a20:431f:b0:187:349d:de16 with SMTP id h31-20020a056a20431f00b00187349dde16mr3978512pzk.37.1700055484019;
+        Wed, 15 Nov 2023 05:38:04 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id t8-20020a62ea08000000b006c1221bc58bsm2783077pfh.115.2023.11.15.05.24.44
+        by smtp.gmail.com with ESMTPSA id x20-20020aa784d4000000b006be4bb0d2dcsm2923931pfn.149.2023.11.15.05.38.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Nov 2023 05:24:44 -0800 (PST)
-Message-ID: <6554c69c.620a0220.dc902.88b1@mx.google.com>
-Date:   Wed, 15 Nov 2023 05:24:44 -0800 (PST)
+        Wed, 15 Nov 2023 05:38:03 -0800 (PST)
+Message-ID: <6554c9bb.a70a0220.18807.8c45@mx.google.com>
+Date:   Wed, 15 Nov 2023 05:38:03 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Branch: linux-5.10.y
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.15.138-267-g01a21bc264b6
-Subject: stable-rc/linux-5.15.y build: 20 builds: 2 failed, 18 passed,
- 10 warnings (v5.15.138-267-g01a21bc264b6)
+X-Kernelci-Kernel: v5.10.200-207-gc3a1f056425f
+Subject: stable-rc/linux-5.10.y build: 16 builds: 2 failed, 14 passed,
+ 11 warnings (v5.10.200-207-gc3a1f056425f)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,16 +71,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 2 failed, 18 passed, 10 warnings (=
-v5.15.138-267-g01a21bc264b6)
+stable-rc/linux-5.10.y build: 16 builds: 2 failed, 14 passed, 11 warnings (=
+v5.10.200-207-gc3a1f056425f)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.138-267-g01a21bc264b6/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.200-207-gc3a1f056425f/
 
 Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.138-267-g01a21bc264b6
-Git Commit: 01a21bc264b6e32a434dc3b9d5823d6cb5c6018d
+Branch: linux-5.10.y
+Git Describe: v5.10.200-207-gc3a1f056425f
+Git Commit: c3a1f056425f657e26f2e5d3264afee187b962b4
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -103,7 +103,6 @@ arm:
     imx_v6_v7_defconfig (gcc-10): 1 warning
     multi_v7_defconfig (gcc-10): 1 warning
     omap2plus_defconfig (gcc-10): 1 warning
-    vexpress_defconfig (gcc-10): 1 warning
 
 i386:
     i386_defconfig (gcc-10): 1 warning
@@ -112,21 +111,23 @@ mips:
     32r2el_defconfig (gcc-10): 1 warning
 
 riscv:
+    rv32_defconfig (gcc-10): 4 warnings
 
 x86_64:
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
 
 
 Warnings summary:
 
-    7    kernel/trace/trace_events.c:996:17: warning: unused variable =E2=
+    6    kernel/trace/trace_events.c:773:17: warning: unused variable =E2=
 =80=98child=E2=80=99 [-Wunused-variable]
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -141,24 +142,13 @@ Detailed per-defconfig build reports:
 ion mismatches
 
 Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
 
 ---------------------------------------------------------------------------=
 -----
 allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
 n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -181,7 +171,7 @@ i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
 n mismatches
 
 Warnings:
-    kernel/trace/trace_events.c:996:17: warning: unused variable =E2=80=98c=
+    kernel/trace/trace_events.c:773:17: warning: unused variable =E2=80=98c=
 hild=E2=80=99 [-Wunused-variable]
 
 ---------------------------------------------------------------------------=
@@ -190,7 +180,7 @@ imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
 ction mismatches
 
 Warnings:
-    kernel/trace/trace_events.c:996:17: warning: unused variable =E2=80=98c=
+    kernel/trace/trace_events.c:773:17: warning: unused variable =E2=80=98c=
 hild=E2=80=99 [-Wunused-variable]
 
 ---------------------------------------------------------------------------=
@@ -204,7 +194,7 @@ multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
 tion mismatches
 
 Warnings:
-    kernel/trace/trace_events.c:996:17: warning: unused variable =E2=80=98c=
+    kernel/trace/trace_events.c:773:17: warning: unused variable =E2=80=98c=
 hild=E2=80=99 [-Wunused-variable]
 
 ---------------------------------------------------------------------------=
@@ -214,22 +204,25 @@ nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 
 ---------------------------------------------------------------------------=
 -----
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
 omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
 ction mismatches
 
 Warnings:
-    kernel/trace/trace_events.c:996:17: warning: unused variable =E2=80=98c=
+    kernel/trace/trace_events.c:773:17: warning: unused variable =E2=80=98c=
 hild=E2=80=99 [-Wunused-variable]
 
 ---------------------------------------------------------------------------=
 -----
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
 ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
 
 ---------------------------------------------------------------------------=
 -----
@@ -243,34 +236,21 @@ ismatches
 
 ---------------------------------------------------------------------------=
 -----
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
-tion mismatches
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
 
 Warnings:
-    kernel/trace/trace_events.c:996:17: warning: unused variable =E2=80=98c=
+    kernel/trace/trace_events.c:773:17: warning: unused variable =E2=80=98c=
 hild=E2=80=99 [-Wunused-variable]
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 1 war=
+ning, 0 section mismatches
 
 Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-    kernel/trace/trace_events.c:996:17: warning: unused variable =E2=80=98c=
+    kernel/trace/trace_events.c:773:17: warning: unused variable =E2=80=98c=
 hild=E2=80=99 [-Wunused-variable]
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 2 war=
-nings, 0 section mismatches
-
-Warnings:
-    kernel/trace/trace_events.c:996:17: warning: unused variable =E2=80=98c=
-hild=E2=80=99 [-Wunused-variable]
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
 
 ---
 For more info write to <info@kernelci.org>
