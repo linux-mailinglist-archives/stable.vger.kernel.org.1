@@ -2,93 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5FDC7EBC94
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 05:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC3EB7EBCE7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 07:00:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234498AbjKOEU3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 14 Nov 2023 23:20:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58550 "EHLO
+        id S233763AbjKOGA7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 01:00:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234496AbjKOEU1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 14 Nov 2023 23:20:27 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68D81D9;
-        Tue, 14 Nov 2023 20:20:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0B384C433C9;
-        Wed, 15 Nov 2023 04:20:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700022024;
-        bh=PlKEtWmd15CNYGGTl7+gaJVldxfItHtqkbBfnLkwDr8=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=nlNe+6br2hBhMsvxlJ0TKBCUjShxd7Ej6tQHty8s6knL/tdLzTKn7YspdkcDQeiZX
-         FNgHeB7gALUYms1cJMqfWPSKqWcMd7FYQwv4OWL+uTgo2SaCEFBum5/fzGJ2bVZVuo
-         exvcdBxK1zMfOH84h4n1Rv2XRlMLfof1qeurKl3G5aEHSDcorfbkvHPiG7EAD/YrvY
-         bYvlAy9GsmtZojYqlWT9+4sajzQOQYgBOJsjA1FVT2KC2XQa4QT5ajyyezvJmSTEqe
-         HTb2KAp9/Vh9AjhL7MHpyWPjEJ6zh9XHAAq106AR0BvJ9SO8Y7QYs0HtjOPVy4cDeD
-         jJVvQfaEp0BjA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E323BEA7DA0;
-        Wed, 15 Nov 2023 04:20:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229551AbjKOGA6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 01:00:58 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 140D9D8;
+        Tue, 14 Nov 2023 22:00:55 -0800 (PST)
+Received: from [10.3.2.161] (zone.collabora.co.uk [167.235.23.81])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dmitry.osipenko)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 03AF1660576C;
+        Wed, 15 Nov 2023 06:00:51 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1700028053;
+        bh=yfayPrn571VzLj0DChlXExCPpGyqXY7FpICvXV2pcfQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=afCwFUPafWW5njQKIYmarOcHMEB+Zm9AQPBETDM+WtNSwDMblTGzBiRS4xdVLjJFR
+         Md1s0N75+L56ITHR+pcaw+TL70hdTQ39p4BevgqfPyN5yZ/PS3JJeZ37wuGa1Tp/T3
+         iTQgegNWL4MvJ0em+8S/+hHVhavte82cFbG/0m79OB0Namc1gvBLl9VZgy4nMfIfrb
+         SH0J44w9a9Mypr4noThhyOY2kDbEjQPNdwUT2sRHR+UhYKxZkrfAXtxTE8TughICaF
+         1/T8g8F4Uff35fotBNm+Pc50xnc8xEahwv6vs8AD5E3/l9bIJwrVO9hxrIHJkhg8OO
+         0bvucSIiuiMlg==
+Message-ID: <de40e307-2f97-dda0-e697-19c382a506d7@collabora.com>
+Date:   Wed, 15 Nov 2023 09:00:47 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/5] mptcp: misc. fixes for v6.7
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <170002202392.25123.5567569112552838973.git-patchwork-notify@kernel.org>
-Date:   Wed, 15 Nov 2023 04:20:23 +0000
-References: <20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-0-7b9cd6a7b7f4@kernel.org>
-In-Reply-To: <20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-0-7b9cd6a7b7f4@kernel.org>
-To:     Matthieu Baerts <matttbe@kernel.org>
-Cc:     mptcp@lists.linux.dev, martineau@kernel.org, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        alexanderduyck@fb.com, geliang.tang@suse.com, psonparo@redhat.com,
-        shuah@kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        cpaasch@apple.com, stable@vger.kernel.org,
-        syzbot+9dfbaedb6e6baca57a32@syzkaller.appspotmail.com,
-        xmu@redhat.com
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v7 2/5] i2c: core: run atomic i2c xfer when !preemptible
+Content-Language: en-US
+To:     Chris Morgan <macroalpha82@gmail.com>
+Cc:     Benjamin Bara <bbara93@gmail.com>, Wolfram Sang <wsa@kernel.org>,
+        Lee Jones <lee@kernel.org>, rafael.j.wysocki@intel.com,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        peterz@infradead.org, jonathanh@nvidia.com,
+        richard.leitner@linux.dev, treding@nvidia.com,
+        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-tegra@vger.kernel.org,
+        Benjamin Bara <benjamin.bara@skidata.com>,
+        stable@vger.kernel.org, Nishanth Menon <nm@ti.com>,
+        heiko@sntech.de, max.schwarz@online.de
+References: <20230327-tegra-pmic-reboot-v7-0-18699d5dcd76@skidata.com>
+ <20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com>
+ <655177f4.050a0220.d85c9.3ba0@mx.google.com>
+ <69941f8e-de1f-0319-6729-58625b362b8e@collabora.com>
+ <655238b2.050a0220.209e.4ad5@mx.google.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <655238b2.050a0220.209e.4ad5@mx.google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+On 11/13/23 17:54, Chris Morgan wrote:
+..
+> I can confirm I no longer get any of the errors with this patch. Tested
+> on both an Anbernic RG353P (RK3566 with an RK817 PMIC) and an Odroid
+> Go Advance (RK3326 with an RK817 PMIC). The device appears to shut
+> down consistently again and I no longer see these messages in my dmesg
+> log when I shut down.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+I'll prepare the proper patch, thanks.
 
-On Tue, 14 Nov 2023 00:16:12 +0100 you wrote:
-> Here are a few fixes related to MPTCP:
-> 
-> - Patch 1 limits GSO max size to ~64K when MPTCP is being used due to a
->   spec limit. 'gso_max_size' can exceed the max value supported by MPTCP
->   since v5.19.
-> 
-> - Patch 2 fixes a possible NULL pointer dereference on close that can
->   happen since v6.7-rc1.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,1/5] mptcp: deal with large GSO size
-    https://git.kernel.org/netdev/net/c/9fce92f050f4
-  - [net,2/5] mptcp: fix possible NULL pointer dereference on close
-    https://git.kernel.org/netdev/net/c/d109a7767273
-  - [net,3/5] mptcp: add validity check for sending RM_ADDR
-    https://git.kernel.org/netdev/net/c/8df220b29282
-  - [net,4/5] mptcp: fix setsockopt(IP_TOS) subflow locking
-    https://git.kernel.org/netdev/net/c/7679d34f97b7
-  - [net,5/5] selftests: mptcp: fix fastclose with csum failure
-    https://git.kernel.org/netdev/net/c/7cefbe5e1dac
-
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Best regards,
+Dmitry
 
