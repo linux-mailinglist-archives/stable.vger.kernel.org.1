@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C5597ECB40
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB487ECD75
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232918AbjKOTV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42116 "EHLO
+        id S234478AbjKOTgn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232943AbjKOTVO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:14 -0500
+        with ESMTP id S234469AbjKOTgj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AAD3171C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDADC433C7;
-        Wed, 15 Nov 2023 19:20:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96B81D46
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F09C433C9;
+        Wed, 15 Nov 2023 19:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076058;
-        bh=RDALiUnsdAA3g8pzsMNuNgFs3JPWNZf0sZTWTmL9/HA=;
+        s=korg; t=1700076996;
+        bh=61DUVm0EWTOlpMTZZg6o2BlTUua64yxlhRxE42YGgOw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rtBJREDnfMAi5g2AnEAheHGBsibwABZFLjkssfKfRhbXg8CEsDPIWS95ZlE2Hq18f
-         rOwYDbFdrcyzVUgXDysRlB3dqadyvHuCO3YhWggsMMwlLbW93Ge1vWzJ/PQk83MoP9
-         BD+VyJmnYAg4qrbN5deG4VcLF0pNQrhdyyc3pHg8=
+        b=dAkIOL8Gr1I6RZ0WxLj7n3Pl85hR8U3+z6hqg+fIQk+csjcl8AYUuBVO3NZXHvtvi
+         fs52PwzbxKWzkoOE+FFR10/Vviyq+5dAdIHcX/yhMJg2VYAdRf0+nShNUnlrNpkUbt
+         Pd3TL84EYPSbVNH8TJEmI/BWXHuJkpZELzV9/COY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brett Creeley <brett.creeley@intel.com>,
-        Ahmed Zaki <ahmed.zaki@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 049/550] iavf: Fix promiscuous mode configuration flow messages
+        patches@lists.linux.dev, Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 088/603] wifi: mt76: mt7996: fix TWT command format
 Date:   Wed, 15 Nov 2023 14:10:33 -0500
-Message-ID: <20231115191604.098822306@linuxfoundation.org>
+Message-ID: <20231115191619.227209424@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,293 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@intel.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit 221465de6bd8090ab61267f019866e8d2dd4ea3d ]
+[ Upstream commit 84f313b7392f6501f05d8981105d79859b1252cb ]
 
-Currently when configuring promiscuous mode on the AVF we detect a
-change in the netdev->flags. We use IFF_PROMISC and IFF_ALLMULTI to
-determine whether or not we need to request/release promiscuous mode
-and/or multicast promiscuous mode. The problem is that the AQ calls for
-setting/clearing promiscuous/multicast mode are treated separately. This
-leads to a case where we can trigger two promiscuous mode AQ calls in
-a row with the incorrect state. To fix this make a few changes.
+Align the command format of UNI_CMD_TWT_ARGT_UPDATE to firmware.
 
-Use IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE instead of the previous
-IAVF_FLAG_AQ_[REQUEST|RELEASE]_[PROMISC|ALLMULTI] flags.
-
-In iavf_set_rx_mode() detect if there is a change in the
-netdev->flags in comparison with adapter->flags and set the
-IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE aq_required bit. Then in
-iavf_process_aq_command() only check for IAVF_FLAG_CONFIGURE_PROMISC_MODE
-and call iavf_set_promiscuous() if it's set.
-
-In iavf_set_promiscuous() check again to see which (if any) promiscuous
-mode bits have changed when comparing the netdev->flags with the
-adapter->flags. Use this to set the flags which get sent to the PF
-driver.
-
-Add a spinlock that is used for updating current_netdev_promisc_flags
-and only allows one promiscuous mode AQ at a time.
-
-[1] Fixes the fact that we will only have one AQ call in the aq_required
-queue at any one time.
-
-[2] Streamlines the change in promiscuous mode to only set one AQ
-required bit.
-
-[3] This allows us to keep track of the current state of the flags and
-also makes it so we can take the most recent netdev->flags promiscuous
-mode state.
-
-[4] This fixes the problem where a change in the netdev->flags can cause
-IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE to be set in iavf_set_rx_mode(),
-but cleared in iavf_set_promiscuous() before the change is ever made via
-AQ call.
-
-Fixes: 47d3483988f6 ("i40evf: Add driver support for promiscuous mode")
-Signed-off-by: Brett Creeley <brett.creeley@intel.com>
-Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf.h        | 16 ++--
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 43 +++++------
- .../net/ethernet/intel/iavf/iavf_virtchnl.c   | 75 ++++++++++++-------
- 3 files changed, 74 insertions(+), 60 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index 4d4508e04b1d2..7f6f1677199b9 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -298,8 +298,6 @@ struct iavf_adapter {
- #define IAVF_FLAG_CLIENT_NEEDS_OPEN		BIT(10)
- #define IAVF_FLAG_CLIENT_NEEDS_CLOSE		BIT(11)
- #define IAVF_FLAG_CLIENT_NEEDS_L2_PARAMS	BIT(12)
--#define IAVF_FLAG_PROMISC_ON			BIT(13)
--#define IAVF_FLAG_ALLMULTI_ON			BIT(14)
- #define IAVF_FLAG_LEGACY_RX			BIT(15)
- #define IAVF_FLAG_REINIT_ITR_NEEDED		BIT(16)
- #define IAVF_FLAG_QUEUES_DISABLED		BIT(17)
-@@ -325,10 +323,7 @@ struct iavf_adapter {
- #define IAVF_FLAG_AQ_SET_HENA			BIT_ULL(12)
- #define IAVF_FLAG_AQ_SET_RSS_KEY		BIT_ULL(13)
- #define IAVF_FLAG_AQ_SET_RSS_LUT		BIT_ULL(14)
--#define IAVF_FLAG_AQ_REQUEST_PROMISC		BIT_ULL(15)
--#define IAVF_FLAG_AQ_RELEASE_PROMISC		BIT_ULL(16)
--#define IAVF_FLAG_AQ_REQUEST_ALLMULTI		BIT_ULL(17)
--#define IAVF_FLAG_AQ_RELEASE_ALLMULTI		BIT_ULL(18)
-+#define IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE	BIT_ULL(15)
- #define IAVF_FLAG_AQ_ENABLE_VLAN_STRIPPING	BIT_ULL(19)
- #define IAVF_FLAG_AQ_DISABLE_VLAN_STRIPPING	BIT_ULL(20)
- #define IAVF_FLAG_AQ_ENABLE_CHANNELS		BIT_ULL(21)
-@@ -365,6 +360,12 @@ struct iavf_adapter {
- 	(IAVF_EXTENDED_CAP_SEND_VLAN_V2 |		\
- 	 IAVF_EXTENDED_CAP_RECV_VLAN_V2)
- 
-+	/* Lock to prevent possible clobbering of
-+	 * current_netdev_promisc_flags
-+	 */
-+	spinlock_t current_netdev_promisc_flags_lock;
-+	netdev_features_t current_netdev_promisc_flags;
-+
- 	/* OS defined structs */
- 	struct net_device *netdev;
- 	struct pci_dev *pdev;
-@@ -551,7 +552,8 @@ void iavf_add_ether_addrs(struct iavf_adapter *adapter);
- void iavf_del_ether_addrs(struct iavf_adapter *adapter);
- void iavf_add_vlans(struct iavf_adapter *adapter);
- void iavf_del_vlans(struct iavf_adapter *adapter);
--void iavf_set_promiscuous(struct iavf_adapter *adapter, int flags);
-+void iavf_set_promiscuous(struct iavf_adapter *adapter);
-+bool iavf_promiscuous_mode_changed(struct iavf_adapter *adapter);
- void iavf_request_stats(struct iavf_adapter *adapter);
- int iavf_request_reset(struct iavf_adapter *adapter);
- void iavf_get_hena(struct iavf_adapter *adapter);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 13bfc9333a8c3..65ef588eb1aa9 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1186,6 +1186,16 @@ static int iavf_addr_unsync(struct net_device *netdev, const u8 *addr)
- 	return 0;
- }
- 
-+/**
-+ * iavf_promiscuous_mode_changed - check if promiscuous mode bits changed
-+ * @adapter: device specific adapter
-+ */
-+bool iavf_promiscuous_mode_changed(struct iavf_adapter *adapter)
-+{
-+	return (adapter->current_netdev_promisc_flags ^ adapter->netdev->flags) &
-+		(IFF_PROMISC | IFF_ALLMULTI);
-+}
-+
- /**
-  * iavf_set_rx_mode - NDO callback to set the netdev filters
-  * @netdev: network interface device structure
-@@ -1199,19 +1209,10 @@ static void iavf_set_rx_mode(struct net_device *netdev)
- 	__dev_mc_sync(netdev, iavf_addr_sync, iavf_addr_unsync);
- 	spin_unlock_bh(&adapter->mac_vlan_list_lock);
- 
--	if (netdev->flags & IFF_PROMISC &&
--	    !(adapter->flags & IAVF_FLAG_PROMISC_ON))
--		adapter->aq_required |= IAVF_FLAG_AQ_REQUEST_PROMISC;
--	else if (!(netdev->flags & IFF_PROMISC) &&
--		 adapter->flags & IAVF_FLAG_PROMISC_ON)
--		adapter->aq_required |= IAVF_FLAG_AQ_RELEASE_PROMISC;
--
--	if (netdev->flags & IFF_ALLMULTI &&
--	    !(adapter->flags & IAVF_FLAG_ALLMULTI_ON))
--		adapter->aq_required |= IAVF_FLAG_AQ_REQUEST_ALLMULTI;
--	else if (!(netdev->flags & IFF_ALLMULTI) &&
--		 adapter->flags & IAVF_FLAG_ALLMULTI_ON)
--		adapter->aq_required |= IAVF_FLAG_AQ_RELEASE_ALLMULTI;
-+	spin_lock_bh(&adapter->current_netdev_promisc_flags_lock);
-+	if (iavf_promiscuous_mode_changed(adapter))
-+		adapter->aq_required |= IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE;
-+	spin_unlock_bh(&adapter->current_netdev_promisc_flags_lock);
- }
- 
- /**
-@@ -2162,19 +2163,8 @@ static int iavf_process_aq_command(struct iavf_adapter *adapter)
- 		return 0;
- 	}
- 
--	if (adapter->aq_required & IAVF_FLAG_AQ_REQUEST_PROMISC) {
--		iavf_set_promiscuous(adapter, FLAG_VF_UNICAST_PROMISC |
--				       FLAG_VF_MULTICAST_PROMISC);
--		return 0;
--	}
--
--	if (adapter->aq_required & IAVF_FLAG_AQ_REQUEST_ALLMULTI) {
--		iavf_set_promiscuous(adapter, FLAG_VF_MULTICAST_PROMISC);
--		return 0;
--	}
--	if ((adapter->aq_required & IAVF_FLAG_AQ_RELEASE_PROMISC) ||
--	    (adapter->aq_required & IAVF_FLAG_AQ_RELEASE_ALLMULTI)) {
--		iavf_set_promiscuous(adapter, 0);
-+	if (adapter->aq_required & IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE) {
-+		iavf_set_promiscuous(adapter);
- 		return 0;
- 	}
- 
-@@ -4970,6 +4960,7 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	spin_lock_init(&adapter->cloud_filter_list_lock);
- 	spin_lock_init(&adapter->fdir_fltr_lock);
- 	spin_lock_init(&adapter->adv_rss_lock);
-+	spin_lock_init(&adapter->current_netdev_promisc_flags_lock);
- 
- 	INIT_LIST_HEAD(&adapter->mac_filter_list);
- 	INIT_LIST_HEAD(&adapter->vlan_filter_list);
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-index be3c007ce90a9..e5b36d73e4d56 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_virtchnl.c
-@@ -948,14 +948,14 @@ void iavf_del_vlans(struct iavf_adapter *adapter)
- /**
-  * iavf_set_promiscuous
-  * @adapter: adapter structure
-- * @flags: bitmask to control unicast/multicast promiscuous.
-  *
-  * Request that the PF enable promiscuous mode for our VSI.
-  **/
--void iavf_set_promiscuous(struct iavf_adapter *adapter, int flags)
-+void iavf_set_promiscuous(struct iavf_adapter *adapter)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index cf443748ef7cc..b0e6f51041fdd 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -3548,7 +3548,9 @@ int mt7996_mcu_twt_agrt_update(struct mt7996_dev *dev,
+ 			       int cmd)
  {
-+	struct net_device *netdev = adapter->netdev;
- 	struct virtchnl_promisc_info vpi;
--	int promisc_all;
-+	unsigned int flags;
+ 	struct {
+-		u8 _rsv[4];
++		/* fixed field */
++		u8 bss;
++		u8 _rsv[3];
  
- 	if (adapter->current_op != VIRTCHNL_OP_UNKNOWN) {
- 		/* bail because we already have a command pending */
-@@ -964,36 +964,57 @@ void iavf_set_promiscuous(struct iavf_adapter *adapter, int flags)
- 		return;
- 	}
- 
--	promisc_all = FLAG_VF_UNICAST_PROMISC |
--		      FLAG_VF_MULTICAST_PROMISC;
--	if ((flags & promisc_all) == promisc_all) {
--		adapter->flags |= IAVF_FLAG_PROMISC_ON;
--		adapter->aq_required &= ~IAVF_FLAG_AQ_REQUEST_PROMISC;
--		dev_info(&adapter->pdev->dev, "Entering promiscuous mode\n");
--	}
-+	/* prevent changes to promiscuous flags */
-+	spin_lock_bh(&adapter->current_netdev_promisc_flags_lock);
- 
--	if (flags & FLAG_VF_MULTICAST_PROMISC) {
--		adapter->flags |= IAVF_FLAG_ALLMULTI_ON;
--		adapter->aq_required &= ~IAVF_FLAG_AQ_REQUEST_ALLMULTI;
--		dev_info(&adapter->pdev->dev, "%s is entering multicast promiscuous mode\n",
--			 adapter->netdev->name);
-+	/* sanity check to prevent duplicate AQ calls */
-+	if (!iavf_promiscuous_mode_changed(adapter)) {
-+		adapter->aq_required &= ~IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE;
-+		dev_dbg(&adapter->pdev->dev, "No change in promiscuous mode\n");
-+		/* allow changes to promiscuous flags */
-+		spin_unlock_bh(&adapter->current_netdev_promisc_flags_lock);
-+		return;
- 	}
- 
--	if (!flags) {
--		if (adapter->flags & IAVF_FLAG_PROMISC_ON) {
--			adapter->flags &= ~IAVF_FLAG_PROMISC_ON;
--			adapter->aq_required &= ~IAVF_FLAG_AQ_RELEASE_PROMISC;
--			dev_info(&adapter->pdev->dev, "Leaving promiscuous mode\n");
--		}
-+	/* there are 2 bits, but only 3 states */
-+	if (!(netdev->flags & IFF_PROMISC) &&
-+	    netdev->flags & IFF_ALLMULTI) {
-+		/* State 1  - only multicast promiscuous mode enabled
-+		 * - !IFF_PROMISC && IFF_ALLMULTI
-+		 */
-+		flags = FLAG_VF_MULTICAST_PROMISC;
-+		adapter->current_netdev_promisc_flags |= IFF_ALLMULTI;
-+		adapter->current_netdev_promisc_flags &= ~IFF_PROMISC;
-+		dev_info(&adapter->pdev->dev, "Entering multicast promiscuous mode\n");
-+	} else if (!(netdev->flags & IFF_PROMISC) &&
-+		   !(netdev->flags & IFF_ALLMULTI)) {
-+		/* State 2 - unicast/multicast promiscuous mode disabled
-+		 * - !IFF_PROMISC && !IFF_ALLMULTI
-+		 */
-+		flags = 0;
-+		adapter->current_netdev_promisc_flags &=
-+			~(IFF_PROMISC | IFF_ALLMULTI);
-+		dev_info(&adapter->pdev->dev, "Leaving promiscuous mode\n");
-+	} else {
-+		/* State 3 - unicast/multicast promiscuous mode enabled
-+		 * - IFF_PROMISC && IFF_ALLMULTI
-+		 * - IFF_PROMISC && !IFF_ALLMULTI
-+		 */
-+		flags = FLAG_VF_UNICAST_PROMISC | FLAG_VF_MULTICAST_PROMISC;
-+		adapter->current_netdev_promisc_flags |= IFF_PROMISC;
-+		if (netdev->flags & IFF_ALLMULTI)
-+			adapter->current_netdev_promisc_flags |= IFF_ALLMULTI;
-+		else
-+			adapter->current_netdev_promisc_flags &= ~IFF_ALLMULTI;
- 
--		if (adapter->flags & IAVF_FLAG_ALLMULTI_ON) {
--			adapter->flags &= ~IAVF_FLAG_ALLMULTI_ON;
--			adapter->aq_required &= ~IAVF_FLAG_AQ_RELEASE_ALLMULTI;
--			dev_info(&adapter->pdev->dev, "%s is leaving multicast promiscuous mode\n",
--				 adapter->netdev->name);
--		}
-+		dev_info(&adapter->pdev->dev, "Entering promiscuous mode\n");
- 	}
- 
-+	adapter->aq_required &= ~IAVF_FLAG_AQ_CONFIGURE_PROMISC_MODE;
-+
-+	/* allow changes to promiscuous flags */
-+	spin_unlock_bh(&adapter->current_netdev_promisc_flags_lock);
-+
- 	adapter->current_op = VIRTCHNL_OP_CONFIG_PROMISCUOUS_MODE;
- 	vpi.vsi_id = adapter->vsi_res->vsi_id;
- 	vpi.flags = flags;
+ 		__le16 tag;
+ 		__le16 len;
+@@ -3566,7 +3568,7 @@ int mt7996_mcu_twt_agrt_update(struct mt7996_dev *dev,
+ 		u8 exponent;
+ 		u8 is_ap;
+ 		u8 agrt_params;
+-		u8 __rsv2[135];
++		u8 __rsv2[23];
+ 	} __packed req = {
+ 		.tag = cpu_to_le16(UNI_CMD_TWT_ARGT_UPDATE),
+ 		.len = cpu_to_le16(sizeof(req) - 4),
+@@ -3576,6 +3578,7 @@ int mt7996_mcu_twt_agrt_update(struct mt7996_dev *dev,
+ 		.flowid = flow->id,
+ 		.peer_id = cpu_to_le16(flow->wcid),
+ 		.duration = flow->duration,
++		.bss = mvif->mt76.idx,
+ 		.bss_idx = mvif->mt76.idx,
+ 		.start_tsf = cpu_to_le64(flow->tsf),
+ 		.mantissa = flow->mantissa,
 -- 
 2.42.0
 
