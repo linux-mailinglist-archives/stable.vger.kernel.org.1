@@ -2,46 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 273147ECC6F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 602927ECF02
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233958AbjKOTaZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60330 "EHLO
+        id S235205AbjKOTpp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:45:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233970AbjKOTaZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:25 -0500
+        with ESMTP id S235213AbjKOTpo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C83A19E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC7DC433C7;
-        Wed, 15 Nov 2023 19:30:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AEDF12C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00E5C433C7;
+        Wed, 15 Nov 2023 19:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076621;
-        bh=Uu6cOq5FcssNv1Yfwx/VpGIfLO77LE3jpd19kXwRZsA=;
+        s=korg; t=1700077539;
+        bh=U5fG0LHRlfoZGi2f6X9CALJ9JBHRPdD0FYbqIikijX0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DR/ZKqhHOJBue1HtFcxLcCE7LV/NYYwWSFfOm3h5uG7K5wisAaK7aRNi1v1S5TJYf
-         k52oFzKtxVm6bc6A5XC7zZ1SyyYBGhEJeL/ikuHeOdfPqs+nhZBI9a/o1SIiuY2KyS
-         KFiOZSfnK45SWX709fYwTzl7jsGgJIqHCh2xYZyU=
+        b=KaahpjssmwLQTFxb1P0PR0rSKmScPlRPr6BIcP4WcSCo0bu976qdn5PMcVj1cj21y
+         yOBZAkjK5tHs2/fKIkmM9aRg7N7a7Ip/ShrMzbKjvj0t/UDYDwKwktcDCnCIkzUgmG
+         nAJj70mFdDBLIBYxM12Avi7tUstcYtlaNSr8bdk0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Damian Muszynski <damian.muszynski@intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 326/550] crypto: qat - increase size of buffers
+        patches@lists.linux.dev, Gou Hao <gouhao@uniontech.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 365/603] ext4: move ix sanity check to corrent position
 Date:   Wed, 15 Nov 2023 14:15:10 -0500
-Message-ID: <20231115191623.365100288@linuxfoundation.org>
+Message-ID: <20231115191638.772410095@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,71 +49,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Gou Hao <gouhao@uniontech.com>
 
-[ Upstream commit 4e4e2ed22d505c5bacf65c6a39bfb6d120d24785 ]
+[ Upstream commit af90a8f4a09ec4a3de20142e37f37205d4687f28 ]
 
-Increase the size of the buffers used for composing the names used for
-the transport debugfs entries and the vector name to avoid a potential
-truncation.
+Check 'ix' before it is used.
 
-This resolves the following errors when compiling the driver with W=1
-and KCFLAGS=-Werror on GCC 12.3.1:
-
-    drivers/crypto/intel/qat/qat_common/adf_transport_debug.c: In function ‘adf_ring_debugfs_add’:
-    drivers/crypto/intel/qat/qat_common/adf_transport_debug.c:100:60: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-    drivers/crypto/intel/qat/qat_common/adf_isr.c: In function ‘adf_isr_resource_alloc’:
-    drivers/crypto/intel/qat/qat_common/adf_isr.c:197:47: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size between 0 and 5 [-Werror=format-truncation=]
-
-Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 80e675f906db ("ext4: optimize memmmove lengths in extent/index insertions")
+Signed-off-by: Gou Hao <gouhao@uniontech.com>
+Link: https://lore.kernel.org/r/20230906013341.7199-1-gouhao@uniontech.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_accel_devices.h   | 2 +-
- drivers/crypto/intel/qat/qat_common/adf_transport_debug.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/ext4/extents.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-index 0399417b91fc7..c43e39c34d9ba 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
-@@ -29,7 +29,7 @@
- #define ADF_PCI_MAX_BARS 3
- #define ADF_DEVICE_NAME_LENGTH 32
- #define ADF_ETR_MAX_RINGS_PER_BANK 16
--#define ADF_MAX_MSIX_VECTOR_NAME 16
-+#define ADF_MAX_MSIX_VECTOR_NAME 48
- #define ADF_DEVICE_NAME_PREFIX "qat_"
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 202c76996b621..4d8496d1a8ac4 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1010,6 +1010,11 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
+ 		ix = curp->p_idx;
+ 	}
  
- enum adf_accel_capabilities {
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-index 08bca1c506c0e..e2dd568b87b51 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
-@@ -90,7 +90,7 @@ DEFINE_SEQ_ATTRIBUTE(adf_ring_debug);
- int adf_ring_debugfs_add(struct adf_etr_ring_data *ring, const char *name)
- {
- 	struct adf_etr_ring_debug_entry *ring_debug;
--	char entry_name[8];
-+	char entry_name[16];
++	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
++		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
++		return -EFSCORRUPTED;
++	}
++
+ 	len = EXT_LAST_INDEX(curp->p_hdr) - ix + 1;
+ 	BUG_ON(len < 0);
+ 	if (len > 0) {
+@@ -1019,11 +1024,6 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
+ 		memmove(ix + 1, ix, len * sizeof(struct ext4_extent_idx));
+ 	}
  
- 	ring_debug = kzalloc(sizeof(*ring_debug), GFP_KERNEL);
- 	if (!ring_debug)
-@@ -192,7 +192,7 @@ int adf_bank_debugfs_add(struct adf_etr_bank_data *bank)
- {
- 	struct adf_accel_dev *accel_dev = bank->accel_dev;
- 	struct dentry *parent = accel_dev->transport->debug;
--	char name[8];
-+	char name[16];
- 
- 	snprintf(name, sizeof(name), "bank_%02d", bank->bank_number);
- 	bank->bank_debug_dir = debugfs_create_dir(name, parent);
+-	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
+-		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
+-		return -EFSCORRUPTED;
+-	}
+-
+ 	ix->ei_block = cpu_to_le32(logical);
+ 	ext4_idx_store_pblock(ix, ptr);
+ 	le16_add_cpu(&curp->p_hdr->eh_entries, 1);
 -- 
 2.42.0
 
