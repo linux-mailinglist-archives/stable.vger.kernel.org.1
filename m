@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C764F7ECF59
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69B9F7ECC94
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235291AbjKOTsA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:48:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49810 "EHLO
+        id S233251AbjKOTbU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:31:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235292AbjKOTr7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:59 -0500
+        with ESMTP id S234050AbjKOTbT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D7AAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0173FC433CB;
-        Wed, 15 Nov 2023 19:47:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BCD819D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E62C433C9;
+        Wed, 15 Nov 2023 19:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077675;
-        bh=OaMrMpTjJMNIp4gMmenSjK2+SUnc4y60FuDOIKrU9/A=;
+        s=korg; t=1700076675;
+        bh=CdTO9FzNr/iLjIRiu3FbHzxOqoIrwxdd0DDFtHZFtwo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aJk5+Q55XwQRssD0rZzgMokaE5j29mUWRy89bVUZEfLqg6/gpVwbAcUQk2D31NmY/
-         jmQEgR7dzSa4IPhssCrlo3xFz9QmQ0XD7yASRkrwY1gDk6Z+i+EuyvV2AspZ4ih8HX
-         3k7Bnree/PnhJSC7sydLdM7mQfP4i3JldnQJpmIc=
+        b=nx5VKV9fqyuXW0U+U+3mGlSCNGG31Spc1j5PrBYGU9MxIMdpIzCJzO7PONh3uxCyU
+         JrzVMq4gN7ZnE2oH+2eoaMVe1X/rttqnXBG5EFH/f4BzuJWUvplTkArt8Q/QZA9Efb
+         rQFXFQa/3Kut9K3MDxST6mqPgqeY8m692KT/+a2I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 416/603] leds: trigger: ledtrig-cpu:: Fix output may be truncated issue for cpu
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 377/550] perf stat: Fix aggr mode initialization
 Date:   Wed, 15 Nov 2023 14:16:01 -0500
-Message-ID: <20231115191641.713734525@linuxfoundation.org>
+Message-ID: <20231115191626.960956877@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,61 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit ff50f53276131a3059e8307d11293af388ed2bcd ]
+[ Upstream commit a84fbf205609313594b86065c67e823f09ebe29b ]
 
-In order to teach the compiler that 'trig->name' will never be truncated,
-we need to tell it that 'cpu' is not negative.
+Generating metrics llc_code_read_mpi_demand_plus_prefetch,
+llc_data_read_mpi_demand_plus_prefetch,
+llc_miss_local_memory_bandwidth_read,
+llc_miss_local_memory_bandwidth_write,
+nllc_miss_remote_memory_bandwidth_read, memory_bandwidth_read,
+memory_bandwidth_write, uncore_frequency, upi_data_transmit_bw,
+C2_Pkg_Residency, C3_Core_Residency, C3_Pkg_Residency,
+C6_Core_Residency, C6_Pkg_Residency, C7_Core_Residency,
+C7_Pkg_Residency, UNCORE_FREQ and tma_info_system_socket_clks would
+trigger an address sanitizer heap-buffer-overflows on a SkylakeX.
 
-When building with W=1, this fixes the following warnings:
+```
+==2567752==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x5020003ed098 at pc 0x5621a816654e bp 0x7fffb55d4da0 sp 0x7fffb55d4d98
+READ of size 4 at 0x5020003eee78 thread T0
+    #0 0x558265d6654d in aggr_cpu_id__is_empty tools/perf/util/cpumap.c:694:12
+    #1 0x558265c914da in perf_stat__get_aggr tools/perf/builtin-stat.c:1490:6
+    #2 0x558265c914da in perf_stat__get_global_cached tools/perf/builtin-stat.c:1530:9
+    #3 0x558265e53290 in should_skip_zero_counter tools/perf/util/stat-display.c:947:31
+    #4 0x558265e53290 in print_counter_aggrdata tools/perf/util/stat-display.c:985:18
+    #5 0x558265e51931 in print_counter tools/perf/util/stat-display.c:1110:3
+    #6 0x558265e51931 in evlist__print_counters tools/perf/util/stat-display.c:1571:5
+    #7 0x558265c8ec87 in print_counters tools/perf/builtin-stat.c:981:2
+    #8 0x558265c8cc71 in cmd_stat tools/perf/builtin-stat.c:2837:3
+    #9 0x558265bb9bd4 in run_builtin tools/perf/perf.c:323:11
+    #10 0x558265bb98eb in handle_internal_command tools/perf/perf.c:377:8
+    #11 0x558265bb9389 in run_argv tools/perf/perf.c:421:2
+    #12 0x558265bb9389 in main tools/perf/perf.c:537:3
+```
 
-  drivers/leds/trigger/ledtrig-cpu.c: In function ‘ledtrig_cpu_init’:
-  drivers/leds/trigger/ledtrig-cpu.c:155:56: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 5 [-Werror=format-truncation=]
-    155 |                 snprintf(trig->name, MAX_NAME_LEN, "cpu%d", cpu);
-        |                                                        ^~
-  drivers/leds/trigger/ledtrig-cpu.c:155:52: note: directive argument in the range [-2147483648, 7]
-    155 |                 snprintf(trig->name, MAX_NAME_LEN, "cpu%d", cpu);
-        |                                                    ^~~~~~~
-  drivers/leds/trigger/ledtrig-cpu.c:155:17: note: ‘snprintf’ output between 5 and 15 bytes into a destination of size 8
-    155 |                 snprintf(trig->name, MAX_NAME_LEN, "cpu%d", cpu);
-        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The issue was the use of testing a cpumap with NULL rather than using
+empty, as a map containing the dummy value isn't NULL and the -1
+results in an empty aggr map being allocated which legitimately
+overflows when any member is accessed.
 
-Fixes: 8f88731d052d ("led-triggers: create a trigger for CPU activity")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/3f4be7a99933cf8566e630da54f6ab913caac432.1695453322.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 8a96f454f5668572 ("perf stat: Avoid SEGV if core.cpus isn't set")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230906003912.3317462-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/builtin-stat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-cpu.c b/drivers/leds/trigger/ledtrig-cpu.c
-index 8af4f9bb9cde8..05848a2fecff6 100644
---- a/drivers/leds/trigger/ledtrig-cpu.c
-+++ b/drivers/leds/trigger/ledtrig-cpu.c
-@@ -130,7 +130,7 @@ static int ledtrig_prepare_down_cpu(unsigned int cpu)
- 
- static int __init ledtrig_cpu_init(void)
- {
--	int cpu;
-+	unsigned int cpu;
- 	int ret;
- 
- 	/* Supports up to 9999 cpu cores */
-@@ -152,7 +152,7 @@ static int __init ledtrig_cpu_init(void)
- 		if (cpu >= 8)
- 			continue;
- 
--		snprintf(trig->name, MAX_NAME_LEN, "cpu%d", cpu);
-+		snprintf(trig->name, MAX_NAME_LEN, "cpu%u", cpu);
- 
- 		led_trigger_register_simple(trig->name, &trig->_trig);
- 	}
+diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
+index 07b48f6df48eb..a3af805a1d572 100644
+--- a/tools/perf/builtin-stat.c
++++ b/tools/perf/builtin-stat.c
+@@ -1622,7 +1622,7 @@ static int perf_stat_init_aggr_mode(void)
+ 	 * taking the highest cpu number to be the size of
+ 	 * the aggregation translate cpumap.
+ 	 */
+-	if (evsel_list->core.user_requested_cpus)
++	if (!perf_cpu_map__empty(evsel_list->core.user_requested_cpus))
+ 		nr = perf_cpu_map__max(evsel_list->core.user_requested_cpus).cpu;
+ 	else
+ 		nr = 0;
 -- 
 2.42.0
 
