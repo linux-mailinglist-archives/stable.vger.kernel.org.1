@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB3137ECCE0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6736C7ECCE2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234209AbjKOTdI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39832 "EHLO
+        id S234191AbjKOTdL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:33:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234199AbjKOTdI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:08 -0500
+        with ESMTP id S234200AbjKOTdK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5209FA4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7659C433CB;
-        Wed, 15 Nov 2023 19:33:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6043B1A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8859C433C9;
+        Wed, 15 Nov 2023 19:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076784;
-        bh=EGlBQYv/7VoH1+xFzBhd0GzxzlYuOpfREKviQfjPj/E=;
+        s=korg; t=1700076787;
+        bh=pZxepE3fd1q/n1SH45fODoWXpDthHJ+kmUITCiXmEt4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PsZFdGH3ykxRGSG/KDhhSBBjMZAx5QZTNyH1i+fcacQyK7/UK87ZCLJcDrgYdtEm2
-         UfGT7GGPJEvBiuYjjjMXMdEL83R/Qi17kfoVVkuEHbqXqmSjDddlBzfxiUlhPkLEit
-         N1C6AvaPBs+B2vLr8gAIibiJ/k1P+cyltEqXAE+I=
+        b=uSiGONtsB71A5xq4GrtWkiLfmNHFocmQ3/SrrcLlIXei8qPAHD6XBeEW6LSexl4k7
+         B3Is4w7YdLCcY0rbV4ilKuKSvgRtF3WPgkPAx7pKSJ0GikqczXu+C1pBNwbXD7D4SS
+         ouhZTQ+UrSwg1NmhB3g/MmLzyyF1j84YhvnWlVBY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Juergen Gross <jgross@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sohil Mehta <sohil.mehta@intel.com>,
-        Michael Kelley <mikelley@microsoft.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Zhang Rui <rui.zhang@intel.com>,
+        patches@lists.linux.dev, Yong He <alexyonghe@tencent.com>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Neeraj upadhyay <Neeraj.Upadhyay@amd.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/603] x86/apic: Fake primary thread mask for XEN/PV
-Date:   Wed, 15 Nov 2023 14:09:30 -0500
-Message-ID: <20231115191614.920169287@linuxfoundation.org>
+Subject: [PATCH 6.6 026/603] srcu: Fix callbacks acceleration mishandling
+Date:   Wed, 15 Nov 2023 14:09:31 -0500
+Message-ID: <20231115191614.987480827@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -58,84 +56,155 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 965e05ff8af98c44f9937366715c512000373164 ]
+[ Upstream commit 4a8e65b0c348e42107c64381e692e282900be361 ]
 
-The SMT control mechanism got added as speculation attack vector
-mitigation. The implemented logic relies on the primary thread mask to
-be set up properly.
+SRCU callbacks acceleration might fail if the preceding callbacks
+advance also fails. This can happen when the following steps are met:
 
-This turns out to be an issue with XEN/PV guests because their CPU hotplug
-mechanics do not enumerate APICs and therefore the mask is never correctly
-populated.
+1) The RCU_WAIT_TAIL segment has callbacks (say for gp_num 8) and the
+   RCU_NEXT_READY_TAIL also has callbacks (say for gp_num 12).
 
-This went unnoticed so far because by chance XEN/PV ends up with
-smp_num_siblings == 2. So cpu_smt_control stays at its default value
-CPU_SMT_ENABLED and the primary thread mask is never evaluated in the
-context of CPU hotplug.
+2) The grace period for RCU_WAIT_TAIL is observed as started but not yet
+   completed so rcu_seq_current() returns 4 + SRCU_STATE_SCAN1 = 5.
 
-This stopped "working" with the upcoming overhaul of the topology
-evaluation which legitimately provides a fake topology for XEN/PV. That
-sets smp_num_siblings to 1, which causes the core CPU hot-plug core to
-refuse to bring up the APs.
+3) This value is passed to rcu_segcblist_advance() which can't move
+   any segment forward and fails.
 
-This happens because cpu_smt_control is set to CPU_SMT_NOT_SUPPORTED which
-causes cpu_bootable() to evaluate the unpopulated primary thread mask with
-the conclusion that all non-boot CPUs are not valid to be plugged.
+4) srcu_gp_start_if_needed() still proceeds with callback acceleration.
+   But then the call to rcu_seq_snap() observes the grace period for the
+   RCU_WAIT_TAIL segment (gp_num 8) as completed and the subsequent one
+   for the RCU_NEXT_READY_TAIL segment as started
+   (ie: 8 + SRCU_STATE_SCAN1 = 9) so it returns a snapshot of the
+   next grace period, which is 16.
 
-The core code has already been made more robust against this kind of fail,
-but the primary thread mask really wants to be populated to avoid other
-issues all over the place.
+5) The value of 16 is passed to rcu_segcblist_accelerate() but the
+   freshly enqueued callback in RCU_NEXT_TAIL can't move to
+   RCU_NEXT_READY_TAIL which already has callbacks for a previous grace
+   period (gp_num = 12). So acceleration fails.
 
-Just fake the mask by pretending that all XEN/PV vCPUs are primary threads,
-which is consistent because all of XEN/PVs topology is fake or non-existent.
+6) Note in all these steps, srcu_invoke_callbacks() hadn't had a chance
+   to run srcu_invoke_callbacks().
 
-Fixes: 6a4d2657e048 ("x86/smp: Provide topology_is_primary_thread()")
-Fixes: f54d4434c281 ("x86/apic: Provide cpu_primary_thread mask")
-Reported-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Juergen Gross <jgross@suse.com>
-Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-Tested-by: Michael Kelley <mikelley@microsoft.com>
-Tested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Zhang Rui <rui.zhang@intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230814085112.210011520@linutronix.de
+Then some very bad outcome may happen if the following happens:
+
+7) Some other CPU races and starts the grace period number 16 before the
+   CPU handling previous steps had a chance. Therefore srcu_gp_start()
+   isn't called on the latter sdp to fix the acceleration leak from
+   previous steps with a new pair of call to advance/accelerate.
+
+8) The grace period 16 completes and srcu_invoke_callbacks() is finally
+   called. All the callbacks from previous grace periods (8 and 12) are
+   correctly advanced and executed but callbacks in RCU_NEXT_READY_TAIL
+   still remain. Then rcu_segcblist_accelerate() is called with a
+   snaphot of 20.
+
+9) Since nothing started the grace period number 20, callbacks stay
+   unhandled.
+
+This has been reported in real load:
+
+	[3144162.608392] INFO: task kworker/136:12:252684 blocked for more
+	than 122 seconds.
+	[3144162.615986]       Tainted: G           O  K   5.4.203-1-tlinux4-0011.1 #1
+	[3144162.623053] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs"
+	disables this message.
+	[3144162.631162] kworker/136:12  D    0 252684      2 0x90004000
+	[3144162.631189] Workqueue: kvm-irqfd-cleanup irqfd_shutdown [kvm]
+	[3144162.631192] Call Trace:
+	[3144162.631202]  __schedule+0x2ee/0x660
+	[3144162.631206]  schedule+0x33/0xa0
+	[3144162.631209]  schedule_timeout+0x1c4/0x340
+	[3144162.631214]  ? update_load_avg+0x82/0x660
+	[3144162.631217]  ? raw_spin_rq_lock_nested+0x1f/0x30
+	[3144162.631218]  wait_for_completion+0x119/0x180
+	[3144162.631220]  ? wake_up_q+0x80/0x80
+	[3144162.631224]  __synchronize_srcu.part.19+0x81/0xb0
+	[3144162.631226]  ? __bpf_trace_rcu_utilization+0x10/0x10
+	[3144162.631227]  synchronize_srcu+0x5f/0xc0
+	[3144162.631236]  irqfd_shutdown+0x3c/0xb0 [kvm]
+	[3144162.631239]  ? __schedule+0x2f6/0x660
+	[3144162.631243]  process_one_work+0x19a/0x3a0
+	[3144162.631244]  worker_thread+0x37/0x3a0
+	[3144162.631247]  kthread+0x117/0x140
+	[3144162.631247]  ? process_one_work+0x3a0/0x3a0
+	[3144162.631248]  ? __kthread_cancel_work+0x40/0x40
+	[3144162.631250]  ret_from_fork+0x1f/0x30
+
+Fix this with taking the snapshot for acceleration _before_ the read
+of the current grace period number.
+
+The only side effect of this solution is that callbacks advancing happen
+then _after_ the full barrier in rcu_seq_snap(). This is not a problem
+because that barrier only cares about:
+
+1) Ordering accesses of the update side before call_srcu() so they don't
+   bleed.
+2) See all the accesses prior to the grace period of the current gp_num
+
+The only things callbacks advancing need to be ordered against are
+carried by snp locking.
+
+Reported-by: Yong He <alexyonghe@tencent.com>
+Co-developed-by:: Yong He <alexyonghe@tencent.com>
+Signed-off-by: Yong He <alexyonghe@tencent.com>
+Co-developed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by:  Joel Fernandes (Google) <joel@joelfernandes.org>
+Co-developed-by: Neeraj upadhyay <Neeraj.Upadhyay@amd.com>
+Signed-off-by: Neeraj upadhyay <Neeraj.Upadhyay@amd.com>
+Link: http://lore.kernel.org/CANZk6aR+CqZaqmMWrC2eRRPY12qAZnDZLwLnHZbNi=xXMB401g@mail.gmail.com
+Fixes: da915ad5cf25 ("srcu: Parallelize callback handling")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/apic.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ kernel/rcu/srcutree.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 760adac3d1a82..3cdf48493546d 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -36,6 +36,8 @@
- #include <linux/smp.h>
- #include <linux/mm.h>
- 
-+#include <xen/xen.h>
-+
- #include <asm/trace/irq_vectors.h>
- #include <asm/irq_remapping.h>
- #include <asm/pc-conf-reg.h>
-@@ -2344,6 +2346,15 @@ static int __init smp_init_primary_thread_mask(void)
- {
- 	unsigned int cpu;
- 
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 20d7a238d675a..253ed509b6abb 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -1242,10 +1242,37 @@ static unsigned long srcu_gp_start_if_needed(struct srcu_struct *ssp,
+ 	spin_lock_irqsave_sdp_contention(sdp, &flags);
+ 	if (rhp)
+ 		rcu_segcblist_enqueue(&sdp->srcu_cblist, rhp);
 +	/*
-+	 * XEN/PV provides either none or useless topology information.
-+	 * Pretend that all vCPUs are primary threads.
++	 * The snapshot for acceleration must be taken _before_ the read of the
++	 * current gp sequence used for advancing, otherwise advancing may fail
++	 * and acceleration may then fail too.
++	 *
++	 * This could happen if:
++	 *
++	 *  1) The RCU_WAIT_TAIL segment has callbacks (gp_num = X + 4) and the
++	 *     RCU_NEXT_READY_TAIL also has callbacks (gp_num = X + 8).
++	 *
++	 *  2) The grace period for RCU_WAIT_TAIL is seen as started but not
++	 *     completed so rcu_seq_current() returns X + SRCU_STATE_SCAN1.
++	 *
++	 *  3) This value is passed to rcu_segcblist_advance() which can't move
++	 *     any segment forward and fails.
++	 *
++	 *  4) srcu_gp_start_if_needed() still proceeds with callback acceleration.
++	 *     But then the call to rcu_seq_snap() observes the grace period for the
++	 *     RCU_WAIT_TAIL segment as completed and the subsequent one for the
++	 *     RCU_NEXT_READY_TAIL segment as started (ie: X + 4 + SRCU_STATE_SCAN1)
++	 *     so it returns a snapshot of the next grace period, which is X + 12.
++	 *
++	 *  5) The value of X + 12 is passed to rcu_segcblist_accelerate() but the
++	 *     freshly enqueued callback in RCU_NEXT_TAIL can't move to
++	 *     RCU_NEXT_READY_TAIL which already has callbacks for a previous grace
++	 *     period (gp_num = X + 8). So acceleration fails.
 +	 */
-+	if (xen_pv_domain()) {
-+		cpumask_copy(&__cpu_primary_thread_mask, cpu_possible_mask);
-+		return 0;
-+	}
-+
- 	for (cpu = 0; cpu < nr_logical_cpuids; cpu++)
- 		cpu_mark_primary_thread(cpu, cpuid_to_apicid[cpu]);
- 	return 0;
++	s = rcu_seq_snap(&ssp->srcu_sup->srcu_gp_seq);
+ 	rcu_segcblist_advance(&sdp->srcu_cblist,
+ 			      rcu_seq_current(&ssp->srcu_sup->srcu_gp_seq));
+-	s = rcu_seq_snap(&ssp->srcu_sup->srcu_gp_seq);
+-	(void)rcu_segcblist_accelerate(&sdp->srcu_cblist, s);
++	WARN_ON_ONCE(!rcu_segcblist_accelerate(&sdp->srcu_cblist, s) && rhp);
+ 	if (ULONG_CMP_LT(sdp->srcu_gp_seq_needed, s)) {
+ 		sdp->srcu_gp_seq_needed = s;
+ 		needgp = true;
 -- 
 2.42.0
 
