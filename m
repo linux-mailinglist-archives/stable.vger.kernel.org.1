@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E26A7ECDBF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA8907ECB61
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234631AbjKOTiL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:38:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47162 "EHLO
+        id S232888AbjKOTVx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234636AbjKOTiK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:10 -0500
+        with ESMTP id S232889AbjKOTVw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2DAB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FE3C433C8;
-        Wed, 15 Nov 2023 19:38:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 834F412C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E30C433CB;
+        Wed, 15 Nov 2023 19:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077087;
-        bh=tjWQXNx05cGKHG4pOQKR7Yb2JnhfZxMKU0vIXhaFhHc=;
+        s=korg; t=1700076109;
+        bh=yZ79EaOHZ1Z/4dYtC5rtY2utXtIXxArPiDPDyPtwF2U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MW2dpYk7bogBnxowUyqxZswhFL9pSCy4kBzsZE5ID4Rz+sBeY42Tuun7hm2qiwbhh
-         4SVSi7Dy8sOUkE2e1TsRBhKQ3LuE3ApnpxYcQaY5N6DloQbQBioyx281wReZUVvYNg
-         eVDb3HZlVVE0wMy13Bxx9WoLeEGbkN/jqG5DGDKM=
+        b=RL+5Fu1D74hLt0cAfggLjoebUwiZk4NNufzvus70kT+YuBic4AgosxAOpbSVsLumQ
+         KWxYLNVbiRq66C7gyHeERyA6kQz43FjbMamBW1/h+5/1ZgE8Qo52okB7fFhXdvMfgn
+         NVS8WwNDoHe3MagbqiKMQQwZ8pZks+r6gLu29caU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gavin Li <gavinl@nvidia.com>,
-        Heng Qi <hengqi@linux.alibaba.com>,
-        Jason Wang <jasowang@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/603] virtio-net: fix the vq coalescing setting for vq resize
+Subject: [PATCH 6.5 081/550] wifi: mt76: mt7603: rework/fix rx pse hang check
 Date:   Wed, 15 Nov 2023 14:11:05 -0500
-Message-ID: <20231115191621.542379867@linuxfoundation.org>
+Message-ID: <20231115191606.312725358@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,91 +49,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heng Qi <hengqi@linux.alibaba.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit f61fe5f081cf40de08d0a4c89659baf23c900f0c ]
+[ Upstream commit baa19b2e4b7bbb509a7ca7939c8785477dcd40ee ]
 
-According to the definition of virtqueue coalescing spec[1]:
+It turns out that the code in mt7603_rx_pse_busy() does not detect actual
+hardware hangs, it only checks for busy conditions in PSE.
+A reset should only be performed if these conditions are true and if there
+is no rx activity as well.
+Reset the counter whenever a rx interrupt occurs. In order to also deal with
+a fully loaded CPU that leaves interrupts disabled with continuous NAPI
+polling, also check for pending rx interrupts in the function itself.
 
-  Upon disabling and re-enabling a transmit virtqueue, the device MUST set
-  the coalescing parameters of the virtqueue to those configured through the
-  VIRTIO_NET_CTRL_NOTF_COAL_TX_SET command, or, if the driver did not set
-  any TX coalescing parameters, to 0.
-
-  Upon disabling and re-enabling a receive virtqueue, the device MUST set
-  the coalescing parameters of the virtqueue to those configured through the
-  VIRTIO_NET_CTRL_NOTF_COAL_RX_SET command, or, if the driver did not set
-  any RX coalescing parameters, to 0.
-
-We need to add this setting for vq resize (ethtool -G) where vq_reset happens.
-
-[1] https://lists.oasis-open.org/archives/virtio-dev/202303/msg00415.html
-
-Fixes: 394bd87764b6 ("virtio_net: support per queue interrupt coalesce command")
-Cc: Gavin Li <gavinl@nvidia.com>
-Signed-off-by: Heng Qi <hengqi@linux.alibaba.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ .../net/wireless/mediatek/mt76/mt7603/core.c  |  2 ++
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   | 23 +++++++++++++------
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 4211f28c59dc8..cd1e9e87eaa35 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -2855,6 +2855,9 @@ static void virtnet_get_ringparam(struct net_device *dev,
- 	ring->tx_pending = virtqueue_get_vring_size(vi->sq[0].vq);
- }
- 
-+static int virtnet_send_ctrl_coal_vq_cmd(struct virtnet_info *vi,
-+					 u16 vqn, u32 max_usecs, u32 max_packets);
-+
- static int virtnet_set_ringparam(struct net_device *dev,
- 				 struct ethtool_ringparam *ring,
- 				 struct kernel_ethtool_ringparam *kernel_ring,
-@@ -2890,12 +2893,36 @@ static int virtnet_set_ringparam(struct net_device *dev,
- 			err = virtnet_tx_resize(vi, sq, ring->tx_pending);
- 			if (err)
- 				return err;
-+
-+			/* Upon disabling and re-enabling a transmit virtqueue, the device must
-+			 * set the coalescing parameters of the virtqueue to those configured
-+			 * through the VIRTIO_NET_CTRL_NOTF_COAL_TX_SET command, or, if the driver
-+			 * did not set any TX coalescing parameters, to 0.
-+			 */
-+			err = virtnet_send_ctrl_coal_vq_cmd(vi, txq2vq(i),
-+							    vi->intr_coal_tx.max_usecs,
-+							    vi->intr_coal_tx.max_packets);
-+			if (err)
-+				return err;
-+
-+			vi->sq[i].intr_coal.max_usecs = vi->intr_coal_tx.max_usecs;
-+			vi->sq[i].intr_coal.max_packets = vi->intr_coal_tx.max_packets;
- 		}
- 
- 		if (ring->rx_pending != rx_pending) {
- 			err = virtnet_rx_resize(vi, rq, ring->rx_pending);
- 			if (err)
- 				return err;
-+
-+			/* The reason is same as the transmit virtqueue reset */
-+			err = virtnet_send_ctrl_coal_vq_cmd(vi, rxq2vq(i),
-+							    vi->intr_coal_rx.max_usecs,
-+							    vi->intr_coal_rx.max_packets);
-+			if (err)
-+				return err;
-+
-+			vi->rq[i].intr_coal.max_usecs = vi->intr_coal_rx.max_usecs;
-+			vi->rq[i].intr_coal.max_packets = vi->intr_coal_rx.max_packets;
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/core.c b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+index 60a996b63c0c0..915b8349146af 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+@@ -42,11 +42,13 @@ irqreturn_t mt7603_irq_handler(int irq, void *dev_instance)
  	}
  
+ 	if (intr & MT_INT_RX_DONE(0)) {
++		dev->rx_pse_check = 0;
+ 		mt7603_irq_disable(dev, MT_INT_RX_DONE(0));
+ 		napi_schedule(&dev->mt76.napi[0]);
+ 	}
+ 
+ 	if (intr & MT_INT_RX_DONE(1)) {
++		dev->rx_pse_check = 0;
+ 		mt7603_irq_disable(dev, MT_INT_RX_DONE(1));
+ 		napi_schedule(&dev->mt76.napi[1]);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 12e0af52082a6..05cdb970b3d8b 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1559,20 +1559,29 @@ static bool mt7603_rx_pse_busy(struct mt7603_dev *dev)
+ {
+ 	u32 addr, val;
+ 
+-	if (mt76_rr(dev, MT_MCU_DEBUG_RESET) & MT_MCU_DEBUG_RESET_QUEUES)
+-		return true;
+-
+ 	if (mt7603_rx_fifo_busy(dev))
+-		return false;
++		goto out;
+ 
+ 	addr = mt7603_reg_map(dev, MT_CLIENT_BASE_PHYS_ADDR + MT_CLIENT_STATUS);
+ 	mt76_wr(dev, addr, 3);
+ 	val = mt76_rr(dev, addr) >> 16;
+ 
+-	if (is_mt7628(dev) && (val & 0x4001) == 0x4001)
+-		return true;
++	if (!(val & BIT(0)))
++		return false;
++
++	if (is_mt7628(dev))
++		val &= 0xa000;
++	else
++		val &= 0x8000;
++	if (!val)
++		return false;
++
++out:
++	if (mt76_rr(dev, MT_INT_SOURCE_CSR) &
++	    (MT_INT_RX_DONE(0) | MT_INT_RX_DONE(1)))
++		return false;
+ 
+-	return (val & 0x8001) == 0x8001 || (val & 0xe001) == 0xe001;
++	return true;
+ }
+ 
+ static bool
 -- 
 2.42.0
 
