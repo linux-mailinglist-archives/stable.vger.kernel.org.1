@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 226387ED0B6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 422F77ED0B3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343618AbjKOT5K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:57:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42206 "EHLO
+        id S1343646AbjKOT5L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343627AbjKOT5D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:03 -0500
+        with ESMTP id S1343886AbjKOT5F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D5F3198
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246F1C433C9;
-        Wed, 15 Nov 2023 19:57:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B5FAAF
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935AEC433C8;
+        Wed, 15 Nov 2023 19:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078220;
-        bh=9AvsNk3+BrNdDH4seCpRyAutN6hV9WFS/c6YWxjSCoM=;
+        s=korg; t=1700078221;
+        bh=yHTKKqi+zZBwgo6MKSJqgGCKjEDUtu2pNZjOiSP8LXw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZufQjbEYrMGeXHkchWaDq2bGcaMNzdsiRQyrYkXldpmFmZ7DMbQcZBMYIlBSCdAK7
-         gSspKmFfivPqTbXhOPfL1ntXYbs9e8K3oV4SqjMhei+hUQ1zKLqk8AQGdu40Mtqlk/
-         e6h/NbBykJPjw/ys7UhVbm3pMKqGlkxKzpuUW/jY=
+        b=KVdOjHLut8X3ht840QQTCFAnKoI4dbWbS+oXTcmH8XTcIBVETH7jBSKGAzb1DoIGC
+         Tk7LQLd6T58kORKNhFGAYiVp4jVFu8NSNY7GFEBthPfWSkm/LhmhfCNx/Tr8zzaJ+T
+         +MUU1jl0dwQlCu5Pl5R8nDkeSypeaEtEbLlhbkQQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrea Righi <andrea.righi@canonical.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
+        patches@lists.linux.dev,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/379] module/decompress: use vmalloc() for gzip decompression workspace
-Date:   Wed, 15 Nov 2023 14:24:20 -0500
-Message-ID: <20231115192656.039842303@linuxfoundation.org>
+Subject: [PATCH 6.1 186/379] ASoC: cs35l41: Verify PM runtime resume errors in IRQ handler
+Date:   Wed, 15 Nov 2023 14:24:21 -0500
+Message-ID: <20231115192656.103845996@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -54,62 +56,53 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Andrea Righi <andrea.righi@canonical.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 3737df782c740b944912ed93420c57344b1cf864 ]
+[ Upstream commit 9f8948db9849d202dee3570507d3a0642f92d632 ]
 
-Use a similar approach as commit a419beac4a07 ("module/decompress: use
-vmalloc() for zstd decompression workspace") and replace kmalloc() with
-vmalloc() also for the gzip module decompression workspace.
+The interrupt handler invokes pm_runtime_get_sync() without checking the
+returned error code.
 
-In this case the workspace is represented by struct inflate_workspace
-that can be fairly large for kmalloc() and it can potentially lead to
-allocation errors on certain systems:
+Add a proper verification and switch to pm_runtime_resume_and_get(), to
+avoid the need to call pm_runtime_put_noidle() for decrementing the PM
+usage counter before returning from the error condition.
 
-$ pahole inflate_workspace
-struct inflate_workspace {
-	struct inflate_state       inflate_state;        /*     0  9544 */
-	/* --- cacheline 149 boundary (9536 bytes) was 8 bytes ago --- */
-	unsigned char              working_window[32768]; /*  9544 32768 */
-
-	/* size: 42312, cachelines: 662, members: 2 */
-	/* last cacheline: 8 bytes */
-};
-
-Considering that there is no need to use continuous physical memory,
-simply switch to vmalloc() to provide a more reliable in-kernel module
-decompression.
-
-Fixes: b1ae6dc41eaa ("module: add in-kernel support for decompressing")
-Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Fixes: f517ba4924ad ("ASoC: cs35l41: Add support for hibernate memory retention mode")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20230907171010.1447274-6-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module/decompress.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs35l41.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
-index 720e719253cd1..e1e9f69c5dd16 100644
---- a/kernel/module/decompress.c
-+++ b/kernel/module/decompress.c
-@@ -100,7 +100,7 @@ static ssize_t module_gzip_decompress(struct load_info *info,
- 	s.next_in = buf + gzip_hdr_len;
- 	s.avail_in = size - gzip_hdr_len;
+diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
+index 2f4b0ee93aced..e428898e42112 100644
+--- a/sound/soc/codecs/cs35l41.c
++++ b/sound/soc/codecs/cs35l41.c
+@@ -374,10 +374,18 @@ static irqreturn_t cs35l41_irq(int irq, void *data)
+ 	struct cs35l41_private *cs35l41 = data;
+ 	unsigned int status[4] = { 0, 0, 0, 0 };
+ 	unsigned int masks[4] = { 0, 0, 0, 0 };
+-	int ret = IRQ_NONE;
+ 	unsigned int i;
++	int ret;
  
--	s.workspace = kmalloc(zlib_inflate_workspacesize(), GFP_KERNEL);
-+	s.workspace = vmalloc(zlib_inflate_workspacesize());
- 	if (!s.workspace)
- 		return -ENOMEM;
+-	pm_runtime_get_sync(cs35l41->dev);
++	ret = pm_runtime_resume_and_get(cs35l41->dev);
++	if (ret < 0) {
++		dev_err(cs35l41->dev,
++			"pm_runtime_resume_and_get failed in %s: %d\n",
++			__func__, ret);
++		return IRQ_NONE;
++	}
++
++	ret = IRQ_NONE;
  
-@@ -138,7 +138,7 @@ static ssize_t module_gzip_decompress(struct load_info *info,
- out_inflate_end:
- 	zlib_inflateEnd(&s);
- out:
--	kfree(s.workspace);
-+	vfree(s.workspace);
- 	return retval;
- }
- #elif CONFIG_MODULE_COMPRESS_XZ
+ 	for (i = 0; i < ARRAY_SIZE(status); i++) {
+ 		regmap_read(cs35l41->regmap,
 -- 
 2.42.0
 
