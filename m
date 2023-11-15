@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81E217ED0CA
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CC077ED0CB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343835AbjKOT5e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:57:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
+        id S1343846AbjKOT5f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343846AbjKOT5e (ORCPT
+        with ESMTP id S1343848AbjKOT5e (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A37F189
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A45CBC433C8;
-        Wed, 15 Nov 2023 19:57:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B85E219E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226F4C433C7;
+        Wed, 15 Nov 2023 19:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078249;
-        bh=h/cQu7LOMRhh6lD6J5hxkDV9XImOk+UakWEy96YMwd0=;
+        s=korg; t=1700078251;
+        bh=g0bn4kHIpopRydD3a5LhGLGD4Q0qqCz3/WtnucRmVo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zR/ylK3icWWaGkGbhiGZtgPXAGZTO7K19n6B/cH5sIOYSmvG7TRZfzj6Prw/irhRH
-         D6+wu0ILkYLuMtNNZnBXekKvMuNxGBDXpSct4LohOJJ+/ewbpzljWhcSTv66EfUkGE
-         E+A9CujCqZ39DGJf2kZl7updBcvgVoMQ7w5HyLzo=
+        b=so0vTp0zcRXRrIm04yoF0GoGoF2z1CqgYHOT+6yzdRdwiwD+txHiai30AhWpQPf1/
+         YG1taE8MVtv6WMEdv0TRib/n6f1Im8vASsiIAUxm4uBFQMzj8fMeJPhEBeSfjKZwtB
+         feefN3gII/FuABcGrU1PQSRL1ZAcPC6A9IyHzK0c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Gaurav Jain <gaurav.jain@nxp.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/379] crypto: caam/qi2 - fix Chacha20 + Poly1305 self test failure
-Date:   Wed, 15 Nov 2023 14:24:40 -0500
-Message-ID: <20231115192657.239737743@linuxfoundation.org>
+Subject: [PATCH 6.1 206/379] crypto: caam/jr - fix Chacha20 + Poly1305 self test failure
+Date:   Wed, 15 Nov 2023 14:24:41 -0500
+Message-ID: <20231115192657.301868368@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -56,26 +56,26 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Gaurav Jain <gaurav.jain@nxp.com>
 
-[ Upstream commit 7b8c6aee0d5b864e70c0da82583f9862e374eaf3 ]
+[ Upstream commit a8d3cdcc092fb2f2882acb6c20473a1be0ef4484 ]
 
 key buffer is not copied in chachapoly_setkey function,
 results in wrong output for encryption/decryption operation.
 
 fix this by memcpy the key in caam_ctx key arrary
 
-Fixes: c10a53367901 ("crypto: caam/qi2 - add support for Chacha20 + Poly1305")
+Fixes: d6bbd4eea243 ("crypto: caam/jr - add support for Chacha20 + Poly1305")
 Signed-off-by: Gaurav Jain <gaurav.jain@nxp.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/caamalg_qi2.c | 3 ++-
+ drivers/crypto/caam/caamalg.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
-index 4482cb145d051..56058d4992cc4 100644
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -639,7 +639,8 @@ static int chachapoly_setkey(struct crypto_aead *aead, const u8 *key,
+diff --git a/drivers/crypto/caam/caamalg.c b/drivers/crypto/caam/caamalg.c
+index d3d8bb0a69900..e156238b4da90 100644
+--- a/drivers/crypto/caam/caamalg.c
++++ b/drivers/crypto/caam/caamalg.c
+@@ -566,7 +566,8 @@ static int chachapoly_setkey(struct crypto_aead *aead, const u8 *key,
  	if (keylen != CHACHA_KEY_SIZE + saltlen)
  		return -EINVAL;
  
