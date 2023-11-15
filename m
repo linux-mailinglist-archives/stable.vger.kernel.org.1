@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCAE97ECE09
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5A2E7ECFEE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234770AbjKOTkI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:40:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51120 "EHLO
+        id S235453AbjKOTvq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234776AbjKOTkG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:06 -0500
+        with ESMTP id S235455AbjKOTvp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:45 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0371E1BF
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430C6C433C7;
-        Wed, 15 Nov 2023 19:39:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E261189
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A17C433C9;
+        Wed, 15 Nov 2023 19:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077192;
-        bh=GxqIKFNhzguNUvq3JJO8xOw3qDHxqCZpGL6hT63M4rw=;
+        s=korg; t=1700077901;
+        bh=Hgy6qEcbJRBcrxY4io7GT70qQa/p4xrmuzJcdpzZCmc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jypDBioBfUy1lxS3Jwe5zCUD9nxWQ9cmfvoZvKWvuMl2qOMy/0XRNd6E5jx5H2Bpe
-         JVogkSto3qUIxFtkevk14HTh4KqxqcVbSXXkfa+UQsCteLyEJe6TT8ljr5+Mkio+ro
-         nmu7TlExCZNi0BnQ/WCns/1WhNlAxwFcSMd8o9tw=
+        b=jZBaS5i6HnlnzWbI/nujtfzgxsLa4WgZsDbfcD1M7uh8z7ODk/thYxQCIR96BXlaj
+         7ttF/48JaLH5oEJsG6JJPn29FT+a/d7uVkwiTBgAODkmv8Us1FQAYo960SmBiaPgW1
+         d5BZbg48PV9Dz/iOql+zcq/E9Iv/KlPJrgMu/8aA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anand Jain <anand.jain@oracle.com>,
-        Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
+        patches@lists.linux.dev, Carl Worth <carl@os.amperecomputing.com>,
+        Ilkka Koskinen <ilkka@os.amperecomputing.com>,
+        Will Deacon <will@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 550/550] btrfs: make found_logical_ret parameter mandatory for function queue_scrub_stripe()
+Subject: [PATCH 6.6 589/603] arm64/arm: arm_pmuv3: perf: Dont truncate 64-bit registers
 Date:   Wed, 15 Nov 2023 14:18:54 -0500
-Message-ID: <20231115191639.051187961@linuxfoundation.org>
+Message-ID: <20231115191652.007173288@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,105 +53,217 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
 
-[ Upstream commit 47e2b06b7b5cb356a987ba3429550c3a89ea89d6 ]
+[ Upstream commit 403edfa436286b21f5ffe6856ae5b36396e8966c ]
 
-[BUG]
-There is a compilation warning reported on commit ae76d8e3e135 ("btrfs:
-scrub: fix grouping of read IO"), where gcc (14.0.0 20231022 experimental)
-is reporting the following uninitialized variable:
+The driver used to truncate several 64-bit registers such as PMCEID[n]
+registers used to describe whether architectural and microarchitectural
+events in range 0x4000-0x401f exist. Due to discarding the bits, the
+driver made the events invisible, even if they existed.
 
-  fs/btrfs/scrub.c: In function ‘scrub_simple_mirror.isra’:
-  fs/btrfs/scrub.c:2075:29: error: ‘found_logical’ may be used uninitialized [-Werror=maybe-uninitialized[https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmaybe-uninitialized]]
-   2075 |                 cur_logical = found_logical + BTRFS_STRIPE_LEN;
-  fs/btrfs/scrub.c:2040:21: note: ‘found_logical’ was declared here
-   2040 |                 u64 found_logical;
-        |                     ^~~~~~~~~~~~~
+Moreover, PMCCFILTR and PMCR registers have additional bits in the upper
+32 bits. This patch makes them available although they aren't currently
+used. Finally, functions handling PMXEVCNTR and PMXEVTYPER registers are
+removed as they not being used at all.
 
-[CAUSE]
-This is a false alert, as @found_logical is passed as parameter
-@found_logical_ret of function queue_scrub_stripe().
-
-As long as queue_scrub_stripe() returned 0, we would update
-@found_logical_ret.  And if queue_scrub_stripe() returned >0 or <0, the
-caller would not utilized @found_logical, thus there should be nothing
-wrong.
-
-Although the triggering gcc is still experimental, it looks like the
-extra check on "if (found_logical_ret)" can sometimes confuse the
-compiler.
-
-Meanwhile the only caller of queue_scrub_stripe() is always passing a
-valid pointer, there is no need for such check at all.
-
-[FIX]
-Although the report itself is a false alert, we can still make it more
-explicit by:
-
-- Replace the check for @found_logical_ret with ASSERT()
-
-- Initialize @found_logical to U64_MAX
-
-- Add one extra ASSERT() to make sure @found_logical got updated
-
-Link: https://lore.kernel.org/linux-btrfs/87fs1x1p93.fsf@gentoo.org/
-Fixes: ae76d8e3e135 ("btrfs: scrub: fix grouping of read IO")
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: df29ddf4f04b ("arm64: perf: Abstract system register accesses away")
+Reported-by: Carl Worth <carl@os.amperecomputing.com>
+Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Acked-by: Will Deacon <will@kernel.org>
+Closes: https://lore.kernel.org/..
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20231102183012.1251410-1-ilkka@os.amperecomputing.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm/include/asm/arm_pmuv3.h   | 48 ++++++++++++++----------------
+ arch/arm64/include/asm/arm_pmuv3.h | 25 ++++------------
+ drivers/perf/arm_pmuv3.c           |  6 ++--
+ 3 files changed, 31 insertions(+), 48 deletions(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index cfbd6b1c4b7f1..ab8e0c12f0fe4 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -1803,6 +1803,9 @@ static int queue_scrub_stripe(struct scrub_ctx *sctx, struct btrfs_block_group *
- 	 */
- 	ASSERT(sctx->cur_stripe < SCRUB_TOTAL_STRIPES);
+diff --git a/arch/arm/include/asm/arm_pmuv3.h b/arch/arm/include/asm/arm_pmuv3.h
+index 72529f5e2bed9..a41b503b7dcde 100644
+--- a/arch/arm/include/asm/arm_pmuv3.h
++++ b/arch/arm/include/asm/arm_pmuv3.h
+@@ -23,6 +23,8 @@
+ #define PMUSERENR		__ACCESS_CP15(c9,  0, c14, 0)
+ #define PMINTENSET		__ACCESS_CP15(c9,  0, c14, 1)
+ #define PMINTENCLR		__ACCESS_CP15(c9,  0, c14, 2)
++#define PMCEID2			__ACCESS_CP15(c9,  0, c14, 4)
++#define PMCEID3			__ACCESS_CP15(c9,  0, c14, 5)
+ #define PMMIR			__ACCESS_CP15(c9,  0, c14, 6)
+ #define PMCCFILTR		__ACCESS_CP15(c14, 0, c15, 7)
  
-+	/* @found_logical_ret must be specified. */
-+	ASSERT(found_logical_ret);
+@@ -150,21 +152,6 @@ static inline u64 read_pmccntr(void)
+ 	return read_sysreg(PMCCNTR);
+ }
+ 
+-static inline void write_pmxevcntr(u32 val)
+-{
+-	write_sysreg(val, PMXEVCNTR);
+-}
+-
+-static inline u32 read_pmxevcntr(void)
+-{
+-	return read_sysreg(PMXEVCNTR);
+-}
+-
+-static inline void write_pmxevtyper(u32 val)
+-{
+-	write_sysreg(val, PMXEVTYPER);
+-}
+-
+ static inline void write_pmcntenset(u32 val)
+ {
+ 	write_sysreg(val, PMCNTENSET);
+@@ -205,16 +192,6 @@ static inline void write_pmuserenr(u32 val)
+ 	write_sysreg(val, PMUSERENR);
+ }
+ 
+-static inline u32 read_pmceid0(void)
+-{
+-	return read_sysreg(PMCEID0);
+-}
+-
+-static inline u32 read_pmceid1(void)
+-{
+-	return read_sysreg(PMCEID1);
+-}
+-
+ static inline void kvm_set_pmu_events(u32 set, struct perf_event_attr *attr) {}
+ static inline void kvm_clr_pmu_events(u32 clr) {}
+ static inline bool kvm_pmu_counter_deferred(struct perf_event_attr *attr)
+@@ -231,6 +208,7 @@ static inline void kvm_vcpu_pmu_resync_el0(void) {}
+ 
+ /* PMU Version in DFR Register */
+ #define ARMV8_PMU_DFR_VER_NI        0
++#define ARMV8_PMU_DFR_VER_V3P1      0x4
+ #define ARMV8_PMU_DFR_VER_V3P4      0x5
+ #define ARMV8_PMU_DFR_VER_V3P5      0x6
+ #define ARMV8_PMU_DFR_VER_IMP_DEF   0xF
+@@ -251,4 +229,24 @@ static inline bool is_pmuv3p5(int pmuver)
+ 	return pmuver >= ARMV8_PMU_DFR_VER_V3P5;
+ }
+ 
++static inline u64 read_pmceid0(void)
++{
++	u64 val = read_sysreg(PMCEID0);
 +
- 	stripe = &sctx->stripes[sctx->cur_stripe];
- 	scrub_reset_stripe(stripe);
- 	ret = scrub_find_fill_first_stripe(bg, &sctx->extent_path,
-@@ -1811,8 +1814,7 @@ static int queue_scrub_stripe(struct scrub_ctx *sctx, struct btrfs_block_group *
- 	/* Either >0 as no more extents or <0 for error. */
- 	if (ret)
- 		return ret;
--	if (found_logical_ret)
--		*found_logical_ret = stripe->logical;
-+	*found_logical_ret = stripe->logical;
- 	sctx->cur_stripe++;
++	if (read_pmuver() >= ARMV8_PMU_DFR_VER_V3P1)
++		val |= (u64)read_sysreg(PMCEID2) << 32;
++
++	return val;
++}
++
++static inline u64 read_pmceid1(void)
++{
++	u64 val = read_sysreg(PMCEID1);
++
++	if (read_pmuver() >= ARMV8_PMU_DFR_VER_V3P1)
++		val |= (u64)read_sysreg(PMCEID3) << 32;
++
++	return val;
++}
++
+ #endif
+diff --git a/arch/arm64/include/asm/arm_pmuv3.h b/arch/arm64/include/asm/arm_pmuv3.h
+index 18dc2fb3d7b7b..c27404fa4418a 100644
+--- a/arch/arm64/include/asm/arm_pmuv3.h
++++ b/arch/arm64/include/asm/arm_pmuv3.h
+@@ -46,12 +46,12 @@ static inline u32 read_pmuver(void)
+ 			ID_AA64DFR0_EL1_PMUVer_SHIFT);
+ }
  
- 	/* We filled one group, submit it. */
-@@ -2037,7 +2039,7 @@ static int scrub_simple_mirror(struct scrub_ctx *sctx,
- 	path.skip_locking = 1;
- 	/* Go through each extent items inside the logical range */
- 	while (cur_logical < logical_end) {
--		u64 found_logical;
-+		u64 found_logical = U64_MAX;
- 		u64 cur_physical = physical + cur_logical - logical_start;
+-static inline void write_pmcr(u32 val)
++static inline void write_pmcr(u64 val)
+ {
+ 	write_sysreg(val, pmcr_el0);
+ }
  
- 		/* Canceled? */
-@@ -2072,6 +2074,8 @@ static int scrub_simple_mirror(struct scrub_ctx *sctx,
- 		if (ret < 0)
- 			break;
+-static inline u32 read_pmcr(void)
++static inline u64 read_pmcr(void)
+ {
+ 	return read_sysreg(pmcr_el0);
+ }
+@@ -71,21 +71,6 @@ static inline u64 read_pmccntr(void)
+ 	return read_sysreg(pmccntr_el0);
+ }
  
-+		/* queue_scrub_stripe() returned 0, @found_logical must be updated. */
-+		ASSERT(found_logical != U64_MAX);
- 		cur_logical = found_logical + BTRFS_STRIPE_LEN;
+-static inline void write_pmxevcntr(u32 val)
+-{
+-	write_sysreg(val, pmxevcntr_el0);
+-}
+-
+-static inline u32 read_pmxevcntr(void)
+-{
+-	return read_sysreg(pmxevcntr_el0);
+-}
+-
+-static inline void write_pmxevtyper(u32 val)
+-{
+-	write_sysreg(val, pmxevtyper_el0);
+-}
+-
+ static inline void write_pmcntenset(u32 val)
+ {
+ 	write_sysreg(val, pmcntenset_el0);
+@@ -106,7 +91,7 @@ static inline void write_pmintenclr(u32 val)
+ 	write_sysreg(val, pmintenclr_el1);
+ }
  
- 		/* Don't hold CPU for too long time */
+-static inline void write_pmccfiltr(u32 val)
++static inline void write_pmccfiltr(u64 val)
+ {
+ 	write_sysreg(val, pmccfiltr_el0);
+ }
+@@ -126,12 +111,12 @@ static inline void write_pmuserenr(u32 val)
+ 	write_sysreg(val, pmuserenr_el0);
+ }
+ 
+-static inline u32 read_pmceid0(void)
++static inline u64 read_pmceid0(void)
+ {
+ 	return read_sysreg(pmceid0_el0);
+ }
+ 
+-static inline u32 read_pmceid1(void)
++static inline u64 read_pmceid1(void)
+ {
+ 	return read_sysreg(pmceid1_el0);
+ }
+diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
+index 8fcaa26f0f8a6..d681638ec6b82 100644
+--- a/drivers/perf/arm_pmuv3.c
++++ b/drivers/perf/arm_pmuv3.c
+@@ -428,12 +428,12 @@ static inline bool armv8pmu_event_is_chained(struct perf_event *event)
+ #define	ARMV8_IDX_TO_COUNTER(x)	\
+ 	(((x) - ARMV8_IDX_COUNTER0) & ARMV8_PMU_COUNTER_MASK)
+ 
+-static inline u32 armv8pmu_pmcr_read(void)
++static inline u64 armv8pmu_pmcr_read(void)
+ {
+ 	return read_pmcr();
+ }
+ 
+-static inline void armv8pmu_pmcr_write(u32 val)
++static inline void armv8pmu_pmcr_write(u64 val)
+ {
+ 	val &= ARMV8_PMU_PMCR_MASK;
+ 	isb();
+@@ -957,7 +957,7 @@ static int armv8pmu_set_event_filter(struct hw_perf_event *event,
+ static void armv8pmu_reset(void *info)
+ {
+ 	struct arm_pmu *cpu_pmu = (struct arm_pmu *)info;
+-	u32 pmcr;
++	u64 pmcr;
+ 
+ 	/* The counter and interrupt enable registers are unknown at reset. */
+ 	armv8pmu_disable_counter(U32_MAX);
 -- 
 2.42.0
 
