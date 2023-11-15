@@ -2,59 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5D797EC362
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 14:16:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B06E97EC369
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 14:16:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343885AbjKONQC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 08:16:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53716 "EHLO
+        id S1343899AbjKONQF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 08:16:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343875AbjKONQB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 08:16:01 -0500
+        with ESMTP id S1343875AbjKONQD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 08:16:03 -0500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51CBB120
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:15:58 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B721120
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:16:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1700054157;
+        s=mimecast20190719; t=1700054159;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=WdkCfOkpqSODFD3esOEEEI4uePJ2ewc8SQpEyHY/6Ls=;
-        b=NocfwToNlSlM6mAF142By87EbYRZWCj4GUHGUQ5c1ohuh2Da9xSVlMzM199nRbqybpM1OV
-        M/V0otiW1LGRuSOCTpX0tMOFvcX+lj9neMne3cJKQRUD/k/o+SHrrFw9vEonQM4TCK41s0
-        dFOTcPQnr5zjBDmeZZ9DH+6CuU3NO6E=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=B8baLtlzsuyZcOKODOHaJ6HAGilgrqHGy9qmPbinQNI=;
+        b=dJW0ZBw3CvOtyjgVlMKm0LvmmQPjELpmTE0cLvwL8MK8vKrGqFZYhc4zuC8w1MbQ3bKEu9
+        JwiLZAWcdbOLOUr8XmxMmcoUVzGsJnD9czzoi/HCDEY2xHf+zwcsLMOJBDlvK10539biy3
+        u/6wmuoJy+F+WSS3Jy/dQUMe15TO0nA=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-660-9-QMkDrAMr23pu91DwCHbw-1; Wed, 15 Nov 2023 08:15:56 -0500
-X-MC-Unique: 9-QMkDrAMr23pu91DwCHbw-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-40a5290e259so20789725e9.2
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:15:56 -0800 (PST)
+ us-mta-302-Px22S3EQMneBAB2Ti3ix0A-1; Wed, 15 Nov 2023 08:15:58 -0500
+X-MC-Unique: Px22S3EQMneBAB2Ti3ix0A-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3314bd215ceso1455724f8f.2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 05:15:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700054155; x=1700658955;
+        d=1e100.net; s=20230601; t=1700054157; x=1700658957;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WdkCfOkpqSODFD3esOEEEI4uePJ2ewc8SQpEyHY/6Ls=;
-        b=JQzPPwsEsj5p+qgxtUu5lsdAU4834qmoWRdKHIdlMU5xbJU0ysEgwaDl9HDN8mTsEJ
-         a5gEaKDs79NXsxbf68ZKE70GF5ODObs2kYVuajYwlcJP7id6M1OBVnahvhrOzrKGJ+mX
-         JOnETeTV40gcHa53Y7r8g3IhLwv3IgWSWTAVqaPltdIoyH9Jo5yvrpKWRxpCdsNQlYQk
-         CJvogHxcMCV6CP1QfsE4b120D3dVWztb5C07umTTSve8HTSDL09GtYazi4jet2XuvLly
-         FB6LpHJ22Rb9VN/MwDabMa0sGySui4b53ZxuGYopCx1Y3Hnzr2qdghBnHe9YmncdOhkn
-         +EGQ==
-X-Gm-Message-State: AOJu0YzMQXhPt/ncgFNEaXtrl+zqdtz3jZ1PZ5rWZLa83GU6zHWg18Pw
-        mio2HUxEYLXrolxyWIIe7AXSxqM0WH0bSu8emq7LVL6z4KCzJrb4KbUIMdV4OaHVg/l8bKEuPXi
-        BKu54JtxxUmq9xiGQ
-X-Received: by 2002:a05:600c:1d12:b0:40a:4429:a994 with SMTP id l18-20020a05600c1d1200b0040a4429a994mr9334049wms.28.1700054155056;
-        Wed, 15 Nov 2023 05:15:55 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGoWZxbtxmm92MRQ4/GXfrWok30Xz8lAdSnCK8MW1HWy9dYer1O9tD6vbzy8D8AMhy89TPi+g==
-X-Received: by 2002:a05:600c:1d12:b0:40a:4429:a994 with SMTP id l18-20020a05600c1d1200b0040a4429a994mr9334033wms.28.1700054154854;
-        Wed, 15 Nov 2023 05:15:54 -0800 (PST)
+        bh=B8baLtlzsuyZcOKODOHaJ6HAGilgrqHGy9qmPbinQNI=;
+        b=tEi8oj3BsFmwC4l4tzF2wjay9LUyml4Cysw45WzcN6wBrAlyST0xColzxZKkjz/36t
+         KocOhkLDAIIsW2l2xNDY0zZXrbbJmAzxf7N2jbVAUSgY4SkJ8ivx9P9koVqWTz40h29P
+         G/YscjspbntkSiIdA/wVPOwV+6/BLY3U6Ol0yG8ulQCULMERfsZbywB+4sbSFrYUz1YZ
+         l0AopJ6eSZ+8TXvKpDqdD0BFYP+UKN15gdNFJSlsLbOdY2Y/O49LwxV0y3tuxmbpGeZ8
+         VFClaG/3bpj66AsbO1z3VwNahwqILyjeLwZy6AZWToPMBPnlZ1RLxiP19PoVMvHxNj0J
+         mlCQ==
+X-Gm-Message-State: AOJu0YyoRNks2799R01BFc1u5Fu0auxsy5zeocwTsoEBDXYQ8ppp6pQ2
+        sq6aOMaaecOsBSU+X3RM6QX2QJbfFSAZAOboz/YQS6dMnWsrzADIsDU5hjIzLDchcgypuvQgskb
+        6bdEIYSXWVIKb+2OQ
+X-Received: by 2002:a5d:6d89:0:b0:32f:7b14:89d9 with SMTP id l9-20020a5d6d89000000b0032f7b1489d9mr10958287wrs.9.1700054157041;
+        Wed, 15 Nov 2023 05:15:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFDaKwJNBk2fEmPyHouSjZgkvyhlK79vrfYZN/upvL8mRJpAtkAcw0QUDFTOK7GVHFogRFeXg==
+X-Received: by 2002:a5d:6d89:0:b0:32f:7b14:89d9 with SMTP id l9-20020a5d6d89000000b0032f7b1489d9mr10958258wrs.9.1700054156678;
+        Wed, 15 Nov 2023 05:15:56 -0800 (PST)
 Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id m16-20020a7bca50000000b0040841e79715sm14706785wml.27.2023.11.15.05.15.54
+        by smtp.gmail.com with ESMTPSA id h15-20020a5d548f000000b0032fbe5b1e45sm10507123wrv.61.2023.11.15.05.15.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Nov 2023 05:15:54 -0800 (PST)
+        Wed, 15 Nov 2023 05:15:55 -0800 (PST)
 From:   Javier Martinez Canillas <javierm@redhat.com>
 To:     linux-kernel@vger.kernel.org
 Cc:     Maxime Ripard <mripard@kernel.org>,
@@ -67,14 +67,15 @@ Cc:     Maxime Ripard <mripard@kernel.org>,
         Javier Martinez Canillas <javierm@redhat.com>,
         stable@vger.kernel.org,
         nerdopolis <bluescreen_avenger@verizon.net>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@gmail.com>,
+        Chia-I Wu <olvaffe@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@redhat.com>,
         Gerd Hoffmann <kraxel@redhat.com>,
+        Gurchetan Singh <gurchetansingh@chromium.org>,
         Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        dri-devel@lists.freedesktop.org
-Subject: [PATCH v2 1/5] drm: Allow drivers to indicate the damage helpers to ignore damage clips
-Date:   Wed, 15 Nov 2023 14:15:40 +0100
-Message-ID: <20231115131549.2191589-2-javierm@redhat.com>
+        dri-devel@lists.freedesktop.org, virtualization@lists.linux.dev
+Subject: [PATCH v2 2/5] drm/virtio: Disable damage clipping if FB changed since last page-flip
+Date:   Wed, 15 Nov 2023 14:15:41 +0100
+Message-ID: <20231115131549.2191589-3-javierm@redhat.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231115131549.2191589-1-javierm@redhat.com>
 References: <20231115131549.2191589-1-javierm@redhat.com>
@@ -91,67 +92,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-It allows drivers to set a struct drm_plane_state .ignore_damage_clips in
-their plane's .atomic_check callback, as an indication to damage helpers
-such as drm_atomic_helper_damage_iter_init() that the damage clips should
-be ignored.
-
-To be used by drivers that do per-buffer (e.g: virtio-gpu) uploads (rather
-than per-plane uploads), since these type of drivers need to handle buffer
-damages instead of frame damages.
-
-That way, these drivers could force a full plane update if the framebuffer
-attached to a plane's state has changed since the last update (page-flip).
+The driver does per-buffer uploads and needs to force a full plane update
+if the plane's attached framebuffer has change since the last page-flip.
 
 Fixes: 01f05940a9a7 ("drm/virtio: Enable fb damage clips property for the primary plane")
 Cc: <stable@vger.kernel.org> # v6.4+
 Reported-by: nerdopolis <bluescreen_avenger@verizon.net>
 Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218115
-Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Suggested-by: Sima Vetter <daniel.vetter@ffwll.ch>
 Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 ---
 
 Changes in v2:
-- Add a struct drm_plane_state .ignore_damage_clips to set in the plane's
-  .atomic_check, instead of having different helpers (Thomas Zimmermann).
+- Set struct drm_plane_state .ignore_damage_clips in virtio-gpu plane's
+  .atomic_check instead of using a different helpers (Thomas Zimmermann).
 
- drivers/gpu/drm/drm_damage_helper.c | 3 ++-
- include/drm/drm_plane.h             | 8 ++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/virtio/virtgpu_plane.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_damage_helper.c b/drivers/gpu/drm/drm_damage_helper.c
-index d8b2955e88fd..afb02aae707b 100644
---- a/drivers/gpu/drm/drm_damage_helper.c
-+++ b/drivers/gpu/drm/drm_damage_helper.c
-@@ -241,7 +241,8 @@ drm_atomic_helper_damage_iter_init(struct drm_atomic_helper_damage_iter *iter,
- 	iter->plane_src.x2 = (src.x2 >> 16) + !!(src.x2 & 0xFFFF);
- 	iter->plane_src.y2 = (src.y2 >> 16) + !!(src.y2 & 0xFFFF);
+diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
+index a2e045f3a000..a1ef657eba07 100644
+--- a/drivers/gpu/drm/virtio/virtgpu_plane.c
++++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
+@@ -79,6 +79,8 @@ static int virtio_gpu_plane_atomic_check(struct drm_plane *plane,
+ {
+ 	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
+ 										 plane);
++	struct drm_plane_state *old_plane_state = drm_atomic_get_old_plane_state(state,
++										 plane);
+ 	bool is_cursor = plane->type == DRM_PLANE_TYPE_CURSOR;
+ 	struct drm_crtc_state *crtc_state;
+ 	int ret;
+@@ -86,6 +88,14 @@ static int virtio_gpu_plane_atomic_check(struct drm_plane *plane,
+ 	if (!new_plane_state->fb || WARN_ON(!new_plane_state->crtc))
+ 		return 0;
  
--	if (!iter->clips || !drm_rect_equals(&state->src, &old_state->src)) {
-+	if (!iter->clips || state->ignore_damage_clips ||
-+	    !drm_rect_equals(&state->src, &old_state->src)) {
- 		iter->clips = NULL;
- 		iter->num_clips = 0;
- 		iter->full_update = true;
-diff --git a/include/drm/drm_plane.h b/include/drm/drm_plane.h
-index 79d62856defb..cc2e8fc35fd2 100644
---- a/include/drm/drm_plane.h
-+++ b/include/drm/drm_plane.h
-@@ -190,6 +190,14 @@ struct drm_plane_state {
- 	 */
- 	struct drm_property_blob *fb_damage_clips;
- 
-+	/**
-+	 * @ignore_damage_clips:
-+	 *
-+	 * Set by drivers to indicate the drm_atomic_helper_damage_iter_init()
-+	 * helper that the @fb_damage_clips blob property should be ignored.
++	/*
++	 * Ignore damage clips if the framebuffer attached to the plane's state
++	 * has changed since the last plane update (page-flip). In this case, a
++	 * full plane update should happen because uploads are done per-buffer.
 +	 */
-+	bool ignore_damage_clips;
++	if (old_plane_state->fb != new_plane_state->fb)
++		new_plane_state->ignore_damage_clips = true;
 +
- 	/**
- 	 * @src:
- 	 *
+ 	crtc_state = drm_atomic_get_crtc_state(state,
+ 					       new_plane_state->crtc);
+ 	if (IS_ERR(crtc_state))
 -- 
 2.41.0
 
