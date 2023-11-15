@@ -2,130 +2,244 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3708C7ED705
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8E57ED70A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:08:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344441AbjKOWFA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 17:05:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46786 "EHLO
+        id S235304AbjKOWIh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 17:08:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344466AbjKOWE7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:04:59 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E671A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:04:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61D7C433C7;
-        Wed, 15 Nov 2023 22:04:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085896;
-        bh=rOG1XcIL1rcZf7glzj4df1rAP3gaI5qgmcQRqStecVo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jLQPQ6DFAYj42/bT8RfYA7ONO1bFOcVGQsvp7JZQqwt+NA+ZB9aEj5bLuQoc7f1vE
-         DqADKd2U5+dhQSDcPXSTlAXA6O3lZzcoNbs+5jePVZ6uaBC1DP5sPO4vF8I2OOLyiq
-         muqYNYYU9Y4nJ5kh5qTsjiR9ayHl9JXSuXHU2VJQ=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 119/119] btrfs: use u64 for buffer sizes in the tree search ioctls
-Date:   Wed, 15 Nov 2023 17:01:49 -0500
-Message-ID: <20231115220136.362950106@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
-References: <20231115220132.607437515@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+        with ESMTP id S234927AbjKOWIg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:08:36 -0500
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 754E0E6
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:08:33 -0800 (PST)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6b709048f32so130183b3a.0
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:08:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700086112; x=1700690912; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=5hwrYZC9S3SupqolE/dbs0FRUVZebOtv5uIfZj9TZa8=;
+        b=A86qpgZgqHOEBlTEHKsjIuwb9mmcTBX+Nfm1ELvtBnGwFVOHODTj/BemTDmxy3UUUJ
+         WADnc0jreA3eruBdXwEs9uJykDCPa4Du/yw4m0Fb5dVyuhZ34vf1QOucKXFePPQAhVl7
+         9YXxcCXPr2PUiHipSRvaadvWl6KP5GdSNh6c8C4tH9drb6wxqRf2h0Bl8g8jUQJF3Mft
+         a88AaZ03K0Y9nUsRFl0zydNh/SIYjs0VtpUCsESelwM0lWGC8yMGUHU7S+kv7TWjJi7F
+         NqqJcJm75+Zpn7SNTREJs8ozlCUT7gZI/HTvuJ6gYKT/Zk8bd4VYMQY46yVEK+JZ0si8
+         UBCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700086112; x=1700690912;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5hwrYZC9S3SupqolE/dbs0FRUVZebOtv5uIfZj9TZa8=;
+        b=IIkIhrwSbB/xR7BSdCjHgzWOpLRzuV1Lte4TxdVDYdQqeH1x29By/eVUYcXaJCdJJJ
+         cEdDRsSRJV0DNmmMnMDlaoiC9FmIaBus6xOeObQUqO4y/bUoN9xeTCRS93sdgjyCocPn
+         aFjtEfh17fYMVDgMK8E1VY3Hao313D5nlYktjgTf5aFK9T0jWGlqw5N+TwSisquv/DxA
+         LS5LePaNETP8ayE3w1tic4glgBayHTN/tawt66HKImG3vJFNEq7B6dgaMZPf1dBIqM53
+         7dYYwHTsUZPUEGtM80Gb49l5bP/p4sf9DDGrXKzxxET2NYZ0bSbnjP39lCZPwS8FEHEw
+         yGtg==
+X-Gm-Message-State: AOJu0Yzol9BHT0xzzcU2T6FRzwZofvdPtfT2ZpHMVWTSgvD4DUK9Vb0F
+        exRi/SYChiXAHCGLcscM0MuwROCxnpkvJdTATz9+Tg==
+X-Google-Smtp-Source: AGHT+IFjzVDbuUistDIkKruLPiSut9+3WVrqp/ygxiuCTVmhWToHwh7+S20TLvA38Ab0vBxCOEQG3A==
+X-Received: by 2002:a05:6a00:1790:b0:6bd:f224:c79e with SMTP id s16-20020a056a00179000b006bdf224c79emr13728425pfg.11.1700086112425;
+        Wed, 15 Nov 2023 14:08:32 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id it2-20020a056a00458200b006c4d371ef7csm3349652pfb.14.2023.11.15.14.08.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Nov 2023 14:08:31 -0800 (PST)
+Message-ID: <6555415f.050a0220.ffd16.b1b0@mx.google.com>
+Date:   Wed, 15 Nov 2023 14:08:31 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.15.138-245-g0d55b31d7e1d
+Subject: stable-rc/linux-5.15.y build: 20 builds: 2 failed, 18 passed,
+ 3 warnings (v5.15.138-245-g0d55b31d7e1d)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+stable-rc/linux-5.15.y build: 20 builds: 2 failed, 18 passed, 3 warnings (v=
+5.15.138-245-g0d55b31d7e1d)
 
-------------------
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.138-245-g0d55b31d7e1d/
 
-From: Filipe Manana <fdmanana@suse.com>
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.138-245-g0d55b31d7e1d
+Git Commit: 0d55b31d7e1db6eee3c65c0e64d373dd4269578c
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-[ Upstream commit dec96fc2dcb59723e041416b8dc53e011b4bfc2e ]
+Build Failures Detected:
 
-In the tree search v2 ioctl we use the type size_t, which is an unsigned
-long, to track the buffer size in the local variable 'buf_size'. An
-unsigned long is 32 bits wide on a 32 bits architecture. The buffer size
-defined in struct btrfs_ioctl_search_args_v2 is a u64, so when we later
-try to copy the local variable 'buf_size' to the argument struct, when
-the search returns -EOVERFLOW, we copy only 32 bits which will be a
-problem on big endian systems.
+arm64:
+    defconfig+arm64-chromebook: (gcc-10) FAIL
 
-Fix this by using a u64 type for the buffer sizes, not only at
-btrfs_ioctl_tree_search_v2(), but also everywhere down the call chain
-so that we can use the u64 at btrfs_ioctl_tree_search_v2().
+x86_64:
+    x86_64_defconfig+x86-board: (gcc-10) FAIL
 
-Fixes: cc68a8a5a433 ("btrfs: new ioctl TREE_SEARCH_V2")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/linux-btrfs/ce6f4bd6-9453-4ffe-ba00-cee35495e10f@moroto.mountain/
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
 ---
- fs/btrfs/ioctl.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 775245b148bb3..1575992d1f14c 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -2110,7 +2110,7 @@ static noinline int key_in_sk(struct btrfs_key *key,
- static noinline int copy_to_sk(struct btrfs_path *path,
- 			       struct btrfs_key *key,
- 			       struct btrfs_ioctl_search_key *sk,
--			       size_t *buf_size,
-+			       u64 *buf_size,
- 			       char __user *ubuf,
- 			       unsigned long *sk_offset,
- 			       int *num_found)
-@@ -2242,7 +2242,7 @@ static noinline int copy_to_sk(struct btrfs_path *path,
- 
- static noinline int search_ioctl(struct inode *inode,
- 				 struct btrfs_ioctl_search_key *sk,
--				 size_t *buf_size,
-+				 u64 *buf_size,
- 				 char __user *ubuf)
- {
- 	struct btrfs_fs_info *info = btrfs_sb(inode->i_sb);
-@@ -2314,7 +2314,7 @@ static noinline int btrfs_ioctl_tree_search(struct file *file,
- 	struct btrfs_ioctl_search_key sk;
- 	struct inode *inode;
- 	int ret;
--	size_t buf_size;
-+	u64 buf_size;
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
-@@ -2348,8 +2348,8 @@ static noinline int btrfs_ioctl_tree_search_v2(struct file *file,
- 	struct btrfs_ioctl_search_args_v2 args;
- 	struct inode *inode;
- 	int ret;
--	size_t buf_size;
--	const size_t buf_limit = SZ_16M;
-+	u64 buf_size;
-+	const u64 buf_limit = SZ_16M;
- 
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EPERM;
--- 
-2.42.0
-
-
-
+For more info write to <info@kernelci.org>
