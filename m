@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5997F7ED4CE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD917ED2DB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344618AbjKOU7O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:59:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36872 "EHLO
+        id S233364AbjKOUos (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344762AbjKOU6C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:02 -0500
+        with ESMTP id S233543AbjKOUor (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4310E1BF1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91881C4E66A;
-        Wed, 15 Nov 2023 20:50:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18603A1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:44 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93664C433C9;
+        Wed, 15 Nov 2023 20:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081457;
-        bh=HX7QkTUHWDIOoFpt5zTW4N0bcXUSDIF3/e2iWnY+87w=;
+        s=korg; t=1700081083;
+        bh=hxqRsaFG7PvpL+EkmP0tUnqygdiDqs5WffbsRo1Ppds=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iZFFeoewURUFbNaS4c18jOQPAb6pgGSy2r5XGYT/1JeQeOnP45N7MOlTGGVDWzXnL
-         MSEr4ZUlZ3/C4jp5sekaSaEs5kGCEeSOba14pMbDYWEB0hwZHePDvkOmk0rxUhlxil
-         0CHae7trIlF0Va4k6C7CQZEJzkG7h7m7GwhkCjLA=
+        b=gqXo1KJOp7dayHGB02MLrM87obiARFyCxsQOuZTYbHUKsJnc2gvWJqLhIzWO8jWkZ
+         c7A/o0O4nPFnfDWgToTPtA3K3jgq7VDOfR7CuAv04LycGAp+nMs9979scr+QkJW6Fn
+         XQunlJupXLtT6DVUqQzAzBqO6q+9MSaE538Y/IQQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gou Hao <gouhao@uniontech.com>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/244] ext4: move ix sanity check to corrent position
-Date:   Wed, 15 Nov 2023 15:35:31 -0500
-Message-ID: <20231115203556.693738034@linuxfoundation.org>
+        patches@lists.linux.dev, Devi Priya <quic_devipriy@quicinc.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 20/88] clk: qcom: clk-rcg2: Fix clock rate overflow for high parent frequencies
+Date:   Wed, 15 Nov 2023 15:35:32 -0500
+Message-ID: <20231115191427.399098369@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,53 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gou Hao <gouhao@uniontech.com>
+From: Devi Priya <quic_devipriy@quicinc.com>
 
-[ Upstream commit af90a8f4a09ec4a3de20142e37f37205d4687f28 ]
+[ Upstream commit f7b7d30158cff246667273bd2a62fc93ee0725d2 ]
 
-Check 'ix' before it is used.
+If the parent clock rate is greater than unsigned long max/2 then
+integer overflow happens when calculating the clock rate on 32-bit systems.
+As RCG2 uses half integer dividers, the clock rate is first being
+multiplied by 2 which will overflow the unsigned long max value.
+Hence, replace the common pattern of doing 64-bit multiplication
+and then a do_div() call with simpler mult_frac call.
 
-Fixes: 80e675f906db ("ext4: optimize memmmove lengths in extent/index insertions")
-Signed-off-by: Gou Hao <gouhao@uniontech.com>
-Link: https://lore.kernel.org/r/20230906013341.7199-1-gouhao@uniontech.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: bcd61c0f535a ("clk: qcom: Add support for root clock generators (RCGs)")
+Signed-off-by: Devi Priya <quic_devipriy@quicinc.com>
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Link: https://lore.kernel.org/r/20230901073640.4973-1-quic_devipriy@quicinc.com
+[bjorn: Also drop unnecessary {} around single statements]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/clk/qcom/clk-rcg2.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 13497bd4e14bb..592be39e3d51f 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1004,6 +1004,11 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
- 		ix = curp->p_idx;
- 	}
- 
-+	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
-+		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
-+		return -EFSCORRUPTED;
-+	}
-+
- 	len = EXT_LAST_INDEX(curp->p_hdr) - ix + 1;
- 	BUG_ON(len < 0);
- 	if (len > 0) {
-@@ -1013,11 +1018,6 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
- 		memmove(ix + 1, ix, len * sizeof(struct ext4_extent_idx));
- 	}
- 
--	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
--		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
--		return -EFSCORRUPTED;
+diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
+index 04bd29d6aba13..8ac8915903e2c 100644
+--- a/drivers/clk/qcom/clk-rcg2.c
++++ b/drivers/clk/qcom/clk-rcg2.c
+@@ -132,17 +132,11 @@ static int clk_rcg2_set_parent(struct clk_hw *hw, u8 index)
+ static unsigned long
+ calc_rate(unsigned long rate, u32 m, u32 n, u32 mode, u32 hid_div)
+ {
+-	if (hid_div) {
+-		rate *= 2;
+-		rate /= hid_div + 1;
 -	}
--
- 	ix->ei_block = cpu_to_le32(logical);
- 	ext4_idx_store_pblock(ix, ptr);
- 	le16_add_cpu(&curp->p_hdr->eh_entries, 1);
++	if (hid_div)
++		rate = mult_frac(rate, 2, hid_div + 1);
+ 
+-	if (mode) {
+-		u64 tmp = rate;
+-		tmp *= m;
+-		do_div(tmp, n);
+-		rate = tmp;
+-	}
++	if (mode)
++		rate = mult_frac(rate, m, n);
+ 
+ 	return rate;
+ }
 -- 
 2.42.0
 
