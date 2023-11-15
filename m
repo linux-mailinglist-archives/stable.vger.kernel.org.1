@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 039277ED2D2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 85AA87ED491
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233403AbjKOUog (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:44:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60662 "EHLO
+        id S1344581AbjKOU62 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:58:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233492AbjKOUog (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:36 -0500
+        with ESMTP id S1344612AbjKOU5m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FBF0125
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86162C433C7;
-        Wed, 15 Nov 2023 20:44:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BAB198E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04066C36AF1;
+        Wed, 15 Nov 2023 20:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081071;
-        bh=FEElsma4a6VmbKraRQhOVhD1DjHzD+pqzrLXAkSuGw4=;
+        s=korg; t=1700081389;
+        bh=+d9sQsoRDKddKVdz9dDC2HN5StFG/SDvAUAy09LnrYM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KJ9OcRDtCGqAysYvqGGH02pUinxPq4crab6qRX5CATKrQJEHvKhAdvOb984Go2PvP
-         sI4ciXxXrlFS/yqG2+AEc9f+93MTNhHVEzGJoysUWsIOuiu/tkx50JHDq6dzkNy62w
-         ZOkQC6xckfhnAFhyR+Ok18qsCXWRW60MOBS1Ycpo=
+        b=lOgw1W35cip7BOgIILvQA7Q/bSQirCxRYBQEjZKxKueXpB/LlZg9jPZ4GednkLvDF
+         hcT+CWqlJMVtDBTwBQDO2+UknaUGV3hNtTqfxzTmZGTPMED4yLCvm+Ftnfbo2JjURQ
+         SuNelmPkQndO55YFSepl1jq9C0TKox1qfN38B+zc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Neal Cardwell <ncardwell@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 04/88] tcp_metrics: add missing barriers on delete
+Subject: [PATCH 5.15 124/244] arm64: dts: imx8mm: Add sound-dai-cells to micfil node
 Date:   Wed, 15 Nov 2023 15:35:16 -0500
-Message-ID: <20231115191426.451031144@linuxfoundation.org>
+Message-ID: <20231115203555.813383819@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit cbc3a153222805d65f821e10f4f78b6afce06f86 ]
+[ Upstream commit 0e6cc2b8bb7d67733f4a47720787eff1ce2666f2 ]
 
-When removing an item from RCU protected list, we must prevent
-store-tearing, using rcu_assign_pointer() or WRITE_ONCE().
+Per the DT bindings, the micfil node should have a sound-dai-cells
+entry.
 
-Fixes: 04f721c671656 ("tcp_metrics: Rewrite tcp_metrics_flush_all")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 3bd0788c43d9 ("arm64: dts: imx8mm: Add support for micfil")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 7bbd9125b5000..9ad4258cfcbcc 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -913,7 +913,7 @@ static void tcp_metrics_flush_all(struct net *net)
- 			match = net ? net_eq(tm_net(tm), net) :
- 				!refcount_read(&tm_net(tm)->count);
- 			if (match) {
--				*pp = tm->tcpm_next;
-+				rcu_assign_pointer(*pp, tm->tcpm_next);
- 				kfree_rcu(tm, rcu_head);
- 			} else {
- 				pp = &tm->tcpm_next;
-@@ -954,7 +954,7 @@ static int tcp_metrics_nl_cmd_del(struct sk_buff *skb, struct genl_info *info)
- 		if (addr_same(&tm->tcpm_daddr, &daddr) &&
- 		    (!src || addr_same(&tm->tcpm_saddr, &saddr)) &&
- 		    net_eq(tm_net(tm), net)) {
--			*pp = tm->tcpm_next;
-+			rcu_assign_pointer(*pp, tm->tcpm_next);
- 			kfree_rcu(tm, rcu_head);
- 			found = true;
- 		} else {
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index 2a67122c5624c..86731850a6bd6 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -366,6 +366,7 @@ micfil: audio-controller@30080000 {
+ 						      "pll8k", "pll11k", "clkext3";
+ 					dmas = <&sdma2 24 25 0x80000000>;
+ 					dma-names = "rx";
++					#sound-dai-cells = <0>;
+ 					status = "disabled";
+ 				};
+ 
 -- 
 2.42.0
 
