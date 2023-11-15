@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC5D07ED2F5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7CF37ED4D9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233655AbjKOUpS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43550 "EHLO
+        id S1344774AbjKOU7V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233605AbjKOUpP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:15 -0500
+        with ESMTP id S1344775AbjKOU6D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3E431BE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2052BC433CA;
-        Wed, 15 Nov 2023 20:45:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E836D1BFE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29126C4E753;
+        Wed, 15 Nov 2023 20:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081111;
-        bh=QCCkzszfyrEFttnfShUvfKZ/nFbGl4y8Ty7C2OKruIE=;
+        s=korg; t=1700081499;
+        bh=Rad+I5+HD6MH1p87ZwM+/z79beEHq5CLycbcb+owiIY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PScg/ns40kESV7OnlEFSxoxLN3fBiy89xbMk2RtKD5pb1n8/y7+l9tR3AsJxDQS7F
-         si2SotajpLkhHCWBvOGr67gZjGuZefRowJ30/1p7Q+oG5Lxm1Gw0Xxoda/wRGod5/b
-         agax+A7Mj/z9XLIcFn7O7IxgmjGJWbnmtLODf6G0=
+        b=RuhwRJofOJyJ1ZMH36FlUm+QQAaCob5AbiyZwZYDya3av73I2GfBFzKuUcf1+4BYQ
+         yPpNI656t051i58ebgYLIbplGis2fB/TO5KZmzc6PrJnzW9+ViPb70ECwzfBEdd8q6
+         aJFvKkWCR0DGL4eHpsJtCirdPq85xMjnPCBBwMJg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Rogan Dawes <rogan@dawes.za.net>,
+        Fabio Estevam <festevam@denx.de>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Lee Jones <lee@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 45/88] ASoC: ams-delta.c: use component after check
+Subject: [PATCH 5.15 165/244] leds: pwm: Dont disable the PWM when the LED should be off
 Date:   Wed, 15 Nov 2023 15:35:57 -0500
-Message-ID: <20231115191428.891651468@linuxfoundation.org>
+Message-ID: <20231115203558.249367395@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,57 +53,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit bd0f7498bc9084d8cccc5484cd004b40f314b763 ]
+[ Upstream commit 76fe464c8e64e71b2e4af11edeef0e5d85eeb6aa ]
 
-	static void cx81801_close()
-	{
-		...
-(A)		struct snd_soc_dapm_context *dapm = &component->card->dapm;
-		...
-(B)		if (!component)
-			return;
-	}
+Disabling a PWM (i.e. calling pwm_apply_state with .enabled = false)
+gives no guarantees what the PWM output does. It might freeze where it
+currently is, or go in a High-Z state or drive the active or inactive
+state, it might even continue to toggle.
 
-(A) uses component before NULL check (B). This patch moves it after (B).
+To ensure that the LED gets really disabled, don't disable the PWM even
+when .duty_cycle is zero.
 
-Fixes: d0fdfe34080c ("ASoC: cx20442: replace codec to component")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/3e608474-e99a-4866-ae98-3054a4221f09@moroto.mountain
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/r/87ttqdq623.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This fixes disabling a leds-pwm LED on i.MX28. The PWM on this SoC is
+one of those that freezes its output on disable, so if you disable an
+LED that is full on, it stays on. If you disable a LED with half
+brightness it goes off in 50% of the cases and full on in the other 50%.
+
+Fixes: 41c42ff5dbe2 ("leds: simple driver for pwm driven LEDs")
+Reported-by: Rogan Dawes <rogan@dawes.za.net>
+Reported-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Fabio Estevam <festevam@denx.de>
+Link: https://lore.kernel.org/r/20230922192834.1695727-1-u.kleine-koenig@pengutronix.de
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/omap/ams-delta.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/leds/leds-pwm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/omap/ams-delta.c b/sound/soc/omap/ams-delta.c
-index 4dce494dfbd3e..ef9fda16ce131 100644
---- a/sound/soc/omap/ams-delta.c
-+++ b/sound/soc/omap/ams-delta.c
-@@ -300,7 +300,7 @@ static int cx81801_open(struct tty_struct *tty)
- static void cx81801_close(struct tty_struct *tty)
- {
- 	struct snd_soc_component *component = tty->disc_data;
--	struct snd_soc_dapm_context *dapm = &component->card->dapm;
-+	struct snd_soc_dapm_context *dapm;
+diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
+index cc892ecd52408..6d3e33e8b5f91 100644
+--- a/drivers/leds/leds-pwm.c
++++ b/drivers/leds/leds-pwm.c
+@@ -53,7 +53,7 @@ static int led_pwm_set(struct led_classdev *led_cdev,
+ 		duty = led_dat->pwmstate.period - duty;
  
- 	del_timer_sync(&cx81801_timer);
- 
-@@ -312,6 +312,8 @@ static void cx81801_close(struct tty_struct *tty)
- 
- 	v253_ops.close(tty);
- 
-+	dapm = &component->card->dapm;
-+
- 	/* Revert back to default audio input/output constellation */
- 	snd_soc_dapm_mutex_lock(dapm);
+ 	led_dat->pwmstate.duty_cycle = duty;
+-	led_dat->pwmstate.enabled = duty > 0;
++	led_dat->pwmstate.enabled = true;
+ 	return pwm_apply_state(led_dat->pwm, &led_dat->pwmstate);
+ }
  
 -- 
 2.42.0
