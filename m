@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E3C097ECEA2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD907ECEA6
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235143AbjKOToU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47962 "EHLO
+        id S229591AbjKOToW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:44:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229591AbjKOToT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:19 -0500
+        with ESMTP id S235146AbjKOToV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E567CAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BEDBC433C8;
-        Wed, 15 Nov 2023 19:44:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2E2712C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:18 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25261C433C7;
+        Wed, 15 Nov 2023 19:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077456;
-        bh=KaactzJjgCxlSgjp1/l59A5roDVgPhhtH3Y2Tz6o0a4=;
+        s=korg; t=1700077458;
+        bh=G8kp/b3wADm3pUji1DHKKJZHWlA1OH7Q9EsHsgSkTO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h9d0CKnKl7GoLUqUMqmYTOL/ST8haHyx7cRP9xkViDazj4/YEgIO93bU9sBAgsGUz
-         1zvzjnEp3xucCX71SAU7Z9+/pVUfFlxURytCo5Wn8uO6EsgpVNx+JYAQ60Ddi+gFmQ
-         GBAlhJPI2Tunl8kzBiH2yNrBSV8fza5AQUu2rKzk=
+        b=v5k0e7ME8xSGtzfmyXNlQnJ3vUL1dL4g91HqWKQWBUkqldkq9Z8p/vu7f+59FQnSJ
+         bImHCyiBttaCGxcuuv8bqbMSY4JI1NwwdV0igP81y6mVJ3f1AYPfW2MV1pToo63uco
+         F4clvvmdw7eOs24GxM/XpWG9r/KP1pW6HfI+JGaE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Fabio Estevam <festevam@denx.de>,
-        Mirela Rabulea <mirela.rabulea@nxp.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 314/603] arm64: dts: imx8qm-ss-img: Fix jpegenc compatible entry
-Date:   Wed, 15 Nov 2023 14:14:19 -0500
-Message-ID: <20231115191635.190260599@linuxfoundation.org>
+Subject: [PATCH 6.6 315/603] arm64: dts: imx8mp-debix-model-a: Remove USB hub reset-gpios
+Date:   Wed, 15 Nov 2023 14:14:20 -0500
+Message-ID: <20231115191635.268344842@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -58,38 +56,58 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 1d33cd614d89b0ec024d25ec45acf4632211b5a7 ]
+[ Upstream commit 0ce9a2c121e3ab354cf66aeecd3ed0758f3c5067 ]
 
-The first compatible entry for the jpegenc should be 'nxp,imx8qm-jpgenc'.
+The SAI2_TXC pin is left unconnected per the imx8mp-debix-model-a
+schematics:
 
-Change it accordingly to fix the following schema warning:
+https://debix.io/Uploads/Temp/file/20230331/DEBIX%20Model%20A%20Schematics.pdf
 
-imx8qm-apalis-eval.dtb: jpegenc@58450000: compatible: 'oneOf' conditional failed, one must be fixed:
-	'nxp,imx8qm-jpgdec' is not one of ['nxp,imx8qxp-jpgdec', 'nxp,imx8qxp-jpgenc']
-	'nxp,imx8qm-jpgenc' was expected
-	'nxp,imx8qxp-jpgdec' was expected
+Also, the RTS5411E USB hub chip does not have a reset pin.
 
-Fixes: 5bb279171afc ("arm64: dts: imx8: Add jpeg encoder/decoder nodes")
+Remove this pin description to properly describe the hardware.
+
+This also fixes the following schema warning:
+
+hub@1: 'reset-gpios' does not match any of the regexes: 'pinctrl-[0-9]+'
+from schema $id: http://devicetree.org/schemas/usb/realtek,rts5411.yaml#
+
+Fixes: 0253e1cb6300 ("arm64: dts: imx8mp-debix: add USB host support")
 Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Mirela Rabulea <mirela.rabulea@nxp.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-index 7764b4146e0ab..2bbdacb1313f9 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-@@ -8,5 +8,5 @@ &jpegdec {
- };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+index 28db9349ed62c..267ceffc02d84 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
+@@ -284,7 +284,6 @@ &usb_dwc3_1 {
+ 	usb_hub_2_x: hub@1 {
+ 		compatible = "usbbda,5411";
+ 		reg = <1>;
+-		reset-gpios = <&gpio4 25 GPIO_ACTIVE_LOW>;
+ 		vdd-supply = <&reg_usb_hub>;
+ 		peer-hub = <&usb_hub_3_x>;
+ 	};
+@@ -293,7 +292,6 @@ usb_hub_2_x: hub@1 {
+ 	usb_hub_3_x: hub@2 {
+ 		compatible = "usbbda,411";
+ 		reg = <2>;
+-		reset-gpios = <&gpio4 25 GPIO_ACTIVE_LOW>;
+ 		vdd-supply = <&reg_usb_hub>;
+ 		peer-hub = <&usb_hub_2_x>;
+ 	};
+@@ -443,7 +441,6 @@ MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX				0x49
+ 	pinctrl_usb1: usb1grp {
+ 		fsl,pins = <
+ 			MX8MP_IOMUXC_GPIO1_IO14__USB2_OTG_PWR				0x10
+-			MX8MP_IOMUXC_SAI2_TXC__GPIO4_IO25				0x19
+ 		>;
+ 	};
  
- &jpegenc {
--	compatible = "nxp,imx8qm-jpgdec", "nxp,imx8qxp-jpgenc";
-+	compatible = "nxp,imx8qm-jpgenc", "nxp,imx8qxp-jpgenc";
- };
 -- 
 2.42.0
 
