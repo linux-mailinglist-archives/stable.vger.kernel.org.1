@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC6C7ECC3A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56BB97ECED5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233783AbjKOT1f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:27:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59154 "EHLO
+        id S235165AbjKOTow (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:44:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233833AbjKOT1a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:30 -0500
+        with ESMTP id S235166AbjKOTou (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBD2AD42
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F9AC433C8;
-        Wed, 15 Nov 2023 19:27:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A74519F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE48C433CC;
+        Wed, 15 Nov 2023 19:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076447;
-        bh=2vK2Q9gkD5W4Q4grCGdUxhi7YBfmXYueiIAUrgDmJxI=;
+        s=korg; t=1700077487;
+        bh=Chs6uAXQxzGCG/N5hioMEW9aREmPDsqx6XYSg6B6kLw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ww6dB22dR1Csp40rrB2dXM4f1JMmaGJPRiQfvaX0BuAWU5dEww75DSrl1/Mf2vnAL
-         IT5r2+ownsHVFRlS2RRlBPfa6kp5p/TYLY3gdMvLnjXjRnyj4a+X2UFf0wIKIYOufW
-         YBI1qVtmBAKm6yOuO0tjEVJOxmJs8vFN7EyYxjOM=
+        b=JBzVV1fK4a2Pi2FaAN1sMeweqeK+Lc0VV05Fo5KM5XiudpfIxe1qboRahpkF3ZOwV
+         Ee6arzo2UE7LeWPfs2jTrGuKDAupjkZ3iZQ6cThLUbcu9GRJBm8AKdxfnUIEZkhCtU
+         XOcz+6sYlm1OUTcETApenFSZTArivTEoEJMyqVU0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brad Griffis <bgriffis@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
+        patches@lists.linux.dev,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 294/550] arm64: tegra: Fix P3767 card detect polarity
+Subject: [PATCH 6.6 333/603] ASoC: cs35l41: Verify PM runtime resume errors in IRQ handler
 Date:   Wed, 15 Nov 2023 14:14:38 -0500
-Message-ID: <20231115191621.200577235@linuxfoundation.org>
+Message-ID: <20231115191636.558873161@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +52,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brad Griffis <bgriffis@nvidia.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit c6b7a1d11d0fa6333078141251908f48042016e1 ]
+[ Upstream commit 9f8948db9849d202dee3570507d3a0642f92d632 ]
 
-The SD card detect pin is active-low on all Orin Nano and NX SKUs that
-have an SD card slot.
+The interrupt handler invokes pm_runtime_get_sync() without checking the
+returned error code.
 
-Fixes: 13b0aca303e9 ("arm64: tegra: Support Jetson Orin NX")
-Signed-off-by: Brad Griffis <bgriffis@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Add a proper verification and switch to pm_runtime_resume_and_get(), to
+avoid the need to call pm_runtime_put_noidle() for decrementing the PM
+usage counter before returning from the error condition.
+
+Fixes: f517ba4924ad ("ASoC: cs35l41: Add support for hibernate memory retention mode")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20230907171010.1447274-6-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/cs35l41.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi
-index a8aa6e7d8fbc5..2ea102b3a7f40 100644
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3767.dtsi
-@@ -42,7 +42,7 @@ flash@0 {
- 		mmc@3400000 {
- 			status = "okay";
- 			bus-width = <4>;
--			cd-gpios = <&gpio TEGRA234_MAIN_GPIO(G, 7) GPIO_ACTIVE_HIGH>;
-+			cd-gpios = <&gpio TEGRA234_MAIN_GPIO(G, 7) GPIO_ACTIVE_LOW>;
- 			disable-wp;
- 		};
+diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
+index 12327b4c3d563..a31cb9ba7f7de 100644
+--- a/sound/soc/codecs/cs35l41.c
++++ b/sound/soc/codecs/cs35l41.c
+@@ -386,10 +386,18 @@ static irqreturn_t cs35l41_irq(int irq, void *data)
+ 	struct cs35l41_private *cs35l41 = data;
+ 	unsigned int status[4] = { 0, 0, 0, 0 };
+ 	unsigned int masks[4] = { 0, 0, 0, 0 };
+-	int ret = IRQ_NONE;
+ 	unsigned int i;
++	int ret;
  
+-	pm_runtime_get_sync(cs35l41->dev);
++	ret = pm_runtime_resume_and_get(cs35l41->dev);
++	if (ret < 0) {
++		dev_err(cs35l41->dev,
++			"pm_runtime_resume_and_get failed in %s: %d\n",
++			__func__, ret);
++		return IRQ_NONE;
++	}
++
++	ret = IRQ_NONE;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(status); i++) {
+ 		regmap_read(cs35l41->regmap,
 -- 
 2.42.0
 
