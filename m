@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D817C7ED321
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 377447ED4E3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233554AbjKOUqX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:46:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36054 "EHLO
+        id S1344756AbjKOU73 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233680AbjKOUqW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:22 -0500
+        with ESMTP id S1344786AbjKOU6G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81A7C192
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85F5C433C7;
-        Wed, 15 Nov 2023 20:46:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5342BD5A
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF00C4E763;
+        Wed, 15 Nov 2023 20:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081179;
-        bh=Jlqqcj92CJBoDgfJIz9L1vBWdgoLdUqK6o5vEhYNRSM=;
+        s=korg; t=1700081524;
+        bh=JojXOYgurHY0k8kr6fjNMYqy790RBaIfvRRwjb2u4gU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dnpf+LJM2dcQBOy6QtxjUva5N3y4WAm2v/p+XnT8gmskbKxuxgSRzOiYxlZgp36bv
-         zydT9urNXv2zyaO1tZIblt3uDAJ+i6G8jkF8nKc/YpcKWkKLukMVsr1sRV3lxXkvOu
-         /Dl06bfv/02CCb3BZgmbg7yzY4PJ5GqClPiHp4l0=
+        b=i+BdLW/cJTRYIpV1klspaLdttYzep3mF1w+jiTlRfPXJgf7I8OVIG1IgwIZX39q71
+         EkClF7J6eUMGrSowR8xufLFfXbwzcIfl4mlGAIhM8lvInojQ07RuU73vw2x1RWumyA
+         3FLQB8W9A6ZKNhT5wPF9xL0t4DsFFxzEIBnyhAHw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 86/88] fbdev: fsl-diu-fb: mark wr_reg_wa() static
+        patches@lists.linux.dev, Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 206/244] media: cedrus: Fix clock/reset sequence
 Date:   Wed, 15 Nov 2023 15:36:38 -0500
-Message-ID: <20231115191431.212812657@linuxfoundation.org>
+Message-ID: <20231115203600.719030906@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,40 +51,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jernej Skrabec <jernej.skrabec@gmail.com>
 
-[ Upstream commit a5035c81847430dfa3482807b07325f29e9e8c09 ]
+[ Upstream commit 36fe515c1a3cd5eac148e8a591a82108d92d5522 ]
 
-wr_reg_wa() is not an appropriate name for a global function, and doesn't need
-to be global anyway, so mark it static and avoid the warning:
+According to H6 user manual, resets should always be de-asserted before
+clocks are enabled. This is also consistent with vendor driver.
 
-drivers/video/fbdev/fsl-diu-fb.c:493:6: error: no previous prototype for 'wr_reg_wa' [-Werror=missing-prototypes]
-
-Fixes: 0d9dab39fbbe ("powerpc/5121: fsl-diu-fb: fix issue with re-enabling DIU area descriptor")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: d5aecd289bab ("media: cedrus: Implement runtime PM")
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Acked-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/fsl-diu-fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../staging/media/sunxi/cedrus/cedrus_hw.c    | 24 +++++++++----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/video/fbdev/fsl-diu-fb.c b/drivers/video/fbdev/fsl-diu-fb.c
-index bc9eb8afc3137..0a86a91614085 100644
---- a/drivers/video/fbdev/fsl-diu-fb.c
-+++ b/drivers/video/fbdev/fsl-diu-fb.c
-@@ -495,7 +495,7 @@ static enum fsl_diu_monitor_port fsl_diu_name_to_port(const char *s)
-  * Workaround for failed writing desc register of planes.
-  * Needed with MPC5121 DIU rev 2.0 silicon.
-  */
--void wr_reg_wa(u32 *reg, u32 val)
-+static void wr_reg_wa(u32 *reg, u32 val)
+diff --git a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
+index e2f2ff609c7e6..0904aea782b1e 100644
+--- a/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
++++ b/drivers/staging/media/sunxi/cedrus/cedrus_hw.c
+@@ -147,12 +147,12 @@ int cedrus_hw_suspend(struct device *device)
  {
- 	do {
- 		out_be32(reg, val);
+ 	struct cedrus_dev *dev = dev_get_drvdata(device);
+ 
+-	reset_control_assert(dev->rstc);
+-
+ 	clk_disable_unprepare(dev->ram_clk);
+ 	clk_disable_unprepare(dev->mod_clk);
+ 	clk_disable_unprepare(dev->ahb_clk);
+ 
++	reset_control_assert(dev->rstc);
++
+ 	return 0;
+ }
+ 
+@@ -161,11 +161,18 @@ int cedrus_hw_resume(struct device *device)
+ 	struct cedrus_dev *dev = dev_get_drvdata(device);
+ 	int ret;
+ 
++	ret = reset_control_reset(dev->rstc);
++	if (ret) {
++		dev_err(dev->dev, "Failed to apply reset\n");
++
++		return ret;
++	}
++
+ 	ret = clk_prepare_enable(dev->ahb_clk);
+ 	if (ret) {
+ 		dev_err(dev->dev, "Failed to enable AHB clock\n");
+ 
+-		return ret;
++		goto err_rst;
+ 	}
+ 
+ 	ret = clk_prepare_enable(dev->mod_clk);
+@@ -182,21 +189,14 @@ int cedrus_hw_resume(struct device *device)
+ 		goto err_mod_clk;
+ 	}
+ 
+-	ret = reset_control_reset(dev->rstc);
+-	if (ret) {
+-		dev_err(dev->dev, "Failed to apply reset\n");
+-
+-		goto err_ram_clk;
+-	}
+-
+ 	return 0;
+ 
+-err_ram_clk:
+-	clk_disable_unprepare(dev->ram_clk);
+ err_mod_clk:
+ 	clk_disable_unprepare(dev->mod_clk);
+ err_ahb_clk:
+ 	clk_disable_unprepare(dev->ahb_clk);
++err_rst:
++	reset_control_assert(dev->rstc);
+ 
+ 	return ret;
+ }
 -- 
 2.42.0
 
