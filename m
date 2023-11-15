@@ -2,38 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 952537ED6C1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:03:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8707ED6C2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:03:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343823AbjKOWDV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 17:03:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40214 "EHLO
+        id S1343709AbjKOWDW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 17:03:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343749AbjKOWDU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:03:20 -0500
+        with ESMTP id S1343821AbjKOWDV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:03:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DB7193
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:03:17 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CB4C433CB;
-        Wed, 15 Nov 2023 22:03:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 760C2195
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:03:18 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFACFC433C9;
+        Wed, 15 Nov 2023 22:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085796;
-        bh=7p3+PvEga5tnB5wox6NAT5zK60WGZ73cy2u3LZZovGA=;
+        s=korg; t=1700085798;
+        bh=N9nNJu4a3V/LOIrmBTjZT/jiNmSRYnvgbM39DPFOBME=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qZBuBeNhNReH2ltLd6sla/uuRC2rN8wht8kPxZGcs3is6TSsDfcnojLsh1sDOan9o
-         wPzKocvrNsyq0rzFAJTS2HBzCXFEujW6a6j0LYyD+5xbVBSC4P7s6tTwyarelZVJPa
-         Oq/vIgC97ROqN8T7l3iME9i5VEP88AExumqsVwIA=
+        b=T4+bem/lddTXYzL7JHF8EWQ4cl4eTaVKpykZTD0oF6DfbVc/jwqqfGeRHQUsPC47M
+         eQuENH2Mr+KgJWe31Z7dKWHpjARDgj78OT1LCWdLafwjUhQNRX0GgRB5Cb/Fo2kO8k
+         FQrhWPGjCaZ3/3UEhfaD6kz0ns9uoxzbPhk6hsEc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Kursad Oney <kursad.oney@broadcom.com>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 059/119] ARM: 9321/1: memset: cast the constant byte to unsigned char
-Date:   Wed, 15 Nov 2023 17:00:49 -0500
-Message-ID: <20231115220134.456617465@linuxfoundation.org>
+        patches@lists.linux.dev, Gou Hao <gouhao@uniontech.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 060/119] ext4: move ix sanity check to corrent position
+Date:   Wed, 15 Nov 2023 17:00:50 -0500
+Message-ID: <20231115220134.488521933@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
 References: <20231115220132.607437515@linuxfoundation.org>
@@ -56,61 +53,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kursad Oney <kursad.oney@broadcom.com>
+From: Gou Hao <gouhao@uniontech.com>
 
-[ Upstream commit c0e824661f443b8cab3897006c1bbc69fd0e7bc4 ]
+[ Upstream commit af90a8f4a09ec4a3de20142e37f37205d4687f28 ]
 
-memset() description in ISO/IEC 9899:1999 (and elsewhere) says:
+Check 'ix' before it is used.
 
-	The memset function copies the value of c (converted to an
-	unsigned char) into each of the first n characters of the
-	object pointed to by s.
-
-The kernel's arm32 memset does not cast c to unsigned char. This results
-in the following code to produce erroneous output:
-
-	char a[128];
-	memset(a, -128, sizeof(a));
-
-This is because gcc will generally emit the following code before
-it calls memset() :
-
-	mov   r0, r7
-	mvn   r1, #127        ; 0x7f
-	bl    00000000 <memset>
-
-r1 ends up with 0xffffff80 before being used by memset() and the
-'a' array will have -128 once in every four bytes while the other
-bytes will be set incorrectly to -1 like this (printing the first
-8 bytes) :
-
-	test_module: -128 -1 -1 -1
-	test_module: -1 -1 -1 -128
-
-The change here is to 'and' r1 with 255 before it is used.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Kursad Oney <kursad.oney@broadcom.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 80e675f906db ("ext4: optimize memmmove lengths in extent/index insertions")
+Signed-off-by: Gou Hao <gouhao@uniontech.com>
+Link: https://lore.kernel.org/r/20230906013341.7199-1-gouhao@uniontech.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/lib/memset.S | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/extents.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/lib/memset.S b/arch/arm/lib/memset.S
-index 6ca4535c47fb6..e36d053a8a903 100644
---- a/arch/arm/lib/memset.S
-+++ b/arch/arm/lib/memset.S
-@@ -16,6 +16,7 @@
- ENTRY(mmioset)
- ENTRY(memset)
- UNWIND( .fnstart         )
-+	and	r1, r1, #255		@ cast to unsigned char
- 	ands	r3, r0, #3		@ 1 unaligned?
- 	mov	ip, r0			@ preserve r0 as return value
- 	bne	6f			@ 1
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 478c35d453784..98e1b1ddb4ec7 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1036,6 +1036,11 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
+ 		ix = curp->p_idx;
+ 	}
+ 
++	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
++		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
++		return -EFSCORRUPTED;
++	}
++
+ 	len = EXT_LAST_INDEX(curp->p_hdr) - ix + 1;
+ 	BUG_ON(len < 0);
+ 	if (len > 0) {
+@@ -1045,11 +1050,6 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
+ 		memmove(ix + 1, ix, len * sizeof(struct ext4_extent_idx));
+ 	}
+ 
+-	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
+-		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
+-		return -EFSCORRUPTED;
+-	}
+-
+ 	ix->ei_block = cpu_to_le32(logical);
+ 	ext4_idx_store_pblock(ix, ptr);
+ 	le16_add_cpu(&curp->p_hdr->eh_entries, 1);
 -- 
 2.42.0
 
