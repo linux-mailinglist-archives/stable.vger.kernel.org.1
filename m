@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFDD87ECFC0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7EE7ECD57
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235394AbjKOTue (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52394 "EHLO
+        id S234468AbjKOTgC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235405AbjKOTud (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:33 -0500
+        with ESMTP id S234485AbjKOTgA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AA591A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41ABC433C7;
-        Wed, 15 Nov 2023 19:50:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F161BF
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A28DC433C9;
+        Wed, 15 Nov 2023 19:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077829;
-        bh=e0bbPI4u0TFb93d3EJUd5dRJL5Y+FWGNgTZUaA7B+1c=;
+        s=korg; t=1700076956;
+        bh=SoKgti6ewAMotgn32FdjM3RpDB8gtMwDMr69+2aw2Bc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TY6l2f548zqFKnWYD0xDchbeRbwFNrs5VXxhyqFtUrC2Y0kbaRjLPoYyI8aQNcKkT
-         /+/kgswwHk0skZaugTwbIxLeI5I8uygoqGcEZdY+gEaDznoJnXE1m71bitx4hHTSa+
-         9kYq0ATByHrJD89jhjjVQL2I1FKJHxpKIQon+URU=
+        b=K683PcNwKDdhMwBYuCYkkv5TShfYZXyPd1d2uTXaygnpiSBvZt/SOUVMoS7upWAq2
+         3ZEnF0qvAN8tuZ/14nJ3E8o9nZvo5VWXLD3f+H6rdPqQ04GBmb/FTnkSc0y87OWg/T
+         ya8SS8EeV0KQ3zRUCXkzh7fKSsl7x+fJTgcfOodg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiaolei Wang <xiaolei.wang@windriver.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 513/603] media: ov5640: Fix a memory leak when ov5640_probe fails
-Date:   Wed, 15 Nov 2023 14:17:38 -0500
-Message-ID: <20231115191647.599944033@linuxfoundation.org>
+Subject: [PATCH 6.5 475/550] media: i2c: max9286: Fix some redundant of_node_put() calls
+Date:   Wed, 15 Nov 2023 14:17:39 -0500
+Message-ID: <20231115191633.787638027@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +55,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 20290feaaeb76cc719921aad275ccb18662a7c3a ]
+[ Upstream commit 0822315e46b400f611cba1193456ee6a5dc3e41d ]
 
-sensor->ctrls.handler is initialized in ov5640_init_controls(),
-so when the sensor is not connected and ov5640_sensor_resume()
-fails, sensor->ctrls.handler should be released, otherwise a
-memory leak will be detected:
+This is odd to have a of_node_put() just after a for_each_child_of_node()
+or a for_each_endpoint_of_node() loop. It should already be called
+during the last iteration.
 
-unreferenced object 0xc674ca80 (size 64):
-   comm "swapper/0", pid 1, jiffies 4294938337 (age 204.880s)
-   hex dump (first 32 bytes):
-     80 55 75 c6 80 54 75 c6 00 55 75 c6 80 52 75 c6 .Uu..Tu..Uu..Ru.
-     00 53 75 c6 00 00 00 00 00 00 00 00 00 00 00 00 .Su..........
+Remove these calls.
 
-Fixes: 85644a9b37ec ("media: ov5640: Use runtime PM")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Fixes: 66d8c9d2422d ("media: i2c: Add MAX9286 driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov5640.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/i2c/max9286.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
-index 1c9cda1e7df5c..40532f7bcabea 100644
---- a/drivers/media/i2c/ov5640.c
-+++ b/drivers/media/i2c/ov5640.c
-@@ -3928,7 +3928,7 @@ static int ov5640_probe(struct i2c_client *client)
- 	ret = ov5640_sensor_resume(dev);
- 	if (ret) {
- 		dev_err(dev, "failed to power on\n");
--		goto entity_cleanup;
-+		goto free_ctrls;
- 	}
+diff --git a/drivers/media/i2c/max9286.c b/drivers/media/i2c/max9286.c
+index 88c58e0c49aab..e265e94ca3de4 100644
+--- a/drivers/media/i2c/max9286.c
++++ b/drivers/media/i2c/max9286.c
+@@ -1461,7 +1461,6 @@ static int max9286_parse_dt(struct max9286_priv *priv)
  
- 	pm_runtime_set_active(dev);
-@@ -3953,8 +3953,9 @@ static int ov5640_probe(struct i2c_client *client)
- err_pm_runtime:
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
--	v4l2_ctrl_handler_free(&sensor->ctrls.handler);
- 	ov5640_sensor_suspend(dev);
-+free_ctrls:
-+	v4l2_ctrl_handler_free(&sensor->ctrls.handler);
- entity_cleanup:
- 	media_entity_cleanup(&sensor->sd.entity);
- 	mutex_destroy(&sensor->lock);
+ 		i2c_mux_mask |= BIT(id);
+ 	}
+-	of_node_put(node);
+ 	of_node_put(i2c_mux);
+ 
+ 	/* Parse the endpoints */
+@@ -1525,7 +1524,6 @@ static int max9286_parse_dt(struct max9286_priv *priv)
+ 		priv->source_mask |= BIT(ep.port);
+ 		priv->nsources++;
+ 	}
+-	of_node_put(node);
+ 
+ 	of_property_read_u32(dev->of_node, "maxim,bus-width", &priv->bus_width);
+ 	switch (priv->bus_width) {
 -- 
 2.42.0
 
