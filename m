@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1914D7ED010
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16EFC7ED011
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235486AbjKOTwg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:52:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58084 "EHLO
+        id S235493AbjKOTwi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:52:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235487AbjKOTwf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:52:35 -0500
+        with ESMTP id S235488AbjKOTwh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:52:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48515B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:52:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD90AC433C9;
-        Wed, 15 Nov 2023 19:52:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4DA819E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:52:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C225C433CA;
+        Wed, 15 Nov 2023 19:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077951;
-        bh=DqVbYuSNPmY8Fn6zZg8Lxb9JEGIBcwZW/odk8MwwSzo=;
+        s=korg; t=1700077953;
+        bh=3SF2hc4f7QatSn90G1PzZ2/VVrnLw9j5BJ7IV7KO+tM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NrZXF8cgY4+ugN+B52vzYTA55nGbfWd0Ycc+awVRyboBOF/8sIrsNOj6Gm+PZcXH9
-         zMZNq4gRnr5ETmWQ32q1FW3dNfBAQOgY8pRfJCbRkb3wJh+/48GLO443oPSi4xEMaS
-         WsA7g0T+bTTc2VB2HglzhegzQm+hUZNo6oP9bplw=
+        b=GCmlQYjF/uDrAu0jwjBUB6me62RRhaNq5JqiCzyj09Go8Oz7ABnbPPPI2AE2Xvli8
+         yOfQGkQwagI439feDFPI99xZJk7IIZknAliH1qAB9fqGru7UBcRLtYcbpeUh/Baqtg
+         qUb+GYsBfH+Sz0Kwsr/Opvh2xK6hUqocDm5csiQ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Andy Shevchenko <andy@kernel.org>,
-        linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+        patches@lists.linux.dev, Wendy Wang <wendy.wang@intel.com>,
+        Chen Yu <yu.c.chen@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/379] string: Adjust strtomem() logic to allow for smaller sources
-Date:   Wed, 15 Nov 2023 14:21:33 -0500
-Message-ID: <20231115192646.235811582@linuxfoundation.org>
+Subject: [PATCH 6.1 019/379] genirq/matrix: Exclude managed interrupts in irq_matrix_allocated()
+Date:   Wed, 15 Nov 2023 14:21:34 -0500
+Message-ID: <20231115192646.292821074@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,72 +55,71 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit 0e108725f6cc5b3be9e607f89c9fbcbb236367b7 ]
+[ Upstream commit a0b0bad10587ae2948a7c36ca4ffc206007fbcf3 ]
 
-Arnd noticed we have a case where a shorter source string is being copied
-into a destination byte array, but this results in a strnlen() call that
-exceeds the size of the source. This is seen with -Wstringop-overread:
+When a CPU is about to be offlined, x86 validates that all active
+interrupts which are targeted to this CPU can be migrated to the remaining
+online CPUs. If not, the offline operation is aborted.
 
-In file included from ../include/linux/uuid.h:11,
-                 from ../include/linux/mod_devicetable.h:14,
-                 from ../include/linux/cpufeature.h:12,
-                 from ../arch/x86/coco/tdx/tdx.c:7:
-../arch/x86/coco/tdx/tdx.c: In function 'tdx_panic.constprop':
-../include/linux/string.h:284:9: error: 'strnlen' specified bound 64 exceeds source size 60 [-Werror=stringop-overread]
-  284 |         memcpy_and_pad(dest, _dest_len, src, strnlen(src, _dest_len), pad); \
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../arch/x86/coco/tdx/tdx.c:124:9: note: in expansion of macro 'strtomem_pad'
-  124 |         strtomem_pad(message.str, msg, '\0');
-      |         ^~~~~~~~~~~~
+The validation uses irq_matrix_allocated() to retrieve the number of
+vectors which are allocated on the outgoing CPU. The returned number of
+allocated vectors includes also vectors which are associated to managed
+interrupts.
 
-Use the smaller of the two buffer sizes when calling strnlen(). When
-src length is unknown (SIZE_MAX), it is adjusted to use dest length,
-which is what the original code did.
+That's overaccounting because managed interrupts are:
 
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Fixes: dfbafa70bde2 ("string: Introduce strtomem() and strtomem_pad()")
-Tested-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Andy Shevchenko <andy@kernel.org>
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+  - not migrated when the affinity mask of the interrupt targets only
+    the outgoing CPU
+
+  - migrated to another CPU, but in that case the vector is already
+    pre-allocated on the potential target CPUs and must not be taken into
+    account.
+
+As a consequence the check whether the remaining online CPUs have enough
+capacity for migrating the allocated vectors from the outgoing CPU might
+fail incorrectly.
+
+Let irq_matrix_allocated() return only the number of allocated non-managed
+interrupts to make this validation check correct.
+
+[ tglx: Amend changelog and fixup kernel-doc comment ]
+
+Fixes: 2f75d9e1c905 ("genirq: Implement bitmap matrix allocator")
+Reported-by: Wendy Wang <wendy.wang@intel.com>
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20231020072522.557846-1-yu.c.chen@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/string.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ kernel/irq/matrix.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index cf7607b321027..26ab8928d8661 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -276,10 +276,12 @@ void memcpy_and_pad(void *dest, size_t dest_len, const void *src, size_t count,
-  */
- #define strtomem_pad(dest, src, pad)	do {				\
- 	const size_t _dest_len = __builtin_object_size(dest, 1);	\
-+	const size_t _src_len = __builtin_object_size(src, 1);		\
- 									\
- 	BUILD_BUG_ON(!__builtin_constant_p(_dest_len) ||		\
- 		     _dest_len == (size_t)-1);				\
--	memcpy_and_pad(dest, _dest_len, src, strnlen(src, _dest_len), pad); \
-+	memcpy_and_pad(dest, _dest_len, src,				\
-+		       strnlen(src, min(_src_len, _dest_len)), pad);	\
- } while (0)
+diff --git a/kernel/irq/matrix.c b/kernel/irq/matrix.c
+index 1698e77645acf..75d0ae490e29c 100644
+--- a/kernel/irq/matrix.c
++++ b/kernel/irq/matrix.c
+@@ -466,16 +466,16 @@ unsigned int irq_matrix_reserved(struct irq_matrix *m)
+ }
  
  /**
-@@ -297,10 +299,11 @@ void memcpy_and_pad(void *dest, size_t dest_len, const void *src, size_t count,
+- * irq_matrix_allocated - Get the number of allocated irqs on the local cpu
++ * irq_matrix_allocated - Get the number of allocated non-managed irqs on the local CPU
+  * @m:		Pointer to the matrix to search
+  *
+- * This returns number of allocated irqs
++ * This returns number of allocated non-managed interrupts.
   */
- #define strtomem(dest, src)	do {					\
- 	const size_t _dest_len = __builtin_object_size(dest, 1);	\
-+	const size_t _src_len = __builtin_object_size(src, 1);		\
- 									\
- 	BUILD_BUG_ON(!__builtin_constant_p(_dest_len) ||		\
- 		     _dest_len == (size_t)-1);				\
--	memcpy(dest, src, min(_dest_len, strnlen(src, _dest_len)));	\
-+	memcpy(dest, src, strnlen(src, min(_src_len, _dest_len)));	\
- } while (0)
+ unsigned int irq_matrix_allocated(struct irq_matrix *m)
+ {
+ 	struct cpumap *cm = this_cpu_ptr(m->maps);
  
- /**
+-	return cm->allocated;
++	return cm->allocated - cm->managed_allocated;
+ }
+ 
+ #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
 -- 
 2.42.0
 
