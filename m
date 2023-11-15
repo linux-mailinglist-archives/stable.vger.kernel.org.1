@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EB4B7ECD31
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 340247ECB20
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234360AbjKOTe5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:34:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37154 "EHLO
+        id S230006AbjKOTUS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:20:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234363AbjKOTe5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:57 -0500
+        with ESMTP id S230224AbjKOTUR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C24E91AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:53 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B4EC433CA;
-        Wed, 15 Nov 2023 19:34:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E70C319E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AE1C433C7;
+        Wed, 15 Nov 2023 19:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076893;
-        bh=UfgjBLANxOTETSHcTmncKsYtc4ZAdwO/9iTQEaHLlxI=;
+        s=korg; t=1700076013;
+        bh=fEUFCngFyN1dWVLNIqm/1CsUWjBqghaHILFwtH/L7JI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Jyr3Ja8fqM3miskz5XqMMWSfUS+q0hpex4Fd6krhvCtmxKTc/RraKit34rpAoh8GN
-         k+djKIQussLAVZ3J3hL1SQ5MubLVgDg7REWOpSX+7KU60JriWb61E/J7+tuJ2kpERw
-         skkylGN8IFkmmVTHkFsHk1cGAtOpP2kHDj50kyLU=
+        b=EMCxzXpzuuyRUV2BeqM4OdzJfFIVlV/8qqUlX3MchJHYvZHQi/E9FSo3Euqi6onTB
+         YnJyq1LbcJQSFGffLLPW1gIxIkb57RiygoLINUpCBYcuNp9mUEPd5orrnJjodWUnR+
+         L22lrxMZd4xOtkDToFD0LsXMtArCeCoUwpZzdbeI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Derick Marks <derick.w.marks@intel.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Alison Schofield <alison.schofield@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/603] udp: lockless UDP_ENCAP_L2TPINUDP / UDP_GRO
+Subject: [PATCH 6.5 020/550] ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window
 Date:   Wed, 15 Nov 2023 14:10:04 -0500
-Message-ID: <20231115191617.207769195@linuxfoundation.org>
+Message-ID: <20231115191602.120300069@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,156 +52,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit ac9a7f4ce5dda1472e8f44096f33066c6ec1a3b4 ]
+[ Upstream commit 8f1004679987302b155f14b966ca6d4335814fcb ]
 
-Move udp->encap_enabled to udp->udp_flags.
+Commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
+CFMWS not in SRAT") did not account for the case where the BIOS
+only partially describes a CFMWS Window in the SRAT. That means
+the omitted address ranges, of a partially described CFMWS Window,
+do not get assigned to a NUMA node.
 
-Add udp_test_and_set_bit() helper to allow lockless
-udp_tunnel_encap_enable() implementation.
+Replace the call to phys_to_target_node() with numa_add_memblks().
+Numa_add_memblks() searches an HPA range for existing memblk(s)
+and extends those memblk(s) to fill the entire CFMWS Window.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 70a36f571362 ("udp: annotate data-races around udp->encap_type")
+Extending the existing memblks is a simple strategy that reuses
+SRAT defined proximity domains from part of a window to fill out
+the entire window, based on the knowledge* that all of a CFMWS
+window is of a similar performance class.
+
+*Note that this heuristic will evolve when CFMWS Windows present
+a wider range of characteristics. The extension of the proximity
+domain, implemented here, is likely a step in developing a more
+sophisticated performance profile in the future.
+
+There is no change in behavior when the SRAT does not describe
+the CFMWS Window at all. In that case, a new NUMA node with a
+single memblk covering the entire CFMWS Window is created.
+
+Fixes: fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
+Reported-by: Derick Marks <derick.w.marks@intel.com>
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Tested-by: Derick Marks <derick.w.marks@intel.com>
+Link: https://lore.kernel.org/all/eaa0b7cffb0951a126223eef3cbe7b55b8300ad9.1689018477.git.alison.schofield%40intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/udp.h        |  9 ++++-----
- include/net/udp_tunnel.h   |  9 +++------
- net/ipv4/udp.c             | 10 +++-------
- net/ipv4/udp_tunnel_core.c |  2 +-
- net/ipv6/udp.c             |  2 +-
- 5 files changed, 12 insertions(+), 20 deletions(-)
+ drivers/acpi/numa/srat.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/udp.h b/include/linux/udp.h
-index bb2b87adfbea9..0cf83270a4a28 100644
---- a/include/linux/udp.h
-+++ b/include/linux/udp.h
-@@ -39,6 +39,7 @@ enum {
- 	UDP_FLAGS_GRO_ENABLED,	/* Request GRO aggregation */
- 	UDP_FLAGS_ACCEPT_FRAGLIST,
- 	UDP_FLAGS_ACCEPT_L4,
-+	UDP_FLAGS_ENCAP_ENABLED, /* This socket enabled encap */
- };
+diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+index 1f4fc5f8a819d..12f330b0eac01 100644
+--- a/drivers/acpi/numa/srat.c
++++ b/drivers/acpi/numa/srat.c
+@@ -310,11 +310,16 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
+ 	start = cfmws->base_hpa;
+ 	end = cfmws->base_hpa + cfmws->window_size;
  
- struct udp_sock {
-@@ -52,11 +53,7 @@ struct udp_sock {
+-	/* Skip if the SRAT already described the NUMA details for this HPA */
+-	node = phys_to_target_node(start);
+-	if (node != NUMA_NO_NODE)
++	/*
++	 * The SRAT may have already described NUMA details for all,
++	 * or a portion of, this CFMWS HPA range. Extend the memblks
++	 * found for any portion of the window to cover the entire
++	 * window.
++	 */
++	if (!numa_fill_memblks(start, end))
+ 		return 0;
  
- 	int		 pending;	/* Any pending frames ? */
- 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
--	unsigned char	 encap_enabled:1; /* This socket enabled encap
--					   * processing; UDP tunnels and
--					   * different encapsulation layer set
--					   * this
--					   */
-+
- /* indicator bits used by pcflag: */
- #define UDPLITE_BIT      0x1  		/* set by udplite proto init function */
- #define UDPLITE_SEND_CC  0x2  		/* set via udplite setsockopt         */
-@@ -104,6 +101,8 @@ struct udp_sock {
- 	test_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
- #define udp_set_bit(nr, sk)			\
- 	set_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
-+#define udp_test_and_set_bit(nr, sk)		\
-+	test_and_set_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
- #define udp_clear_bit(nr, sk)			\
- 	clear_bit(UDP_FLAGS_##nr, &udp_sk(sk)->udp_flags)
- #define udp_assign_bit(nr, sk, val)		\
-diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
-index 0ca9b7a11baf5..29251c3519cf0 100644
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -174,16 +174,13 @@ static inline int udp_tunnel_handle_offloads(struct sk_buff *skb, bool udp_csum)
- }
- #endif
++	/* No SRAT description. Create a new node. */
+ 	node = acpi_map_pxm_to_node(*fake_pxm);
  
--static inline void udp_tunnel_encap_enable(struct socket *sock)
-+static inline void udp_tunnel_encap_enable(struct sock *sk)
- {
--	struct udp_sock *up = udp_sk(sock->sk);
--
--	if (up->encap_enabled)
-+	if (udp_test_and_set_bit(ENCAP_ENABLED, sk))
- 		return;
- 
--	up->encap_enabled = 1;
- #if IS_ENABLED(CONFIG_IPV6)
--	if (sock->sk->sk_family == PF_INET6)
-+	if (READ_ONCE(sk->sk_family) == PF_INET6)
- 		ipv6_stub->udpv6_encap_enable();
- #endif
- 	udp_encap_enable();
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index 75ba86a87bb62..637a4faf9aff6 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2618,7 +2618,7 @@ void udp_destroy_sock(struct sock *sk)
- 			if (encap_destroy)
- 				encap_destroy(sk);
- 		}
--		if (up->encap_enabled)
-+		if (udp_test_bit(ENCAP_ENABLED, sk))
- 			static_branch_dec(&udp_encap_needed_key);
- 	}
- }
-@@ -2685,9 +2685,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
- 			fallthrough;
- 		case UDP_ENCAP_L2TPINUDP:
- 			up->encap_type = val;
--			lock_sock(sk);
--			udp_tunnel_encap_enable(sk->sk_socket);
--			release_sock(sk);
-+			udp_tunnel_encap_enable(sk);
- 			break;
- 		default:
- 			err = -ENOPROTOOPT;
-@@ -2710,14 +2708,12 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
- 		break;
- 
- 	case UDP_GRO:
--		lock_sock(sk);
- 
- 		/* when enabling GRO, accept the related GSO packet type */
- 		if (valbool)
--			udp_tunnel_encap_enable(sk->sk_socket);
-+			udp_tunnel_encap_enable(sk);
- 		udp_assign_bit(GRO_ENABLED, sk, valbool);
- 		udp_assign_bit(ACCEPT_L4, sk, valbool);
--		release_sock(sk);
- 		break;
- 
- 	/*
-diff --git a/net/ipv4/udp_tunnel_core.c b/net/ipv4/udp_tunnel_core.c
-index 9b18f371af0d4..1e7e4aecdc48a 100644
---- a/net/ipv4/udp_tunnel_core.c
-+++ b/net/ipv4/udp_tunnel_core.c
-@@ -78,7 +78,7 @@ void setup_udp_tunnel_sock(struct net *net, struct socket *sock,
- 	udp_sk(sk)->gro_receive = cfg->gro_receive;
- 	udp_sk(sk)->gro_complete = cfg->gro_complete;
- 
--	udp_tunnel_encap_enable(sock);
-+	udp_tunnel_encap_enable(sk);
- }
- EXPORT_SYMBOL_GPL(setup_udp_tunnel_sock);
- 
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 2c3281879b6df..90688877e9004 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1670,7 +1670,7 @@ void udpv6_destroy_sock(struct sock *sk)
- 			if (encap_destroy)
- 				encap_destroy(sk);
- 		}
--		if (up->encap_enabled) {
-+		if (udp_test_bit(ENCAP_ENABLED, sk)) {
- 			static_branch_dec(&udpv6_encap_needed_key);
- 			udp_encap_disable();
- 		}
+ 	if (node == NUMA_NO_NODE) {
 -- 
 2.42.0
 
