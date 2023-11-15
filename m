@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F33F7ECCDE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B753A7ECF66
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234203AbjKOTdG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39762 "EHLO
+        id S235311AbjKOTsO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234185AbjKOTdF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:05 -0500
+        with ESMTP id S235317AbjKOTsN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4344D19E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FF4C433C7;
-        Wed, 15 Nov 2023 19:33:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49E74AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1E2C433C8;
+        Wed, 15 Nov 2023 19:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076780;
-        bh=iuBGQ1bBWvbaBGESckMAOl073a7Tid4DYDSWJoYJBFA=;
+        s=korg; t=1700077689;
+        bh=z7QuIdLpA6UyqVG21L0xByF246Itg0y/SBDtwA+BCmQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R8tTdALqp3ewdHgWH0fxaDfKoOaVBKQHGiX/xlg0/9Tu/gtA7LmF4lgfif+OP/O1s
-         m2QECKtT/MRqr5OZuP0lsArLfXI4WnxmNzysQbvrmnCpRh61bAXJbCFkrrUyKqvQT+
-         TMCl4Twmz5DdljKXZ8+bM4YBSSe7+OewteFptr3M=
+        b=FLd4c6mPI5DXr6wIhq/lm+JBL2FxiaiJcnDE05RylwTWZOmGZr8OrviW0oggNi8J0
+         IOBo5t+hmzVx9ndZlxlz3IWzwakzUqhKq8iHIKQxYNPCSNvBH1Va6BhJzV1I2z26We
+         pqCZDXetkuGSvvdscBOt5N23+rYtTFvyYbsSMkhM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Georgi Djakov <djakov@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 419/550] interconnect: qcom: sm8150: Set ACV enable_mask
+Subject: [PATCH 6.6 458/603] interconnect: qcom: osm-l3: Replace custom implementation of COUNT_ARGS()
 Date:   Wed, 15 Nov 2023 14:16:43 -0500
-Message-ID: <20231115191629.799929831@linuxfoundation.org>
+Message-ID: <20231115191644.325755564@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,37 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 7ed42176406e5a2c9a5767d0d75690c7d1588027 ]
+[ Upstream commit 577a3c5af1fe87b65931ea94d5515266da301f56 ]
 
-ACV expects an enable_mask corresponding to the APPS RSC, fill it in.
+Replace custom and non-portable implementation of COUNT_ARGS().
 
-Fixes: a09b817c8bad ("interconnect: qcom: Add SM8150 interconnect provider driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811-topic-acv-v2-9-765ad70e539a@linaro.org
+Fixes: 5bc9900addaf ("interconnect: qcom: Add OSM L3 interconnect provider support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230920154927.2090732-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sm8150.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/interconnect/qcom/osm-l3.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/qcom/sm8150.c b/drivers/interconnect/qcom/sm8150.c
-index 640fd4c4a6886..685f35bbf5a7c 100644
---- a/drivers/interconnect/qcom/sm8150.c
-+++ b/drivers/interconnect/qcom/sm8150.c
-@@ -156,6 +156,7 @@ DEFINE_QNODE(xs_sys_tcu_cfg, SM8150_SLAVE_TCU, 1, 8);
+diff --git a/drivers/interconnect/qcom/osm-l3.c b/drivers/interconnect/qcom/osm-l3.c
+index dc321bb86d0be..e97478bbc2825 100644
+--- a/drivers/interconnect/qcom/osm-l3.c
++++ b/drivers/interconnect/qcom/osm-l3.c
+@@ -3,6 +3,7 @@
+  * Copyright (c) 2020-2021, The Linux Foundation. All rights reserved.
+  */
  
- static struct qcom_icc_bcm bcm_acv = {
- 	.name = "ACV",
-+	.enable_mask = BIT(3),
- 	.keepalive = false,
- 	.num_nodes = 1,
- 	.nodes = { &ebi },
++#include <linux/args.h>
+ #include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/interconnect-provider.h>
+@@ -78,7 +79,7 @@ enum {
+ 		.name = #_name,						\
+ 		.id = _id,						\
+ 		.buswidth = _buswidth,					\
+-		.num_links = ARRAY_SIZE(((int[]){ __VA_ARGS__ })),	\
++		.num_links = COUNT_ARGS(__VA_ARGS__),			\
+ 		.links = { __VA_ARGS__ },				\
+ 	}
+ 
 -- 
 2.42.0
 
