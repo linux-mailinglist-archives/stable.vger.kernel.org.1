@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8722B7ECB70
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 210837ECDE0
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233051AbjKOTWX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:22:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50298 "EHLO
+        id S234684AbjKOTi7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233114AbjKOTWT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:19 -0500
+        with ESMTP id S234707AbjKOTi4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:56 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54C571BE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF9CC433C9;
-        Wed, 15 Nov 2023 19:22:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C63B8B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:52 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD92C433C7;
+        Wed, 15 Nov 2023 19:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076131;
-        bh=dxzohK9rl0MfCfjUYEUkPOxPPlo6ohtz0SRcTHp28Kc=;
+        s=korg; t=1700077132;
+        bh=4sYBZsn8Pqa3OI+L63P47YJAjoMKBMu8rdGO7+5B1nU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LZduuqld6OLZVkOG04AdwLIdNagiVDPmAQqN6zT+i57jS8JB89R+JDw1MhuqG7RYA
-         o+gMWQtZYMUsZIXW+nzZ+g3qeSfhijEoBhzJ2N2cDMDZIoR6jHgFwPlKMShBYNO+jM
-         JFMFDxm24V0Q947T6KXooUiGw5/MjWePIVs9yC5U=
+        b=CVJfPq+jpIwcehI9yOAp8+P6uEmQUAvsDFrioVd+XNNbSjLb6nUSHkDij0trHm0A7
+         BhsFqp/SG3quK5m+ZG0dKtMo9nLcyxX1X31N41U4bnBGxaZwhPcmnsBDhgQH575VqR
+         qVWozN3J46ePMxSbmpV/AbsoLNGeS8jfrPJ5lDiE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Evelyn Tsai <evelyn.tsai@mediatek.com>,
-        StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 094/550] wifi: mt76: get rid of false alamrs of tx emission issues
-Date:   Wed, 15 Nov 2023 14:11:18 -0500
-Message-ID: <20231115191607.234103735@linuxfoundation.org>
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 134/603] wifi: mac80211: dont recreate driver link debugfs in reconfig
+Date:   Wed, 15 Nov 2023 14:11:19 -0500
+Message-ID: <20231115191622.541176756@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 413f05d68d11981f5984b49214d3a5a0d88079b1 ]
+[ Upstream commit 822cab1987a0e028e38b60aecd98af0289b46e7b ]
 
-When the set_chan_info command is set with CH_SWITCH_NORMAL reason,
-even if the action is UNI_CHANNEL_RX_PATH, it'll still generate some
-unexpected tones, which might confuse DFS CAC tests that there are some
-tone leakages. To get rid of these kinds of false alarms, always bypass
-DPD calibration when IEEE80211_CONF_IDLE is set.
+We can delete any that we want to remove, but we can't
+recreate the links as they already exist.
 
-Reviewed-by: Evelyn Tsai <evelyn.tsai@mediatek.com>
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Stable-dep-of: c685034cabc5 ("wifi: mt76: fix per-band IEEE80211_CONF_MONITOR flag comparison")
+Fixes: 170cd6a66d9a ("wifi: mac80211: add netdev per-link debugfs data and driver hook")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230928172905.3d0214838421.I512a0ff86f631ff42bf25ea0cb2e8e8616794a94@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 6 +++---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ net/mac80211/driver-ops.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 411157e93865b..fa0f938f03a32 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2702,10 +2702,10 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
- 	if (mt76_connac_spe_idx(phy->mt76->antenna_mask))
- 		req.tx_path_num = fls(phy->mt76->antenna_mask);
+diff --git a/net/mac80211/driver-ops.c b/net/mac80211/driver-ops.c
+index 30cd0c905a24f..aa37a1410f377 100644
+--- a/net/mac80211/driver-ops.c
++++ b/net/mac80211/driver-ops.c
+@@ -510,10 +510,13 @@ int drv_change_vif_links(struct ieee80211_local *local,
+ 	if (ret)
+ 		return ret;
  
--	if (cmd == MCU_EXT_CMD(SET_RX_PATH) ||
--	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-+	if (dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
- 		req.switch_reason = CH_SWITCH_NORMAL;
--	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-+	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL ||
-+		 phy->mt76->hw->conf.flags & IEEE80211_CONF_IDLE)
- 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
- 	else if (!cfg80211_reg_can_beacon(phy->mt76->hw->wiphy, chandef,
- 					  NL80211_IFTYPE_AP))
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 60cc3fdca9463..c4492803ec16e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2873,10 +2873,10 @@ int mt7996_mcu_set_chan_info(struct mt7996_phy *phy, u16 tag)
- 		.channel_band = ch_band[chandef->chan->band],
- 	};
+-	for_each_set_bit(link_id, &links_to_add, IEEE80211_MLD_MAX_NUM_LINKS) {
+-		link = rcu_access_pointer(sdata->link[link_id]);
++	if (!local->in_reconfig) {
++		for_each_set_bit(link_id, &links_to_add,
++				 IEEE80211_MLD_MAX_NUM_LINKS) {
++			link = rcu_access_pointer(sdata->link[link_id]);
  
--	if (tag == UNI_CHANNEL_RX_PATH ||
--	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-+	if (dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
- 		req.switch_reason = CH_SWITCH_NORMAL;
--	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
-+	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL ||
-+		 phy->mt76->hw->conf.flags & IEEE80211_CONF_IDLE)
- 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
- 	else if (!cfg80211_reg_can_beacon(phy->mt76->hw->wiphy, chandef,
- 					  NL80211_IFTYPE_AP))
+-		ieee80211_link_debugfs_drv_add(link);
++			ieee80211_link_debugfs_drv_add(link);
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.42.0
 
