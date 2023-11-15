@@ -2,42 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F5A77ED164
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:01:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 867EA7ED16C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:01:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344124AbjKOUBU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:01:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60446 "EHLO
+        id S1344132AbjKOUBf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:01:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344161AbjKOUBT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:01:19 -0500
+        with ESMTP id S1344153AbjKOUBc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:01:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 205A2AF
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:01:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DB7C433C7;
-        Wed, 15 Nov 2023 20:01:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223F392
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:01:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC70C433C8;
+        Wed, 15 Nov 2023 20:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078475;
-        bh=FxbBerayyBMsjWCE46nMgNFJ1lTzFaCqGANFqtC21+c=;
+        s=korg; t=1700078488;
+        bh=DxRsb1c2dg3tByF1CHdSBtLlsQm2SibkAJkVJLyNx/o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wzRiiyTwtSYNqo1tgkwuvK3Kgpu1kLgQ6MMVjirGPVgIF/l0vK/hXE6dfOndAL7MX
-         Lo6NXMp1FsBH17OWGrxmk71h5zsM/4IEEQNEd2grXZ9F8wGAhmQFw8EECDZYHyGUUU
-         ocm9k9izSDn1DzfCMZGHroMYRDSl1NzvIcj8OhSQ=
+        b=zbpILzWRn+aWId6PXrtnbAEL5M2W/wDyVjit1iUHNcuV0doyDvWXPjmK2RFWn3s6f
+         qz1Z/2t/5RV/I7tsaiKt0tccyKelqbXqrQpMjI7UN6IT2Wuc8DcSTbZchBoNTuOun2
+         9Ok2AN9EJk6zhGrpV5jyZvIJsLyYPBBnlbzBhSxo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pratyush Yadav <p.yadav@ti.com>,
-        Julien Massot <julien.massot@collabora.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Jai Luthra <j-luthra@ti.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 327/379] media: cadence: csi2rx: Unregister v4l2 async notifier
-Date:   Wed, 15 Nov 2023 14:26:42 -0500
-Message-ID: <20231115192704.493816425@linuxfoundation.org>
+Subject: [PATCH 6.1 328/379] media: dvb-usb-v2: af9035: fix missing unlock
+Date:   Wed, 15 Nov 2023 14:26:43 -0500
+Message-ID: <20231115192704.551866071@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -60,65 +53,65 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Pratyush Yadav <p.yadav@ti.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit b2701715301a49b53d05c7d43f3fedc3b8743bfc ]
+[ Upstream commit f31b2cb85f0ee165d78e1c43f6d69f82cc3b2145 ]
 
-The notifier is added to the global notifier list when registered. When
-the module is removed, the struct csi2rx_priv in which the notifier is
-embedded, is destroyed. As a result the notifier list has a reference to
-a notifier that no longer exists. This causes invalid memory accesses
-when the list is iterated over. Similar for when the probe fails.
-Unregister and clean up the notifier to avoid this.
+Instead of returning an error, goto the mutex unlock at
+the end of the function.
 
-Fixes: 1fc3b37f34f6 ("media: v4l: cadence: Add Cadence MIPI-CSI2 RX driver")
+Fixes smatch warning:
 
-Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
-Tested-by: Julien Massot <julien.massot@collabora.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+drivers/media/usb/dvb-usb-v2/af9035.c:467 af9035_i2c_master_xfer() warn: inconsistent returns '&d->i2c_mutex'.
+  Locked on  : 326,387
+  Unlocked on: 465,467
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 7bf744f2de0a ("media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer")
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/cadence/cdns-csi2rx.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/media/usb/dvb-usb-v2/af9035.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/cadence/cdns-csi2rx.c b/drivers/media/platform/cadence/cdns-csi2rx.c
-index cc3ebb0d96f66..2a23da6a0b8ee 100644
---- a/drivers/media/platform/cadence/cdns-csi2rx.c
-+++ b/drivers/media/platform/cadence/cdns-csi2rx.c
-@@ -404,8 +404,10 @@ static int csi2rx_parse_dt(struct csi2rx_priv *csi2rx)
- 	asd = v4l2_async_nf_add_fwnode_remote(&csi2rx->notifier, fwh,
- 					      struct v4l2_async_subdev);
- 	of_node_put(ep);
--	if (IS_ERR(asd))
-+	if (IS_ERR(asd)) {
-+		v4l2_async_nf_cleanup(&csi2rx->notifier);
- 		return PTR_ERR(asd);
-+	}
+diff --git a/drivers/media/usb/dvb-usb-v2/af9035.c b/drivers/media/usb/dvb-usb-v2/af9035.c
+index cd6f5374414d4..5f9dec71ff6e0 100644
+--- a/drivers/media/usb/dvb-usb-v2/af9035.c
++++ b/drivers/media/usb/dvb-usb-v2/af9035.c
+@@ -323,8 +323,10 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
+-			if (msg[0].len < 3 || msg[1].len < 1)
+-				return -EOPNOTSUPP;
++			if (msg[0].len < 3 || msg[1].len < 1) {
++				ret = -EOPNOTSUPP;
++				goto unlock;
++			}
+ 			/* demod access via firmware interface */
+ 			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
+@@ -384,8 +386,10 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 			ret = -EOPNOTSUPP;
+ 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
+ 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
+-			if (msg[0].len < 3)
+-				return -EOPNOTSUPP;
++			if (msg[0].len < 3) {
++				ret = -EOPNOTSUPP;
++				goto unlock;
++			}
+ 			/* demod access via firmware interface */
+ 			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
+ 					msg[0].buf[2];
+@@ -460,6 +464,7 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
+ 		ret = -EOPNOTSUPP;
+ 	}
  
- 	csi2rx->notifier.ops = &csi2rx_notifier_ops;
++unlock:
+ 	mutex_unlock(&d->i2c_mutex);
  
-@@ -467,6 +469,7 @@ static int csi2rx_probe(struct platform_device *pdev)
- 	return 0;
- 
- err_cleanup:
-+	v4l2_async_nf_unregister(&csi2rx->notifier);
- 	v4l2_async_nf_cleanup(&csi2rx->notifier);
- err_free_priv:
- 	kfree(csi2rx);
-@@ -477,6 +480,8 @@ static int csi2rx_remove(struct platform_device *pdev)
- {
- 	struct csi2rx_priv *csi2rx = platform_get_drvdata(pdev);
- 
-+	v4l2_async_nf_unregister(&csi2rx->notifier);
-+	v4l2_async_nf_cleanup(&csi2rx->notifier);
- 	v4l2_async_unregister_subdev(&csi2rx->subdev);
- 	kfree(csi2rx);
- 
+ 	if (ret < 0)
 -- 
 2.42.0
 
