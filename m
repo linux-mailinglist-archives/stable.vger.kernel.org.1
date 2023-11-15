@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF6207ED486
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 180C07ED45F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344843AbjKOU6U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34462 "EHLO
+        id S1344635AbjKOU5z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:57:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344611AbjKOU5k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:40 -0500
+        with ESMTP id S1344641AbjKOU5a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA884172A
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8170AC32779;
-        Wed, 15 Nov 2023 20:48:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96707D73
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D640AC116AC;
+        Wed, 15 Nov 2023 20:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081323;
-        bh=j+V4AOth914tlv9D88g7NypVmY0rzcTu+bHR/DJUGaA=;
+        s=korg; t=1700081273;
+        bh=1px7vPK+Ni4L4imY4wrv3ouo+dxeuhi46WczIls8TSE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c843d9V/ioU9rzEJwkbJi2ghnYlAx4tO0z20v00bdgb3iP4AK/yMdAtbRWHopHs0T
-         AiWmtr/s1xMa8NuLFFxtbgOOzLe3DILcBJ6su9OurMp76q/vDQZxt3O72uU5DSVgax
-         lcai/2lqaUta41/zCS/Wdqz7sr8dRes9JdWFC8LE=
+        b=1Lr0uN1Ns6RRGh9Q6LeV9HoymZnqanGLWknkmXMB+bM56HIE2xijNpApCXj5arQMH
+         17XVYLgXzFSsEC3Wja1KIf17DJcYsFGwV5lCUPeVJTSoFGhV7AgwJcZ6ZzOxFQaqCG
+         HHmnnLIcLXccwPa/O4bBJdUhaKlgfNDXmTW49QOU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, David Wragg <dwragg@cloudflare.com>,
+        Yan Zhai <yan@cloudflare.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/244] ACPI: sysfs: Fix create_pnp_modalias() and create_of_modalias()
-Date:   Wed, 15 Nov 2023 15:33:59 -0500
-Message-ID: <20231115203551.190802984@linuxfoundation.org>
+Subject: [PATCH 5.15 048/244] ipv6: avoid atomic fragment on GSO packets
+Date:   Wed, 15 Nov 2023 15:34:00 -0500
+Message-ID: <20231115203551.249902442@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -55,60 +55,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Yan Zhai <yan@cloudflare.com>
 
-[ Upstream commit 48cf49d31994ff97b33c4044e618560ec84d35fb ]
+[ Upstream commit 03d6c848bfb406e9ef6d9846d759e97beaeea113 ]
 
-snprintf() does not return negative values on error.
+When the ipv6 stack output a GSO packet, if its gso_size is larger than
+dst MTU, then all segments would be fragmented. However, it is possible
+for a GSO packet to have a trailing segment with smaller actual size
+than both gso_size as well as the MTU, which leads to an "atomic
+fragment". Atomic fragments are considered harmful in RFC-8021. An
+Existing report from APNIC also shows that atomic fragments are more
+likely to be dropped even it is equivalent to a no-op [1].
 
-To know if the buffer was too small, the returned value needs to be
-compared with the length of the passed buffer. If it is greater or
-equal, the output has been truncated, so add checks for the truncation
-to create_pnp_modalias() and create_of_modalias(). Also make them
-return -ENOMEM in that case, as they already do that elsewhere.
+Add an extra check in the GSO slow output path. For each segment from
+the original over-sized packet, if it fits with the path MTU, then avoid
+generating an atomic fragment.
 
-Moreover, the remaining size of the buffer used by snprintf() needs to
-be updated after the first write to avoid out-of-bounds access as
-already done correctly in create_pnp_modalias(), but not in
-create_of_modalias(), so change the latter accordingly.
-
-Fixes: 8765c5ba1949 ("ACPI / scan: Rework modalias creation when "compatible" is present")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-[ rjw: Merge two patches into one, combine changelogs, add subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://www.potaroo.net/presentations/2022-03-01-ipv6-frag.pdf [1]
+Fixes: b210de4f8c97 ("net: ipv6: Validate GSO SKB before finish IPv6 processing")
+Reported-by: David Wragg <dwragg@cloudflare.com>
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Link: https://lore.kernel.org/r/90912e3503a242dca0bc36958b11ed03a2696e5e.1698156966.git.yan@cloudflare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/device_sysfs.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/ipv6/ip6_output.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/device_sysfs.c b/drivers/acpi/device_sysfs.c
-index 61271e61c3073..da9cd11adfb56 100644
---- a/drivers/acpi/device_sysfs.c
-+++ b/drivers/acpi/device_sysfs.c
-@@ -157,8 +157,8 @@ static int create_pnp_modalias(struct acpi_device *acpi_dev, char *modalias,
- 		return 0;
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 2207acd7108c1..5045b479c2a95 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -159,7 +159,13 @@ ip6_finish_output_gso_slowpath_drop(struct net *net, struct sock *sk,
+ 		int err;
  
- 	len = snprintf(modalias, size, "acpi:");
--	if (len <= 0)
--		return len;
-+	if (len >= size)
-+		return -ENOMEM;
- 
- 	size -= len;
- 
-@@ -211,8 +211,10 @@ static int create_of_modalias(struct acpi_device *acpi_dev, char *modalias,
- 	len = snprintf(modalias, size, "of:N%sT", (char *)buf.pointer);
- 	ACPI_FREE(buf.pointer);
- 
--	if (len <= 0)
--		return len;
-+	if (len >= size)
-+		return -ENOMEM;
-+
-+	size -= len;
- 
- 	of_compatible = acpi_dev->data.of_compatible;
- 	if (of_compatible->type == ACPI_TYPE_PACKAGE) {
+ 		skb_mark_not_on_list(segs);
+-		err = ip6_fragment(net, sk, segs, ip6_finish_output2);
++		/* Last GSO segment can be smaller than gso_size (and MTU).
++		 * Adding a fragment header would produce an "atomic fragment",
++		 * which is considered harmful (RFC-8021). Avoid that.
++		 */
++		err = segs->len > mtu ?
++			ip6_fragment(net, sk, segs, ip6_finish_output2) :
++			ip6_finish_output2(net, sk, segs);
+ 		if (err && ret == 0)
+ 			ret = err;
+ 	}
 -- 
 2.42.0
 
