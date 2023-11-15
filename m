@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B64767ECB1E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D51E7ECD2F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229804AbjKOTUP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:20:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56670 "EHLO
+        id S234365AbjKOTey (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229778AbjKOTUO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:14 -0500
+        with ESMTP id S234360AbjKOTex (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B83A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80594C433C7;
-        Wed, 15 Nov 2023 19:20:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979481BD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9B2C433CB;
+        Wed, 15 Nov 2023 19:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076010;
-        bh=n9v3/slubW3YVX0cXIBJJ414yM+a6vZ4m3WLQBOmPx4=;
+        s=korg; t=1700076890;
+        bh=JahcFFMT8uSVQvwUGYfXfssx8l5yoEs4RkJKGcerbE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TdPtat4TXABelnW2/VYz53kee5iQiAgEI2sk6NXFWZEVS8aQGKkjT/Kckf2IlMoUy
-         4gvFFPONqVJr91/8KUoVvrBdMNaAFOxsWdbkybWBbJfHrve1L5JxW+rtvIjvbegVwd
-         kb8bmcKpTK4Yn65fQn5VSPlGTMIDODcDd7/28Uds=
+        b=qz2xTbZg8Mq7/Uytv00y1a4dOfamYgkwur3iMYqrrVzspf6D2XPdPTudPIRRnweSI
+         6tR/sHaMh40Pq7RDYwVrweIeMIuUUXyS9YA22tG8p4/2CVnYFnTauAg9uMUWm3RKk2
+         L1cIL7Rv0y7QlcwmqmN7pNhJhj7VGQHL14hbbSRQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Derick Marks <derick.w.marks@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 019/550] x86/numa: Introduce numa_fill_memblks()
+Subject: [PATCH 6.6 058/603] udp: move udp->accept_udp_{l4|fraglist} to udp->udp_flags
 Date:   Wed, 15 Nov 2023 14:10:03 -0500
-Message-ID: <20231115191602.056084327@linuxfoundation.org>
+Message-ID: <20231115191617.140663711@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,197 +51,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8f012db27c9516be1a7aca93ea4a6ca9c75056c9 ]
+[ Upstream commit f5f52f0884a595ff99ab1a608643fe4025fca2d5 ]
 
-numa_fill_memblks() fills in the gaps in numa_meminfo memblks
-over an physical address range.
+These are read locklessly, move them to udp_flags to fix data-races.
 
-The ACPI driver will use numa_fill_memblks() to implement a new Linux
-policy that prescribes extending proximity domains in a portion of a
-CFMWS window to the entire window.
-
-Dan Williams offered this explanation of the policy:
-A CFWMS is an ACPI data structure that indicates *potential* locations
-where CXL memory can be placed. It is the playground where the CXL
-driver has free reign to establish regions. That space can be populated
-by BIOS created regions, or driver created regions, after hotplug or
-other reconfiguration.
-
-When BIOS creates a region in a CXL Window it additionally describes
-that subset of the Window range in the other typical ACPI tables SRAT,
-SLIT, and HMAT. The rationale for BIOS not pre-describing the entire
-CXL Window in SRAT, SLIT, and HMAT is that it can not predict the
-future. I.e. there is nothing stopping higher or lower performance
-devices being placed in the same Window. Compare that to ACPI memory
-hotplug that just onlines additional capacity in the proximity domain
-with little freedom for dynamic performance differentiation.
-
-That leaves the OS with a choice, should unpopulated window capacity
-match the proximity domain of an existing region, or should it allocate
-a new one? This patch takes the simple position of minimizing proximity
-domain proliferation by reusing any proximity domain intersection for
-the entire Window. If the Window has no intersections then allocate a
-new proximity domain. Note that SRAT, SLIT and HMAT information can be
-enumerated dynamically in a standard way from device provided data.
-Think of CXL as the end of ACPI needing to describe memory attributes,
-CXL offers a standard discovery model for performance attributes, but
-Linux still needs to interoperate with the old regime.
-
-Reported-by: Derick Marks <derick.w.marks@intel.com>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Tested-by: Derick Marks <derick.w.marks@intel.com>
-Link: https://lore.kernel.org/all/ef078a6f056ca974e5af85997013c0fda9e3326d.1689018477.git.alison.schofield%40intel.com
-Stable-dep-of: 8f1004679987 ("ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 70a36f571362 ("udp: annotate data-races around udp->encap_type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/sparsemem.h |  2 +
- arch/x86/mm/numa.c               | 80 ++++++++++++++++++++++++++++++++
- include/linux/numa.h             |  7 +++
- 3 files changed, 89 insertions(+)
+ include/linux/udp.h | 16 +++++++++-------
+ net/ipv4/udp.c      |  2 +-
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/sparsemem.h b/arch/x86/include/asm/sparsemem.h
-index 64df897c0ee30..1be13b2dfe8bf 100644
---- a/arch/x86/include/asm/sparsemem.h
-+++ b/arch/x86/include/asm/sparsemem.h
-@@ -37,6 +37,8 @@ extern int phys_to_target_node(phys_addr_t start);
- #define phys_to_target_node phys_to_target_node
- extern int memory_add_physaddr_to_nid(u64 start);
- #define memory_add_physaddr_to_nid memory_add_physaddr_to_nid
-+extern int numa_fill_memblks(u64 start, u64 end);
-+#define numa_fill_memblks numa_fill_memblks
- #endif
- #endif /* __ASSEMBLY__ */
+diff --git a/include/linux/udp.h b/include/linux/udp.h
+index b344bd2e41fc9..bb2b87adfbea9 100644
+--- a/include/linux/udp.h
++++ b/include/linux/udp.h
+@@ -37,6 +37,8 @@ enum {
+ 	UDP_FLAGS_NO_CHECK6_TX, /* Send zero UDP6 checksums on TX? */
+ 	UDP_FLAGS_NO_CHECK6_RX, /* Allow zero UDP6 checksums on RX? */
+ 	UDP_FLAGS_GRO_ENABLED,	/* Request GRO aggregation */
++	UDP_FLAGS_ACCEPT_FRAGLIST,
++	UDP_FLAGS_ACCEPT_L4,
+ };
  
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 2aadb2019b4f2..c01c5506fd4ae 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -11,6 +11,7 @@
- #include <linux/nodemask.h>
- #include <linux/sched.h>
- #include <linux/topology.h>
-+#include <linux/sort.h>
+ struct udp_sock {
+@@ -50,13 +52,11 @@ struct udp_sock {
  
- #include <asm/e820/api.h>
- #include <asm/proto.h>
-@@ -961,4 +962,83 @@ int memory_add_physaddr_to_nid(u64 start)
- 	return nid;
- }
- EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-+
-+static int __init cmp_memblk(const void *a, const void *b)
-+{
-+	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
-+	const struct numa_memblk *mb = *(const struct numa_memblk **)b;
-+
-+	return ma->start - mb->start;
-+}
-+
-+static struct numa_memblk *numa_memblk_list[NR_NODE_MEMBLKS] __initdata;
-+
-+/**
-+ * numa_fill_memblks - Fill gaps in numa_meminfo memblks
-+ * @start: address to begin fill
-+ * @end: address to end fill
-+ *
-+ * Find and extend numa_meminfo memblks to cover the @start-@end
-+ * physical address range, such that the first memblk includes
-+ * @start, the last memblk includes @end, and any gaps in between
-+ * are filled.
-+ *
-+ * RETURNS:
-+ * 0		  : Success
-+ * NUMA_NO_MEMBLK : No memblk exists in @start-@end range
-+ */
-+
-+int __init numa_fill_memblks(u64 start, u64 end)
-+{
-+	struct numa_memblk **blk = &numa_memblk_list[0];
-+	struct numa_meminfo *mi = &numa_meminfo;
-+	int count = 0;
-+	u64 prev_end;
-+
-+	/*
-+	 * Create a list of pointers to numa_meminfo memblks that
-+	 * overlap start, end. Exclude (start == bi->end) since
-+	 * end addresses in both a CFMWS range and a memblk range
-+	 * are exclusive.
-+	 *
-+	 * This list of pointers is used to make in-place changes
-+	 * that fill out the numa_meminfo memblks.
-+	 */
-+	for (int i = 0; i < mi->nr_blks; i++) {
-+		struct numa_memblk *bi = &mi->blk[i];
-+
-+		if (start < bi->end && end >= bi->start) {
-+			blk[count] = &mi->blk[i];
-+			count++;
-+		}
-+	}
-+	if (!count)
-+		return NUMA_NO_MEMBLK;
-+
-+	/* Sort the list of pointers in memblk->start order */
-+	sort(&blk[0], count, sizeof(blk[0]), cmp_memblk, NULL);
-+
-+	/* Make sure the first/last memblks include start/end */
-+	blk[0]->start = min(blk[0]->start, start);
-+	blk[count - 1]->end = max(blk[count - 1]->end, end);
-+
-+	/*
-+	 * Fill any gaps by tracking the previous memblks
-+	 * end address and backfilling to it if needed.
-+	 */
-+	prev_end = blk[0]->end;
-+	for (int i = 1; i < count; i++) {
-+		struct numa_memblk *curr = blk[i];
-+
-+		if (prev_end >= curr->start) {
-+			if (prev_end < curr->end)
-+				prev_end = curr->end;
-+		} else {
-+			curr->start = prev_end;
-+			prev_end = curr->end;
-+		}
-+	}
-+	return 0;
-+}
-+
- #endif
-diff --git a/include/linux/numa.h b/include/linux/numa.h
-index fb30a42f0700d..a904861de8000 100644
---- a/include/linux/numa.h
-+++ b/include/linux/numa.h
-@@ -12,6 +12,7 @@
- #define MAX_NUMNODES    (1 << NODES_SHIFT)
+ 	int		 pending;	/* Any pending frames ? */
+ 	__u8		 encap_type;	/* Is this an Encapsulation socket? */
+-	unsigned char	 encap_enabled:1, /* This socket enabled encap
++	unsigned char	 encap_enabled:1; /* This socket enabled encap
+ 					   * processing; UDP tunnels and
+ 					   * different encapsulation layer set
+ 					   * this
+ 					   */
+-			 accept_udp_l4:1,
+-			 accept_udp_fraglist:1;
+ /* indicator bits used by pcflag: */
+ #define UDPLITE_BIT      0x1  		/* set by udplite proto init function */
+ #define UDPLITE_SEND_CC  0x2  		/* set via udplite setsockopt         */
+@@ -149,10 +149,12 @@ static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
+ 	if (!skb_is_gso(skb))
+ 		return false;
  
- #define	NUMA_NO_NODE	(-1)
-+#define	NUMA_NO_MEMBLK	(-1)
+-	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 && !udp_sk(sk)->accept_udp_l4)
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
++	    !udp_test_bit(ACCEPT_L4, sk))
+ 		return true;
  
- /* optionally keep NUMA memory info available post init */
- #ifdef CONFIG_NUMA_KEEP_MEMINFO
-@@ -43,6 +44,12 @@ static inline int phys_to_target_node(u64 start)
- 	return 0;
- }
- #endif
-+#ifndef numa_fill_memblks
-+static inline int __init numa_fill_memblks(u64 start, u64 end)
-+{
-+	return NUMA_NO_MEMBLK;
-+}
-+#endif
- #else /* !CONFIG_NUMA */
- static inline int numa_nearest_node(int node, unsigned int state)
+-	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST && !udp_sk(sk)->accept_udp_fraglist)
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST &&
++	    !udp_test_bit(ACCEPT_FRAGLIST, sk))
+ 		return true;
+ 
+ 	return false;
+@@ -160,8 +162,8 @@ static inline bool udp_unexpected_gso(struct sock *sk, struct sk_buff *skb)
+ 
+ static inline void udp_allow_gso(struct sock *sk)
  {
+-	udp_sk(sk)->accept_udp_l4 = 1;
+-	udp_sk(sk)->accept_udp_fraglist = 1;
++	udp_set_bit(ACCEPT_L4, sk);
++	udp_set_bit(ACCEPT_FRAGLIST, sk);
+ }
+ 
+ #define udp_portaddr_for_each_entry(__sk, list) \
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index db43907b9a3e8..75ba86a87bb62 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -2716,7 +2716,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
+ 		if (valbool)
+ 			udp_tunnel_encap_enable(sk->sk_socket);
+ 		udp_assign_bit(GRO_ENABLED, sk, valbool);
+-		up->accept_udp_l4 = valbool;
++		udp_assign_bit(ACCEPT_L4, sk, valbool);
+ 		release_sock(sk);
+ 		break;
+ 
 -- 
 2.42.0
 
