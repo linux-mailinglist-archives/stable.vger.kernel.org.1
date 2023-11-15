@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B2F57ECE44
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F256B7ECBCF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234948AbjKOTlz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:41:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58610 "EHLO
+        id S232753AbjKOTYi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234954AbjKOTly (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:54 -0500
+        with ESMTP id S233082AbjKOTYh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CAE1AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA62CC433C8;
-        Wed, 15 Nov 2023 19:41:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30E712C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194DCC433C9;
+        Wed, 15 Nov 2023 19:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077311;
-        bh=E1xBuSirc7YgSxmLytE7KQgDeuHqJRbYhDVIbuYJ6xM=;
+        s=korg; t=1700076274;
+        bh=QIhKqvTykITGXW+CIIxXqK6ZrUADrPhVq7fpWLLP/jo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vWRW4oUDf7g6lOES3nWwE3HfL/Otk9+bhFkm+UVF3zrLG04O2iHneh/fMFaUdLTQ4
-         qVRmhik2Hr80i7gd5aywiW1QEsch2PbcapmJUnPq3fmerdg14nguIKxkIOck5MMBdu
-         6NmnLQYa87zlijKnhr59zKfIcp1CFw3wVrVch52U=
+        b=ub2pFlClsEimR09d2TEasX6oLsA6lxHgNYdogryy2jNJezJXoOnz5DPzwtDuJilql
+         lCJg/fbAorSm3nMragmnIu+o+trfb0et1/AvnflyqOnDtj4ZuQ/VsnqoRUFKdzflTP
+         8UuYkbu0NUDYW7PQjQ+gWGlvZun9H5i+9BwyRt88=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/603] drm/bridge: lt8912b: Fix bridge_detach
+        Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 186/550] clk: qcom: ipq5332: drop the CLK_SET_RATE_PARENT flag from GPLL clocks
 Date:   Wed, 15 Nov 2023 14:12:50 -0500
-Message-ID: <20231115191628.781528897@linuxfoundation.org>
+Message-ID: <20231115191613.627263327@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,84 +52,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
 
-[ Upstream commit 941882a0e96d245f38116e940912b404b6a93c6f ]
+[ Upstream commit 5635ef0bd1052420bc659a00be6fd0c60cec5cb9 ]
 
-The driver calls lt8912_bridge_detach() from its lt8912_remove()
-function. As the DRM core detaches bridges automatically, this leads to
-calling lt8912_bridge_detach() twice. The code probably has tried to
-manage the double-call with the 'is_attached' variable, but the driver
-never sets the variable to false, so its of no help.
+GPLL clock rates are fixed and shouldn't be scaled based on the
+request from dependent clocks. Doing so will result in the unexpected
+behaviour. So drop the CLK_SET_RATE_PARENT flag from the GPLL clocks.
 
-Fix the issue by dropping the call to lt8912_bridge_detach() from
-lt8912_remove(), as the DRM core will handle the detach call for us,
-and also drop the useless is_attached field.
-
-Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230804-lt8912b-v1-1-c542692c6a2f@ideasonboard.com
+Fixes: 3d89d52970fd ("clk: qcom: add Global Clock controller (GCC) driver for IPQ5332 SoC")
+Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-5-c8ceb1a37680@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/clk/qcom/gcc-ipq5332.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-index 4eaea67fb71c2..0e581f6e3c885 100644
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -45,7 +45,6 @@ struct lt8912 {
- 
- 	u8 data_lanes;
- 	bool is_power_on;
--	bool is_attached;
+diff --git a/drivers/clk/qcom/gcc-ipq5332.c b/drivers/clk/qcom/gcc-ipq5332.c
+index 1077d03cefe5b..c975fb6719d45 100644
+--- a/drivers/clk/qcom/gcc-ipq5332.c
++++ b/drivers/clk/qcom/gcc-ipq5332.c
+@@ -111,7 +111,6 @@ static struct clk_alpha_pll_postdiv gpll2 = {
+ 				&gpll2_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
  };
  
- static int lt8912_write_init_config(struct lt8912 *lt)
-@@ -575,8 +574,6 @@ static int lt8912_bridge_attach(struct drm_bridge *bridge,
- 	if (ret)
- 		goto error;
+@@ -151,7 +150,6 @@ static struct clk_alpha_pll_postdiv gpll4 = {
+ 				&gpll4_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
--	lt->is_attached = true;
--
- 	return 0;
- 
- error:
-@@ -588,15 +585,13 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
- {
- 	struct lt8912 *lt = bridge_to_lt8912(bridge);
- 
--	if (lt->is_attached) {
--		lt8912_hard_power_off(lt);
-+	lt8912_hard_power_off(lt);
- 
--		if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
--			drm_bridge_hpd_disable(lt->hdmi_port);
-+	if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
-+		drm_bridge_hpd_disable(lt->hdmi_port);
- 
--		drm_connector_unregister(&lt->connector);
--		drm_connector_cleanup(&lt->connector);
--	}
-+	drm_connector_unregister(&lt->connector);
-+	drm_connector_cleanup(&lt->connector);
- }
- 
- static enum drm_connector_status
-@@ -750,7 +745,6 @@ static void lt8912_remove(struct i2c_client *client)
- {
- 	struct lt8912 *lt = i2c_get_clientdata(client);
- 
--	lt8912_bridge_detach(&lt->bridge);
- 	drm_bridge_remove(&lt->bridge);
- 	lt8912_free_i2c(lt);
- 	lt8912_put_dt(lt);
 -- 
 2.42.0
 
