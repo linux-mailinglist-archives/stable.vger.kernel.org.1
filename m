@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 137977ECE36
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 095C17ECBD6
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234940AbjKOTlh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:41:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
+        id S233109AbjKOTYt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234830AbjKOTlg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:36 -0500
+        with ESMTP id S233054AbjKOTYt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5187119E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBB4C433C9;
-        Wed, 15 Nov 2023 19:41:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D44BB1A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55677C433C7;
+        Wed, 15 Nov 2023 19:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077291;
-        bh=NISNgejFv6wEwp/e5KH67Q/0af9YdTcMf/DOFixIYxs=;
+        s=korg; t=1700076285;
+        bh=EYLa1g5TuWQJuHidIG4ASDu3Zb84iFt/TDnZ9KSTOv0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TPwkt/43elViZ578kM3RQozRELNh/8jhhSPTZ+Dvg1HHG6DWF4ROk7hegtspVtEuD
-         iLdg1fUguMaRdht+0XM0PaUso0Pueb0/Ul3+HUB7Fz5ilkxSWVjm0SoC4AxYRf9Z6J
-         6HHMNg8fskE+AnevitVhjOV3Cyna7VnICSI++9bI=
+        b=jEIW/YceuNHo2GompMLLI/sK5dM6GiOvl8O/+hzuFUIBT5Pov1ZsF4o9KEKjPLuvq
+         gmXkZ8YqUFWn3ixk48rszE7oXHemMEX3E+lw7i3eIL6nTvkSENwt3wPhX1OOabw9vG
+         +C+G63ZvVKfG3Kl3NVyF9uaifyeavH/Pdad4L6Hg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Nartowicz <deadbeef@nartowicz.co.uk>,
-        Armin Wolf <W_Armin@gmx.de>,
-        Guenter Roeck <linux@roeck-us.net>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 206/603] Revert "hwmon: (sch56xx-common) Add automatic module loading on supported devices"
-Date:   Wed, 15 Nov 2023 14:12:31 -0500
-Message-ID: <20231115191627.519174262@linuxfoundation.org>
+Subject: [PATCH 6.5 168/550] clk: renesas: rzg2l: Fix computation formula
+Date:   Wed, 15 Nov 2023 14:12:32 -0500
+Message-ID: <20231115191612.357569639@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,104 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit d621a46d05107f4e510383d6a38f2160c62d28f7 ]
+[ Upstream commit a2b23159499efd36b2d63b3c4534075d12ddc97a ]
 
-This reverts commit 393935baa45e5ccb9603cf7f9f020ed1bc0915f7.
+According to the hardware manual for RZ/G2L
+(r01uh0914ej0130-rzg2l-rzg2lc.pdf), the computation formula for PLL rate
+is as follows:
 
-As reported by Ian Nartowicz, this and the next patch
-result in a failure to load the driver on Celsius W280.
-While the alternative would be to add the board to the DMI
-override table, it is quite likely that other systems are
-also affected. Revert the offending patches to avoid future
-problems.
+    Fout = ((m + k/65536) * Fin) / (p * 2^s)
 
-Fixes: 393935baa45e ("hwmon: (sch56xx-common) Add automatic module loading on supported devices")
-Reported-by: Ian Nartowicz <deadbeef@nartowicz.co.uk>
-Closes: https://lore.kernel.org/linux-hwmon/20231025192239.3c5389ae@debian.org/T/#t
-Cc: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+and k has values in the range [-32768, 32767].  Dividing k by 65536 with
+integer arithmetic gives zero all the time, causing slight differences
+b/w what has been set vs. what is displayed.  Thus, get rid of this and
+decompose the formula before dividing k by 65536.
+
+Fixes: ef3c613ccd68a ("clk: renesas: Add CPG core wrapper for RZ/G2L SoC")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230929053915.1530607-6-claudiu.beznea@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sch56xx-common.c | 40 ++--------------------------------
- 1 file changed, 2 insertions(+), 38 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hwmon/sch56xx-common.c b/drivers/hwmon/sch56xx-common.c
-index 3ece53adabd62..ac1f725807155 100644
---- a/drivers/hwmon/sch56xx-common.c
-+++ b/drivers/hwmon/sch56xx-common.c
-@@ -7,10 +7,8 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index 03028362cf619..a3b20c898a391 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -43,7 +43,7 @@
+ #define GET_SHIFT(val)		((val >> 12) & 0xff)
+ #define GET_WIDTH(val)		((val >> 8) & 0xf)
  
- #include <linux/module.h>
--#include <linux/mod_devicetable.h>
- #include <linux/init.h>
- #include <linux/platform_device.h>
--#include <linux/dmi.h>
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/acpi.h>
-@@ -21,10 +19,7 @@
- #include <linux/slab.h>
- #include "sch56xx-common.h"
+-#define KDIV(val)		FIELD_GET(GENMASK(31, 16), val)
++#define KDIV(val)		((s16)FIELD_GET(GENMASK(31, 16), val))
+ #define MDIV(val)		FIELD_GET(GENMASK(15, 6), val)
+ #define PDIV(val)		FIELD_GET(GENMASK(5, 0), val)
+ #define SDIV(val)		FIELD_GET(GENMASK(2, 0), val)
+@@ -702,18 +702,18 @@ static unsigned long rzg2l_cpg_pll_clk_recalc_rate(struct clk_hw *hw,
+ 	struct pll_clk *pll_clk = to_pll(hw);
+ 	struct rzg2l_cpg_priv *priv = pll_clk->priv;
+ 	unsigned int val1, val2;
+-	unsigned int mult = 1;
+-	unsigned int div = 1;
++	u64 rate;
  
--static bool ignore_dmi;
--module_param(ignore_dmi, bool, 0);
--MODULE_PARM_DESC(ignore_dmi, "Omit DMI check for supported devices (default=0)");
--
-+/* Insmod parameters */
- static bool nowayout = WATCHDOG_NOWAYOUT;
- module_param(nowayout, bool, 0);
- MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
-@@ -523,42 +518,11 @@ static int __init sch56xx_device_add(int address, const char *name)
- 	return PTR_ERR_OR_ZERO(sch56xx_pdev);
+ 	if (pll_clk->type != CLK_TYPE_SAM_PLL)
+ 		return parent_rate;
+ 
+ 	val1 = readl(priv->base + GET_REG_SAMPLL_CLK1(pll_clk->conf));
+ 	val2 = readl(priv->base + GET_REG_SAMPLL_CLK2(pll_clk->conf));
+-	mult = MDIV(val1) + KDIV(val1) / 65536;
+-	div = PDIV(val1) << SDIV(val2);
+ 
+-	return DIV_ROUND_CLOSEST_ULL((u64)parent_rate * mult, div);
++	rate = mul_u64_u32_shr(parent_rate, (MDIV(val1) << 16) + KDIV(val1),
++			       16 + SDIV(val2));
++
++	return DIV_ROUND_CLOSEST_ULL(rate, PDIV(val1));
  }
  
--/* For autoloading only */
--static const struct dmi_system_id sch56xx_dmi_table[] __initconst = {
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
--		},
--	},
--	{ }
--};
--MODULE_DEVICE_TABLE(dmi, sch56xx_dmi_table);
--
- static int __init sch56xx_init(void)
- {
--	const char *name = NULL;
- 	int address;
-+	const char *name = NULL;
- 
--	if (!ignore_dmi) {
--		if (!dmi_check_system(sch56xx_dmi_table))
--			return -ENODEV;
--
--		/*
--		 * Some machines like the Esprimo P720 and Esprimo C700 have
--		 * onboard devices named " Antiope"/" Theseus" instead of
--		 * "Antiope"/"Theseus", so we need to check for both.
--		 */
--		if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
--		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
--		    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
--		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
--			return -ENODEV;
--	}
--
--	/*
--	 * Some devices like the Esprimo C700 have both onboard devices,
--	 * so we still have to check manually
--	 */
- 	address = sch56xx_find(0x4e, &name);
- 	if (address < 0)
- 		address = sch56xx_find(0x2e, &name);
+ static const struct clk_ops rzg2l_cpg_pll_ops = {
 -- 
 2.42.0
 
