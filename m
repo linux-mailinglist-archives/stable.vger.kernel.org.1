@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3340B7ECBF0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6207ECE64
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233240AbjKOTZ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58520 "EHLO
+        id S235096AbjKOTmu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233225AbjKOTZZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:25 -0500
+        with ESMTP id S235100AbjKOTms (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E541319E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475A8C433C7;
-        Wed, 15 Nov 2023 19:25:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1EB9B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:44 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63940C433C7;
+        Wed, 15 Nov 2023 19:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076321;
-        bh=FRMhcbz3WCk0OBntO8vDtQaWJXVg73n7HBM0aCAUPGE=;
+        s=korg; t=1700077364;
+        bh=bSNT/uEZbOU4/df6QoNE/pf8NCheDYRgFDNOnjn7lmc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=irMTa0UkpgjB+MQ8PFxy95Jo3dLeLIJ4ns1NC4eCZgzUnZ/RRQuFYgWeh94EHIn+8
-         9FuRna07QE4qaNEhk/THohd2jj0CIcbI2wTv0YUvG1w8qU/V6Jw41K8Y3/CqLWvome
-         BAGDifumuUFUiy5u0LRu7xkJASylsJpTk0nkY7Vg=
+        b=cyQFnMpuAIxKKVwQreifQBqPfog4T6fAzEjP5YgrGGMjaZ7qmgQ83O2/NWJGFRUCM
+         BUTAEIqMS6EDfQ68kfhiH1ykFZ6Tz7A08xo6vbGSTb27Cjq8FzNXJgaGEAWbc5Ek2B
+         LsFQ4bYp7XYplVZyQxcnkeDLD3pMn/HViGHOmz1g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Maxim Schwalm <maxim.schwalm@gmail.com>
-Subject: [PATCH 6.5 217/550] drm/bridge: tc358768: Fix use of uninitialized variable
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Clark <robdclark@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 256/603] drm/msm/a6xx: Fix unknown speedbin case
 Date:   Wed, 15 Nov 2023 14:13:21 -0500
-Message-ID: <20231115191615.777882415@linuxfoundation.org>
+Message-ID: <20231115191630.998320599@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit a2d9036615f0adfa5b0a46bb2ce42ef1d9a04fbe ]
+[ Upstream commit 75cb60d4f5f762b12643b67cbefefcf05ecfd7eb ]
 
-smatch reports:
+When opp-supported-hw is present under an OPP node, but no form of
+opp_set_supported_hw() has been called, that OPP is ignored by the API
+and marked as unsupported.
 
-drivers/gpu/drm/bridge/tc358768.c:223 tc358768_update_bits() error: uninitialized symbol 'orig'.
+Before Commit c928a05e4415 ("drm/msm/adreno: Move speedbin mapping to
+device table"), an unknown speedbin would result in marking all OPPs
+as available, but it's better to avoid potentially overclocking the
+silicon - the GMU will simply refuse to power up the chip.
 
-Fix this by bailing out from tc358768_update_bits() if the
-tc358768_read() produces an error.
+Currently, the Adreno speedbin code does just that (AND returns an
+invalid error, (int)UINT_MAX). Fix that by defaulting to speedbin 0
+(which is conveniently always bound to fuseval == 0).
 
-Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-2-31725f008a50@ideasonboard.com
+Fixes: c928a05e4415 ("drm/msm/adreno: Move speedbin mapping to device table")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/559604/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index 819a4b6ec2a07..bc97a837955ba 100644
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -216,6 +216,10 @@ static void tc358768_update_bits(struct tc358768_priv *priv, u32 reg, u32 mask,
- 	u32 tmp, orig;
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index d4e85e24002fb..522ca7fe67625 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -2237,7 +2237,7 @@ static int a6xx_set_supported_hw(struct device *dev, const struct adreno_info *i
+ 		DRM_DEV_ERROR(dev,
+ 			"missing support for speed-bin: %u. Some OPPs may not be supported by hardware\n",
+ 			speedbin);
+-		return UINT_MAX;
++		supp_hw = BIT(0); /* Default */
+ 	}
  
- 	tc358768_read(priv, reg, &orig);
-+
-+	if (priv->error)
-+		return;
-+
- 	tmp = orig & ~mask;
- 	tmp |= val & mask;
- 	if (tmp != orig)
+ 	ret = devm_pm_opp_set_supported_hw(dev, &supp_hw, 1);
 -- 
 2.42.0
 
