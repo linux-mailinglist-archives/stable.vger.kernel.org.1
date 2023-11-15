@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BBB37ECDD6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A0397ECDDC
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234682AbjKOTiq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:38:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47998 "EHLO
+        id S234713AbjKOTiy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234680AbjKOTiq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:46 -0500
+        with ESMTP id S234696AbjKOTit (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 181E112C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943A4C433C7;
-        Wed, 15 Nov 2023 19:38:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65139CE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF83CC433C7;
+        Wed, 15 Nov 2023 19:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077122;
-        bh=cuiMbkjklB98gSaJFOyx5/N63dYMaRe6E6Xf/NWW0X0=;
+        s=korg; t=1700077126;
+        bh=rZTDsPoXI2L4VZFTcFz3RHtYoAxqm1b1lD8hWQV2AvQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KRojIw7IPgXzWA6Vclt8n+JR3BGLaryocWJ0goH7oZRJ/4t9FVP9aX5OoXDqii8QQ
-         ODXEjAXKZDQ0t0giXrYlKHZOJtVcajm7qB5sntd0adEJ85PbrJQW94h/lEOt73nC9g
-         xgjbM3kZ864rTrf/0SeOokWxMzpoLaYqULUsNups=
+        b=i5hK6EOLYmZCHaqctfKl71zjU2pyXS3jF94EiMmGhfH75aLHlwIG/6eL/0LiiiE3U
+         Q8MonDh4YHRExBmj19v2pfVdFL51RGXWXi8gg7Je0WMwHK9gn52sVHrbePS9O/diPm
+         30z3dDsfRp8/wXLCl96dPHhZWJQ7Pas8dtKaYfLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anup Patel <apatel@ventanamicro.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrea Righi <andrea.righi@canonical.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 529/550] RISC-V: Dont fail in riscv_of_parent_hartid() for disabled HARTs
-Date:   Wed, 15 Nov 2023 14:18:33 -0500
-Message-ID: <20231115191637.605866043@linuxfoundation.org>
+Subject: [PATCH 6.5 530/550] module/decompress: use kvmalloc() consistently
+Date:   Wed, 15 Nov 2023 14:18:34 -0500
+Message-ID: <20231115191637.673127331@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -55,54 +55,69 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Andrea Righi <andrea.righi@canonical.com>
 
-[ Upstream commit c4676f8dc1e12e68d6511f9ed89707fdad4c962c ]
+[ Upstream commit 17fc8084aa8f9d5235f252fc3978db657dd77e92 ]
 
-The riscv_of_processor_hartid() used by riscv_of_parent_hartid() fails
-for HARTs disabled in the DT. This results in the following warning
-thrown by the RISC-V INTC driver for the E-core on SiFive boards:
+We consistently switched from kmalloc() to vmalloc() in module
+decompression to prevent potential memory allocation failures with large
+modules, however vmalloc() is not as memory-efficient and fast as
+kmalloc().
 
-[    0.000000] riscv-intc: unable to find hart id for /cpus/cpu@0/interrupt-controller
+Since we don't know in general the size of the workspace required by the
+decompression algorithm, it is more reasonable to use kvmalloc()
+consistently, also considering that we don't have special memory
+requirements here.
 
-The riscv_of_parent_hartid() is only expected to read the hartid
-from the DT so we directly call of_get_cpu_hwid() instead of calling
-riscv_of_processor_hartid().
-
-Fixes: ad635e723e17 ("riscv: cpu: Add 64bit hartid support on RV64")
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20231027154254.355853-2-apatel@ventanamicro.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Tested-by: Andrea Righi <andrea.righi@canonical.com>
+Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpu.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ kernel/module/decompress.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-index 35b854cf078ed..fa8bf78fa9c5a 100644
---- a/arch/riscv/kernel/cpu.c
-+++ b/arch/riscv/kernel/cpu.c
-@@ -88,13 +88,14 @@ int riscv_early_of_processor_hartid(struct device_node *node, unsigned long *har
-  */
- int riscv_of_parent_hartid(struct device_node *node, unsigned long *hartid)
- {
--	int rc;
--
- 	for (; node; node = node->parent) {
- 		if (of_device_is_compatible(node, "riscv")) {
--			rc = riscv_of_processor_hartid(node, hartid);
--			if (!rc)
--				return 0;
-+			*hartid = (unsigned long)of_get_cpu_hwid(node, 0);
-+			if (*hartid == ~0UL) {
-+				pr_warn("Found CPU without hart ID\n");
-+				return -ENODEV;
-+			}
-+			return 0;
- 		}
+diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
+index 4156d59be4408..474e68f0f0634 100644
+--- a/kernel/module/decompress.c
++++ b/kernel/module/decompress.c
+@@ -100,7 +100,7 @@ static ssize_t module_gzip_decompress(struct load_info *info,
+ 	s.next_in = buf + gzip_hdr_len;
+ 	s.avail_in = size - gzip_hdr_len;
+ 
+-	s.workspace = vmalloc(zlib_inflate_workspacesize());
++	s.workspace = kvmalloc(zlib_inflate_workspacesize(), GFP_KERNEL);
+ 	if (!s.workspace)
+ 		return -ENOMEM;
+ 
+@@ -138,7 +138,7 @@ static ssize_t module_gzip_decompress(struct load_info *info,
+ out_inflate_end:
+ 	zlib_inflateEnd(&s);
+ out:
+-	vfree(s.workspace);
++	kvfree(s.workspace);
+ 	return retval;
+ }
+ #elif defined(CONFIG_MODULE_COMPRESS_XZ)
+@@ -241,7 +241,7 @@ static ssize_t module_zstd_decompress(struct load_info *info,
  	}
  
+ 	wksp_size = zstd_dstream_workspace_bound(header.windowSize);
+-	wksp = vmalloc(wksp_size);
++	wksp = kvmalloc(wksp_size, GFP_KERNEL);
+ 	if (!wksp) {
+ 		retval = -ENOMEM;
+ 		goto out;
+@@ -284,7 +284,7 @@ static ssize_t module_zstd_decompress(struct load_info *info,
+ 	retval = new_size;
+ 
+  out:
+-	vfree(wksp);
++	kvfree(wksp);
+ 	return retval;
+ }
+ #else
 -- 
 2.42.0
 
