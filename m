@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD91F7ECD7D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9FC87ECFB1
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234483AbjKOTgx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35652 "EHLO
+        id S235383AbjKOTuL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:50:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234525AbjKOTgw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:52 -0500
+        with ESMTP id S235387AbjKOTuJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A0C1AC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5ACC433C8;
-        Wed, 15 Nov 2023 19:36:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB0C81A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD5AC433C7;
+        Wed, 15 Nov 2023 19:50:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077008;
-        bh=Ks2Z6PIJz3n/mZJcDIuqoRrj0MdCrWNOFEPQ0hzMQcg=;
+        s=korg; t=1700077806;
+        bh=T7pttDyMZsfx3AKhSxNxeG04p3+zkmxU3jrQt5T0slw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lM53yoCCMb5A6DXLckWlkeFffiM5/mrckghSHyWtCJtkps7D+jnQps+fEwQFaa+gJ
-         MRtZ9Hny0Cjr7dkq8l1XgSDP0XgQEpQamMLh61/Ba0Cm6m7323hnaMP05y22M3H9s5
-         l6JYTGREc3Jw0agd7HztqGSWlpDnUhfYogPjOqD4=
+        b=yH8gNrb3gWuMxTqm6wYb9pHn2c/2i9Y+aWADwWDYcGEB6f7m3F6ajgwbxSuAJx+OV
+         W3o0H5fZI5ZYRq8ksHaC4/QyW4fIw0bS3P3a/JzoQ+tXim7LqYtqN3Qzs89SsI8EKP
+         ZCzDJkTXiQc2xp+u6A7czIX8vcOggp1kJdN5EBzg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Mark Brown <broonie@kernel.org>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 491/550] regmap: prevent noinc writes from clobbering cache
-Date:   Wed, 15 Nov 2023 14:17:55 -0500
-Message-ID: <20231115191634.913200711@linuxfoundation.org>
+Subject: [PATCH 6.6 531/603] media: cec: meson: always include meson sub-directory in Makefile
+Date:   Wed, 15 Nov 2023 14:17:56 -0500
+Message-ID: <20231115191648.651624925@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,59 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 984a4afdc87a1fc226fd657b1cd8255c13d3fc1a ]
+[ Upstream commit 94e27fbeca27d8c772fc2bc807730aaee5886055 ]
 
-Currently, noinc writes are cached as if they were standard incrementing
-writes, overwriting unrelated register values in the cache. Instead, we
-want to cache the last value written to the register, as is done in the
-accelerated noinc handler (regmap_noinc_readwrite).
+'meson' directory contains two separate drivers, so it should be added
+to Makefile compilation hierarchy unconditionally, because otherwise the
+meson-ao-cec-g12a won't be compiled if meson-ao-cec is not selected.
 
-Fixes: cdf6b11daa77 ("regmap: Add regmap_noinc_write API")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Link: https://lore.kernel.org/r/20231101142926.2722603-2-ben.wolsieffer@hefring.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Fixes: 4be5e8648b0c ("media: move CEC platform drivers to a separate directory")
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/media/cec/platform/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index bb2f41043f602..0d7ed11b089c3 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1714,17 +1714,19 @@ static int _regmap_raw_write_impl(struct regmap *map, unsigned int reg,
- 	}
- 
- 	if (!map->cache_bypass && map->format.parse_val) {
--		unsigned int ival;
-+		unsigned int ival, offset;
- 		int val_bytes = map->format.val_bytes;
--		for (i = 0; i < val_len / val_bytes; i++) {
--			ival = map->format.parse_val(val + (i * val_bytes));
--			ret = regcache_write(map,
--					     reg + regmap_get_offset(map, i),
--					     ival);
-+
-+		/* Cache the last written value for noinc writes */
-+		i = noinc ? val_len - val_bytes : 0;
-+		for (; i < val_len; i += val_bytes) {
-+			ival = map->format.parse_val(val + i);
-+			offset = noinc ? 0 : regmap_get_offset(map, i / val_bytes);
-+			ret = regcache_write(map, reg + offset, ival);
- 			if (ret) {
- 				dev_err(map->dev,
- 					"Error in caching of register: %x ret: %d\n",
--					reg + regmap_get_offset(map, i), ret);
-+					reg + offset, ret);
- 				return ret;
- 			}
- 		}
+diff --git a/drivers/media/cec/platform/Makefile b/drivers/media/cec/platform/Makefile
+index 26d2bc7783944..a51e98ab4958d 100644
+--- a/drivers/media/cec/platform/Makefile
++++ b/drivers/media/cec/platform/Makefile
+@@ -6,7 +6,7 @@
+ # Please keep it in alphabetic order
+ obj-$(CONFIG_CEC_CROS_EC) += cros-ec/
+ obj-$(CONFIG_CEC_GPIO) += cec-gpio/
+-obj-$(CONFIG_CEC_MESON_AO) += meson/
++obj-y += meson/
+ obj-$(CONFIG_CEC_SAMSUNG_S5P) += s5p/
+ obj-$(CONFIG_CEC_SECO) += seco/
+ obj-$(CONFIG_CEC_STI) += sti/
 -- 
 2.42.0
 
