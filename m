@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8C27ECE47
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A1B57ECBD2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234967AbjKOTmE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
+        id S233082AbjKOTYn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234951AbjKOTmD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:03 -0500
+        with ESMTP id S233054AbjKOTYm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5459A12C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC154C433C8;
-        Wed, 15 Nov 2023 19:41:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBC2A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F8BC433C8;
+        Wed, 15 Nov 2023 19:24:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077320;
-        bh=L6vELtLA7OZsiREdpWgl0PhVtoH1FvHSHA5dHq+E9rU=;
+        s=korg; t=1700076279;
+        bh=yYz5xW1hKLsAaC+/JRilMF7Ulcs/XaFERab2p+vvFIA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=idoUUqus7kElcFIF6p3If46JCpQhIH0O4/qSgsJbFK6lbAi+jGGHclvXqMGjw0pww
-         7zZRb41lYrww3YKh8FAWp4exQMx+c4DRGGpITPmTYMm2Ig2hHYUe8chmAtekmbucMN
-         P+q3M9Z0oI/JlxnMiguhJmjLxlcDGyS5wohTan6o=
+        b=C1NSlsclHmTCGykDrtBNPGAAS2xaOLdIM+Y0tv86kSLMkw2CVZkjf4hA/GI6f2n6v
+         9ynB/qyA++ifh+RW2Xg0GJtBuSnl7kdWHBZRXjU2abg9rvfOCWX+JIE21MBVBUcvtQ
+         gc+fCrJxy0/rUYTmIwKLDf3QGvuMxjo/j0ki3wmc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/603] drm/bridge: lt8912b: Add missing drm_bridge_attach call
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 189/550] platform/x86: wmi: Fix opening of char device
 Date:   Wed, 15 Nov 2023 14:12:53 -0500
-Message-ID: <20231115191628.971946285@linuxfoundation.org>
+Message-ID: <20231115191613.849541156@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,48 +51,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit f45acf7acf75921c0409d452f0165f51a19a74fd ]
+[ Upstream commit eba9ac7abab91c8f6d351460239108bef5e7a0b6 ]
 
-The driver does not call drm_bridge_attach(), which causes the next
-bridge to not be added to the bridge chain. This causes the pipeline
-init to fail when DRM_BRIDGE_ATTACH_NO_CONNECTOR is used.
+Since commit fa1f68db6ca7 ("drivers: misc: pass miscdevice pointer via
+file private data"), the miscdevice stores a pointer to itself inside
+filp->private_data, which means that private_data will not be NULL when
+wmi_char_open() is called. This might cause memory corruption should
+wmi_char_open() be unable to find its driver, something which can
+happen when the associated WMI device is deleted in wmi_free_devices().
 
-Add the call to drm_bridge_attach().
+Fix the problem by using the miscdevice pointer to retrieve the WMI
+device data associated with a char device using container_of(). This
+also avoids wmi_char_open() picking a wrong WMI device bound to a
+driver with the same name as the original driver.
 
-Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230804-lt8912b-v1-4-c542692c6a2f@ideasonboard.com
+Fixes: 44b6b7661132 ("platform/x86: wmi: create userspace interface for drivers")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20231020211005.38216-5-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/lontium-lt8912b.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/platform/x86/wmi.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-index 9ee639e75a1c2..03532efb893bb 100644
---- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
-+++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
-@@ -558,6 +558,13 @@ static int lt8912_bridge_attach(struct drm_bridge *bridge,
- 	struct lt8912 *lt = bridge_to_lt8912(bridge);
- 	int ret;
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 7d11ff5bc856c..317c907304149 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -911,21 +911,13 @@ static int wmi_dev_match(struct device *dev, struct device_driver *driver)
+ }
+ static int wmi_char_open(struct inode *inode, struct file *filp)
+ {
+-	const char *driver_name = filp->f_path.dentry->d_iname;
+-	struct wmi_block *wblock;
+-	struct wmi_block *next;
+-
+-	list_for_each_entry_safe(wblock, next, &wmi_block_list, list) {
+-		if (!wblock->dev.dev.driver)
+-			continue;
+-		if (strcmp(driver_name, wblock->dev.dev.driver->name) == 0) {
+-			filp->private_data = wblock;
+-			break;
+-		}
+-	}
++	/*
++	 * The miscdevice already stores a pointer to itself
++	 * inside filp->private_data
++	 */
++	struct wmi_block *wblock = container_of(filp->private_data, struct wmi_block, char_dev);
  
-+	ret = drm_bridge_attach(bridge->encoder, lt->hdmi_port, bridge,
-+				DRM_BRIDGE_ATTACH_NO_CONNECTOR);
-+	if (ret < 0) {
-+		dev_err(lt->dev, "Failed to attach next bridge (%d)\n", ret);
-+		return ret;
-+	}
-+
- 	if (!(flags & DRM_BRIDGE_ATTACH_NO_CONNECTOR)) {
- 		ret = lt8912_bridge_connector_init(bridge);
- 		if (ret) {
+-	if (!filp->private_data)
+-		return -ENODEV;
++	filp->private_data = wblock;
+ 
+ 	return nonseekable_open(inode, filp);
+ }
 -- 
 2.42.0
 
