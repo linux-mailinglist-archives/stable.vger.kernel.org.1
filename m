@@ -2,39 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C5957ECF42
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 118F87ECCC4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235272AbjKOTrX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:47:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58716 "EHLO
+        id S234100AbjKOTca (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235271AbjKOTrW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:22 -0500
+        with ESMTP id S234124AbjKOTc0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67505AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE701C433C7;
-        Wed, 15 Nov 2023 19:47:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F5821B1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05195C433C8;
+        Wed, 15 Nov 2023 19:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077639;
-        bh=Vg6EFnd/795qiSWiuf9QYKv5lu2NxdEdMX9KJVec7dI=;
+        s=korg; t=1700076743;
+        bh=EF7rVuSrJIJJ1FthvxSiZE5jAtJfgUgrH84hHDAz9mU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ugLFCCLgq2sQnuH0O2W6FCpa4GiG62C2eJ58L/KEUnjnHyCgfNFE6XEiOklKxOVPr
-         WrYEynv6+pvpzKCHFEK4cwiWAj9bGJ1mcKw5UOHfGqPcya7aXH+Zpg4vjsQRpSMG16
-         Fa8aKOGmT+QzWibwTIFz43XNrRNkvS5Kh/SY/vY4=
+        b=Ybcshk2yzTCwgYF7+NotXC/Xus4MvUpt7Gi9RTttGqn4/ldOmOPpE67mi536O4q4W
+         TG+/8T0a3O9yaJNFdA7W8v37K7Wk7lk3+Psrh9zDx3jWyjYobHiV9LnI1gZW2+mFI+
+         lREV7Pk9fB+2wtFSuR57ZJsC4y+I56IAlEgMTQfU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>, bpf@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 427/603] f2fs: compress: fix to avoid redundant compress extension
+Subject: [PATCH 6.5 388/550] perf parse-events: Remove unused PE_KERNEL_PMU_EVENT token
 Date:   Wed, 15 Nov 2023 14:16:12 -0500
-Message-ID: <20231115191642.384514837@linuxfoundation.org>
+Message-ID: <20231115191627.737078401@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,91 +58,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 7e1b150fece033703a824df1bbc03df091ea53cc ]
+[ Upstream commit bf7d46b3a088ccb8f8045c5902d5848bc23286f9 ]
 
-With below script, redundant compress extension will be parsed and added
-by parse_options(), because parse_options() doesn't check whether the
-extension is existed or not, fix it.
+Removed by commit 70c90e4a6b2f ("perf parse-events: Avoid scanning
+PMUs before parsing").
 
-1. mount -t f2fs -o compress_extension=so /dev/vdb /mnt/f2fs
-2. mount -t f2fs -o remount,compress_extension=so /mnt/f2fs
-3. mount|grep f2fs
-
-/dev/vdb on /mnt/f2fs type f2fs (...,compress_extension=so,compress_extension=so,...)
-
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Fixes: 151b1982be5d ("f2fs: compress: add nocompress extensions support")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: bpf@vger.kernel.org
+Link: https://lore.kernel.org/r/20230627181030.95608-3-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: ede72dca45b1 ("perf parse-events: Fix tracepoint name memory leak")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ tools/perf/util/parse-events.y | 27 ---------------------------
+ 1 file changed, 27 deletions(-)
 
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index a8c8232852bb1..12790bc6e0739 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -547,6 +547,29 @@ static int f2fs_set_test_dummy_encryption(struct super_block *sb,
+diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
+index 43557f20d0989..1393c39ebf330 100644
+--- a/tools/perf/util/parse-events.y
++++ b/tools/perf/util/parse-events.y
+@@ -70,7 +70,6 @@ static void free_list_evsel(struct list_head* list_evsel)
+ %token PE_LEGACY_CACHE
+ %token PE_PREFIX_MEM PE_PREFIX_RAW PE_PREFIX_GROUP
+ %token PE_ERROR
+-%token PE_KERNEL_PMU_EVENT
+ %token PE_ARRAY_ALL PE_ARRAY_RANGE
+ %token PE_DRV_CFG_TERM
+ %token PE_TERM_HW
+@@ -88,7 +87,6 @@ static void free_list_evsel(struct list_head* list_evsel)
+ %type <str> PE_MODIFIER_EVENT
+ %type <str> PE_MODIFIER_BP
+ %type <str> PE_EVENT_NAME
+-%type <str> PE_KERNEL_PMU_EVENT
+ %type <str> PE_DRV_CFG_TERM
+ %type <str> name_or_raw name_or_legacy
+ %destructor { free ($$); } <str>
+@@ -376,18 +374,6 @@ PE_NAME opt_pmu_config
+ #undef CLEANUP
  }
+ |
+-PE_KERNEL_PMU_EVENT sep_dc
+-{
+-	struct list_head *list;
+-	int err;
+-
+-	err = parse_events_multi_pmu_add(_parse_state, $1, NULL, &list);
+-	free($1);
+-	if (err < 0)
+-		YYABORT;
+-	$$ = list;
+-}
+-|
+ PE_NAME sep_dc
+ {
+ 	struct list_head *list;
+@@ -408,19 +394,6 @@ PE_NAME sep_dc
+ 	free($1);
+ 	$$ = list;
+ }
+-|
+-PE_KERNEL_PMU_EVENT opt_pmu_config
+-{
+-	struct list_head *list;
+-	int err;
+-
+-	/* frees $2 */
+-	err = parse_events_multi_pmu_add(_parse_state, $1, $2, &list);
+-	free($1);
+-	if (err < 0)
+-		YYABORT;
+-	$$ = list;
+-}
  
- #ifdef CONFIG_F2FS_FS_COMPRESSION
-+static bool is_compress_extension_exist(struct f2fs_sb_info *sbi,
-+					const char *new_ext, bool is_ext)
-+{
-+	unsigned char (*ext)[F2FS_EXTENSION_LEN];
-+	int ext_cnt;
-+	int i;
-+
-+	if (is_ext) {
-+		ext = F2FS_OPTION(sbi).extensions;
-+		ext_cnt = F2FS_OPTION(sbi).compress_ext_cnt;
-+	} else {
-+		ext = F2FS_OPTION(sbi).noextensions;
-+		ext_cnt = F2FS_OPTION(sbi).nocompress_ext_cnt;
-+	}
-+
-+	for (i = 0; i < ext_cnt; i++) {
-+		if (!strcasecmp(new_ext, ext[i]))
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * 1. The same extension name cannot not appear in both compress and non-compress extension
-  * at the same time.
-@@ -1149,6 +1172,11 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 				return -EINVAL;
- 			}
- 
-+			if (is_compress_extension_exist(sbi, name, true)) {
-+				kfree(name);
-+				break;
-+			}
-+
- 			strcpy(ext[ext_cnt], name);
- 			F2FS_OPTION(sbi).compress_ext_cnt++;
- 			kfree(name);
-@@ -1173,6 +1201,11 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
- 				return -EINVAL;
- 			}
- 
-+			if (is_compress_extension_exist(sbi, name, false)) {
-+				kfree(name);
-+				break;
-+			}
-+
- 			strcpy(noext[noext_cnt], name);
- 			F2FS_OPTION(sbi).nocompress_ext_cnt++;
- 			kfree(name);
+ value_sym:
+ PE_VALUE_SYM_HW
 -- 
 2.42.0
 
