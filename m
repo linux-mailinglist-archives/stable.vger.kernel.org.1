@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1D47ECE11
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F7707ECB7C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234680AbjKOTkT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:40:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50254 "EHLO
+        id S229469AbjKOTWj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:22:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234799AbjKOTkO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:14 -0500
+        with ESMTP id S233054AbjKOTWj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8B731BD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888ECC43391;
-        Wed, 15 Nov 2023 19:40:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6D51A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB52C433CC;
+        Wed, 15 Nov 2023 19:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077204;
-        bh=OVRfcbCxM+w376JIFD1jY/nnUH0UlqqsTcfvceowIPU=;
+        s=korg; t=1700076150;
+        bh=mY0Ye0hQONOV6sWiC5bouyuAIWpjhwnj4JJUqp4ZdZg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dovyQvUmGeSlQ2oMHvt5WAop8TXVlz0remGRRACsmr4WRshEFPhc+G6eWXrXzgqaX
-         EQq1H78avwUjZ16WxsRpGRsQYRm8FKwbnGCmx/xGxgwCON/Udi+Xrbps2TqlEotwdv
-         B9LCMBkfwhYJs6WKLbkeMEoRsWLZxdkICxHOfWdY=
+        b=kQRXm3IgC8qrVE4ObI/grqVFCg00Lx6LDBaHoBHgbKTWCyR9iIQJNeNrqSDf85MO2
+         Wl2so/azOyPBZMi+RWGqqV8KWDzNwH5aUzEpDPzqNN2XzsykHU6Hw0cjXVZnmNYyVB
+         vcbChkmmTnT48hHIXmu8OSmqLGVklyMb4f1TnVjY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev,
+        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/603] wifi: iwlwifi: mvm: fix netif csum flags
+Subject: [PATCH 6.5 105/550] can: etas_es58x: add missing a blank line after declaration
 Date:   Wed, 15 Nov 2023 14:11:29 -0500
-Message-ID: <20231115191623.159274287@linuxfoundation.org>
+Message-ID: <20231115191607.977605201@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,80 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
 
-[ Upstream commit 08365d3b9140c751a84f8027ac7d2e662958f768 ]
+[ Upstream commit 4f8005092cafc194ba6a8e5f39626ba0b9f08271 ]
 
-We shouldn't advertise arbitrary checksum flags since we had
-to remove support for it due to broken hardware.
+Fix below checkpatch warning:
 
-Fixes: ec18e7d4d20d ("wifi: iwlwifi: mvm: use old checksum for Bz A-step")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231017115047.e37327f1a129.Iaee86b00db4db791cd90adaf15384b8c87d2ad49@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+  WARNING: Missing a blank line after declarations
+  #2233: FILE: drivers/net/can/usb/etas_es58x/es58x_core.c:2233:
+  +		int ret = es58x_init_netdev(es58x_dev, ch_idx);
+  +		if (ret) {
+
+Fixes: d8f26fd689dd ("can: etas_es58x: remove es58x_get_product_info()")
+Signed-off-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Link: https://lore.kernel.org/all/20230924110914.183898-3-mailhol.vincent@wanadoo.fr
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 4 ++--
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c     | 2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-config.h | 5 +----
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/net/can/usb/etas_es58x/es58x_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index 3d223014cfe6d..42e765fe3cfe1 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -158,7 +158,7 @@ const struct iwl_cfg iwl_cfg_bz = {
- 	.fw_name_mac = "bz",
- 	.uhb_supported = true,
- 	IWL_DEVICE_BZ,
--	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
-+	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
- 	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
- };
+diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
+index 0c7f7505632cd..5e3a72b7c4691 100644
+--- a/drivers/net/can/usb/etas_es58x/es58x_core.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
+@@ -2230,6 +2230,7 @@ static int es58x_probe(struct usb_interface *intf,
  
-@@ -166,7 +166,7 @@ const struct iwl_cfg iwl_cfg_gl = {
- 	.fw_name_mac = "gl",
- 	.uhb_supported = true,
- 	IWL_DEVICE_BZ,
--	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
-+	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
- 	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
- };
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-index d6243025993ea..604e9cef6baac 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-@@ -151,7 +151,7 @@ const struct iwl_cfg iwl_cfg_sc = {
- 	.fw_name_mac = "sc",
- 	.uhb_supported = true,
- 	IWL_DEVICE_SC,
--	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
-+	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
- 	.num_rbds = IWL_NUM_RBDS_SC_EHT,
- };
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-index 241a9e3f2a1a7..f45f645ca6485 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
-@@ -86,10 +86,7 @@ enum iwl_nvm_type {
- #define IWL_DEFAULT_MAX_TX_POWER 22
- #define IWL_TX_CSUM_NETIF_FLAGS (NETIF_F_IPV6_CSUM | NETIF_F_IP_CSUM |\
- 				 NETIF_F_TSO | NETIF_F_TSO6)
--#define IWL_TX_CSUM_NETIF_FLAGS_BZ (NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6)
--#define IWL_CSUM_NETIF_FLAGS_MASK (IWL_TX_CSUM_NETIF_FLAGS | \
--				   IWL_TX_CSUM_NETIF_FLAGS_BZ | \
--				   NETIF_F_RXCSUM)
-+#define IWL_CSUM_NETIF_FLAGS_MASK (IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM)
- 
- /* Antenna presence definitions */
- #define	ANT_NONE	0x0
+ 	for (ch_idx = 0; ch_idx < es58x_dev->num_can_ch; ch_idx++) {
+ 		int ret = es58x_init_netdev(es58x_dev, ch_idx);
++
+ 		if (ret) {
+ 			es58x_free_netdevs(es58x_dev);
+ 			return ret;
 -- 
 2.42.0
 
