@@ -2,36 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D86767ECF17
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2922D7ECF18
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235219AbjKOTqS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57774 "EHLO
+        id S235223AbjKOTqV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:46:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235227AbjKOTqR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:17 -0500
+        with ESMTP id S235217AbjKOTqU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A54E09E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:14 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A55EC433CC;
-        Wed, 15 Nov 2023 19:46:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABFE1189
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC83C433CB;
+        Wed, 15 Nov 2023 19:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077574;
-        bh=tjiVi5hdbNwyFrbbUIHTcth20pODqALE1qPGKXR3qvw=;
+        s=korg; t=1700077576;
+        bh=ZPWBaLOZqeO9HGjslFoOUjADxtNsJNa++Sr+MKmWM6g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cP2PDdy3oHszVKfcLq+OcdgsQ0EZkWgKpHH4p8HE2fRPq1NfxI6HME9AcCnb5QHjg
-         qFZm/UplJGVt31BRbBREvmFv3PbrCtrzxPcRbg/5rpRWybF0Dje/R6KfUel4fkPX9f
-         5tpBbJpwai8e3QmvIfgOyd34NCVZxbp/BQyyOGek=
+        b=uCkQ5GqzRPACOiaVXNl79X2WUqolwfoaUis+KDCQ/PW2aPiJu4QEtDeL6SR0YpIoE
+         ROFq2vshBd1jAN+zp0YJGIoWEWeK0cCP2esT6yhixiXIUn11L15CDDbzpSrqiZonxp
+         D0UIE+CjNhP+5jGTQy0jQIBbX5q6pepUrKV6aWPs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Mars Cheng <marscheng@google.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Yen-lin Lai <yenlinlai@google.com>,
+        Daniel Mentz <danielmentz@google.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 386/603] ASoC: fsl: Fix PM disable depth imbalance in fsl_easrc_probe
-Date:   Wed, 15 Nov 2023 14:15:31 -0500
-Message-ID: <20231115191639.962243982@linuxfoundation.org>
+Subject: [PATCH 6.6 387/603] scsi: ufs: core: Leave space for \0 in utf8 desc string
+Date:   Wed, 15 Nov 2023 14:15:32 -0500
+Message-ID: <20231115191640.014715094@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -54,52 +58,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Daniel Mentz <danielmentz@google.com>
 
-[ Upstream commit 9e630efb5a4af56fdb15aa10405f5cfd3f5f5b83 ]
+[ Upstream commit a75a16c62a2540f11eeae4f2b50e95deefb652ea ]
 
-The pm_runtime_enable will increase power disable depth. Thus
-a pairing decrement is needed on the error handling path to
-keep it balanced according to context. We fix it by calling
-pm_runtime_disable when error returns.
+utf16s_to_utf8s does not NULL terminate the output string. For us to be
+able to add a NULL character when utf16s_to_utf8s returns, we need to make
+sure that there is space for such NULL character at the end of the output
+buffer. We can achieve this by passing an output buffer size to
+utf16s_to_utf8s that is one character less than what we allocated.
 
-Fixes: 955ac624058f ("ASoC: fsl_easrc: Add EASRC ASoC CPU DAI drivers")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_C0D62E6D89818179A02A04A0C248F0DDC40A@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Other call sites of utf16s_to_utf8s appear to be using the same technique
+where they artificially reduce the buffer size by one to leave space for a
+NULL character or line feed character.
+
+Fixes: 4b828fe156a6 ("scsi: ufs: revamp string descriptor reading")
+Reviewed-by: Mars Cheng <marscheng@google.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Yen-lin Lai <yenlinlai@google.com>
+Signed-off-by: Daniel Mentz <danielmentz@google.com>
+Link: https://lore.kernel.org/r/20231017182026.2141163-1-danielmentz@google.com
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_easrc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_easrc.c b/sound/soc/fsl/fsl_easrc.c
-index ba62995c909ac..ec53bda46a467 100644
---- a/sound/soc/fsl/fsl_easrc.c
-+++ b/sound/soc/fsl/fsl_easrc.c
-@@ -1966,17 +1966,21 @@ static int fsl_easrc_probe(struct platform_device *pdev)
- 					      &fsl_easrc_dai, 1);
- 	if (ret) {
- 		dev_err(dev, "failed to register ASoC DAI\n");
--		return ret;
-+		goto err_pm_disable;
- 	}
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 8382e8cfa414a..5767642982c13 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -3632,7 +3632,7 @@ int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
+ 		 */
+ 		ret = utf16s_to_utf8s(uc_str->uc,
+ 				      uc_str->len - QUERY_DESC_HDR_SIZE,
+-				      UTF16_BIG_ENDIAN, str, ascii_len);
++				      UTF16_BIG_ENDIAN, str, ascii_len - 1);
  
- 	ret = devm_snd_soc_register_component(dev, &fsl_asrc_component,
- 					      NULL, 0);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register ASoC platform\n");
--		return ret;
-+		goto err_pm_disable;
- 	}
- 
- 	return 0;
-+
-+err_pm_disable:
-+	pm_runtime_disable(&pdev->dev);
-+	return ret;
- }
- 
- static void fsl_easrc_remove(struct platform_device *pdev)
+ 		/* replace non-printable or non-ASCII characters with spaces */
+ 		for (i = 0; i < ret; i++)
 -- 
 2.42.0
 
