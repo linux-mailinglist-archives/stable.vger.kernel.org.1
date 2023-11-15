@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5213B7ECDE7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70CD27ECB75
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234708AbjKOTjF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40692 "EHLO
+        id S233121AbjKOTW2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:22:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234707AbjKOTjF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:05 -0500
+        with ESMTP id S232988AbjKOTW0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 616BC19E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:02 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78811C433C8;
-        Wed, 15 Nov 2023 19:39:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB26D4A
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96DA1C433C7;
+        Wed, 15 Nov 2023 19:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077141;
-        bh=0z/5Y0geWI9Pa1bP0iRdz033zyTeZXkVlrqXIe34Ow0=;
+        s=korg; t=1700076140;
+        bh=zTTaYBASHSCTQuWJN18FtGZL+j4gw0YWH74yLC5htZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gPeZA3KCRk31p5ltNjwIVMTnYYm/e7STSlGjrs5LSDnn2XofOzD5mn4az5cJLUBI2
-         C/ct2L/hYU8jiQlasYK2SbdecWLgnWipfmf/w3G+SAh/Wzwqz+r/N4wUZ/xzg+bksS
-         wgxDb2EVventRJTBGcPsTvZw4Z2kohK0EIan/wOA=
+        b=CI7o4pOQmnSVy83f/W8mG8Gz1cqWUWcx1qTZ5hnUvnxg132mWzv8AvVieGW7DAUjF
+         AuWAAKaic18jB2CMW3PWJiDBa60A5ZINfVSc1SdbBo5BFKsytaTlIP0Zhl63F7hIOU
+         w2JNv1FeQnUOt63jC6K/HCpL4PQRGjEOErLzPVPw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Neal Cardwell <ncardwell@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/603] wifi: iwlwifi: mvm: Correctly set link configuration
-Date:   Wed, 15 Nov 2023 14:11:22 -0500
-Message-ID: <20231115191622.702349089@linuxfoundation.org>
+Subject: [PATCH 6.5 099/550] tcp_metrics: properly set tp->snd_ssthresh in tcp_init_metrics()
+Date:   Wed, 15 Nov 2023 14:11:23 -0500
+Message-ID: <20231115191607.577149756@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,69 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 35b9281fb710ea9fa47dca56774f4a9606fe9154 ]
+[ Upstream commit 081480014a64a69d901f8ef1ffdd56d6085cf87e ]
 
-In case the link puncturing is changed such that the channel
-is no longer punctured, configure the FW correctly indicating
-the EHT parameters changed (with a 0 punctured map).
+We need to set tp->snd_ssthresh to TCP_INFINITE_SSTHRESH
+in the case tcp_get_metrics() fails for some reason.
 
-Allow EHT parameters configuration only when the link really
-supports EHT.
-
-Fixes: 55eb1c5fa4b2 ("wifi: iwlwifi: mvm: add support for the new LINK command")
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231004123422.2666ef86e032.I4b0e95722660acc5345ceefba7e8866a69572e8e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9ad7c049f0f7 ("tcp: RFC2988bis + taking RTT sample from 3WHS for the passive open side")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/link.c       | 13 ++++++++-----
- .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c   |  2 +-
- 2 files changed, 9 insertions(+), 6 deletions(-)
+ net/ipv4/tcp_metrics.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-index ace82e2c5bd91..4f8d2a3191ec7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
-@@ -194,11 +194,14 @@ int iwl_mvm_link_changed(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		flags_mask |= LINK_FLG_MU_EDCA_CW;
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 61c573a72db63..5a08dc46a1130 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -470,6 +470,10 @@ void tcp_init_metrics(struct sock *sk)
+ 	u32 val, crtt = 0; /* cached RTT scaled by 8 */
+ 
+ 	sk_dst_confirm(sk);
++	/* ssthresh may have been reduced unnecessarily during.
++	 * 3WHS. Restore it back to its initial default.
++	 */
++	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
+ 	if (!dst)
+ 		goto reset;
+ 
+@@ -489,11 +493,6 @@ void tcp_init_metrics(struct sock *sk)
+ 		tp->snd_ssthresh = val;
+ 		if (tp->snd_ssthresh > tp->snd_cwnd_clamp)
+ 			tp->snd_ssthresh = tp->snd_cwnd_clamp;
+-	} else {
+-		/* ssthresh may have been reduced unnecessarily during.
+-		 * 3WHS. Restore it back to its initial default.
+-		 */
+-		tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
  	}
- 
--	if (link_conf->eht_puncturing && !iwlwifi_mod_params.disable_11be)
--		cmd.puncture_mask = cpu_to_le16(link_conf->eht_puncturing);
--	else
--		/* This flag can be set only if the MAC has eht support */
--		changes &= ~LINK_CONTEXT_MODIFY_EHT_PARAMS;
-+	if (changes & LINK_CONTEXT_MODIFY_EHT_PARAMS) {
-+		if (iwlwifi_mod_params.disable_11be ||
-+		    !link_conf->eht_support)
-+			changes &= ~LINK_CONTEXT_MODIFY_EHT_PARAMS;
-+		else
-+			cmd.puncture_mask =
-+				cpu_to_le16(link_conf->eht_puncturing);
-+	}
- 
- 	cmd.bss_color = link_conf->he_bss_color.color;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 778a311b500bc..a3a2e9a1fa7bd 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -653,7 +653,7 @@ iwl_mvm_mld_link_info_changed_station(struct iwl_mvm *mvm,
- 	}
- 
- 	/* Update EHT Puncturing info */
--	if (changes & BSS_CHANGED_EHT_PUNCTURING && vif->cfg.assoc && has_eht)
-+	if (changes & BSS_CHANGED_EHT_PUNCTURING && vif->cfg.assoc)
- 		link_changes |= LINK_CONTEXT_MODIFY_EHT_PARAMS;
- 
- 	if (link_changes) {
+ 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
+ 	if (val && tp->reordering != val)
 -- 
 2.42.0
 
