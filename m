@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 422F77ED0B3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07DE87ED0B8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343646AbjKOT5L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:57:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
+        id S1343802AbjKOT5M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343886AbjKOT5F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:05 -0500
+        with ESMTP id S1343898AbjKOT5H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B5FAAF
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:02 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935AEC433C8;
-        Wed, 15 Nov 2023 19:57:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97DD81BC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C6EDC433CB;
+        Wed, 15 Nov 2023 19:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078221;
-        bh=yHTKKqi+zZBwgo6MKSJqgGCKjEDUtu2pNZjOiSP8LXw=;
+        s=korg; t=1700078223;
+        bh=ryCiCJpdVD3/mmoZQ6vxNfCAdaUcpi/JRKAaffHj6Lc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KVdOjHLut8X3ht840QQTCFAnKoI4dbWbS+oXTcmH8XTcIBVETH7jBSKGAzb1DoIGC
-         Tk7LQLd6T58kORKNhFGAYiVp4jVFu8NSNY7GFEBthPfWSkm/LhmhfCNx/Tr8zzaJ+T
-         +MUU1jl0dwQlCu5Pl5R8nDkeSypeaEtEbLlhbkQQ=
+        b=YQnTGjNMnzJytAN4rI36s8TF+ykj9uCsiXL9WRrm94sa5q6Sa7f8Cv9QjQtuAFRLB
+         WQnlHsbtfbK9LVplnANEERwIqIOFxwRGFBt9YF4QUm6FKz9KGyZQrYjSqma1kcRo5I
+         lNnjVvajsbHFwXX18ZxkRX+2Exta12J65zUQY7l8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
         Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/379] ASoC: cs35l41: Verify PM runtime resume errors in IRQ handler
-Date:   Wed, 15 Nov 2023 14:24:21 -0500
-Message-ID: <20231115192656.103845996@linuxfoundation.org>
+Subject: [PATCH 6.1 187/379] ASoC: cs35l41: Undo runtime PM changes at driver exit time
+Date:   Wed, 15 Nov 2023 14:24:22 -0500
+Message-ID: <20231115192656.166216011@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -58,51 +57,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 9f8948db9849d202dee3570507d3a0642f92d632 ]
+[ Upstream commit 2d5661e6008ae1a1cd6df7cc844908fb8b982c58 ]
 
-The interrupt handler invokes pm_runtime_get_sync() without checking the
-returned error code.
+According to the documentation, drivers are responsible for undoing at
+removal time all runtime PM changes done during probing.
 
-Add a proper verification and switch to pm_runtime_resume_and_get(), to
-avoid the need to call pm_runtime_put_noidle() for decrementing the PM
-usage counter before returning from the error condition.
+Hence, add the missing calls to pm_runtime_dont_use_autosuspend(), which
+are necessary for undoing pm_runtime_use_autosuspend().
+
+Note this would have been handled implicitly by
+devm_pm_runtime_enable(), but there is a need to continue using
+pm_runtime_enable()/pm_runtime_disable() in order to ensure the runtime
+PM is disabled as soon as the remove() callback is entered.
 
 Fixes: f517ba4924ad ("ASoC: cs35l41: Add support for hibernate memory retention mode")
 Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20230907171010.1447274-6-cristian.ciocaltea@collabora.com
+Link: https://lore.kernel.org/r/20230907171010.1447274-7-cristian.ciocaltea@collabora.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l41.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs35l41.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index 2f4b0ee93aced..e428898e42112 100644
+index e428898e42112..e91c1a4640e46 100644
 --- a/sound/soc/codecs/cs35l41.c
 +++ b/sound/soc/codecs/cs35l41.c
-@@ -374,10 +374,18 @@ static irqreturn_t cs35l41_irq(int irq, void *data)
- 	struct cs35l41_private *cs35l41 = data;
- 	unsigned int status[4] = { 0, 0, 0, 0 };
- 	unsigned int masks[4] = { 0, 0, 0, 0 };
--	int ret = IRQ_NONE;
- 	unsigned int i;
-+	int ret;
+@@ -1338,6 +1338,7 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
+ 	return 0;
  
--	pm_runtime_get_sync(cs35l41->dev);
-+	ret = pm_runtime_resume_and_get(cs35l41->dev);
-+	if (ret < 0) {
-+		dev_err(cs35l41->dev,
-+			"pm_runtime_resume_and_get failed in %s: %d\n",
-+			__func__, ret);
-+		return IRQ_NONE;
-+	}
-+
-+	ret = IRQ_NONE;
+ err_pm:
++	pm_runtime_dont_use_autosuspend(cs35l41->dev);
+ 	pm_runtime_disable(cs35l41->dev);
+ 	pm_runtime_put_noidle(cs35l41->dev);
  
- 	for (i = 0; i < ARRAY_SIZE(status); i++) {
- 		regmap_read(cs35l41->regmap,
+@@ -1354,6 +1355,7 @@ EXPORT_SYMBOL_GPL(cs35l41_probe);
+ void cs35l41_remove(struct cs35l41_private *cs35l41)
+ {
+ 	pm_runtime_get_sync(cs35l41->dev);
++	pm_runtime_dont_use_autosuspend(cs35l41->dev);
+ 	pm_runtime_disable(cs35l41->dev);
+ 
+ 	regmap_write(cs35l41->regmap, CS35L41_IRQ1_MASK1, 0xFFFFFFFF);
 -- 
 2.42.0
 
