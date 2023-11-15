@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 904BB7ECE3E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 381D87ECBCB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234939AbjKOTlr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:41:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39238 "EHLO
+        id S232740AbjKOTYc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234946AbjKOTlq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:46 -0500
+        with ESMTP id S232731AbjKOTYb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B83BAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24718C433C7;
-        Wed, 15 Nov 2023 19:41:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 459AA12C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D428C433C9;
+        Wed, 15 Nov 2023 19:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077303;
-        bh=Zo1UfXAkiVKpOeuWi5q7GFmMnvIXgiGpLpfIxXxH+wA=;
+        s=korg; t=1700076267;
+        bh=zs+fsk/04UpO9kRwf5jaIyZKhofjQ3GdOJ2peZjcNP8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nlERZANiVoqvN8+2sP50wbSZTIEyPFdQbz2sV0tFVVgPXwpRWnNBwIgzhC1rXH06/
-         2WPV7KLk2bewrpw/G5OCzIQ0RNBRiLLgAoMMSPP8smtkTuBLhaUCxz7ywPAX4eD1nM
-         0oDhMpBCeaqlISEGQE9jD+61301K7ThQ2b9FyRkA=
+        b=nLBOirfmDDD0hI+lswsXYQwvaPVd2hmy4N+pwgRKuwts3rNSnd849DQrYIU2AUmaj
+         9sj643s7+x4yT+QWKkM6dM9b48zmD3mHSVhn0FyvD2Asg7miFAGf2O9ChOwLEYcTCR
+         jVIQY4WjPY9yIuM82CzLgmDvosFqQOlqCW08ydV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Kathiravan T <quic_kathirav@quicinc.com>,
+        Varadarajan Narayanan <quic_varada@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/603] drm/rockchip: vop2: Add missing call to crtc reset helper
-Date:   Wed, 15 Nov 2023 14:12:46 -0500
-Message-ID: <20231115191628.578024954@linuxfoundation.org>
+Subject: [PATCH 6.5 183/550] clk: qcom: apss-ipq-pll: Use stromer plus ops for stromer plus pll
+Date:   Wed, 15 Nov 2023 14:12:47 -0500
+Message-ID: <20231115191613.410198898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-[ Upstream commit 4d49d87b3606369c6e29b9d051892ee1a6fc4e75 ]
+[ Upstream commit 267e29198436a8cb6770213471f72502c895096a ]
 
-Add missing call to crtc reset helper to properly vblank reset.
+The set rate and determine rate operations are different between
+Stromer and Stromer Plus PLLs. Since the programming sequence is
+different, the PLLs dont get configured properly and random,
+inexplicable crash/freeze is seen. Hence, use stromer plus ops
+for ipq_pll_stromer_plus.
 
-Also move vop2_crtc_reset and call vop2_crtc_destroy_state to simplify
-and remove duplicated code.
-
-Fixes: 604be85547ce ("drm/rockchip: Add VOP2 driver")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230621223311.2239547-6-jonas@kwiboo.se
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: c7ef7fbb1ccf ("clk: qcom: apss-ipq-pll: add support for IPQ5332")
+Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+Link: https://lore.kernel.org/r/c86ecaa23dc4f39650bcf4a3bd54a617a932e4fd.1697781921.git.quic_varada@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 31 +++++++++-----------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ drivers/clk/qcom/apss-ipq-pll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index d843c19c146db..c306806aa3dea 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -2079,23 +2079,6 @@ static const struct drm_crtc_helper_funcs vop2_crtc_helper_funcs = {
- 	.atomic_disable = vop2_crtc_atomic_disable,
+diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
+index ce28d882ee785..f44be99999ec0 100644
+--- a/drivers/clk/qcom/apss-ipq-pll.c
++++ b/drivers/clk/qcom/apss-ipq-pll.c
+@@ -68,7 +68,7 @@ static struct clk_alpha_pll ipq_pll_stromer_plus = {
+ 				.fw_name = "xo",
+ 			},
+ 			.num_parents = 1,
+-			.ops = &clk_alpha_pll_stromer_ops,
++			.ops = &clk_alpha_pll_stromer_plus_ops,
+ 		},
+ 	},
  };
- 
--static void vop2_crtc_reset(struct drm_crtc *crtc)
--{
--	struct rockchip_crtc_state *vcstate = to_rockchip_crtc_state(crtc->state);
--
--	if (crtc->state) {
--		__drm_atomic_helper_crtc_destroy_state(crtc->state);
--		kfree(vcstate);
--	}
--
--	vcstate = kzalloc(sizeof(*vcstate), GFP_KERNEL);
--	if (!vcstate)
--		return;
--
--	crtc->state = &vcstate->base;
--	crtc->state->crtc = crtc;
--}
--
- static struct drm_crtc_state *vop2_crtc_duplicate_state(struct drm_crtc *crtc)
- {
- 	struct rockchip_crtc_state *vcstate;
-@@ -2122,6 +2105,20 @@ static void vop2_crtc_destroy_state(struct drm_crtc *crtc,
- 	kfree(vcstate);
- }
- 
-+static void vop2_crtc_reset(struct drm_crtc *crtc)
-+{
-+	struct rockchip_crtc_state *vcstate =
-+		kzalloc(sizeof(*vcstate), GFP_KERNEL);
-+
-+	if (crtc->state)
-+		vop2_crtc_destroy_state(crtc, crtc->state);
-+
-+	if (vcstate)
-+		__drm_atomic_helper_crtc_reset(crtc, &vcstate->base);
-+	else
-+		__drm_atomic_helper_crtc_reset(crtc, NULL);
-+}
-+
- static const struct drm_crtc_funcs vop2_crtc_funcs = {
- 	.set_config = drm_atomic_helper_set_config,
- 	.page_flip = drm_atomic_helper_page_flip,
 -- 
 2.42.0
 
