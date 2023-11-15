@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4DC7ECC4C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:28:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D667ECF0B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233499AbjKOT2B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:28:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33356 "EHLO
+        id S235241AbjKOTqE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:46:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233796AbjKOT2A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:28:00 -0500
+        with ESMTP id S235224AbjKOTqA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD5E1B6
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34107C433C7;
-        Wed, 15 Nov 2023 19:27:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B3FAD55
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:54 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05C6C433CA;
+        Wed, 15 Nov 2023 19:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076476;
-        bh=XMP/fgH0Oa2EDdF2DWO6cBmeKYLQMNL/hR6zy/dSyWs=;
+        s=korg; t=1700077554;
+        bh=fH+0tt9z/AaTXDQTxIr1H2vTiShUZwZHuvpl3tHdSWY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NMsqAnyxqG7BxupES644RsqUNHqyS/KniZxzhy6qFNRHI6uyBt83cDtEfteWeieyz
-         4oMD9b00EhZSWC6wL66wWJNmOPddaFUVAqfYlvWyItcGz2FnnNuMU5EL0UEI2PatgB
-         O+Mz3GinmqNlKezw02itFfPSpkdxXPeGk8QB4Ujk=
+        b=dWu+G7AMGc/cvwHLKmEvouf7/wXWEkaynRosdMAykJexPeMKX5jRVJAnWwSIAUYkv
+         naUcXSpTosOO/O7rmXUNEisWOOVUf+wAe2bqVPKEDvaNdJXKk4FCVg9Axgs+UJw5BI
+         bLl4EeZjjPGXj79juDtTLyltCgZSnbHIiipB2jRU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Wahren <wahrenst@gmx.net>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Chen Ni <nichen@iscas.ac.cn>,
+        Ira Weiny <ira.weiny@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 313/550] hwrng: bcm2835 - Fix hwrng throughput regression
-Date:   Wed, 15 Nov 2023 14:14:57 -0500
-Message-ID: <20231115191622.541910629@linuxfoundation.org>
+Subject: [PATCH 6.6 353/603] libnvdimm/of_pmem: Use devm_kstrdup instead of kstrdup and check its return value
+Date:   Wed, 15 Nov 2023 14:14:58 -0500
+Message-ID: <20231115191637.963241090@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit b58a36008bfa1aadf55f516bcbfae40c779eb54b ]
+[ Upstream commit 6fd4ebfc4d61e3097b595ab2725d513e3bbd6739 ]
 
-The last RCU stall fix caused a massive throughput regression of the
-hwrng on Raspberry Pi 0 - 3. hwrng_msleep doesn't sleep precisely enough
-and usleep_range doesn't allow scheduling. So try to restore the
-best possible throughput by introducing hwrng_yield which interruptable
-sleeps for one jiffy.
+Use devm_kstrdup() instead of kstrdup() and check its return value to
+avoid memory leak.
 
-Some performance measurements on Raspberry Pi 3B+ (arm64/defconfig):
-
-sudo dd if=/dev/hwrng of=/dev/null count=1 bs=10000
-
-cpu_relax              ~138025 Bytes / sec
-hwrng_msleep(1000)         ~13 Bytes / sec
-hwrng_yield              ~2510 Bytes / sec
-
-Fixes: 96cb9d055445 ("hwrng: bcm2835 - use hwrng_msleep() instead of cpu_relax()")
-Link: https://lore.kernel.org/linux-arm-kernel/bc97ece5-44a3-4c4e-77da-2db3eb66b128@gmx.net/
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 49bddc73d15c ("libnvdimm/of_pmem: Provide a unique name for bus provider")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/bcm2835-rng.c | 2 +-
- drivers/char/hw_random/core.c        | 6 ++++++
- include/linux/hw_random.h            | 1 +
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/nvdimm/of_pmem.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/char/hw_random/bcm2835-rng.c b/drivers/char/hw_random/bcm2835-rng.c
-index e98fcac578d66..634eab4776f32 100644
---- a/drivers/char/hw_random/bcm2835-rng.c
-+++ b/drivers/char/hw_random/bcm2835-rng.c
-@@ -71,7 +71,7 @@ static int bcm2835_rng_read(struct hwrng *rng, void *buf, size_t max,
- 	while ((rng_readl(priv, RNG_STATUS) >> 24) == 0) {
- 		if (!wait)
- 			return 0;
--		hwrng_msleep(rng, 1000);
-+		hwrng_yield(rng);
- 	}
+diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
+index 1b9f5b8a6167e..d3fca0ab62900 100644
+--- a/drivers/nvdimm/of_pmem.c
++++ b/drivers/nvdimm/of_pmem.c
+@@ -30,7 +30,13 @@ static int of_pmem_region_probe(struct platform_device *pdev)
+ 	if (!priv)
+ 		return -ENOMEM;
  
- 	num_words = rng_readl(priv, RNG_STATUS) >> 24;
-diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
-index f34d356fe2c06..599a4bc2c5484 100644
---- a/drivers/char/hw_random/core.c
-+++ b/drivers/char/hw_random/core.c
-@@ -679,6 +679,12 @@ long hwrng_msleep(struct hwrng *rng, unsigned int msecs)
- }
- EXPORT_SYMBOL_GPL(hwrng_msleep);
- 
-+long hwrng_yield(struct hwrng *rng)
-+{
-+	return wait_for_completion_interruptible_timeout(&rng->dying, 1);
-+}
-+EXPORT_SYMBOL_GPL(hwrng_yield);
+-	priv->bus_desc.provider_name = kstrdup(pdev->name, GFP_KERNEL);
++	priv->bus_desc.provider_name = devm_kstrdup(&pdev->dev, pdev->name,
++							GFP_KERNEL);
++	if (!priv->bus_desc.provider_name) {
++		kfree(priv);
++		return -ENOMEM;
++	}
 +
- static int __init hwrng_modinit(void)
- {
- 	int ret;
-diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
-index 8a3115516a1ba..136e9842120e8 100644
---- a/include/linux/hw_random.h
-+++ b/include/linux/hw_random.h
-@@ -63,5 +63,6 @@ extern void hwrng_unregister(struct hwrng *rng);
- extern void devm_hwrng_unregister(struct device *dve, struct hwrng *rng);
+ 	priv->bus_desc.module = THIS_MODULE;
+ 	priv->bus_desc.of_node = np;
  
- extern long hwrng_msleep(struct hwrng *rng, unsigned int msecs);
-+extern long hwrng_yield(struct hwrng *rng);
- 
- #endif /* LINUX_HWRANDOM_H_ */
 -- 
 2.42.0
 
