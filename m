@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C1507ECB58
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D9D47ECDAC
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232882AbjKOTVo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42068 "EHLO
+        id S234609AbjKOThp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232919AbjKOTVh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:37 -0500
+        with ESMTP id S234605AbjKOTho (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7AA21AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4942DC433CA;
-        Wed, 15 Nov 2023 19:21:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3161D9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64FDC433C8;
+        Wed, 15 Nov 2023 19:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076094;
-        bh=kn1WfBewYm32RfkOrrjm6vjPKY61y22Keaa0AgGQ6Tk=;
+        s=korg; t=1700077060;
+        bh=Xr8wXcKe4ODwq7TXwgHEb7VkYbP5UuOIhITS6Bz2ZiQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RhaeqTnQUyvXh6bYuRepfYOyx6j7GUyDhMC7QG/5RqT9zE0jEL+xqYwQOV95yaB3Z
-         I5XwBQ6aa/5VYY1rIlZBnzkHnYOHv+S+3DMYwfJpj3Jx7MX+pgMAy+cAg2dmqYID5/
-         /2tcrZkkZ4++KvGjsrYlqGaAZTzDho0BLzIKWKds=
+        b=G5eeixWJchl2H2zA5rfLj1vPWQil8n5AZJ6EOUiem80k3mpQQWy/x3+/+JrTRpUMY
+         fV1wXJz0IA0tWIuj49NJV4pLZuxzO9frfl9NGbBCvTjVMDW+do5ErRIE8t94le0HLm
+         9AgAdIlB0RGKWpAIRwI9wOEWRyjOHYbc9ifYAT84=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Geoff Levand <geoff@infradead.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 073/550] net: spider_net: Use size_add() in call to struct_size()
+Subject: [PATCH 6.6 112/603] can: dev: can_restart(): fix race condition between controller restart and netif_carrier_on()
 Date:   Wed, 15 Nov 2023 14:10:57 -0500
-Message-ID: <20231115191605.759064848@linuxfoundation.org>
+Message-ID: <20231115191620.975243330@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,42 +51,103 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 0201409079b975e46cc40e8bdff4bd61329ee10f ]
+[ Upstream commit 6841cab8c4504835e4011689cbdb3351dec693fd ]
 
-If, for any reason, the open-coded arithmetic causes a wraparound,
-the protection that `struct_size()` adds against potential integer
-overflows is defeated. Fix this by hardening call to `struct_size()`
-with `size_add()`.
+This race condition was discovered while updating the at91_can driver
+to use can_bus_off(). The following scenario describes how the
+converted at91_can driver would behave.
 
-Fixes: 3f1071ec39f7 ("net: spider_net: Use struct_size() helper")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Geoff Levand <geoff@infradead.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+When a CAN device goes into BUS-OFF state, the driver usually
+stops/resets the CAN device and calls can_bus_off().
+
+This function sets the netif carrier to off, and (if configured by
+user space) schedules a delayed work that calls can_restart() to
+restart the CAN device.
+
+The can_restart() function first checks if the carrier is off and
+triggers an error message if the carrier is OK.
+
+Then it calls the driver's do_set_mode() function to restart the
+device, then it sets the netif carrier to on. There is a race window
+between these two calls.
+
+The at91 CAN controller (observed on the sama5d3, a single core 32 bit
+ARM CPU) has a hardware limitation. If the device goes into bus-off
+while sending a CAN frame, there is no way to abort the sending of
+this frame. After the controller is enabled again, another attempt is
+made to send it.
+
+If the bus is still faulty, the device immediately goes back to the
+bus-off state. The driver calls can_bus_off(), the netif carrier is
+switched off and another can_restart is scheduled. This occurs within
+the race window before the original can_restart() handler marks the
+netif carrier as OK. This would cause the 2nd can_restart() to be
+called with an OK netif carrier, resulting in an error message.
+
+The flow of the 1st can_restart() looks like this:
+
+can_restart()
+    // bail out if netif_carrier is OK
+
+    netif_carrier_ok(dev)
+    priv->do_set_mode(dev, CAN_MODE_START)
+        // enable CAN controller
+        // sama5d3 restarts sending old message
+
+        // CAN devices goes into BUS_OFF, triggers IRQ
+
+// IRQ handler start
+    at91_irq()
+        at91_irq_err_line()
+            can_bus_off()
+                netif_carrier_off()
+                schedule_delayed_work()
+// IRQ handler end
+
+    netif_carrier_on()
+
+The 2nd can_restart() will be called with an OK netif carrier and the
+error message will be printed.
+
+To close the race window, first set the netif carrier to on, then
+restart the controller. In case the restart fails with an error code,
+roll back the netif carrier to off.
+
+Fixes: 39549eef3587 ("can: CAN Network device driver and Netlink interface")
+Link: https://lore.kernel.org/all/20231005-can-dev-fix-can-restart-v2-2-91b5c1fd922c@pengutronix.de
+Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/toshiba/spider_net.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/dev/dev.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/toshiba/spider_net.c b/drivers/net/ethernet/toshiba/spider_net.c
-index 50d7eacfec582..87e67121477cb 100644
---- a/drivers/net/ethernet/toshiba/spider_net.c
-+++ b/drivers/net/ethernet/toshiba/spider_net.c
-@@ -2332,7 +2332,7 @@ spider_net_alloc_card(void)
- 	struct spider_net_card *card;
+diff --git a/drivers/net/can/dev/dev.c b/drivers/net/can/dev/dev.c
+index a5bbdfa9a2693..735d5de3caa0e 100644
+--- a/drivers/net/can/dev/dev.c
++++ b/drivers/net/can/dev/dev.c
+@@ -154,11 +154,12 @@ static void can_restart(struct net_device *dev)
+ 	priv->can_stats.restarts++;
  
- 	netdev = alloc_etherdev(struct_size(card, darray,
--					    tx_descriptors + rx_descriptors));
-+					    size_add(tx_descriptors, rx_descriptors)));
- 	if (!netdev)
- 		return NULL;
+ 	/* Now restart the device */
+-	err = priv->do_set_mode(dev, CAN_MODE_START);
+-
+ 	netif_carrier_on(dev);
+-	if (err)
++	err = priv->do_set_mode(dev, CAN_MODE_START);
++	if (err) {
+ 		netdev_err(dev, "Error %d during restart", err);
++		netif_carrier_off(dev);
++	}
+ }
  
+ static void can_restart_work(struct work_struct *work)
 -- 
 2.42.0
 
