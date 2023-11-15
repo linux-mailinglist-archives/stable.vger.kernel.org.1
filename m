@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 823517ED4A0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDB9E7ED305
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344694AbjKOU6k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34734 "EHLO
+        id S233662AbjKOUpu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344631AbjKOU5n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:43 -0500
+        with ESMTP id S233753AbjKOUpo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2ECF19A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606ECC4E69D;
-        Wed, 15 Nov 2023 20:51:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B461730
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C11C433CC;
+        Wed, 15 Nov 2023 20:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081482;
-        bh=PeR3HfCe4KPF4C7k3HgUPm2GdjJHE10NE/0SUIdaN+k=;
+        s=korg; t=1700081138;
+        bh=z+fL77yVZ//O2CfgoHJu1XYDhVF32R98SkiIYyA1IZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DVnX4qXqm3qxHR/LaWmnLhgOHj/6uSlj9tzeQT/tHJrGqMuVe9GX27snxe2By5WRm
-         hTEN9+TTcI0EX4+y0Ej98sfWua6jNJ+XAh2J9ZQEytClBzfjzjYtn7VdSq80iz8zNE
-         BzqnqxB0QXuIemd7bort3VaOITBdCNQMs1Dk+MHE=
+        b=WJtzPVEJKgBj/Rtxl6W7TdRrMXPqAUt6db3S4OVuAbbEKYjw4uGWaX8iDSDcCs5xu
+         lg6rsEdGPKor1b17QUAkXNsHYL9kGR3EMP4Z4cxk11wG+2pO2qrb7e6AwwB8aJhXHf
+         8tLRCl0lHhLi4sm4B59b69MrJ/2eZy5a+tJrkTsw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Blixt <jonas.blixt@actia.se>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 181/244] USB: usbip: fix stub_dev hub disconnect
+Subject: [PATCH 4.19 61/88] f2fs: fix to initialize map.m_pblk in f2fs_precache_extents()
 Date:   Wed, 15 Nov 2023 15:36:13 -0500
-Message-ID: <20231115203559.251004863@linuxfoundation.org>
+Message-ID: <20231115191429.791790195@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,48 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Blixt <jonas.blixt@actia.se>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 97475763484245916735a1aa9a3310a01d46b008 ]
+[ Upstream commit 8b07c1fb0f1ad139373c8253f2fad8bc43fab07d ]
 
-If a hub is disconnected that has device(s) that's attached to the usbip layer
-the disconnect function might fail because it tries to release the port
-on an already disconnected hub.
+Otherwise, it may print random physical block address in tracepoint
+of f2fs_map_blocks() as below:
 
-Fixes: 6080cd0e9239 ("staging: usbip: claim ports used by shared devices")
-Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20230615092810.1215490-1-jonas.blixt@actia.se
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+f2fs_map_blocks: dev = (253,16), ino = 2297, file offset = 0, start blkaddr = 0xa356c421, len = 0x0, flags = 0
+
+Fixes: c4020b2da4c9 ("f2fs: support F2FS_IOC_PRECACHE_EXTENTS")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/usbip/stub_dev.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/f2fs/file.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/usbip/stub_dev.c b/drivers/usb/usbip/stub_dev.c
-index 3c6d452e3bf40..4104eea03e806 100644
---- a/drivers/usb/usbip/stub_dev.c
-+++ b/drivers/usb/usbip/stub_dev.c
-@@ -462,8 +462,13 @@ static void stub_disconnect(struct usb_device *udev)
- 	/* release port */
- 	rc = usb_hub_release_port(udev->parent, udev->portnum,
- 				  (struct usb_dev_state *) udev);
--	if (rc) {
--		dev_dbg(&udev->dev, "unable to release port\n");
-+	/*
-+	 * NOTE: If a HUB disconnect triggered disconnect of the down stream
-+	 * device usb_hub_release_port will return -ENODEV so we can safely ignore
-+	 * that error here.
-+	 */
-+	if (rc && (rc != -ENODEV)) {
-+		dev_dbg(&udev->dev, "unable to release port (%i)\n", rc);
- 		return;
- 	}
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 2a7249496c57e..043ce96ac1270 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -2892,6 +2892,7 @@ int f2fs_precache_extents(struct inode *inode)
+ 		return -EOPNOTSUPP;
  
+ 	map.m_lblk = 0;
++	map.m_pblk = 0;
+ 	map.m_next_pgofs = NULL;
+ 	map.m_next_extent = &m_next_extent;
+ 	map.m_seg_type = NO_CHECK_TYPE;
 -- 
 2.42.0
 
