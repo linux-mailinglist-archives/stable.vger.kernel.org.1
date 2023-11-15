@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12BEA7ECE53
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD3257ECBC4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234989AbjKOTmX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34552 "EHLO
+        id S232718AbjKOTYV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234991AbjKOTmW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:22 -0500
+        with ESMTP id S232716AbjKOTYU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB2F5AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF46C433C7;
-        Wed, 15 Nov 2023 19:42:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B269F19D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:17 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1756AC433C7;
+        Wed, 15 Nov 2023 19:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077338;
-        bh=jwxHsmILQz92EeAYMMwWFeP9RY0XsT4VZVKWSvtq3QY=;
+        s=korg; t=1700076257;
+        bh=J4NjhF6NtXvEvo+9DxL5hj9og0/kC9/9/+yy14SPlD4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GaINoS+4RXstXhpuHX+77jebzSbgiTf1NLmt8m9BbqLeDyOXbrldqS8PZvq3CIsoN
-         9ynD0jsa/b2fUG/FaP+DdUW35ArbwSpTbJSTHYif8+dolWl2MXhbYULR8waJynKr9Z
-         VMLVAKoE2GdNP0r7vbg7C/qP6dv6hcHcyVjCBYPQ=
+        b=jd1szNo31cr+3KwQfY++os3S8d6/4CuhOCrpHS/QevxGzoiKBi4vf67oK4rNu874O
+         PHbs+nxHmKPEOkpono5zJa8XAFZHfR/KiNb595wJKVXn0unIlDF0eZDX8EbU6bB2BL
+         wq4L8/ogNC2tfPA37CZeAfSEvhYkjwhvhx/edxns=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 214/603] drm: bridge: samsung-dsim: Initialize ULPS EXIT for i.MX8M DSIM
-Date:   Wed, 15 Nov 2023 14:12:39 -0500
-Message-ID: <20231115191628.089386645@linuxfoundation.org>
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 176/550] clk: mediatek: clk-mt6779: Add check for mtk_alloc_clk_data
+Date:   Wed, 15 Nov 2023 14:12:40 -0500
+Message-ID: <20231115191612.934023942@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 192948f6a923bedf461b4aa09e70a25cfb8a6041 ]
+[ Upstream commit 1f57f78fbacf630430bf954e5a84caafdfea30c0 ]
 
-The ULPS EXIT is initialized to 0xaf in downstream BSP as well as older
-revisions of this patchset, in newer revisions of the DSIM patchset it
-was left out and set to 0. Fix it.
+Add the check for the return value of mtk_alloc_clk_data() in order to
+avoid NULL pointer dereference.
 
-Fixes: 4d562c70c4dc ("drm: bridge: samsung-dsim: Add i.MX8M Mini/Nano support")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230709134827.449185-1-marex@denx.de
+Fixes: 710774e04861 ("clk: mediatek: Add MT6779 clock support")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230912093407.21505-2-jiasheng@iscas.ac.cn
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/mediatek/clk-mt6779.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index cf777bdb25d2a..6f2ca74238d14 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -385,7 +385,7 @@ static const unsigned int imx8mm_dsim_reg_values[] = {
- 	[RESET_TYPE] = DSIM_SWRST,
- 	[PLL_TIMER] = 500,
- 	[STOP_STATE_CNT] = 0xf,
--	[PHYCTRL_ULPS_EXIT] = 0,
-+	[PHYCTRL_ULPS_EXIT] = DSIM_PHYCTRL_ULPS_EXIT(0xaf),
- 	[PHYCTRL_VREG_LP] = 0,
- 	[PHYCTRL_SLEW_UP] = 0,
- 	[PHYTIMING_LPX] = DSIM_PHYTIMING_LPX(0x06),
+diff --git a/drivers/clk/mediatek/clk-mt6779.c b/drivers/clk/mediatek/clk-mt6779.c
+index f33fbaee14048..fd14da075604b 100644
+--- a/drivers/clk/mediatek/clk-mt6779.c
++++ b/drivers/clk/mediatek/clk-mt6779.c
+@@ -1219,6 +1219,8 @@ static int clk_mt6779_apmixed_probe(struct platform_device *pdev)
+ 	struct device_node *node = pdev->dev.of_node;
+ 
+ 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
++	if (!clk_data)
++		return -ENOMEM;
+ 
+ 	mtk_clk_register_plls(node, plls, ARRAY_SIZE(plls), clk_data);
+ 
+@@ -1239,6 +1241,8 @@ static int clk_mt6779_top_probe(struct platform_device *pdev)
+ 		return PTR_ERR(base);
+ 
+ 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR_CLK);
++	if (!clk_data)
++		return -ENOMEM;
+ 
+ 	mtk_clk_register_fixed_clks(top_fixed_clks, ARRAY_SIZE(top_fixed_clks),
+ 				    clk_data);
 -- 
 2.42.0
 
