@@ -2,45 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6826F7ECC91
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B511C7ECF36
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234036AbjKOTbQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:31:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46138 "EHLO
+        id S235258AbjKOTrE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:47:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233251AbjKOTbP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:15 -0500
+        with ESMTP id S235265AbjKOTrD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FF5FA1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0036BC433C7;
-        Wed, 15 Nov 2023 19:31:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502DAB9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77EFC433C9;
+        Wed, 15 Nov 2023 19:46:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076672;
-        bh=y/cxYkWNW6/gaYb9L8Xh/2MBJPNBg75N5P0F0gDCQyA=;
+        s=korg; t=1700077620;
+        bh=fsajHMMaFKnQYJgvp2ZPQ/HXC7VLFxqW/sSGM0B5AUs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AvQ4ryRZ+MTWAelNV9OqWmQ9Yhs+JdR1almMxpEh1hjEfGPnsiumRnTx6C7IKOO8d
-         A5Nn+bgm7IFMiepk+OxPjefK6L/ZOZDxwYwf7FitPZs8BQ7+mrLRgUyDlLB/1hq5vh
-         TifpSSBNuOeft0XS2wugocc3gBgfHqr9uTtlW03M=
+        b=vI6K2uteSqzvhn7oglXywCEyCjAuGvoGOGECyfZEE+TXHB94QijwrrOjS7ODZanzU
+         KLENQ1A8zjYobGJ8K8FkWISYt2WoPjxjbIwVdQR5P7+ueaFpa02arR70ZrTmaz5GOT
+         Oh+73SGhbrs4TeNYTbtd7Wld/kI2aInE8QvUD9Xw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-        Daniel Gomez <da.gomez@samsung.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Kieran Bingham <kbingham@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Pankaj Raghav <p.raghav@samsung.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 375/550] scripts/gdb: fix usage of MOD_TEXT not defined when CONFIG_MODULES=n
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 414/603] leds: turris-omnia: Do not use SMBUS calls
 Date:   Wed, 15 Nov 2023 14:15:59 -0500
-Message-ID: <20231115191626.819591526@linuxfoundation.org>
+Message-ID: <20231115191641.609203062@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,63 +51,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 16501630bdeb107141a0139ddc33f92ab5582c6f ]
+[ Upstream commit 6de283b96b31b4890e3ee8c86caca2a3a30d1011 ]
 
-MOD_TEXT is only defined if CONFIG_MODULES=y which lead to loading failure
-of the gdb scripts when kernel is built without CONFIG_MODULES=y:
+The leds-turris-omnia driver uses three function for I2C access:
+- i2c_smbus_write_byte_data() and i2c_smbus_read_byte_data(), which
+  cause an emulated SMBUS transfer,
+- i2c_master_send(), which causes an ordinary I2C transfer.
 
-Reading symbols from vmlinux...
-Traceback (most recent call last):
-  File "/foo/vmlinux-gdb.py", line 25, in <module>
-    import linux.constants
-  File "/foo/scripts/gdb/linux/constants.py", line 14, in <module>
-    LX_MOD_TEXT = gdb.parse_and_eval("MOD_TEXT")
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-gdb.error: No symbol "MOD_TEXT" in current context.
+The Turris Omnia MCU LED controller is not semantically SMBUS, it
+operates as a simple I2C bus. It does not implement any of the SMBUS
+specific features, like PEC, or procedure calls, or anything. Moreover
+the I2C controller driver also does not implement SMBUS, and so the
+emulated SMBUS procedure from drivers/i2c/i2c-core-smbus.c is used for
+the SMBUS calls, which gives an unnecessary overhead.
 
-Add a conditional check on CONFIG_MODULES to fix this error.
+When I first wrote the driver, I was unaware of these facts, and I
+simply used the first function that worked.
 
-Link: https://lkml.kernel.org/r/20231031134848.119391-1-da.gomez@samsung.com
-Fixes: b4aff7513df3 ("scripts/gdb: use mem instead of core_layout to get the module address")
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Tested-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Pankaj Raghav <p.raghav@samsung.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Drop the I2C SMBUS calls and instead use simple I2C transfers.
+
+Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Link: https://lore.kernel.org/r/20230918161104.20860-2-kabel@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/constants.py.in | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/leds/leds-turris-omnia.c | 54 +++++++++++++++++++++++++-------
+ 1 file changed, 42 insertions(+), 12 deletions(-)
 
-diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
-index fab74ca9df6fc..d16099a2b1c68 100644
---- a/scripts/gdb/linux/constants.py.in
-+++ b/scripts/gdb/linux/constants.py.in
-@@ -63,10 +63,11 @@ LX_GDBPARSED(IRQD_LEVEL)
- LX_GDBPARSED(IRQ_HIDDEN)
+diff --git a/drivers/leds/leds-turris-omnia.c b/drivers/leds/leds-turris-omnia.c
+index b8a95a917cfa4..b13a547e72c49 100644
+--- a/drivers/leds/leds-turris-omnia.c
++++ b/drivers/leds/leds-turris-omnia.c
+@@ -2,7 +2,7 @@
+ /*
+  * CZ.NIC's Turris Omnia LEDs driver
+  *
+- * 2020 by Marek Behún <kabel@kernel.org>
++ * 2020, 2023 by Marek Behún <kabel@kernel.org>
+  */
  
- /* linux/module.h */
--LX_GDBPARSED(MOD_TEXT)
--LX_GDBPARSED(MOD_DATA)
--LX_GDBPARSED(MOD_RODATA)
--LX_GDBPARSED(MOD_RO_AFTER_INIT)
-+if IS_BUILTIN(CONFIG_MODULES):
-+    LX_GDBPARSED(MOD_TEXT)
-+    LX_GDBPARSED(MOD_DATA)
-+    LX_GDBPARSED(MOD_RODATA)
-+    LX_GDBPARSED(MOD_RO_AFTER_INIT)
+ #include <linux/i2c.h>
+@@ -41,6 +41,37 @@ struct omnia_leds {
+ 	struct omnia_led leds[];
+ };
  
- /* linux/mount.h */
- LX_VALUE(MNT_NOSUID)
++static int omnia_cmd_write_u8(const struct i2c_client *client, u8 cmd, u8 val)
++{
++	u8 buf[2] = { cmd, val };
++
++	return i2c_master_send(client, buf, sizeof(buf));
++}
++
++static int omnia_cmd_read_u8(const struct i2c_client *client, u8 cmd)
++{
++	struct i2c_msg msgs[2];
++	u8 reply;
++	int ret;
++
++	msgs[0].addr = client->addr;
++	msgs[0].flags = 0;
++	msgs[0].len = 1;
++	msgs[0].buf = &cmd;
++	msgs[1].addr = client->addr;
++	msgs[1].flags = I2C_M_RD;
++	msgs[1].len = 1;
++	msgs[1].buf = &reply;
++
++	ret = i2c_transfer(client->adapter, msgs, ARRAY_SIZE(msgs));
++	if (likely(ret == ARRAY_SIZE(msgs)))
++		return reply;
++	else if (ret < 0)
++		return ret;
++	else
++		return -EIO;
++}
++
+ static int omnia_led_brightness_set_blocking(struct led_classdev *cdev,
+ 					     enum led_brightness brightness)
+ {
+@@ -64,7 +95,7 @@ static int omnia_led_brightness_set_blocking(struct led_classdev *cdev,
+ 	if (buf[2] || buf[3] || buf[4])
+ 		state |= CMD_LED_STATE_ON;
+ 
+-	ret = i2c_smbus_write_byte_data(leds->client, CMD_LED_STATE, state);
++	ret = omnia_cmd_write_u8(leds->client, CMD_LED_STATE, state);
+ 	if (ret >= 0 && (state & CMD_LED_STATE_ON))
+ 		ret = i2c_master_send(leds->client, buf, 5);
+ 
+@@ -114,9 +145,9 @@ static int omnia_led_register(struct i2c_client *client, struct omnia_led *led,
+ 	cdev->brightness_set_blocking = omnia_led_brightness_set_blocking;
+ 
+ 	/* put the LED into software mode */
+-	ret = i2c_smbus_write_byte_data(client, CMD_LED_MODE,
+-					CMD_LED_MODE_LED(led->reg) |
+-					CMD_LED_MODE_USER);
++	ret = omnia_cmd_write_u8(client, CMD_LED_MODE,
++				 CMD_LED_MODE_LED(led->reg) |
++				 CMD_LED_MODE_USER);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Cannot set LED %pOF to software mode: %i\n", np,
+ 			ret);
+@@ -124,8 +155,8 @@ static int omnia_led_register(struct i2c_client *client, struct omnia_led *led,
+ 	}
+ 
+ 	/* disable the LED */
+-	ret = i2c_smbus_write_byte_data(client, CMD_LED_STATE,
+-					CMD_LED_STATE_LED(led->reg));
++	ret = omnia_cmd_write_u8(client, CMD_LED_STATE,
++				 CMD_LED_STATE_LED(led->reg));
+ 	if (ret < 0) {
+ 		dev_err(dev, "Cannot set LED %pOF brightness: %i\n", np, ret);
+ 		return ret;
+@@ -158,7 +189,7 @@ static ssize_t brightness_show(struct device *dev, struct device_attribute *a,
+ 	struct i2c_client *client = to_i2c_client(dev);
+ 	int ret;
+ 
+-	ret = i2c_smbus_read_byte_data(client, CMD_LED_GET_BRIGHTNESS);
++	ret = omnia_cmd_read_u8(client, CMD_LED_GET_BRIGHTNESS);
+ 
+ 	if (ret < 0)
+ 		return ret;
+@@ -179,8 +210,7 @@ static ssize_t brightness_store(struct device *dev, struct device_attribute *a,
+ 	if (brightness > 100)
+ 		return -EINVAL;
+ 
+-	ret = i2c_smbus_write_byte_data(client, CMD_LED_SET_BRIGHTNESS,
+-					(u8)brightness);
++	ret = omnia_cmd_write_u8(client, CMD_LED_SET_BRIGHTNESS, brightness);
+ 
+ 	return ret < 0 ? ret : count;
+ }
+@@ -237,8 +267,8 @@ static void omnia_leds_remove(struct i2c_client *client)
+ 	u8 buf[5];
+ 
+ 	/* put all LEDs into default (HW triggered) mode */
+-	i2c_smbus_write_byte_data(client, CMD_LED_MODE,
+-				  CMD_LED_MODE_LED(OMNIA_BOARD_LEDS));
++	omnia_cmd_write_u8(client, CMD_LED_MODE,
++			   CMD_LED_MODE_LED(OMNIA_BOARD_LEDS));
+ 
+ 	/* set all LEDs color to [255, 255, 255] */
+ 	buf[0] = CMD_LED_COLOR;
 -- 
 2.42.0
 
