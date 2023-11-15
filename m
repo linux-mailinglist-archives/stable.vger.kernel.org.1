@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16EFC7ED011
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 009D67ED013
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:52:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235493AbjKOTwi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:52:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58120 "EHLO
+        id S235489AbjKOTwl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:52:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235488AbjKOTwh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:52:37 -0500
+        with ESMTP id S235487AbjKOTwk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:52:40 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4DA819E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:52:33 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C225C433CA;
-        Wed, 15 Nov 2023 19:52:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F9BB92
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:52:37 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8870C433C7;
+        Wed, 15 Nov 2023 19:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077953;
-        bh=3SF2hc4f7QatSn90G1PzZ2/VVrnLw9j5BJ7IV7KO+tM=;
+        s=korg; t=1700077956;
+        bh=tpN6UcveSNWS2jUglLl41fPqv74V1VeYnnBUnWvAnS0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GCmlQYjF/uDrAu0jwjBUB6me62RRhaNq5JqiCzyj09Go8Oz7ABnbPPPI2AE2Xvli8
-         yOfQGkQwagI439feDFPI99xZJk7IIZknAliH1qAB9fqGru7UBcRLtYcbpeUh/Baqtg
-         qUb+GYsBfH+Sz0Kwsr/Opvh2xK6hUqocDm5csiQ0=
+        b=d7/exMWb8Ngd72AnQjIKxfi7XspFIDQ1MpyIr3tl7GHlrmfPbFWvYKJG1ibYf9rur
+         Zg0Tgnfvb2RnIsZB/ZLAcmehlLuLjtW0LmIgvkMabGvnow1zerJi0SubVJfXS+qQzh
+         O2CfHDLNtgnTK/aBScWCvuzvPHfTM1PRnpHHR2RQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wendy Wang <wendy.wang@intel.com>,
-        Chen Yu <yu.c.chen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/379] genirq/matrix: Exclude managed interrupts in irq_matrix_allocated()
-Date:   Wed, 15 Nov 2023 14:21:34 -0500
-Message-ID: <20231115192646.292821074@linuxfoundation.org>
+Subject: [PATCH 6.1 020/379] wifi: cfg80211: add flush functions for wiphy work
+Date:   Wed, 15 Nov 2023 14:21:35 -0500
+Message-ID: <20231115192646.351375838@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,71 +53,171 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit a0b0bad10587ae2948a7c36ca4ffc206007fbcf3 ]
+[ Upstream commit 56cfb8ce1f7f6c4e5ca571a2ec0880e131cd0311 ]
 
-When a CPU is about to be offlined, x86 validates that all active
-interrupts which are targeted to this CPU can be migrated to the remaining
-online CPUs. If not, the offline operation is aborted.
+There may be sometimes reasons to actually run the work
+if it's pending, add flush functions for both regular and
+delayed wiphy work that will do this.
 
-The validation uses irq_matrix_allocated() to retrieve the number of
-vectors which are allocated on the outgoing CPU. The returned number of
-allocated vectors includes also vectors which are associated to managed
-interrupts.
-
-That's overaccounting because managed interrupts are:
-
-  - not migrated when the affinity mask of the interrupt targets only
-    the outgoing CPU
-
-  - migrated to another CPU, but in that case the vector is already
-    pre-allocated on the potential target CPUs and must not be taken into
-    account.
-
-As a consequence the check whether the remaining online CPUs have enough
-capacity for migrating the allocated vectors from the outgoing CPU might
-fail incorrectly.
-
-Let irq_matrix_allocated() return only the number of allocated non-managed
-interrupts to make this validation check correct.
-
-[ tglx: Amend changelog and fixup kernel-doc comment ]
-
-Fixes: 2f75d9e1c905 ("genirq: Implement bitmap matrix allocator")
-Reported-by: Wendy Wang <wendy.wang@intel.com>
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20231020072522.557846-1-yu.c.chen@intel.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: eadfb54756ae ("wifi: mac80211: move sched-scan stop work to wiphy work")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/matrix.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/net/cfg80211.h | 21 +++++++++++++++++++++
+ net/wireless/core.c    | 34 ++++++++++++++++++++++++++++++++--
+ net/wireless/core.h    |  3 ++-
+ net/wireless/sysfs.c   |  4 ++--
+ 4 files changed, 57 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/irq/matrix.c b/kernel/irq/matrix.c
-index 1698e77645acf..75d0ae490e29c 100644
---- a/kernel/irq/matrix.c
-+++ b/kernel/irq/matrix.c
-@@ -466,16 +466,16 @@ unsigned int irq_matrix_reserved(struct irq_matrix *m)
- }
- 
- /**
-- * irq_matrix_allocated - Get the number of allocated irqs on the local cpu
-+ * irq_matrix_allocated - Get the number of allocated non-managed irqs on the local CPU
-  * @m:		Pointer to the matrix to search
-  *
-- * This returns number of allocated irqs
-+ * This returns number of allocated non-managed interrupts.
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 7a6c3059d50b5..a6d7f05fd0145 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -5690,6 +5690,16 @@ void wiphy_work_queue(struct wiphy *wiphy, struct wiphy_work *work);
   */
- unsigned int irq_matrix_allocated(struct irq_matrix *m)
- {
- 	struct cpumap *cm = this_cpu_ptr(m->maps);
+ void wiphy_work_cancel(struct wiphy *wiphy, struct wiphy_work *work);
  
--	return cm->allocated;
-+	return cm->allocated - cm->managed_allocated;
++/**
++ * wiphy_work_flush - flush previously queued work
++ * @wiphy: the wiphy, for debug purposes
++ * @work: the work to flush, this can be %NULL to flush all work
++ *
++ * Flush the work (i.e. run it if pending). This must be called
++ * under the wiphy mutex acquired by wiphy_lock().
++ */
++void wiphy_work_flush(struct wiphy *wiphy, struct wiphy_work *work);
++
+ struct wiphy_delayed_work {
+ 	struct wiphy_work work;
+ 	struct wiphy *wiphy;
+@@ -5733,6 +5743,17 @@ void wiphy_delayed_work_queue(struct wiphy *wiphy,
+ void wiphy_delayed_work_cancel(struct wiphy *wiphy,
+ 			       struct wiphy_delayed_work *dwork);
+ 
++/**
++ * wiphy_delayed work_flush - flush previously queued delayed work
++ * @wiphy: the wiphy, for debug purposes
++ * @work: the work to flush
++ *
++ * Flush the work (i.e. run it if pending). This must be called
++ * under the wiphy mutex acquired by wiphy_lock().
++ */
++void wiphy_delayed_work_flush(struct wiphy *wiphy,
++			      struct wiphy_delayed_work *dwork);
++
+ /**
+  * struct wireless_dev - wireless device state
+  *
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index bf2f1f583fb12..63d75fecc2c53 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1042,7 +1042,8 @@ void wiphy_rfkill_start_polling(struct wiphy *wiphy)
  }
+ EXPORT_SYMBOL(wiphy_rfkill_start_polling);
  
- #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
+-void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev)
++void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev,
++				  struct wiphy_work *end)
+ {
+ 	unsigned int runaway_limit = 100;
+ 	unsigned long flags;
+@@ -1061,6 +1062,10 @@ void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev)
+ 		wk->func(&rdev->wiphy, wk);
+ 
+ 		spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
++
++		if (wk == end)
++			break;
++
+ 		if (WARN_ON(--runaway_limit == 0))
+ 			INIT_LIST_HEAD(&rdev->wiphy_work_list);
+ 	}
+@@ -1111,7 +1116,7 @@ void wiphy_unregister(struct wiphy *wiphy)
+ #endif
+ 
+ 	/* surely nothing is reachable now, clean up work */
+-	cfg80211_process_wiphy_works(rdev);
++	cfg80211_process_wiphy_works(rdev, NULL);
+ 	wiphy_unlock(&rdev->wiphy);
+ 	rtnl_unlock();
+ 
+@@ -1636,6 +1641,21 @@ void wiphy_work_cancel(struct wiphy *wiphy, struct wiphy_work *work)
+ }
+ EXPORT_SYMBOL_GPL(wiphy_work_cancel);
+ 
++void wiphy_work_flush(struct wiphy *wiphy, struct wiphy_work *work)
++{
++	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
++	unsigned long flags;
++	bool run;
++
++	spin_lock_irqsave(&rdev->wiphy_work_lock, flags);
++	run = !work || !list_empty(&work->entry);
++	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
++
++	if (run)
++		cfg80211_process_wiphy_works(rdev, work);
++}
++EXPORT_SYMBOL_GPL(wiphy_work_flush);
++
+ void wiphy_delayed_work_timer(struct timer_list *t)
+ {
+ 	struct wiphy_delayed_work *dwork = from_timer(dwork, t, timer);
+@@ -1668,6 +1688,16 @@ void wiphy_delayed_work_cancel(struct wiphy *wiphy,
+ }
+ EXPORT_SYMBOL_GPL(wiphy_delayed_work_cancel);
+ 
++void wiphy_delayed_work_flush(struct wiphy *wiphy,
++			      struct wiphy_delayed_work *dwork)
++{
++	lockdep_assert_held(&wiphy->mtx);
++
++	del_timer_sync(&dwork->timer);
++	wiphy_work_flush(wiphy, &dwork->work);
++}
++EXPORT_SYMBOL_GPL(wiphy_delayed_work_flush);
++
+ static int __init cfg80211_init(void)
+ {
+ 	int err;
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 86fd79912254d..e1accacc6f233 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -461,7 +461,8 @@ int cfg80211_change_iface(struct cfg80211_registered_device *rdev,
+ 			  struct net_device *dev, enum nl80211_iftype ntype,
+ 			  struct vif_params *params);
+ void cfg80211_process_rdev_events(struct cfg80211_registered_device *rdev);
+-void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev);
++void cfg80211_process_wiphy_works(struct cfg80211_registered_device *rdev,
++				  struct wiphy_work *end);
+ void cfg80211_process_wdev_events(struct wireless_dev *wdev);
+ 
+ bool cfg80211_does_bw_fit_range(const struct ieee80211_freq_range *freq_range,
+diff --git a/net/wireless/sysfs.c b/net/wireless/sysfs.c
+index 4d3b658030105..a88f338c61d31 100644
+--- a/net/wireless/sysfs.c
++++ b/net/wireless/sysfs.c
+@@ -105,14 +105,14 @@ static int wiphy_suspend(struct device *dev)
+ 			cfg80211_leave_all(rdev);
+ 			cfg80211_process_rdev_events(rdev);
+ 		}
+-		cfg80211_process_wiphy_works(rdev);
++		cfg80211_process_wiphy_works(rdev, NULL);
+ 		if (rdev->ops->suspend)
+ 			ret = rdev_suspend(rdev, rdev->wiphy.wowlan_config);
+ 		if (ret == 1) {
+ 			/* Driver refuse to configure wowlan */
+ 			cfg80211_leave_all(rdev);
+ 			cfg80211_process_rdev_events(rdev);
+-			cfg80211_process_wiphy_works(rdev);
++			cfg80211_process_wiphy_works(rdev, NULL);
+ 			ret = rdev_suspend(rdev, NULL);
+ 		}
+ 		if (ret == 0)
 -- 
 2.42.0
 
