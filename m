@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4857F7ECED1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 991397ECC36
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235177AbjKOTou (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38774 "EHLO
+        id S233315AbjKOT1c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46908 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235164AbjKOTor (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:47 -0500
+        with ESMTP id S233313AbjKOT10 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D85CE1A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55513C433C9;
-        Wed, 15 Nov 2023 19:44:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65A911A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FCBC433C9;
+        Wed, 15 Nov 2023 19:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077483;
-        bh=BzZI0Bz9JPME2UieeHtmqKc/7ibhbQPIhbTsB+JTRM0=;
+        s=korg; t=1700076443;
+        bh=yflsFgSM4W4ZjqfzasLfSGRa17pQpy5McDilAYyERm0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j/BLSydRwBqDSxN3+9lzw3qYld7pj75+pasDqAADVLTaVa7bGh+S4JEDu6yOBj50Z
-         s3iq9WugptnkOOqBnDlO+95E7l+IboqZHO9c66Cxxbi59mtBgSl+kByzg4AZCKHAgW
-         vOhpB5o0dGtnosguixRMOLqyz49fov3krfyoB0TU=
+        b=1vrr1dMwUVmyTVrh+vs5PoPjJ2x6nMf+GNk3cAPfj1glM8kzZDMW+i+SgJItwbnls
+         qHbgRpBquEqXVqAnD2LDbYfMej9LipMTvGSikN6JBV5VlRS5MjfrUR4omWfuV6dn0y
+         LXgzXFqgbz/HbZmWBTTo/J27vkABRQRTOrX3oKDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 331/603] ASoC: cs35l41: Initialize completion object before requesting IRQ
+Subject: [PATCH 6.5 292/550] arm64: dts: imx8mm: Add sound-dai-cells to micfil node
 Date:   Wed, 15 Nov 2023 14:14:36 -0500
-Message-ID: <20231115191636.421493497@linuxfoundation.org>
+Message-ID: <20231115191621.049386423@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 5ad668a9ce83d819701fb7abc1c2236049ec15c2 ]
+[ Upstream commit 0e6cc2b8bb7d67733f4a47720787eff1ce2666f2 ]
 
-Technically, an interrupt handler can be called before probe() finishes
-its execution, hence ensure the pll_lock completion object is always
-initialized before being accessed in cs35l41_irq().
+Per the DT bindings, the micfil node should have a sound-dai-cells
+entry.
 
-Fixes: f5030564938b ("ALSA: cs35l41: Add shared boost feature")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20230907171010.1447274-4-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3bd0788c43d9 ("arm64: dts: imx8mm: Add support for micfil")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l41.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index 722b69a6de26c..fe5376b3e01b9 100644
---- a/sound/soc/codecs/cs35l41.c
-+++ b/sound/soc/codecs/cs35l41.c
-@@ -1273,6 +1273,8 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
- 		regmap_update_bits(cs35l41->regmap, CS35L41_IRQ1_MASK3, CS35L41_INT3_PLL_LOCK_MASK,
- 				   0 << CS35L41_INT3_PLL_LOCK_SHIFT);
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index 1a647d4072ba0..453254bd5f195 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -399,6 +399,7 @@ micfil: audio-controller@30080000 {
+ 						      "pll8k", "pll11k", "clkext3";
+ 					dmas = <&sdma2 24 25 0x80000000>;
+ 					dma-names = "rx";
++					#sound-dai-cells = <0>;
+ 					status = "disabled";
+ 				};
  
-+	init_completion(&cs35l41->pll_lock);
-+
- 	ret = devm_request_threaded_irq(cs35l41->dev, cs35l41->irq, NULL, cs35l41_irq,
- 					IRQF_ONESHOT | IRQF_SHARED | irq_pol,
- 					"cs35l41", cs35l41);
-@@ -1295,8 +1297,6 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
- 	if (ret < 0)
- 		goto err;
- 
--	init_completion(&cs35l41->pll_lock);
--
- 	pm_runtime_set_autosuspend_delay(cs35l41->dev, 3000);
- 	pm_runtime_use_autosuspend(cs35l41->dev);
- 	pm_runtime_mark_last_busy(cs35l41->dev);
 -- 
 2.42.0
 
