@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E83E7ED451
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 652F37ED2C5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344710AbjKOU5o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34674 "EHLO
+        id S233379AbjKOUoQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344589AbjKOU53 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:29 -0500
+        with ESMTP id S233289AbjKOUoQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9681ED75
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDADC36AEE;
-        Wed, 15 Nov 2023 20:49:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B2C3BC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC23C433C7;
+        Wed, 15 Nov 2023 20:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081384;
-        bh=DWDdbniHQjxDVCy4DXVl/gFyeN3QnowM7X+49RaH5/Q=;
+        s=korg; t=1700081052;
+        bh=t6LAKxfYnfxge0l7MdF9EQLgN+08WJHaC/4X++RmunA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I4IdvvdqTWVlUI/6t2f89wt5NFjf3An1UnT7Nlr3aqjzDXXQVUuAvb4eIYUo3lU3A
-         OFVsfjgrmfGthd5VeDz5cMXl8YAqiybefy6pZXOJ3hr7OJJktXSh+5Tji7ndNnN9w4
-         ZPp5aNS7CAmm1yC88GJAewXCJZeCnkYCcplXzq8s=
+        b=wRFznVQfFWBci9wkxtKSdCFaf7dTAzNH9ytwPAHsNj2lG9IFeEzYa8Yq4aP7H460j
+         6hfIDgkIWgaP6jJaAV6VVH2K7rzfzM8XT28FW7ZA+hHCGVwULBfDZqmi4b6EnoApuU
+         /oage1ga4LaSS/jKHtoIyCfQWn27V/Xif/jEEuxs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sudeep Holla <sudeep.holla@arm.com>,
+        patches@lists.linux.dev, Reuben Hawkins <reubenhwk@gmail.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 121/244] firmware: arm_ffa: Assign the missing IDR allocation ID to the FFA device
+Subject: [PATCH 4.19 01/88] vfs: fix readahead(2) on block devices
 Date:   Wed, 15 Nov 2023 15:35:13 -0500
-Message-ID: <20231115203555.611496428@linuxfoundation.org>
+Message-ID: <20231115191426.291570066@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,71 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Reuben Hawkins <reubenhwk@gmail.com>
 
-[ Upstream commit 7d0bc6360f17ea323ab25939a34857123d7d87e5 ]
+[ Upstream commit 7116c0af4b8414b2f19fdb366eea213cbd9d91c2 ]
 
-Commit 19b8766459c4 ("firmware: arm_ffa: Fix FFA device names for logical
-partitions") added an ID to the FFA device using ida_alloc() and append
-the same to "arm-ffa" to make up a unique device name. However it missed
-to stash the id value in ffa_dev to help freeing the ID later when the
-device is destroyed.
+Readahead was factored to call generic_fadvise.  That refactor added an
+S_ISREG restriction which broke readahead on block devices.
 
-Due to the missing/unassigned ID in FFA device, we get the following
-warning when the FF-A device is unregistered.
+In addition to S_ISREG, this change checks S_ISBLK to fix block device
+readahead.  There is no change in behavior with any file type besides block
+devices in this change.
 
-  |   ida_free called for id=0 which is not allocated.
-  |   WARNING: CPU: 7 PID: 1 at lib/idr.c:525 ida_free+0x114/0x164
-  |   CPU: 7 PID: 1 Comm: swapper/0 Not tainted 6.6.0-rc4 #209
-  |   pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-  |   pc : ida_free+0x114/0x164
-  |   lr : ida_free+0x114/0x164
-  |   Call trace:
-  |    ida_free+0x114/0x164
-  |    ffa_release_device+0x24/0x3c
-  |    device_release+0x34/0x8c
-  |    kobject_put+0x94/0xf8
-  |    put_device+0x18/0x24
-  |    klist_devices_put+0x14/0x20
-  |    klist_next+0xc8/0x114
-  |    bus_for_each_dev+0xd8/0x144
-  |    arm_ffa_bus_exit+0x30/0x54
-  |    ffa_init+0x68/0x330
-  |    do_one_initcall+0xdc/0x250
-  |    do_initcall_level+0x8c/0xac
-  |    do_initcalls+0x54/0x94
-  |    do_basic_setup+0x1c/0x28
-  |    kernel_init_freeable+0x104/0x170
-  |    kernel_init+0x20/0x1a0
-  |    ret_from_fork+0x10/0x20
-
-Fix the same by actually assigning the ID in the FFA device this time
-for real.
-
-Fixes: 19b8766459c4 ("firmware: arm_ffa: Fix FFA device names for logical partitions")
-Link: https://lore.kernel.org/r/20231003085932.3553985-1-sudeep.holla@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Fixes: 3d8f7615319b ("vfs: implement readahead(2) using POSIX_FADV_WILLNEED")
+Signed-off-by: Reuben Hawkins <reubenhwk@gmail.com>
+Link: https://lore.kernel.org/r/20231003015704.2415-1-reubenhwk@gmail.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/bus.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/readahead.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
-index edef31c413123..f79ba6f733ba4 100644
---- a/drivers/firmware/arm_ffa/bus.c
-+++ b/drivers/firmware/arm_ffa/bus.c
-@@ -192,6 +192,7 @@ struct ffa_device *ffa_device_register(const uuid_t *uuid, int vm_id)
- 	dev->release = ffa_release_device;
- 	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 4e630143a0ba8..96d0f652222a9 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -593,7 +593,8 @@ ssize_t ksys_readahead(int fd, loff_t offset, size_t count)
+ 	 */
+ 	ret = -EINVAL;
+ 	if (!f.file->f_mapping || !f.file->f_mapping->a_ops ||
+-	    !S_ISREG(file_inode(f.file)->i_mode))
++	    (!S_ISREG(file_inode(f.file)->i_mode) &&
++	    !S_ISBLK(file_inode(f.file)->i_mode)))
+ 		goto out;
  
-+	ffa_dev->id = id;
- 	ffa_dev->vm_id = vm_id;
- 	uuid_copy(&ffa_dev->uuid, uuid);
- 
+ 	ret = vfs_fadvise(f.file, offset, count, POSIX_FADV_WILLNEED);
 -- 
 2.42.0
 
