@@ -2,85 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34C9C7ECAA9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 19:41:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B39987ECADE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 19:59:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229561AbjKOSlc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 13:41:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34990 "EHLO
+        id S229504AbjKOS7x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 13:59:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjKOSlc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 13:41:32 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBB5F9B;
-        Wed, 15 Nov 2023 10:41:28 -0800 (PST)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AFDxWMc014687;
-        Wed, 15 Nov 2023 18:41:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=PuFShW91pLCSKKRSr5TB0Kzh1Ye2y9QdBmcBG1d4LLo=;
- b=A45+UnlBOrODk8jEkvyk9I3LDsY5Yj34tyqSYs4Fsc54r5tpfGUq5BGoqxgtyij3WciF
- 8c1VNHJPbtE/BbJI0y3h0AVGjE5Jzmm5LFQgX0obFRRZ1KI1iqyaoMrIYNYzDxs5n9bp
- NxOXe68evw/3gmVcowyGaF8dqHe7YStnSxh0SxdJUOaYdoTmeQFJkcDlFITVL8U1ziWy
- CnEJw6q1e9qs7HudziLVsxLwe8+MlTihn7bOM1A+0Km4PdlEMe5E8mz0W3cL8sqrVmqb
- W+0R+EDBsVky/aJMhGSTTTa4cnJorN4KVEsWLDyjVu+saW5bZ0lxxLfL+WUqFUMWoxyj FA== 
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ucmbaj3uf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Nov 2023 18:41:18 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AFIfHeW009144
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Nov 2023 18:41:17 GMT
-Received: from [10.110.71.50] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Wed, 15 Nov
- 2023 10:41:16 -0800
-Message-ID: <ad9f92d8-9aa6-14d1-7444-bb64131044b5@quicinc.com>
-Date:   Wed, 15 Nov 2023 10:41:15 -0800
+        with ESMTP id S229505AbjKOS7w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 13:59:52 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84CE61A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 10:59:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD35C433C7;
+        Wed, 15 Nov 2023 18:59:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1700074788;
+        bh=Sou11nwX0oc7DoBbbQiUuW8KOWf1rWkdSgUwEBZiX4E=;
+        h=Subject:To:Cc:From:Date:From;
+        b=A21dgv4+nyQiv7HHhp6GvMOGvuR7ScqC5WFqo2BT0J0aydQoEfxyq2Fk2+mP/ojho
+         jqdm+qkY+OSY3AUwTlLf0tD/l/ZmyQ9BS3kHuZg4pz+DVUzVTHgKjcTkTZOY2U8Noc
+         LLYCg97yEjlAO0YyKns6UD8MavVczp7521ZxshFk=
+Subject: FAILED: patch "[PATCH] Revert "drm/amd/display: Remove v_startup workaround for" failed to apply to 6.6-stable tree
+To:     hamza.mahfooz@amd.com, alexander.deucher@amd.com,
+        harry.wentland@amd.com, jerry.zuo@amd.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 15 Nov 2023 13:59:45 -0500
+Message-ID: <2023111545-lather-aftermath-a46a@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH] drm/msm/dpu: Add missing safe_lut_tbl in sc8280xp catalog
-Content-Language: en-US
-To:     Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Rob Clark <robdclark@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        "Sean Paul" <sean@poorly.run>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        "David Airlie" <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Kuogee Hsieh <quic_khsieh@quicinc.com>
-CC:     Johan Hovold <johan@kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>,
-        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, Doug Anderson <dianders@chromium.org>,
-        Rob Clark <robdclark@chromium.org>
-References: <20231030-sc8280xp-dpu-safe-lut-v1-1-6d485d7b428f@quicinc.com>
-From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <20231030-sc8280xp-dpu-safe-lut-v1-1-6d485d7b428f@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: AclYIrKBsC7tOZwgZDgYgqZm0qk-nLBA
-X-Proofpoint-ORIG-GUID: AclYIrKBsC7tOZwgZDgYgqZm0qk-nLBA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-15_18,2023-11-15_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- adultscore=0 mlxlogscore=999 impostorscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 clxscore=1011 malwarescore=0
- bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311150146
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -90,47 +44,109 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On 10/30/2023 4:23 PM, Bjorn Andersson wrote:
-> During USB transfers on the SC8280XP __arm_smmu_tlb_sync() is seen to
-> typically take 1-2ms to complete. As expected this results in poor
-> performance, something that has been mitigated by proposing running the
-> iommu in non-strict mode (boot with iommu.strict=0).
-> 
-> This turns out to be related to the SAFE logic, and programming the QOS
-> SAFE values in the DPU (per suggestion from Rob and Doug) reduces the
-> TLB sync time to below 10us, which means significant less time spent
-> with interrupts disabled and a significant boost in throughput.
-> 
-> Fixes: 4a352c2fc15a ("drm/msm/dpu: Introduce SC8280XP")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Doug Anderson <dianders@chromium.org>
-> Suggested-by: Rob Clark <robdclark@chromium.org>
-> Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-> ---
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Matches what we have in downstream DT, hence
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 63461ea3fb403be0d040be3c88e621b55672e26a
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023111545-lather-aftermath-a46a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Possible dependencies:
 
->   drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
-> index 1ccd1edd693c..4c0528794e7a 100644
-> --- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
-> +++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
-> @@ -406,6 +406,7 @@ static const struct dpu_perf_cfg sc8280xp_perf_data = {
->   	.min_llcc_ib = 0,
->   	.min_dram_ib = 800000,
->   	.danger_lut_tbl = {0xf, 0xffff, 0x0},
-> +	.safe_lut_tbl = {0xfe00, 0xfe00, 0xffff},
->   	.qos_lut_tbl = {
->   		{.nentry = ARRAY_SIZE(sc8180x_qos_linear),
->   		.entries = sc8180x_qos_linear
-> 
-> ---
-> base-commit: c503e3eec382ac708ee7adf874add37b77c5d312
-> change-id: 20231030-sc8280xp-dpu-safe-lut-9769027b8452
-> 
-> Best regards,
+63461ea3fb40 ("Revert "drm/amd/display: Remove v_startup workaround for dcn3+"")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 63461ea3fb403be0d040be3c88e621b55672e26a Mon Sep 17 00:00:00 2001
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Date: Thu, 31 Aug 2023 15:17:14 -0400
+Subject: [PATCH] Revert "drm/amd/display: Remove v_startup workaround for
+ dcn3+"
+
+This reverts commit 3a31e8b89b7240d9a17ace8a1ed050bdcb560f9e.
+
+We still need to call dcn20_adjust_freesync_v_startup() for older DCN3+
+ASICs. Otherwise, it can cause DP to HDMI 2.1 PCONs to fail to light up.
+
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2809
+Reviewed-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+index 0989a0152ae8..1bfdf0271fdf 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -1099,6 +1099,10 @@ void dcn20_calculate_dlg_params(struct dc *dc,
+ 		context->res_ctx.pipe_ctx[i].plane_res.bw.dppclk_khz =
+ 						pipes[pipe_idx].clks_cfg.dppclk_mhz * 1000;
+ 		context->res_ctx.pipe_ctx[i].pipe_dlg_param = pipes[pipe_idx].pipe.dest;
++		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
++			dcn20_adjust_freesync_v_startup(
++				&context->res_ctx.pipe_ctx[i].stream->timing,
++				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+ 
+ 		pipe_idx++;
+ 	}
+@@ -1927,7 +1931,6 @@ static bool dcn20_validate_bandwidth_internal(struct dc *dc, struct dc_state *co
+ 	int vlevel = 0;
+ 	int pipe_split_from[MAX_PIPES];
+ 	int pipe_cnt = 0;
+-	int i = 0;
+ 	display_e2e_pipe_params_st *pipes = kzalloc(dc->res_pool->pipe_count * sizeof(display_e2e_pipe_params_st), GFP_ATOMIC);
+ 	DC_LOGGER_INIT(dc->ctx->logger);
+ 
+@@ -1951,15 +1954,6 @@ static bool dcn20_validate_bandwidth_internal(struct dc *dc, struct dc_state *co
+ 	dcn20_calculate_wm(dc, context, pipes, &pipe_cnt, pipe_split_from, vlevel, fast_validate);
+ 	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
+ 
+-	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (!context->res_ctx.pipe_ctx[i].stream)
+-			continue;
+-		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
+-			dcn20_adjust_freesync_v_startup(
+-				&context->res_ctx.pipe_ctx[i].stream->timing,
+-				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+-	}
+-
+ 	BW_VAL_TRACE_END_WATERMARKS();
+ 
+ 	goto validate_out;
+@@ -2232,7 +2226,6 @@ bool dcn21_validate_bandwidth_fp(struct dc *dc,
+ 	int vlevel = 0;
+ 	int pipe_split_from[MAX_PIPES];
+ 	int pipe_cnt = 0;
+-	int i = 0;
+ 	display_e2e_pipe_params_st *pipes = kzalloc(dc->res_pool->pipe_count * sizeof(display_e2e_pipe_params_st), GFP_ATOMIC);
+ 	DC_LOGGER_INIT(dc->ctx->logger);
+ 
+@@ -2261,15 +2254,6 @@ bool dcn21_validate_bandwidth_fp(struct dc *dc,
+ 	dcn21_calculate_wm(dc, context, pipes, &pipe_cnt, pipe_split_from, vlevel, fast_validate);
+ 	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
+ 
+-	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (!context->res_ctx.pipe_ctx[i].stream)
+-			continue;
+-		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
+-			dcn20_adjust_freesync_v_startup(
+-				&context->res_ctx.pipe_ctx[i].stream->timing,
+-				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+-	}
+-
+ 	BW_VAL_TRACE_END_WATERMARKS();
+ 
+ 	goto validate_out;
+
