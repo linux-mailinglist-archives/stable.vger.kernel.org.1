@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09F167ECCDA
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1FD77ECF61
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234180AbjKOTc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:32:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46362 "EHLO
+        id S235307AbjKOTsL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234182AbjKOTc6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:58 -0500
+        with ESMTP id S235301AbjKOTsK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 203F119D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861A8C433C7;
-        Wed, 15 Nov 2023 19:32:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 314FC1AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0997C433C7;
+        Wed, 15 Nov 2023 19:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076774;
-        bh=B52WIjoht8AGPHts7TuAt8YeLuY/fLSZ/iyYgMsz8VE=;
+        s=korg; t=1700077686;
+        bh=9TkOorPaPDwnfPXNAy5BNhQjESE9JLTkXlKkrejhvUs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ADGYRGmqrC8KonZiq81x6X6uPl0EXPqs+KCXrfU5P3IlfQTsfbkqiEjpKKOq6TPE2
-         EIYkMuruLKqkHqRAmwNUo9ogd4oTsz3FvFiJDWbD/txGY6MsioEbgDSIpMSLzKkeLA
-         YAXexVqoxw4MYi8xXdGE3aTuHcOdlB7KcNExwSIc=
+        b=uqEeJRMH0I8gvg942LX3c3eSoGaGD3KSXiUFbadhQkXItN5RziYNJUpvQkqFyXX8k
+         RhR44R6x+0Z96QQNUD4oUqorT6/KIGMcgK3tAotCjRuaIuyl7UA4zmrqpiYITFfIaj
+         YgYF900uRbndmNGKg+8aJecG73I1tYDFPoNNP5Pc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
         Georgi Djakov <djakov@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 417/550] interconnect: qcom: sm6350: Set ACV enable_mask
+Subject: [PATCH 6.6 456/603] interconnect: qcom: sm8250: Set ACV enable_mask
 Date:   Wed, 15 Nov 2023 14:16:41 -0500
-Message-ID: <20231115191629.667785829@linuxfoundation.org>
+Message-ID: <20231115191644.207444289@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,30 +50,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit fe7a3abf4111992af3de51d22383a8e8a0affe1e ]
+[ Upstream commit 9434c6896123141ac1f8f18b3d1751abbecdd03f ]
 
 ACV expects an enable_mask corresponding to the APPS RSC, fill it in.
 
-Fixes: 6a6eff73a954 ("interconnect: qcom: Add SM6350 driver support")
+Fixes: 6df5b349491e ("interconnect: qcom: Add SM8250 interconnect provider driver")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811-topic-acv-v2-8-765ad70e539a@linaro.org
+Link: https://lore.kernel.org/r/20230811-topic-acv-v2-10-765ad70e539a@linaro.org
 Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sm6350.c | 1 +
+ drivers/interconnect/qcom/sm8250.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/interconnect/qcom/sm6350.c b/drivers/interconnect/qcom/sm6350.c
-index 8a33a39f13260..aae4b43b730c0 100644
---- a/drivers/interconnect/qcom/sm6350.c
-+++ b/drivers/interconnect/qcom/sm6350.c
-@@ -144,6 +144,7 @@ DEFINE_QNODE(xs_sys_tcu_cfg, SM6350_SLAVE_TCU, 1, 8);
+diff --git a/drivers/interconnect/qcom/sm8250.c b/drivers/interconnect/qcom/sm8250.c
+index d4a4ecef11f01..661dc18d99dba 100644
+--- a/drivers/interconnect/qcom/sm8250.c
++++ b/drivers/interconnect/qcom/sm8250.c
+@@ -1397,6 +1397,7 @@ static struct qcom_icc_node qup2_core_slave = {
  
  static struct qcom_icc_bcm bcm_acv = {
  	.name = "ACV",
