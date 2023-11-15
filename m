@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC7467ECDD4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F2877ECFE8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234677AbjKOTio (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:38:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47916 "EHLO
+        id S235457AbjKOTvh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234675AbjKOTin (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:43 -0500
+        with ESMTP id S235448AbjKOTvg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF039E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F0DC433C9;
-        Wed, 15 Nov 2023 19:38:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5551119E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A928AC433C8;
+        Wed, 15 Nov 2023 19:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077119;
-        bh=M0K27hFFQcoECOLwj6Io9aMuFOESTY31zCaY8JEWIK8=;
+        s=korg; t=1700077893;
+        bh=ui37yxyoDcdRB3Ayj/BhQZ/aq48em5voKUmfKvx0kIE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oa3TVx+Xu4UFuCobLY1QiVrmo0NLHN+xP7Y0JJnB+hi04iOHNSWdLfiai14YR0Vpn
-         JgQDpWLWaKEBk3xgaahdGaUIbBeTrD60Ip+jsg5FYV/FIZzNwIF/MY5qvY/ATf5aEw
-         WuHJiVMCw/9ar3cCCOl2KCoDsH/5leJZ+XAXO44s=
+        b=PU0LR6yGvwbJruNJfy9VcH1PsVcX3X4sgGKsWDev9yU2HC4UTZgE+eTeUVVVX+Fhp
+         hi9Dy1Lp744SG83Q/TD2nxEbfpSH9uRv2RJ6e0bEyccLsewBwqCTqVh96A9lmjxo19
+         xIoMfjMUFwUvHCifxOzqH9Cz6rHi8Qn+jbehBIfg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paul Blakey <paulb@nvidia.com>,
-        Vlad Buslov <vladbu@nvidia.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 528/550] net/sched: act_ct: Always fill offloading tuple iifidx
+        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 567/603] nbd: fix uaf in nbd_open
 Date:   Wed, 15 Nov 2023 14:18:32 -0500
-Message-ID: <20231115191637.539701805@linuxfoundation.org>
+Message-ID: <20231115191650.796497859@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,149 +50,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 9bc64bd0cd765f696fcd40fc98909b1f7c73b2ba ]
+[ Upstream commit 327462725b0f759f093788dfbcb2f1fd132f956b ]
 
-Referenced commit doesn't always set iifidx when offloading the flow to
-hardware. Fix the following cases:
+Commit 4af5f2e03013 ("nbd: use blk_mq_alloc_disk and
+blk_cleanup_disk") cleans up disk by blk_cleanup_disk() and it won't set
+disk->private_data as NULL as before. UAF may be triggered in nbd_open()
+if someone tries to open nbd device right after nbd_put() since nbd has
+been free in nbd_dev_remove().
 
-- nf_conn_act_ct_ext_fill() is called before extension is created with
-nf_conn_act_ct_ext_add() in tcf_ct_act(). This can cause rule offload with
-unspecified iifidx when connection is offloaded after only single
-original-direction packet has been processed by tc data path. Always fill
-the new nf_conn_act_ct_ext instance after creating it in
-nf_conn_act_ct_ext_add().
+Fix this by implementing ->free_disk and free private data in it.
 
-- Offloading of unidirectional UDP NEW connections is now supported, but ct
-flow iifidx field is not updated when connection is promoted to
-bidirectional which can result reply-direction iifidx to be zero when
-refreshing the connection. Fill in the extension and update flow iifidx
-before calling flow_offload_refresh().
-
-Fixes: 9795ded7f924 ("net/sched: act_ct: Fill offloading tuple iifidx")
-Reviewed-by: Paul Blakey <paulb@nvidia.com>
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 6a9bad0069cf ("net/sched: act_ct: offload UDP NEW connections")
-Link: https://lore.kernel.org/r/20231103151410.764271-1-vladbu@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4af5f2e03013 ("nbd: use blk_mq_alloc_disk and blk_cleanup_disk")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Link: https://lore.kernel.org/r/20231107103435.2074904-1-lilingfeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_conntrack_act_ct.h | 30 ++++++++++++---------
- net/openvswitch/conntrack.c                 |  2 +-
- net/sched/act_ct.c                          | 15 ++++++++++-
- 3 files changed, 32 insertions(+), 15 deletions(-)
+ drivers/block/nbd.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_act_ct.h b/include/net/netfilter/nf_conntrack_act_ct.h
-index 078d3c52c03f9..e5f2f0b73a9a0 100644
---- a/include/net/netfilter/nf_conntrack_act_ct.h
-+++ b/include/net/netfilter/nf_conntrack_act_ct.h
-@@ -20,7 +20,22 @@ static inline struct nf_conn_act_ct_ext *nf_conn_act_ct_ext_find(const struct nf
- #endif
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 800f131222fc8..855fdf5c3b4ea 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -250,7 +250,6 @@ static void nbd_dev_remove(struct nbd_device *nbd)
+ 	struct gendisk *disk = nbd->disk;
+ 
+ 	del_gendisk(disk);
+-	put_disk(disk);
+ 	blk_mq_free_tag_set(&nbd->tag_set);
+ 
+ 	/*
+@@ -261,7 +260,7 @@ static void nbd_dev_remove(struct nbd_device *nbd)
+ 	idr_remove(&nbd_index_idr, nbd->index);
+ 	mutex_unlock(&nbd_index_mutex);
+ 	destroy_workqueue(nbd->recv_workq);
+-	kfree(nbd);
++	put_disk(disk);
  }
  
--static inline struct nf_conn_act_ct_ext *nf_conn_act_ct_ext_add(struct nf_conn *ct)
-+static inline void nf_conn_act_ct_ext_fill(struct sk_buff *skb, struct nf_conn *ct,
-+					   enum ip_conntrack_info ctinfo)
+ static void nbd_dev_remove_work(struct work_struct *work)
+@@ -1608,6 +1607,13 @@ static void nbd_release(struct gendisk *disk)
+ 	nbd_put(nbd);
+ }
+ 
++static void nbd_free_disk(struct gendisk *disk)
 +{
-+#if IS_ENABLED(CONFIG_NET_ACT_CT)
-+	struct nf_conn_act_ct_ext *act_ct_ext;
++	struct nbd_device *nbd = disk->private_data;
 +
-+	act_ct_ext = nf_conn_act_ct_ext_find(ct);
-+	if (dev_net(skb->dev) == &init_net && act_ct_ext)
-+		act_ct_ext->ifindex[CTINFO2DIR(ctinfo)] = skb->dev->ifindex;
-+#endif
++	kfree(nbd);
 +}
 +
-+static inline struct
-+nf_conn_act_ct_ext *nf_conn_act_ct_ext_add(struct sk_buff *skb,
-+					   struct nf_conn *ct,
-+					   enum ip_conntrack_info ctinfo)
+ static const struct block_device_operations nbd_fops =
  {
- #if IS_ENABLED(CONFIG_NET_ACT_CT)
- 	struct nf_conn_act_ct_ext *act_ct = nf_ct_ext_find(ct, NF_CT_EXT_ACT_CT);
-@@ -29,22 +44,11 @@ static inline struct nf_conn_act_ct_ext *nf_conn_act_ct_ext_add(struct nf_conn *
- 		return act_ct;
+ 	.owner =	THIS_MODULE,
+@@ -1615,6 +1621,7 @@ static const struct block_device_operations nbd_fops =
+ 	.release =	nbd_release,
+ 	.ioctl =	nbd_ioctl,
+ 	.compat_ioctl =	nbd_ioctl,
++	.free_disk =	nbd_free_disk,
+ };
  
- 	act_ct = nf_ct_ext_add(ct, NF_CT_EXT_ACT_CT, GFP_ATOMIC);
-+	nf_conn_act_ct_ext_fill(skb, ct, ctinfo);
- 	return act_ct;
- #else
- 	return NULL;
- #endif
- }
- 
--static inline void nf_conn_act_ct_ext_fill(struct sk_buff *skb, struct nf_conn *ct,
--					   enum ip_conntrack_info ctinfo)
--{
--#if IS_ENABLED(CONFIG_NET_ACT_CT)
--	struct nf_conn_act_ct_ext *act_ct_ext;
--
--	act_ct_ext = nf_conn_act_ct_ext_find(ct);
--	if (dev_net(skb->dev) == &init_net && act_ct_ext)
--		act_ct_ext->ifindex[CTINFO2DIR(ctinfo)] = skb->dev->ifindex;
--#endif
--}
--
- #endif /* _NF_CONNTRACK_ACT_CT_H */
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index 331730fd35803..2669a1d1ad9f4 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -1043,7 +1043,7 @@ static int ovs_ct_commit(struct net *net, struct sw_flow_key *key,
- 		if (err)
- 			return err;
- 
--		nf_conn_act_ct_ext_add(ct);
-+		nf_conn_act_ct_ext_add(skb, ct, ctinfo);
- 	} else if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS) &&
- 		   labels_nonzero(&info->labels.mask)) {
- 		err = ovs_ct_set_labels(ct, key, &info->labels.value,
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index ad7c955453782..d131750663c3c 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -376,6 +376,17 @@ static void tcf_ct_flow_tc_ifidx(struct flow_offload *entry,
- 	entry->tuplehash[dir].tuple.tc.iifidx = act_ct_ext->ifindex[dir];
- }
- 
-+static void tcf_ct_flow_ct_ext_ifidx_update(struct flow_offload *entry)
-+{
-+	struct nf_conn_act_ct_ext *act_ct_ext;
-+
-+	act_ct_ext = nf_conn_act_ct_ext_find(entry->ct);
-+	if (act_ct_ext) {
-+		tcf_ct_flow_tc_ifidx(entry, act_ct_ext, FLOW_OFFLOAD_DIR_ORIGINAL);
-+		tcf_ct_flow_tc_ifidx(entry, act_ct_ext, FLOW_OFFLOAD_DIR_REPLY);
-+	}
-+}
-+
- static void tcf_ct_flow_table_add(struct tcf_ct_flow_table *ct_ft,
- 				  struct nf_conn *ct,
- 				  bool tcp, bool bidirectional)
-@@ -671,6 +682,8 @@ static bool tcf_ct_flow_table_lookup(struct tcf_ct_params *p,
- 	else
- 		ctinfo = IP_CT_ESTABLISHED_REPLY;
- 
-+	nf_conn_act_ct_ext_fill(skb, ct, ctinfo);
-+	tcf_ct_flow_ct_ext_ifidx_update(flow);
- 	flow_offload_refresh(nf_ft, flow, force_refresh);
- 	if (!test_bit(IPS_ASSURED_BIT, &ct->status)) {
- 		/* Process this flow in SW to allow promoting to ASSURED */
-@@ -1030,7 +1043,7 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
- 		tcf_ct_act_set_labels(ct, p->labels, p->labels_mask);
- 
- 		if (!nf_ct_is_confirmed(ct))
--			nf_conn_act_ct_ext_add(ct);
-+			nf_conn_act_ct_ext_add(skb, ct, ctinfo);
- 
- 		/* This will take care of sending queued events
- 		 * even if the connection is already confirmed.
+ #if IS_ENABLED(CONFIG_DEBUG_FS)
 -- 
 2.42.0
 
