@@ -2,45 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD3257ECBC4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BEC67ECE37
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232718AbjKOTYV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57808 "EHLO
+        id S234839AbjKOTlh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232716AbjKOTYU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:20 -0500
+        with ESMTP id S234939AbjKOTlh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B269F19D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:17 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1756AC433C7;
-        Wed, 15 Nov 2023 19:24:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93231A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4165EC433C7;
+        Wed, 15 Nov 2023 19:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076257;
-        bh=J4NjhF6NtXvEvo+9DxL5hj9og0/kC9/9/+yy14SPlD4=;
+        s=korg; t=1700077293;
+        bh=nlygXryv5WuSeD1yY8M7C2IbYtKn8Dgc82k9/TMiii0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jd1szNo31cr+3KwQfY++os3S8d6/4CuhOCrpHS/QevxGzoiKBi4vf67oK4rNu874O
-         PHbs+nxHmKPEOkpono5zJa8XAFZHfR/KiNb595wJKVXn0unIlDF0eZDX8EbU6bB2BL
-         wq4L8/ogNC2tfPA37CZeAfSEvhYkjwhvhx/edxns=
+        b=Epa3oMECkrb4dkkJZX3oQUAS86uQasyd4utudyfNgFOaZ4WGqHoptgSO3B5rjbe4q
+         uhPQuUSIPimMNECxzG73xcIsl34OoHZOlT7LrKtxZ3TVgjmbDEQMxilLh3XHD0hjDs
+         RP8AhklqdccgnfanY5KZ+FJ5cBMD45T/1+y2AlEo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 176/550] clk: mediatek: clk-mt6779: Add check for mtk_alloc_clk_data
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Aleksandr Nogikh <nogikh@google.com>,
+        Adam Ford <aford173@gmail.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        =?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+        Robert Chiras <robert.chiras@nxp.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Robert Foss <rfoss@kernel.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 215/603] drm: bridge: for GENERIC_PHY_MIPI_DPHY also select GENERIC_PHY
 Date:   Wed, 15 Nov 2023 14:12:40 -0500
-Message-ID: <20231115191612.934023942@linuxfoundation.org>
+Message-ID: <20231115191628.156983839@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,49 +61,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 1f57f78fbacf630430bf954e5a84caafdfea30c0 ]
+[ Upstream commit 96413b355a49fd684430a230479bd231d977894f ]
 
-Add the check for the return value of mtk_alloc_clk_data() in order to
-avoid NULL pointer dereference.
+Three DRM bridge drivers select GENERIC_PHY_MIPI_DPHY when GENERIC_PHY
+might not be set.  This causes Kconfig warnings and a build error.
 
-Fixes: 710774e04861 ("clk: mediatek: Add MT6779 clock support")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230912093407.21505-2-jiasheng@iscas.ac.cn
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+WARNING: unmet direct dependencies detected for GENERIC_PHY_MIPI_DPHY
+  Depends on [n]: GENERIC_PHY [=n]
+  Selected by [y]:
+  - DRM_NWL_MIPI_DSI [=y] && DRM_BRIDGE [=y] && DRM [=y] && COMMON_CLK [=y] && OF [=y] && HAS_IOMEM [=y]
+  - DRM_SAMSUNG_DSIM [=y] && DRM [=y] && DRM_BRIDGE [=y] && COMMON_CLK [=y] && OF [=y] && HAS_IOMEM [=y]
+
+(drm/bridge/cadence/Kconfig was found by inspection.)
+
+aarch64-linux-ld: drivers/gpu/drm/bridge/samsung-dsim.o: in function `samsung_dsim_set_phy_ctrl':
+drivers/gpu/drm/bridge/samsung-dsim.c:731: undefined reference to `phy_mipi_dphy_get_default_config_for_hsclk'
+
+Prevent these warnings and build error by also selecting GENERIC_PHY
+whenever selecting GENERIC_PHY_MIPI_DPHY.
+
+Fixes: fced5a364dee ("drm/bridge: cdns: Convert to phy framework")
+Fixes: 44cfc6233447 ("drm/bridge: Add NWL MIPI DSI host controller support")
+Fixes: 171b3b1e0f8b ("drm: bridge: samsung-dsim: Select GENERIC_PHY_MIPI_DPHY")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: Aleksandr Nogikh <nogikh@google.com>
+Link: lore.kernel.org/r/20230803144227.2187749-1-nogikh@google.com
+Cc: Adam Ford <aford173@gmail.com>
+Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+Cc: Guido Günther <agx@sigxcpu.org>
+Cc: Robert Chiras <robert.chiras@nxp.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Robert Foss <rfoss@kernel.org>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Reviewed-by: Adam Ford <aford173@gmail.com>
+Tested-by: Aleksandr Nogikh <nogikh@google.com>
+Reviewed-by: Guido Günther <agx@sigxcpu.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230804030140.21395-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt6779.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/bridge/Kconfig         | 2 ++
+ drivers/gpu/drm/bridge/cadence/Kconfig | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mt6779.c b/drivers/clk/mediatek/clk-mt6779.c
-index f33fbaee14048..fd14da075604b 100644
---- a/drivers/clk/mediatek/clk-mt6779.c
-+++ b/drivers/clk/mediatek/clk-mt6779.c
-@@ -1219,6 +1219,8 @@ static int clk_mt6779_apmixed_probe(struct platform_device *pdev)
- 	struct device_node *node = pdev->dev.of_node;
- 
- 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
-+	if (!clk_data)
-+		return -ENOMEM;
- 
- 	mtk_clk_register_plls(node, plls, ARRAY_SIZE(plls), clk_data);
- 
-@@ -1239,6 +1241,8 @@ static int clk_mt6779_top_probe(struct platform_device *pdev)
- 		return PTR_ERR(base);
- 
- 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR_CLK);
-+	if (!clk_data)
-+		return -ENOMEM;
- 
- 	mtk_clk_register_fixed_clks(top_fixed_clks, ARRAY_SIZE(top_fixed_clks),
- 				    clk_data);
+diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
+index 44a660a4bdbfc..ba82a1142adf7 100644
+--- a/drivers/gpu/drm/bridge/Kconfig
++++ b/drivers/gpu/drm/bridge/Kconfig
+@@ -181,6 +181,7 @@ config DRM_NWL_MIPI_DSI
+ 	select DRM_KMS_HELPER
+ 	select DRM_MIPI_DSI
+ 	select DRM_PANEL_BRIDGE
++	select GENERIC_PHY
+ 	select GENERIC_PHY_MIPI_DPHY
+ 	select MFD_SYSCON
+ 	select MULTIPLEXER
+@@ -227,6 +228,7 @@ config DRM_SAMSUNG_DSIM
+ 	select DRM_KMS_HELPER
+ 	select DRM_MIPI_DSI
+ 	select DRM_PANEL_BRIDGE
++	select GENERIC_PHY
+ 	select GENERIC_PHY_MIPI_DPHY
+ 	help
+ 	  The Samsung MIPI DSIM bridge controller driver.
+diff --git a/drivers/gpu/drm/bridge/cadence/Kconfig b/drivers/gpu/drm/bridge/cadence/Kconfig
+index ec35215a20034..cced81633ddcd 100644
+--- a/drivers/gpu/drm/bridge/cadence/Kconfig
++++ b/drivers/gpu/drm/bridge/cadence/Kconfig
+@@ -4,6 +4,7 @@ config DRM_CDNS_DSI
+ 	select DRM_KMS_HELPER
+ 	select DRM_MIPI_DSI
+ 	select DRM_PANEL_BRIDGE
++	select GENERIC_PHY
+ 	select GENERIC_PHY_MIPI_DPHY
+ 	depends on OF
+ 	help
 -- 
 2.42.0
 
