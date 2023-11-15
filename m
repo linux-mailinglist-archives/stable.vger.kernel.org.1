@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66E547ED38C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33AF77ED373
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:52:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234846AbjKOUxX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:53:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36032 "EHLO
+        id S233870AbjKOUwo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:52:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234888AbjKOUxW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:22 -0500
+        with ESMTP id S233760AbjKOUwo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:52:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A9A5BC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFF6C4E777;
-        Wed, 15 Nov 2023 20:53:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A4FDB0
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:52:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F406BC4E779;
+        Wed, 15 Nov 2023 20:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081599;
-        bh=O985sxKW8pHgFAJSQiVCcNSKlrtsgq8jBwksbOFoy8g=;
+        s=korg; t=1700081561;
+        bh=fUmzaVanyzr/sZ1DmCzX3Ku2BHrFftingK5sci9NCtM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ax0J2JX9IaShqNDbAoq3gLOBWgKx39qk3mMf0Bfvf+BnByI+KycRbqwoQPy86swH8
-         d5O1qV6p1KBBVGKU0+vtZmqTNigNK38MIHz4bsHjgck1vT9h2q6t5SarshyDasav2R
-         Che75qdFpfZt5Eki9WE/0Klbvxx1LFZamWT7J+kk=
+        b=Sca12VQDsxg3V5IOmsZZwVChfHSIPPawhI8jgm46sAVemBOMyyfOyp9ifWgabxTxX
+         iZ2F7/jVeifpI88mj2k4H4I3OVaae5PzXfO2xz1pv7+4l5XDi8dgN+L3EipV7++IkY
+         +mus0VV4gigtcWJ9KGXZ93gOo/G9vOUqtKRcl+88=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paul Moore <paul@paul-moore.com>,
+        patches@lists.linux.dev, Patrick Thompson <ptf@google.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
         Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 220/244] dccp/tcp: Call security_inet_conn_request() after setting IPv6 addresses.
-Date:   Wed, 15 Nov 2023 15:36:52 -0500
-Message-ID: <20231115203601.541901717@linuxfoundation.org>
+Subject: [PATCH 5.15 221/244] net: r8169: Disable multicast filter for RTL8168H and RTL8107E
+Date:   Wed, 15 Nov 2023 15:36:53 -0500
+Message-ID: <20231115203601.602664637@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -55,82 +56,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Patrick Thompson <ptf@google.com>
 
-[ Upstream commit 23be1e0e2a83a8543214d2599a31d9a2185a796b ]
+[ Upstream commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df ]
 
-Initially, commit 4237c75c0a35 ("[MLSXFRM]: Auto-labeling of child
-sockets") introduced security_inet_conn_request() in some functions
-where reqsk is allocated.  The hook is added just after the allocation,
-so reqsk's IPv6 remote address was not initialised then.
+RTL8168H and RTL8107E ethernet adapters erroneously filter unicast
+eapol packets unless allmulti is enabled. These devices correspond to
+RTL_GIGA_MAC_VER_46 and VER_48. Add an exception for VER_46 and VER_48
+in the same way that VER_35 has an exception.
 
-However, SELinux/Smack started to read it in netlbl_req_setattr()
-after commit e1adea927080 ("calipso: Allow request sockets to be
-relabelled by the lsm.").
-
-Commit 284904aa7946 ("lsm: Relocate the IPv4 security_inet_conn_request()
-hooks") fixed that kind of issue only in TCPv4 because IPv6 labeling was
-not supported at that time.  Finally, the same issue was introduced again
-in IPv6.
-
-Let's apply the same fix on DCCPv6 and TCPv6.
-
-Fixes: e1adea927080 ("calipso: Allow request sockets to be relabelled by the lsm.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
+Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
+Signed-off-by: Patrick Thompson <ptf@google.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20231030205031.177855-1-ptf@google.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/ipv6.c       | 6 +++---
- net/ipv6/syncookies.c | 7 ++++---
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index 0ddf64845a06c..6f05e9d0d4287 100644
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -359,15 +359,15 @@ static int dccp_v6_conn_request(struct sock *sk, struct sk_buff *skb)
- 	if (dccp_parse_options(sk, dreq, skb))
- 		goto drop_and_free;
- 
--	if (security_inet_conn_request(sk, skb, req))
--		goto drop_and_free;
--
- 	ireq = inet_rsk(req);
- 	ireq->ir_v6_rmt_addr = ipv6_hdr(skb)->saddr;
- 	ireq->ir_v6_loc_addr = ipv6_hdr(skb)->daddr;
- 	ireq->ireq_family = AF_INET6;
- 	ireq->ir_mark = inet_request_mark(sk, skb);
- 
-+	if (security_inet_conn_request(sk, skb, req))
-+		goto drop_and_free;
-+
- 	if (ipv6_opt_accepted(sk, skb, IP6CB(skb)) ||
- 	    np->rxopt.bits.rxinfo || np->rxopt.bits.rxoinfo ||
- 	    np->rxopt.bits.rxhlim || np->rxopt.bits.rxohlim) {
-diff --git a/net/ipv6/syncookies.c b/net/ipv6/syncookies.c
-index 12ae817aaf2ec..c10a68bb85de3 100644
---- a/net/ipv6/syncookies.c
-+++ b/net/ipv6/syncookies.c
-@@ -180,14 +180,15 @@ struct sock *cookie_v6_check(struct sock *sk, struct sk_buff *skb)
- 	treq = tcp_rsk(req);
- 	treq->tfo_listener = false;
- 
--	if (security_inet_conn_request(sk, skb, req))
--		goto out_free;
--
- 	req->mss = mss;
- 	ireq->ir_rmt_port = th->source;
- 	ireq->ir_num = ntohs(th->dest);
- 	ireq->ir_v6_rmt_addr = ipv6_hdr(skb)->saddr;
- 	ireq->ir_v6_loc_addr = ipv6_hdr(skb)->daddr;
-+
-+	if (security_inet_conn_request(sk, skb, req))
-+		goto out_free;
-+
- 	if (ipv6_opt_accepted(sk, skb, &TCP_SKB_CB(skb)->header.h6) ||
- 	    np->rxopt.bits.rxinfo || np->rxopt.bits.rxoinfo ||
- 	    np->rxopt.bits.rxhlim || np->rxopt.bits.rxohlim) {
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index ab84c623a7c62..2e555eda19a85 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2551,7 +2551,9 @@ static void rtl_set_rx_mode(struct net_device *dev)
+ 		rx_mode |= AcceptAllPhys;
+ 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
+ 		   dev->flags & IFF_ALLMULTI ||
+-		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
++		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
++		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
++		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
+ 		/* accept all multicasts */
+ 	} else if (netdev_mc_empty(dev)) {
+ 		rx_mode &= ~AcceptMulticast;
 -- 
 2.42.0
 
