@@ -2,38 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7346C7ED51B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:00:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EC497ED514
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344729AbjKOVAE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:00:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36902 "EHLO
+        id S1344815AbjKOVAA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:00:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344755AbjKOU7H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:59:07 -0500
+        with ESMTP id S1344671AbjKOU7E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:59:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FEBE1BCC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:58:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3E8C433D9;
-        Wed, 15 Nov 2023 20:58:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2A881BC1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:58:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 291B7C433CB;
+        Wed, 15 Nov 2023 20:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081904;
-        bh=0Dl1DfgtwuwZf43z1lOWHI0H3nXDo9oOVefmZMunrN8=;
+        s=korg; t=1700081895;
+        bh=BHU9tF7AdMCaYgmu+KM5XYOk9d3jvEDKXvA7LmHKlDk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sml9aRPxiDyhJWANy5uxQG73zABqsZHvEunBReLdL4VG2fVtaWqoX6DzA+42ouT5D
-         ev8L55BhheKprkhPUqJQOwiNUYhpgUuiok5rkv8RSuj9lKQw+jyLuMwtQ+MOoATnXZ
-         gO4QIN/n8KDxWjPVjZWT0LkctefdGbXLlcf7idzk=
+        b=PWAJ3ADhWnGd0OfqywWf4pvavsnDbJMFszQPLlfrVn4nvdkD/kRkjzKkB33ybfIz4
+         gPqQEDo0xFxhU9P5uFwL4oGPVBdJYcahrb92lv4hpvpfHpePFIobDTbC5RNr7AF1rW
+         gCfXtV07RSl5JztVu29fxh4X4Ao7koM4UT+E0eb8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-        Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/191] spi: spi-zynq-qspi: add spi-mem to driver kconfig dependencies
-Date:   Wed, 15 Nov 2023 15:47:40 -0500
-Message-ID: <20231115204655.540751326@linuxfoundation.org>
+Subject: [PATCH 5.10 186/191] fbdev: imsttfb: Fix error path of imsttfb_probe()
+Date:   Wed, 15 Nov 2023 15:47:41 -0500
+Message-ID: <20231115204655.599055886@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -56,35 +53,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit c2ded280a4b1b7bd93e53670528504be08d24967 ]
+[ Upstream commit 518ecb6a209f6ff678aeadf9f2bf870c0982ca85 ]
 
-Zynq QSPI driver has been converted to use spi-mem framework so
-add spi-mem to driver kconfig dependencies.
+Release ressources when init_imstt() returns failure.
 
-Fixes: 67dca5e580f1 ("spi: spi-mem: Add support for Zynq QSPI controller")
-Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/1699037031-702858-1-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Stable-dep-of: aba6ab57a910 ("fbdev: imsttfb: fix a resource leak in probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/imsttfb.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 4d98ce7571df0..5fd9b515f6f14 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -949,6 +949,7 @@ config SPI_XTENSA_XTFPGA
- config SPI_ZYNQ_QSPI
- 	tristate "Xilinx Zynq QSPI controller"
- 	depends on ARCH_ZYNQ || COMPILE_TEST
-+	depends on SPI_MEM
- 	help
- 	  This enables support for the Zynq Quad SPI controller
- 	  in master mode.
+diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
+index 1b2fb8ed76237..876ddf05e133a 100644
+--- a/drivers/video/fbdev/imsttfb.c
++++ b/drivers/video/fbdev/imsttfb.c
+@@ -1525,8 +1525,10 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto error;
+ 	info->pseudo_palette = par->palette;
+ 	ret = init_imstt(info);
+-	if (!ret)
+-		pci_set_drvdata(pdev, info);
++	if (ret)
++		goto error;
++
++	pci_set_drvdata(pdev, info);
+ 	return ret;
+ 
+ error:
 -- 
 2.42.0
 
