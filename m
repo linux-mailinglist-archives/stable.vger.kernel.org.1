@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F08387ECBD7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4B3B7ECE4D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233122AbjKOTYv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38796 "EHLO
+        id S234975AbjKOTmO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233054AbjKOTYu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:50 -0500
+        with ESMTP id S234977AbjKOTmN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B44D19D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:47 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0581C433C8;
-        Wed, 15 Nov 2023 19:24:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A87EAB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133CBC433CB;
+        Wed, 15 Nov 2023 19:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076287;
-        bh=ymMAk+FtJcQoQiK5/K3FJT/IX19sAPWaEV0Y9PIOfJM=;
+        s=korg; t=1700077329;
+        bh=9zfeSWl/G9okiOKllTgz+g8SXVk7mJigBxjJYh8rzlA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tk2qbJ165dO2+jg0y1MZ1rYAkG/RkgcoCUwooK5XJhNyiklMsIAjBwSE8T7S+ZmGC
-         b1VutUa2waOKYYaz109XbgGI4ecHnhjmNU4/oA+AAqXUMDMVqy1GZ3lOCKkeWOOemk
-         QZ1LjomekP2DZ60UVG/SXWbyHSRrg1700/SP6U0o=
+        b=ZoOQfjxM14ZZnLDkll+3fgCoufn7gc3lQJ6supbtNinLnH5V3sdvaRvnWejO7whb1
+         LSdjzffPmADQ6Mm8eX3iTVkqEvJrIWyDXxYHXruaZRXzTfJHYSjgmTrFkkcPr5OIMq
+         fs5ijD6JdXtaIlZULSKpgtD2XVqjv2+x/P06gARg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 169/550] clk: linux/clk-provider.h: fix kernel-doc warnings and typos
+Subject: [PATCH 6.6 208/603] hwmon: (sch5627) Use bit macros when accessing the control register
 Date:   Wed, 15 Nov 2023 14:12:33 -0500
-Message-ID: <20231115191612.423896623@linuxfoundation.org>
+Message-ID: <20231115191627.663129375@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,119 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 84aefafe6b294041b7fa0757414c4a29c1bdeea2 ]
+[ Upstream commit 7f0b28e0653f36b51542d25dd54ed312c397ecfc ]
 
-Fix spelling of "Structure".
+Use bit macros then accessing SCH5627_REG_CTRL, so that people
+do not need to look at the datasheet to find out what each bit
+does.
 
-Fix multiple kernel-doc warnings:
+Tested on a Fujitsu Esprimo P720.
 
-clk-provider.h:269: warning: Function parameter or member 'recalc_rate' not described in 'clk_ops'
-clk-provider.h:468: warning: Function parameter or member 'parent_data' not described in 'clk_hw_register_fixed_rate_with_accuracy_parent_data'
-clk-provider.h:468: warning: Excess function parameter 'parent_name' description in 'clk_hw_register_fixed_rate_with_accuracy_parent_data'
-clk-provider.h:482: warning: Function parameter or member 'parent_data' not described in 'clk_hw_register_fixed_rate_parent_accuracy'
-clk-provider.h:482: warning: Excess function parameter 'parent_name' description in 'clk_hw_register_fixed_rate_parent_accuracy'
-clk-provider.h:687: warning: Function parameter or member 'flags' not described in 'clk_divider'
-clk-provider.h:1164: warning: Function parameter or member 'flags' not described in 'clk_fractional_divider'
-clk-provider.h:1164: warning: Function parameter or member 'approximation' not described in 'clk_fractional_divider'
-clk-provider.h:1213: warning: Function parameter or member 'flags' not described in 'clk_multiplier'
-
-Fixes: 9fba738a53dd ("clk: add duty cycle support")
-Fixes: b2476490ef11 ("clk: introduce the common clock framework")
-Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
-Fixes: f5290d8e4f0c ("clk: asm9260: use parent index to link the reference clock")
-Fixes: 9d9f78ed9af0 ("clk: basic clock hardware types")
-Fixes: e2d0e90fae82 ("clk: new basic clk type for fractional divider")
-Fixes: f2e0a53271a4 ("clk: Add a basic multiplier clock")
-
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org
-Link: https://lore.kernel.org/r/20230930221428.18463-1-rdunlap@infradead.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20230907052639.16491-2-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 7da8a6354360 ("hwmon: (sch5627) Disallow write access if virtual registers are locked")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/clk-provider.h | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/hwmon/sch5627.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-index 0f0cd01906b4c..ec93fb23372b4 100644
---- a/include/linux/clk-provider.h
-+++ b/include/linux/clk-provider.h
-@@ -74,7 +74,7 @@ void clk_hw_forward_rate_request(const struct clk_hw *core,
- 				 unsigned long parent_rate);
+diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
+index 1bbda3b05532e..0eefb8c0aef25 100644
+--- a/drivers/hwmon/sch5627.c
++++ b/drivers/hwmon/sch5627.c
+@@ -6,6 +6,7 @@
  
- /**
-- * struct clk_duty - Struture encoding the duty cycle ratio of a clock
-+ * struct clk_duty - Structure encoding the duty cycle ratio of a clock
-  *
-  * @num:	Numerator of the duty cycle ratio
-  * @den:	Denominator of the duty cycle ratio
-@@ -129,7 +129,7 @@ struct clk_duty {
-  * @restore_context: Restore the context of the clock after a restoration
-  *		of power.
-  *
-- * @recalc_rate	Recalculate the rate of this clock, by querying hardware. The
-+ * @recalc_rate: Recalculate the rate of this clock, by querying hardware. The
-  *		parent rate is an input parameter.  It is up to the caller to
-  *		ensure that the prepare_mutex is held across this call. If the
-  *		driver cannot figure out a rate for this clock, it must return
-@@ -456,7 +456,7 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
-  * clock with the clock framework
-  * @dev: device that is registering this clock
-  * @name: name of this clock
-- * @parent_name: name of clock's parent
-+ * @parent_data: name of clock's parent
-  * @flags: framework-specific flags
-  * @fixed_rate: non-adjustable clock rate
-  * @fixed_accuracy: non-adjustable clock accuracy
-@@ -471,7 +471,7 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
-  * the clock framework
-  * @dev: device that is registering this clock
-  * @name: name of this clock
-- * @parent_name: name of clock's parent
-+ * @parent_data: name of clock's parent
-  * @flags: framework-specific flags
-  * @fixed_rate: non-adjustable clock rate
-  */
-@@ -649,7 +649,7 @@ struct clk_div_table {
-  * Clock with an adjustable divider affecting its output frequency.  Implements
-  * .recalc_rate, .set_rate and .round_rate
-  *
-- * Flags:
-+ * @flags:
-  * CLK_DIVIDER_ONE_BASED - by default the divisor is the value read from the
-  *	register plus one.  If CLK_DIVIDER_ONE_BASED is set then the divider is
-  *	the raw value read from the register, with the value of zero considered
-@@ -1130,11 +1130,12 @@ struct clk_hw *clk_hw_register_fixed_factor_parent_hw(struct device *dev,
-  * @mwidth:	width of the numerator bit field
-  * @nshift:	shift to the denominator bit field
-  * @nwidth:	width of the denominator bit field
-+ * @approximation: clk driver's callback for calculating the divider clock
-  * @lock:	register lock
-  *
-  * Clock with adjustable fractional divider affecting its output frequency.
-  *
-- * Flags:
-+ * @flags:
-  * CLK_FRAC_DIVIDER_ZERO_BASED - by default the numerator and denominator
-  *	is the value read from the register. If CLK_FRAC_DIVIDER_ZERO_BASED
-  *	is set then the numerator and denominator are both the value read
-@@ -1191,7 +1192,7 @@ void clk_hw_unregister_fractional_divider(struct clk_hw *hw);
-  * Clock with an adjustable multiplier affecting its output frequency.
-  * Implements .recalc_rate, .set_rate and .round_rate
-  *
-- * Flags:
-+ * @flags:
-  * CLK_MULTIPLIER_ZERO_BYPASS - By default, the multiplier is the value read
-  *	from the register, with 0 being a valid value effectively
-  *	zeroing the output clock rate. If CLK_MULTIPLIER_ZERO_BYPASS is
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/bits.h>
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/init.h>
+@@ -32,6 +33,9 @@
+ #define SCH5627_REG_PRIMARY_ID		0x3f
+ #define SCH5627_REG_CTRL		0x40
+ 
++#define SCH5627_CTRL_START		BIT(0)
++#define SCH5627_CTRL_VBAT		BIT(4)
++
+ #define SCH5627_NO_TEMPS		8
+ #define SCH5627_NO_FANS			4
+ #define SCH5627_NO_IN			5
+@@ -147,7 +151,8 @@ static int sch5627_update_in(struct sch5627_data *data)
+ 
+ 	/* Trigger a Vbat voltage measurement every 5 minutes */
+ 	if (time_after(jiffies, data->last_battery + 300 * HZ)) {
+-		sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL, data->control | 0x10);
++		sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL,
++					  data->control | SCH5627_CTRL_VBAT);
+ 		data->last_battery = jiffies;
+ 	}
+ 
+@@ -483,14 +488,13 @@ static int sch5627_probe(struct platform_device *pdev)
+ 		return val;
+ 
+ 	data->control = val;
+-	if (!(data->control & 0x01)) {
++	if (!(data->control & SCH5627_CTRL_START)) {
+ 		pr_err("hardware monitoring not enabled\n");
+ 		return -ENODEV;
+ 	}
+ 	/* Trigger a Vbat voltage measurement, so that we get a valid reading
+ 	   the first time we read Vbat */
+-	sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL,
+-				  data->control | 0x10);
++	sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL, data->control | SCH5627_CTRL_VBAT);
+ 	data->last_battery = jiffies;
+ 
+ 	/*
 -- 
 2.42.0
 
