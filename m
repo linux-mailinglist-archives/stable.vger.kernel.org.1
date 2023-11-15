@@ -2,45 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E470B7ECFA3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2636F7ECD32
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235367AbjKOTtr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:49:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54212 "EHLO
+        id S234373AbjKOTfB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:35:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235368AbjKOTtq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:46 -0500
+        with ESMTP id S234389AbjKOTfA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E44D91AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD19C433C9;
-        Wed, 15 Nov 2023 19:49:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C8221AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D16C433C7;
+        Wed, 15 Nov 2023 19:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077782;
-        bh=hsAUS28V70tfWzpxrb/DSxqRC+PjSejq11yUNk9lfFg=;
+        s=korg; t=1700076895;
+        bh=3w8gVbk5LhjRgbhoM8KiHwxnHeLdtc6Fv4c7iymb0RU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zpJGe4bBSEUlTKHiCAlgCBubSVqwVcnNz4Q+ombZO58G+Vl4tus6EzouSl0EnfN+X
-         m67eF+F4DOYey4sW/FGioDn3V8CznWBy06dbK4lu/kiSVO37Z49snyHtuhwSy7bZXh
-         WIYcxRDgqsih2e7Qwa8cu6t2FHxJmUxsBh9INwhU=
+        b=UoUPm9GKSJBO2XzHBEIGhHP/z3W6ImSUv8YDDcEYaw+E/pPA8iu4itW2ymgXnTGPL
+         e4LUy9qUMnYsgehYvcDtrN09E/nGDkmuXuRkvD96T5FwhcsKS335qr32EJ3mNlEzw6
+         u95lAMUwkxF72mpz+uqZWV4QqdIK83B0guMaIX+0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Gonda <pgonda@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Dionna Glaze <dionnaglaze@google.com>,
-        Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        patches@lists.linux.dev, Davidlohr Bueso <dave@stgolabs.net>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dave Jiang <dave.jiang@intel.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 495/603] virt: sevguest: Fix passing a stack buffer as a scatterlist target
+Subject: [PATCH 6.5 456/550] cxl/memdev: Fix sanitize vs decoder setup locking
 Date:   Wed, 15 Nov 2023 14:17:20 -0500
-Message-ID: <20231115191646.532941994@linuxfoundation.org>
+Message-ID: <20231115191632.467001505@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,200 +52,334 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit db10cb9b574675402bfd8fe1a31aafdd45b002df ]
+[ Upstream commit 339818380868e34ff2c482db05031bf47a67d609 ]
 
-CONFIG_DEBUG_SG highlights that get_{report,ext_report,derived_key)()}
-are passing stack buffers as the @req_buf argument to
-handle_guest_request(), generating a Call Trace of the following form:
+The sanitize operation is destructive and the expectation is that the
+device is unmapped while in progress. The current implementation does a
+lockless check for decoders being active, but then does nothing to
+prevent decoders from racing to be committed. Introduce state tracking
+to resolve this race.
 
-    WARNING: CPU: 0 PID: 1175 at include/linux/scatterlist.h:187 enc_dec_message+0x518/0x5b0 [sev_guest]
-    [..]
-    Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-    RIP: 0010:enc_dec_message+0x518/0x5b0 [sev_guest]
-    Call Trace:
-     <TASK>
-    [..]
-     handle_guest_request+0x135/0x520 [sev_guest]
-     get_ext_report+0x1ec/0x3e0 [sev_guest]
-     snp_guest_ioctl+0x157/0x200 [sev_guest]
+This incidentally cleans up unpriveleged userspace from triggering mmio
+read cycles by spinning on reading the 'security/state' attribute. Which
+at a minimum is a waste since the kernel state machine can cache the
+completion result.
 
-Note that the above Call Trace was with the DEBUG_SG BUG_ON()s converted
-to WARN_ON()s.
+Lastly cxl_mem_sanitize() was mistakenly marked EXPORT_SYMBOL() in the
+original implementation, but an export was never required.
 
-This is benign as long as there are no hardware crypto accelerators
-loaded for the aead cipher, and no subsequent dma_map_sg() is performed
-on the scatterlist. However, sev-guest can not assume the presence of
-an aead accelerator nor can it assume that CONFIG_DEBUG_SG is disabled.
-
-Resolve this bug by allocating virt_addr_valid() memory, similar to the
-other buffers am @snp_dev instance carries, to marshal requests from
-user buffers to kernel buffers.
-
-Reported-by: Peter Gonda <pgonda@google.com>
-Closes: http://lore.kernel.org/r/CAMkAt6r2VPPMZ__SQfJse8qWsUyYW3AgYbOUVM0S_Vtk=KvkxQ@mail.gmail.com
-Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Dionna Glaze <dionnaglaze@google.com>
-Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Fixes: 0c36b6ad436a ("cxl/mbox: Add sanitization handling machinery")
+Cc: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/sev-guest/sev-guest.c | 45 ++++++++++++++-----------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ drivers/cxl/core/core.h   |  1 +
+ drivers/cxl/core/hdm.c    | 19 ++++++++++++++
+ drivers/cxl/core/mbox.c   | 55 ++++++++++++++++++++++++++++-----------
+ drivers/cxl/core/memdev.c | 43 ++++++++++++------------------
+ drivers/cxl/core/port.c   |  6 +++++
+ drivers/cxl/core/region.c |  6 -----
+ drivers/cxl/cxlmem.h      |  4 ++-
+ drivers/cxl/pci.c         |  5 ++++
+ 8 files changed, 90 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index 97dbe715e96ad..5bee58ef5f1e3 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -57,6 +57,11 @@ struct snp_guest_dev {
+diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
+index 45e7e044cf4a0..8e5f3d84311e5 100644
+--- a/drivers/cxl/core/core.h
++++ b/drivers/cxl/core/core.h
+@@ -75,6 +75,7 @@ resource_size_t __rcrb_to_component(struct device *dev,
+ 				    enum cxl_rcrb which);
  
- 	struct snp_secrets_page_layout *layout;
- 	struct snp_req_data input;
-+	union {
-+		struct snp_report_req report;
-+		struct snp_derived_key_req derived_key;
-+		struct snp_ext_report_req ext_report;
-+	} req;
- 	u32 *os_area_msg_seqno;
- 	u8 *vmpck;
+ extern struct rw_semaphore cxl_dpa_rwsem;
++extern struct rw_semaphore cxl_region_rwsem;
+ 
+ int cxl_memdev_init(void);
+ void cxl_memdev_exit(void);
+diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
+index 4449b34a80cc9..506c9e14cdf98 100644
+--- a/drivers/cxl/core/hdm.c
++++ b/drivers/cxl/core/hdm.c
+@@ -650,6 +650,25 @@ static int cxl_decoder_commit(struct cxl_decoder *cxld)
+ 		return -EBUSY;
+ 	}
+ 
++	/*
++	 * For endpoint decoders hosted on CXL memory devices that
++	 * support the sanitize operation, make sure sanitize is not in-flight.
++	 */
++	if (is_endpoint_decoder(&cxld->dev)) {
++		struct cxl_endpoint_decoder *cxled =
++			to_cxl_endpoint_decoder(&cxld->dev);
++		struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
++		struct cxl_memdev_state *mds =
++			to_cxl_memdev_state(cxlmd->cxlds);
++
++		if (mds && mds->security.sanitize_active) {
++			dev_dbg(&cxlmd->dev,
++				"attempted to commit %s during sanitize\n",
++				dev_name(&cxld->dev));
++			return -EBUSY;
++		}
++	}
++
+ 	down_read(&cxl_dpa_rwsem);
+ 	/* common decoder settings */
+ 	ctrl = readl(hdm + CXL_HDM_DECODER0_CTRL_OFFSET(cxld->id));
+diff --git a/drivers/cxl/core/mbox.c b/drivers/cxl/core/mbox.c
+index 4df4f614f490e..b91bb98869917 100644
+--- a/drivers/cxl/core/mbox.c
++++ b/drivers/cxl/core/mbox.c
+@@ -1125,20 +1125,7 @@ int cxl_dev_state_identify(struct cxl_memdev_state *mds)
+ }
+ EXPORT_SYMBOL_NS_GPL(cxl_dev_state_identify, CXL);
+ 
+-/**
+- * cxl_mem_sanitize() - Send a sanitization command to the device.
+- * @mds: The device data for the operation
+- * @cmd: The specific sanitization command opcode
+- *
+- * Return: 0 if the command was executed successfully, regardless of
+- * whether or not the actual security operation is done in the background,
+- * such as for the Sanitize case.
+- * Error return values can be the result of the mailbox command, -EINVAL
+- * when security requirements are not met or invalid contexts.
+- *
+- * See CXL 3.0 @8.2.9.8.5.1 Sanitize and @8.2.9.8.5.2 Secure Erase.
+- */
+-int cxl_mem_sanitize(struct cxl_memdev_state *mds, u16 cmd)
++static int __cxl_mem_sanitize(struct cxl_memdev_state *mds, u16 cmd)
+ {
+ 	int rc;
+ 	u32 sec_out = 0;
+@@ -1183,7 +1170,45 @@ int cxl_mem_sanitize(struct cxl_memdev_state *mds, u16 cmd)
+ 
+ 	return 0;
+ }
+-EXPORT_SYMBOL_NS_GPL(cxl_mem_sanitize, CXL);
++
++
++/**
++ * cxl_mem_sanitize() - Send a sanitization command to the device.
++ * @cxlmd: The device for the operation
++ * @cmd: The specific sanitization command opcode
++ *
++ * Return: 0 if the command was executed successfully, regardless of
++ * whether or not the actual security operation is done in the background,
++ * such as for the Sanitize case.
++ * Error return values can be the result of the mailbox command, -EINVAL
++ * when security requirements are not met or invalid contexts, or -EBUSY
++ * if the sanitize operation is already in flight.
++ *
++ * See CXL 3.0 @8.2.9.8.5.1 Sanitize and @8.2.9.8.5.2 Secure Erase.
++ */
++int cxl_mem_sanitize(struct cxl_memdev *cxlmd, u16 cmd)
++{
++	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
++	struct cxl_port  *endpoint;
++	int rc;
++
++	/* synchronize with cxl_mem_probe() and decoder write operations */
++	device_lock(&cxlmd->dev);
++	endpoint = cxlmd->endpoint;
++	down_read(&cxl_region_rwsem);
++	/*
++	 * Require an endpoint to be safe otherwise the driver can not
++	 * be sure that the device is unmapped.
++	 */
++	if (endpoint && endpoint->commit_end == -1)
++		rc = __cxl_mem_sanitize(mds, cmd);
++	else
++		rc = -EBUSY;
++	up_read(&cxl_region_rwsem);
++	device_unlock(&cxlmd->dev);
++
++	return rc;
++}
+ 
+ static int add_dpa_res(struct device *dev, struct resource *parent,
+ 		       struct resource *res, resource_size_t start,
+diff --git a/drivers/cxl/core/memdev.c b/drivers/cxl/core/memdev.c
+index 4c2e24a1a89c2..a02061028b710 100644
+--- a/drivers/cxl/core/memdev.c
++++ b/drivers/cxl/core/memdev.c
+@@ -125,13 +125,16 @@ static ssize_t security_state_show(struct device *dev,
+ 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+ 	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+ 	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlds);
+-	u64 reg = readq(cxlds->regs.mbox + CXLDEV_MBOX_BG_CMD_STATUS_OFFSET);
+-	u32 pct = FIELD_GET(CXLDEV_MBOX_BG_CMD_COMMAND_PCT_MASK, reg);
+-	u16 cmd = FIELD_GET(CXLDEV_MBOX_BG_CMD_COMMAND_OPCODE_MASK, reg);
+ 	unsigned long state = mds->security.state;
++	int rc = 0;
+ 
+-	if (cmd == CXL_MBOX_OP_SANITIZE && pct != 100)
+-		return sysfs_emit(buf, "sanitize\n");
++	/* sync with latest submission state */
++	mutex_lock(&mds->mbox_mutex);
++	if (mds->security.sanitize_active)
++		rc = sysfs_emit(buf, "sanitize\n");
++	mutex_unlock(&mds->mbox_mutex);
++	if (rc)
++		return rc;
+ 
+ 	if (!(state & CXL_PMEM_SEC_STATE_USER_PASS_SET))
+ 		return sysfs_emit(buf, "disabled\n");
+@@ -152,24 +155,17 @@ static ssize_t security_sanitize_store(struct device *dev,
+ 				       const char *buf, size_t len)
+ {
+ 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
+-	struct cxl_port *port = cxlmd->endpoint;
+ 	bool sanitize;
+ 	ssize_t rc;
+ 
+ 	if (kstrtobool(buf, &sanitize) || !sanitize)
+ 		return -EINVAL;
+ 
+-	if (!port || !is_cxl_endpoint(port))
+-		return -EINVAL;
+-
+-	/* ensure no regions are mapped to this memdev */
+-	if (port->commit_end != -1)
+-		return -EBUSY;
+-
+-	rc = cxl_mem_sanitize(mds, CXL_MBOX_OP_SANITIZE);
++	rc = cxl_mem_sanitize(cxlmd, CXL_MBOX_OP_SANITIZE);
++	if (rc)
++		return rc;
+ 
+-	return rc ? rc : len;
++	return len;
+ }
+ static struct device_attribute dev_attr_security_sanitize =
+ 	__ATTR(sanitize, 0200, NULL, security_sanitize_store);
+@@ -179,24 +175,17 @@ static ssize_t security_erase_store(struct device *dev,
+ 				    const char *buf, size_t len)
+ {
+ 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
+-	struct cxl_memdev_state *mds = to_cxl_memdev_state(cxlmd->cxlds);
+-	struct cxl_port *port = cxlmd->endpoint;
+ 	ssize_t rc;
+ 	bool erase;
+ 
+ 	if (kstrtobool(buf, &erase) || !erase)
+ 		return -EINVAL;
+ 
+-	if (!port || !is_cxl_endpoint(port))
+-		return -EINVAL;
+-
+-	/* ensure no regions are mapped to this memdev */
+-	if (port->commit_end != -1)
+-		return -EBUSY;
+-
+-	rc = cxl_mem_sanitize(mds, CXL_MBOX_OP_SECURE_ERASE);
++	rc = cxl_mem_sanitize(cxlmd, CXL_MBOX_OP_SECURE_ERASE);
++	if (rc)
++		return rc;
+ 
+-	return rc ? rc : len;
++	return len;
+ }
+ static struct device_attribute dev_attr_security_erase =
+ 	__ATTR(erase, 0200, NULL, security_erase_store);
+diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
+index 7ca01a834e188..5ba606c6e03ff 100644
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -28,6 +28,12 @@
+  * instantiated by the core.
+  */
+ 
++/*
++ * All changes to the interleave configuration occur with this lock held
++ * for write.
++ */
++DECLARE_RWSEM(cxl_region_rwsem);
++
+ static DEFINE_IDA(cxl_port_ida);
+ static DEFINE_XARRAY(cxl_root_buses);
+ 
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index b4c6a749406f1..8394cd96e1869 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -28,12 +28,6 @@
+  * 3. Decoder targets
+  */
+ 
+-/*
+- * All changes to the interleave configuration occur with this lock held
+- * for write.
+- */
+-static DECLARE_RWSEM(cxl_region_rwsem);
+-
+ static struct cxl_region *to_cxl_region(struct device *dev);
+ 
+ static ssize_t uuid_show(struct device *dev, struct device_attribute *attr,
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index fbdee1d637175..6933bc20e76b6 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -364,6 +364,7 @@ struct cxl_fw_state {
+  * @state: state of last security operation
+  * @enabled_cmds: All security commands enabled in the CEL
+  * @poll_tmo_secs: polling timeout
++ * @sanitize_active: sanitize completion pending
+  * @poll_dwork: polling work item
+  * @sanitize_node: sanitation sysfs file to notify
+  */
+@@ -371,6 +372,7 @@ struct cxl_security_state {
+ 	unsigned long state;
+ 	DECLARE_BITMAP(enabled_cmds, CXL_SEC_ENABLED_MAX);
+ 	int poll_tmo_secs;
++	bool sanitize_active;
+ 	struct delayed_work poll_dwork;
+ 	struct kernfs_node *sanitize_node;
  };
-@@ -473,8 +478,8 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code,
- static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
- 	struct snp_guest_crypto *crypto = snp_dev->crypto;
-+	struct snp_report_req *req = &snp_dev->req.report;
- 	struct snp_report_resp *resp;
--	struct snp_report_req req;
- 	int rc, resp_len;
+@@ -884,7 +886,7 @@ static inline void cxl_mem_active_dec(void)
+ }
+ #endif
  
- 	lockdep_assert_held(&snp_cmd_mutex);
-@@ -482,7 +487,7 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 	if (!arg->req_data || !arg->resp_data)
- 		return -EINVAL;
+-int cxl_mem_sanitize(struct cxl_memdev_state *mds, u16 cmd);
++int cxl_mem_sanitize(struct cxl_memdev *cxlmd, u16 cmd);
  
--	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-+	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
- 		return -EFAULT;
+ struct cxl_hdm {
+ 	struct cxl_component_regs regs;
+diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
+index 565862d7946c5..0ecd339b5b8e9 100644
+--- a/drivers/cxl/pci.c
++++ b/drivers/cxl/pci.c
+@@ -154,6 +154,7 @@ static void cxl_mbox_sanitize_work(struct work_struct *work)
+ 		mds->security.poll_tmo_secs = 0;
+ 		if (mds->security.sanitize_node)
+ 			sysfs_notify_dirent(mds->security.sanitize_node);
++		mds->security.sanitize_active = false;
  
- 	/*
-@@ -496,7 +501,7 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 		return -ENOMEM;
- 
- 	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg,
--				  SNP_MSG_REPORT_REQ, &req, sizeof(req), resp->data,
-+				  SNP_MSG_REPORT_REQ, req, sizeof(*req), resp->data,
- 				  resp_len);
- 	if (rc)
- 		goto e_free;
-@@ -511,9 +516,9 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 
- static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
-+	struct snp_derived_key_req *req = &snp_dev->req.derived_key;
- 	struct snp_guest_crypto *crypto = snp_dev->crypto;
- 	struct snp_derived_key_resp resp = {0};
--	struct snp_derived_key_req req;
- 	int rc, resp_len;
- 	/* Response data is 64 bytes and max authsize for GCM is 16 bytes. */
- 	u8 buf[64 + 16];
-@@ -532,11 +537,11 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
- 	if (sizeof(buf) < resp_len)
- 		return -ENOMEM;
- 
--	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-+	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
- 		return -EFAULT;
- 
- 	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg,
--				  SNP_MSG_KEY_REQ, &req, sizeof(req), buf, resp_len);
-+				  SNP_MSG_KEY_REQ, req, sizeof(*req), buf, resp_len);
- 	if (rc)
- 		return rc;
- 
-@@ -552,8 +557,8 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
- 
- static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
-+	struct snp_ext_report_req *req = &snp_dev->req.ext_report;
- 	struct snp_guest_crypto *crypto = snp_dev->crypto;
--	struct snp_ext_report_req req;
- 	struct snp_report_resp *resp;
- 	int ret, npages = 0, resp_len;
- 
-@@ -562,18 +567,18 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 	if (!arg->req_data || !arg->resp_data)
- 		return -EINVAL;
- 
--	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-+	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
- 		return -EFAULT;
- 
- 	/* userspace does not want certificate data */
--	if (!req.certs_len || !req.certs_address)
-+	if (!req->certs_len || !req->certs_address)
- 		goto cmd;
- 
--	if (req.certs_len > SEV_FW_BLOB_MAX_SIZE ||
--	    !IS_ALIGNED(req.certs_len, PAGE_SIZE))
-+	if (req->certs_len > SEV_FW_BLOB_MAX_SIZE ||
-+	    !IS_ALIGNED(req->certs_len, PAGE_SIZE))
- 		return -EINVAL;
- 
--	if (!access_ok((const void __user *)req.certs_address, req.certs_len))
-+	if (!access_ok((const void __user *)req->certs_address, req->certs_len))
- 		return -EFAULT;
- 
- 	/*
-@@ -582,8 +587,8 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 	 * the host. If host does not supply any certs in it, then copy
- 	 * zeros to indicate that certificate data was not provided.
- 	 */
--	memset(snp_dev->certs_data, 0, req.certs_len);
--	npages = req.certs_len >> PAGE_SHIFT;
-+	memset(snp_dev->certs_data, 0, req->certs_len);
-+	npages = req->certs_len >> PAGE_SHIFT;
- cmd:
- 	/*
- 	 * The intermediate response buffer is used while decrypting the
-@@ -597,14 +602,14 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 
- 	snp_dev->input.data_npages = npages;
- 	ret = handle_guest_request(snp_dev, SVM_VMGEXIT_EXT_GUEST_REQUEST, arg,
--				   SNP_MSG_REPORT_REQ, &req.data,
--				   sizeof(req.data), resp->data, resp_len);
-+				   SNP_MSG_REPORT_REQ, &req->data,
-+				   sizeof(req->data), resp->data, resp_len);
- 
- 	/* If certs length is invalid then copy the returned length */
- 	if (arg->vmm_error == SNP_GUEST_VMM_ERR_INVALID_LEN) {
--		req.certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
-+		req->certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
- 
--		if (copy_to_user((void __user *)arg->req_data, &req, sizeof(req)))
-+		if (copy_to_user((void __user *)arg->req_data, req, sizeof(*req)))
- 			ret = -EFAULT;
- 	}
- 
-@@ -612,8 +617,8 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 		goto e_free;
- 
- 	if (npages &&
--	    copy_to_user((void __user *)req.certs_address, snp_dev->certs_data,
--			 req.certs_len)) {
-+	    copy_to_user((void __user *)req->certs_address, snp_dev->certs_data,
-+			 req->certs_len)) {
- 		ret = -EFAULT;
- 		goto e_free;
- 	}
+ 		dev_dbg(cxlds->dev, "Sanitization operation ended\n");
+ 	} else {
+@@ -292,9 +293,13 @@ static int __cxl_pci_mbox_send_cmd(struct cxl_memdev_state *mds,
+ 		 * and allow userspace to poll(2) for completion.
+ 		 */
+ 		if (mbox_cmd->opcode == CXL_MBOX_OP_SANITIZE) {
++			if (mds->security.sanitize_active)
++				return -EBUSY;
++
+ 			/* give first timeout a second */
+ 			timeout = 1;
+ 			mds->security.poll_tmo_secs = timeout;
++			mds->security.sanitize_active = true;
+ 			schedule_delayed_work(&mds->security.poll_dwork,
+ 					      timeout * HZ);
+ 			dev_dbg(dev, "Sanitization operation started\n");
 -- 
 2.42.0
 
