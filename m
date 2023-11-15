@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B9D7ECBD9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8894E7ECE4E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233054AbjKOTYx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35316 "EHLO
+        id S234977AbjKOTmO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233136AbjKOTYw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:52 -0500
+        with ESMTP id S234971AbjKOTmO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB3919D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516CFC433C7;
-        Wed, 15 Nov 2023 19:24:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 252599E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EBAC433C9;
+        Wed, 15 Nov 2023 19:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076288;
-        bh=rbpv0BfQQaOlS7JeuCJV7IFbLPbWPv7llmNmV3DOzSM=;
+        s=korg; t=1700077330;
+        bh=rP3F7yEZXFlNmvsZY8o6VanRigY46PCJC+jEpSpP/A8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DMjnoLgG6T+7DCUK9uY5l9aSteSwz43wqAO7kVpeJYmIAumLMhmifTqkvTCYF56RP
-         814xo7dEJnpBViDZ21WakE2XvJGzeqgNsdojOEWjGyGX66Vw0X4kC5q2tZ3a/Omfit
-         7gYj1Qkxfmj4GcJmEq8iHGLuNVl6U5DXxKY49LbM=
+        b=PQnutZnIqJ1qaUPkyzFKbKG6UP0mSBqHPVqfY8ahOlLVfFvJyEStvBqsscfWUfC3A
+         Fn3eTgOhmq8Fzv06LJyX0IZR3pVzXw/iSr8fHmi4DJQT5CAzkwJ+7aMhStSDKBZryK
+         gquBHKjDmQGMKgRC6sVOLGL66eQBuyoQ0Ri7472Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Han Xu <han.xu@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 170/550] spi: nxp-fspi: use the correct ioremap function
+Subject: [PATCH 6.6 209/603] hwmon: (sch5627) Disallow write access if virtual registers are locked
 Date:   Wed, 15 Nov 2023 14:12:34 -0500
-Message-ID: <20231115191612.493914249@linuxfoundation.org>
+Message-ID: <20231115191627.733538001@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Xu <han.xu@nxp.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit c3aa5cb264a38ae9bbcce32abca4c155af0456df ]
+[ Upstream commit 7da8a635436029957c5350da3acf51d78ed64071 ]
 
-AHB memory as MMIO should be mapped with ioremap rather than ioremap_wc,
-which should have been used initially just to handle unaligned access as
-a workaround.
+When the lock bit inside SCH5627_REG_CTRL is set, then the virtual
+registers become read-only until the next power cycle.
+Disallow write access to those registers in such a case.
 
-Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
-Signed-off-by: Han Xu <han.xu@nxp.com>
-Link: https://lore.kernel.org/r/20231010201524.2021340-1-han.xu@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Tested on a Fujitsu Esprimo P720.
+
+Fixes: aa9f833dfc12 ("hwmon: (sch5627) Add pwmX_auto_channels_temp support")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20230907052639.16491-3-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-nxp-fspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/sch5627.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
-index 8e44de084bbe3..426aa885072af 100644
---- a/drivers/spi/spi-nxp-fspi.c
-+++ b/drivers/spi/spi-nxp-fspi.c
-@@ -760,7 +760,7 @@ static int nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
- 		f->memmap_len = len > NXP_FSPI_MIN_IOMAP ?
- 				len : NXP_FSPI_MIN_IOMAP;
+diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
+index 0eefb8c0aef25..bf408e35e2c32 100644
+--- a/drivers/hwmon/sch5627.c
++++ b/drivers/hwmon/sch5627.c
+@@ -34,6 +34,7 @@
+ #define SCH5627_REG_CTRL		0x40
  
--		f->ahb_addr = ioremap_wc(f->memmap_phy + f->memmap_start,
-+		f->ahb_addr = ioremap(f->memmap_phy + f->memmap_start,
- 					 f->memmap_len);
+ #define SCH5627_CTRL_START		BIT(0)
++#define SCH5627_CTRL_LOCK		BIT(1)
+ #define SCH5627_CTRL_VBAT		BIT(4)
  
- 		if (!f->ahb_addr) {
+ #define SCH5627_NO_TEMPS		8
+@@ -231,6 +232,14 @@ static int reg_to_rpm(u16 reg)
+ static umode_t sch5627_is_visible(const void *drvdata, enum hwmon_sensor_types type, u32 attr,
+ 				  int channel)
+ {
++	const struct sch5627_data *data = drvdata;
++
++	/* Once the lock bit is set, the virtual registers become read-only
++	 * until the next power cycle.
++	 */
++	if (data->control & SCH5627_CTRL_LOCK)
++		return 0444;
++
+ 	if (type == hwmon_pwm && attr == hwmon_pwm_auto_channels_temp)
+ 		return 0644;
+ 
 -- 
 2.42.0
 
