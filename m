@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47ABE7ECF92
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2C5D7ECD3F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235356AbjKOTtX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:49:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36176 "EHLO
+        id S234396AbjKOTfT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:35:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235351AbjKOTtV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:21 -0500
+        with ESMTP id S234404AbjKOTfT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3284DB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF5CC433C8;
-        Wed, 15 Nov 2023 19:49:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A9E130
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB85AC433CB;
+        Wed, 15 Nov 2023 19:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077757;
-        bh=rXlNYr2EGLZt335Jug3zF9J02WSL26HARYLXxG3LcyY=;
+        s=korg; t=1700076915;
+        bh=hIgM5YpSxYnYCGRDlrI2I99J7bRoqIjhYHyyE4Bos+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Te3ZJOFjsKBLRyMFNy8/Vms9WPa72y/i6THqEFLkKiQGl/V+fgMZP7fCwPIRaHX2H
-         3hBuhpDbV7eQeGieDIDwVrrbqx2fO1+C6B89sUNc3nqnuOMvipODxgR/ZZ/UoJMb8E
-         0fR7mj9ar3zadxUNgkKgVYCOtBLQC0EbpLczMnJw=
+        b=FpG+IiFRFeGYqoJcSQqpiPaWPm5IuQf197eeNoE8MQYWFPC+0AN0klvbqAMYb8kow
+         3q1uO1PudrCzJhPVeYzV9Q2LfBnNf9rrPqj2aSJsT1CqZ61A4B3HkzzmQjMTcjEx+r
+         5UJgZQABpShhXvO945rq42YmuznZXi/DEKLBHAOE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Terry Bowman <terry.bowman@amd.com>,
-        Robert Richter <rrichter@amd.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev,
+        Alison Schofield <alison.schofield@intel.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 501/603] cxl/core/regs: Rename @dev to @host in struct cxl_register_map
+Subject: [PATCH 6.5 462/550] cxl/region: Calculate a target position in a region interleave
 Date:   Wed, 15 Nov 2023 14:17:26 -0500
-Message-ID: <20231115191646.893557986@linuxfoundation.org>
+Message-ID: <20231115191632.894664523@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,210 +51,198 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Richter <rrichter@amd.com>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit dd22581f89537163f065e8ef7c125ce0fddf62cc ]
+[ Upstream commit a3e00c964fb943934af916f48f0dd43b5110c866 ]
 
-The primary role of @dev is to host the mappings for devm operations.
-@dev is too ambiguous as a name. I.e. when does @dev refer to the
-'struct device *' instance that the registers belong, and when does
-@dev refer to the 'struct device *' instance hosting the mapping for
-devm operations?
+Introduce a calculation to find a target's position in a region
+interleave. Perform a self-test of the calculation on user-defined
+regions.
 
-Clarify the role of @dev in cxl_register_map by renaming it to @host.
-Also, rename local variables to 'host' where map->host is used.
+The region driver uses the kernel sort() function to put region
+targets in relative order. Positions are assigned based on each
+target's index in that sorted list. That relative sort doesn't
+consider the offset of a port into its parent port which causes
+some auto-discovered regions to fail creation. In one failure case,
+a 2 + 2 config (2 host bridges each with 2 endpoints), the sort
+puts all the targets of one port ahead of another port when they
+were expected to be interleaved.
 
-Signed-off-by: Terry Bowman <terry.bowman@amd.com>
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20231018171713.1883517-3-rrichter@amd.com
+In preparation for repairing the autodiscovery region assembly,
+introduce a new method for discovering a target position in the
+region interleave.
+
+cxl_calc_interleave_pos() adds a method to find the target position by
+ascending from an endpoint to a root decoder. The calculation starts
+with the endpoint's local position and position in the parent port. It
+traverses towards the root decoder and examines both position and ways
+in order to allow the position to be refined all the way to the root
+decoder.
+
+This calculation: position = position * parent_ways + parent_pos;
+applied iteratively yields the correct position.
+
+Include a self-test that exercises this new position calculation against
+every successfully configured user-defined region.
+
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://lore.kernel.org/r/0ac32c75cf81dd8b86bf07d70ff139d33c2300bc.1698263080.git.alison.schofield@intel.com
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 33d9c987bf8f ("cxl/port: Fix @host confusion in cxl_dport_setup_regs()")
+Stable-dep-of: 0cf36a85c140 ("cxl/region: Use cxl_calc_interleave_pos() for auto-discovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/hdm.c  |  2 +-
- drivers/cxl/core/port.c |  4 ++--
- drivers/cxl/core/regs.c | 28 ++++++++++++++--------------
- drivers/cxl/cxl.h       |  4 ++--
- drivers/cxl/pci.c       |  2 +-
- 5 files changed, 20 insertions(+), 20 deletions(-)
+ drivers/cxl/core/region.c | 127 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 127 insertions(+)
 
-diff --git a/drivers/cxl/core/hdm.c b/drivers/cxl/core/hdm.c
-index 506c9e14cdf98..3ad0d39d3d3fa 100644
---- a/drivers/cxl/core/hdm.c
-+++ b/drivers/cxl/core/hdm.c
-@@ -85,7 +85,7 @@ static int map_hdm_decoder_regs(struct cxl_port *port, void __iomem *crb,
- 				struct cxl_component_regs *regs)
- {
- 	struct cxl_register_map map = {
--		.dev = &port->dev,
-+		.host = &port->dev,
- 		.resource = port->component_reg_phys,
- 		.base = crb,
- 		.max_size = CXL_COMPONENT_REG_BLOCK_SIZE,
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index 5ba606c6e03ff..c24cfe2271948 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -697,14 +697,14 @@ static struct cxl_port *cxl_port_alloc(struct device *uport_dev,
- 	return ERR_PTR(rc);
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 123474d6c475a..01210e45a21ff 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1498,6 +1498,113 @@ static int match_switch_decoder_by_range(struct device *dev, void *data)
+ 	return (r1->start == r2->start && r1->end == r2->end);
  }
  
--static int cxl_setup_comp_regs(struct device *dev, struct cxl_register_map *map,
-+static int cxl_setup_comp_regs(struct device *host, struct cxl_register_map *map,
- 			       resource_size_t component_reg_phys)
- {
- 	if (component_reg_phys == CXL_RESOURCE_NONE)
- 		return 0;
- 
- 	*map = (struct cxl_register_map) {
--		.dev = dev,
-+		.host = host,
- 		.reg_type = CXL_REGLOC_RBI_COMPONENT,
- 		.resource = component_reg_phys,
- 		.max_size = CXL_COMPONENT_REG_BLOCK_SIZE,
-diff --git a/drivers/cxl/core/regs.c b/drivers/cxl/core/regs.c
-index 6281127b3e9d9..e0fbe964f6f0a 100644
---- a/drivers/cxl/core/regs.c
-+++ b/drivers/cxl/core/regs.c
-@@ -204,7 +204,7 @@ int cxl_map_component_regs(const struct cxl_register_map *map,
- 			   struct cxl_component_regs *regs,
- 			   unsigned long map_mask)
- {
--	struct device *dev = map->dev;
-+	struct device *host = map->host;
- 	struct mapinfo {
- 		const struct cxl_reg_map *rmap;
- 		void __iomem **addr;
-@@ -225,7 +225,7 @@ int cxl_map_component_regs(const struct cxl_register_map *map,
- 			continue;
- 		phys_addr = map->resource + mi->rmap->offset;
- 		length = mi->rmap->size;
--		*(mi->addr) = devm_cxl_iomap_block(dev, phys_addr, length);
-+		*(mi->addr) = devm_cxl_iomap_block(host, phys_addr, length);
- 		if (!*(mi->addr))
- 			return -ENOMEM;
- 	}
-@@ -237,7 +237,7 @@ EXPORT_SYMBOL_NS_GPL(cxl_map_component_regs, CXL);
- int cxl_map_device_regs(const struct cxl_register_map *map,
- 			struct cxl_device_regs *regs)
- {
--	struct device *dev = map->dev;
-+	struct device *host = map->host;
- 	resource_size_t phys_addr = map->resource;
- 	struct mapinfo {
- 		const struct cxl_reg_map *rmap;
-@@ -259,7 +259,7 @@ int cxl_map_device_regs(const struct cxl_register_map *map,
- 
- 		addr = phys_addr + mi->rmap->offset;
- 		length = mi->rmap->size;
--		*(mi->addr) = devm_cxl_iomap_block(dev, addr, length);
-+		*(mi->addr) = devm_cxl_iomap_block(host, addr, length);
- 		if (!*(mi->addr))
- 			return -ENOMEM;
- 	}
-@@ -309,7 +309,7 @@ int cxl_find_regblock_instance(struct pci_dev *pdev, enum cxl_regloc_type type,
- 	int regloc, i;
- 
- 	*map = (struct cxl_register_map) {
--		.dev = &pdev->dev,
-+		.host = &pdev->dev,
- 		.resource = CXL_RESOURCE_NONE,
++static int find_pos_and_ways(struct cxl_port *port, struct range *range,
++			     int *pos, int *ways)
++{
++	struct cxl_switch_decoder *cxlsd;
++	struct cxl_port *parent;
++	struct device *dev;
++	int rc = -ENXIO;
++
++	parent = next_port(port);
++	if (!parent)
++		return rc;
++
++	dev = device_find_child(&parent->dev, range,
++				match_switch_decoder_by_range);
++	if (!dev) {
++		dev_err(port->uport_dev,
++			"failed to find decoder mapping %#llx-%#llx\n",
++			range->start, range->end);
++		return rc;
++	}
++	cxlsd = to_cxl_switch_decoder(dev);
++	*ways = cxlsd->cxld.interleave_ways;
++
++	for (int i = 0; i < *ways; i++) {
++		if (cxlsd->target[i] == port->parent_dport) {
++			*pos = i;
++			rc = 0;
++			break;
++		}
++	}
++	put_device(dev);
++
++	return rc;
++}
++
++/**
++ * cxl_calc_interleave_pos() - calculate an endpoint position in a region
++ * @cxled: endpoint decoder member of given region
++ *
++ * The endpoint position is calculated by traversing the topology from
++ * the endpoint to the root decoder and iteratively applying this
++ * calculation:
++ *
++ *    position = position * parent_ways + parent_pos;
++ *
++ * ...where @position is inferred from switch and root decoder target lists.
++ *
++ * Return: position >= 0 on success
++ *	   -ENXIO on failure
++ */
++static int cxl_calc_interleave_pos(struct cxl_endpoint_decoder *cxled)
++{
++	struct cxl_port *iter, *port = cxled_to_port(cxled);
++	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
++	struct range *range = &cxled->cxld.hpa_range;
++	int parent_ways = 0, parent_pos = 0, pos = 0;
++	int rc;
++
++	/*
++	 * Example: the expected interleave order of the 4-way region shown
++	 * below is: mem0, mem2, mem1, mem3
++	 *
++	 *		  root_port
++	 *                 /      \
++	 *      host_bridge_0    host_bridge_1
++	 *        |    |           |    |
++	 *       mem0 mem1        mem2 mem3
++	 *
++	 * In the example the calculator will iterate twice. The first iteration
++	 * uses the mem position in the host-bridge and the ways of the host-
++	 * bridge to generate the first, or local, position. The second
++	 * iteration uses the host-bridge position in the root_port and the ways
++	 * of the root_port to refine the position.
++	 *
++	 * A trace of the calculation per endpoint looks like this:
++	 * mem0: pos = 0 * 2 + 0    mem2: pos = 0 * 2 + 0
++	 *       pos = 0 * 2 + 0          pos = 0 * 2 + 1
++	 *       pos: 0                   pos: 1
++	 *
++	 * mem1: pos = 0 * 2 + 1    mem3: pos = 0 * 2 + 1
++	 *       pos = 1 * 2 + 0          pos = 1 * 2 + 1
++	 *       pos: 2                   pos = 3
++	 *
++	 * Note that while this example is simple, the method applies to more
++	 * complex topologies, including those with switches.
++	 */
++
++	/* Iterate from endpoint to root_port refining the position */
++	for (iter = port; iter; iter = next_port(iter)) {
++		if (is_cxl_root(iter))
++			break;
++
++		rc = find_pos_and_ways(iter, range, &parent_pos, &parent_ways);
++		if (rc)
++			return rc;
++
++		pos = pos * parent_ways + parent_pos;
++	}
++
++	dev_dbg(&cxlmd->dev,
++		"decoder:%s parent:%s port:%s range:%#llx-%#llx pos:%d\n",
++		dev_name(&cxled->cxld.dev), dev_name(cxlmd->dev.parent),
++		dev_name(&port->dev), range->start, range->end, pos);
++
++	return pos;
++}
++
+ static void find_positions(const struct cxl_switch_decoder *cxlsd,
+ 			   const struct cxl_port *iter_a,
+ 			   const struct cxl_port *iter_b, int *a_pos,
+@@ -1761,6 +1868,26 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+ 		.end = p->res->end,
  	};
  
-@@ -403,15 +403,15 @@ EXPORT_SYMBOL_NS_GPL(cxl_map_pmu_regs, CXL);
- 
- static int cxl_map_regblock(struct cxl_register_map *map)
- {
--	struct device *dev = map->dev;
-+	struct device *host = map->host;
- 
- 	map->base = ioremap(map->resource, map->max_size);
- 	if (!map->base) {
--		dev_err(dev, "failed to map registers\n");
-+		dev_err(host, "failed to map registers\n");
- 		return -ENOMEM;
- 	}
- 
--	dev_dbg(dev, "Mapped CXL Memory Device resource %pa\n", &map->resource);
-+	dev_dbg(host, "Mapped CXL Memory Device resource %pa\n", &map->resource);
++	if (p->nr_targets != p->interleave_ways)
++		return 0;
++
++	/*
++	 * Test the auto-discovery position calculator function
++	 * against this successfully created user-defined region.
++	 * A fail message here means that this interleave config
++	 * will fail when presented as CXL_REGION_F_AUTO.
++	 */
++	for (int i = 0; i < p->nr_targets; i++) {
++		struct cxl_endpoint_decoder *cxled = p->targets[i];
++		int test_pos;
++
++		test_pos = cxl_calc_interleave_pos(cxled);
++		dev_dbg(&cxled->cxld.dev,
++			"Test cxl_calc_interleave_pos(): %s test_pos:%d cxled->pos:%d\n",
++			(test_pos == cxled->pos) ? "success" : "fail",
++			test_pos, cxled->pos);
++	}
++
  	return 0;
- }
  
-@@ -425,28 +425,28 @@ static int cxl_probe_regs(struct cxl_register_map *map)
- {
- 	struct cxl_component_reg_map *comp_map;
- 	struct cxl_device_reg_map *dev_map;
--	struct device *dev = map->dev;
-+	struct device *host = map->host;
- 	void __iomem *base = map->base;
- 
- 	switch (map->reg_type) {
- 	case CXL_REGLOC_RBI_COMPONENT:
- 		comp_map = &map->component_map;
--		cxl_probe_component_regs(dev, base, comp_map);
--		dev_dbg(dev, "Set up component registers\n");
-+		cxl_probe_component_regs(host, base, comp_map);
-+		dev_dbg(host, "Set up component registers\n");
- 		break;
- 	case CXL_REGLOC_RBI_MEMDEV:
- 		dev_map = &map->device_map;
--		cxl_probe_device_regs(dev, base, dev_map);
-+		cxl_probe_device_regs(host, base, dev_map);
- 		if (!dev_map->status.valid || !dev_map->mbox.valid ||
- 		    !dev_map->memdev.valid) {
--			dev_err(dev, "registers not found: %s%s%s\n",
-+			dev_err(host, "registers not found: %s%s%s\n",
- 				!dev_map->status.valid ? "status " : "",
- 				!dev_map->mbox.valid ? "mbox " : "",
- 				!dev_map->memdev.valid ? "memdev " : "");
- 			return -ENXIO;
- 		}
- 
--		dev_dbg(dev, "Probing device registers...\n");
-+		dev_dbg(host, "Probing device registers...\n");
- 		break;
- 	default:
- 		break;
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index 76d92561af294..b5b015b661eae 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -247,7 +247,7 @@ struct cxl_pmu_reg_map {
- 
- /**
-  * struct cxl_register_map - DVSEC harvested register block mapping parameters
-- * @dev: device for devm operations and logging
-+ * @host: device for devm operations and logging
-  * @base: virtual base of the register-block-BAR + @block_offset
-  * @resource: physical resource base of the register block
-  * @max_size: maximum mapping size to perform register search
-@@ -257,7 +257,7 @@ struct cxl_pmu_reg_map {
-  * @pmu_map: cxl_reg_maps for CXL Performance Monitoring Units
-  */
- struct cxl_register_map {
--	struct device *dev;
-+	struct device *host;
- 	void __iomem *base;
- 	resource_size_t resource;
- 	resource_size_t max_size;
-diff --git a/drivers/cxl/pci.c b/drivers/cxl/pci.c
-index 33c48370a830c..8bece1e2e2491 100644
---- a/drivers/cxl/pci.c
-+++ b/drivers/cxl/pci.c
-@@ -474,7 +474,7 @@ static int cxl_rcrb_get_comp_regs(struct pci_dev *pdev,
- 	resource_size_t component_reg_phys;
- 
- 	*map = (struct cxl_register_map) {
--		.dev = &pdev->dev,
-+		.host = &pdev->dev,
- 		.resource = CXL_RESOURCE_NONE,
- 	};
- 
+ err_decrement:
 -- 
 2.42.0
 
