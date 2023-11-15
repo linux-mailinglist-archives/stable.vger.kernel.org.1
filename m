@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 134857ED304
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 401077ED586
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233619AbjKOUpu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59984 "EHLO
+        id S1343549AbjKOVHd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233718AbjKOUpn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:43 -0500
+        with ESMTP id S235593AbjKOVH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A976310E0
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F663C433CD;
-        Wed, 15 Nov 2023 20:45:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB36BAB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AF5C4E69C;
+        Wed, 15 Nov 2023 20:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081136;
-        bh=2QN2mnDqJEqdQtlhYgnhWpuyWr1L1fZtmanw2+eOz8U=;
+        s=korg; t=1700081480;
+        bh=ZEBW5uUP0smhJy0Hrc2NUVPaccbHj5V5SHo6DP8eD3M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RJ0FFHuP8mXhdC87LAdJypSckRweNiVeJILSzFmia8goxoBZNmAJOSWOALJgC1Zs2
-         O/8UgSZ2doK12RCWQbSB9yrFo2nXPoxBE2BhUElN5ZL6/SpHsQN9g/x2tUlLJSLxU6
-         FonKV5IukBFCnuGsEd/5jxFKv/r7uFmHLbji+PVw=
+        b=evnPQ4luHzBcXtAYOUZ8i3My0FsGlV7l1nbtJXX51bBh9AzcKvUo9f0T9/DDGRH1s
+         s83iyOZVObPFdFZBJSGtdgYhke3kXRVFJf63lDhV5vukiCiE5T+goSD+zaGVTcLxDF
+         4dXqkZdDd2zmbR769dHhdWpr9SC4OMKejsd5wX5c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 60/88] dmaengine: pxa_dma: Remove an erroneous BUG_ON() in pxad_free_desc()
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 180/244] tools: iio: iio_generic_buffer ensure alignment
 Date:   Wed, 15 Nov 2023 15:36:12 -0500
-Message-ID: <20231115191429.742410420@linuxfoundation.org>
+Message-ID: <20231115203559.199916438@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-[ Upstream commit 83c761f568733277ce1f7eb9dc9e890649c29a8c ]
+[ Upstream commit 2d3dff577dd0ea8fe9637a13822f7603c4a881c8 ]
 
-If pxad_alloc_desc() fails on the first dma_pool_alloc() call, then
-sw_desc->nb_desc is zero.
-In such a case pxad_free_desc() is called and it will BUG_ON().
+The iio_generic_buffer can return garbage values when the total size of
+scan data is not a multiple of the largest element in the scan. This can be
+demonstrated by reading a scan, consisting, for example of one 4-byte and
+one 2-byte element, where the 4-byte element is first in the buffer.
 
-Remove this erroneous BUG_ON().
+The IIO generic buffer code does not take into account the last two
+padding bytes that are needed to ensure that the 4-byte data for next
+scan is correctly aligned.
 
-It is also useless, because if "sw_desc->nb_desc == 0", then, on the first
-iteration of the for loop, i is -1 and the loop will not be executed.
-(both i and sw_desc->nb_desc are 'int')
+Add the padding bytes required to align the next sample with the scan size.
 
-Fixes: a57e16cf0333 ("dmaengine: pxa: add pxa dmaengine driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/c8fc5563c9593c914fde41f0f7d1489a21b45a9a.1696676782.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Fixes: e58537ccce73 ("staging: iio: update example application.")
+Link: https://lore.kernel.org/r/ZRvlm4ktNLu+qmlf@dc78bmyyyyyyyyyyyyydt-3.rev.dnainternet.fi
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/pxa_dma.c | 1 -
- 1 file changed, 1 deletion(-)
+ tools/iio/iio_generic_buffer.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
-index c54986902b9d2..6dfd08dadb12d 100644
---- a/drivers/dma/pxa_dma.c
-+++ b/drivers/dma/pxa_dma.c
-@@ -772,7 +772,6 @@ static void pxad_free_desc(struct virt_dma_desc *vd)
- 	dma_addr_t dma;
- 	struct pxad_desc_sw *sw_desc = to_pxad_sw_desc(vd);
+diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
+index 44bbf80f0cfdd..0d0a7a19d6f95 100644
+--- a/tools/iio/iio_generic_buffer.c
++++ b/tools/iio/iio_generic_buffer.c
+@@ -54,9 +54,12 @@ enum autochan {
+ static unsigned int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
+ {
+ 	unsigned int bytes = 0;
+-	int i = 0;
++	int i = 0, max = 0;
++	unsigned int misalignment;
  
--	BUG_ON(sw_desc->nb_desc == 0);
- 	for (i = sw_desc->nb_desc - 1; i >= 0; i--) {
- 		if (i > 0)
- 			dma = sw_desc->hw_desc[i - 1]->ddadr;
+ 	while (i < num_channels) {
++		if (channels[i].bytes > max)
++			max = channels[i].bytes;
+ 		if (bytes % channels[i].bytes == 0)
+ 			channels[i].location = bytes;
+ 		else
+@@ -66,6 +69,14 @@ static unsigned int size_from_channelarray(struct iio_channel_info *channels, in
+ 		bytes = channels[i].location + channels[i].bytes;
+ 		i++;
+ 	}
++	/*
++	 * We want the data in next sample to also be properly aligned so
++	 * we'll add padding at the end if needed. Adding padding only
++	 * works for channel data which size is 2^n bytes.
++	 */
++	misalignment = bytes % max;
++	if (misalignment)
++		bytes += max - misalignment;
+ 
+ 	return bytes;
+ }
 -- 
 2.42.0
 
