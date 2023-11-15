@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD777ECF2D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47D477ECC86
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235251AbjKOTqu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55384 "EHLO
+        id S233999AbjKOTbC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:31:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235250AbjKOTqu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:50 -0500
+        with ESMTP id S233992AbjKOTbB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB46E1BC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C09EC433CB;
-        Wed, 15 Nov 2023 19:46:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79A051A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6F7C433C7;
+        Wed, 15 Nov 2023 19:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077606;
-        bh=wwtpEm/P/3ViYrb0jraK7fQSnHOrOoP//O3cqfY8I3M=;
+        s=korg; t=1700076658;
+        bh=V4iIzYC0ZVNwoPILTnEtwfGf2xPpA7fE2aXQENwX18k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L7wkphsubCLeDsCt1DcewNukt2ay8kO830I2VYIcezCaD0To8aUrE0/bdUqd6DE4u
-         kRqlMLSDTwW8I+rY4N0lb07p7UkaFkjy+eLapQkY+taZICKEaSI+U4mqW6DBZnXGBu
-         94+flHdtwzsfvifefUUlhXYgCNBQCvcXX3PewpxQ=
+        b=G0tOKN6P1AajDvO8gpjomNkOGMTqE+l/7gE9DXoPRtkGHZh3cVV06QfHvJqO19m7J
+         jqs0XL2ulHEtzGF8veC40fZQvHP7PJ4mJEWIpd+GY9dLKimoWCRWtFGbzE7ehF2l87
+         fQDK+EKkNzfcRQ5LE7IZ8yrOxuV9z+fZfhKQUc9Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 406/603] ASoC: ams-delta.c: use component after check
+        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 367/550] mfd: core: Ensure disabled devices are skipped without aborting
 Date:   Wed, 15 Nov 2023 14:15:51 -0500
-Message-ID: <20231115191641.129437644@linuxfoundation.org>
+Message-ID: <20231115191626.258461317@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit bd0f7498bc9084d8cccc5484cd004b40f314b763 ]
+[ Upstream commit 7ba7bdef4d14e3722e2842da3b48cbadb73e52d6 ]
 
-	static void cx81801_close()
-	{
-		...
-(A)		struct snd_soc_dapm_context *dapm = &component->card->dapm;
-		...
-(B)		if (!component)
-			return;
-	}
+The loop searching for a matching device based on its compatible
+string is aborted when a matching disabled device is found.
+This abort prevents to add devices as soon as one disabled device
+is found.
 
-(A) uses component before NULL check (B). This patch moves it after (B).
+Continue searching for an other device instead of aborting on the
+first disabled one fixes the issue.
 
-Fixes: d0fdfe34080c ("ASoC: cx20442: replace codec to component")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/3e608474-e99a-4866-ae98-3054a4221f09@moroto.mountain
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/r/87ttqdq623.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 22380b65dc70 ("mfd: mfd-core: Ensure disabled devices are ignored without error")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/528425d6472176bb1d02d79596b51f8c28a551cc.1692376361.git.christophe.leroy@csgroup.eu
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/ti/ams-delta.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mfd/mfd-core.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/ti/ams-delta.c b/sound/soc/ti/ams-delta.c
-index 666057d50ea0d..dd3f59bb72faf 100644
---- a/sound/soc/ti/ams-delta.c
-+++ b/sound/soc/ti/ams-delta.c
-@@ -303,7 +303,7 @@ static int cx81801_open(struct tty_struct *tty)
- static void cx81801_close(struct tty_struct *tty)
- {
- 	struct snd_soc_component *component = tty->disc_data;
--	struct snd_soc_dapm_context *dapm = &component->card->dapm;
-+	struct snd_soc_dapm_context *dapm;
+diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
+index 0ed7c0d7784e1..2b85509a90fc2 100644
+--- a/drivers/mfd/mfd-core.c
++++ b/drivers/mfd/mfd-core.c
+@@ -146,6 +146,7 @@ static int mfd_add_device(struct device *parent, int id,
+ 	struct platform_device *pdev;
+ 	struct device_node *np = NULL;
+ 	struct mfd_of_node_entry *of_entry, *tmp;
++	bool disabled = false;
+ 	int ret = -ENOMEM;
+ 	int platform_id;
+ 	int r;
+@@ -183,11 +184,10 @@ static int mfd_add_device(struct device *parent, int id,
+ 	if (IS_ENABLED(CONFIG_OF) && parent->of_node && cell->of_compatible) {
+ 		for_each_child_of_node(parent->of_node, np) {
+ 			if (of_device_is_compatible(np, cell->of_compatible)) {
+-				/* Ignore 'disabled' devices error free */
++				/* Skip 'disabled' devices */
+ 				if (!of_device_is_available(np)) {
+-					of_node_put(np);
+-					ret = 0;
+-					goto fail_alias;
++					disabled = true;
++					continue;
+ 				}
  
- 	del_timer_sync(&cx81801_timer);
+ 				ret = mfd_match_of_node_to_dev(pdev, np, cell);
+@@ -197,10 +197,17 @@ static int mfd_add_device(struct device *parent, int id,
+ 				if (ret)
+ 					goto fail_alias;
  
-@@ -315,6 +315,8 @@ static void cx81801_close(struct tty_struct *tty)
+-				break;
++				goto match;
+ 			}
+ 		}
  
- 	v253_ops.close(tty);
- 
-+	dapm = &component->card->dapm;
++		if (disabled) {
++			/* Ignore 'disabled' devices error free */
++			ret = 0;
++			goto fail_alias;
++		}
 +
- 	/* Revert back to default audio input/output constellation */
- 	snd_soc_dapm_mutex_lock(dapm);
- 
++match:
+ 		if (!pdev->dev.of_node)
+ 			pr_warn("%s: Failed to locate of_node [id: %d]\n",
+ 				cell->name, platform_id);
 -- 
 2.42.0
 
