@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7B077ED4A3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AF237ED2DF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344698AbjKOU6n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34726 "EHLO
+        id S233630AbjKOUo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344585AbjKOU5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:44 -0500
+        with ESMTP id S233560AbjKOUow (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C76FA19A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64502C4AF7F;
-        Wed, 15 Nov 2023 20:50:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7551AE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C71BC433C9;
+        Wed, 15 Nov 2023 20:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081431;
-        bh=lWDWNAKkMHGHE6JxX2zmYApfj6AIu63ZQGnGtt2b6Z4=;
+        s=korg; t=1700081088;
+        bh=57OiORwxDsFmreiKMlwQmK8KkYMYAJftxLEr8EGcC6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mnHAU+upR87lozK4ALaJwWn/D5B7S1xzECNAotccAu+rTKxyHRU3Xjf5Twi01zcJV
-         SQ29p5Z8mDU6++0WAYYa4uFmPR+uFnJPAChKM/vtTEOVtLS3X0SSV1NeEgbzVWr27d
-         7BhR7Ya3drtgRk23ZvKnWcOX3RrIVU/SctuJYsBo=
+        b=rM2TJcogzeCyJw74TznlvzlEmxn9B8z3LxSfqekF1GFxdA94w69JmRzIba799aC5G
+         j2whIQtoLNfmqACkAyGG+r+DuNDztzjVOVjSoAA8Y///pJ3gRwaQ2qAAgzDsGVPm/A
+         7uSciOij0BpNkqtZdVdxaaDwQcC8iib6sBjcX/2A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/244] Revert "HID: logitech-hidpp: add a module parameter to keep firmware gestures"
-Date:   Wed, 15 Nov 2023 15:35:42 -0500
-Message-ID: <20231115203557.335466050@linuxfoundation.org>
+Subject: [PATCH 4.19 31/88] drm/rockchip: cdn-dp: Fix some error handling paths in cdn_dp_probe()
+Date:   Wed, 15 Nov 2023 15:35:43 -0500
+Message-ID: <20231115191428.019291993@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,60 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Nocera <hadess@hadess.net>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit cae253d6033da885e71c29c1591b22838a52de76 ]
+[ Upstream commit 44b968d0d0868b7a9b7a5c64464ada464ff4d532 ]
 
-Now that we're in 2022, and the majority of desktop environments can and
-should support touchpad gestures through libinput, remove the legacy
-module parameter that made it possible to use gestures implemented in
-firmware.
+cdn_dp_audio_codec_init() can fail. So add some error handling.
 
-This will eventually allow simplifying the driver's initialisation code.
+If component_add() fails, the previous cdn_dp_audio_codec_init() call
+should be undone, as already done in the remove function.
 
-This reverts commit 9188dbaed68a4b23dc96eba165265c08caa7dc2a.
-
-Signed-off-by: Bastien Nocera <hadess@hadess.net>
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Link: https://lore.kernel.org/r/20221220154345.474596-1-hadess@hadess.net
-Stable-dep-of: 11ca0322a419 ("HID: logitech-hidpp: Don't restart IO, instead defer hid_connect() only")
+Fixes: 88582f564692 ("drm/rockchip: cdn-dp: Don't unregister audio dev when unbinding")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/8494a41602fadb7439630921a9779640698f2f9f.1693676045.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/gpu/drm/rockchip/cdn-dp-core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 25fa235934880..7681a3fa67dab 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -31,11 +31,6 @@ MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Benjamin Tissoires <benjamin.tissoires@gmail.com>");
- MODULE_AUTHOR("Nestor Lopez Casado <nlopezcasad@logitech.com>");
+diff --git a/drivers/gpu/drm/rockchip/cdn-dp-core.c b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+index 3f992e5a75c97..579652f8b42b3 100644
+--- a/drivers/gpu/drm/rockchip/cdn-dp-core.c
++++ b/drivers/gpu/drm/rockchip/cdn-dp-core.c
+@@ -1156,6 +1156,7 @@ static int cdn_dp_probe(struct platform_device *pdev)
+ 	struct cdn_dp_device *dp;
+ 	struct extcon_dev *extcon;
+ 	struct phy *phy;
++	int ret;
+ 	int i;
  
--static bool disable_raw_mode;
--module_param(disable_raw_mode, bool, 0644);
--MODULE_PARM_DESC(disable_raw_mode,
--	"Disable Raw mode reporting for touchpads and keep firmware gestures.");
--
- static bool disable_tap_to_click;
- module_param(disable_tap_to_click, bool, 0644);
- MODULE_PARM_DESC(disable_tap_to_click,
-@@ -4137,11 +4132,6 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
- 	    hidpp_application_equals(hdev, HID_GD_KEYBOARD))
- 		hidpp->quirks |= HIDPP_QUIRK_HIDPP_CONSUMER_VENDOR_KEYS;
+ 	dp = devm_kzalloc(dev, sizeof(*dp), GFP_KERNEL);
+@@ -1196,9 +1197,19 @@ static int cdn_dp_probe(struct platform_device *pdev)
+ 	mutex_init(&dp->lock);
+ 	dev_set_drvdata(dev, dp);
  
--	if (disable_raw_mode) {
--		hidpp->quirks &= ~HIDPP_QUIRK_CLASS_WTP;
--		hidpp->quirks &= ~HIDPP_QUIRK_NO_HIDINPUT;
--	}
--
- 	if (hidpp->quirks & HIDPP_QUIRK_CLASS_WTP) {
- 		ret = wtp_allocate(hdev, id);
- 		if (ret)
+-	cdn_dp_audio_codec_init(dp, dev);
++	ret = cdn_dp_audio_codec_init(dp, dev);
++	if (ret)
++		return ret;
++
++	ret = component_add(dev, &cdn_dp_component_ops);
++	if (ret)
++		goto err_audio_deinit;
+ 
+-	return component_add(dev, &cdn_dp_component_ops);
++	return 0;
++
++err_audio_deinit:
++	platform_device_unregister(dp->audio_pdev);
++	return ret;
+ }
+ 
+ static int cdn_dp_remove(struct platform_device *pdev)
 -- 
 2.42.0
 
