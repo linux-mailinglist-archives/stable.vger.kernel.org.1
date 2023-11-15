@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C56447ECB3E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDFC57ECD69
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232842AbjKOTVW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41976 "EHLO
+        id S234543AbjKOTgd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233133AbjKOTVM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:12 -0500
+        with ESMTP id S234531AbjKOTgZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5659C10EC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C276AC433C9;
-        Wed, 15 Nov 2023 19:20:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990649E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7C8C433C8;
+        Wed, 15 Nov 2023 19:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076056;
-        bh=/Q13S/NuJUrwJBmVRDZgU4x+jKl3vpbiJIMJh/+KJe8=;
+        s=korg; t=1700076982;
+        bh=RBuHHBR9UDHlapYKZyNnkHzAJYa4Siz7Cjz0n/K5m00=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XKeDnAlqsBWptXZZoydyX1q21WrywdxG2J9oa38/6wSFn+UjqmgKF0RfJawfuVcv3
-         iSSFjYr5/ZLl/ojDM9PJ5olMzWm5Gwcu7dImW7crLCR6jKerNEkBL2d8V/Wkd00cTv
-         hjhGshbFpwSgQ/iCEJbjX+w4AlXPnm/Ecqb5S1J0=
+        b=gHkO8AMA5h/ipoB+WHL2z3uIvgc+X2+MH6GQ6nnTuMD/ikLSfLYHY0fPgAwkNGsXN
+         +q1ZVoV8QRMEqvxp0ZWnRUM5vFz7xHMNIecwBfq3xHkzarDX1eKIr5CZVFNGtkdY+5
+         FT92YzjC8PV+bKS0lNzaDJIultDzObY7H7beG3NA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 047/550] wifi: iwlwifi: dont use an uninitialized variable
+        patches@lists.linux.dev, Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/603] wifi: mt76: mt7996: fix wmm queue mapping
 Date:   Wed, 15 Nov 2023 14:10:31 -0500
-Message-ID: <20231115191603.968711639@linuxfoundation.org>
+Message-ID: <20231115191619.083855333@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +50,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit c46fcc6e43d617252945e706f04e5f82a59f2b8e ]
+[ Upstream commit 9b11696e5c5bf6030a32571f3f88845226d8b662 ]
 
-Don't use variable err uninitialized.
-The reason for removing the check instead of initializing it
-in the beginning of the function is because that way
-static checkers will be able to catch issues if we do something
-wrong in the future.
+Firmware uses access class index (ACI) for wmm parameters update, so
+convert mac80211 queue to ACI in mt7996_conf_tx().
 
-Fixes: bf976c814c86 ("wifi: iwlwifi: mvm: implement link change ops")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230830112059.431b01bd8779.I31fc4ab35f551b85a10f974a6b18fc30191e9c35@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/main.c | 12 +++++++++---
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c  |  2 +-
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index b719843e94576..778a311b500bc 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -1089,9 +1089,6 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
- 		}
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+index c3a479dc3f533..600010cdb94e6 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
+@@ -190,7 +190,7 @@ static int mt7996_add_interface(struct ieee80211_hw *hw,
+ 	mvif->mt76.omac_idx = idx;
+ 	mvif->phy = phy;
+ 	mvif->mt76.band_idx = band_idx;
+-	mvif->mt76.wmm_idx = band_idx;
++	mvif->mt76.wmm_idx = vif->type != NL80211_IFTYPE_AP;
  
--	if (err)
--		goto out_err;
--
- 	err = 0;
- 	if (new_links == 0) {
- 		mvmvif->link[0] = &mvmvif->deflink;
+ 	ret = mt7996_mcu_add_dev_info(phy, vif, true);
+ 	if (ret)
+@@ -414,10 +414,16 @@ mt7996_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	       const struct ieee80211_tx_queue_params *params)
+ {
+ 	struct mt7996_vif *mvif = (struct mt7996_vif *)vif->drv_priv;
++	const u8 mq_to_aci[] = {
++		[IEEE80211_AC_VO] = 3,
++		[IEEE80211_AC_VI] = 2,
++		[IEEE80211_AC_BE] = 0,
++		[IEEE80211_AC_BK] = 1,
++	};
+ 
++	/* firmware uses access class index */
++	mvif->queue_params[mq_to_aci[queue]] = *params;
+ 	/* no need to update right away, we'll get BSS_CHANGED_QOS */
+-	queue = mt76_connac_lmac_mapping(queue);
+-	mvif->queue_params[queue] = *params;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 4ed1643818980..cf443748ef7cc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -2679,7 +2679,7 @@ int mt7996_mcu_set_tx(struct mt7996_dev *dev, struct ieee80211_vif *vif)
+ 
+ 		e = (struct edca *)tlv;
+ 		e->set = WMM_PARAM_SET;
+-		e->queue = ac + mvif->mt76.wmm_idx * MT7996_MAX_WMM_SETS;
++		e->queue = ac;
+ 		e->aifs = q->aifs;
+ 		e->txop = cpu_to_le16(q->txop);
+ 
 -- 
 2.42.0
 
