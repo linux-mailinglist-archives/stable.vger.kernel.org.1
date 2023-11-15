@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B957ED13C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E31397ED148
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:00:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344075AbjKOUAQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:00:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33644 "EHLO
+        id S1344107AbjKOUAh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:00:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344096AbjKOUAO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:14 -0500
+        with ESMTP id S1344112AbjKOUAd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:00:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 375CFD42
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:00:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BAFC433CA;
-        Wed, 15 Nov 2023 20:00:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 709E7189
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:00:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4D28C433C7;
+        Wed, 15 Nov 2023 20:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078410;
-        bh=wawxS7oO100s4uqACvMXLhL0U7QFAW6k62VmTAlgNR4=;
+        s=korg; t=1700078430;
+        bh=xtc/zTtUBledwktISsGn0hBUXj6c7Vdblk2R1hjL9B4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Utjr/wfrYvo+gigd3dPhghbd5LB+4nI3lkeXlTleOmnfZn5tggGrZDYGLLCfpoR7k
-         5eCsRR6T4DjOsBntVdCda4Ugm4yZJDZiBB+rPkPa/6mk91yuB5d2DsNR60H6xJBc96
-         CbuF0qZ5/Hiqqc4iDDAwBl4qkgHB4sN8aRonFzXI=
+        b=x5XkeNDNdbEstA7utN/lCtOUdVegycWYcxmC7hiRw+gDcQYbwfu7ayPD3kDr4xjju
+         v1W+W3qpcX0vkCpEgu7S8kHZ4jtI46N89RkFz6djAlIFR4DpKlnY/tcJn+NffFCHSm
+         47+Ub0IUuPQZDragCqBLGWhmJ5SBtmMrmtz0D+qg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wang Yufen <wangyufen@huawei.com>,
-        "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 299/379] powerpc/pseries: fix potential memory leak in init_cpu_associativity()
-Date:   Wed, 15 Nov 2023 14:26:14 -0500
-Message-ID: <20231115192702.831385141@linuxfoundation.org>
+Subject: [PATCH 6.1 300/379] xhci: Loosen RPM as default policy to cover for AMD xHC 1.1
+Date:   Wed, 15 Nov 2023 14:26:15 -0500
+Message-ID: <20231115192702.890197033@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,40 +56,45 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Wang Yufen <wangyufen@huawei.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 95f1a128cd728a7257d78e868f1f5a145fc43736 ]
+[ Upstream commit 4baf1218150985ee3ab0a27220456a1f027ea0ac ]
 
-If the vcpu_associativity alloc memory successfully but the
-pcpu_associativity fails to alloc memory, the vcpu_associativity
-memory leaks.
+The AMD USB host controller (1022:43f7) isn't going into PCI D3 by default
+without anything connected. This is because the policy that was introduced
+by commit a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all
+xHC 1.2 or later devices") only covered 1.2 or later.
 
-Fixes: d62c8deeb6e6 ("powerpc/pseries: Provide vcpu dispatch statistics")
-Signed-off-by: Wang Yufen <wangyufen@huawei.com>
-Reviewed-by: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/1671003983-10794-1-git-send-email-wangyufen@huawei.com
+The 1.1 specification also has the same requirement as the 1.2
+specification for D3 support. So expand the runtime PM as default policy
+to all AMD 1.1 devices as well.
+
+Fixes: a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all xHC 1.2 or later devices")
+Link: https://composter.com.ua/documents/xHCI_Specification_for_USB.pdf
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20231019102924.2797346-15-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/lpar.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 2c2812a87d470..541199c6a587d 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -524,8 +524,10 @@ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 2aed88c28ef69..c4dd648710ae0 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -348,6 +348,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	/* xHC spec requires PCI devices to support D3hot and D3cold */
+ 	if (xhci->hci_version >= 0x120)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
++	else if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version >= 0x110)
++		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
  
- 	if (cmd) {
- 		rc = init_cpu_associativity();
--		if (rc)
-+		if (rc) {
-+			destroy_cpu_associativity();
- 			goto out;
-+		}
- 
- 		for_each_possible_cpu(cpu) {
- 			disp = per_cpu_ptr(&vcpu_disp_data, cpu);
+ 	if (xhci->quirks & XHCI_RESET_ON_RESUME)
+ 		xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
 -- 
 2.42.0
 
