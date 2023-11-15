@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 516137ED308
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D21AE7ED596
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233661AbjKOUpx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45566 "EHLO
+        id S1344797AbjKOVHo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233698AbjKOUpr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:47 -0500
+        with ESMTP id S235624AbjKOVH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 035251AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A893AC433C8;
-        Wed, 15 Nov 2023 20:45:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4D61A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C492DC4E74D;
+        Wed, 15 Nov 2023 20:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081142;
-        bh=kp75P8aM3/JGQaARbqGbiVscWqgGME45cuxUmbQNskE=;
+        s=korg; t=1700081489;
+        bh=PyqAGX60qgujZ7omt/dO5yVy6Lf2tOnZWWQLqORThpI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wE+2oWPejAZIWWKh/3NuTfpT1mMefsJH3xs4/Phd573xraF8XlVeZuQPXCQWNE38w
-         mXLmAm7c+7LFQ3q7dgg14vXGeyHdzfxzo7vUjOdLVOSB5p4SIYvVSqP3F4FlgJarVO
-         d8xj3oiIhCARzNOI349T3M/ChCv4g1h9cjmIxUMQ=
+        b=W4NOx33f8N5iZH2T5RtZMV9HHMJTd96Y9QB2YNRtMddlSwgY1Z6cE8kEQ6Dk/k4wz
+         KfV6JcSTtQk1XKR+QiK8SPpEK3h0YrKThw9b/m+5IJ9JOwRSouHaf9bYMdb46e3bUg
+         I1Qc4y1LaB65ZqEfZ3TcwbEv20dROJ1RTWbWbazU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 64/88] pcmcia: ds: fix possible name leak in error path in pcmcia_device_add()
+Subject: [PATCH 5.15 184/244] powerpc: Only define __parse_fpscr() when required
 Date:   Wed, 15 Nov 2023 15:36:16 -0500
-Message-ID: <20231115191429.976711869@linuxfoundation.org>
+Message-ID: <20231115203559.397545672@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 99e1241049a92dd3e9a90a0f91e32ce390133278 ]
+[ Upstream commit c7e0d9bb9154c6e6b2ac8746faba27b53393f25e ]
 
-Afer commit 1fa5ae857bb1 ("driver core: get rid of struct device's
-bus_id string array"), the name of device is allocated dynamically.
-Therefore, it needs to be freed, which is done by the driver core for
-us once all references to the device are gone. Therefore, move the
-dev_set_name() call immediately before the call device_register(), which
-either succeeds (then the freeing will be done upon subsequent remvoal),
-or puts the reference in the error call. Also, it is not unusual that the
-return value of dev_set_name is not checked.
+Clang 17 reports:
 
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-[linux@dominikbrodowski.net: simplification, commit message modified]
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+arch/powerpc/kernel/traps.c:1167:19: error: unused function '__parse_fpscr' [-Werror,-Wunused-function]
+
+__parse_fpscr() is called from two sites. First call is guarded
+by #ifdef CONFIG_PPC_FPU_REGS
+
+Second call is guarded by CONFIG_MATH_EMULATION which selects
+CONFIG_PPC_FPU_REGS.
+
+So only define __parse_fpscr() when CONFIG_PPC_FPU_REGS is defined.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309210327.WkqSd5Bq-lkp@intel.com/
+Fixes: b6254ced4da6 ("powerpc/signal: Don't manage floating point regs when no FPU")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/5de2998c57f3983563b27b39228ea9a7229d4110.1695385984.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/ds.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/powerpc/kernel/traps.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pcmcia/ds.c b/drivers/pcmcia/ds.c
-index e07bd5249f271..3701887be32e8 100644
---- a/drivers/pcmcia/ds.c
-+++ b/drivers/pcmcia/ds.c
-@@ -521,9 +521,6 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
- 	/* by default don't allow DMA */
- 	p_dev->dma_mask = DMA_MASK_NONE;
- 	p_dev->dev.dma_mask = &p_dev->dma_mask;
--	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
--	if (!dev_name(&p_dev->dev))
--		goto err_free;
- 	p_dev->devname = kasprintf(GFP_KERNEL, "pcmcia%s", dev_name(&p_dev->dev));
- 	if (!p_dev->devname)
- 		goto err_free;
-@@ -581,6 +578,7 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index a08bb7cefdc54..fe912983ced96 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1148,6 +1148,7 @@ static void emulate_single_step(struct pt_regs *regs)
+ 		__single_step_exception(regs);
+ }
  
- 	pcmcia_device_query(p_dev);
++#ifdef CONFIG_PPC_FPU_REGS
+ static inline int __parse_fpscr(unsigned long fpscr)
+ {
+ 	int ret = FPE_FLTUNK;
+@@ -1174,6 +1175,7 @@ static inline int __parse_fpscr(unsigned long fpscr)
  
-+	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
- 	if (device_register(&p_dev->dev)) {
- 		mutex_lock(&s->ops_mutex);
- 		list_del(&p_dev->socket_device_list);
+ 	return ret;
+ }
++#endif
+ 
+ static void parse_fpe(struct pt_regs *regs)
+ {
 -- 
 2.42.0
 
