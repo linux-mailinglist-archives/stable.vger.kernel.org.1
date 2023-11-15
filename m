@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01FF97ED587
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B78067ED307
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235579AbjKOVHe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37372 "EHLO
+        id S233625AbjKOUpw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235590AbjKOVHZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:25 -0500
+        with ESMTP id S233661AbjKOUpq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB6D196
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EE8C4E74B;
-        Wed, 15 Nov 2023 20:51:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B15CE5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04489C433C9;
+        Wed, 15 Nov 2023 20:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081485;
-        bh=ss2lifuWG+UAjIlduAH2wIWTLyYl5Z25kObBsdZ0/Sc=;
+        s=korg; t=1700081141;
+        bh=v9hA1gBIYatGs1h274eS7Jdu69P1DKE3FgO/tSrcpP0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X42SkkAMcye5vXUbrTbpMEMMcb9+fPQkm0TWn8tmC4vXWS3dJ+6FVj2ZsUat8wCwc
-         E+zWiEd4eE8FSDXeYtwR9t1aRO0JmtJ6Ztz5ge9Td+hBfS/udRp9k12Eo6ViGVWFZ7
-         ShT29Kwn+QyR8SXEWKy2t9JGK5BsCMgY7XPLXmVI=
+        b=FCc/WX2NW16aIafWkXX9YHizRXG1tijXU5Jrtfn6zJZhBunNlQncC5GFYjtQv0yrw
+         2MrP6vkDaUydi20nYSiWXo3cYQNeSv0AjZquT9MaUzHrE6d87GKDaxg6RIHpgBewMm
+         IflzIF2bZfQrvCtO+/H9wsCam3bqKJq9JMQQTcRA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 182/244] dmaengine: pxa_dma: Remove an erroneous BUG_ON() in pxad_free_desc()
-Date:   Wed, 15 Nov 2023 15:36:14 -0500
-Message-ID: <20231115203559.302199612@linuxfoundation.org>
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 63/88] pcmcia: ds: fix refcount leak in pcmcia_device_add()
+Date:   Wed, 15 Nov 2023 15:36:15 -0500
+Message-ID: <20231115191429.917260601@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +50,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 83c761f568733277ce1f7eb9dc9e890649c29a8c ]
+[ Upstream commit 402ab979b29126068e0b596b641422ff7490214c ]
 
-If pxad_alloc_desc() fails on the first dma_pool_alloc() call, then
-sw_desc->nb_desc is zero.
-In such a case pxad_free_desc() is called and it will BUG_ON().
+As the comment of device_register() says, it should use put_device()
+to give up the reference in the error path. Then, insofar resources
+will be freed in pcmcia_release_dev(), the error path is no longer
+needed. In particular, this means that the (previously missing) dropping
+of the reference to &p_dev->function_config->ref is now handled by
+pcmcia_release_dev().
 
-Remove this erroneous BUG_ON().
-
-It is also useless, because if "sw_desc->nb_desc == 0", then, on the first
-iteration of the for loop, i is -1 and the loop will not be executed.
-(both i and sw_desc->nb_desc are 'int')
-
-Fixes: a57e16cf0333 ("dmaengine: pxa: add pxa dmaengine driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/c8fc5563c9593c914fde41f0f7d1489a21b45a9a.1696676782.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 360b65b95bae ("[PATCH] pcmcia: make config_t independent, add reference counting")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+[linux@dominikbrodowski.net: simplification, commit message rewrite]
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/pxa_dma.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/pcmcia/ds.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/pxa_dma.c b/drivers/dma/pxa_dma.c
-index e613ace79ea83..2731dc27f9d71 100644
---- a/drivers/dma/pxa_dma.c
-+++ b/drivers/dma/pxa_dma.c
-@@ -722,7 +722,6 @@ static void pxad_free_desc(struct virt_dma_desc *vd)
- 	dma_addr_t dma;
- 	struct pxad_desc_sw *sw_desc = to_pxad_sw_desc(vd);
+diff --git a/drivers/pcmcia/ds.c b/drivers/pcmcia/ds.c
+index a9258f641ceed..e07bd5249f271 100644
+--- a/drivers/pcmcia/ds.c
++++ b/drivers/pcmcia/ds.c
+@@ -581,8 +581,14 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
  
--	BUG_ON(sw_desc->nb_desc == 0);
- 	for (i = sw_desc->nb_desc - 1; i >= 0; i--) {
- 		if (i > 0)
- 			dma = sw_desc->hw_desc[i - 1]->ddadr;
+ 	pcmcia_device_query(p_dev);
+ 
+-	if (device_register(&p_dev->dev))
+-		goto err_unreg;
++	if (device_register(&p_dev->dev)) {
++		mutex_lock(&s->ops_mutex);
++		list_del(&p_dev->socket_device_list);
++		s->device_count--;
++		mutex_unlock(&s->ops_mutex);
++		put_device(&p_dev->dev);
++		return NULL;
++	}
+ 
+ 	return p_dev;
+ 
 -- 
 2.42.0
 
