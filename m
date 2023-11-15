@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7FD37ECD48
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB33F7ECB18
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234437AbjKOTff (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49794 "EHLO
+        id S229759AbjKOTUG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:20:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234442AbjKOTfc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:32 -0500
+        with ESMTP id S229804AbjKOTUF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 487281AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2596C433C8;
-        Wed, 15 Nov 2023 19:35:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ECA519E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24BAC433C8;
+        Wed, 15 Nov 2023 19:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076928;
-        bh=uNr43cE+PGukcM+XEWQybLZfohmwH6MBwTxmVISBoJY=;
+        s=korg; t=1700076001;
+        bh=7Gx77PL4Z5YJqWs5vIqS8Zdl80v9WjRxWwUaG/wjyc4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LJo/vHiaY2y+qTMwveLnmsvPjsrCZNPHpXQrAum8vFttlBeF/MxVNhoUKd5WZnNhF
-         vC1GNBG2mGB1UhDXtvq/IwRuG0wjFoAX20Jd5An/plV650dWagglkYms2w+4UhL2o3
-         DkndEWwMavl5BXhgXVQA3M4u4KvRPlqtfJ0/PLvo=
+        b=PmHborpxXsmQh8s5gKz+4XmedZQ0t0tzxQtm8eVYDrnsZEzR3YhiOVmseEvR158M9
+         rJvSSSSH5I3gi14asiA5lMxm5o/HT9qcRap1hC+ryyDpGCi5J7XZnjwjCs2Jqk+p7w
+         a94NZyRjeloFIU+vF7Sj0asiq7cuMNVmfp3vGD2A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Jingbo Xu <jefflexu@linux.alibaba.com>,
+        Tejun Heo <tj@kernel.org>,
+        Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/603] wifi: iwlwifi: Use FW rate for non-data frames
+Subject: [PATCH 6.5 013/550] writeback, cgroup: switch inodes with dirty timestamps to release dying cgwbs
 Date:   Wed, 15 Nov 2023 14:09:57 -0500
-Message-ID: <20231115191616.735909450@linuxfoundation.org>
+Message-ID: <20231115191601.636730790@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,66 +52,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Jingbo Xu <jefflexu@linux.alibaba.com>
 
-[ Upstream commit 499d02790495958506a64f37ceda7e97345a50a8 ]
+[ Upstream commit 6654408a33e6297d8e1d2773409431d487399b95 ]
 
-Currently we are setting the rate in the tx cmd for
-mgmt frames (e.g. during connection establishment).
-This was problematic when sending mgmt frames in eSR mode,
-as we don't know what link this frame will be sent on
-(This is decided by the FW), so we don't know what is the
-lowest rate.
-Fix this by not setting the rate in tx cmd and rely
-on FW to choose the right one.
-Set rate only for injected frames with fixed rate,
-or when no sta is given.
-Also set for important frames (EAPOL etc.) the High Priority flag.
+The cgwb cleanup routine will try to release the dying cgwb by switching
+the attached inodes.  It fetches the attached inodes from wb->b_attached
+list, omitting the fact that inodes only with dirty timestamps reside in
+wb->b_dirty_time list, which is the case when lazytime is enabled.  This
+causes enormous zombie memory cgroup when lazytime is enabled, as inodes
+with dirty timestamps can not be switched to a live cgwb for a long time.
 
-Fixes: 055b22e770dd ("iwlwifi: mvm: Set Tx rate and flags when there is not station")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230913145231.6c7e59620ee0.I6eaed3ccdd6dd62b9e664facc484081fc5275843@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+It is reasonable not to switch cgwb for inodes with dirty data, as
+otherwise it may break the bandwidth restrictions.  However since the
+writeback of inode metadata is not accounted for, let's also switch
+inodes with dirty timestamps to avoid zombie memory and block cgroups
+when laztytime is enabled.
+
+Fixes: c22d70a162d3 ("writeback, cgroup: release dying cgwbs by switching attached inodes")
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20231014125511.102978-1-jefflexu@linux.alibaba.com
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/fs-writeback.c | 41 +++++++++++++++++++++++++++++------------
+ 1 file changed, 29 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 898dca3936435..8158e6d9ef190 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -536,16 +536,20 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			flags |= IWL_TX_FLAGS_ENCRYPT_DIS;
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index d532a93e980d7..e19edd179dfc0 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -613,6 +613,24 @@ static void inode_switch_wbs(struct inode *inode, int new_wb_id)
+ 	kfree(isw);
+ }
  
- 		/*
--		 * For data packets rate info comes from the fw. Only
--		 * set rate/antenna during connection establishment or in case
--		 * no station is given.
-+		 * For data and mgmt packets rate info comes from the fw. Only
-+		 * set rate/antenna for injected frames with fixed rate, or
-+		 * when no sta is given.
- 		 */
--		if (!sta || !ieee80211_is_data(hdr->frame_control) ||
--		    mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
-+		if (unlikely(!sta ||
-+			     info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT)) {
- 			flags |= IWL_TX_FLAGS_CMD_RATE;
- 			rate_n_flags =
- 				iwl_mvm_get_tx_rate_n_flags(mvm, info, sta,
- 							    hdr->frame_control);
-+		} else if (!ieee80211_is_data(hdr->frame_control) ||
-+			   mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
-+			/* These are important frames */
-+			flags |= IWL_TX_FLAGS_HIGH_PRI;
- 		}
++static bool isw_prepare_wbs_switch(struct inode_switch_wbs_context *isw,
++				   struct list_head *list, int *nr)
++{
++	struct inode *inode;
++
++	list_for_each_entry(inode, list, i_io_list) {
++		if (!inode_prepare_wbs_switch(inode, isw->new_wb))
++			continue;
++
++		isw->inodes[*nr] = inode;
++		(*nr)++;
++
++		if (*nr >= WB_MAX_INODES_PER_ISW - 1)
++			return true;
++	}
++	return false;
++}
++
+ /**
+  * cleanup_offline_cgwb - detach associated inodes
+  * @wb: target wb
+@@ -625,7 +643,6 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
+ {
+ 	struct cgroup_subsys_state *memcg_css;
+ 	struct inode_switch_wbs_context *isw;
+-	struct inode *inode;
+ 	int nr;
+ 	bool restart = false;
  
- 		if (mvm->trans->trans_cfg->device_family >=
+@@ -647,17 +664,17 @@ bool cleanup_offline_cgwb(struct bdi_writeback *wb)
+ 
+ 	nr = 0;
+ 	spin_lock(&wb->list_lock);
+-	list_for_each_entry(inode, &wb->b_attached, i_io_list) {
+-		if (!inode_prepare_wbs_switch(inode, isw->new_wb))
+-			continue;
+-
+-		isw->inodes[nr++] = inode;
+-
+-		if (nr >= WB_MAX_INODES_PER_ISW - 1) {
+-			restart = true;
+-			break;
+-		}
+-	}
++	/*
++	 * In addition to the inodes that have completed writeback, also switch
++	 * cgwbs for those inodes only with dirty timestamps. Otherwise, those
++	 * inodes won't be written back for a long time when lazytime is
++	 * enabled, and thus pinning the dying cgwbs. It won't break the
++	 * bandwidth restrictions, as writeback of inode metadata is not
++	 * accounted for.
++	 */
++	restart = isw_prepare_wbs_switch(isw, &wb->b_attached, &nr);
++	if (!restart)
++		restart = isw_prepare_wbs_switch(isw, &wb->b_dirty_time, &nr);
+ 	spin_unlock(&wb->list_lock);
+ 
+ 	/* no attached inodes? bail out */
 -- 
 2.42.0
 
