@@ -2,59 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C35337ECD49
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB6F37ECF80
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234420AbjKOTfg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58136 "EHLO
+        id S235334AbjKOTsx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234434AbjKOTfe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:34 -0500
+        with ESMTP id S235332AbjKOTsx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED0281A8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7AAC433C7;
-        Wed, 15 Nov 2023 19:35:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B9619E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE9AC433C8;
+        Wed, 15 Nov 2023 19:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076930;
-        bh=tKEim86aqgEdwBSAhmQWs3Ht/ttN53xmLmi4QgCA4r0=;
+        s=korg; t=1700077729;
+        bh=1JFlgi9U8gs70iDNsYG+NG2bt3isV0t7/lLJutKWdlc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ziWVDoB6vYVMydD2gTJRheeK47TOcPcTHDWLyMVHfZjbJMYN0R+8vNRMC3FT1zwtk
-         2FnpXANNlyFXrgg+67eB8UlTbstsuaRhG5GQWyexSSyWcNPhxN7ULUyQFZCFF0Z6QZ
-         g9LsaXadLMVQqUvcRIIrgWJcXyGCSOIpwASql2OU=
+        b=BcRQ6RTFhiR4/9R1TAQpVwugNC+zIls157MBVvPl2l5w4ZJF/T8qaZx7n6F4jtvpr
+         0ulV3gLSGGRksdmYMowWpQ3VWsC/uaHlVzlmmArCy1pufsAeMo824wc4CicYyZUT2r
+         bqIi0bVAg006Q9oDJX/Y+8JOu/ER3iYItbWrqGrQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        K Prateek Nayak <kprateek.nayak@amd.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        German Gomez <german.gomez@arm.com>,
-        James Clark <james.clark@arm.com>,
-        Nick Terrell <terrelln@fb.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Changbin Du <changbin.du@huawei.com>,
-        liuwenyu <liuwenyu7@huawei.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>, Song Liu <song@kernel.org>,
-        Leo Yan <leo.yan@linaro.org>, Kajol Jain <kjain@linux.ibm.com>,
-        Andi Kleen <ak@linux.intel.com>,
         Kan Liang <kan.liang@linux.intel.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Liam Howlett <liam.howlett@oracle.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        Caleb Biggers <caleb.biggers@intel.com>,
+        Perry Taylor <perry.taylor@intel.com>,
         Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 444/550] perf hist: Add missing puts to hist__account_cycles
+Subject: [PATCH 6.6 483/603] perf vendor events intel: Add broadwellde two metrics
 Date:   Wed, 15 Nov 2023 14:17:08 -0500
-Message-ID: <20231115191631.583261435@linuxfoundation.org>
+Message-ID: <20231115191645.802273698@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,83 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit c1149037f65bcf0334886180ebe3d5efcf214912 ]
+[ Upstream commit 19a214bffdf7abb8d472895bb944d9c269ab1699 ]
 
-Caught using reference count checking on perf top with
-"--call-graph=lbr". After this no memory leaks were detected.
+Add tma_info_system_socket_clks and uncore_freq metrics that require a
+broadwellx style uncore event for UNC_CLOCK.
 
-Fixes: 57849998e2cd ("perf report: Add processing for cycle histograms")
+The associated converter script fix is in:
+https://github.com/intel/perfmon/pull/112
+
+Fixes: 7d124303d620 ("perf vendor events intel: Update broadwell variant events/metrics")
 Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Nick Terrell <terrelln@fb.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Changbin Du <changbin.du@huawei.com>
-Cc: liuwenyu <liuwenyu7@huawei.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Yanteng Si <siyanteng@loongson.cn>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20231024222353.3024098-6-irogers@google.com
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Cc: Caleb Biggers <caleb.biggers@intel.com>
+Cc: Perry Taylor <perry.taylor@intel.com>
+Link: https://lore.kernel.org/r/20230926205948.1399594-2-irogers@google.com
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hist.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ .../arch/x86/broadwellde/bdwde-metrics.json          | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-index 3dc8a4968beb9..ac8c0ef48a7f3 100644
---- a/tools/perf/util/hist.c
-+++ b/tools/perf/util/hist.c
-@@ -2676,8 +2676,6 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 
- 	/* If we have branch cycles always annotate them. */
- 	if (bs && bs->nr && entries[0].flags.cycles) {
--		int i;
--
- 		bi = sample__resolve_bstack(sample, al);
- 		if (bi) {
- 			struct addr_map_symbol *prev = NULL;
-@@ -2692,7 +2690,7 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 			 * Note that perf stores branches reversed from
- 			 * program order!
- 			 */
--			for (i = bs->nr - 1; i >= 0; i--) {
-+			for (int i = bs->nr - 1; i >= 0; i--) {
- 				addr_map_symbol__account_cycles(&bi[i].from,
- 					nonany_branch_mode ? NULL : prev,
- 					bi[i].flags.cycles);
-@@ -2701,6 +2699,12 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
- 				if (total_cycles)
- 					*total_cycles += bi[i].flags.cycles;
- 			}
-+			for (unsigned int i = 0; i < bs->nr; i++) {
-+				map__put(bi[i].to.ms.map);
-+				maps__put(bi[i].to.ms.maps);
-+				map__put(bi[i].from.ms.map);
-+				maps__put(bi[i].from.ms.maps);
-+			}
- 			free(bi);
- 		}
- 	}
+diff --git a/tools/perf/pmu-events/arch/x86/broadwellde/bdwde-metrics.json b/tools/perf/pmu-events/arch/x86/broadwellde/bdwde-metrics.json
+index d0ef46c9bb612..e1f55fcfa0d02 100644
+--- a/tools/perf/pmu-events/arch/x86/broadwellde/bdwde-metrics.json
++++ b/tools/perf/pmu-events/arch/x86/broadwellde/bdwde-metrics.json
+@@ -48,6 +48,12 @@
+         "MetricName": "C7_Pkg_Residency",
+         "ScaleUnit": "100%"
+     },
++    {
++        "BriefDescription": "Uncore frequency per die [GHZ]",
++        "MetricExpr": "tma_info_system_socket_clks / #num_dies / duration_time / 1e9",
++        "MetricGroup": "SoC",
++        "MetricName": "UNCORE_FREQ"
++    },
+     {
+         "BriefDescription": "Percentage of cycles spent in System Management Interrupts.",
+         "MetricExpr": "((msr@aperf@ - cycles) / msr@aperf@ if msr@smi@ > 0 else 0)",
+@@ -690,6 +696,12 @@
+         "MetricGroup": "SMT",
+         "MetricName": "tma_info_system_smt_2t_utilization"
+     },
++    {
++        "BriefDescription": "Socket actual clocks when any core is active on that socket",
++        "MetricExpr": "cbox_0@event\\=0x0@",
++        "MetricGroup": "SoC",
++        "MetricName": "tma_info_system_socket_clks"
++    },
+     {
+         "BriefDescription": "Average Frequency Utilization relative nominal frequency",
+         "MetricExpr": "tma_info_thread_clks / CPU_CLK_UNHALTED.REF_TSC",
 -- 
 2.42.0
 
