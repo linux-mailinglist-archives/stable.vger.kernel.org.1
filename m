@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B22557ED30A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3E27ED493
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233620AbjKOUpy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:45:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45570 "EHLO
+        id S1344616AbjKOU6b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:58:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233680AbjKOUpt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:49 -0500
+        with ESMTP id S1344618AbjKOU5n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81BCC1AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC9CC433C9;
-        Wed, 15 Nov 2023 20:45:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7783D199C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D95EC4E74F;
+        Wed, 15 Nov 2023 20:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081146;
-        bh=dbzGcAXaqlRqmXNiGHni3wiwMpqbW4M9Fbdi8fL6nXs=;
+        s=korg; t=1700081492;
+        bh=VMx68yJ/33dnvpJfhi4JEEPzirf0BwV7xBWNOYHAz2A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bxlAbyCJ51tML3WHEA5P67LOJZQg5AR7vOOqiZrmcAGglNjlGO7En1EDAKl/6/xzV
-         ZryWJF2inh1wfVbhseC9MvhAu2lyw+LNxT6lVct+UQurpMV4oxYE98FEdwMGCoOQAr
-         LBo2Dcmbezxv9ureOnou3Re5bjeqEfkDXwSiTOkk=
+        b=tCe/5pVe1FBWFAjDOltZnQqsIh4ObVRRRsbiUcs3LdmPhgXZlHQWgL613RawXVLQE
+         c+Qm8zqql7WW08Z6ZO4UGL4LzMdfm52B0HKLXArXHPwvMXHmodNoJl0DV2TgVDTuZx
+         +k9dNEmnawQYkiIQXQ6ITX1yS10AcvQ5VBwhCszU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Katya Orlova <e.orlova@ispras.ru>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 66/88] media: s3c-camif: Avoid inappropriate kfree()
+Subject: [PATCH 5.15 186/244] powerpc/40x: Remove stale PTE_ATOMIC_UPDATES macro
 Date:   Wed, 15 Nov 2023 15:36:18 -0500
-Message-ID: <20231115191430.094148300@linuxfoundation.org>
+Message-ID: <20231115203559.502688022@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Katya Orlova <e.orlova@ispras.ru>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 61334819aca018c3416ee6c330a08a49c1524fc3 ]
+[ Upstream commit cc8ee288f484a2a59c01ccd4d8a417d6ed3466e3 ]
 
-s3c_camif_register_video_node() works with video_device structure stored
-as a field of camif_vp, so it should not be kfreed.
-But there is video_device_release() on error path that do it.
+40x TLB handlers were reworked by commit 2c74e2586bb9 ("powerpc/40x:
+Rework 40x PTE access and TLB miss") to not require PTE_ATOMIC_UPDATES
+anymore.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Then commit 4e1df545e2fa ("powerpc/pgtable: Drop PTE_ATOMIC_UPDATES")
+removed all code related to PTE_ATOMIC_UPDATES.
 
-Fixes: babde1c243b2 ("[media] V4L: Add driver for S3C24XX/S3C64XX SoC series camera interface")
-Signed-off-by: Katya Orlova <e.orlova@ispras.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Remove left over PTE_ATOMIC_UPDATES macro.
+
+Fixes: 2c74e2586bb9 ("powerpc/40x: Rework 40x PTE access and TLB miss")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/f061db5857fcd748f84a6707aad01754686ce97e.1695659959.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/s3c-camif/camif-capture.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/powerpc/include/asm/nohash/32/pte-40x.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/media/platform/s3c-camif/camif-capture.c b/drivers/media/platform/s3c-camif/camif-capture.c
-index c02dce8b4c6c7..6e150fc64e0a0 100644
---- a/drivers/media/platform/s3c-camif/camif-capture.c
-+++ b/drivers/media/platform/s3c-camif/camif-capture.c
-@@ -1142,12 +1142,12 @@ int s3c_camif_register_video_node(struct camif_dev *camif, int idx)
+diff --git a/arch/powerpc/include/asm/nohash/32/pte-40x.h b/arch/powerpc/include/asm/nohash/32/pte-40x.h
+index 2d3153cfc0d79..acf61242e85bf 100644
+--- a/arch/powerpc/include/asm/nohash/32/pte-40x.h
++++ b/arch/powerpc/include/asm/nohash/32/pte-40x.h
+@@ -69,9 +69,6 @@
  
- 	ret = vb2_queue_init(q);
- 	if (ret)
--		goto err_vd_rel;
-+		return ret;
+ #define _PTE_NONE_MASK	0
  
- 	vp->pad.flags = MEDIA_PAD_FL_SINK;
- 	ret = media_entity_pads_init(&vfd->entity, 1, &vp->pad);
- 	if (ret)
--		goto err_vd_rel;
-+		return ret;
- 
- 	video_set_drvdata(vfd, vp);
- 
-@@ -1179,8 +1179,6 @@ int s3c_camif_register_video_node(struct camif_dev *camif, int idx)
- 	v4l2_ctrl_handler_free(&vp->ctrl_handler);
- err_me_cleanup:
- 	media_entity_cleanup(&vfd->entity);
--err_vd_rel:
--	video_device_release(vfd);
- 	return ret;
- }
+-/* Until my rework is finished, 40x still needs atomic PTE updates */
+-#define PTE_ATOMIC_UPDATES	1
+-
+ #define _PAGE_BASE_NC	(_PAGE_PRESENT | _PAGE_ACCESSED)
+ #define _PAGE_BASE	(_PAGE_BASE_NC)
  
 -- 
 2.42.0
