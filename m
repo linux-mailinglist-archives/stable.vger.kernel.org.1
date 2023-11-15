@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66C5C7ED093
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 745F37ED096
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229780AbjKOT41 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:56:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58692 "EHLO
+        id S235679AbjKOT4d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:56:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235589AbjKOT4Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:16 -0500
+        with ESMTP id S1343824AbjKOT4V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60694C2
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC75C43391;
-        Wed, 15 Nov 2023 19:56:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1E510D5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BBDC433C7;
+        Wed, 15 Nov 2023 19:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078169;
-        bh=4iUGa6N+aL9V/wlE0xKCBbl8IEboBKzF01BCHj3S8Q4=;
+        s=korg; t=1700078172;
+        bh=YCMSF6+z0TiItubqJtY4TQdrP/1q4oh+JcQYeMVSvOo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FLiV/qob5k/q8HJiF+imhVxY+gJazPT4EIdI5WdE8ir3jxJ//2nwEtHqQr+5HFYrv
-         80j01fVrlrafo+M5tJpEfce0J53KoJ8ooDWinq8pU/i+hfYm4pMbD5AzowM1rV7QWu
-         V7go2MiOTsCdcSfTdSVj7nKs0DlYFO29bkzdnIS4=
+        b=V8/Ky3d4uToBLuCwpz40jRkTLORILk5h69TUhfy0CUmmq7eB5NBnkTEvf12vIwpKO
+         i7y0waNwxNyQDJeTuJ+Izm1c/S0qZ7WThZUhSBs80DSy0zsrnT3ABVpyH0JvcshTWs
+         B+E4u5PIZtVdq7ZsJ8/W4Ui0d5NOs3uFT2XKO0mo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Chen <chenhao418@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Yicong Yang <yangyicong@hisilicon.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/379] drivers/perf: hisi: use cpuhp_state_remove_instance_nocalls() for hisi_hns3_pmu uninit process
-Date:   Wed, 15 Nov 2023 14:23:49 -0500
-Message-ID: <20231115192654.223091197@linuxfoundation.org>
+        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
+        Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Subject: [PATCH 6.1 155/379] perf/arm-cmn: Revamp model detection
+Date:   Wed, 15 Nov 2023 14:23:50 -0500
+Message-ID: <20231115192654.281877172@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,67 +54,360 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Hao Chen <chenhao418@huawei.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit 50b560783f7f71790bcf70e9e9855155fb0af8c1 ]
+[ Upstream commit 7819e05a0dceac20c5ff78ec9b252faf3b76b824 ]
 
-When tearing down a 'hisi_hns3' PMU, we mistakenly run the CPU hotplug
-callbacks after the device has been unregistered, leading to fireworks
-when we try to execute empty function callbacks within the driver:
+CMN implements a set of CoreSight-format peripheral ID registers which
+in principle we should be able to use to identify the hardware. However
+so far we have avoided trying to use the part number field since the
+TRMs have all described it as "configuration dependent". It turns out,
+though, that this is a quirk of the documentation generation process,
+and in fact the part number should always be a stable well-defined field
+which we can trust.
 
-  | Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-  | CPU: 0 PID: 15 Comm: cpuhp/0 Tainted: G        W  O      5.12.0-rc4+ #1
-  | Hardware name:  , BIOS KpxxxFPGA 1P B600 V143 04/22/2021
-  | pstate: 80400009 (Nzcv daif +PAN -UAO -TCO BTYPE=--)
-  | pc : perf_pmu_migrate_context+0x98/0x38c
-  | lr : perf_pmu_migrate_context+0x94/0x38c
-  |
-  | Call trace:
-  |  perf_pmu_migrate_context+0x98/0x38c
-  |  hisi_hns3_pmu_offline_cpu+0x104/0x12c [hisi_hns3_pmu]
+To that end, revamp our model detection to rely less on ACPI/DT, and
+pave the way towards further using the hardware information as an
+identifier for userspace jevent metrics. This includes renaming the
+revision constants to maximise readability.
 
-Use cpuhp_state_remove_instance_nocalls() instead of
-cpuhp_state_remove_instance() so that the notifiers don't execute after
-the PMU device has been unregistered.
-
-Fixes: 66637ab137b4 ("drivers/perf: hisi: add driver for HNS3 PMU")
-Signed-off-by: Hao Chen <chenhao418@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20231019091352.998964-1-shaojijie@huawei.com
-[will: Rewrote commit message]
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-and-tested-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+Link: https://lore.kernel.org/r/3c791eaae814b0126f9adbd5419bfb4a600dade7.1686588640.git.robin.murphy@arm.com
 Signed-off-by: Will Deacon <will@kernel.org>
+Stable-dep-of: e3e73f511c49 ("perf/arm-cmn: Fix DTC domain detection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hns3_pmu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/perf/arm-cmn.c | 145 ++++++++++++++++++++++++++---------------
+ 1 file changed, 93 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/perf/hisilicon/hns3_pmu.c b/drivers/perf/hisilicon/hns3_pmu.c
-index e0457d84af6b3..16869bf5bf4cc 100644
---- a/drivers/perf/hisilicon/hns3_pmu.c
-+++ b/drivers/perf/hisilicon/hns3_pmu.c
-@@ -1556,8 +1556,8 @@ static int hns3_pmu_init_pmu(struct pci_dev *pdev, struct hns3_pmu *hns3_pmu)
- 	ret = perf_pmu_register(&hns3_pmu->pmu, hns3_pmu->pmu.name, -1);
- 	if (ret) {
- 		pci_err(pdev, "failed to register perf PMU, ret = %d.\n", ret);
--		cpuhp_state_remove_instance(CPUHP_AP_PERF_ARM_HNS3_PMU_ONLINE,
--					    &hns3_pmu->node);
-+		cpuhp_state_remove_instance_nocalls(CPUHP_AP_PERF_ARM_HNS3_PMU_ONLINE,
-+						    &hns3_pmu->node);
- 	}
+diff --git a/drivers/perf/arm-cmn.c b/drivers/perf/arm-cmn.c
+index cfb36adf4eb80..5e896218ac5f4 100644
+--- a/drivers/perf/arm-cmn.c
++++ b/drivers/perf/arm-cmn.c
+@@ -44,8 +44,11 @@
+ #define CMN_MAX_DTMS			(CMN_MAX_XPS + (CMN_MAX_DIMENSION - 1) * 4)
  
- 	return ret;
-@@ -1568,8 +1568,8 @@ static void hns3_pmu_uninit_pmu(struct pci_dev *pdev)
- 	struct hns3_pmu *hns3_pmu = pci_get_drvdata(pdev);
+ /* The CFG node has various info besides the discovery tree */
+-#define CMN_CFGM_PERIPH_ID_2		0x0010
+-#define CMN_CFGM_PID2_REVISION		GENMASK(7, 4)
++#define CMN_CFGM_PERIPH_ID_01		0x0008
++#define CMN_CFGM_PID0_PART_0		GENMASK_ULL(7, 0)
++#define CMN_CFGM_PID1_PART_1		GENMASK_ULL(35, 32)
++#define CMN_CFGM_PERIPH_ID_23		0x0010
++#define CMN_CFGM_PID2_REVISION		GENMASK_ULL(7, 4)
  
- 	perf_pmu_unregister(&hns3_pmu->pmu);
--	cpuhp_state_remove_instance(CPUHP_AP_PERF_ARM_HNS3_PMU_ONLINE,
--				    &hns3_pmu->node);
-+	cpuhp_state_remove_instance_nocalls(CPUHP_AP_PERF_ARM_HNS3_PMU_ONLINE,
-+					    &hns3_pmu->node);
+ #define CMN_CFGM_INFO_GLOBAL		0x900
+ #define CMN_INFO_MULTIPLE_DTM_EN	BIT_ULL(63)
+@@ -186,6 +189,7 @@
+ #define CMN_WP_DOWN			2
+ 
+ 
++/* Internal values for encoding event support */
+ enum cmn_model {
+ 	CMN600 = 1,
+ 	CMN650 = 2,
+@@ -197,26 +201,34 @@ enum cmn_model {
+ 	CMN_650ON = CMN650 | CMN700,
+ };
+ 
++/* Actual part numbers and revision IDs defined by the hardware */
++enum cmn_part {
++	PART_CMN600 = 0x434,
++	PART_CMN650 = 0x436,
++	PART_CMN700 = 0x43c,
++	PART_CI700 = 0x43a,
++};
++
+ /* CMN-600 r0px shouldn't exist in silicon, thankfully */
+ enum cmn_revision {
+-	CMN600_R1P0,
+-	CMN600_R1P1,
+-	CMN600_R1P2,
+-	CMN600_R1P3,
+-	CMN600_R2P0,
+-	CMN600_R3P0,
+-	CMN600_R3P1,
+-	CMN650_R0P0 = 0,
+-	CMN650_R1P0,
+-	CMN650_R1P1,
+-	CMN650_R2P0,
+-	CMN650_R1P2,
+-	CMN700_R0P0 = 0,
+-	CMN700_R1P0,
+-	CMN700_R2P0,
+-	CI700_R0P0 = 0,
+-	CI700_R1P0,
+-	CI700_R2P0,
++	REV_CMN600_R1P0,
++	REV_CMN600_R1P1,
++	REV_CMN600_R1P2,
++	REV_CMN600_R1P3,
++	REV_CMN600_R2P0,
++	REV_CMN600_R3P0,
++	REV_CMN600_R3P1,
++	REV_CMN650_R0P0 = 0,
++	REV_CMN650_R1P0,
++	REV_CMN650_R1P1,
++	REV_CMN650_R2P0,
++	REV_CMN650_R1P2,
++	REV_CMN700_R0P0 = 0,
++	REV_CMN700_R1P0,
++	REV_CMN700_R2P0,
++	REV_CI700_R0P0 = 0,
++	REV_CI700_R1P0,
++	REV_CI700_R2P0,
+ };
+ 
+ enum cmn_node_type {
+@@ -306,7 +318,7 @@ struct arm_cmn {
+ 	unsigned int state;
+ 
+ 	enum cmn_revision rev;
+-	enum cmn_model model;
++	enum cmn_part part;
+ 	u8 mesh_x;
+ 	u8 mesh_y;
+ 	u16 num_xps;
+@@ -394,19 +406,35 @@ static struct arm_cmn_node *arm_cmn_node(const struct arm_cmn *cmn,
+ 	return NULL;
  }
  
- static int hns3_pmu_init_dev(struct pci_dev *pdev)
++static enum cmn_model arm_cmn_model(const struct arm_cmn *cmn)
++{
++	switch (cmn->part) {
++	case PART_CMN600:
++		return CMN600;
++	case PART_CMN650:
++		return CMN650;
++	case PART_CMN700:
++		return CMN700;
++	case PART_CI700:
++		return CI700;
++	default:
++		return 0;
++	};
++}
++
+ static u32 arm_cmn_device_connect_info(const struct arm_cmn *cmn,
+ 				       const struct arm_cmn_node *xp, int port)
+ {
+ 	int offset = CMN_MXP__CONNECT_INFO(port);
+ 
+ 	if (port >= 2) {
+-		if (cmn->model & (CMN600 | CMN650))
++		if (cmn->part == PART_CMN600 || cmn->part == PART_CMN650)
+ 			return 0;
+ 		/*
+ 		 * CI-700 may have extra ports, but still has the
+ 		 * mesh_port_connect_info registers in the way.
+ 		 */
+-		if (cmn->model == CI700)
++		if (cmn->part == PART_CI700)
+ 			offset += CI700_CONNECT_INFO_P2_5_OFFSET;
+ 	}
+ 
+@@ -640,7 +668,7 @@ static umode_t arm_cmn_event_attr_is_visible(struct kobject *kobj,
+ 
+ 	eattr = container_of(attr, typeof(*eattr), attr.attr);
+ 
+-	if (!(eattr->model & cmn->model))
++	if (!(eattr->model & arm_cmn_model(cmn)))
+ 		return 0;
+ 
+ 	type = eattr->type;
+@@ -658,7 +686,7 @@ static umode_t arm_cmn_event_attr_is_visible(struct kobject *kobj,
+ 		if ((intf & 4) && !(cmn->ports_used & BIT(intf & 3)))
+ 			return 0;
+ 
+-		if (chan == 4 && cmn->model == CMN600)
++		if (chan == 4 && cmn->part == PART_CMN600)
+ 			return 0;
+ 
+ 		if ((chan == 5 && cmn->rsp_vc_num < 2) ||
+@@ -669,19 +697,19 @@ static umode_t arm_cmn_event_attr_is_visible(struct kobject *kobj,
+ 	}
+ 
+ 	/* Revision-specific differences */
+-	if (cmn->model == CMN600) {
+-		if (cmn->rev < CMN600_R1P3) {
++	if (cmn->part == PART_CMN600) {
++		if (cmn->rev < REV_CMN600_R1P3) {
+ 			if (type == CMN_TYPE_CXRA && eventid > 0x10)
+ 				return 0;
+ 		}
+-		if (cmn->rev < CMN600_R1P2) {
++		if (cmn->rev < REV_CMN600_R1P2) {
+ 			if (type == CMN_TYPE_HNF && eventid == 0x1b)
+ 				return 0;
+ 			if (type == CMN_TYPE_CXRA || type == CMN_TYPE_CXHA)
+ 				return 0;
+ 		}
+-	} else if (cmn->model == CMN650) {
+-		if (cmn->rev < CMN650_R2P0 || cmn->rev == CMN650_R1P2) {
++	} else if (cmn->part == PART_CMN650) {
++		if (cmn->rev < REV_CMN650_R2P0 || cmn->rev == REV_CMN650_R1P2) {
+ 			if (type == CMN_TYPE_HNF && eventid > 0x22)
+ 				return 0;
+ 			if (type == CMN_TYPE_SBSX && eventid == 0x17)
+@@ -689,8 +717,8 @@ static umode_t arm_cmn_event_attr_is_visible(struct kobject *kobj,
+ 			if (type == CMN_TYPE_RNI && eventid > 0x10)
+ 				return 0;
+ 		}
+-	} else if (cmn->model == CMN700) {
+-		if (cmn->rev < CMN700_R2P0) {
++	} else if (cmn->part == PART_CMN700) {
++		if (cmn->rev < REV_CMN700_R2P0) {
+ 			if (type == CMN_TYPE_HNF && eventid > 0x2c)
+ 				return 0;
+ 			if (type == CMN_TYPE_CCHA && eventid > 0x74)
+@@ -698,7 +726,7 @@ static umode_t arm_cmn_event_attr_is_visible(struct kobject *kobj,
+ 			if (type == CMN_TYPE_CCLA && eventid > 0x27)
+ 				return 0;
+ 		}
+-		if (cmn->rev < CMN700_R1P0) {
++		if (cmn->rev < REV_CMN700_R1P0) {
+ 			if (type == CMN_TYPE_HNF && eventid > 0x2b)
+ 				return 0;
+ 		}
+@@ -1200,7 +1228,7 @@ static u32 arm_cmn_wp_config(struct perf_event *event)
+ 	u32 grp = CMN_EVENT_WP_GRP(event);
+ 	u32 exc = CMN_EVENT_WP_EXCLUSIVE(event);
+ 	u32 combine = CMN_EVENT_WP_COMBINE(event);
+-	bool is_cmn600 = to_cmn(event->pmu)->model == CMN600;
++	bool is_cmn600 = to_cmn(event->pmu)->part == PART_CMN600;
+ 
+ 	config = FIELD_PREP(CMN_DTM_WPn_CONFIG_WP_DEV_SEL, dev) |
+ 		 FIELD_PREP(CMN_DTM_WPn_CONFIG_WP_CHN_SEL, chn) |
+@@ -1520,14 +1548,14 @@ static int arm_cmn_validate_group(struct arm_cmn *cmn, struct perf_event *event)
+ 	return ret;
+ }
+ 
+-static enum cmn_filter_select arm_cmn_filter_sel(enum cmn_model model,
++static enum cmn_filter_select arm_cmn_filter_sel(const struct arm_cmn *cmn,
+ 						 enum cmn_node_type type,
+ 						 unsigned int eventid)
+ {
+ 	struct arm_cmn_event_attr *e;
+-	int i;
++	enum cmn_model model = arm_cmn_model(cmn);
+ 
+-	for (i = 0; i < ARRAY_SIZE(arm_cmn_event_attrs) - 1; i++) {
++	for (int i = 0; i < ARRAY_SIZE(arm_cmn_event_attrs) - 1; i++) {
+ 		e = container_of(arm_cmn_event_attrs[i], typeof(*e), attr.attr);
+ 		if (e->model & model && e->type == type && e->eventid == eventid)
+ 			return e->fsel;
+@@ -1570,12 +1598,12 @@ static int arm_cmn_event_init(struct perf_event *event)
+ 		/* ...but the DTM may depend on which port we're watching */
+ 		if (cmn->multi_dtm)
+ 			hw->dtm_offset = CMN_EVENT_WP_DEV_SEL(event) / 2;
+-	} else if (type == CMN_TYPE_XP && cmn->model == CMN700) {
++	} else if (type == CMN_TYPE_XP && cmn->part == PART_CMN700) {
+ 		hw->wide_sel = true;
+ 	}
+ 
+ 	/* This is sufficiently annoying to recalculate, so cache it */
+-	hw->filter_sel = arm_cmn_filter_sel(cmn->model, type, eventid);
++	hw->filter_sel = arm_cmn_filter_sel(cmn, type, eventid);
+ 
+ 	bynodeid = CMN_EVENT_BYNODEID(event);
+ 	nodeid = CMN_EVENT_NODEID(event);
+@@ -2006,6 +2034,7 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 	void __iomem *cfg_region;
+ 	struct arm_cmn_node cfg, *dn;
+ 	struct arm_cmn_dtm *dtm;
++	enum cmn_part part;
+ 	u16 child_count, child_poff;
+ 	u32 xp_offset[CMN_MAX_XPS];
+ 	u64 reg;
+@@ -2017,7 +2046,19 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 		return -ENODEV;
+ 
+ 	cfg_region = cmn->base + rgn_offset;
+-	reg = readl_relaxed(cfg_region + CMN_CFGM_PERIPH_ID_2);
++
++	reg = readq_relaxed(cfg_region + CMN_CFGM_PERIPH_ID_01);
++	part = FIELD_GET(CMN_CFGM_PID0_PART_0, reg);
++	part |= FIELD_GET(CMN_CFGM_PID1_PART_1, reg) << 8;
++	if (cmn->part && cmn->part != part)
++		dev_warn(cmn->dev,
++			 "Firmware binding mismatch: expected part number 0x%x, found 0x%x\n",
++			 cmn->part, part);
++	cmn->part = part;
++	if (!arm_cmn_model(cmn))
++		dev_warn(cmn->dev, "Unknown part number: 0x%x\n", part);
++
++	reg = readl_relaxed(cfg_region + CMN_CFGM_PERIPH_ID_23);
+ 	cmn->rev = FIELD_GET(CMN_CFGM_PID2_REVISION, reg);
+ 
+ 	reg = readq_relaxed(cfg_region + CMN_CFGM_INFO_GLOBAL);
+@@ -2081,7 +2122,7 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 		if (xp->id == (1 << 3))
+ 			cmn->mesh_x = xp->logid;
+ 
+-		if (cmn->model == CMN600)
++		if (cmn->part == PART_CMN600)
+ 			xp->dtc = 0xf;
+ 		else
+ 			xp->dtc = 1 << readl_relaxed(xp_region + CMN_DTM_UNIT_INFO);
+@@ -2201,7 +2242,7 @@ static int arm_cmn_discover(struct arm_cmn *cmn, unsigned int rgn_offset)
+ 	if (cmn->num_xps == 1)
+ 		dev_warn(cmn->dev, "1x1 config not fully supported, translate XP events manually\n");
+ 
+-	dev_dbg(cmn->dev, "model %d, periph_id_2 revision %d\n", cmn->model, cmn->rev);
++	dev_dbg(cmn->dev, "periph_id part 0x%03x revision %d\n", cmn->part, cmn->rev);
+ 	reg = cmn->ports_used;
+ 	dev_dbg(cmn->dev, "mesh %dx%d, ID width %d, ports %6pbl%s\n",
+ 		cmn->mesh_x, cmn->mesh_y, arm_cmn_xyidbits(cmn), &reg,
+@@ -2256,17 +2297,17 @@ static int arm_cmn_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	cmn->dev = &pdev->dev;
+-	cmn->model = (unsigned long)device_get_match_data(cmn->dev);
++	cmn->part = (unsigned long)device_get_match_data(cmn->dev);
+ 	platform_set_drvdata(pdev, cmn);
+ 
+-	if (cmn->model == CMN600 && has_acpi_companion(cmn->dev)) {
++	if (cmn->part == PART_CMN600 && has_acpi_companion(cmn->dev)) {
+ 		rootnode = arm_cmn600_acpi_probe(pdev, cmn);
+ 	} else {
+ 		rootnode = 0;
+ 		cmn->base = devm_platform_ioremap_resource(pdev, 0);
+ 		if (IS_ERR(cmn->base))
+ 			return PTR_ERR(cmn->base);
+-		if (cmn->model == CMN600)
++		if (cmn->part == PART_CMN600)
+ 			rootnode = arm_cmn600_of_probe(pdev->dev.of_node);
+ 	}
+ 	if (rootnode < 0)
+@@ -2335,10 +2376,10 @@ static int arm_cmn_remove(struct platform_device *pdev)
+ 
+ #ifdef CONFIG_OF
+ static const struct of_device_id arm_cmn_of_match[] = {
+-	{ .compatible = "arm,cmn-600", .data = (void *)CMN600 },
+-	{ .compatible = "arm,cmn-650", .data = (void *)CMN650 },
+-	{ .compatible = "arm,cmn-700", .data = (void *)CMN700 },
+-	{ .compatible = "arm,ci-700", .data = (void *)CI700 },
++	{ .compatible = "arm,cmn-600", .data = (void *)PART_CMN600 },
++	{ .compatible = "arm,cmn-650" },
++	{ .compatible = "arm,cmn-700" },
++	{ .compatible = "arm,ci-700" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, arm_cmn_of_match);
+@@ -2346,9 +2387,9 @@ MODULE_DEVICE_TABLE(of, arm_cmn_of_match);
+ 
+ #ifdef CONFIG_ACPI
+ static const struct acpi_device_id arm_cmn_acpi_match[] = {
+-	{ "ARMHC600", CMN600 },
+-	{ "ARMHC650", CMN650 },
+-	{ "ARMHC700", CMN700 },
++	{ "ARMHC600", PART_CMN600 },
++	{ "ARMHC650" },
++	{ "ARMHC700" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(acpi, arm_cmn_acpi_match);
 -- 
 2.42.0
 
