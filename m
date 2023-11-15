@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF5F87ECE1E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB057ECB9B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234816AbjKOTkd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:40:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42058 "EHLO
+        id S231167AbjKOTXV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:23:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234486AbjKOTkc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:32 -0500
+        with ESMTP id S231204AbjKOTXU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC5B010E0
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604AAC433C8;
-        Wed, 15 Nov 2023 19:40:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ED8A19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:17 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D326CC433CB;
+        Wed, 15 Nov 2023 19:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077227;
-        bh=V8kvtHk6dbLxEEs/KUw1SBxJ70a7au/VAD5ZK4Ji9r4=;
+        s=korg; t=1700076197;
+        bh=k5pvGp1IhzJ7HaxirzkN0dOmWeca1m/rSBlvrfigLrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Um+OXd8NFe+rikhqGVb6ajIqpxhSRzc8optNzx2N+Rkk4U5BrqZJFKlZyli0bXieF
-         fwJCW2eYYi5Lni8pP/Svfs39FvJ7vi6N51curw/bqO4hOZWFqkW6duvg50pnhZjelw
-         qlrOhy8wh0+cara39hWm6bKneqpIYbrXokjDaXjU=
+        b=iPW5unL7YGpGkZHhVePnLRICPGGGkT+9SLS06QEgJuzyViNcZmO7iSSc69xvHGAEu
+         szOWE67+Xo/qVcBfw6CRKkvCVkxS9z77wib6HlkBFvgFrorpDPG1aZseGRsaI+zEDr
+         heLPEfzEt1/hARwuLT/jV7LfvXggPKjxX7P8J3gw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/603] clk: renesas: rzg2l: Wait for status bit of SD mux before continuing
+Subject: [PATCH 6.5 136/550] wifi: iwlwifi: mvm: fix netif csum flags
 Date:   Wed, 15 Nov 2023 14:12:00 -0500
-Message-ID: <20231115191625.338275648@linuxfoundation.org>
+Message-ID: <20231115191610.118846562@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +50,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 549f4ae2601f968e2474c6031fb4799468882f64 ]
+[ Upstream commit 08365d3b9140c751a84f8027ac7d2e662958f768 ]
 
-The hardware user manual for RZ/G2L (r01uh0914ej0130-rzg2l-rzg2lc.pdf,
-chapter 7.4.7 Procedure for Switching Clocks by the Dynamic Switching
-Frequency Selectors) specifies that we need to check CPG_PL2SDHI_DSEL
-for SD clock switching status.
+We shouldn't advertise arbitrary checksum flags since we had
+to remove support for it due to broken hardware.
 
-Fixes: eaff33646f4cb ("clk: renesas: rzg2l: Add SDHI clk mux support")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230929053915.1530607-3-claudiu.beznea@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Fixes: ec18e7d4d20d ("wifi: iwlwifi: mvm: use old checksum for Bz A-step")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231017115047.e37327f1a129.Iaee86b00db4db791cd90adaf15384b8c87d2ad49@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 4 ++--
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c     | 2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h | 5 +----
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index 47f488387f33a..9d25f7d0494e6 100644
---- a/drivers/clk/renesas/rzg2l-cpg.c
-+++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -188,7 +188,8 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
- 	u32 off = GET_REG_OFFSET(hwdata->conf);
- 	u32 shift = GET_SHIFT(hwdata->conf);
- 	const u32 clk_src_266 = 2;
--	u32 bitmask;
-+	u32 msk, val, bitmask;
-+	int ret;
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index 3d223014cfe6d..42e765fe3cfe1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -158,7 +158,7 @@ const struct iwl_cfg iwl_cfg_bz = {
+ 	.fw_name_mac = "bz",
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
+-	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
+ };
  
- 	/*
- 	 * As per the HW manual, we should not directly switch from 533 MHz to
-@@ -202,14 +203,10 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
- 	 * the index to value mapping is done by adding 1 to the index.
- 	 */
- 	bitmask = (GENMASK(GET_WIDTH(hwdata->conf) - 1, 0) << shift) << 16;
-+	msk = off ? CPG_CLKSTATUS_SELSDHI1_STS : CPG_CLKSTATUS_SELSDHI0_STS;
- 	if (index != clk_src_266) {
--		u32 msk, val;
--		int ret;
--
- 		writel(bitmask | ((clk_src_266 + 1) << shift), priv->base + off);
+@@ -166,7 +166,7 @@ const struct iwl_cfg iwl_cfg_gl = {
+ 	.fw_name_mac = "gl",
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
+-	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
+ };
  
--		msk = off ? CPG_CLKSTATUS_SELSDHI1_STS : CPG_CLKSTATUS_SELSDHI0_STS;
--
- 		ret = readl_poll_timeout(priv->base + CPG_CLKSTATUS, val,
- 					 !(val & msk), 100,
- 					 CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
-@@ -221,7 +218,13 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+index d6243025993ea..604e9cef6baac 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+@@ -151,7 +151,7 @@ const struct iwl_cfg iwl_cfg_sc = {
+ 	.fw_name_mac = "sc",
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_SC,
+-	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
++	.features = IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM,
+ 	.num_rbds = IWL_NUM_RBDS_SC_EHT,
+ };
  
- 	writel(bitmask | ((index + 1) << shift), priv->base + off);
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+index 241a9e3f2a1a7..f45f645ca6485 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+@@ -86,10 +86,7 @@ enum iwl_nvm_type {
+ #define IWL_DEFAULT_MAX_TX_POWER 22
+ #define IWL_TX_CSUM_NETIF_FLAGS (NETIF_F_IPV6_CSUM | NETIF_F_IP_CSUM |\
+ 				 NETIF_F_TSO | NETIF_F_TSO6)
+-#define IWL_TX_CSUM_NETIF_FLAGS_BZ (NETIF_F_HW_CSUM | NETIF_F_TSO | NETIF_F_TSO6)
+-#define IWL_CSUM_NETIF_FLAGS_MASK (IWL_TX_CSUM_NETIF_FLAGS | \
+-				   IWL_TX_CSUM_NETIF_FLAGS_BZ | \
+-				   NETIF_F_RXCSUM)
++#define IWL_CSUM_NETIF_FLAGS_MASK (IWL_TX_CSUM_NETIF_FLAGS | NETIF_F_RXCSUM)
  
--	return 0;
-+	ret = readl_poll_timeout(priv->base + CPG_CLKSTATUS, val,
-+				 !(val & msk), 100,
-+				 CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
-+	if (ret)
-+		dev_err(priv->dev, "failed to switch clk source\n");
-+
-+	return ret;
- }
- 
- static u8 rzg2l_cpg_sd_clk_mux_get_parent(struct clk_hw *hw)
+ /* Antenna presence definitions */
+ #define	ANT_NONE	0x0
 -- 
 2.42.0
 
