@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E38757ED3B2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 807277ED3B3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234895AbjKOUyH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:54:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54932 "EHLO
+        id S235069AbjKOUyU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:54:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235031AbjKOUyE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:04 -0500
+        with ESMTP id S235047AbjKOUyG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E033192
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A847EC4E77A;
-        Wed, 15 Nov 2023 20:54:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D926DD44
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176AFC4E778;
+        Wed, 15 Nov 2023 20:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081640;
-        bh=oPHVw2tkKNEzkhP+YhwJSaVYaszfifgjhyMmjqliw5k=;
+        s=korg; t=1700081642;
+        bh=VwIzOg6VsD/5ApADG+FFRCE4K/RTsZizqCN3TH7JsB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=brXa/uVKo9N3X34SO3c0uFxF0LeifyLrgU91pW2rW7m2rqATFFGcK9gvYOuECzqAT
-         XZRCKkJCFySPdMqLNFmuvMLK/ziiTJZe4bYmVThRvJZtzMB982nyEwpB8Hj4VLsna6
-         OXdngpIZ73+7zAMdgLdK/ML3XGbkggAKP2vHd1vo=
+        b=PMnsYjkrzRqFux/wdO1lqLo9ZHF0Tyui+Evg0EUDEB0MXfsObBscvmBTTdCV44imw
+         qBqVTNykL7eWMPhwx9rPtcea40IvnmDGJm6h5iiXHpGckVe67W4PTJ6VDzJLykSW3z
+         9IN1XxL5y0Kt2Wm2R8WpLJXE3oP36rGXtqjtu7UI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Wragg <dwragg@cloudflare.com>,
-        Yan Zhai <yan@cloudflare.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 033/191] ipv6: avoid atomic fragment on GSO packets
-Date:   Wed, 15 Nov 2023 15:45:08 -0500
-Message-ID: <20231115204646.534280489@linuxfoundation.org>
+Subject: [PATCH 5.10 034/191] net: add DEV_STATS_READ() helper
+Date:   Wed, 15 Nov 2023 15:45:09 -0500
+Message-ID: <20231115204646.597929640@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -55,52 +54,53 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 03d6c848bfb406e9ef6d9846d759e97beaeea113 ]
+[ Upstream commit 0b068c714ca9479d2783cc333fff5bc2d4a6d45c ]
 
-When the ipv6 stack output a GSO packet, if its gso_size is larger than
-dst MTU, then all segments would be fragmented. However, it is possible
-for a GSO packet to have a trailing segment with smaller actual size
-than both gso_size as well as the MTU, which leads to an "atomic
-fragment". Atomic fragments are considered harmful in RFC-8021. An
-Existing report from APNIC also shows that atomic fragments are more
-likely to be dropped even it is equivalent to a no-op [1].
+Companion of DEV_STATS_INC() & DEV_STATS_ADD().
 
-Add an extra check in the GSO slow output path. For each segment from
-the original over-sized packet, if it fits with the path MTU, then avoid
-generating an atomic fragment.
+This is going to be used in the series.
 
-Link: https://www.potaroo.net/presentations/2022-03-01-ipv6-frag.pdf [1]
-Fixes: b210de4f8c97 ("net: ipv6: Validate GSO SKB before finish IPv6 processing")
-Reported-by: David Wragg <dwragg@cloudflare.com>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Link: https://lore.kernel.org/r/90912e3503a242dca0bc36958b11ed03a2696e5e.1698156966.git.yan@cloudflare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Use it in macsec_get_stats64().
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: ff672b9ffeb3 ("ipvlan: properly track tx_errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/macsec.c      | 6 +++---
+ include/linux/netdevice.h | 1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 58b5ab5fcdbf1..4126be15e0d9b 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -178,7 +178,13 @@ ip6_finish_output_gso_slowpath_drop(struct net *net, struct sock *sk,
- 		int err;
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 0ffcef2fa10af..83b02dc7dfd2d 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -3686,9 +3686,9 @@ static void macsec_get_stats64(struct net_device *dev,
  
- 		skb_mark_not_on_list(segs);
--		err = ip6_fragment(net, sk, segs, ip6_finish_output2);
-+		/* Last GSO segment can be smaller than gso_size (and MTU).
-+		 * Adding a fragment header would produce an "atomic fragment",
-+		 * which is considered harmful (RFC-8021). Avoid that.
-+		 */
-+		err = segs->len > mtu ?
-+			ip6_fragment(net, sk, segs, ip6_finish_output2) :
-+			ip6_finish_output2(net, sk, segs);
- 		if (err && ret == 0)
- 			ret = err;
- 	}
+ 	dev_fetch_sw_netstats(s, dev->tstats);
+ 
+-	s->rx_dropped = atomic_long_read(&dev->stats.__rx_dropped);
+-	s->tx_dropped = atomic_long_read(&dev->stats.__tx_dropped);
+-	s->rx_errors = atomic_long_read(&dev->stats.__rx_errors);
++	s->rx_dropped = DEV_STATS_READ(dev, rx_dropped);
++	s->tx_dropped = DEV_STATS_READ(dev, tx_dropped);
++	s->rx_errors = DEV_STATS_READ(dev, rx_errors);
+ }
+ 
+ static int macsec_get_iflink(const struct net_device *dev)
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index e814ce78a1965..3380668478e8a 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -5286,5 +5286,6 @@ extern struct net_device *blackhole_netdev;
+ #define DEV_STATS_INC(DEV, FIELD) atomic_long_inc(&(DEV)->stats.__##FIELD)
+ #define DEV_STATS_ADD(DEV, FIELD, VAL) 	\
+ 		atomic_long_add((VAL), &(DEV)->stats.__##FIELD)
++#define DEV_STATS_READ(DEV, FIELD) atomic_long_read(&(DEV)->stats.__##FIELD)
+ 
+ #endif	/* _LINUX_NETDEVICE_H */
 -- 
 2.42.0
 
