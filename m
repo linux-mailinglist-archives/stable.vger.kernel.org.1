@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0A7D7ECFB4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E927ECD8C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235387AbjKOTuO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:50:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46930 "EHLO
+        id S234558AbjKOThH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235390AbjKOTuO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:50:14 -0500
+        with ESMTP id S234563AbjKOThF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BFE7AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01DAC433C9;
-        Wed, 15 Nov 2023 19:50:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C0F1AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED76C433CA;
+        Wed, 15 Nov 2023 19:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077811;
-        bh=Ra5QKiMrgzVT3gcxVyCS0HVeGm0GE6Gw+e7qWPpI0tE=;
+        s=korg; t=1700077022;
+        bh=yctbJKbEeoiybxhtu/lkBXXkRr1SlY7xcfDcaBRf++g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q3K16g1c+AiCNBVZDUPs9RVo72PTWiE32SOpT4sif+lsC1M+a80VYIqUegQjicTow
-         7iRdSULgeAt52v08w7Dv6ufMfMEO0nGMTO9cM2pIXCRzkk1iWkeUBIahunFSAfKbX3
-         spkCtKjvejuOf0bKe3sV6mkQy5dkh5vAmwQH1QEM=
+        b=FFNUCFzcLmc6i3Jj6noMJnVOdK3F8wDXmrD9b71d66cl5eA1O8n9ttT+NBOCZ3GaP
+         hrMHzoZaDOQlzZQ/FizshxHifiD0k7H0+mWVOQYSG5C+XJcIGrVnCwgSkc210l8aob
+         +Q+7k4uU1P13VYodoottUdghj8PKxZ6iUQxfM1V0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Mark Brown <broonie@kernel.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 533/603] regmap: prevent noinc writes from clobbering cache
-Date:   Wed, 15 Nov 2023 14:17:58 -0500
-Message-ID: <20231115191648.769451324@linuxfoundation.org>
+Subject: [PATCH 6.5 495/550] pwm: brcmstb: Utilize appropriate clock APIs in suspend/resume
+Date:   Wed, 15 Nov 2023 14:17:59 -0500
+Message-ID: <20231115191635.221344828@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,59 +54,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-[ Upstream commit 984a4afdc87a1fc226fd657b1cd8255c13d3fc1a ]
+[ Upstream commit e9bc4411548aaa738905d37851a0146c16b3bb21 ]
 
-Currently, noinc writes are cached as if they were standard incrementing
-writes, overwriting unrelated register values in the cache. Instead, we
-want to cache the last value written to the register, as is done in the
-accelerated noinc handler (regmap_noinc_readwrite).
+The suspend/resume functions currently utilize
+clk_disable()/clk_enable() respectively which may be no-ops with certain
+clock providers such as SCMI. Fix this to use clk_disable_unprepare()
+and clk_prepare_enable() respectively as we should.
 
-Fixes: cdf6b11daa77 ("regmap: Add regmap_noinc_write API")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Link: https://lore.kernel.org/r/20231101142926.2722603-2-ben.wolsieffer@hefring.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 3a9f5957020f ("pwm: Add Broadcom BCM7038 PWM controller support")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/pwm/pwm-brcmstb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 234a84ecde8b1..ea61577471994 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1620,17 +1620,19 @@ static int _regmap_raw_write_impl(struct regmap *map, unsigned int reg,
- 	}
+diff --git a/drivers/pwm/pwm-brcmstb.c b/drivers/pwm/pwm-brcmstb.c
+index a3faa9a3de7cc..a7d529bf76adc 100644
+--- a/drivers/pwm/pwm-brcmstb.c
++++ b/drivers/pwm/pwm-brcmstb.c
+@@ -288,7 +288,7 @@ static int brcmstb_pwm_suspend(struct device *dev)
+ {
+ 	struct brcmstb_pwm *p = dev_get_drvdata(dev);
  
- 	if (!map->cache_bypass && map->format.parse_val) {
--		unsigned int ival;
-+		unsigned int ival, offset;
- 		int val_bytes = map->format.val_bytes;
--		for (i = 0; i < val_len / val_bytes; i++) {
--			ival = map->format.parse_val(val + (i * val_bytes));
--			ret = regcache_write(map,
--					     reg + regmap_get_offset(map, i),
--					     ival);
-+
-+		/* Cache the last written value for noinc writes */
-+		i = noinc ? val_len - val_bytes : 0;
-+		for (; i < val_len; i += val_bytes) {
-+			ival = map->format.parse_val(val + i);
-+			offset = noinc ? 0 : regmap_get_offset(map, i / val_bytes);
-+			ret = regcache_write(map, reg + offset, ival);
- 			if (ret) {
- 				dev_err(map->dev,
- 					"Error in caching of register: %x ret: %d\n",
--					reg + regmap_get_offset(map, i), ret);
-+					reg + offset, ret);
- 				return ret;
- 			}
- 		}
+-	clk_disable(p->clk);
++	clk_disable_unprepare(p->clk);
+ 
+ 	return 0;
+ }
+@@ -297,7 +297,7 @@ static int brcmstb_pwm_resume(struct device *dev)
+ {
+ 	struct brcmstb_pwm *p = dev_get_drvdata(dev);
+ 
+-	clk_enable(p->clk);
++	clk_prepare_enable(p->clk);
+ 
+ 	return 0;
+ }
 -- 
 2.42.0
 
