@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AF1A7ECFD7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C9D07ECDCB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235419AbjKOTvN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41570 "EHLO
+        id S234656AbjKOTi3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235433AbjKOTvL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:11 -0500
+        with ESMTP id S234655AbjKOTi2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2A11A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC76C433C8;
-        Wed, 15 Nov 2023 19:51:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC5499E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF92C433CC;
+        Wed, 15 Nov 2023 19:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077867;
-        bh=6FpuizoJz+eMk7vQJcRKs4AJlmxzh7dBxMa7jcDN/80=;
+        s=korg; t=1700077105;
+        bh=Ij6/gHl4Jo2LNnCymwtc0eHwrsK4zE7B43SwRFd4zOk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RepqmVy3cswBMKbTZnFAuzxHA7kpbxY/19TjtJ0EuOpNKyLIHeIcUYbb4d0j33p7f
-         Y2NnM2/hdi1gAnR9FepUNqedoDBDva1NoL2FNTW+K+sG1F2rwlWdimm6DLilZ5/5n5
-         5+LFPMA1v9R8RXFKsF2ShSI2zLMkZgePchBfBgBg=
+        b=rNE7+NHjxBD+YNKn1xLlVLKJVgkvHnHLzcC9lqwuzAgvLM5qZGJgT9bW5wK+aiP/S
+         AiR9Qy9sXgEHkveBpDayqTgXWv9n/aCXnto1QeofqHkONkvaN1YrJiFGXrsgrWCXGH
+         3MzXQaUmzE7g7CR3ibCgTIVetpJtE2fE5c8GlK9U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        linux-afs@lists.infradead.org, Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Jian Shen <shenjian15@huawei.com>,
+        Jijie Shao <shaojijie@huawei.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>,
+        Jiri Pirko <jiri@nvidia.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 544/603] rxrpc: Fix two connection reaping bugs
-Date:   Wed, 15 Nov 2023 14:18:09 -0500
-Message-ID: <20231115191649.428634820@linuxfoundation.org>
+Subject: [PATCH 6.5 506/550] net: page_pool: add missing free_percpu when page_pool_init fail
+Date:   Wed, 15 Nov 2023 14:18:10 -0500
+Message-ID: <20231115191635.994857278@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,64 +55,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 61e4a86600029e6e8d468d1fad6b6c749bebed19 ]
+[ Upstream commit 8ffbd1669ed1d58939d6e878dffaa2f60bf961a4 ]
 
-Fix two connection reaping bugs:
+When ptr_ring_init() returns failure in page_pool_init(), free_percpu()
+is not called to free pool->recycle_stats, which may cause memory
+leak.
 
- (1) rxrpc_connection_expiry is in units of seconds, so
-     rxrpc_disconnect_call() needs to multiply it by HZ when adding it to
-     jiffies.
-
- (2) rxrpc_client_conn_reap_timeout() should set RXRPC_CLIENT_REAP_TIMER if
-     local->kill_all_client_conns is clear, not if it is set (in which case
-     we don't need the timer).  Without this, old client connections don't
-     get cleaned up until the local endpoint is cleaned up.
-
-Fixes: 5040011d073d ("rxrpc: Make the local endpoint hold a ref on a connected call")
-Fixes: 0d6bf319bc5a ("rxrpc: Move the client conn cache management to the I/O thread")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/783911.1698364174@warthog.procyon.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ad6fa1e1ab1b ("page_pool: Add recycle stats")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Yunsheng Lin <linyunsheng@huawei.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Link: https://lore.kernel.org/r/20231030091256.2915394-1-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_object.c  | 2 +-
- net/rxrpc/local_object.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/core/page_pool.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
-index ac85d4644a3c3..df8a271948a1c 100644
---- a/net/rxrpc/conn_object.c
-+++ b/net/rxrpc/conn_object.c
-@@ -212,7 +212,7 @@ void rxrpc_disconnect_call(struct rxrpc_call *call)
- 		conn->idle_timestamp = jiffies;
- 		if (atomic_dec_and_test(&conn->active))
- 			rxrpc_set_service_reap_timer(conn->rxnet,
--						     jiffies + rxrpc_connection_expiry);
-+						     jiffies + rxrpc_connection_expiry * HZ);
- 	}
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index a3e12a61d456c..1ed4affd9149f 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -210,8 +210,12 @@ static int page_pool_init(struct page_pool *pool,
+ 		return -ENOMEM;
+ #endif
  
- 	rxrpc_put_call(call, rxrpc_call_put_io_thread);
-diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
-index 7d910aee4f8cb..c553a30e9c838 100644
---- a/net/rxrpc/local_object.c
-+++ b/net/rxrpc/local_object.c
-@@ -87,7 +87,7 @@ static void rxrpc_client_conn_reap_timeout(struct timer_list *timer)
- 	struct rxrpc_local *local =
- 		container_of(timer, struct rxrpc_local, client_conn_reap_timer);
+-	if (ptr_ring_init(&pool->ring, ring_qsize, GFP_KERNEL) < 0)
++	if (ptr_ring_init(&pool->ring, ring_qsize, GFP_KERNEL) < 0) {
++#ifdef CONFIG_PAGE_POOL_STATS
++		free_percpu(pool->recycle_stats);
++#endif
+ 		return -ENOMEM;
++	}
  
--	if (local->kill_all_client_conns &&
-+	if (!local->kill_all_client_conns &&
- 	    test_and_set_bit(RXRPC_CLIENT_CONN_REAP_TIMER, &local->client_conn_flags))
- 		rxrpc_wake_up_io_thread(local);
- }
+ 	atomic_set(&pool->pages_state_release_cnt, 0);
+ 
 -- 
 2.42.0
 
