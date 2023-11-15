@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F2757ED4A4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2F47ED2EB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344585AbjKOU6o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36950 "EHLO
+        id S233580AbjKOUpI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344640AbjKOU5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:44 -0500
+        with ESMTP id S233574AbjKOUpE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9B8E19A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD82C4E67E;
-        Wed, 15 Nov 2023 20:50:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6D2A1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410ABC433C9;
+        Wed, 15 Nov 2023 20:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081459;
-        bh=9JMRCXWiRuDozgJY3LGisu/WmgKuaR14mSwDXu8xpWU=;
+        s=korg; t=1700081100;
+        bh=wj6k97fiFFNcM62uGwytbJ8C5ZMPLyKRXadCrA5Vo2E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NLjEC2jB/e/1SVWDgtTKJGiTZDiNPGZNAT58yrP/wq2FtNWZduaBvVYePeFCy0PzB
-         TQBEkTGYAGVy54FxumaEG8Se/RAmg8T6lRjPKawuZ0Q1dsECzMOW4RMv1nkA3Z+1bF
-         3VoeYyRMDpd3PcxvAlDM58t5WFWTYF9pC0qqr9oI=
+        b=itNSJVzLptB8Hxfmp5awbSl24b7QQBrcvN+K6o9Z9a97ItrVjmQJX0R3qGzloPUg/
+         rFdaXNIR1xlzXXxnjQtZ8wY2P9B8tGsmo87Q0B4cCq1skGs2KVaG2tJPDClqv83FbW
+         8jKRAKVizkyq9sAnUw7xahIxtKv4UCsZAfcXmIIQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/244] ASoC: fsl: mpc5200_dma.c: Fix warning of Function parameter or member not described
-Date:   Wed, 15 Nov 2023 15:35:32 -0500
-Message-ID: <20231115203556.752672667@linuxfoundation.org>
+Subject: [PATCH 4.19 21/88] clk: keystone: pll: fix a couple NULL vs IS_ERR() checks
+Date:   Wed, 15 Nov 2023 15:35:33 -0500
+Message-ID: <20231115191427.458822273@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +50,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4a221b2e3340f4a3c2b414c46c846a26c6caf820 ]
+[ Upstream commit a5d14f8b551eb1551c10053653ee8e27f19672fa ]
 
-This patch fixes the warnings of "Function parameter or member 'xxx'
-not described".
+The clk_register_divider() and clk_register_mux() functions returns
+error pointers on error but this code checks for NULL.  Fix that.
 
->> sound/soc/fsl/mpc5200_dma.c:116: warning: Function parameter or member 'component' not described in 'psc_dma_trigger'
-   sound/soc/fsl/mpc5200_dma.c:116: warning: Function parameter or member 'substream' not described in 'psc_dma_trigger'
-   sound/soc/fsl/mpc5200_dma.c:116: warning: Function parameter or member 'cmd' not described in 'psc_dma_trigger'
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310061914.jJuekdHs-lkp@intel.com/
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Fixes: 6d1048bc1152 ("ASoC: fsl: mpc5200_dma: remove snd_pcm_ops")
-Link: https://lore.kernel.org/r/87il7fcqm8.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b9e0d40c0d83 ("clk: keystone: add Keystone PLL clock driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/d9da4c97-0da9-499f-9a21-1f8e3f148dc1@moroto.mountain
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/mpc5200_dma.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/keystone/pll.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/fsl/mpc5200_dma.c b/sound/soc/fsl/mpc5200_dma.c
-index 9014978100207..3f7ccae3f6b1a 100644
---- a/sound/soc/fsl/mpc5200_dma.c
-+++ b/sound/soc/fsl/mpc5200_dma.c
-@@ -100,6 +100,9 @@ static irqreturn_t psc_dma_bcom_irq(int irq, void *_psc_dma_stream)
+diff --git a/drivers/clk/keystone/pll.c b/drivers/clk/keystone/pll.c
+index 526694c2a6c97..a75ece5992394 100644
+--- a/drivers/clk/keystone/pll.c
++++ b/drivers/clk/keystone/pll.c
+@@ -285,12 +285,13 @@ static void __init of_pll_div_clk_init(struct device_node *node)
  
- /**
-  * psc_dma_trigger: start and stop the DMA transfer.
-+ * @component: triggered component
-+ * @substream: triggered substream
-+ * @cmd: triggered command
-  *
-  * This function is called by ALSA to start, stop, pause, and resume the DMA
-  * transfer of data.
+ 	clk = clk_register_divider(NULL, clk_name, parent_name, 0, reg, shift,
+ 				 mask, 0, NULL);
+-	if (clk) {
+-		of_clk_add_provider(node, of_clk_src_simple_get, clk);
+-	} else {
++	if (IS_ERR(clk)) {
+ 		pr_err("%s: error registering divider %s\n", __func__, clk_name);
+ 		iounmap(reg);
++		return;
+ 	}
++
++	of_clk_add_provider(node, of_clk_src_simple_get, clk);
+ }
+ CLK_OF_DECLARE(pll_divider_clock, "ti,keystone,pll-divider-clock", of_pll_div_clk_init);
+ 
+@@ -332,9 +333,11 @@ static void __init of_pll_mux_clk_init(struct device_node *node)
+ 	clk = clk_register_mux(NULL, clk_name, (const char **)&parents,
+ 				ARRAY_SIZE(parents) , 0, reg, shift, mask,
+ 				0, NULL);
+-	if (clk)
+-		of_clk_add_provider(node, of_clk_src_simple_get, clk);
+-	else
++	if (IS_ERR(clk)) {
+ 		pr_err("%s: error registering mux %s\n", __func__, clk_name);
++		return;
++	}
++
++	of_clk_add_provider(node, of_clk_src_simple_get, clk);
+ }
+ CLK_OF_DECLARE(pll_mux_clock, "ti,keystone,pll-mux-clock", of_pll_mux_clk_init);
 -- 
 2.42.0
 
