@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F77F7ECC5F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:29:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E3DD7ECEEE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233915AbjKOT36 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:29:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45012 "EHLO
+        id S235183AbjKOTpJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:45:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233909AbjKOT35 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:29:57 -0500
+        with ESMTP id S235189AbjKOTpJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4CE09E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C9A0C433CA;
-        Wed, 15 Nov 2023 19:29:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C651AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C65C433C7;
+        Wed, 15 Nov 2023 19:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076594;
-        bh=DFsFnZjEJI4Bzpq+HqO646/zv0VB1JDabfpve4SAPNE=;
+        s=korg; t=1700077505;
+        bh=SIExlMmjH0bu1F2dMklpBW6AkVPofe+CTdo9XOl0epY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y/fpEWrNADlk8koup8lf5VhtQ5khvVOPHgLerLvKH8FiiYyBHGdQ6VGJP/pUylfbA
-         INZ+kjqWuI/Qc2JBJJUvp17ukxjzQGxrmCGNDgAIN8Nhcmvwm8uNPp2R+OJgNMpa8y
-         IKvDHgolPDxJjGJEKnG18PutTlnV8+ejezZTTZCw=
+        b=BcVOHiIxGCyLOKn0BjudfNRgjd0y8waHVcGzLvX99HXEpV1GX29NYZ2Ub06qE8zEl
+         TqeTRQ2sVEDAyTN4sb7JbvW9KLkIrmvwCSQm7eFI9FRCf9fZnVEyzYqLoXCh9J4bRs
+         1SZL+TLVa7Byz8bpSH4WQydnpq4Hgrc0maN6FYTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Stefan Wahren <wahrenst@gmx.net>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 305/550] ASoC: cs35l41: Handle mdsync_down reg write errors
+Subject: [PATCH 6.6 344/603] hwrng: bcm2835 - Fix hwrng throughput regression
 Date:   Wed, 15 Nov 2023 14:14:49 -0500
-Message-ID: <20231115191621.957267161@linuxfoundation.org>
+Message-ID: <20231115191637.328391157@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +51,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit a9a3f54a23d844971c274f352500dddeadb4412c ]
+[ Upstream commit b58a36008bfa1aadf55f516bcbfae40c779eb54b ]
 
-The return code of regmap_multi_reg_write() call related to "MDSYNC
-down" sequence is shadowed by the subsequent
-wait_for_completion_timeout() invocation, which is expected to time
-timeout in case the write operation failed.
+The last RCU stall fix caused a massive throughput regression of the
+hwrng on Raspberry Pi 0 - 3. hwrng_msleep doesn't sleep precisely enough
+and usleep_range doesn't allow scheduling. So try to restore the
+best possible throughput by introducing hwrng_yield which interruptable
+sleeps for one jiffy.
 
-Let cs35l41_global_enable() return the correct error code instead of
--ETIMEDOUT.
+Some performance measurements on Raspberry Pi 3B+ (arm64/defconfig):
 
-Fixes: f5030564938b ("ALSA: cs35l41: Add shared boost feature")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20230907171010.1447274-2-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+sudo dd if=/dev/hwrng of=/dev/null count=1 bs=10000
+
+cpu_relax              ~138025 Bytes / sec
+hwrng_msleep(1000)         ~13 Bytes / sec
+hwrng_yield              ~2510 Bytes / sec
+
+Fixes: 96cb9d055445 ("hwrng: bcm2835 - use hwrng_msleep() instead of cpu_relax()")
+Link: https://lore.kernel.org/linux-arm-kernel/bc97ece5-44a3-4c4e-77da-2db3eb66b128@gmx.net/
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l41-lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/hw_random/bcm2835-rng.c | 2 +-
+ drivers/char/hw_random/core.c        | 6 ++++++
+ include/linux/hw_random.h            | 1 +
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l41-lib.c b/sound/soc/codecs/cs35l41-lib.c
-index 1e4205295a0de..74b9494ca83e9 100644
---- a/sound/soc/codecs/cs35l41-lib.c
-+++ b/sound/soc/codecs/cs35l41-lib.c
-@@ -1224,7 +1224,7 @@ int cs35l41_global_enable(struct regmap *regmap, enum cs35l41_boost_type b_type,
- 		cs35l41_mdsync_down_seq[2].def = pwr_ctrl1;
- 		ret = regmap_multi_reg_write(regmap, cs35l41_mdsync_down_seq,
- 					     ARRAY_SIZE(cs35l41_mdsync_down_seq));
--		if (!enable)
-+		if (ret || !enable)
- 			break;
+diff --git a/drivers/char/hw_random/bcm2835-rng.c b/drivers/char/hw_random/bcm2835-rng.c
+index e19b0f9f48b97..4c08efe7f3753 100644
+--- a/drivers/char/hw_random/bcm2835-rng.c
++++ b/drivers/char/hw_random/bcm2835-rng.c
+@@ -70,7 +70,7 @@ static int bcm2835_rng_read(struct hwrng *rng, void *buf, size_t max,
+ 	while ((rng_readl(priv, RNG_STATUS) >> 24) == 0) {
+ 		if (!wait)
+ 			return 0;
+-		hwrng_msleep(rng, 1000);
++		hwrng_yield(rng);
+ 	}
  
- 		if (!pll_lock)
+ 	num_words = rng_readl(priv, RNG_STATUS) >> 24;
+diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
+index e3598ec9cfca8..420f155d251fb 100644
+--- a/drivers/char/hw_random/core.c
++++ b/drivers/char/hw_random/core.c
+@@ -678,6 +678,12 @@ long hwrng_msleep(struct hwrng *rng, unsigned int msecs)
+ }
+ EXPORT_SYMBOL_GPL(hwrng_msleep);
+ 
++long hwrng_yield(struct hwrng *rng)
++{
++	return wait_for_completion_interruptible_timeout(&rng->dying, 1);
++}
++EXPORT_SYMBOL_GPL(hwrng_yield);
++
+ static int __init hwrng_modinit(void)
+ {
+ 	int ret;
+diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+index 8a3115516a1ba..136e9842120e8 100644
+--- a/include/linux/hw_random.h
++++ b/include/linux/hw_random.h
+@@ -63,5 +63,6 @@ extern void hwrng_unregister(struct hwrng *rng);
+ extern void devm_hwrng_unregister(struct device *dve, struct hwrng *rng);
+ 
+ extern long hwrng_msleep(struct hwrng *rng, unsigned int msecs);
++extern long hwrng_yield(struct hwrng *rng);
+ 
+ #endif /* LINUX_HWRANDOM_H_ */
 -- 
 2.42.0
 
