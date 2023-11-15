@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3FB47ECE99
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2B907ECE9B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235144AbjKOToM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43870 "EHLO
+        id S235145AbjKOToP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:44:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235141AbjKOToL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:11 -0500
+        with ESMTP id S235143AbjKOToO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9ED0B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2D7C433C8;
-        Wed, 15 Nov 2023 19:44:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E20B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 514B5C433C7;
+        Wed, 15 Nov 2023 19:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077447;
-        bh=Sk/Em0X5f2Cdemd/y51A9iz/OnUqSOTxaKz4f1VGA8E=;
+        s=korg; t=1700077450;
+        bh=azu6Twf0n/JG5jLJWNjAVUtRTVskZF2WRCaxbsKzKZk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kUOfnS7YPq387dIdbNixIfnAb+k5yOarfDr76mxe3O9Qu8wTS18V0gdW2ivVl3pRe
-         Bbt+ab2E2h9Q7n60jblVqnEYhCUcmRWU2/I42ef9fXfH750iDMcqQSRKPBwTxLwq24
-         KELdIXa0u6Xg8V0PdW1bMgLGfABD/yxVB61v7wVk=
+        b=jqeyo/RJsNqyvATcw6jR5vQ0d9bv/hjq5xUOzwhGMPhm7jeUXnGm3hrLThGN9qI1Z
+         dgeskH96b1RwA86vpnmbFzon8BTfdZ2vbkZMTSlGV0168XNEwxTo9pG/KvyuQbYshY
+         e5jmOsk4cjL0cPDxhltc9WpQthvXYlzi1055iVzU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Herring <robh@kernel.org>,
-        Aradhya Bhatia <a-bhatia1@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
+        patches@lists.linux.dev, Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 309/603] arm64: dts: ti: Fix HDMI Audio overlay in Makefile
-Date:   Wed, 15 Nov 2023 14:14:14 -0500
-Message-ID: <20231115191634.806312173@linuxfoundation.org>
+Subject: [PATCH 6.6 310/603] firmware: arm_ffa: Assign the missing IDR allocation ID to the FFA device
+Date:   Wed, 15 Nov 2023 14:14:15 -0500
+Message-ID: <20231115191634.882141523@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -55,46 +53,67 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Aradhya Bhatia <a-bhatia1@ti.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 69c570ebc3964534c19dc4438d3b96f55d489fc3 ]
+[ Upstream commit 7d0bc6360f17ea323ab25939a34857123d7d87e5 ]
 
-Apply HDMI audio overlay to AM625 and AM62-LP SK-EVMs DT binaries,
-instead of leaving it in a floating state.
+Commit 19b8766459c4 ("firmware: arm_ffa: Fix FFA device names for logical
+partitions") added an ID to the FFA device using ida_alloc() and append
+the same to "arm-ffa" to make up a unique device name. However it missed
+to stash the id value in ffa_dev to help freeing the ID later when the
+device is destroyed.
 
-Fixes: b50ccab9e07c ("arm64: dts: ti: am62x-sk: Add overlay for HDMI audio")
-Reported-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231003092259.28103-1-a-bhatia1@ti.com
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Due to the missing/unassigned ID in FFA device, we get the following
+warning when the FF-A device is unregistered.
+
+  |   ida_free called for id=0 which is not allocated.
+  |   WARNING: CPU: 7 PID: 1 at lib/idr.c:525 ida_free+0x114/0x164
+  |   CPU: 7 PID: 1 Comm: swapper/0 Not tainted 6.6.0-rc4 #209
+  |   pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+  |   pc : ida_free+0x114/0x164
+  |   lr : ida_free+0x114/0x164
+  |   Call trace:
+  |    ida_free+0x114/0x164
+  |    ffa_release_device+0x24/0x3c
+  |    device_release+0x34/0x8c
+  |    kobject_put+0x94/0xf8
+  |    put_device+0x18/0x24
+  |    klist_devices_put+0x14/0x20
+  |    klist_next+0xc8/0x114
+  |    bus_for_each_dev+0xd8/0x144
+  |    arm_ffa_bus_exit+0x30/0x54
+  |    ffa_init+0x68/0x330
+  |    do_one_initcall+0xdc/0x250
+  |    do_initcall_level+0x8c/0xac
+  |    do_initcalls+0x54/0x94
+  |    do_basic_setup+0x1c/0x28
+  |    kernel_init_freeable+0x104/0x170
+  |    kernel_init+0x20/0x1a0
+  |    ret_from_fork+0x10/0x20
+
+Fix the same by actually assigning the ID in the FFA device this time
+for real.
+
+Fixes: 19b8766459c4 ("firmware: arm_ffa: Fix FFA device names for logical partitions")
+Link: https://lore.kernel.org/r/20231003085932.3553985-1-sudeep.holla@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/Makefile | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/bus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/ti/Makefile b/arch/arm64/boot/dts/ti/Makefile
-index 51dab9499cd0b..8bd5acc6d6835 100644
---- a/arch/arm64/boot/dts/ti/Makefile
-+++ b/arch/arm64/boot/dts/ti/Makefile
-@@ -9,6 +9,8 @@
- # alphabetically.
+diff --git a/drivers/firmware/arm_ffa/bus.c b/drivers/firmware/arm_ffa/bus.c
+index 2b8bfcd010f5f..7865438b36960 100644
+--- a/drivers/firmware/arm_ffa/bus.c
++++ b/drivers/firmware/arm_ffa/bus.c
+@@ -193,6 +193,7 @@ struct ffa_device *ffa_device_register(const uuid_t *uuid, int vm_id,
+ 	dev->release = ffa_release_device;
+ 	dev_set_name(&ffa_dev->dev, "arm-ffa-%d", id);
  
- # Boards with AM62x SoC
-+k3-am625-sk-hdmi-audio-dtbs := k3-am625-sk.dtb k3-am62x-sk-hdmi-audio.dtbo
-+k3-am62-lp-sk-hdmi-audio-dtbs := k3-am62-lp-sk.dtb k3-am62x-sk-hdmi-audio.dtbo
- dtb-$(CONFIG_ARCH_K3) += k3-am625-beagleplay.dtb
- dtb-$(CONFIG_ARCH_K3) += k3-am625-phyboard-lyra-rdk.dtb
- dtb-$(CONFIG_ARCH_K3) += k3-am625-sk.dtb
-@@ -19,7 +21,8 @@ dtb-$(CONFIG_ARCH_K3) += k3-am625-verdin-wifi-dahlia.dtb
- dtb-$(CONFIG_ARCH_K3) += k3-am625-verdin-wifi-dev.dtb
- dtb-$(CONFIG_ARCH_K3) += k3-am625-verdin-wifi-yavia.dtb
- dtb-$(CONFIG_ARCH_K3) += k3-am62-lp-sk.dtb
--dtb-$(CONFIG_ARCH_K3) += k3-am62x-sk-hdmi-audio.dtbo
-+dtb-$(CONFIG_ARCH_K3) += k3-am625-sk-hdmi-audio.dtb
-+dtb-$(CONFIG_ARCH_K3) += k3-am62-lp-sk-hdmi-audio.dtb
- 
- # Boards with AM62Ax SoC
- dtb-$(CONFIG_ARCH_K3) += k3-am62a7-sk.dtb
++	ffa_dev->id = id;
+ 	ffa_dev->vm_id = vm_id;
+ 	ffa_dev->ops = ops;
+ 	uuid_copy(&ffa_dev->uuid, uuid);
 -- 
 2.42.0
 
