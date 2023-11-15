@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB6F27ECB8B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A16297ECE16
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230059AbjKOTW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:22:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33912 "EHLO
+        id S234807AbjKOTkY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:40:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230087AbjKOTW5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:57 -0500
+        with ESMTP id S234819AbjKOTkT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 783DC1B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:53 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF10AC433C8;
-        Wed, 15 Nov 2023 19:22:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCEE21B1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E028C433C7;
+        Wed, 15 Nov 2023 19:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076173;
-        bh=ozG5hH7j2n3BxGuk9l0FC0oGG1wHQqJ2RXcJa81g4jc=;
+        s=korg; t=1700077215;
+        bh=PCw3QbC1N591S+wBIqvNa1HDt5NYeMG3j/J3tTLR0Tw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WPUb8VzpPoy2P9C+tBXG1vkg21YZjIovJlDqQ2RviaXDUtMYPY+OUGKhBruizcPM9
-         Suk7cXrJDSp/vdEDVv/FScIudtThVRPTPerD/N7PMjVjlr9vFHfAqBPK8TYRxlvFce
-         +bIC6reXkpOkvqPhuUKb6/UMY4TCivY/YODxm+rY=
+        b=Sw/FKhfVnJr0aUHYmJCoEnrBoAYmQLP30bQi/cFX8sHZZ2t520Y9aAExzgi6z7cXZ
+         NevrrSZ7gsouRjpNN/vgi9suXETAZsCcmunpH46xXP4vvH65LdP72qC0dfsUYCJOjT
+         G/uu8oImmPJ43fK3nk4JTGXoxsRBdZmGUPZJE3C8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Ayush Sawal <ayush.sawal@chelsio.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Varadarajan Narayanan <quic_varada@quicinc.com>,
+        Kathiravan T <quic_kathirav@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 121/550] chtls: fix tp->rcv_tstamp initialization
+Subject: [PATCH 6.6 160/603] clk: qcom: ipq5332: Drop set rate parent from gpll0 dependent clocks
 Date:   Wed, 15 Nov 2023 14:11:45 -0500
-Message-ID: <20231115191609.080653746@linuxfoundation.org>
+Message-ID: <20231115191624.264194684@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-[ Upstream commit 225d9ddbacb102621af6d28ff7bf5a0b4ce249d8 ]
+[ Upstream commit ccd8ab030643040600a663edde56b434b6f4fb6c ]
 
-tp->rcv_tstamp should be set to tcp_jiffies, not tcp_time_stamp().
+IPQ5332's GPLL0's nominal/turbo frequency is 800MHz.
+This must not be scaled based on the requirement of
+dependent clocks. Hence remove the CLK_SET_RATE_PARENT
+flag.
 
-Fixes: cc35c88ae4db ("crypto : chtls - CPL handler definition")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Ayush Sawal <ayush.sawal@chelsio.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 3d89d52970fd ("clk: qcom: add Global Clock controller (GCC) driver for IPQ5332 SoC")
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+Reviewed-by: Kathiravan T <quic_kathirav@quicinc.com>
+Link: https://lore.kernel.org/r/1693474133-10467-1-git-send-email-quic_varada@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-ipq5332.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-index 7750702900fa6..6f6525983130e 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-@@ -2259,7 +2259,7 @@ static void chtls_rx_ack(struct sock *sk, struct sk_buff *skb)
+diff --git a/drivers/clk/qcom/gcc-ipq5332.c b/drivers/clk/qcom/gcc-ipq5332.c
+index b02026f8549b2..b836159fbdefa 100644
+--- a/drivers/clk/qcom/gcc-ipq5332.c
++++ b/drivers/clk/qcom/gcc-ipq5332.c
+@@ -71,7 +71,6 @@ static struct clk_fixed_factor gpll0_div2 = {
+ 				&gpll0_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_fixed_factor_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
- 		if (tp->snd_una != snd_una) {
- 			tp->snd_una = snd_una;
--			tp->rcv_tstamp = tcp_time_stamp(tp);
-+			tp->rcv_tstamp = tcp_jiffies32;
- 			if (tp->snd_una == tp->snd_nxt &&
- 			    !csk_flag_nochk(csk, CSK_TX_FAILOVER))
- 				csk_reset_flag(csk, CSK_TX_WAIT_IDLE);
+@@ -85,7 +84,6 @@ static struct clk_alpha_pll_postdiv gpll0 = {
+ 				&gpll0_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
 -- 
 2.42.0
 
