@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 245BF7ECC62
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 061877ECEF8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233922AbjKOTaD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59194 "EHLO
+        id S235198AbjKOTp2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:45:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233918AbjKOTaC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:02 -0500
+        with ESMTP id S235199AbjKOTp0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C2AD12C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FCBC433C7;
-        Wed, 15 Nov 2023 19:29:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44E6E189
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF263C433C8;
+        Wed, 15 Nov 2023 19:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076599;
-        bh=tQvJ75GRH2mkq8j07ijg9yu4CdynjVDmzcHBcDTua2c=;
+        s=korg; t=1700077522;
+        bh=0tszDPs82ppgeqH/mftNrUIbjLm7yzJ8MR8sL8crsOo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y0ZG84CFyxGdpyZLLvcc1TiACLfLpj7xAB7LyR0aP8Zy3Gq8199SpywbZkGLXjqL4
-         z+N2dG4yOuH4/3XWjmLtn8inZffX+/PorfLDuwN/KYf7uBllLjEtRVq2rsd4mLKMAX
-         X1yH2t/1EgDu5jGat7d8B0j3xQW+UmwqS3dcwIZk=
+        b=0yRQYecLHiv6u0EIMyQiApKp0jICCCwteCH3pIGUTt8mTFBrzPI47aXJs0pezyo6y
+         FlUKSI+Ig5wv2ZdZ4AnYYOJ22FYUAVWs7GdO5NNOO7uYi+rXFT10v7t6pbl5+5tXIs
+         yqm0mvEoZj9mprIPnPFCQ7/vJG4NRuQGPspQBATM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Adam Guerin <adam.guerin@intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 308/550] ASoC: cs35l41: Undo runtime PM changes at driver exit time
+Subject: [PATCH 6.6 347/603] crypto: qat - fix state machines cleanup paths
 Date:   Wed, 15 Nov 2023 14:14:52 -0500
-Message-ID: <20231115191622.163151897@linuxfoundation.org>
+Message-ID: <20231115191637.538204659@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,55 +52,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 2d5661e6008ae1a1cd6df7cc844908fb8b982c58 ]
+[ Upstream commit c9ca9756f376f51f985130a0e599d956065d4c44 ]
 
-According to the documentation, drivers are responsible for undoing at
-removal time all runtime PM changes done during probing.
+Commit 1bdc85550a2b ("crypto: qat - fix concurrency issue when device
+state changes") introduced the function adf_dev_down() which wraps the
+functions adf_dev_stop() and adf_dev_shutdown().
+In a subsequent change, the sequence adf_dev_stop() followed by
+adf_dev_shutdown() was then replaced across the driver with just a call
+to the function adf_dev_down().
 
-Hence, add the missing calls to pm_runtime_dont_use_autosuspend(), which
-are necessary for undoing pm_runtime_use_autosuspend().
+The functions adf_dev_stop() and adf_dev_shutdown() are called in error
+paths to stop the accelerator and free up resources and can be called
+even if the counterparts adf_dev_init() and adf_dev_start() did not
+complete successfully.
+However, the implementation of adf_dev_down() prevents the stop/shutdown
+sequence if the device is found already down.
+For example, if adf_dev_init() fails, the device status is not set as
+started and therefore a call to adf_dev_down() won't be calling
+adf_dev_shutdown() to undo what adf_dev_init() did.
 
-Note this would have been handled implicitly by
-devm_pm_runtime_enable(), but there is a need to continue using
-pm_runtime_enable()/pm_runtime_disable() in order to ensure the runtime
-PM is disabled as soon as the remove() callback is entered.
+Do not check if a device is started in adf_dev_down() but do the
+equivalent check in adf_sysfs.c when handling a DEV_DOWN command from
+the user.
 
-Fixes: f517ba4924ad ("ASoC: cs35l41: Add support for hibernate memory retention mode")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20230907171010.1447274-7-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 2b60f79c7b81 ("crypto: qat - replace state machine calls")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Adam Guerin <adam.guerin@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l41.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/intel/qat/qat_common/adf_init.c  | 7 -------
+ drivers/crypto/intel/qat/qat_common/adf_sysfs.c | 7 +++++++
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
-index abbe82071c1a4..9e26e96f0776e 100644
---- a/sound/soc/codecs/cs35l41.c
-+++ b/sound/soc/codecs/cs35l41.c
-@@ -1338,6 +1338,7 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
- 	return 0;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_init.c b/drivers/crypto/intel/qat/qat_common/adf_init.c
+index 89001fe92e762..35aef5e8fc386 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_init.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
+@@ -440,13 +440,6 @@ int adf_dev_down(struct adf_accel_dev *accel_dev, bool reconfig)
  
- err_pm:
-+	pm_runtime_dont_use_autosuspend(cs35l41->dev);
- 	pm_runtime_disable(cs35l41->dev);
- 	pm_runtime_put_noidle(cs35l41->dev);
+ 	mutex_lock(&accel_dev->state_lock);
  
-@@ -1354,6 +1355,7 @@ EXPORT_SYMBOL_GPL(cs35l41_probe);
- void cs35l41_remove(struct cs35l41_private *cs35l41)
- {
- 	pm_runtime_get_sync(cs35l41->dev);
-+	pm_runtime_dont_use_autosuspend(cs35l41->dev);
- 	pm_runtime_disable(cs35l41->dev);
+-	if (!adf_dev_started(accel_dev)) {
+-		dev_info(&GET_DEV(accel_dev), "Device qat_dev%d already down\n",
+-			 accel_dev->accel_id);
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+ 	if (reconfig) {
+ 		ret = adf_dev_shutdown_cache_cfg(accel_dev);
+ 		goto out;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_sysfs.c b/drivers/crypto/intel/qat/qat_common/adf_sysfs.c
+index a74d2f9303670..a8f33558d7cb8 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_sysfs.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_sysfs.c
+@@ -52,6 +52,13 @@ static ssize_t state_store(struct device *dev, struct device_attribute *attr,
+ 	case DEV_DOWN:
+ 		dev_info(dev, "Stopping device qat_dev%d\n", accel_id);
  
- 	regmap_write(cs35l41->regmap, CS35L41_IRQ1_MASK1, 0xFFFFFFFF);
++		if (!adf_dev_started(accel_dev)) {
++			dev_info(&GET_DEV(accel_dev), "Device qat_dev%d already down\n",
++				 accel_id);
++
++			break;
++		}
++
+ 		ret = adf_dev_down(accel_dev, true);
+ 		if (ret < 0)
+ 			return -EINVAL;
 -- 
 2.42.0
 
