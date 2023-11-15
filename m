@@ -2,105 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27F627EC1FE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 13:14:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B3547EC2D7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 13:49:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343695AbjKOMOg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 07:14:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38352 "EHLO
+        id S1343816AbjKOMtE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 07:49:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234997AbjKOMOc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 07:14:32 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988A012A;
-        Wed, 15 Nov 2023 04:14:29 -0800 (PST)
+        with ESMTP id S1343723AbjKOMtD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 07:49:03 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2299411F;
+        Wed, 15 Nov 2023 04:49:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700050469; x=1731586469;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=xXsNuZqeotzzaISlvHoKm0RPUf/hku/cbqM9xqPJtr0=;
-  b=NnTVSTTU20Z/wn9Hsbx/80KU6sTjRwzhbsGI45br3htEcAuq+1YgqvS1
-   IvsiuSjt9U0sVucO4Zg8DqpWNyF9weiZ9ARmKKEZraW2ML3kVd4Xuhydn
-   54mL1VH75GOn3cYeo1wOa20YErKsB2tC5k0Xb9pTkJy7+SLZpoSNN/dtv
-   EZ87nGPdLRB2jS8o08drrHtbtQ06cBhe0fd4vu8990zwuPUlWlabHxLTS
-   q/BqJm9HiH7aReIQYDFOTUkX55VhgCrIefkn+yGBFyMkJ5l61W4pJDOQh
-   4+ZhaZc7TSEbY4+Cq0LySI7uamduLnBAhCIOoxucckZNglbA4UVG+avCG
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="388026042"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; 
-   d="scan'208";a="388026042"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 04:14:28 -0800
+  t=1700052540; x=1731588540;
+  h=from:to:cc:in-reply-to:references:subject:message-id:
+   date:mime-version:content-transfer-encoding;
+  bh=SF+1geNN0bIT4JrgyKR8RRkZ5elaJ520dBZaV+2ASAI=;
+  b=kdty0HuSUeuFkLhcuzZGs44v6Mcz4+QrA3eFXVqo1vzbBwhlVezj/b5m
+   VQmc+pb0hG2g+Htr5ccL6OFPqz7daUc6a3qr+gxByB6TVAMHmfbbPIbKy
+   h/rAAX2vWj575MIV4OVq7BUb2OLt8MW86vleId7fwa04YJQbSBymOZvM9
+   7dFXYl/5R25gAm5s4eEWDz4rwarlnNCuCeMzJoq6qMBB5Ia1QJN7WI0W6
+   79NvrHVk/PcVYJDI95jQgVulyl/3V5L/mDTiGClmHKkPMvKb5WuZpfcnU
+   cyorIyCaw7nQi4XmSX/Rnu+C21dOLDsvtARJS7S++unrbjGD3bp3tZQ4B
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="393726212"
+X-IronPort-AV: E=Sophos;i="6.03,305,1694761200"; 
+   d="scan'208";a="393726212"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 04:48:59 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="794136847"
-X-IronPort-AV: E=Sophos;i="6.03,304,1694761200"; 
-   d="scan'208";a="794136847"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga008.jf.intel.com with ESMTP; 15 Nov 2023 04:14:26 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1058)
-        id C3B3D2D6; Wed, 15 Nov 2023 14:14:24 +0200 (EET)
-From:   Niklas Neronin <niklas.neronin@linux.intel.com>
-To:     linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
-        gregkh@linuxfoundation.org
-Cc:     Niklas Neronin <niklas.neronin@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] usb: config: fix iteration issue in 'usb_get_bos_descriptor()'
-Date:   Wed, 15 Nov 2023 14:13:25 +0200
-Message-ID: <20231115121325.471454-1-niklas.neronin@linux.intel.com>
-X-Mailer: git-send-email 2.42.0
+X-IronPort-AV: E=McAfee;i="6600,9927,10894"; a="1012250245"
+X-IronPort-AV: E=Sophos;i="6.03,305,1694761200"; 
+   d="scan'208";a="1012250245"
+Received: from rkhristx-mobl.ger.corp.intel.com (HELO localhost) ([10.252.38.217])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 04:48:56 -0800
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     platform-driver-x86@vger.kernel.org,
+        Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, Mark Gross <markgross@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Ike Panhc <ike.pan@canonical.com>, stable@vger.kernel.org
+In-Reply-To: <20231114114055.6220-2-stuart.a.hayhurst@gmail.com>
+References: <9f46c613-63c2-4bc7-b938-7c9ea862a55e@linux.intel.com>
+ <20231114114055.6220-2-stuart.a.hayhurst@gmail.com>
+Subject: Re: [PATCH v2] platform/x86: ideapad-laptop: Set max_brightness
+ before using it
+Message-Id: <170005252425.3220.12662660184359784558.b4-ty@linux.intel.com>
+Date:   Wed, 15 Nov 2023 14:48:44 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The BOS descriptor defines a root descriptor and is the base descriptor for
-accessing a family of related descriptors.
+On Tue, 14 Nov 2023 11:38:08 +0000, Stuart Hayhurst wrote:
 
-Function 'usb_get_bos_descriptor()' encounters an iteration issue when
-skipping the 'USB_DT_DEVICE_CAPABILITY' descriptor type. This results in
-the same descriptor being read repeatedly.
+> max_brightness is used in ideapad_kbd_bl_brightness_get() before it's set,
+> causing ideapad_kbd_bl_brightness_get() to return -EINVAL sometimes
+> 
+> 
 
-To address this issue, a 'goto' statement is introduced to ensure that the
-pointer and the amount read is updated correctly. This ensures that the
-function iterates to the next descriptor instead of reading the same
-descriptor repeatedly.
 
-Cc: stable@vger.kernel.org
-Fixes: 3dd550a2d365 ("USB: usbcore: Fix slab-out-of-bounds bug during device reset")
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
----
- drivers/usb/core/config.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Thank you for your contribution, it has been applied to my local
+review-ilpo branch. Note it will show up in the public
+platform-drivers-x86/review-ilpo branch only once I've pushed my
+local branch there, which might take a while.
 
-diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
-index b19e38d5fd10..7f8d33f92ddb 100644
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -1047,7 +1047,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
- 
- 		if (cap->bDescriptorType != USB_DT_DEVICE_CAPABILITY) {
- 			dev_notice(ddev, "descriptor type invalid, skip\n");
--			continue;
-+			goto skip_to_next_descriptor;
- 		}
- 
- 		switch (cap_type) {
-@@ -1078,6 +1078,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
- 			break;
- 		}
- 
-+skip_to_next_descriptor:
- 		total_len -= length;
- 		buffer += length;
- 	}
--- 
-2.42.0
+The list of commits applied:
+[1/1] platform/x86: ideapad-laptop: Set max_brightness before using it
+      commit: 7a3c36eef9a5d13b16aa954da54224c9c6bed339
+
+--
+ i.
 
