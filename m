@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19ABC7ED314
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A08FA7ED4CD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233648AbjKOUqI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:46:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35852 "EHLO
+        id S1344795AbjKOU7N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:59:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233693AbjKOUqG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:06 -0500
+        with ESMTP id S1344753AbjKOU6B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D9731BC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FEAC433C8;
-        Wed, 15 Nov 2023 20:46:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 912141BE8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E2FC4E681;
+        Wed, 15 Nov 2023 20:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081162;
-        bh=263TiVKwma71NdauysdTr0i93lzradtWD9Q2BIhulPM=;
+        s=korg; t=1700081468;
+        bh=6Y4vCP8XU1r9SPYgxL2UrLmjVuiooJ960Gw/mtDDfTA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L5pHcVOkh2emnHLuEmQseTNDGTr2pE3iwL5U4lN9pHIgPSs4aG7KAV5Ku+IeLWWjd
-         fZ46oUmQuVDpreFZSGNFH0WQU1cYeVjnHqgWhdSPSJNLYMm+wl06Kwl+7WlTnZweLQ
-         uvDKXb19k1MBst2WbotqjtNAC0GFfsjdwE7cPMFw=
+        b=gy8kS5CTjuo9WdLeBRCbhrUieHUp4+rVv5qjyLNAMFMVYAe81LGdNRt97q8FxmL1f
+         Gjz92jY29di47WRgUuf8JaJbJKUCbU0lI8pr9crj+96iI+zeQKVTSCjHPOJkMtdiIS
+         r4SoNTU25jFjEPwwJlgnkTat8ZRDyi3Iwza8iah4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 51/88] leds: trigger: ledtrig-cpu:: Fix output may be truncated issue for cpu
-Date:   Wed, 15 Nov 2023 15:36:03 -0500
-Message-ID: <20231115191429.223606090@linuxfoundation.org>
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Leo Yan <leo.yan@linaro.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 172/244] perf tools: Get rid of evlist__add_on_all_cpus()
+Date:   Wed, 15 Nov 2023 15:36:04 -0500
+Message-ID: <20231115203558.668902014@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,61 +56,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit ff50f53276131a3059e8307d11293af388ed2bcd ]
+[ Upstream commit 60ea006f72512fd7c36f16cdbe91f4fc284f8115 ]
 
-In order to teach the compiler that 'trig->name' will never be truncated,
-we need to tell it that 'cpu' is not negative.
+The cpu and thread maps are properly handled in libperf now.  No need to
+do it in the perf tools anymore.  Let's remove the logic.
 
-When building with W=1, this fixes the following warnings:
-
-  drivers/leds/trigger/ledtrig-cpu.c: In function ‘ledtrig_cpu_init’:
-  drivers/leds/trigger/ledtrig-cpu.c:155:56: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 5 [-Werror=format-truncation=]
-    155 |                 snprintf(trig->name, MAX_NAME_LEN, "cpu%d", cpu);
-        |                                                        ^~
-  drivers/leds/trigger/ledtrig-cpu.c:155:52: note: directive argument in the range [-2147483648, 7]
-    155 |                 snprintf(trig->name, MAX_NAME_LEN, "cpu%d", cpu);
-        |                                                    ^~~~~~~
-  drivers/leds/trigger/ledtrig-cpu.c:155:17: note: ‘snprintf’ output between 5 and 15 bytes into a destination of size 8
-    155 |                 snprintf(trig->name, MAX_NAME_LEN, "cpu%d", cpu);
-        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Fixes: 8f88731d052d ("led-triggers: create a trigger for CPU activity")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/3f4be7a99933cf8566e630da54f6ab913caac432.1695453322.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20221003204647.1481128-4-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: f9cdeb58a9cf ("perf evlist: Avoid frequency mode for the dummy event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-cpu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/evlist.c | 29 ++---------------------------
+ 1 file changed, 2 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-cpu.c b/drivers/leds/trigger/ledtrig-cpu.c
-index 1fca1ad00c3b9..19e068cadedfb 100644
---- a/drivers/leds/trigger/ledtrig-cpu.c
-+++ b/drivers/leds/trigger/ledtrig-cpu.c
-@@ -134,7 +134,7 @@ static int ledtrig_prepare_down_cpu(unsigned int cpu)
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index a75cdcf381308..63ef40543a9fe 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -258,28 +258,6 @@ int evlist__add_dummy(struct evlist *evlist)
+ 	return 0;
+ }
  
- static int __init ledtrig_cpu_init(void)
+-static void evlist__add_on_all_cpus(struct evlist *evlist, struct evsel *evsel)
+-{
+-	evsel->core.system_wide = true;
+-
+-	/*
+-	 * All CPUs.
+-	 *
+-	 * Note perf_event_open() does not accept CPUs that are not online, so
+-	 * in fact this CPU list will include only all online CPUs.
+-	 */
+-	perf_cpu_map__put(evsel->core.own_cpus);
+-	evsel->core.own_cpus = perf_cpu_map__new(NULL);
+-	perf_cpu_map__put(evsel->core.cpus);
+-	evsel->core.cpus = perf_cpu_map__get(evsel->core.own_cpus);
+-
+-	/* No threads */
+-	perf_thread_map__put(evsel->core.threads);
+-	evsel->core.threads = perf_thread_map__new_dummy();
+-
+-	evlist__add(evlist, evsel);
+-}
+-
+ struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide)
  {
--	int cpu;
-+	unsigned int cpu;
- 	int ret;
+ 	struct evsel *evsel = evlist__dummy_event(evlist);
+@@ -292,14 +270,11 @@ struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide)
+ 	evsel->core.attr.exclude_hv = 1;
+ 	evsel->core.attr.freq = 0;
+ 	evsel->core.attr.sample_period = 1;
++	evsel->core.system_wide = system_wide;
+ 	evsel->no_aux_samples = true;
+ 	evsel->name = strdup("dummy:u");
  
- 	/* Supports up to 9999 cpu cores */
-@@ -156,7 +156,7 @@ static int __init ledtrig_cpu_init(void)
- 		if (cpu >= 8)
- 			continue;
+-	if (system_wide)
+-		evlist__add_on_all_cpus(evlist, evsel);
+-	else
+-		evlist__add(evlist, evsel);
+-
++	evlist__add(evlist, evsel);
+ 	return evsel;
+ }
  
--		snprintf(trig->name, MAX_NAME_LEN, "cpu%d", cpu);
-+		snprintf(trig->name, MAX_NAME_LEN, "cpu%u", cpu);
- 
- 		led_trigger_register_simple(trig->name, &trig->_trig);
- 	}
 -- 
 2.42.0
 
