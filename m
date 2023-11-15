@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E3DD7ECEEE
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4FB87ECEEF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235183AbjKOTpJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51844 "EHLO
+        id S235190AbjKOTpL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:45:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235189AbjKOTpJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:09 -0500
+        with ESMTP id S235186AbjKOTpK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C651AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:06 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C65C433C7;
-        Wed, 15 Nov 2023 19:45:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E7AB9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B46C433C8;
+        Wed, 15 Nov 2023 19:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077505;
-        bh=SIExlMmjH0bu1F2dMklpBW6AkVPofe+CTdo9XOl0epY=;
+        s=korg; t=1700077507;
+        bh=VG816C542MoPSKdbk+j8Xwqemy34ZT6YDApRcN12vCo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BcVOHiIxGCyLOKn0BjudfNRgjd0y8waHVcGzLvX99HXEpV1GX29NYZ2Ub06qE8zEl
-         TqeTRQ2sVEDAyTN4sb7JbvW9KLkIrmvwCSQm7eFI9FRCf9fZnVEyzYqLoXCh9J4bRs
-         1SZL+TLVa7Byz8bpSH4WQydnpq4Hgrc0maN6FYTs=
+        b=Q12lqzQFn/niwqk9x1+d6mTuVY9V1x1x2DV+L90dz+CAklAZfQqx3DJHXA6On6V7u
+         uGkUXhW55nRew/Pu2r/wfSeQ1AYu19vmlQr/Lc/Rbv15NpmpBp5kjQKWhK4Y83tZdl
+         IMu2QDMYN94HSFxb091WFEoEnUesUIY24Lwacs7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Wahren <wahrenst@gmx.net>,
-        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        patches@lists.linux.dev,
+        "Timur I. Davletshin" <timur.davletshin@gmail.com>,
+        Jo-Philipp Wich <jo@mein.io>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 344/603] hwrng: bcm2835 - Fix hwrng throughput regression
-Date:   Wed, 15 Nov 2023 14:14:49 -0500
-Message-ID: <20231115191637.328391157@linuxfoundation.org>
+Subject: [PATCH 6.6 345/603] hwrng: geode - fix accessing registers
+Date:   Wed, 15 Nov 2023 14:14:50 -0500
+Message-ID: <20231115191637.394444622@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -55,77 +57,56 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit b58a36008bfa1aadf55f516bcbfae40c779eb54b ]
+[ Upstream commit 464bd8ec2f06707f3773676a1bd2c64832a3c805 ]
 
-The last RCU stall fix caused a massive throughput regression of the
-hwrng on Raspberry Pi 0 - 3. hwrng_msleep doesn't sleep precisely enough
-and usleep_range doesn't allow scheduling. So try to restore the
-best possible throughput by introducing hwrng_yield which interruptable
-sleeps for one jiffy.
+When the membase and pci_dev pointer were moved to a new struct in priv,
+the actual membase users were left untouched, and they started reading
+out arbitrary memory behind the struct instead of registers. This
+unfortunately turned the RNG into a constant number generator, depending
+on the content of what was at that offset.
 
-Some performance measurements on Raspberry Pi 3B+ (arm64/defconfig):
+To fix this, update geode_rng_data_{read,present}() to also get the
+membase via amd_geode_priv, and properly read from the right addresses
+again.
 
-sudo dd if=/dev/hwrng of=/dev/null count=1 bs=10000
-
-cpu_relax              ~138025 Bytes / sec
-hwrng_msleep(1000)         ~13 Bytes / sec
-hwrng_yield              ~2510 Bytes / sec
-
-Fixes: 96cb9d055445 ("hwrng: bcm2835 - use hwrng_msleep() instead of cpu_relax()")
-Link: https://lore.kernel.org/linux-arm-kernel/bc97ece5-44a3-4c4e-77da-2db3eb66b128@gmx.net/
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Fixes: 9f6ec8dc574e ("hwrng: geode - Fix PCI device refcount leak")
+Reported-by: Timur I. Davletshin <timur.davletshin@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217882
+Tested-by: Timur I. Davletshin <timur.davletshin@gmail.com>
+Suggested-by: Jo-Philipp Wich <jo@mein.io>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/bcm2835-rng.c | 2 +-
- drivers/char/hw_random/core.c        | 6 ++++++
- include/linux/hw_random.h            | 1 +
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/char/hw_random/geode-rng.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/hw_random/bcm2835-rng.c b/drivers/char/hw_random/bcm2835-rng.c
-index e19b0f9f48b97..4c08efe7f3753 100644
---- a/drivers/char/hw_random/bcm2835-rng.c
-+++ b/drivers/char/hw_random/bcm2835-rng.c
-@@ -70,7 +70,7 @@ static int bcm2835_rng_read(struct hwrng *rng, void *buf, size_t max,
- 	while ((rng_readl(priv, RNG_STATUS) >> 24) == 0) {
- 		if (!wait)
- 			return 0;
--		hwrng_msleep(rng, 1000);
-+		hwrng_yield(rng);
- 	}
+diff --git a/drivers/char/hw_random/geode-rng.c b/drivers/char/hw_random/geode-rng.c
+index 12fbe80918319..159baf00a8675 100644
+--- a/drivers/char/hw_random/geode-rng.c
++++ b/drivers/char/hw_random/geode-rng.c
+@@ -58,7 +58,8 @@ struct amd_geode_priv {
  
- 	num_words = rng_readl(priv, RNG_STATUS) >> 24;
-diff --git a/drivers/char/hw_random/core.c b/drivers/char/hw_random/core.c
-index e3598ec9cfca8..420f155d251fb 100644
---- a/drivers/char/hw_random/core.c
-+++ b/drivers/char/hw_random/core.c
-@@ -678,6 +678,12 @@ long hwrng_msleep(struct hwrng *rng, unsigned int msecs)
- }
- EXPORT_SYMBOL_GPL(hwrng_msleep);
- 
-+long hwrng_yield(struct hwrng *rng)
-+{
-+	return wait_for_completion_interruptible_timeout(&rng->dying, 1);
-+}
-+EXPORT_SYMBOL_GPL(hwrng_yield);
-+
- static int __init hwrng_modinit(void)
+ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
  {
- 	int ret;
-diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
-index 8a3115516a1ba..136e9842120e8 100644
---- a/include/linux/hw_random.h
-+++ b/include/linux/hw_random.h
-@@ -63,5 +63,6 @@ extern void hwrng_unregister(struct hwrng *rng);
- extern void devm_hwrng_unregister(struct device *dve, struct hwrng *rng);
+-	void __iomem *mem = (void __iomem *)rng->priv;
++	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
++	void __iomem *mem = priv->membase;
  
- extern long hwrng_msleep(struct hwrng *rng, unsigned int msecs);
-+extern long hwrng_yield(struct hwrng *rng);
+ 	*data = readl(mem + GEODE_RNG_DATA_REG);
  
- #endif /* LINUX_HWRANDOM_H_ */
+@@ -67,7 +68,8 @@ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
+ 
+ static int geode_rng_data_present(struct hwrng *rng, int wait)
+ {
+-	void __iomem *mem = (void __iomem *)rng->priv;
++	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
++	void __iomem *mem = priv->membase;
+ 	int data, i;
+ 
+ 	for (i = 0; i < 20; i++) {
 -- 
 2.42.0
 
