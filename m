@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E74477ECDD2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC7467ECDD4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234676AbjKOTik (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:38:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57234 "EHLO
+        id S234677AbjKOTio (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234675AbjKOTij (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:39 -0500
+        with ESMTP id S234675AbjKOTin (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B390CA4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C10FC433C8;
-        Wed, 15 Nov 2023 19:38:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF039E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F0DC433C9;
+        Wed, 15 Nov 2023 19:38:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077116;
-        bh=tlrbQCMV7SRoV44hlAQZJ65fmTxTf9Fdrdt3pU4Yvi4=;
+        s=korg; t=1700077119;
+        bh=M0K27hFFQcoECOLwj6Io9aMuFOESTY31zCaY8JEWIK8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ctbOK6NaRHBYpK6NFswQotcAlTq6kJVGbbF6JeOECAoLgoGMiA+HqpShBFoLnAaRm
-         EGZvmRIMYvqlHI29bF0RsguajOeTjtx0qwPIXnEkRgPAxrUqyDqqV2F8JBqoicUCew
-         l9FhyUXfJlreV9HKqOU8zBrKIh8gmMHAtd1F5a9U=
+        b=oa3TVx+Xu4UFuCobLY1QiVrmo0NLHN+xP7Y0JJnB+hi04iOHNSWdLfiai14YR0Vpn
+         JgQDpWLWaKEBk3xgaahdGaUIbBeTrD60Ip+jsg5FYV/FIZzNwIF/MY5qvY/ATf5aEw
+         WuHJiVMCw/9ar3cCCOl2KCoDsH/5leJZ+XAXO44s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Huhardeaux <tech@tootai.net>,
-        Florian Westphal <fw@strlen.de>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
+        patches@lists.linux.dev, Paul Blakey <paulb@nvidia.com>,
+        Vlad Buslov <vladbu@nvidia.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 527/550] netfilter: nat: fix ipv6 nat redirect with mapped and scoped addresses
-Date:   Wed, 15 Nov 2023 14:18:31 -0500
-Message-ID: <20231115191637.474283933@linuxfoundation.org>
+Subject: [PATCH 6.5 528/550] net/sched: act_ct: Always fill offloading tuple iifidx
+Date:   Wed, 15 Nov 2023 14:18:32 -0500
+Message-ID: <20231115191637.539701805@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -55,94 +56,145 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit 80abbe8a8263106fe45a4f293b92b5c74cc9cc8a ]
+[ Upstream commit 9bc64bd0cd765f696fcd40fc98909b1f7c73b2ba ]
 
-The ipv6 redirect target was derived from the ipv4 one, i.e. its
-identical to a 'dnat' with the first (primary) address assigned to the
-network interface.  The code has been moved around to make it usable
-from nf_tables too, but its still the same as it was back when this
-was added in 2012.
+Referenced commit doesn't always set iifidx when offloading the flow to
+hardware. Fix the following cases:
 
-IPv6, however, has different types of addresses, if the 'wrong' address
-comes first the redirection does not work.
+- nf_conn_act_ct_ext_fill() is called before extension is created with
+nf_conn_act_ct_ext_add() in tcf_ct_act(). This can cause rule offload with
+unspecified iifidx when connection is offloaded after only single
+original-direction packet has been processed by tc data path. Always fill
+the new nf_conn_act_ct_ext instance after creating it in
+nf_conn_act_ct_ext_add().
 
-In Daniels case, the addresses are:
-  inet6 ::ffff:192 ...
-  inet6 2a01: ...
+- Offloading of unidirectional UDP NEW connections is now supported, but ct
+flow iifidx field is not updated when connection is promoted to
+bidirectional which can result reply-direction iifidx to be zero when
+refreshing the connection. Fill in the extension and update flow iifidx
+before calling flow_offload_refresh().
 
-... so the function attempts to redirect to the mapped address.
-
-Add more checks before the address is deemed correct:
-1. If the packets' daddr is scoped, search for a scoped address too
-2. skip tentative addresses
-3. skip mapped addresses
-
-Use the first address that appears to match our needs.
-
-Reported-by: Daniel Huhardeaux <tech@tootai.net>
-Closes: https://lore.kernel.org/netfilter/71be06b8-6aa0-4cf9-9e0b-e2839b01b22f@tootai.net/
-Fixes: 115e23ac78f8 ("netfilter: ip6tables: add REDIRECT target")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 9795ded7f924 ("net/sched: act_ct: Fill offloading tuple iifidx")
+Reviewed-by: Paul Blakey <paulb@nvidia.com>
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Fixes: 6a9bad0069cf ("net/sched: act_ct: offload UDP NEW connections")
+Link: https://lore.kernel.org/r/20231103151410.764271-1-vladbu@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_nat_redirect.c | 27 ++++++++++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ include/net/netfilter/nf_conntrack_act_ct.h | 30 ++++++++++++---------
+ net/openvswitch/conntrack.c                 |  2 +-
+ net/sched/act_ct.c                          | 15 ++++++++++-
+ 3 files changed, 32 insertions(+), 15 deletions(-)
 
-diff --git a/net/netfilter/nf_nat_redirect.c b/net/netfilter/nf_nat_redirect.c
-index 6616ba5d0b049..5b37487d9d11f 100644
---- a/net/netfilter/nf_nat_redirect.c
-+++ b/net/netfilter/nf_nat_redirect.c
-@@ -80,6 +80,26 @@ EXPORT_SYMBOL_GPL(nf_nat_redirect_ipv4);
+diff --git a/include/net/netfilter/nf_conntrack_act_ct.h b/include/net/netfilter/nf_conntrack_act_ct.h
+index 078d3c52c03f9..e5f2f0b73a9a0 100644
+--- a/include/net/netfilter/nf_conntrack_act_ct.h
++++ b/include/net/netfilter/nf_conntrack_act_ct.h
+@@ -20,7 +20,22 @@ static inline struct nf_conn_act_ct_ext *nf_conn_act_ct_ext_find(const struct nf
+ #endif
+ }
  
- static const struct in6_addr loopback_addr = IN6ADDR_LOOPBACK_INIT;
- 
-+static bool nf_nat_redirect_ipv6_usable(const struct inet6_ifaddr *ifa, unsigned int scope)
+-static inline struct nf_conn_act_ct_ext *nf_conn_act_ct_ext_add(struct nf_conn *ct)
++static inline void nf_conn_act_ct_ext_fill(struct sk_buff *skb, struct nf_conn *ct,
++					   enum ip_conntrack_info ctinfo)
 +{
-+	unsigned int ifa_addr_type = ipv6_addr_type(&ifa->addr);
++#if IS_ENABLED(CONFIG_NET_ACT_CT)
++	struct nf_conn_act_ct_ext *act_ct_ext;
 +
-+	if (ifa_addr_type & IPV6_ADDR_MAPPED)
-+		return false;
-+
-+	if ((ifa->flags & IFA_F_TENTATIVE) && (!(ifa->flags & IFA_F_OPTIMISTIC)))
-+		return false;
-+
-+	if (scope) {
-+		unsigned int ifa_scope = ifa_addr_type & IPV6_ADDR_SCOPE_MASK;
-+
-+		if (!(scope & ifa_scope))
-+			return false;
-+	}
-+
-+	return true;
++	act_ct_ext = nf_conn_act_ct_ext_find(ct);
++	if (dev_net(skb->dev) == &init_net && act_ct_ext)
++		act_ct_ext->ifindex[CTINFO2DIR(ctinfo)] = skb->dev->ifindex;
++#endif
 +}
 +
- unsigned int
- nf_nat_redirect_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 		     unsigned int hooknum)
-@@ -89,14 +109,19 @@ nf_nat_redirect_ipv6(struct sk_buff *skb, const struct nf_nat_range2 *range,
- 	if (hooknum == NF_INET_LOCAL_OUT) {
- 		newdst.in6 = loopback_addr;
- 	} else {
-+		unsigned int scope = ipv6_addr_scope(&ipv6_hdr(skb)->daddr);
- 		struct inet6_dev *idev;
--		struct inet6_ifaddr *ifa;
- 		bool addr = false;
++static inline struct
++nf_conn_act_ct_ext *nf_conn_act_ct_ext_add(struct sk_buff *skb,
++					   struct nf_conn *ct,
++					   enum ip_conntrack_info ctinfo)
+ {
+ #if IS_ENABLED(CONFIG_NET_ACT_CT)
+ 	struct nf_conn_act_ct_ext *act_ct = nf_ct_ext_find(ct, NF_CT_EXT_ACT_CT);
+@@ -29,22 +44,11 @@ static inline struct nf_conn_act_ct_ext *nf_conn_act_ct_ext_add(struct nf_conn *
+ 		return act_ct;
  
- 		idev = __in6_dev_get(skb->dev);
- 		if (idev != NULL) {
-+			const struct inet6_ifaddr *ifa;
+ 	act_ct = nf_ct_ext_add(ct, NF_CT_EXT_ACT_CT, GFP_ATOMIC);
++	nf_conn_act_ct_ext_fill(skb, ct, ctinfo);
+ 	return act_ct;
+ #else
+ 	return NULL;
+ #endif
+ }
+ 
+-static inline void nf_conn_act_ct_ext_fill(struct sk_buff *skb, struct nf_conn *ct,
+-					   enum ip_conntrack_info ctinfo)
+-{
+-#if IS_ENABLED(CONFIG_NET_ACT_CT)
+-	struct nf_conn_act_ct_ext *act_ct_ext;
+-
+-	act_ct_ext = nf_conn_act_ct_ext_find(ct);
+-	if (dev_net(skb->dev) == &init_net && act_ct_ext)
+-		act_ct_ext->ifindex[CTINFO2DIR(ctinfo)] = skb->dev->ifindex;
+-#endif
+-}
+-
+ #endif /* _NF_CONNTRACK_ACT_CT_H */
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 331730fd35803..2669a1d1ad9f4 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1043,7 +1043,7 @@ static int ovs_ct_commit(struct net *net, struct sw_flow_key *key,
+ 		if (err)
+ 			return err;
+ 
+-		nf_conn_act_ct_ext_add(ct);
++		nf_conn_act_ct_ext_add(skb, ct, ctinfo);
+ 	} else if (IS_ENABLED(CONFIG_NF_CONNTRACK_LABELS) &&
+ 		   labels_nonzero(&info->labels.mask)) {
+ 		err = ovs_ct_set_labels(ct, key, &info->labels.value,
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index ad7c955453782..d131750663c3c 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -376,6 +376,17 @@ static void tcf_ct_flow_tc_ifidx(struct flow_offload *entry,
+ 	entry->tuplehash[dir].tuple.tc.iifidx = act_ct_ext->ifindex[dir];
+ }
+ 
++static void tcf_ct_flow_ct_ext_ifidx_update(struct flow_offload *entry)
++{
++	struct nf_conn_act_ct_ext *act_ct_ext;
 +
- 			read_lock_bh(&idev->lock);
- 			list_for_each_entry(ifa, &idev->addr_list, if_list) {
-+				if (!nf_nat_redirect_ipv6_usable(ifa, scope))
-+					continue;
++	act_ct_ext = nf_conn_act_ct_ext_find(entry->ct);
++	if (act_ct_ext) {
++		tcf_ct_flow_tc_ifidx(entry, act_ct_ext, FLOW_OFFLOAD_DIR_ORIGINAL);
++		tcf_ct_flow_tc_ifidx(entry, act_ct_ext, FLOW_OFFLOAD_DIR_REPLY);
++	}
++}
 +
- 				newdst.in6 = ifa->addr;
- 				addr = true;
- 				break;
+ static void tcf_ct_flow_table_add(struct tcf_ct_flow_table *ct_ft,
+ 				  struct nf_conn *ct,
+ 				  bool tcp, bool bidirectional)
+@@ -671,6 +682,8 @@ static bool tcf_ct_flow_table_lookup(struct tcf_ct_params *p,
+ 	else
+ 		ctinfo = IP_CT_ESTABLISHED_REPLY;
+ 
++	nf_conn_act_ct_ext_fill(skb, ct, ctinfo);
++	tcf_ct_flow_ct_ext_ifidx_update(flow);
+ 	flow_offload_refresh(nf_ft, flow, force_refresh);
+ 	if (!test_bit(IPS_ASSURED_BIT, &ct->status)) {
+ 		/* Process this flow in SW to allow promoting to ASSURED */
+@@ -1030,7 +1043,7 @@ TC_INDIRECT_SCOPE int tcf_ct_act(struct sk_buff *skb, const struct tc_action *a,
+ 		tcf_ct_act_set_labels(ct, p->labels, p->labels_mask);
+ 
+ 		if (!nf_ct_is_confirmed(ct))
+-			nf_conn_act_ct_ext_add(ct);
++			nf_conn_act_ct_ext_add(skb, ct, ctinfo);
+ 
+ 		/* This will take care of sending queued events
+ 		 * even if the connection is already confirmed.
 -- 
 2.42.0
 
