@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B8D07ECC5A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:29:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C02D7ECEFF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233899AbjKOT3t (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:29:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39066 "EHLO
+        id S235201AbjKOTpi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:45:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233883AbjKOT3t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:29:49 -0500
+        with ESMTP id S235206AbjKOTph (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7D0A1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BC1C433C8;
-        Wed, 15 Nov 2023 19:29:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1E72AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA61C433C8;
+        Wed, 15 Nov 2023 19:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076586;
-        bh=1QsC6Pazzf39qmuFTx2kbm+LIBcsXe1op7pl2aAWVas=;
+        s=korg; t=1700077534;
+        bh=3+lOEp0jxulonivkYIWQYELuaYP+PllZ32wmw+TUb9A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aufFn0ueVcWJkT9VzHvnNdLRo4E21C8ncy6s+S0g60F0FPHD2nnTwQquvvVVLIwks
-         NRgfafrZ5uG0I6/BdCuQ4BZCdi2k6Tn7xGFsvf1uCoholh+d43NmU5aggSdSfaxNcu
-         bfaKmDRYlq6nGc76HgyIQVywBgqix7t4PZnH9L8M=
+        b=ZpdlTz+C4ymdzBuCSGrEEXcFg98XmqFaqT1JAnnEPkyEawKeNzIpPwD6FA94E75xB
+         rEi4BF/3fmqAiB0KryODbYz2NV14VzyQF/Dag1iagOxG3F9ITc5deNg9ze2O9FxeoE
+         cgnXKgy/hb+upJfzIlzoB8f8hCdvrbsrzg4F3VTk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen Ni <nichen@iscas.ac.cn>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
+        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Kursad Oney <kursad.oney@broadcom.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 322/550] libnvdimm/of_pmem: Use devm_kstrdup instead of kstrdup and check its return value
-Date:   Wed, 15 Nov 2023 14:15:06 -0500
-Message-ID: <20231115191623.088319034@linuxfoundation.org>
+Subject: [PATCH 6.6 362/603] ARM: 9321/1: memset: cast the constant byte to unsigned char
+Date:   Wed, 15 Nov 2023 14:15:07 -0500
+Message-ID: <20231115191638.563662012@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Kursad Oney <kursad.oney@broadcom.com>
 
-[ Upstream commit 6fd4ebfc4d61e3097b595ab2725d513e3bbd6739 ]
+[ Upstream commit c0e824661f443b8cab3897006c1bbc69fd0e7bc4 ]
 
-Use devm_kstrdup() instead of kstrdup() and check its return value to
-avoid memory leak.
+memset() description in ISO/IEC 9899:1999 (and elsewhere) says:
 
-Fixes: 49bddc73d15c ("libnvdimm/of_pmem: Provide a unique name for bus provider")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+	The memset function copies the value of c (converted to an
+	unsigned char) into each of the first n characters of the
+	object pointed to by s.
+
+The kernel's arm32 memset does not cast c to unsigned char. This results
+in the following code to produce erroneous output:
+
+	char a[128];
+	memset(a, -128, sizeof(a));
+
+This is because gcc will generally emit the following code before
+it calls memset() :
+
+	mov   r0, r7
+	mvn   r1, #127        ; 0x7f
+	bl    00000000 <memset>
+
+r1 ends up with 0xffffff80 before being used by memset() and the
+'a' array will have -128 once in every four bytes while the other
+bytes will be set incorrectly to -1 like this (printing the first
+8 bytes) :
+
+	test_module: -128 -1 -1 -1
+	test_module: -1 -1 -1 -128
+
+The change here is to 'and' r1 with 255 before it is used.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Kursad Oney <kursad.oney@broadcom.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/of_pmem.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm/lib/memset.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-index 10dbdcdfb9ce9..0243789ba914b 100644
---- a/drivers/nvdimm/of_pmem.c
-+++ b/drivers/nvdimm/of_pmem.c
-@@ -30,7 +30,13 @@ static int of_pmem_region_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
- 
--	priv->bus_desc.provider_name = kstrdup(pdev->name, GFP_KERNEL);
-+	priv->bus_desc.provider_name = devm_kstrdup(&pdev->dev, pdev->name,
-+							GFP_KERNEL);
-+	if (!priv->bus_desc.provider_name) {
-+		kfree(priv);
-+		return -ENOMEM;
-+	}
-+
- 	priv->bus_desc.module = THIS_MODULE;
- 	priv->bus_desc.of_node = np;
- 
+diff --git a/arch/arm/lib/memset.S b/arch/arm/lib/memset.S
+index d71ab61430b26..de75ae4d5ab41 100644
+--- a/arch/arm/lib/memset.S
++++ b/arch/arm/lib/memset.S
+@@ -17,6 +17,7 @@ ENTRY(__memset)
+ ENTRY(mmioset)
+ WEAK(memset)
+ UNWIND( .fnstart         )
++	and	r1, r1, #255		@ cast to unsigned char
+ 	ands	r3, r0, #3		@ 1 unaligned?
+ 	mov	ip, r0			@ preserve r0 as return value
+ 	bne	6f			@ 1
 -- 
 2.42.0
 
