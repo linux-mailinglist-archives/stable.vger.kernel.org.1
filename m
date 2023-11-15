@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4FB87ECEEF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC8E7ECC60
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:29:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235190AbjKOTpL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51852 "EHLO
+        id S233920AbjKOTaA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235186AbjKOTpK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:10 -0500
+        with ESMTP id S233918AbjKOT37 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:29:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4E7AB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B46C433C8;
-        Wed, 15 Nov 2023 19:45:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB40A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:29:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD394C433C9;
+        Wed, 15 Nov 2023 19:29:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077507;
-        bh=VG816C542MoPSKdbk+j8Xwqemy34ZT6YDApRcN12vCo=;
+        s=korg; t=1700076596;
+        bh=lZKA9Lxahtb42dILcLFx4b0EpD7TTiLS30DKSyiBIT0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q12lqzQFn/niwqk9x1+d6mTuVY9V1x1x2DV+L90dz+CAklAZfQqx3DJHXA6On6V7u
-         uGkUXhW55nRew/Pu2r/wfSeQ1AYu19vmlQr/Lc/Rbv15NpmpBp5kjQKWhK4Y83tZdl
-         IMu2QDMYN94HSFxb091WFEoEnUesUIY24Lwacs7w=
+        b=zgaJDrHRXt8uE67j63Qv+IlIiwX0oMg7SGqr4vYzVuEhT78skjxNqbq5f22Zf9hrB
+         4M9ifJ1oIStrQFYC6ChRDRaDCD3VoOh1trXT2BVMYpUDNnIw2Zr5Yk8nWcCw43qONH
+         1b/NjWvjkWHz7f00fo0QjCy3JJ2pCjyJGoWDm5Ys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Timur I. Davletshin" <timur.davletshin@gmail.com>,
-        Jo-Philipp Wich <jo@mein.io>,
-        Jonas Gorski <jonas.gorski@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 345/603] hwrng: geode - fix accessing registers
+Subject: [PATCH 6.5 306/550] ASoC: cs35l41: Initialize completion object before requesting IRQ
 Date:   Wed, 15 Nov 2023 14:14:50 -0500
-Message-ID: <20231115191637.394444622@linuxfoundation.org>
+Message-ID: <20231115191622.027701520@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,60 +52,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-[ Upstream commit 464bd8ec2f06707f3773676a1bd2c64832a3c805 ]
+[ Upstream commit 5ad668a9ce83d819701fb7abc1c2236049ec15c2 ]
 
-When the membase and pci_dev pointer were moved to a new struct in priv,
-the actual membase users were left untouched, and they started reading
-out arbitrary memory behind the struct instead of registers. This
-unfortunately turned the RNG into a constant number generator, depending
-on the content of what was at that offset.
+Technically, an interrupt handler can be called before probe() finishes
+its execution, hence ensure the pll_lock completion object is always
+initialized before being accessed in cs35l41_irq().
 
-To fix this, update geode_rng_data_{read,present}() to also get the
-membase via amd_geode_priv, and properly read from the right addresses
-again.
-
-Fixes: 9f6ec8dc574e ("hwrng: geode - Fix PCI device refcount leak")
-Reported-by: Timur I. Davletshin <timur.davletshin@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217882
-Tested-by: Timur I. Davletshin <timur.davletshin@gmail.com>
-Suggested-by: Jo-Philipp Wich <jo@mein.io>
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: f5030564938b ("ALSA: cs35l41: Add shared boost feature")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20230907171010.1447274-4-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/geode-rng.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs35l41.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/char/hw_random/geode-rng.c b/drivers/char/hw_random/geode-rng.c
-index 12fbe80918319..159baf00a8675 100644
---- a/drivers/char/hw_random/geode-rng.c
-+++ b/drivers/char/hw_random/geode-rng.c
-@@ -58,7 +58,8 @@ struct amd_geode_priv {
+diff --git a/sound/soc/codecs/cs35l41.c b/sound/soc/codecs/cs35l41.c
+index 8a879b6f48290..c9f033d2782d2 100644
+--- a/sound/soc/codecs/cs35l41.c
++++ b/sound/soc/codecs/cs35l41.c
+@@ -1283,6 +1283,8 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
+ 		regmap_update_bits(cs35l41->regmap, CS35L41_IRQ1_MASK3, CS35L41_INT3_PLL_LOCK_MASK,
+ 				   0 << CS35L41_INT3_PLL_LOCK_SHIFT);
  
- static int geode_rng_data_read(struct hwrng *rng, u32 *data)
- {
--	void __iomem *mem = (void __iomem *)rng->priv;
-+	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
-+	void __iomem *mem = priv->membase;
++	init_completion(&cs35l41->pll_lock);
++
+ 	ret = devm_request_threaded_irq(cs35l41->dev, cs35l41->irq, NULL, cs35l41_irq,
+ 					IRQF_ONESHOT | IRQF_SHARED | irq_pol,
+ 					"cs35l41", cs35l41);
+@@ -1305,8 +1307,6 @@ int cs35l41_probe(struct cs35l41_private *cs35l41, const struct cs35l41_hw_cfg *
+ 	if (ret < 0)
+ 		goto err;
  
- 	*data = readl(mem + GEODE_RNG_DATA_REG);
- 
-@@ -67,7 +68,8 @@ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
- 
- static int geode_rng_data_present(struct hwrng *rng, int wait)
- {
--	void __iomem *mem = (void __iomem *)rng->priv;
-+	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
-+	void __iomem *mem = priv->membase;
- 	int data, i;
- 
- 	for (i = 0; i < 20; i++) {
+-	init_completion(&cs35l41->pll_lock);
+-
+ 	pm_runtime_set_autosuspend_delay(cs35l41->dev, 3000);
+ 	pm_runtime_use_autosuspend(cs35l41->dev);
+ 	pm_runtime_mark_last_busy(cs35l41->dev);
 -- 
 2.42.0
 
