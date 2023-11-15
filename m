@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 642997ECBF3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 802907ECE67
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233262AbjKOTZb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:25:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58650 "EHLO
+        id S235087AbjKOTmz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233254AbjKOTZa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:30 -0500
+        with ESMTP id S235089AbjKOTmx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83B5E1A8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05241C433C8;
-        Wed, 15 Nov 2023 19:25:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3DBC19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2927FC433C7;
+        Wed, 15 Nov 2023 19:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076326;
-        bh=0CrFzOpmExqKn2mzT1eyHOB382LXfSFrXI5MQOVpqT0=;
+        s=korg; t=1700077369;
+        bh=wRQEHcI5zqIb+u7UH/u8A9tB2TLiqNIWj2OA4Yiw+fg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1C5j5bmoNl61zadf7uWII61jj4kWfjj9byUMRuEZY5Pw0iLPCCOugzXWVy5yxDPRv
-         TAwTKLnInA2h+5DVQMyl2IasOpp6acaJuErlxhfYPrNr3M+7kvdaXSpeEw6aGzK+Gz
-         xy+e6yL5TqUZvdvNFHA7uKbU7ExFdamxY1WATjEs=
+        b=Nl/kwFGxnkog6MEFQAd4gOn9tB7U4xCEllDUH9XZIXuQYXK9YLBSJByeHagG+qS25
+         QKwK31MrYYjcC4CAFOyyJ/v9gnoomJ82/HEmtAnwrxUWgRsvZlYsxNT/GukvVPYNYI
+         5Yj/sxi0qidvggI7eb7p4Ft6erbJqp2eg933xV5Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Maxim Schwalm <maxim.schwalm@gmail.com>
-Subject: [PATCH 6.5 220/550] drm/bridge: tc358768: Print logical values, not raw register values
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 259/603] drm/bridge: lt9611uxc: fix the race in the error path
 Date:   Wed, 15 Nov 2023 14:13:24 -0500
-Message-ID: <20231115191615.990936243@linuxfoundation.org>
+Message-ID: <20231115191631.234438832@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,119 +50,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 013ea98cdfccef3b7c38b087c1f629488d2ef683 ]
+[ Upstream commit 15fe53be46eaf4f6339cd433972ecc90513e3076 ]
 
-The driver debug prints DSI related timings as raw register values in
-hex. It is much more useful to see the "logical" value of the timing,
-not the register value.
+If DSI host attachment fails, the LT9611UXC driver will remove the
+bridge without ensuring that there is no outstanding HPD work being
+done. In rare cases this can result in the warnings regarding the mutex
+being incorrect. Fix this by forcebly freing IRQ and flushing the work.
 
-Change the prints to print the values separately, in case a single
-register contains multiple values, and use %u to have it in a more human
-consumable form.
+DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+WARNING: CPU: 0 PID: 10 at kernel/locking/mutex.c:582 __mutex_lock+0x468/0x77c
+Modules linked in:
+CPU: 0 PID: 10 Comm: kworker/0:1 Tainted: G     U             6.6.0-rc5-next-20231011-gd81f81c2b682-dirty #1206
+Hardware name: Qualcomm Technologies, Inc. Robotics RB5 (DT)
+Workqueue: events lt9611uxc_hpd_work
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __mutex_lock+0x468/0x77c
+lr : __mutex_lock+0x468/0x77c
+sp : ffff8000800a3c70
+x29: ffff8000800a3c70 x28: 0000000000000000 x27: ffffd595fe333000
+x26: ffff7c2f0002c005 x25: ffffd595ff1b3000 x24: ffffd595fccda5a0
+x23: 0000000000000000 x22: 0000000000000002 x21: ffff7c2f056d91c8
+x20: 0000000000000000 x19: ffff7c2f056d91c8 x18: fffffffffffe8db0
+x17: 000000040044ffff x16: 005000f2b5503510 x15: 0000000000000000
+x14: 000000000006efb8 x13: 0000000000000000 x12: 0000000000000037
+x11: 0000000000000001 x10: 0000000000001470 x9 : ffff8000800a3ae0
+x8 : ffff7c2f0027f8d0 x7 : ffff7c2f0027e400 x6 : ffffd595fc702b54
+x5 : 0000000000000000 x4 : ffff8000800a0000 x3 : 0000000000000000
+x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff7c2f0027e400
+Call trace:
+ __mutex_lock+0x468/0x77c
+ mutex_lock_nested+0x24/0x30
+ drm_bridge_hpd_notify+0x2c/0x5c
+ lt9611uxc_hpd_work+0x6c/0x80
+ process_one_work+0x1ec/0x51c
+ worker_thread+0x1ec/0x3e4
+ kthread+0x120/0x124
+ ret_from_fork+0x10/0x20
+irq event stamp: 15799
+hardirqs last  enabled at (15799): [<ffffd595fc702ba4>] finish_task_switch.isra.0+0xa8/0x278
+hardirqs last disabled at (15798): [<ffffd595fd5a1580>] __schedule+0x7b8/0xbd8
+softirqs last  enabled at (15794): [<ffffd595fc690698>] __do_softirq+0x498/0x4e0
+softirqs last disabled at (15771): [<ffffd595fc69615c>] ____do_softirq+0x10/0x1c
 
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Fixes: bc6fa8676ebb ("drm/bridge/lontium-lt9611uxc: move HPD notification out of IRQ handler")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
 Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-7-31725f008a50@ideasonboard.com
-Stable-dep-of: f1dabbe64506 ("drm/bridge: tc358768: Fix tc358768_ns_to_cnt()")
+Link: https://patchwork.freedesktop.org/patch/msgid/20231011220002.382422-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index e42b5259ea344..163477ec91a9c 100644
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -739,57 +739,59 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
+diff --git a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+index 22c84d29c2bc5..6f33bb0dd32aa 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
++++ b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+@@ -929,9 +929,9 @@ static int lt9611uxc_probe(struct i2c_client *client)
+ 	init_waitqueue_head(&lt9611uxc->wq);
+ 	INIT_WORK(&lt9611uxc->work, lt9611uxc_hpd_work);
  
- 	/* LP11 > 100us for D-PHY Rx Init */
- 	val = tc358768_ns_to_cnt(100 * 1000, dsibclk_nsk) - 1;
--	dev_dbg(priv->dev, "LINEINITCNT: 0x%x\n", val);
-+	dev_dbg(priv->dev, "LINEINITCNT: %u\n", val);
- 	tc358768_write(priv, TC358768_LINEINITCNT, val);
+-	ret = devm_request_threaded_irq(dev, client->irq, NULL,
+-					lt9611uxc_irq_thread_handler,
+-					IRQF_ONESHOT, "lt9611uxc", lt9611uxc);
++	ret = request_threaded_irq(client->irq, NULL,
++				   lt9611uxc_irq_thread_handler,
++				   IRQF_ONESHOT, "lt9611uxc", lt9611uxc);
+ 	if (ret) {
+ 		dev_err(dev, "failed to request irq\n");
+ 		goto err_disable_regulators;
+@@ -967,6 +967,8 @@ static int lt9611uxc_probe(struct i2c_client *client)
+ 	return lt9611uxc_audio_init(dev, lt9611uxc);
  
- 	/* LPTimeCnt > 50ns */
- 	val = tc358768_ns_to_cnt(50, dsibclk_nsk) - 1;
- 	lptxcnt = val;
--	dev_dbg(priv->dev, "LPTXTIMECNT: 0x%x\n", val);
-+	dev_dbg(priv->dev, "LPTXTIMECNT: %u\n", val);
- 	tc358768_write(priv, TC358768_LPTXTIMECNT, val);
+ err_remove_bridge:
++	free_irq(client->irq, lt9611uxc);
++	cancel_work_sync(&lt9611uxc->work);
+ 	drm_bridge_remove(&lt9611uxc->bridge);
  
- 	/* 38ns < TCLK_PREPARE < 95ns */
- 	val = tc358768_ns_to_cnt(65, dsibclk_nsk) - 1;
-+	dev_dbg(priv->dev, "TCLK_PREPARECNT %u\n", val);
- 	/* TCLK_PREPARE + TCLK_ZERO > 300ns */
- 	val2 = tc358768_ns_to_cnt(300 - tc358768_to_ns(2 * ui_nsk),
- 				  dsibclk_nsk) - 2;
-+	dev_dbg(priv->dev, "TCLK_ZEROCNT %u\n", val2);
- 	val |= val2 << 8;
--	dev_dbg(priv->dev, "TCLK_HEADERCNT: 0x%x\n", val);
- 	tc358768_write(priv, TC358768_TCLK_HEADERCNT, val);
+ err_disable_regulators:
+@@ -983,7 +985,7 @@ static void lt9611uxc_remove(struct i2c_client *client)
+ {
+ 	struct lt9611uxc *lt9611uxc = i2c_get_clientdata(client);
  
- 	/* TCLK_TRAIL > 60ns AND TEOT <= 105 ns + 12*UI */
- 	raw_val = tc358768_ns_to_cnt(60 + tc358768_to_ns(2 * ui_nsk), dsibclk_nsk) - 5;
- 	val = clamp(raw_val, 0, 127);
--	dev_dbg(priv->dev, "TCLK_TRAILCNT: 0x%x\n", val);
-+	dev_dbg(priv->dev, "TCLK_TRAILCNT: %u\n", val);
- 	tc358768_write(priv, TC358768_TCLK_TRAILCNT, val);
- 
- 	/* 40ns + 4*UI < THS_PREPARE < 85ns + 6*UI */
- 	val = 50 + tc358768_to_ns(4 * ui_nsk);
- 	val = tc358768_ns_to_cnt(val, dsibclk_nsk) - 1;
-+	dev_dbg(priv->dev, "THS_PREPARECNT %u\n", val);
- 	/* THS_PREPARE + THS_ZERO > 145ns + 10*UI */
- 	raw_val = tc358768_ns_to_cnt(145 - tc358768_to_ns(3 * ui_nsk), dsibclk_nsk) - 10;
- 	val2 = clamp(raw_val, 0, 127);
-+	dev_dbg(priv->dev, "THS_ZEROCNT %u\n", val2);
- 	val |= val2 << 8;
--	dev_dbg(priv->dev, "THS_HEADERCNT: 0x%x\n", val);
- 	tc358768_write(priv, TC358768_THS_HEADERCNT, val);
- 
- 	/* TWAKEUP > 1ms in lptxcnt steps */
- 	val = tc358768_ns_to_cnt(1020000, dsibclk_nsk);
- 	val = val / (lptxcnt + 1) - 1;
--	dev_dbg(priv->dev, "TWAKEUP: 0x%x\n", val);
-+	dev_dbg(priv->dev, "TWAKEUP: %u\n", val);
- 	tc358768_write(priv, TC358768_TWAKEUP, val);
- 
- 	/* TCLK_POSTCNT > 60ns + 52*UI */
- 	val = tc358768_ns_to_cnt(60 + tc358768_to_ns(52 * ui_nsk),
- 				 dsibclk_nsk) - 3;
--	dev_dbg(priv->dev, "TCLK_POSTCNT: 0x%x\n", val);
-+	dev_dbg(priv->dev, "TCLK_POSTCNT: %u\n", val);
- 	tc358768_write(priv, TC358768_TCLK_POSTCNT, val);
- 
- 	/* max(60ns + 4*UI, 8*UI) < THS_TRAILCNT < 105ns + 12*UI */
- 	raw_val = tc358768_ns_to_cnt(60 + tc358768_to_ns(18 * ui_nsk),
- 				     dsibclk_nsk) - 4;
- 	val = clamp(raw_val, 0, 15);
--	dev_dbg(priv->dev, "THS_TRAILCNT: 0x%x\n", val);
-+	dev_dbg(priv->dev, "THS_TRAILCNT: %u\n", val);
- 	tc358768_write(priv, TC358768_THS_TRAILCNT, val);
- 
- 	val = BIT(0);
-@@ -803,10 +805,11 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 	/* TXTAGOCNT[26:16] RXTASURECNT[10:0] */
- 	val = tc358768_to_ns((lptxcnt + 1) * dsibclk_nsk * 4);
- 	val = tc358768_ns_to_cnt(val, dsibclk_nsk) / 4 - 1;
-+	dev_dbg(priv->dev, "TXTAGOCNT: %u\n", val);
- 	val2 = tc358768_ns_to_cnt(tc358768_to_ns((lptxcnt + 1) * dsibclk_nsk),
- 				  dsibclk_nsk) - 2;
-+	dev_dbg(priv->dev, "RXTASURECNT: %u\n", val2);
- 	val = val << 16 | val2;
--	dev_dbg(priv->dev, "BTACNTRL1: 0x%x\n", val);
- 	tc358768_write(priv, TC358768_BTACNTRL1, val);
- 
- 	/* START[0] */
+-	disable_irq(client->irq);
++	free_irq(client->irq, lt9611uxc);
+ 	cancel_work_sync(&lt9611uxc->work);
+ 	lt9611uxc_audio_exit(lt9611uxc);
+ 	drm_bridge_remove(&lt9611uxc->bridge);
 -- 
 2.42.0
 
