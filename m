@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A49987ECC88
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC7B7ECF30
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233981AbjKOTbG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:31:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41058 "EHLO
+        id S235253AbjKOTqz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:46:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234014AbjKOTbE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:04 -0500
+        with ESMTP id S235256AbjKOTqy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C51CFA1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B911C433CC;
-        Wed, 15 Nov 2023 19:31:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4653D1A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE7CCC433C7;
+        Wed, 15 Nov 2023 19:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076661;
-        bh=Rv8rk3CocMdZm9ZovdeN3XpfFLTblpsXxdQK43wKR+s=;
+        s=korg; t=1700077610;
+        bh=9Vl1w5mjQAci7I082/bwIWcqES+Wvyrs0QX9BaK11ac=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tW/ZPSOJBowaTb5I/9iUTKo5IoD4FLuHGT3vKUiIOVtAzFQo/mXRoaQ54W7ce9KOQ
-         E7SjI/S2FUP4ZSX2JFOXJ6kThZMz+e0NOKG1xrUPdFAcIjKxR226LokN0gFJeNCl7s
-         LD84DLLpFy1qHFHdd3lvafBZAa/7V6j70CfW4b+k=
+        b=eoU4LIlD+PJiRMWJCwq/oCqP6Z16X9HG7ejR6F0W2ZxCxgVUMoDFvFGzUT08aLH8S
+         hjHdsHsOQxTE5wzSP0XNr/MIVLFmECX14s7yxUGWx4rhCJQcb11sXa7rLSwZtE74cK
+         p0pGXdeYgVc6PY1g7fZMi7uqV28eM9en6Sbw+8Ps=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
         Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 369/550] dt-bindings: mfd: mt6397: Split out compatible for MediaTek MT6366 PMIC
-Date:   Wed, 15 Nov 2023 14:15:53 -0500
-Message-ID: <20231115191626.393629990@linuxfoundation.org>
+Subject: [PATCH 6.6 409/603] mfd: core: Un-constify mfd_cell.of_reg
+Date:   Wed, 15 Nov 2023 14:15:54 -0500
+Message-ID: <20231115191641.323660608@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,59 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 
-[ Upstream commit 61fdd1f1d2c183ec256527d16d75e75c3582af82 ]
+[ Upstream commit 3c70342f1f0045dc827bb2f02d814ce31e0e0d05 ]
 
-The MT6366 PMIC is mostly, but not fully, compatible with MT6358. It has
-a different set of regulators. Specifically, it lacks the camera related
-VCAM* LDOs and VLDO28, but has additional VM18, VMDDR, and VSRAM_CORE LDOs.
+Enable dynamically filling in the whole mfd_cell structure. All other
+fields already allow that.
 
-The PMICs contain a chip ID register that can be used to detect which
-exact model is preset, so it is possible to share a common base
-compatible string.
-
-Add a separate compatible for the MT6366 PMIC, with a fallback to the
-MT6358 PMIC.
-
-Fixes: 49be16305587 ("dt-bindings: mfd: Add compatible for the MediaTek MT6366 PMIC")
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230928085537.3246669-2-wenst@chromium.org
+Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Link: https://lore.kernel.org/r/b73fe4bc4bd6ba1af90940a640ed65fe254c0408.1693253717.git.mirq-linux@rere.qmqm.pl
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/mfd/mt6397.txt | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/mfd/core.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/mfd/mt6397.txt b/Documentation/devicetree/bindings/mfd/mt6397.txt
-index 294693a8906cf..10540aa7afa1a 100644
---- a/Documentation/devicetree/bindings/mfd/mt6397.txt
-+++ b/Documentation/devicetree/bindings/mfd/mt6397.txt
-@@ -22,8 +22,9 @@ compatible:
- 	"mediatek,mt6323" for PMIC MT6323
- 	"mediatek,mt6331" for PMIC MT6331 and MT6332
- 	"mediatek,mt6357" for PMIC MT6357
--	"mediatek,mt6358" for PMIC MT6358 and MT6366
-+	"mediatek,mt6358" for PMIC MT6358
- 	"mediatek,mt6359" for PMIC MT6359
-+	"mediatek,mt6366", "mediatek,mt6358" for PMIC MT6366
- 	"mediatek,mt6397" for PMIC MT6397
+diff --git a/include/linux/mfd/core.h b/include/linux/mfd/core.h
+index 47e7a3a61ce69..e8bcad641d8c2 100644
+--- a/include/linux/mfd/core.h
++++ b/include/linux/mfd/core.h
+@@ -92,7 +92,7 @@ struct mfd_cell {
+ 	 * (above) when matching OF nodes with devices that have identical
+ 	 * compatible strings
+ 	 */
+-	const u64 of_reg;
++	u64 of_reg;
  
- Optional subnodes:
-@@ -40,6 +41,7 @@ Optional subnodes:
- 		- compatible: "mediatek,mt6323-regulator"
- 	see ../regulator/mt6323-regulator.txt
- 		- compatible: "mediatek,mt6358-regulator"
-+		- compatible: "mediatek,mt6366-regulator", "mediatek-mt6358-regulator"
- 	see ../regulator/mt6358-regulator.txt
- 		- compatible: "mediatek,mt6397-regulator"
- 	see ../regulator/mt6397-regulator.txt
+ 	/* Set to 'true' to use 'of_reg' (above) - allows for of_reg=0 */
+ 	bool use_of_reg;
 -- 
 2.42.0
 
