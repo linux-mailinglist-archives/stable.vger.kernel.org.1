@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBFC77ED0B0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D6F07ED0B1
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343841AbjKOT5E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:57:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35314 "EHLO
+        id S1343888AbjKOT5F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343802AbjKOT4w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:52 -0500
+        with ESMTP id S235598AbjKOT4y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33DDCAF
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC061C433C8;
-        Wed, 15 Nov 2023 19:56:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E46D51
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FEAFC433C7;
+        Wed, 15 Nov 2023 19:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078208;
-        bh=Zt21gXsip+1g+pq4ZRvj5hUoXF/RW206fEyUSLimth8=;
+        s=korg; t=1700078210;
+        bh=MglhbTj/BcbrQhEbZ0Dns0MKp3/Koj2PT/+wGBXeDqE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0wBDhyXq9kc6W1LULWm5Wo3uLoZRUcFx1yDxLHUCX9AqO6zrAv9K8MhQ0ZWTXVVr3
-         NVihMYFw0MTSp1hsXfI8V/iXMGUXcIa4meMxahXPbEbCRyUXd9+N6V1wqXU+mhKrLm
-         4KXUUOEtzX988SLzHLAXQrzHUgEcral86yjADcMg=
+        b=IRL7NTVlxog/GvHkLnYM6iparaWgErJ1y7ZNiJ+z1rwIvNRf4BilFqLdQoPJDYbzT
+         QvmdSwzKZliuoj+zlOA5Yj+TpVw39kvQoFtvM3WFu3eTbVbePGNKqQRQmTrXj/FDL9
+         +RC82bFZ69pjQU6RddNCGcH78mkezxWODMtqz2i4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fabio Estevam <festevam@denx.de>,
-        Mirela Rabulea <mirela.rabulea@nxp.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
+        Fabio Estevam <festevam@gmail.com>,
         Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/379] arm64: dts: imx8qm-ss-img: Fix jpegenc compatible entry
-Date:   Wed, 15 Nov 2023 14:24:14 -0500
-Message-ID: <20231115192655.691724607@linuxfoundation.org>
+Subject: [PATCH 6.1 180/379] arm64: dts: imx8mm: Add sound-dai-cells to micfil node
+Date:   Wed, 15 Nov 2023 14:24:15 -0500
+Message-ID: <20231115192655.750094996@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -56,40 +55,34 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Adam Ford <aford173@gmail.com>
 
-[ Upstream commit 1d33cd614d89b0ec024d25ec45acf4632211b5a7 ]
+[ Upstream commit 0e6cc2b8bb7d67733f4a47720787eff1ce2666f2 ]
 
-The first compatible entry for the jpegenc should be 'nxp,imx8qm-jpgenc'.
+Per the DT bindings, the micfil node should have a sound-dai-cells
+entry.
 
-Change it accordingly to fix the following schema warning:
-
-imx8qm-apalis-eval.dtb: jpegenc@58450000: compatible: 'oneOf' conditional failed, one must be fixed:
-	'nxp,imx8qm-jpgdec' is not one of ['nxp,imx8qxp-jpgdec', 'nxp,imx8qxp-jpgenc']
-	'nxp,imx8qm-jpgenc' was expected
-	'nxp,imx8qxp-jpgdec' was expected
-
-Fixes: 5bb279171afc ("arm64: dts: imx8: Add jpeg encoder/decoder nodes")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Mirela Rabulea <mirela.rabulea@nxp.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 3bd0788c43d9 ("arm64: dts: imx8mm: Add support for micfil")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mm.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-index 7764b4146e0ab..2bbdacb1313f9 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-img.dtsi
-@@ -8,5 +8,5 @@ &jpegdec {
- };
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+index 12c82bb1bb7aa..d583db18f74cc 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
+@@ -398,6 +398,7 @@ micfil: audio-controller@30080000 {
+ 						      "pll8k", "pll11k", "clkext3";
+ 					dmas = <&sdma2 24 25 0x80000000>;
+ 					dma-names = "rx";
++					#sound-dai-cells = <0>;
+ 					status = "disabled";
+ 				};
  
- &jpegenc {
--	compatible = "nxp,imx8qm-jpgdec", "nxp,imx8qxp-jpgenc";
-+	compatible = "nxp,imx8qm-jpgenc", "nxp,imx8qxp-jpgenc";
- };
 -- 
 2.42.0
 
