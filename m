@@ -2,45 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 634457ECD36
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 223357ECFA6
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234377AbjKOTfF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:35:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60036 "EHLO
+        id S235372AbjKOTtw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234374AbjKOTfF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:05 -0500
+        with ESMTP id S235373AbjKOTtv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C424A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E26C433C9;
-        Wed, 15 Nov 2023 19:35:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8306319F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04366C433CD;
+        Wed, 15 Nov 2023 19:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076901;
-        bh=ZBqWhPLsaLJAo6KQ4iRPT1byk/JK5jjIRP2DqhwGWmg=;
+        s=korg; t=1700077787;
+        bh=oUjQ74weIvhBrPcXsA8hgj2kaMjKnqvhxegy/Q2Zm5I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o/XoFJuqOW2axJXwL1bAG9jjBKZ5ghn1LNvoK/tA6Yzu5ebn5h2O9BMhGzQwPUt9D
-         IWDmNYHZh8uYxng8Oo50oS1QmOSXG9xnACEd/mdAejCVbUqSo4NX5b7/oKPySyqlaM
-         nCdPxmwXJi9/MV4H9cQfmxWh/YGjil4XhAY/hGm4=
+        b=vR9Ip2Ro9kc1LMjbnu8iRaN28sdLPOmclTwXiT06OmAZhOVTeA4dr5kE4UNKTjZA5
+         cOX32ndMCcw7E5U4U/LjYieLIEnIPOysiFlkYwEsX5xnESObB0DBw3RswxleleMSfc
+         LW7vW2C4cX4qKof6cPbaMYJ3aDOj8uE0HDR1lsFs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Gonda <pgonda@google.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Dionna Glaze <dionnaglaze@google.com>,
-        Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        patches@lists.linux.dev,
+        Alison Schofield <alison.schofield@intel.com>,
         Dan Williams <dan.j.williams@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 458/550] virt: sevguest: Fix passing a stack buffer as a scatterlist target
-Date:   Wed, 15 Nov 2023 14:17:22 -0500
-Message-ID: <20231115191632.603281424@linuxfoundation.org>
+Subject: [PATCH 6.6 498/603] cxl/region: Calculate a target position in a region interleave
+Date:   Wed, 15 Nov 2023 14:17:23 -0500
+Message-ID: <20231115191646.711551608@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,200 +51,198 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit db10cb9b574675402bfd8fe1a31aafdd45b002df ]
+[ Upstream commit a3e00c964fb943934af916f48f0dd43b5110c866 ]
 
-CONFIG_DEBUG_SG highlights that get_{report,ext_report,derived_key)()}
-are passing stack buffers as the @req_buf argument to
-handle_guest_request(), generating a Call Trace of the following form:
+Introduce a calculation to find a target's position in a region
+interleave. Perform a self-test of the calculation on user-defined
+regions.
 
-    WARNING: CPU: 0 PID: 1175 at include/linux/scatterlist.h:187 enc_dec_message+0x518/0x5b0 [sev_guest]
-    [..]
-    Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-    RIP: 0010:enc_dec_message+0x518/0x5b0 [sev_guest]
-    Call Trace:
-     <TASK>
-    [..]
-     handle_guest_request+0x135/0x520 [sev_guest]
-     get_ext_report+0x1ec/0x3e0 [sev_guest]
-     snp_guest_ioctl+0x157/0x200 [sev_guest]
+The region driver uses the kernel sort() function to put region
+targets in relative order. Positions are assigned based on each
+target's index in that sorted list. That relative sort doesn't
+consider the offset of a port into its parent port which causes
+some auto-discovered regions to fail creation. In one failure case,
+a 2 + 2 config (2 host bridges each with 2 endpoints), the sort
+puts all the targets of one port ahead of another port when they
+were expected to be interleaved.
 
-Note that the above Call Trace was with the DEBUG_SG BUG_ON()s converted
-to WARN_ON()s.
+In preparation for repairing the autodiscovery region assembly,
+introduce a new method for discovering a target position in the
+region interleave.
 
-This is benign as long as there are no hardware crypto accelerators
-loaded for the aead cipher, and no subsequent dma_map_sg() is performed
-on the scatterlist. However, sev-guest can not assume the presence of
-an aead accelerator nor can it assume that CONFIG_DEBUG_SG is disabled.
+cxl_calc_interleave_pos() adds a method to find the target position by
+ascending from an endpoint to a root decoder. The calculation starts
+with the endpoint's local position and position in the parent port. It
+traverses towards the root decoder and examines both position and ways
+in order to allow the position to be refined all the way to the root
+decoder.
 
-Resolve this bug by allocating virt_addr_valid() memory, similar to the
-other buffers am @snp_dev instance carries, to marshal requests from
-user buffers to kernel buffers.
+This calculation: position = position * parent_ways + parent_pos;
+applied iteratively yields the correct position.
 
-Reported-by: Peter Gonda <pgonda@google.com>
-Closes: http://lore.kernel.org/r/CAMkAt6r2VPPMZ__SQfJse8qWsUyYW3AgYbOUVM0S_Vtk=KvkxQ@mail.gmail.com
-Fixes: fce96cf04430 ("virt: Add SEV-SNP guest driver")
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Dionna Glaze <dionnaglaze@google.com>
-Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Tested-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Include a self-test that exercises this new position calculation against
+every successfully configured user-defined region.
+
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://lore.kernel.org/r/0ac32c75cf81dd8b86bf07d70ff139d33c2300bc.1698263080.git.alison.schofield@intel.com
 Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Stable-dep-of: 0cf36a85c140 ("cxl/region: Use cxl_calc_interleave_pos() for auto-discovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virt/coco/sev-guest/sev-guest.c | 45 ++++++++++++++-----------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ drivers/cxl/core/region.c | 127 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 127 insertions(+)
 
-diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
-index 97dbe715e96ad..5bee58ef5f1e3 100644
---- a/drivers/virt/coco/sev-guest/sev-guest.c
-+++ b/drivers/virt/coco/sev-guest/sev-guest.c
-@@ -57,6 +57,11 @@ struct snp_guest_dev {
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index f43b2b051b301..ccde7489edbde 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1497,6 +1497,113 @@ static int match_switch_decoder_by_range(struct device *dev, void *data)
+ 	return (r1->start == r2->start && r1->end == r2->end);
+ }
  
- 	struct snp_secrets_page_layout *layout;
- 	struct snp_req_data input;
-+	union {
-+		struct snp_report_req report;
-+		struct snp_derived_key_req derived_key;
-+		struct snp_ext_report_req ext_report;
-+	} req;
- 	u32 *os_area_msg_seqno;
- 	u8 *vmpck;
- };
-@@ -473,8 +478,8 @@ static int handle_guest_request(struct snp_guest_dev *snp_dev, u64 exit_code,
- static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
- 	struct snp_guest_crypto *crypto = snp_dev->crypto;
-+	struct snp_report_req *req = &snp_dev->req.report;
- 	struct snp_report_resp *resp;
--	struct snp_report_req req;
- 	int rc, resp_len;
++static int find_pos_and_ways(struct cxl_port *port, struct range *range,
++			     int *pos, int *ways)
++{
++	struct cxl_switch_decoder *cxlsd;
++	struct cxl_port *parent;
++	struct device *dev;
++	int rc = -ENXIO;
++
++	parent = next_port(port);
++	if (!parent)
++		return rc;
++
++	dev = device_find_child(&parent->dev, range,
++				match_switch_decoder_by_range);
++	if (!dev) {
++		dev_err(port->uport_dev,
++			"failed to find decoder mapping %#llx-%#llx\n",
++			range->start, range->end);
++		return rc;
++	}
++	cxlsd = to_cxl_switch_decoder(dev);
++	*ways = cxlsd->cxld.interleave_ways;
++
++	for (int i = 0; i < *ways; i++) {
++		if (cxlsd->target[i] == port->parent_dport) {
++			*pos = i;
++			rc = 0;
++			break;
++		}
++	}
++	put_device(dev);
++
++	return rc;
++}
++
++/**
++ * cxl_calc_interleave_pos() - calculate an endpoint position in a region
++ * @cxled: endpoint decoder member of given region
++ *
++ * The endpoint position is calculated by traversing the topology from
++ * the endpoint to the root decoder and iteratively applying this
++ * calculation:
++ *
++ *    position = position * parent_ways + parent_pos;
++ *
++ * ...where @position is inferred from switch and root decoder target lists.
++ *
++ * Return: position >= 0 on success
++ *	   -ENXIO on failure
++ */
++static int cxl_calc_interleave_pos(struct cxl_endpoint_decoder *cxled)
++{
++	struct cxl_port *iter, *port = cxled_to_port(cxled);
++	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
++	struct range *range = &cxled->cxld.hpa_range;
++	int parent_ways = 0, parent_pos = 0, pos = 0;
++	int rc;
++
++	/*
++	 * Example: the expected interleave order of the 4-way region shown
++	 * below is: mem0, mem2, mem1, mem3
++	 *
++	 *		  root_port
++	 *                 /      \
++	 *      host_bridge_0    host_bridge_1
++	 *        |    |           |    |
++	 *       mem0 mem1        mem2 mem3
++	 *
++	 * In the example the calculator will iterate twice. The first iteration
++	 * uses the mem position in the host-bridge and the ways of the host-
++	 * bridge to generate the first, or local, position. The second
++	 * iteration uses the host-bridge position in the root_port and the ways
++	 * of the root_port to refine the position.
++	 *
++	 * A trace of the calculation per endpoint looks like this:
++	 * mem0: pos = 0 * 2 + 0    mem2: pos = 0 * 2 + 0
++	 *       pos = 0 * 2 + 0          pos = 0 * 2 + 1
++	 *       pos: 0                   pos: 1
++	 *
++	 * mem1: pos = 0 * 2 + 1    mem3: pos = 0 * 2 + 1
++	 *       pos = 1 * 2 + 0          pos = 1 * 2 + 1
++	 *       pos: 2                   pos = 3
++	 *
++	 * Note that while this example is simple, the method applies to more
++	 * complex topologies, including those with switches.
++	 */
++
++	/* Iterate from endpoint to root_port refining the position */
++	for (iter = port; iter; iter = next_port(iter)) {
++		if (is_cxl_root(iter))
++			break;
++
++		rc = find_pos_and_ways(iter, range, &parent_pos, &parent_ways);
++		if (rc)
++			return rc;
++
++		pos = pos * parent_ways + parent_pos;
++	}
++
++	dev_dbg(&cxlmd->dev,
++		"decoder:%s parent:%s port:%s range:%#llx-%#llx pos:%d\n",
++		dev_name(&cxled->cxld.dev), dev_name(cxlmd->dev.parent),
++		dev_name(&port->dev), range->start, range->end, pos);
++
++	return pos;
++}
++
+ static void find_positions(const struct cxl_switch_decoder *cxlsd,
+ 			   const struct cxl_port *iter_a,
+ 			   const struct cxl_port *iter_b, int *a_pos,
+@@ -1760,6 +1867,26 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+ 		.end = p->res->end,
+ 	};
  
- 	lockdep_assert_held(&snp_cmd_mutex);
-@@ -482,7 +487,7 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 	if (!arg->req_data || !arg->resp_data)
- 		return -EINVAL;
++	if (p->nr_targets != p->interleave_ways)
++		return 0;
++
++	/*
++	 * Test the auto-discovery position calculator function
++	 * against this successfully created user-defined region.
++	 * A fail message here means that this interleave config
++	 * will fail when presented as CXL_REGION_F_AUTO.
++	 */
++	for (int i = 0; i < p->nr_targets; i++) {
++		struct cxl_endpoint_decoder *cxled = p->targets[i];
++		int test_pos;
++
++		test_pos = cxl_calc_interleave_pos(cxled);
++		dev_dbg(&cxled->cxld.dev,
++			"Test cxl_calc_interleave_pos(): %s test_pos:%d cxled->pos:%d\n",
++			(test_pos == cxled->pos) ? "success" : "fail",
++			test_pos, cxled->pos);
++	}
++
+ 	return 0;
  
--	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-+	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
- 		return -EFAULT;
- 
- 	/*
-@@ -496,7 +501,7 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 		return -ENOMEM;
- 
- 	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg,
--				  SNP_MSG_REPORT_REQ, &req, sizeof(req), resp->data,
-+				  SNP_MSG_REPORT_REQ, req, sizeof(*req), resp->data,
- 				  resp_len);
- 	if (rc)
- 		goto e_free;
-@@ -511,9 +516,9 @@ static int get_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_io
- 
- static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
-+	struct snp_derived_key_req *req = &snp_dev->req.derived_key;
- 	struct snp_guest_crypto *crypto = snp_dev->crypto;
- 	struct snp_derived_key_resp resp = {0};
--	struct snp_derived_key_req req;
- 	int rc, resp_len;
- 	/* Response data is 64 bytes and max authsize for GCM is 16 bytes. */
- 	u8 buf[64 + 16];
-@@ -532,11 +537,11 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
- 	if (sizeof(buf) < resp_len)
- 		return -ENOMEM;
- 
--	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-+	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
- 		return -EFAULT;
- 
- 	rc = handle_guest_request(snp_dev, SVM_VMGEXIT_GUEST_REQUEST, arg,
--				  SNP_MSG_KEY_REQ, &req, sizeof(req), buf, resp_len);
-+				  SNP_MSG_KEY_REQ, req, sizeof(*req), buf, resp_len);
- 	if (rc)
- 		return rc;
- 
-@@ -552,8 +557,8 @@ static int get_derived_key(struct snp_guest_dev *snp_dev, struct snp_guest_reque
- 
- static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_request_ioctl *arg)
- {
-+	struct snp_ext_report_req *req = &snp_dev->req.ext_report;
- 	struct snp_guest_crypto *crypto = snp_dev->crypto;
--	struct snp_ext_report_req req;
- 	struct snp_report_resp *resp;
- 	int ret, npages = 0, resp_len;
- 
-@@ -562,18 +567,18 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 	if (!arg->req_data || !arg->resp_data)
- 		return -EINVAL;
- 
--	if (copy_from_user(&req, (void __user *)arg->req_data, sizeof(req)))
-+	if (copy_from_user(req, (void __user *)arg->req_data, sizeof(*req)))
- 		return -EFAULT;
- 
- 	/* userspace does not want certificate data */
--	if (!req.certs_len || !req.certs_address)
-+	if (!req->certs_len || !req->certs_address)
- 		goto cmd;
- 
--	if (req.certs_len > SEV_FW_BLOB_MAX_SIZE ||
--	    !IS_ALIGNED(req.certs_len, PAGE_SIZE))
-+	if (req->certs_len > SEV_FW_BLOB_MAX_SIZE ||
-+	    !IS_ALIGNED(req->certs_len, PAGE_SIZE))
- 		return -EINVAL;
- 
--	if (!access_ok((const void __user *)req.certs_address, req.certs_len))
-+	if (!access_ok((const void __user *)req->certs_address, req->certs_len))
- 		return -EFAULT;
- 
- 	/*
-@@ -582,8 +587,8 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 	 * the host. If host does not supply any certs in it, then copy
- 	 * zeros to indicate that certificate data was not provided.
- 	 */
--	memset(snp_dev->certs_data, 0, req.certs_len);
--	npages = req.certs_len >> PAGE_SHIFT;
-+	memset(snp_dev->certs_data, 0, req->certs_len);
-+	npages = req->certs_len >> PAGE_SHIFT;
- cmd:
- 	/*
- 	 * The intermediate response buffer is used while decrypting the
-@@ -597,14 +602,14 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 
- 	snp_dev->input.data_npages = npages;
- 	ret = handle_guest_request(snp_dev, SVM_VMGEXIT_EXT_GUEST_REQUEST, arg,
--				   SNP_MSG_REPORT_REQ, &req.data,
--				   sizeof(req.data), resp->data, resp_len);
-+				   SNP_MSG_REPORT_REQ, &req->data,
-+				   sizeof(req->data), resp->data, resp_len);
- 
- 	/* If certs length is invalid then copy the returned length */
- 	if (arg->vmm_error == SNP_GUEST_VMM_ERR_INVALID_LEN) {
--		req.certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
-+		req->certs_len = snp_dev->input.data_npages << PAGE_SHIFT;
- 
--		if (copy_to_user((void __user *)arg->req_data, &req, sizeof(req)))
-+		if (copy_to_user((void __user *)arg->req_data, req, sizeof(*req)))
- 			ret = -EFAULT;
- 	}
- 
-@@ -612,8 +617,8 @@ static int get_ext_report(struct snp_guest_dev *snp_dev, struct snp_guest_reques
- 		goto e_free;
- 
- 	if (npages &&
--	    copy_to_user((void __user *)req.certs_address, snp_dev->certs_data,
--			 req.certs_len)) {
-+	    copy_to_user((void __user *)req->certs_address, snp_dev->certs_data,
-+			 req->certs_len)) {
- 		ret = -EFAULT;
- 		goto e_free;
- 	}
+ err_decrement:
 -- 
 2.42.0
 
