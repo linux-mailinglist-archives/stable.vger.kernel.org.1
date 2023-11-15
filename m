@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FD907ECEA6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7518B7ECC39
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229591AbjKOToW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34742 "EHLO
+        id S233477AbjKOT1e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235146AbjKOToV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:21 -0500
+        with ESMTP id S233817AbjKOT13 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:29 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2E2712C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25261C433C7;
-        Wed, 15 Nov 2023 19:44:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38D921AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9F5C433CC;
+        Wed, 15 Nov 2023 19:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077458;
-        bh=G8kp/b3wADm3pUji1DHKKJZHWlA1OH7Q9EsHsgSkTO4=;
+        s=korg; t=1700076446;
+        bh=JBCx6tkWAV0oVt+Klx9y+BDw0zC9cUhRtkNZcFl/GJk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v5k0e7ME8xSGtzfmyXNlQnJ3vUL1dL4g91HqWKQWBUkqldkq9Z8p/vu7f+59FQnSJ
-         bImHCyiBttaCGxcuuv8bqbMSY4JI1NwwdV0igP81y6mVJ3f1AYPfW2MV1pToo63uco
-         F4clvvmdw7eOs24GxM/XpWG9r/KP1pW6HfI+JGaE=
+        b=po+iZQVJa2k27xycv6hsNaKNnr+EOSfirV7yrBjl7LFcKAtV70i7VJlRT7Leo5D/M
+         edZwIoBEvBrhmt15L0MVIf8V7m+bVyZE7btwCnk1/mhSfhqctRj+vyxrgNPT8zKEM2
+         8PnuMnaoqJpIZnY+deO3C4U0CMHa3FYJHkO4nHg4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fabio Estevam <festevam@denx.de>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 315/603] arm64: dts: imx8mp-debix-model-a: Remove USB hub reset-gpios
+Subject: [PATCH 6.5 276/550] riscv: dts: allwinner: remove address-cells from intc node
 Date:   Wed, 15 Nov 2023 14:14:20 -0500
-Message-ID: <20231115191635.268344842@linuxfoundation.org>
+Message-ID: <20231115191619.884566345@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit 0ce9a2c121e3ab354cf66aeecd3ed0758f3c5067 ]
+[ Upstream commit 267860b10c67dd396c73a9e6e8103670d78a4c01 ]
 
-The SAI2_TXC pin is left unconnected per the imx8mp-debix-model-a
-schematics:
+A recent submission [1] from Rob has added additionalProperties: false
+to the interrupt-controller child node of RISC-V cpus, highlighting that
+the D1 DT has been incorrectly using #address-cells since its
+introduction. It has no child nodes, so #address-cells is not needed.
+Remove it.
 
-https://debix.io/Uploads/Temp/file/20230331/DEBIX%20Model%20A%20Schematics.pdf
-
-Also, the RTS5411E USB hub chip does not have a reset pin.
-
-Remove this pin description to properly describe the hardware.
-
-This also fixes the following schema warning:
-
-hub@1: 'reset-gpios' does not match any of the regexes: 'pinctrl-[0-9]+'
-from schema $id: http://devicetree.org/schemas/usb/realtek,rts5411.yaml#
-
-Fixes: 0253e1cb6300 ("arm64: dts: imx8mp-debix: add USB host support")
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 077e5f4f5528 ("riscv: dts: allwinner: Add the D1/D1s SoC devicetree")
+Link: https://patchwork.kernel.org/project/linux-riscv/patch/20230915201946.4184468-1-robh@kernel.org/ [1]
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://lore.kernel.org/r/20230916-saddling-dastardly-8cf6d1263c24@spud
+Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-index 28db9349ed62c..267ceffc02d84 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-debix-model-a.dts
-@@ -284,7 +284,6 @@ &usb_dwc3_1 {
- 	usb_hub_2_x: hub@1 {
- 		compatible = "usbbda,5411";
- 		reg = <1>;
--		reset-gpios = <&gpio4 25 GPIO_ACTIVE_LOW>;
- 		vdd-supply = <&reg_usb_hub>;
- 		peer-hub = <&usb_hub_3_x>;
- 	};
-@@ -293,7 +292,6 @@ usb_hub_2_x: hub@1 {
- 	usb_hub_3_x: hub@2 {
- 		compatible = "usbbda,411";
- 		reg = <2>;
--		reset-gpios = <&gpio4 25 GPIO_ACTIVE_LOW>;
- 		vdd-supply = <&reg_usb_hub>;
- 		peer-hub = <&usb_hub_2_x>;
- 	};
-@@ -443,7 +441,6 @@ MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX				0x49
- 	pinctrl_usb1: usb1grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_GPIO1_IO14__USB2_OTG_PWR				0x10
--			MX8MP_IOMUXC_SAI2_TXC__GPIO4_IO25				0x19
- 		>;
- 	};
- 
+diff --git a/arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi b/arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi
+index 8275630af977d..b8684312593e5 100644
+--- a/arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi
++++ b/arch/riscv/boot/dts/allwinner/sun20i-d1s.dtsi
+@@ -30,7 +30,6 @@ cpu0: cpu@0 {
+ 			cpu0_intc: interrupt-controller {
+ 				compatible = "riscv,cpu-intc";
+ 				interrupt-controller;
+-				#address-cells = <0>;
+ 				#interrupt-cells = <1>;
+ 			};
+ 		};
 -- 
 2.42.0
 
