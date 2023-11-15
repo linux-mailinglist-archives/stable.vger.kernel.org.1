@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38BE97ED3B8
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8BBC7ED3BA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235048AbjKOUyY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:54:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59122 "EHLO
+        id S235044AbjKOUy0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:54:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235054AbjKOUyT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:19 -0500
+        with ESMTP id S235071AbjKOUyU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 286D5D51
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA07C4E777;
-        Wed, 15 Nov 2023 20:54:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2785AD73
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CE4C4E778;
+        Wed, 15 Nov 2023 20:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081649;
-        bh=kSJaxpN7t7FTjK/GPdLJWCC2YFVkaNXM9e+5mUrMSDA=;
+        s=korg; t=1700081652;
+        bh=rzAna7fHfVvZbaIz/Bps1OT+3emFv8sMUtdYfokLJnQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SjNWmoUJidaApI7JfpDaydAP17WqNte33utR2CwHrfMul6g/vNWals1wYoo0CxOIy
-         0rNIOM+Kfs4Vg2/CEqXydNRb1OQtNIpXvRwVr2KtKZud0IISCC1Q2k1z7PV/S3kh0x
-         9T9YATmSvEiUrG6ORk0Suo/c3w7Unz+KcmR9MdMs=
+        b=N28bnI8/K088bowSbKuDJ0DkRZVzg7AaJyXP7sLVjoHBeBcOG95xBvDQD7Q2hitXI
+         CGKKDKYJlG52x2eO1nT7VMnFyznRsaH3PSN4DW3MqVLs04Obod2A/e8kwmTB7LHKl9
+         apx5Z8dt787LMPTKhxGptXw2uAoTY1LoMGRR1POE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@somainline.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/191] clk: qcom: mmcc-msm8998: Dont check halt bit on some branch clks
-Date:   Wed, 15 Nov 2023 15:45:14 -0500
-Message-ID: <20231115204646.903503908@linuxfoundation.org>
+Subject: [PATCH 5.10 040/191] clk: qcom: mmcc-msm8998: Set bimc_smmu_gdsc always on
+Date:   Wed, 15 Nov 2023 15:45:15 -0500
+Message-ID: <20231115204646.968341976@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -55,53 +56,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
 
-[ Upstream commit 9906c4140897bbdbff7bb71c6ae67903cb9954ce ]
+[ Upstream commit 68e1d106eb4dceb61bc2818d829786b364fd502b ]
 
-Some branch clocks are governed externally and we're only supposed to
-send a request concerning their shutdown, not actually ensure it happens.
+This GDSC enables (or cuts!) power to the Multimedia Subsystem IOMMU
+(mmss smmu), which has bootloader pre-set secure contexts.
+In the event of a complete power loss, the secure contexts will be
+reset and the hypervisor will crash the SoC.
 
-Use the BRANCH_HALT_SKIP define to skip checking the halt bit.
+To prevent this, and get a working multimedia subsystem, set this
+GDSC as always on.
 
-Fixes: d14b15b5931c ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-4-ba1b1fd9ee75@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@somainline.org>
+Link: https://lore.kernel.org/r/20210114221059.483390-10-angelogioacchino.delregno@somainline.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Stable-dep-of: 1fc62c834739 ("clk: qcom: mmcc-msm8998: Fix the SMMU GDSC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8998.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/mmcc-msm8998.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
-index 0f7c2a48ef2e6..c0bdefcbb2946 100644
+index c0bdefcbb2946..8768cdcf0aa3c 100644
 --- a/drivers/clk/qcom/mmcc-msm8998.c
 +++ b/drivers/clk/qcom/mmcc-msm8998.c
-@@ -2487,6 +2487,7 @@ static struct clk_branch fd_ahb_clk = {
+@@ -2666,7 +2666,7 @@ static struct gdsc bimc_smmu_gdsc = {
+ 		.name = "bimc_smmu",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | ALWAYS_ON,
+ };
  
- static struct clk_branch mnoc_ahb_clk = {
- 	.halt_reg = 0x5024,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x5024,
- 		.enable_mask = BIT(0),
-@@ -2502,6 +2503,7 @@ static struct clk_branch mnoc_ahb_clk = {
- 
- static struct clk_branch bimc_smmu_ahb_clk = {
- 	.halt_reg = 0xe004,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.hwcg_reg = 0xe004,
- 	.hwcg_bit = 1,
- 	.clkr = {
-@@ -2519,6 +2521,7 @@ static struct clk_branch bimc_smmu_ahb_clk = {
- 
- static struct clk_branch bimc_smmu_axi_clk = {
- 	.halt_reg = 0xe008,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.hwcg_reg = 0xe008,
- 	.hwcg_bit = 1,
- 	.clkr = {
+ static struct clk_regmap *mmcc_msm8998_clocks[] = {
 -- 
 2.42.0
 
