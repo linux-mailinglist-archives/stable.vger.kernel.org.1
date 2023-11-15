@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A69F57ECBB9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98D617ECBDE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232628AbjKOTYE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60026 "EHLO
+        id S233151AbjKOTZB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:25:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232665AbjKOTYD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:03 -0500
+        with ESMTP id S233168AbjKOTY7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C34E1A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F204CC433C8;
-        Wed, 15 Nov 2023 19:23:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8267E19F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05455C433C8;
+        Wed, 15 Nov 2023 19:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076240;
-        bh=R8CJa8BEjFPGAivUJHFT0yGjQgEE8bDDa5YNbaxzAQQ=;
+        s=korg; t=1700076296;
+        bh=aN8ObnFRa9S1AYeRcEjCjFX7dntvmtXj+R7uhB9Vql8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VLHYjyZeh0wOw8YLO+TxjLl7kHOe1Z5usnPvhW/E/3d5u2nKQybfeL1LVR7IfVSBb
-         pKTRhDMJD7Nz9f1Pg6OwPrbDl3/BWysFEKxZigFQNtPxv5wwyAo3GPBgrWXMfELdPS
-         JtmMQeEBMAu1R3oABAXwDT7rFhvfmVVPYHLJTlEM=
+        b=zx+8jfDohhwxIgarZCSZ1vn/eLOJ5mvmZSQBlPVDY/R1yxEUOiquD3fRnAd/p1NDV
+         qZwHn/koJbuZU4QAT/XlPo8QyBeiUW9/9WvWt83Ms4uVZKIasMo6Z785TC6e30hvEf
+         KfJPlO6x0Fdei7h2ebVGE9V8s9v5htgeVmL4125k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
         Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 164/550] clk: renesas: rzg2l: Wait for status bit of SD mux before continuing
-Date:   Wed, 15 Nov 2023 14:12:28 -0500
-Message-ID: <20231115191612.084486625@linuxfoundation.org>
+Subject: [PATCH 6.5 165/550] clk: renesas: rzg2l: Lock around writes to mux register
+Date:   Wed, 15 Nov 2023 14:12:29 -0500
+Message-ID: <20231115191612.156716433@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -57,68 +57,88 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 549f4ae2601f968e2474c6031fb4799468882f64 ]
+[ Upstream commit d2692ed490e680a41401cef879adebcfafb4298f ]
 
-The hardware user manual for RZ/G2L (r01uh0914ej0130-rzg2l-rzg2lc.pdf,
-chapter 7.4.7 Procedure for Switching Clocks by the Dynamic Switching
-Frequency Selectors) specifies that we need to check CPG_PL2SDHI_DSEL
-for SD clock switching status.
+The SD MUX output (SD0) is further divided by 4 in G2{L,UL}.  The
+divided clock is SD0_DIV4. SD0_DIV4 is registered with
+CLK_SET_RATE_PARENT which means a rate request for it is propagated to
+the MUX and could reach rzg2l_cpg_sd_clk_mux_set_parent() concurrently
+with the users of SD0.
+Add proper locking to avoid concurrent accesses on SD MUX set rate
+registers.
 
 Fixes: eaff33646f4cb ("clk: renesas: rzg2l: Add SDHI clk mux support")
 Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230929053915.1530607-3-claudiu.beznea@bp.renesas.com
+Link: https://lore.kernel.org/r/20230929053915.1530607-4-claudiu.beznea@bp.renesas.com
 Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/rzg2l-cpg.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 23 +++++++++++++----------
+ drivers/clk/renesas/rzg2l-cpg.h |  2 +-
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
-index bc623515ad843..7245a34d43e0b 100644
+index 7245a34d43e0b..7be098315899c 100644
 --- a/drivers/clk/renesas/rzg2l-cpg.c
 +++ b/drivers/clk/renesas/rzg2l-cpg.c
-@@ -195,7 +195,8 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
- 	u32 off = GET_REG_OFFSET(hwdata->conf);
+@@ -196,6 +196,7 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
  	u32 shift = GET_SHIFT(hwdata->conf);
  	const u32 clk_src_266 = 2;
--	u32 bitmask;
-+	u32 msk, val, bitmask;
-+	int ret;
+ 	u32 msk, val, bitmask;
++	unsigned long flags;
+ 	int ret;
  
  	/*
- 	 * As per the HW manual, we should not directly switch from 533 MHz to
-@@ -209,14 +210,10 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
- 	 * the index to value mapping is done by adding 1 to the index.
+@@ -211,23 +212,25 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
  	 */
  	bitmask = (GENMASK(GET_WIDTH(hwdata->conf) - 1, 0) << shift) << 16;
-+	msk = off ? CPG_CLKSTATUS_SELSDHI1_STS : CPG_CLKSTATUS_SELSDHI0_STS;
+ 	msk = off ? CPG_CLKSTATUS_SELSDHI1_STS : CPG_CLKSTATUS_SELSDHI0_STS;
++	spin_lock_irqsave(&priv->rmw_lock, flags);
  	if (index != clk_src_266) {
--		u32 msk, val;
--		int ret;
--
  		writel(bitmask | ((clk_src_266 + 1) << shift), priv->base + off);
  
--		msk = off ? CPG_CLKSTATUS_SELSDHI1_STS : CPG_CLKSTATUS_SELSDHI0_STS;
--
- 		ret = readl_poll_timeout(priv->base + CPG_CLKSTATUS, val,
- 					 !(val & msk), 100,
- 					 CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
-@@ -228,7 +225,13 @@ static int rzg2l_cpg_sd_clk_mux_set_parent(struct clk_hw *hw, u8 index)
+-		ret = readl_poll_timeout(priv->base + CPG_CLKSTATUS, val,
+-					 !(val & msk), 100,
+-					 CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
+-		if (ret) {
+-			dev_err(priv->dev, "failed to switch clk source\n");
+-			return ret;
+-		}
++		ret = readl_poll_timeout_atomic(priv->base + CPG_CLKSTATUS, val,
++						!(val & msk), 10,
++						CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
++		if (ret)
++			goto unlock;
+ 	}
  
  	writel(bitmask | ((index + 1) << shift), priv->base + off);
  
--	return 0;
-+	ret = readl_poll_timeout(priv->base + CPG_CLKSTATUS, val,
-+				 !(val & msk), 100,
-+				 CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
-+	if (ret)
-+		dev_err(priv->dev, "failed to switch clk source\n");
+-	ret = readl_poll_timeout(priv->base + CPG_CLKSTATUS, val,
+-				 !(val & msk), 100,
+-				 CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
++	ret = readl_poll_timeout_atomic(priv->base + CPG_CLKSTATUS, val,
++					!(val & msk), 10,
++					CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US);
++unlock:
++	spin_unlock_irqrestore(&priv->rmw_lock, flags);
 +
-+	return ret;
- }
+ 	if (ret)
+ 		dev_err(priv->dev, "failed to switch clk source\n");
  
- static u8 rzg2l_cpg_sd_clk_mux_get_parent(struct clk_hw *hw)
+diff --git a/drivers/clk/renesas/rzg2l-cpg.h b/drivers/clk/renesas/rzg2l-cpg.h
+index 6cee9e56acc72..91e9c2569f801 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.h
++++ b/drivers/clk/renesas/rzg2l-cpg.h
+@@ -43,7 +43,7 @@
+ #define CPG_CLKSTATUS_SELSDHI0_STS	BIT(28)
+ #define CPG_CLKSTATUS_SELSDHI1_STS	BIT(29)
+ 
+-#define CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US	20000
++#define CPG_SDHI_CLK_SWITCH_STATUS_TIMEOUT_US	200
+ 
+ /* n = 0/1/2 for PLL1/4/6 */
+ #define CPG_SAMPLL_CLK1(n)	(0x04 + (16 * n))
 -- 
 2.42.0
 
