@@ -2,42 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E2077ED5C2
+	by mail.lfdr.de (Postfix) with ESMTP id 0C1A77ED5C1
 	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:12:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344335AbjKOVMZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:12:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
+        id S1343844AbjKOVMY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:12:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344680AbjKOVMY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:12:24 -0500
+        with ESMTP id S1344335AbjKOVMX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:12:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CB0B11F
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C9B111D
         for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:12:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95959C433C7;
-        Wed, 15 Nov 2023 20:47:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11B7FC433C9;
+        Wed, 15 Nov 2023 20:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081221;
-        bh=mP/KCifvT7rr/ijEV4+pLIGtRw48pxdQtaTm3kAHDtk=;
+        s=korg; t=1700081223;
+        bh=d0H7PwP+Ms9QwrL5s8tEBe9r6/XKqXop3Hu8foVYV+o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LrSSPTtygdfgNYiB71d569qCZr5zMtPP8bRIykKvCIMbC3dYzdwfH8jxaO2uJYpm9
-         AvrZZbC4FzXzMRouSdL3xe9Ar18O3k88Bd7Sk201d6jATOMrnVz1LTEg163LBb/qIs
-         NwoREmc+kDO+uHZJqI2Y3MWR6VmXwHOfHUV3XFG4=
+        b=IIZwThZ4dlTw4OOHFakEL4yt5EBu796wAE211y+f2Dji+gJ/VWHybgPIu/VcJBl2u
+         n0OW8AoOBEnW2k4VLNtI67XBmv6JTi+OcLpxdbS1FJCG3f7nWg7QuTd3WnGyLVUiwW
+         GfWtlomSPCR5WjzLuyw3u8VO1EKppxwe6pMVDqCY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Darren Hart <dvhart@infradead.org>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        =?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 007/244] futex: Dont include process MM in futex key on no-MMU
-Date:   Wed, 15 Nov 2023 15:33:19 -0500
-Message-ID: <20231115203548.814391924@linuxfoundation.org>
+Subject: [PATCH 5.15 008/244] x86: Share definition of __is_canonical_address()
+Date:   Wed, 15 Nov 2023 15:33:20 -0500
+Message-ID: <20231115203548.878241384@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -45,12 +39,11 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -61,57 +54,163 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit c73801ae4f22b390228ebf471d55668e824198b6 ]
+[ Upstream commit 1fb85d06ad6754796cd1b920639ca9d8840abefd ]
 
-On no-MMU, all futexes are treated as private because there is no need
-to map a virtual address to physical to match the futex across
-processes. This doesn't quite work though, because private futexes
-include the current process's mm_struct as part of their key. This makes
-it impossible for one process to wake up a shared futex being waited on
-in another process.
+Reduce code duplication by moving canonical address code to a common header
+file.
 
-Fix this bug by excluding the mm_struct from the key. With
-a single address space, the futex address is already a unique key.
-
-Fixes: 784bdf3bb694 ("futex: Assume all mappings are private on !MMU systems")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Darren Hart <dvhart@infradead.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: André Almeida <andrealmeid@igalia.com>
-Link: https://lore.kernel.org/r/20231019204548.1236437-2-ben.wolsieffer@hefring.com
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220131072453.2839535-3-adrian.hunter@intel.com
+Stable-dep-of: f79936545fb1 ("x86/sev-es: Allow copy_from_kernel_nofault() in earlier boot")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ arch/x86/events/intel/pt.c  | 14 ++------------
+ arch/x86/include/asm/page.h | 10 ++++++++++
+ arch/x86/kvm/emulate.c      |  4 ++--
+ arch/x86/kvm/x86.c          |  2 +-
+ arch/x86/kvm/x86.h          |  7 +------
+ arch/x86/mm/maccess.c       |  7 +------
+ 6 files changed, 17 insertions(+), 27 deletions(-)
 
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index 764e73622b386..d42245170a7a0 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -570,7 +570,17 @@ static int get_futex_key(u32 __user *uaddr, bool fshared, union futex_key *key,
- 	 *        but access_ok() should be faster than find_vma()
- 	 */
- 	if (!fshared) {
--		key->private.mm = mm;
-+		/*
-+		 * On no-MMU, shared futexes are treated as private, therefore
-+		 * we must not include the current process in the key. Since
-+		 * there is only one address space, the address is a unique key
-+		 * on its own.
-+		 */
-+		if (IS_ENABLED(CONFIG_MMU))
-+			key->private.mm = mm;
-+		else
-+			key->private.mm = NULL;
+diff --git a/arch/x86/events/intel/pt.c b/arch/x86/events/intel/pt.c
+index d0295240c78a8..a85d3138839c5 100644
+--- a/arch/x86/events/intel/pt.c
++++ b/arch/x86/events/intel/pt.c
+@@ -1360,20 +1360,10 @@ static void pt_addr_filters_fini(struct perf_event *event)
+ }
+ 
+ #ifdef CONFIG_X86_64
+-static u64 canonical_address(u64 vaddr, u8 vaddr_bits)
+-{
+-	return ((s64)vaddr << (64 - vaddr_bits)) >> (64 - vaddr_bits);
+-}
+-
+-static u64 is_canonical_address(u64 vaddr, u8 vaddr_bits)
+-{
+-	return canonical_address(vaddr, vaddr_bits) == vaddr;
+-}
+-
+ /* Clamp to a canonical address greater-than-or-equal-to the address given */
+ static u64 clamp_to_ge_canonical_addr(u64 vaddr, u8 vaddr_bits)
+ {
+-	return is_canonical_address(vaddr, vaddr_bits) ?
++	return __is_canonical_address(vaddr, vaddr_bits) ?
+ 	       vaddr :
+ 	       -BIT_ULL(vaddr_bits - 1);
+ }
+@@ -1381,7 +1371,7 @@ static u64 clamp_to_ge_canonical_addr(u64 vaddr, u8 vaddr_bits)
+ /* Clamp to a canonical address less-than-or-equal-to the address given */
+ static u64 clamp_to_le_canonical_addr(u64 vaddr, u8 vaddr_bits)
+ {
+-	return is_canonical_address(vaddr, vaddr_bits) ?
++	return __is_canonical_address(vaddr, vaddr_bits) ?
+ 	       vaddr :
+ 	       BIT_ULL(vaddr_bits - 1) - 1;
+ }
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index 4d5810c8fab74..9cc82f305f4bf 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -71,6 +71,16 @@ static inline void copy_user_page(void *to, void *from, unsigned long vaddr,
+ extern bool __virt_addr_valid(unsigned long kaddr);
+ #define virt_addr_valid(kaddr)	__virt_addr_valid((unsigned long) (kaddr))
+ 
++static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
++{
++	return ((s64)vaddr << (64 - vaddr_bits)) >> (64 - vaddr_bits);
++}
 +
- 		key->private.address = address;
- 		return 0;
- 	}
++static __always_inline u64 __is_canonical_address(u64 vaddr, u8 vaddr_bits)
++{
++	return __canonical_address(vaddr, vaddr_bits) == vaddr;
++}
++
+ #endif	/* __ASSEMBLY__ */
+ 
+ #include <asm-generic/memory_model.h>
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index cb96e4354f317..98b25a7af8ce8 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -687,7 +687,7 @@ static inline u8 ctxt_virt_addr_bits(struct x86_emulate_ctxt *ctxt)
+ static inline bool emul_is_noncanonical_address(u64 la,
+ 						struct x86_emulate_ctxt *ctxt)
+ {
+-	return get_canonical(la, ctxt_virt_addr_bits(ctxt)) != la;
++	return !__is_canonical_address(la, ctxt_virt_addr_bits(ctxt));
+ }
+ 
+ /*
+@@ -737,7 +737,7 @@ static __always_inline int __linearize(struct x86_emulate_ctxt *ctxt,
+ 	case X86EMUL_MODE_PROT64:
+ 		*linear = la;
+ 		va_bits = ctxt_virt_addr_bits(ctxt);
+-		if (get_canonical(la, va_bits) != la)
++		if (!__is_canonical_address(la, va_bits))
+ 			goto bad;
+ 
+ 		*max_size = min_t(u64, ~0u, (1ull << va_bits) - la);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index a26200c3e82b5..7e9b615653065 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1745,7 +1745,7 @@ static int __kvm_set_msr(struct kvm_vcpu *vcpu, u32 index, u64 data,
+ 		 * value, and that something deterministic happens if the guest
+ 		 * invokes 64-bit SYSENTER.
+ 		 */
+-		data = get_canonical(data, vcpu_virt_addr_bits(vcpu));
++		data = __canonical_address(data, vcpu_virt_addr_bits(vcpu));
+ 		break;
+ 	case MSR_TSC_AUX:
+ 		if (!kvm_is_supported_user_return_msr(MSR_TSC_AUX))
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index cd0c93ec72fad..f7854e742e8ce 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -211,14 +211,9 @@ static inline u8 vcpu_virt_addr_bits(struct kvm_vcpu *vcpu)
+ 	return kvm_read_cr4_bits(vcpu, X86_CR4_LA57) ? 57 : 48;
+ }
+ 
+-static inline u64 get_canonical(u64 la, u8 vaddr_bits)
+-{
+-	return ((int64_t)la << (64 - vaddr_bits)) >> (64 - vaddr_bits);
+-}
+-
+ static inline bool is_noncanonical_address(u64 la, struct kvm_vcpu *vcpu)
+ {
+-	return get_canonical(la, vcpu_virt_addr_bits(vcpu)) != la;
++	return !__is_canonical_address(la, vcpu_virt_addr_bits(vcpu));
+ }
+ 
+ static inline void vcpu_cache_mmio_info(struct kvm_vcpu *vcpu,
+diff --git a/arch/x86/mm/maccess.c b/arch/x86/mm/maccess.c
+index 92ec176a72937..5a53c2cc169cc 100644
+--- a/arch/x86/mm/maccess.c
++++ b/arch/x86/mm/maccess.c
+@@ -4,11 +4,6 @@
+ #include <linux/kernel.h>
+ 
+ #ifdef CONFIG_X86_64
+-static __always_inline u64 canonical_address(u64 vaddr, u8 vaddr_bits)
+-{
+-	return ((s64)vaddr << (64 - vaddr_bits)) >> (64 - vaddr_bits);
+-}
+-
+ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
+ {
+ 	unsigned long vaddr = (unsigned long)unsafe_src;
+@@ -19,7 +14,7 @@ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
+ 	 * we also need to include the userspace guard page.
+ 	 */
+ 	return vaddr >= TASK_SIZE_MAX + PAGE_SIZE &&
+-	       canonical_address(vaddr, boot_cpu_data.x86_virt_bits) == vaddr;
++	       __is_canonical_address(vaddr, boot_cpu_data.x86_virt_bits);
+ }
+ #else
+ bool copy_from_kernel_nofault_allowed(const void *unsafe_src, size_t size)
 -- 
 2.42.0
 
