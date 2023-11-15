@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 560517ECD04
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF8A07ECF78
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234288AbjKOTd4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50840 "EHLO
+        id S235323AbjKOTsk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234253AbjKOTdx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:53 -0500
+        with ESMTP id S235320AbjKOTsj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9AF7D50
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:47 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF99C433CB;
-        Wed, 15 Nov 2023 19:33:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6CA112C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59094C433C8;
+        Wed, 15 Nov 2023 19:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076827;
-        bh=aSVZ+nM7adp1LikfrvSUtI1w0VX755YI60BMNDa8eqo=;
+        s=korg; t=1700077716;
+        bh=ZNm0KlcioNsv2bJKEN5LxcsaOv7QuoLm17omQRXy05I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0MuTK3aUVRG2BLI51rLegnk0r7yjbGbz78lH5IQlPYHHxGlQWi+d0d0s6OZ7F6l4q
-         XrKIVW+Uz3KhwhdieXwYz1xnyzjx+DxON/KvjTXv56dEBg4gleTole5kIRBUv4vkVi
-         ncy+LB8axQ38nfGeC5VriqifOLduU4a6oGbytC/k=
+        b=VxwidKGLLZG1R3X1qgNICRRnFUtR4qk0gP0oaRhwguECZ5kj2fTMg4JLGNowjOTEN
+         DiadIsWpsuqN840NdlUfdWUqPJzccdVKrYeqnfcMGMU3B7H9qxHeFJE22YtCe5443r
+         PrLZjtiMvYR/wDNEAao3EbTbz1SESspEWcJW5WIw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Richter <tmricht@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        Ian Rogers <irogers@google.com>, gor@linux.ibm.com,
-        hca@linux.ibm.com, sumanthk@linux.ibm.com, svens@linux.ibm.com,
+        patches@lists.linux.dev, Disha Goel <disgoel@linux.vnet.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Disha Goel <disgoel@linux.ibm.com>, maddy@linux.ibm.com,
         Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 435/550] perf trace: Use the right bpf_probe_read(_str) variant for reading user data
-Date:   Wed, 15 Nov 2023 14:16:59 -0500
-Message-ID: <20231115191630.926834605@linuxfoundation.org>
+Subject: [PATCH 6.6 475/603] perf vendor events: Update PMC used in PM_RUN_INST_CMPL event for power10 platform
+Date:   Wed, 15 Nov 2023 14:17:00 -0500
+Message-ID: <20231115191645.334767960@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,173 +53,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Kajol Jain <kjain@linux.ibm.com>
 
-[ Upstream commit 5069211e2f0b47e75119805e23ae6352d871e263 ]
+[ Upstream commit 3f8b6e5b11192dacb721d2d28ea4589917f5e822 ]
 
-Perf test case 111 Check open filename arg using perf trace + vfs_getname
-fails on s390. This is caused by a failing function
-bpf_probe_read() in file util/bpf_skel/augmented_raw_syscalls.bpf.c.
+The CPI_STALL_RATIO metric group can be used to present the high
+level CPI stall breakdown metrics in powerpc, which will show:
 
-The root cause is the lookup by address. Function bpf_probe_read()
-is used. This function works only for architectures
-with ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE.
+- DISPATCH_STALL_CPI ( Dispatch stall cycles per insn )
+- ISSUE_STALL_CPI ( Issue stall cycles per insn )
+- EXECUTION_STALL_CPI ( Execution stall cycles per insn )
+- COMPLETION_STALL_CPI ( Completion stall cycles per insn )
 
-On s390 is not possible to determine from the address to which
-address space the address belongs to (user or kernel space).
+Commit cf26e043c2a9 ("perf vendor events power10: Add JSON
+metric events to present CPI stall cycles in powerpc)" which added
+the CPI_STALL_RATIO metric group, also modified
+the PMC value used in PM_RUN_INST_CMPL event from PMC4 to PMC5,
+to avoid multiplexing of events.
+But that got revert in recent changes. Fix this issue by changing
+back the PMC value used in PM_RUN_INST_CMPL to PMC5.
 
-Replace bpf_probe_read() by bpf_probe_read_kernel()
-and bpf_probe_read_str() by bpf_probe_read_user_str() to
-explicity specify the address space the address refers to.
+Result with the fix:
 
-Output before:
- # ./perf trace -eopen,openat -- touch /tmp/111
- libbpf: prog 'sys_enter': BPF program load failed: Invalid argument
- libbpf: prog 'sys_enter': -- BEGIN PROG LOAD LOG --
- reg type unsupported for arg#0 function sys_enter#75
- 0: R1=ctx(off=0,imm=0) R10=fp0
- ; int sys_enter(struct syscall_enter_args *args)
- 0: (bf) r6 = r1           ; R1=ctx(off=0,imm=0) R6_w=ctx(off=0,imm=0)
- ; return bpf_get_current_pid_tgid();
- 1: (85) call bpf_get_current_pid_tgid#14      ; R0_w=scalar()
- 2: (63) *(u32 *)(r10 -8) = r0 ; R0_w=scalar() R10=fp0 fp-8=????mmmm
- 3: (bf) r2 = r10              ; R2_w=fp0 R10=fp0
- ;
- .....
- lines deleted here
- .....
- 23: (bf) r3 = r6              ; R3_w=ctx(off=0,imm=0) R6=ctx(off=0,imm=0)
- 24: (85) call bpf_probe_read#4
- unknown func bpf_probe_read#4
- processed 23 insns (limit 1000000) max_states_per_insn 0 \
-	 total_states 2 peak_states 2 mark_read 2
- -- END PROG LOAD LOG --
- libbpf: prog 'sys_enter': failed to load: -22
- libbpf: failed to load object 'augmented_raw_syscalls_bpf'
- libbpf: failed to load BPF skeleton 'augmented_raw_syscalls_bpf': -22
- ....
+ ./perf stat --metric-no-group -M CPI_STALL_RATIO <workload>
 
-Output after:
- # ./perf test -Fv 111
- 111: Check open filename arg using perf trace + vfs_getname          :
- --- start ---
-     1.085 ( 0.011 ms): touch/320753 openat(dfd: CWD, filename: \
-	"/tmp/temporary_file.SWH85", \
-	flags: CREAT|NOCTTY|NONBLOCK|WRONLY, mode: IRUGO|IWUGO) = 3
- ---- end ----
- Check open filename arg using perf trace + vfs_getname: Ok
- #
+ Performance counter stats for 'workload':
 
-Test with the sleep command shows:
-Output before:
- # ./perf trace -e *sleep sleep 1.234567890
-     0.000 (1234.681 ms): sleep/63114 clock_nanosleep(rqtp: \
-         { .tv_sec: 0, .tv_nsec: 0 }, rmtp: 0x3ffe0979720) = 0
- #
+        68,745,426      PM_CMPL_STALL                    #     0.21 COMPLETION_STALL_CPI
+         7,692,827      PM_ISSUE_STALL                   #     0.02 ISSUE_STALL_CPI
+       322,638,223      PM_RUN_INST_CMPL                 #     0.05 DISPATCH_STALL_CPI
+                                                  #     0.48 EXECUTION_STALL_CPI
+        16,858,553      PM_DISP_STALL_CYC
+       153,880,133      PM_EXEC_STALL
 
-Output after:
- # ./perf trace -e *sleep sleep 1.234567890
-     0.000 (1234.686 ms): sleep/64277 clock_nanosleep(rqtp: \
-         { .tv_sec: 1, .tv_nsec: 234567890 }, rmtp: 0x3fff3df9ea0) = 0
- #
+       0.089774592 seconds time elapsed
 
-Fixes: 14e4b9f4289a ("perf trace: Raw augmented syscalls fix libbpf 1.0+ compatibility")
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Co-developed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: gor@linux.ibm.com
-Cc: hca@linux.ibm.com
-Cc: sumanthk@linux.ibm.com
-Cc: svens@linux.ibm.com
-Link: https://lore.kernel.org/r/20231019082642.3286650-1-tmricht@linux.ibm.com
+"--metric-no-group" is used for forcing PM_RUN_INST_CMPL to be scheduled
+in all group for more accuracy.
+
+Fixes: 7d473f475b2a ("perf vendor events: Move JSON/events to appropriate files for power10 platform")
+Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Tested-by: Disha Goel<disgoel@linux.ibm.com>
+Cc: maddy@linux.ibm.com
+Link: https://lore.kernel.org/r/20231016143110.244255-1-kjain@linux.ibm.com
 Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/examples/bpf/augmented_raw_syscalls.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tools/perf/pmu-events/arch/powerpc/power10/pmc.json | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/examples/bpf/augmented_raw_syscalls.c b/tools/perf/examples/bpf/augmented_raw_syscalls.c
-index 9a03189d33d38..74fa9e642b424 100644
---- a/tools/perf/examples/bpf/augmented_raw_syscalls.c
-+++ b/tools/perf/examples/bpf/augmented_raw_syscalls.c
-@@ -147,7 +147,7 @@ static inline
- unsigned int augmented_arg__read_str(struct augmented_arg *augmented_arg, const void *arg, unsigned int arg_len)
- {
- 	unsigned int augmented_len = sizeof(*augmented_arg);
--	int string_len = bpf_probe_read_str(&augmented_arg->value, arg_len, arg);
-+	int string_len = bpf_probe_read_user_str(&augmented_arg->value, arg_len, arg);
- 
- 	augmented_arg->size = augmented_arg->err = 0;
- 	/*
-@@ -196,7 +196,7 @@ int sys_enter_connect(struct syscall_enter_args *args)
- 	if (socklen > sizeof(augmented_args->saddr))
- 		socklen = sizeof(augmented_args->saddr);
- 
--	bpf_probe_read(&augmented_args->saddr, socklen, sockaddr_arg);
-+	bpf_probe_read_user(&augmented_args->saddr, socklen, sockaddr_arg);
- 
- 	return augmented__output(args, augmented_args, len + socklen);
- }
-@@ -215,7 +215,7 @@ int sys_enter_sendto(struct syscall_enter_args *args)
- 	if (socklen > sizeof(augmented_args->saddr))
- 		socklen = sizeof(augmented_args->saddr);
- 
--	bpf_probe_read(&augmented_args->saddr, socklen, sockaddr_arg);
-+	bpf_probe_read_user(&augmented_args->saddr, socklen, sockaddr_arg);
- 
- 	return augmented__output(args, augmented_args, len + socklen);
- }
-@@ -305,7 +305,7 @@ int sys_enter_perf_event_open(struct syscall_enter_args *args)
-         if (augmented_args == NULL)
- 		goto failure;
- 
--	if (bpf_probe_read(&augmented_args->__data, sizeof(*attr), attr) < 0)
-+	if (bpf_probe_read_user(&augmented_args->__data, sizeof(*attr), attr) < 0)
- 		goto failure;
- 
- 	attr_read = (const struct perf_event_attr_size *)augmented_args->__data;
-@@ -319,7 +319,7 @@ int sys_enter_perf_event_open(struct syscall_enter_args *args)
-                 goto failure;
- 
- 	// Now that we read attr->size and tested it against the size limits, read it completely
--	if (bpf_probe_read(&augmented_args->__data, size, attr) < 0)
-+	if (bpf_probe_read_user(&augmented_args->__data, size, attr) < 0)
- 		goto failure;
- 
- 	return augmented__output(args, augmented_args, len + size);
-@@ -341,7 +341,7 @@ int sys_enter_clock_nanosleep(struct syscall_enter_args *args)
- 	if (size > sizeof(augmented_args->__data))
-                 goto failure;
- 
--	bpf_probe_read(&augmented_args->__data, size, rqtp_arg);
-+	bpf_probe_read_user(&augmented_args->__data, size, rqtp_arg);
- 
- 	return augmented__output(args, augmented_args, len + size);
- failure:
-@@ -380,7 +380,7 @@ int sys_enter(struct syscall_enter_args *args)
- 	if (augmented_args == NULL)
- 		return 1;
- 
--	bpf_probe_read(&augmented_args->args, sizeof(augmented_args->args), args);
-+	bpf_probe_read_kernel(&augmented_args->args, sizeof(augmented_args->args), args);
- 
- 	/*
- 	 * Jump to syscall specific augmenter, even if the default one,
-@@ -401,7 +401,7 @@ int sys_exit(struct syscall_exit_args *args)
- 	if (pid_filter__has(&pids_filtered, getpid()))
- 		return 0;
- 
--	bpf_probe_read(&exit_args, sizeof(exit_args), args);
-+	bpf_probe_read_kernel(&exit_args, sizeof(exit_args), args);
- 	/*
- 	 * Jump to syscall specific return augmenter, even if the default one,
- 	 * "!raw_syscalls:unaugmented" that will just return 1 to return the
+diff --git a/tools/perf/pmu-events/arch/powerpc/power10/pmc.json b/tools/perf/pmu-events/arch/powerpc/power10/pmc.json
+index c606ae03cd27d..0e0253d0e7577 100644
+--- a/tools/perf/pmu-events/arch/powerpc/power10/pmc.json
++++ b/tools/perf/pmu-events/arch/powerpc/power10/pmc.json
+@@ -195,7 +195,7 @@
+     "BriefDescription": "Threshold counter exceeded a value of 128."
+   },
+   {
+-    "EventCode": "0x400FA",
++    "EventCode": "0x500FA",
+     "EventName": "PM_RUN_INST_CMPL",
+     "BriefDescription": "PowerPC instruction completed while the run latch is set."
+   }
 -- 
 2.42.0
 
