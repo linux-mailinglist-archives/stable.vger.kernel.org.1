@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 064FB7ECD62
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5641F7ECB48
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234481AbjKOTgQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47754 "EHLO
+        id S232813AbjKOTVd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234520AbjKOTgM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:12 -0500
+        with ESMTP id S233308AbjKOTVR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1DC1B1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AABC433C9;
-        Wed, 15 Nov 2023 19:36:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6274312C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B5FC433C8;
+        Wed, 15 Nov 2023 19:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076969;
-        bh=NV7ySFvpTLUF9fyCJMsbzdbVb7cv4oT9Dw/D4WYOCG0=;
+        s=korg; t=1700076071;
+        bh=b2E7ujHk+P0vsJ+3JAsm0h3bqs/SmTvAQu0bbbamKsc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iuP/Fvg+8HjFeqDW2i6n/xMa0tGg/TTtRdAD7CB+GUxVHEmUbgQrQJ8VYsDePRcNf
-         /NBUfY/BfXvck762GA+Vk2Ext0aqEj1cphRxAUt5frQ0RRSPzlTuM32KptsspDUEEt
-         h8b83dbEceZaxTctlHuK3ePYUxw7YcJiNjiMqEOQ=
+        b=ovkKceUZrf2A9X8cXKcI8mnLxz4iy6Bu2uUpsXThQT1xTy7JR2ubyCKWuypsEYP1N
+         JTGpHL1rWX058egwDidC9qZQfiVxVRTM9IP+drkkW6hJZYyZAq93SXyymZ45o/U4J/
+         jU6+2AcpiI7WWxhGy1uWlhx6Keeni4UlsIjkoyj4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Namhyung Kim <namhyung@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 069/603] tipc: Use size_add() in calls to struct_size()
-Date:   Wed, 15 Nov 2023 14:10:14 -0500
-Message-ID: <20231115191617.884499129@linuxfoundation.org>
+Subject: [PATCH 6.5 031/550] perf: Optimize perf_cgroup_switch()
+Date:   Wed, 15 Nov 2023 14:10:15 -0500
+Message-ID: <20231115191602.868021407@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +50,372 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 2506a91734754de690869824fb0d1ac592ec1266 ]
+[ Upstream commit f06cc667f79909e9175460b167c277b7c64d3df0 ]
 
-If, for any reason, the open-coded arithmetic causes a wraparound,
-the protection that `struct_size()` adds against potential integer
-overflows is defeated. Fix this by hardening call to `struct_size()`
-with `size_add()`.
+Namhyung reported that bd2756811766 ("perf: Rewrite core context handling")
+regresses context switch overhead when perf-cgroup is in use together
+with 'slow' PMUs like uncore.
 
-Fixes: e034c6d23bc4 ("tipc: Use struct_size() helper")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Specifically, perf_cgroup_switch()'s perf_ctx_disable() /
+ctx_sched_out() etc.. all iterate the full list of active PMUs for
+that CPU, even if they don't have cgroup events.
+
+Previously there was cgrp_cpuctx_list which linked the relevant PMUs
+together, but that got lost in the rework. Instead of re-instruducing
+a similar list, let the perf_event_pmu_context iteration skip those
+that do not have cgroup events. This avoids growing multiple versions
+of the perf_event_pmu_context iteration.
+
+Measured performance (on a slightly different patch):
+
+Before)
+
+  $ taskset -c 0 ./perf bench sched pipe -l 10000 -G AAA,BBB
+  # Running 'sched/pipe' benchmark:
+  # Executed 10000 pipe operations between two processes
+
+       Total time: 0.901 [sec]
+
+        90.128700 usecs/op
+            11095 ops/sec
+
+After)
+
+  $ taskset -c 0 ./perf bench sched pipe -l 10000 -G AAA,BBB
+  # Running 'sched/pipe' benchmark:
+  # Executed 10000 pipe operations between two processes
+
+       Total time: 0.065 [sec]
+
+         6.560100 usecs/op
+           152436 ops/sec
+
+Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Reported-by: Namhyung Kim <namhyung@kernel.org>
+Debugged-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20231009210425.GC6307@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/link.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/perf_event.h |   1 +
+ kernel/events/core.c       | 115 +++++++++++++++++++------------------
+ 2 files changed, 61 insertions(+), 55 deletions(-)
 
-diff --git a/net/tipc/link.c b/net/tipc/link.c
-index e33b4f29f77cf..d0143823658d5 100644
---- a/net/tipc/link.c
-+++ b/net/tipc/link.c
-@@ -1446,7 +1446,7 @@ u16 tipc_get_gap_ack_blks(struct tipc_gap_ack_blks **ga, struct tipc_link *l,
- 		p = (struct tipc_gap_ack_blks *)msg_data(hdr);
- 		sz = ntohs(p->len);
- 		/* Sanity check */
--		if (sz == struct_size(p, gacks, p->ugack_cnt + p->bgack_cnt)) {
-+		if (sz == struct_size(p, gacks, size_add(p->ugack_cnt, p->bgack_cnt))) {
- 			/* Good, check if the desired type exists */
- 			if ((uc && p->ugack_cnt) || (!uc && p->bgack_cnt))
- 				goto ok;
-@@ -1533,7 +1533,7 @@ static u16 tipc_build_gap_ack_blks(struct tipc_link *l, struct tipc_msg *hdr)
- 			__tipc_build_gap_ack_blks(ga, l, ga->bgack_cnt) : 0;
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index 227e9d45f61b6..e7afd0dd8a3d1 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -879,6 +879,7 @@ struct perf_event_pmu_context {
+ 	unsigned int			embedded : 1;
  
- 	/* Total len */
--	len = struct_size(ga, gacks, ga->bgack_cnt + ga->ugack_cnt);
-+	len = struct_size(ga, gacks, size_add(ga->bgack_cnt, ga->ugack_cnt));
- 	ga->len = htons(len);
- 	return len;
+ 	unsigned int			nr_events;
++	unsigned int			nr_cgroups;
+ 
+ 	atomic_t			refcount; /* event <-> epc */
+ 	struct rcu_head			rcu_head;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index f2f4d2b3beee0..e66398c9ffe05 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -375,6 +375,7 @@ enum event_type_t {
+ 	EVENT_TIME = 0x4,
+ 	/* see ctx_resched() for details */
+ 	EVENT_CPU = 0x8,
++	EVENT_CGROUP = 0x10,
+ 	EVENT_ALL = EVENT_FLEXIBLE | EVENT_PINNED,
+ };
+ 
+@@ -684,20 +685,26 @@ do {									\
+ 	___p;								\
+ })
+ 
+-static void perf_ctx_disable(struct perf_event_context *ctx)
++static void perf_ctx_disable(struct perf_event_context *ctx, bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		perf_pmu_disable(pmu_ctx->pmu);
++	}
  }
+ 
+-static void perf_ctx_enable(struct perf_event_context *ctx)
++static void perf_ctx_enable(struct perf_event_context *ctx, bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		perf_pmu_enable(pmu_ctx->pmu);
++	}
+ }
+ 
+ static void ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type);
+@@ -856,9 +863,9 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 		return;
+ 
+ 	perf_ctx_lock(cpuctx, cpuctx->task_ctx);
+-	perf_ctx_disable(&cpuctx->ctx);
++	perf_ctx_disable(&cpuctx->ctx, true);
+ 
+-	ctx_sched_out(&cpuctx->ctx, EVENT_ALL);
++	ctx_sched_out(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
+ 	/*
+ 	 * must not be done before ctxswout due
+ 	 * to update_cgrp_time_from_cpuctx() in
+@@ -870,9 +877,9 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	 * perf_cgroup_set_timestamp() in ctx_sched_in()
+ 	 * to not have to pass task around
+ 	 */
+-	ctx_sched_in(&cpuctx->ctx, EVENT_ALL);
++	ctx_sched_in(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
+ 
+-	perf_ctx_enable(&cpuctx->ctx);
++	perf_ctx_enable(&cpuctx->ctx, true);
+ 	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
+ }
+ 
+@@ -965,6 +972,8 @@ perf_cgroup_event_enable(struct perf_event *event, struct perf_event_context *ct
+ 	if (!is_cgroup_event(event))
+ 		return;
+ 
++	event->pmu_ctx->nr_cgroups++;
++
+ 	/*
+ 	 * Because cgroup events are always per-cpu events,
+ 	 * @ctx == &cpuctx->ctx.
+@@ -985,6 +994,8 @@ perf_cgroup_event_disable(struct perf_event *event, struct perf_event_context *c
+ 	if (!is_cgroup_event(event))
+ 		return;
+ 
++	event->pmu_ctx->nr_cgroups--;
++
+ 	/*
+ 	 * Because cgroup events are always per-cpu events,
+ 	 * @ctx == &cpuctx->ctx.
+@@ -2679,9 +2690,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
+ 
+ 	event_type &= EVENT_ALL;
+ 
+-	perf_ctx_disable(&cpuctx->ctx);
++	perf_ctx_disable(&cpuctx->ctx, false);
+ 	if (task_ctx) {
+-		perf_ctx_disable(task_ctx);
++		perf_ctx_disable(task_ctx, false);
+ 		task_ctx_sched_out(task_ctx, event_type);
+ 	}
+ 
+@@ -2699,9 +2710,9 @@ static void ctx_resched(struct perf_cpu_context *cpuctx,
+ 
+ 	perf_event_sched_in(cpuctx, task_ctx);
+ 
+-	perf_ctx_enable(&cpuctx->ctx);
++	perf_ctx_enable(&cpuctx->ctx, false);
+ 	if (task_ctx)
+-		perf_ctx_enable(task_ctx);
++		perf_ctx_enable(task_ctx, false);
+ }
+ 
+ void perf_pmu_resched(struct pmu *pmu)
+@@ -3246,6 +3257,9 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
+ 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	struct perf_event_pmu_context *pmu_ctx;
+ 	int is_active = ctx->is_active;
++	bool cgroup = event_type & EVENT_CGROUP;
++
++	event_type &= ~EVENT_CGROUP;
+ 
+ 	lockdep_assert_held(&ctx->lock);
+ 
+@@ -3292,8 +3306,11 @@ ctx_sched_out(struct perf_event_context *ctx, enum event_type_t event_type)
+ 
+ 	is_active ^= ctx->is_active; /* changed bits */
+ 
+-	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry)
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
+ 		__pmu_ctx_sched_out(pmu_ctx, is_active);
++	}
+ }
+ 
+ /*
+@@ -3484,7 +3501,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
+ 		raw_spin_lock_nested(&next_ctx->lock, SINGLE_DEPTH_NESTING);
+ 		if (context_equiv(ctx, next_ctx)) {
+ 
+-			perf_ctx_disable(ctx);
++			perf_ctx_disable(ctx, false);
+ 
+ 			/* PMIs are disabled; ctx->nr_pending is stable. */
+ 			if (local_read(&ctx->nr_pending) ||
+@@ -3504,7 +3521,7 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
+ 			perf_ctx_sched_task_cb(ctx, false);
+ 			perf_event_swap_task_ctx_data(ctx, next_ctx);
+ 
+-			perf_ctx_enable(ctx);
++			perf_ctx_enable(ctx, false);
+ 
+ 			/*
+ 			 * RCU_INIT_POINTER here is safe because we've not
+@@ -3528,13 +3545,13 @@ perf_event_context_sched_out(struct task_struct *task, struct task_struct *next)
+ 
+ 	if (do_switch) {
+ 		raw_spin_lock(&ctx->lock);
+-		perf_ctx_disable(ctx);
++		perf_ctx_disable(ctx, false);
+ 
+ inside_switch:
+ 		perf_ctx_sched_task_cb(ctx, false);
+ 		task_ctx_sched_out(ctx, EVENT_ALL);
+ 
+-		perf_ctx_enable(ctx);
++		perf_ctx_enable(ctx, false);
+ 		raw_spin_unlock(&ctx->lock);
+ 	}
+ }
+@@ -3820,47 +3837,32 @@ static int merge_sched_in(struct perf_event *event, void *data)
+ 	return 0;
+ }
+ 
+-static void ctx_pinned_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void pmu_groups_sched_in(struct perf_event_context *ctx,
++				struct perf_event_groups *groups,
++				struct pmu *pmu)
+ {
+-	struct perf_event_pmu_context *pmu_ctx;
+ 	int can_add_hw = 1;
+-
+-	if (pmu) {
+-		visit_groups_merge(ctx, &ctx->pinned_groups,
+-				   smp_processor_id(), pmu,
+-				   merge_sched_in, &can_add_hw);
+-	} else {
+-		list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
+-			can_add_hw = 1;
+-			visit_groups_merge(ctx, &ctx->pinned_groups,
+-					   smp_processor_id(), pmu_ctx->pmu,
+-					   merge_sched_in, &can_add_hw);
+-		}
+-	}
++	visit_groups_merge(ctx, groups, smp_processor_id(), pmu,
++			   merge_sched_in, &can_add_hw);
+ }
+ 
+-static void ctx_flexible_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void ctx_groups_sched_in(struct perf_event_context *ctx,
++				struct perf_event_groups *groups,
++				bool cgroup)
+ {
+ 	struct perf_event_pmu_context *pmu_ctx;
+-	int can_add_hw = 1;
+ 
+-	if (pmu) {
+-		visit_groups_merge(ctx, &ctx->flexible_groups,
+-				   smp_processor_id(), pmu,
+-				   merge_sched_in, &can_add_hw);
+-	} else {
+-		list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
+-			can_add_hw = 1;
+-			visit_groups_merge(ctx, &ctx->flexible_groups,
+-					   smp_processor_id(), pmu_ctx->pmu,
+-					   merge_sched_in, &can_add_hw);
+-		}
++	list_for_each_entry(pmu_ctx, &ctx->pmu_ctx_list, pmu_ctx_entry) {
++		if (cgroup && !pmu_ctx->nr_cgroups)
++			continue;
++		pmu_groups_sched_in(ctx, groups, pmu_ctx->pmu);
+ 	}
+ }
+ 
+-static void __pmu_ctx_sched_in(struct perf_event_context *ctx, struct pmu *pmu)
++static void __pmu_ctx_sched_in(struct perf_event_context *ctx,
++			       struct pmu *pmu)
+ {
+-	ctx_flexible_sched_in(ctx, pmu);
++	pmu_groups_sched_in(ctx, &ctx->flexible_groups, pmu);
+ }
+ 
+ static void
+@@ -3868,6 +3870,9 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
+ {
+ 	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	int is_active = ctx->is_active;
++	bool cgroup = event_type & EVENT_CGROUP;
++
++	event_type &= ~EVENT_CGROUP;
+ 
+ 	lockdep_assert_held(&ctx->lock);
+ 
+@@ -3900,11 +3905,11 @@ ctx_sched_in(struct perf_event_context *ctx, enum event_type_t event_type)
+ 	 * in order to give them the best chance of going on.
+ 	 */
+ 	if (is_active & EVENT_PINNED)
+-		ctx_pinned_sched_in(ctx, NULL);
++		ctx_groups_sched_in(ctx, &ctx->pinned_groups, cgroup);
+ 
+ 	/* Then walk through the lower prio flexible groups */
+ 	if (is_active & EVENT_FLEXIBLE)
+-		ctx_flexible_sched_in(ctx, NULL);
++		ctx_groups_sched_in(ctx, &ctx->flexible_groups, cgroup);
+ }
+ 
+ static void perf_event_context_sched_in(struct task_struct *task)
+@@ -3919,11 +3924,11 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 
+ 	if (cpuctx->task_ctx == ctx) {
+ 		perf_ctx_lock(cpuctx, ctx);
+-		perf_ctx_disable(ctx);
++		perf_ctx_disable(ctx, false);
+ 
+ 		perf_ctx_sched_task_cb(ctx, true);
+ 
+-		perf_ctx_enable(ctx);
++		perf_ctx_enable(ctx, false);
+ 		perf_ctx_unlock(cpuctx, ctx);
+ 		goto rcu_unlock;
+ 	}
+@@ -3936,7 +3941,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	if (!ctx->nr_events)
+ 		goto unlock;
+ 
+-	perf_ctx_disable(ctx);
++	perf_ctx_disable(ctx, false);
+ 	/*
+ 	 * We want to keep the following priority order:
+ 	 * cpu pinned (that don't need to move), task pinned,
+@@ -3946,7 +3951,7 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	 * events, no need to flip the cpuctx's events around.
+ 	 */
+ 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree)) {
+-		perf_ctx_disable(&cpuctx->ctx);
++		perf_ctx_disable(&cpuctx->ctx, false);
+ 		ctx_sched_out(&cpuctx->ctx, EVENT_FLEXIBLE);
+ 	}
+ 
+@@ -3955,9 +3960,9 @@ static void perf_event_context_sched_in(struct task_struct *task)
+ 	perf_ctx_sched_task_cb(cpuctx->task_ctx, true);
+ 
+ 	if (!RB_EMPTY_ROOT(&ctx->pinned_groups.tree))
+-		perf_ctx_enable(&cpuctx->ctx);
++		perf_ctx_enable(&cpuctx->ctx, false);
+ 
+-	perf_ctx_enable(ctx);
++	perf_ctx_enable(ctx, false);
+ 
+ unlock:
+ 	perf_ctx_unlock(cpuctx, ctx);
 -- 
 2.42.0
 
