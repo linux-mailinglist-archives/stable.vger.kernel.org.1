@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 340247ECB20
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C30E17ECD33
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjKOTUS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:20:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56722 "EHLO
+        id S234389AbjKOTfC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:35:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230224AbjKOTUR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:17 -0500
+        with ESMTP id S234370AbjKOTfA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E70C319E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AE1C433C7;
-        Wed, 15 Nov 2023 19:20:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D29919E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9291DC433CB;
+        Wed, 15 Nov 2023 19:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076013;
-        bh=fEUFCngFyN1dWVLNIqm/1CsUWjBqghaHILFwtH/L7JI=;
+        s=korg; t=1700076896;
+        bh=ArMOTo3XroasB7Xp+icAu2/gySThlA3z/eP3cwSOQuI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EMCxzXpzuuyRUV2BeqM4OdzJfFIVlV/8qqUlX3MchJHYvZHQi/E9FSo3Euqi6onTB
-         YnJyq1LbcJQSFGffLLPW1gIxIkb57RiygoLINUpCBYcuNp9mUEPd5orrnJjodWUnR+
-         L22lrxMZd4xOtkDToFD0LsXMtArCeCoUwpZzdbeI=
+        b=ydHU9tsm3oZeClT3bAd2PMevVQL6aUdhXO99ABZVml/ustSG/giNgkAMIs2fEaKYq
+         vDY4/1no0iq1YaN5x+k/t08hOuPkBcENMoG6vG9CORRegztYId9eo45HB41MprjnUk
+         f3rCiiXcnlLx5cuD6rEmbmJOFdtrWJxEpxJUXxVI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Derick Marks <derick.w.marks@intel.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 020/550] ACPI/NUMA: Apply SRAT proximity domain to entire CFMWS window
-Date:   Wed, 15 Nov 2023 14:10:04 -0500
-Message-ID: <20231115191602.120300069@linuxfoundation.org>
+Subject: [PATCH 6.6 060/603] udp: annotate data-races around udp->encap_type
+Date:   Wed, 15 Nov 2023 14:10:05 -0500
+Message-ID: <20231115191617.277433799@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,75 +52,207 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8f1004679987302b155f14b966ca6d4335814fcb ]
+[ Upstream commit 70a36f571362a8de8b8c02d21ae524fc776287f2 ]
 
-Commit fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each
-CFMWS not in SRAT") did not account for the case where the BIOS
-only partially describes a CFMWS Window in the SRAT. That means
-the omitted address ranges, of a partially described CFMWS Window,
-do not get assigned to a NUMA node.
+syzbot/KCSAN complained about UDP_ENCAP_L2TPINUDP setsockopt() racing.
 
-Replace the call to phys_to_target_node() with numa_add_memblks().
-Numa_add_memblks() searches an HPA range for existing memblk(s)
-and extends those memblk(s) to fill the entire CFMWS Window.
+Add READ_ONCE()/WRITE_ONCE() to document races on this lockless field.
 
-Extending the existing memblks is a simple strategy that reuses
-SRAT defined proximity domains from part of a window to fill out
-the entire window, based on the knowledge* that all of a CFMWS
-window is of a similar performance class.
+syzbot report was:
+BUG: KCSAN: data-race in udp_lib_setsockopt / udp_lib_setsockopt
 
-*Note that this heuristic will evolve when CFMWS Windows present
-a wider range of characteristics. The extension of the proximity
-domain, implemented here, is likely a step in developing a more
-sophisticated performance profile in the future.
+read-write to 0xffff8881083603fa of 1 bytes by task 16557 on cpu 0:
+udp_lib_setsockopt+0x682/0x6c0
+udp_setsockopt+0x73/0xa0 net/ipv4/udp.c:2779
+sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
+__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
+__do_sys_setsockopt net/socket.c:2274 [inline]
+__se_sys_setsockopt net/socket.c:2271 [inline]
+__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-There is no change in behavior when the SRAT does not describe
-the CFMWS Window at all. In that case, a new NUMA node with a
-single memblk covering the entire CFMWS Window is created.
+read-write to 0xffff8881083603fa of 1 bytes by task 16554 on cpu 1:
+udp_lib_setsockopt+0x682/0x6c0
+udp_setsockopt+0x73/0xa0 net/ipv4/udp.c:2779
+sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
+__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
+__do_sys_setsockopt net/socket.c:2274 [inline]
+__se_sys_setsockopt net/socket.c:2271 [inline]
+__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Fixes: fd49f99c1809 ("ACPI: NUMA: Add a node and memblk for each CFMWS not in SRAT")
-Reported-by: Derick Marks <derick.w.marks@intel.com>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Tested-by: Derick Marks <derick.w.marks@intel.com>
-Link: https://lore.kernel.org/all/eaa0b7cffb0951a126223eef3cbe7b55b8300ad9.1689018477.git.alison.schofield%40intel.com
+value changed: 0x01 -> 0x05
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 16554 Comm: syz-executor.5 Not tainted 6.5.0-rc7-syzkaller-00004-gf7757129e3de #0
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/numa/srat.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/gtp.c      | 4 ++--
+ net/ipv4/udp.c         | 9 +++++----
+ net/ipv4/xfrm4_input.c | 4 ++--
+ net/ipv6/udp.c         | 5 +++--
+ net/ipv6/xfrm6_input.c | 4 ++--
+ net/l2tp/l2tp_core.c   | 6 +++---
+ 6 files changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
-index 1f4fc5f8a819d..12f330b0eac01 100644
---- a/drivers/acpi/numa/srat.c
-+++ b/drivers/acpi/numa/srat.c
-@@ -310,11 +310,16 @@ static int __init acpi_parse_cfmws(union acpi_subtable_headers *header,
- 	start = cfmws->base_hpa;
- 	end = cfmws->base_hpa + cfmws->window_size;
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index b22596b18ee8c..b1919278e931f 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -630,7 +630,7 @@ static void __gtp_encap_destroy(struct sock *sk)
+ 			gtp->sk0 = NULL;
+ 		else
+ 			gtp->sk1u = NULL;
+-		udp_sk(sk)->encap_type = 0;
++		WRITE_ONCE(udp_sk(sk)->encap_type, 0);
+ 		rcu_assign_sk_user_data(sk, NULL);
+ 		release_sock(sk);
+ 		sock_put(sk);
+@@ -682,7 +682,7 @@ static int gtp_encap_recv(struct sock *sk, struct sk_buff *skb)
  
--	/* Skip if the SRAT already described the NUMA details for this HPA */
--	node = phys_to_target_node(start);
--	if (node != NUMA_NO_NODE)
-+	/*
-+	 * The SRAT may have already described NUMA details for all,
-+	 * or a portion of, this CFMWS HPA range. Extend the memblks
-+	 * found for any portion of the window to cover the entire
-+	 * window.
-+	 */
-+	if (!numa_fill_memblks(start, end))
- 		return 0;
+ 	netdev_dbg(gtp->dev, "encap_recv sk=%p\n", sk);
  
-+	/* No SRAT description. Create a new node. */
- 	node = acpi_map_pxm_to_node(*fake_pxm);
+-	switch (udp_sk(sk)->encap_type) {
++	switch (READ_ONCE(udp_sk(sk)->encap_type)) {
+ 	case UDP_ENCAP_GTP0:
+ 		netdev_dbg(gtp->dev, "received GTP0 packet\n");
+ 		ret = gtp0_udp_encap_recv(gtp, skb);
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 637a4faf9aff6..2eeab4af17a13 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -714,7 +714,7 @@ int __udp4_lib_err(struct sk_buff *skb, u32 info, struct udp_table *udptable)
+ 			       iph->saddr, uh->source, skb->dev->ifindex,
+ 			       inet_sdif(skb), udptable, NULL);
  
- 	if (node == NUMA_NO_NODE) {
+-	if (!sk || udp_sk(sk)->encap_type) {
++	if (!sk || READ_ONCE(udp_sk(sk)->encap_type)) {
+ 		/* No socket for error: try tunnels before discarding */
+ 		if (static_branch_unlikely(&udp_encap_needed_key)) {
+ 			sk = __udp4_lib_err_encap(net, iph, uh, udptable, sk, skb,
+@@ -2081,7 +2081,8 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 	}
+ 	nf_reset_ct(skb);
+ 
+-	if (static_branch_unlikely(&udp_encap_needed_key) && up->encap_type) {
++	if (static_branch_unlikely(&udp_encap_needed_key) &&
++	    READ_ONCE(up->encap_type)) {
+ 		int (*encap_rcv)(struct sock *sk, struct sk_buff *skb);
+ 
+ 		/*
+@@ -2684,7 +2685,7 @@ int udp_lib_setsockopt(struct sock *sk, int level, int optname,
+ #endif
+ 			fallthrough;
+ 		case UDP_ENCAP_L2TPINUDP:
+-			up->encap_type = val;
++			WRITE_ONCE(up->encap_type, val);
+ 			udp_tunnel_encap_enable(sk);
+ 			break;
+ 		default:
+@@ -2785,7 +2786,7 @@ int udp_lib_getsockopt(struct sock *sk, int level, int optname,
+ 		break;
+ 
+ 	case UDP_ENCAP:
+-		val = up->encap_type;
++		val = READ_ONCE(up->encap_type);
+ 		break;
+ 
+ 	case UDP_NO_CHECK6_TX:
+diff --git a/net/ipv4/xfrm4_input.c b/net/ipv4/xfrm4_input.c
+index eac206a290d05..183f6dc372429 100644
+--- a/net/ipv4/xfrm4_input.c
++++ b/net/ipv4/xfrm4_input.c
+@@ -85,11 +85,11 @@ int xfrm4_udp_encap_rcv(struct sock *sk, struct sk_buff *skb)
+ 	struct udphdr *uh;
+ 	struct iphdr *iph;
+ 	int iphlen, len;
+-
+ 	__u8 *udpdata;
+ 	__be32 *udpdata32;
+-	__u16 encap_type = up->encap_type;
++	u16 encap_type;
+ 
++	encap_type = READ_ONCE(up->encap_type);
+ 	/* if this is not encapsulated socket, then just return now */
+ 	if (!encap_type)
+ 		return 1;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 90688877e9004..0e79d189613be 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -571,7 +571,7 @@ int __udp6_lib_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 	sk = __udp6_lib_lookup(net, daddr, uh->dest, saddr, uh->source,
+ 			       inet6_iif(skb), inet6_sdif(skb), udptable, NULL);
+ 
+-	if (!sk || udp_sk(sk)->encap_type) {
++	if (!sk || READ_ONCE(udp_sk(sk)->encap_type)) {
+ 		/* No socket for error: try tunnels before discarding */
+ 		if (static_branch_unlikely(&udpv6_encap_needed_key)) {
+ 			sk = __udp6_lib_err_encap(net, hdr, offset, uh,
+@@ -688,7 +688,8 @@ static int udpv6_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 	}
+ 	nf_reset_ct(skb);
+ 
+-	if (static_branch_unlikely(&udpv6_encap_needed_key) && up->encap_type) {
++	if (static_branch_unlikely(&udpv6_encap_needed_key) &&
++	    READ_ONCE(up->encap_type)) {
+ 		int (*encap_rcv)(struct sock *sk, struct sk_buff *skb);
+ 
+ 		/*
+diff --git a/net/ipv6/xfrm6_input.c b/net/ipv6/xfrm6_input.c
+index 4907ab241d6be..4156387248e40 100644
+--- a/net/ipv6/xfrm6_input.c
++++ b/net/ipv6/xfrm6_input.c
+@@ -81,14 +81,14 @@ int xfrm6_udp_encap_rcv(struct sock *sk, struct sk_buff *skb)
+ 	struct ipv6hdr *ip6h;
+ 	int len;
+ 	int ip6hlen = sizeof(struct ipv6hdr);
+-
+ 	__u8 *udpdata;
+ 	__be32 *udpdata32;
+-	__u16 encap_type = up->encap_type;
++	u16 encap_type;
+ 
+ 	if (skb->protocol == htons(ETH_P_IP))
+ 		return xfrm4_udp_encap_rcv(sk, skb);
+ 
++	encap_type = READ_ONCE(up->encap_type);
+ 	/* if this is not encapsulated socket, then just return now */
+ 	if (!encap_type)
+ 		return 1;
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 03608d3ded4b8..8d21ff25f1602 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -1139,9 +1139,9 @@ static void l2tp_tunnel_destruct(struct sock *sk)
+ 	switch (tunnel->encap) {
+ 	case L2TP_ENCAPTYPE_UDP:
+ 		/* No longer an encapsulation socket. See net/ipv4/udp.c */
+-		(udp_sk(sk))->encap_type = 0;
+-		(udp_sk(sk))->encap_rcv = NULL;
+-		(udp_sk(sk))->encap_destroy = NULL;
++		WRITE_ONCE(udp_sk(sk)->encap_type, 0);
++		udp_sk(sk)->encap_rcv = NULL;
++		udp_sk(sk)->encap_destroy = NULL;
+ 		break;
+ 	case L2TP_ENCAPTYPE_IP:
+ 		break;
 -- 
 2.42.0
 
