@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3E797ECF1A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C049B7ECC7C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235221AbjKOTqX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35636 "EHLO
+        id S233997AbjKOTaq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235232AbjKOTqX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:23 -0500
+        with ESMTP id S233992AbjKOTap (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:45 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14E051A8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F8FC433C8;
-        Wed, 15 Nov 2023 19:46:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A34A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:42 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD7AC433C9;
+        Wed, 15 Nov 2023 19:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077579;
-        bh=BFlGpTbMS3O4x/OZiJYLMtjEkptCaQAGnlNdkKk0zl0=;
+        s=korg; t=1700076642;
+        bh=D19gDffhUXnxjKbZIin2HwBgQ/KPAdcOSBeYSUgzWzk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OgrDL8ssdgN2JH52EnVaUW4x+P/B1z/XhQyoOvSHhhuwzYEdVIDgxUrbZqrqsHcEa
-         0n2k/CJgX49ezna52nZGY+b4qFujD4xXkgdkN9kP9NNqzwbD2zqm6Hyeh9siLwWNwT
-         QdhF5uK2DtoM3f67DKkukkeIHWHqnsXo2pZAf4KM=
+        b=tRD7tuFue72kGtzJCID47dag/y71P5J322QwaGGDqti0YSKgVMnr8jxdMiZd7EHiZ
+         jMAsnD1oPgcDB2b0EVl6jdfCARgG4dkHN0RmYBbpstsglJOcfq3jPNJq1RI5j6t1fW
+         EMsMylV8D8jFtgO31gvFY/KQVNhtqhz/j3Sk8+m4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 371/603] fs: dlm: Fix the size of a buffer in dlm_create_debug_file()
+        patches@lists.linux.dev, Russell King <rmk+kernel@armlinux.org.uk>,
+        Stefan Wahren <wahrenst@gmx.net>,
+        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 332/550] ARM: 9323/1: mm: Fix ARCH_LOW_ADDRESS_LIMIT when CONFIG_ZONE_DMA
 Date:   Wed, 15 Nov 2023 14:15:16 -0500
-Message-ID: <20231115191639.185193086@linuxfoundation.org>
+Message-ID: <20231115191623.778806090@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,58 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: wahrenst <wahrenst@gmx.net>
 
-[ Upstream commit b859e01054354033f480d9df41b0ebc2c7537379 ]
+[ Upstream commit 399da29ff5eb3f675c71423bec4cf2208f218576 ]
 
-8 is not the maximum size of the suffix used when creating debugfs files.
+Configuring VMSPLIT_2G + LPAE on Raspberry Pi 4 leads to SWIOTLB
+buffer allocation beyond platform dma_zone_size of SZ_1G, which
+results in broken SD card boot.
 
-Let the compiler compute the correct size, and only give a hint about the
-longest possible string that is used.
+So fix this be setting ARCH_LOW_ADDRESS_LIMIT in CONFIG_ZONE_DMA
+case.
 
-When building with W=1, this fixes the following warnings:
-
-  fs/dlm/debug_fs.c: In function ‘dlm_create_debug_file’:
-  fs/dlm/debug_fs.c:1020:58: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-   1020 |         snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_waiters", ls->ls_name);
-        |                                                          ^
-  fs/dlm/debug_fs.c:1020:9: note: ‘snprintf’ output between 9 and 73 bytes into a destination of size 72
-   1020 |         snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_waiters", ls->ls_name);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  fs/dlm/debug_fs.c:1031:50: error: ‘_queued_asts’ directive output may be truncated writing 12 bytes into a region of size between 8 and 72 [-Werror=format-truncation=]
-   1031 |         snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_queued_asts", ls->ls_name);
-        |                                                  ^~~~~~~~~~~~
-  fs/dlm/debug_fs.c:1031:9: note: ‘snprintf’ output between 13 and 77 bytes into a destination of size 72
-   1031 |         snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_queued_asts", ls->ls_name);
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Fixes: 541adb0d4d10b ("fs: dlm: debugfs for queued callbacks")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Suggested-by: Russell King <rmk+kernel@armlinux.org.uk>
+Fixes: e9faf9b0b07a ("ARM: add multi_v7_lpae_defconfig")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/debug_fs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/include/asm/dma.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
-index 5aabcb6f0f157..fc44ab6657cab 100644
---- a/fs/dlm/debug_fs.c
-+++ b/fs/dlm/debug_fs.c
-@@ -973,7 +973,8 @@ void dlm_delete_debug_comms_file(void *ctx)
+diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
+index c6aded1b069cf..e2a1916013e75 100644
+--- a/arch/arm/include/asm/dma.h
++++ b/arch/arm/include/asm/dma.h
+@@ -12,6 +12,9 @@
+ 	extern phys_addr_t arm_dma_zone_size; \
+ 	arm_dma_zone_size && arm_dma_zone_size < (0x100000000ULL - PAGE_OFFSET) ? \
+ 		(PAGE_OFFSET + arm_dma_zone_size) : 0xffffffffUL; })
++
++extern phys_addr_t arm_dma_limit;
++#define ARCH_LOW_ADDRESS_LIMIT arm_dma_limit
+ #endif
  
- void dlm_create_debug_file(struct dlm_ls *ls)
- {
--	char name[DLM_LOCKSPACE_LEN + 8];
-+	/* Reserve enough space for the longest file name */
-+	char name[DLM_LOCKSPACE_LEN + sizeof("_queued_asts")];
- 
- 	/* format 1 */
- 
+ #ifdef CONFIG_ISA_DMA_API
 -- 
 2.42.0
 
