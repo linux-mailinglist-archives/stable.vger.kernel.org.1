@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5C9C7ECE03
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B1DF7ECFE7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234762AbjKOTj4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47986 "EHLO
+        id S235437AbjKOTv1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234778AbjKOTjy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:54 -0500
+        with ESMTP id S235433AbjKOTvZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A0DB1AC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7987BC433C7;
-        Wed, 15 Nov 2023 19:39:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F785AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1240C433C8;
+        Wed, 15 Nov 2023 19:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077184;
-        bh=cjARZvmyJzmOGEshSXlLVoDS82j2W7CXR3IztwRFVj8=;
+        s=korg; t=1700077882;
+        bh=ghDXs4KtFFFlmQz2TzY7o44FBhB14Q/ubhg2xpvjPTQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wZBp6otgOO8AfHVQ794dEWYRg3mAXI9Qnt/1EzWbaLEZMdG1rIbjY/ZljfZPcEna0
-         pnLN0BhaK+Cya1yeXyDvaXocYjUQ14DsKAwZhKZm3HtjfMqiQof9cgGoDS9MJVfEjr
-         h3MCfOneAAcx3CsiJqRYRPKQZ2wX8giNP4l/4CgE=
+        b=a+JGXAint17FUULvKwxMQZr7+KcF9eGirk0GGZChTGOPEK63xIzooQ+SlPTWMPHyF
+         U4h+zeGBOZkmCnNR0AKtXAOxP3RQF6r38+Cg4dhN0IWRmgPpz+SuzoVqsRvmgUERnB
+         XrYAm+Cql2wOLlbmPsS0hSLuvsCjq8RuOKaSi+DU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 539/550] fbdev: imsttfb: fix a resource leak in probe
+        patches@lists.linux.dev, Diogo Ivo <diogo.ivo@siemens.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 578/603] net: ti: icss-iep: fix setting counter value
 Date:   Wed, 15 Nov 2023 14:18:43 -0500
-Message-ID: <20231115191638.297723363@linuxfoundation.org>
+Message-ID: <20231115191651.439283436@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Diogo Ivo <diogo.ivo@siemens.com>
 
-[ Upstream commit aba6ab57a910ad4b940c2024d15f2cdbf5b7f76b ]
+[ Upstream commit 83b9dda8afa4e968d9cce253f390b01c0612a2a5 ]
 
-I've re-written the error handling but the bug is that if init_imstt()
-fails we need to call iounmap(par->cmap_regs).
+Currently icss_iep_set_counter() writes the upper 32-bits of the
+counter value to both the lower and upper counter registers, so
+fix this by writing the appropriate value to the lower register.
 
-Fixes: c75f5a550610 ("fbdev: imsttfb: Fix use after free bug in imsttfb_probe")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: c1e0230eeaab ("net: ti: icss-iep: Add IEP driver")
+Signed-off-by: Diogo Ivo <diogo.ivo@siemens.com>
+Link: https://lore.kernel.org/r/20231107120037.1513546-1-diogo.ivo@siemens.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/imsttfb.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/ti/icssg/icss_iep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/imsttfb.c b/drivers/video/fbdev/imsttfb.c
-index db7cf995aa784..d2806ba296aa3 100644
---- a/drivers/video/fbdev/imsttfb.c
-+++ b/drivers/video/fbdev/imsttfb.c
-@@ -1495,8 +1495,8 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	if (!request_mem_region(addr, size, "imsttfb")) {
- 		printk(KERN_ERR "imsttfb: Can't reserve memory region\n");
--		framebuffer_release(info);
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto release_info;
- 	}
- 
- 	switch (pdev->device) {
-@@ -1513,36 +1513,39 @@ static int imsttfb_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			printk(KERN_INFO "imsttfb: Device 0x%x unknown, "
- 					 "contact maintainer.\n", pdev->device);
- 			ret = -ENODEV;
--			goto error;
-+			goto release_mem_region;
- 	}
- 
- 	info->fix.smem_start = addr;
- 	info->screen_base = (__u8 *)ioremap(addr, par->ramdac == IBM ?
- 					    0x400000 : 0x800000);
- 	if (!info->screen_base)
--		goto error;
-+		goto release_mem_region;
- 	info->fix.mmio_start = addr + 0x800000;
- 	par->dc_regs = ioremap(addr + 0x800000, 0x1000);
- 	if (!par->dc_regs)
--		goto error;
-+		goto unmap_screen_base;
- 	par->cmap_regs_phys = addr + 0x840000;
- 	par->cmap_regs = (__u8 *)ioremap(addr + 0x840000, 0x1000);
- 	if (!par->cmap_regs)
--		goto error;
-+		goto unmap_dc_regs;
- 	info->pseudo_palette = par->palette;
- 	ret = init_imstt(info);
- 	if (ret)
--		goto error;
-+		goto unmap_cmap_regs;
- 
- 	pci_set_drvdata(pdev, info);
--	return ret;
-+	return 0;
- 
--error:
--	if (par->dc_regs)
--		iounmap(par->dc_regs);
--	if (info->screen_base)
--		iounmap(info->screen_base);
-+unmap_cmap_regs:
-+	iounmap(par->cmap_regs);
-+unmap_dc_regs:
-+	iounmap(par->dc_regs);
-+unmap_screen_base:
-+	iounmap(info->screen_base);
-+release_mem_region:
- 	release_mem_region(addr, size);
-+release_info:
- 	framebuffer_release(info);
- 	return ret;
+diff --git a/drivers/net/ethernet/ti/icssg/icss_iep.c b/drivers/net/ethernet/ti/icssg/icss_iep.c
+index 4cf2a52e43783..3025e9c189702 100644
+--- a/drivers/net/ethernet/ti/icssg/icss_iep.c
++++ b/drivers/net/ethernet/ti/icssg/icss_iep.c
+@@ -177,7 +177,7 @@ static void icss_iep_set_counter(struct icss_iep *iep, u64 ns)
+ 	if (iep->plat_data->flags & ICSS_IEP_64BIT_COUNTER_SUPPORT)
+ 		writel(upper_32_bits(ns), iep->base +
+ 		       iep->plat_data->reg_offs[ICSS_IEP_COUNT_REG1]);
+-	writel(upper_32_bits(ns), iep->base + iep->plat_data->reg_offs[ICSS_IEP_COUNT_REG0]);
++	writel(lower_32_bits(ns), iep->base + iep->plat_data->reg_offs[ICSS_IEP_COUNT_REG0]);
  }
+ 
+ static void icss_iep_update_to_next_boundary(struct icss_iep *iep, u64 start_ns);
 -- 
 2.42.0
 
