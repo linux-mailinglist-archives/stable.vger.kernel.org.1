@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64BA17ECEF3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56BDF7ECC2F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235191AbjKOTpT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36740 "EHLO
+        id S232865AbjKOT1Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235194AbjKOTpR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:17 -0500
+        with ESMTP id S233484AbjKOT1P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:15 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA85AB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:14 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E514C433C8;
-        Wed, 15 Nov 2023 19:45:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2571A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A20C433C9;
+        Wed, 15 Nov 2023 19:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077514;
-        bh=2DUWgx4grdJrUj8PD1+WXQXG5hasAqj8VscrpSQhRBU=;
+        s=korg; t=1700076432;
+        bh=MXLEPo5oRioxu8VuDDFW1MCUWksf3Xbq5UGhFpdiaO4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LsVhW9+K2ehDKakVPORy9mbG5NykDrNRGoWAsYJeggtnrVtv4fZNWx/yQKaiPOkHy
-         JQj8nXyGnZfIU5kfv1yFifGDJ/Q3p0NTvQPKwrOLh4xW2lSpWUvblkBR0AkAquP8al
-         18uTBatkBUxiVWgt1yfO7mE2mu4K6xKR8NZjng1Y=
+        b=ZE+SP62brcoUUMQzUF7pXLDJQ9OSXp6GtopSBkKIbxiT2eknQkmYedqqc339dGWBn
+         qY6cpbSwG1GJWpwzB0FVkfGUQyPkrj3ur4BDhD8Qup20liQimnimvN1bsP73U13RrV
+         YES/u1AYDqUpmkE64RgfYwHl8bMZBAUJph28JsYY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
-        "Wieczor-Retman, Maciej" <maciej.wieczor-retman@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Devarsh Thakkar <devarsht@ti.com>,
+        Aradhya Bhatia <a-bhatia1@ti.com>,
+        Jai Luthra <j-luthra@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 324/603] selftests/resctrl: Ensure the benchmark commands fits to its array
+Subject: [PATCH 6.5 285/550] arm64: dts: ti: k3-am62a7-sk: Drop i2c-1 to 100Khz
 Date:   Wed, 15 Nov 2023 14:14:29 -0500
-Message-ID: <20231115191635.918382478@linuxfoundation.org>
+Message-ID: <20231115191620.547265629@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,54 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit 4a28c7665c2a1ac0400864eabb0c641e135f61aa ]
+[ Upstream commit 63e5aa69b821472a3203a29e17c025329c1b151f ]
 
-Benchmark command is copied into an array in the stack. The array is
-BENCHMARK_ARGS items long but the command line could try to provide a
-longer command. Argument size is also fixed by BENCHMARK_ARG_SIZE (63
-bytes of space after fitting the terminating \0 character) and user
-could have inputted argument longer than that.
+The TLV320AIC3106 audio codec is interfaced on the i2c-1 bus. With the
+default rate of 400Khz the i2c register writes fail to sync:
 
-Return error in case the benchmark command does not fit to the space
-allocated for it.
+[   36.026387] tlv320aic3x 1-001b: Unable to sync registers 0x16-0x16. -110
+[   38.101130] omap_i2c 20010000.i2c: controller timed out
 
-Fixes: ecdbb911f22d ("selftests/resctrl: Add MBM test")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Reviewed-by: "Wieczor-Retman, Maciej" <maciej.wieczor-retman@intel.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Dropping the rate to 100Khz fixes the issue.
+
+Fixes: 38c4a08c820c ("arm64: dts: ti: Add support for AM62A7-SK")
+Reviewed-by: Devarsh Thakkar <devarsht@ti.com>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20231003-mcasp_am62a-v3-3-2b631ff319ca@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/resctrl_tests.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/ti/k3-am62a7-sk.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/resctrl/resctrl_tests.c b/tools/testing/selftests/resctrl/resctrl_tests.c
-index d511daeb6851e..9e2bc8ba95f13 100644
---- a/tools/testing/selftests/resctrl/resctrl_tests.c
-+++ b/tools/testing/selftests/resctrl/resctrl_tests.c
-@@ -255,9 +255,14 @@ int main(int argc, char **argv)
- 		return ksft_exit_skip("Not running as root. Skipping...\n");
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+index ecc0e13331c41..726afa29efe4c 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-am62a7-sk.dts
+@@ -232,7 +232,7 @@ &main_i2c1 {
+ 	status = "okay";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_i2c1_pins_default>;
+-	clock-frequency = <400000>;
++	clock-frequency = <100000>;
  
- 	if (has_ben) {
-+		if (argc - ben_ind >= BENCHMARK_ARGS)
-+			ksft_exit_fail_msg("Too long benchmark command.\n");
-+
- 		/* Extract benchmark command from command line. */
- 		for (i = ben_ind; i < argc; i++) {
- 			benchmark_cmd[i - ben_ind] = benchmark_cmd_area[i];
-+			if (strlen(argv[i]) >= BENCHMARK_ARG_SIZE)
-+				ksft_exit_fail_msg("Too long benchmark command argument.\n");
- 			sprintf(benchmark_cmd[i - ben_ind], "%s", argv[i]);
- 		}
- 		benchmark_cmd[ben_count] = NULL;
+ 	exp1: gpio@22 {
+ 		compatible = "ti,tca6424";
 -- 
 2.42.0
 
