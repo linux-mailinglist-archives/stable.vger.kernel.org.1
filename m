@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 699B47ECE5E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A5A17ECBEA
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235062AbjKOTmj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36130 "EHLO
+        id S233195AbjKOTZR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:25:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234998AbjKOTmi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:38 -0500
+        with ESMTP id S232889AbjKOTZQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CADF19F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00D2C433C9;
-        Wed, 15 Nov 2023 19:42:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05638A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78332C433C8;
+        Wed, 15 Nov 2023 19:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077354;
-        bh=+QUYnvPJsyJnMATk8kQSIwwZWWY/AYzj2vqKUqcNpAU=;
+        s=korg; t=1700076312;
+        bh=wq4nPE+1J6MVuUQ6BNNqK2bRVW3piiFpyLiGpWiEZls=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PYoWTvQS6XX5OUHZ7nYhwPTY+GJKP8TNkGqtCtyf/yF+BBmOw2XXrxiePPw7etrdg
-         ZalU2tSGOAeSCkPIu7FFqiN8VMXi/ua20W5nyzV048/78LfD58vapfo3ytVzKXLIU6
-         Rbf95Uh2qRAyZKWz0OPHJBRKnTmsgaLxSUM/VPq8=
+        b=t3FdSUbxpn3rQHAINESMF7wFLP0qqbT5f5LDmjkkQdrQmjbyh6gC7neRP4eEVBMU8
+         YQl6NN3DNPKU121A6oFSLw1x4rpVbkb0Emt2EDmk7UiJHpq4uZh8/JmbY3xvcuUp1Z
+         TXrdzcOHLsHJWKjueJNZ50JRQG4+ZCSr2v8EZMBI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Fei Shao <fshao@chromium.org>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 251/603] drm/mediatek: Add mmsys_dev_num to mt8188 vdosys0 driver data
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 212/550] drm/bridge: lt8912b: Fix crash on bridge detach
 Date:   Wed, 15 Nov 2023 14:13:16 -0500
-Message-ID: <20231115191630.630298896@linuxfoundation.org>
+Message-ID: <20231115191615.482929875@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,41 +50,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit ff64e4c31d969cdba20a41969edb3def15f3aaa0 ]
+[ Upstream commit 44283993144a03af9df31934d6c32bbd42d1a347 ]
 
-Add missing mmsys_dev_num to mt8188 vdosys0 driver data.
+The lt8912b driver, in its bridge detach function, calls
+drm_connector_unregister() and drm_connector_cleanup().
 
-Fixes: 54b48080278a ("drm/mediatek: Add mediatek-drm of vdosys0 support for mt8188")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Tested-by: Fei Shao <fshao@chromium.org>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231004024013.18956-2-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+drm_connector_unregister() should be called only for connectors
+explicitly registered with drm_connector_register(), which is not the
+case in lt8912b.
+
+The driver's drm_connector_funcs.destroy hook is set to
+drm_connector_cleanup().
+
+Thus the driver should not call either drm_connector_unregister() nor
+drm_connector_cleanup() in its lt8912_bridge_detach(), as they cause a
+crash on bridge detach:
+
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+Mem abort info:
+  ESR = 0x0000000096000006
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x06: level 2 translation fault
+Data abort info:
+  ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
+  CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=00000000858f3000
+[0000000000000000] pgd=0800000085918003, p4d=0800000085918003, pud=0800000085431003, pmd=0000000000000000
+Internal error: Oops: 0000000096000006 [#1] PREEMPT SMP
+Modules linked in: tidss(-) display_connector lontium_lt8912b tc358768 panel_lvds panel_simple drm_dma_helper drm_kms_helper drm drm_panel_orientation_quirks
+CPU: 3 PID: 462 Comm: rmmod Tainted: G        W          6.5.0-rc2+ #2
+Hardware name: Toradex Verdin AM62 on Verdin Development Board (DT)
+pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : drm_connector_cleanup+0x78/0x2d4 [drm]
+lr : lt8912_bridge_detach+0x54/0x6c [lontium_lt8912b]
+sp : ffff800082ed3a90
+x29: ffff800082ed3a90 x28: ffff0000040c1940 x27: 0000000000000000
+x26: 0000000000000000 x25: dead000000000122 x24: dead000000000122
+x23: dead000000000100 x22: ffff000003fb6388 x21: 0000000000000000
+x20: 0000000000000000 x19: ffff000003fb6260 x18: fffffffffffe56e8
+x17: 0000000000000000 x16: 0010000000000000 x15: 0000000000000038
+x14: 0000000000000000 x13: ffff800081914b48 x12: 000000000000040e
+x11: 000000000000015a x10: ffff80008196ebb8 x9 : ffff800081914b48
+x8 : 00000000ffffefff x7 : ffff0000040c1940 x6 : ffff80007aa649d0
+x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffff80008159e008
+x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+Call trace:
+ drm_connector_cleanup+0x78/0x2d4 [drm]
+ lt8912_bridge_detach+0x54/0x6c [lontium_lt8912b]
+ drm_bridge_detach+0x44/0x84 [drm]
+ drm_encoder_cleanup+0x40/0xb8 [drm]
+ drmm_encoder_alloc_release+0x1c/0x30 [drm]
+ drm_managed_release+0xac/0x148 [drm]
+ drm_dev_put.part.0+0x88/0xb8 [drm]
+ devm_drm_dev_init_release+0x14/0x24 [drm]
+ devm_action_release+0x14/0x20
+ release_nodes+0x5c/0x90
+ devres_release_all+0x8c/0xe0
+ device_unbind_cleanup+0x18/0x68
+ device_release_driver_internal+0x208/0x23c
+ driver_detach+0x4c/0x94
+ bus_remove_driver+0x70/0xf4
+ driver_unregister+0x30/0x60
+ platform_driver_unregister+0x14/0x20
+ tidss_platform_driver_exit+0x18/0xb2c [tidss]
+ __arm64_sys_delete_module+0x1a0/0x2b4
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0x60/0x10c
+ do_el0_svc_compat+0x1c/0x40
+ el0_svc_compat+0x40/0xac
+ el0t_32_sync_handler+0xb0/0x138
+ el0t_32_sync+0x194/0x198
+Code: 9104a276 f2fbd5b7 aa0203e1 91008af8 (f85c0420)
+
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230804-lt8912b-v1-2-c542692c6a2f@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index 93552d76b6e77..2d6a979afe8f9 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -288,6 +288,7 @@ static const struct mtk_mmsys_driver_data mt8186_mmsys_driver_data = {
- static const struct mtk_mmsys_driver_data mt8188_vdosys0_driver_data = {
- 	.main_path = mt8188_mtk_ddp_main,
- 	.main_len = ARRAY_SIZE(mt8188_mtk_ddp_main),
-+	.mmsys_dev_num = 1,
- };
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index 0e581f6e3c885..2d752e083433f 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -589,9 +589,6 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
  
- static const struct mtk_mmsys_driver_data mt8192_mmsys_driver_data = {
+ 	if (lt->hdmi_port->ops & DRM_BRIDGE_OP_HPD)
+ 		drm_bridge_hpd_disable(lt->hdmi_port);
+-
+-	drm_connector_unregister(&lt->connector);
+-	drm_connector_cleanup(&lt->connector);
+ }
+ 
+ static enum drm_connector_status
 -- 
 2.42.0
 
