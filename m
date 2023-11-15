@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A907ECEC8
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:44:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6E47ECC34
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235169AbjKOToq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:44:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38706 "EHLO
+        id S233495AbjKOT10 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235156AbjKOTon (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:44:43 -0500
+        with ESMTP id S233852AbjKOT1V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20CFB1AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:44:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78B61C433C8;
-        Wed, 15 Nov 2023 19:44:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E73EFD4B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:18 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E7EC433C7;
+        Wed, 15 Nov 2023 19:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077478;
-        bh=Uxjb501i9TR00BFdLPHlTOf+XEWFXnwDbogectWIvik=;
+        s=korg; t=1700076438;
+        bh=zS2VXQyLd2X24Tg3aLf2k8P3zoEnBB0ZCLJIJCFZeKA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ndvcfxMwMR4B02j7YTWwb5xtwcZ4MMP0H58u5Uyv+fhfsP9NsSdJUHKWqbAwDIMNC
-         nhQVkuJx01/5uJjVYSbnfRuYvVDO2A3dSRpCi0BAX3jIqZaj74hOvTBlGUif4XkrKy
-         fQuqrNO66xUFC1iwRzJe0XP50nCvhsbtxzgf3MWQ=
+        b=DZMaf5EQWS9ACNzlXB7keBejbECuhe5E00CeDQ7CvYffi6U80sRO+OxdlQsy5ddlf
+         mpmijrHn21LtHemtIRdK38lrKuJLmH0Ye8fYuVcSW4V5HOokyMyerzTKCgj2ujpBRV
+         t/8zFbqewfP3YYfRckSVZE+PMrB5qA+XUoKXEnIs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrea Righi <andrea.righi@canonical.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
+        patches@lists.linux.dev,
+        Cristian Marussi <cristian.marussi@arm.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
+        Sudeep Holla <sudeep.holla@arm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 328/603] module/decompress: use vmalloc() for gzip decompression workspace
+Subject: [PATCH 6.5 289/550] clk: scmi: Free scmi_clk allocated when the clocks with invalid info are skipped
 Date:   Wed, 15 Nov 2023 14:14:33 -0500
-Message-ID: <20231115191636.206012766@linuxfoundation.org>
+Message-ID: <20231115191620.826499154@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,66 +53,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrea Righi <andrea.righi@canonical.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 3737df782c740b944912ed93420c57344b1cf864 ]
+[ Upstream commit 3537a75e73f3420614a358d0c8b390ea483cc87d ]
 
-Use a similar approach as commit a419beac4a07 ("module/decompress: use
-vmalloc() for zstd decompression workspace") and replace kmalloc() with
-vmalloc() also for the gzip module decompression workspace.
+Add the missing devm_kfree() when we skip the clocks with invalid or
+missing information from the firmware.
 
-In this case the workspace is represented by struct inflate_workspace
-that can be fairly large for kmalloc() and it can potentially lead to
-allocation errors on certain systems:
-
-$ pahole inflate_workspace
-struct inflate_workspace {
-	struct inflate_state       inflate_state;        /*     0  9544 */
-	/* --- cacheline 149 boundary (9536 bytes) was 8 bytes ago --- */
-	unsigned char              working_window[32768]; /*  9544 32768 */
-
-	/* size: 42312, cachelines: 662, members: 2 */
-	/* last cacheline: 8 bytes */
-};
-
-Considering that there is no need to use continuous physical memory,
-simply switch to vmalloc() to provide a more reliable in-kernel module
-decompression.
-
-Fixes: b1ae6dc41eaa ("module: add in-kernel support for decompressing")
-Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Cristian Marussi <cristian.marussi@arm.com>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org
+Fixes: 6d6a1d82eaef ("clk: add support for clocks provided by SCMI")
+Link: https://lore.kernel.org/r/20231004193600.66232-1-sudeep.holla@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/module/decompress.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/clk-scmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/module/decompress.c b/kernel/module/decompress.c
-index 87440f714c0ca..4156d59be4408 100644
---- a/kernel/module/decompress.c
-+++ b/kernel/module/decompress.c
-@@ -100,7 +100,7 @@ static ssize_t module_gzip_decompress(struct load_info *info,
- 	s.next_in = buf + gzip_hdr_len;
- 	s.avail_in = size - gzip_hdr_len;
+diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
+index 2c7a830ce3080..fdec715c9ba9b 100644
+--- a/drivers/clk/clk-scmi.c
++++ b/drivers/clk/clk-scmi.c
+@@ -213,6 +213,7 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
+ 		sclk->info = scmi_proto_clk_ops->info_get(ph, idx);
+ 		if (!sclk->info) {
+ 			dev_dbg(dev, "invalid clock info for idx %d\n", idx);
++			devm_kfree(dev, sclk);
+ 			continue;
+ 		}
  
--	s.workspace = kmalloc(zlib_inflate_workspacesize(), GFP_KERNEL);
-+	s.workspace = vmalloc(zlib_inflate_workspacesize());
- 	if (!s.workspace)
- 		return -ENOMEM;
- 
-@@ -138,7 +138,7 @@ static ssize_t module_gzip_decompress(struct load_info *info,
- out_inflate_end:
- 	zlib_inflateEnd(&s);
- out:
--	kfree(s.workspace);
-+	vfree(s.workspace);
- 	return retval;
- }
- #elif defined(CONFIG_MODULE_COMPRESS_XZ)
 -- 
 2.42.0
 
