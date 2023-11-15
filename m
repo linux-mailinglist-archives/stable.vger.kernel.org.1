@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8A67ECF31
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9397ECC8B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235255AbjKOTq5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35044 "EHLO
+        id S234022AbjKOTbK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:31:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235254AbjKOTq4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:56 -0500
+        with ESMTP id S234014AbjKOTbJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8B9019E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA6FC433C8;
-        Wed, 15 Nov 2023 19:46:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B3F912C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3F3C433C9;
+        Wed, 15 Nov 2023 19:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077612;
-        bh=zUMe3iycG47IFY+xW/0xTYag7AOKJpo1rR8AXerGAsc=;
+        s=korg; t=1700076665;
+        bh=9TtzI1E8ZdjRsIexJ/byIIDE+A4FOM4LIzfcXaZaiMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gsOeos2MwinTbGQb1NlqPFGPPlB76UkM7JVsTQY7Tvcg34Z1Shd8qZBsqopXG4KJM
-         qrcSKHMPX1xBrrmib0GGBRsgW1n6O885N/BV45VVMYDk9f7y3be5u5N4dKIUOr8HaO
-         R49XFEiC93PnwS4iJqMMpEdHw2ZIHl5TbRqDUHE4=
+        b=kYQ11kLuxQmG9Y7Im1NicTQ9St9YA0WLMxKloOkpCLfR6DUInJnxmxGlOH6sXRtGy
+         wsJPTaY8FZQa1GVdvUIz9bPDiXlMfU9jB+5KupzAGvUb9jc+EbdKUvkUwmot+sHQp4
+         WCosLGk9oUnWKUl3nGZcW/uBPJeONT/aXr8ZmrPc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
         Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 410/603] mfd: core: Ensure disabled devices are skipped without aborting
+Subject: [PATCH 6.5 371/550] leds: turris-omnia: Drop unnecessary mutex locking
 Date:   Wed, 15 Nov 2023 14:15:55 -0500
-Message-ID: <20231115191641.388905897@linuxfoundation.org>
+Message-ID: <20231115191626.542832751@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,79 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 7ba7bdef4d14e3722e2842da3b48cbadb73e52d6 ]
+[ Upstream commit 760b6b7925bf09491aafa4727eef74fc6bf738b0 ]
 
-The loop searching for a matching device based on its compatible
-string is aborted when a matching disabled device is found.
-This abort prevents to add devices as soon as one disabled device
-is found.
+Do not lock driver mutex in the global LED panel brightness sysfs
+accessors brightness_show() and brightness_store().
 
-Continue searching for an other device instead of aborting on the
-first disabled one fixes the issue.
+The mutex locking is unnecessary here. The I2C transfers are guarded by
+I2C core locking mechanism, and the LED commands itself do not interfere
+with other commands.
 
-Fixes: 22380b65dc70 ("mfd: mfd-core: Ensure disabled devices are ignored without error")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://lore.kernel.org/r/528425d6472176bb1d02d79596b51f8c28a551cc.1692376361.git.christophe.leroy@csgroup.eu
+Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/20230802160748.11208-2-kabel@kernel.org
 Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 6de283b96b31 ("leds: turris-omnia: Do not use SMBUS calls")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/mfd-core.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/leds/leds-turris-omnia.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/mfd/mfd-core.c b/drivers/mfd/mfd-core.c
-index 0ed7c0d7784e1..2b85509a90fc2 100644
---- a/drivers/mfd/mfd-core.c
-+++ b/drivers/mfd/mfd-core.c
-@@ -146,6 +146,7 @@ static int mfd_add_device(struct device *parent, int id,
- 	struct platform_device *pdev;
- 	struct device_node *np = NULL;
- 	struct mfd_of_node_entry *of_entry, *tmp;
-+	bool disabled = false;
- 	int ret = -ENOMEM;
- 	int platform_id;
- 	int r;
-@@ -183,11 +184,10 @@ static int mfd_add_device(struct device *parent, int id,
- 	if (IS_ENABLED(CONFIG_OF) && parent->of_node && cell->of_compatible) {
- 		for_each_child_of_node(parent->of_node, np) {
- 			if (of_device_is_compatible(np, cell->of_compatible)) {
--				/* Ignore 'disabled' devices error free */
-+				/* Skip 'disabled' devices */
- 				if (!of_device_is_available(np)) {
--					of_node_put(np);
--					ret = 0;
--					goto fail_alias;
-+					disabled = true;
-+					continue;
- 				}
+diff --git a/drivers/leds/leds-turris-omnia.c b/drivers/leds/leds-turris-omnia.c
+index 64b2d7b6d3f31..bbd610100e418 100644
+--- a/drivers/leds/leds-turris-omnia.c
++++ b/drivers/leds/leds-turris-omnia.c
+@@ -156,12 +156,9 @@ static ssize_t brightness_show(struct device *dev, struct device_attribute *a,
+ 			       char *buf)
+ {
+ 	struct i2c_client *client = to_i2c_client(dev);
+-	struct omnia_leds *leds = i2c_get_clientdata(client);
+ 	int ret;
  
- 				ret = mfd_match_of_node_to_dev(pdev, np, cell);
-@@ -197,10 +197,17 @@ static int mfd_add_device(struct device *parent, int id,
- 				if (ret)
- 					goto fail_alias;
+-	mutex_lock(&leds->lock);
+ 	ret = i2c_smbus_read_byte_data(client, CMD_LED_GET_BRIGHTNESS);
+-	mutex_unlock(&leds->lock);
  
--				break;
-+				goto match;
- 			}
- 		}
+ 	if (ret < 0)
+ 		return ret;
+@@ -173,7 +170,6 @@ static ssize_t brightness_store(struct device *dev, struct device_attribute *a,
+ 				const char *buf, size_t count)
+ {
+ 	struct i2c_client *client = to_i2c_client(dev);
+-	struct omnia_leds *leds = i2c_get_clientdata(client);
+ 	unsigned long brightness;
+ 	int ret;
  
-+		if (disabled) {
-+			/* Ignore 'disabled' devices error free */
-+			ret = 0;
-+			goto fail_alias;
-+		}
-+
-+match:
- 		if (!pdev->dev.of_node)
- 			pr_warn("%s: Failed to locate of_node [id: %d]\n",
- 				cell->name, platform_id);
+@@ -183,15 +179,10 @@ static ssize_t brightness_store(struct device *dev, struct device_attribute *a,
+ 	if (brightness > 100)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&leds->lock);
+ 	ret = i2c_smbus_write_byte_data(client, CMD_LED_SET_BRIGHTNESS,
+ 					(u8)brightness);
+-	mutex_unlock(&leds->lock);
+-
+-	if (ret < 0)
+-		return ret;
+ 
+-	return count;
++	return ret < 0 ? ret : count;
+ }
+ static DEVICE_ATTR_RW(brightness);
+ 
 -- 
 2.42.0
 
