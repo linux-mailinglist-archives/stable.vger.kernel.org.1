@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FF87ECBBC
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB8637ECE35
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232696AbjKOTYK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60174 "EHLO
+        id S234827AbjKOTle (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232638AbjKOTYJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:09 -0500
+        with ESMTP id S234821AbjKOTld (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39FB01AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:05 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B2FC433C8;
-        Wed, 15 Nov 2023 19:24:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F86CE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A743C433C7;
+        Wed, 15 Nov 2023 19:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076244;
-        bh=52WwxfN0nYJTAgq0Q/gDeT2MxT6sixN6XieMW9uF5As=;
+        s=korg; t=1700077290;
+        bh=nbcBkzwfZTJQcQv5o4Sqg6H6NaSU3NEF7ltTWCuTt4w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d1D6ySXBz2ePTsH6MoMAvgJOBhoqCwOaW9sKJvvY0Js6hjID0/G2rSPs00C7un6ix
-         5L5ZV0QmGd2nEb2ioDhzSS6AjgeVPPkJvcFMNBWN3KSGbQb6ariMx/m1zx4pmjdFT9
-         Vnn4JMHLFjZ8HOsStvk9A7/O/6Bx2jDNOinowQE4=
+        b=WcrywimpXNiO/kg2yd3AEPvC4cPcfscBakLD57TYIPiOZUDUYnlE0mrpC7udNZQxP
+         wWnFgmeQIgtoh6RCpsdguEOCfbmaEO8OFjqvEHlGt0tMjuuDGIr90TpYN9O7YTrYyd
+         h0+oCvj+JCALFyL/uwrSigGoojEAJj57sepuJbtQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Sergio Paracuellos <sergio.paracuellos@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 142/550] Bluetooth: Make handle of hci_conn be unique
-Date:   Wed, 15 Nov 2023 14:12:06 -0500
-Message-ID: <20231115191610.535746670@linuxfoundation.org>
+Subject: [PATCH 6.6 182/603] clk: ralink: mtmips: quiet unused variable warning
+Date:   Wed, 15 Nov 2023 14:12:07 -0500
+Message-ID: <20231115191625.833159278@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,364 +53,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Sergio Paracuellos <sergio.paracuellos@gmail.com>
 
-[ Upstream commit 181a42edddf51d5d9697ecdf365d72ebeab5afb0 ]
+[ Upstream commit 619102313466eaf8a6ac188e711f5df749dac6d4 ]
 
-The handle of new hci_conn is always HCI_CONN_HANDLE_MAX + 1 if
-the handle of the first hci_conn entry in hci_dev->conn_hash->list
-is not HCI_CONN_HANDLE_MAX + 1. Use ida to manage the allocation of
-hci_conn->handle to make it be unique.
+When CONFIG_OF is disabled then the matching table is not referenced and
+the following warning appears:
 
-Fixes: 9f78191cc9f1 ("Bluetooth: hci_conn: Always allocate unique handles")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+drivers/clk/ralink/clk-mtmips.c:821:34: warning: unused variable 'mtmips_of_match' [-Wunused-const-variable]
+821 |   static const struct of_device_id mtmips_of_match[] = {
+    |                          ^
+
+There are two match tables in the driver: one for the clock driver and the
+other for the reset driver. The only difference between them is that the
+clock driver uses 'data' and does not have 'ralink,rt2880-reset' compatible.
+Both just can be merged into a single one just by adding the compatible
+'ralink,rt2880-reset' entry to 'mtmips_of_match[]', which will allow it to
+be used for 'mtmips_clk_driver' (which doesn't use the data) as well as for
+'mtmips_clk_init()' (which doesn't need get called for 'ralink,rt2880-reset').
+
+Doing in this way ensures that 'CONFIG_OF' is not disabled anymore so the
+above warning disapears.
+
+Fixes: 6f3b15586eef ("clk: ralink: add clock and reset driver for MTMIPS SoCs")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307242310.CdOnd2py-lkp@intel.com/
+Suggested-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Link: https://lore.kernel.org/r/20230827023932.501102-1-sergio.paracuellos@gmail.com
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |  6 +++-
- net/bluetooth/amp.c              |  3 +-
- net/bluetooth/hci_conn.c         | 57 ++++++++++++++++++--------------
- net/bluetooth/hci_core.c         |  3 ++
- net/bluetooth/hci_event.c        | 38 +++++++++------------
- 5 files changed, 56 insertions(+), 51 deletions(-)
+ drivers/clk/ralink/clk-mtmips.c | 20 +++++---------------
+ 1 file changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 0a3f98481b0fe..e159450d3f2c1 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -350,6 +350,8 @@ struct hci_dev {
- 	struct list_head list;
- 	struct mutex	lock;
+diff --git a/drivers/clk/ralink/clk-mtmips.c b/drivers/clk/ralink/clk-mtmips.c
+index 1e7991439527a..50a443bf79ecd 100644
+--- a/drivers/clk/ralink/clk-mtmips.c
++++ b/drivers/clk/ralink/clk-mtmips.c
+@@ -821,6 +821,10 @@ static const struct mtmips_clk_data mt76x8_clk_data = {
+ };
  
-+	struct ida	unset_handle_ida;
-+
- 	const char	*name;
- 	unsigned long	flags;
- 	__u16		id;
-@@ -1429,7 +1431,9 @@ int hci_le_create_cis_pending(struct hci_dev *hdev);
- int hci_conn_check_create_cis(struct hci_conn *conn);
- 
- struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
--			      u8 role);
-+			      u8 role, u16 handle);
-+struct hci_conn *hci_conn_add_unset(struct hci_dev *hdev, int type,
-+				    bdaddr_t *dst, u8 role);
- void hci_conn_del(struct hci_conn *conn);
- void hci_conn_hash_flush(struct hci_dev *hdev);
- void hci_conn_check_pending(struct hci_dev *hdev);
-diff --git a/net/bluetooth/amp.c b/net/bluetooth/amp.c
-index 2134f92bd7ac2..5d698f19868c5 100644
---- a/net/bluetooth/amp.c
-+++ b/net/bluetooth/amp.c
-@@ -109,7 +109,7 @@ struct hci_conn *phylink_add(struct hci_dev *hdev, struct amp_mgr *mgr,
- 	struct hci_conn *hcon;
- 	u8 role = out ? HCI_ROLE_MASTER : HCI_ROLE_SLAVE;
- 
--	hcon = hci_conn_add(hdev, AMP_LINK, dst, role);
-+	hcon = hci_conn_add(hdev, AMP_LINK, dst, role, __next_handle(mgr));
- 	if (!hcon)
- 		return NULL;
- 
-@@ -117,7 +117,6 @@ struct hci_conn *phylink_add(struct hci_dev *hdev, struct amp_mgr *mgr,
- 
- 	hcon->state = BT_CONNECT;
- 	hcon->attempt++;
--	hcon->handle = __next_handle(mgr);
- 	hcon->remote_id = remote_id;
- 	hcon->amp_mgr = amp_mgr_get(mgr);
- 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 7cad9665360cf..4e03642488230 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -153,6 +153,9 @@ static void hci_conn_cleanup(struct hci_conn *conn)
- 
- 	hci_conn_hash_del(hdev, conn);
- 
-+	if (HCI_CONN_HANDLE_UNSET(conn->handle))
-+		ida_free(&hdev->unset_handle_ida, conn->handle);
-+
- 	if (conn->cleanup)
- 		conn->cleanup(conn);
- 
-@@ -930,31 +933,18 @@ static void cis_cleanup(struct hci_conn *conn)
- 	hci_le_remove_cig(hdev, conn->iso_qos.ucast.cig);
- }
- 
--static u16 hci_conn_hash_alloc_unset(struct hci_dev *hdev)
-+static int hci_conn_hash_alloc_unset(struct hci_dev *hdev)
- {
--	struct hci_conn_hash *h = &hdev->conn_hash;
--	struct hci_conn  *c;
--	u16 handle = HCI_CONN_HANDLE_MAX + 1;
--
--	rcu_read_lock();
--
--	list_for_each_entry_rcu(c, &h->list, list) {
--		/* Find the first unused handle */
--		if (handle == 0xffff || c->handle != handle)
--			break;
--		handle++;
--	}
--	rcu_read_unlock();
--
--	return handle;
-+	return ida_alloc_range(&hdev->unset_handle_ida, HCI_CONN_HANDLE_MAX + 1,
-+			       U16_MAX, GFP_ATOMIC);
- }
- 
- struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
--			      u8 role)
-+			      u8 role, u16 handle)
- {
- 	struct hci_conn *conn;
- 
--	BT_DBG("%s dst %pMR", hdev->name, dst);
-+	bt_dev_dbg(hdev, "dst %pMR handle 0x%4.4x", dst, handle);
- 
- 	conn = kzalloc(sizeof(*conn), GFP_KERNEL);
- 	if (!conn)
-@@ -962,7 +952,7 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 
- 	bacpy(&conn->dst, dst);
- 	bacpy(&conn->src, &hdev->bdaddr);
--	conn->handle = hci_conn_hash_alloc_unset(hdev);
-+	conn->handle = handle;
- 	conn->hdev  = hdev;
- 	conn->type  = type;
- 	conn->role  = role;
-@@ -1047,6 +1037,20 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 	return conn;
- }
- 
-+struct hci_conn *hci_conn_add_unset(struct hci_dev *hdev, int type,
-+				    bdaddr_t *dst, u8 role)
-+{
-+	int handle;
-+
-+	bt_dev_dbg(hdev, "dst %pMR", dst);
-+
-+	handle = hci_conn_hash_alloc_unset(hdev);
-+	if (unlikely(handle < 0))
-+		return NULL;
-+
-+	return hci_conn_add(hdev, type, dst, role, handle);
-+}
-+
- static void hci_conn_cleanup_child(struct hci_conn *conn, u8 reason)
- {
- 	if (!reason)
-@@ -1277,6 +1281,9 @@ u8 hci_conn_set_handle(struct hci_conn *conn, u16 handle)
- 	if (conn->abort_reason)
- 		return conn->abort_reason;
- 
-+	if (HCI_CONN_HANDLE_UNSET(conn->handle))
-+		ida_free(&hdev->unset_handle_ida, conn->handle);
-+
- 	conn->handle = handle;
- 
+ static const struct of_device_id mtmips_of_match[] = {
++	{
++		.compatible = "ralink,rt2880-reset",
++		.data = NULL,
++	},
+ 	{
+ 		.compatible = "ralink,rt2880-sysc",
+ 		.data = &rt2880_clk_data,
+@@ -1088,25 +1092,11 @@ static int mtmips_clk_probe(struct platform_device *pdev)
  	return 0;
-@@ -1383,7 +1390,7 @@ struct hci_conn *hci_connect_le(struct hci_dev *hdev, bdaddr_t *dst,
- 	if (conn) {
- 		bacpy(&conn->dst, dst);
- 	} else {
--		conn = hci_conn_add(hdev, LE_LINK, dst, role);
-+		conn = hci_conn_add_unset(hdev, LE_LINK, dst, role);
- 		if (!conn)
- 			return ERR_PTR(-ENOMEM);
- 		hci_conn_hold(conn);
-@@ -1554,7 +1561,7 @@ static struct hci_conn *hci_add_bis(struct hci_dev *hdev, bdaddr_t *dst,
- 		     memcmp(conn->le_per_adv_data, base, base_len)))
- 		return ERR_PTR(-EADDRINUSE);
+ }
  
--	conn = hci_conn_add(hdev, ISO_LINK, dst, HCI_ROLE_MASTER);
-+	conn = hci_conn_add_unset(hdev, ISO_LINK, dst, HCI_ROLE_MASTER);
- 	if (!conn)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1598,7 +1605,7 @@ struct hci_conn *hci_connect_le_scan(struct hci_dev *hdev, bdaddr_t *dst,
- 
- 	BT_DBG("requesting refresh of dst_addr");
- 
--	conn = hci_conn_add(hdev, LE_LINK, dst, HCI_ROLE_MASTER);
-+	conn = hci_conn_add_unset(hdev, LE_LINK, dst, HCI_ROLE_MASTER);
- 	if (!conn)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1646,7 +1653,7 @@ struct hci_conn *hci_connect_acl(struct hci_dev *hdev, bdaddr_t *dst,
- 
- 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
- 	if (!acl) {
--		acl = hci_conn_add(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
-+		acl = hci_conn_add_unset(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
- 		if (!acl)
- 			return ERR_PTR(-ENOMEM);
- 	}
-@@ -1706,7 +1713,7 @@ struct hci_conn *hci_connect_sco(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 
- 	sco = hci_conn_hash_lookup_ba(hdev, type, dst);
- 	if (!sco) {
--		sco = hci_conn_add(hdev, type, dst, HCI_ROLE_MASTER);
-+		sco = hci_conn_add_unset(hdev, type, dst, HCI_ROLE_MASTER);
- 		if (!sco) {
- 			hci_conn_drop(acl);
- 			return ERR_PTR(-ENOMEM);
-@@ -1898,7 +1905,7 @@ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 	cis = hci_conn_hash_lookup_cis(hdev, dst, dst_type, qos->ucast.cig,
- 				       qos->ucast.cis);
- 	if (!cis) {
--		cis = hci_conn_add(hdev, ISO_LINK, dst, HCI_ROLE_MASTER);
-+		cis = hci_conn_add_unset(hdev, ISO_LINK, dst, HCI_ROLE_MASTER);
- 		if (!cis)
- 			return ERR_PTR(-ENOMEM);
- 		cis->cleanup = cis_cleanup;
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 63d4d38863acb..eb591495ba245 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2535,6 +2535,8 @@ struct hci_dev *hci_alloc_dev_priv(int sizeof_priv)
- 	mutex_init(&hdev->lock);
- 	mutex_init(&hdev->req_lock);
- 
-+	ida_init(&hdev->unset_handle_ida);
-+
- 	INIT_LIST_HEAD(&hdev->mesh_pending);
- 	INIT_LIST_HEAD(&hdev->mgmt_pending);
- 	INIT_LIST_HEAD(&hdev->reject_list);
-@@ -2789,6 +2791,7 @@ void hci_release_dev(struct hci_dev *hdev)
- 	hci_codec_list_clear(&hdev->local_codecs);
- 	hci_dev_unlock(hdev);
- 
-+	ida_destroy(&hdev->unset_handle_ida);
- 	ida_simple_remove(&hci_index_ida, hdev->id);
- 	kfree_skb(hdev->sent_cmd);
- 	kfree_skb(hdev->recv_event);
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 5a23dd251cb2e..634ac77cb2c9d 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2335,8 +2335,8 @@ static void hci_cs_create_conn(struct hci_dev *hdev, __u8 status)
- 		}
- 	} else {
- 		if (!conn) {
--			conn = hci_conn_add(hdev, ACL_LINK, &cp->bdaddr,
--					    HCI_ROLE_MASTER);
-+			conn = hci_conn_add_unset(hdev, ACL_LINK, &cp->bdaddr,
-+						  HCI_ROLE_MASTER);
- 			if (!conn)
- 				bt_dev_err(hdev, "no memory for new connection");
- 		}
-@@ -3151,8 +3151,8 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
- 		    hci_bdaddr_list_lookup_with_flags(&hdev->accept_list,
- 						      &ev->bdaddr,
- 						      BDADDR_BREDR)) {
--			conn = hci_conn_add(hdev, ev->link_type, &ev->bdaddr,
--					    HCI_ROLE_SLAVE);
-+			conn = hci_conn_add_unset(hdev, ev->link_type,
-+						  &ev->bdaddr, HCI_ROLE_SLAVE);
- 			if (!conn) {
- 				bt_dev_err(hdev, "no memory for new conn");
- 				goto unlock;
-@@ -3317,8 +3317,8 @@ static void hci_conn_request_evt(struct hci_dev *hdev, void *data,
- 	conn = hci_conn_hash_lookup_ba(hdev, ev->link_type,
- 			&ev->bdaddr);
- 	if (!conn) {
--		conn = hci_conn_add(hdev, ev->link_type, &ev->bdaddr,
--				    HCI_ROLE_SLAVE);
-+		conn = hci_conn_add_unset(hdev, ev->link_type, &ev->bdaddr,
-+					  HCI_ROLE_SLAVE);
- 		if (!conn) {
- 			bt_dev_err(hdev, "no memory for new connection");
- 			goto unlock;
-@@ -5867,7 +5867,7 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
- 		if (status)
- 			goto unlock;
- 
--		conn = hci_conn_add(hdev, LE_LINK, bdaddr, role);
-+		conn = hci_conn_add_unset(hdev, LE_LINK, bdaddr, role);
- 		if (!conn) {
- 			bt_dev_err(hdev, "no memory for new connection");
- 			goto unlock;
-@@ -5929,17 +5929,11 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
- 
- 	conn->dst_type = ev_bdaddr_type(hdev, conn->dst_type, NULL);
- 
--	if (handle > HCI_CONN_HANDLE_MAX) {
--		bt_dev_err(hdev, "Invalid handle: 0x%4.4x > 0x%4.4x", handle,
--			   HCI_CONN_HANDLE_MAX);
--		status = HCI_ERROR_INVALID_PARAMETERS;
--	}
+-static const struct of_device_id mtmips_clk_of_match[] = {
+-	{ .compatible = "ralink,rt2880-reset" },
+-	{ .compatible = "ralink,rt2880-sysc" },
+-	{ .compatible = "ralink,rt3050-sysc" },
+-	{ .compatible = "ralink,rt3052-sysc" },
+-	{ .compatible = "ralink,rt3352-sysc" },
+-	{ .compatible = "ralink,rt3883-sysc" },
+-	{ .compatible = "ralink,rt5350-sysc" },
+-	{ .compatible = "ralink,mt7620-sysc" },
+-	{ .compatible = "ralink,mt7628-sysc" },
+-	{ .compatible = "ralink,mt7688-sysc" },
+-	{}
+-};
 -
- 	/* All connection failure handling is taken care of by the
- 	 * hci_conn_failed function which is triggered by the HCI
- 	 * request completion callbacks used for connecting.
- 	 */
--	if (status)
-+	if (status || hci_conn_set_handle(conn, handle))
- 		goto unlock;
+ static struct platform_driver mtmips_clk_driver = {
+ 	.probe = mtmips_clk_probe,
+ 	.driver = {
+ 		.name = "mtmips-clk",
+-		.of_match_table = mtmips_clk_of_match,
++		.of_match_table = mtmips_of_match,
+ 	},
+ };
  
- 	/* Drop the connection if it has been aborted */
-@@ -5963,7 +5957,6 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
- 		mgmt_device_connected(hdev, conn, NULL, 0);
- 
- 	conn->sec_level = BT_SECURITY_LOW;
--	conn->handle = handle;
- 	conn->state = BT_CONFIG;
- 
- 	/* Store current advertising instance as connection advertising instance
-@@ -6597,8 +6590,8 @@ static void hci_le_pa_sync_estabilished_evt(struct hci_dev *hdev, void *data,
- 
- 	if (ev->status) {
- 		/* Add connection to indicate the failed PA sync event */
--		pa_sync = hci_conn_add(hdev, ISO_LINK, BDADDR_ANY,
--				       HCI_ROLE_SLAVE);
-+		pa_sync = hci_conn_add_unset(hdev, ISO_LINK, BDADDR_ANY,
-+					     HCI_ROLE_SLAVE);
- 
- 		if (!pa_sync)
- 			goto unlock;
-@@ -6976,12 +6969,12 @@ static void hci_le_cis_req_evt(struct hci_dev *hdev, void *data,
- 
- 	cis = hci_conn_hash_lookup_handle(hdev, cis_handle);
- 	if (!cis) {
--		cis = hci_conn_add(hdev, ISO_LINK, &acl->dst, HCI_ROLE_SLAVE);
-+		cis = hci_conn_add(hdev, ISO_LINK, &acl->dst, HCI_ROLE_SLAVE,
-+				   cis_handle);
- 		if (!cis) {
- 			hci_le_reject_cis(hdev, ev->cis_handle);
- 			goto unlock;
- 		}
--		cis->handle = cis_handle;
- 	}
- 
- 	cis->iso_qos.ucast.cig = ev->cig_id;
-@@ -7096,10 +7089,9 @@ static void hci_le_big_sync_established_evt(struct hci_dev *hdev, void *data,
- 		bis = hci_conn_hash_lookup_handle(hdev, handle);
- 		if (!bis) {
- 			bis = hci_conn_add(hdev, ISO_LINK, BDADDR_ANY,
--					   HCI_ROLE_SLAVE);
-+					   HCI_ROLE_SLAVE, handle);
- 			if (!bis)
- 				continue;
--			bis->handle = handle;
- 		}
- 
- 		if (ev->status != 0x42)
-@@ -7165,8 +7157,8 @@ static void hci_le_big_info_adv_report_evt(struct hci_dev *hdev, void *data,
- 		goto unlock;
- 
- 	/* Add connection to indicate the PA sync event */
--	pa_sync = hci_conn_add(hdev, ISO_LINK, BDADDR_ANY,
--			       HCI_ROLE_SLAVE);
-+	pa_sync = hci_conn_add_unset(hdev, ISO_LINK, BDADDR_ANY,
-+				     HCI_ROLE_SLAVE);
- 
- 	if (!pa_sync)
- 		goto unlock;
 -- 
 2.42.0
 
