@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A9197ECD5E
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AFB587ECD64
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234493AbjKOTgM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47684 "EHLO
+        id S234485AbjKOTgO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234487AbjKOTgH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:07 -0500
+        with ESMTP id S234549AbjKOTgK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF4FAD42
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C0BC433C8;
-        Wed, 15 Nov 2023 19:36:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6EE5A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7B5C433CA;
+        Wed, 15 Nov 2023 19:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076963;
-        bh=e0seoj7LTsnn1L6AY6pD90UrieCXGqQDd8Ra2LUyiUU=;
+        s=korg; t=1700076966;
+        bh=8jZW2OZ1XD8GVITkH30x0tImakqCAGrAPm8Z+gSmRPI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hu0RL/TPD99OtUAHE8Ax1O+6kYB/QeO248RZ+Xfnr4Z6q/INYp76iZ/Q1oJGI5xKI
-         ykW840A0E53s6IAyHB+L1OFIBS5yPCy9k1O2P+vlRFhLy8+gXu1SCQPEupXLn0yLvR
-         VSsZtfASe9Ug/fun7LF/8SgbuYRY/P45VPXwC32U=
+        b=EDl+Ujg7GXEW6OFg3khJd9wXySbF4CuhMQAYQ57PEacfiqLkC9b/ZyvlWi0WmjTiN
+         6q8Q6FgwfmLlae/MnXyi4vRkqFK1Ab7jAsmlTzkoHZMtXs5QejIwN4iCsT5qasI+Us
+         u6bQWNZfksGoXUtlS2HUGbPkXbLLvPk0QWE/rq0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        patches@lists.linux.dev, Ming Qian <ming.qian@nxp.com>,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 477/550] media: bttv: fix use after free error due to btv->timeout timer
-Date:   Wed, 15 Nov 2023 14:17:41 -0500
-Message-ID: <20231115191633.933186961@linuxfoundation.org>
+Subject: [PATCH 6.5 478/550] media: amphion: handle firmware debug message
+Date:   Wed, 15 Nov 2023 14:17:42 -0500
+Message-ID: <20231115191634.002556740@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -54,50 +55,132 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Ming Qian <ming.qian@nxp.com>
 
-[ Upstream commit bd5b50b329e850d467e7bcc07b2b6bde3752fbda ]
+[ Upstream commit 6496617b2b06d7004a5cbd53d48f19567d6b018c ]
 
-There may be some a race condition between timer function
-bttv_irq_timeout and bttv_remove. The timer is setup in
-probe and there is no timer_delete operation in remove
-function. When it hit kfree btv, the function might still be
-invoked, which will cause use after free bug.
+decoder firmware may notify host some debug message,
+it can help analyze the state of the firmware in case of error
 
-This bug is found by static analysis, it may be false positive.
-
-Fix it by adding del_timer_sync invoking to the remove function.
-
-cpu0                cpu1
-                  bttv_probe
-                    ->timer_setup
-                      ->bttv_set_dma
-                        ->mod_timer;
-bttv_remove
-  ->kfree(btv);
-                  ->bttv_irq_timeout
-                    ->USE btv
-
-Fixes: 162e6376ac58 ("media: pci: Convert timers to use timer_setup()")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/bt8xx/bttv-driver.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/amphion/vpu_defs.h    |  1 +
+ drivers/media/platform/amphion/vpu_helpers.c |  1 +
+ drivers/media/platform/amphion/vpu_malone.c  |  1 +
+ drivers/media/platform/amphion/vpu_msgs.c    | 31 ++++++++++++++++----
+ 4 files changed, 29 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
-index 734f02b91aa31..a50cae25b5463 100644
---- a/drivers/media/pci/bt8xx/bttv-driver.c
-+++ b/drivers/media/pci/bt8xx/bttv-driver.c
-@@ -3830,6 +3830,7 @@ static void bttv_remove(struct pci_dev *pci_dev)
+diff --git a/drivers/media/platform/amphion/vpu_defs.h b/drivers/media/platform/amphion/vpu_defs.h
+index 667637eedb5d4..7320852668d64 100644
+--- a/drivers/media/platform/amphion/vpu_defs.h
++++ b/drivers/media/platform/amphion/vpu_defs.h
+@@ -71,6 +71,7 @@ enum {
+ 	VPU_MSG_ID_TIMESTAMP_INFO,
+ 	VPU_MSG_ID_FIRMWARE_XCPT,
+ 	VPU_MSG_ID_PIC_SKIPPED,
++	VPU_MSG_ID_DBG_MSG,
+ };
  
- 	/* free resources */
- 	free_irq(btv->c.pci->irq,btv);
-+	del_timer_sync(&btv->timeout);
- 	iounmap(btv->bt848_mmio);
- 	release_mem_region(pci_resource_start(btv->c.pci,0),
- 			   pci_resource_len(btv->c.pci,0));
+ enum VPU_ENC_MEMORY_RESOURSE {
+diff --git a/drivers/media/platform/amphion/vpu_helpers.c b/drivers/media/platform/amphion/vpu_helpers.c
+index af3b336e5dc32..d12310af9ebce 100644
+--- a/drivers/media/platform/amphion/vpu_helpers.c
++++ b/drivers/media/platform/amphion/vpu_helpers.c
+@@ -489,6 +489,7 @@ const char *vpu_id_name(u32 id)
+ 	case VPU_MSG_ID_UNSUPPORTED: return "unsupported";
+ 	case VPU_MSG_ID_FIRMWARE_XCPT: return "exception";
+ 	case VPU_MSG_ID_PIC_SKIPPED: return "skipped";
++	case VPU_MSG_ID_DBG_MSG: return "debug msg";
+ 	}
+ 	return "<unknown>";
+ }
+diff --git a/drivers/media/platform/amphion/vpu_malone.c b/drivers/media/platform/amphion/vpu_malone.c
+index c1d6606ad7e57..46713be69adbd 100644
+--- a/drivers/media/platform/amphion/vpu_malone.c
++++ b/drivers/media/platform/amphion/vpu_malone.c
+@@ -747,6 +747,7 @@ static struct vpu_pair malone_msgs[] = {
+ 	{VPU_MSG_ID_UNSUPPORTED, VID_API_EVENT_UNSUPPORTED_STREAM},
+ 	{VPU_MSG_ID_FIRMWARE_XCPT, VID_API_EVENT_FIRMWARE_XCPT},
+ 	{VPU_MSG_ID_PIC_SKIPPED, VID_API_EVENT_PIC_SKIPPED},
++	{VPU_MSG_ID_DBG_MSG, VID_API_EVENT_DBG_MSG_DEC},
+ };
+ 
+ static void vpu_malone_pack_fs_alloc(struct vpu_rpc_event *pkt,
+diff --git a/drivers/media/platform/amphion/vpu_msgs.c b/drivers/media/platform/amphion/vpu_msgs.c
+index d0ead051f7d18..b74a407a19f22 100644
+--- a/drivers/media/platform/amphion/vpu_msgs.c
++++ b/drivers/media/platform/amphion/vpu_msgs.c
+@@ -23,6 +23,7 @@
+ struct vpu_msg_handler {
+ 	u32 id;
+ 	void (*done)(struct vpu_inst *inst, struct vpu_rpc_event *pkt);
++	u32 is_str;
+ };
+ 
+ static void vpu_session_handle_start_done(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+@@ -154,7 +155,7 @@ static void vpu_session_handle_error(struct vpu_inst *inst, struct vpu_rpc_event
+ {
+ 	char *str = (char *)pkt->data;
+ 
+-	if (strlen(str))
++	if (*str)
+ 		dev_err(inst->dev, "instance %d firmware error : %s\n", inst->id, str);
+ 	else
+ 		dev_err(inst->dev, "instance %d is unsupported stream\n", inst->id);
+@@ -180,6 +181,21 @@ static void vpu_session_handle_pic_skipped(struct vpu_inst *inst, struct vpu_rpc
+ 	vpu_inst_unlock(inst);
+ }
+ 
++static void vpu_session_handle_dbg_msg(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
++{
++	char *str = (char *)pkt->data;
++
++	if (*str)
++		dev_info(inst->dev, "instance %d firmware dbg msg : %s\n", inst->id, str);
++}
++
++static void vpu_terminate_string_msg(struct vpu_rpc_event *pkt)
++{
++	if (pkt->hdr.num == ARRAY_SIZE(pkt->data))
++		pkt->hdr.num--;
++	pkt->data[pkt->hdr.num] = 0;
++}
++
+ static struct vpu_msg_handler handlers[] = {
+ 	{VPU_MSG_ID_START_DONE, vpu_session_handle_start_done},
+ 	{VPU_MSG_ID_STOP_DONE, vpu_session_handle_stop_done},
+@@ -193,9 +209,10 @@ static struct vpu_msg_handler handlers[] = {
+ 	{VPU_MSG_ID_PIC_DECODED, vpu_session_handle_pic_decoded},
+ 	{VPU_MSG_ID_DEC_DONE, vpu_session_handle_pic_done},
+ 	{VPU_MSG_ID_PIC_EOS, vpu_session_handle_eos},
+-	{VPU_MSG_ID_UNSUPPORTED, vpu_session_handle_error},
+-	{VPU_MSG_ID_FIRMWARE_XCPT, vpu_session_handle_firmware_xcpt},
++	{VPU_MSG_ID_UNSUPPORTED, vpu_session_handle_error, true},
++	{VPU_MSG_ID_FIRMWARE_XCPT, vpu_session_handle_firmware_xcpt, true},
+ 	{VPU_MSG_ID_PIC_SKIPPED, vpu_session_handle_pic_skipped},
++	{VPU_MSG_ID_DBG_MSG, vpu_session_handle_dbg_msg, true},
+ };
+ 
+ static int vpu_session_handle_msg(struct vpu_inst *inst, struct vpu_rpc_event *msg)
+@@ -219,8 +236,12 @@ static int vpu_session_handle_msg(struct vpu_inst *inst, struct vpu_rpc_event *m
+ 		}
+ 	}
+ 
+-	if (handler && handler->done)
+-		handler->done(inst, msg);
++	if (handler) {
++		if (handler->is_str)
++			vpu_terminate_string_msg(msg);
++		if (handler->done)
++			handler->done(inst, msg);
++	}
+ 
+ 	vpu_response_cmd(inst, msg_id, 1);
+ 
 -- 
 2.42.0
 
