@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E031F7ECBA9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 185847ECE31
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232391AbjKOTXk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53076 "EHLO
+        id S234687AbjKOTl2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232408AbjKOTXi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:38 -0500
+        with ESMTP id S234827AbjKOTl1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A9D1A3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A559C433C9;
-        Wed, 15 Nov 2023 19:23:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D48A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E63EC433C7;
+        Wed, 15 Nov 2023 19:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076215;
-        bh=ktVrPHoqFijnrVRRKieZRL+9TkFrTNF4t5X8NVK9NZU=;
+        s=korg; t=1700077284;
+        bh=GuBLG+Xrq6ngc9zzgIOUjTSWz+SF1KtexcToSJouCSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pXLzdqr0t+gyKAUY2/2EILeg89Z6ykJNfmmDL9n1dvcRSJb4Io5mscmNsUZ4p1hRB
-         /hudGVTuYmoiicJuw98isSeAbqov6Z+ycdN7SFOwwaRts5NXHlh7OZpd28qdJmkn5y
-         +/sZCQKCcgLVC/Vw2ArXAZkoE9co3T4Vq4GraKSE=
+        b=hW8VKsqQ47oTJqZYDik3B/knuJ91IuiqbCMg/aiySXGNaE8fFcU3fsUCA384FBvSl
+         ev1hrIwhpp6s+69VZC96VEl1yren03pV3bKBlfTNFfDELL2CklVIZSBSF2xSom6Asf
+         YK2tPbvlixIXiPbqxZZ1YJMllhmU5C283kIKmjm0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 149/550] net: add DEV_STATS_READ() helper
+Subject: [PATCH 6.6 188/603] clk: mediatek: clk-mt6797: Add check for mtk_alloc_clk_data
 Date:   Wed, 15 Nov 2023 14:12:13 -0500
-Message-ID: <20231115191611.032943272@linuxfoundation.org>
+Message-ID: <20231115191626.253001543@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +52,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 0b068c714ca9479d2783cc333fff5bc2d4a6d45c ]
+[ Upstream commit 606f6366a35a3329545e38129804d65ef26ed7d2 ]
 
-Companion of DEV_STATS_INC() & DEV_STATS_ADD().
+Add the check for the return value of mtk_alloc_clk_data() in order to
+avoid NULL pointer dereference.
 
-This is going to be used in the series.
-
-Use it in macsec_get_stats64().
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: ff672b9ffeb3 ("ipvlan: properly track tx_errors")
+Fixes: 96596aa06628 ("clk: mediatek: add clk support for MT6797")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230912093407.21505-3-jiasheng@iscas.ac.cn
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c      | 6 +++---
- include/linux/netdevice.h | 1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/clk/mediatek/clk-mt6797.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 1c60548c1ddde..27deb14d20225 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -3668,9 +3668,9 @@ static void macsec_get_stats64(struct net_device *dev,
+diff --git a/drivers/clk/mediatek/clk-mt6797.c b/drivers/clk/mediatek/clk-mt6797.c
+index 2ebd25f0ce71d..f12d4e9ff0bba 100644
+--- a/drivers/clk/mediatek/clk-mt6797.c
++++ b/drivers/clk/mediatek/clk-mt6797.c
+@@ -390,6 +390,8 @@ static int mtk_topckgen_init(struct platform_device *pdev)
+ 		return PTR_ERR(base);
  
- 	dev_fetch_sw_netstats(s, dev->tstats);
+ 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR);
++	if (!clk_data)
++		return -ENOMEM;
  
--	s->rx_dropped = atomic_long_read(&dev->stats.__rx_dropped);
--	s->tx_dropped = atomic_long_read(&dev->stats.__tx_dropped);
--	s->rx_errors = atomic_long_read(&dev->stats.__rx_errors);
-+	s->rx_dropped = DEV_STATS_READ(dev, rx_dropped);
-+	s->tx_dropped = DEV_STATS_READ(dev, tx_dropped);
-+	s->rx_errors = DEV_STATS_READ(dev, rx_errors);
- }
+ 	mtk_clk_register_factors(top_fixed_divs, ARRAY_SIZE(top_fixed_divs),
+ 				 clk_data);
+@@ -545,6 +547,8 @@ static void mtk_infrasys_init_early(struct device_node *node)
  
- static int macsec_get_iflink(const struct net_device *dev)
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index b828c7a75be20..48134407b70fd 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -5230,5 +5230,6 @@ extern struct net_device *blackhole_netdev;
- #define DEV_STATS_INC(DEV, FIELD) atomic_long_inc(&(DEV)->stats.__##FIELD)
- #define DEV_STATS_ADD(DEV, FIELD, VAL) 	\
- 		atomic_long_add((VAL), &(DEV)->stats.__##FIELD)
-+#define DEV_STATS_READ(DEV, FIELD) atomic_long_read(&(DEV)->stats.__##FIELD)
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return;
  
- #endif	/* _LINUX_NETDEVICE_H */
+ 		for (i = 0; i < CLK_INFRA_NR; i++)
+ 			infra_clk_data->hws[i] = ERR_PTR(-EPROBE_DEFER);
+@@ -570,6 +574,8 @@ static int mtk_infrasys_init(struct platform_device *pdev)
+ 
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return -ENOMEM;
+ 	} else {
+ 		for (i = 0; i < CLK_INFRA_NR; i++) {
+ 			if (infra_clk_data->hws[i] == ERR_PTR(-EPROBE_DEFER))
 -- 
 2.42.0
 
