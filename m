@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 376AE7ECBAF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16BBF7ED2A7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232552AbjKOTXu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55938 "EHLO
+        id S233326AbjKOUmy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232535AbjKOTXt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:49 -0500
+        with ESMTP id S235044AbjKOTlC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8805D1A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1847C433C9;
-        Wed, 15 Nov 2023 19:23:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC54A9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510D2C433C8;
+        Wed, 15 Nov 2023 19:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076223;
-        bh=i/zxereBmjiC/jwquAsvjFgPnhH1F2tjQYdRMMK+7os=;
+        s=korg; t=1700077258;
+        bh=GceRFJfOI8n02VV7vUtBG3D7vVJ4c7hx2SMHLWhJ8xQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yfslvlIWn4ePSpXLayMs7OSqODUuRBPOVwybvxAXBeSVc0GEGdqQc7x8hU5zxLbWh
-         b2dWO2SmL1uwwBXqRQ2oE55l4o2NxYcRrvA4t0tyHLP2BiOiI8cDxnzxEUpYlfOCUi
-         zzkE1B6bAQMj6ldrfFBsLQqodrSRkqtNzxUNwo+8=
+        b=YyVsPJTffzZeMCCqisBDUv7bOAup28mHbg+yzEydDGb0Ajoavk1Lvel3BWk6FJ4As
+         x0xct8NEBYY9NJYVRoc0VqC+utTgvySLnR8y8CWMF+gf7nR3CsqTsz4rbpN8Wn7+UJ
+         /yXnKD39crKKs4vs6uKVwphPGOZaqQ/r0VBXexEQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Kathiravan T <quic_kathirav@quicinc.com>,
+        Varadarajan Narayanan <quic_varada@quicinc.com>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 154/550] clk: qcom: gcc-msm8996: Remove RPM bus clocks
+Subject: [PATCH 6.6 193/603] clk: qcom: clk-alpha-pll: introduce stromer plus ops
 Date:   Wed, 15 Nov 2023 14:12:18 -0500
-Message-ID: <20231115191611.377434525@linuxfoundation.org>
+Message-ID: <20231115191626.611382967@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,523 +53,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-[ Upstream commit 4afda5f6bcdf673ef2556fcfa458daf3a5a648d8 ]
+[ Upstream commit 84da48921a97cee3dd1391659e93ee01d122b78b ]
 
-The GCC driver contains clocks that are owned (meaning configured and
-scaled) by the RPM core.
+Stromer plus APSS PLL does not support dynamic frequency scaling.
+To switch between frequencies, we have to shut down the PLL,
+configure the L and ALPHA values and turn on again. So introduce the
+separate set of ops for Stromer Plus PLL.
 
-Remove them from Linux to stop interjecting the RPM's logic.
-
-Fixes: b1e010c0730a ("clk: qcom: Add MSM8996 Global Clock Control (GCC) driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230830-topic-rpmbusclocks8996gcc-v1-1-9e99bedcdc3b@linaro.org
+Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
+Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
+Link: https://lore.kernel.org/r/2affa6c63ff0c4342230623a7d4eef02ec7c02d4.1697781921.git.quic_varada@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 267e29198436 ("clk: qcom: apss-ipq-pll: Use stromer plus ops for stromer plus pll")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-msm8996.c | 237 +--------------------------------
- 1 file changed, 5 insertions(+), 232 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c | 63 ++++++++++++++++++++++++++++++++
+ drivers/clk/qcom/clk-alpha-pll.h |  1 +
+ 2 files changed, 64 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-msm8996.c b/drivers/clk/qcom/gcc-msm8996.c
-index 5e44d1bcca9e2..48345ae7c2466 100644
---- a/drivers/clk/qcom/gcc-msm8996.c
-+++ b/drivers/clk/qcom/gcc-msm8996.c
-@@ -245,71 +245,6 @@ static const struct clk_parent_data gcc_xo_gpll0_gpll4_gpll0_early_div[] = {
- 	{ .hw = &gpll0_early_div.hw }
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index e4ef645f65d1f..892f2efc1c32c 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -2479,3 +2479,66 @@ const struct clk_ops clk_alpha_pll_stromer_ops = {
+ 	.set_rate = clk_alpha_pll_stromer_set_rate,
  };
+ EXPORT_SYMBOL_GPL(clk_alpha_pll_stromer_ops);
++
++static int clk_alpha_pll_stromer_plus_set_rate(struct clk_hw *hw,
++					       unsigned long rate,
++					       unsigned long prate)
++{
++	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
++	u32 l, alpha_width = pll_alpha_width(pll);
++	int ret, pll_mode;
++	u64 a;
++
++	rate = alpha_pll_round_rate(rate, prate, &l, &a, alpha_width);
++
++	ret = regmap_read(pll->clkr.regmap, PLL_MODE(pll), &pll_mode);
++	if (ret)
++		return ret;
++
++	regmap_write(pll->clkr.regmap, PLL_MODE(pll), 0);
++
++	/* Delay of 2 output clock ticks required until output is disabled */
++	udelay(1);
++
++	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
++
++	if (alpha_width > ALPHA_BITWIDTH)
++		a <<= alpha_width - ALPHA_BITWIDTH;
++
++	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
++	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
++					a >> ALPHA_BITWIDTH);
++
++	regmap_write(pll->clkr.regmap, PLL_MODE(pll), PLL_BYPASSNL);
++
++	/* Wait five micro seconds or more */
++	udelay(5);
++	regmap_update_bits(pll->clkr.regmap, PLL_MODE(pll), PLL_RESET_N,
++			   PLL_RESET_N);
++
++	/* The lock time should be less than 50 micro seconds worst case */
++	usleep_range(50, 60);
++
++	ret = wait_for_pll_enable_lock(pll);
++	if (ret) {
++		pr_err("Wait for PLL enable lock failed [%s] %d\n",
++		       clk_hw_get_name(hw), ret);
++		return ret;
++	}
++
++	if (pll_mode & PLL_OUTCTRL)
++		regmap_update_bits(pll->clkr.regmap, PLL_MODE(pll), PLL_OUTCTRL,
++				   PLL_OUTCTRL);
++
++	return 0;
++}
++
++const struct clk_ops clk_alpha_pll_stromer_plus_ops = {
++	.prepare = clk_alpha_pll_enable,
++	.unprepare = clk_alpha_pll_disable,
++	.is_enabled = clk_alpha_pll_is_enabled,
++	.recalc_rate = clk_alpha_pll_recalc_rate,
++	.determine_rate = clk_alpha_pll_stromer_determine_rate,
++	.set_rate = clk_alpha_pll_stromer_plus_set_rate,
++};
++EXPORT_SYMBOL_GPL(clk_alpha_pll_stromer_plus_ops);
+diff --git a/drivers/clk/qcom/clk-alpha-pll.h b/drivers/clk/qcom/clk-alpha-pll.h
+index e4bd863027ab6..903fbab9b58e9 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.h
++++ b/drivers/clk/qcom/clk-alpha-pll.h
+@@ -152,6 +152,7 @@ extern const struct clk_ops clk_alpha_pll_postdiv_ops;
+ extern const struct clk_ops clk_alpha_pll_huayra_ops;
+ extern const struct clk_ops clk_alpha_pll_postdiv_ro_ops;
+ extern const struct clk_ops clk_alpha_pll_stromer_ops;
++extern const struct clk_ops clk_alpha_pll_stromer_plus_ops;
  
--static const struct freq_tbl ftbl_system_noc_clk_src[] = {
--	F(19200000, P_XO, 1, 0, 0),
--	F(50000000, P_GPLL0_EARLY_DIV, 6, 0, 0),
--	F(100000000, P_GPLL0, 6, 0, 0),
--	F(150000000, P_GPLL0, 4, 0, 0),
--	F(200000000, P_GPLL0, 3, 0, 0),
--	F(240000000, P_GPLL0, 2.5, 0, 0),
--	{ }
--};
--
--static struct clk_rcg2 system_noc_clk_src = {
--	.cmd_rcgr = 0x0401c,
--	.hid_width = 5,
--	.parent_map = gcc_xo_gpll0_gpll0_early_div_map,
--	.freq_tbl = ftbl_system_noc_clk_src,
--	.clkr.hw.init = &(struct clk_init_data){
--		.name = "system_noc_clk_src",
--		.parent_data = gcc_xo_gpll0_gpll0_early_div,
--		.num_parents = ARRAY_SIZE(gcc_xo_gpll0_gpll0_early_div),
--		.ops = &clk_rcg2_ops,
--	},
--};
--
--static const struct freq_tbl ftbl_config_noc_clk_src[] = {
--	F(19200000, P_XO, 1, 0, 0),
--	F(37500000, P_GPLL0, 16, 0, 0),
--	F(75000000, P_GPLL0, 8, 0, 0),
--	{ }
--};
--
--static struct clk_rcg2 config_noc_clk_src = {
--	.cmd_rcgr = 0x0500c,
--	.hid_width = 5,
--	.parent_map = gcc_xo_gpll0_map,
--	.freq_tbl = ftbl_config_noc_clk_src,
--	.clkr.hw.init = &(struct clk_init_data){
--		.name = "config_noc_clk_src",
--		.parent_data = gcc_xo_gpll0,
--		.num_parents = ARRAY_SIZE(gcc_xo_gpll0),
--		.ops = &clk_rcg2_ops,
--	},
--};
--
--static const struct freq_tbl ftbl_periph_noc_clk_src[] = {
--	F(19200000, P_XO, 1, 0, 0),
--	F(37500000, P_GPLL0, 16, 0, 0),
--	F(50000000, P_GPLL0, 12, 0, 0),
--	F(75000000, P_GPLL0, 8, 0, 0),
--	F(100000000, P_GPLL0, 6, 0, 0),
--	{ }
--};
--
--static struct clk_rcg2 periph_noc_clk_src = {
--	.cmd_rcgr = 0x06014,
--	.hid_width = 5,
--	.parent_map = gcc_xo_gpll0_map,
--	.freq_tbl = ftbl_periph_noc_clk_src,
--	.clkr.hw.init = &(struct clk_init_data){
--		.name = "periph_noc_clk_src",
--		.parent_data = gcc_xo_gpll0,
--		.num_parents = ARRAY_SIZE(gcc_xo_gpll0),
--		.ops = &clk_rcg2_ops,
--	},
--};
--
- static const struct freq_tbl ftbl_usb30_master_clk_src[] = {
- 	F(19200000, P_XO, 1, 0, 0),
- 	F(120000000, P_GPLL0, 5, 0, 0),
-@@ -1298,11 +1233,7 @@ static struct clk_branch gcc_mmss_noc_cfg_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_mmss_noc_cfg_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT | CLK_IGNORE_UNUSED,
-+			.flags = CLK_IGNORE_UNUSED,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1465,11 +1396,6 @@ static struct clk_branch gcc_usb_phy_cfg_ahb2phy_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_usb_phy_cfg_ahb2phy_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1499,11 +1425,6 @@ static struct clk_branch gcc_sdcc1_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_sdcc1_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1550,11 +1471,6 @@ static struct clk_branch gcc_sdcc2_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_sdcc2_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1584,11 +1500,6 @@ static struct clk_branch gcc_sdcc3_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_sdcc3_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1618,11 +1529,6 @@ static struct clk_branch gcc_sdcc4_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_sdcc4_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1636,11 +1542,6 @@ static struct clk_branch gcc_blsp1_ahb_clk = {
- 		.enable_mask = BIT(17),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_blsp1_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -1978,11 +1879,6 @@ static struct clk_branch gcc_blsp2_ahb_clk = {
- 		.enable_mask = BIT(15),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_blsp2_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2319,11 +2215,6 @@ static struct clk_branch gcc_pdm_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pdm_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2354,11 +2245,6 @@ static struct clk_branch gcc_prng_ahb_clk = {
- 		.enable_mask = BIT(13),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_prng_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2371,11 +2257,6 @@ static struct clk_branch gcc_tsif_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_tsif_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2423,11 +2304,6 @@ static struct clk_branch gcc_boot_rom_ahb_clk = {
- 		.enable_mask = BIT(10),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_boot_rom_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2521,11 +2397,6 @@ static struct clk_branch gcc_pcie_0_slv_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_0_slv_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2538,11 +2409,6 @@ static struct clk_branch gcc_pcie_0_mstr_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_0_mstr_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2555,11 +2421,6 @@ static struct clk_branch gcc_pcie_0_cfg_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_0_cfg_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2607,11 +2468,6 @@ static struct clk_branch gcc_pcie_1_slv_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_1_slv_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2624,11 +2480,6 @@ static struct clk_branch gcc_pcie_1_mstr_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_1_mstr_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2641,11 +2492,6 @@ static struct clk_branch gcc_pcie_1_cfg_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_1_cfg_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2693,11 +2539,6 @@ static struct clk_branch gcc_pcie_2_slv_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_2_slv_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2710,11 +2551,6 @@ static struct clk_branch gcc_pcie_2_mstr_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_2_mstr_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2727,11 +2563,6 @@ static struct clk_branch gcc_pcie_2_cfg_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_2_cfg_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2779,11 +2610,6 @@ static struct clk_branch gcc_pcie_phy_cfg_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_pcie_phy_cfg_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -2830,11 +2656,6 @@ static struct clk_branch gcc_ufs_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_ufs_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3061,11 +2882,7 @@ static struct clk_branch gcc_aggre0_snoc_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_aggre0_snoc_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
-+			.flags = CLK_IS_CRITICAL,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3078,11 +2895,7 @@ static struct clk_branch gcc_aggre0_cnoc_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_aggre0_cnoc_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
-+			.flags = CLK_IS_CRITICAL,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3095,11 +2908,7 @@ static struct clk_branch gcc_smmu_aggre0_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_smmu_aggre0_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
-+			.flags = CLK_IS_CRITICAL,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3112,11 +2921,7 @@ static struct clk_branch gcc_smmu_aggre0_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_smmu_aggre0_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT | CLK_IS_CRITICAL,
-+			.flags = CLK_IS_CRITICAL,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3163,10 +2968,6 @@ static struct clk_branch gcc_dcc_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_dcc_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3179,10 +2980,6 @@ static struct clk_branch gcc_aggre0_noc_mpu_cfg_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_aggre0_noc_mpu_cfg_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3195,11 +2992,6 @@ static struct clk_branch gcc_qspi_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_qspi_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&periph_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
--			.flags = CLK_SET_RATE_PARENT,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3348,10 +3140,6 @@ static struct clk_branch gcc_mss_cfg_ahb_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_mss_cfg_ahb_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&config_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3364,10 +3152,6 @@ static struct clk_branch gcc_mss_mnoc_bimc_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_mss_mnoc_bimc_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3380,10 +3164,6 @@ static struct clk_branch gcc_mss_snoc_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_mss_snoc_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3396,10 +3176,6 @@ static struct clk_branch gcc_mss_q6_bimc_axi_clk = {
- 		.enable_mask = BIT(0),
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gcc_mss_q6_bimc_axi_clk",
--			.parent_hws = (const struct clk_hw*[]){
--				&system_noc_clk_src.clkr.hw,
--			},
--			.num_parents = 1,
- 			.ops = &clk_branch2_ops,
- 		},
- 	},
-@@ -3496,9 +3272,6 @@ static struct clk_regmap *gcc_msm8996_clocks[] = {
- 	[GPLL0] = &gpll0.clkr,
- 	[GPLL4_EARLY] = &gpll4_early.clkr,
- 	[GPLL4] = &gpll4.clkr,
--	[SYSTEM_NOC_CLK_SRC] = &system_noc_clk_src.clkr,
--	[CONFIG_NOC_CLK_SRC] = &config_noc_clk_src.clkr,
--	[PERIPH_NOC_CLK_SRC] = &periph_noc_clk_src.clkr,
- 	[USB30_MASTER_CLK_SRC] = &usb30_master_clk_src.clkr,
- 	[USB30_MOCK_UTMI_CLK_SRC] = &usb30_mock_utmi_clk_src.clkr,
- 	[USB3_PHY_AUX_CLK_SRC] = &usb3_phy_aux_clk_src.clkr,
+ extern const struct clk_ops clk_alpha_pll_fabia_ops;
+ extern const struct clk_ops clk_alpha_pll_fixed_fabia_ops;
 -- 
 2.42.0
 
