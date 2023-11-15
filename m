@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E2D7ED46F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06C017ED2EC
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344657AbjKOU6F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34410 "EHLO
+        id S233558AbjKOUpJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344659AbjKOU5h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:37 -0500
+        with ESMTP id S233510AbjKOUpF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6380B11F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0687C4E668;
-        Wed, 15 Nov 2023 20:50:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39E98192
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23F4C433CB;
+        Wed, 15 Nov 2023 20:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081448;
-        bh=/0yKmdOw/Z6QMU37TfRzwpeS30B+7WNhj4cvL4lXov0=;
+        s=korg; t=1700081101;
+        bh=B42oDr3FPA35wDhIL7G+DmWdWvzs4Qd3gGEg9ZOlAvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EuaEY+6sbT6eHrkpiyO/oJ/7tv8KkVFRO7ibKWJTr2/aEX52IW/knfWQ71dRjqDoF
-         m8aUJpnKf31bj3+U3L4tCBoP90aUcYVyP7yxyRPBFwzBwoFzGKpzYkWWp10lkEiizY
-         Lwj8BFIGbGKbmmNIwFWdg1LNNSpsq0v3GTw6XQ0k=
+        b=u/ZrN5m6tigLea2JtQDHwMish2eDfV1AtgXjpCjUEcJRTZpflNt3k/0qG06KEIsC5
+         ICamxiClovy+QC+J7fBRzCreS9Ab1xZmqfV1WQSOS2JYksm6hmpzW6eY+CwaG7LScx
+         SI1Qu28Ta3dw99tgSbeTJRvqNhVymbpSOr7iCE5w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/244] mfd: core: Un-constify mfd_cell.of_reg
+        patches@lists.linux.dev, Danny Kaehn <danny.kaehn@plexus.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 39/88] hid: cp2112: Fix duplicate workqueue initialization
 Date:   Wed, 15 Nov 2023 15:35:51 -0500
-Message-ID: <20231115203557.884305825@linuxfoundation.org>
+Message-ID: <20231115191428.540056398@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,39 +49,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+From: Danny Kaehn <danny.kaehn@plexus.com>
 
-[ Upstream commit 3c70342f1f0045dc827bb2f02d814ce31e0e0d05 ]
+[ Upstream commit e3c2d2d144c082dd71596953193adf9891491f42 ]
 
-Enable dynamically filling in the whole mfd_cell structure. All other
-fields already allow that.
+Previously the cp2112 driver called INIT_DELAYED_WORK within
+cp2112_gpio_irq_startup, resulting in duplicate initilizations of the
+workqueue on subsequent IRQ startups following an initial request. This
+resulted in a warning in set_work_data in workqueue.c, as well as a rare
+NULL dereference within process_one_work in workqueue.c.
 
-Fixes: 466a62d7642f ("mfd: core: Make a best effort attempt to match devices with the correct of_nodes")
-Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Link: https://lore.kernel.org/r/b73fe4bc4bd6ba1af90940a640ed65fe254c0408.1693253717.git.mirq-linux@rere.qmqm.pl
-Signed-off-by: Lee Jones <lee@kernel.org>
+Initialize the workqueue within _probe instead.
+
+Fixes: 13de9cca514e ("HID: cp2112: add IRQ chip handling")
+Signed-off-by: Danny Kaehn <danny.kaehn@plexus.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mfd/core.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-cp2112.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/mfd/core.h b/include/linux/mfd/core.h
-index 0bc7cba798a34..b449765b5cac1 100644
---- a/include/linux/mfd/core.h
-+++ b/include/linux/mfd/core.h
-@@ -92,7 +92,7 @@ struct mfd_cell {
- 	 * (above) when matching OF nodes with devices that have identical
- 	 * compatible strings
- 	 */
--	const u64 of_reg;
-+	u64 of_reg;
+diff --git a/drivers/hid/hid-cp2112.c b/drivers/hid/hid-cp2112.c
+index 875fd8b2eec23..6dc9ee8adb65f 100644
+--- a/drivers/hid/hid-cp2112.c
++++ b/drivers/hid/hid-cp2112.c
+@@ -1163,8 +1163,6 @@ static unsigned int cp2112_gpio_irq_startup(struct irq_data *d)
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct cp2112_device *dev = gpiochip_get_data(gc);
  
- 	/* Set to 'true' to use 'of_reg' (above) - allows for of_reg=0 */
- 	bool use_of_reg;
+-	INIT_DELAYED_WORK(&dev->gpio_poll_worker, cp2112_gpio_poll_callback);
+-
+ 	if (!dev->gpio_poll) {
+ 		dev->gpio_poll = true;
+ 		schedule_delayed_work(&dev->gpio_poll_worker, 0);
+@@ -1358,6 +1356,8 @@ static int cp2112_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 	girq->default_type = IRQ_TYPE_NONE;
+ 	girq->handler = handle_simple_irq;
+ 
++	INIT_DELAYED_WORK(&dev->gpio_poll_worker, cp2112_gpio_poll_callback);
++
+ 	ret = gpiochip_add_data(&dev->gc, dev);
+ 	if (ret < 0) {
+ 		hid_err(hdev, "error registering gpio chip\n");
 -- 
 2.42.0
 
