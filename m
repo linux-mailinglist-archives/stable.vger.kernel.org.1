@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C049B7ECC7C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0E897ECC7D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233997AbjKOTaq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51966 "EHLO
+        id S233349AbjKOTat (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233992AbjKOTap (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:45 -0500
+        with ESMTP id S234014AbjKOTar (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7A34A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD7AC433C9;
-        Wed, 15 Nov 2023 19:30:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F2A61AC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:44 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36CDC433C9;
+        Wed, 15 Nov 2023 19:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076642;
-        bh=D19gDffhUXnxjKbZIin2HwBgQ/KPAdcOSBeYSUgzWzk=;
+        s=korg; t=1700076643;
+        bh=/xHdzCFtTQvU02azXj9MCQwveNrrxgDyNfO+eUxgZlI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tRD7tuFue72kGtzJCID47dag/y71P5J322QwaGGDqti0YSKgVMnr8jxdMiZd7EHiZ
-         jMAsnD1oPgcDB2b0EVl6jdfCARgG4dkHN0RmYBbpstsglJOcfq3jPNJq1RI5j6t1fW
-         EMsMylV8D8jFtgO31gvFY/KQVNhtqhz/j3Sk8+m4=
+        b=l0m7d1vE2+L4m+GdPA2C8t3PCDxFSNPmYruCT26s+i/cQ7HZav6CvlWQF/GbMPDQ/
+         ir0cIFphSUk7IqaQI7c4vs1rEFJHk67N5WUndFERpYMnehWOcgn8kOx23esFc7GWxP
+         VjTwfVaS69URJ7T4/LVgDCxW1n161o8l7tHDqZx8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Russell King <rmk+kernel@armlinux.org.uk>,
-        Stefan Wahren <wahrenst@gmx.net>,
-        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 332/550] ARM: 9323/1: mm: Fix ARCH_LOW_ADDRESS_LIMIT when CONFIG_ZONE_DMA
-Date:   Wed, 15 Nov 2023 14:15:16 -0500
-Message-ID: <20231115191623.778806090@linuxfoundation.org>
+        patches@lists.linux.dev, Gou Hao <gouhao@uniontech.com>,
+        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 333/550] ext4: move ix sanity check to corrent position
+Date:   Wed, 15 Nov 2023 14:15:17 -0500
+Message-ID: <20231115191623.852548259@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -54,41 +53,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: wahrenst <wahrenst@gmx.net>
+From: Gou Hao <gouhao@uniontech.com>
 
-[ Upstream commit 399da29ff5eb3f675c71423bec4cf2208f218576 ]
+[ Upstream commit af90a8f4a09ec4a3de20142e37f37205d4687f28 ]
 
-Configuring VMSPLIT_2G + LPAE on Raspberry Pi 4 leads to SWIOTLB
-buffer allocation beyond platform dma_zone_size of SZ_1G, which
-results in broken SD card boot.
+Check 'ix' before it is used.
 
-So fix this be setting ARCH_LOW_ADDRESS_LIMIT in CONFIG_ZONE_DMA
-case.
-
-Suggested-by: Russell King <rmk+kernel@armlinux.org.uk>
-Fixes: e9faf9b0b07a ("ARM: add multi_v7_lpae_defconfig")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 80e675f906db ("ext4: optimize memmmove lengths in extent/index insertions")
+Signed-off-by: Gou Hao <gouhao@uniontech.com>
+Link: https://lore.kernel.org/r/20230906013341.7199-1-gouhao@uniontech.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/dma.h | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/extents.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
-index c6aded1b069cf..e2a1916013e75 100644
---- a/arch/arm/include/asm/dma.h
-+++ b/arch/arm/include/asm/dma.h
-@@ -12,6 +12,9 @@
- 	extern phys_addr_t arm_dma_zone_size; \
- 	arm_dma_zone_size && arm_dma_zone_size < (0x100000000ULL - PAGE_OFFSET) ? \
- 		(PAGE_OFFSET + arm_dma_zone_size) : 0xffffffffUL; })
-+
-+extern phys_addr_t arm_dma_limit;
-+#define ARCH_LOW_ADDRESS_LIMIT arm_dma_limit
- #endif
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index e4115d338f101..d97333aa92e99 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1010,6 +1010,11 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
+ 		ix = curp->p_idx;
+ 	}
  
- #ifdef CONFIG_ISA_DMA_API
++	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
++		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
++		return -EFSCORRUPTED;
++	}
++
+ 	len = EXT_LAST_INDEX(curp->p_hdr) - ix + 1;
+ 	BUG_ON(len < 0);
+ 	if (len > 0) {
+@@ -1019,11 +1024,6 @@ static int ext4_ext_insert_index(handle_t *handle, struct inode *inode,
+ 		memmove(ix + 1, ix, len * sizeof(struct ext4_extent_idx));
+ 	}
+ 
+-	if (unlikely(ix > EXT_MAX_INDEX(curp->p_hdr))) {
+-		EXT4_ERROR_INODE(inode, "ix > EXT_MAX_INDEX!");
+-		return -EFSCORRUPTED;
+-	}
+-
+ 	ix->ei_block = cpu_to_le32(logical);
+ 	ext4_idx_store_pblock(ix, ptr);
+ 	le16_add_cpu(&curp->p_hdr->eh_entries, 1);
 -- 
 2.42.0
 
