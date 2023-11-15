@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96DA87ED44B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5CA97ED309
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:45:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344604AbjKOU5k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34630 "EHLO
+        id S233673AbjKOUpx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:45:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344605AbjKOU51 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:27 -0500
+        with ESMTP id S233709AbjKOUpr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:45:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FCD8D55
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555CDC4E74E;
-        Wed, 15 Nov 2023 20:51:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA791BE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:45:44 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C39C433C7;
+        Wed, 15 Nov 2023 20:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081490;
-        bh=G/HW4OAb00A1QR5GBSlmLxnKV0u6tOxo1ntAE2JrP7g=;
+        s=korg; t=1700081144;
+        bh=KmUnJdCWRPf8jBc+TvEH6WZBVdTaZrjyxz1yyBQ+8PY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ajXqO73RGAaP3aVv5ZlIEflcLkAEBd+LFzgozV3C7mx0a6dIx/QFy79EuKAeDVIGv
-         s8Gi7BfJ1i9cl2DARLU8epuqxDyx5Z9Mu3offh+30WgXATKNk2m7Zkh8pptuIjtqaX
-         9i+KlrbASXWfybBdVT42b5q14UPcNt1HB7CnKrnE=
+        b=zlOvrDgV7/CJLTlsfTwFT1iIhsMj9LmJObY6krJqKs1dUVhJde9ByxgW+nAyWHYA7
+         w4s1SpsZEDENhDtNsUesKPlK2QujWtmZG/+jC4RzqgX9pQjBxWDCxoSpnv6skaWYR4
+         HlcqaSNwqFEGu4s6hTca0BBuiU4Ys0ONsqE2bzEI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Sumit Garg <sumit.garg@linaro.org>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 185/244] modpost: fix tee MODULE_DEVICE_TABLE built on big-endian host
+Subject: [PATCH 4.19 65/88] media: bttv: fix use after free error due to btv->timeout timer
 Date:   Wed, 15 Nov 2023 15:36:17 -0500
-Message-ID: <20231115203559.447927739@linuxfoundation.org>
+Message-ID: <20231115191430.035555908@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,73 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 7f54e00e5842663c2cea501bbbdfa572c94348a3 ]
+[ Upstream commit bd5b50b329e850d467e7bcc07b2b6bde3752fbda ]
 
-When MODULE_DEVICE_TABLE(tee, ) is built on a host with a different
-endianness from the target architecture, it results in an incorrect
-MODULE_ALIAS().
+There may be some a race condition between timer function
+bttv_irq_timeout and bttv_remove. The timer is setup in
+probe and there is no timer_delete operation in remove
+function. When it hit kfree btv, the function might still be
+invoked, which will cause use after free bug.
 
-For example, see a case where drivers/char/hw_random/optee-rng.c
-is built as a module for ARM little-endian.
+This bug is found by static analysis, it may be false positive.
 
-If you build it on a little-endian host, you will get the correct
-MODULE_ALIAS:
+Fix it by adding del_timer_sync invoking to the remove function.
 
-    $ grep MODULE_ALIAS drivers/char/hw_random/optee-rng.mod.c
-    MODULE_ALIAS("tee:ab7a617c-b8e7-4d8f-8301-d09b61036b64*");
+cpu0                cpu1
+                  bttv_probe
+                    ->timer_setup
+                      ->bttv_set_dma
+                        ->mod_timer;
+bttv_remove
+  ->kfree(btv);
+                  ->bttv_irq_timeout
+                    ->USE btv
 
-However, if you build it on a big-endian host, you will get a wrong
-MODULE_ALIAS:
-
-    $ grep MODULE_ALIAS drivers/char/hw_random/optee-rng.mod.c
-    MODULE_ALIAS("tee:646b0361-9bd0-0183-8f4d-e7b87c617aab*");
-
-The same problem also occurs when you enable CONFIG_CPU_BIG_ENDIAN,
-and build it on a little-endian host.
-
-This issue has been unnoticed because the ARM kernel is configured for
-little-endian by default, and most likely built on a little-endian host
-(cross-build on x86 or native-build on ARM).
-
-The uuid field must not be reversed because uuid_t is an array of __u8.
-
-Fixes: 0fc1db9d1059 ("tee: add bus driver framework for TEE based devices")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Sumit Garg <sumit.garg@linaro.org>
+Fixes: 162e6376ac58 ("media: pci: Convert timers to use timer_setup()")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/mod/file2alias.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/media/pci/bt8xx/bttv-driver.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/mod/file2alias.c b/scripts/mod/file2alias.c
-index 05089ef5cc0ec..23e7102abe0cd 100644
---- a/scripts/mod/file2alias.c
-+++ b/scripts/mod/file2alias.c
-@@ -1339,13 +1339,13 @@ static int do_typec_entry(const char *filename, void *symval, char *alias)
- /* Looks like: tee:uuid */
- static int do_tee_entry(const char *filename, void *symval, char *alias)
- {
--	DEF_FIELD(symval, tee_client_device_id, uuid);
-+	DEF_FIELD_ADDR(symval, tee_client_device_id, uuid);
+diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
+index 2a9d25431d733..fce894574c411 100644
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -4300,6 +4300,7 @@ static void bttv_remove(struct pci_dev *pci_dev)
  
- 	sprintf(alias, "tee:%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-%02x%02x%02x%02x%02x%02x",
--		uuid.b[0], uuid.b[1], uuid.b[2], uuid.b[3], uuid.b[4],
--		uuid.b[5], uuid.b[6], uuid.b[7], uuid.b[8], uuid.b[9],
--		uuid.b[10], uuid.b[11], uuid.b[12], uuid.b[13], uuid.b[14],
--		uuid.b[15]);
-+		uuid->b[0], uuid->b[1], uuid->b[2], uuid->b[3], uuid->b[4],
-+		uuid->b[5], uuid->b[6], uuid->b[7], uuid->b[8], uuid->b[9],
-+		uuid->b[10], uuid->b[11], uuid->b[12], uuid->b[13], uuid->b[14],
-+		uuid->b[15]);
- 
- 	add_wildcard(alias);
- 	return 1;
+ 	/* free resources */
+ 	free_irq(btv->c.pci->irq,btv);
++	del_timer_sync(&btv->timeout);
+ 	iounmap(btv->bt848_mmio);
+ 	release_mem_region(pci_resource_start(btv->c.pci,0),
+ 			   pci_resource_len(btv->c.pci,0));
 -- 
 2.42.0
 
