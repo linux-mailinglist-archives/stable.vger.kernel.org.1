@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A37A67ECDB2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA8497ECB5C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234612AbjKOThv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:37:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36104 "EHLO
+        id S232589AbjKOTVs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234619AbjKOThu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:50 -0500
+        with ESMTP id S232888AbjKOTVo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A06CF9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:47 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F4DC433CB;
-        Wed, 15 Nov 2023 19:37:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E643F1A5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B1BC433C8;
+        Wed, 15 Nov 2023 19:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077067;
-        bh=jFNAJLOIXIRWvFs3FK2WddW2EuyRgwFo6o2X91cM7o0=;
+        s=korg; t=1700076100;
+        bh=pzkhAJ+GM+XsZrtcJ2goX5XF1El2njevqUq8YfG9OyI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AsTgKn9irjIHA0eBz0FO9iS2rW1woZI+00YWu1DXgO8d9l+9dhuFks2FGp7rbKzl8
-         BdYFphtQj6lpz0wAwb2VUglHk74b5K2j5yRdC3kWoZgPu5HRKlYbMZaWfWsutX4op/
-         nsntK85X/2I87749pOTpfnQ33OcgZ5nL7AcdsD6g=
+        b=Sms25CUPSbn7H61grDHMCAXjyo57vYg91N9vZ31Hl2nNkmdEaHtHy/E3JZ0hV4Yq7
+         Ty2EzTtlLWoGX/9ld1aEqrqCNFSoFqRDXLQjT4CEqzMp3XhDVdK39Uda9ccK/gSQfo
+         2nqWtxHNOequCXOoCwrALcgly0Yh6/N8b6HG8TtU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
+        patches@lists.linux.dev, Baochen Qiang <quic_bqiang@quicinc.com>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/603] PM / devfreq: rockchip-dfi: Make pmu regmap mandatory
-Date:   Wed, 15 Nov 2023 14:10:59 -0500
-Message-ID: <20231115191621.123191105@linuxfoundation.org>
+Subject: [PATCH 6.5 076/550] wifi: ath12k: fix DMA unmap warning on NULL DMA address
+Date:   Wed, 15 Nov 2023 14:11:00 -0500
+Message-ID: <20231115191605.972710982@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,55 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 1e0731c05c985deb68a97fa44c1adcd3305dda90 ]
+[ Upstream commit 9ae8c496d211155a3f220b63da364fba1a794292 ]
 
-As a matter of fact the regmap_pmu already is mandatory because
-it is used unconditionally in the driver. Bail out gracefully in
-probe() rather than crashing later.
+In ath12k_dp_tx(), if we reach fail_dma_unmap due to some errors,
+current code does DMA unmap unconditionally on skb_cb->paddr_ext_desc.
+However, skb_cb->paddr_ext_desc may be NULL and thus we get below
+warning:
 
-Link: https://lore.kernel.org/lkml/20230704093242.583575-2-s.hauer@pengutronix.de/
-Fixes: b9d1262bca0af ("PM / devfreq: event: support rockchip dfi controller")
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+kernel: [ 8887.076212] WARNING: CPU: 3 PID: 0 at drivers/iommu/dma-iommu.c:1077 iommu_dma_unmap_page+0x79/0x90
+
+Fix it by checking skb_cb->paddr_ext_desc before unmap it.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230830021131.5610-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/event/rockchip-dfi.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_tx.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/devfreq/event/rockchip-dfi.c b/drivers/devfreq/event/rockchip-dfi.c
-index 39ac069cabc75..74893c06aa087 100644
---- a/drivers/devfreq/event/rockchip-dfi.c
-+++ b/drivers/devfreq/event/rockchip-dfi.c
-@@ -193,14 +193,15 @@ static int rockchip_dfi_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(data->clk),
- 				     "Cannot get the clk pclk_ddr_mon\n");
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index d3c7c76d6b75e..5d1be6451d587 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -330,8 +330,11 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
  
--	/* try to find the optional reference to the pmu syscon */
- 	node = of_parse_phandle(np, "rockchip,pmu", 0);
--	if (node) {
--		data->regmap_pmu = syscon_node_to_regmap(node);
--		of_node_put(node);
--		if (IS_ERR(data->regmap_pmu))
--			return PTR_ERR(data->regmap_pmu);
--	}
-+	if (!node)
-+		return dev_err_probe(&pdev->dev, -ENODEV, "Can't find pmu_grf registers\n");
+ fail_unmap_dma:
+ 	dma_unmap_single(ab->dev, ti.paddr, ti.data_len, DMA_TO_DEVICE);
+-	dma_unmap_single(ab->dev, skb_cb->paddr_ext_desc,
+-			 sizeof(struct hal_tx_msdu_ext_desc), DMA_TO_DEVICE);
 +
-+	data->regmap_pmu = syscon_node_to_regmap(node);
-+	of_node_put(node);
-+	if (IS_ERR(data->regmap_pmu))
-+		return PTR_ERR(data->regmap_pmu);
-+
- 	data->dev = dev;
++	if (skb_cb->paddr_ext_desc)
++		dma_unmap_single(ab->dev, skb_cb->paddr_ext_desc,
++				 sizeof(struct hal_tx_msdu_ext_desc),
++				 DMA_TO_DEVICE);
  
- 	desc = devm_kzalloc(dev, sizeof(*desc), GFP_KERNEL);
+ fail_remove_tx_buf:
+ 	ath12k_dp_tx_release_txbuf(dp, tx_desc, pool_id);
 -- 
 2.42.0
 
