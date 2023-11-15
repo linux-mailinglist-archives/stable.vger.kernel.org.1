@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D8B7ED2B5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:43:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1DB67ED2BE
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:43:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233562AbjKOUnD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:43:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42160 "EHLO
+        id S233433AbjKOUnI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:43:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235604AbjKOTzh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:55:37 -0500
+        with ESMTP id S1343734AbjKOTzq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:55:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2B18171F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:55:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5242BC433B6;
-        Wed, 15 Nov 2023 19:55:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B70B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:55:42 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D05CEC433C9;
+        Wed, 15 Nov 2023 19:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078129;
-        bh=FNcsL9SVaq6kUIBHzkOA9bohHoQvfMggUM8RIBoDPt8=;
+        s=korg; t=1700078142;
+        bh=PWySqCyQQQz5gLWdm0wlTUzSJDBYb02lK6yr1TPX5ro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YRQgWFVKYuLuDZwCXY1oyFV/d1QQwvxzV1psIWBcmGKFlPaw0+e1bqhpxIm1UsuU8
-         B6SavwG/XBfgqi1eP8krWHTQCygp5nl3X5F5FMKOmhl8bTcHnx9mEKK9EI16oJiaOv
-         tsZjKZe3jYeyI5NGGnvdHvdhHCiWinclkedKRFIE=
+        b=RJR0wE5SWCAiuD9r/djR4rQLYumEPDIPSkVb5PZWSOaEfbYaL0/89VjWq7UEJFqH3
+         sQoZXgnAaIMATYMWr2n83axI1qZZ2n1+8wtw6IqDLxqlXbFbhwGb8gVOg66lnaf1Q8
+         52SPfjNQYlC38H3XjJcUUYRmZkWmZXy5BskpMrxE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Armin Wolf <W_Armin@gmx.de>,
         Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/379] Revert "hwmon: (sch56xx-common) Add DMI override table"
-Date:   Wed, 15 Nov 2023 14:23:05 -0500
-Message-ID: <20231115192651.635885021@linuxfoundation.org>
+Subject: [PATCH 6.1 111/379] Revert "hwmon: (sch56xx-common) Add automatic module loading on supported devices"
+Date:   Wed, 15 Nov 2023 14:23:06 -0500
+Message-ID: <20231115192651.694923111@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -57,89 +57,98 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 28da9dee3594423534f3ea1e1f61e6bb2d2fa651 ]
+[ Upstream commit d621a46d05107f4e510383d6a38f2160c62d28f7 ]
 
-This reverts commit fd2d53c367ae9983c2100ac733a834e0c79d7537.
+This reverts commit 393935baa45e5ccb9603cf7f9f020ed1bc0915f7.
 
-As reported by Ian Nartowicz, this and the preceding patch
+As reported by Ian Nartowicz, this and the next patch
 result in a failure to load the driver on Celsius W280.
 While the alternative would be to add the board to the DMI
 override table, it is quite likely that other systems are
 also affected. Revert the offending patches to avoid future
 problems.
 
-Fixes: fd2d53c367ae ("hwmon: (sch56xx-common) Add DMI override table")
+Fixes: 393935baa45e ("hwmon: (sch56xx-common) Add automatic module loading on supported devices")
 Reported-by: Ian Nartowicz <deadbeef@nartowicz.co.uk>
 Closes: https://lore.kernel.org/linux-hwmon/20231025192239.3c5389ae@debian.org/T/#t
 Cc: Armin Wolf <W_Armin@gmx.de>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sch56xx-common.c | 44 ++++++++--------------------------
- 1 file changed, 10 insertions(+), 34 deletions(-)
+ drivers/hwmon/sch56xx-common.c | 40 ++--------------------------------
+ 1 file changed, 2 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/hwmon/sch56xx-common.c b/drivers/hwmon/sch56xx-common.c
-index de3a0886c2f72..3ece53adabd62 100644
+index 3ece53adabd62..ac1f725807155 100644
 --- a/drivers/hwmon/sch56xx-common.c
 +++ b/drivers/hwmon/sch56xx-common.c
-@@ -523,28 +523,6 @@ static int __init sch56xx_device_add(int address, const char *name)
+@@ -7,10 +7,8 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include <linux/module.h>
+-#include <linux/mod_devicetable.h>
+ #include <linux/init.h>
+ #include <linux/platform_device.h>
+-#include <linux/dmi.h>
+ #include <linux/err.h>
+ #include <linux/io.h>
+ #include <linux/acpi.h>
+@@ -21,10 +19,7 @@
+ #include <linux/slab.h>
+ #include "sch56xx-common.h"
+ 
+-static bool ignore_dmi;
+-module_param(ignore_dmi, bool, 0);
+-MODULE_PARM_DESC(ignore_dmi, "Omit DMI check for supported devices (default=0)");
+-
++/* Insmod parameters */
+ static bool nowayout = WATCHDOG_NOWAYOUT;
+ module_param(nowayout, bool, 0);
+ MODULE_PARM_DESC(nowayout, "Watchdog cannot be stopped once started (default="
+@@ -523,42 +518,11 @@ static int __init sch56xx_device_add(int address, const char *name)
  	return PTR_ERR_OR_ZERO(sch56xx_pdev);
  }
  
--static const struct dmi_system_id sch56xx_dmi_override_table[] __initconst = {
+-/* For autoloading only */
+-static const struct dmi_system_id sch56xx_dmi_table[] __initconst = {
 -	{
 -		.matches = {
 -			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "CELSIUS W380"),
--		},
--	},
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO P710"),
--		},
--	},
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO E9900"),
 -		},
 -	},
 -	{ }
 -};
+-MODULE_DEVICE_TABLE(dmi, sch56xx_dmi_table);
 -
- /* For autoloading only */
- static const struct dmi_system_id sch56xx_dmi_table[] __initconst = {
- 	{
-@@ -565,18 +543,16 @@ static int __init sch56xx_init(void)
- 		if (!dmi_check_system(sch56xx_dmi_table))
- 			return -ENODEV;
+ static int __init sch56xx_init(void)
+ {
+-	const char *name = NULL;
+ 	int address;
++	const char *name = NULL;
  
--		if (!dmi_check_system(sch56xx_dmi_override_table)) {
--			/*
--			 * Some machines like the Esprimo P720 and Esprimo C700 have
--			 * onboard devices named " Antiope"/" Theseus" instead of
--			 * "Antiope"/"Theseus", so we need to check for both.
--			 */
--			if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
--			    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
--			    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
--			    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
--				return -ENODEV;
--		}
-+		/*
-+		 * Some machines like the Esprimo P720 and Esprimo C700 have
-+		 * onboard devices named " Antiope"/" Theseus" instead of
-+		 * "Antiope"/"Theseus", so we need to check for both.
-+		 */
-+		if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
-+		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
-+		    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
-+		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
-+			return -ENODEV;
- 	}
- 
- 	/*
+-	if (!ignore_dmi) {
+-		if (!dmi_check_system(sch56xx_dmi_table))
+-			return -ENODEV;
+-
+-		/*
+-		 * Some machines like the Esprimo P720 and Esprimo C700 have
+-		 * onboard devices named " Antiope"/" Theseus" instead of
+-		 * "Antiope"/"Theseus", so we need to check for both.
+-		 */
+-		if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
+-		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
+-		    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
+-		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
+-			return -ENODEV;
+-	}
+-
+-	/*
+-	 * Some devices like the Esprimo C700 have both onboard devices,
+-	 * so we still have to check manually
+-	 */
+ 	address = sch56xx_find(0x4e, &name);
+ 	if (address < 0)
+ 		address = sch56xx_find(0x2e, &name);
 -- 
 2.42.0
 
