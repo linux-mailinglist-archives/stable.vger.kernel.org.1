@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBA437ECFD1
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C877ECDF4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235423AbjKOTvE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36342 "EHLO
+        id S234740AbjKOTjX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235419AbjKOTvA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:00 -0500
+        with ESMTP id S234758AbjKOTjV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CCE412C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:50:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF433C433C8;
-        Wed, 15 Nov 2023 19:50:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13EEF1AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:17 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8890CC433C8;
+        Wed, 15 Nov 2023 19:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077857;
-        bh=BNtRXE4iu+nnSW4ea2LayvaSEz1ouufnM3XA2nV8SlA=;
+        s=korg; t=1700077156;
+        bh=YUo4Z5zzH+gG8z8cw/MrDxCmlOtwJ0pQSmnIzLphY3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lydx1c008i7ubeaAjZxZi0njdslqWVRrIxFHBOQnOsEAcvKkgwpFpCrzfzkuQCVjK
-         qeMmipLNMJUKUxaUaRLH4G+V23KIG4mQmh+ULbQF55MshBQXXszZhBXo5XGjEhgnaZ
-         JHhYE49mR/+YzTt8aisnX5JIKey1BLRLcyiIJ8bg=
+        b=BPgqGvC7N8i0/6ST4BTWNuavcbVVI+H4/sZyJYq55qtNAfdND48iLIbYUTSJ6yYJG
+         RFIUFc0o4vYyd4CRy6+LY76RtEUEYkuJ/v/Khw47cairuaeHlo0rsSdSgkyie00bQS
+         /pCvpP/HMm9AE3KT4XlcLrMyHowJkzqo6Tqh/1o8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dave Ertman <david.m.ertman@intel.com>,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 562/603] ice: Fix SRIOV LAG disable on non-compliant aggregate
+Subject: [PATCH 6.5 523/550] r8169: respect userspace disabling IFF_MULTICAST
 Date:   Wed, 15 Nov 2023 14:18:27 -0500
-Message-ID: <20231115191650.502826259@linuxfoundation.org>
+Message-ID: <20231115191637.184543326@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,58 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Ertman <david.m.ertman@intel.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 3e39da4fa16c9c09207d98b8a86a6f6436b531c9 ]
+[ Upstream commit 8999ce4cfc87e61b4143ec2e7b93d8e92e11fa7f ]
 
-If an attribute of an aggregate interface disqualifies it from supporting
-SRIOV, the driver will unwind the SRIOV support.  Currently the driver is
-clearing the feature bit for all interfaces in the aggregate, but this is
-not allowing the other interfaces to unwind successfully on driver unload.
+So far we ignore the setting of IFF_MULTICAST. Fix this and clear bit
+AcceptMulticast if IFF_MULTICAST isn't set.
 
-Only clear the feature bit for the interface that is currently unwinding.
+Note: Based on the implementations I've seen it doesn't seem to be 100% clear
+what a driver is supposed to do if IFF_ALLMULTI is set but IFF_MULTICAST
+is not. This patch is based on the understanding that IFF_MULTICAST has
+precedence.
 
-Fixes: bf65da2eb279 ("ice: enforce interface eligibility and add messaging for SRIOV LAG")
-Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/4a57ba02-d52d-4369-9f14-3565e6c1f7dc@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lag.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index 7b1256992dcf6..a8da5f8374451 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -1529,18 +1529,12 @@ static void ice_lag_chk_disabled_bond(struct ice_lag *lag, void *ptr)
-  */
- static void ice_lag_disable_sriov_bond(struct ice_lag *lag)
- {
--	struct ice_lag_netdev_list *entry;
- 	struct ice_netdev_priv *np;
--	struct net_device *netdev;
- 	struct ice_pf *pf;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 4b8251cdb4363..0c76c162b8a9f 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2582,6 +2582,8 @@ static void rtl_set_rx_mode(struct net_device *dev)
  
--	list_for_each_entry(entry, lag->netdev_head, node) {
--		netdev = entry->netdev;
--		np = netdev_priv(netdev);
--		pf = np->vsi->back;
--
--		ice_clear_feature_support(pf, ICE_F_SRIOV_LAG);
--	}
-+	np = netdev_priv(lag->netdev);
-+	pf = np->vsi->back;
-+	ice_clear_feature_support(pf, ICE_F_SRIOV_LAG);
- }
- 
- /**
+ 	if (dev->flags & IFF_PROMISC) {
+ 		rx_mode |= AcceptAllPhys;
++	} else if (!(dev->flags & IFF_MULTICAST)) {
++		rx_mode &= ~AcceptMulticast;
+ 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
+ 		   dev->flags & IFF_ALLMULTI ||
+ 		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
 -- 
 2.42.0
 
