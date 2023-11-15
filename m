@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 553627ECC64
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 273147ECC6F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233935AbjKOTaG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59262 "EHLO
+        id S233958AbjKOTaZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233930AbjKOTaG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:06 -0500
+        with ESMTP id S233970AbjKOTaZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F8CA1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:02 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4406FC433CA;
-        Wed, 15 Nov 2023 19:30:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C83A19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC7DC433C7;
+        Wed, 15 Nov 2023 19:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076602;
-        bh=bClABtLfqSWvXvnKwRo+jHx3f/1AyGfMXb8DGt3cNjQ=;
+        s=korg; t=1700076621;
+        bh=Uu6cOq5FcssNv1Yfwx/VpGIfLO77LE3jpd19kXwRZsA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O4/GgNQc1VyPxeIb8qPmJblEjoKy0dp/BvLMEUR2rk+Y7cwVh+spQyxEn6pDsn85n
-         GGSB65sSKEsseFZ37e0omZFS07uFj1hQMZl/OIDTQ/44dPtfYPtNrQxVoD9aSRlD0p
-         Tb1YsX2ZghvlMwINlgeJHmg9VO4NIG78xGfhCt58=
+        b=DR/ZKqhHOJBue1HtFcxLcCE7LV/NYYwWSFfOm3h5uG7K5wisAaK7aRNi1v1S5TJYf
+         k52oFzKtxVm6bc6A5XC7zZ1SyyYBGhEJeL/ikuHeOdfPqs+nhZBI9a/o1SIiuY2KyS
+         KFiOZSfnK45SWX709fYwTzl7jsGgJIqHCh2xYZyU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaurav Jain <gaurav.jain@nxp.com>,
+        patches@lists.linux.dev,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Damian Muszynski <damian.muszynski@intel.com>,
         Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 325/550] crypto: caam/jr - fix Chacha20 + Poly1305 self test failure
-Date:   Wed, 15 Nov 2023 14:15:09 -0500
-Message-ID: <20231115191623.296672904@linuxfoundation.org>
+Subject: [PATCH 6.5 326/550] crypto: qat - increase size of buffers
+Date:   Wed, 15 Nov 2023 14:15:10 -0500
+Message-ID: <20231115191623.365100288@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -39,6 +41,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,37 +57,67 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Gaurav Jain <gaurav.jain@nxp.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit a8d3cdcc092fb2f2882acb6c20473a1be0ef4484 ]
+[ Upstream commit 4e4e2ed22d505c5bacf65c6a39bfb6d120d24785 ]
 
-key buffer is not copied in chachapoly_setkey function,
-results in wrong output for encryption/decryption operation.
+Increase the size of the buffers used for composing the names used for
+the transport debugfs entries and the vector name to avoid a potential
+truncation.
 
-fix this by memcpy the key in caam_ctx key arrary
+This resolves the following errors when compiling the driver with W=1
+and KCFLAGS=-Werror on GCC 12.3.1:
 
-Fixes: d6bbd4eea243 ("crypto: caam/jr - add support for Chacha20 + Poly1305")
-Signed-off-by: Gaurav Jain <gaurav.jain@nxp.com>
+    drivers/crypto/intel/qat/qat_common/adf_transport_debug.c: In function ‘adf_ring_debugfs_add’:
+    drivers/crypto/intel/qat/qat_common/adf_transport_debug.c:100:60: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+    drivers/crypto/intel/qat/qat_common/adf_isr.c: In function ‘adf_isr_resource_alloc’:
+    drivers/crypto/intel/qat/qat_common/adf_isr.c:197:47: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size between 0 and 5 [-Werror=format-truncation=]
+
+Fixes: a672a9dc872e ("crypto: qat - Intel(R) QAT transport code")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/caam/caamalg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/crypto/intel/qat/qat_common/adf_accel_devices.h   | 2 +-
+ drivers/crypto/intel/qat/qat_common/adf_transport_debug.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/caam/caamalg.c b/drivers/crypto/caam/caamalg.c
-index feb86013dbf63..192cadc7d85a5 100644
---- a/drivers/crypto/caam/caamalg.c
-+++ b/drivers/crypto/caam/caamalg.c
-@@ -572,7 +572,8 @@ static int chachapoly_setkey(struct crypto_aead *aead, const u8 *key,
- 	if (keylen != CHACHA_KEY_SIZE + saltlen)
- 		return -EINVAL;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
+index 0399417b91fc7..c43e39c34d9ba 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
+@@ -29,7 +29,7 @@
+ #define ADF_PCI_MAX_BARS 3
+ #define ADF_DEVICE_NAME_LENGTH 32
+ #define ADF_ETR_MAX_RINGS_PER_BANK 16
+-#define ADF_MAX_MSIX_VECTOR_NAME 16
++#define ADF_MAX_MSIX_VECTOR_NAME 48
+ #define ADF_DEVICE_NAME_PREFIX "qat_"
  
--	ctx->cdata.key_virt = key;
-+	memcpy(ctx->key, key, keylen);
-+	ctx->cdata.key_virt = ctx->key;
- 	ctx->cdata.keylen = keylen - saltlen;
+ enum adf_accel_capabilities {
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
+index 08bca1c506c0e..e2dd568b87b51 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_transport_debug.c
+@@ -90,7 +90,7 @@ DEFINE_SEQ_ATTRIBUTE(adf_ring_debug);
+ int adf_ring_debugfs_add(struct adf_etr_ring_data *ring, const char *name)
+ {
+ 	struct adf_etr_ring_debug_entry *ring_debug;
+-	char entry_name[8];
++	char entry_name[16];
  
- 	return chachapoly_set_sh_desc(aead);
+ 	ring_debug = kzalloc(sizeof(*ring_debug), GFP_KERNEL);
+ 	if (!ring_debug)
+@@ -192,7 +192,7 @@ int adf_bank_debugfs_add(struct adf_etr_bank_data *bank)
+ {
+ 	struct adf_accel_dev *accel_dev = bank->accel_dev;
+ 	struct dentry *parent = accel_dev->transport->debug;
+-	char name[8];
++	char name[16];
+ 
+ 	snprintf(name, sizeof(name), "bank_%02d", bank->bank_number);
+ 	bank->bank_debug_dir = debugfs_create_dir(name, parent);
 -- 
 2.42.0
 
