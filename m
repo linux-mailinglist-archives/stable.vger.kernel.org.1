@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E89D7ECF2A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3652F7ECC83
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235238AbjKOTqr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55308 "EHLO
+        id S233968AbjKOTa7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:30:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235251AbjKOTqp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:45 -0500
+        with ESMTP id S233995AbjKOTa4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:56 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02DB1C2
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A97C433C8;
-        Wed, 15 Nov 2023 19:46:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD25819F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265E7C433CA;
+        Wed, 15 Nov 2023 19:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077601;
-        bh=1dQu9jXD2q5Bzcx6VwlgjCtwUP9YKubqQXEfYzzysms=;
+        s=korg; t=1700076653;
+        bh=Bo/lokr+0JMmpPq1AybZ6pFN2Pl2g0JM0mF8zSeYrKg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oiakQk78G7gk5VKde7GCkPf6bD4B3J1fzx1SY4uHwN0lAmkuJfjAO0cJnNxRO4Ef9
-         yeCdyTIJKNFQmlxxgagO/xkvGOtyMasbayuZ+wX/7Pn5YWJORpucMW4dtLIcj2h6N/
-         SMi0LLPBwozJyspeo1vkzCTIl9N1NcHDOmS759Os=
+        b=nXL/z9mzNRfkeqtoUBtC61npLj1jgByyIgvNkCvTbeU3bLjK4NB7TvFeKyOeffye9
+         uZytdWgVjGfDpir3Wb7A1c/O1CK1Z3fqO260Tv6xH2Afj/dsZR9XU8JUsCPfVejuk5
+         0aP8jEY9sHo7AGMZRLWdQounrCimv1WFVeCMbJWI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Damian Muszynski <damian.muszynski@intel.com>,
-        Tero Kristo <tero.kristo@linux.intel.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 403/603] crypto: qat - use masks for AE groups
+Subject: [PATCH 6.5 364/550] erofs: fix erofs_insert_workgroup() lockref usage
 Date:   Wed, 15 Nov 2023 14:15:48 -0500
-Message-ID: <20231115191640.922809797@linuxfoundation.org>
+Message-ID: <20231115191626.050160137@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,112 +50,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit f7df2329eec1729a606bba8ed1566a1b3c248bad ]
+[ Upstream commit 1a0ac8bd7a4fa5b2f4ef14c3b1e9d6e5a5faae06 ]
 
-The adf_fw_config structures hardcode a bit mask that represents the
-acceleration engines (AEs) where a certain firmware image will have to
-be loaded to. Remove the hardcoded masks and replace them with defines.
+As Linus pointed out [1], lockref_put_return() is fundamentally
+designed to be something that can fail.  It behaves as a fastpath-only
+thing, and the failure case needs to be handled anyway.
 
-This does not introduce any functional change.
+Actually, since the new pcluster was just allocated without being
+populated, it won't be accessed by others until it is inserted into
+XArray, so lockref helpers are actually unneeded here.
 
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Reviewed-by: Tero Kristo <tero.kristo@linux.intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: a238487f7965 ("crypto: qat - fix ring to service map for QAT GEN4")
+Let's just set the proper reference count on initializing.
+
+[1] https://lore.kernel.org/r/CAHk-=whCga8BeQnJ3ZBh_Hfm9ctba_wpF444LpwRybVNMzO6Dw@mail.gmail.com
+
+Fixes: 7674a42f35ea ("erofs: use struct lockref to replace handcrafted approach")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20231031060524.1103921-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/qat/qat_4xxx/adf_4xxx_hw_data.c     | 46 ++++++++++---------
- 1 file changed, 25 insertions(+), 21 deletions(-)
+ fs/erofs/utils.c | 8 +-------
+ fs/erofs/zdata.c | 1 +
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-index 10839269c4d32..44b732fb80bca 100644
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
-@@ -14,6 +14,10 @@
- #include "adf_cfg_services.h"
- #include "icp_qat_hw.h"
+diff --git a/fs/erofs/utils.c b/fs/erofs/utils.c
+index cc6fb9e988991..4256a85719a1d 100644
+--- a/fs/erofs/utils.c
++++ b/fs/erofs/utils.c
+@@ -77,12 +77,7 @@ struct erofs_workgroup *erofs_insert_workgroup(struct super_block *sb,
+ 	struct erofs_sb_info *const sbi = EROFS_SB(sb);
+ 	struct erofs_workgroup *pre;
  
-+#define ADF_AE_GROUP_0		GENMASK(3, 0)
-+#define ADF_AE_GROUP_1		GENMASK(7, 4)
-+#define ADF_AE_GROUP_2		BIT(8)
-+
- enum adf_fw_objs {
- 	ADF_FW_SYM_OBJ,
- 	ADF_FW_ASYM_OBJ,
-@@ -41,45 +45,45 @@ struct adf_fw_config {
- };
+-	/*
+-	 * Bump up before making this visible to others for the XArray in order
+-	 * to avoid potential UAF without serialized by xa_lock.
+-	 */
+-	lockref_get(&grp->lockref);
+-
++	DBG_BUGON(grp->lockref.count < 1);
+ repeat:
+ 	xa_lock(&sbi->managed_pslots);
+ 	pre = __xa_cmpxchg(&sbi->managed_pslots, grp->index,
+@@ -96,7 +91,6 @@ struct erofs_workgroup *erofs_insert_workgroup(struct super_block *sb,
+ 			cond_resched();
+ 			goto repeat;
+ 		}
+-		lockref_put_return(&grp->lockref);
+ 		grp = pre;
+ 	}
+ 	xa_unlock(&sbi->managed_pslots);
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index 9bfdb4ad7c763..2461a3f74e744 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -805,6 +805,7 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
+ 		return PTR_ERR(pcl);
  
- static const struct adf_fw_config adf_fw_cy_config[] = {
--	{0xF0, ADF_FW_SYM_OBJ},
--	{0xF, ADF_FW_ASYM_OBJ},
--	{0x100, ADF_FW_ADMIN_OBJ},
-+	{ADF_AE_GROUP_1, ADF_FW_SYM_OBJ},
-+	{ADF_AE_GROUP_0, ADF_FW_ASYM_OBJ},
-+	{ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ},
- };
- 
- static const struct adf_fw_config adf_fw_dc_config[] = {
--	{0xF0, ADF_FW_DC_OBJ},
--	{0xF, ADF_FW_DC_OBJ},
--	{0x100, ADF_FW_ADMIN_OBJ},
-+	{ADF_AE_GROUP_1, ADF_FW_DC_OBJ},
-+	{ADF_AE_GROUP_0, ADF_FW_DC_OBJ},
-+	{ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ},
- };
- 
- static const struct adf_fw_config adf_fw_sym_config[] = {
--	{0xF0, ADF_FW_SYM_OBJ},
--	{0xF, ADF_FW_SYM_OBJ},
--	{0x100, ADF_FW_ADMIN_OBJ},
-+	{ADF_AE_GROUP_1, ADF_FW_SYM_OBJ},
-+	{ADF_AE_GROUP_0, ADF_FW_SYM_OBJ},
-+	{ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ},
- };
- 
- static const struct adf_fw_config adf_fw_asym_config[] = {
--	{0xF0, ADF_FW_ASYM_OBJ},
--	{0xF, ADF_FW_ASYM_OBJ},
--	{0x100, ADF_FW_ADMIN_OBJ},
-+	{ADF_AE_GROUP_1, ADF_FW_ASYM_OBJ},
-+	{ADF_AE_GROUP_0, ADF_FW_ASYM_OBJ},
-+	{ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ},
- };
- 
- static const struct adf_fw_config adf_fw_asym_dc_config[] = {
--	{0xF0, ADF_FW_ASYM_OBJ},
--	{0xF, ADF_FW_DC_OBJ},
--	{0x100, ADF_FW_ADMIN_OBJ},
-+	{ADF_AE_GROUP_1, ADF_FW_ASYM_OBJ},
-+	{ADF_AE_GROUP_0, ADF_FW_DC_OBJ},
-+	{ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ},
- };
- 
- static const struct adf_fw_config adf_fw_sym_dc_config[] = {
--	{0xF0, ADF_FW_SYM_OBJ},
--	{0xF, ADF_FW_DC_OBJ},
--	{0x100, ADF_FW_ADMIN_OBJ},
-+	{ADF_AE_GROUP_1, ADF_FW_SYM_OBJ},
-+	{ADF_AE_GROUP_0, ADF_FW_DC_OBJ},
-+	{ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ},
- };
- 
- static const struct adf_fw_config adf_fw_dcc_config[] = {
--	{0xF0, ADF_FW_DC_OBJ},
--	{0xF, ADF_FW_SYM_OBJ},
--	{0x100, ADF_FW_ADMIN_OBJ},
-+	{ADF_AE_GROUP_1, ADF_FW_DC_OBJ},
-+	{ADF_AE_GROUP_0, ADF_FW_SYM_OBJ},
-+	{ADF_AE_GROUP_2, ADF_FW_ADMIN_OBJ},
- };
- 
- static_assert(ARRAY_SIZE(adf_fw_cy_config) == ARRAY_SIZE(adf_fw_dc_config));
+ 	spin_lock_init(&pcl->obj.lockref.lock);
++	pcl->obj.lockref.count = 1;	/* one ref for this request */
+ 	pcl->algorithmformat = map->m_algorithmformat;
+ 	pcl->length = 0;
+ 	pcl->partial = true;
 -- 
 2.42.0
 
