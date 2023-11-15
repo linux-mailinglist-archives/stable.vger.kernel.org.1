@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8424C7ECBCC
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8986C7ECE40
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232818AbjKOTYe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58756 "EHLO
+        id S234941AbjKOTlv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:41:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232731AbjKOTYd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:33 -0500
+        with ESMTP id S234948AbjKOTlu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5C2912C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3BAC433C9;
-        Wed, 15 Nov 2023 19:24:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71F19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:41:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD5FC433C7;
+        Wed, 15 Nov 2023 19:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076269;
-        bh=7s25sTpvdBL5MvhOxensFp3E3LkABudeC3fBdzCn1gU=;
+        s=korg; t=1700077306;
+        bh=dxicgrVV0n3jUkChIGtw0C6TkNxJj0qrU9brottlX28=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HlVcuJ4BeeCNX+p1HiwDDBbQrTR4OHSQBvx5glEtqwTYd3hrIhH6RAIumuf2zBfcb
-         vKtBhXWjV3OVuVhiaUKHtMAOeVKPRMuxG0CD06rawY4RW6JcfhiYQd5ymr6CIMOdeG
-         C+PFLk6jiztHpl0DTWQcLo4bDlmn5beZpcejAYB0=
+        b=ozGhCKNSEdd+on7FiffdYJAF7sXsYRslAXOUiUpmDvLVKqsfMP7WnGmoU4KqyRoir
+         4Z0r4W4GgvlKQywf9bNQXiknTWYm3CKps3TIpvq0t8ZJOrfEpWW0vTBuX5gOm8OxCF
+         qq9cbp/GHETPCDLqt7wP8GH6J/FJHnviO1a2hX2s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Kathiravan T <quic_kathirav@quicinc.com>,
-        Varadarajan Narayanan <quic_varada@quicinc.com>,
-        Bjorn Andersson <andersson@kernel.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 184/550] clk: qcom: apss-ipq-pll: Fix l value for ipq5332_pll_config
+Subject: [PATCH 6.6 223/603] drm/radeon: Remove the references of radeon_gem_ pread & pwrite ioctls
 Date:   Wed, 15 Nov 2023 14:12:48 -0500
-Message-ID: <20231115191613.476911954@linuxfoundation.org>
+Message-ID: <20231115191628.685887996@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,46 +53,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varadarajan Narayanan <quic_varada@quicinc.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 5b7a4d3d2b33398330aef69e0ff5656273483587 ]
+[ Upstream commit 52548038496fd58b762067b946f943c9bbcbd01e ]
 
-The earlier 'l' value of 0x3e is for 1.5GHz. Not all SKUs support
-this frequency. Hence set it to 0x2d to get 1.1GHz which is
-supported in all SKUs.
+Removing the functions of pread & pwrite & IOCTL defines, as their
+existence allows an authorized client to spam the system logs.
 
-The frequency can still increase above this initial configuration
-made here when the cpufreq driver picks a different OPP.
-
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Fixes: c7ef7fbb1ccf ("clk: qcom: apss-ipq-pll: add support for IPQ5332")
-Signed-off-by: Kathiravan T <quic_kathirav@quicinc.com>
-Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
-Link: https://lore.kernel.org/r/00e6be6cb9cee56628123a64ade118d0a752018b.1697781921.git.quic_varada@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: db996e64b293 ("drm/radeon: Fix ENOSYS with better fitting error codes in radeon_gem.c")
+Suggested-by: Christian König <christian.koenig@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/apss-ipq-pll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/radeon.h     |  4 ----
+ drivers/gpu/drm/radeon/radeon_drv.c |  2 --
+ drivers/gpu/drm/radeon/radeon_gem.c | 16 ----------------
+ 3 files changed, 22 deletions(-)
 
-diff --git a/drivers/clk/qcom/apss-ipq-pll.c b/drivers/clk/qcom/apss-ipq-pll.c
-index f44be99999ec0..6ac7e3bfe79a5 100644
---- a/drivers/clk/qcom/apss-ipq-pll.c
-+++ b/drivers/clk/qcom/apss-ipq-pll.c
-@@ -74,7 +74,7 @@ static struct clk_alpha_pll ipq_pll_stromer_plus = {
- };
+diff --git a/drivers/gpu/drm/radeon/radeon.h b/drivers/gpu/drm/radeon/radeon.h
+index 8afb03bbce298..3d3d2109dfebc 100644
+--- a/drivers/gpu/drm/radeon/radeon.h
++++ b/drivers/gpu/drm/radeon/radeon.h
+@@ -2215,10 +2215,6 @@ int radeon_gem_pin_ioctl(struct drm_device *dev, void *data,
+ 			 struct drm_file *file_priv);
+ int radeon_gem_unpin_ioctl(struct drm_device *dev, void *data,
+ 			   struct drm_file *file_priv);
+-int radeon_gem_pwrite_ioctl(struct drm_device *dev, void *data,
+-			    struct drm_file *file_priv);
+-int radeon_gem_pread_ioctl(struct drm_device *dev, void *data,
+-			   struct drm_file *file_priv);
+ int radeon_gem_set_domain_ioctl(struct drm_device *dev, void *data,
+ 				struct drm_file *filp);
+ int radeon_gem_mmap_ioctl(struct drm_device *dev, void *data,
+diff --git a/drivers/gpu/drm/radeon/radeon_drv.c b/drivers/gpu/drm/radeon/radeon_drv.c
+index fa531493b1113..7bf08164140ef 100644
+--- a/drivers/gpu/drm/radeon/radeon_drv.c
++++ b/drivers/gpu/drm/radeon/radeon_drv.c
+@@ -555,8 +555,6 @@ static const struct drm_ioctl_desc radeon_ioctls_kms[] = {
+ 	DRM_IOCTL_DEF_DRV(RADEON_GEM_CREATE, radeon_gem_create_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
+ 	DRM_IOCTL_DEF_DRV(RADEON_GEM_MMAP, radeon_gem_mmap_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
+ 	DRM_IOCTL_DEF_DRV(RADEON_GEM_SET_DOMAIN, radeon_gem_set_domain_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
+-	DRM_IOCTL_DEF_DRV(RADEON_GEM_PREAD, radeon_gem_pread_ioctl, DRM_AUTH),
+-	DRM_IOCTL_DEF_DRV(RADEON_GEM_PWRITE, radeon_gem_pwrite_ioctl, DRM_AUTH),
+ 	DRM_IOCTL_DEF_DRV(RADEON_GEM_WAIT_IDLE, radeon_gem_wait_idle_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
+ 	DRM_IOCTL_DEF_DRV(RADEON_CS, radeon_cs_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
+ 	DRM_IOCTL_DEF_DRV(RADEON_INFO, radeon_info_ioctl, DRM_AUTH|DRM_RENDER_ALLOW),
+diff --git a/drivers/gpu/drm/radeon/radeon_gem.c b/drivers/gpu/drm/radeon/radeon_gem.c
+index 358d19242f4ba..3fec3acdaf284 100644
+--- a/drivers/gpu/drm/radeon/radeon_gem.c
++++ b/drivers/gpu/drm/radeon/radeon_gem.c
+@@ -311,22 +311,6 @@ int radeon_gem_info_ioctl(struct drm_device *dev, void *data,
+ 	return 0;
+ }
  
- static const struct alpha_pll_config ipq5332_pll_config = {
--	.l = 0x3e,
-+	.l = 0x2d,
- 	.config_ctl_val = 0x4001075b,
- 	.config_ctl_hi_val = 0x304,
- 	.main_output_mask = BIT(0),
+-int radeon_gem_pread_ioctl(struct drm_device *dev, void *data,
+-			   struct drm_file *filp)
+-{
+-	/* TODO: implement */
+-	DRM_ERROR("unimplemented %s\n", __func__);
+-	return -EOPNOTSUPP;
+-}
+-
+-int radeon_gem_pwrite_ioctl(struct drm_device *dev, void *data,
+-			    struct drm_file *filp)
+-{
+-	/* TODO: implement */
+-	DRM_ERROR("unimplemented %s\n", __func__);
+-	return -EOPNOTSUPP;
+-}
+-
+ int radeon_gem_create_ioctl(struct drm_device *dev, void *data,
+ 			    struct drm_file *filp)
+ {
 -- 
 2.42.0
 
