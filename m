@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B261B7ECBD4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF3847ECE4A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233094AbjKOTYr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:24:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38690 "EHLO
+        id S234961AbjKOTmK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:42:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233116AbjKOTYq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:46 -0500
+        with ESMTP id S234964AbjKOTmI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:08 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC12C130
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A16C433C7;
-        Wed, 15 Nov 2023 19:24:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF4EB9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C63C433C7;
+        Wed, 15 Nov 2023 19:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076282;
-        bh=8oqn5shOpu7FzDx1UXprpBjt2x5m1V0VvgrnYIVwctg=;
+        s=korg; t=1700077324;
+        bh=T4JTWAQ6HMpHGaku8aWYqEbBEVnHm1nPyk9oStb1Yk0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e/DIw2zA1w8tgR/+/WtijWJm2KDwAg2C7qZk9/m3useESqlpUkJ+1ObaVfecNd2dw
-         jJbqOUf2JKb9Tzzaa4G5UdxZjqiqA5V/l073E4d0d2MhFj64Ocu3JZ+oDlJudNEjyJ
-         pu6n/1guQXPPHbWyOBjxIlmgw6Fk+pp+SDOnPjMo=
+        b=mRiWVTPzLxOigAUBgMNGEj49m0Ccp+JPLsQK25Zm6gUjBLiWTaEvz8mh9+o9fUgJu
+         Vai8xNB73I8D/Oalt4uRMOy5KJI04MoMpnodWe1FBC8gT/ERPcKXgyfA7+dvaSe2Jq
+         HDDXsXdJnQyXEOTTwW7kXAgdIpXslry7YrtqEutM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dragos Bogdan <dragos.bogdan@analog.com>,
-        Nuno Sa <nuno.sa@analog.com>,
-        Guenter Roeck <linux@roeck-us.net>,
+        patches@lists.linux.dev, Kai Huang <kai.huang@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 191/550] hwmon: (axi-fan-control) Fix possible NULL pointer dereference
-Date:   Wed, 15 Nov 2023 14:12:55 -0500
-Message-ID: <20231115191613.997493397@linuxfoundation.org>
+Subject: [PATCH 6.6 231/603] x86/tdx: Zero out the missing RSI in TDX_HYPERCALL macro
+Date:   Wed, 15 Nov 2023 14:12:56 -0500
+Message-ID: <20231115191629.185679619@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,76 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Bogdan <dragos.bogdan@analog.com>
+From: Kai Huang <kai.huang@intel.com>
 
-[ Upstream commit 2a5b3370a1d9750eca325292e291c8c7cb8cf2e0 ]
+[ Upstream commit 5d092b66119d774853cc9308522620299048a662 ]
 
-axi_fan_control_irq_handler(), dependent on the private
-axi_fan_control_data structure, might be called before the hwmon
-device is registered. That will cause an "Unable to handle kernel
-NULL pointer dereference" error.
+In the TDX_HYPERCALL asm, after the TDCALL instruction returns from the
+untrusted VMM, the registers that the TDX guest shares to the VMM need
+to be cleared to avoid speculative execution of VMM-provided values.
 
-Fixes: 8412b410fa5e ("hwmon: Support ADI Fan Control IP")
-Signed-off-by: Dragos Bogdan <dragos.bogdan@analog.com>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231025132100.649499-1-nuno.sa@analog.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+RSI is specified in the bitmap of those registers, but it is missing
+when zeroing out those registers in the current TDX_HYPERCALL.
+
+It was there when it was originally added in commit 752d13305c78
+("x86/tdx: Expand __tdx_hypercall() to handle more arguments"), but was
+later removed in commit 1e70c680375a ("x86/tdx: Do not corrupt
+frame-pointer in __tdx_hypercall()"), which was correct because %rsi is
+later restored in the "pop %rsi".  However a later commit 7a3a401874be
+("x86/tdx: Drop flags from __tdx_hypercall()") removed that "pop %rsi"
+but forgot to add the "xor %rsi, %rsi" back.
+
+Fix by adding it back.
+
+Fixes: 7a3a401874be ("x86/tdx: Drop flags from __tdx_hypercall()")
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/e7d1157074a0b45d34564d5f17f3e0ffee8115e9.1692096753.git.kai.huang%40intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/axi-fan-control.c | 29 ++++++++++++++++-------------
- 1 file changed, 16 insertions(+), 13 deletions(-)
+ arch/x86/coco/tdx/tdcall.S | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/axi-fan-control.c b/drivers/hwmon/axi-fan-control.c
-index 5fd136baf1cd3..19b9bf3d75ef9 100644
---- a/drivers/hwmon/axi-fan-control.c
-+++ b/drivers/hwmon/axi-fan-control.c
-@@ -496,6 +496,21 @@ static int axi_fan_control_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 	}
+diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
+index b193c0a1d8db3..2eca5f43734fe 100644
+--- a/arch/x86/coco/tdx/tdcall.S
++++ b/arch/x86/coco/tdx/tdcall.S
+@@ -195,6 +195,7 @@ SYM_FUNC_END(__tdx_module_call)
+ 	xor %r10d, %r10d
+ 	xor %r11d, %r11d
+ 	xor %rdi,  %rdi
++	xor %rsi,  %rsi
+ 	xor %rdx,  %rdx
  
-+	ret = axi_fan_control_init(ctl, pdev->dev.of_node);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Failed to initialize device\n");
-+		return ret;
-+	}
-+
-+	ctl->hdev = devm_hwmon_device_register_with_info(&pdev->dev,
-+							 name,
-+							 ctl,
-+							 &axi_chip_info,
-+							 axi_fan_control_groups);
-+
-+	if (IS_ERR(ctl->hdev))
-+		return PTR_ERR(ctl->hdev);
-+
- 	ctl->irq = platform_get_irq(pdev, 0);
- 	if (ctl->irq < 0)
- 		return ctl->irq;
-@@ -509,19 +524,7 @@ static int axi_fan_control_probe(struct platform_device *pdev)
- 		return ret;
- 	}
- 
--	ret = axi_fan_control_init(ctl, pdev->dev.of_node);
--	if (ret) {
--		dev_err(&pdev->dev, "Failed to initialize device\n");
--		return ret;
--	}
--
--	ctl->hdev = devm_hwmon_device_register_with_info(&pdev->dev,
--							 name,
--							 ctl,
--							 &axi_chip_info,
--							 axi_fan_control_groups);
--
--	return PTR_ERR_OR_ZERO(ctl->hdev);
-+	return 0;
- }
- 
- static struct platform_driver axi_fan_control_driver = {
+ 	/* Restore callee-saved GPRs as mandated by the x86_64 ABI */
 -- 
 2.42.0
 
