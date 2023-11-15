@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0B5C7ED3EF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:55:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFC7F7ED3F0
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:55:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235042AbjKOUz3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:55:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41752 "EHLO
+        id S1343582AbjKOUza (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:55:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235074AbjKOUz0 (ORCPT
+        with ESMTP id S235050AbjKOUz0 (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:55:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDBA81A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:55:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECB3C4E779;
-        Wed, 15 Nov 2023 20:55:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78E95187
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:55:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE808C4E77A;
+        Wed, 15 Nov 2023 20:55:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081721;
-        bh=Tk6FlykPT0C2bataSAvfQ1Zjh2TQCTwcBnUkBaGTQ2o=;
+        s=korg; t=1700081723;
+        bh=mQrU/5QIo6HFHbphujgBi8qc90Hq2AD48uAyY19/Qng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jzyBxqnkksDOKDS9puquMfdpQL8neQVu/FYmu+YICo8WPtIRR5b6NLdTgLw3I2YH4
-         M7lg1R3nPQmL+rWLA8cWfmhaLUNeSWDALNsjLu6db5T/gcnfStnhaGBG2XnjLQyihw
-         OZ/PeMxDwzrFoI7Pizn07xKWaCEfRtTAdrcxiOnQ=
+        b=Gu8+r7CnuL1FFNgzRV2MCRoVkXC8HJ7gcsbX95ruD1bME7G+gdTAoHbnfXE6R6o23
+         9cJSgaYyW1Ikdh7QJK1Yp6eJ2EA0FLIvzJtQGVLieCKVOw8hxhJwRAw1oLOAK8TrNe
+         j4b0bksa+hwgozjtt5YRnhWLYvtjI8nvFbBJWCSg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
-        Sudeep Holla <sudeep.holla@arm.com>,
+        Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/191] clk: scmi: Free scmi_clk allocated when the clocks with invalid info are skipped
-Date:   Wed, 15 Nov 2023 15:46:00 -0500
-Message-ID: <20231115204649.682548269@linuxfoundation.org>
+Subject: [PATCH 5.10 086/191] selftests/pidfd: Fix ksft print formats
+Date:   Wed, 15 Nov 2023 15:46:01 -0500
+Message-ID: <20231115204649.741353047@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -57,36 +55,99 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-[ Upstream commit 3537a75e73f3420614a358d0c8b390ea483cc87d ]
+[ Upstream commit 4d7f4e8158b62f63031510cdc24acc520956c091 ]
 
-Add the missing devm_kfree() when we skip the clocks with invalid or
-missing information from the firmware.
+Compiling pidfd selftest after adding a __printf() attribute to
+ksft_print_msg() and ksft_test_result_pass() exposes -Wformat warnings
+in error_report(), test_pidfd_poll_exec_thread(),
+child_poll_exec_test(), test_pidfd_poll_leader_exit_thread(),
+child_poll_leader_exit_test().
 
-Cc: Cristian Marussi <cristian.marussi@arm.com>
-Cc: Michael Turquette <mturquette@baylibre.com>
-Cc: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-clk@vger.kernel.org
-Fixes: 6d6a1d82eaef ("clk: add support for clocks provided by SCMI")
-Link: https://lore.kernel.org/r/20231004193600.66232-1-sudeep.holla@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+The ksft_test_result_pass() in error_report() expects a string but
+doesn't provide any argument after the format string. All the other
+calls to ksft_print_msg() in the functions mentioned above have format
+strings that don't match with other passed arguments.
+
+Fix format specifiers so they match the passed variables.
+
+Add a missing variable to ksft_test_result_pass() inside
+error_report() so it matches other cases in the switch statement.
+
+Fixes: 2def297ec7fb ("pidfd: add tests for NSpid info in fdinfo")
+
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-scmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/pidfd/pidfd_fdinfo_test.c |  2 +-
+ tools/testing/selftests/pidfd/pidfd_test.c        | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/clk/clk-scmi.c b/drivers/clk/clk-scmi.c
-index c754dfbb73fd4..c62636fb4aca8 100644
---- a/drivers/clk/clk-scmi.c
-+++ b/drivers/clk/clk-scmi.c
-@@ -170,6 +170,7 @@ static int scmi_clocks_probe(struct scmi_device *sdev)
- 		sclk->info = handle->clk_ops->info_get(handle, idx);
- 		if (!sclk->info) {
- 			dev_dbg(dev, "invalid clock info for idx %d\n", idx);
-+			devm_kfree(dev, sclk);
- 			continue;
- 		}
+diff --git a/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c b/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
+index 3fd8e903118f5..3bc46d6151f44 100644
+--- a/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
++++ b/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
+@@ -62,7 +62,7 @@ static void error_report(struct error *err, const char *test_name)
+ 		break;
+ 
+ 	case PIDFD_PASS:
+-		ksft_test_result_pass("%s test: Passed\n");
++		ksft_test_result_pass("%s test: Passed\n", test_name);
+ 		break;
+ 
+ 	default:
+diff --git a/tools/testing/selftests/pidfd/pidfd_test.c b/tools/testing/selftests/pidfd/pidfd_test.c
+index 9a2d64901d591..79f543ad394c2 100644
+--- a/tools/testing/selftests/pidfd/pidfd_test.c
++++ b/tools/testing/selftests/pidfd/pidfd_test.c
+@@ -380,13 +380,13 @@ static int test_pidfd_send_signal_syscall_support(void)
+ 
+ static void *test_pidfd_poll_exec_thread(void *priv)
+ {
+-	ksft_print_msg("Child Thread: starting. pid %d tid %d ; and sleeping\n",
++	ksft_print_msg("Child Thread: starting. pid %d tid %ld ; and sleeping\n",
+ 			getpid(), syscall(SYS_gettid));
+ 	ksft_print_msg("Child Thread: doing exec of sleep\n");
+ 
+ 	execl("/bin/sleep", "sleep", str(CHILD_THREAD_MIN_WAIT), (char *)NULL);
+ 
+-	ksft_print_msg("Child Thread: DONE. pid %d tid %d\n",
++	ksft_print_msg("Child Thread: DONE. pid %d tid %ld\n",
+ 			getpid(), syscall(SYS_gettid));
+ 	return NULL;
+ }
+@@ -426,7 +426,7 @@ static int child_poll_exec_test(void *args)
+ {
+ 	pthread_t t1;
+ 
+-	ksft_print_msg("Child (pidfd): starting. pid %d tid %d\n", getpid(),
++	ksft_print_msg("Child (pidfd): starting. pid %d tid %ld\n", getpid(),
+ 			syscall(SYS_gettid));
+ 	pthread_create(&t1, NULL, test_pidfd_poll_exec_thread, NULL);
+ 	/*
+@@ -477,10 +477,10 @@ static void test_pidfd_poll_exec(int use_waitpid)
+ 
+ static void *test_pidfd_poll_leader_exit_thread(void *priv)
+ {
+-	ksft_print_msg("Child Thread: starting. pid %d tid %d ; and sleeping\n",
++	ksft_print_msg("Child Thread: starting. pid %d tid %ld ; and sleeping\n",
+ 			getpid(), syscall(SYS_gettid));
+ 	sleep(CHILD_THREAD_MIN_WAIT);
+-	ksft_print_msg("Child Thread: DONE. pid %d tid %d\n", getpid(), syscall(SYS_gettid));
++	ksft_print_msg("Child Thread: DONE. pid %d tid %ld\n", getpid(), syscall(SYS_gettid));
+ 	return NULL;
+ }
+ 
+@@ -489,7 +489,7 @@ static int child_poll_leader_exit_test(void *args)
+ {
+ 	pthread_t t1, t2;
+ 
+-	ksft_print_msg("Child: starting. pid %d tid %d\n", getpid(), syscall(SYS_gettid));
++	ksft_print_msg("Child: starting. pid %d tid %ld\n", getpid(), syscall(SYS_gettid));
+ 	pthread_create(&t1, NULL, test_pidfd_poll_leader_exit_thread, NULL);
+ 	pthread_create(&t2, NULL, test_pidfd_poll_leader_exit_thread, NULL);
  
 -- 
 2.42.0
