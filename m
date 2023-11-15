@@ -2,49 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEC737ECC95
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:31:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16AA47ECF4C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234037AbjKOTbX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:31:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45832 "EHLO
+        id S235280AbjKOTrh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:47:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234048AbjKOTbW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:31:22 -0500
+        with ESMTP id S235277AbjKOTrh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3BEB1AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1595CC433C7;
-        Wed, 15 Nov 2023 19:31:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DED0AB8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A34C433C8;
+        Wed, 15 Nov 2023 19:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076678;
-        bh=Z1gwnIkXgdMBjln4RBnx9dLb7ZQMQtadz+E1kxnxrFA=;
+        s=korg; t=1700077653;
+        bh=PYVHpf1bPcpfsI71RHOEsiejTF33To3FDlCWPB571Ow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Csd3H148kln8B2Uv6FmMy6NmwPa7aJskrD+Tax+uXM352eFd3OXkiDzhyp7bOBpDC
-         9YV3bXuFNMYw+Iw7YUK5jDsgUw4aKokO0tRQLXKNKbbSk+w22cmlMt5nujwbE5cqfg
-         FHWLCyXGlW5BD/MdLUg1w0pyzo2pQ+sD13JTz9ZY=
+        b=EOIAaLArP1SWrdkVnmQLiZNKDFzRuGFDPMd8jXgH7sDjLkEkww8BPSGU9D9aYolMV
+         MXNz2iRUXpi2fHCRSNeaqxfNszhUZF8Ortn9I7wRZpysFaO4Zqj+9kW3ooeh80Yp78
+         NPIWgMSwyHJZKuCYtlX6iVC0yT6iMqQYIwbfk8y8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev,
+        Georgia Garcia <georgia.garcia@canonical.com>,
+        John Johansen <john.johansen@canonical.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 379/550] perf kwork: Fix incorrect and missing free atom in work_push_atom()
+Subject: [PATCH 6.6 418/603] apparmor: fix invalid reference on profile->disconnected
 Date:   Wed, 15 Nov 2023 14:16:03 -0500
-Message-ID: <20231115191627.104565246@linuxfoundation.org>
+Message-ID: <20231115191641.805104641@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Georgia Garcia <georgia.garcia@canonical.com>
 
-[ Upstream commit d39710088d82ef100b33cdf4a9de3546fb0bb5df ]
+[ Upstream commit 8884ba07786c718771cf7b78cb3024924b27ec2b ]
 
-1. Atoms are managed in page mode and should be released using atom_free()
-   instead of free().
-2. When the event does not match, the atom needs to free.
+profile->disconnected was storing an invalid reference to the
+disconnected path. Fix it by duplicating the string using
+aa_unpack_strdup and freeing accordingly.
 
-Fixes: f98919ec4fccdacf ("perf kwork: Implement 'report' subcommand")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Link: https://lore.kernel.org/r/20230812084917.169338-2-yangjihong1@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 72c8a768641d ("apparmor: allow profiles to provide info to disconnected paths")
+Signed-off-by: Georgia Garcia <georgia.garcia@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-kwork.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ security/apparmor/policy.c        | 1 +
+ security/apparmor/policy_unpack.c | 5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-kwork.c b/tools/perf/builtin-kwork.c
-index 14bf7a8429e76..73b5dc099a8ae 100644
---- a/tools/perf/builtin-kwork.c
-+++ b/tools/perf/builtin-kwork.c
-@@ -406,12 +406,14 @@ static int work_push_atom(struct perf_kwork *kwork,
+diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
+index b38f7b2a5e1d5..ec695a6caac7d 100644
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -255,6 +255,7 @@ void aa_free_profile(struct aa_profile *profile)
  
- 	work = work_findnew(&class->work_root, &key, &kwork->cmp_id);
- 	if (work == NULL) {
--		free(atom);
-+		atom_free(atom);
- 		return -1;
+ 	aa_put_ns(profile->ns);
+ 	kfree_sensitive(profile->rename);
++	kfree_sensitive(profile->disconnected);
+ 
+ 	free_attachment(&profile->attach);
+ 
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 8b8846073e142..b49201306753c 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -807,7 +807,7 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
+ 	const char *info = "failed to unpack profile";
+ 	size_t ns_len;
+ 	struct rhashtable_params params = { 0 };
+-	char *key = NULL;
++	char *key = NULL, *disconnected = NULL;
+ 	struct aa_data *data;
+ 	int error = -EPROTO;
+ 	kernel_cap_t tmpcap;
+@@ -873,7 +873,8 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
  	}
  
--	if (!profile_event_match(kwork, work, sample))
-+	if (!profile_event_match(kwork, work, sample)) {
-+		atom_free(atom);
- 		return 0;
-+	}
+ 	/* disconnected attachment string is optional */
+-	(void) aa_unpack_str(e, &profile->disconnected, "disconnected");
++	(void) aa_unpack_strdup(e, &disconnected, "disconnected");
++	profile->disconnected = disconnected;
  
- 	if (dst_type < KWORK_TRACE_MAX) {
- 		dst_atom = list_last_entry_or_null(&work->atom_list[dst_type],
+ 	/* per profile debug flags (complain, audit) */
+ 	if (!aa_unpack_nameX(e, AA_STRUCT, "flags")) {
 -- 
 2.42.0
 
