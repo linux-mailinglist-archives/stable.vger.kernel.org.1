@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA7EE7ECD57
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B657ECFA8
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234468AbjKOTgC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47710 "EHLO
+        id S235378AbjKOTty (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234485AbjKOTgA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:00 -0500
+        with ESMTP id S235376AbjKOTtx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F161BF
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A28DC433C9;
-        Wed, 15 Nov 2023 19:35:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C60DC2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D10C433C9;
+        Wed, 15 Nov 2023 19:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076956;
-        bh=SoKgti6ewAMotgn32FdjM3RpDB8gtMwDMr69+2aw2Bc=;
+        s=korg; t=1700077790;
+        bh=J2rlEtYN1xl5trT88SV7TwpdONuketFlladqDpBEmvg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K683PcNwKDdhMwBYuCYkkv5TShfYZXyPd1d2uTXaygnpiSBvZt/SOUVMoS7upWAq2
-         3ZEnF0qvAN8tuZ/14nJ3E8o9nZvo5VWXLD3f+H6rdPqQ04GBmb/FTnkSc0y87OWg/T
-         ya8SS8EeV0KQ3zRUCXkzh7fKSsl7x+fJTgcfOodg=
+        b=aG+/uDDmstkMz1MLutjZpM2a0RpCey4mxji7tWOOe7LgV7O72Lv34cKJEA2cXM2WR
+         rO0TcaGync/yWTsY+9JQc6z8pIZNqWVP57LzuvWAngMr37JvaoYdTjQy6HEk6Xf0EO
+         JWntCytk0nEpyYeuvveioQv0QjyEszGmUXvY6V6M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 475/550] media: i2c: max9286: Fix some redundant of_node_put() calls
+Subject: [PATCH 6.6 514/603] media: bttv: fix use after free error due to btv->timeout timer
 Date:   Wed, 15 Nov 2023 14:17:39 -0500
-Message-ID: <20231115191633.787638027@linuxfoundation.org>
+Message-ID: <20231115191647.658348110@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,52 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 0822315e46b400f611cba1193456ee6a5dc3e41d ]
+[ Upstream commit bd5b50b329e850d467e7bcc07b2b6bde3752fbda ]
 
-This is odd to have a of_node_put() just after a for_each_child_of_node()
-or a for_each_endpoint_of_node() loop. It should already be called
-during the last iteration.
+There may be some a race condition between timer function
+bttv_irq_timeout and bttv_remove. The timer is setup in
+probe and there is no timer_delete operation in remove
+function. When it hit kfree btv, the function might still be
+invoked, which will cause use after free bug.
 
-Remove these calls.
+This bug is found by static analysis, it may be false positive.
 
-Fixes: 66d8c9d2422d ("media: i2c: Add MAX9286 driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fix it by adding del_timer_sync invoking to the remove function.
+
+cpu0                cpu1
+                  bttv_probe
+                    ->timer_setup
+                      ->bttv_set_dma
+                        ->mod_timer;
+bttv_remove
+  ->kfree(btv);
+                  ->bttv_irq_timeout
+                    ->USE btv
+
+Fixes: 162e6376ac58 ("media: pci: Convert timers to use timer_setup()")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/max9286.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/media/pci/bt8xx/bttv-driver.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/i2c/max9286.c b/drivers/media/i2c/max9286.c
-index 88c58e0c49aab..e265e94ca3de4 100644
---- a/drivers/media/i2c/max9286.c
-+++ b/drivers/media/i2c/max9286.c
-@@ -1461,7 +1461,6 @@ static int max9286_parse_dt(struct max9286_priv *priv)
+diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
+index aa708a0e5eac6..09a193bb87df3 100644
+--- a/drivers/media/pci/bt8xx/bttv-driver.c
++++ b/drivers/media/pci/bt8xx/bttv-driver.c
+@@ -3474,6 +3474,7 @@ static void bttv_remove(struct pci_dev *pci_dev)
  
- 		i2c_mux_mask |= BIT(id);
- 	}
--	of_node_put(node);
- 	of_node_put(i2c_mux);
- 
- 	/* Parse the endpoints */
-@@ -1525,7 +1524,6 @@ static int max9286_parse_dt(struct max9286_priv *priv)
- 		priv->source_mask |= BIT(ep.port);
- 		priv->nsources++;
- 	}
--	of_node_put(node);
- 
- 	of_property_read_u32(dev->of_node, "maxim,bus-width", &priv->bus_width);
- 	switch (priv->bus_width) {
+ 	/* free resources */
+ 	free_irq(btv->c.pci->irq,btv);
++	del_timer_sync(&btv->timeout);
+ 	iounmap(btv->bt848_mmio);
+ 	release_mem_region(pci_resource_start(btv->c.pci,0),
+ 			   pci_resource_len(btv->c.pci,0));
 -- 
 2.42.0
 
