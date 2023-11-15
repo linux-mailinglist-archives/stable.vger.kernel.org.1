@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC92D7ECE13
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F00D07ECFE4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234783AbjKOTkV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:40:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50302 "EHLO
+        id S235447AbjKOTvb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234826AbjKOTkQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:16 -0500
+        with ESMTP id S235442AbjKOTva (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA146D51
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ACEBC433CA;
-        Wed, 15 Nov 2023 19:40:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF3A1A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73D50C433CC;
+        Wed, 15 Nov 2023 19:51:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077209;
-        bh=49da5BXOfKK6+TRQtEZoVevxdOJM87R6MzNoN8S7s9A=;
+        s=korg; t=1700077886;
+        bh=6HwUKvVGtfSXGLQaiOvx/p9nfSWThs3mxBBIak257mo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MLaq4OUNeYdBw6N8ARqddzVkTuUY1IsdVU8aK79bKcXPxt1eNO7as5Bt6CqfrE1I+
-         yKLU0v3pKS1r3yEybGDDSVp8Z/IWmEC4tHwUCP34t0bt8A2G4hekMyRPVd8XVfhWvl
-         hBb4I+OSrXMuteZx6/bozG/IOnEA3xg/L2Iugdo0=
+        b=Q9alB8i71xtPIEk87nW1MsI0n/l4IrwbR20WxdmwbIp+mFiv+VE/R909UehBM828i
+         somBo3OWHglXwhIVFT62x+1NJ8JlMY+n9d2YrhIPNsy7O7lVgMwgygzJz7WzsBo+X2
+         y2ophYxgX9wyrW2qq1JQNq0p4jIAGhJ29R6MUKWA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mukesh Ojha <quic_mojha@quicinc.com>,
-        Yujie Liu <yujie.liu@intel.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 542/550] tracing/kprobes: Fix the order of argument descriptions
+Subject: [PATCH 6.6 581/603] fs: dlm: Simplify buffer size computation in dlm_create_debug_file()
 Date:   Wed, 15 Nov 2023 14:18:46 -0500
-Message-ID: <20231115191638.500845887@linuxfoundation.org>
+Message-ID: <20231115191651.605473683@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,47 +52,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yujie Liu <yujie.liu@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit f032c53bea6d2057c14553832d846be2f151cfb2 ]
+[ Upstream commit 19b3102c0b5350621e7492281f2be0f071fb7e31 ]
 
-The order of descriptions should be consistent with the argument list of
-the function, so "kretprobe" should be the second one.
+Use sizeof(name) instead of the equivalent, but hard coded,
+DLM_LOCKSPACE_LEN + 8.
 
-int __kprobe_event_gen_cmd_start(struct dynevent_cmd *cmd, bool kretprobe,
-                                 const char *name, const char *loc, ...)
+This is less verbose and more future proof.
 
-Link: https://lore.kernel.org/all/20231031041305.3363712-1-yujie.liu@intel.com/
-
-Fixes: 2a588dd1d5d6 ("tracing: Add kprobe event command generation functions")
-Suggested-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Yujie Liu <yujie.liu@intel.com>
-Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_kprobe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/dlm/debug_fs.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index c63e25cb9406e..d23b18cbdadd1 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1019,9 +1019,9 @@ EXPORT_SYMBOL_GPL(kprobe_event_cmd_init);
- /**
-  * __kprobe_event_gen_cmd_start - Generate a kprobe event command from arg list
-  * @cmd: A pointer to the dynevent_cmd struct representing the new event
-+ * @kretprobe: Is this a return probe?
-  * @name: The name of the kprobe event
-  * @loc: The location of the kprobe event
-- * @kretprobe: Is this a return probe?
-  * @...: Variable number of arg (pairs), one pair for each field
-  *
-  * NOTE: Users normally won't want to call this function directly, but
+diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
+index fc44ab6657cab..c93359ceaae61 100644
+--- a/fs/dlm/debug_fs.c
++++ b/fs/dlm/debug_fs.c
+@@ -987,7 +987,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 	/* format 2 */
+ 
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_locks", ls->ls_name);
++	snprintf(name, sizeof(name), "%s_locks", ls->ls_name);
+ 
+ 	ls->ls_debug_locks_dentry = debugfs_create_file(name,
+ 							0644,
+@@ -998,7 +998,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 	/* format 3 */
+ 
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_all", ls->ls_name);
++	snprintf(name, sizeof(name), "%s_all", ls->ls_name);
+ 
+ 	ls->ls_debug_all_dentry = debugfs_create_file(name,
+ 						      S_IFREG | S_IRUGO,
+@@ -1009,7 +1009,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 	/* format 4 */
+ 
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_toss", ls->ls_name);
++	snprintf(name, sizeof(name), "%s_toss", ls->ls_name);
+ 
+ 	ls->ls_debug_toss_dentry = debugfs_create_file(name,
+ 						       S_IFREG | S_IRUGO,
+@@ -1018,7 +1018,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 						       &format4_fops);
+ 
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_waiters", ls->ls_name);
++	snprintf(name, sizeof(name), "%s_waiters", ls->ls_name);
+ 
+ 	ls->ls_debug_waiters_dentry = debugfs_create_file(name,
+ 							  0644,
+@@ -1029,7 +1029,7 @@ void dlm_create_debug_file(struct dlm_ls *ls)
+ 	/* format 5 */
+ 
+ 	memset(name, 0, sizeof(name));
+-	snprintf(name, DLM_LOCKSPACE_LEN + 8, "%s_queued_asts", ls->ls_name);
++	snprintf(name, sizeof(name), "%s_queued_asts", ls->ls_name);
+ 
+ 	ls->ls_debug_queued_asts_dentry = debugfs_create_file(name,
+ 							      0644,
 -- 
 2.42.0
 
