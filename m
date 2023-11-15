@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7661E7ECC06
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02D637ECE7D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233254AbjKOT0c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:26:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49982 "EHLO
+        id S235112AbjKOTn1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233640AbjKOT0P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:15 -0500
+        with ESMTP id S235109AbjKOTn1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D51D1BE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF5AC433C7;
-        Wed, 15 Nov 2023 19:26:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD779E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87B2C433C9;
+        Wed, 15 Nov 2023 19:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076371;
-        bh=N3rLuU2qiihJjdmxK2glHdKW8894Yvxcn51RhOmjlUk=;
+        s=korg; t=1700077403;
+        bh=XWgx0pg+FXwdu9AuCPzbNjVE2xVjD2UlTbTjsBRVAKs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kPBwOK6pBA0tmuyzLDbjLxQ3sWdtd5jPNFeRSUCTJA5qXkMe+x/Vd/XhEZx5+q7bZ
-         rHiXU4sibVfWuYl0HfPxxy/FrLDWLga59IYWpjlwIiJDIoiTUGuur+TFf5Z5vqzsu6
-         /1uyp527z6mRN7qbML4JfUDE0L3d74qnvHFFWelc=
+        b=hUmosyVAbUXaMfgtgm8/JSoB1bRXndJq+jM50EMqL8T/4U5dah0VzX77PYDy2x+D9
+         yhc4HgouoZxoTuAavc4raDX5Ye4zUR8P0iIwGW8iVaWJKY3TPHq80uambbyGRwUF9h
+         Lo2TpPhWPzhvJhmHMtCcppE1bB0FZcXvP0NFoD/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Douglas Anderson <dianders@chromium.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Juergen Gross <jgross@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 225/550] drm/aspeed: Convert to platform remove callback returning void
+Subject: [PATCH 6.6 264/603] xen: irqfd: Use _IOW instead of the internal _IOC() macro
 Date:   Wed, 15 Nov 2023 14:13:29 -0500
-Message-ID: <20231115191616.383493488@linuxfoundation.org>
+Message-ID: <20231115191631.589124164@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,61 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 9a32dd324c46a0c76cac9d91e5a88abcf83f7b03 ]
+[ Upstream commit 767e33ca47dd8ace7769e0b0c19d7b0c38b2f72d ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+_IOC() an internal helper that we should not use in driver code.  In
+particular, we got the data direction wrong here, which breaks a number
+of tools, as having "_IOC_NONE" should never be paired with a nonzero
+size.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Use _IOW() instead.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230507162616.1368908-6-u.kleine-koenig@pengutronix.de
-Stable-dep-of: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdown/remove time for misc drivers")
+Fixes: f8941e6c4c71 ("xen: privcmd: Add support for irqfd")
+Reported-by: Arnd Bergmann <arnd@kernel.org>
+Closes: https://lore.kernel.org/all/268a2031-63b8-4c7d-b1e5-8ab83ca80b4a@app.fastmail.com/
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/599ca6f1b9dd2f0e6247ea37bee3ea6827404b6d.1697439990.git.viresh.kumar@linaro.org
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/aspeed/aspeed_gfx_drv.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ include/uapi/xen/privcmd.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/aspeed/aspeed_gfx_drv.c b/drivers/gpu/drm/aspeed/aspeed_gfx_drv.c
-index c8c7f82151559..d207b03f8357c 100644
---- a/drivers/gpu/drm/aspeed/aspeed_gfx_drv.c
-+++ b/drivers/gpu/drm/aspeed/aspeed_gfx_drv.c
-@@ -351,20 +351,18 @@ static int aspeed_gfx_probe(struct platform_device *pdev)
- 	return ret;
- }
+diff --git a/include/uapi/xen/privcmd.h b/include/uapi/xen/privcmd.h
+index b143fafce84db..e145bca5105c5 100644
+--- a/include/uapi/xen/privcmd.h
++++ b/include/uapi/xen/privcmd.h
+@@ -138,6 +138,6 @@ struct privcmd_irqfd {
+ #define IOCTL_PRIVCMD_MMAP_RESOURCE				\
+ 	_IOC(_IOC_NONE, 'P', 7, sizeof(struct privcmd_mmap_resource))
+ #define IOCTL_PRIVCMD_IRQFD					\
+-	_IOC(_IOC_NONE, 'P', 8, sizeof(struct privcmd_irqfd))
++	_IOW('P', 8, struct privcmd_irqfd)
  
--static int aspeed_gfx_remove(struct platform_device *pdev)
-+static void aspeed_gfx_remove(struct platform_device *pdev)
- {
- 	struct drm_device *drm = platform_get_drvdata(pdev);
- 
- 	sysfs_remove_group(&pdev->dev.kobj, &aspeed_sysfs_attr_group);
- 	drm_dev_unregister(drm);
- 	aspeed_gfx_unload(drm);
--
--	return 0;
- }
- 
- static struct platform_driver aspeed_gfx_platform_driver = {
- 	.probe		= aspeed_gfx_probe,
--	.remove		= aspeed_gfx_remove,
-+	.remove_new	= aspeed_gfx_remove,
- 	.driver = {
- 		.name = "aspeed_gfx",
- 		.of_match_table = aspeed_gfx_match,
+ #endif /* __LINUX_PUBLIC_PRIVCMD_H__ */
 -- 
 2.42.0
 
