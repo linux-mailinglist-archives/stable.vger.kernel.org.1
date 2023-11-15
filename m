@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B3427ECC45
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F0B17ECEF2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233769AbjKOT1u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:27:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44724 "EHLO
+        id S235193AbjKOTpQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:45:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233847AbjKOT1s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:48 -0500
+        with ESMTP id S235191AbjKOTpQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 700BF1AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D779FC433C9;
-        Wed, 15 Nov 2023 19:27:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD2DBAB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8A0C433C7;
+        Wed, 15 Nov 2023 19:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076465;
-        bh=SIT3ogTDeLPmYEMxWw4uehyePp9at+IjFOKg/D0QEpk=;
+        s=korg; t=1700077512;
+        bh=g5GZcCXZQis+XVGCr1xtmROQyl81PqePLXTxqOgIPFE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1CDu8gdDAPNd/3vASNRTj2N4W1DjfUwhd+3f9IQwJd60UyKvsIrQXhA3hmx1F5ma5
-         5agfLRMp8g1bZ1dNcz32J4eVfloPqRR9KUrzRiFatV5cIw2aIDDZU+vensrGd3F6U+
-         ND4m+7i+7ytn0F2XlXvXBIeaBK7+xqh5Ysqg5g/c=
+        b=eUcYhouuKXUyQ8lyp7BWt6Yu69owQcEB51z+FA55wkvo36bIjm7yK/HHT0MLAFlso
+         jK8NGKpZXfIrFBzNJTJ/oSuDa6iJfKWsricNRnIyauPEoHJcTXjYzCbNbBGmMiXr2p
+         dIuF7WyfV8VTmP+ZPqLJaI7r97ay5+9/dFcZjlyI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Dhruva Gole <d-gole@ti.com>,
-        Nishanth Menon <nm@ti.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 283/550] firmware: ti_sci: Mark driver as non removable
-Date:   Wed, 15 Nov 2023 14:14:27 -0500
-Message-ID: <20231115191620.403087330@linuxfoundation.org>
+        Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 323/603] selftests/pidfd: Fix ksft print formats
+Date:   Wed, 15 Nov 2023 14:14:28 -0500
+Message-ID: <20231115191635.850182016@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,112 +51,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhruva Gole <d-gole@ti.com>
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-[ Upstream commit 7b7a224b1ba1703583b25a3641ad9798f34d832a ]
+[ Upstream commit 4d7f4e8158b62f63031510cdc24acc520956c091 ]
 
-The TI-SCI message protocol provides a way to communicate between
-various compute processors with a central system controller entity. It
-provides the fundamental device management capability and clock control
-in the SOCs that it's used in.
+Compiling pidfd selftest after adding a __printf() attribute to
+ksft_print_msg() and ksft_test_result_pass() exposes -Wformat warnings
+in error_report(), test_pidfd_poll_exec_thread(),
+child_poll_exec_test(), test_pidfd_poll_leader_exit_thread(),
+child_poll_leader_exit_test().
 
-The remove function failed to do all the necessary cleanup if
-there are registered users. Some things are freed however which
-likely results in an oops later on.
+The ksft_test_result_pass() in error_report() expects a string but
+doesn't provide any argument after the format string. All the other
+calls to ksft_print_msg() in the functions mentioned above have format
+strings that don't match with other passed arguments.
 
-Ensure that the driver isn't unbound by suppressing its bind and unbind
-sysfs attributes. As the driver is built-in there is no way to remove
-device once bound.
+Fix format specifiers so they match the passed variables.
 
-We can also remove the ti_sci_remove call along with the
-ti_sci_debugfs_destroy as there are no callers for it any longer.
+Add a missing variable to ksft_test_result_pass() inside
+error_report() so it matches other cases in the switch statement.
 
-Fixes: aa276781a64a ("firmware: Add basic support for TI System Control Interface (TI-SCI) protocol")
-Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Closes: https://lore.kernel.org/linux-arm-kernel/20230216083908.mvmydic5lpi3ogo7@pengutronix.de/
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20230921091025.133130-1-d-gole@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 2def297ec7fb ("pidfd: add tests for NSpid info in fdinfo")
+
+Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/ti_sci.c | 46 +--------------------------------------
- 1 file changed, 1 insertion(+), 45 deletions(-)
+ tools/testing/selftests/pidfd/pidfd_fdinfo_test.c |  2 +-
+ tools/testing/selftests/pidfd/pidfd_test.c        | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index 91aaa0ca9bde8..1213951307f72 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -190,19 +190,6 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
- 	return 0;
+diff --git a/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c b/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
+index 4e86f927880c3..01cc37bf611c3 100644
+--- a/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
++++ b/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
+@@ -62,7 +62,7 @@ static void error_report(struct error *err, const char *test_name)
+ 		break;
+ 
+ 	case PIDFD_PASS:
+-		ksft_test_result_pass("%s test: Passed\n");
++		ksft_test_result_pass("%s test: Passed\n", test_name);
+ 		break;
+ 
+ 	default:
+diff --git a/tools/testing/selftests/pidfd/pidfd_test.c b/tools/testing/selftests/pidfd/pidfd_test.c
+index 00a07e7c571cd..c081ae91313aa 100644
+--- a/tools/testing/selftests/pidfd/pidfd_test.c
++++ b/tools/testing/selftests/pidfd/pidfd_test.c
+@@ -381,13 +381,13 @@ static int test_pidfd_send_signal_syscall_support(void)
+ 
+ static void *test_pidfd_poll_exec_thread(void *priv)
+ {
+-	ksft_print_msg("Child Thread: starting. pid %d tid %d ; and sleeping\n",
++	ksft_print_msg("Child Thread: starting. pid %d tid %ld ; and sleeping\n",
+ 			getpid(), syscall(SYS_gettid));
+ 	ksft_print_msg("Child Thread: doing exec of sleep\n");
+ 
+ 	execl("/bin/sleep", "sleep", str(CHILD_THREAD_MIN_WAIT), (char *)NULL);
+ 
+-	ksft_print_msg("Child Thread: DONE. pid %d tid %d\n",
++	ksft_print_msg("Child Thread: DONE. pid %d tid %ld\n",
+ 			getpid(), syscall(SYS_gettid));
+ 	return NULL;
+ }
+@@ -427,7 +427,7 @@ static int child_poll_exec_test(void *args)
+ {
+ 	pthread_t t1;
+ 
+-	ksft_print_msg("Child (pidfd): starting. pid %d tid %d\n", getpid(),
++	ksft_print_msg("Child (pidfd): starting. pid %d tid %ld\n", getpid(),
+ 			syscall(SYS_gettid));
+ 	pthread_create(&t1, NULL, test_pidfd_poll_exec_thread, NULL);
+ 	/*
+@@ -480,10 +480,10 @@ static void test_pidfd_poll_exec(int use_waitpid)
+ 
+ static void *test_pidfd_poll_leader_exit_thread(void *priv)
+ {
+-	ksft_print_msg("Child Thread: starting. pid %d tid %d ; and sleeping\n",
++	ksft_print_msg("Child Thread: starting. pid %d tid %ld ; and sleeping\n",
+ 			getpid(), syscall(SYS_gettid));
+ 	sleep(CHILD_THREAD_MIN_WAIT);
+-	ksft_print_msg("Child Thread: DONE. pid %d tid %d\n", getpid(), syscall(SYS_gettid));
++	ksft_print_msg("Child Thread: DONE. pid %d tid %ld\n", getpid(), syscall(SYS_gettid));
+ 	return NULL;
  }
  
--/**
-- * ti_sci_debugfs_destroy() - clean up log debug file
-- * @pdev:	platform device pointer
-- * @info:	Pointer to SCI entity information
-- */
--static void ti_sci_debugfs_destroy(struct platform_device *pdev,
--				   struct ti_sci_info *info)
--{
--	if (IS_ERR(info->debug_region))
--		return;
--
--	debugfs_remove(info->d);
--}
- #else /* CONFIG_DEBUG_FS */
- static inline int ti_sci_debugfs_create(struct platform_device *dev,
- 					struct ti_sci_info *info)
-@@ -3448,43 +3435,12 @@ static int ti_sci_probe(struct platform_device *pdev)
- 	return ret;
- }
+@@ -492,7 +492,7 @@ static int child_poll_leader_exit_test(void *args)
+ {
+ 	pthread_t t1, t2;
  
--static int ti_sci_remove(struct platform_device *pdev)
--{
--	struct ti_sci_info *info;
--	struct device *dev = &pdev->dev;
--	int ret = 0;
--
--	of_platform_depopulate(dev);
--
--	info = platform_get_drvdata(pdev);
--
--	if (info->nb.notifier_call)
--		unregister_restart_handler(&info->nb);
--
--	mutex_lock(&ti_sci_list_mutex);
--	if (info->users)
--		ret = -EBUSY;
--	else
--		list_del(&info->node);
--	mutex_unlock(&ti_sci_list_mutex);
--
--	if (!ret) {
--		ti_sci_debugfs_destroy(pdev, info);
--
--		/* Safe to free channels since no more users */
--		mbox_free_channel(info->chan_tx);
--		mbox_free_channel(info->chan_rx);
--	}
--
--	return ret;
--}
--
- static struct platform_driver ti_sci_driver = {
- 	.probe = ti_sci_probe,
--	.remove = ti_sci_remove,
- 	.driver = {
- 		   .name = "ti-sci",
- 		   .of_match_table = of_match_ptr(ti_sci_of_match),
-+		   .suppress_bind_attrs = true,
- 	},
- };
- module_platform_driver(ti_sci_driver);
+-	ksft_print_msg("Child: starting. pid %d tid %d\n", getpid(), syscall(SYS_gettid));
++	ksft_print_msg("Child: starting. pid %d tid %ld\n", getpid(), syscall(SYS_gettid));
+ 	pthread_create(&t1, NULL, test_pidfd_poll_leader_exit_thread, NULL);
+ 	pthread_create(&t2, NULL, test_pidfd_poll_leader_exit_thread, NULL);
+ 
 -- 
 2.42.0
 
