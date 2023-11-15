@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0374F7ECBAD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 104C67ED2A6
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232405AbjKOTXq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55842 "EHLO
+        id S233434AbjKOUmy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232489AbjKOTXp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:45 -0500
+        with ESMTP id S235030AbjKOTlA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:41:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECC0A1A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:41 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6A5C433CA;
-        Wed, 15 Nov 2023 19:23:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5AC81B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF6BC433C7;
+        Wed, 15 Nov 2023 19:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076221;
-        bh=+zcZIR1Re97GozRCr1svH+c/peIairX9tGFAg8XGwdU=;
+        s=korg; t=1700077256;
+        bh=PbnD+LvMK4ZUSILm55phXkgjL+sau6F52tWZrpxovRk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wTfVlb7cGp5G8X06LnpYGSdec/O6ZVZLBZ188qLSDAcBpyAJDlnI9Ybo106jz8HbK
-         DhMhAuQe70f+RieaGCWOgdy8h+XLKDAVC1VwOZXOJuFFZ69mddbIyj2MGIN92f92i2
-         a1bgkVStpwgIgBfVEdGTzclVwjpM0TA/e8AhuNII=
+        b=mnomfarOU0DWgrNM47jeKZfnflrXBp+sQZZ8Gb0nyfC/UmsxRjZ6a2r8Zl3XiJvTr
+         mGLaTBsufXZmYX5NKYc7uYoPDwLd6UwJuUjHLIjpmxqs9lrKDvFOF2SLsd9yencjSl
+         8orA4mYqQen9sbFYELnaCasVEh4D48DeNHs4qqAg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
+        patches@lists.linux.dev, kernel test robot <yujie.liu@intel.com>,
         Varadarajan Narayanan <quic_varada@quicinc.com>,
-        Kathiravan T <quic_kathirav@quicinc.com>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 153/550] clk: qcom: ipq5332: Drop set rate parent from gpll0 dependent clocks
+Subject: [PATCH 6.6 192/603] clk: qcom: config IPQ_APSS_6018 should depend on QCOM_SMEM
 Date:   Wed, 15 Nov 2023 14:12:17 -0500
-Message-ID: <20231115191611.311138721@linuxfoundation.org>
+Message-ID: <20231115191626.541137196@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Varadarajan Narayanan <quic_varada@quicinc.com>
 
-[ Upstream commit ccd8ab030643040600a663edde56b434b6f4fb6c ]
+[ Upstream commit 6a15647d0adc686226045e8046369f34d6ab03ed ]
 
-IPQ5332's GPLL0's nominal/turbo frequency is 800MHz.
-This must not be scaled based on the requirement of
-dependent clocks. Hence remove the CLK_SET_RATE_PARENT
-flag.
+The config IPQ_APSS_6018 should depend on QCOM_SMEM, to
+avoid the following error reported by 'kernel test robot'
 
-Fixes: 3d89d52970fd ("clk: qcom: add Global Clock controller (GCC) driver for IPQ5332 SoC")
+	loongarch64-linux-ld: drivers/clk/qcom/apss-ipq6018.o: in function `apss_ipq6018_probe':
+	>> apss-ipq6018.c:(.text+0xd0): undefined reference to `qcom_smem_get_soc_id'
+
+Fixes: 5e77b4ef1b19 ("clk: qcom: Add ipq6018 apss clock controller")
+Reported-by: kernel test robot <yujie.liu@intel.com>
+Closes: https://lore.kernel.org/r/202310181650.g8THtfsm-lkp@intel.com/
 Signed-off-by: Varadarajan Narayanan <quic_varada@quicinc.com>
-Reviewed-by: Kathiravan T <quic_kathirav@quicinc.com>
-Link: https://lore.kernel.org/r/1693474133-10467-1-git-send-email-quic_varada@quicinc.com
+Link: https://lore.kernel.org/r/f4c4d65a7cb71e807d6d472c63c7718408c8f5f0.1697781921.git.quic_varada@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq5332.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/clk/qcom/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/gcc-ipq5332.c b/drivers/clk/qcom/gcc-ipq5332.c
-index a75ab88ed14c6..1077d03cefe5b 100644
---- a/drivers/clk/qcom/gcc-ipq5332.c
-+++ b/drivers/clk/qcom/gcc-ipq5332.c
-@@ -70,7 +70,6 @@ static struct clk_fixed_factor gpll0_div2 = {
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -84,7 +83,6 @@ static struct clk_alpha_pll_postdiv gpll0 = {
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
+diff --git a/drivers/clk/qcom/Kconfig b/drivers/clk/qcom/Kconfig
+index 865db5202e4cf..a79b837583894 100644
+--- a/drivers/clk/qcom/Kconfig
++++ b/drivers/clk/qcom/Kconfig
+@@ -131,6 +131,7 @@ config IPQ_APSS_6018
+ 	tristate "IPQ APSS Clock Controller"
+ 	select IPQ_APSS_PLL
+ 	depends on QCOM_APCS_IPC || COMPILE_TEST
++	depends on QCOM_SMEM
+ 	help
+ 	  Support for APSS clock controller on IPQ platforms. The
+ 	  APSS clock controller manages the Mux and enable block that feeds the
 -- 
 2.42.0
 
