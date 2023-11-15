@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45D187ECD5D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D500F7ECB37
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234501AbjKOTgH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47752 "EHLO
+        id S232860AbjKOTVA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234507AbjKOTgB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:01 -0500
+        with ESMTP id S232845AbjKOTUw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 537741A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E7FC433CA;
-        Wed, 15 Nov 2023 19:35:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B87C0D5D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D63C433C8;
+        Wed, 15 Nov 2023 19:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076958;
-        bh=UEBitcw6VyBI8X35afw2y/JVBWCsMoYjpLmOOYkv5s0=;
+        s=korg; t=1700076045;
+        bh=WwRX3SqqakKjBz1VpOP64wtjStT62nrnt8ZWXRfaciU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SsuUhZDdEsDJodo/UE0+SDJYymaqTqEqvV+r4KtsB/Ru+hMSbEynVxoujpTrZ/I70
-         Swt+BjTcMc9cqz2MBOLo4zA3x5FEvwduWbQSP+a8Cy4qI+QS23ngp0S4o49JpqlVS1
-         +jBep9pgVkDGXgWOPP8g2z2tKfZ4iYWdS7L6XeGc=
+        b=TB0E7vJas48WrqDQNkqafaQrF+OpxLVqOxW2/ak5d/lH/JF737tUhibddPKRXjNO/
+         0MyVYTZvQFZWRppS2GdhMRp7dKRu6KYNPcxNlwD7GGdQ5M5y7S+4I0AXIQlFaYz4at
+         cZAGKzmOb6inQnzrreOat5d1w4ZJOSpeLEENkqBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/603] wifi: mt76: mt7603: rework/fix rx pse hang check
-Date:   Wed, 15 Nov 2023 14:10:24 -0500
-Message-ID: <20231115191618.592422312@linuxfoundation.org>
+Subject: [PATCH 6.5 041/550] wifi: mac80211: move offchannel works to wiphy work
+Date:   Wed, 15 Nov 2023 14:10:25 -0500
+Message-ID: <20231115191603.557936746@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,89 +49,201 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit baa19b2e4b7bbb509a7ca7939c8785477dcd40ee ]
+[ Upstream commit 97c19e42b264e6b71a9ff9deea04c19f621805b9 ]
 
-It turns out that the code in mt7603_rx_pse_busy() does not detect actual
-hardware hangs, it only checks for busy conditions in PSE.
-A reset should only be performed if these conditions are true and if there
-is no rx activity as well.
-Reset the counter whenever a rx interrupt occurs. In order to also deal with
-a fully loaded CPU that leaves interrupts disabled with continuous NAPI
-polling, also check for pending rx interrupts in the function itself.
+Make the offchannel works wiphy works to have the
+wiphy locked for executing them.
 
-Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: eadfb54756ae ("wifi: mac80211: move sched-scan stop work to wiphy work")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/mediatek/mt76/mt7603/core.c  |  2 ++
- .../net/wireless/mediatek/mt76/mt7603/mac.c   | 23 +++++++++++++------
- 2 files changed, 18 insertions(+), 7 deletions(-)
+ net/mac80211/ieee80211_i.h |  4 ++--
+ net/mac80211/main.c        |  6 +++---
+ net/mac80211/offchannel.c  | 36 ++++++++++++++++++------------------
+ 3 files changed, 23 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/core.c b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
-index 60a996b63c0c0..915b8349146af 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
-@@ -42,11 +42,13 @@ irqreturn_t mt7603_irq_handler(int irq, void *dev_instance)
- 	}
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index fef9aea9ba958..10ad1d8f9ba83 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1583,9 +1583,9 @@ struct ieee80211_local {
+ 	/*
+ 	 * Remain-on-channel support
+ 	 */
+-	struct delayed_work roc_work;
++	struct wiphy_delayed_work roc_work;
+ 	struct list_head roc_list;
+-	struct work_struct hw_roc_start, hw_roc_done;
++	struct wiphy_work hw_roc_start, hw_roc_done;
+ 	unsigned long hw_roc_start_time;
+ 	u64 roc_cookie_counter;
  
- 	if (intr & MT_INT_RX_DONE(0)) {
-+		dev->rx_pse_check = 0;
- 		mt7603_irq_disable(dev, MT_INT_RX_DONE(0));
- 		napi_schedule(&dev->mt76.napi[0]);
- 	}
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index adb8637a37445..f1cbb7c5d4ac3 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -376,8 +376,8 @@ static void ieee80211_restart_work(struct work_struct *work)
+ 	ieee80211_scan_cancel(local);
  
- 	if (intr & MT_INT_RX_DONE(1)) {
-+		dev->rx_pse_check = 0;
- 		mt7603_irq_disable(dev, MT_INT_RX_DONE(1));
- 		napi_schedule(&dev->mt76.napi[1]);
- 	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-index 99ae080502d80..7a506a0c46e2b 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
-@@ -1570,20 +1570,29 @@ static bool mt7603_rx_pse_busy(struct mt7603_dev *dev)
- {
- 	u32 addr, val;
+ 	/* make sure any new ROC will consider local->in_reconfig */
+-	flush_delayed_work(&local->roc_work);
+-	flush_work(&local->hw_roc_done);
++	wiphy_delayed_work_flush(local->hw.wiphy, &local->roc_work);
++	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_done);
  
--	if (mt76_rr(dev, MT_MCU_DEBUG_RESET) & MT_MCU_DEBUG_RESET_QUEUES)
--		return true;
--
- 	if (mt7603_rx_fifo_busy(dev))
--		return false;
-+		goto out;
+ 	/* wait for all packet processing to be done */
+ 	synchronize_net();
+@@ -1480,11 +1480,11 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
+ 	ieee80211_remove_interfaces(local);
  
- 	addr = mt7603_reg_map(dev, MT_CLIENT_BASE_PHYS_ADDR + MT_CLIENT_STATUS);
- 	mt76_wr(dev, addr, 3);
- 	val = mt76_rr(dev, addr) >> 16;
+ 	wiphy_lock(local->hw.wiphy);
++	wiphy_delayed_work_cancel(local->hw.wiphy, &local->roc_work);
+ 	wiphy_work_cancel(local->hw.wiphy, &local->radar_detected_work);
+ 	wiphy_unlock(local->hw.wiphy);
+ 	rtnl_unlock();
  
--	if (is_mt7628(dev) && (val & 0x4001) == 0x4001)
--		return true;
-+	if (!(val & BIT(0)))
-+		return false;
-+
-+	if (is_mt7628(dev))
-+		val &= 0xa000;
-+	else
-+		val &= 0x8000;
-+	if (!val)
-+		return false;
-+
-+out:
-+	if (mt76_rr(dev, MT_INT_SOURCE_CSR) &
-+	    (MT_INT_RX_DONE(0) | MT_INT_RX_DONE(1)))
-+		return false;
+-	cancel_delayed_work_sync(&local->roc_work);
+ 	cancel_work_sync(&local->restart_work);
+ 	cancel_work_sync(&local->reconfig_filter);
+ 	flush_work(&local->sched_scan_stopped_work);
+diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
+index cdf991e74ab99..5bedd9cef414d 100644
+--- a/net/mac80211/offchannel.c
++++ b/net/mac80211/offchannel.c
+@@ -230,7 +230,7 @@ static bool ieee80211_recalc_sw_work(struct ieee80211_local *local,
+ 	if (dur == LONG_MAX)
+ 		return false;
  
--	return (val & 0x8001) == 0x8001 || (val & 0xe001) == 0xe001;
-+	return true;
+-	mod_delayed_work(local->workqueue, &local->roc_work, dur);
++	wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work, dur);
+ 	return true;
  }
  
- static bool
+@@ -258,7 +258,7 @@ static void ieee80211_handle_roc_started(struct ieee80211_roc_work *roc,
+ 	roc->notified = true;
+ }
+ 
+-static void ieee80211_hw_roc_start(struct work_struct *work)
++static void ieee80211_hw_roc_start(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+ 	struct ieee80211_local *local =
+ 		container_of(work, struct ieee80211_local, hw_roc_start);
+@@ -285,7 +285,7 @@ void ieee80211_ready_on_channel(struct ieee80211_hw *hw)
+ 
+ 	trace_api_ready_on_channel(local);
+ 
+-	ieee80211_queue_work(hw, &local->hw_roc_start);
++	wiphy_work_queue(hw->wiphy, &local->hw_roc_start);
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_ready_on_channel);
+ 
+@@ -338,7 +338,7 @@ static void _ieee80211_start_next_roc(struct ieee80211_local *local)
+ 				tmp->started = true;
+ 				tmp->abort = true;
+ 			}
+-			ieee80211_queue_work(&local->hw, &local->hw_roc_done);
++			wiphy_work_queue(local->hw.wiphy, &local->hw_roc_done);
+ 			return;
+ 		}
+ 
+@@ -368,8 +368,8 @@ static void _ieee80211_start_next_roc(struct ieee80211_local *local)
+ 			ieee80211_hw_config(local, 0);
+ 		}
+ 
+-		ieee80211_queue_delayed_work(&local->hw, &local->roc_work,
+-					     msecs_to_jiffies(min_dur));
++		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work,
++					 msecs_to_jiffies(min_dur));
+ 
+ 		/* tell userspace or send frame(s) */
+ 		list_for_each_entry(tmp, &local->roc_list, list) {
+@@ -407,8 +407,8 @@ void ieee80211_start_next_roc(struct ieee80211_local *local)
+ 		_ieee80211_start_next_roc(local);
+ 	} else {
+ 		/* delay it a bit */
+-		ieee80211_queue_delayed_work(&local->hw, &local->roc_work,
+-					     round_jiffies_relative(HZ/2));
++		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work,
++					 round_jiffies_relative(HZ / 2));
+ 	}
+ }
+ 
+@@ -451,7 +451,7 @@ static void __ieee80211_roc_work(struct ieee80211_local *local)
+ 	}
+ }
+ 
+-static void ieee80211_roc_work(struct work_struct *work)
++static void ieee80211_roc_work(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+ 	struct ieee80211_local *local =
+ 		container_of(work, struct ieee80211_local, roc_work.work);
+@@ -461,7 +461,7 @@ static void ieee80211_roc_work(struct work_struct *work)
+ 	mutex_unlock(&local->mtx);
+ }
+ 
+-static void ieee80211_hw_roc_done(struct work_struct *work)
++static void ieee80211_hw_roc_done(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+ 	struct ieee80211_local *local =
+ 		container_of(work, struct ieee80211_local, hw_roc_done);
+@@ -482,7 +482,7 @@ void ieee80211_remain_on_channel_expired(struct ieee80211_hw *hw)
+ 
+ 	trace_api_remain_on_channel_expired(local);
+ 
+-	ieee80211_queue_work(hw, &local->hw_roc_done);
++	wiphy_work_queue(hw->wiphy, &local->hw_roc_done);
+ }
+ EXPORT_SYMBOL_GPL(ieee80211_remain_on_channel_expired);
+ 
+@@ -586,8 +586,8 @@ static int ieee80211_start_roc_work(struct ieee80211_local *local,
+ 		/* if not HW assist, just queue & schedule work */
+ 		if (!local->ops->remain_on_channel) {
+ 			list_add_tail(&roc->list, &local->roc_list);
+-			ieee80211_queue_delayed_work(&local->hw,
+-						     &local->roc_work, 0);
++			wiphy_delayed_work_queue(local->hw.wiphy,
++						 &local->roc_work, 0);
+ 		} else {
+ 			/* otherwise actually kick it off here
+ 			 * (for error handling)
+@@ -695,7 +695,7 @@ static int ieee80211_cancel_roc(struct ieee80211_local *local,
+ 	if (!cookie)
+ 		return -ENOENT;
+ 
+-	flush_work(&local->hw_roc_start);
++	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_start);
+ 
+ 	mutex_lock(&local->mtx);
+ 	list_for_each_entry_safe(roc, tmp, &local->roc_list, list) {
+@@ -745,7 +745,7 @@ static int ieee80211_cancel_roc(struct ieee80211_local *local,
+ 	} else {
+ 		/* go through work struct to return to the operating channel */
+ 		found->abort = true;
+-		mod_delayed_work(local->workqueue, &local->roc_work, 0);
++		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work, 0);
+ 	}
+ 
+  out_unlock:
+@@ -994,9 +994,9 @@ int ieee80211_mgmt_tx_cancel_wait(struct wiphy *wiphy,
+ 
+ void ieee80211_roc_setup(struct ieee80211_local *local)
+ {
+-	INIT_WORK(&local->hw_roc_start, ieee80211_hw_roc_start);
+-	INIT_WORK(&local->hw_roc_done, ieee80211_hw_roc_done);
+-	INIT_DELAYED_WORK(&local->roc_work, ieee80211_roc_work);
++	wiphy_work_init(&local->hw_roc_start, ieee80211_hw_roc_start);
++	wiphy_work_init(&local->hw_roc_done, ieee80211_hw_roc_done);
++	wiphy_delayed_work_init(&local->roc_work, ieee80211_roc_work);
+ 	INIT_LIST_HEAD(&local->roc_list);
+ }
+ 
 -- 
 2.42.0
 
