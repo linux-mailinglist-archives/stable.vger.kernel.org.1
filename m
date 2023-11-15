@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48CAD7ECE72
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF54E7ECC05
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235102AbjKOTnK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
+        id S233504AbjKOT0a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:26:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235103AbjKOTnJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:09 -0500
+        with ESMTP id S233513AbjKOT0O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:26:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 984B319E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:06 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF10C433CA;
-        Wed, 15 Nov 2023 19:43:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14664D6B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:26:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812D5C433C9;
+        Wed, 15 Nov 2023 19:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077386;
-        bh=mBvWTI8kTWgh7Ud4TNUxr/FUakqnBi0c720MgZ6yD0A=;
+        s=korg; t=1700076369;
+        bh=ZP1nDyL2NSU8yeBCNkVDIF41PbDqV6nWmgIOI7s4Rx4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VyMeTQkA7hODFwk9Ntj+rzHf1z7ONDyckK3ky88FUEgU98e+jJLxdlM1dodhv9YVT
-         j1Vq5qUx688kfIKK7q6mx4Q7AKZuwinlnO1QPaKOTzq8fe6++Ej416DX0TKauDLPM5
-         VExqXZjg3TzETiCn21YvJqywmCOuJdafwxCoUnwk=
+        b=Dldn72IBt+2h3Lj0d2Hl2WcRsSI2P0AC5uVaR/3E5vWDLQDtgWxnBF/VQd7ZmWSrZ
+         6lcM9pxaZ//KsdBbDgRd5YyWqgVsJOONn4RleBzBNyYC4Mcb46pQUzRVvUCtc9w27M
+         x0MUmQiFQ/8iG/A9M4u+heU38XrH+gJI9VH1K/cU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Juergen Gross <jgross@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/603] xen: Make struct privcmd_irqfds layout architecture independent
+        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+        Robert Foss <rfoss@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Maxim Schwalm <maxim.schwalm@gmail.com>
+Subject: [PATCH 6.5 224/550] drm/bridge: tc358768: Fix tc358768_ns_to_cnt()
 Date:   Wed, 15 Nov 2023 14:13:28 -0500
-Message-ID: <20231115191631.513382911@linuxfoundation.org>
+Message-ID: <20231115191616.302401567@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,59 +53,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 8dd765a5d769c521d73931850d1c8708fbc490cb ]
+[ Upstream commit f1dabbe645065d20ca863c8d446c74c59ca1ca9d ]
 
-Using indirect pointers in an ioctl command argument means that the
-layout is architecture specific, in particular we can't use the same one
-from 32-bit compat tasks. The general recommendation is to have __u64
-members and use u64_to_user_ptr() to access it from the kernel if we are
-unable to avoid the pointers altogether.
+The tc358768_ns_to_cnt() is, most likely, supposed to do a div-round-up
+operation, but it misses subtracting one from the dividend.
 
-Fixes: f8941e6c4c71 ("xen: privcmd: Add support for irqfd")
-Reported-by: Arnd Bergmann <arnd@kernel.org>
-Closes: https://lore.kernel.org/all/268a2031-63b8-4c7d-b1e5-8ab83ca80b4a@app.fastmail.com/
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/a4ef0d4a68fc858b34a81fd3f9877d9b6898eb77.1697439990.git.viresh.kumar@linaro.org
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fix this by just using DIV_ROUND_UP().
+
+Fixes: ff1ca6397b1d ("drm/bridge: Add tc358768 driver")
+Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
+Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-11-31725f008a50@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/privcmd.c      | 2 +-
- include/uapi/xen/privcmd.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/tc358768.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/xen/privcmd.c b/drivers/xen/privcmd.c
-index f00ad5f5f1d4a..da88173bac432 100644
---- a/drivers/xen/privcmd.c
-+++ b/drivers/xen/privcmd.c
-@@ -935,7 +935,7 @@ static int privcmd_irqfd_assign(struct privcmd_irqfd *irqfd)
- 		return -ENOMEM;
- 	dm_op = kirqfd + 1;
+diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
+index d1000d1f69f4e..6eed5c4232956 100644
+--- a/drivers/gpu/drm/bridge/tc358768.c
++++ b/drivers/gpu/drm/bridge/tc358768.c
+@@ -630,7 +630,7 @@ static int tc358768_setup_pll(struct tc358768_priv *priv,
  
--	if (copy_from_user(dm_op, irqfd->dm_op, irqfd->size)) {
-+	if (copy_from_user(dm_op, u64_to_user_ptr(irqfd->dm_op), irqfd->size)) {
- 		ret = -EFAULT;
- 		goto error_kfree;
- 	}
-diff --git a/include/uapi/xen/privcmd.h b/include/uapi/xen/privcmd.h
-index 375718ba4ab62..b143fafce84db 100644
---- a/include/uapi/xen/privcmd.h
-+++ b/include/uapi/xen/privcmd.h
-@@ -102,7 +102,7 @@ struct privcmd_mmap_resource {
- #define PRIVCMD_IRQFD_FLAG_DEASSIGN (1 << 0)
+ static u32 tc358768_ns_to_cnt(u32 ns, u32 period_ps)
+ {
+-	return (ns * 1000 + period_ps) / period_ps;
++	return DIV_ROUND_UP(ns * 1000, period_ps);
+ }
  
- struct privcmd_irqfd {
--	void __user *dm_op;
-+	__u64 dm_op;
- 	__u32 size; /* Size of structure pointed by dm_op */
- 	__u32 fd;
- 	__u32 flags;
+ static u32 tc358768_ps_to_ns(u32 ps)
 -- 
 2.42.0
 
