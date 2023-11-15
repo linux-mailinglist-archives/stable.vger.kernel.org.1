@@ -2,35 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8EB7ED0A0
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA0057ED0A1
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235615AbjKOT4q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:56:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60516 "EHLO
+        id S1343613AbjKOT4t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:56:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235655AbjKOT4a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:30 -0500
+        with ESMTP id S235677AbjKOT4c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E911E1B1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63936C433C7;
-        Wed, 15 Nov 2023 19:56:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3BDD55
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075C6C433C9;
+        Wed, 15 Nov 2023 19:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078186;
-        bh=wMlb5+tRy1XI8r/emd/seIcFeN2Uyu9yyh33ODyX22M=;
+        s=korg; t=1700078188;
+        bh=OkDdJTNBc61j8SSbAVkt777l6QR3IcwPYqbknpwLPUY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R0YMOOOmBEnSn/Li+oJRG2fhqdJiJ72KL0lyums6ZuE5FR1+rgzBZi2gwwFfidUUf
-         +yFOreL56Bwd0i2fv82/ZaF7nwa/MRSfT+Gvwh8PNgtVoE749rtgJegUY2py6XofZL
-         a1ZVLix8TwjhwpvnTAVJkAVDtYu2V23TlnmZufT0=
+        b=CkT+hINxlT79e1lV5IUy0WSVGPzYe5pbKLi8DHvofF3n2gUUCDtl/XHQcy/n1Rqnr
+         WUuQvOvg71dC3TULe47q6YY/e8EywiqINeS3lr34gg2J3Vs+NMEiZNCUyNrYfNbyfr
+         DAY9IaYqgd1+UpxW5ywfE+xPrgOzMXa+Ad8B4x8A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gabriel Krisman Bertazi <krisman@suse.de>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/379] io_uring/kbuf: Allow the full buffer id space for provided buffers
-Date:   Wed, 15 Nov 2023 14:23:35 -0500
-Message-ID: <20231115192653.405650647@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 141/379] drm/mediatek: Fix iommu fault by swapping FBs after updating plane state
+Date:   Wed, 15 Nov 2023 14:23:36 -0500
+Message-ID: <20231115192653.461010457@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -53,72 +59,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit f74c746e476b9dad51448b9a9421aae72b60e25f ]
+[ Upstream commit 3ec71e05ae6e7f46512e568ed81c92be589003dd ]
 
-nbufs tracks the number of buffers and not the last bgid. In 16-bit, we
-have 2^16 valid buffers, but the check mistakenly rejects the last
-bid. Let's fix it to make the interface consistent with the
-documentation.
+According to the comment in drm_atomic_helper_async_commit(),
+we should make sure FBs have been swapped, so that cleanups in the
+new_state performs a cleanup in the old FB.
 
-Fixes: ddf0322db79c ("io_uring: add IORING_OP_PROVIDE_BUFFERS")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Link: https://lore.kernel.org/r/20231005000531.30800-3-krisman@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+So we should move swapping FBs after calling mtk_plane_update_new_state(),
+to avoid using the old FB which could be freed.
+
+Fixes: 1a64a7aff8da ("drm/mediatek: Fix cursor plane no update")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://patchwork.kernel.org/project/linux-mediatek/patch/20230809125722.24112-2-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_drm_plane.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index e45602b02a9f1..57ef6850c6a87 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -19,12 +19,15 @@
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_plane.c b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
+index 2f5e007dd3800..c4a0203d17e38 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_plane.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
+@@ -157,9 +157,9 @@ static void mtk_plane_atomic_async_update(struct drm_plane *plane,
+ 	plane->state->src_y = new_state->src_y;
+ 	plane->state->src_h = new_state->src_h;
+ 	plane->state->src_w = new_state->src_w;
+-	swap(plane->state->fb, new_state->fb);
  
- #define BGID_ARRAY	64
- 
-+/* BIDs are addressed by a 16-bit field in a CQE */
-+#define MAX_BIDS_PER_BGID (1 << 16)
-+
- struct io_provide_buf {
- 	struct file			*file;
- 	__u64				addr;
- 	__u32				len;
- 	__u32				bgid;
--	__u16				nbufs;
-+	__u32				nbufs;
- 	__u16				bid;
- };
- 
-@@ -281,7 +284,7 @@ int io_remove_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
- 		return -EINVAL;
- 
- 	tmp = READ_ONCE(sqe->fd);
--	if (!tmp || tmp > USHRT_MAX)
-+	if (!tmp || tmp > MAX_BIDS_PER_BGID)
- 		return -EINVAL;
- 
- 	memset(p, 0, sizeof(*p));
-@@ -327,7 +330,7 @@ int io_provide_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
- 		return -EINVAL;
- 
- 	tmp = READ_ONCE(sqe->fd);
--	if (!tmp || tmp > USHRT_MAX)
-+	if (!tmp || tmp > MAX_BIDS_PER_BGID)
- 		return -E2BIG;
- 	p->nbufs = tmp;
- 	p->addr = READ_ONCE(sqe->addr);
-@@ -347,7 +350,7 @@ int io_provide_buffers_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe
- 	tmp = READ_ONCE(sqe->off);
- 	if (tmp > USHRT_MAX)
- 		return -E2BIG;
--	if (tmp + p->nbufs > USHRT_MAX)
-+	if (tmp + p->nbufs > MAX_BIDS_PER_BGID)
- 		return -EINVAL;
- 	p->bid = tmp;
- 	return 0;
+ 	mtk_plane_update_new_state(new_state, new_plane_state);
++	swap(plane->state->fb, new_state->fb);
+ 	wmb(); /* Make sure the above parameters are set before update */
+ 	new_plane_state->pending.async_dirty = true;
+ 	mtk_drm_crtc_async_update(new_state->crtc, plane, state);
 -- 
 2.42.0
 
