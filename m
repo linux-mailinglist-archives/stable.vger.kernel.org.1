@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDACA7ECCB3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42FE57ECF50
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234206AbjKOTcV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:32:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35860 "EHLO
+        id S235284AbjKOTrp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:47:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234139AbjKOTcC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:02 -0500
+        with ESMTP id S235282AbjKOTro (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C171AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:31:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3403C433C7;
-        Wed, 15 Nov 2023 19:31:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E53D1C2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0D1C433C7;
+        Wed, 15 Nov 2023 19:47:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076717;
-        bh=HTjrnfrzxdmR94C32ZHgOPwj7Rl73BjY/e3jLM1hCW8=;
+        s=korg; t=1700077660;
+        bh=iqffH9Ryhu8TSjomU8JsZWU8rSam8br0urV/fcghL+E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IsSQZEdGhewiJ3zfDmzh8dB/bZ2Es9KGGc9n/xIbQDcvc4cg9IQ4juGNoDponV2ZN
-         WuvhDiBNPqIgn83vd26D1/AQtVBsVXWmpqraBltaTz2itHQZKN4Ks8Ulswiw7nsoPu
-         ItwjnAayE3DeygMSidZjyiuRpHSzF3DV7KOvJFSQ=
+        b=aZQV4IHb5mAecwWo29ktVISIGE5ocIMTMtmlHMEfttcuq6JTaCsXYh/gmu8oHg05L
+         ZkXc02xUiLRuCbdFfB2YEX/7LwD1dTa4WmyLlzRAxUMLoIdxWosAvy98nnPE5ozsOA
+         At3vuQoxoEFegU90zeJBBh+ev0BPSuQ/xsSIrVrA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Disha Goel <disgoel@linux.vnet.ibm.com>,
-        Disha Goel <disgoel@linux.ibm.com>,
-        Kajol Jain <kjain@linux.ibm.com>, maddy@linux.ibm.com,
-        atrajeev@linux.vnet.ibm.com, Namhyung Kim <namhyung@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 400/550] tools/perf: Update call stack check in builtin-lock.c
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 439/603] dmaengine: ti: edma: handle irq_of_parse_and_map() errors
 Date:   Wed, 15 Nov 2023 14:16:24 -0500
-Message-ID: <20231115191628.578918823@linuxfoundation.org>
+Message-ID: <20231115191643.192816880@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,150 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d7c9ae8d5d1be0c4156d1e20e4369a77b711a4cc ]
+[ Upstream commit 14f6d317913f634920a640e9047aa2e66f5bdcb7 ]
 
-The perf test named "kernel lock contention analysis test"
-fails in powerpc system with below error:
+Zero is not a valid IRQ for in-kernel code and the irq_of_parse_and_map()
+function returns zero on error.  So this check for valid IRQs should only
+accept values > 0.
 
-  [command]# ./perf test 81 -vv
-   81: kernel lock contention analysis test                            :
-   --- start ---
-  test child forked, pid 2140
-  Testing perf lock record and perf lock contention
-  Testing perf lock contention --use-bpf
-  [Skip] No BPF support
-  Testing perf lock record and perf lock contention at the same time
-  Testing perf lock contention --threads
-  Testing perf lock contention --lock-addr
-  Testing perf lock contention --type-filter (w/ spinlock)
-  Testing perf lock contention --lock-filter (w/ tasklist_lock)
-  Testing perf lock contention --callstack-filter (w/ unix_stream)
-  [Fail] Recorded result should have a lock from unix_stream:
-  test child finished with -1
-   ---- end ----
-  kernel lock contention analysis test: FAILED!
-
-The test is failing because we get an address entry with 0 in
-perf lock samples for powerpc, and code for lock contention
-option "--callstack-filter" will not check further entries after
-address 0.
-
-Below are some of the samples from test generated perf.data file, which
-have 0 address in the 2nd entry of callstack:
- --------
-sched-messaging    3409 [001]  7152.904029: lock:contention_begin: 0xc00000c80904ef00 (flags=SPIN)
-        c0000000001e926c __traceiter_contention_begin+0x6c ([kernel.kallsyms])
-                       0 [unknown] ([unknown])
-        c000000000f8a178 native_queued_spin_lock_slowpath+0x1f8 ([kernel.kallsyms])
-        c000000000f89f44 _raw_spin_lock_irqsave+0x84 ([kernel.kallsyms])
-        c0000000001d9fd0 prepare_to_wait+0x50 ([kernel.kallsyms])
-        c000000000c80f50 sock_alloc_send_pskb+0x1b0 ([kernel.kallsyms])
-        c000000000e82298 unix_stream_sendmsg+0x2b8 ([kernel.kallsyms])
-        c000000000c78980 sock_sendmsg+0x80 ([kernel.kallsyms])
-
-sched-messaging    3408 [005]  7152.904036: lock:contention_begin: 0xc00000c80904ef00 (flags=SPIN)
-        c0000000001e926c __traceiter_contention_begin+0x6c ([kernel.kallsyms])
-                       0 [unknown] ([unknown])
-        c000000000f8a178 native_queued_spin_lock_slowpath+0x1f8 ([kernel.kallsyms])
-        c000000000f89f44 _raw_spin_lock_irqsave+0x84 ([kernel.kallsyms])
-        c0000000001d9fd0 prepare_to_wait+0x50 ([kernel.kallsyms])
-        c000000000c80f50 sock_alloc_send_pskb+0x1b0 ([kernel.kallsyms])
-        c000000000e82298 unix_stream_sendmsg+0x2b8 ([kernel.kallsyms])
-        c000000000c78980 sock_sendmsg+0x80 ([kernel.kallsyms])
- --------
-
-Based on commit 20002ded4d93 ("perf_counter: powerpc: Add callchain support"),
-incase of powerpc, the callchain saved by kernel always includes first
-three entries as the NIP (next instruction pointer), LR (link register), and
-the contents of LR save area in the second stack frame. In certain scenarios
-its possible to have invalid kernel instruction addresses in either of LR or the
-second stack frame's LR. In that case, kernel will store the address as zer0.
-Hence, its possible to have 2nd or 3rd callstack entry as 0.
-
-As per the current code in match_callstack_filter function, we skip the callstack
-check incase we get 0 address. And hence the test case is failing in powerpc.
-
-Fix this issue by updating the check in match_callstack_filter function,
-to not skip callstack check if the 2nd or 3rd entry have 0 address
-for powerpc.
-
-Result in powerpc after patch changes:
-
-  [command]# ./perf test 81 -vv
-   81: kernel lock contention analysis test                            :
-   --- start ---
-  test child forked, pid 4570
-  Testing perf lock record and perf lock contention
-  Testing perf lock contention --use-bpf
-  [Skip] No BPF support
-  Testing perf lock record and perf lock contention at the same time
-  Testing perf lock contention --threads
-  Testing perf lock contention --lock-addr
-  Testing perf lock contention --type-filter (w/ spinlock)
-  Testing perf lock contention --lock-filter (w/ tasklist_lock)
-  [Skip] Could not find 'tasklist_lock'
-  Testing perf lock contention --callstack-filter (w/ unix_stream)
-  Testing perf lock contention --callstack-filter with task aggregation
-  Testing perf lock contention CSV output
-  [Skip] No BPF support
-  test child finished with 0
-   ---- end ----
-  kernel lock contention analysis test: Ok
-
-Fixes: ebab291641be ("perf lock contention: Support filters for different aggregation")
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Tested-by: Disha Goel <disgoel@linux.ibm.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-Cc: maddy@linux.ibm.com
-Cc: atrajeev@linux.vnet.ibm.com
-Link: https://lore.kernel.org/r/20231003092113.252380-1-kjain@linux.ibm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/f15cb6a7-8449-4f79-98b6-34072f04edbc@moroto.mountain
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-lock.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/dma/ti/edma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
-index 0cf1c5a2e0323..17255a0982e7d 100644
---- a/tools/perf/builtin-lock.c
-+++ b/tools/perf/builtin-lock.c
-@@ -524,6 +524,7 @@ bool match_callstack_filter(struct machine *machine, u64 *callstack)
- 	struct map *kmap;
- 	struct symbol *sym;
- 	u64 ip;
-+	const char *arch = perf_env__arch(machine->env);
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index aa8e2e8ac2609..33d6d931b33bb 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -2401,7 +2401,7 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq < 0 && node)
+ 		irq = irq_of_parse_and_map(node, 0);
  
- 	if (list_empty(&callstack_filters))
- 		return true;
-@@ -531,7 +532,21 @@ bool match_callstack_filter(struct machine *machine, u64 *callstack)
- 	for (int i = 0; i < max_stack_depth; i++) {
- 		struct callstack_filter *filter;
+-	if (irq >= 0) {
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccint",
+ 					  dev_name(dev));
+ 		ret = devm_request_irq(dev, irq, dma_irq_handler, 0, irq_name,
+@@ -2417,7 +2417,7 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq < 0 && node)
+ 		irq = irq_of_parse_and_map(node, 2);
  
--		if (!callstack || !callstack[i])
-+		/*
-+		 * In powerpc, the callchain saved by kernel always includes
-+		 * first three entries as the NIP (next instruction pointer),
-+		 * LR (link register), and the contents of LR save area in the
-+		 * second stack frame. In certain scenarios its possible to have
-+		 * invalid kernel instruction addresses in either LR or the second
-+		 * stack frame's LR. In that case, kernel will store that address as
-+		 * zero.
-+		 *
-+		 * The below check will continue to look into callstack,
-+		 * incase first or second callstack index entry has 0
-+		 * address for powerpc.
-+		 */
-+		if (!callstack || (!callstack[i] && (strcmp(arch, "powerpc") ||
-+						(i != 1 && i != 2))))
- 			break;
- 
- 		ip = callstack[i];
+-	if (irq >= 0) {
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccerrint",
+ 					  dev_name(dev));
+ 		ret = devm_request_irq(dev, irq, dma_ccerr_handler, 0, irq_name,
 -- 
 2.42.0
 
