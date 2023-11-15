@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F0B17ECEF2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8FA67ECC2C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:27:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235193AbjKOTpQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:45:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36716 "EHLO
+        id S233633AbjKOT1X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:27:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235191AbjKOTpQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:45:16 -0500
+        with ESMTP id S233845AbjKOT1O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:27:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD2DBAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8A0C433C7;
-        Wed, 15 Nov 2023 19:45:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 518BBA1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F20C433C7;
+        Wed, 15 Nov 2023 19:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077512;
-        bh=g5GZcCXZQis+XVGCr1xtmROQyl81PqePLXTxqOgIPFE=;
+        s=korg; t=1700076431;
+        bh=i4ehM4MTpXj524plOPc78TA52llK7WSEx0u/Vr6d6Qs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eUcYhouuKXUyQ8lyp7BWt6Yu69owQcEB51z+FA55wkvo36bIjm7yK/HHT0MLAFlso
-         jK8NGKpZXfIrFBzNJTJ/oSuDa6iJfKWsricNRnIyauPEoHJcTXjYzCbNbBGmMiXr2p
-         dIuF7WyfV8VTmP+ZPqLJaI7r97ay5+9/dFcZjlyI=
+        b=enXF9QAnfsauW9mNOCijgmpRZ/1JY7NzEaSdkdXTuxCG9Xm2KFIKlS5HH3LVrBfuu
+         p9QeoDFyA30C4sO4/jHWyeG1Q3XX6+Xd9xVZ+kCWdKJYXQoDq/TsjPlRX/Buvd48nc
+         GbZL19R3AdAsBVHGNLfUCXC9idwk/C1bBQfL+e+Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Wadim Egorov <w.egorov@phytec.de>,
+        Nishanth Menon <nm@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 323/603] selftests/pidfd: Fix ksft print formats
+Subject: [PATCH 6.5 284/550] arm64: dts: ti: k3-am625-beagleplay: Fix typo in ramoops reg
 Date:   Wed, 15 Nov 2023 14:14:28 -0500
-Message-ID: <20231115191635.850182016@linuxfoundation.org>
+Message-ID: <20231115191620.474244568@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,104 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+From: Wadim Egorov <w.egorov@phytec.de>
 
-[ Upstream commit 4d7f4e8158b62f63031510cdc24acc520956c091 ]
+[ Upstream commit 33269ac0b768b07da017df173d52952625c57870 ]
 
-Compiling pidfd selftest after adding a __printf() attribute to
-ksft_print_msg() and ksft_test_result_pass() exposes -Wformat warnings
-in error_report(), test_pidfd_poll_exec_thread(),
-child_poll_exec_test(), test_pidfd_poll_leader_exit_thread(),
-child_poll_leader_exit_test().
+Seems like the address value of the reg property was mistyped.
+Update reg to 0x9ca00000 to match node's definition.
 
-The ksft_test_result_pass() in error_report() expects a string but
-doesn't provide any argument after the format string. All the other
-calls to ksft_print_msg() in the functions mentioned above have format
-strings that don't match with other passed arguments.
-
-Fix format specifiers so they match the passed variables.
-
-Add a missing variable to ksft_test_result_pass() inside
-error_report() so it matches other cases in the switch statement.
-
-Fixes: 2def297ec7fb ("pidfd: add tests for NSpid info in fdinfo")
-
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: f5a731f0787f ("arm64: dts: ti: Add k3-am625-beagleplay")
+Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
+Reviewed-by: Nishanth Menon <nm@ti.com>
+Link: https://lore.kernel.org/r/20230925151444.1856852-1-w.egorov@phytec.de
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/pidfd/pidfd_fdinfo_test.c |  2 +-
- tools/testing/selftests/pidfd/pidfd_test.c        | 12 ++++++------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c b/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
-index 4e86f927880c3..01cc37bf611c3 100644
---- a/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
-+++ b/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
-@@ -62,7 +62,7 @@ static void error_report(struct error *err, const char *test_name)
- 		break;
+diff --git a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
+index 589bf998bc528..92541e9842a24 100644
+--- a/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
++++ b/arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts
+@@ -58,7 +58,7 @@ reserved-memory {
  
- 	case PIDFD_PASS:
--		ksft_test_result_pass("%s test: Passed\n");
-+		ksft_test_result_pass("%s test: Passed\n", test_name);
- 		break;
- 
- 	default:
-diff --git a/tools/testing/selftests/pidfd/pidfd_test.c b/tools/testing/selftests/pidfd/pidfd_test.c
-index 00a07e7c571cd..c081ae91313aa 100644
---- a/tools/testing/selftests/pidfd/pidfd_test.c
-+++ b/tools/testing/selftests/pidfd/pidfd_test.c
-@@ -381,13 +381,13 @@ static int test_pidfd_send_signal_syscall_support(void)
- 
- static void *test_pidfd_poll_exec_thread(void *priv)
- {
--	ksft_print_msg("Child Thread: starting. pid %d tid %d ; and sleeping\n",
-+	ksft_print_msg("Child Thread: starting. pid %d tid %ld ; and sleeping\n",
- 			getpid(), syscall(SYS_gettid));
- 	ksft_print_msg("Child Thread: doing exec of sleep\n");
- 
- 	execl("/bin/sleep", "sleep", str(CHILD_THREAD_MIN_WAIT), (char *)NULL);
- 
--	ksft_print_msg("Child Thread: DONE. pid %d tid %d\n",
-+	ksft_print_msg("Child Thread: DONE. pid %d tid %ld\n",
- 			getpid(), syscall(SYS_gettid));
- 	return NULL;
- }
-@@ -427,7 +427,7 @@ static int child_poll_exec_test(void *args)
- {
- 	pthread_t t1;
- 
--	ksft_print_msg("Child (pidfd): starting. pid %d tid %d\n", getpid(),
-+	ksft_print_msg("Child (pidfd): starting. pid %d tid %ld\n", getpid(),
- 			syscall(SYS_gettid));
- 	pthread_create(&t1, NULL, test_pidfd_poll_exec_thread, NULL);
- 	/*
-@@ -480,10 +480,10 @@ static void test_pidfd_poll_exec(int use_waitpid)
- 
- static void *test_pidfd_poll_leader_exit_thread(void *priv)
- {
--	ksft_print_msg("Child Thread: starting. pid %d tid %d ; and sleeping\n",
-+	ksft_print_msg("Child Thread: starting. pid %d tid %ld ; and sleeping\n",
- 			getpid(), syscall(SYS_gettid));
- 	sleep(CHILD_THREAD_MIN_WAIT);
--	ksft_print_msg("Child Thread: DONE. pid %d tid %d\n", getpid(), syscall(SYS_gettid));
-+	ksft_print_msg("Child Thread: DONE. pid %d tid %ld\n", getpid(), syscall(SYS_gettid));
- 	return NULL;
- }
- 
-@@ -492,7 +492,7 @@ static int child_poll_leader_exit_test(void *args)
- {
- 	pthread_t t1, t2;
- 
--	ksft_print_msg("Child: starting. pid %d tid %d\n", getpid(), syscall(SYS_gettid));
-+	ksft_print_msg("Child: starting. pid %d tid %ld\n", getpid(), syscall(SYS_gettid));
- 	pthread_create(&t1, NULL, test_pidfd_poll_leader_exit_thread, NULL);
- 	pthread_create(&t2, NULL, test_pidfd_poll_leader_exit_thread, NULL);
- 
+ 		ramoops: ramoops@9ca00000 {
+ 			compatible = "ramoops";
+-			reg = <0x00 0x9c700000 0x00 0x00100000>;
++			reg = <0x00 0x9ca00000 0x00 0x00100000>;
+ 			record-size = <0x8000>;
+ 			console-size = <0x8000>;
+ 			ftrace-size = <0x00>;
 -- 
 2.42.0
 
