@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23E397ED1C1
+	by mail.lfdr.de (Postfix) with ESMTP id 905D77ED1C2
 	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:05:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344311AbjKOUFD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S1344329AbjKOUFD (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 15:05:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52426 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344330AbjKOUE7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:04:59 -0500
+        with ESMTP id S1344318AbjKOUFA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:05:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B049AB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AD8C433C7;
-        Wed, 15 Nov 2023 20:04:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33673B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2AAC433C8;
+        Wed, 15 Nov 2023 20:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078695;
-        bh=ZpFU/3ayOne/wULhsNVQJuf13IyIcd4viJoo07jJEzI=;
+        s=korg; t=1700078696;
+        bh=42TabPbSjc2ZfHWda+vzOfGKGQHHfJpJr5TZg8azmbw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TBiXgypjqFsa9uwBQowExbLrsgJbzDM9ppkWIvSa1RYaQ9bw0uyiXX4GiH1tx+nFd
-         MMPKTEMMUuKZfS2bWF2uJpbAgShN9TEdVghIU9QwvcSOYREkTOlPctSVKTAJDVk6mj
-         npTGcwSmdMp8UlLEkBFTewYpuXzcqAq5Z9pUSjhM=
+        b=apfAYw0xLd88HZ1IcJv7wZcvEAWDApjfmVEt0L/SauG8FSIjcj0wPOGU5b0gZszg1
+         Pc7KPQnlKSl6XlgJGYKmjDiBebyK0kUYBb9E/OQFJjkpnn4M7BG02CoaK0b9+t6u4s
+         YTnU7iWhl8hnt/z2Wa56aGb3pu3TWX44r9Q6f1VY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
-        Dominik Brodowski <linux@dominikbrodowski.net>,
+        patches@lists.linux.dev, Katya Orlova <e.orlova@ispras.ru>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 33/45] pcmcia: ds: fix possible name leak in error path in pcmcia_device_add()
-Date:   Wed, 15 Nov 2023 14:33:10 -0500
-Message-ID: <20231115191421.567532381@linuxfoundation.org>
+Subject: [PATCH 4.14 34/45] media: s3c-camif: Avoid inappropriate kfree()
+Date:   Wed, 15 Nov 2023 14:33:11 -0500
+Message-ID: <20231115191421.619021059@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191419.641552204@linuxfoundation.org>
 References: <20231115191419.641552204@linuxfoundation.org>
@@ -54,50 +54,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Katya Orlova <e.orlova@ispras.ru>
 
-[ Upstream commit 99e1241049a92dd3e9a90a0f91e32ce390133278 ]
+[ Upstream commit 61334819aca018c3416ee6c330a08a49c1524fc3 ]
 
-Afer commit 1fa5ae857bb1 ("driver core: get rid of struct device's
-bus_id string array"), the name of device is allocated dynamically.
-Therefore, it needs to be freed, which is done by the driver core for
-us once all references to the device are gone. Therefore, move the
-dev_set_name() call immediately before the call device_register(), which
-either succeeds (then the freeing will be done upon subsequent remvoal),
-or puts the reference in the error call. Also, it is not unusual that the
-return value of dev_set_name is not checked.
+s3c_camif_register_video_node() works with video_device structure stored
+as a field of camif_vp, so it should not be kfreed.
+But there is video_device_release() on error path that do it.
 
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-[linux@dominikbrodowski.net: simplification, commit message modified]
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: babde1c243b2 ("[media] V4L: Add driver for S3C24XX/S3C64XX SoC series camera interface")
+Signed-off-by: Katya Orlova <e.orlova@ispras.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/ds.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/platform/s3c-camif/camif-capture.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pcmcia/ds.c b/drivers/pcmcia/ds.c
-index e07bd5249f271..3701887be32e8 100644
---- a/drivers/pcmcia/ds.c
-+++ b/drivers/pcmcia/ds.c
-@@ -521,9 +521,6 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
- 	/* by default don't allow DMA */
- 	p_dev->dma_mask = DMA_MASK_NONE;
- 	p_dev->dev.dma_mask = &p_dev->dma_mask;
--	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
--	if (!dev_name(&p_dev->dev))
--		goto err_free;
- 	p_dev->devname = kasprintf(GFP_KERNEL, "pcmcia%s", dev_name(&p_dev->dev));
- 	if (!p_dev->devname)
- 		goto err_free;
-@@ -581,6 +578,7 @@ static struct pcmcia_device *pcmcia_device_add(struct pcmcia_socket *s,
+diff --git a/drivers/media/platform/s3c-camif/camif-capture.c b/drivers/media/platform/s3c-camif/camif-capture.c
+index 85d26713cedb9..63710f73fc3c4 100644
+--- a/drivers/media/platform/s3c-camif/camif-capture.c
++++ b/drivers/media/platform/s3c-camif/camif-capture.c
+@@ -1142,12 +1142,12 @@ int s3c_camif_register_video_node(struct camif_dev *camif, int idx)
  
- 	pcmcia_device_query(p_dev);
+ 	ret = vb2_queue_init(q);
+ 	if (ret)
+-		goto err_vd_rel;
++		return ret;
  
-+	dev_set_name(&p_dev->dev, "%d.%d", p_dev->socket->sock, p_dev->device_no);
- 	if (device_register(&p_dev->dev)) {
- 		mutex_lock(&s->ops_mutex);
- 		list_del(&p_dev->socket_device_list);
+ 	vp->pad.flags = MEDIA_PAD_FL_SINK;
+ 	ret = media_entity_pads_init(&vfd->entity, 1, &vp->pad);
+ 	if (ret)
+-		goto err_vd_rel;
++		return ret;
+ 
+ 	video_set_drvdata(vfd, vp);
+ 
+@@ -1179,8 +1179,6 @@ int s3c_camif_register_video_node(struct camif_dev *camif, int idx)
+ 	v4l2_ctrl_handler_free(&vp->ctrl_handler);
+ err_me_cleanup:
+ 	media_entity_cleanup(&vfd->entity);
+-err_vd_rel:
+-	video_device_release(vfd);
+ 	return ret;
+ }
+ 
 -- 
 2.42.0
 
