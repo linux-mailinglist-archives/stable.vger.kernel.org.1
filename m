@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ED8C7ECE75
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E35BE7ED297
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235107AbjKOTnO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54538 "EHLO
+        id S233302AbjKOUmo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235103AbjKOTnO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:14 -0500
+        with ESMTP id S233605AbjKOTZv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5984F9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8880C433C7;
-        Wed, 15 Nov 2023 19:43:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79774A4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE480C433C8;
+        Wed, 15 Nov 2023 19:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077391;
-        bh=6aY5o816DD+CfcvyCv6AQFHJJV9hhpBKdEVSaDe76I8=;
+        s=korg; t=1700076348;
+        bh=lpRVATMmhFJzsBNY09ymxEVciDUHGfLBGUhHIuFCAdk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wC+DlrPk55WJc+SFo+dyEnadqRcJFcQNjBaJ+MDCVYNZjAYYg7/njWdjPiWUkTUUm
-         AwTiLPz/bQrqFevAKmsEFZfJBMAtQq4LGzwi26V0ASOXnDVlVS8WcNwyYIIfiZclyR
-         qJT9W32xdBliRsO4nXFMlof/ab5koXgVd3oqZNlU=
+        b=xoaxG5Oxl5HMTG4q0OF8Qj3siYxNLJPlEHovofChTfh46yVtSEiUZsHsY3JT5ZlbW
+         /STiCDOFo2BFkLpA4oVZzO9nuA4qaW5BJZsBogGG+qWH+2TeH5AaopCECLhGP8askn
+         y/nOPMO/skCGe3mg7XVJUKxnOMLq/OjhVm6nh45s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junhao He <hejunhao3@huawei.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/603] perf: hisi: Fix use-after-free when register pmu fails
+        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 235/550] drm/amd/display: Check all enabled planes in dm_check_crtc_cursor
 Date:   Wed, 15 Nov 2023 14:13:39 -0500
-Message-ID: <20231115191632.308551975@linuxfoundation.org>
+Message-ID: <20231115191616.998559280@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -49,64 +52,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Michel Dänzer <mdaenzer@redhat.com>
 
-[ Upstream commit b805cafc604bfdb671fae7347a57f51154afa735 ]
+[ Upstream commit 003048ddf44b1a6cfa57afa5a0cf40673e13f1ba ]
 
-When we fail to register the uncore pmu, the pmu context may not been
-allocated. The error handing will call cpuhp_state_remove_instance()
-to call uncore pmu offline callback, which migrate the pmu context.
-Since that's liable to lead to some kind of use-after-free.
+It was only checking planes which had any state changes in the same
+commit. However, it also needs to check other enabled planes.
 
-Use cpuhp_state_remove_instance_nocalls() instead of
-cpuhp_state_remove_instance() so that the notifiers don't execute after
-the PMU device has been failed to register.
+Not doing this meant that a commit might spuriously "succeed", resulting
+in the cursor plane displaying with incorrect scaling. See
+https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/3177#note_1824263
+for an example.
 
-Fixes: a0ab25cd82ee ("drivers/perf: hisi: Add support for HiSilicon PA PMU driver")
-FIxes: 3bf30882c3c7 ("drivers/perf: hisi: Add support for HiSilicon SLLC PMU driver")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Link: https://lore.kernel.org/r/20231024113630.13472-1-hejunhao3@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: d1bfbe8a3202 ("amd/display: check cursor plane matches underlying plane")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hisi_uncore_pa_pmu.c   | 4 ++--
- drivers/perf/hisilicon/hisi_uncore_sllc_pmu.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/perf/hisilicon/hisi_uncore_pa_pmu.c b/drivers/perf/hisilicon/hisi_uncore_pa_pmu.c
-index d941e746b4248..797cf201996a9 100644
---- a/drivers/perf/hisilicon/hisi_uncore_pa_pmu.c
-+++ b/drivers/perf/hisilicon/hisi_uncore_pa_pmu.c
-@@ -505,8 +505,8 @@ static int hisi_pa_pmu_probe(struct platform_device *pdev)
- 	ret = perf_pmu_register(&pa_pmu->pmu, name, -1);
- 	if (ret) {
- 		dev_err(pa_pmu->dev, "PMU register failed, ret = %d\n", ret);
--		cpuhp_state_remove_instance(CPUHP_AP_PERF_ARM_HISI_PA_ONLINE,
--					    &pa_pmu->node);
-+		cpuhp_state_remove_instance_nocalls(CPUHP_AP_PERF_ARM_HISI_PA_ONLINE,
-+						    &pa_pmu->node);
- 		return ret;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 83d670f0d199b..ee9eb7350b7fb 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -9874,14 +9874,24 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
+ 	 * blending properties match the underlying planes'.
+ 	 */
  
-diff --git a/drivers/perf/hisilicon/hisi_uncore_sllc_pmu.c b/drivers/perf/hisilicon/hisi_uncore_sllc_pmu.c
-index 6fe534a665eda..e706ca5676764 100644
---- a/drivers/perf/hisilicon/hisi_uncore_sllc_pmu.c
-+++ b/drivers/perf/hisilicon/hisi_uncore_sllc_pmu.c
-@@ -450,8 +450,8 @@ static int hisi_sllc_pmu_probe(struct platform_device *pdev)
- 	ret = perf_pmu_register(&sllc_pmu->pmu, name, -1);
- 	if (ret) {
- 		dev_err(sllc_pmu->dev, "PMU register failed, ret = %d\n", ret);
--		cpuhp_state_remove_instance(CPUHP_AP_PERF_ARM_HISI_SLLC_ONLINE,
--					    &sllc_pmu->node);
-+		cpuhp_state_remove_instance_nocalls(CPUHP_AP_PERF_ARM_HISI_SLLC_ONLINE,
-+						    &sllc_pmu->node);
- 		return ret;
- 	}
+-	new_cursor_state = drm_atomic_get_new_plane_state(state, cursor);
+-	if (!new_cursor_state || !new_cursor_state->fb)
++	new_cursor_state = drm_atomic_get_plane_state(state, cursor);
++	if (IS_ERR(new_cursor_state))
++		return PTR_ERR(new_cursor_state);
++
++	if (!new_cursor_state->fb)
+ 		return 0;
  
+ 	dm_get_oriented_plane_size(new_cursor_state, &cursor_src_w, &cursor_src_h);
+ 	cursor_scale_w = new_cursor_state->crtc_w * 1000 / cursor_src_w;
+ 	cursor_scale_h = new_cursor_state->crtc_h * 1000 / cursor_src_h;
+ 
++	/* Need to check all enabled planes, even if this commit doesn't change
++	 * their state
++	 */
++	i = drm_atomic_add_affected_planes(state, crtc);
++	if (i)
++		return i;
++
+ 	for_each_new_plane_in_state_reverse(state, underlying, new_underlying_state, i) {
+ 		/* Narrow down to non-cursor planes on the same CRTC as the cursor */
+ 		if (new_underlying_state->crtc != crtc || underlying == crtc->cursor)
 -- 
 2.42.0
 
