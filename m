@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19F307ECFD3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD77C7ECDD0
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235420AbjKOTvI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:51:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36466 "EHLO
+        id S234670AbjKOTih (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:38:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235426AbjKOTvF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:05 -0500
+        with ESMTP id S234659AbjKOTig (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F169512C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A10EC433C8;
-        Wed, 15 Nov 2023 19:51:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F79EB9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25B40C433C9;
+        Wed, 15 Nov 2023 19:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077861;
-        bh=8VSbfxyUz40qL+vDBX5IoI299OPQFn6ochjr+m7PxV8=;
+        s=korg; t=1700077113;
+        bh=VUa3VhkRUUsILOcrrfARPHmJ7cs13Hj8tje0QF0K0Ts=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yltCMM+eYUdL6PXcVa1fepZe+jxX3vBjSmvlMwHz0s88/QfLn2vfDdM2pSNY1j2ny
-         GvdA0N91++rLlfuZcN/6o664hSBZ8EEV5wVe8SHHmgV34wL/y8MUzzhOfxyI7lX8wJ
-         lT18NVLGQH3Z1XZ9p2WfJBWzDgd6O7b6HiNQzL1Q=
+        b=dfZii6M5yv4+uGOex2DrhMrQRhIX9B4qO7+I3RvChLGTo5kPVnMRD0hDT6IurLbwJ
+         jbPoDa2AT6AuiXILNG/xC1QvIANEtBKhlBWT4plwT8fVBQCOpwTGKX3/f+aoJ421/d
+         cXtvIAK5GnYR8ktEWyVYQrLLlLc6KPwnU+u10rs4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
-        Aniruddha Paul <aniruddha.paul@intel.com>,
-        Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <zenczykowski@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 564/603] ice: Fix VF-VF filter rules in switchdev mode
-Date:   Wed, 15 Nov 2023 14:18:29 -0500
-Message-ID: <20231115191650.622848471@linuxfoundation.org>
+Subject: [PATCH 6.5 526/550] netfilter: xt_recent: fix (increase) ipv6 literal buffer length
+Date:   Wed, 15 Nov 2023 14:18:30 -0500
+Message-ID: <20231115191637.402257566@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,193 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aniruddha Paul <aniruddha.paul@intel.com>
+From: Maciej Żenczykowski <zenczykowski@gmail.com>
 
-[ Upstream commit 8b3c8c55ccbc02920b0ae6601c66df24f0d833bd ]
+[ Upstream commit 7b308feb4fd2d1c06919445c65c8fbf8e9fd1781 ]
 
-Any packet leaving VSI i.e VF's VSI is considered as
-egress traffic by HW, thus failing to match the added
-rule.
+in6_pton() supports 'low-32-bit dot-decimal representation'
+(this is useful with DNS64/NAT64 networks for example):
 
-Mark the direction for redirect rules as below:
-1. VF-VF - Egress
-2. Uplink-VF - Ingress
-3. VF-Uplink - Egress
-4. Link_Partner-Uplink - Ingress
-5. Link_Partner-VF - Ingress
+  # echo +aaaa:bbbb:cccc:dddd:eeee:ffff:1.2.3.4 > /proc/self/net/xt_recent/DEFAULT
+  # cat /proc/self/net/xt_recent/DEFAULT
+  src=aaaa:bbbb:cccc:dddd:eeee:ffff:0102:0304 ttl: 0 last_seen: 9733848829 oldest_pkt: 1 9733848829
 
-Fixes: 0960a27bd479 ("ice: Add direction metadata")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Aniruddha Paul <aniruddha.paul@intel.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+but the provided buffer is too short:
+
+  # echo +aaaa:bbbb:cccc:dddd:eeee:ffff:255.255.255.255 > /proc/self/net/xt_recent/DEFAULT
+  -bash: echo: write error: Invalid argument
+
+Fixes: 079aa88fe717 ("netfilter: xt_recent: IPv6 support")
+Signed-off-by: Maciej Żenczykowski <zenczykowski@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_tc_lib.c | 90 ++++++++++++++-------
- 1 file changed, 62 insertions(+), 28 deletions(-)
+ net/netfilter/xt_recent.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_tc_lib.c b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-index 37b54db91df27..0e75fc6b3c060 100644
---- a/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_tc_lib.c
-@@ -630,32 +630,61 @@ bool ice_is_tunnel_supported(struct net_device *dev)
- 	return ice_tc_tun_get_type(dev) != TNL_LAST;
- }
- 
--static int
--ice_eswitch_tc_parse_action(struct ice_tc_flower_fltr *fltr,
--			    struct flow_action_entry *act)
-+static bool ice_tc_is_dev_uplink(struct net_device *dev)
-+{
-+	return netif_is_ice(dev) || ice_is_tunnel_supported(dev);
-+}
-+
-+static int ice_tc_setup_redirect_action(struct net_device *filter_dev,
-+					struct ice_tc_flower_fltr *fltr,
-+					struct net_device *target_dev)
+diff --git a/net/netfilter/xt_recent.c b/net/netfilter/xt_recent.c
+index 7ddb9a78e3fc8..ef93e0d3bee04 100644
+--- a/net/netfilter/xt_recent.c
++++ b/net/netfilter/xt_recent.c
+@@ -561,7 +561,7 @@ recent_mt_proc_write(struct file *file, const char __user *input,
  {
- 	struct ice_repr *repr;
- 
-+	fltr->action.fltr_act = ICE_FWD_TO_VSI;
-+
-+	if (ice_is_port_repr_netdev(filter_dev) &&
-+	    ice_is_port_repr_netdev(target_dev)) {
-+		repr = ice_netdev_to_repr(target_dev);
-+
-+		fltr->dest_vsi = repr->src_vsi;
-+		fltr->direction = ICE_ESWITCH_FLTR_EGRESS;
-+	} else if (ice_is_port_repr_netdev(filter_dev) &&
-+		   ice_tc_is_dev_uplink(target_dev)) {
-+		repr = ice_netdev_to_repr(filter_dev);
-+
-+		fltr->dest_vsi = repr->src_vsi->back->switchdev.uplink_vsi;
-+		fltr->direction = ICE_ESWITCH_FLTR_EGRESS;
-+	} else if (ice_tc_is_dev_uplink(filter_dev) &&
-+		   ice_is_port_repr_netdev(target_dev)) {
-+		repr = ice_netdev_to_repr(target_dev);
-+
-+		fltr->dest_vsi = repr->src_vsi;
-+		fltr->direction = ICE_ESWITCH_FLTR_INGRESS;
-+	} else {
-+		NL_SET_ERR_MSG_MOD(fltr->extack,
-+				   "Unsupported netdevice in switchdev mode");
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ice_eswitch_tc_parse_action(struct net_device *filter_dev,
-+				       struct ice_tc_flower_fltr *fltr,
-+				       struct flow_action_entry *act)
-+{
-+	int err;
-+
- 	switch (act->id) {
- 	case FLOW_ACTION_DROP:
- 		fltr->action.fltr_act = ICE_DROP_PACKET;
- 		break;
- 
- 	case FLOW_ACTION_REDIRECT:
--		fltr->action.fltr_act = ICE_FWD_TO_VSI;
--
--		if (ice_is_port_repr_netdev(act->dev)) {
--			repr = ice_netdev_to_repr(act->dev);
--
--			fltr->dest_vsi = repr->src_vsi;
--			fltr->direction = ICE_ESWITCH_FLTR_INGRESS;
--		} else if (netif_is_ice(act->dev) ||
--			   ice_is_tunnel_supported(act->dev)) {
--			fltr->direction = ICE_ESWITCH_FLTR_EGRESS;
--		} else {
--			NL_SET_ERR_MSG_MOD(fltr->extack, "Unsupported netdevice in switchdev mode");
--			return -EINVAL;
--		}
-+		err = ice_tc_setup_redirect_action(filter_dev, fltr, act->dev);
-+		if (err)
-+			return err;
- 
- 		break;
- 
-@@ -696,10 +725,6 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 		goto exit;
- 	}
- 
--	/* egress traffic is always redirect to uplink */
--	if (fltr->direction == ICE_ESWITCH_FLTR_EGRESS)
--		fltr->dest_vsi = vsi->back->switchdev.uplink_vsi;
--
- 	rule_info.sw_act.fltr_act = fltr->action.fltr_act;
- 	if (fltr->action.fltr_act != ICE_DROP_PACKET)
- 		rule_info.sw_act.vsi_handle = fltr->dest_vsi->idx;
-@@ -713,13 +738,21 @@ ice_eswitch_add_tc_fltr(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr)
- 	rule_info.flags_info.act_valid = true;
- 
- 	if (fltr->direction == ICE_ESWITCH_FLTR_INGRESS) {
-+		/* Uplink to VF */
- 		rule_info.sw_act.flag |= ICE_FLTR_RX;
- 		rule_info.sw_act.src = hw->pf_id;
- 		rule_info.flags_info.act = ICE_SINGLE_ACT_LB_ENABLE;
--	} else {
-+	} else if (fltr->direction == ICE_ESWITCH_FLTR_EGRESS &&
-+		   fltr->dest_vsi == vsi->back->switchdev.uplink_vsi) {
-+		/* VF to Uplink */
- 		rule_info.sw_act.flag |= ICE_FLTR_TX;
- 		rule_info.sw_act.src = vsi->idx;
- 		rule_info.flags_info.act = ICE_SINGLE_ACT_LAN_ENABLE;
-+	} else {
-+		/* VF to VF */
-+		rule_info.sw_act.flag |= ICE_FLTR_TX;
-+		rule_info.sw_act.src = vsi->idx;
-+		rule_info.flags_info.act = ICE_SINGLE_ACT_LB_ENABLE;
- 	}
- 
- 	/* specify the cookie as filter_rule_id */
-@@ -1745,16 +1778,17 @@ ice_tc_parse_action(struct ice_vsi *vsi, struct ice_tc_flower_fltr *fltr,
- 
- /**
-  * ice_parse_tc_flower_actions - Parse the actions for a TC filter
-+ * @filter_dev: Pointer to device on which filter is being added
-  * @vsi: Pointer to VSI
-  * @cls_flower: Pointer to TC flower offload structure
-  * @fltr: Pointer to TC flower filter structure
-  *
-  * Parse the actions for a TC filter
-  */
--static int
--ice_parse_tc_flower_actions(struct ice_vsi *vsi,
--			    struct flow_cls_offload *cls_flower,
--			    struct ice_tc_flower_fltr *fltr)
-+static int ice_parse_tc_flower_actions(struct net_device *filter_dev,
-+				       struct ice_vsi *vsi,
-+				       struct flow_cls_offload *cls_flower,
-+				       struct ice_tc_flower_fltr *fltr)
- {
- 	struct flow_rule *rule = flow_cls_offload_flow_rule(cls_flower);
- 	struct flow_action *flow_action = &rule->action;
-@@ -1769,7 +1803,7 @@ ice_parse_tc_flower_actions(struct ice_vsi *vsi,
- 
- 	flow_action_for_each(i, act, flow_action) {
- 		if (ice_is_eswitch_mode_switchdev(vsi->back))
--			err = ice_eswitch_tc_parse_action(fltr, act);
-+			err = ice_eswitch_tc_parse_action(filter_dev, fltr, act);
- 		else
- 			err = ice_tc_parse_action(vsi, fltr, act);
- 		if (err)
-@@ -1856,7 +1890,7 @@ ice_add_tc_fltr(struct net_device *netdev, struct ice_vsi *vsi,
- 	if (err < 0)
- 		goto err;
- 
--	err = ice_parse_tc_flower_actions(vsi, f, fltr);
-+	err = ice_parse_tc_flower_actions(netdev, vsi, f, fltr);
- 	if (err < 0)
- 		goto err;
- 
+ 	struct recent_table *t = pde_data(file_inode(file));
+ 	struct recent_entry *e;
+-	char buf[sizeof("+b335:1d35:1e55:dead:c0de:1715:5afe:c0de")];
++	char buf[sizeof("+b335:1d35:1e55:dead:c0de:1715:255.255.255.255")];
+ 	const char *c = buf;
+ 	union nf_inet_addr addr = {};
+ 	u_int16_t family;
 -- 
 2.42.0
 
