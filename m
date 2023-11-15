@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11BD57ED42A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E72817ED430
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344571AbjKOU5J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36586 "EHLO
+        id S234970AbjKOU5R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:57:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344563AbjKOU5H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:07 -0500
+        with ESMTP id S235570AbjKOU5L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AB03BC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036A6C4E77A;
-        Wed, 15 Nov 2023 20:57:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B66A91BE
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28109C4E778;
+        Wed, 15 Nov 2023 20:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081824;
-        bh=nnk+34XJ24IMHpKzE5l465wshC/r9lN6u+5GZWsdBEc=;
+        s=korg; t=1700081827;
+        bh=NCSt9+3Gc51TCLajc5BIF3bkZrdcuSjPODN2oWCIqE4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hRESRyzFDZ2VkjCCClu9on3Kmw+muShSBQkuFVY9/045O3UgL0a/mNUk4CczamYYA
-         asByN7H8L2B4paVoW3w8DpDN04+5DYUDgPusuST5UtMQXpX9giDuTJVYs3hB0N2X8F
-         O/vcoYTMTPP7zSeQmU+l9PO+sk6fktxy5N0FRWZ0=
+        b=JmmeqEgipRD3Q7J37F9zAMTUbZZ6Lp3VkwnlLB+mGxWXrthM88CZTAMV0H4CPHeBp
+         6hwmQpgYQkgNQHmKTMEGZ1L+MJxOISN/DNMwrR98sVCsIEUz4W5v6oo2aQVEuTeTR7
+         l37ccaWHHaMIMaLoTpglCjv/qSR3s1F9m39pIDeQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Dominik Brodowski <linux@dominikbrodowski.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 149/191] rtc: pcf85363: fix wrong mask/val parameters in regmap_update_bits call
-Date:   Wed, 15 Nov 2023 15:47:04 -0500
-Message-ID: <20231115204653.448847037@linuxfoundation.org>
+Subject: [PATCH 5.10 150/191] pcmcia: cs: fix possible hung task and memory leak pccardd()
+Date:   Wed, 15 Nov 2023 15:47:05 -0500
+Message-ID: <20231115204653.504983214@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -55,40 +54,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 2be36c09b6b07306be33519e1aa70d2e2a2161bb ]
+[ Upstream commit e3ea1b4847e49234e691c0d66bf030bd65bb7f2b ]
 
-The current implementation passes PIN_IO_INTA_OUT (2) as a mask and
-PIN_IO_INTAPM (GENMASK(1, 0)) as a value.
-Swap the variables to assign mask and value the right way.
+If device_register() returns error in pccardd(), it leads two issues:
 
-This error was first introduced with the alarm support. For better or
-worse it worked as expected because 0x02 was applied as a mask to 0x03,
-resulting 0x02 anyway. This will of course not work for any other value.
+1. The socket_released has never been completed, it will block
+   pcmcia_unregister_socket(), because of waiting for completion
+   of socket_released.
+2. The device name allocated by dev_set_name() is leaked.
 
-Fixes: e5aac267a10a ("rtc: pcf85363: add alarm support")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20231013-topic-pcf85363_regmap_update_bits-v1-1-c454f016f71f@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fix this two issues by calling put_device() when device_register() fails.
+socket_released can be completed in pcmcia_release_socket(), the name can
+be freed in kobject_cleanup().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-pcf85363.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pcmcia/cs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/rtc/rtc-pcf85363.c b/drivers/rtc/rtc-pcf85363.c
-index 3450d615974d5..bb962dce3ab26 100644
---- a/drivers/rtc/rtc-pcf85363.c
-+++ b/drivers/rtc/rtc-pcf85363.c
-@@ -407,7 +407,7 @@ static int pcf85363_probe(struct i2c_client *client,
- 	if (client->irq > 0) {
- 		regmap_write(pcf85363->regmap, CTRL_FLAGS, 0);
- 		regmap_update_bits(pcf85363->regmap, CTRL_PIN_IO,
--				   PIN_IO_INTA_OUT, PIN_IO_INTAPM);
-+				   PIN_IO_INTAPM, PIN_IO_INTA_OUT);
- 		ret = devm_request_threaded_irq(&client->dev, client->irq,
- 						NULL, pcf85363_rtc_handle_irq,
- 						IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+diff --git a/drivers/pcmcia/cs.c b/drivers/pcmcia/cs.c
+index f70197154a362..820cce7c8b400 100644
+--- a/drivers/pcmcia/cs.c
++++ b/drivers/pcmcia/cs.c
+@@ -605,6 +605,7 @@ static int pccardd(void *__skt)
+ 		dev_warn(&skt->dev, "PCMCIA: unable to register socket\n");
+ 		skt->thread = NULL;
+ 		complete(&skt->thread_done);
++		put_device(&skt->dev);
+ 		return 0;
+ 	}
+ 	ret = pccard_sysfs_add_socket(&skt->dev);
 -- 
 2.42.0
 
