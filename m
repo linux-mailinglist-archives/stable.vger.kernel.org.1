@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D9867ECDA7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C71627ECFD4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234595AbjKOThi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:37:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54768 "EHLO
+        id S235418AbjKOTvJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234605AbjKOThh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:37 -0500
+        with ESMTP id S235427AbjKOTvH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA8EA4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27D2C433C7;
-        Wed, 15 Nov 2023 19:37:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 790A0B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F309FC433C7;
+        Wed, 15 Nov 2023 19:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077054;
-        bh=R6vV9wPh4ioJOnmIIcjnyoLOLdLOAXvlQ6ZVJlUaA8Q=;
+        s=korg; t=1700077863;
+        bh=Sc+NwKitPJGBpNPvGSXr5fpZlyMRB5mUTmleD0CvqHA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0M6nrNMohhPNzQck9pvVdmK36uf/WwyGch1AFzlfmqBdp1sEUYSp/TB1VbHUvAYy2
-         7ZT4kiqKvcvnPTxL0F5sPI3UH9djaaEjtajBno9NFVfT5AifO8TBM9nMrIl6xh7C7m
-         efGr/h0uKpz1ZS2MJadml9ZhzXyX5M38f5YkUATo=
+        b=KsEu2WoE7MsGL1lie0NK76ztKKrCpzZkkeNfO8Q275I7XkQ6fq8RTqPGyJtMNIFVU
+         ob4D4nwylgVQsPL1l4C2F7pNkYxq4cj6/+zkDW3Om/7GXy50ijFkIYBSW9gn+lc6gZ
+         FN6njuPDUV9Z8lHDuMymGS5e6SS1nrAF5rZSkSJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hsin-Wei Hung <hsinweih@uci.edu>,
-        Hou Tao <houtao1@huawei.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+a8c7be6dee0de1b669cc@syzkaller.appspotmail.com,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 502/550] bpf: Check map->usercnt after timer->timer is assigned
+Subject: [PATCH 6.6 541/603] llc: verify mac len before reading mac header
 Date:   Wed, 15 Nov 2023 14:18:06 -0500
-Message-ID: <20231115191635.717679558@linuxfoundation.org>
+Message-ID: <20231115191649.248000455@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,115 +52,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit fd381ce60a2d79cc967506208085336d3d268ae0 ]
+[ Upstream commit 7b3ba18703a63f6fd487183b9262b08e5632da1b ]
 
-When there are concurrent uref release and bpf timer init operations,
-the following sequence diagram is possible. It will break the guarantee
-provided by bpf_timer: bpf_timer will still be alive after userspace
-application releases or unpins the map. It also will lead to kmemleak
-for old kernel version which doesn't release bpf_timer when map is
-released.
+LLC reads the mac header with eth_hdr without verifying that the skb
+has an Ethernet header.
 
-bpf program X:
+Syzbot was able to enter llc_rcv on a tun device. Tun can insert
+packets without mac len and with user configurable skb->protocol
+(passing a tun_pi header when not configuring IFF_NO_PI).
 
-bpf_timer_init()
-  lock timer->lock
-    read timer->timer as NULL
-    read map->usercnt != 0
+    BUG: KMSAN: uninit-value in llc_station_ac_send_test_r net/llc/llc_station.c:81 [inline]
+    BUG: KMSAN: uninit-value in llc_station_rcv+0x6fb/0x1290 net/llc/llc_station.c:111
+    llc_station_ac_send_test_r net/llc/llc_station.c:81 [inline]
+    llc_station_rcv+0x6fb/0x1290 net/llc/llc_station.c:111
+    llc_rcv+0xc5d/0x14a0 net/llc/llc_input.c:218
+    __netif_receive_skb_one_core net/core/dev.c:5523 [inline]
+    __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5637
+    netif_receive_skb_internal net/core/dev.c:5723 [inline]
+    netif_receive_skb+0x58/0x660 net/core/dev.c:5782
+    tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
+    tun_get_user+0x54c5/0x69c0 drivers/net/tun.c:2002
 
-                process Y:
+Add a mac_len test before all three eth_hdr(skb) calls under net/llc.
 
-                close(map_fd)
-                  // put last uref
-                  bpf_map_put_uref()
-                    atomic_dec_and_test(map->usercnt)
-                      array_map_free_timers()
-                        bpf_timer_cancel_and_free()
-                          // just return
-                          read timer->timer is NULL
+There are further uses in include/net/llc_pdu.h. All these are
+protected by a test skb->protocol == ETH_P_802_2. Which does not
+protect against this tun scenario.
 
-    t = bpf_map_kmalloc_node()
-    timer->timer = t
-  unlock timer->lock
+But the mac_len test added in this patch in llc_fixup_skb will
+indirectly protect those too. That is called from llc_rcv before any
+other LLC code.
 
-Fix the problem by checking map->usercnt after timer->timer is assigned,
-so when there are concurrent uref release and bpf timer init, either
-bpf_timer_cancel_and_free() from uref release reads a no-NULL timer
-or the newly-added atomic64_read() returns a zero usercnt.
+It is tempting to just add a blanket mac_len check in llc_rcv, but
+not sure whether that could break valid LLC paths that do not assume
+an Ethernet header. 802.2 LLC may be used on top of non-802.3
+protocols in principle. The below referenced commit shows that used
+to, on top of Token Ring.
 
-Because atomic_dec_and_test(map->usercnt) and READ_ONCE(timer->timer)
-in bpf_timer_cancel_and_free() are not protected by a lock, so add
-a memory barrier to guarantee the order between map->usercnt and
-timer->timer. Also use WRITE_ONCE(timer->timer, x) to match the lockless
-read of timer->timer in bpf_timer_cancel_and_free().
+At least one of the three eth_hdr uses goes back to before the start
+of git history. But the one that syzbot exercises is introduced in
+this commit. That commit is old enough (2008), that effectively all
+stable kernels should receive this.
 
-Reported-by: Hsin-Wei Hung <hsinweih@uci.edu>
-Closes: https://lore.kernel.org/bpf/CABcoxUaT2k9hWsS1tNgXyoU3E-=PuOgMn737qK984fbFmfYixQ@mail.gmail.com
-Fixes: b00628b1c7d5 ("bpf: Introduce bpf timers.")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231030063616.1653024-1-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: f83f1768f833 ("[LLC]: skb allocation size for responses")
+Reported-by: syzbot+a8c7be6dee0de1b669cc@syzkaller.appspotmail.com
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20231025234251.3796495-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ net/llc/llc_input.c   | 10 ++++++++--
+ net/llc/llc_s_ac.c    |  3 +++
+ net/llc/llc_station.c |  3 +++
+ 3 files changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 3779300002327..add185dfa5c65 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -1174,13 +1174,6 @@ BPF_CALL_3(bpf_timer_init, struct bpf_timer_kern *, timer, struct bpf_map *, map
- 		ret = -EBUSY;
- 		goto out;
- 	}
--	if (!atomic64_read(&map->usercnt)) {
--		/* maps with timers must be either held by user space
--		 * or pinned in bpffs.
--		 */
--		ret = -EPERM;
--		goto out;
--	}
- 	/* allocate hrtimer via map_kmalloc to use memcg accounting */
- 	t = bpf_map_kmalloc_node(map, sizeof(*t), GFP_ATOMIC, map->numa_node);
- 	if (!t) {
-@@ -1193,7 +1186,21 @@ BPF_CALL_3(bpf_timer_init, struct bpf_timer_kern *, timer, struct bpf_map *, map
- 	rcu_assign_pointer(t->callback_fn, NULL);
- 	hrtimer_init(&t->timer, clockid, HRTIMER_MODE_REL_SOFT);
- 	t->timer.function = bpf_timer_cb;
--	timer->timer = t;
-+	WRITE_ONCE(timer->timer, t);
-+	/* Guarantee the order between timer->timer and map->usercnt. So
-+	 * when there are concurrent uref release and bpf timer init, either
-+	 * bpf_timer_cancel_and_free() called by uref release reads a no-NULL
-+	 * timer or atomic64_read() below returns a zero usercnt.
-+	 */
-+	smp_mb();
-+	if (!atomic64_read(&map->usercnt)) {
-+		/* maps with timers must be either held by user space
-+		 * or pinned in bpffs.
-+		 */
-+		WRITE_ONCE(timer->timer, NULL);
-+		kfree(t);
-+		ret = -EPERM;
-+	}
- out:
- 	__bpf_spin_unlock_irqrestore(&timer->lock);
- 	return ret;
-@@ -1368,7 +1375,7 @@ void bpf_timer_cancel_and_free(void *val)
- 	/* The subsequent bpf_timer_start/cancel() helpers won't be able to use
- 	 * this timer, since it won't be initialized.
- 	 */
--	timer->timer = NULL;
-+	WRITE_ONCE(timer->timer, NULL);
- out:
- 	__bpf_spin_unlock_irqrestore(&timer->lock);
- 	if (!t)
+diff --git a/net/llc/llc_input.c b/net/llc/llc_input.c
+index 7cac441862e21..51bccfb00a9cd 100644
+--- a/net/llc/llc_input.c
++++ b/net/llc/llc_input.c
+@@ -127,8 +127,14 @@ static inline int llc_fixup_skb(struct sk_buff *skb)
+ 	skb->transport_header += llc_len;
+ 	skb_pull(skb, llc_len);
+ 	if (skb->protocol == htons(ETH_P_802_2)) {
+-		__be16 pdulen = eth_hdr(skb)->h_proto;
+-		s32 data_size = ntohs(pdulen) - llc_len;
++		__be16 pdulen;
++		s32 data_size;
++
++		if (skb->mac_len < ETH_HLEN)
++			return 0;
++
++		pdulen = eth_hdr(skb)->h_proto;
++		data_size = ntohs(pdulen) - llc_len;
+ 
+ 		if (data_size < 0 ||
+ 		    !pskb_may_pull(skb, data_size))
+diff --git a/net/llc/llc_s_ac.c b/net/llc/llc_s_ac.c
+index 79d1cef8f15a9..06fb8e6944b06 100644
+--- a/net/llc/llc_s_ac.c
++++ b/net/llc/llc_s_ac.c
+@@ -153,6 +153,9 @@ int llc_sap_action_send_test_r(struct llc_sap *sap, struct sk_buff *skb)
+ 	int rc = 1;
+ 	u32 data_size;
+ 
++	if (skb->mac_len < ETH_HLEN)
++		return 1;
++
+ 	llc_pdu_decode_sa(skb, mac_da);
+ 	llc_pdu_decode_da(skb, mac_sa);
+ 	llc_pdu_decode_ssap(skb, &dsap);
+diff --git a/net/llc/llc_station.c b/net/llc/llc_station.c
+index 05c6ae0920534..f506542925109 100644
+--- a/net/llc/llc_station.c
++++ b/net/llc/llc_station.c
+@@ -76,6 +76,9 @@ static int llc_station_ac_send_test_r(struct sk_buff *skb)
+ 	u32 data_size;
+ 	struct sk_buff *nskb;
+ 
++	if (skb->mac_len < ETH_HLEN)
++		goto out;
++
+ 	/* The test request command is type U (llc_len = 3) */
+ 	data_size = ntohs(eth_hdr(skb)->h_proto) - 3;
+ 	nskb = llc_alloc_frame(NULL, skb->dev, LLC_PDU_TYPE_U, data_size);
 -- 
 2.42.0
 
