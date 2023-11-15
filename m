@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 383737ECCFF
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F96A7ECF8D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:49:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234241AbjKOTdr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44690 "EHLO
+        id S235350AbjKOTtO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:49:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234259AbjKOTdr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:47 -0500
+        with ESMTP id S235347AbjKOTtN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:49:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0B791AD
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F57EC433C7;
-        Wed, 15 Nov 2023 19:33:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F80B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:49:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC274C433C8;
+        Wed, 15 Nov 2023 19:49:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076823;
-        bh=k91LL5ulF2lnif8zCyzBKYsC6UGrLfrvS9QRgmmecO8=;
+        s=korg; t=1700077749;
+        bh=ctZtkCOMYx87arsnCZzSBtJPXuZzwh5uF8nAoiufaIM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EKVe/AqAaReVaOtZDweyyRJNMfrsXUyQKbMcxbRIplAusCUyn+Cc59EDdR5RT9TKu
-         G254dtmG1k0jkrYsjxbJTmijrSE3UTc+w+mXeo9ILsSykB74PeLpioIyTw/0l3UOFH
-         gvKgOE48gjVwAYjKdh9UA20eLE7XvJ+3oFSE8os8=
+        b=2e8xy1njLe1EP240yUfdAXQldOenLFSK86AwuTMXN2ITjuT75jqPHmS2Udu/ny7/g
+         XsfOtoZcP2YOO+lABVufx0MmylEiP3DSTpwDRG3Y6jh3iVWa/OdBr/GH1htS8Q+Usl
+         K9kNsKPfObyJhzpAwVvBFGlvy8oMxnMPfCu63Cv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joel Stanley <joel@jms.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
+        patches@lists.linux.dev, Wang Yufen <wangyufen@huawei.com>,
+        "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 434/550] powerpc: Hide empty pt_regs at base of the stack
-Date:   Wed, 15 Nov 2023 14:16:58 -0500
-Message-ID: <20231115191630.855312233@linuxfoundation.org>
+Subject: [PATCH 6.6 474/603] powerpc/pseries: fix potential memory leak in init_cpu_associativity()
+Date:   Wed, 15 Nov 2023 14:16:59 -0500
+Message-ID: <20231115191645.277819273@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,125 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Wang Yufen <wangyufen@huawei.com>
 
-[ Upstream commit d45c4b48dafb5820e5cc267ff9a6d7784d13a43c ]
+[ Upstream commit 95f1a128cd728a7257d78e868f1f5a145fc43736 ]
 
-A thread started via eg. user_mode_thread() runs in the kernel to begin
-with and then may later return to userspace. While it's running in the
-kernel it has a pt_regs at the base of its kernel stack, but that
-pt_regs is all zeroes.
+If the vcpu_associativity alloc memory successfully but the
+pcpu_associativity fails to alloc memory, the vcpu_associativity
+memory leaks.
 
-If the thread oopses in that state, it leads to an ugly stack trace with
-a big block of zero GPRs, as reported by Joel:
-
-  Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc7-00004-gf7757129e3de-dirty #3
-  Hardware name: IBM PowerNV (emulated by qemu) POWER9 0x4e1200 opal:v7.0 PowerNV
-  Call Trace:
-  [c0000000036afb00] [c0000000010dd058] dump_stack_lvl+0x6c/0x9c (unreliable)
-  [c0000000036afb30] [c00000000013c524] panic+0x178/0x424
-  [c0000000036afbd0] [c000000002005100] mount_root_generic+0x250/0x324
-  [c0000000036afca0] [c0000000020057d0] prepare_namespace+0x2d4/0x344
-  [c0000000036afd20] [c0000000020049c0] kernel_init_freeable+0x358/0x3ac
-  [c0000000036afdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-  [c0000000036afe50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-  --- interrupt: 0 at 0x0
-  NIP:  0000000000000000 LR: 0000000000000000 CTR: 0000000000000000
-  REGS: c0000000036afe80 TRAP: 0000   Not tainted  (6.5.0-rc7-00004-gf7757129e3de-dirty)
-  MSR:  0000000000000000 <>  CR: 00000000  XER: 00000000
-  CFAR: 0000000000000000 IRQMASK: 0
-  GPR00: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR04: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR12: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  GPR28: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-  NIP [0000000000000000] 0x0
-  LR [0000000000000000] 0x0
-  --- interrupt: 0
-
-The all-zero pt_regs looks ugly and conveys no useful information, other
-than its presence. So detect that case and just show the presence of the
-frame by printing the interrupt marker, eg:
-
-  Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
-  CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.5.0-rc3-00126-g18e9506562a0-dirty #301
-  Hardware name: IBM pSeries (emulated by qemu) POWER9 (raw) 0x4e1202 0xf000005 of:SLOF,HEAD hv:linux,kvm pSeries
-  Call Trace:
-  [c000000003aabb00] [c000000001143db8] dump_stack_lvl+0x6c/0x9c (unreliable)
-  [c000000003aabb30] [c00000000014c624] panic+0x178/0x424
-  [c000000003aabbd0] [c0000000020050fc] mount_root_generic+0x250/0x324
-  [c000000003aabca0] [c0000000020057cc] prepare_namespace+0x2d4/0x344
-  [c000000003aabd20] [c0000000020049bc] kernel_init_freeable+0x358/0x3ac
-  [c000000003aabdf0] [c0000000000111b0] kernel_init+0x30/0x1a0
-  [c000000003aabe50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-  --- interrupt: 0 at 0x0
-
-To avoid ever suppressing a valid pt_regs make sure the pt_regs has a
-zero MSR and TRAP value, and is located at the very base of the stack.
-
-Fixes: 6895dfc04741 ("powerpc: copy_thread fill in interrupt frame marker and back chain")
-Reported-by: Joel Stanley <joel@jms.id.au>
-Reported-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Joel Stanley <joel@jms.id.au>
+Fixes: d62c8deeb6e6 ("powerpc/pseries: Provide vcpu dispatch statistics")
+Signed-off-by: Wang Yufen <wangyufen@huawei.com>
+Reviewed-by: "Naveen N. Rao" <naveen.n.rao@linux.vnet.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230824064210.907266-1-mpe@ellerman.id.au
+Link: https://msgid.link/1671003983-10794-1-git-send-email-wangyufen@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/process.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/pseries/lpar.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index b68898ac07e19..392404688cec3 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -2258,6 +2258,22 @@ unsigned long __get_wchan(struct task_struct *p)
- 	return ret;
- }
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index f2cb62148f36f..d4d6de0628b05 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -526,8 +526,10 @@ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
  
-+static bool empty_user_regs(struct pt_regs *regs, struct task_struct *tsk)
-+{
-+	unsigned long stack_page;
-+
-+	// A non-empty pt_regs should never have a zero MSR or TRAP value.
-+	if (regs->msr || regs->trap)
-+		return false;
-+
-+	// Check it sits at the very base of the stack
-+	stack_page = (unsigned long)task_stack_page(tsk);
-+	if ((unsigned long)(regs + 1) != stack_page + THREAD_SIZE)
-+		return false;
-+
-+	return true;
-+}
-+
- static int kstack_depth_to_print = CONFIG_PRINT_STACK_DEPTH;
+ 	if (cmd) {
+ 		rc = init_cpu_associativity();
+-		if (rc)
++		if (rc) {
++			destroy_cpu_associativity();
+ 			goto out;
++		}
  
- void __no_sanitize_address show_stack(struct task_struct *tsk,
-@@ -2322,9 +2338,13 @@ void __no_sanitize_address show_stack(struct task_struct *tsk,
- 			lr = regs->link;
- 			printk("%s--- interrupt: %lx at %pS\n",
- 			       loglvl, regs->trap, (void *)regs->nip);
--			__show_regs(regs);
--			printk("%s--- interrupt: %lx\n",
--			       loglvl, regs->trap);
-+
-+			// Detect the case of an empty pt_regs at the very base
-+			// of the stack and suppress showing it in full.
-+			if (!empty_user_regs(regs, tsk)) {
-+				__show_regs(regs);
-+				printk("%s--- interrupt: %lx\n", loglvl, regs->trap);
-+			}
- 
- 			firstframe = 1;
- 		}
+ 		for_each_possible_cpu(cpu) {
+ 			disp = per_cpu_ptr(&vcpu_disp_data, cpu);
 -- 
 2.42.0
 
