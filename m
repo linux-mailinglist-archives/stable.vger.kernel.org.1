@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF3847ECE4A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DFE37ECBD5
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234961AbjKOTmK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50574 "EHLO
+        id S233101AbjKOTYs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234964AbjKOTmI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:08 -0500
+        with ESMTP id S233054AbjKOTYr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF4EB9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C63C433C7;
-        Wed, 15 Nov 2023 19:42:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 552F0130
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:44 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF9FC433C8;
+        Wed, 15 Nov 2023 19:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077324;
-        bh=T4JTWAQ6HMpHGaku8aWYqEbBEVnHm1nPyk9oStb1Yk0=;
+        s=korg; t=1700076284;
+        bh=gcikZJfPJ5lv8lvvFCDvkfHn2A+Tbk7cUUJQpuDTJ5Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mRiWVTPzLxOigAUBgMNGEj49m0Ccp+JPLsQK25Zm6gUjBLiWTaEvz8mh9+o9fUgJu
-         Vai8xNB73I8D/Oalt4uRMOy5KJI04MoMpnodWe1FBC8gT/ERPcKXgyfA7+dvaSe2Jq
-         HDDXsXdJnQyXEOTTwW7kXAgdIpXslry7YrtqEutM=
+        b=vUjZUDEqSWwgOnJoJAUtKUmOO4l+8Lb3Yx7u8ZbE2D1qfJPN2fGKvZjiEAFrbzPHI
+         Ztp5f7SfZDH2OnYFp6aA0lI3UDtxNOiK2sV5UdUjgmm08ZeGMPNAjy7BEI0+uMplET
+         L7f3+vrBpUyZS4+0ZM0XtbHswsjPYz28dB3kExoY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kai Huang <kai.huang@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        patches@lists.linux.dev, Zhang Rui <rui.zhang@intel.com>,
+        kernel test robot <lkp@intel.com>,
+        Guenter Roeck <linux@roeck-us.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/603] x86/tdx: Zero out the missing RSI in TDX_HYPERCALL macro
+Subject: [PATCH 6.5 192/550] hwmon: (coretemp) Fix potentially truncated sysfs attribute name
 Date:   Wed, 15 Nov 2023 14:12:56 -0500
-Message-ID: <20231115191629.185679619@linuxfoundation.org>
+Message-ID: <20231115191614.071400810@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +51,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Huang <kai.huang@intel.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 5d092b66119d774853cc9308522620299048a662 ]
+[ Upstream commit bbfff736d30e5283ad09e748caff979d75ddef7f ]
 
-In the TDX_HYPERCALL asm, after the TDCALL instruction returns from the
-untrusted VMM, the registers that the TDX guest shares to the VMM need
-to be cleared to avoid speculative execution of VMM-provided values.
+When build with W=1 and "-Werror=format-truncation", below error is
+observed in coretemp driver,
 
-RSI is specified in the bitmap of those registers, but it is missing
-when zeroing out those registers in the current TDX_HYPERCALL.
+   drivers/hwmon/coretemp.c: In function 'create_core_data':
+>> drivers/hwmon/coretemp.c:393:34: error: '%s' directive output may be truncated writing likely 5 or more bytes into a region of size between 3 and 13 [-Werror=format-truncation=]
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                                  ^~
+   drivers/hwmon/coretemp.c:393:26: note: assuming directive output of 5 bytes
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                          ^~~~~~~~~~~
+   drivers/hwmon/coretemp.c:392:17: note: 'snprintf' output 7 or more bytes (assuming 22) into a destination of size 19
+     392 |                 snprintf(tdata->attr_name[i], CORETEMP_NAME_LENGTH,
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     393 |                          "temp%d_%s", attr_no, suffixes[i]);
+         |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   cc1: all warnings being treated as errors
 
-It was there when it was originally added in commit 752d13305c78
-("x86/tdx: Expand __tdx_hypercall() to handle more arguments"), but was
-later removed in commit 1e70c680375a ("x86/tdx: Do not corrupt
-frame-pointer in __tdx_hypercall()"), which was correct because %rsi is
-later restored in the "pop %rsi".  However a later commit 7a3a401874be
-("x86/tdx: Drop flags from __tdx_hypercall()") removed that "pop %rsi"
-but forgot to add the "xor %rsi, %rsi" back.
+Given that
+1. '%d' could take 10 charactors,
+2. '%s' could take 10 charactors ("crit_alarm"),
+3. "temp", "_" and the NULL terminator take 6 charactors,
+fix the problem by increasing CORETEMP_NAME_LENGTH to 28.
 
-Fix by adding it back.
-
-Fixes: 7a3a401874be ("x86/tdx: Drop flags from __tdx_hypercall()")
-Signed-off-by: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/e7d1157074a0b45d34564d5f17f3e0ffee8115e9.1692096753.git.kai.huang%40intel.com
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310200443.iD3tUbbK-lkp@intel.com/
+Link: https://lore.kernel.org/r/20231025122316.836400-1-rui.zhang@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/coco/tdx/tdcall.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/coretemp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/coco/tdx/tdcall.S b/arch/x86/coco/tdx/tdcall.S
-index b193c0a1d8db3..2eca5f43734fe 100644
---- a/arch/x86/coco/tdx/tdcall.S
-+++ b/arch/x86/coco/tdx/tdcall.S
-@@ -195,6 +195,7 @@ SYM_FUNC_END(__tdx_module_call)
- 	xor %r10d, %r10d
- 	xor %r11d, %r11d
- 	xor %rdi,  %rdi
-+	xor %rsi,  %rsi
- 	xor %rdx,  %rdx
- 
- 	/* Restore callee-saved GPRs as mandated by the x86_64 ABI */
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index eba94f68585a8..ba82d1e79c131 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -42,7 +42,7 @@ MODULE_PARM_DESC(tjmax, "TjMax value in degrees Celsius");
+ #define PKG_SYSFS_ATTR_NO	1	/* Sysfs attribute for package temp */
+ #define BASE_SYSFS_ATTR_NO	2	/* Sysfs Base attr no for coretemp */
+ #define NUM_REAL_CORES		128	/* Number of Real cores per cpu */
+-#define CORETEMP_NAME_LENGTH	19	/* String Length of attrs */
++#define CORETEMP_NAME_LENGTH	28	/* String Length of attrs */
+ #define MAX_CORE_ATTRS		4	/* Maximum no of basic attrs */
+ #define TOTAL_ATTRS		(MAX_CORE_ATTRS + 1)
+ #define MAX_CORE_DATA		(NUM_REAL_CORES + BASE_SYSFS_ATTR_NO)
 -- 
 2.42.0
 
