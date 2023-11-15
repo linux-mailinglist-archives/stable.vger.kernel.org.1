@@ -2,45 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A08FA7ED4CD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:59:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4D187ED316
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344795AbjKOU7N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:59:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34674 "EHLO
+        id S233682AbjKOUqI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344753AbjKOU6B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:58:01 -0500
+        with ESMTP id S233664AbjKOUqI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:08 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 912141BE8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:33 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E2FC4E681;
-        Wed, 15 Nov 2023 20:51:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB87DE5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0C0C433C7;
+        Wed, 15 Nov 2023 20:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081468;
-        bh=6Y4vCP8XU1r9SPYgxL2UrLmjVuiooJ960Gw/mtDDfTA=;
+        s=korg; t=1700081164;
+        bh=sAKMCUjLaTnZH+3AFsNBGcDmlo2RXILOXYYm5O9quNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gy8kS5CTjuo9WdLeBRCbhrUieHUp4+rVv5qjyLNAMFMVYAe81LGdNRt97q8FxmL1f
-         Gjz92jY29di47WRgUuf8JaJbJKUCbU0lI8pr9crj+96iI+zeQKVTSCjHPOJkMtdiIS
-         r4SoNTU25jFjEPwwJlgnkTat8ZRDyi3Iwza8iah4=
+        b=vLDnzZ0f67y8nyd3mXGKAtdTsNDAImyL2rogLRT+kME5ZcILpA0W4sQm9XCmkc1C7
+         /mTMREYJYFxWUdVVpEkWyXzlyUN+CFfTCRDt1q/8qGzn1XPwbcH/kHuCJovTzVP3yX
+         13TYkHpxv5FH8QMah4PpDlTIk2qYyaWa5kKCcXhA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Leo Yan <leo.yan@linaro.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
+        GUO Zihua <guozihua@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 172/244] perf tools: Get rid of evlist__add_on_all_cpus()
+Subject: [PATCH 4.19 52/88] tty: tty_jobctrl: fix pid memleak in disassociate_ctty()
 Date:   Wed, 15 Nov 2023 15:36:04 -0500
-Message-ID: <20231115203558.668902014@linuxfoundation.org>
+Message-ID: <20231115191429.284232438@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,83 +50,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 60ea006f72512fd7c36f16cdbe91f4fc284f8115 ]
+[ Upstream commit 11e7f27b79757b6586645d87b95d5b78375ecdfc ]
 
-The cpu and thread maps are properly handled in libperf now.  No need to
-do it in the perf tools anymore.  Let's remove the logic.
+There is a pid leakage:
+------------------------------
+unreferenced object 0xffff88810c181940 (size 224):
+  comm "sshd", pid 8191, jiffies 4294946950 (age 524.570s)
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 00 00 ad 4e ad de  .............N..
+    ff ff ff ff 6b 6b 6b 6b ff ff ff ff ff ff ff ff  ....kkkk........
+  backtrace:
+    [<ffffffff814774e6>] kmem_cache_alloc+0x5c6/0x9b0
+    [<ffffffff81177342>] alloc_pid+0x72/0x570
+    [<ffffffff81140ac4>] copy_process+0x1374/0x2470
+    [<ffffffff81141d77>] kernel_clone+0xb7/0x900
+    [<ffffffff81142645>] __se_sys_clone+0x85/0xb0
+    [<ffffffff8114269b>] __x64_sys_clone+0x2b/0x30
+    [<ffffffff83965a72>] do_syscall_64+0x32/0x80
+    [<ffffffff83a00085>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
 
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20221003204647.1481128-4-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: f9cdeb58a9cf ("perf evlist: Avoid frequency mode for the dummy event")
+It turns out that there is a race condition between disassociate_ctty() and
+tty_signal_session_leader(), which caused this leakage.
+
+The pid memleak is triggered by the following race:
+task[sshd]                     task[bash]
+-----------------------        -----------------------
+                               disassociate_ctty();
+                               spin_lock_irq(&current->sighand->siglock);
+                               put_pid(current->signal->tty_old_pgrp);
+                               current->signal->tty_old_pgrp = NULL;
+                               tty = tty_kref_get(current->signal->tty);
+                               spin_unlock_irq(&current->sighand->siglock);
+tty_vhangup();
+tty_lock(tty);
+...
+tty_signal_session_leader();
+spin_lock_irq(&p->sighand->siglock);
+...
+if (tty->ctrl.pgrp) //tty->ctrl.pgrp is not NULL
+p->signal->tty_old_pgrp = get_pid(tty->ctrl.pgrp); //An extra get
+spin_unlock_irq(&p->sighand->siglock);
+...
+tty_unlock(tty);
+                               if (tty) {
+                                   tty_lock(tty);
+                                   ...
+                                   put_pid(tty->ctrl.pgrp);
+                                   tty->ctrl.pgrp = NULL; //It's too late
+                                   ...
+                                   tty_unlock(tty);
+                               }
+
+The issue is believed to be introduced by commit c8bcd9c5be24 ("tty:
+Fix ->session locking") who moves the unlock of siglock in
+disassociate_ctty() above "if (tty)", making a small window allowing
+tty_signal_session_leader() to kick in. It can be easily reproduced by
+adding a delay before "if (tty)" and at the entrance of
+tty_signal_session_leader().
+
+To fix this issue, we move "put_pid(current->signal->tty_old_pgrp)" after
+"tty->ctrl.pgrp = NULL".
+
+Fixes: c8bcd9c5be24 ("tty: Fix ->session locking")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Co-developed-by: GUO Zihua <guozihua@huawei.com>
+Signed-off-by: GUO Zihua <guozihua@huawei.com>
+Link: https://lore.kernel.org/r/20230831023329.165737-1-yiyang13@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evlist.c | 29 ++---------------------------
- 1 file changed, 2 insertions(+), 27 deletions(-)
+ drivers/tty/tty_jobctrl.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index a75cdcf381308..63ef40543a9fe 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -258,28 +258,6 @@ int evlist__add_dummy(struct evlist *evlist)
- 	return 0;
- }
+diff --git a/drivers/tty/tty_jobctrl.c b/drivers/tty/tty_jobctrl.c
+index ffcab80ba77d9..73fdd55c6bef9 100644
+--- a/drivers/tty/tty_jobctrl.c
++++ b/drivers/tty/tty_jobctrl.c
+@@ -290,12 +290,7 @@ void disassociate_ctty(int on_exit)
+ 		return;
+ 	}
  
--static void evlist__add_on_all_cpus(struct evlist *evlist, struct evsel *evsel)
--{
--	evsel->core.system_wide = true;
+-	spin_lock_irq(&current->sighand->siglock);
+-	put_pid(current->signal->tty_old_pgrp);
+-	current->signal->tty_old_pgrp = NULL;
+-	tty = tty_kref_get(current->signal->tty);
+-	spin_unlock_irq(&current->sighand->siglock);
 -
--	/*
--	 * All CPUs.
--	 *
--	 * Note perf_event_open() does not accept CPUs that are not online, so
--	 * in fact this CPU list will include only all online CPUs.
--	 */
--	perf_cpu_map__put(evsel->core.own_cpus);
--	evsel->core.own_cpus = perf_cpu_map__new(NULL);
--	perf_cpu_map__put(evsel->core.cpus);
--	evsel->core.cpus = perf_cpu_map__get(evsel->core.own_cpus);
--
--	/* No threads */
--	perf_thread_map__put(evsel->core.threads);
--	evsel->core.threads = perf_thread_map__new_dummy();
--
--	evlist__add(evlist, evsel);
--}
--
- struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide)
- {
- 	struct evsel *evsel = evlist__dummy_event(evlist);
-@@ -292,14 +270,11 @@ struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide)
- 	evsel->core.attr.exclude_hv = 1;
- 	evsel->core.attr.freq = 0;
- 	evsel->core.attr.sample_period = 1;
-+	evsel->core.system_wide = system_wide;
- 	evsel->no_aux_samples = true;
- 	evsel->name = strdup("dummy:u");
++	tty = get_current_tty();
+ 	if (tty) {
+ 		unsigned long flags;
  
--	if (system_wide)
--		evlist__add_on_all_cpus(evlist, evsel);
--	else
--		evlist__add(evlist, evsel);
--
-+	evlist__add(evlist, evsel);
- 	return evsel;
- }
+@@ -310,6 +305,16 @@ void disassociate_ctty(int on_exit)
+ 		tty_kref_put(tty);
+ 	}
  
++	/* If tty->ctrl.pgrp is not NULL, it may be assigned to
++	 * current->signal->tty_old_pgrp in a race condition, and
++	 * cause pid memleak. Release current->signal->tty_old_pgrp
++	 * after tty->ctrl.pgrp set to NULL.
++	 */
++	spin_lock_irq(&current->sighand->siglock);
++	put_pid(current->signal->tty_old_pgrp);
++	current->signal->tty_old_pgrp = NULL;
++	spin_unlock_irq(&current->sighand->siglock);
++
+ 	/* Now clear signal->tty under the lock */
+ 	read_lock(&tasklist_lock);
+ 	session_clear_tty(task_session(current));
 -- 
 2.42.0
 
