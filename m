@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 194747ED1BC
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 670767ED1BD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:04:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344287AbjKOUEy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:04:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52384 "EHLO
+        id S1344301AbjKOUEz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:04:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344312AbjKOUEu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:04:50 -0500
+        with ESMTP id S1344321AbjKOUEw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:04:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA0F194
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C71C433CC;
-        Wed, 15 Nov 2023 20:04:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB931BD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:04:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A734C433C7;
+        Wed, 15 Nov 2023 20:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078686;
-        bh=GNYP9SZ2OwAuphtEUxNraLvf/9KlZktKBAXOVfc8WjQ=;
+        s=korg; t=1700078688;
+        bh=ZZSeUUl7EYRvWusZ1xTJqcUdx5yjnn+VT0JLs2zFo7Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iWqsW/+SSpJ/3pBL9KfA9Jsg2EjndPQBHOyw7uFuh8dh52+Czkly0BtlVmYPKj0lF
-         liHsbKcn7s2vNuJX+dGpns4ttHCoh4yPmO+wEtpOZF4mXyKEo9MZ6ODtDtArdbx4aK
-         xcc6B3YpqHzUaiYSQxL9dCYMIGKJ5rQD1pzmbVKs=
+        b=BwGfrbMCkMmeXDF9vMUZGI4qW9VoWao9U1mof6Tbwg9jVLHVyWQNzBUHugpxfUFNq
+         5Jg6U9IuM/ZG/oCHXz6hp0CRN4k7uABPDoHwDwfQYb36XG5dRXVWLMKb90KjCaUYO4
+         B72dvHPFGA5GTC0KXLJqRKepic1ieFRnMKunj3dI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        patches@lists.linux.dev, Jonas Blixt <jonas.blixt@actia.se>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 28/45] misc: st_core: Do not call kfree_skb() under spin_lock_irqsave()
-Date:   Wed, 15 Nov 2023 14:33:05 -0500
-Message-ID: <20231115191421.284116272@linuxfoundation.org>
+Subject: [PATCH 4.14 29/45] USB: usbip: fix stub_dev hub disconnect
+Date:   Wed, 15 Nov 2023 14:33:06 -0500
+Message-ID: <20231115191421.335117590@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191419.641552204@linuxfoundation.org>
 References: <20231115191419.641552204@linuxfoundation.org>
@@ -53,63 +54,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Jonas Blixt <jonas.blixt@actia.se>
 
-[ Upstream commit 4d08c3d12b61022501989f9f071514d2d6f77c47 ]
+[ Upstream commit 97475763484245916735a1aa9a3310a01d46b008 ]
 
-It is not allowed to call kfree_skb() from hardware interrupt
-context or with hardware interrupts being disabled.
-So replace kfree_skb() with dev_kfree_skb_irq() under
-spin_lock_irqsave(). Compile tested only.
+If a hub is disconnected that has device(s) that's attached to the usbip layer
+the disconnect function might fail because it tries to release the port
+on an already disconnected hub.
 
-Fixes: 53618cc1e51e ("Staging: sources for ST core")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://lore.kernel.org/r/20230823035020.1281892-1-ruanjinjie@huawei.com
+Fixes: 6080cd0e9239 ("staging: usbip: claim ports used by shared devices")
+Signed-off-by: Jonas Blixt <jonas.blixt@actia.se>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230615092810.1215490-1-jonas.blixt@actia.se
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/ti-st/st_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/usbip/stub_dev.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/ti-st/st_core.c b/drivers/misc/ti-st/st_core.c
-index eda8d407be287..e5fbd61f69c8e 100644
---- a/drivers/misc/ti-st/st_core.c
-+++ b/drivers/misc/ti-st/st_core.c
-@@ -28,6 +28,7 @@
- #include <linux/skbuff.h>
- 
- #include <linux/ti_wilink_st.h>
-+#include <linux/netdevice.h>
- 
- extern void st_kim_recv(void *, const unsigned char *, long);
- void st_int_recv(void *, const unsigned char *, long);
-@@ -436,7 +437,7 @@ static void st_int_enqueue(struct st_data_s *st_gdata, struct sk_buff *skb)
- 	case ST_LL_AWAKE_TO_ASLEEP:
- 		pr_err("ST LL is illegal state(%ld),"
- 			   "purging received skb.", st_ll_getstate(st_gdata));
--		kfree_skb(skb);
-+		dev_kfree_skb_irq(skb);
- 		break;
- 	case ST_LL_ASLEEP:
- 		skb_queue_tail(&st_gdata->tx_waitq, skb);
-@@ -445,7 +446,7 @@ static void st_int_enqueue(struct st_data_s *st_gdata, struct sk_buff *skb)
- 	default:
- 		pr_err("ST LL is illegal state(%ld),"
- 			   "purging received skb.", st_ll_getstate(st_gdata));
--		kfree_skb(skb);
-+		dev_kfree_skb_irq(skb);
- 		break;
+diff --git a/drivers/usb/usbip/stub_dev.c b/drivers/usb/usbip/stub_dev.c
+index 16bb3197d6580..d179b281b9521 100644
+--- a/drivers/usb/usbip/stub_dev.c
++++ b/drivers/usb/usbip/stub_dev.c
+@@ -511,8 +511,13 @@ static void stub_disconnect(struct usb_device *udev)
+ 	/* release port */
+ 	rc = usb_hub_release_port(udev->parent, udev->portnum,
+ 				  (struct usb_dev_state *) udev);
+-	if (rc) {
+-		dev_dbg(&udev->dev, "unable to release port\n");
++	/*
++	 * NOTE: If a HUB disconnect triggered disconnect of the down stream
++	 * device usb_hub_release_port will return -ENODEV so we can safely ignore
++	 * that error here.
++	 */
++	if (rc && (rc != -ENODEV)) {
++		dev_dbg(&udev->dev, "unable to release port (%i)\n", rc);
+ 		return;
  	}
  
-@@ -499,7 +500,7 @@ void st_tx_wakeup(struct st_data_s *st_data)
- 				spin_unlock_irqrestore(&st_data->lock, flags);
- 				break;
- 			}
--			kfree_skb(skb);
-+			dev_kfree_skb_irq(skb);
- 			spin_unlock_irqrestore(&st_data->lock, flags);
- 		}
- 		/* if wake-up is set in another context- restart sending */
 -- 
 2.42.0
 
