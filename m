@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A7CA7ED2A2
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BE237ECB8E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233449AbjKOUmv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:42:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43280 "EHLO
+        id S230203AbjKOTXC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:23:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234895AbjKOTkp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:45 -0500
+        with ESMTP id S230087AbjKOTXB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D08ED6A
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ACCC433C8;
-        Wed, 15 Nov 2023 19:40:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E64191A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 686F0C433C7;
+        Wed, 15 Nov 2023 19:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077241;
-        bh=xWh8FviYTS2T0tG37DqybTSp5TRO38OzymFjGpg9knU=;
+        s=korg; t=1700076177;
+        bh=r9zRy3VQ6cF0XB8FDe2rHzUhGY5L9rxRwynMJJy1gWw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1gfUxwJpOIlVSvVo6bZrZbobq+ImdqCoKO2LP/hMmIG8NnYMHTY/pvaWNzxWbYfjR
-         0EsxSwrgUOwt3QZRCr5axmdh+lL1dugsICoRRXZwQtIBFaTX/YrAsH77G6c96pTsAM
-         KeK1JEpl7XKM62WG8b1kXa//odRyn0Sfws/6QdFc=
+        b=IvCMyURQEtkybvDWXHE/8q5SrVYjfGemk5n/88u1xW4h9o8hPyaKPNxacpVgxHS+9
+         tep/FByc4OmQb/icYBxy4cEz7a3RLbTR+Fm/PR1ZRH8sLMO13dLSyv+bc1aTmM8Jpm
+         ISjepTqqNOSG+BrSAakGxwGzosv66Uz45nkqEbOI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Avraham Stern <avraham.stern@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/603] clk: qcom: mmcc-msm8998: Dont check halt bit on some branch clks
+Subject: [PATCH 6.5 124/550] wifi: iwlwifi: mvm: fix removing pasn station for responder
 Date:   Wed, 15 Nov 2023 14:11:48 -0500
-Message-ID: <20231115191624.468041997@linuxfoundation.org>
+Message-ID: <20231115191609.287588192@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,57 +51,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit 9906c4140897bbdbff7bb71c6ae67903cb9954ce ]
+[ Upstream commit ff2687612c21a87a58c76099f3d59f8db376b995 ]
 
-Some branch clocks are governed externally and we're only supposed to
-send a request concerning their shutdown, not actually ensure it happens.
+In case of MLD operation the station should be removed using the
+mld api.
 
-Use the BRANCH_HALT_SKIP define to skip checking the halt bit.
-
-Fixes: d14b15b5931c ("clk: qcom: Add MSM8998 Multimedia Clock Controller (MMCC) driver")
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-4-ba1b1fd9ee75@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: fd940de72d49 ("wifi: iwlwifi: mvm: FTM responder MLO support")
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230926110319.7eb353abb95c.I2b30be09b99f5a2379956e010bafaa465ff053ba@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/mmcc-msm8998.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/mmcc-msm8998.c b/drivers/clk/qcom/mmcc-msm8998.c
-index a023c4374be96..b0b51adb73a54 100644
---- a/drivers/clk/qcom/mmcc-msm8998.c
-+++ b/drivers/clk/qcom/mmcc-msm8998.c
-@@ -2439,6 +2439,7 @@ static struct clk_branch fd_ahb_clk = {
- 
- static struct clk_branch mnoc_ahb_clk = {
- 	.halt_reg = 0x5024,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.clkr = {
- 		.enable_reg = 0x5024,
- 		.enable_mask = BIT(0),
-@@ -2454,6 +2455,7 @@ static struct clk_branch mnoc_ahb_clk = {
- 
- static struct clk_branch bimc_smmu_ahb_clk = {
- 	.halt_reg = 0xe004,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.hwcg_reg = 0xe004,
- 	.hwcg_bit = 1,
- 	.clkr = {
-@@ -2471,6 +2473,7 @@ static struct clk_branch bimc_smmu_ahb_clk = {
- 
- static struct clk_branch bimc_smmu_axi_clk = {
- 	.halt_reg = 0xe008,
-+	.halt_check = BRANCH_HALT_SKIP,
- 	.hwcg_reg = 0xe008,
- 	.hwcg_bit = 1,
- 	.clkr = {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
+index b49781d1a07a7..10b9219b3bfd3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-responder.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+- * Copyright (C) 2018-2022 Intel Corporation
++ * Copyright (C) 2018-2023 Intel Corporation
+  */
+ #include <net/cfg80211.h>
+ #include <linux/etherdevice.h>
+@@ -302,7 +302,12 @@ static void iwl_mvm_resp_del_pasn_sta(struct iwl_mvm *mvm,
+ 				      struct iwl_mvm_pasn_sta *sta)
+ {
+ 	list_del(&sta->list);
+-	iwl_mvm_rm_sta_id(mvm, vif, sta->int_sta.sta_id);
++
++	if (iwl_mvm_has_mld_api(mvm->fw))
++		iwl_mvm_mld_rm_sta_id(mvm, sta->int_sta.sta_id);
++	else
++		iwl_mvm_rm_sta_id(mvm, vif, sta->int_sta.sta_id);
++
+ 	iwl_mvm_dealloc_int_sta(mvm, &sta->int_sta);
+ 	kfree(sta);
+ }
 -- 
 2.42.0
 
