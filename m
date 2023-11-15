@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 212197ED2D7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF6D07ED487
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233494AbjKOUom (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:44:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60784 "EHLO
+        id S1344611AbjKOU6V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:58:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233527AbjKOUol (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:41 -0500
+        with ESMTP id S235570AbjKOU5k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:40 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6142CA1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B0AC433C7;
-        Wed, 15 Nov 2023 20:44:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D16173F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442F8C4AF5D;
+        Wed, 15 Nov 2023 20:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081078;
-        bh=uhRcVbE6/Kbvf0t0/6P9HME4JYAEw4OQJkgYF+q59yU=;
+        s=korg; t=1700081398;
+        bh=c6xK6LIkEoWXQF+mQlFFAJ65a8k82jy2CWdBdHUsMck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nSgMcR6AFu8WL2IucOwjUR8VoHyONbbzvHqZpdudS4IYL/r0PLq4Ko1d9CcNZCUs1
-         T5vdweGqg5boezICQiVK7ziNkpSxFdwqfezcp6LSrxbBhKalyRMKvxT6pKQvPzN6mX
-         LqePQPoNRsE7G937J5hahcvyvOEYBIfZJm+GcnR8=
+        b=A0gTd/qbPQ7qr+rGs3XFCKHm3BsSbR4npFAPKwdt9gC7hImRy9YXv9KYW4hmkNto4
+         9fka/cvAyz7ypFMX55mIgIO8jJNiKOTRGwo8be8923BqEOk1IYWXrD1KyJEj9AzGpE
+         sPYAlBd2mqEDyE0Jw1pXpg9yrLFMk3Xt/05BH1Po=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "Timur I. Davletshin" <timur.davletshin@gmail.com>,
+        Jo-Philipp Wich <jo@mein.io>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/88] can: dev: move driver related infrastructure into separate subdir
-Date:   Wed, 15 Nov 2023 15:35:20 -0500
-Message-ID: <20231115191426.694692619@linuxfoundation.org>
+Subject: [PATCH 5.15 129/244] hwrng: geode - fix accessing registers
+Date:   Wed, 15 Nov 2023 15:35:21 -0500
+Message-ID: <20231115203556.115890719@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +53,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 3e77f70e734584e0ad1038e459ed3fd2400f873a ]
+[ Upstream commit 464bd8ec2f06707f3773676a1bd2c64832a3c805 ]
 
-This patch moves the CAN driver related infrastructure into a separate subdir.
-It will be split into more files in the coming patches.
+When the membase and pci_dev pointer were moved to a new struct in priv,
+the actual membase users were left untouched, and they started reading
+out arbitrary memory behind the struct instead of registers. This
+unfortunately turned the RNG into a constant number generator, depending
+on the content of what was at that offset.
 
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://lore.kernel.org/r/20210111141930.693847-3-mkl@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: fe5c9940dfd8 ("can: dev: can_restart(): don't crash kernel if carrier is OK")
+To fix this, update geode_rng_data_{read,present}() to also get the
+membase via amd_geode_priv, and properly read from the right addresses
+again.
+
+Fixes: 9f6ec8dc574e ("hwrng: geode - Fix PCI device refcount leak")
+Reported-by: Timur I. Davletshin <timur.davletshin@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217882
+Tested-by: Timur I. Davletshin <timur.davletshin@gmail.com>
+Suggested-by: Jo-Philipp Wich <jo@mein.io>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/Makefile               | 7 +------
- drivers/net/can/dev/Makefile           | 7 +++++++
- drivers/net/can/{ => dev}/dev.c        | 0
- drivers/net/can/{ => dev}/rx-offload.c | 0
- 4 files changed, 8 insertions(+), 6 deletions(-)
- create mode 100644 drivers/net/can/dev/Makefile
- rename drivers/net/can/{ => dev}/dev.c (100%)
- rename drivers/net/can/{ => dev}/rx-offload.c (100%)
+ drivers/char/hw_random/geode-rng.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/Makefile b/drivers/net/can/Makefile
-index 44922bf29b6a0..93e11f1fee5c6 100644
---- a/drivers/net/can/Makefile
-+++ b/drivers/net/can/Makefile
-@@ -7,12 +7,7 @@ obj-$(CONFIG_CAN_VCAN)		+= vcan.o
- obj-$(CONFIG_CAN_VXCAN)		+= vxcan.o
- obj-$(CONFIG_CAN_SLCAN)		+= slcan.o
+diff --git a/drivers/char/hw_random/geode-rng.c b/drivers/char/hw_random/geode-rng.c
+index 12fbe80918319..159baf00a8675 100644
+--- a/drivers/char/hw_random/geode-rng.c
++++ b/drivers/char/hw_random/geode-rng.c
+@@ -58,7 +58,8 @@ struct amd_geode_priv {
  
--obj-$(CONFIG_CAN_DEV)		+= can-dev.o
--can-dev-y			+= dev.o
--can-dev-y			+= rx-offload.o
--
--can-dev-$(CONFIG_CAN_LEDS)	+= led.o
--
-+obj-y				+= dev/
- obj-y				+= rcar/
- obj-y				+= spi/
- obj-y				+= usb/
-diff --git a/drivers/net/can/dev/Makefile b/drivers/net/can/dev/Makefile
-new file mode 100644
-index 0000000000000..cba92e6bcf6f5
---- /dev/null
-+++ b/drivers/net/can/dev/Makefile
-@@ -0,0 +1,7 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-$(CONFIG_CAN_DEV)		+= can-dev.o
-+can-dev-y			+= dev.o
-+can-dev-y			+= rx-offload.o
-+
-+can-dev-$(CONFIG_CAN_LEDS)	+= led.o
-diff --git a/drivers/net/can/dev.c b/drivers/net/can/dev/dev.c
-similarity index 100%
-rename from drivers/net/can/dev.c
-rename to drivers/net/can/dev/dev.c
-diff --git a/drivers/net/can/rx-offload.c b/drivers/net/can/dev/rx-offload.c
-similarity index 100%
-rename from drivers/net/can/rx-offload.c
-rename to drivers/net/can/dev/rx-offload.c
+ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
+ {
+-	void __iomem *mem = (void __iomem *)rng->priv;
++	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
++	void __iomem *mem = priv->membase;
+ 
+ 	*data = readl(mem + GEODE_RNG_DATA_REG);
+ 
+@@ -67,7 +68,8 @@ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
+ 
+ static int geode_rng_data_present(struct hwrng *rng, int wait)
+ {
+-	void __iomem *mem = (void __iomem *)rng->priv;
++	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
++	void __iomem *mem = priv->membase;
+ 	int data, i;
+ 
+ 	for (i = 0; i < 20; i++) {
 -- 
 2.42.0
 
