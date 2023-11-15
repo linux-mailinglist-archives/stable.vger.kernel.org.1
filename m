@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3652F7ECC83
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:30:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1257A7ECF2B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233968AbjKOTa7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:30:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52074 "EHLO
+        id S235246AbjKOTqr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:46:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233995AbjKOTa4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:30:56 -0500
+        with ESMTP id S235242AbjKOTqr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD25819F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:30:53 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265E7C433CA;
-        Wed, 15 Nov 2023 19:30:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61B61AD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:46:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F161C433C7;
+        Wed, 15 Nov 2023 19:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076653;
-        bh=Bo/lokr+0JMmpPq1AybZ6pFN2Pl2g0JM0mF8zSeYrKg=;
+        s=korg; t=1700077603;
+        bh=J2MIBoQSJacSAkojynG0tAxou8mXDwNbPMu3mlLhoVE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nXL/z9mzNRfkeqtoUBtC61npLj1jgByyIgvNkCvTbeU3bLjK4NB7TvFeKyOeffye9
-         uZytdWgVjGfDpir3Wb7A1c/O1CK1Z3fqO260Tv6xH2Afj/dsZR9XU8JUsCPfVejuk5
-         0aP8jEY9sHo7AGMZRLWdQounrCimv1WFVeCMbJWI=
+        b=lI9YqiAbJheQO6E8ZTl3NHe7ZKpwPyU8mDqBXMdPmQ8QACrWVhL5+IqF5iCQTyMti
+         kQrQZCpR/gHN1r/7JwB4yaVAYV0DM/U13MIY2eHheuiY5fQM+Mt6Vttrj2h3J7Kd5I
+         hp4nK/Up5zTNKDUYNl/EFMTOxCPiZUwYNHHuNA6s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Gao Xiang <hsiangkao@linux.alibaba.com>,
+        patches@lists.linux.dev,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Damian Muszynski <damian.muszynski@intel.com>,
+        Tero Kristo <tero.kristo@linux.intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 364/550] erofs: fix erofs_insert_workgroup() lockref usage
-Date:   Wed, 15 Nov 2023 14:15:48 -0500
-Message-ID: <20231115191626.050160137@linuxfoundation.org>
+Subject: [PATCH 6.6 404/603] crypto: qat - fix ring to service map for QAT GEN4
+Date:   Wed, 15 Nov 2023 14:15:49 -0500
+Message-ID: <20231115191640.991662940@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,74 +53,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 1a0ac8bd7a4fa5b2f4ef14c3b1e9d6e5a5faae06 ]
+[ Upstream commit a238487f7965d102794ed9f8aff0b667cd2ae886 ]
 
-As Linus pointed out [1], lockref_put_return() is fundamentally
-designed to be something that can fail.  It behaves as a fastpath-only
-thing, and the failure case needs to be handled anyway.
+The 4xxx drivers hardcode the ring to service mapping. However, when
+additional configurations where added to the driver, the mappings were
+not updated. This implies that an incorrect mapping might be reported
+through pfvf for certain configurations.
 
-Actually, since the new pcluster was just allocated without being
-populated, it won't be accessed by others until it is inserted into
-XArray, so lockref helpers are actually unneeded here.
+Add an algorithm that computes the correct ring to service mapping based
+on the firmware loaded on the device.
 
-Let's just set the proper reference count on initializing.
-
-[1] https://lore.kernel.org/r/CAHk-=whCga8BeQnJ3ZBh_Hfm9ctba_wpF444LpwRybVNMzO6Dw@mail.gmail.com
-
-Fixes: 7674a42f35ea ("erofs: use struct lockref to replace handcrafted approach")
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20231031060524.1103921-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Fixes: 0cec19c761e5 ("crypto: qat - add support for compression for 4xxx")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
+Reviewed-by: Tero Kristo <tero.kristo@linux.intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/utils.c | 8 +-------
- fs/erofs/zdata.c | 1 +
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ .../intel/qat/qat_4xxx/adf_4xxx_hw_data.c     | 54 +++++++++++++++++++
+ .../intel/qat/qat_common/adf_accel_devices.h  |  1 +
+ .../crypto/intel/qat/qat_common/adf_init.c    |  3 ++
+ 3 files changed, 58 insertions(+)
 
-diff --git a/fs/erofs/utils.c b/fs/erofs/utils.c
-index cc6fb9e988991..4256a85719a1d 100644
---- a/fs/erofs/utils.c
-+++ b/fs/erofs/utils.c
-@@ -77,12 +77,7 @@ struct erofs_workgroup *erofs_insert_workgroup(struct super_block *sb,
- 	struct erofs_sb_info *const sbi = EROFS_SB(sb);
- 	struct erofs_workgroup *pre;
- 
--	/*
--	 * Bump up before making this visible to others for the XArray in order
--	 * to avoid potential UAF without serialized by xa_lock.
--	 */
--	lockref_get(&grp->lockref);
--
-+	DBG_BUGON(grp->lockref.count < 1);
- repeat:
- 	xa_lock(&sbi->managed_pslots);
- 	pre = __xa_cmpxchg(&sbi->managed_pslots, grp->index,
-@@ -96,7 +91,6 @@ struct erofs_workgroup *erofs_insert_workgroup(struct super_block *sb,
- 			cond_resched();
- 			goto repeat;
- 		}
--		lockref_put_return(&grp->lockref);
- 		grp = pre;
+diff --git a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
+index 44b732fb80bca..a5691ba0b7244 100644
+--- a/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
++++ b/drivers/crypto/intel/qat/qat_4xxx/adf_4xxx_hw_data.c
+@@ -423,6 +423,59 @@ static const struct adf_fw_config *get_fw_config(struct adf_accel_dev *accel_dev
  	}
- 	xa_unlock(&sbi->managed_pslots);
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 9bfdb4ad7c763..2461a3f74e744 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -805,6 +805,7 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
- 		return PTR_ERR(pcl);
+ }
  
- 	spin_lock_init(&pcl->obj.lockref.lock);
-+	pcl->obj.lockref.count = 1;	/* one ref for this request */
- 	pcl->algorithmformat = map->m_algorithmformat;
- 	pcl->length = 0;
- 	pcl->partial = true;
++enum adf_rp_groups {
++	RP_GROUP_0 = 0,
++	RP_GROUP_1,
++	RP_GROUP_COUNT
++};
++
++static u16 get_ring_to_svc_map(struct adf_accel_dev *accel_dev)
++{
++	enum adf_cfg_service_type rps[RP_GROUP_COUNT];
++	const struct adf_fw_config *fw_config;
++	u16 ring_to_svc_map;
++	int i, j;
++
++	fw_config = get_fw_config(accel_dev);
++	if (!fw_config)
++		return 0;
++
++	for (i = 0; i < RP_GROUP_COUNT; i++) {
++		switch (fw_config[i].ae_mask) {
++		case ADF_AE_GROUP_0:
++			j = RP_GROUP_0;
++			break;
++		case ADF_AE_GROUP_1:
++			j = RP_GROUP_1;
++			break;
++		default:
++			return 0;
++		}
++
++		switch (fw_config[i].obj) {
++		case ADF_FW_SYM_OBJ:
++			rps[j] = SYM;
++			break;
++		case ADF_FW_ASYM_OBJ:
++			rps[j] = ASYM;
++			break;
++		case ADF_FW_DC_OBJ:
++			rps[j] = COMP;
++			break;
++		default:
++			rps[j] = 0;
++			break;
++		}
++	}
++
++	ring_to_svc_map = rps[RP_GROUP_0] << ADF_CFG_SERV_RING_PAIR_0_SHIFT |
++			  rps[RP_GROUP_1] << ADF_CFG_SERV_RING_PAIR_1_SHIFT |
++			  rps[RP_GROUP_0] << ADF_CFG_SERV_RING_PAIR_2_SHIFT |
++			  rps[RP_GROUP_1] << ADF_CFG_SERV_RING_PAIR_3_SHIFT;
++
++	return ring_to_svc_map;
++}
++
+ static const char *uof_get_name(struct adf_accel_dev *accel_dev, u32 obj_num,
+ 				const char * const fw_objs[], int num_objs)
+ {
+@@ -519,6 +572,7 @@ void adf_init_hw_data_4xxx(struct adf_hw_device_data *hw_data, u32 dev_id)
+ 	hw_data->uof_get_ae_mask = uof_get_ae_mask;
+ 	hw_data->set_msix_rttable = set_msix_default_rttable;
+ 	hw_data->set_ssm_wdtimer = adf_gen4_set_ssm_wdtimer;
++	hw_data->get_ring_to_svc_map = get_ring_to_svc_map;
+ 	hw_data->disable_iov = adf_disable_sriov;
+ 	hw_data->ring_pair_reset = adf_gen4_ring_pair_reset;
+ 	hw_data->enable_pm = adf_gen4_enable_pm;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
+index 1e84ff309ed3b..79d5a1535eda3 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_accel_devices.h
+@@ -182,6 +182,7 @@ struct adf_hw_device_data {
+ 	void (*get_arb_info)(struct arb_info *arb_csrs_info);
+ 	void (*get_admin_info)(struct admin_info *admin_csrs_info);
+ 	enum dev_sku_info (*get_sku)(struct adf_hw_device_data *self);
++	u16 (*get_ring_to_svc_map)(struct adf_accel_dev *accel_dev);
+ 	int (*alloc_irq)(struct adf_accel_dev *accel_dev);
+ 	void (*free_irq)(struct adf_accel_dev *accel_dev);
+ 	void (*enable_error_correction)(struct adf_accel_dev *accel_dev);
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_init.c b/drivers/crypto/intel/qat/qat_common/adf_init.c
+index 7323a9f1f11c8..0f9e2d59ce385 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_init.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_init.c
+@@ -97,6 +97,9 @@ static int adf_dev_init(struct adf_accel_dev *accel_dev)
+ 		return -EFAULT;
+ 	}
+ 
++	if (hw_data->get_ring_to_svc_map)
++		hw_data->ring_to_svc_map = hw_data->get_ring_to_svc_map(accel_dev);
++
+ 	if (adf_ae_init(accel_dev)) {
+ 		dev_err(&GET_DEV(accel_dev),
+ 			"Failed to initialise Acceleration Engine\n");
 -- 
 2.42.0
 
