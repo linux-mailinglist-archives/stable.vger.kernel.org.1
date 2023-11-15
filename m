@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E17E87ECB77
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BDC07ECE15
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232988AbjKOTWc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:22:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47034 "EHLO
+        id S234809AbjKOTkX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:40:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233066AbjKOTWb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:31 -0500
+        with ESMTP id S234836AbjKOTkS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E0C1AE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF54C433CB;
-        Wed, 15 Nov 2023 19:22:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBCA1AB
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CE6C433D9;
+        Wed, 15 Nov 2023 19:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076143;
-        bh=HUGc8l5wDoZ8m/ebC8DXLn2CdCTlrekjPAYo1e9WuXE=;
+        s=korg; t=1700077213;
+        bh=AWtBayWPtioh5+KLCfWxyfU5yBoBR9ARLSKm/MHWtRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LmR2dAIp+qaE5Vdhn2qxGClZF37JOGwVGXQZyudSxAedk+55HF6fHmsFRGszxEc45
-         MYQKnu6NpApH8vmZkkniq/MkIB7vRSFukSxGHjKp/YwszRNCjznD8ibDjsQlbqmG1f
-         GRIop4V6N96MAMKNu0BWHf8y2E5z7qQVir3wgKds=
+        b=CyPoWI5s7YPvuUNpoBMKHQ6ZymQcBCCGUQNolv7cWWvNVGujSCRTraF+mEqX2z556
+         KHAmRNCO1iWxgZ7mu0+2UbNo/kJSpGiRqIzgyrtcAfVl37Qr1WMXRO7yLPbHFi/dIQ
+         4pqeg49749y82zEomOwazR0lOvwSLOvyWVhqzNNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 101/550] wifi: rtlwifi: fix EDCA limit set by BT coexistence
-Date:   Wed, 15 Nov 2023 14:11:25 -0500
-Message-ID: <20231115191607.716374694@linuxfoundation.org>
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 141/603] wifi: iwlwifi: mvm: fix iwl_mvm_mac_flush_sta()
+Date:   Wed, 15 Nov 2023 14:11:26 -0500
+Message-ID: <20231115191622.948092786@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,72 +50,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 3391ee7f9ea508c375d443cd712c2e699be235b4 ]
+[ Upstream commit 43874283ce6c5bd32ac9d30878b2c96a974357cb ]
 
-In 'rtl92c_dm_check_edca_turbo()', 'rtl88e_dm_check_edca_turbo()',
-and 'rtl8723e_dm_check_edca_turbo()', the DL limit should be set
-from the corresponding field of 'rtlpriv->btcoexist' rather than
-UL. Compile tested only.
+When I implemented iwl_mvm_mac_flush_sta() I completely botched it;
+it basically always happens after the iwl_mvm_sta_pre_rcu_remove()
+call, and that already clears mvm->fw_id_to_mac_id[] entries, so we
+cannot rely on those at iwl_mvm_mac_flush_sta() time. This means it
+never did anything.
 
-Fixes: 0529c6b81761 ("rtlwifi: rtl8723ae: Update driver to match 06/28/14 Realtek version")
-Fixes: c151aed6aa14 ("rtlwifi: rtl8188ee: Update driver to match Realtek release of 06282014")
-Fixes: beb5bc402043 ("rtlwifi: rtl8192c-common: Convert common dynamic management routines for addition of rtl8192se and rtl8192de")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230928052327.120178-1-dmantipov@yandex.ru
+Fix this by just going through the station IDs and now with the new
+API for iwl_mvm_flush_sta(), call those.
+
+Fixes: a6cc6ccb1c8a ("wifi: iwlwifi: mvm: support new flush_sta method")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231011130030.0b5878e93118.I1093e60163052e7be64d2b01424097cd6a272979@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c       | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c | 2 +-
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c       | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 20 +++++++++----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-index 6f61d6a106272..5a34894a533be 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/dm.c
-@@ -799,7 +799,7 @@ static void rtl88e_dm_check_edca_turbo(struct ieee80211_hw *hw)
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index e68026a657059..a25ea638229b0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -5602,22 +5602,20 @@ void iwl_mvm_mac_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ void iwl_mvm_mac_flush_sta(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta)
+ {
++	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+-	int i;
++	struct iwl_mvm_link_sta *mvm_link_sta;
++	struct ieee80211_link_sta *link_sta;
++	int link_id;
  
- 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
--		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
-+		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
- 		bt_change_edca = true;
- 	}
+ 	mutex_lock(&mvm->mutex);
+-	for (i = 0; i < mvm->fw->ucode_capa.num_stations; i++) {
+-		struct iwl_mvm_sta *mvmsta;
+-		struct ieee80211_sta *tmp;
+-
+-		tmp = rcu_dereference_protected(mvm->fw_id_to_mac_id[i],
+-						lockdep_is_held(&mvm->mutex));
+-		if (tmp != sta)
++	for_each_sta_active_link(vif, sta, link_sta, link_id) {
++		mvm_link_sta = rcu_dereference_protected(mvmsta->link[link_id],
++							 lockdep_is_held(&mvm->mutex));
++		if (!mvm_link_sta)
+ 			continue;
  
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-index 0b6a15c2e5ccd..d92aad60edfe9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/dm_common.c
-@@ -640,7 +640,7 @@ static void rtl92c_dm_check_edca_turbo(struct ieee80211_hw *hw)
+-		mvmsta = iwl_mvm_sta_from_mac80211(sta);
+-
+-		if (iwl_mvm_flush_sta(mvm, mvmsta->deflink.sta_id,
++		if (iwl_mvm_flush_sta(mvm, mvm_link_sta->sta_id,
+ 				      mvmsta->tfd_queue_msk))
+ 			IWL_ERR(mvm, "flush request fail\n");
  	}
- 
- 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
--		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
-+		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
- 		bt_change_edca = true;
- 	}
- 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
-index 8ada31380efa4..0ff8e355c23a4 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/dm.c
-@@ -466,7 +466,7 @@ static void rtl8723e_dm_check_edca_turbo(struct ieee80211_hw *hw)
- 	}
- 
- 	if (rtlpriv->btcoexist.bt_edca_dl != 0) {
--		edca_be_ul = rtlpriv->btcoexist.bt_edca_dl;
-+		edca_be_dl = rtlpriv->btcoexist.bt_edca_dl;
- 		bt_change_edca = true;
- 	}
- 
 -- 
 2.42.0
 
