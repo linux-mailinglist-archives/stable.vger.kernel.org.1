@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98A0D7ED0B4
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 365617ED0BB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343897AbjKOT5G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:57:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50520 "EHLO
+        id S1343553AbjKOT5O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235676AbjKOT45 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:57 -0500
+        with ESMTP id S1343610AbjKOT5J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E10FCD67
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:53 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C8EC433C7;
-        Wed, 15 Nov 2023 19:56:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3EDE1B2
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA72C433C8;
+        Wed, 15 Nov 2023 19:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078213;
-        bh=oMwKW0mmGTHE/6Sf5c+6dlSNMf3bJ6Vs0z2/7BzaHsw=;
+        s=korg; t=1700078226;
+        bh=4aPKCxYhjYrmMTEuQaxux3sdcsmWVAia3iiTpUSoZsI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dkTOGWUaOK7fOGbBBLNX7W3KI6yFpf/nC1O+4Qtj3JGjvdGydqY1yYnbRBt32a5Wn
-         SBY4h+oEAZsYaPnr/Kivj0k0n1wtyoa/kilfOhDZK5ASwlbv+TpIXcy6kTY6ZDE+pY
-         ffGX/DO1eZhlOEsoogTPJVn1Rcf3TjCQblN26EwQ=
+        b=gbzQ161BuoDE7YmBy5VL5r2DZFvGa0vph7JyswHBbzaIXFm9X4eoKXu5v/1gDGfJr
+         ivgQcmh5Xba9lZFjjZICdtUV22zpkr8UxO6UVQDE4Ehlqjxn9F/8T53zbtS87qojMe
+         VmnIasyXGQugREWWyESUZ/5mdorOYaiTCW/1Fxuk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/379] arm64: dts: qcom: sc7280: Add missing LMH interrupts
-Date:   Wed, 15 Nov 2023 14:23:59 -0500
-Message-ID: <20231115192654.811563279@linuxfoundation.org>
+Subject: [PATCH 6.1 165/379] arm64: dts: qcom: sm8150: add ref clock to PCIe PHYs
+Date:   Wed, 15 Nov 2023 14:24:00 -0500
+Message-ID: <20231115192654.872968177@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -54,41 +55,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 3f93d119c9d6e1744d55cd48af764160a1a3aca3 ]
+[ Upstream commit c204b3709409279ac019f3d374e444bb0b1424f0 ]
 
-Hook up the interrupts that signal the Limits Management Hardware has
-started some sort of throttling action.
+Follow the rest of the platforms and add "ref" clocks to both PCIe PHYs
+found on the Qualcomm SM8150 platform.
 
-Fixes: 7dbd121a2c58 ("arm64: dts: qcom: sc7280: Add cpufreq hw node")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811-topic-7280_lmhirq-v1-1-c262b6a25c8f@linaro.org
+Fixes: a1c86c680533 ("arm64: dts: qcom: sm8150: Add PCIe nodes")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230820142035.89903-15-dmitry.baryshkov@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8150.dtsi | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 409dad617a27c..aea356c63b9a3 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -5338,6 +5338,14 @@ cpufreq_hw: cpufreq@18591000 {
- 			reg = <0 0x18591000 0 0x1000>,
- 			      <0 0x18592000 0 0x1000>,
- 			      <0 0x18593000 0 0x1000>;
-+
-+			interrupts = <GIC_SPI 30 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 31 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 19 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "dcvsh-irq-0",
-+					  "dcvsh-irq-1",
-+					  "dcvsh-irq-2";
-+
- 			clocks = <&rpmhcc RPMH_CXO_CLK>, <&gcc GCC_GPLL0>;
- 			clock-names = "xo", "alternate";
- 			#freq-domain-cells = <1>;
+diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+index de794a5078dfc..c586378fc6bc7 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -1839,8 +1839,12 @@ pcie0_phy: phy@1c06000 {
+ 			ranges;
+ 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
+ 				 <&gcc GCC_PCIE_0_CFG_AHB_CLK>,
++				 <&gcc GCC_PCIE_0_CLKREF_CLK>,
+ 				 <&gcc GCC_PCIE0_PHY_REFGEN_CLK>;
+-			clock-names = "aux", "cfg_ahb", "refgen";
++			clock-names = "aux",
++				      "cfg_ahb",
++				      "ref",
++				      "refgen";
+ 
+ 			resets = <&gcc GCC_PCIE_0_PHY_BCR>;
+ 			reset-names = "phy";
+@@ -1938,8 +1942,12 @@ pcie1_phy: phy@1c0e000 {
+ 			ranges;
+ 			clocks = <&gcc GCC_PCIE_PHY_AUX_CLK>,
+ 				 <&gcc GCC_PCIE_1_CFG_AHB_CLK>,
++				 <&gcc GCC_PCIE_1_CLKREF_CLK>,
+ 				 <&gcc GCC_PCIE1_PHY_REFGEN_CLK>;
+-			clock-names = "aux", "cfg_ahb", "refgen";
++			clock-names = "aux",
++				      "cfg_ahb",
++				      "ref",
++				      "refgen";
+ 
+ 			resets = <&gcc GCC_PCIE_1_PHY_BCR>;
+ 			reset-names = "phy";
 -- 
 2.42.0
 
