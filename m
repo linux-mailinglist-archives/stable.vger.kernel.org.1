@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC7917ED43F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE9A27ED48F
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344638AbjKOU5a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34468 "EHLO
+        id S1344605AbjKOU61 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:58:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235086AbjKOU5Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:24 -0500
+        with ESMTP id S1344581AbjKOU5m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60D021A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEC2C43140;
-        Wed, 15 Nov 2023 20:47:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD521986
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09503C43142;
+        Wed, 15 Nov 2023 20:47:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081262;
-        bh=TTJOqkna18m+vmBl4AGzNfBvjihUyxD2SOn2O0CogcQ=;
+        s=korg; t=1700081264;
+        bh=Rw1THJjsqRbR0yiJquwzZsuLGKFNchEjMDNrFPmDufc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iSI/qRBvS0OFr3SJ4K2DTM6ZTZ825aPVkfQrQj5m4EtjFlPY1OVkVrU49PnblQJb8
-         JLolXZG8jygqX/R1cuVZxcIu6PDkjgvN6OyECrsvEmnJd+8x9c7zecEd2aw6AjRA3y
-         59UbqW3cRRFfZ/k0l9xb1SXQux75KNFcEL/Lovdw=
+        b=KialIqQ4uwD5zWaOyKOJ8Ex77S9RQUkEPUM92iYo/tNd1vqHou9lulMbz/ZMqMoyk
+         K/13UJVeSUEn2GIbI69Y0TZkmDp9dBiCGd+uxQAJkAhsi/Wd0sXGg1B+RFhw8pUPm9
+         7+o6MmU1spwgZXQqW84iIWAFzgNjeEITJQUsJF9U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/244] wifi: rtw88: debug: Fix the NULL vs IS_ERR() bug for debugfs_create_file()
-Date:   Wed, 15 Nov 2023 15:33:35 -0500
-Message-ID: <20231115203549.760761377@linuxfoundation.org>
+        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 024/244] wifi: mt76: mt7603: rework/fix rx pse hang check
+Date:   Wed, 15 Nov 2023 15:33:36 -0500
+Message-ID: <20231115203549.818360721@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -54,39 +53,85 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 74f7957c9b1b95553faaf146a2553e023a9d1720 ]
+[ Upstream commit baa19b2e4b7bbb509a7ca7939c8785477dcd40ee ]
 
-Since debugfs_create_file() return ERR_PTR and never return NULL, so use
-IS_ERR() to check it instead of checking NULL.
+It turns out that the code in mt7603_rx_pse_busy() does not detect actual
+hardware hangs, it only checks for busy conditions in PSE.
+A reset should only be performed if these conditions are true and if there
+is no rx activity as well.
+Reset the counter whenever a rx interrupt occurs. In order to also deal with
+a fully loaded CPU that leaves interrupts disabled with continuous NAPI
+polling, also check for pending rx interrupts in the function itself.
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230919050651.962694-1-ruanjinjie@huawei.com
+Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7603/core.c  |  2 ++
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   | 23 +++++++++++++------
+ 2 files changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index dfd52cff5d02f..1cc2b7b948044 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -1061,9 +1061,9 @@ static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
- #define rtw_debugfs_add_core(name, mode, fopname, parent)		\
- 	do {								\
- 		rtw_debug_priv_ ##name.rtwdev = rtwdev;			\
--		if (!debugfs_create_file(#name, mode,			\
-+		if (IS_ERR(debugfs_create_file(#name, mode,		\
- 					 parent, &rtw_debug_priv_ ##name,\
--					 &file_ops_ ##fopname))		\
-+					 &file_ops_ ##fopname)))	\
- 			pr_debug("Unable to initialize debugfs:%s\n",	\
- 			       #name);					\
- 	} while (0)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/core.c b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+index 60a996b63c0c0..915b8349146af 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/core.c
+@@ -42,11 +42,13 @@ irqreturn_t mt7603_irq_handler(int irq, void *dev_instance)
+ 	}
+ 
+ 	if (intr & MT_INT_RX_DONE(0)) {
++		dev->rx_pse_check = 0;
+ 		mt7603_irq_disable(dev, MT_INT_RX_DONE(0));
+ 		napi_schedule(&dev->mt76.napi[0]);
+ 	}
+ 
+ 	if (intr & MT_INT_RX_DONE(1)) {
++		dev->rx_pse_check = 0;
+ 		mt7603_irq_disable(dev, MT_INT_RX_DONE(1));
+ 		napi_schedule(&dev->mt76.napi[1]);
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 3745512b1eb3c..915a1043c869e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1561,20 +1561,29 @@ static bool mt7603_rx_pse_busy(struct mt7603_dev *dev)
+ {
+ 	u32 addr, val;
+ 
+-	if (mt76_rr(dev, MT_MCU_DEBUG_RESET) & MT_MCU_DEBUG_RESET_QUEUES)
+-		return true;
+-
+ 	if (mt7603_rx_fifo_busy(dev))
+-		return false;
++		goto out;
+ 
+ 	addr = mt7603_reg_map(dev, MT_CLIENT_BASE_PHYS_ADDR + MT_CLIENT_STATUS);
+ 	mt76_wr(dev, addr, 3);
+ 	val = mt76_rr(dev, addr) >> 16;
+ 
+-	if (is_mt7628(dev) && (val & 0x4001) == 0x4001)
+-		return true;
++	if (!(val & BIT(0)))
++		return false;
++
++	if (is_mt7628(dev))
++		val &= 0xa000;
++	else
++		val &= 0x8000;
++	if (!val)
++		return false;
++
++out:
++	if (mt76_rr(dev, MT_INT_SOURCE_CSR) &
++	    (MT_INT_RX_DONE(0) | MT_INT_RX_DONE(1)))
++		return false;
+ 
+-	return (val & 0x8001) == 0x8001 || (val & 0xe001) == 0xe001;
++	return true;
+ }
+ 
+ static bool
 -- 
 2.42.0
 
