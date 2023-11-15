@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1137ECE54
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B51D57ECBCD
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234991AbjKOTmY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34588 "EHLO
+        id S232731AbjKOTYf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234986AbjKOTmX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:23 -0500
+        with ESMTP id S233040AbjKOTYe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 413AA1A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BB4C433CA;
-        Wed, 15 Nov 2023 19:42:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E9F712C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F27C433C7;
+        Wed, 15 Nov 2023 19:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077339;
-        bh=MZ4NbJCTfHKi6M7C3iK8wAuXJU1uHYU/l8WGgr0x84E=;
+        s=korg; t=1700076271;
+        bh=DRO8m4KIvRiVdrGMKLl6xVTIzfpfkDanecjexnLjwLs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XLK12v+Q/zGMK1PTM6dhD1eXZeerMVG4JXVg8zCM/O9nfY2QgOX9HWtfsIduRLmKX
-         xsarGqjhliPuiu8zRrXHQmisKxZVOTU+Qj/Mc5MsQxyYxCibfLlZiz92soH3LXuGIa
-         IPnrnwdrSqCfYzv6Yn2j8DRKT/PwMflSgo9CwY4M=
+        b=MBlyAoGxnZAtmPjoMczbQz8O0ut88m+to+6AWJnigNO93DxyEDqSayzWf2aYauELk
+         U/3K0bcoryQw300Rge7X5wbEqYrL0K3sRZv9HBa8DzTQNTO9aGaRErOLiA5LiVbQXX
+         4IpLkjvg1AfK8lfLmN4wb/6Ni/YVasdcJuNsZ3Cs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Nartowicz <deadbeef@nartowicz.co.uk>,
-        Armin Wolf <W_Armin@gmx.de>,
-        Guenter Roeck <linux@roeck-us.net>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 205/603] Revert "hwmon: (sch56xx-common) Add DMI override table"
-Date:   Wed, 15 Nov 2023 14:12:30 -0500
-Message-ID: <20231115191627.452651616@linuxfoundation.org>
+Subject: [PATCH 6.5 167/550] clk: renesas: rzg2l: Use FIELD_GET() for PLL register fields
+Date:   Wed, 15 Nov 2023 14:12:31 -0500
+Message-ID: <20231115191612.293659850@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,95 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 28da9dee3594423534f3ea1e1f61e6bb2d2fa651 ]
+[ Upstream commit 72977f07b035e488c3f1928832a1616c6cae7278 ]
 
-This reverts commit fd2d53c367ae9983c2100ac733a834e0c79d7537.
+Use FIELD_GET() for PLL register fields.  This is its purpose.
 
-As reported by Ian Nartowicz, this and the preceding patch
-result in a failure to load the driver on Celsius W280.
-While the alternative would be to add the board to the DMI
-override table, it is quite likely that other systems are
-also affected. Revert the offending patches to avoid future
-problems.
-
-Fixes: fd2d53c367ae ("hwmon: (sch56xx-common) Add DMI override table")
-Reported-by: Ian Nartowicz <deadbeef@nartowicz.co.uk>
-Closes: https://lore.kernel.org/linux-hwmon/20231025192239.3c5389ae@debian.org/T/#t
-Cc: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230912045157.177966-14-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: a2b23159499e ("clk: renesas: rzg2l: Fix computation formula")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sch56xx-common.c | 44 ++++++++--------------------------
- 1 file changed, 10 insertions(+), 34 deletions(-)
+ drivers/clk/renesas/rzg2l-cpg.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/sch56xx-common.c b/drivers/hwmon/sch56xx-common.c
-index de3a0886c2f72..3ece53adabd62 100644
---- a/drivers/hwmon/sch56xx-common.c
-+++ b/drivers/hwmon/sch56xx-common.c
-@@ -523,28 +523,6 @@ static int __init sch56xx_device_add(int address, const char *name)
- 	return PTR_ERR_OR_ZERO(sch56xx_pdev);
- }
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index a0970f77c473f..03028362cf619 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -11,6 +11,7 @@
+  * Copyright (C) 2015 Renesas Electronics Corp.
+  */
  
--static const struct dmi_system_id sch56xx_dmi_override_table[] __initconst = {
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "CELSIUS W380"),
--		},
--	},
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO P710"),
--		},
--	},
--	{
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "ESPRIMO E9900"),
--		},
--	},
--	{ }
--};
--
- /* For autoloading only */
- static const struct dmi_system_id sch56xx_dmi_table[] __initconst = {
- 	{
-@@ -565,18 +543,16 @@ static int __init sch56xx_init(void)
- 		if (!dmi_check_system(sch56xx_dmi_table))
- 			return -ENODEV;
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/clk-provider.h>
+ #include <linux/clk/renesas.h>
+@@ -39,14 +40,13 @@
+ #define WARN_DEBUG(x)	do { } while (0)
+ #endif
  
--		if (!dmi_check_system(sch56xx_dmi_override_table)) {
--			/*
--			 * Some machines like the Esprimo P720 and Esprimo C700 have
--			 * onboard devices named " Antiope"/" Theseus" instead of
--			 * "Antiope"/"Theseus", so we need to check for both.
--			 */
--			if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
--			    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
--			    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
--			    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
--				return -ENODEV;
--		}
-+		/*
-+		 * Some machines like the Esprimo P720 and Esprimo C700 have
-+		 * onboard devices named " Antiope"/" Theseus" instead of
-+		 * "Antiope"/"Theseus", so we need to check for both.
-+		 */
-+		if (!dmi_find_device(DMI_DEV_TYPE_OTHER, "Antiope", NULL) &&
-+		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Antiope", NULL) &&
-+		    !dmi_find_device(DMI_DEV_TYPE_OTHER, "Theseus", NULL) &&
-+		    !dmi_find_device(DMI_DEV_TYPE_OTHER, " Theseus", NULL))
-+			return -ENODEV;
- 	}
+-#define DIV_RSMASK(v, s, m)	((v >> s) & m)
+ #define GET_SHIFT(val)		((val >> 12) & 0xff)
+ #define GET_WIDTH(val)		((val >> 8) & 0xf)
  
- 	/*
+-#define KDIV(val)		DIV_RSMASK(val, 16, 0xffff)
+-#define MDIV(val)		DIV_RSMASK(val, 6, 0x3ff)
+-#define PDIV(val)		DIV_RSMASK(val, 0, 0x3f)
+-#define SDIV(val)		DIV_RSMASK(val, 0, 0x7)
++#define KDIV(val)		FIELD_GET(GENMASK(31, 16), val)
++#define MDIV(val)		FIELD_GET(GENMASK(15, 6), val)
++#define PDIV(val)		FIELD_GET(GENMASK(5, 0), val)
++#define SDIV(val)		FIELD_GET(GENMASK(2, 0), val)
+ 
+ #define CLK_ON_R(reg)		(reg)
+ #define CLK_MON_R(reg)		(0x180 + (reg))
 -- 
 2.42.0
 
