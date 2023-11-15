@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D500F7ECB37
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E51847ECD5C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232860AbjKOTVA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59290 "EHLO
+        id S234557AbjKOTgL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232845AbjKOTUw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:52 -0500
+        with ESMTP id S234508AbjKOTgF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B87C0D5D
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D63C433C8;
-        Wed, 15 Nov 2023 19:20:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBCAD1AD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250F1C433C8;
+        Wed, 15 Nov 2023 19:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076045;
-        bh=WwRX3SqqakKjBz1VpOP64wtjStT62nrnt8ZWXRfaciU=;
+        s=korg; t=1700076961;
+        bh=9iKNko/kxQk9YKmCm94Bn//VUUGMjX5H9xOPTexUvhc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TB0E7vJas48WrqDQNkqafaQrF+OpxLVqOxW2/ak5d/lH/JF737tUhibddPKRXjNO/
-         0MyVYTZvQFZWRppS2GdhMRp7dKRu6KYNPcxNlwD7GGdQ5M5y7S+4I0AXIQlFaYz4at
-         cZAGKzmOb6inQnzrreOat5d1w4ZJOSpeLEENkqBE=
+        b=2iU23n1HvJEsl6/lqzoJ7NkQYq46wjw5PjLvjLX8uXeQiBp63+0/iqkIFar+JOpkn
+         leRACjUAIS20Kkw5pA5GHhSupPh/ZZ3nyXHRug05hqiFpxHm4MPtc9Xb54j2z85MlA
+         evcJshQXk63UexhJNrAhUDbaqB3eMxcGOoTTkJLA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Felix Fietkau <nbd@nbd.name>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 041/550] wifi: mac80211: move offchannel works to wiphy work
+Subject: [PATCH 6.6 080/603] wifi: mt76: mt7603: improve watchdog reset reliablity
 Date:   Wed, 15 Nov 2023 14:10:25 -0500
-Message-ID: <20231115191603.557936746@linuxfoundation.org>
+Message-ID: <20231115191618.666743683@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,201 +49,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 97c19e42b264e6b71a9ff9deea04c19f621805b9 ]
+[ Upstream commit c677dda165231c3efffb9de4bace249d5d2a51b9 ]
 
-Make the offchannel works wiphy works to have the
-wiphy locked for executing them.
+Only trigger PSE reset if PSE was stuck, otherwise it can cause DMA issues.
+Trigger the PSE reset while DMA is fully stopped in order to improve
+reliabilty.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: eadfb54756ae ("wifi: mac80211: move sched-scan stop work to wiphy work")
+Fixes: c8846e101502 ("mt76: add driver for MT7603E and MT7628/7688")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/ieee80211_i.h |  4 ++--
- net/mac80211/main.c        |  6 +++---
- net/mac80211/offchannel.c  | 36 ++++++++++++++++++------------------
- 3 files changed, 23 insertions(+), 23 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7603/mac.c   | 29 ++++++++-----------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index fef9aea9ba958..10ad1d8f9ba83 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1583,9 +1583,9 @@ struct ieee80211_local {
- 	/*
- 	 * Remain-on-channel support
- 	 */
--	struct delayed_work roc_work;
-+	struct wiphy_delayed_work roc_work;
- 	struct list_head roc_list;
--	struct work_struct hw_roc_start, hw_roc_done;
-+	struct wiphy_work hw_roc_start, hw_roc_done;
- 	unsigned long hw_roc_start_time;
- 	u64 roc_cookie_counter;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+index 7a506a0c46e2b..cf21d06257e53 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/mac.c
+@@ -1441,15 +1441,6 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
  
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index adb8637a37445..f1cbb7c5d4ac3 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -376,8 +376,8 @@ static void ieee80211_restart_work(struct work_struct *work)
- 	ieee80211_scan_cancel(local);
+ 	mt7603_beacon_set_timer(dev, -1, 0);
  
- 	/* make sure any new ROC will consider local->in_reconfig */
--	flush_delayed_work(&local->roc_work);
--	flush_work(&local->hw_roc_done);
-+	wiphy_delayed_work_flush(local->hw.wiphy, &local->roc_work);
-+	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_done);
+-	if (dev->reset_cause[RESET_CAUSE_RESET_FAILED] ||
+-	    dev->cur_reset_cause == RESET_CAUSE_RX_PSE_BUSY ||
+-	    dev->cur_reset_cause == RESET_CAUSE_BEACON_STUCK ||
+-	    dev->cur_reset_cause == RESET_CAUSE_TX_HANG)
+-		mt7603_pse_reset(dev);
+-
+-	if (dev->reset_cause[RESET_CAUSE_RESET_FAILED])
+-		goto skip_dma_reset;
+-
+ 	mt7603_mac_stop(dev);
  
- 	/* wait for all packet processing to be done */
- 	synchronize_net();
-@@ -1480,11 +1480,11 @@ void ieee80211_unregister_hw(struct ieee80211_hw *hw)
- 	ieee80211_remove_interfaces(local);
+ 	mt76_clear(dev, MT_WPDMA_GLO_CFG,
+@@ -1459,28 +1450,32 @@ static void mt7603_mac_watchdog_reset(struct mt7603_dev *dev)
  
- 	wiphy_lock(local->hw.wiphy);
-+	wiphy_delayed_work_cancel(local->hw.wiphy, &local->roc_work);
- 	wiphy_work_cancel(local->hw.wiphy, &local->radar_detected_work);
- 	wiphy_unlock(local->hw.wiphy);
- 	rtnl_unlock();
+ 	mt7603_irq_disable(dev, mask);
  
--	cancel_delayed_work_sync(&local->roc_work);
- 	cancel_work_sync(&local->restart_work);
- 	cancel_work_sync(&local->reconfig_filter);
- 	flush_work(&local->sched_scan_stopped_work);
-diff --git a/net/mac80211/offchannel.c b/net/mac80211/offchannel.c
-index cdf991e74ab99..5bedd9cef414d 100644
---- a/net/mac80211/offchannel.c
-+++ b/net/mac80211/offchannel.c
-@@ -230,7 +230,7 @@ static bool ieee80211_recalc_sw_work(struct ieee80211_local *local,
- 	if (dur == LONG_MAX)
- 		return false;
+-	mt76_set(dev, MT_WPDMA_GLO_CFG, MT_WPDMA_GLO_CFG_FORCE_TX_EOF);
+-
+ 	mt7603_pse_client_reset(dev);
  
--	mod_delayed_work(local->workqueue, &local->roc_work, dur);
-+	wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work, dur);
- 	return true;
- }
+ 	mt76_queue_tx_cleanup(dev, dev->mt76.q_mcu[MT_MCUQ_WM], true);
+ 	for (i = 0; i < __MT_TXQ_MAX; i++)
+ 		mt76_queue_tx_cleanup(dev, dev->mphy.q_tx[i], true);
  
-@@ -258,7 +258,7 @@ static void ieee80211_handle_roc_started(struct ieee80211_roc_work *roc,
- 	roc->notified = true;
- }
- 
--static void ieee80211_hw_roc_start(struct work_struct *work)
-+static void ieee80211_hw_roc_start(struct wiphy *wiphy, struct wiphy_work *work)
- {
- 	struct ieee80211_local *local =
- 		container_of(work, struct ieee80211_local, hw_roc_start);
-@@ -285,7 +285,7 @@ void ieee80211_ready_on_channel(struct ieee80211_hw *hw)
- 
- 	trace_api_ready_on_channel(local);
- 
--	ieee80211_queue_work(hw, &local->hw_roc_start);
-+	wiphy_work_queue(hw->wiphy, &local->hw_roc_start);
- }
- EXPORT_SYMBOL_GPL(ieee80211_ready_on_channel);
- 
-@@ -338,7 +338,7 @@ static void _ieee80211_start_next_roc(struct ieee80211_local *local)
- 				tmp->started = true;
- 				tmp->abort = true;
- 			}
--			ieee80211_queue_work(&local->hw, &local->hw_roc_done);
-+			wiphy_work_queue(local->hw.wiphy, &local->hw_roc_done);
- 			return;
- 		}
- 
-@@ -368,8 +368,8 @@ static void _ieee80211_start_next_roc(struct ieee80211_local *local)
- 			ieee80211_hw_config(local, 0);
- 		}
- 
--		ieee80211_queue_delayed_work(&local->hw, &local->roc_work,
--					     msecs_to_jiffies(min_dur));
-+		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work,
-+					 msecs_to_jiffies(min_dur));
- 
- 		/* tell userspace or send frame(s) */
- 		list_for_each_entry(tmp, &local->roc_list, list) {
-@@ -407,8 +407,8 @@ void ieee80211_start_next_roc(struct ieee80211_local *local)
- 		_ieee80211_start_next_roc(local);
- 	} else {
- 		/* delay it a bit */
--		ieee80211_queue_delayed_work(&local->hw, &local->roc_work,
--					     round_jiffies_relative(HZ/2));
-+		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work,
-+					 round_jiffies_relative(HZ / 2));
- 	}
- }
- 
-@@ -451,7 +451,7 @@ static void __ieee80211_roc_work(struct ieee80211_local *local)
- 	}
- }
- 
--static void ieee80211_roc_work(struct work_struct *work)
-+static void ieee80211_roc_work(struct wiphy *wiphy, struct wiphy_work *work)
- {
- 	struct ieee80211_local *local =
- 		container_of(work, struct ieee80211_local, roc_work.work);
-@@ -461,7 +461,7 @@ static void ieee80211_roc_work(struct work_struct *work)
- 	mutex_unlock(&local->mtx);
- }
- 
--static void ieee80211_hw_roc_done(struct work_struct *work)
-+static void ieee80211_hw_roc_done(struct wiphy *wiphy, struct wiphy_work *work)
- {
- 	struct ieee80211_local *local =
- 		container_of(work, struct ieee80211_local, hw_roc_done);
-@@ -482,7 +482,7 @@ void ieee80211_remain_on_channel_expired(struct ieee80211_hw *hw)
- 
- 	trace_api_remain_on_channel_expired(local);
- 
--	ieee80211_queue_work(hw, &local->hw_roc_done);
-+	wiphy_work_queue(hw->wiphy, &local->hw_roc_done);
- }
- EXPORT_SYMBOL_GPL(ieee80211_remain_on_channel_expired);
- 
-@@ -586,8 +586,8 @@ static int ieee80211_start_roc_work(struct ieee80211_local *local,
- 		/* if not HW assist, just queue & schedule work */
- 		if (!local->ops->remain_on_channel) {
- 			list_add_tail(&roc->list, &local->roc_list);
--			ieee80211_queue_delayed_work(&local->hw,
--						     &local->roc_work, 0);
-+			wiphy_delayed_work_queue(local->hw.wiphy,
-+						 &local->roc_work, 0);
- 		} else {
- 			/* otherwise actually kick it off here
- 			 * (for error handling)
-@@ -695,7 +695,7 @@ static int ieee80211_cancel_roc(struct ieee80211_local *local,
- 	if (!cookie)
- 		return -ENOENT;
- 
--	flush_work(&local->hw_roc_start);
-+	wiphy_work_flush(local->hw.wiphy, &local->hw_roc_start);
- 
- 	mutex_lock(&local->mtx);
- 	list_for_each_entry_safe(roc, tmp, &local->roc_list, list) {
-@@ -745,7 +745,7 @@ static int ieee80211_cancel_roc(struct ieee80211_local *local,
- 	} else {
- 		/* go through work struct to return to the operating channel */
- 		found->abort = true;
--		mod_delayed_work(local->workqueue, &local->roc_work, 0);
-+		wiphy_delayed_work_queue(local->hw.wiphy, &local->roc_work, 0);
++	mt7603_dma_sched_reset(dev);
++
++	mt76_tx_status_check(&dev->mt76, true);
++
+ 	mt76_for_each_q_rx(&dev->mt76, i) {
+ 		mt76_queue_rx_reset(dev, i);
  	}
  
-  out_unlock:
-@@ -994,9 +994,9 @@ int ieee80211_mgmt_tx_cancel_wait(struct wiphy *wiphy,
+-	mt76_tx_status_check(&dev->mt76, true);
++	if (dev->reset_cause[RESET_CAUSE_RESET_FAILED] ||
++	    dev->cur_reset_cause == RESET_CAUSE_RX_PSE_BUSY)
++		mt7603_pse_reset(dev);
  
- void ieee80211_roc_setup(struct ieee80211_local *local)
- {
--	INIT_WORK(&local->hw_roc_start, ieee80211_hw_roc_start);
--	INIT_WORK(&local->hw_roc_done, ieee80211_hw_roc_done);
--	INIT_DELAYED_WORK(&local->roc_work, ieee80211_roc_work);
-+	wiphy_work_init(&local->hw_roc_start, ieee80211_hw_roc_start);
-+	wiphy_work_init(&local->hw_roc_done, ieee80211_hw_roc_done);
-+	wiphy_delayed_work_init(&local->roc_work, ieee80211_roc_work);
- 	INIT_LIST_HEAD(&local->roc_list);
- }
+-	mt7603_dma_sched_reset(dev);
++	if (!dev->reset_cause[RESET_CAUSE_RESET_FAILED]) {
++		mt7603_mac_dma_start(dev);
  
+-	mt7603_mac_dma_start(dev);
++		mt7603_irq_enable(dev, mask);
+ 
+-	mt7603_irq_enable(dev, mask);
++		clear_bit(MT76_RESET, &dev->mphy.state);
++	}
+ 
+-skip_dma_reset:
+-	clear_bit(MT76_RESET, &dev->mphy.state);
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
+ 	mt76_worker_enable(&dev->mt76.tx_worker);
 -- 
 2.42.0
 
