@@ -2,131 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 901B87EC070
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 11:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 162617EC06A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 11:28:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234465AbjKOKaD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 05:30:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54480 "EHLO
+        id S230336AbjKOK2u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 05:28:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234422AbjKOKaC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 05:30:02 -0500
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A9912A;
-        Wed, 15 Nov 2023 02:29:58 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id A677A204DF;
-        Wed, 15 Nov 2023 10:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1700044196; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=n8aA2UVQ0+uOj5ji+nYMEChAgeirex99KBxEC+pZenE=;
-        b=Hxp26XAavlawNZTjMKVxhpgXKik1tUdK3KXXHLGd5cuMF02bstsjzW3IYv7xoHo3lzHf8S
-        q03buNDlZdqnhzCThZTEtya5Jv9AHK9WzYWWP8Tgd9Lg9ZvwcMw840RtVE46b/Sh3728XJ
-        udQy9LRkMEDR7dZBHe9e0LJySfy9nbo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1700044196;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=n8aA2UVQ0+uOj5ji+nYMEChAgeirex99KBxEC+pZenE=;
-        b=edU6q5daEgr2LapNWKla7oJMD5OcHfeAfCq+3OoM3/jSAo5sB/qWP0Dvf6ggl/+7M3Gn6p
-        oF/gu4yJofTPjPBg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7C3E5139B7;
-        Wed, 15 Nov 2023 10:29:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id sJVRHaSdVGV+UAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Wed, 15 Nov 2023 10:29:56 +0000
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-To:     deller@gmx.de, javierm@redhat.com
-Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Sam Ravnborg <sam@ravnborg.org>, Arnd Bergmann <arnd@arndb.de>,
-        stable@vger.kernel.org
-Subject: [PATCH 01/32] fbdev/acornfb: Fix name of fb_ops initializer macro
-Date:   Wed, 15 Nov 2023 11:19:06 +0100
-Message-ID: <20231115102954.7102-2-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231115102954.7102-1-tzimmermann@suse.de>
-References: <20231115102954.7102-1-tzimmermann@suse.de>
+        with ESMTP id S234116AbjKOK2t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 05:28:49 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC0DFF5;
+        Wed, 15 Nov 2023 02:28:46 -0800 (PST)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AF8UIfw008664;
+        Wed, 15 Nov 2023 10:28:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-type; s=qcppdkim1;
+ bh=biTKcBkduKS9Btt6KyQBvzx3Ku8HKlge9gVh55vfer4=;
+ b=JqRPPSn30NHko9OKGKZgd0Gh8/sgz6G+oOVZA/I+IRixByVjApdnN/4BLGNIuYu6Bqz5
+ wEHARsJt2GvQvA/uCdMwauqcfdgqFHmPO3A/GfMwnGbMaecMhGRNmcgnc4aRKpIor3UD
+ x6U337iWVeU+//lrgjCdEboxpwfyLCIxDmQL4nEUJOyCj2Ap5La7IH4rSA84OxPsgS4B
+ fYExxZIuHNFGBBjyK+HIewcodvDQtx20syAgpRXFVVJjaSbzFHYHI3DgRl2xdoYBfsfq
+ gbBJbIpoKhfdjpVN4QY85Svqbjuzze8uZAOQ4ahdpwslrNApSAgujEsbbTdTP2neuHMe Cg== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uchkyh9un-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 15 Nov 2023 10:28:44 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AFAShGo004241
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 15 Nov 2023 10:28:43 GMT
+Received: from aiquny2-gv.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.39; Wed, 15 Nov 2023 02:28:38 -0800
+From:   Maria Yu <quic_aiquny@quicinc.com>
+To:     <linus.walleij@linaro.org>, <andy.shevchenko@gmail.com>
+CC:     Maria Yu <quic_aiquny@quicinc.com>, <linux-gpio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v3] pinctrl: avoid reload of p state in list iteration
+Date:   Wed, 15 Nov 2023 18:28:24 +0800
+Message-ID: <20231115102824.23727-1-quic_aiquny@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-        none
-X-Spam-Level: 
-X-Spam-Score: -3.10
-X-Spamd-Result: default: False [-3.10 / 50.00];
-         ARC_NA(0.00)[];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[gmx.de];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         R_MISSING_CHARSET(2.50)[];
-         REPLY(-4.00)[];
-         BROKEN_CONTENT_TYPE(1.50)[];
-         NEURAL_HAM_LONG(-3.00)[-1.000];
-         DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-         NEURAL_HAM_SHORT(-1.00)[-1.000];
-         RCPT_COUNT_SEVEN(0.00)[8];
-         MID_CONTAINS_FROM(1.00)[];
-         FREEMAIL_TO(0.00)[gmx.de,redhat.com];
-         FUZZY_BLOCKED(0.00)[rspamd.com];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         RCVD_TLS_ALL(0.00)[];
-         BAYES_HAM(-0.00)[12.29%]
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 4bLluzVZbz0odrejcKR7HjVzZvuiGWuP
+X-Proofpoint-ORIG-GUID: 4bLluzVZbz0odrejcKR7HjVzZvuiGWuP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-15_08,2023-11-15_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=960
+ priorityscore=1501 suspectscore=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 mlxscore=0 bulkscore=0 phishscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311150079
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fix build by using the correct name for the initializer macro
-for struct fb_ops.
+When in the list_for_each_entry iteration, reload of p->state->settings
+with a local setting from old_state will makes the list iteration in a
+infinite loop.
+The typical issue happened, it will frequently have printk message like:
+  "not freeing pin xx (xxx) as part of deactivating group xxx - it is
+already used for some other setting".
+This is a compiler-dependent problem, one instance was got using Clang
+version 10.0 plus arm64 architecture with linux version 4.19.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 9037afde8b9d ("fbdev/acornfb: Use fbdev I/O helpers")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: <stable@vger.kernel.org> # v6.6+
+Fixes: 6e5e959dde0d ("pinctrl: API changes to support multiple states per device")
+Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
+Cc: stable@vger.kernel.org
 ---
- drivers/video/fbdev/acornfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/acornfb.c b/drivers/video/fbdev/acornfb.c
-index 163d2c9f951c3..f0600f6ca2548 100644
---- a/drivers/video/fbdev/acornfb.c
-+++ b/drivers/video/fbdev/acornfb.c
-@@ -605,7 +605,7 @@ acornfb_pan_display(struct fb_var_screeninfo *var, struct fb_info *info)
+diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
+index 1fa89be29b8f..f2977eb65522 100644
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1262,17 +1262,17 @@ static void pinctrl_link_add(struct pinctrl_dev *pctldev,
+ static int pinctrl_commit_state(struct pinctrl *p, struct pinctrl_state *state)
+ {
+ 	struct pinctrl_setting *setting, *setting2;
+-	struct pinctrl_state *old_state = p->state;
++	struct pinctrl_state *old_state = READ_ONCE(p->state);
+ 	int ret;
  
- static const struct fb_ops acornfb_ops = {
- 	.owner		= THIS_MODULE,
--	FB_IOMEM_DEFAULT_OPS,
-+	FB_DEFAULT_IOMEM_OPS,
- 	.fb_check_var	= acornfb_check_var,
- 	.fb_set_par	= acornfb_set_par,
- 	.fb_setcolreg	= acornfb_setcolreg,
+-	if (p->state) {
++	if (old_state) {
+ 		/*
+ 		 * For each pinmux setting in the old state, forget SW's record
+ 		 * of mux owner for that pingroup. Any pingroups which are
+ 		 * still owned by the new state will be re-acquired by the call
+ 		 * to pinmux_enable_setting() in the loop below.
+ 		 */
+-		list_for_each_entry(setting, &p->state->settings, node) {
++		list_for_each_entry(setting, &old_state->settings, node) {
+ 			if (setting->type != PIN_MAP_TYPE_MUX_GROUP)
+ 				continue;
+ 			pinmux_disable_setting(setting);
+
+base-commit: 9bacdd8996c77c42ca004440be610692275ff9d0
 -- 
-2.42.0
+2.17.1
 
