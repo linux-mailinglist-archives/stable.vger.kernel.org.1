@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB0657ED104
+	by mail.lfdr.de (Postfix) with ESMTP id 5F4F17ED103
 	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:59:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344002AbjKOT64 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:58:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44038 "EHLO
+        id S1343954AbjKOT65 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:58:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343991AbjKOT6x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:58:53 -0500
+        with ESMTP id S1343995AbjKOT6y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:58:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A648D4B
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:58:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D17C433C7;
-        Wed, 15 Nov 2023 19:58:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A796ED53
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:58:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F69C433C9;
+        Wed, 15 Nov 2023 19:58:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078328;
-        bh=78R4FRu4bBryurn6xsyiiTC0+DRz+UbQzM4ql4rJD68=;
+        s=korg; t=1700078330;
+        bh=G85NV5rYskTJvOfssEk74Zo9wgeMOOAWAmG1yJHvH+I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mk+MXFnareyuU0jr6rc9ltlri+Ng6qc8Jc2L9/aWUslH52kssaILSFJ6uW8HIznsm
-         T/BTq52aM1qz8L7L5Q5fMV/F8cyCsxTKAYhzS/wDYhaHqJp8tA0Ffx921tmE6D80y2
-         qb61EEw/6rEiF3d1j+ZBYFLR+R6g0hQSQSXPyvFg=
+        b=HM97DIJmM1COTw3XDWe971eiF31l3TuNV4JYbO4UwZhnlt50MSBvw4/BYJvMiqtf9
+         y9WU+hie2MVYaeFFQlu+255Jq6P5GsInAZzsqBvGz/dKX3ewMMCGIF3xeFAuMaBgyN
+         VEpBhejy56sW2VUxYq91ndvdc23e5Xi3lV87EmwY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,9 +39,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sandipan Das <sandipan.das@amd.com>,
         Arnaldo Carvalho de Melo <acme@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 256/379] perf kwork: Add the supported subcommands to the document
-Date:   Wed, 15 Nov 2023 14:25:31 -0500
-Message-ID: <20231115192700.290958776@linuxfoundation.org>
+Subject: [PATCH 6.1 257/379] perf kwork: Set ordered_events to true in struct perf_tool
+Date:   Wed, 15 Nov 2023 14:25:32 -0500
+Message-ID: <20231115192700.351306278@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -66,13 +66,11 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Yang Jihong <yangjihong1@huawei.com>
 
-[ Upstream commit 76e0d8c821bbd952730799cc7af841f9de67b7f7 ]
+[ Upstream commit 0c526579a4b2b6ecd540472f2e34c2850cf70f76 ]
 
-Add missing report, latency and timehist subcommands to the document.
+'perf kwork' processes data based on timestamps and needs to sort events.
 
 Fixes: f98919ec4fccdacf ("perf kwork: Implement 'report' subcommand")
-Fixes: ad3d9f7a929ab2df ("perf kwork: Implement perf kwork latency")
-Fixes: bcc8b3e88d6fa1a3 ("perf kwork: Implement perf kwork timehist")
 Reviewed-by: Ian Rogers <irogers@google.com>
 Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
@@ -85,26 +83,32 @@ Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Ravi Bangoria <ravi.bangoria@amd.com>
 Cc: Sandipan Das <sandipan.das@amd.com>
-Link: https://lore.kernel.org/r/20230812084917.169338-3-yangjihong1@huawei.com
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Link: https://lore.kernel.org/r/20230812084917.169338-4-yangjihong1@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/Documentation/perf-kwork.txt | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/builtin-kwork.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/Documentation/perf-kwork.txt b/tools/perf/Documentation/perf-kwork.txt
-index 3c36324712b6e..482d6c52e2edf 100644
---- a/tools/perf/Documentation/perf-kwork.txt
-+++ b/tools/perf/Documentation/perf-kwork.txt
-@@ -8,7 +8,7 @@ perf-kwork - Tool to trace/measure kernel work properties (latencies)
- SYNOPSIS
- --------
- [verse]
--'perf kwork' {record}
-+'perf kwork' {record|report|latency|timehist}
- 
- DESCRIPTION
- -----------
+diff --git a/tools/perf/builtin-kwork.c b/tools/perf/builtin-kwork.c
+index 25dff3a40d3df..25cba0d61736c 100644
+--- a/tools/perf/builtin-kwork.c
++++ b/tools/perf/builtin-kwork.c
+@@ -1672,9 +1672,10 @@ int cmd_kwork(int argc, const char **argv)
+ 	static struct perf_kwork kwork = {
+ 		.class_list          = LIST_HEAD_INIT(kwork.class_list),
+ 		.tool = {
+-			.mmap    = perf_event__process_mmap,
+-			.mmap2   = perf_event__process_mmap2,
+-			.sample  = perf_kwork__process_tracepoint_sample,
++			.mmap		= perf_event__process_mmap,
++			.mmap2		= perf_event__process_mmap2,
++			.sample		= perf_kwork__process_tracepoint_sample,
++			.ordered_events = true,
+ 		},
+ 		.atom_page_list      = LIST_HEAD_INIT(kwork.atom_page_list),
+ 		.sort_list           = LIST_HEAD_INIT(kwork.sort_list),
 -- 
 2.42.0
 
