@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6B9C7ED067
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:54:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BFF7ED069
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:54:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235559AbjKOTyr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:54:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
+        id S235558AbjKOTyu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:54:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235558AbjKOTyq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:54:46 -0500
+        with ESMTP id S235562AbjKOTyu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:54:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A61C1B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:54:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E2AC433C9;
-        Wed, 15 Nov 2023 19:54:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A295FB9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:54:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27381C433C8;
+        Wed, 15 Nov 2023 19:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078083;
-        bh=n5Bnkrri/saRxnE+13p7wpER70PQwNWArj68GrK5uCY=;
+        s=korg; t=1700078086;
+        bh=p++aBLP0W8zlGwzrJsc8edFZ2Nym8aDOzGpwdFTJEVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lVUuUyibtKNYiCq7B7c55eXrp3HmRLO931lGWf2oBHk9lNFvxIVUuUEK3VkzkL820
-         FqN9m7tT4x4E03o7K110jzK9T727RS5TTXxG/yB8G8Kbrfa6up0plCt4mDJC5FJM9x
-         37OTX0wrnT5EMUZn7bGkAEk6JxfCXgqkGeYnv5t8=
+        b=kyH16hR5gRUtTBJyevtOgG6QFRqYcv3sZM61aZEYvRWVMWD8mF9pY1bik+akP4l9t
+         c2UYFoZPkZMpG9XTmWXI/+Og69MDJn93wq6ePz1uf24kP2FiT0QU+wGjZ4x8y/NVFz
+         4YGtlHx1AX4NiqCcd41tkY0qwGWHV4Kcv7rbDtkA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -31,9 +31,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         <angelogioacchino.delregno@collabora.com>,
         Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/379] clk: mediatek: clk-mt6779: Add check for mtk_alloc_clk_data
-Date:   Wed, 15 Nov 2023 14:22:55 -0500
-Message-ID: <20231115192651.052650218@linuxfoundation.org>
+Subject: [PATCH 6.1 101/379] clk: mediatek: clk-mt6797: Add check for mtk_alloc_clk_data
+Date:   Wed, 15 Nov 2023 14:22:56 -0500
+Message-ID: <20231115192651.111350642@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -58,43 +58,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 1f57f78fbacf630430bf954e5a84caafdfea30c0 ]
+[ Upstream commit 606f6366a35a3329545e38129804d65ef26ed7d2 ]
 
 Add the check for the return value of mtk_alloc_clk_data() in order to
 avoid NULL pointer dereference.
 
-Fixes: 710774e04861 ("clk: mediatek: Add MT6779 clock support")
+Fixes: 96596aa06628 ("clk: mediatek: add clk support for MT6797")
 Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230912093407.21505-2-jiasheng@iscas.ac.cn
+Link: https://lore.kernel.org/r/20230912093407.21505-3-jiasheng@iscas.ac.cn
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt6779.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/mediatek/clk-mt6797.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/clk/mediatek/clk-mt6779.c b/drivers/clk/mediatek/clk-mt6779.c
-index 0d0a90ee5eb2c..39dadc9547088 100644
---- a/drivers/clk/mediatek/clk-mt6779.c
-+++ b/drivers/clk/mediatek/clk-mt6779.c
-@@ -1218,6 +1218,8 @@ static int clk_mt6779_apmixed_probe(struct platform_device *pdev)
- 	struct device_node *node = pdev->dev.of_node;
- 
- 	clk_data = mtk_alloc_clk_data(CLK_APMIXED_NR_CLK);
-+	if (!clk_data)
-+		return -ENOMEM;
- 
- 	mtk_clk_register_plls(node, plls, ARRAY_SIZE(plls), clk_data);
- 
-@@ -1238,6 +1240,8 @@ static int clk_mt6779_top_probe(struct platform_device *pdev)
+diff --git a/drivers/clk/mediatek/clk-mt6797.c b/drivers/clk/mediatek/clk-mt6797.c
+index 78339cb35beb0..b362e99c8f53c 100644
+--- a/drivers/clk/mediatek/clk-mt6797.c
++++ b/drivers/clk/mediatek/clk-mt6797.c
+@@ -392,6 +392,8 @@ static int mtk_topckgen_init(struct platform_device *pdev)
  		return PTR_ERR(base);
  
- 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR_CLK);
+ 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR);
 +	if (!clk_data)
 +		return -ENOMEM;
  
- 	mtk_clk_register_fixed_clks(top_fixed_clks, ARRAY_SIZE(top_fixed_clks),
- 				    clk_data);
+ 	mtk_clk_register_factors(top_fixed_divs, ARRAY_SIZE(top_fixed_divs),
+ 				 clk_data);
+@@ -546,6 +548,8 @@ static void mtk_infrasys_init_early(struct device_node *node)
+ 
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return;
+ 
+ 		for (i = 0; i < CLK_INFRA_NR; i++)
+ 			infra_clk_data->hws[i] = ERR_PTR(-EPROBE_DEFER);
+@@ -571,6 +575,8 @@ static int mtk_infrasys_init(struct platform_device *pdev)
+ 
+ 	if (!infra_clk_data) {
+ 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
++		if (!infra_clk_data)
++			return -ENOMEM;
+ 	} else {
+ 		for (i = 0; i < CLK_INFRA_NR; i++) {
+ 			if (infra_clk_data->hws[i] == ERR_PTR(-EPROBE_DEFER))
 -- 
 2.42.0
 
