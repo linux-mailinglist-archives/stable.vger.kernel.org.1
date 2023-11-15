@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD117ECB4B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6C937ECD4C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:35:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232855AbjKOTVg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59512 "EHLO
+        id S234426AbjKOTfl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:35:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232830AbjKOTVU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:20 -0500
+        with ESMTP id S234440AbjKOTfj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:35:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79582D44
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE42C433C8;
-        Wed, 15 Nov 2023 19:21:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2947019E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:35:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F0CC433C8;
+        Wed, 15 Nov 2023 19:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076076;
-        bh=HliRRUwsHGwhLWpY/ToimAYqG21vbN0WmmrtTffwgH8=;
+        s=korg; t=1700076935;
+        bh=xNphWY4pnYBG6cOvTHL/NQlB9y719hbvUUH1ZATFHw0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S7BdbiNEzZ7VXayICiH33klI9cyXAt5DrrDG4c37TZ0+vSBCfvtMe+/CqaAIpF3gk
-         WmSV8AG9JEEkbXCof2YGM7+fr8YLYvKDLU00cDrVFB2eNCnLakCsll5itKRSUPZS5Z
-         qRe0v8YMpqWGZ/4u+/uEQd/NSZHtHw5qePb4JElc=
+        b=tcnnJfdE91a56jCsQTMnCwfQdg/fQgkVQMX6FBzXzAyQJLREOIqD/otA/Oog3npDW
+         GQFK4NrksTxei26SfGPD18yVlIAnIoeNJTx7r7ain8R6o6y2l9aOaZ8LmPAtlZJw0P
+         Pmr7SuViybpirZAeGVhvrmJxcXOGKs46A786NJJ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Andy Shevchenko <andy@kernel.org>,
-        linux-hardening@vger.kernel.org, Kees Cook <keescook@chromium.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 034/550] string: Adjust strtomem() logic to allow for smaller sources
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 073/603] wifi: rtw88: debug: Fix the NULL vs IS_ERR() bug for debugfs_create_file()
 Date:   Wed, 15 Nov 2023 14:10:18 -0500
-Message-ID: <20231115191603.074247047@linuxfoundation.org>
+Message-ID: <20231115191618.160955591@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,76 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 0e108725f6cc5b3be9e607f89c9fbcbb236367b7 ]
+[ Upstream commit 74f7957c9b1b95553faaf146a2553e023a9d1720 ]
 
-Arnd noticed we have a case where a shorter source string is being copied
-into a destination byte array, but this results in a strnlen() call that
-exceeds the size of the source. This is seen with -Wstringop-overread:
+Since debugfs_create_file() return ERR_PTR and never return NULL, so use
+IS_ERR() to check it instead of checking NULL.
 
-In file included from ../include/linux/uuid.h:11,
-                 from ../include/linux/mod_devicetable.h:14,
-                 from ../include/linux/cpufeature.h:12,
-                 from ../arch/x86/coco/tdx/tdx.c:7:
-../arch/x86/coco/tdx/tdx.c: In function 'tdx_panic.constprop':
-../include/linux/string.h:284:9: error: 'strnlen' specified bound 64 exceeds source size 60 [-Werror=stringop-overread]
-  284 |         memcpy_and_pad(dest, _dest_len, src, strnlen(src, _dest_len), pad); \
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../arch/x86/coco/tdx/tdx.c:124:9: note: in expansion of macro 'strtomem_pad'
-  124 |         strtomem_pad(message.str, msg, '\0');
-      |         ^~~~~~~~~~~~
-
-Use the smaller of the two buffer sizes when calling strnlen(). When
-src length is unknown (SIZE_MAX), it is adjusted to use dest length,
-which is what the original code did.
-
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Fixes: dfbafa70bde2 ("string: Introduce strtomem() and strtomem_pad()")
-Tested-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Andy Shevchenko <andy@kernel.org>
-Cc: linux-hardening@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230919050651.962694-1-ruanjinjie@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/string.h | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw88/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index dbfc66400050f..9e3cb6923b0ef 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -277,10 +277,12 @@ void memcpy_and_pad(void *dest, size_t dest_len, const void *src, size_t count,
-  */
- #define strtomem_pad(dest, src, pad)	do {				\
- 	const size_t _dest_len = __builtin_object_size(dest, 1);	\
-+	const size_t _src_len = __builtin_object_size(src, 1);		\
- 									\
- 	BUILD_BUG_ON(!__builtin_constant_p(_dest_len) ||		\
- 		     _dest_len == (size_t)-1);				\
--	memcpy_and_pad(dest, _dest_len, src, strnlen(src, _dest_len), pad); \
-+	memcpy_and_pad(dest, _dest_len, src,				\
-+		       strnlen(src, min(_src_len, _dest_len)), pad);	\
- } while (0)
- 
- /**
-@@ -298,10 +300,11 @@ void memcpy_and_pad(void *dest, size_t dest_len, const void *src, size_t count,
-  */
- #define strtomem(dest, src)	do {					\
- 	const size_t _dest_len = __builtin_object_size(dest, 1);	\
-+	const size_t _src_len = __builtin_object_size(src, 1);		\
- 									\
- 	BUILD_BUG_ON(!__builtin_constant_p(_dest_len) ||		\
- 		     _dest_len == (size_t)-1);				\
--	memcpy(dest, src, min(_dest_len, strnlen(src, _dest_len)));	\
-+	memcpy(dest, src, strnlen(src, min(_src_len, _dest_len)));	\
- } while (0)
- 
- /**
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index f8ba133baff06..35bc37a3c469d 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -1233,9 +1233,9 @@ static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
+ #define rtw_debugfs_add_core(name, mode, fopname, parent)		\
+ 	do {								\
+ 		rtw_debug_priv_ ##name.rtwdev = rtwdev;			\
+-		if (!debugfs_create_file(#name, mode,			\
++		if (IS_ERR(debugfs_create_file(#name, mode,		\
+ 					 parent, &rtw_debug_priv_ ##name,\
+-					 &file_ops_ ##fopname))		\
++					 &file_ops_ ##fopname)))	\
+ 			pr_debug("Unable to initialize debugfs:%s\n",	\
+ 			       #name);					\
+ 	} while (0)
 -- 
 2.42.0
 
