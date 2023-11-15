@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD9F7ED452
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27DA77ED584
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344713AbjKOU5p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:57:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34532 "EHLO
+        id S235576AbjKOVHc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 16:07:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344619AbjKOU53 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:29 -0500
+        with ESMTP id S235581AbjKOVHZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9712ACE
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD4CC32778;
-        Wed, 15 Nov 2023 20:48:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A2FFD5B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C53C116AE;
+        Wed, 15 Nov 2023 20:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081322;
-        bh=7m6lDoP6kouBysjN2C9l1c93RgHYh+oir5LZQmI4CSg=;
+        s=korg; t=1700081274;
+        bh=Ilg2H0gMaPsNmiOyyFjBjkuA+gPSV7ftPJnJcR32fNA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y/B60iOFd3PuYyvVL6p5C3lpF4dtJyp2wzIOcdbiJJk0mLD1RXgvfKm7aUilEN6zA
-         bk25hELhiqsYUrVtVf6u5LRS1oK3m+sMAIXjquFIHTzQ3mK+U5PFP15QoNErscSQJY
-         ZsH+SqOgU37hr0I8pkhrvmdAAp5ZbYmp8Ud/rMIM=
+        b=HhPFAChsl0QNzDP9JP1SDDJgw5Ovlg+P2TSOQsy+cVKIDxaUajyL++RHHKK0VT4vZ
+         cTxsBhCn4pi86H5JBNV7XRxXAkog7qJVQeH8JAhNwkHwkzw7yP3E8GgDtXEpMeJEbY
+         TuZsCbLZNKH33ud5Cg9f5iYIJtxa1ic+vvmfs3z0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arseniy Velikanov <adomerlee@gmail.com>,
-        Danila Tikhonov <danila@jiaxyga.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/244] clk: qcom: gcc-sm8150: Fix gcc_sdcc2_apps_clk_src
-Date:   Wed, 15 Nov 2023 15:34:08 -0500
-Message-ID: <20231115203551.721141403@linuxfoundation.org>
+Subject: [PATCH 5.15 057/244] clk: imx: Select MXC_CLK for CLK_IMX8QXP
+Date:   Wed, 15 Nov 2023 15:34:09 -0500
+Message-ID: <20231115203551.776462031@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
 References: <20231115203548.387164783@linuxfoundation.org>
@@ -56,37 +54,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Danila Tikhonov <danila@jiaxyga.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 7138c244fb293f24ce8ab782961022eff00a10c4 ]
+[ Upstream commit 317e69c49b4ceef8aebb47d771498ccb3571bdf9 ]
 
-Set .flags = CLK_OPS_PARENT_ENABLE to fix "gcc_sdcc2_apps_clk_src: rcg
-didn't update its configuration" error.
+If the i.MX8QXP clock provider is built-in but the MXC_CLK is
+built as module, build fails:
 
-Fixes: 2a1d7eb854bb ("clk: qcom: gcc: Add global clock controller driver for SM8150")
-Tested-by: Arseniy Velikanov <adomerlee@gmail.com>
-Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230913175612.8685-1-danila@jiaxyga.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+aarch64-linux-ld: drivers/clk/imx/clk-imx8-acm.o: in function `imx8_acm_clk_probe':
+clk-imx8-acm.c:(.text+0x3d0): undefined reference to `imx_check_clk_hws'
+
+Fix that by selecting MXC_CLK in case of CLK_IMX8QXP.
+
+Fixes: c2cccb6d0b33 ("clk: imx: add imx8qxp clk driver")
+Closes: https://lore.kernel.org/all/8b77219e-b59e-40f1-96f1-980a0b2debcf@infradead.org/
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm8150.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/qcom/gcc-sm8150.c b/drivers/clk/qcom/gcc-sm8150.c
-index 2457944857197..e9ed963f129da 100644
---- a/drivers/clk/qcom/gcc-sm8150.c
-+++ b/drivers/clk/qcom/gcc-sm8150.c
-@@ -792,7 +792,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parents_6,
- 		.num_parents = ARRAY_SIZE(gcc_parents_6),
--		.flags = CLK_SET_RATE_PARENT,
-+		.flags = CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_rcg2_floor_ops,
- 	},
- };
+diff --git a/drivers/clk/imx/Kconfig b/drivers/clk/imx/Kconfig
+index 47d9ec3abd2f7..d3d730610cb4f 100644
+--- a/drivers/clk/imx/Kconfig
++++ b/drivers/clk/imx/Kconfig
+@@ -96,5 +96,6 @@ config CLK_IMX8QXP
+ 	depends on (ARCH_MXC && ARM64) || COMPILE_TEST
+ 	depends on IMX_SCU && HAVE_ARM_SMCCC
+ 	select MXC_CLK_SCU
++	select MXC_CLK
+ 	help
+ 	  Build the driver for IMX8QXP SCU based clocks.
 -- 
 2.42.0
 
