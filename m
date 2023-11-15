@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D5FB7ECDF6
+	by mail.lfdr.de (Postfix) with ESMTP id C2CA97ECDF7
 	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234736AbjKOTjY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:39:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37636 "EHLO
+        id S234754AbjKOTj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234770AbjKOTjW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:22 -0500
+        with ESMTP id S234721AbjKOTjY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A78A91B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC75C433C9;
-        Wed, 15 Nov 2023 19:39:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B814019F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0B3C433C7;
+        Wed, 15 Nov 2023 19:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077158;
-        bh=sved93onRm+I2UKJ8nm+rJH7HTilt84yn1EfrJ54QTQ=;
+        s=korg; t=1700077161;
+        bh=Do96oEl0jBGQcM+aFZzGC8NcJ44z52ud47+kaZDNpf8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=agOQNEfiySken8enhRIxTq89Uldcxmvb0SVlywNzFtplpT+4++kn3Gn8Gg3bPYcVV
-         C6stG6bdf4VskrdyNZAwNwQA2UItYCtZ0uWo7IjuRMf2KjlgVCUrWGus5egOg1rUTg
-         No4zOiv01gT4OIogL3LIBHKiuVB/TDpoVek50aEk=
+        b=CRIWUQfbOnisH9jdACAs3u25XMFplaEVONAjkbYHzIzu+pPm2L7kW9NqTsmOvPupY
+         s6plUFJUZLzV3BICxzTB8jq6czQJhvKug3sNcQme18LO47CYqU14vLzJQqLQ5R+F0u
+         VV8eOyENL14jvCGMI8fyQRt28ymgtGMiqSajw2Fs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Phil Sutter <phil@nwl.cc>, Florian Westphal <fw@strlen.de>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/603] net: skb_find_text: Ignore patterns extending past to
-Date:   Wed, 15 Nov 2023 14:11:11 -0500
-Message-ID: <20231115191621.956213667@linuxfoundation.org>
+Subject: [PATCH 6.6 127/603] selftests/bpf: Make linked_list failure test more robust
+Date:   Wed, 15 Nov 2023 14:11:12 -0500
+Message-ID: <20231115191622.029482116@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -55,203 +54,67 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit c4eee56e14fe001e1cff54f0b438a5e2d0dd7454 ]
+[ Upstream commit da1055b673f3baac2249571c9882ce767a0aa746 ]
 
-Assume that caller's 'to' offset really represents an upper boundary for
-the pattern search, so patterns extending past this offset are to be
-rejected.
+The linked list failure test 'pop_front_off' and 'pop_back_off'
+currently rely on matching exact instruction and register values.  The
+purpose of the test is to ensure the offset is correctly incremented for
+the returned pointers from list pop helpers, which can then be used with
+container_of to obtain the real object. Hence, somehow obtaining the
+information that the offset is 48 will work for us. Make the test more
+robust by relying on verifier error string of bpf_spin_lock and remove
+dependence on fragile instruction index or register number, which can be
+affected by different clang versions used to build the selftests.
 
-The old behaviour also was kind of inconsistent when it comes to
-fragmentation (or otherwise non-linear skbs): If the pattern started in
-between 'to' and 'from' offsets but extended to the next fragment, it
-was not found if 'to' offset was still within the current fragment.
-
-Test the new behaviour in a kselftest using iptables' string match.
-
-Suggested-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Fixes: f72b948dcbb8 ("[NET]: skb_find_text ignores to argument")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 300f19dcdb99 ("selftests/bpf: Add BPF linked list API tests")
+Reported-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231020144839.2734006-1-memxor@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c                             |   3 +-
- tools/testing/selftests/netfilter/Makefile    |   2 +-
- .../testing/selftests/netfilter/xt_string.sh  | 128 ++++++++++++++++++
- 3 files changed, 131 insertions(+), 2 deletions(-)
- create mode 100755 tools/testing/selftests/netfilter/xt_string.sh
+ tools/testing/selftests/bpf/prog_tests/linked_list.c | 10 ++--------
+ tools/testing/selftests/bpf/progs/linked_list_fail.c |  4 +++-
+ 2 files changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 4eaf7ed0d1f44..97b4a42e6e347 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4254,6 +4254,7 @@ static void skb_ts_finish(struct ts_config *conf, struct ts_state *state)
- unsigned int skb_find_text(struct sk_buff *skb, unsigned int from,
- 			   unsigned int to, struct ts_config *config)
- {
-+	unsigned int patlen = config->ops->get_pattern_len(config);
- 	struct ts_state state;
- 	unsigned int ret;
+diff --git a/tools/testing/selftests/bpf/prog_tests/linked_list.c b/tools/testing/selftests/bpf/prog_tests/linked_list.c
+index 18cf7b17463d9..98dde091d2825 100644
+--- a/tools/testing/selftests/bpf/prog_tests/linked_list.c
++++ b/tools/testing/selftests/bpf/prog_tests/linked_list.c
+@@ -94,14 +94,8 @@ static struct {
+ 	{ "incorrect_head_var_off2", "variable ptr_ access var_off=(0x0; 0xffffffff) disallowed" },
+ 	{ "incorrect_head_off1", "bpf_list_head not found at offset=25" },
+ 	{ "incorrect_head_off2", "bpf_list_head not found at offset=1" },
+-	{ "pop_front_off",
+-	  "15: (bf) r1 = r6                      ; R1_w=ptr_or_null_foo(id=4,ref_obj_id=4,off=48,imm=0) "
+-	  "R6_w=ptr_or_null_foo(id=4,ref_obj_id=4,off=48,imm=0) refs=2,4\n"
+-	  "16: (85) call bpf_this_cpu_ptr#154\nR1 type=ptr_or_null_ expected=percpu_ptr_" },
+-	{ "pop_back_off",
+-	  "15: (bf) r1 = r6                      ; R1_w=ptr_or_null_foo(id=4,ref_obj_id=4,off=48,imm=0) "
+-	  "R6_w=ptr_or_null_foo(id=4,ref_obj_id=4,off=48,imm=0) refs=2,4\n"
+-	  "16: (85) call bpf_this_cpu_ptr#154\nR1 type=ptr_or_null_ expected=percpu_ptr_" },
++	{ "pop_front_off", "off 48 doesn't point to 'struct bpf_spin_lock' that is at 40" },
++	{ "pop_back_off", "off 48 doesn't point to 'struct bpf_spin_lock' that is at 40" },
+ };
  
-@@ -4265,7 +4266,7 @@ unsigned int skb_find_text(struct sk_buff *skb, unsigned int from,
- 	skb_prepare_seq_read(skb, from, to, TS_SKB_CB(&state));
+ static void test_linked_list_fail_prog(const char *prog_name, const char *err_msg)
+diff --git a/tools/testing/selftests/bpf/progs/linked_list_fail.c b/tools/testing/selftests/bpf/progs/linked_list_fail.c
+index f4c63daba2297..6438982b928bd 100644
+--- a/tools/testing/selftests/bpf/progs/linked_list_fail.c
++++ b/tools/testing/selftests/bpf/progs/linked_list_fail.c
+@@ -591,7 +591,9 @@ int pop_ptr_off(void *(*op)(void *head))
+ 	n = op(&p->head);
+ 	bpf_spin_unlock(&p->lock);
  
- 	ret = textsearch_find(config, &state);
--	return (ret <= to - from ? ret : UINT_MAX);
-+	return (ret + patlen <= to - from ? ret : UINT_MAX);
+-	bpf_this_cpu_ptr(n);
++	if (!n)
++		return 0;
++	bpf_spin_lock((void *)n);
+ 	return 0;
  }
- EXPORT_SYMBOL(skb_find_text);
  
-diff --git a/tools/testing/selftests/netfilter/Makefile b/tools/testing/selftests/netfilter/Makefile
-index ef90aca4cc96a..bced422b78f72 100644
---- a/tools/testing/selftests/netfilter/Makefile
-+++ b/tools/testing/selftests/netfilter/Makefile
-@@ -7,7 +7,7 @@ TEST_PROGS := nft_trans_stress.sh nft_fib.sh nft_nat.sh bridge_brouter.sh \
- 	nft_queue.sh nft_meta.sh nf_nat_edemux.sh \
- 	ipip-conntrack-mtu.sh conntrack_tcp_unreplied.sh \
- 	conntrack_vrf.sh nft_synproxy.sh rpath.sh nft_audit.sh \
--	conntrack_sctp_collision.sh
-+	conntrack_sctp_collision.sh xt_string.sh
- 
- HOSTPKG_CONFIG := pkg-config
- 
-diff --git a/tools/testing/selftests/netfilter/xt_string.sh b/tools/testing/selftests/netfilter/xt_string.sh
-new file mode 100755
-index 0000000000000..1802653a47287
---- /dev/null
-+++ b/tools/testing/selftests/netfilter/xt_string.sh
-@@ -0,0 +1,128 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+# return code to signal skipped test
-+ksft_skip=4
-+rc=0
-+
-+if ! iptables --version >/dev/null 2>&1; then
-+	echo "SKIP: Test needs iptables"
-+	exit $ksft_skip
-+fi
-+if ! ip -V >/dev/null 2>&1; then
-+	echo "SKIP: Test needs iproute2"
-+	exit $ksft_skip
-+fi
-+if ! nc -h >/dev/null 2>&1; then
-+	echo "SKIP: Test needs netcat"
-+	exit $ksft_skip
-+fi
-+
-+pattern="foo bar baz"
-+patlen=11
-+hdrlen=$((20 + 8)) # IPv4 + UDP
-+ns="ns-$(mktemp -u XXXXXXXX)"
-+trap 'ip netns del $ns' EXIT
-+ip netns add "$ns"
-+ip -net "$ns" link add d0 type dummy
-+ip -net "$ns" link set d0 up
-+ip -net "$ns" addr add 10.1.2.1/24 dev d0
-+
-+#ip netns exec "$ns" tcpdump -npXi d0 &
-+#tcpdump_pid=$!
-+#trap 'kill $tcpdump_pid; ip netns del $ns' EXIT
-+
-+add_rule() { # (alg, from, to)
-+	ip netns exec "$ns" \
-+		iptables -A OUTPUT -o d0 -m string \
-+			--string "$pattern" --algo $1 --from $2 --to $3
-+}
-+showrules() { # ()
-+	ip netns exec "$ns" iptables -v -S OUTPUT | grep '^-A'
-+}
-+zerorules() {
-+	ip netns exec "$ns" iptables -Z OUTPUT
-+}
-+countrule() { # (pattern)
-+	showrules | grep -c -- "$*"
-+}
-+send() { # (offset)
-+	( for ((i = 0; i < $1 - $hdrlen; i++)); do
-+		printf " "
-+	  done
-+	  printf "$pattern"
-+	) | ip netns exec "$ns" nc -w 1 -u 10.1.2.2 27374
-+}
-+
-+add_rule bm 1000 1500
-+add_rule bm 1400 1600
-+add_rule kmp 1000 1500
-+add_rule kmp 1400 1600
-+
-+zerorules
-+send 0
-+send $((1000 - $patlen))
-+if [ $(countrule -c 0 0) -ne 4 ]; then
-+	echo "FAIL: rules match data before --from"
-+	showrules
-+	((rc--))
-+fi
-+
-+zerorules
-+send 1000
-+send $((1400 - $patlen))
-+if [ $(countrule -c 2) -ne 2 ]; then
-+	echo "FAIL: only two rules should match at low offset"
-+	showrules
-+	((rc--))
-+fi
-+
-+zerorules
-+send $((1500 - $patlen))
-+if [ $(countrule -c 1) -ne 4 ]; then
-+	echo "FAIL: all rules should match at end of packet"
-+	showrules
-+	((rc--))
-+fi
-+
-+zerorules
-+send 1495
-+if [ $(countrule -c 1) -ne 1 ]; then
-+	echo "FAIL: only kmp with proper --to should match pattern spanning fragments"
-+	showrules
-+	((rc--))
-+fi
-+
-+zerorules
-+send 1500
-+if [ $(countrule -c 1) -ne 2 ]; then
-+	echo "FAIL: two rules should match pattern at start of second fragment"
-+	showrules
-+	((rc--))
-+fi
-+
-+zerorules
-+send $((1600 - $patlen))
-+if [ $(countrule -c 1) -ne 2 ]; then
-+	echo "FAIL: two rules should match pattern at end of largest --to"
-+	showrules
-+	((rc--))
-+fi
-+
-+zerorules
-+send $((1600 - $patlen + 1))
-+if [ $(countrule -c 1) -ne 0 ]; then
-+	echo "FAIL: no rules should match pattern extending largest --to"
-+	showrules
-+	((rc--))
-+fi
-+
-+zerorules
-+send 1600
-+if [ $(countrule -c 1) -ne 0 ]; then
-+	echo "FAIL: no rule should match pattern past largest --to"
-+	showrules
-+	((rc--))
-+fi
-+
-+exit $rc
 -- 
 2.42.0
 
