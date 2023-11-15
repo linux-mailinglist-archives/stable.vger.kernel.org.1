@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4B3B7ECE4D
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:42:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16B9D7ECBD9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:24:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234975AbjKOTmO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:42:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58690 "EHLO
+        id S233054AbjKOTYx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:24:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234977AbjKOTmN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:42:13 -0500
+        with ESMTP id S233136AbjKOTYw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:24:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A87EAB
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:42:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133CBC433CB;
-        Wed, 15 Nov 2023 19:42:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEB3919D
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:24:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516CFC433C7;
+        Wed, 15 Nov 2023 19:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077329;
-        bh=9zfeSWl/G9okiOKllTgz+g8SXVk7mJigBxjJYh8rzlA=;
+        s=korg; t=1700076288;
+        bh=rbpv0BfQQaOlS7JeuCJV7IFbLPbWPv7llmNmV3DOzSM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZoOQfjxM14ZZnLDkll+3fgCoufn7gc3lQJ6supbtNinLnH5V3sdvaRvnWejO7whb1
-         LSdjzffPmADQ6Mm8eX3iTVkqEvJrIWyDXxYHXruaZRXzTfJHYSjgmTrFkkcPr5OIMq
-         fs5ijD6JdXtaIlZULSKpgtD2XVqjv2+x/P06gARg=
+        b=DMjnoLgG6T+7DCUK9uY5l9aSteSwz43wqAO7kVpeJYmIAumLMhmifTqkvTCYF56RP
+         814xo7dEJnpBViDZ21WakE2XvJGzeqgNsdojOEWjGyGX66Vw0X4kC5q2tZ3a/Omfit
+         7gYj1Qkxfmj4GcJmEq8iHGLuNVl6U5DXxKY49LbM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
-        Guenter Roeck <linux@roeck-us.net>,
+        patches@lists.linux.dev, Han Xu <han.xu@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 208/603] hwmon: (sch5627) Use bit macros when accessing the control register
-Date:   Wed, 15 Nov 2023 14:12:33 -0500
-Message-ID: <20231115191627.663129375@linuxfoundation.org>
+Subject: [PATCH 6.5 170/550] spi: nxp-fspi: use the correct ioremap function
+Date:   Wed, 15 Nov 2023 14:12:34 -0500
+Message-ID: <20231115191612.493914249@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,78 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Han Xu <han.xu@nxp.com>
 
-[ Upstream commit 7f0b28e0653f36b51542d25dd54ed312c397ecfc ]
+[ Upstream commit c3aa5cb264a38ae9bbcce32abca4c155af0456df ]
 
-Use bit macros then accessing SCH5627_REG_CTRL, so that people
-do not need to look at the datasheet to find out what each bit
-does.
+AHB memory as MMIO should be mapped with ioremap rather than ioremap_wc,
+which should have been used initially just to handle unaligned access as
+a workaround.
 
-Tested on a Fujitsu Esprimo P720.
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20230907052639.16491-2-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 7da8a6354360 ("hwmon: (sch5627) Disallow write access if virtual registers are locked")
+Fixes: d166a73503ef ("spi: fspi: dynamically alloc AHB memory")
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Link: https://lore.kernel.org/r/20231010201524.2021340-1-han.xu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sch5627.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/spi/spi-nxp-fspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
-index 1bbda3b05532e..0eefb8c0aef25 100644
---- a/drivers/hwmon/sch5627.c
-+++ b/drivers/hwmon/sch5627.c
-@@ -6,6 +6,7 @@
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 8e44de084bbe3..426aa885072af 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -760,7 +760,7 @@ static int nxp_fspi_read_ahb(struct nxp_fspi *f, const struct spi_mem_op *op)
+ 		f->memmap_len = len > NXP_FSPI_MIN_IOMAP ?
+ 				len : NXP_FSPI_MIN_IOMAP;
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-		f->ahb_addr = ioremap_wc(f->memmap_phy + f->memmap_start,
++		f->ahb_addr = ioremap(f->memmap_phy + f->memmap_start,
+ 					 f->memmap_len);
  
-+#include <linux/bits.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
- #include <linux/init.h>
-@@ -32,6 +33,9 @@
- #define SCH5627_REG_PRIMARY_ID		0x3f
- #define SCH5627_REG_CTRL		0x40
- 
-+#define SCH5627_CTRL_START		BIT(0)
-+#define SCH5627_CTRL_VBAT		BIT(4)
-+
- #define SCH5627_NO_TEMPS		8
- #define SCH5627_NO_FANS			4
- #define SCH5627_NO_IN			5
-@@ -147,7 +151,8 @@ static int sch5627_update_in(struct sch5627_data *data)
- 
- 	/* Trigger a Vbat voltage measurement every 5 minutes */
- 	if (time_after(jiffies, data->last_battery + 300 * HZ)) {
--		sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL, data->control | 0x10);
-+		sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL,
-+					  data->control | SCH5627_CTRL_VBAT);
- 		data->last_battery = jiffies;
- 	}
- 
-@@ -483,14 +488,13 @@ static int sch5627_probe(struct platform_device *pdev)
- 		return val;
- 
- 	data->control = val;
--	if (!(data->control & 0x01)) {
-+	if (!(data->control & SCH5627_CTRL_START)) {
- 		pr_err("hardware monitoring not enabled\n");
- 		return -ENODEV;
- 	}
- 	/* Trigger a Vbat voltage measurement, so that we get a valid reading
- 	   the first time we read Vbat */
--	sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL,
--				  data->control | 0x10);
-+	sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL, data->control | SCH5627_CTRL_VBAT);
- 	data->last_battery = jiffies;
- 
- 	/*
+ 		if (!f->ahb_addr) {
 -- 
 2.42.0
 
