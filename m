@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEEF57ED583
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 025857ED318
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233750AbjKOVHc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37356 "EHLO
+        id S233687AbjKOUqN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235579AbjKOVHZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:25 -0500
+        with ESMTP id S233692AbjKOUqL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58F40D4E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F4AC4E683;
-        Wed, 15 Nov 2023 20:51:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC18D19B
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B67C433C9;
+        Wed, 15 Nov 2023 20:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081471;
-        bh=hPh1dHgtXXEKg053Yq+XZHx+PlCbHNf3ZLIzsybjJGo=;
+        s=korg; t=1700081167;
+        bh=3Y/nNtJ5KUz+X5ym/YkfszxzPYmabN6V7jqesjG0PUA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gd/zhkv6L+RUPpYKzKx0ZsdXEQRACzdDpJNafiYQDndE66lVcMQBhcHP3xzs1ROjb
-         LXUNRzEE2KH3oduTyiVpSM3gZs9YW2Qnt3lw1GbdmNJAQ8uOUb9+qDE7vXCRJkF5zV
-         yC6Z3G/TZ13gAakZRAeJApgAVVS2ccjxNY0NbKr4=
+        b=Z3X2Vm8jFdGV/LXni2PTOR1YdasJQzdTNk2bHtegMR4aNQH1YUM/GpV9uCXa8wYpX
+         kV/tYLuDfaMgRpe9NhvviKAu0mHnLOaSHozqeM/qq+Yk+ZBkKnTH5eUZJMfamyTLcv
+         wHHvsES9/gkXovpNejvfcHRbOxEkhp8hwJNY+mqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Prinke <michael.prinke@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Lijun Pan <lijun.pan@intel.com>, Vinod Koul <vkoul@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 174/244] dmaengine: idxd: Register dsa_bus_type before registering idxd sub-drivers
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 54/88] dmaengine: ti: edma: handle irq_of_parse_and_map() errors
 Date:   Wed, 15 Nov 2023 15:36:06 -0500
-Message-ID: <20231115203558.804086352@linuxfoundation.org>
+Message-ID: <20231115191429.393995341@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,64 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenghua Yu <fenghua.yu@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 88928addeec577386e8c83b48b5bc24d28ba97fd ]
+[ Upstream commit 14f6d317913f634920a640e9047aa2e66f5bdcb7 ]
 
-idxd sub-drivers belong to bus dsa_bus_type. Thus, dsa_bus_type must be
-registered in dsa bus init before idxd drivers can be registered.
+Zero is not a valid IRQ for in-kernel code and the irq_of_parse_and_map()
+function returns zero on error.  So this check for valid IRQs should only
+accept values > 0.
 
-But the order is wrong when both idxd and idxd_bus are builtin drivers.
-In this case, idxd driver is compiled and linked before idxd_bus driver.
-Since the initcall order is determined by the link order, idxd sub-drivers
-are registered in idxd initcall before dsa_bus_type is registered
-in idxd_bus initcall. idxd initcall fails:
-
-[   21.562803] calling  idxd_init_module+0x0/0x110 @ 1
-[   21.570761] Driver 'idxd' was unable to register with bus_type 'dsa' because the bus was not initialized.
-[   21.586475] initcall idxd_init_module+0x0/0x110 returned -22 after 15717 usecs
-[   21.597178] calling  dsa_bus_init+0x0/0x20 @ 1
-
-To fix the issue, compile and link idxd_bus driver before idxd driver
-to ensure the right registration order.
-
-Fixes: d9e5481fca74 ("dmaengine: dsa: move dsa_bus_type out of idxd driver to standalone")
-Reported-by: Michael Prinke <michael.prinke@intel.com>
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Lijun Pan <lijun.pan@intel.com>
-Tested-by: Lijun Pan <lijun.pan@intel.com>
-Link: https://lore.kernel.org/r/20230924162232.1409454-1-fenghua.yu@intel.com
+Fixes: 2b6b3b742019 ("ARM/dmaengine: edma: Merge the two drivers under drivers/dma/")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/f15cb6a7-8449-4f79-98b6-34072f04edbc@moroto.mountain
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/Makefile | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/dma/ti/edma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/idxd/Makefile b/drivers/dma/idxd/Makefile
-index a1e9f2b3a37cc..817ffa95a9b11 100644
---- a/drivers/dma/idxd/Makefile
-+++ b/drivers/dma/idxd/Makefile
-@@ -1,12 +1,12 @@
- ccflags-y += -DDEFAULT_SYMBOL_NAMESPACE=IDXD
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index 44158fa859737..3a1b37971bef8 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -2303,7 +2303,7 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq < 0 && node)
+ 		irq = irq_of_parse_and_map(node, 0);
  
-+obj-$(CONFIG_INTEL_IDXD_BUS) += idxd_bus.o
-+idxd_bus-y := bus.o
-+
- obj-$(CONFIG_INTEL_IDXD) += idxd.o
- idxd-y := init.o irq.o device.o sysfs.o submit.o dma.o cdev.o
+-	if (irq >= 0) {
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccint",
+ 					  dev_name(dev));
+ 		ret = devm_request_irq(dev, irq, dma_irq_handler, 0, irq_name,
+@@ -2319,7 +2319,7 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq < 0 && node)
+ 		irq = irq_of_parse_and_map(node, 2);
  
- idxd-$(CONFIG_INTEL_IDXD_PERFMON) += perfmon.o
- 
--obj-$(CONFIG_INTEL_IDXD_BUS) += idxd_bus.o
--idxd_bus-y := bus.o
--
- obj-$(CONFIG_INTEL_IDXD_COMPAT) += idxd_compat.o
- idxd_compat-y := compat.o
+-	if (irq >= 0) {
++	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccerrint",
+ 					  dev_name(dev));
+ 		ret = devm_request_irq(dev, irq, dma_ccerr_handler, 0, irq_name,
 -- 
 2.42.0
 
