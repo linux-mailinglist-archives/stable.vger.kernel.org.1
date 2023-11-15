@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA597ECBFC
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3E777ECE8C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233501AbjKOT0C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:26:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51920 "EHLO
+        id S235127AbjKOTnx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:43:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233509AbjKOTZq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:46 -0500
+        with ESMTP id S235131AbjKOTnv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A62B1B6
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2809DC433C9;
-        Wed, 15 Nov 2023 19:25:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E05C71B1
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA10C433C9;
+        Wed, 15 Nov 2023 19:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076342;
-        bh=LCdbfv1oWqVcFQX7LQIJBzT/IeHrIgp+W/EgPtY8IZ0=;
+        s=korg; t=1700077427;
+        bh=gqUEHkyZ7Mdqe8iuxDWpbS3tLvimXLm/stoNFjoUwlI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uyQjlcZyhPcQKqvq9BhkQIVGEPsolOgH8OQczVfo+w2XcLi9Q1ZrZy0yXDNYaIIZg
-         +YD5rJmytMC7Zqs5j8o5/g3ujiKtMWTLHjUccocZpZlIIhEPJg2gXE3Adco3gKiM8U
-         ByUZzjmf5s5cpzIcSV7pf2YkhgYXR3Fh3O3QHu5o=
+        b=iVIDZMTWkXkzp/zqZx04FZnL1/NVVW/ivPQsoiqKpUe5C27JbzdpHvQ+HQxzU5dDy
+         ReyAh1LLYTF40SQf9We/7ZerN0ICRT5YDVyFiUbI/oDiv1MEEb4EYpKlJwUfb4GjyV
+         i8XRe0/yrn04upPH6tloKhLbj+STyddF4IV8goUc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Sierra <alex.sierra@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
+        patches@lists.linux.dev, Yang Wang <kevinyang.wang@amd.com>,
+        "Kunwu.Chan" <chentao@kylinos.cn>,
         Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 231/550] drm/amdkfd: retry after EBUSY is returned from hmm_ranges_get_pages
-Date:   Wed, 15 Nov 2023 14:13:35 -0500
-Message-ID: <20231115191616.739559575@linuxfoundation.org>
+Subject: [PATCH 6.6 271/603] drm/amd/pm: Fix a memory leak on an error path
+Date:   Wed, 15 Nov 2023 14:13:36 -0500
+Message-ID: <20231115191632.094539252@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Sierra <alex.sierra@amd.com>
+From: Kunwu.Chan <chentao@kylinos.cn>
 
-[ Upstream commit ebac9414a56a5f7c336db5f5c7cc34713b649407 ]
+[ Upstream commit 828f8e31379b28fe7f07fb5865b8ed099d223fca ]
 
-if hmm_range_get_pages returns EBUSY error during
-svm_range_validate_and_map, within the context of a page fault
-interrupt. This should retry through svm_range_restore_pages
-callback. Therefore we treat this as EAGAIN error instead, and defer
-it to restore pages fallback.
+Add missing free on an error path.
 
-Signed-off-by: Alex Sierra <alex.sierra@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Fixes: 511a95552ec8 ("drm/amd/pm: Add SMU 13.0.6 support")
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Kunwu.Chan <chentao@kylinos.cn>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: eb3c357bcb28 ("drm/amdkfd: Handle errors from svm validate and map")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index a9b57c66cb7d7..4c1b72194a6f8 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -1651,6 +1651,8 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
- 		WRITE_ONCE(p->svms.faulting_task, NULL);
- 		if (r) {
- 			pr_debug("failed %d to get svm range pages\n", r);
-+			if (r == -EBUSY)
-+				r = -EAGAIN;
- 			goto unreserve_out;
- 		}
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
+index de80e191a92c4..24d6811438c5c 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
+@@ -1968,8 +1968,10 @@ static ssize_t smu_v13_0_6_get_gpu_metrics(struct smu_context *smu, void **table
+ 
+ 	metrics = kzalloc(sizeof(MetricsTable_t), GFP_KERNEL);
+ 	ret = smu_v13_0_6_get_metrics_table(smu, metrics, true);
+-	if (ret)
++	if (ret) {
++		kfree(metrics);
+ 		return ret;
++	}
+ 
+ 	smu_cmn_init_soft_gpu_metrics(gpu_metrics, 1, 3);
  
 -- 
 2.42.0
