@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 199037ECE1C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30AF27ECB9A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234791AbjKOTk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:40:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57070 "EHLO
+        id S231319AbjKOTXU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:23:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234804AbjKOTk2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:28 -0500
+        with ESMTP id S231167AbjKOTXT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762F4D5F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB03C433C8;
-        Wed, 15 Nov 2023 19:40:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF52AA4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743DCC433C8;
+        Wed, 15 Nov 2023 19:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077224;
-        bh=bbBwxq39uQ2ammYEwd5GH4Xxkip/48WJO2qB6lbhzBQ=;
+        s=korg; t=1700076195;
+        bh=4irrJKd/lFYjPMQVWkvsA+AyMtKUlUHXFflZKqu2kbo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ljKF9FjNdNLEeXUIKyBHrJwm+JFt3CUjg2K+iIhFFurRbayVAj038pCiCFNcz3Ubc
-         CulULQR3YQX35sVl2tici7srZKAzTysoJPmtNrXfkqpahRf2F4BOUQWaHTWF2C8N7P
-         TmSI7yeW3uwsikhuxlvGorL8fHxe3YQbJYo5mXk8=
+        b=H4vLq8m0VZFtDJ+tVhbYT8yNXTKVrjh+My7aJC63zn5eaVVpZDuUihCIlwjFk8mEv
+         r/1v/RW/ILIfQLoancmH5h5fGylszFdkvW1b03jFdQ3ZHRNXRtffCLDTvSQDYSfA+o
+         vY6qVft56YKEMvNP/uYyr//ovXXD0cJonmtG9nX0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
-        Laurentiu Palcu <laurentiu.palcu@nxp.com>,
-        Robert Chiras <robert.chiras@nxp.com>,
-        Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/603] clk: imx: imx8qxp: Fix elcdif_pll clock
-Date:   Wed, 15 Nov 2023 14:11:58 -0500
-Message-ID: <20231115191625.186272675@linuxfoundation.org>
+Subject: [PATCH 6.5 135/550] wifi: iwlwifi: increase number of RX buffers for EHT devices
+Date:   Wed, 15 Nov 2023 14:11:59 -0500
+Message-ID: <20231115191610.047441543@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +50,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Chiras <robert.chiras@nxp.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 15cee75dacb82ade710d61bfd536011933ef9bf2 ]
+[ Upstream commit 2cf254c1e24fa8f01f42f5a8c77617e56bf50b86 ]
 
-Move the elcdif_pll clock initialization before the lcd_clk, since the
-elcdif_clk needs to be initialized ahead of lcd_clk, being its parent.
-This change fixes issues with the LCD clocks during suspend/resume.
+EHT devices can support 512 MPDUs in an A-MPDU, each of
+which might be an A-MSDU and thus further contain multiple
+MSDUs, which need their own buffer each. Increase the number
+of buffers to avoid running out in high-throughput scenarios.
 
-Fixes: babfaa9556d7 ("clk: imx: scu: add more scu clocks")
-Suggested-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
-Acked-by: Laurentiu Palcu <laurentiu.palcu@nxp.com>
-Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230912-imx8-clk-v1-v1-2-69a34bcfcae1@nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230830112059.824e522927f1.Ie5b4a2d3953072b9d76054ae67e2e45900d6bba4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 08365d3b9140 ("wifi: iwlwifi: mvm: fix netif csum flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8qxp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c | 10 ++++------
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c |  8 +++-----
+ 2 files changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
-index cadcbb318f5cf..4020aa4b79bf2 100644
---- a/drivers/clk/imx/clk-imx8qxp.c
-+++ b/drivers/clk/imx/clk-imx8qxp.c
-@@ -147,10 +147,10 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
- 	imx_clk_scu("adc0_clk",  IMX_SC_R_ADC_0, IMX_SC_PM_CLK_PER);
- 	imx_clk_scu("adc1_clk",  IMX_SC_R_ADC_1, IMX_SC_PM_CLK_PER);
- 	imx_clk_scu("pwm_clk",   IMX_SC_R_LCD_0_PWM_0, IMX_SC_PM_CLK_PER);
-+	imx_clk_scu("elcdif_pll", IMX_SC_R_ELCDIF_PLL, IMX_SC_PM_CLK_PLL);
- 	imx_clk_scu2("lcd_clk", lcd_sels, ARRAY_SIZE(lcd_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_PER);
- 	imx_clk_scu2("lcd_pxl_clk", lcd_pxl_sels, ARRAY_SIZE(lcd_pxl_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_MISC0);
- 	imx_clk_scu("lcd_pxl_bypass_div_clk", IMX_SC_R_LCD_0, IMX_SC_PM_CLK_BYPASS);
--	imx_clk_scu("elcdif_pll", IMX_SC_R_ELCDIF_PLL, IMX_SC_PM_CLK_PLL);
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index b9893b22e41da..3d223014cfe6d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -134,12 +134,10 @@ static const struct iwl_base_params iwl_bz_base_params = {
+ 	.ht_params = &iwl_gl_a_ht_params
  
- 	/* Audio SS */
- 	imx_clk_scu("audio_pll0_clk", IMX_SC_R_AUDIO_PLL_0, IMX_SC_PM_CLK_PLL);
+ /*
+- * If the device doesn't support HE, no need to have that many buffers.
+- * These sizes were picked according to 8 MSDUs inside 256 A-MSDUs in an
++ * This size was picked according to 8 MSDUs inside 512 A-MSDUs in an
+  * A-MPDU, with additional overhead to account for processing time.
+  */
+-#define IWL_NUM_RBDS_NON_HE		512
+-#define IWL_NUM_RBDS_BZ_HE		4096
++#define IWL_NUM_RBDS_BZ_EHT		(512 * 16)
+ 
+ const struct iwl_cfg_trans_params iwl_bz_trans_cfg = {
+ 	.device_family = IWL_DEVICE_FAMILY_BZ,
+@@ -161,7 +159,7 @@ const struct iwl_cfg iwl_cfg_bz = {
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
+ 	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+-	.num_rbds = IWL_NUM_RBDS_BZ_HE,
++	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
+ };
+ 
+ const struct iwl_cfg iwl_cfg_gl = {
+@@ -169,7 +167,7 @@ const struct iwl_cfg iwl_cfg_gl = {
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_BZ,
+ 	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+-	.num_rbds = IWL_NUM_RBDS_BZ_HE,
++	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
+ };
+ 
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+index ad283fd22e2a2..d6243025993ea 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
+@@ -127,12 +127,10 @@ static const struct iwl_base_params iwl_sc_base_params = {
+ 	.ht_params = &iwl_22000_ht_params
+ 
+ /*
+- * If the device doesn't support HE, no need to have that many buffers.
+- * These sizes were picked according to 8 MSDUs inside 256 A-MSDUs in an
++ * This size was picked according to 8 MSDUs inside 512 A-MSDUs in an
+  * A-MPDU, with additional overhead to account for processing time.
+  */
+-#define IWL_NUM_RBDS_NON_HE		512
+-#define IWL_NUM_RBDS_SC_HE		4096
++#define IWL_NUM_RBDS_SC_EHT		(512 * 16)
+ 
+ const struct iwl_cfg_trans_params iwl_sc_trans_cfg = {
+ 	.device_family = IWL_DEVICE_FAMILY_SC,
+@@ -154,7 +152,7 @@ const struct iwl_cfg iwl_cfg_sc = {
+ 	.uhb_supported = true,
+ 	IWL_DEVICE_SC,
+ 	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
+-	.num_rbds = IWL_NUM_RBDS_SC_HE,
++	.num_rbds = IWL_NUM_RBDS_SC_EHT,
+ };
+ 
+ MODULE_FIRMWARE(IWL_SC_A_FM_B_FW_MODULE_FIRMWARE(IWL_SC_UCODE_API_MAX));
 -- 
 2.42.0
 
