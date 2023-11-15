@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C79E17ED398
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 570CC7ED399
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:53:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234903AbjKOUxi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S234908AbjKOUxi (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 15:53:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44586 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234915AbjKOUxg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:36 -0500
+        with ESMTP id S234970AbjKOUxh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:53:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 627611A5
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB28DC4E77A;
-        Wed, 15 Nov 2023 20:53:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A06A1B8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:53:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB54C4E777;
+        Wed, 15 Nov 2023 20:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081611;
-        bh=zutMOxNYtgpPBd//sHGmNRGRuho/9QjsgS02uqR27xM=;
+        s=korg; t=1700081612;
+        bh=vWgvZfkfbc0i7SXkWgw3/Y4OLStX5ZgVvM3uza8cEbs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=thgs2d1l26xNTmN/t5Nzal5BoulnK03/3deRymSfEhgNsutp4aYWl7yzMS4F7H0vB
-         0rhoDk2zxaqXvu/6JOpOvaAouZPfjA4tlIV+NWnPM6sRe4PW13eywy8oY/BUG+tncJ
-         l9jats74DK915RZr2DcezGzFDR2jHqBBQ1+Yd+1g=
+        b=dAPH9jnkUgWIOFU2w/bT/doL1y7S2i1fJ9qfD3KIUIzvSPgR5oABm1qoFlR3ydkxr
+         N7PXQF6A8Ab3SpA4Zh9Ng1/3w+HdoGUYpPx+UoyESSl9JVlDH58Fz1sNnNWNiv/Ma9
+         4gbNPgmGxJvWX2S+WUAszK2z454K4RgtncVgGY2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Kees Cook <keescook@chromium.org>,
-        Ido Schimmel <idosch@nvidia.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/191] mlxsw: Use size_mul() in call to struct_size()
-Date:   Wed, 15 Nov 2023 15:44:50 -0500
-Message-ID: <20231115204645.422576271@linuxfoundation.org>
+Subject: [PATCH 5.10 016/191] tipc: Use size_add() in calls to struct_size()
+Date:   Wed, 15 Nov 2023 15:44:51 -0500
+Message-ID: <20231115204645.481399767@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -59,35 +58,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit e22c6ea025013ae447fe269269753ffec763dde5 ]
+[ Upstream commit 2506a91734754de690869824fb0d1ac592ec1266 ]
 
-If, for any reason, the open-coded arithmetic causes a wraparound, the
-protection that `struct_size()` adds against potential integer overflows
-is defeated. Fix this by hardening call to `struct_size()` with `size_mul()`.
+If, for any reason, the open-coded arithmetic causes a wraparound,
+the protection that `struct_size()` adds against potential integer
+overflows is defeated. Fix this by hardening call to `struct_size()`
+with `size_add()`.
 
-Fixes: 2285ec872d9d ("mlxsw: spectrum_acl_bloom_filter: use struct_size() in kzalloc()")
+Fixes: e034c6d23bc4 ("tipc: Use struct_size() helper")
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tipc/link.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c
-index dbd3bebf11eca..2e8b17e3b9358 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_bloom_filter.c
-@@ -251,7 +251,7 @@ mlxsw_sp_acl_bf_init(struct mlxsw_sp *mlxsw_sp, unsigned int num_erp_banks)
- 	 * is 2^ACL_MAX_BF_LOG
- 	 */
- 	bf_bank_size = 1 << MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_BF_LOG);
--	bf = kzalloc(struct_size(bf, refcnt, bf_bank_size * num_erp_banks),
-+	bf = kzalloc(struct_size(bf, refcnt, size_mul(bf_bank_size, num_erp_banks)),
- 		     GFP_KERNEL);
- 	if (!bf)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/net/tipc/link.c b/net/tipc/link.c
+index dbb1bc722ba9b..5f849c7300283 100644
+--- a/net/tipc/link.c
++++ b/net/tipc/link.c
+@@ -1410,7 +1410,7 @@ u16 tipc_get_gap_ack_blks(struct tipc_gap_ack_blks **ga, struct tipc_link *l,
+ 		p = (struct tipc_gap_ack_blks *)msg_data(hdr);
+ 		sz = ntohs(p->len);
+ 		/* Sanity check */
+-		if (sz == struct_size(p, gacks, p->ugack_cnt + p->bgack_cnt)) {
++		if (sz == struct_size(p, gacks, size_add(p->ugack_cnt, p->bgack_cnt))) {
+ 			/* Good, check if the desired type exists */
+ 			if ((uc && p->ugack_cnt) || (!uc && p->bgack_cnt))
+ 				goto ok;
+@@ -1497,7 +1497,7 @@ static u16 tipc_build_gap_ack_blks(struct tipc_link *l, struct tipc_msg *hdr)
+ 			__tipc_build_gap_ack_blks(ga, l, ga->bgack_cnt) : 0;
+ 
+ 	/* Total len */
+-	len = struct_size(ga, gacks, ga->bgack_cnt + ga->ugack_cnt);
++	len = struct_size(ga, gacks, size_add(ga->bgack_cnt, ga->ugack_cnt));
+ 	ga->len = htons(len);
+ 	return len;
+ }
 -- 
 2.42.0
 
