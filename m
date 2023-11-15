@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30AF27ECB9A
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2B867ECE1D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231319AbjKOTXU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34668 "EHLO
+        id S234810AbjKOTkb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:40:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231167AbjKOTXT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:19 -0500
+        with ESMTP id S234811AbjKOTka (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF52AA4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743DCC433C8;
-        Wed, 15 Nov 2023 19:23:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD8F19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7F79C433CA;
+        Wed, 15 Nov 2023 19:40:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076195;
-        bh=4irrJKd/lFYjPMQVWkvsA+AyMtKUlUHXFflZKqu2kbo=;
+        s=korg; t=1700077225;
+        bh=mmTCOZGGbdwL5tMy7/og1aisCQ5SqrY5NkSRV0KMg9E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H4vLq8m0VZFtDJ+tVhbYT8yNXTKVrjh+My7aJC63zn5eaVVpZDuUihCIlwjFk8mEv
-         r/1v/RW/ILIfQLoancmH5h5fGylszFdkvW1b03jFdQ3ZHRNXRtffCLDTvSQDYSfA+o
-         vY6qVft56YKEMvNP/uYyr//ovXXD0cJonmtG9nX0=
+        b=MsutqjRXPqLi4/DOKNsgpmm4IaFHjUhWXntpy+jCr53UdiJO9fFiUQIgE2DRqBpR8
+         OCXNwpQNvdzdqF4z71yPbRkaG6noAVwgX2ALUdSBdf+Mh4cjXLRtAYc9UYeI+9CUQG
+         U02xo2+OWaHJk9n5miVg+sAp1pKFfccE8fYTS8Dk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev, Dirk Behme <dirk.behme@de.bosch.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 135/550] wifi: iwlwifi: increase number of RX buffers for EHT devices
+Subject: [PATCH 6.6 174/603] clk: renesas: rcar-gen3: Extend SDnH divider table
 Date:   Wed, 15 Nov 2023 14:11:59 -0500
-Message-ID: <20231115191610.047441543@linuxfoundation.org>
+Message-ID: <20231115191625.267788622@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,95 +51,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Dirk Behme <dirk.behme@de.bosch.com>
 
-[ Upstream commit 2cf254c1e24fa8f01f42f5a8c77617e56bf50b86 ]
+[ Upstream commit d5252d9697a3e7007c741e9c103073868955a304 ]
 
-EHT devices can support 512 MPDUs in an A-MPDU, each of
-which might be an A-MSDU and thus further contain multiple
-MSDUs, which need their own buffer each. Increase the number
-of buffers to avoid running out in high-throughput scenarios.
+The clock dividers might be used with clock stop bit enabled or not.
+Current tables only support recommended values from the datasheet.  This
+might result in warnings like below because no valid clock divider is
+found. Resulting in a 0 divider.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230830112059.824e522927f1.Ie5b4a2d3953072b9d76054ae67e2e45900d6bba4@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 08365d3b9140 ("wifi: iwlwifi: mvm: fix netif csum flags")
+There are Renesas ARM Trusted Firmware version out there which e.g.
+configure 0x201 (shifted logical right by 2: 0x80) and with this match
+the added { STPnHCK | 0, 1 }:
+
+https://github.com/renesas-rcar/arm-trusted-firmware/blob/rcar_gen3_v2.3/drivers/renesas/rcar/emmc/emmc_init.c#L108
+
+------------[ cut here ]------------
+sd1h: Zero divisor and CLK_DIVIDER_ALLOW_ZERO not set
+WARNING: CPU: 1 PID: 1 at drivers/clk/clk-divider.c:141 divider_recalc_rate+0x48/0x70
+Modules linked in:
+CPU: 1 PID: 1 Comm: swapper/0 Not tainted 6.1.52 #1
+Hardware name: Custom board based on r8a7796 (DT)
+pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : divider_recalc_rate+0x48/0x70
+...
+------------[ cut here ]------------
+
+Fixes: bb6d3fa98a41 ("clk: renesas: rcar-gen3: Switch to new SD clock handling")
+Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+[wsa: extended the table to 5 entries, added comments, reword commit message a little]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230928080317.28224-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c | 10 ++++------
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c |  8 +++-----
- 2 files changed, 7 insertions(+), 11 deletions(-)
+ drivers/clk/renesas/rcar-cpg-lib.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-index b9893b22e41da..3d223014cfe6d 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
-@@ -134,12 +134,10 @@ static const struct iwl_base_params iwl_bz_base_params = {
- 	.ht_params = &iwl_gl_a_ht_params
+diff --git a/drivers/clk/renesas/rcar-cpg-lib.c b/drivers/clk/renesas/rcar-cpg-lib.c
+index e2e0447de1901..5a15f8788b922 100644
+--- a/drivers/clk/renesas/rcar-cpg-lib.c
++++ b/drivers/clk/renesas/rcar-cpg-lib.c
+@@ -70,8 +70,21 @@ void cpg_simple_notifier_register(struct raw_notifier_head *notifiers,
+ #define STPnHCK	BIT(9 - SDnSRCFC_SHIFT)
  
- /*
-- * If the device doesn't support HE, no need to have that many buffers.
-- * These sizes were picked according to 8 MSDUs inside 256 A-MSDUs in an
-+ * This size was picked according to 8 MSDUs inside 512 A-MSDUs in an
-  * A-MPDU, with additional overhead to account for processing time.
-  */
--#define IWL_NUM_RBDS_NON_HE		512
--#define IWL_NUM_RBDS_BZ_HE		4096
-+#define IWL_NUM_RBDS_BZ_EHT		(512 * 16)
- 
- const struct iwl_cfg_trans_params iwl_bz_trans_cfg = {
- 	.device_family = IWL_DEVICE_FAMILY_BZ,
-@@ -161,7 +159,7 @@ const struct iwl_cfg iwl_cfg_bz = {
- 	.uhb_supported = true,
- 	IWL_DEVICE_BZ,
- 	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
--	.num_rbds = IWL_NUM_RBDS_BZ_HE,
-+	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
+ static const struct clk_div_table cpg_sdh_div_table[] = {
++	/*
++	 * These values are recommended by the datasheet.  Because they come
++	 * first, Linux will only use these.
++	 */
+ 	{ 0, 1 }, { 1, 2 }, { STPnHCK | 2, 4 }, { STPnHCK | 3, 8 },
+-	{ STPnHCK | 4, 16 }, { 0, 0 },
++	{ STPnHCK | 4, 16 },
++	/*
++	 * These values are not recommended because STPnHCK is wrong.  But they
++	 * have been seen because of broken firmware.  So, we support reading
++	 * them but Linux will sanitize them when initializing through
++	 * recalc_rate.
++	 */
++	{ STPnHCK | 0, 1 }, { STPnHCK | 1, 2 },  { 2, 4 }, { 3, 8 }, { 4, 16 },
++	/* Sentinel */
++	{ 0, 0 }
  };
  
- const struct iwl_cfg iwl_cfg_gl = {
-@@ -169,7 +167,7 @@ const struct iwl_cfg iwl_cfg_gl = {
- 	.uhb_supported = true,
- 	IWL_DEVICE_BZ,
- 	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
--	.num_rbds = IWL_NUM_RBDS_BZ_HE,
-+	.num_rbds = IWL_NUM_RBDS_BZ_EHT,
- };
- 
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-index ad283fd22e2a2..d6243025993ea 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/sc.c
-@@ -127,12 +127,10 @@ static const struct iwl_base_params iwl_sc_base_params = {
- 	.ht_params = &iwl_22000_ht_params
- 
- /*
-- * If the device doesn't support HE, no need to have that many buffers.
-- * These sizes were picked according to 8 MSDUs inside 256 A-MSDUs in an
-+ * This size was picked according to 8 MSDUs inside 512 A-MSDUs in an
-  * A-MPDU, with additional overhead to account for processing time.
-  */
--#define IWL_NUM_RBDS_NON_HE		512
--#define IWL_NUM_RBDS_SC_HE		4096
-+#define IWL_NUM_RBDS_SC_EHT		(512 * 16)
- 
- const struct iwl_cfg_trans_params iwl_sc_trans_cfg = {
- 	.device_family = IWL_DEVICE_FAMILY_SC,
-@@ -154,7 +152,7 @@ const struct iwl_cfg iwl_cfg_sc = {
- 	.uhb_supported = true,
- 	IWL_DEVICE_SC,
- 	.features = IWL_TX_CSUM_NETIF_FLAGS_BZ | NETIF_F_RXCSUM,
--	.num_rbds = IWL_NUM_RBDS_SC_HE,
-+	.num_rbds = IWL_NUM_RBDS_SC_EHT,
- };
- 
- MODULE_FIRMWARE(IWL_SC_A_FM_B_FW_MODULE_FIRMWARE(IWL_SC_UCODE_API_MAX));
+ struct clk * __init cpg_sdh_clk_register(const char *name,
 -- 
 2.42.0
 
