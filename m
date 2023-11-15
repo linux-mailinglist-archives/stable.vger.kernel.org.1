@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E487B7ECD6F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6ACF57ECB3D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234304AbjKOTg2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:36:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60180 "EHLO
+        id S232821AbjKOTVU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234564AbjKOTgW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:22 -0500
+        with ESMTP id S232831AbjKOTU7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:20:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C91CD55
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33A5C433C8;
-        Wed, 15 Nov 2023 19:36:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F83D4F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:20:54 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 434D1C433C8;
+        Wed, 15 Nov 2023 19:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076979;
-        bh=l5UAmf1Evp1Cr07sqQK/qRv6grCcatrzX8JZlyCmIdA=;
+        s=korg; t=1700076054;
+        bh=nkJIjSLcJJ4FsqF5yF9xzeHZYT98didJ1tA5NZflmk0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rieBt+EL+RIFU7G1T1+1tvqE3a9rziJ3gFzSfNnAnBgwsdGleqCPaq6bKZVYmWRRD
-         zCLHn4BQaEV2n9ad2/UdWp7nIZKGvklfrEBaz2+9TGcMCIeNGgtSEm/f98PsvN2x19
-         9PCvYCLcsokvucgKK3IULkbB21lIB/Cdv+2cne+4=
+        b=WjJN7wm5LlwQi6l6QdvdsHG/NvcHY0ARPVgPrnSISnRF4Erkii8cWG3pvsDexNMwL
+         Dlbt1BVHDFjzqQvcWzEs8lENKQ2eid3tRyFoWXF82zE5LnqrUCIQUjgjVE8HwdR2cS
+         CQsE7qVapf18hqhTBeJ30HiYFSdWM5P6C/ZMmgTc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Howard Hsu <howard-yh.hsu@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/603] wifi: mt76: mt7996: fix beamformee ss subfield in EHT PHY cap
+        patches@lists.linux.dev,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 046/550] wifi: iwlwifi: honor the enable_ini value
 Date:   Wed, 15 Nov 2023 14:10:30 -0500
-Message-ID: <20231115191619.008342996@linuxfoundation.org>
+Message-ID: <20231115191603.899304055@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +52,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Howard Hsu <howard-yh.hsu@mediatek.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit e19028104b2de5510b43282f632c4b6453568c41 ]
+[ Upstream commit e0c1ca236e28e4263fba76d47a108ed95dcae33e ]
 
-According to P802.11be_D3.2 Table 9-404m, the minimum value of
-Beamformee SS field shall be 3. Fix the values to follow the spec.
+In case the user sets the enable_ini to some preset, we want to honor
+the value.
 
-Fixes: 348533eb968d ("wifi: mt76: mt7996: add EHT capability init")
-Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Remove the ops to set the value of the module parameter is runtime, we
+don't want to allow to modify the value in runtime since we configure
+the firmware once at the beginning on its life.
+
+Fixes: b49c2b252b58 ("iwlwifi: Configure FW debug preset via module param.")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230830112059.5734e0f374bb.I6698eda8ed2112378dd47ac5d62866ebe7a94f77@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ .../wireless/intel/iwlwifi/fw/api/dbg-tlv.h   |  1 +
+ .../net/wireless/intel/iwlwifi/iwl-dbg-tlv.h  |  5 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 51 +++++++------------
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  4 ++
+ 4 files changed, 25 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 26e03b28935f2..66d8cc0eeabee 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -733,16 +733,17 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
- 		IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
- 		IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h b/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
+index ba538d70985f4..39bee9c00e071 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/dbg-tlv.h
+@@ -13,6 +13,7 @@
+ #define IWL_FW_INI_DOMAIN_ALWAYS_ON		0
+ #define IWL_FW_INI_REGION_ID_MASK		GENMASK(15, 0)
+ #define IWL_FW_INI_REGION_DUMP_POLICY_MASK	GENMASK(31, 16)
++#define IWL_FW_INI_PRESET_DISABLE		0xff
  
-+	val = max_t(u8, sts - 1, 3);
- 	eht_cap_elem->phy_cap_info[0] |=
--		u8_encode_bits(u8_get_bits(sts - 1, BIT(0)),
-+		u8_encode_bits(u8_get_bits(val, BIT(0)),
- 			       IEEE80211_EHT_PHY_CAP0_BEAMFORMEE_SS_80MHZ_MASK);
+ /**
+  * struct iwl_fw_ini_hcmd
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
+index 128059ca77e60..06fb7d6653905 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.h
+@@ -1,6 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
+ /*
+- * Copyright (C) 2018-2022 Intel Corporation
++ * Copyright (C) 2018-2023 Intel Corporation
+  */
+ #ifndef __iwl_dbg_tlv_h__
+ #define __iwl_dbg_tlv_h__
+@@ -10,7 +10,8 @@
+ #include <fw/file.h>
+ #include <fw/api/dbg-tlv.h>
  
- 	eht_cap_elem->phy_cap_info[1] =
--		u8_encode_bits(u8_get_bits(sts - 1, GENMASK(2, 1)),
-+		u8_encode_bits(u8_get_bits(val, GENMASK(2, 1)),
- 			       IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_80MHZ_MASK) |
--		u8_encode_bits(sts - 1,
-+		u8_encode_bits(val,
- 			       IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MHZ_MASK) |
--		u8_encode_bits(sts - 1,
-+		u8_encode_bits(val,
- 			       IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK);
+-#define IWL_DBG_TLV_MAX_PRESET 15
++#define IWL_DBG_TLV_MAX_PRESET	15
++#define ENABLE_INI		(IWL_DBG_TLV_MAX_PRESET + 1)
  
- 	eht_cap_elem->phy_cap_info[2] =
+ /**
+  * struct iwl_dbg_tlv_node - debug TLV node
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 3d87d26845e74..fb5e254757e71 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1795,6 +1795,22 @@ struct iwl_drv *iwl_drv_start(struct iwl_trans *trans)
+ #endif
+ 
+ 	drv->trans->dbg.domains_bitmap = IWL_TRANS_FW_DBG_DOMAIN(drv->trans);
++	if (iwlwifi_mod_params.enable_ini != ENABLE_INI) {
++		/* We have a non-default value in the module parameter,
++		 * take its value
++		 */
++		drv->trans->dbg.domains_bitmap &= 0xffff;
++		if (iwlwifi_mod_params.enable_ini != IWL_FW_INI_PRESET_DISABLE) {
++			if (iwlwifi_mod_params.enable_ini > ENABLE_INI) {
++				IWL_ERR(trans,
++					"invalid enable_ini module parameter value: max = %d, using 0 instead\n",
++					ENABLE_INI);
++				iwlwifi_mod_params.enable_ini = 0;
++			}
++			drv->trans->dbg.domains_bitmap =
++				BIT(IWL_FW_DBG_DOMAIN_POS + iwlwifi_mod_params.enable_ini);
++		}
++	}
+ 
+ 	ret = iwl_request_firmware(drv, true);
+ 	if (ret) {
+@@ -1843,8 +1859,6 @@ void iwl_drv_stop(struct iwl_drv *drv)
+ 	kfree(drv);
+ }
+ 
+-#define ENABLE_INI	(IWL_DBG_TLV_MAX_PRESET + 1)
+-
+ /* shared module parameters */
+ struct iwl_mod_params iwlwifi_mod_params = {
+ 	.fw_restart = true,
+@@ -1964,38 +1978,7 @@ module_param_named(uapsd_disable, iwlwifi_mod_params.uapsd_disable, uint, 0644);
+ MODULE_PARM_DESC(uapsd_disable,
+ 		 "disable U-APSD functionality bitmap 1: BSS 2: P2P Client (default: 3)");
+ 
+-static int enable_ini_set(const char *arg, const struct kernel_param *kp)
+-{
+-	int ret = 0;
+-	bool res;
+-	__u32 new_enable_ini;
+-
+-	/* in case the argument type is a number */
+-	ret = kstrtou32(arg, 0, &new_enable_ini);
+-	if (!ret) {
+-		if (new_enable_ini > ENABLE_INI) {
+-			pr_err("enable_ini cannot be %d, in range 0-16\n", new_enable_ini);
+-			return -EINVAL;
+-		}
+-		goto out;
+-	}
+-
+-	/* in case the argument type is boolean */
+-	ret = kstrtobool(arg, &res);
+-	if (ret)
+-		return ret;
+-	new_enable_ini = (res ? ENABLE_INI : 0);
+-
+-out:
+-	iwlwifi_mod_params.enable_ini = new_enable_ini;
+-	return 0;
+-}
+-
+-static const struct kernel_param_ops enable_ini_ops = {
+-	.set = enable_ini_set
+-};
+-
+-module_param_cb(enable_ini, &enable_ini_ops, &iwlwifi_mod_params.enable_ini, 0644);
++module_param_named(enable_ini, iwlwifi_mod_params.enable_ini, uint, 0444);
+ MODULE_PARM_DESC(enable_ini,
+ 		 "0:disable, 1-15:FW_DBG_PRESET Values, 16:enabled without preset value defined,"
+ 		 "Debug INI TLV FW debug infrastructure (default: 16)");
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index d02943d0ea625..b248944e11df9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -56,6 +56,10 @@
+  *	6) Eventually, the free function will be called.
+  */
+ 
++/* default preset 0 (start from bit 16)*/
++#define IWL_FW_DBG_DOMAIN_POS	16
++#define IWL_FW_DBG_DOMAIN	BIT(IWL_FW_DBG_DOMAIN_POS)
++
+ #define IWL_TRANS_FW_DBG_DOMAIN(trans)	IWL_FW_INI_DOMAIN_ALWAYS_ON
+ 
+ #define FH_RSCSR_FRAME_SIZE_MSK		0x00003FFF	/* bits 0-13 */
 -- 
 2.42.0
 
