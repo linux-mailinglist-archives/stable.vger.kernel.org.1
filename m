@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB7D7ED58C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3651B7ED322
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344704AbjKOVHh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37424 "EHLO
+        id S233692AbjKOUqZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:46:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235604AbjKOVH0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:26 -0500
+        with ESMTP id S233684AbjKOUqY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0993F1A1
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9174BC4E764;
-        Wed, 15 Nov 2023 20:52:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39646BC
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99028C433C9;
+        Wed, 15 Nov 2023 20:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081525;
-        bh=89YU0Zp/mifB7bkWS6rs0FrHzir8ejHYzukBP50lGy8=;
+        s=korg; t=1700081180;
+        bh=8FA3lFr+szaUtpwEh7vPNbDDft6uLo7F0j5NFeN0g7c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vVG4yPNH4nK3x4oJYzEBBhZvvrGtwnFAhjvqUgCHKgUfLyvA4Beb/COSfD/ubQ/BY
-         eAK3zV6zD+FIVM8ExLGqmxXkZxUMn616YxnJnK2nRK6AuZCcJxH8AaVSqoem9hbtHu
-         EGn0vvBufv2fw6jzm14itHMqWAfjvfULzjUaTSkM=
+        b=u4Ob40V6OoxEjc67QvvAT/Eg5kl+Ob9CnC0YtbTADI6pTZWDzxdWlTpMXQQU9H2xp
+         tgJHghh0GFKKZNtakCcfmX4tG1xcm6brs+hnl7yT476e2K900qtqJdizlB+bTLvLHI
+         6PkOUiqGBFQ31WSZhIN/pnKmozxdrPzGXg4fGnEM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 207/244] media: dvb-usb-v2: af9035: fix missing unlock
+        patches@lists.linux.dev,
+        Dominique Martinet <dominique.martinet@atmark-techno.com>,
+        Alex Fetters <Alex.Fetters@garmin.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 87/88] Revert "mmc: core: Capture correct oemid-bits for eMMC cards"
 Date:   Wed, 15 Nov 2023 15:36:39 -0500
-Message-ID: <20231115203600.780418995@linuxfoundation.org>
+Message-ID: <20231115191431.274537699@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,71 +52,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-[ Upstream commit f31b2cb85f0ee165d78e1c43f6d69f82cc3b2145 ]
+commit 421b605edb1ce611dee06cf6fd9a1c1f2fd85ad0 upstream.
 
-Instead of returning an error, goto the mutex unlock at
-the end of the function.
+This reverts commit 84ee19bffc9306128cd0f1c650e89767079efeff.
 
-Fixes smatch warning:
+The commit above made quirks with an OEMID fail to be applied, as they
+were checking card->cid.oemid for the full 16 bits defined in MMC_FIXUP
+macros but the field would only contain the bottom 8 bits.
 
-drivers/media/usb/dvb-usb-v2/af9035.c:467 af9035_i2c_master_xfer() warn: inconsistent returns '&d->i2c_mutex'.
-  Locked on  : 326,387
-  Unlocked on: 465,467
+eMMC v5.1A might have bogus values in OEMID's higher bits so another fix
+will be made, but it has been decided to revert this until that is ready.
 
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: 7bf744f2de0a ("media: dvb-usb-v2: af9035: Fix null-ptr-deref in af9035_i2c_master_xfer")
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 84ee19bffc93 ("mmc: core: Capture correct oemid-bits for eMMC cards")
+Link: https://lkml.kernel.org/r/ZToJsSLHr8RnuTHz@codewreck.org
+Link: https://lkml.kernel.org/r/CAPDyKFqkKibcXnwjnhc3+W1iJBHLeqQ9BpcZrSwhW2u9K2oUtg@mail.gmail.com
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Cc: stable@vger.kernel.org
+Cc: Alex Fetters <Alex.Fetters@garmin.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103004220.1666641-1-asmadeus@codewreck.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/dvb-usb-v2/af9035.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/mmc/core/mmc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/dvb-usb-v2/af9035.c b/drivers/media/usb/dvb-usb-v2/af9035.c
-index 56bb507fca214..dabfe9b332226 100644
---- a/drivers/media/usb/dvb-usb-v2/af9035.c
-+++ b/drivers/media/usb/dvb-usb-v2/af9035.c
-@@ -323,8 +323,10 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
- 			ret = -EOPNOTSUPP;
- 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
- 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
--			if (msg[0].len < 3 || msg[1].len < 1)
--				return -EOPNOTSUPP;
-+			if (msg[0].len < 3 || msg[1].len < 1) {
-+				ret = -EOPNOTSUPP;
-+				goto unlock;
-+			}
- 			/* demod access via firmware interface */
- 			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
- 					msg[0].buf[2];
-@@ -384,8 +386,10 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
- 			ret = -EOPNOTSUPP;
- 		} else if ((msg[0].addr == state->af9033_i2c_addr[0]) ||
- 			   (msg[0].addr == state->af9033_i2c_addr[1])) {
--			if (msg[0].len < 3)
--				return -EOPNOTSUPP;
-+			if (msg[0].len < 3) {
-+				ret = -EOPNOTSUPP;
-+				goto unlock;
-+			}
- 			/* demod access via firmware interface */
- 			reg = msg[0].buf[0] << 16 | msg[0].buf[1] << 8 |
- 					msg[0].buf[2];
-@@ -460,6 +464,7 @@ static int af9035_i2c_master_xfer(struct i2c_adapter *adap,
- 		ret = -EOPNOTSUPP;
- 	}
- 
-+unlock:
- 	mutex_unlock(&d->i2c_mutex);
- 
- 	if (ret < 0)
--- 
-2.42.0
-
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -98,7 +98,7 @@ static int mmc_decode_cid(struct mmc_car
+ 	case 3: /* MMC v3.1 - v3.3 */
+ 	case 4: /* MMC v4 */
+ 		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
+-		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 8);
++		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
+ 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
+ 		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
+ 		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
 
 
