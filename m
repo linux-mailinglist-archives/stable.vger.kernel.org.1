@@ -2,133 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34FC47EC520
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 15:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0BAF7EC634
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 15:47:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343868AbjKOO1Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 09:27:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54606 "EHLO
+        id S234976AbjKOOrb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 09:47:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjKOO1Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 09:27:25 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB61C8;
-        Wed, 15 Nov 2023 06:27:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700058441; x=1731594441;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bYhYhApETD3WaI4adC9XBOsh3iVZc0Tijeg2BL85FTo=;
-  b=ASgSpeI/3ja6DmV8GPY0Nluk2a/eq1pAPz1ImfRo+epMb8AIoPz2WKq+
-   6ckviktzHOAwW7zvvHCuoKsAzVeVD3OT1/RhsRCgZkd0lGsI5e8z8h6xF
-   PljxyIrbrnsGKty7v9iwc7DiVUHZ20mD09pFfIjjZ8/URmwoKSGtWZGdE
-   jhfSfo47AxNNXiVtKZLIKKumDmdSB/aHaGmNg5fyHD+W8wqfyRrWeCauu
-   t7iFj+T5D9nilVulck4d09C+ZTp2mls/Zu3FzKM2guUhLMz5HpcTwsliD
-   t/pd9O7fqcgOaA2aHj0bt81X9zXFPLrig6uUDJHe3uSWzRHT5h+jRndPQ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="9519395"
-X-IronPort-AV: E=Sophos;i="6.03,305,1694761200"; 
-   d="scan'208";a="9519395"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 06:27:21 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="768595544"
-X-IronPort-AV: E=Sophos;i="6.03,305,1694761200"; 
-   d="scan'208";a="768595544"
-Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
-  by fmsmga007.fm.intel.com with ESMTP; 15 Nov 2023 06:27:16 -0800
-Received: from kbuild by b8de5498638e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1r3GrK-0000Oy-0y;
-        Wed, 15 Nov 2023 14:27:14 +0000
-Date:   Wed, 15 Nov 2023 22:26:40 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Johan Hovold <johan+linaro@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <helgaas@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev, Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Nirmal Patel <nirmal.patel@linux.intel.com>,
-        Jonathan Derrick <jonathan.derrick@linux.dev>,
-        linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-        Michael Bottini <michael.a.bottini@linux.intel.com>,
-        "David E . Box" <david.e.box@linux.intel.com>
-Subject: Re: [PATCH 1/6] PCI/ASPM: Add locked helper for enabling link state
-Message-ID: <202311152225.ZdVv0ufT-lkp@intel.com>
-References: <20231114135553.32301-2-johan+linaro@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231114135553.32301-2-johan+linaro@kernel.org>
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S234954AbjKOOrb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 09:47:31 -0500
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A8DB6;
+        Wed, 15 Nov 2023 06:47:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+        :Date:subject:date:message-id:reply-to;
+        bh=yfv8RLWW8OJj6tqwzcuXfDoEVuCDGTTEEl/uhycqU/w=; b=ePgCLU1vqT8vyT45MEJbB1mbxt
+        YKJR6DLsyQTsAPDfCvg90F5s3hUXwGgxs1LxW4xBm2YkGxppuuJCmBBDCWDUF/z4SoekYxECWgJZT
+        0HDPmPEdAm3eWNT0YGsB/y+KOEyEyPHJPKYhSFKTMWf7noUHSkb6Oj8WFsp2noK5FGPU=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:57814 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1r3HAj-0001dr-Pm; Wed, 15 Nov 2023 09:47:18 -0500
+Date:   Wed, 15 Nov 2023 09:47:17 -0500
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Daniel Mack <daniel@zonque.org>
+Cc:     gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        lech.perczak@camlingroup.com, u.kleine-koenig@pengutronix.de,
+        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Maxim Popov <maxim.snafu@gmail.com>, stable@vger.kernel.org
+Message-Id: <20231115094717.7541b01ec0c8a7f4006fcae6@hugovil.com>
+In-Reply-To: <140280a6-1948-4630-b10c-8e6a2afec2de@zonque.org>
+References: <20231114074904.239458-1-daniel@zonque.org>
+        <20231114102025.d48c0a6ec6c413f274b7680b@hugovil.com>
+        <140280a6-1948-4630-b10c-8e6a2afec2de@zonque.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_CSS autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH] serial: sc16is7xx: address RX timeout interrupt errata
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Johan,
+On Tue, 14 Nov 2023 16:55:33 +0100
+Daniel Mack <daniel@zonque.org> wrote:
 
-kernel test robot noticed the following build warnings:
+> Hi Hugo,
+> 
+> On 11/14/23 16:20, Hugo Villeneuve wrote:
+> > On Tue, 14 Nov 2023 08:49:04 +0100
+> > Daniel Mack <daniel@zonque.org> wrote:
+> >> This devices has a silicon bug that makes it report a timeout interrupt
+> >> but no data in FIFO.
+> >>
+> >> The datasheet states the following in the errata section 18.1.4:
+> >>
+> >>   "If the host reads the receive FIFO at the at the same time as a
+> >>   time-out interrupt condition happens, the host might read 0xCC
+> >>   (time-out) in the Interrupt Indication Register (IIR), but bit 0
+> >>   of the Line Status Register (LSR) is not set (means there is not
+> >>   data in the receive FIFO)."
+> >>
+> >> When this happens, the loop in sc16is7xx_irq() will run forever,
+> >> which effectively blocks the i2c bus and breaks the functionality
+> >> of the UART.
+> >>
+> >> From the information above, it is assumed that when the bug is
+> >> triggered, the FIFO does in fact have payload in its buffer, but the
+> >> fill level reporting is off-by-one. Hence this patch fixes the issue
+> >> by reading one byte from the FIFO when that condition is detected.
+> > 
+> > From what I understand from the errata, when the problem occurs, it
+> > affects bit 0 of the LSR register. I see no mention that it
+> > also affects the RX FIFO level register (SC16IS7XX_RXLVL_REG)?
+> 
+> True, the errata doesn't explicitly mention that, but tests have shown
+> that the RXLVL register is equally affected.
 
-[auto build test WARNING on pci/next]
-[also build test WARNING on pci/for-linus linus/master v6.7-rc1 next-20231115]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Hi Daniel,
+ok, now it makes more sense if RXLVL is affected.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Johan-Hovold/PCI-ASPM-Add-locked-helper-for-enabling-link-state/20231114-220117
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
-patch link:    https://lore.kernel.org/r/20231114135553.32301-2-johan%2Blinaro%40kernel.org
-patch subject: [PATCH 1/6] PCI/ASPM: Add locked helper for enabling link state
-config: x86_64-randconfig-002-20231115 (https://download.01.org/0day-ci/archive/20231115/202311152225.ZdVv0ufT-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231115/202311152225.ZdVv0ufT-lkp@intel.com/reproduce)
+Have you contacted NXP about this? If not, I suggest you do open a
+support case and let them know about your findings, because it is very
+strange that it is not mentioned in the errata. And doing so may led to
+an updated and better documentation on their side about this errata.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202311152225.ZdVv0ufT-lkp@intel.com/
+And incorporate this new info into your commit log for an eventual
+patch V2.
 
-All warnings (new ones prefixed by >>):
-
->> drivers/pci/pcie/aspm.c:1186: warning: expecting prototype for pci_enable_link_state(). Prototype was for pci_enable_link_state_locked() instead
+Thank you,
+Hugo.
 
 
-vim +1186 drivers/pci/pcie/aspm.c
-
-  1172	
-  1173	/**
-  1174	 * pci_enable_link_state - Clear and set the default device link state so that
-  1175	 * the link may be allowed to enter the specified states. Note that if the
-  1176	 * BIOS didn't grant ASPM control to the OS, this does nothing because we can't
-  1177	 * touch the LNKCTL register. Also note that this does not enable states
-  1178	 * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-  1179	 *
-  1180	 * @pdev: PCI device
-  1181	 * @state: Mask of ASPM link states to enable
-  1182	 *
-  1183	 * Context: Caller holds pci_bus_sem read lock.
-  1184	 */
-  1185	int pci_enable_link_state_locked(struct pci_dev *pdev, int state)
-> 1186	{
-  1187		lockdep_assert_held_read(&pci_bus_sem);
-  1188	
-  1189		return __pci_enable_link_state(pdev, state, true);
-  1190	}
-  1191	EXPORT_SYMBOL(pci_enable_link_state_locked);
-  1192	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > LSR[0] would be checked only if we were using polled mode of
+> > operation, but we always use the interrupt mode (IRQ), and therefore I
+> > would say that this errata doesn't apply to this driver, and the
+> > patch is not necessary...
+> 
+> Well, it is. We have seen this bug in the wild and extensively
+> stress-tested the patch on dozens of boards for many days. Without this
+> patch, kernels on affected systems would consume a lot of CPU cycles in
+> the interrupt threads and effectively render the I2C bus unusable due to
+> the busy polling.
+> 
+> With this patch applied, we were no longer able to reproduce the issue.
+> 
+> 
+> Thanks,
+> Daniel
+> 
+> 
