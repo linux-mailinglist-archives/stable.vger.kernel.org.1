@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CD687ED31C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA86E7ED46A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233664AbjKOUqQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:46:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
+        id S1344765AbjKOU6C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:58:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233651AbjKOUqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:46:15 -0500
+        with ESMTP id S1344653AbjKOU5h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B02C1B8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:46:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E52C433C8;
-        Wed, 15 Nov 2023 20:46:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF968127
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FF0C4E686;
+        Wed, 15 Nov 2023 20:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081170;
-        bh=jnTR+mRx/2fZAs8dULeecJwLWdGJaKOWxWO097nnXrE=;
+        s=korg; t=1700081474;
+        bh=+D9IVXtUE4cjEB/PlDFGUtYw3jKZB3VpepGIX17DQwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WULhDVMcCrdEVvI4GGOs+Z9SD6ZzkL0kblA9tAi0J9TA/bYZKSOJZsZcv/Kv7EU2Q
-         AdvGbi69Q3CmXStWk2DaYh966W9eHfx2Ey70fFcLSevv6zV1Go45MN8v+an0nLCRLe
-         9maGfZ/1DOb0Ro3PuLbqCmv/UDjhcSyPy/gS/+6s=
+        b=qP4k9lKWAG+VQ9YITPgLBJ6pabiBZiKFC2NuUgKv+EYDacEz59pt33VNXJ7QDn1r6
+         rB+lqF1V5MRWAE5F77uYzFS26vMOKulKsKfwnWipb/x2dVWUb8qkuWhZzJ5Wi7djYS
+         gnngUx6pzqDi0i5857siUskvd+fFOEaB4AyZHuSo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alexandru Ardelean <alexandru.ardelean@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 56/88] tools: iio: privatize globals and functions in iio_generic_buffer.c file
+Subject: [PATCH 5.15 176/244] usb: chipidea: Fix DMA overwrite for Tegra
 Date:   Wed, 15 Nov 2023 15:36:08 -0500
-Message-ID: <20231115191429.513731015@linuxfoundation.org>
+Message-ID: <20231115203558.938781699@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
-References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
+References: <20231115203548.387164783@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,132 +51,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Ardelean <alexandru.ardelean@analog.com>
+From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 
-[ Upstream commit ebe5112535b5cf389ca7d337cf6a0c1d885f9880 ]
+[ Upstream commit 7ab8716713c931ac79988f2592e1cf8b2e4fec1b ]
 
-Mostly a tidy-up.
-But also helps to understand the limits of scope of these functions and
-globals.
+Tegra USB controllers seem to issue DMA in full 32-bit words only and thus
+may overwrite unevenly-sized buffers.  One such occurrence is detected by
+SLUB when receiving a reply to a 1-byte buffer (below).  Fix this by
+allocating a bounce buffer also for buffers with sizes not a multiple of 4.
 
-Signed-off-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
-Link: https://lore.kernel.org/r/20210215104043.91251-24-alexandru.ardelean@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 2d3dff577dd0 ("tools: iio: iio_generic_buffer ensure alignment")
+=============================================================================
+BUG kmalloc-64 (Tainted: G    B             ): kmalloc Redzone overwritten
+-----------------------------------------------------------------------------
+
+0x8555cd02-0x8555cd03 @offset=3330. First byte 0x0 instead of 0xcc
+Allocated in usb_get_status+0x2b/0xac age=1 cpu=3 pid=41
+ __kmem_cache_alloc_node+0x12f/0x1e4
+ __kmalloc+0x33/0x8c
+ usb_get_status+0x2b/0xac
+ hub_probe+0x5e9/0xcec
+ usb_probe_interface+0xbf/0x21c
+ really_probe+0xa5/0x2c4
+ __driver_probe_device+0x75/0x174
+ driver_probe_device+0x31/0x94
+ __device_attach_driver+0x65/0xc0
+ bus_for_each_drv+0x4b/0x74
+ __device_attach+0x69/0x120
+ bus_probe_device+0x65/0x6c
+ device_add+0x48b/0x5f8
+ usb_set_configuration+0x37b/0x6b4
+ usb_generic_driver_probe+0x37/0x68
+ usb_probe_device+0x35/0xb4
+Slab 0xbf622b80 objects=21 used=18 fp=0x8555cdc0 flags=0x800(slab|zone=0)
+Object 0x8555cd00 @offset=3328 fp=0x00000000
+
+Redzone  8555ccc0: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc  ................
+Redzone  8555ccd0: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc  ................
+Redzone  8555cce0: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc  ................
+Redzone  8555ccf0: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc  ................
+Object   8555cd00: 01 00 00 00 cc cc cc cc cc cc cc cc cc cc cc cc  ................
+Object   8555cd10: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc  ................
+Object   8555cd20: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc  ................
+Object   8555cd30: cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc  ................
+Redzone  8555cd40: cc cc cc cc                                      ....
+Padding  8555cd74: 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a 5a              ZZZZZZZZZZZZ
+CPU: 3 PID: 41 Comm: kworker/3:1 Tainted: G    B              6.6.0-rc1mq-00118-g59786f827ea1 #1115
+Hardware name: NVIDIA Tegra SoC (Flattened Device Tree)
+Workqueue: usb_hub_wq hub_event
+[<8010ca28>] (unwind_backtrace) from [<801090a5>] (show_stack+0x11/0x14)
+[<801090a5>] (show_stack) from [<805da2fb>] (dump_stack_lvl+0x4d/0x7c)
+[<805da2fb>] (dump_stack_lvl) from [<8026464f>] (check_bytes_and_report+0xb3/0xe4)
+[<8026464f>] (check_bytes_and_report) from [<802648e1>] (check_object+0x261/0x290)
+[<802648e1>] (check_object) from [<802671b1>] (free_to_partial_list+0x105/0x3f8)
+[<802671b1>] (free_to_partial_list) from [<80268613>] (__kmem_cache_free+0x103/0x128)
+[<80268613>] (__kmem_cache_free) from [<80425a67>] (usb_get_status+0x73/0xac)
+[<80425a67>] (usb_get_status) from [<80421b31>] (hub_probe+0x5e9/0xcec)
+[<80421b31>] (hub_probe) from [<80428bbb>] (usb_probe_interface+0xbf/0x21c)
+[<80428bbb>] (usb_probe_interface) from [<803ee13d>] (really_probe+0xa5/0x2c4)
+[<803ee13d>] (really_probe) from [<803ee3d1>] (__driver_probe_device+0x75/0x174)
+[<803ee3d1>] (__driver_probe_device) from [<803ee501>] (driver_probe_device+0x31/0x94)
+usb 1-1: device descriptor read/8, error -71
+
+Fixes: fc53d5279094 ("usb: chipidea: tegra: Support host mode")
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Link: https://lore.kernel.org/r/ef8466b834c1726f5404c95c3e192e90460146f8.1695934946.git.mirq-linux@rere.qmqm.pl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/iio/iio_generic_buffer.c | 31 +++++++++++++++----------------
- 1 file changed, 15 insertions(+), 16 deletions(-)
+ drivers/usb/chipidea/host.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/iio/iio_generic_buffer.c b/tools/iio/iio_generic_buffer.c
-index 84545666a09c4..9a5af0f6592dc 100644
---- a/tools/iio/iio_generic_buffer.c
-+++ b/tools/iio/iio_generic_buffer.c
-@@ -53,7 +53,7 @@ enum autochan {
-  * Has the side effect of filling the channels[i].location values used
-  * in processing the buffer output.
-  **/
--int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
-+static int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
- {
- 	int bytes = 0;
- 	int i = 0;
-@@ -72,7 +72,7 @@ int size_from_channelarray(struct iio_channel_info *channels, int num_channels)
- 	return bytes;
- }
+diff --git a/drivers/usb/chipidea/host.c b/drivers/usb/chipidea/host.c
+index bdc3885c0d493..de1e7a4322ada 100644
+--- a/drivers/usb/chipidea/host.c
++++ b/drivers/usb/chipidea/host.c
+@@ -403,12 +403,13 @@ static int ci_hdrc_alloc_dma_aligned_buffer(struct urb *urb, gfp_t mem_flags)
+ 	const unsigned int ci_hdrc_usb_dma_align = 32;
+ 	size_t kmalloc_size;
  
--void print1byte(uint8_t input, struct iio_channel_info *info)
-+static void print1byte(uint8_t input, struct iio_channel_info *info)
- {
- 	/*
- 	 * Shift before conversion to avoid sign extension
-@@ -89,7 +89,7 @@ void print1byte(uint8_t input, struct iio_channel_info *info)
- 	}
- }
+-	if (urb->num_sgs || urb->sg || urb->transfer_buffer_length == 0 ||
+-	    !((uintptr_t)urb->transfer_buffer & (ci_hdrc_usb_dma_align - 1)))
++	if (urb->num_sgs || urb->sg || urb->transfer_buffer_length == 0)
++		return 0;
++	if (!((uintptr_t)urb->transfer_buffer & (ci_hdrc_usb_dma_align - 1)) && !(urb->transfer_buffer_length & 3))
+ 		return 0;
  
--void print2byte(uint16_t input, struct iio_channel_info *info)
-+static void print2byte(uint16_t input, struct iio_channel_info *info)
- {
- 	/* First swap if incorrect endian */
- 	if (info->be)
-@@ -112,7 +112,7 @@ void print2byte(uint16_t input, struct iio_channel_info *info)
- 	}
- }
+ 	/* Allocate a buffer with enough padding for alignment */
+-	kmalloc_size = urb->transfer_buffer_length +
++	kmalloc_size = ALIGN(urb->transfer_buffer_length, 4) +
+ 		       sizeof(struct ci_hdrc_dma_aligned_buffer) +
+ 		       ci_hdrc_usb_dma_align - 1;
  
--void print4byte(uint32_t input, struct iio_channel_info *info)
-+static void print4byte(uint32_t input, struct iio_channel_info *info)
- {
- 	/* First swap if incorrect endian */
- 	if (info->be)
-@@ -135,7 +135,7 @@ void print4byte(uint32_t input, struct iio_channel_info *info)
- 	}
- }
- 
--void print8byte(uint64_t input, struct iio_channel_info *info)
-+static void print8byte(uint64_t input, struct iio_channel_info *info)
- {
- 	/* First swap if incorrect endian */
- 	if (info->be)
-@@ -171,9 +171,8 @@ void print8byte(uint64_t input, struct iio_channel_info *info)
-  *			      to fill the location offsets.
-  * @num_channels:	number of channels
-  **/
--void process_scan(char *data,
--		  struct iio_channel_info *channels,
--		  int num_channels)
-+static void process_scan(char *data, struct iio_channel_info *channels,
-+			 int num_channels)
- {
- 	int k;
- 
-@@ -242,7 +241,7 @@ static int enable_disable_all_channels(char *dev_dir_name, int enable)
- 	return 0;
- }
- 
--void print_usage(void)
-+static void print_usage(void)
- {
- 	fprintf(stderr, "Usage: generic_buffer [options]...\n"
- 		"Capture, convert and output data from IIO device buffer\n"
-@@ -261,12 +260,12 @@ void print_usage(void)
- 		"  -w <n>     Set delay between reads in us (event-less mode)\n");
- }
- 
--enum autochan autochannels = AUTOCHANNELS_DISABLED;
--char *dev_dir_name = NULL;
--char *buf_dir_name = NULL;
--bool current_trigger_set = false;
-+static enum autochan autochannels = AUTOCHANNELS_DISABLED;
-+static char *dev_dir_name = NULL;
-+static char *buf_dir_name = NULL;
-+static bool current_trigger_set = false;
- 
--void cleanup(void)
-+static void cleanup(void)
- {
- 	int ret;
- 
-@@ -298,14 +297,14 @@ void cleanup(void)
- 	}
- }
- 
--void sig_handler(int signum)
-+static void sig_handler(int signum)
- {
- 	fprintf(stderr, "Caught signal %d\n", signum);
- 	cleanup();
- 	exit(-signum);
- }
- 
--void register_cleanup(void)
-+static void register_cleanup(void)
- {
- 	struct sigaction sa = { .sa_handler = sig_handler };
- 	const int signums[] = { SIGINT, SIGTERM, SIGABRT };
 -- 
 2.42.0
 
