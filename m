@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CDEF7ED0DD
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:58:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1C707ED0C3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235614AbjKOT6E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:58:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53784 "EHLO
+        id S1343533AbjKOT5X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235676AbjKOT6D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:58:03 -0500
+        with ESMTP id S1343627AbjKOT5X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:57:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAFA71A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC99C433C7;
-        Wed, 15 Nov 2023 19:57:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A33181A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:57:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F7C3C433C7;
+        Wed, 15 Nov 2023 19:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078279;
-        bh=wpI0JuRca5MOFjrfKuOtqo6F2j6p6vlBL2mK9lHqjy0=;
+        s=korg; t=1700078239;
+        bh=u2ahk3sS4hkb0XTR0SrLd9spFIeUkTKmWY/HJxZnyUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=co68fYKcWb7+QvzUm5Ayt4YNWIzR+8gLIITQ/C79Gl2uCi1079rB9uXnaaZfCrQ/Q
-         fnG/LH4A8/8igg+wLZ3pyABybIT+ABFOC7wSntwqv7qPavxgpg6BQuXvarCPTkQFjI
-         heIas7tWAks5JykiuGZXG3RaFzLqZlIgiiG/GQh8=
+        b=LInZAcDEjreS7CUYRIZtfxPkxQDnSuQpWF5+JB+bqds4SDO+VJTvuH49QRO+T4x40
+         g1lkoUXy+VUql0VKrtm9Qd+E/fEr5VsuvhsF0Z1aT4Pto2e9CVZDW4QH57s6tSxZIV
+         xCQmq3a0OpGITCRVQ8AL7wSGy08oiEGFTo6rcsqE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        Takashi Iwai <tiwai@suse.de>, Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 189/379] ALSA: hda: cs35l41: Undo runtime PM changes at driver exit time
-Date:   Wed, 15 Nov 2023 14:24:24 -0500
-Message-ID: <20231115192656.284203906@linuxfoundation.org>
+Subject: [PATCH 6.1 190/379] KEYS: Include linux/errno.h in linux/verification.h
+Date:   Wed, 15 Nov 2023 14:24:25 -0500
+Message-ID: <20231115192656.341193846@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,46 +54,34 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 85a1bf86fac0c195929768b4e92c78cad107523b ]
+[ Upstream commit 0a596b0682a7ce37e26c36629816f105c6459d06 ]
 
-According to the documentation, drivers are responsible for undoing at
-removal time all runtime PM changes done during probing.
+Add inclusion of linux/errno.h as otherwise the reference to EINVAL
+may be invalid.
 
-Hence, add the missing calls to pm_runtime_dont_use_autosuspend(), which
-are necessary for undoing pm_runtime_use_autosuspend().
-
-Fixes: 1873ebd30cc8 ("ALSA: hda: cs35l41: Support Hibernation during Suspend")
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20230907171010.1447274-11-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f3cf4134c5c6 ("bpf: Add bpf_lookup_*_key() and bpf_key_put() kfuncs")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308261414.HKw1Mrip-lkp@intel.com/
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l41_hda.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/verification.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/cs35l41_hda.c b/sound/pci/hda/cs35l41_hda.c
-index f92fc84199bc8..c79a12e5c9ad2 100644
---- a/sound/pci/hda/cs35l41_hda.c
-+++ b/sound/pci/hda/cs35l41_hda.c
-@@ -1509,6 +1509,7 @@ int cs35l41_hda_probe(struct device *dev, const char *device_name, int id, int i
- 	return 0;
+diff --git a/include/linux/verification.h b/include/linux/verification.h
+index f34e50ebcf60a..cb2d47f280910 100644
+--- a/include/linux/verification.h
++++ b/include/linux/verification.h
+@@ -8,6 +8,7 @@
+ #ifndef _LINUX_VERIFICATION_H
+ #define _LINUX_VERIFICATION_H
  
- err_pm:
-+	pm_runtime_dont_use_autosuspend(cs35l41->dev);
- 	pm_runtime_disable(cs35l41->dev);
- 	pm_runtime_put_noidle(cs35l41->dev);
++#include <linux/errno.h>
+ #include <linux/types.h>
  
-@@ -1527,6 +1528,7 @@ void cs35l41_hda_remove(struct device *dev)
- 	struct cs35l41_hda *cs35l41 = dev_get_drvdata(dev);
- 
- 	pm_runtime_get_sync(cs35l41->dev);
-+	pm_runtime_dont_use_autosuspend(cs35l41->dev);
- 	pm_runtime_disable(cs35l41->dev);
- 
- 	if (cs35l41->halo_initialized)
+ /*
 -- 
 2.42.0
 
