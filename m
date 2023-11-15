@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E35BE7ED297
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DF147ED29A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233302AbjKOUmo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:42:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55224 "EHLO
+        id S233287AbjKOUmp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233605AbjKOTZv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:51 -0500
+        with ESMTP id S233648AbjKOTZx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79774A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE480C433C8;
-        Wed, 15 Nov 2023 19:25:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 410D11AD
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE05C433C8;
+        Wed, 15 Nov 2023 19:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076348;
-        bh=lpRVATMmhFJzsBNY09ymxEVciDUHGfLBGUhHIuFCAdk=;
+        s=korg; t=1700076349;
+        bh=2XaxAVuEpcYFy8k8igQ6sFgVEekwLHVtlvTOoAcdXhE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xoaxG5Oxl5HMTG4q0OF8Qj3siYxNLJPlEHovofChTfh46yVtSEiUZsHsY3JT5ZlbW
-         /STiCDOFo2BFkLpA4oVZzO9nuA4qaW5BJZsBogGG+qWH+2TeH5AaopCECLhGP8askn
-         y/nOPMO/skCGe3mg7XVJUKxnOMLq/OjhVm6nh45s=
+        b=Elqb9UIbZbeMN+rO65VO73sHdflRKH0zMzkM4j6PO2Ztz2e5M6O5DyjJ+ETtH2+KS
+         5mxya9G8Nd2I8JENafiMhNBV2aZjcNU+Fp7VbfYjs+i/y1Llzl+KCvh+BSg1pl4Zbh
+         A7VVdCg5VYsPY950tO41sI5/CeXq2wPmbvMx0c7U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
         =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
         Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 235/550] drm/amd/display: Check all enabled planes in dm_check_crtc_cursor
-Date:   Wed, 15 Nov 2023 14:13:39 -0500
-Message-ID: <20231115191616.998559280@linuxfoundation.org>
+Subject: [PATCH 6.5 236/550] drm/amd/display: Refactor dm_get_plane_scale helper
+Date:   Wed, 15 Nov 2023 14:13:40 -0500
+Message-ID: <20231115191617.063838191@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -58,57 +59,74 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Michel Dänzer <mdaenzer@redhat.com>
 
-[ Upstream commit 003048ddf44b1a6cfa57afa5a0cf40673e13f1ba ]
+[ Upstream commit ec4d770bbb155674c2497f255f4199bdc42287a9 ]
 
-It was only checking planes which had any state changes in the same
-commit. However, it also needs to check other enabled planes.
+Cleanup, no functional change intended.
 
-Not doing this meant that a commit might spuriously "succeed", resulting
-in the cursor plane displaying with incorrect scaling. See
-https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/3177#note_1824263
-for an example.
-
-Fixes: d1bfbe8a3202 ("amd/display: check cursor plane matches underlying plane")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
 Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: bc0b79ce2050 ("drm/amd/display: Bail from dm_check_crtc_cursor if no relevant change")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 23 +++++++++++--------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 83d670f0d199b..ee9eb7350b7fb 100644
+index ee9eb7350b7fb..e465e9e56e672 100644
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -9874,14 +9874,24 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
- 	 * blending properties match the underlying planes'.
- 	 */
+@@ -9857,6 +9857,17 @@ static void dm_get_oriented_plane_size(struct drm_plane_state *plane_state,
+ 	}
+ }
  
--	new_cursor_state = drm_atomic_get_new_plane_state(state, cursor);
--	if (!new_cursor_state || !new_cursor_state->fb)
-+	new_cursor_state = drm_atomic_get_plane_state(state, cursor);
-+	if (IS_ERR(new_cursor_state))
-+		return PTR_ERR(new_cursor_state);
++static void
++dm_get_plane_scale(struct drm_plane_state *plane_state,
++		   int *out_plane_scale_w, int *out_plane_scale_h)
++{
++	int plane_src_w, plane_src_h;
 +
-+	if (!new_cursor_state->fb)
++	dm_get_oriented_plane_size(plane_state, &plane_src_w, &plane_src_h);
++	*out_plane_scale_w = plane_state->crtc_w * 1000 / plane_src_w;
++	*out_plane_scale_h = plane_state->crtc_h * 1000 / plane_src_h;
++}
++
+ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
+ 				struct drm_crtc *crtc,
+ 				struct drm_crtc_state *new_crtc_state)
+@@ -9865,8 +9876,6 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
+ 	struct drm_plane_state *new_cursor_state, *new_underlying_state;
+ 	int i;
+ 	int cursor_scale_w, cursor_scale_h, underlying_scale_w, underlying_scale_h;
+-	int cursor_src_w, cursor_src_h;
+-	int underlying_src_w, underlying_src_h;
+ 
+ 	/* On DCE and DCN there is no dedicated hardware cursor plane. We get a
+ 	 * cursor per pipe but it's going to inherit the scaling and
+@@ -9881,9 +9890,7 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
+ 	if (!new_cursor_state->fb)
  		return 0;
  
- 	dm_get_oriented_plane_size(new_cursor_state, &cursor_src_w, &cursor_src_h);
- 	cursor_scale_w = new_cursor_state->crtc_w * 1000 / cursor_src_w;
- 	cursor_scale_h = new_cursor_state->crtc_h * 1000 / cursor_src_h;
+-	dm_get_oriented_plane_size(new_cursor_state, &cursor_src_w, &cursor_src_h);
+-	cursor_scale_w = new_cursor_state->crtc_w * 1000 / cursor_src_w;
+-	cursor_scale_h = new_cursor_state->crtc_h * 1000 / cursor_src_h;
++	dm_get_plane_scale(new_cursor_state, &cursor_scale_w, &cursor_scale_h);
  
-+	/* Need to check all enabled planes, even if this commit doesn't change
-+	 * their state
-+	 */
-+	i = drm_atomic_add_affected_planes(state, crtc);
-+	if (i)
-+		return i;
-+
- 	for_each_new_plane_in_state_reverse(state, underlying, new_underlying_state, i) {
- 		/* Narrow down to non-cursor planes on the same CRTC as the cursor */
- 		if (new_underlying_state->crtc != crtc || underlying == crtc->cursor)
+ 	/* Need to check all enabled planes, even if this commit doesn't change
+ 	 * their state
+@@ -9901,10 +9908,8 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
+ 		if (!new_underlying_state->fb)
+ 			continue;
+ 
+-		dm_get_oriented_plane_size(new_underlying_state,
+-					   &underlying_src_w, &underlying_src_h);
+-		underlying_scale_w = new_underlying_state->crtc_w * 1000 / underlying_src_w;
+-		underlying_scale_h = new_underlying_state->crtc_h * 1000 / underlying_src_h;
++		dm_get_plane_scale(new_underlying_state,
++				   &underlying_scale_w, &underlying_scale_h);
+ 
+ 		if (cursor_scale_w != underlying_scale_w ||
+ 		    cursor_scale_h != underlying_scale_h) {
 -- 
 2.42.0
 
