@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF2157ED0B5
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54AEE7ED0B9
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343793AbjKOT5G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:57:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50438 "EHLO
+        id S1343901AbjKOT5H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:57:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235666AbjKOT4z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:55 -0500
+        with ESMTP id S235689AbjKOT46 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:58 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655BE1BC
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D66B7C433C7;
-        Wed, 15 Nov 2023 19:56:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EC5BD49
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34DDC433C9;
+        Wed, 15 Nov 2023 19:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078212;
-        bh=GwZb6SxljqzWTve9jcozMEx5LK7XZMmWljAO2+wzVBg=;
+        s=korg; t=1700078215;
+        bh=pabrYOoOj2/By6v19le1QV9lAgseIcWECSy9LE3oSYQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oDKT5kLKz17m7zIxVjUhoBF7d/J4qOkh/YZlwKdVBEC55FaJ2lH9pKNXRoXrnz0XH
-         3heAMfCuYFm+y9FfPZbRFRWTFM6uH3UK+d/3p3q90bgdjl5UnV2UT33h/gRPXe25pE
-         dNu+0A/viMJ99Yu74muFCKe0ncdFfWzyJ/g7sOQA=
+        b=xvjHbE0UDWXQQshRKXBWi7Yuwyer90Ulcaw0vX2ou+hlVlDRIlJzc35AU1o1mCd5d
+         4U0CC7GhcWKkNa4go697U8z9oo0V53ePVZluj9+WXzs4iGGUPud2zSGbmTXGEG/ayF
+         IkjvHgwtOeO1ZNva/tZOEUxEKt6QK15kh3Z14gJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Shubhi Garg <shgarg@nvidia.com>,
+        Jon Hunter <jonathanh@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 181/379] arm64: dts: imx8mn: Add sound-dai-cells to micfil node
-Date:   Wed, 15 Nov 2023 14:24:16 -0500
-Message-ID: <20231115192655.809484675@linuxfoundation.org>
+Subject: [PATCH 6.1 182/379] arm64: tegra: Use correct interrupts for Tegra234 TKE
+Date:   Wed, 15 Nov 2023 14:24:17 -0500
+Message-ID: <20231115192655.866753390@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -55,33 +55,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit db1925454a2e7cadcac8756442ca7c3198332336 ]
+[ Upstream commit c0b80988eb78d6423249ab530bfbc6b238790a26 ]
 
-Per the DT bindings, the micfil node should have a sound-dai-cells
-entry.
+The shared interrupts 0-9 of the TKE are mapped to interrupts 0-9, but
+shared interrupts 10-15 are mapped to 256-261. Correct the mapping for
+the final 6 interrupts. This prevents the TKE from requesting the RTC
+interrupt (along with several GTE and watchdog interrupts).
 
-Fixes: cca69ef6eba5 ("arm64: dts: imx8mn: Add support for micfil")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Reported-by: Shubhi Garg <shgarg@nvidia.com>
+Fixes: 28d860ed02c2 ("arm64: tegra: Enable native timers on Tegra234")
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/nvidia/tegra234.dtsi | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn.dtsi b/arch/arm64/boot/dts/freescale/imx8mn.dtsi
-index 37246ca9d9075..66fadbf19f0a3 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn.dtsi
-@@ -370,6 +370,7 @@ micfil: audio-controller@30080000 {
- 						      "pll8k", "pll11k", "clkext3";
- 					dmas = <&sdma2 24 25 0x80000000>;
- 					dma-names = "rx";
-+					#sound-dai-cells = <0>;
- 					status = "disabled";
- 				};
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234.dtsi b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+index dfe2cf2f4b218..6598e9ac52b81 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234.dtsi
+@@ -532,12 +532,12 @@ timer@2080000 {
+ 				     <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 8 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 9 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 10 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 11 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 15 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 256 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 257 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 258 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 259 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 260 IRQ_TYPE_LEVEL_HIGH>,
++				     <GIC_SPI 261 IRQ_TYPE_LEVEL_HIGH>;
+ 			status = "okay";
+ 		};
  
 -- 
 2.42.0
