@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7120B7ED0AB
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:57:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B067ED084
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:56:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235619AbjKOT4y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:56:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53422 "EHLO
+        id S1343918AbjKOT4M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:56:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343855AbjKOT4i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:38 -0500
+        with ESMTP id S1343935AbjKOT4D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:56:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54AC2D7A
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:56:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A9BC433C9;
-        Wed, 15 Nov 2023 19:56:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A0381A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:55:54 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BE8C433B7;
+        Wed, 15 Nov 2023 19:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700078194;
-        bh=rk8i1Rxt/IDOh1cEtKs63Qvs1c+Vp7IcmqaK9EsAOxE=;
+        s=korg; t=1700078153;
+        bh=GHyzafHMZifQHN0Hfr2pmLcZ+7m52ig40hZLGZp4wfc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PXbdorcIm3OU1E7DdEkdLRJuMj0h4VQjp4CvGR0V/H3NIlRcs+lPAqCp5a8bsYztZ
-         AZnisloNR2Yx9H0Qxv1auggWKrj2DhHVV7OsK4gTQWO1b3nqpM22CulDCOodyHQF6+
-         JciWE8TR4EW2V8dc27FQCiZUuOLjjAXFjSBfOC+c=
+        b=GBrMIVLWBH1nYp2ZaQIvBBriZST/mevWt9ViQMRQcqsO3O3XjHk2afWiv0rthux12
+         5Z5iXsufXgPCjNFmd0qWTXL9aKwEYmLY6lNkYtj+24qm+BH1G3AzuOH+a7ajhd9ftD
+         xkTSwEZB9syXrO/E+q1OdZEivrVXLkVDtw53K3eg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Xiaogang.Chen" <xiaogang.chen@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Michel=20D=C3=A4nzer?= <mdaenzer@redhat.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/379] drm/amdkfd: fix some race conditions in vram buffer alloc/free of svm code
-Date:   Wed, 15 Nov 2023 14:23:30 -0500
-Message-ID: <20231115192653.116675597@linuxfoundation.org>
+Subject: [PATCH 6.1 136/379] drm/amd/display: Check all enabled planes in dm_check_crtc_cursor
+Date:   Wed, 15 Nov 2023 14:23:31 -0500
+Message-ID: <20231115192653.173052805@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
 References: <20231115192645.143643130@linuxfoundation.org>
@@ -40,6 +40,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,47 +56,59 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+From: Michel Dänzer <mdaenzer@redhat.com>
 
-[ Upstream commit 7bfaa160caed8192f8262c4638f552cad94bcf5a ]
+[ Upstream commit 003048ddf44b1a6cfa57afa5a0cf40673e13f1ba ]
 
-This patch fixes:
-1: ref number of prange's svm_bo got decreased by an async call from hmm. When
-wait svm_bo of prange got released we shoul also wait prang->svm_bo become NULL,
-otherwise prange->svm_bo may be set to null after allocate new vram buffer.
+It was only checking planes which had any state changes in the same
+commit. However, it also needs to check other enabled planes.
 
-2: During waiting svm_bo of prange got released in a while loop should reschedule
-current task to give other tasks oppotunity to run, specially the the workque
-task that handles svm_bo ref release, otherwise we may enter to softlock.
+Not doing this meant that a commit might spuriously "succeed", resulting
+in the cursor plane displaying with incorrect scaling. See
+https://gitlab.gnome.org/GNOME/mutter/-/merge_requests/3177#note_1824263
+for an example.
 
-Signed-off-by: Xiaogang.Chen <xiaogang.chen@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Fixes: d1bfbe8a3202 ("amd/display: check cursor plane matches underlying plane")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Michel Dänzer <mdaenzer@redhat.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 63feea08904cb..d7e758c86a0b8 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -487,11 +487,11 @@ svm_range_validate_svm_bo(struct amdgpu_device *adev, struct svm_range *prange)
- 
- 	/* We need a new svm_bo. Spin-loop to wait for concurrent
- 	 * svm_range_bo_release to finish removing this range from
--	 * its range list. After this, it is safe to reuse the
--	 * svm_bo pointer and svm_bo_list head.
-+	 * its range list and set prange->svm_bo to null. After this,
-+	 * it is safe to reuse the svm_bo pointer and svm_bo_list head.
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 339f1f5a08339..ebd07e3f12571 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -9643,14 +9643,24 @@ static int dm_check_crtc_cursor(struct drm_atomic_state *state,
+ 	 * blending properties match the underlying planes'.
  	 */
--	while (!list_empty_careful(&prange->svm_bo_list))
--		;
-+	while (!list_empty_careful(&prange->svm_bo_list) || prange->svm_bo)
-+		cond_resched();
  
- 	return false;
- }
+-	new_cursor_state = drm_atomic_get_new_plane_state(state, cursor);
+-	if (!new_cursor_state || !new_cursor_state->fb)
++	new_cursor_state = drm_atomic_get_plane_state(state, cursor);
++	if (IS_ERR(new_cursor_state))
++		return PTR_ERR(new_cursor_state);
++
++	if (!new_cursor_state->fb)
+ 		return 0;
+ 
+ 	dm_get_oriented_plane_size(new_cursor_state, &cursor_src_w, &cursor_src_h);
+ 	cursor_scale_w = new_cursor_state->crtc_w * 1000 / cursor_src_w;
+ 	cursor_scale_h = new_cursor_state->crtc_h * 1000 / cursor_src_h;
+ 
++	/* Need to check all enabled planes, even if this commit doesn't change
++	 * their state
++	 */
++	i = drm_atomic_add_affected_planes(state, crtc);
++	if (i)
++		return i;
++
+ 	for_each_new_plane_in_state_reverse(state, underlying, new_underlying_state, i) {
+ 		/* Narrow down to non-cursor planes on the same CRTC as the cursor */
+ 		if (new_underlying_state->crtc != crtc || underlying == crtc->cursor)
 -- 
 2.42.0
 
