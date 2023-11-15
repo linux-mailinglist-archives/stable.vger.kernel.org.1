@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6F947ECCD6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67B547ECF63
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234177AbjKOTcw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:32:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46146 "EHLO
+        id S235305AbjKOTsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234155AbjKOTcv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:51 -0500
+        with ESMTP id S235313AbjKOTsK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F061A7
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E514C433CA;
-        Wed, 15 Nov 2023 19:32:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC7551A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:05 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324FAC433C8;
+        Wed, 15 Nov 2023 19:48:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076768;
-        bh=AUffdMteexZwrPNoehp4itEP1Y89a5iawdcjYcwhVNM=;
+        s=korg; t=1700077685;
+        bh=SDmJoRjuTHHEjYf2sxwiWhsu6Rb9lcjNGtwJOlBWLXs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wYvcFlqhgcsNrPA6lf61LvCBmYG+079PHrIUtEhxmnvs0vs7LsU8X1fQmH0Bsd8rg
-         DCq5VGAXEKtIQV/VHvSHGP28gztq8MKYKvbUFL+kJOkLRmVjhVbJmio1z6c2/prsmR
-         QS5V8KLypDa4juVP8RbFC7v2T3UxwGMm2xPpOHws=
+        b=uHpYJCJWYG73aIy4TfUnM+NQW/3T8+3pBymG8pezmOgQSGbdAgp4s4nSeheijyHu4
+         91mr11XiheDgCXmLm8cXwJg4pbsLDysMRF2PZqHB5qBAdoxDIqcjgbxsYaGvxWP19S
+         /TV1DhT2swa8HY1xTrhE0dxBOTWKm8QP9QG6ERCA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
         Georgi Djakov <djakov@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 415/550] interconnect: qcom: sdm845: Set ACV enable_mask
-Date:   Wed, 15 Nov 2023 14:16:39 -0500
-Message-ID: <20231115191629.530097848@linuxfoundation.org>
+Subject: [PATCH 6.6 455/603] interconnect: qcom: sm8150: Set ACV enable_mask
+Date:   Wed, 15 Nov 2023 14:16:40 -0500
+Message-ID: <20231115191644.149475219@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,30 +50,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit f8fe97a9fd2098de0570387029065eef657d50ee ]
+[ Upstream commit 7ed42176406e5a2c9a5767d0d75690c7d1588027 ]
 
 ACV expects an enable_mask corresponding to the APPS RSC, fill it in.
 
-Fixes: b5d2f741077a ("interconnect: qcom: Add sdm845 interconnect provider driver")
+Fixes: a09b817c8bad ("interconnect: qcom: Add SM8150 interconnect provider driver")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811-topic-acv-v2-7-765ad70e539a@linaro.org
+Link: https://lore.kernel.org/r/20230811-topic-acv-v2-9-765ad70e539a@linaro.org
 Signed-off-by: Georgi Djakov <djakov@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/sdm845.c | 1 +
+ drivers/interconnect/qcom/sm8150.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/interconnect/qcom/sdm845.c b/drivers/interconnect/qcom/sdm845.c
-index 39ee54ffdb7ba..02cf890684441 100644
---- a/drivers/interconnect/qcom/sdm845.c
-+++ b/drivers/interconnect/qcom/sdm845.c
-@@ -148,6 +148,7 @@ DEFINE_QNODE(xs_sys_tcu_cfg, SDM845_SLAVE_TCU, 1, 8);
+diff --git a/drivers/interconnect/qcom/sm8150.c b/drivers/interconnect/qcom/sm8150.c
+index c7c9cf7f746b0..edfe824cad353 100644
+--- a/drivers/interconnect/qcom/sm8150.c
++++ b/drivers/interconnect/qcom/sm8150.c
+@@ -1282,6 +1282,7 @@ static struct qcom_icc_node xs_sys_tcu_cfg = {
  
  static struct qcom_icc_bcm bcm_acv = {
  	.name = "ACV",
