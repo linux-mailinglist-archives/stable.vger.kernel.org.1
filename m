@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB3FB7ECB59
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D50D7ECB5B
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232884AbjKOTVp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60842 "EHLO
+        id S232830AbjKOTVr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:21:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232997AbjKOTVj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:39 -0500
+        with ESMTP id S232589AbjKOTVm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58B0D1BF
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00DBC433C7;
-        Wed, 15 Nov 2023 19:21:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 463AC19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB19BC433C9;
+        Wed, 15 Nov 2023 19:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076095;
-        bh=ZMKTdLxDWE4ln3LjLwx3y93Z9SnifWqh9xJm31FAZcw=;
+        s=korg; t=1700076098;
+        bh=EpSN1BWjSjDXYFtBpD/rSk3rFCGk920oJUQIpqn9bFw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tKC4JBsPbfvT+yX+iKn9dPCac0FANSKr1O1PQgwXNAbkUGuVNyI5uexlmJR0MMWK/
-         my6j6dXkClIip3ul2ZjPPz0Fom+SWvgR9BO9DRvUeqWFNstkVrw+4oo7bXYGdQ7UFX
-         vTRDpYzWqdImpm/i/vTDtr/770b0U5+wA9DPRA14=
+        b=vTIZHpvO/3a8MMvA1a2etlddo53qOMyBF0mz4cSPj/unaH3u3Dxrj716ySFgRk+xV
+         wHpL2zC7tyGNEyIobUVHGdhKA9yTmiL2kXtnt/v+Yu2vd7UMHi5ZXSiQYsAfZeThMP
+         rs9riks3gs1J1xw/CBC2JJpnSkRaUHLfXPfjsWVA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lorenzo Bianconi <lorenzo@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 074/550] net: ethernet: mtk_wed: fix EXT_INT_STATUS_RX_FBUF definitions for MT7986 SoC
-Date:   Wed, 15 Nov 2023 14:10:58 -0500
-Message-ID: <20231115191605.830776399@linuxfoundation.org>
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 075/550] wifi: rtw88: debug: Fix the NULL vs IS_ERR() bug for debugfs_create_file()
+Date:   Wed, 15 Nov 2023 14:10:59 -0500
+Message-ID: <20231115191605.905067182@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 References: <20231115191600.708733204@linuxfoundation.org>
@@ -54,37 +54,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit c80471ba74b7f332ac19b985ccb76d852d507acf ]
+[ Upstream commit 74f7957c9b1b95553faaf146a2553e023a9d1720 ]
 
-Fix MTK_WED_EXT_INT_STATUS_RX_FBUF_LO_TH and
-MTK_WED_EXT_INT_STATUS_RX_FBUF_HI_TH definitions for MT7986 (MT7986 is
-the only SoC to use them).
+Since debugfs_create_file() return ERR_PTR and never return NULL, so use
+IS_ERR() to check it instead of checking NULL.
 
-Fixes: de84a090d99a ("net: ethernet: mtk_eth_wed: add wed support for mt7986 chipset")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230919050651.962694-1-ruanjinjie@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_wed_regs.h | 4 ++--
+ drivers/net/wireless/realtek/rtw88/debug.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_wed_regs.h b/drivers/net/ethernet/mediatek/mtk_wed_regs.h
-index 0a50bb98c5ea4..20652c4e739a8 100644
---- a/drivers/net/ethernet/mediatek/mtk_wed_regs.h
-+++ b/drivers/net/ethernet/mediatek/mtk_wed_regs.h
-@@ -64,8 +64,8 @@ struct mtk_wdma_desc {
- #define MTK_WED_EXT_INT_STATUS_TKID_TITO_INVALID	BIT(4)
- #define MTK_WED_EXT_INT_STATUS_TX_FBUF_LO_TH		BIT(8)
- #define MTK_WED_EXT_INT_STATUS_TX_FBUF_HI_TH		BIT(9)
--#define MTK_WED_EXT_INT_STATUS_RX_FBUF_LO_TH		BIT(12)
--#define MTK_WED_EXT_INT_STATUS_RX_FBUF_HI_TH		BIT(13)
-+#define MTK_WED_EXT_INT_STATUS_RX_FBUF_LO_TH		BIT(10) /* wed v2 */
-+#define MTK_WED_EXT_INT_STATUS_RX_FBUF_HI_TH		BIT(11) /* wed v2 */
- #define MTK_WED_EXT_INT_STATUS_RX_DRV_R_RESP_ERR	BIT(16)
- #define MTK_WED_EXT_INT_STATUS_RX_DRV_W_RESP_ERR	BIT(17)
- #define MTK_WED_EXT_INT_STATUS_RX_DRV_COHERENT		BIT(18)
+diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
+index f8ba133baff06..35bc37a3c469d 100644
+--- a/drivers/net/wireless/realtek/rtw88/debug.c
++++ b/drivers/net/wireless/realtek/rtw88/debug.c
+@@ -1233,9 +1233,9 @@ static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
+ #define rtw_debugfs_add_core(name, mode, fopname, parent)		\
+ 	do {								\
+ 		rtw_debug_priv_ ##name.rtwdev = rtwdev;			\
+-		if (!debugfs_create_file(#name, mode,			\
++		if (IS_ERR(debugfs_create_file(#name, mode,		\
+ 					 parent, &rtw_debug_priv_ ##name,\
+-					 &file_ops_ ##fopname))		\
++					 &file_ops_ ##fopname)))	\
+ 			pr_debug("Unable to initialize debugfs:%s\n",	\
+ 			       #name);					\
+ 	} while (0)
 -- 
 2.42.0
 
