@@ -2,59 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2316D7ECF7C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 95A727ECD13
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235328AbjKOTsr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:48:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50152 "EHLO
+        id S234253AbjKOTeT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:34:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235333AbjKOTsq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:46 -0500
+        with ESMTP id S234310AbjKOTeL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:34:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B9D819F
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E12C433C9;
-        Wed, 15 Nov 2023 19:48:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A401B9
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:34:08 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A247C433C8;
+        Wed, 15 Nov 2023 19:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077722;
-        bh=eSV5cUpXIqcLG0TwO9IE/IWJvbj2DyeE4gVF2uk9SuQ=;
+        s=korg; t=1700076847;
+        bh=2U8ocgwhkTYiwV7V1bPqjlMSQGkMnYhklEyf0Rept/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tVrhU9U8quXq16uo3f0E9lcIgDJwS8SaS+b71i1zhzFeIDNyA6RFWjakFXFE6hU0z
-         mgBXQXZ1+84ca8WDhrPxjcieoLM1b4O9FjOEnfglKtx91B1R+WcBVa34PA1GqTmBP1
-         w8fWTbh8cxFauy29njWBadX+tqdgi+4/CHGTrKYs=
+        b=mgQh4F4k4LEHgi2OPX290/gYs3XJtkY8u5VE1e2hNRGM1fQ+a1v8fcujRRy2QAokP
+         3CtyikeJQjcx1MQV5iBMKqz4Igv0GP3kaqC0bSzW9tB25jNv34bRRMVEkzfWFvyjD/
+         /JT9bIjfbJ7ans0+ky5SN2+dwL8HA4VQpfOc1nmA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        K Prateek Nayak <kprateek.nayak@amd.com>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        German Gomez <german.gomez@arm.com>,
-        James Clark <james.clark@arm.com>,
-        Nick Terrell <terrelln@fb.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Changbin Du <changbin.du@huawei.com>,
-        liuwenyu <liuwenyu7@huawei.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>, Song Liu <song@kernel.org>,
-        Leo Yan <leo.yan@linaro.org>, Kajol Jain <kjain@linux.ibm.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Yanteng Si <siyanteng@loongson.cn>,
-        Liam Howlett <liam.howlett@oracle.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 479/603] perf machine: Avoid out of bounds LBR memory read
-Date:   Wed, 15 Nov 2023 14:17:04 -0500
-Message-ID: <20231115191645.564480003@linuxfoundation.org>
+Subject: [PATCH 6.5 441/550] usb: host: xhci-plat: fix possible kernel oops while resuming
+Date:   Wed, 15 Nov 2023 14:17:05 -0500
+Message-ID: <20231115191631.372304321@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,82 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit ab8ce150781d326c6bfbe1e09f175ffde1186f80 ]
+[ Upstream commit a5f928db59519a15e82ecba4ae3e7cbf5a44715a ]
 
-Running perf top with address sanitizer and "--call-graph=lbr" fails
-due to reading sample 0 when no samples exist. Add a guard to prevent
-this.
+If this driver enables the xHC clocks while resuming from sleep, it calls
+clk_prepare_enable() without checking for errors and blithely goes on to
+read/write the xHC's registers -- which, with the xHC not being clocked,
+at least on ARM32 usually causes an imprecise external abort exceptions
+which cause kernel oops.  Currently, the chips for which the driver does
+the clock dance on suspend/resume seem to be the Broadcom STB SoCs, based
+on ARM32 CPUs, as it seems...
 
-Fixes: e2b23483eb1d ("perf machine: Factor out lbr_callchain_add_lbr_ip()")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: German Gomez <german.gomez@arm.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Nick Terrell <terrelln@fb.com>
-Cc: Sean Christopherson <seanjc@google.com>
-Cc: Changbin Du <changbin.du@huawei.com>
-Cc: liuwenyu <liuwenyu7@huawei.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Leo Yan <leo.yan@linaro.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Yanteng Si <siyanteng@loongson.cn>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Link: https://lore.kernel.org/r/20231024222353.3024098-3-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
+
+Fixes: 8bd954c56197 ("usb: host: xhci-plat: suspend and resume clocks")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20231019102924.2797346-19-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/machine.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/usb/host/xhci-plat.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 88f31b3a63acb..e6a8d758f6fe4 100644
---- a/tools/perf/util/machine.c
-+++ b/tools/perf/util/machine.c
-@@ -2624,16 +2624,18 @@ static int lbr_callchain_add_lbr_ip(struct thread *thread,
- 		save_lbr_cursor_node(thread, cursor, i);
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index b26ea7cb4357b..5fabd14e49a03 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -459,23 +459,38 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
+ 	int ret;
+ 
+ 	if (!device_may_wakeup(dev) && (xhci->quirks & XHCI_SUSPEND_RESUME_CLKS)) {
+-		clk_prepare_enable(xhci->clk);
+-		clk_prepare_enable(xhci->reg_clk);
++		ret = clk_prepare_enable(xhci->clk);
++		if (ret)
++			return ret;
++
++		ret = clk_prepare_enable(xhci->reg_clk);
++		if (ret) {
++			clk_disable_unprepare(xhci->clk);
++			return ret;
++		}
  	}
  
--	/* Add LBR ip from first entries.to */
--	ip = entries[0].to;
--	flags = &entries[0].flags;
--	*branch_from = entries[0].from;
--	err = add_callchain_ip(thread, cursor, parent,
--			       root_al, &cpumode, ip,
--			       true, flags, NULL,
--			       *branch_from);
--	if (err)
--		return err;
-+	if (lbr_nr > 0) {
-+		/* Add LBR ip from first entries.to */
-+		ip = entries[0].to;
-+		flags = &entries[0].flags;
-+		*branch_from = entries[0].from;
-+		err = add_callchain_ip(thread, cursor, parent,
-+				root_al, &cpumode, ip,
-+				true, flags, NULL,
-+				*branch_from);
-+		if (err)
-+			return err;
-+	}
+ 	ret = xhci_priv_resume_quirk(hcd);
+ 	if (ret)
+-		return ret;
++		goto disable_clks;
+ 
+ 	ret = xhci_resume(xhci, PMSG_RESUME);
+ 	if (ret)
+-		return ret;
++		goto disable_clks;
+ 
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
  
  	return 0;
++
++disable_clks:
++	if (!device_may_wakeup(dev) && (xhci->quirks & XHCI_SUSPEND_RESUME_CLKS)) {
++		clk_disable_unprepare(xhci->clk);
++		clk_disable_unprepare(xhci->reg_clk);
++	}
++
++	return ret;
  }
+ 
+ static int __maybe_unused xhci_plat_runtime_suspend(struct device *dev)
 -- 
 2.42.0
 
