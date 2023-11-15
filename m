@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 85AA87ED491
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E8F527ED2D3
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344581AbjKOU62 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 15:58:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36892 "EHLO
+        id S233492AbjKOUoi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344612AbjKOU5m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:57:42 -0500
+        with ESMTP id S233371AbjKOUog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18BAB198E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:57:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04066C36AF1;
-        Wed, 15 Nov 2023 20:49:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0870193
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108DBC433C9;
+        Wed, 15 Nov 2023 20:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081389;
-        bh=+d9sQsoRDKddKVdz9dDC2HN5StFG/SDvAUAy09LnrYM=;
+        s=korg; t=1700081073;
+        bh=rkDYwzfoUJo1ZXM1gn1r7j+p0UuB0zP2DYricEV7v+k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lOgw1W35cip7BOgIILvQA7Q/bSQirCxRYBQEjZKxKueXpB/LlZg9jPZ4GednkLvDF
-         hcT+CWqlJMVtDBTwBQDO2+UknaUGV3hNtTqfxzTmZGTPMED4yLCvm+Ftnfbo2JjURQ
-         SuNelmPkQndO55YFSepl1jq9C0TKox1qfN38B+zc=
+        b=N5p/TFHuZ8+DYf5FZxyy6aNevrfKt+SMIyf+u4Cv+/WXyxivX9dGLdpXUqsEws0or
+         dxsXVCqmog1dK21FXiUH6czi8lU02FYg/uk1hOX5QiHJh04JycrAgcKZq26nzzP2FM
+         NnxXK8WkzbVeM6pG2uoEn4hujEQ4aYl6visTO/zQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adam Ford <aford173@gmail.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Neal Cardwell <ncardwell@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 124/244] arm64: dts: imx8mm: Add sound-dai-cells to micfil node
-Date:   Wed, 15 Nov 2023 15:35:16 -0500
-Message-ID: <20231115203555.813383819@linuxfoundation.org>
+Subject: [PATCH 4.19 05/88] tcp_metrics: properly set tp->snd_ssthresh in tcp_init_metrics()
+Date:   Wed, 15 Nov 2023 15:35:17 -0500
+Message-ID: <20231115191426.516833132@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0e6cc2b8bb7d67733f4a47720787eff1ce2666f2 ]
+[ Upstream commit 081480014a64a69d901f8ef1ffdd56d6085cf87e ]
 
-Per the DT bindings, the micfil node should have a sound-dai-cells
-entry.
+We need to set tp->snd_ssthresh to TCP_INFINITE_SSTHRESH
+in the case tcp_get_metrics() fails for some reason.
 
-Fixes: 3bd0788c43d9 ("arm64: dts: imx8mm: Add support for micfil")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 9ad7c049f0f7 ("tcp: RFC2988bis + taking RTT sample from 3WHS for the passive open side")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_metrics.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm.dtsi b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-index 2a67122c5624c..86731850a6bd6 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm.dtsi
-@@ -366,6 +366,7 @@ micfil: audio-controller@30080000 {
- 						      "pll8k", "pll11k", "clkext3";
- 					dmas = <&sdma2 24 25 0x80000000>;
- 					dma-names = "rx";
-+					#sound-dai-cells = <0>;
- 					status = "disabled";
- 				};
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 9ad4258cfcbcc..7d486295d75f5 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -466,6 +466,10 @@ void tcp_init_metrics(struct sock *sk)
+ 	u32 val, crtt = 0; /* cached RTT scaled by 8 */
  
+ 	sk_dst_confirm(sk);
++	/* ssthresh may have been reduced unnecessarily during.
++	 * 3WHS. Restore it back to its initial default.
++	 */
++	tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
+ 	if (!dst)
+ 		goto reset;
+ 
+@@ -484,11 +488,6 @@ void tcp_init_metrics(struct sock *sk)
+ 		tp->snd_ssthresh = val;
+ 		if (tp->snd_ssthresh > tp->snd_cwnd_clamp)
+ 			tp->snd_ssthresh = tp->snd_cwnd_clamp;
+-	} else {
+-		/* ssthresh may have been reduced unnecessarily during.
+-		 * 3WHS. Restore it back to its initial default.
+-		 */
+-		tp->snd_ssthresh = TCP_INFINITE_SSTHRESH;
+ 	}
+ 	val = tcp_metric_get(tm, TCP_METRIC_REORDERING);
+ 	if (val && tp->reordering != val)
 -- 
 2.42.0
 
