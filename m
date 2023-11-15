@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CAAF7ED6B9
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:03:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C77347ED6C4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 23:03:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344225AbjKOWDO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 17:03:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40310 "EHLO
+        id S1343783AbjKOWDZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 17:03:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343783AbjKOWDI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:03:08 -0500
+        with ESMTP id S1343749AbjKOWDY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 17:03:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B147812C
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:03:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35609C433C9;
-        Wed, 15 Nov 2023 22:03:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63410197
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 14:03:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC54C433CA;
+        Wed, 15 Nov 2023 22:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700085784;
-        bh=u2NR8uqh30fEi2hgcvFfQZX449f91iv66zlwxSJDdMw=;
+        s=korg; t=1700085801;
+        bh=QXTL+kcVvPzZUN4NwtKCg4TdB2EIJ2AJht6eAcViFHU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VdNgUQEQhiOTtT2Xnyy+EJ6dscVb+tzHS4HPy4deG8qn0kMheoYDU6KZbwcWeTIeW
-         z/z3muZm0M1e4h+AOey9txNbDHYdqa8SiNB3M9Ra5q4ZTgc4jRyYfHUfFrgVI2nwzD
-         KwSq/nV6MPFjW/ow/rQy542wxNneiwWERGIyrgMo=
+        b=wctsUKhEIpdgZK835+IHcRWnOUoEA6MJ/M2/I/pUbrYnTe1QX4kzQwxsnWzsQIo0Z
+         cBrjZWhGauYNf3YNnXUCgqRC25hiwcdDQ5q2YpT5GahLpSiTfFRpNESA27QP0VF7xR
+         5o+2K/IxJxvGCzvLzooXTsY3Fjn9Crd5p9lTD+7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Markus Schneider-Pargmann <msp@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Stephen Boyd <sboyd@kernel.org>,
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/119] clk: mediatek: clk-mt2701: Add check for mtk_alloc_clk_data
-Date:   Wed, 15 Nov 2023 17:00:24 -0500
-Message-ID: <20231115220133.683476839@linuxfoundation.org>
+Subject: [PATCH 5.4 035/119] platform/x86: wmi: Fix probe failure when failing to register WMI devices
+Date:   Wed, 15 Nov 2023 17:00:25 -0500
+Message-ID: <20231115220133.712428961@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
 References: <20231115220132.607437515@linuxfoundation.org>
@@ -42,6 +39,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -57,64 +55,78 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 0d6e24b422a2166a9297a8286ff2e6ab9a5e8cd3 ]
+[ Upstream commit ed85891a276edaf7a867de0e9acd0837bc3008f2 ]
 
-Add the check for the return value of mtk_alloc_clk_data() in order to
-avoid NULL pointer dereference.
+When a WMI device besides the first one somehow fails to register,
+retval is returned while still containing a negative error code. This
+causes the ACPI device fail to probe, leaving behind zombie WMI devices
+leading to various errors later.
 
-Fixes: e9862118272a ("clk: mediatek: Add MT2701 clock support")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230901024658.23405-1-jiasheng@iscas.ac.cn
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Handle the single error path separately and return 0 unconditionally
+after trying to register all WMI devices to solve the issue. Also
+continue to register WMI devices even if some fail to allocate memory.
+
+Fixes: 6ee50aaa9a20 ("platform/x86: wmi: Instantiate all devices before adding them")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20231020211005.38216-4-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mediatek/clk-mt2701.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/platform/x86/wmi.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/clk/mediatek/clk-mt2701.c b/drivers/clk/mediatek/clk-mt2701.c
-index 695be0f774270..c67cd73aca171 100644
---- a/drivers/clk/mediatek/clk-mt2701.c
-+++ b/drivers/clk/mediatek/clk-mt2701.c
-@@ -675,6 +675,8 @@ static int mtk_topckgen_init(struct platform_device *pdev)
- 		return PTR_ERR(base);
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 67c4ec554ada8..f4327c2873fa3 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -1154,8 +1154,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 	struct wmi_block *wblock, *next;
+ 	union acpi_object *obj;
+ 	acpi_status status;
+-	int retval = 0;
+ 	u32 i, total;
++	int retval;
  
- 	clk_data = mtk_alloc_clk_data(CLK_TOP_NR);
-+	if (!clk_data)
-+		return -ENOMEM;
+ 	status = acpi_evaluate_object(device->handle, "_WDG", NULL, &out);
+ 	if (ACPI_FAILURE(status))
+@@ -1166,8 +1166,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		return -ENXIO;
  
- 	mtk_clk_register_fixed_clks(top_fixed_clks, ARRAY_SIZE(top_fixed_clks),
- 								clk_data);
-@@ -742,6 +744,8 @@ static void __init mtk_infrasys_init_early(struct device_node *node)
+ 	if (obj->type != ACPI_TYPE_BUFFER) {
+-		retval = -ENXIO;
+-		goto out_free_pointer;
++		kfree(obj);
++		return -ENXIO;
+ 	}
  
- 	if (!infra_clk_data) {
- 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
-+		if (!infra_clk_data)
-+			return;
+ 	gblock = (const struct guid_block *)obj->buffer.pointer;
+@@ -1188,8 +1188,8 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
  
- 		for (i = 0; i < CLK_INFRA_NR; i++)
- 			infra_clk_data->clks[i] = ERR_PTR(-EPROBE_DEFER);
-@@ -768,6 +772,8 @@ static int mtk_infrasys_init(struct platform_device *pdev)
+ 		wblock = kzalloc(sizeof(struct wmi_block), GFP_KERNEL);
+ 		if (!wblock) {
+-			retval = -ENOMEM;
+-			break;
++			dev_err(wmi_bus_dev, "Failed to allocate %pUL\n", &gblock[i].guid);
++			continue;
+ 		}
  
- 	if (!infra_clk_data) {
- 		infra_clk_data = mtk_alloc_clk_data(CLK_INFRA_NR);
-+		if (!infra_clk_data)
-+			return -ENOMEM;
- 	} else {
- 		for (i = 0; i < CLK_INFRA_NR; i++) {
- 			if (infra_clk_data->clks[i] == ERR_PTR(-EPROBE_DEFER))
-@@ -896,6 +902,8 @@ static int mtk_pericfg_init(struct platform_device *pdev)
- 		return PTR_ERR(base);
+ 		wblock->acpi_device = device;
+@@ -1228,9 +1228,9 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		}
+ 	}
  
- 	clk_data = mtk_alloc_clk_data(CLK_PERI_NR);
-+	if (!clk_data)
-+		return -ENOMEM;
+-out_free_pointer:
+-	kfree(out.pointer);
+-	return retval;
++	kfree(obj);
++
++	return 0;
+ }
  
- 	mtk_clk_register_gates(node, peri_clks, ARRAY_SIZE(peri_clks),
- 						clk_data);
+ /*
 -- 
 2.42.0
 
