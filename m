@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D11F7ECD0C
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:34:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D47F7ECF79
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234401AbjKOTeI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:34:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50862 "EHLO
+        id S235326AbjKOTsm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234337AbjKOTd5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:57 -0500
+        with ESMTP id S235320AbjKOTsl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27294D49
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DEBC433C7;
-        Wed, 15 Nov 2023 19:33:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62D8C12C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE52C433CA;
+        Wed, 15 Nov 2023 19:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076833;
-        bh=lSToMCOS7jPiR/1c4PJ0QIYbRcJaG6hJGkr2HOh4Sms=;
+        s=korg; t=1700077718;
+        bh=9+eCqPCV8K45PaVV/wmRmN1xvdSJAv8TgrkNUFbcnXE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MRx4ApMjOJhn6IVHhuSC4nLjTm7OWeRWyDqerGX0zrtG4AGhdOCiKbdYYI8WknlyT
-         nQArTzhQXZv87ccPhX5fK65lT+JzvLAfY9boPh5A4AlMXYssTSa6OwpPhj/Ej0jsk+
-         L1OCwjNHfdgztNTiZojzhEeSHzgQ5LrrIm9Ern9E=
+        b=vEbZe/FkeviUSkcx/XLffQFQgVDP/nB/tTMvM5LSgwSk49eW3SEQJJZdZJ7ZWNrbx
+         qt+inikEyZMyG+cqn713Wr6GSCFyELFqMQNap4XWcoTn08y9NxW6DrvWUW/Nm/z2TB
+         LlM5x8nV9UKSJHaz4xT6tpmLZ0FIrM8EnJUQ2uB0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 437/550] powerpc/imc-pmu: Use the correct spinlock initializer.
+Subject: [PATCH 6.6 476/603] xhci: Loosen RPM as default policy to cover for AMD xHC 1.1
 Date:   Wed, 15 Nov 2023 14:17:01 -0500
-Message-ID: <20231115191631.066708799@linuxfoundation.org>
+Message-ID: <20231115191645.393331686@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 007240d59c11f87ac4f6cfc6a1d116630b6b634c ]
+[ Upstream commit 4baf1218150985ee3ab0a27220456a1f027ea0ac ]
 
-The macro __SPIN_LOCK_INITIALIZER() is implementation specific. Users
-that desire to initialize a spinlock in a struct must use
-__SPIN_LOCK_UNLOCKED().
+The AMD USB host controller (1022:43f7) isn't going into PCI D3 by default
+without anything connected. This is because the policy that was introduced
+by commit a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all
+xHC 1.2 or later devices") only covered 1.2 or later.
 
-Use __SPIN_LOCK_UNLOCKED() for the spinlock_t in imc_global_refc.
+The 1.1 specification also has the same requirement as the 1.2
+specification for D3 support. So expand the runtime PM as default policy
+to all AMD 1.1 devices as well.
 
-Fixes: 76d588dddc459 ("powerpc/imc-pmu: Fix use of mutex in IRQs disabled section")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230309134831.Nz12nqsU@linutronix.de
+Fixes: a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all xHC 1.2 or later devices")
+Link: https://composter.com.ua/documents/xHCI_Specification_for_USB.pdf
+Co-developed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20231019102924.2797346-15-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/imc-pmu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
-index 9d229ef7f86ef..ada817c49b722 100644
---- a/arch/powerpc/perf/imc-pmu.c
-+++ b/arch/powerpc/perf/imc-pmu.c
-@@ -51,7 +51,7 @@ static int trace_imc_mem_size;
-  * core and trace-imc
-  */
- static struct imc_pmu_ref imc_global_refc = {
--	.lock = __SPIN_LOCK_INITIALIZER(imc_global_refc.lock),
-+	.lock = __SPIN_LOCK_UNLOCKED(imc_global_refc.lock),
- 	.id = 0,
- 	.refc = 0,
- };
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index b9ae5c2a25275..bde43cef8846c 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -535,6 +535,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	/* xHC spec requires PCI devices to support D3hot and D3cold */
+ 	if (xhci->hci_version >= 0x120)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
++	else if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version >= 0x110)
++		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+ 
+ 	if (xhci->quirks & XHCI_RESET_ON_RESUME)
+ 		xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
 -- 
 2.42.0
 
