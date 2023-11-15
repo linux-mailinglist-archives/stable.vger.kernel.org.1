@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 084DE7ECCF6
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F2477ECF6A
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:48:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjKOTdg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:33:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54080 "EHLO
+        id S235315AbjKOTs0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:48:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234257AbjKOTdf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:33:35 -0500
+        with ESMTP id S235316AbjKOTsZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:48:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 801451A8
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:33:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E9CC433C7;
-        Wed, 15 Nov 2023 19:33:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B4D1A3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:48:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27FDC433C9;
+        Wed, 15 Nov 2023 19:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076809;
-        bh=+qpAMW+0IfjIHW0MJTsiJ0Q/86YVNoW4egzyePptyYo=;
+        s=korg; t=1700077700;
+        bh=niOg1n4dGKdyOOluk2rJpGI/bHfXBtOrHM2ahiKq7tE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RzgGZ5rAAmqPhMuLa56opKgBPaRYFgHNtNKxo6HINq7XTXttmLSflYtymYtZcvfGn
-         2uRKOrddVEjrYJ7zPhfJI2HewOjMr493MunFrGLCLqedmHIioSvV5J7kUF/0VuE9jz
-         DdTZtc8N+V3PfXmmjAcRv9Ek63oqGnZTWnQ1GPFY=
+        b=PWf1ATfhkOIc2B0kUwwDZffFB9HlIM0Rc4FagMc/yVlXAviVW3z8XPT+OnMI5N8aC
+         aGIVVQl7AO7Pb3v4PvOTT2MrLdf5lXAyHJw3FP72cHBWv/LfoLy4rjraj/e8YVxpYN
+         3zBbRvUqe8gaFYGhbq5uuVf6PY0ntu6snx1ck7Tg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        James Clark <james.clark@arm.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        patches@lists.linux.dev,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Holger Dengler <dengler@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 425/550] perf parse-events: Fix for term values that are raw events
+Subject: [PATCH 6.6 464/603] s390/ap: re-init AP queues on config on
 Date:   Wed, 15 Nov 2023 14:16:49 -0500
-Message-ID: <20231115191630.219192074@linuxfoundation.org>
+Message-ID: <20231115191644.675893979@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,89 +52,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-[ Upstream commit b20576fd7fe39554b212095c3c0d7a3dff512515 ]
+[ Upstream commit 32d1d9204f8db3360be55e65bd182a1a68f93308 ]
 
-Raw events can be strings like 'r0xead' but the 0x is optional so they
-can also be 'read'. On IcelakeX uncore_imc_free_running has an event
-called 'read' which may be programmed as:
-```
-$ perf stat -e 'uncore_imc_free_running/event=read/' -a sleep 1
-```
-However, the PE_RAW type isn't allowed on the right of a term, even
-though in this case we just want to interpret it as a string. This
-leads to the following error on IcelakeX:
-```
-$ perf stat -e 'uncore_imc_free_running/event=read/' -a sleep 1
-event syntax error: '..nning/event=read/'
-                                  \___ parser error
-Run 'perf list' for a list of valid events
+On a state toggle from config off to config on and on the
+state toggle from checkstop to not checkstop the queue's
+internal states was set but the state machine was not
+nudged. This did not care as on the first enqueue of a
+request the state machine kick ran.
 
- Usage: perf stat [<options>] [<command>]
+However, within an Secure Execution guest a queue is
+only chosen by the scheduler when it has been bound.
+But to bind a queue, it needs to run through the initial
+states (reset, enable interrupts, ...). So this is like
+a chicken-and-egg problem and the result was in fact
+that a queue was unusable after a config off/on toggle.
 
-    -e, --event <event> event selector. use 'perf list' to list available events
-```
-Fix this by allowing raw types on the right of terms and treat them as
-strings, just as is already done for PE_LEGACY_CACHE. Make this
-consistent by just entirely removing name_or_legacy and always using
-name_or_raw that covers all three cases.
+With some slight rework of the handling of these states
+now the new function _ap_queue_init_state() is called
+which is the core of the ap_queue_init_state() function
+but without locking handling. This has the benefit that
+it can be called on all the places where a (re-)init
+of the AP queue's state machine is needed.
 
-Fixes: 6fd1e5191591 ("perf parse-events: Support PMUs for legacy cache events")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20230928004431.1926969-1-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Fixes: 2d72eaf036d2 ("s390/ap: implement SE AP bind, unbind and associate")
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/parse-events.y | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/s390/crypto/ap_bus.c   | 21 ++++++++++-----------
+ drivers/s390/crypto/ap_bus.h   |  1 +
+ drivers/s390/crypto/ap_queue.c |  9 +++++++--
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/tools/perf/util/parse-events.y b/tools/perf/util/parse-events.y
-index c4f675f15fa91..a049c577bae3d 100644
---- a/tools/perf/util/parse-events.y
-+++ b/tools/perf/util/parse-events.y
-@@ -81,7 +81,7 @@ static void free_list_evsel(struct list_head* list_evsel)
- %type <str> PE_MODIFIER_BP
- %type <str> PE_EVENT_NAME
- %type <str> PE_DRV_CFG_TERM
--%type <str> name_or_raw name_or_legacy
-+%type <str> name_or_raw
- %destructor { free ($$); } <str>
- %type <term> event_term
- %destructor { parse_events_term__delete ($$); } <term>
-@@ -721,8 +721,6 @@ event_term
+diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
+index 339812efe8221..d09e08b71cfba 100644
+--- a/drivers/s390/crypto/ap_bus.c
++++ b/drivers/s390/crypto/ap_bus.c
+@@ -1865,15 +1865,18 @@ static inline void ap_scan_domains(struct ap_card *ac)
+ 			}
+ 			/* get it and thus adjust reference counter */
+ 			get_device(dev);
+-			if (decfg)
++			if (decfg) {
+ 				AP_DBF_INFO("%s(%d,%d) new (decfg) queue dev created\n",
+ 					    __func__, ac->id, dom);
+-			else if (chkstop)
++			} else if (chkstop) {
+ 				AP_DBF_INFO("%s(%d,%d) new (chkstop) queue dev created\n",
+ 					    __func__, ac->id, dom);
+-			else
++			} else {
++				/* nudge the queue's state machine */
++				ap_queue_init_state(aq);
+ 				AP_DBF_INFO("%s(%d,%d) new queue dev created\n",
+ 					    __func__, ac->id, dom);
++			}
+ 			goto put_dev_and_continue;
+ 		}
+ 		/* handle state changes on already existing queue device */
+@@ -1895,10 +1898,8 @@ static inline void ap_scan_domains(struct ap_card *ac)
+ 		} else if (!chkstop && aq->chkstop) {
+ 			/* checkstop off */
+ 			aq->chkstop = false;
+-			if (aq->dev_state > AP_DEV_STATE_UNINITIATED) {
+-				aq->dev_state = AP_DEV_STATE_OPERATING;
+-				aq->sm_state = AP_SM_STATE_RESET_START;
+-			}
++			if (aq->dev_state > AP_DEV_STATE_UNINITIATED)
++				_ap_queue_init_state(aq);
+ 			spin_unlock_bh(&aq->lock);
+ 			AP_DBF_DBG("%s(%d,%d) queue dev checkstop off\n",
+ 				   __func__, ac->id, dom);
+@@ -1922,10 +1923,8 @@ static inline void ap_scan_domains(struct ap_card *ac)
+ 		} else if (!decfg && !aq->config) {
+ 			/* config on this queue device */
+ 			aq->config = true;
+-			if (aq->dev_state > AP_DEV_STATE_UNINITIATED) {
+-				aq->dev_state = AP_DEV_STATE_OPERATING;
+-				aq->sm_state = AP_SM_STATE_RESET_START;
+-			}
++			if (aq->dev_state > AP_DEV_STATE_UNINITIATED)
++				_ap_queue_init_state(aq);
+ 			spin_unlock_bh(&aq->lock);
+ 			AP_DBF_DBG("%s(%d,%d) queue dev config on\n",
+ 				   __func__, ac->id, dom);
+diff --git a/drivers/s390/crypto/ap_bus.h b/drivers/s390/crypto/ap_bus.h
+index be54b070c0316..3e34912a60506 100644
+--- a/drivers/s390/crypto/ap_bus.h
++++ b/drivers/s390/crypto/ap_bus.h
+@@ -287,6 +287,7 @@ struct ap_queue *ap_queue_create(ap_qid_t qid, int device_type);
+ void ap_queue_prepare_remove(struct ap_queue *aq);
+ void ap_queue_remove(struct ap_queue *aq);
+ void ap_queue_init_state(struct ap_queue *aq);
++void _ap_queue_init_state(struct ap_queue *aq);
  
- name_or_raw: PE_RAW | PE_NAME | PE_LEGACY_CACHE
+ struct ap_card *ap_card_create(int id, int queue_depth, int raw_type,
+ 			       int comp_type, unsigned int functions, int ml);
+diff --git a/drivers/s390/crypto/ap_queue.c b/drivers/s390/crypto/ap_queue.c
+index 1336e632adc4a..2943b2529d3a0 100644
+--- a/drivers/s390/crypto/ap_queue.c
++++ b/drivers/s390/crypto/ap_queue.c
+@@ -1160,14 +1160,19 @@ void ap_queue_remove(struct ap_queue *aq)
+ 	spin_unlock_bh(&aq->lock);
+ }
  
--name_or_legacy: PE_NAME | PE_LEGACY_CACHE
--
- event_term:
- PE_RAW
+-void ap_queue_init_state(struct ap_queue *aq)
++void _ap_queue_init_state(struct ap_queue *aq)
  {
-@@ -737,7 +735,7 @@ PE_RAW
- 	$$ = term;
+-	spin_lock_bh(&aq->lock);
+ 	aq->dev_state = AP_DEV_STATE_OPERATING;
+ 	aq->sm_state = AP_SM_STATE_RESET_START;
+ 	aq->last_err_rc = 0;
+ 	aq->assoc_idx = ASSOC_IDX_INVALID;
+ 	ap_wait(ap_sm_event(aq, AP_SM_EVENT_POLL));
++}
++
++void ap_queue_init_state(struct ap_queue *aq)
++{
++	spin_lock_bh(&aq->lock);
++	_ap_queue_init_state(aq);
+ 	spin_unlock_bh(&aq->lock);
  }
- |
--name_or_raw '=' name_or_legacy
-+name_or_raw '=' name_or_raw
- {
- 	struct parse_events_term *term;
- 	int err = parse_events_term__str(&term, PARSE_EVENTS__TERM_TYPE_USER, $1, $3, &@1, &@3);
-@@ -816,7 +814,7 @@ PE_TERM_HW
- 	$$ = term;
- }
- |
--PE_TERM '=' name_or_legacy
-+PE_TERM '=' name_or_raw
- {
- 	struct parse_events_term *term;
- 	int err = parse_events_term__str(&term, (int)$1, NULL, $3, &@1, &@3);
+ EXPORT_SYMBOL(ap_queue_init_state);
 -- 
 2.42.0
 
