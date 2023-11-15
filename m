@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21EC37ECB74
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5213B7ECDE7
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:39:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233059AbjKOTWZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:22:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50348 "EHLO
+        id S234708AbjKOTjF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:39:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233066AbjKOTWY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:22:24 -0500
+        with ESMTP id S234707AbjKOTjF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:39:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 862DFD67
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:22:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E61C433C9;
-        Wed, 15 Nov 2023 19:22:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 616BC19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:39:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78811C433C8;
+        Wed, 15 Nov 2023 19:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076138;
-        bh=6pWjncE2v0OZvDw9CHF2jaAOCar3kIH6Kw3WhMXQL1I=;
+        s=korg; t=1700077141;
+        bh=0z/5Y0geWI9Pa1bP0iRdz033zyTeZXkVlrqXIe34Ow0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rc2ylfPFCDIkM0UziRmhxPo5pZcfQGdbvV9cINUooY34OH4bnWv+kBGeveK4KcDah
-         KG4Vz6Y7TcaoVL21CnadnBslssT5WZXWT4RYwj7SUf96kx6HE4gJ177s6aAfdybK6J
-         5mVkMfJvco3VIz9hBrdWHubshqSBZp5/srRxuw2k=
+        b=gPeZA3KCRk31p5ltNjwIVMTnYYm/e7STSlGjrs5LSDnn2XofOzD5mn4az5cJLUBI2
+         C/ct2L/hYU8jiQlasYK2SbdecWLgnWipfmf/w3G+SAh/Wzwqz+r/N4wUZ/xzg+bksS
+         wgxDb2EVventRJTBGcPsTvZw4Z2kohK0EIan/wOA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        Neal Cardwell <ncardwell@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 098/550] tcp_metrics: add missing barriers on delete
+Subject: [PATCH 6.6 137/603] wifi: iwlwifi: mvm: Correctly set link configuration
 Date:   Wed, 15 Nov 2023 14:11:22 -0500
-Message-ID: <20231115191607.508989761@linuxfoundation.org>
+Message-ID: <20231115191622.702349089@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +51,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit cbc3a153222805d65f821e10f4f78b6afce06f86 ]
+[ Upstream commit 35b9281fb710ea9fa47dca56774f4a9606fe9154 ]
 
-When removing an item from RCU protected list, we must prevent
-store-tearing, using rcu_assign_pointer() or WRITE_ONCE().
+In case the link puncturing is changed such that the channel
+is no longer punctured, configure the FW correctly indicating
+the EHT parameters changed (with a 0 punctured map).
 
-Fixes: 04f721c671656 ("tcp_metrics: Rewrite tcp_metrics_flush_all")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Allow EHT parameters configuration only when the link really
+supports EHT.
+
+Fixes: 55eb1c5fa4b2 ("wifi: iwlwifi: mvm: add support for the new LINK command")
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231004123422.2666ef86e032.I4b0e95722660acc5345ceefba7e8866a69572e8e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_metrics.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c       | 13 ++++++++-----
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c   |  2 +-
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
-index 99ac5efe244d3..61c573a72db63 100644
---- a/net/ipv4/tcp_metrics.c
-+++ b/net/ipv4/tcp_metrics.c
-@@ -908,7 +908,7 @@ static void tcp_metrics_flush_all(struct net *net)
- 			match = net ? net_eq(tm_net(tm), net) :
- 				!refcount_read(&tm_net(tm)->ns.count);
- 			if (match) {
--				*pp = tm->tcpm_next;
-+				rcu_assign_pointer(*pp, tm->tcpm_next);
- 				kfree_rcu(tm, rcu_head);
- 			} else {
- 				pp = &tm->tcpm_next;
-@@ -949,7 +949,7 @@ static int tcp_metrics_nl_cmd_del(struct sk_buff *skb, struct genl_info *info)
- 		if (addr_same(&tm->tcpm_daddr, &daddr) &&
- 		    (!src || addr_same(&tm->tcpm_saddr, &saddr)) &&
- 		    net_eq(tm_net(tm), net)) {
--			*pp = tm->tcpm_next;
-+			rcu_assign_pointer(*pp, tm->tcpm_next);
- 			kfree_rcu(tm, rcu_head);
- 			found = true;
- 		} else {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+index ace82e2c5bd91..4f8d2a3191ec7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+@@ -194,11 +194,14 @@ int iwl_mvm_link_changed(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		flags_mask |= LINK_FLG_MU_EDCA_CW;
+ 	}
+ 
+-	if (link_conf->eht_puncturing && !iwlwifi_mod_params.disable_11be)
+-		cmd.puncture_mask = cpu_to_le16(link_conf->eht_puncturing);
+-	else
+-		/* This flag can be set only if the MAC has eht support */
+-		changes &= ~LINK_CONTEXT_MODIFY_EHT_PARAMS;
++	if (changes & LINK_CONTEXT_MODIFY_EHT_PARAMS) {
++		if (iwlwifi_mod_params.disable_11be ||
++		    !link_conf->eht_support)
++			changes &= ~LINK_CONTEXT_MODIFY_EHT_PARAMS;
++		else
++			cmd.puncture_mask =
++				cpu_to_le16(link_conf->eht_puncturing);
++	}
+ 
+ 	cmd.bss_color = link_conf->he_bss_color.color;
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 778a311b500bc..a3a2e9a1fa7bd 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -653,7 +653,7 @@ iwl_mvm_mld_link_info_changed_station(struct iwl_mvm *mvm,
+ 	}
+ 
+ 	/* Update EHT Puncturing info */
+-	if (changes & BSS_CHANGED_EHT_PUNCTURING && vif->cfg.assoc && has_eht)
++	if (changes & BSS_CHANGED_EHT_PUNCTURING && vif->cfg.assoc)
+ 		link_changes |= LINK_CONTEXT_MODIFY_EHT_PARAMS;
+ 
+ 	if (link_changes) {
 -- 
 2.42.0
 
