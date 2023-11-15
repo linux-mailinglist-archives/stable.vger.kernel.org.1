@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 287187ED3B5
+	by mail.lfdr.de (Postfix) with ESMTP id ECBA87ED3B6
 	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:54:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235084AbjKOUyW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S235002AbjKOUyW (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 15 Nov 2023 15:54:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55052 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235000AbjKOUyI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:08 -0500
+        with ESMTP id S235027AbjKOUyK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:54:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 968D6181
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:05 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1099BC4E777;
-        Wed, 15 Nov 2023 20:54:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B8DD8F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:54:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95136C4E778;
+        Wed, 15 Nov 2023 20:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081645;
-        bh=WupA6UGjpumy57daNgDr0RIKZrYS7My2kLAFouEVGNc=;
+        s=korg; t=1700081646;
+        bh=5YuZ1XS35N4XhBeVg+vYntj0bcSrCwKXTmG5gd7Tpig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nl1rEHbgqpqXt2cJiuENiePAe2xHdBpeXjeqnfDXVZWcwcZ5KjLNDDpxPo/0tvXVN
-         8QAdUnAKo5FmVsV8bUPVcgbyLulSf9991+odKQv+OSfae0QlmgZPWbkluY0bFtRK3o
-         l6R2VmfUOQ9eU/3Rm8bUJTGwWDKbCy3f7txV9HyI=
+        b=mNpd1xgPSGaoaytqKtGcM3hZoZj98kfxf1Xdt35f/HEpPna2sYA9GEX+nQiRK7jaZ
+         m/Yxrsi+oMf3W6Rlv1GW4t4xwZF6+rT7XCnEZ/o91Q4QQz0QH0LBShhgPKSRy1qboz
+         gphcYCOesTiB4Rs2roxJIb/FQwxmWxV8tyHYnsPo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Devi Priya <quic_devipriy@quicinc.com>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/191] regmap: debugfs: Fix a erroneous check after snprintf()
-Date:   Wed, 15 Nov 2023 15:45:11 -0500
-Message-ID: <20231115204646.717615190@linuxfoundation.org>
+Subject: [PATCH 5.10 037/191] clk: qcom: clk-rcg2: Fix clock rate overflow for high parent frequencies
+Date:   Wed, 15 Nov 2023 15:45:12 -0500
+Message-ID: <20231115204646.783718656@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 References: <20231115204644.490636297@linuxfoundation.org>
@@ -55,35 +55,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Devi Priya <quic_devipriy@quicinc.com>
 
-[ Upstream commit d3601857e14de6369f00ae19564f1d817d175d19 ]
+[ Upstream commit f7b7d30158cff246667273bd2a62fc93ee0725d2 ]
 
-This error handling looks really strange.
-Check if the string has been truncated instead.
+If the parent clock rate is greater than unsigned long max/2 then
+integer overflow happens when calculating the clock rate on 32-bit systems.
+As RCG2 uses half integer dividers, the clock rate is first being
+multiplied by 2 which will overflow the unsigned long max value.
+Hence, replace the common pattern of doing 64-bit multiplication
+and then a do_div() call with simpler mult_frac call.
 
-Fixes: f0c2319f9f19 ("regmap: Expose the driver name in debugfs")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/8595de2462c490561f70020a6d11f4d6b652b468.1693857825.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: bcd61c0f535a ("clk: qcom: Add support for root clock generators (RCGs)")
+Signed-off-by: Devi Priya <quic_devipriy@quicinc.com>
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Link: https://lore.kernel.org/r/20230901073640.4973-1-quic_devipriy@quicinc.com
+[bjorn: Also drop unnecessary {} around single statements]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap-debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/clk-rcg2.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/base/regmap/regmap-debugfs.c b/drivers/base/regmap/regmap-debugfs.c
-index 211a335a608d7..ed54dc31e6fd4 100644
---- a/drivers/base/regmap/regmap-debugfs.c
-+++ b/drivers/base/regmap/regmap-debugfs.c
-@@ -48,7 +48,7 @@ static ssize_t regmap_name_read_file(struct file *file,
- 		name = map->dev->driver->name;
+diff --git a/drivers/clk/qcom/clk-rcg2.c b/drivers/clk/qcom/clk-rcg2.c
+index 71a0d30cf44df..eb4fd803bae0d 100644
+--- a/drivers/clk/qcom/clk-rcg2.c
++++ b/drivers/clk/qcom/clk-rcg2.c
+@@ -147,17 +147,11 @@ static int clk_rcg2_set_parent(struct clk_hw *hw, u8 index)
+ static unsigned long
+ calc_rate(unsigned long rate, u32 m, u32 n, u32 mode, u32 hid_div)
+ {
+-	if (hid_div) {
+-		rate *= 2;
+-		rate /= hid_div + 1;
+-	}
++	if (hid_div)
++		rate = mult_frac(rate, 2, hid_div + 1);
  
- 	ret = snprintf(buf, PAGE_SIZE, "%s\n", name);
--	if (ret < 0) {
-+	if (ret >= PAGE_SIZE) {
- 		kfree(buf);
- 		return ret;
- 	}
+-	if (mode) {
+-		u64 tmp = rate;
+-		tmp *= m;
+-		do_div(tmp, n);
+-		rate = tmp;
+-	}
++	if (mode)
++		rate = mult_frac(rate, m, n);
+ 
+ 	return rate;
+ }
 -- 
 2.42.0
 
