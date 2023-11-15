@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 663AF7ECDC7
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E22A7ECFD6
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:51:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234649AbjKOTiX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:38:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53632 "EHLO
+        id S235417AbjKOTvM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:51:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234652AbjKOTiX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:38:23 -0500
+        with ESMTP id S235419AbjKOTvK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:51:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB3F0B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:38:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604F8C433C8;
-        Wed, 15 Nov 2023 19:38:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD9D19E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:51:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410B1C433C7;
+        Wed, 15 Nov 2023 19:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077099;
-        bh=rpUqwJ79/YIn6c3fSzfAz2yZYLWkjY/BcxTTcaPR7Is=;
+        s=korg; t=1700077866;
+        bh=b8ZaN+wgLmndUPSgh7F3YZj0deb7aHUCrxgx0wzDxBQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gmsiMX6bmdCaco7D1RjJ+cyxZ8olXJexlPmCQ1eWD219N3pkzV+IuykMOykFhK/7Q
-         ljn3tZ0BHTPDzYX7pkPmi1vfy8JhWC7ubdWZolSOuaH4bgGecwU2ZT8AWgE9Mu8EL+
-         NnPpMALAp8oguVpcL8ib2mB++lhVx7E8F09+KpXQ=
+        b=I5N/s+XCg3hjzHkAPg8Ox2bP7XWD+HgQ3bylCw0RyWllnZDaDX+taKyvy5BNIN9bb
+         um9nKSXcH17gb0CwuXTth4ivs5MLJa+vO9LjTTG8w9skVp+MwHmg7Vx+Uad5tNsSnk
+         vcwWwyRvNzTjYnxUgknqIPh4Ib/rs6j+g3qsuEvQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ratheesh Kannoth <rkannoth@marvell.com>,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 504/550] octeontx2-pf: Fix error codes
+        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+5138ca807af9d2b42574@syzkaller.appspotmail.com,
+        syzbot+9425c47dccbcb4c17d51@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 543/603] tipc: Change nla_policy for bearer-related names to NLA_NUL_STRING
 Date:   Wed, 15 Nov 2023 14:18:08 -0500
-Message-ID: <20231115191635.850758436@linuxfoundation.org>
+Message-ID: <20231115191649.367597929@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +52,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ratheesh Kannoth <rkannoth@marvell.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 96b9a68d1a6e4f889d453874c9e359aa720b520f ]
+[ Upstream commit 19b3f72a41a8751e26bffc093bb7e1cef29ad579 ]
 
-Some of error codes were wrong. Fix the same.
+syzbot reported the following uninit-value access issue [1]:
 
-Fixes: 51afe9026d0c ("octeontx2-pf: NIX TX overwrites SQ_CTX_HW_S[SQ_INT]")
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20231027021953.1819959-1-rkannoth@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+=====================================================
+BUG: KMSAN: uninit-value in strlen lib/string.c:418 [inline]
+BUG: KMSAN: uninit-value in strstr+0xb8/0x2f0 lib/string.c:756
+ strlen lib/string.c:418 [inline]
+ strstr+0xb8/0x2f0 lib/string.c:756
+ tipc_nl_node_reset_link_stats+0x3ea/0xb50 net/tipc/node.c:2595
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:971 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1051 [inline]
+ genl_rcv_msg+0x11ec/0x1290 net/netlink/genetlink.c:1066
+ netlink_rcv_skb+0x371/0x650 net/netlink/af_netlink.c:2545
+ genl_rcv+0x40/0x60 net/netlink/genetlink.c:1075
+ netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
+ netlink_unicast+0xf47/0x1250 net/netlink/af_netlink.c:1368
+ netlink_sendmsg+0x1238/0x13d0 net/netlink/af_netlink.c:1910
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ sock_sendmsg net/socket.c:753 [inline]
+ ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2541
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2595
+ __sys_sendmsg net/socket.c:2624 [inline]
+ __do_sys_sendmsg net/socket.c:2633 [inline]
+ __se_sys_sendmsg net/socket.c:2631 [inline]
+ __x64_sys_sendmsg+0x307/0x490 net/socket.c:2631
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Uninit was created at:
+ slab_post_alloc_hook+0x12f/0xb70 mm/slab.h:767
+ slab_alloc_node mm/slub.c:3478 [inline]
+ kmem_cache_alloc_node+0x577/0xa80 mm/slub.c:3523
+ kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:559
+ __alloc_skb+0x318/0x740 net/core/skbuff.c:650
+ alloc_skb include/linux/skbuff.h:1286 [inline]
+ netlink_alloc_large_skb net/netlink/af_netlink.c:1214 [inline]
+ netlink_sendmsg+0xb34/0x13d0 net/netlink/af_netlink.c:1885
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ sock_sendmsg net/socket.c:753 [inline]
+ ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2541
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2595
+ __sys_sendmsg net/socket.c:2624 [inline]
+ __do_sys_sendmsg net/socket.c:2633 [inline]
+ __se_sys_sendmsg net/socket.c:2631 [inline]
+ __x64_sys_sendmsg+0x307/0x490 net/socket.c:2631
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+TIPC bearer-related names including link names must be null-terminated
+strings. If a link name which is not null-terminated is passed through
+netlink, strstr() and similar functions can cause buffer overrun. This
+causes the above issue.
+
+This patch changes the nla_policy for bearer-related names from NLA_STRING
+to NLA_NUL_STRING. This resolves the issue by ensuring that only
+null-terminated strings are accepted as bearer-related names.
+
+syzbot reported similar uninit-value issue related to bearer names [2]. The
+root cause of this issue is that a non-null-terminated bearer name was
+passed. This patch also resolved this issue.
+
+Fixes: 7be57fc69184 ("tipc: add link get/dump to new netlink api")
+Fixes: 0655f6a8635b ("tipc: add bearer disable/enable to new netlink api")
+Reported-and-tested-by: syzbot+5138ca807af9d2b42574@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5138ca807af9d2b42574 [1]
+Reported-and-tested-by: syzbot+9425c47dccbcb4c17d51@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9425c47dccbcb4c17d51 [2]
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231030075540.3784537-1-syoshida@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/nic/otx2_struct.h       | 34 +++++++++----------
- 1 file changed, 17 insertions(+), 17 deletions(-)
+ net/tipc/netlink.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
-index fa37b9f312cae..4e5899d8fa2e6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_struct.h
-@@ -318,23 +318,23 @@ enum nix_snd_status_e {
- 	NIX_SND_STATUS_EXT_ERR = 0x6,
- 	NIX_SND_STATUS_JUMP_FAULT = 0x7,
- 	NIX_SND_STATUS_JUMP_POISON = 0x8,
--	NIX_SND_STATUS_CRC_ERR = 0x9,
--	NIX_SND_STATUS_IMM_ERR = 0x10,
--	NIX_SND_STATUS_SG_ERR = 0x11,
--	NIX_SND_STATUS_MEM_ERR = 0x12,
--	NIX_SND_STATUS_INVALID_SUBDC = 0x13,
--	NIX_SND_STATUS_SUBDC_ORDER_ERR = 0x14,
--	NIX_SND_STATUS_DATA_FAULT = 0x15,
--	NIX_SND_STATUS_DATA_POISON = 0x16,
--	NIX_SND_STATUS_NPC_DROP_ACTION = 0x17,
--	NIX_SND_STATUS_LOCK_VIOL = 0x18,
--	NIX_SND_STATUS_NPC_UCAST_CHAN_ERR = 0x19,
--	NIX_SND_STATUS_NPC_MCAST_CHAN_ERR = 0x20,
--	NIX_SND_STATUS_NPC_MCAST_ABORT = 0x21,
--	NIX_SND_STATUS_NPC_VTAG_PTR_ERR = 0x22,
--	NIX_SND_STATUS_NPC_VTAG_SIZE_ERR = 0x23,
--	NIX_SND_STATUS_SEND_MEM_FAULT = 0x24,
--	NIX_SND_STATUS_SEND_STATS_ERR = 0x25,
-+	NIX_SND_STATUS_CRC_ERR = 0x10,
-+	NIX_SND_STATUS_IMM_ERR = 0x11,
-+	NIX_SND_STATUS_SG_ERR = 0x12,
-+	NIX_SND_STATUS_MEM_ERR = 0x13,
-+	NIX_SND_STATUS_INVALID_SUBDC = 0x14,
-+	NIX_SND_STATUS_SUBDC_ORDER_ERR = 0x15,
-+	NIX_SND_STATUS_DATA_FAULT = 0x16,
-+	NIX_SND_STATUS_DATA_POISON = 0x17,
-+	NIX_SND_STATUS_NPC_DROP_ACTION = 0x20,
-+	NIX_SND_STATUS_LOCK_VIOL = 0x21,
-+	NIX_SND_STATUS_NPC_UCAST_CHAN_ERR = 0x22,
-+	NIX_SND_STATUS_NPC_MCAST_CHAN_ERR = 0x23,
-+	NIX_SND_STATUS_NPC_MCAST_ABORT = 0x24,
-+	NIX_SND_STATUS_NPC_VTAG_PTR_ERR = 0x25,
-+	NIX_SND_STATUS_NPC_VTAG_SIZE_ERR = 0x26,
-+	NIX_SND_STATUS_SEND_MEM_FAULT = 0x27,
-+	NIX_SND_STATUS_SEND_STATS_ERR = 0x28,
- 	NIX_SND_STATUS_MAX,
- };
+diff --git a/net/tipc/netlink.c b/net/tipc/netlink.c
+index e8fd257c0e688..1a9a5bdaccf4f 100644
+--- a/net/tipc/netlink.c
++++ b/net/tipc/netlink.c
+@@ -88,7 +88,7 @@ const struct nla_policy tipc_nl_net_policy[TIPC_NLA_NET_MAX + 1] = {
  
+ const struct nla_policy tipc_nl_link_policy[TIPC_NLA_LINK_MAX + 1] = {
+ 	[TIPC_NLA_LINK_UNSPEC]		= { .type = NLA_UNSPEC },
+-	[TIPC_NLA_LINK_NAME]		= { .type = NLA_STRING,
++	[TIPC_NLA_LINK_NAME]		= { .type = NLA_NUL_STRING,
+ 					    .len = TIPC_MAX_LINK_NAME },
+ 	[TIPC_NLA_LINK_MTU]		= { .type = NLA_U32 },
+ 	[TIPC_NLA_LINK_BROADCAST]	= { .type = NLA_FLAG },
+@@ -125,7 +125,7 @@ const struct nla_policy tipc_nl_prop_policy[TIPC_NLA_PROP_MAX + 1] = {
+ 
+ const struct nla_policy tipc_nl_bearer_policy[TIPC_NLA_BEARER_MAX + 1]	= {
+ 	[TIPC_NLA_BEARER_UNSPEC]	= { .type = NLA_UNSPEC },
+-	[TIPC_NLA_BEARER_NAME]		= { .type = NLA_STRING,
++	[TIPC_NLA_BEARER_NAME]		= { .type = NLA_NUL_STRING,
+ 					    .len = TIPC_MAX_BEARER_NAME },
+ 	[TIPC_NLA_BEARER_PROP]		= { .type = NLA_NESTED },
+ 	[TIPC_NLA_BEARER_DOMAIN]	= { .type = NLA_U32 }
 -- 
 2.42.0
 
