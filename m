@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 143307ECB99
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 199037ECE1C
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:40:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230427AbjKOTXS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:23:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34656 "EHLO
+        id S234791AbjKOTk3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:40:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231167AbjKOTXR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:23:17 -0500
+        with ESMTP id S234804AbjKOTk2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:40:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92423A4
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:23:14 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1B9C433C8;
-        Wed, 15 Nov 2023 19:23:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 762F4D5F
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:40:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB03C433C8;
+        Wed, 15 Nov 2023 19:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076194;
-        bh=MxHBibcwxXhkvJbnvvGcBw0cDuOUvNws+8VaXymeG28=;
+        s=korg; t=1700077224;
+        bh=bbBwxq39uQ2ammYEwd5GH4Xxkip/48WJO2qB6lbhzBQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KM0xWMT3C8z1emabMx/beH8GvWaehqEaSSh08D3jFxhu2UV6Fs8OWYBc7eOdTksCY
-         jPuFd/G6v27/HVf9bLI1kJvpzUNsvvzjeIwHJH8mfLGEGprtfeL3mATlZy7H765fn4
-         8Ecu3M5dk6TsqzQsqH+jxqHTe73F3KbUQOESnHOo=
+        b=ljKF9FjNdNLEeXUIKyBHrJwm+JFt3CUjg2K+iIhFFurRbayVAj038pCiCFNcz3Ubc
+         CulULQR3YQX35sVl2tici7srZKAzTysoJPmtNrXfkqpahRf2F4BOUQWaHTWF2C8N7P
+         TmSI7yeW3uwsikhuxlvGorL8fHxe3YQbJYo5mXk8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
+        patches@lists.linux.dev,
+        Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
+        Laurentiu Palcu <laurentiu.palcu@nxp.com>,
+        Robert Chiras <robert.chiras@nxp.com>,
+        Peng Fan <peng.fan@nxp.com>, Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 134/550] wifi: iwlwifi: mvm: remove TDLS stations from FW
+Subject: [PATCH 6.6 173/603] clk: imx: imx8qxp: Fix elcdif_pll clock
 Date:   Wed, 15 Nov 2023 14:11:58 -0500
-Message-ID: <20231115191609.978789222@linuxfoundation.org>
+Message-ID: <20231115191625.186272675@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +53,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Robert Chiras <robert.chiras@nxp.com>
 
-[ Upstream commit 7b404c5cff3d4270fcd5212b6776c8484623ac74 ]
+[ Upstream commit 15cee75dacb82ade710d61bfd536011933ef9bf2 ]
 
-When we remove TDLS stations, we need to remove them from FW
-immediately, even while associated. Some previous refactoring
-here lost the sta ID condition, add it back.
+Move the elcdif_pll clock initialization before the lcd_clk, since the
+elcdif_clk needs to be initialized ahead of lcd_clk, being its parent.
+This change fixes issues with the LCD clocks during suspend/resume.
 
-Fixes: 57974a55d995 ("wifi: iwlwifi: mvm: refactor iwl_mvm_mac_sta_state_common()")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231011130030.933011e710a9.I77c069c781e8b2b698b86cc3f43fc3c7e2dde114@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: babfaa9556d7 ("clk: imx: scu: add more scu clocks")
+Suggested-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
+Acked-by: Laurentiu Palcu <laurentiu.palcu@nxp.com>
+Signed-off-by: Robert Chiras <robert.chiras@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230912-imx8-clk-v1-v1-2-69a34bcfcae1@nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx8qxp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index ebbe165510587..2c231f4623893 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -2059,7 +2059,8 @@ bool iwl_mvm_sta_del(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 		*status = IWL_MVM_QUEUE_FREE;
- 	}
+diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
+index cadcbb318f5cf..4020aa4b79bf2 100644
+--- a/drivers/clk/imx/clk-imx8qxp.c
++++ b/drivers/clk/imx/clk-imx8qxp.c
+@@ -147,10 +147,10 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
+ 	imx_clk_scu("adc0_clk",  IMX_SC_R_ADC_0, IMX_SC_PM_CLK_PER);
+ 	imx_clk_scu("adc1_clk",  IMX_SC_R_ADC_1, IMX_SC_PM_CLK_PER);
+ 	imx_clk_scu("pwm_clk",   IMX_SC_R_LCD_0_PWM_0, IMX_SC_PM_CLK_PER);
++	imx_clk_scu("elcdif_pll", IMX_SC_R_ELCDIF_PLL, IMX_SC_PM_CLK_PLL);
+ 	imx_clk_scu2("lcd_clk", lcd_sels, ARRAY_SIZE(lcd_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_PER);
+ 	imx_clk_scu2("lcd_pxl_clk", lcd_pxl_sels, ARRAY_SIZE(lcd_pxl_sels), IMX_SC_R_LCD_0, IMX_SC_PM_CLK_MISC0);
+ 	imx_clk_scu("lcd_pxl_bypass_div_clk", IMX_SC_R_LCD_0, IMX_SC_PM_CLK_BYPASS);
+-	imx_clk_scu("elcdif_pll", IMX_SC_R_ELCDIF_PLL, IMX_SC_PM_CLK_PLL);
  
--	if (vif->type == NL80211_IFTYPE_STATION) {
-+	if (vif->type == NL80211_IFTYPE_STATION &&
-+	    mvm_link->ap_sta_id == sta_id) {
- 		/* if associated - we can't remove the AP STA now */
- 		if (vif->cfg.assoc)
- 			return true;
+ 	/* Audio SS */
+ 	imx_clk_scu("audio_pll0_clk", IMX_SC_R_AUDIO_PLL_0, IMX_SC_PM_CLK_PLL);
 -- 
 2.42.0
 
