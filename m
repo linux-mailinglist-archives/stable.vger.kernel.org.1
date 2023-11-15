@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D50D7ECB5B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:21:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A37A67ECDB2
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232830AbjKOTVr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:21:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42340 "EHLO
+        id S234612AbjKOThv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:37:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232589AbjKOTVm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:21:42 -0500
+        with ESMTP id S234619AbjKOThu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 463AC19E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:21:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB19BC433C9;
-        Wed, 15 Nov 2023 19:21:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A06CF9E
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F4DC433CB;
+        Wed, 15 Nov 2023 19:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700076098;
-        bh=EpSN1BWjSjDXYFtBpD/rSk3rFCGk920oJUQIpqn9bFw=;
+        s=korg; t=1700077067;
+        bh=jFNAJLOIXIRWvFs3FK2WddW2EuyRgwFo6o2X91cM7o0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vTIZHpvO/3a8MMvA1a2etlddo53qOMyBF0mz4cSPj/unaH3u3Dxrj716ySFgRk+xV
-         wHpL2zC7tyGNEyIobUVHGdhKA9yTmiL2kXtnt/v+Yu2vd7UMHi5ZXSiQYsAfZeThMP
-         rs9riks3gs1J1xw/CBC2JJpnSkRaUHLfXPfjsWVA=
+        b=AsTgKn9irjIHA0eBz0FO9iS2rW1woZI+00YWu1DXgO8d9l+9dhuFks2FGp7rbKzl8
+         BdYFphtQj6lpz0wAwb2VUglHk74b5K2j5yRdC3kWoZgPu5HRKlYbMZaWfWsutX4op/
+         nsntK85X/2I87749pOTpfnQ33OcgZ5nL7AcdsD6g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 075/550] wifi: rtw88: debug: Fix the NULL vs IS_ERR() bug for debugfs_create_file()
+        patches@lists.linux.dev,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 114/603] PM / devfreq: rockchip-dfi: Make pmu regmap mandatory
 Date:   Wed, 15 Nov 2023 14:10:59 -0500
-Message-ID: <20231115191605.905067182@linuxfoundation.org>
+Message-ID: <20231115191621.123191105@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
-References: <20231115191600.708733204@linuxfoundation.org>
+In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
+References: <20231115191613.097702445@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +52,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 74f7957c9b1b95553faaf146a2553e023a9d1720 ]
+[ Upstream commit 1e0731c05c985deb68a97fa44c1adcd3305dda90 ]
 
-Since debugfs_create_file() return ERR_PTR and never return NULL, so use
-IS_ERR() to check it instead of checking NULL.
+As a matter of fact the regmap_pmu already is mandatory because
+it is used unconditionally in the driver. Bail out gracefully in
+probe() rather than crashing later.
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230919050651.962694-1-ruanjinjie@huawei.com
+Link: https://lore.kernel.org/lkml/20230704093242.583575-2-s.hauer@pengutronix.de/
+Fixes: b9d1262bca0af ("PM / devfreq: event: support rockchip dfi controller")
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/devfreq/event/rockchip-dfi.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/debug.c b/drivers/net/wireless/realtek/rtw88/debug.c
-index f8ba133baff06..35bc37a3c469d 100644
---- a/drivers/net/wireless/realtek/rtw88/debug.c
-+++ b/drivers/net/wireless/realtek/rtw88/debug.c
-@@ -1233,9 +1233,9 @@ static struct rtw_debugfs_priv rtw_debug_priv_dm_cap = {
- #define rtw_debugfs_add_core(name, mode, fopname, parent)		\
- 	do {								\
- 		rtw_debug_priv_ ##name.rtwdev = rtwdev;			\
--		if (!debugfs_create_file(#name, mode,			\
-+		if (IS_ERR(debugfs_create_file(#name, mode,		\
- 					 parent, &rtw_debug_priv_ ##name,\
--					 &file_ops_ ##fopname))		\
-+					 &file_ops_ ##fopname)))	\
- 			pr_debug("Unable to initialize debugfs:%s\n",	\
- 			       #name);					\
- 	} while (0)
+diff --git a/drivers/devfreq/event/rockchip-dfi.c b/drivers/devfreq/event/rockchip-dfi.c
+index 39ac069cabc75..74893c06aa087 100644
+--- a/drivers/devfreq/event/rockchip-dfi.c
++++ b/drivers/devfreq/event/rockchip-dfi.c
+@@ -193,14 +193,15 @@ static int rockchip_dfi_probe(struct platform_device *pdev)
+ 		return dev_err_probe(dev, PTR_ERR(data->clk),
+ 				     "Cannot get the clk pclk_ddr_mon\n");
+ 
+-	/* try to find the optional reference to the pmu syscon */
+ 	node = of_parse_phandle(np, "rockchip,pmu", 0);
+-	if (node) {
+-		data->regmap_pmu = syscon_node_to_regmap(node);
+-		of_node_put(node);
+-		if (IS_ERR(data->regmap_pmu))
+-			return PTR_ERR(data->regmap_pmu);
+-	}
++	if (!node)
++		return dev_err_probe(&pdev->dev, -ENODEV, "Can't find pmu_grf registers\n");
++
++	data->regmap_pmu = syscon_node_to_regmap(node);
++	of_node_put(node);
++	if (IS_ERR(data->regmap_pmu))
++		return PTR_ERR(data->regmap_pmu);
++
+ 	data->dev = dev;
+ 
+ 	desc = devm_kzalloc(dev, sizeof(*desc), GFP_KERNEL);
 -- 
 2.42.0
 
