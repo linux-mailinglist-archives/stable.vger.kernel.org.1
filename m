@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 403DB7ECDA3
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:37:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D06F47ECD76
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:36:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234604AbjKOThe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:37:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54662 "EHLO
+        id S234455AbjKOTgn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:36:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234598AbjKOThc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:37:32 -0500
+        with ESMTP id S234525AbjKOTgl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:36:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9718B9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:37:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB4EC433C8;
-        Wed, 15 Nov 2023 19:37:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126E412C
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:36:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C528C433C9;
+        Wed, 15 Nov 2023 19:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077049;
-        bh=V4lCpTjq5tQRl4/k1EsBVcGZayY0Z7TJffgdImnPiv0=;
+        s=korg; t=1700076997;
+        bh=AD0gUP+1uVYI5KNS3IOv5zVBr62vv8QFIh5uqhaO9cc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jYjk8bArkySFonz0L9G1/+ldNCSUa6QUPDNdehK9mdnKZaltnytplNlhoQKcIe+vB
-         R50webEAxJWY1u2l1mcfKFqA8qpZpOaI1C1Z58HU+hKE8feTdzt+V4aHL7nZzjr9e4
-         C264eN6xaRW90r9dCa5/GqfPN0KUK4qkfrCLe/To=
+        b=aiBGLL/N0pO3kEyuVgCHwcyjFAfVig8StdWn4UlPO3SnGrQU4eHgzBcqiyxBfxP8t
+         gOTl3ERnwOGmn9RCDdlVQNf/VhJ1AJu6W3cGjuifBDTliX25BTdSiwsWJFxMtsq/Nn
+         qJLR+AtIIFjGvabYQq0Gb/qE6FVxBaZqutzoZ3N4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shayne Chen <shayne.chen@mediatek.com>,
+        patches@lists.linux.dev, MeiChia Chiu <meichia.chiu@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
         Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/603] wifi: mt76: fix per-band IEEE80211_CONF_MONITOR flag comparison
-Date:   Wed, 15 Nov 2023 14:10:37 -0500
-Message-ID: <20231115191619.528961985@linuxfoundation.org>
+Subject: [PATCH 6.6 093/603] wifi: mt76: mt7915: fix beamforming availability check
+Date:   Wed, 15 Nov 2023 14:10:38 -0500
+Message-ID: <20231115191619.594790496@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
 In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
 References: <20231115191613.097702445@linuxfoundation.org>
@@ -53,63 +54,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+From: MeiChia Chiu <meichia.chiu@mediatek.com>
 
-[ Upstream commit c685034cabc574dbdf16fa675010e202083cb4c2 ]
+[ Upstream commit ced1a0b8f3944e44e7f4eb3772dea1bada25d38a ]
 
-Use the correct ieee80211_conf of each band for IEEE80211_CONF_MONITOR
-comparison.
+Without this patch, when ap sets the tx stream number to 2,
+ap won't send any beamforming packet.
 
-Fixes: 24e69f6bc3ca ("mt76: fix monitor rx FCS error in DFS channel")
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Fixes: f89f297aef28 ("mt76: mt7915: fix txbf starec TLV issues")
+Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 8d745c9730c72..955974a82180f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -2147,7 +2147,7 @@ int mt7615_mcu_set_chan_info(struct mt7615_phy *phy, int cmd)
- 	};
- 
- 	if (cmd == MCU_EXT_CMD(SET_RX_PATH) ||
--	    dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-+	    phy->mt76->hw->conf.flags & IEEE80211_CONF_MONITOR)
- 		req.switch_reason = CH_SWITCH_NORMAL;
- 	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL)
- 		req.switch_reason = CH_SWITCH_SCAN_BYPASS_DPD;
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index acdb54a8bcc6c..92a341aa58228 100644
+index 92a341aa58228..5d8e985cd7d45 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -2740,7 +2740,7 @@ int mt7915_mcu_set_chan_info(struct mt7915_phy *phy, int cmd)
- 	if (mt76_connac_spe_idx(phy->mt76->antenna_mask))
- 		req.tx_path_num = fls(phy->mt76->antenna_mask);
+@@ -1015,13 +1015,13 @@ mt7915_is_ebf_supported(struct mt7915_phy *phy, struct ieee80211_vif *vif,
+ 			struct ieee80211_sta *sta, bool bfee)
+ {
+ 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+-	int tx_ant = hweight8(phy->mt76->chainmask) - 1;
++	int sts = hweight16(phy->mt76->chainmask);
  
--	if (dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-+	if (phy->mt76->hw->conf.flags & IEEE80211_CONF_MONITOR)
- 		req.switch_reason = CH_SWITCH_NORMAL;
- 	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL ||
- 		 phy->mt76->hw->conf.flags & IEEE80211_CONF_IDLE)
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index f80ba8f1f5de1..7575d3506ea4e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2972,7 +2972,7 @@ int mt7996_mcu_set_chan_info(struct mt7996_phy *phy, u16 tag)
- 		.channel_band = ch_band[chandef->chan->band],
- 	};
+ 	if (vif->type != NL80211_IFTYPE_STATION &&
+ 	    vif->type != NL80211_IFTYPE_AP)
+ 		return false;
  
--	if (dev->mt76.hw->conf.flags & IEEE80211_CONF_MONITOR)
-+	if (phy->mt76->hw->conf.flags & IEEE80211_CONF_MONITOR)
- 		req.switch_reason = CH_SWITCH_NORMAL;
- 	else if (phy->mt76->hw->conf.flags & IEEE80211_CONF_OFFCHANNEL ||
- 		 phy->mt76->hw->conf.flags & IEEE80211_CONF_IDLE)
+-	if (!bfee && tx_ant < 2)
++	if (!bfee && sts < 2)
+ 		return false;
+ 
+ 	if (sta->deflink.he_cap.has_he) {
 -- 
 2.42.0
 
