@@ -2,49 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 178817ECF55
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51D877ECCBF
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:32:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235288AbjKOTrx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:47:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49654 "EHLO
+        id S234108AbjKOTc2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:32:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235289AbjKOTrw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:47:52 -0500
+        with ESMTP id S234138AbjKOTcX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:32:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E8EC2
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:47:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B810C433C7;
-        Wed, 15 Nov 2023 19:47:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7865B1A7
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:32:17 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0046AC433C9;
+        Wed, 15 Nov 2023 19:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077668;
-        bh=1O15XiFFnyrvv54QAkdcrjnXlUMm2Roi/xZ7Vdq4FCs=;
+        s=korg; t=1700076737;
+        bh=AgDi3yhlRV3bWeA6WM1V5IQdPqlvq+gSbkAfiQUdAIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BZ8jAhlYbNgMvTv18bW9yocvzlTvljmM0HlcCWn7+tEd1oGzzh0CKATkE6cH1H3st
-         XtlxsXxfR3uzXhodgKck0ae9t/H9sRjVmiwyJMttdBjdKMUPVeJaJ3HxkfxVi3b9t4
-         e0WIHxogwGgSlWxB0uqV2/HRrAPCjVKd+uJikfnc=
+        b=NuKKYtfkYd0OuyLVzOy6jFYdRpZWMhOSKPG7e/zu3SBXMoWRKjlC+GSi/cMCRIA5g
+         05bXplJh5Ab6AIpLYwTeQ6gujjhrkynRqTk88mOWGhzg6Zgc//UqRJ6+3Xdn6eX/7X
+         0/qGJwjVxe2T6CbBoi9nkybHWJXOCyo+aqfeSIyI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ravi Bangoria <ravi.bangoria@amd.com>,
-        Sandipan Das <sandipan.das@amd.com>,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 422/603] perf kwork: Fix incorrect and missing free atom in work_push_atom()
-Date:   Wed, 15 Nov 2023 14:16:07 -0500
-Message-ID: <20231115191642.013933582@linuxfoundation.org>
+Subject: [PATCH 6.5 384/550] f2fs: compress: fix to avoid redundant compress extension
+Date:   Wed, 15 Nov 2023 14:16:08 -0500
+Message-ID: <20231115191627.462430218@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +50,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong1@huawei.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit d39710088d82ef100b33cdf4a9de3546fb0bb5df ]
+[ Upstream commit 7e1b150fece033703a824df1bbc03df091ea53cc ]
 
-1. Atoms are managed in page mode and should be released using atom_free()
-   instead of free().
-2. When the event does not match, the atom needs to free.
+With below script, redundant compress extension will be parsed and added
+by parse_options(), because parse_options() doesn't check whether the
+extension is existed or not, fix it.
 
-Fixes: f98919ec4fccdacf ("perf kwork: Implement 'report' subcommand")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yang Jihong <yangjihong1@huawei.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ravi Bangoria <ravi.bangoria@amd.com>
-Cc: Sandipan Das <sandipan.das@amd.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Link: https://lore.kernel.org/r/20230812084917.169338-2-yangjihong1@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+1. mount -t f2fs -o compress_extension=so /dev/vdb /mnt/f2fs
+2. mount -t f2fs -o remount,compress_extension=so /mnt/f2fs
+3. mount|grep f2fs
+
+/dev/vdb on /mnt/f2fs type f2fs (...,compress_extension=so,compress_extension=so,...)
+
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Fixes: 151b1982be5d ("f2fs: compress: add nocompress extensions support")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-kwork.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/f2fs/super.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
-diff --git a/tools/perf/builtin-kwork.c b/tools/perf/builtin-kwork.c
-index 14bf7a8429e76..73b5dc099a8ae 100644
---- a/tools/perf/builtin-kwork.c
-+++ b/tools/perf/builtin-kwork.c
-@@ -406,12 +406,14 @@ static int work_push_atom(struct perf_kwork *kwork,
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 8d9d2ee7f3c7f..68895be6407f0 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -547,6 +547,29 @@ static int f2fs_set_test_dummy_encryption(struct super_block *sb,
+ }
  
- 	work = work_findnew(&class->work_root, &key, &kwork->cmp_id);
- 	if (work == NULL) {
--		free(atom);
-+		atom_free(atom);
- 		return -1;
- 	}
- 
--	if (!profile_event_match(kwork, work, sample))
-+	if (!profile_event_match(kwork, work, sample)) {
-+		atom_free(atom);
- 		return 0;
+ #ifdef CONFIG_F2FS_FS_COMPRESSION
++static bool is_compress_extension_exist(struct f2fs_sb_info *sbi,
++					const char *new_ext, bool is_ext)
++{
++	unsigned char (*ext)[F2FS_EXTENSION_LEN];
++	int ext_cnt;
++	int i;
++
++	if (is_ext) {
++		ext = F2FS_OPTION(sbi).extensions;
++		ext_cnt = F2FS_OPTION(sbi).compress_ext_cnt;
++	} else {
++		ext = F2FS_OPTION(sbi).noextensions;
++		ext_cnt = F2FS_OPTION(sbi).nocompress_ext_cnt;
 +	}
++
++	for (i = 0; i < ext_cnt; i++) {
++		if (!strcasecmp(new_ext, ext[i]))
++			return true;
++	}
++
++	return false;
++}
++
+ /*
+  * 1. The same extension name cannot not appear in both compress and non-compress extension
+  * at the same time.
+@@ -1149,6 +1172,11 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 				return -EINVAL;
+ 			}
  
- 	if (dst_type < KWORK_TRACE_MAX) {
- 		dst_atom = list_last_entry_or_null(&work->atom_list[dst_type],
++			if (is_compress_extension_exist(sbi, name, true)) {
++				kfree(name);
++				break;
++			}
++
+ 			strcpy(ext[ext_cnt], name);
+ 			F2FS_OPTION(sbi).compress_ext_cnt++;
+ 			kfree(name);
+@@ -1173,6 +1201,11 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 				return -EINVAL;
+ 			}
+ 
++			if (is_compress_extension_exist(sbi, name, false)) {
++				kfree(name);
++				break;
++			}
++
+ 			strcpy(noext[noext_cnt], name);
+ 			F2FS_OPTION(sbi).nocompress_ext_cnt++;
+ 			kfree(name);
 -- 
 2.42.0
 
