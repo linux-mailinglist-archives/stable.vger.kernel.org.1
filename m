@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 340587ECE71
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 122637ECBEB
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:25:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235106AbjKOTnJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43034 "EHLO
+        id S233218AbjKOTZT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:25:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235102AbjKOTnI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:08 -0500
+        with ESMTP id S233225AbjKOTZR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3278D9E
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:05 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6069C433C7;
-        Wed, 15 Nov 2023 19:43:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E1C91A5
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04449C433C7;
+        Wed, 15 Nov 2023 19:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077384;
-        bh=fVcI/NcL4t5pz0dbBwKxkPnejlInDaavEbktCQl7+4o=;
+        s=korg; t=1700076314;
+        bh=Xtiov/AD0I4+BKplENJX14OwZ6UomLTHq8CW6TKlfmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hx3qQK8+le1IlkBCpg3UL6Ukaiux5c08WA6cH5KLKr72dmZWi/vlUhv9RWjjfG+LF
-         PCZyONfY5EBAN2MCl+hePikQCM/9MSAWaXwkuNDKWdVnbgdtROMMub8gMdomUGJceD
-         nQweid73TGq7yt0pmF5PTk+QbmMNRtkHQ35BWrL4=
+        b=HByICNqsbe6p6o//AZj5jvogRwvJG44KeyHkEcJyiMFHYDgzLRuZmnx7IZcfGDe9J
+         gLwwOU3hYcs0qI1XUENvteodxl+o7utJYUjqVxGdiy9q94bYL2vNAgPUUftI/S5UV0
+         6b48LnAFp9odqJ2/hMJyYw9frlr+l6LUN/z8oxQI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-        Marcel Ziswiler <marcel.ziswiler@toradex.com>,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Maxim Schwalm <maxim.schwalm@gmail.com>
-Subject: [PATCH 6.6 234/603] drm/bridge: tc358768: Use struct videomode
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 195/550] hwmon: (sch5627) Use bit macros when accessing the control register
 Date:   Wed, 15 Nov 2023 14:12:59 -0500
-Message-ID: <20231115191629.392381241@linuxfoundation.org>
+Message-ID: <20231115191614.286297907@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,150 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit e5fb21678136a9d009d5c43821881eb4c34fae97 ]
+[ Upstream commit 7f0b28e0653f36b51542d25dd54ed312c397ecfc ]
 
-The TC358768 documentation uses HFP, HBP, etc. values to deal with the
-video mode, while the driver currently uses the DRM display mode
-(htotal, hsync_start, etc).
+Use bit macros then accessing SCH5627_REG_CTRL, so that people
+do not need to look at the datasheet to find out what each bit
+does.
 
-Change the driver to convert the DRM display mode to struct videomode,
-which then allows us to use the same units the documentation uses. This
-makes it much easier to work on the code when using the TC358768
-documentation as a reference.
+Tested on a Fujitsu Esprimo P720.
 
-Reviewed-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Tested-by: Maxim Schwalm <maxim.schwalm@gmail.com> # Asus TF700T
-Tested-by: Marcel Ziswiler <marcel.ziswiler@toradex.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230906-tc358768-v4-6-31725f008a50@ideasonboard.com
-Stable-dep-of: f1dabbe64506 ("drm/bridge: tc358768: Fix tc358768_ns_to_cnt()")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20230907052639.16491-2-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 7da8a6354360 ("hwmon: (sch5627) Disallow write access if virtual registers are locked")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358768.c | 45 ++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 21 deletions(-)
+ drivers/hwmon/sch5627.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358768.c b/drivers/gpu/drm/bridge/tc358768.c
-index b668f77673c3d..e42b5259ea344 100644
---- a/drivers/gpu/drm/bridge/tc358768.c
-+++ b/drivers/gpu/drm/bridge/tc358768.c
-@@ -650,6 +650,7 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 	u32 dsiclk, dsibclk, video_start;
- 	const u32 internal_delay = 40;
- 	int ret, i;
-+	struct videomode vm;
+diff --git a/drivers/hwmon/sch5627.c b/drivers/hwmon/sch5627.c
+index 1bbda3b05532e..0eefb8c0aef25 100644
+--- a/drivers/hwmon/sch5627.c
++++ b/drivers/hwmon/sch5627.c
+@@ -6,6 +6,7 @@
  
- 	if (mode_flags & MIPI_DSI_CLOCK_NON_CONTINUOUS) {
- 		dev_warn_once(priv->dev, "Non-continuous mode unimplemented, falling back to continuous\n");
-@@ -673,6 +674,8 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 		return;
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
++#include <linux/bits.h>
+ #include <linux/module.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/init.h>
+@@ -32,6 +33,9 @@
+ #define SCH5627_REG_PRIMARY_ID		0x3f
+ #define SCH5627_REG_CTRL		0x40
+ 
++#define SCH5627_CTRL_START		BIT(0)
++#define SCH5627_CTRL_VBAT		BIT(4)
++
+ #define SCH5627_NO_TEMPS		8
+ #define SCH5627_NO_FANS			4
+ #define SCH5627_NO_IN			5
+@@ -147,7 +151,8 @@ static int sch5627_update_in(struct sch5627_data *data)
+ 
+ 	/* Trigger a Vbat voltage measurement every 5 minutes */
+ 	if (time_after(jiffies, data->last_battery + 300 * HZ)) {
+-		sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL, data->control | 0x10);
++		sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL,
++					  data->control | SCH5627_CTRL_VBAT);
+ 		data->last_battery = jiffies;
  	}
  
-+	drm_display_mode_to_videomode(mode, &vm);
-+
- 	dsiclk = priv->dsiclk;
- 	dsibclk = dsiclk / 4;
+@@ -483,14 +488,13 @@ static int sch5627_probe(struct platform_device *pdev)
+ 		return val;
  
-@@ -681,28 +684,28 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 	switch (dsi_dev->format) {
- 	case MIPI_DSI_FMT_RGB888:
- 		val |= (0x3 << 4);
--		hact = mode->hdisplay * 3;
--		video_start = (mode->htotal - mode->hsync_start) * 3;
-+		hact = vm.hactive * 3;
-+		video_start = (vm.hsync_len + vm.hback_porch) * 3;
- 		data_type = MIPI_DSI_PACKED_PIXEL_STREAM_24;
- 		break;
- 	case MIPI_DSI_FMT_RGB666:
- 		val |= (0x4 << 4);
--		hact = mode->hdisplay * 3;
--		video_start = (mode->htotal - mode->hsync_start) * 3;
-+		hact = vm.hactive * 3;
-+		video_start = (vm.hsync_len + vm.hback_porch) * 3;
- 		data_type = MIPI_DSI_PACKED_PIXEL_STREAM_18;
- 		break;
+ 	data->control = val;
+-	if (!(data->control & 0x01)) {
++	if (!(data->control & SCH5627_CTRL_START)) {
+ 		pr_err("hardware monitoring not enabled\n");
+ 		return -ENODEV;
+ 	}
+ 	/* Trigger a Vbat voltage measurement, so that we get a valid reading
+ 	   the first time we read Vbat */
+-	sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL,
+-				  data->control | 0x10);
++	sch56xx_write_virtual_reg(data->addr, SCH5627_REG_CTRL, data->control | SCH5627_CTRL_VBAT);
+ 	data->last_battery = jiffies;
  
- 	case MIPI_DSI_FMT_RGB666_PACKED:
- 		val |= (0x4 << 4) | BIT(3);
--		hact = mode->hdisplay * 18 / 8;
--		video_start = (mode->htotal - mode->hsync_start) * 18 / 8;
-+		hact = vm.hactive * 18 / 8;
-+		video_start = (vm.hsync_len + vm.hback_porch) * 18 / 8;
- 		data_type = MIPI_DSI_PIXEL_STREAM_3BYTE_18;
- 		break;
- 
- 	case MIPI_DSI_FMT_RGB565:
- 		val |= (0x5 << 4);
--		hact = mode->hdisplay * 2;
--		video_start = (mode->htotal - mode->hsync_start) * 2;
-+		hact = vm.hactive * 2;
-+		video_start = (vm.hsync_len + vm.hback_porch) * 2;
- 		data_type = MIPI_DSI_PACKED_PIXEL_STREAM_16;
- 		break;
- 	default:
-@@ -814,43 +817,43 @@ static void tc358768_bridge_pre_enable(struct drm_bridge *bridge)
- 		tc358768_write(priv, TC358768_DSI_EVENT, 0);
- 
- 		/* vact */
--		tc358768_write(priv, TC358768_DSI_VACT, mode->vdisplay);
-+		tc358768_write(priv, TC358768_DSI_VACT, vm.vactive);
- 
- 		/* vsw */
--		tc358768_write(priv, TC358768_DSI_VSW,
--			       mode->vsync_end - mode->vsync_start);
-+		tc358768_write(priv, TC358768_DSI_VSW, vm.vsync_len);
-+
- 		/* vbp */
--		tc358768_write(priv, TC358768_DSI_VBPR,
--			       mode->vtotal - mode->vsync_end);
-+		tc358768_write(priv, TC358768_DSI_VBPR, vm.vback_porch);
- 
- 		/* hsw * byteclk * ndl / pclk */
--		val = (u32)div_u64((mode->hsync_end - mode->hsync_start) *
-+		val = (u32)div_u64(vm.hsync_len *
- 				   ((u64)priv->dsiclk / 4) * priv->dsi_lanes,
--				   mode->clock * 1000);
-+				   vm.pixelclock);
- 		tc358768_write(priv, TC358768_DSI_HSW, val);
- 
- 		/* hbp * byteclk * ndl / pclk */
--		val = (u32)div_u64((mode->htotal - mode->hsync_end) *
-+		val = (u32)div_u64(vm.hback_porch *
- 				   ((u64)priv->dsiclk / 4) * priv->dsi_lanes,
--				   mode->clock * 1000);
-+				   vm.pixelclock);
- 		tc358768_write(priv, TC358768_DSI_HBPR, val);
- 	} else {
- 		/* Set event mode */
- 		tc358768_write(priv, TC358768_DSI_EVENT, 1);
- 
- 		/* vact */
--		tc358768_write(priv, TC358768_DSI_VACT, mode->vdisplay);
-+		tc358768_write(priv, TC358768_DSI_VACT, vm.vactive);
- 
- 		/* vsw (+ vbp) */
- 		tc358768_write(priv, TC358768_DSI_VSW,
--			       mode->vtotal - mode->vsync_start);
-+			       vm.vsync_len + vm.vback_porch);
-+
- 		/* vbp (not used in event mode) */
- 		tc358768_write(priv, TC358768_DSI_VBPR, 0);
- 
- 		/* (hsw + hbp) * byteclk * ndl / pclk */
--		val = (u32)div_u64((mode->htotal - mode->hsync_start) *
-+		val = (u32)div_u64((vm.hsync_len + vm.hback_porch) *
- 				   ((u64)priv->dsiclk / 4) * priv->dsi_lanes,
--				   mode->clock * 1000);
-+				   vm.pixelclock);
- 		tc358768_write(priv, TC358768_DSI_HSW, val);
- 
- 		/* hbp (not used in event mode) */
+ 	/*
 -- 
 2.42.0
 
