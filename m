@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6D667ECF0B
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 655F27ECC4D
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:28:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235241AbjKOTqE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:46:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36604 "EHLO
+        id S233796AbjKOT2C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 14:28:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235224AbjKOTqA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:46:00 -0500
+        with ESMTP id S233898AbjKOT2B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:28:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B3FAD55
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:45:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05C6C433CA;
-        Wed, 15 Nov 2023 19:45:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D24E1A8
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:27:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A6FC433C8;
+        Wed, 15 Nov 2023 19:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077554;
-        bh=fH+0tt9z/AaTXDQTxIr1H2vTiShUZwZHuvpl3tHdSWY=;
+        s=korg; t=1700076477;
+        bh=VZLK4T4FhtWtFBiy5WFXjbXuzWZ0vJMZQRWPQhSn2fo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dWu+G7AMGc/cvwHLKmEvouf7/wXWEkaynRosdMAykJexPeMKX5jRVJAnWwSIAUYkv
-         naUcXSpTosOO/O7rmXUNEisWOOVUf+wAe2bqVPKEDvaNdJXKk4FCVg9Axgs+UJw5BI
-         bLl4EeZjjPGXj79juDtTLyltCgZSnbHIiipB2jRU=
+        b=SCuOzKxWNUhuKD3DQuBj3zyknzqCBr4uMO9WfQ3iMdpGAV7dL1o/GJpnzsgdAIMzk
+         iwVtSgsOP9VllygB5Gx9XBTy+XTm++9sBMID9QLhgQlG88hSEp01onrXGuw2Mlqw49
+         GUc97AOFC0PsFN8XL4tN0US9+9jOa3DP2vQXH5zg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen Ni <nichen@iscas.ac.cn>,
-        Ira Weiny <ira.weiny@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
+        patches@lists.linux.dev,
+        "Timur I. Davletshin" <timur.davletshin@gmail.com>,
+        Jo-Philipp Wich <jo@mein.io>,
+        Jonas Gorski <jonas.gorski@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 353/603] libnvdimm/of_pmem: Use devm_kstrdup instead of kstrdup and check its return value
+Subject: [PATCH 6.5 314/550] hwrng: geode - fix accessing registers
 Date:   Wed, 15 Nov 2023 14:14:58 -0500
-Message-ID: <20231115191637.963241090@linuxfoundation.org>
+Message-ID: <20231115191622.595613707@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +53,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit 6fd4ebfc4d61e3097b595ab2725d513e3bbd6739 ]
+[ Upstream commit 464bd8ec2f06707f3773676a1bd2c64832a3c805 ]
 
-Use devm_kstrdup() instead of kstrdup() and check its return value to
-avoid memory leak.
+When the membase and pci_dev pointer were moved to a new struct in priv,
+the actual membase users were left untouched, and they started reading
+out arbitrary memory behind the struct instead of registers. This
+unfortunately turned the RNG into a constant number generator, depending
+on the content of what was at that offset.
 
-Fixes: 49bddc73d15c ("libnvdimm/of_pmem: Provide a unique name for bus provider")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+To fix this, update geode_rng_data_{read,present}() to also get the
+membase via amd_geode_priv, and properly read from the right addresses
+again.
+
+Fixes: 9f6ec8dc574e ("hwrng: geode - Fix PCI device refcount leak")
+Reported-by: Timur I. Davletshin <timur.davletshin@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217882
+Tested-by: Timur I. Davletshin <timur.davletshin@gmail.com>
+Suggested-by: Jo-Philipp Wich <jo@mein.io>
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvdimm/of_pmem.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/char/hw_random/geode-rng.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvdimm/of_pmem.c b/drivers/nvdimm/of_pmem.c
-index 1b9f5b8a6167e..d3fca0ab62900 100644
---- a/drivers/nvdimm/of_pmem.c
-+++ b/drivers/nvdimm/of_pmem.c
-@@ -30,7 +30,13 @@ static int of_pmem_region_probe(struct platform_device *pdev)
- 	if (!priv)
- 		return -ENOMEM;
+diff --git a/drivers/char/hw_random/geode-rng.c b/drivers/char/hw_random/geode-rng.c
+index 12fbe80918319..159baf00a8675 100644
+--- a/drivers/char/hw_random/geode-rng.c
++++ b/drivers/char/hw_random/geode-rng.c
+@@ -58,7 +58,8 @@ struct amd_geode_priv {
  
--	priv->bus_desc.provider_name = kstrdup(pdev->name, GFP_KERNEL);
-+	priv->bus_desc.provider_name = devm_kstrdup(&pdev->dev, pdev->name,
-+							GFP_KERNEL);
-+	if (!priv->bus_desc.provider_name) {
-+		kfree(priv);
-+		return -ENOMEM;
-+	}
-+
- 	priv->bus_desc.module = THIS_MODULE;
- 	priv->bus_desc.of_node = np;
+ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
+ {
+-	void __iomem *mem = (void __iomem *)rng->priv;
++	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
++	void __iomem *mem = priv->membase;
  
+ 	*data = readl(mem + GEODE_RNG_DATA_REG);
+ 
+@@ -67,7 +68,8 @@ static int geode_rng_data_read(struct hwrng *rng, u32 *data)
+ 
+ static int geode_rng_data_present(struct hwrng *rng, int wait)
+ {
+-	void __iomem *mem = (void __iomem *)rng->priv;
++	struct amd_geode_priv *priv = (struct amd_geode_priv *)rng->priv;
++	void __iomem *mem = priv->membase;
+ 	int data, i;
+ 
+ 	for (i = 0; i < 20; i++) {
 -- 
 2.42.0
 
