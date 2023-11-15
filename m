@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B3D47ED59F
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 22:07:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 710CA7ED2D4
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:44:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344658AbjKOVHt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 16:07:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37460 "EHLO
+        id S233371AbjKOUoj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:44:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235635AbjKOVH1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 16:07:27 -0500
+        with ESMTP id S233494AbjKOUoi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 15:44:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C6861724
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 13:07:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB8A9C4AF5C;
-        Wed, 15 Nov 2023 20:49:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51450125
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 12:44:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1CDEC433C7;
+        Wed, 15 Nov 2023 20:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700081393;
-        bh=B8NmKQd+NCQhxbQCYb0evRhYRlLzIISYot3eTMW9+nw=;
+        s=korg; t=1700081075;
+        bh=DfW4qEqiujn6IZ2+4+g+Mwjm58Z2oX3aHatvPFFz0o4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d6uALdFKzo/CzrGXW4vYMtclkr03u5cZS8O6qKH5x0/LzBLAYmvWc0bUVQSzPN53m
-         A9SmwPGjPFMIDd1hjUo0HbkVJta/tEUwdOEEUikhbY00EF/pZBzS9IyRqWWyqdl7pn
-         xKRBACQHD97F3wG+1+R4y+B6wUy6QGnjfhN5oIvg=
+        b=FqNF3xO0AoP5MNTFxGSK/01mCRMpZf6uJHWR5COnN+wCUxnA+dhGvpl82NDbdt67v
+         WKWMFshAsdu29gFHv86IAnnedq7aex3d1a0woYnd9WLJufPyz4vtOxwlfqRYkXNDg1
+         Kd3tXhJKQ4SnxUWQepriu/vwGBzGZe90PWfxe6wQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        Neal Cardwell <ncardwell@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/244] selftests/pidfd: Fix ksft print formats
+Subject: [PATCH 4.19 06/88] tcp_metrics: do not create an entry from tcp_init_metrics()
 Date:   Wed, 15 Nov 2023 15:35:18 -0500
-Message-ID: <20231115203555.934065361@linuxfoundation.org>
+Message-ID: <20231115191426.580660647@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-References: <20231115203548.387164783@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+References: <20231115191426.221330369@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,104 +52,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 4d7f4e8158b62f63031510cdc24acc520956c091 ]
+[ Upstream commit a135798e6e200ecb2f864cecca6d257ba278370c ]
 
-Compiling pidfd selftest after adding a __printf() attribute to
-ksft_print_msg() and ksft_test_result_pass() exposes -Wformat warnings
-in error_report(), test_pidfd_poll_exec_thread(),
-child_poll_exec_test(), test_pidfd_poll_leader_exit_thread(),
-child_poll_leader_exit_test().
+tcp_init_metrics() only wants to get metrics if they were
+previously stored in the cache. Creating an entry is adding
+useless costs, especially when tcp_no_metrics_save is set.
 
-The ksft_test_result_pass() in error_report() expects a string but
-doesn't provide any argument after the format string. All the other
-calls to ksft_print_msg() in the functions mentioned above have format
-strings that don't match with other passed arguments.
-
-Fix format specifiers so they match the passed variables.
-
-Add a missing variable to ksft_test_result_pass() inside
-error_report() so it matches other cases in the switch statement.
-
-Fixes: 2def297ec7fb ("pidfd: add tests for NSpid info in fdinfo")
-
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 51c5d0c4b169 ("tcp: Maintain dynamic metrics in local cache.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/pidfd/pidfd_fdinfo_test.c |  2 +-
- tools/testing/selftests/pidfd/pidfd_test.c        | 12 ++++++------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ net/ipv4/tcp_metrics.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c b/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
-index 3fd8e903118f5..3bc46d6151f44 100644
---- a/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
-+++ b/tools/testing/selftests/pidfd/pidfd_fdinfo_test.c
-@@ -62,7 +62,7 @@ static void error_report(struct error *err, const char *test_name)
- 		break;
+diff --git a/net/ipv4/tcp_metrics.c b/net/ipv4/tcp_metrics.c
+index 7d486295d75f5..60619b1f4acdc 100644
+--- a/net/ipv4/tcp_metrics.c
++++ b/net/ipv4/tcp_metrics.c
+@@ -474,7 +474,7 @@ void tcp_init_metrics(struct sock *sk)
+ 		goto reset;
  
- 	case PIDFD_PASS:
--		ksft_test_result_pass("%s test: Passed\n");
-+		ksft_test_result_pass("%s test: Passed\n", test_name);
- 		break;
- 
- 	default:
-diff --git a/tools/testing/selftests/pidfd/pidfd_test.c b/tools/testing/selftests/pidfd/pidfd_test.c
-index 9a2d64901d591..79f543ad394c2 100644
---- a/tools/testing/selftests/pidfd/pidfd_test.c
-+++ b/tools/testing/selftests/pidfd/pidfd_test.c
-@@ -380,13 +380,13 @@ static int test_pidfd_send_signal_syscall_support(void)
- 
- static void *test_pidfd_poll_exec_thread(void *priv)
- {
--	ksft_print_msg("Child Thread: starting. pid %d tid %d ; and sleeping\n",
-+	ksft_print_msg("Child Thread: starting. pid %d tid %ld ; and sleeping\n",
- 			getpid(), syscall(SYS_gettid));
- 	ksft_print_msg("Child Thread: doing exec of sleep\n");
- 
- 	execl("/bin/sleep", "sleep", str(CHILD_THREAD_MIN_WAIT), (char *)NULL);
- 
--	ksft_print_msg("Child Thread: DONE. pid %d tid %d\n",
-+	ksft_print_msg("Child Thread: DONE. pid %d tid %ld\n",
- 			getpid(), syscall(SYS_gettid));
- 	return NULL;
- }
-@@ -426,7 +426,7 @@ static int child_poll_exec_test(void *args)
- {
- 	pthread_t t1;
- 
--	ksft_print_msg("Child (pidfd): starting. pid %d tid %d\n", getpid(),
-+	ksft_print_msg("Child (pidfd): starting. pid %d tid %ld\n", getpid(),
- 			syscall(SYS_gettid));
- 	pthread_create(&t1, NULL, test_pidfd_poll_exec_thread, NULL);
- 	/*
-@@ -477,10 +477,10 @@ static void test_pidfd_poll_exec(int use_waitpid)
- 
- static void *test_pidfd_poll_leader_exit_thread(void *priv)
- {
--	ksft_print_msg("Child Thread: starting. pid %d tid %d ; and sleeping\n",
-+	ksft_print_msg("Child Thread: starting. pid %d tid %ld ; and sleeping\n",
- 			getpid(), syscall(SYS_gettid));
- 	sleep(CHILD_THREAD_MIN_WAIT);
--	ksft_print_msg("Child Thread: DONE. pid %d tid %d\n", getpid(), syscall(SYS_gettid));
-+	ksft_print_msg("Child Thread: DONE. pid %d tid %ld\n", getpid(), syscall(SYS_gettid));
- 	return NULL;
- }
- 
-@@ -489,7 +489,7 @@ static int child_poll_leader_exit_test(void *args)
- {
- 	pthread_t t1, t2;
- 
--	ksft_print_msg("Child: starting. pid %d tid %d\n", getpid(), syscall(SYS_gettid));
-+	ksft_print_msg("Child: starting. pid %d tid %ld\n", getpid(), syscall(SYS_gettid));
- 	pthread_create(&t1, NULL, test_pidfd_poll_leader_exit_thread, NULL);
- 	pthread_create(&t2, NULL, test_pidfd_poll_leader_exit_thread, NULL);
- 
+ 	rcu_read_lock();
+-	tm = tcp_get_metrics(sk, dst, true);
++	tm = tcp_get_metrics(sk, dst, false);
+ 	if (!tm) {
+ 		rcu_read_unlock();
+ 		goto reset;
 -- 
 2.42.0
 
