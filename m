@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BD967ECE79
-	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 20:43:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2898F7ED29E
+	for <lists+stable@lfdr.de>; Wed, 15 Nov 2023 21:42:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235113AbjKOTnW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 14:43:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54646 "EHLO
+        id S233342AbjKOUmr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 15:42:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235116AbjKOTnV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:43:21 -0500
+        with ESMTP id S233750AbjKOTZ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 14:25:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 082A3B9
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:43:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FD05C433C9;
-        Wed, 15 Nov 2023 19:43:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FE9EA4
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 11:25:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85BCC433C7;
+        Wed, 15 Nov 2023 19:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700077397;
-        bh=NWpnWef7GwH//Apj8icO1cmBaNidgGW/yzB2eXxyMp4=;
+        s=korg; t=1700076356;
+        bh=XqMXIB1JA/VDTFAAoltK7l7vIGrHU5Wpk5fuJc7x5uY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wDrohkmZqdmbeGWV0xwH81uXqt/x8WRoHR+vNdCwnKvmI3Zuelhvb+uRaKyGdV8f2
-         sZtFDtXFuJ7y2yQGU366ajnv4GGvsXizbZDxFj///B9gESO7ioE+PUlLsLCoJ2XRkr
-         uUXaDfggKdRESQuMWXu3Iqr4X52FLI8qCVv3J+Fo=
+        b=F1AyXTFwT+8+G7HXESWS9e1ksD7JSpWTst4vieP2DSoneOvsCFWmfAa17woXkmgTB
+         w58j/ssIXfatC9JhDPRKXjzjqYaEopKRH+renScrp/62flTsTjbjC99el4mX8VjETf
+         z3LJQdOEqlXBak5Hkb3uZlzLskbpgzBJKmbg+Ge4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Fei Shao <fshao@chromium.org>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 278/603] arm64: dts: qcom: sc7280: link usb3_phy_wrapper_gcc_usb30_pipe_clk
-Date:   Wed, 15 Nov 2023 14:13:43 -0500
-Message-ID: <20231115191632.604735593@linuxfoundation.org>
+Subject: [PATCH 6.5 240/550] drm/mediatek: Add mmsys_dev_num to mt8188 vdosys0 driver data
+Date:   Wed, 15 Nov 2023 14:13:44 -0500
+Message-ID: <20231115191617.348724659@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-References: <20231115191613.097702445@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 70c4a1ca13b333b00e01266d299605fa1041b0d5 ]
+[ Upstream commit ff64e4c31d969cdba20a41969edb3def15f3aaa0 ]
 
-Use usb_1_ssphy's clock as gcc's usb3_phy_wrapper_gcc_usb30_pipe_clk
-clock source.
+Add missing mmsys_dev_num to mt8188 vdosys0 driver data.
 
-Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
-Fixes: 1c39e6f9b534 ("arm64: dts: qcom: sc7280: Add USB related nodes")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230711120916.4165894-7-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 54b48080278a ("drm/mediatek: Add mediatek-drm of vdosys0 support for mt8188")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Tested-by: Fei Shao <fshao@chromium.org>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20231004024013.18956-2-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_drm_drv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 925428a5f6aea..2870fe8fd5263 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -869,7 +869,8 @@ gcc: clock-controller@100000 {
- 			clocks = <&rpmhcc RPMH_CXO_CLK>,
- 				 <&rpmhcc RPMH_CXO_CLK_A>, <&sleep_clk>,
- 				 <0>, <&pcie1_lane>,
--				 <0>, <0>, <0>, <0>;
-+				 <0>, <0>, <0>,
-+				 <&usb_1_ssphy>;
- 			clock-names = "bi_tcxo", "bi_tcxo_ao", "sleep_clk",
- 				      "pcie_0_pipe_clk", "pcie_1_pipe_clk",
- 				      "ufs_phy_rx_symbol_0_clk", "ufs_phy_rx_symbol_1_clk",
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+index 30d10f21562f4..da9cbcc685db6 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
+@@ -287,6 +287,7 @@ static const struct mtk_mmsys_driver_data mt8186_mmsys_driver_data = {
+ static const struct mtk_mmsys_driver_data mt8188_vdosys0_driver_data = {
+ 	.main_path = mt8188_mtk_ddp_main,
+ 	.main_len = ARRAY_SIZE(mt8188_mtk_ddp_main),
++	.mmsys_dev_num = 1,
+ };
+ 
+ static const struct mtk_mmsys_driver_data mt8192_mmsys_driver_data = {
 -- 
 2.42.0
 
