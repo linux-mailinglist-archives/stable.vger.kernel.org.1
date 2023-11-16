@@ -2,163 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06CE97EDBBC
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 08:04:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F352E7EDBE4
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 08:22:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229815AbjKPHEZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 02:04:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52558 "EHLO
+        id S230127AbjKPHWR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 02:22:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229638AbjKPHEY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 02:04:24 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D771192;
-        Wed, 15 Nov 2023 23:04:21 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 818AC228F8;
-        Thu, 16 Nov 2023 07:04:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1700118259; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wpPRcxQ5IiHGTAj6tgpbwrduKyzSuCcDvStD8GSl+y8=;
-        b=afYDxkq5miwZnwVOvswSzpRNWbmJphZ00V5EhAfqDMtn0mODHh/Yl72DKtcjhFh8rm5GFl
-        1F9aFP+XhltXUYs4kbt5zijVrucVGn2IAS7IXhkbYnWCmM2wY7NxxGztcH/oQ8+ijfVnXB
-        fktOOjTPZRdkT6HCC6qflIu0vLubuYo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1700118259;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wpPRcxQ5IiHGTAj6tgpbwrduKyzSuCcDvStD8GSl+y8=;
-        b=6hKjd+VNaIQALyi0U+PGWfKHk6TdjAXs63eYJgYKLy7HNOwvJgT9kWt1OWMwZnOccwi0ao
-        UWYRD4xA/XTMTRBQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4BC9C139C4;
-        Thu, 16 Nov 2023 07:04:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id ly+6EfO+VWVmOQAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Thu, 16 Nov 2023 07:04:19 +0000
-Message-ID: <4bd106d5-c3e3-6731-9a74-cff81e2392de@suse.cz>
-Date:   Thu, 16 Nov 2023 08:04:18 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] mm: kmem: properly initialize local objcg variable in
- current_obj_cgroup()
-Content-Language: en-US
-To:     Roman Gushchin <roman.gushchin@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Erhard Furtner <erhard_f@mailbox.org>,
-        Shakeel Butt <shakeelb@google.com>,
-        David Rientjes <rientjes@google.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Muchun Song <muchun.song@linux.dev>, stable@vger.kernel.org
-References: <20231116025109.3775055-1-roman.gushchin@linux.dev>
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20231116025109.3775055-1-roman.gushchin@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out1.suse.de;
-        none
-X-Spam-Level: 
-X-Spam-Score: -4.29
-X-Spamd-Result: default: False [-4.29 / 50.00];
-         ARC_NA(0.00)[];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         BAYES_HAM(-0.00)[41.80%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         REPLY(-4.00)[];
-         DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-         NEURAL_HAM_SHORT(-0.18)[-0.920];
-         RCPT_COUNT_SEVEN(0.00)[11];
-         FUZZY_BLOCKED(0.00)[rspamd.com];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         RCVD_TLS_ALL(0.00)[];
-         MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229984AbjKPHWR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 02:22:17 -0500
+Received: from nautica.notk.org (ipv6.notk.org [IPv6:2001:41d0:1:7a93::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4539DD;
+        Wed, 15 Nov 2023 23:22:12 -0800 (PST)
+Received: by nautica.notk.org (Postfix, from userid 108)
+        id 2EC2FC023; Thu, 16 Nov 2023 08:22:07 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+        t=1700119327; bh=UGteBNk1MfmhOR9aXzCP79/I0BC+ccGkg1SeZSW7BUM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=FdEHqgA/vvJqykCo6La5SMb3UL3Z4dmvZ+YrSJxI/7DcFomPhl8zFFvGU29aZF6QJ
+         Ce7uFDSsya5faNQMCuLvxrpqApXVAa9Sj2kGe3m6/qEDPxlYLY/D40FXL3KLQ7/0rS
+         gOlW5xk0yiVUe1UwGjeTH/z46bScz9N549OSdjaA2nR8MrmV+SbLBQQ5qds1yDJLpq
+         TsOqQelaad6uypxPpWtSrtKykXL+mnm6ANwm17Ufu2l1h3Ub46QQRc2QvPVAgfn85P
+         iMh9pBS8biDRCa04tIkvUE33e8zG9YlW49GnXBxWpMrJBq11nSbnjf1pB3VrXuOTE+
+         ma9UL/YbORnGA==
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
+Received: from gaia (localhost [127.0.0.1])
+        by nautica.notk.org (Postfix) with ESMTPS id 1E26AC009;
+        Thu, 16 Nov 2023 08:22:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+        t=1700119325; bh=UGteBNk1MfmhOR9aXzCP79/I0BC+ccGkg1SeZSW7BUM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tDte+n079n7PTU601fuxNcjLBrTKvnVs1mbSaaEt6o8MdgrpRDBE5ZuThOEzUCi0i
+         rGwo9fPlT9gZVAKu7k/uUlHXJVtm3LpiDcTWbbl48W0yK1d9Lq7qr22ALeiEP/1pSb
+         qVHIAFzoPsbKlv9rqpikFE/Zja3tHY36iqddMK/7J+JGDDjOGTP9w4V9TWmwPcYgpg
+         YyBemiKaqc32YZRTX3PzEvOsYYemHGI7mw9N8wDBxH3A673UuVd9cWIBy+WDje7Co3
+         0BY1RsUE9wmHab8v6y0RB02Bil+BxYBanyRJYCsLtwaY3fN4hstpGZrQY3Wvujiz13
+         vX7YlQ+1h4qPQ==
+Received: from localhost (gaia [local])
+        by gaia (OpenSMTPD) with ESMTPA id a19c72eb;
+        Thu, 16 Nov 2023 07:21:57 +0000 (UTC)
+Date:   Thu, 16 Nov 2023 16:21:42 +0900
+From:   Dominique Martinet <asmadeus@codewreck.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
+Message-ID: <ZVXDBtXJS7kWUqNG@codewreck.org>
+References: <20231115204644.490636297@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/16/23 03:51, Roman Gushchin wrote:
-> Actually the problem is caused by uninitialized local variable in
-> current_obj_cgroup(). If the root memory cgroup is set as an active
-> memory cgroup for a charging scope (as in the trace, where systemd
-> tries to create the first non-root cgroup, so the parent cgroup is
-> the root cgroup), the "for" loop is skipped and uninitialized objcg is
-> returned, causing a panic down the accounting stack.
+Greg Kroah-Hartman wrote on Wed, Nov 15, 2023 at 03:44:35PM -0500:
+> This is the start of the stable review cycle for the 5.10.201 release.
+> There are 191 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> The fix is trivial: initialize the objcg variable to NULL
-> unconditionally before the "for" loop.
+> Responses should be made by Fri, 17 Nov 2023 20:46:03 +0000.
+> Anything received after that time might be too late.
 > 
-> Fixes: e86828e5446d ("mm: kmem: scoped objcg protection")
-> Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/1959
-> Signed-off-by: Roman Gushchin (Cruise) <roman.gushchin@linux.dev>
-> Cc: Shakeel Butt <shakeelb@google.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: Dennis Zhou <dennis@kernel.org>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Michal Hocko <mhocko@kernel.org>
-> Cc: Muchun Song <muchun.song@linux.dev>
-> Cc: stable@vger.kernel.org
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.201-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Tested on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-We could also do this to make it less confusing?
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 774bd6e21e27..a08bcec661b6 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3175,7 +3175,6 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
- 		objcg = rcu_dereference_check(memcg->objcg, 1);
- 		if (likely(objcg))
- 			break;
--		objcg = NULL;
- 	}
- 
- 	return objcg;
-
-
-> ---
->  mm/memcontrol.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 774bd6e21e27..b138501e6489 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3165,6 +3165,7 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
->  	return NULL;
->  
->  from_memcg:
-> +	objcg = NULL;
->  	for (; !mem_cgroup_is_root(memcg); memcg = parent_mem_cgroup(memcg)) {
->  		/*
->  		 * Memcg pointer is protected by scope (see set_active_memcg())
-
+-- 
+Dominique Martinet | Asmadeus
