@@ -2,129 +2,226 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A28377EDF3D
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 12:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EBC2C7EDF49
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 12:13:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230456AbjKPLLU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 06:11:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35368 "EHLO
+        id S1345122AbjKPLNh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 06:13:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345083AbjKPLLT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 06:11:19 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54042AA;
-        Thu, 16 Nov 2023 03:11:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C03C433C7;
-        Thu, 16 Nov 2023 11:11:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700133076;
-        bh=S39I4q3Z2eyaTdKnVU0kVAHPshukGXcnGgf90hu5hNI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=kFY3JkENtL0CxjTkP/J8DwUB+SNQglfyJDHH7+sTiuRn0h/RUE7p3oaQ9qmm2EqUz
-         lJ8fKPSOka5GNjCzNZHxSf7AG6Gxycoolw68U9X3zNLhbf+PorV19XXd+0AJ9dW/Xv
-         Rs1D2g3X/xGGTH1hLuNRHeoRpA6X+9eMtKXDG3WLqM4c7l+4a5VetChSvtL3/ZQrwI
-         U355iW85fbSl1wMHuMOjIACUU9o+H6yzVw3tyyJmpQB9iKCoTXzWcBj5tSPrEMsbRa
-         JotGEznqCUVHoaEh6BM6b7ygvXrc8KQcKlmNu5a3klH/eu9lvDm5WiyUxcJJGGmqV1
-         WVw+8Ya70CViw==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2c6b5841f61so7347201fa.0;
-        Thu, 16 Nov 2023 03:11:15 -0800 (PST)
-X-Gm-Message-State: AOJu0Ywscy8wiDPGFjgcafrbTxcYyYihQieq1sou7jrvNexEPYYivadF
-        zHsROOAexZil6XVizYMZPVhrmr2PpdWU8Lrqst4=
-X-Google-Smtp-Source: AGHT+IFuerTCkQll0+xraF3KBCWCtKLNVm468vnWCiWQYEjYBagDH99HbCteNccZAey1E04nPRwuluu4JS60wiQzko0=
-X-Received: by 2002:a05:651c:20b:b0:2c6:edf1:b05e with SMTP id
- y11-20020a05651c020b00b002c6edf1b05emr580932ljn.15.1700133074166; Thu, 16 Nov
- 2023 03:11:14 -0800 (PST)
+        with ESMTP id S1344966AbjKPLNg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 06:13:36 -0500
+Received: from mail-vs1-xe2c.google.com (mail-vs1-xe2c.google.com [IPv6:2607:f8b0:4864:20::e2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91088196
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 03:13:32 -0800 (PST)
+Received: by mail-vs1-xe2c.google.com with SMTP id ada2fe7eead31-45fa1536e16so258670137.0
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 03:13:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700133211; x=1700738011; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PPbTsNVbTJpvM9xFj6LjzFWal6KJ/8xDtc70facoOGk=;
+        b=Sac8YYcONKSvEGqX7Tb4TUjy04m/uY/kubX/92PutXdVnuHpDvAjy2bXjipOsmbWWZ
+         M5JrZrEjPCdMsDSB62y92k4vwMyrx8VkOKE8tmKGZRivzh5FaxTSC0Ixp1GXU54lWCw3
+         gReZazt+UdAVZPfPe6R719LEj2fzMEWF4UA/E8QkGhHkrHqH92Lg+ji+SER1mHNYvPJD
+         YOZ6RwLP+FLGfAhDKPJuzEv0skw+qfypLeKVZKKf3udjR7IAR4EwY+E3cbTkn/SrZgzS
+         PpIrYh4E1IMHvnizTRiA7i8WrV27BDQdj1dicSTQVGZ3KTUmMtdQLXSg1usfiYrgZOAb
+         pY1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700133211; x=1700738011;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PPbTsNVbTJpvM9xFj6LjzFWal6KJ/8xDtc70facoOGk=;
+        b=JnTcpCtEfoqYShjRtjMO/mDuAyldBi83JGU6fQKG06251Ah3M4kpyO/Pf3cd8EPhlS
+         MaFAVo+OdsmP77LY65TGiHoz4L6JcLEb/wCRBbJxbtwKGxDhlUHgJgIfXCiLLkFiP4vv
+         FcSlq3iqssd64idIN0lOzsraRkp+hvzPT0HoKq0z970hliZx0j19DdKJrre/BP9JDgqW
+         JnpuiZhScGsD4NJZkbjGk2C0NBXecqfSTHZAETxxw5HAlUuLkpbCHVR32KXIYhQ2lYk/
+         BG4bRnC2Jjz1vD8M19EwDLkg4W4UaHXA2RbaAD42UK2dgL3zntB5E0sHBLQ5ZjjUhcQO
+         2vhA==
+X-Gm-Message-State: AOJu0YyVix15SQeE83wjqg3PzEbN8uzldxSspPjFxAUUBXz7B8jZ7WjA
+        20IffJGLZIUz+iVtPeOfbzaAUGgesL6LnzS+Gd2ddQ==
+X-Google-Smtp-Source: AGHT+IEA2x1WPWP9jfSdwsLXwYb+NbDsT7pP3FL/Ha+9jHQmjvVEub6KCNATZoBtK104xn94ETxAamo97B3WhzCTPco=
+X-Received: by 2002:a67:e885:0:b0:45f:1790:5b55 with SMTP id
+ x5-20020a67e885000000b0045f17905b55mr13106640vsn.28.1700133211627; Thu, 16
+ Nov 2023 03:13:31 -0800 (PST)
 MIME-Version: 1.0
-References: <20231115095830.20607-1-quic_aiquny@quicinc.com>
-In-Reply-To: <20231115095830.20607-1-quic_aiquny@quicinc.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 16 Nov 2023 21:11:03 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXEHjY2NmEztvfQR34k903Jgx_4fqgHpkxq4YAiTc5szyA@mail.gmail.com>
-Message-ID: <CAMj1kXEHjY2NmEztvfQR34k903Jgx_4fqgHpkxq4YAiTc5szyA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ARM: kprobes: Explicitly reserve r7 for local variables
-To:     Maria Yu <quic_aiquny@quicinc.com>
-Cc:     linux@armlinux.org.uk, mhiramat@kernel.org, kernel@quicinc.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_lijuang@quicinc.com, stable@vger.kernel.org
+References: <20231115191426.221330369@linuxfoundation.org>
+In-Reply-To: <20231115191426.221330369@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 16 Nov 2023 16:43:20 +0530
+Message-ID: <CA+G9fYsq8SV8vpmcZexRWsPoBxYDKNfFBxJKPmev8cXvCJw+uw@mail.gmail.com>
+Subject: Re: [PATCH 4.19 00/88] 4.19.299-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 15 Nov 2023 at 19:58, Maria Yu <quic_aiquny@quicinc.com> wrote:
+On Thu, 16 Nov 2023 at 02:14, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Registers r7 is removed in clobber list, so compiler may choose r7 for
-> local variables usage, while r7 will be actually updated by the inline asm
-> code. This caused the runtime behavior wrong.
-> While those kind of reserved registers cannot be set to clobber list
-> because of error like "inline asm clobber list contains reserved
-> registers".
-> Explicitly reserve r7 by adding attribute no-omit-frame-pointer for needed
-> function, then in T32 asm code r7 is used as a frame pointer and is not
-> available for use as a general-purpose register.
-> Note that "no-omit-frame-pointer" will make the code size a little bigger
-> to store the stack frame pointer. So limited to needed functions can have
-> the less impact than the full source file.
+> This is the start of the stable review cycle for the 4.19.299 release.
+> There are 88 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Fixes: dd12e97f3c72 ("ARM: kprobes: treat R7 as the frame pointer register in Thumb2 builds")
-> Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
-> Cc: stable@vger.kernel.org
+> Responses should be made by Fri, 17 Nov 2023 19:14:03 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
+4.19.299-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-4.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 
-> ---
->  arch/arm/probes/kprobes/actions-thumb.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm/probes/kprobes/actions-thumb.c b/arch/arm/probes/kprobes/actions-thumb.c
-> index 51624fc263fc..c2fdaf9f6dba 100644
-> --- a/arch/arm/probes/kprobes/actions-thumb.c
-> +++ b/arch/arm/probes/kprobes/actions-thumb.c
-> @@ -438,7 +438,7 @@ t16_simulate_branch(probes_opcode_t insn,
->         regs->ARM_pc = pc + (offset * 2);
->  }
->
-> -static unsigned long __kprobes
-> +static unsigned long __kprobes __attribute__((optimize("no-omit-frame-pointer")))
->  t16_emulate_loregs(probes_opcode_t insn,
->                    struct arch_probes_insn *asi, struct pt_regs *regs)
->  {
-> @@ -521,7 +521,7 @@ t16_decode_hiregs(probes_opcode_t insn, struct arch_probes_insn *asi,
->         return INSN_GOOD;
->  }
->
-> -static void __kprobes
-> +static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
->  t16_emulate_push(probes_opcode_t insn,
->                 struct arch_probes_insn *asi, struct pt_regs *regs)
->  {
-> @@ -557,7 +557,7 @@ t16_decode_push(probes_opcode_t insn, struct arch_probes_insn *asi,
->         return INSN_GOOD;
->  }
->
-> -static void __kprobes
-> +static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
->  t16_emulate_pop_nopc(probes_opcode_t insn,
->                 struct arch_probes_insn *asi, struct pt_regs *regs)
->  {
-> @@ -576,7 +576,7 @@ t16_emulate_pop_nopc(probes_opcode_t insn,
->                 );
->  }
->
-> -static void __kprobes
-> +static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
->  t16_emulate_pop_pc(probes_opcode_t insn,
->                 struct arch_probes_insn *asi, struct pt_regs *regs)
->  {
->
-> base-commit: 9bacdd8996c77c42ca004440be610692275ff9d0
-> --
-> 2.17.1
->
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 4.19.298-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-4.19.y
+* git commit: cf4a4e22ca8be35b01101e3d8d6d1dc62d7d2412
+* git describe: v4.19.297-62-gcf4a4e22ca8b
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
+.297-62-gcf4a4e22ca8b
+
+## Test Regressions (compared to v4.19.297)
+
+## Metric Regressions (compared to v4.19.297)
+
+## Test Fixes (compared to v4.19.297)
+
+## Metric Fixes (compared to v4.19.297)
+
+## Test result summary
+total: 53428, pass: 45034, fail: 1563, skip: 6798, xfail: 33
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 110 total, 104 passed, 6 failed
+* arm64: 35 total, 31 passed, 4 failed
+* i386: 19 total, 16 passed, 3 failed
+* mips: 19 total, 19 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 4 total, 4 passed, 0 failed
+* x86_64: 30 total, 25 passed, 5 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-user
+* kselftest-vm
+* kselftest-zram
+* kunit
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
