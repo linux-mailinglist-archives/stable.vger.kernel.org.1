@@ -2,68 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ADE07ED921
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 03:09:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EAEB7ED95E
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 03:28:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbjKPCJ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 21:09:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
+        id S235621AbjKPC2I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 21:28:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbjKPCJ7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 21:09:59 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B3B2187
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 18:09:55 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b2f4a5ccebso197186b6e.3
-        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 18:09:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700100594; x=1700705394; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jge6msL/+JniYXSRDUYwZ1gtj2Oz8qyUenaWgII62f4=;
-        b=TTar4Gw2120BK8I0tBivBTjSTKsENavxgtXYTIg+ErLv8JPqqbLx30kHld4ebfIXmC
-         DmRbaHO9q22ZhphKrJdb0OBbEF+j6rDhdD+dGm91cXMNnaSOV8HgUyoUEunN1HeSDuEs
-         qOwYZYJ3l94oP4WhVvNKf7Rv/9OR7wuMBd0f/EzE1auK3xwMMRxq7bxnt1IsOqpR1lKN
-         GQ4T97DGXeCgDklPtOLVmMO+c5zM/SvE7MPT8kCn7iMFov84I7jndhb4DvlDv6w8AywT
-         WDsDnzlmgOQF/S4BLinplGaudNzGOpEDl77TLef8V/m/Vd/p9FNET1BhKPWNtB64SEbe
-         CA4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700100594; x=1700705394;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jge6msL/+JniYXSRDUYwZ1gtj2Oz8qyUenaWgII62f4=;
-        b=vEUryvQDxxoZJhxVtB71bvrTZQan7TDXs8B6nyl8vkxLABivHD8vMVRT9ADQO5i/EL
-         azaoPFrexPvok52a+F+AhvNnWxRE33iWWpAdaxhDuXdGb/OHtpwZTyswur05i6kiu1/+
-         cS/IbPVqYRzFlm6QZGuqt+o720dPwhYrwyolIRdXGq/WRxpkdxeYYdkZaFP1K+ODnW+Y
-         lKaE4Hs2lc0UXr9uUo2/CcoUSiuER+whI5alYfKgYq+1wdbkzlutyRd6XH3wM7Rn2Mtv
-         DHQ5jajAifS5NP7eQ3+/veV9ldoaHwyDrudwWrL9vaYg1gGRe+uUfCHZSHTIqCqCTMmc
-         myeA==
-X-Gm-Message-State: AOJu0Yzp2UqNvVbHwm0kvdVqG8cwkU6mBhP8fqmSSo0WoN7C0vHx9IIV
-        5N7vKaQ2dnpcv3xWOrA8hZlw/aU6bydfh/jaDYkWxg==
-X-Google-Smtp-Source: AGHT+IF9E+2uMLYV/h74y8jVdiDEuAB1P7gxUF27yLWEK2p0q8L+uk1AlqrXtJdFub0wkxf6z/yJpg==
-X-Received: by 2002:a05:6808:b3c:b0:3b2:db86:209 with SMTP id t28-20020a0568080b3c00b003b2db860209mr14981227oij.38.1700100594243;
-        Wed, 15 Nov 2023 18:09:54 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id m18-20020aa78a12000000b0068c10187dc3sm3403626pfa.168.2023.11.15.18.09.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Nov 2023 18:09:53 -0800 (PST)
-Message-ID: <655579f1.a70a0220.ec95b.bac6@mx.google.com>
-Date:   Wed, 15 Nov 2023 18:09:53 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S235054AbjKPC2H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 21:28:07 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF5118D;
+        Wed, 15 Nov 2023 18:28:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700101684; x=1731637684;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=i4SZmEyT6wpW2/7XS8XAzK1oS3JdmZRckxrVbhm4i0k=;
+  b=fnV2fO9WltwBbIoA9VVdcnXAQz7rWOYVTOqtN0/VJfq1ntan630+gpQj
+   EX/SYaFH8kis3N7JFtok19yOYmJY49Gv5yxttWRFisjTYMR4VWlsFqMmY
+   4jdGXOwL7KTy72CHVmO+1Z/e9xjB9N19fQmRU0uTSReN5wn5+ZKpT88XK
+   ulv17qau/VVqPdue4weu9Dypxhata8AK3Is3H4q+C6cLN9ioJYbw+lDvD
+   uVXRczA+Rr9Jaoj//nkwZZrHpiYDmSKPLxaTVqQgA3ZD6uSuLJeQjvtvB
+   F//fJoowl3aYeI9W4gEqhfe4rJ3wbgWhmIrKCY80iByQLRB0yKDLCu1wO
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="381393618"
+X-IronPort-AV: E=Sophos;i="6.03,306,1694761200"; 
+   d="scan'208";a="381393618"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 18:28:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.03,306,1694761200"; 
+   d="scan'208";a="13403588"
+Received: from allen-box.sh.intel.com ([10.239.159.127])
+  by fmviesa001.fm.intel.com with ESMTP; 15 Nov 2023 18:27:59 -0800
+From:   Lu Baolu <baolu.lu@linux.intel.com>
+To:     Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Kevin Tian <kevin.tian@intel.com>
+Cc:     iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+        "Abdul Halim, Mohd Syazwan" <mohd.syazwan.abdul.halim@intel.com>,
+        stable@vger.kernel.org, Abdul@vger.kernel.org,
+        Halim@vger.kernel.org, Lu Baolu <baolu.lu@linux.intel.com>
+Subject: [PATCH 1/1] iommu/vt-d: Add MTL to quirk list to skip TE disabling
+Date:   Thu, 16 Nov 2023 10:23:24 +0800
+Message-Id: <20231116022324.30120-1-baolu.lu@linux.intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.10.200-192-g550b7e1fee20
-Subject: stable-rc/linux-5.10.y baseline: 113 runs,
- 2 regressions (v5.10.200-192-g550b7e1fee20)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -72,151 +63,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y baseline: 113 runs, 2 regressions (v5.10.200-192-g55=
-0b7e1fee20)
+From: "Abdul Halim, Mohd Syazwan" <mohd.syazwan.abdul.halim@intel.com>
 
-Regressions Summary
--------------------
+The VT-d spec requires (10.4.4 Global Command Register, TE field) that:
 
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
+Hardware implementations supporting DMA draining must drain any in-flight
+DMA read/write requests queued within the Root-Complex before completing
+the translation enable command and reflecting the status of the command
+through the TES field in the Global Status register.
 
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
+Unfortunately, some integrated graphic devices fail to do so after some
+kind of power state transition. As the result, the system might stuck in
+iommu_disable_translation(), waiting for the completion of TE transition.
 
+Add MTL to the quirk list for those devices and skips TE disabling if the
+qurik hits.
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
-nel/v5.10.200-192-g550b7e1fee20/plan/baseline/
+Fixes: b1012ca8dc4f ("iommu/vt-d: Skip TE disabling on quirky gfx dedicated iommu")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdul Halim, Mohd Syazwan <mohd.syazwan.abdul.halim@intel.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+---
+ drivers/iommu/intel/iommu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-5.10.y
-  Describe: v5.10.200-192-g550b7e1fee20
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      550b7e1fee20e8840f9c1028c89dd3fc9c959fff =
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 061df1b68ff7..22cadcefadaa 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -5080,7 +5080,7 @@ static void quirk_igfx_skip_te_disable(struct pci_dev *dev)
+ 	ver = (dev->device >> 8) & 0xff;
+ 	if (ver != 0x45 && ver != 0x46 && ver != 0x4c &&
+ 	    ver != 0x4e && ver != 0x8a && ver != 0x98 &&
+-	    ver != 0x9a && ver != 0xa7)
++	    ver != 0x9a && ver != 0xa7 && ver != 0x7d)
+ 		return;
+ 
+ 	if (risky_device(dev))
+-- 
+2.34.1
 
-
-
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/6555480a94a83a7be97e4aaa
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
-00-192-g550b7e1fee20/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-p=
-ine-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
-00-192-g550b7e1fee20/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-p=
-ine-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6555480a94a83a7be97e4ab3
-        failing since 35 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
-t fail: v5.10.198)
-
-    2023-11-15T22:36:48.806844  <8>[   16.949774] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 444163_1.5.2.4.1>
-    2023-11-15T22:36:48.911795  / # #
-    2023-11-15T22:36:49.013398  export SHELL=3D/bin/sh
-    2023-11-15T22:36:49.014044  #
-    2023-11-15T22:36:49.114991  / # export SHELL=3D/bin/sh. /lava-444163/en=
-vironment
-    2023-11-15T22:36:49.115644  =
-
-    2023-11-15T22:36:49.216642  / # . /lava-444163/environment/lava-444163/=
-bin/lava-test-runner /lava-444163/1
-    2023-11-15T22:36:49.217545  =
-
-    2023-11-15T22:36:49.222090  / # /lava-444163/bin/lava-test-runner /lava=
--444163/1
-    2023-11-15T22:36:49.289300  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/6555481c94a83a7be97e4b29
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
-00-192-g550b7e1fee20/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h=
-6-pine-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
-00-192-g550b7e1fee20/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h=
-6-pine-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6555481c94a83a7be97e4b32
-        failing since 35 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
-t fail: v5.10.198)
-
-    2023-11-15T22:43:32.479712  / # #
-
-    2023-11-15T22:43:32.582109  export SHELL=3D/bin/sh
-
-    2023-11-15T22:43:32.582880  #
-
-    2023-11-15T22:43:32.684259  / # export SHELL=3D/bin/sh. /lava-12012273/=
-environment
-
-    2023-11-15T22:43:32.685033  =
-
-
-    2023-11-15T22:43:32.786554  / # . /lava-12012273/environment/lava-12012=
-273/bin/lava-test-runner /lava-12012273/1
-
-    2023-11-15T22:43:32.787714  =
-
-
-    2023-11-15T22:43:32.802870  / # /lava-12012273/bin/lava-test-runner /la=
-va-12012273/1
-
-    2023-11-15T22:43:32.861501  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-11-15T22:43:32.861695  + cd /lava-1201227<8>[   18.183590] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12012273_1.5.2.4.5>
- =
-
-    ... (10 line(s) more)  =
-
- =20
