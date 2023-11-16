@@ -2,73 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 606997EE5D8
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 18:24:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF3517EE5E1
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 18:24:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229919AbjKPRYK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 12:24:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37768 "EHLO
+        id S1345354AbjKPRY1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 12:24:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbjKPRYK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 12:24:10 -0500
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96D5B194
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 09:24:07 -0800 (PST)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1cc209561c3so257385ad.0
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 09:24:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1700155447; x=1700760247; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fxrwYPS2UXkYH5vJnr9A5YVDipfIzNaz0lzuX0Xmv0I=;
-        b=irctMJkuQHl395qk1zZSnnb1uRrxAh1I2QfTBzgJHJRnlELvi545Jsv3n46PDJAvLN
-         H6q1zJJfkQ/82FSzmMS+x9avgRyvoDDNL+ryPh03d7SpXvHrbtMttCMyPY6k2AlFoviK
-         09XVrxHO0vX1QL5+tpehlJLb+mSYpWX1P4UuM56z7XhLbnTxtW0UZ9PLmQe8/Re130Vf
-         n9rvaWjpOOw+TACvenRoh5B0FGSjw6L4acXbTUoV+rKPhhtij0N5KmYfzUaM2wpmkY+F
-         c2Ersp2t1jD3GlAlR4FFMNtiAeF+NZchC4F1tpm2POWX4SFD1/Pbgic72Aw9lbXhgo+g
-         KB2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700155447; x=1700760247;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fxrwYPS2UXkYH5vJnr9A5YVDipfIzNaz0lzuX0Xmv0I=;
-        b=QRtPCTTWnsL8D7iz5q8a24GOA9YCQEcu3apn9P2gmIoUru43x4dQLybjRyPRX81FOY
-         fbQByZ0DsGcVqQ9LgiSxSGgXmuN6L/CtQ+5XfKSPfsWAJXyRBXNnIN31sQ0MpgNee0Ro
-         PoqgJhdcDpbmE9Afhd6O4kwuKEnxpBT+MC6fgbVSR8Dpsn+yWSjR8okPI4pbXsrqW9l0
-         uBq3gFawZbOG/xSkVUHnzn+WFv/fQWlFaXIXJWAauVxRZ+JDBH6tKdiQY5ohTqzirj77
-         E0vWvwzLE89ywnyEV6qasBOw3wq1JWCEJErQ4uad27RRj7v3kTvGxFx9+mF2Z2TVDJWN
-         gARg==
-X-Gm-Message-State: AOJu0YwX4u6GLqEqOBMMvTQ0QkNtYXEZz249oJJFkToc4PQu3hjZEgQu
-        A4LmM30EcWIStDHPQf3HTjNof8WqfxI0RQsDZl1YSA==
-X-Google-Smtp-Source: AGHT+IFr8rUGSROBx+KthnbMWFjb114D0XucdKv2i+7CAsyNBKWK/XLKLVYkxswJRzGDWuZeAfXfu5JQ88fyMqoyh6M=
-X-Received: by 2002:a17:902:dace:b0:1cc:38c4:5448 with SMTP id
- q14-20020a170902dace00b001cc38c45448mr318339plx.22.1700155446770; Thu, 16 Nov
- 2023 09:24:06 -0800 (PST)
+        with ESMTP id S1345314AbjKPRYZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 12:24:25 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD149D73;
+        Thu, 16 Nov 2023 09:24:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD37C433CA;
+        Thu, 16 Nov 2023 17:24:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700155460;
+        bh=/B6JGyRiiov2KpkuJVzSZzJhSDEp4Byf+qHwBNlACac=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=HSrRtPnDzSFpOZws4iU58xlCoKdKfHVEATrGDQoZ7zBqsZL7Es+u3steobl56VqfZ
+         8ELEuvzzClmT+SoR4pdB19wuF4Nn2HSOtq4C0uPT+Tx4AXcu5zzpPc8grHLpndzIZp
+         djb0lFqTpdT6cn2K195abD6J9Al5uHiWDHoBTMpBbrqAw3+bZCuyfG3OAwBokreVk8
+         9hR7CYqoYNKQyGRsK1ecx40zKzTz0iIvKAFLYTfDSA5aXl0NcQ3YgSkFfyHh/xoB2f
+         dx91geI8UZP+gi53v6IzL/AgKyeT/MwKp7SU9YnBswZfbgmqJ+1ZrHFeLkADPHNb2k
+         GE/sk4hP9xHsg==
+Date:   Thu, 16 Nov 2023 10:24:18 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Maria Yu <quic_aiquny@quicinc.com>
+Cc:     linux@armlinux.org.uk, ardb@kernel.org, mhiramat@kernel.org,
+        kernel@quicinc.com, linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_lijuang@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] ARM: kprobes: Explicitly reserve r7 for local
+ variables
+Message-ID: <20231116172418.GA174808@dev-arch.thelio-3990X>
+References: <20231115095830.20607-1-quic_aiquny@quicinc.com>
 MIME-Version: 1.0
-References: <20231116025109.3775055-1-roman.gushchin@linux.dev> <4bd106d5-c3e3-6731-9a74-cff81e2392de@suse.cz>
-In-Reply-To: <4bd106d5-c3e3-6731-9a74-cff81e2392de@suse.cz>
-From:   Shakeel Butt <shakeelb@google.com>
-Date:   Thu, 16 Nov 2023 09:23:55 -0800
-Message-ID: <CALvZod6_SWk8CUCW+9CToxEozfQZiCqW26anTQS7CdpRrPwzUA@mail.gmail.com>
-Subject: Re: [PATCH] mm: kmem: properly initialize local objcg variable in current_obj_cgroup()
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     Roman Gushchin <roman.gushchin@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org,
-        Erhard Furtner <erhard_f@mailbox.org>,
-        David Rientjes <rientjes@google.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Muchun Song <muchun.song@linux.dev>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231115095830.20607-1-quic_aiquny@quicinc.com>
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,73 +51,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Nov 15, 2023 at 11:04=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> w=
-rote:
->
-> On 11/16/23 03:51, Roman Gushchin wrote:
-> > Actually the problem is caused by uninitialized local variable in
-> > current_obj_cgroup(). If the root memory cgroup is set as an active
-> > memory cgroup for a charging scope (as in the trace, where systemd
-> > tries to create the first non-root cgroup, so the parent cgroup is
-> > the root cgroup), the "for" loop is skipped and uninitialized objcg is
-> > returned, causing a panic down the accounting stack.
-> >
-> > The fix is trivial: initialize the objcg variable to NULL
-> > unconditionally before the "for" loop.
-> >
-> > Fixes: e86828e5446d ("mm: kmem: scoped objcg protection")
-> > Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-> > Closes: https://github.com/ClangBuiltLinux/linux/issues/1959
-> > Signed-off-by: Roman Gushchin (Cruise) <roman.gushchin@linux.dev>
-> > Cc: Shakeel Butt <shakeelb@google.com>
-> > Cc: Vlastimil Babka <vbabka@suse.cz>
-> > Cc: David Rientjes <rientjes@google.com>
-> > Cc: Dennis Zhou <dennis@kernel.org>
-> > Cc: Johannes Weiner <hannes@cmpxchg.org>
-> > Cc: Michal Hocko <mhocko@kernel.org>
-> > Cc: Muchun Song <muchun.song@linux.dev>
-> > Cc: stable@vger.kernel.org
->
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
->
-> We could also do this to make it less confusing?
->
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 774bd6e21e27..a08bcec661b6 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3175,7 +3175,6 @@ __always_inline struct obj_cgroup *current_obj_cgro=
-up(void)
->                 objcg =3D rcu_dereference_check(memcg->objcg, 1);
->                 if (likely(objcg))
->                         break;
-> -               objcg =3D NULL;
->         }
->
->         return objcg;
->
->
-> > ---
-> >  mm/memcontrol.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > index 774bd6e21e27..b138501e6489 100644
-> > --- a/mm/memcontrol.c
-> > +++ b/mm/memcontrol.c
-> > @@ -3165,6 +3165,7 @@ __always_inline struct obj_cgroup *current_obj_cg=
-roup(void)
-> >       return NULL;
-> >
-> >  from_memcg:
-> > +     objcg =3D NULL;
-> >       for (; !mem_cgroup_is_root(memcg); memcg =3D parent_mem_cgroup(me=
-mcg)) {
-> >               /*
-> >                * Memcg pointer is protected by scope (see set_active_me=
-mcg())
->
+On Wed, Nov 15, 2023 at 05:58:30PM +0800, Maria Yu wrote:
+> Registers r7 is removed in clobber list, so compiler may choose r7 for
+> local variables usage, while r7 will be actually updated by the inline asm
+> code. This caused the runtime behavior wrong.
+> While those kind of reserved registers cannot be set to clobber list
+> because of error like "inline asm clobber list contains reserved
+> registers".
+> Explicitly reserve r7 by adding attribute no-omit-frame-pointer for needed
+> function, then in T32 asm code r7 is used as a frame pointer and is not
+> available for use as a general-purpose register.
+> Note that "no-omit-frame-pointer" will make the code size a little bigger
+> to store the stack frame pointer. So limited to needed functions can have
+> the less impact than the full source file.
+> 
+> Fixes: dd12e97f3c72 ("ARM: kprobes: treat R7 as the frame pointer register in Thumb2 builds")
+> Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
+> Cc: stable@vger.kernel.org
 
-For Roman's change and Vlastimil's cleanup:
+This causes warnings with clang:
 
-Acked-by: Shakeel Butt <shakeelb@google.com>
+  arch/arm/probes/kprobes/actions-thumb.c:441:47: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+    441 | static unsigned long __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+        |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  arch/arm/probes/kprobes/actions-thumb.c:524:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+    524 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+        |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  arch/arm/probes/kprobes/actions-thumb.c:560:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+    560 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+        |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  arch/arm/probes/kprobes/actions-thumb.c:579:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+    579 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+        |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  4 warnings generated.
+
+Furthermore, as far as I am aware, the optimize attribute has other issues so
+its use is discouraged, see commits 080b6f407635 ("bpf: Don't rely on GCC
+__attribute__((optimize)) to disable GCSE") and a7223f5bfcae ("powerpc: Avoid
+broken GCC __attribute__((optimize))").
+
+Cheers,
+Nathan
+
+> ---
+>  arch/arm/probes/kprobes/actions-thumb.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm/probes/kprobes/actions-thumb.c b/arch/arm/probes/kprobes/actions-thumb.c
+> index 51624fc263fc..c2fdaf9f6dba 100644
+> --- a/arch/arm/probes/kprobes/actions-thumb.c
+> +++ b/arch/arm/probes/kprobes/actions-thumb.c
+> @@ -438,7 +438,7 @@ t16_simulate_branch(probes_opcode_t insn,
+>  	regs->ARM_pc = pc + (offset * 2);
+>  }
+>  
+> -static unsigned long __kprobes
+> +static unsigned long __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+>  t16_emulate_loregs(probes_opcode_t insn,
+>  		   struct arch_probes_insn *asi, struct pt_regs *regs)
+>  {
+> @@ -521,7 +521,7 @@ t16_decode_hiregs(probes_opcode_t insn, struct arch_probes_insn *asi,
+>  	return INSN_GOOD;
+>  }
+>  
+> -static void __kprobes
+> +static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+>  t16_emulate_push(probes_opcode_t insn,
+>  		struct arch_probes_insn *asi, struct pt_regs *regs)
+>  {
+> @@ -557,7 +557,7 @@ t16_decode_push(probes_opcode_t insn, struct arch_probes_insn *asi,
+>  	return INSN_GOOD;
+>  }
+>  
+> -static void __kprobes
+> +static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+>  t16_emulate_pop_nopc(probes_opcode_t insn,
+>  		struct arch_probes_insn *asi, struct pt_regs *regs)
+>  {
+> @@ -576,7 +576,7 @@ t16_emulate_pop_nopc(probes_opcode_t insn,
+>  		);
+>  }
+>  
+> -static void __kprobes
+> +static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+>  t16_emulate_pop_pc(probes_opcode_t insn,
+>  		struct arch_probes_insn *asi, struct pt_regs *regs)
+>  {
+> 
+> base-commit: 9bacdd8996c77c42ca004440be610692275ff9d0
+> -- 
+> 2.17.1
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
