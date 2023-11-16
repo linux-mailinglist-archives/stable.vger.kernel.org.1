@@ -2,93 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F352E7EDBE4
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 08:22:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D2D757EDBEA
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 08:25:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230127AbjKPHWR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 02:22:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50740 "EHLO
+        id S233735AbjKPHZB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 02:25:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229984AbjKPHWR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 02:22:17 -0500
-Received: from nautica.notk.org (ipv6.notk.org [IPv6:2001:41d0:1:7a93::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4539DD;
-        Wed, 15 Nov 2023 23:22:12 -0800 (PST)
-Received: by nautica.notk.org (Postfix, from userid 108)
-        id 2EC2FC023; Thu, 16 Nov 2023 08:22:07 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-        t=1700119327; bh=UGteBNk1MfmhOR9aXzCP79/I0BC+ccGkg1SeZSW7BUM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FdEHqgA/vvJqykCo6La5SMb3UL3Z4dmvZ+YrSJxI/7DcFomPhl8zFFvGU29aZF6QJ
-         Ce7uFDSsya5faNQMCuLvxrpqApXVAa9Sj2kGe3m6/qEDPxlYLY/D40FXL3KLQ7/0rS
-         gOlW5xk0yiVUe1UwGjeTH/z46bScz9N549OSdjaA2nR8MrmV+SbLBQQ5qds1yDJLpq
-         TsOqQelaad6uypxPpWtSrtKykXL+mnm6ANwm17Ufu2l1h3Ub46QQRc2QvPVAgfn85P
-         iMh9pBS8biDRCa04tIkvUE33e8zG9YlW49GnXBxWpMrJBq11nSbnjf1pB3VrXuOTE+
-         ma9UL/YbORnGA==
+        with ESMTP id S229984AbjKPHZB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 02:25:01 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98718C5;
+        Wed, 15 Nov 2023 23:24:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700119497; x=1731655497;
+  h=message-id:date:mime-version:cc:subject:to:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xzxCiQMFYJij7t6O0mSmHnDg/h78ww1UnMJV0w34NHk=;
+  b=YPCM3aHrcAuyxC5ziUn2rSN2x+AAuWPDU/SH7P/2atink8PBh19efYHt
+   6Rrp3hQdUfuY3mTzMpF+WXWHT1Zmk/vDM17uYKFD+NVnZqJL7or2LS0X9
+   TiqFZCr8Q1qo6BCXA/yJ91ryggbxxZMDGJozeoD4hjTBGq7gs6/RsOtTJ
+   kZqD+wPUBDAEXgDFxJK03XyZKokJp4jcnUtWjBXTkfy8DkWMb/1X7kb6m
+   g6d3e420BuhVN92i1KMVjmYtxf7nh7Pd1YeHSHuWVxAPAMzjSJ8lQgvkO
+   wRGl38okPvRvCisQathMpMSjoiioT0MzzRjHOya9CXd4lGe7s3EgnGHzY
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="422124648"
+X-IronPort-AV: E=Sophos;i="6.03,307,1694761200"; 
+   d="scan'208";a="422124648"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 23:24:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10895"; a="938757177"
+X-IronPort-AV: E=Sophos;i="6.03,307,1694761200"; 
+   d="scan'208";a="938757177"
+Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.255.31.199]) ([10.255.31.199])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Nov 2023 23:24:54 -0800
+Message-ID: <b825e828-6dff-4064-896e-df4de24aa6d6@linux.intel.com>
+Date:   Thu, 16 Nov 2023 15:24:51 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc:     baolu.lu@linux.intel.com,
+        "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Abdul Halim, Mohd Syazwan" <mohd.syazwan.abdul.halim@intel.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/1] iommu/vt-d: Add MTL to quirk list to skip TE
+ disabling
+To:     "Tian, Kevin" <kevin.tian@intel.com>,
+        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>
+References: <20231116022324.30120-1-baolu.lu@linux.intel.com>
+ <BN9PR11MB527667F09E2FAD729AE2BC2C8CB0A@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Language: en-US
+From:   Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <BN9PR11MB527667F09E2FAD729AE2BC2C8CB0A@BN9PR11MB5276.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
-Received: from gaia (localhost [127.0.0.1])
-        by nautica.notk.org (Postfix) with ESMTPS id 1E26AC009;
-        Thu, 16 Nov 2023 08:22:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-        t=1700119325; bh=UGteBNk1MfmhOR9aXzCP79/I0BC+ccGkg1SeZSW7BUM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tDte+n079n7PTU601fuxNcjLBrTKvnVs1mbSaaEt6o8MdgrpRDBE5ZuThOEzUCi0i
-         rGwo9fPlT9gZVAKu7k/uUlHXJVtm3LpiDcTWbbl48W0yK1d9Lq7qr22ALeiEP/1pSb
-         qVHIAFzoPsbKlv9rqpikFE/Zja3tHY36iqddMK/7J+JGDDjOGTP9w4V9TWmwPcYgpg
-         YyBemiKaqc32YZRTX3PzEvOsYYemHGI7mw9N8wDBxH3A673UuVd9cWIBy+WDje7Co3
-         0BY1RsUE9wmHab8v6y0RB02Bil+BxYBanyRJYCsLtwaY3fN4hstpGZrQY3Wvujiz13
-         vX7YlQ+1h4qPQ==
-Received: from localhost (gaia [local])
-        by gaia (OpenSMTPD) with ESMTPA id a19c72eb;
-        Thu, 16 Nov 2023 07:21:57 +0000 (UTC)
-Date:   Thu, 16 Nov 2023 16:21:42 +0900
-From:   Dominique Martinet <asmadeus@codewreck.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
-Message-ID: <ZVXDBtXJS7kWUqNG@codewreck.org>
-References: <20231115204644.490636297@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Greg Kroah-Hartman wrote on Wed, Nov 15, 2023 at 03:44:35PM -0500:
-> This is the start of the stable review cycle for the 5.10.201 release.
-> There are 191 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 2023/11/16 11:27, Tian, Kevin wrote:
+>> From: Lu Baolu <baolu.lu@linux.intel.com>
+>> Sent: Thursday, November 16, 2023 10:23 AM
+>>
+>> From: "Abdul Halim, Mohd Syazwan"
+>> <mohd.syazwan.abdul.halim@intel.com>
+>>
+>> The VT-d spec requires (10.4.4 Global Command Register, TE field) that:
+>>
+>> Hardware implementations supporting DMA draining must drain any in-flight
+>> DMA read/write requests queued within the Root-Complex before
+>> completing
+>> the translation enable command and reflecting the status of the command
+>> through the TES field in the Global Status register.
 > 
-> Responses should be made by Fri, 17 Nov 2023 20:46:03 +0000.
-> Anything received after that time might be too late.
+> this talks about 'enable'...
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.201-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+>>
+>> Unfortunately, some integrated graphic devices fail to do so after some
+>> kind of power state transition. As the result, the system might stuck in
+>> iommu_disable_translation(), waiting for the completion of TE transition.
+> 
+> ...while this fixes 'disable'. wrong citation?
 
-Tested on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
+Right. It's confusing. I will change it to below.
 
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+"
+...before switching address translation on or off and reflecting the
+status of the command through the TES field in the Global Status
+register.
+"
 
--- 
-Dominique Martinet | Asmadeus
+> 
+>> @@ -5080,7 +5080,7 @@ static void quirk_igfx_skip_te_disable(struct
+>> pci_dev *dev)
+>>   	ver = (dev->device >> 8) & 0xff;
+>>   	if (ver != 0x45 && ver != 0x46 && ver != 0x4c &&
+>>   	    ver != 0x4e && ver != 0x8a && ver != 0x98 &&
+>> -	    ver != 0x9a && ver != 0xa7)
+>> +	    ver != 0x9a && ver != 0xa7 && ver != 0x7d)
+>>   		return;
+>>
+> 
+> this fix alone is fine, but I found this quirk overall is not cleanly handled.
+> 
+> Basically it sets iommu_skip_te_disable as true, leading to early return
+> in iommu_disable_translation():
+> 
+> 	if (iommu_skip_te_disable && iommu->drhd->gfx_dedicated &&
+> 	   (cap_read_drain(iommu->cap) || cap_write_drain(iommu->cap)))
+> 		return;
+> 
+> However the caller of iommu_disable_translation() is not aware of this
+> quirk and continues as if the iommu is disabled. IMHO this is problematic
+> w/o meeting the caller's assumption.
+> 
+> e.g. kdump and suspend. We may want to abort those paths early in case
+> of such quirk...
+
+I can see your point.
+
+This fix is just to add a new device model to the established quirk
+list. All devices (including the new one) in this quirk list have
+undergone thorough verification. Therefor, I'd like to keep it as-is.
+
+We can refine the quirk implementation in a separated patch series with
+sufficient consideration and verification. Does this work for you?
+
+Best regards,
+baolu
