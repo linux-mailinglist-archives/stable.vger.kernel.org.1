@@ -2,259 +2,221 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CC6E7ED8BC
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 01:56:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ADE07ED921
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 03:09:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbjKPA41 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 15 Nov 2023 19:56:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59946 "EHLO
+        id S230098AbjKPCJ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 15 Nov 2023 21:09:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbjKPA40 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 19:56:26 -0500
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D38ADAF;
-        Wed, 15 Nov 2023 16:56:21 -0800 (PST)
-Received: from loongson.cn (unknown [10.180.129.93])
-        by gateway (Coremail) with SMTP id _____8Dx_7uzaFVlU2Y6AA--.56070S3;
-        Thu, 16 Nov 2023 08:56:19 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.180.129.93])
-        by localhost.localdomain (Coremail) with SMTP id AQAAf8Cxri+waFVlAIZDAA--.15990S2;
-        Thu, 16 Nov 2023 08:56:16 +0800 (CST)
-From:   Hongchen Zhang <zhanghongchen@loongson.cn>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Bojan Smojver <bojan@rexursive.com>
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        loongson-kernel@lists.loongnix.cn,
-        Hongchen Zhang <zhanghongchen@loongson.cn>,
-        stable@vger.kernel.org, Weihao Li <liweihao@loongson.cn>
-Subject: [PATCH v2] PM: hibernate: use acquire/release ordering when compress/decompress image
-Date:   Thu, 16 Nov 2023 08:56:09 +0800
-Message-Id: <20231116005609.1583858-1-zhanghongchen@loongson.cn>
-X-Mailer: git-send-email 2.33.0
+        with ESMTP id S229692AbjKPCJ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 15 Nov 2023 21:09:59 -0500
+Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B3B2187
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 18:09:55 -0800 (PST)
+Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b2f4a5ccebso197186b6e.3
+        for <stable@vger.kernel.org>; Wed, 15 Nov 2023 18:09:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700100594; x=1700705394; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jge6msL/+JniYXSRDUYwZ1gtj2Oz8qyUenaWgII62f4=;
+        b=TTar4Gw2120BK8I0tBivBTjSTKsENavxgtXYTIg+ErLv8JPqqbLx30kHld4ebfIXmC
+         DmRbaHO9q22ZhphKrJdb0OBbEF+j6rDhdD+dGm91cXMNnaSOV8HgUyoUEunN1HeSDuEs
+         qOwYZYJ3l94oP4WhVvNKf7Rv/9OR7wuMBd0f/EzE1auK3xwMMRxq7bxnt1IsOqpR1lKN
+         GQ4T97DGXeCgDklPtOLVmMO+c5zM/SvE7MPT8kCn7iMFov84I7jndhb4DvlDv6w8AywT
+         WDsDnzlmgOQF/S4BLinplGaudNzGOpEDl77TLef8V/m/Vd/p9FNET1BhKPWNtB64SEbe
+         CA4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700100594; x=1700705394;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jge6msL/+JniYXSRDUYwZ1gtj2Oz8qyUenaWgII62f4=;
+        b=vEUryvQDxxoZJhxVtB71bvrTZQan7TDXs8B6nyl8vkxLABivHD8vMVRT9ADQO5i/EL
+         azaoPFrexPvok52a+F+AhvNnWxRE33iWWpAdaxhDuXdGb/OHtpwZTyswur05i6kiu1/+
+         cS/IbPVqYRzFlm6QZGuqt+o720dPwhYrwyolIRdXGq/WRxpkdxeYYdkZaFP1K+ODnW+Y
+         lKaE4Hs2lc0UXr9uUo2/CcoUSiuER+whI5alYfKgYq+1wdbkzlutyRd6XH3wM7Rn2Mtv
+         DHQ5jajAifS5NP7eQ3+/veV9ldoaHwyDrudwWrL9vaYg1gGRe+uUfCHZSHTIqCqCTMmc
+         myeA==
+X-Gm-Message-State: AOJu0Yzp2UqNvVbHwm0kvdVqG8cwkU6mBhP8fqmSSo0WoN7C0vHx9IIV
+        5N7vKaQ2dnpcv3xWOrA8hZlw/aU6bydfh/jaDYkWxg==
+X-Google-Smtp-Source: AGHT+IF9E+2uMLYV/h74y8jVdiDEuAB1P7gxUF27yLWEK2p0q8L+uk1AlqrXtJdFub0wkxf6z/yJpg==
+X-Received: by 2002:a05:6808:b3c:b0:3b2:db86:209 with SMTP id t28-20020a0568080b3c00b003b2db860209mr14981227oij.38.1700100594243;
+        Wed, 15 Nov 2023 18:09:54 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id m18-20020aa78a12000000b0068c10187dc3sm3403626pfa.168.2023.11.15.18.09.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Nov 2023 18:09:53 -0800 (PST)
+Message-ID: <655579f1.a70a0220.ec95b.bac6@mx.google.com>
+Date:   Wed, 15 Nov 2023 18:09:53 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: AQAAf8Cxri+waFVlAIZDAA--.15990S2
-X-CM-SenderInfo: x2kd0w5krqwupkhqwqxorr0wxvrqhubq/1tbiAQAQB2VUKqkG2gABs5
-X-Coremail-Antispam: 1Uk129KBj93XoW3Gw47uFWkJrW7ZFyrXFWkGrX_yoW7KFy5pF
-        W8Xan0kr4UXrs8Z39rAay8Z345A3ZYyFZrGrsxG34fuasIgrsYya40gF9Yvr1YyFy8t34v
-        9a17K34qgryqqFXCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-        sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-        0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-        IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-        e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-        0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-        Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-        kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
-        twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-        8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-        6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-        AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-        0xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
-        v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
-        xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUcbAwUUUUU
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.10.200-192-g550b7e1fee20
+Subject: stable-rc/linux-5.10.y baseline: 113 runs,
+ 2 regressions (v5.10.200-192-g550b7e1fee20)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When we test S4(suspend to disk) on LoongArch 3A6000 platform, the
-test case sometimes fails. The dmesg log shows the following error:
-	Invalid LZO compressed length
-After we dig into the code, we find out that:
-When compress/decompress the image, the synchronization operation
-between the control thread and the compress/decompress/crc thread
-uses relaxed ordering interface, which is unreliable, and the
-following situation may occur:
-CPU 0					CPU 1
-save_image_lzo				lzo_compress_threadfn
-					  atomic_set(&d->stop, 1);
-  atomic_read(&data[thr].stop)
-  data[thr].cmp = data[thr].cmp_len;
-	  				  WRITE data[thr].cmp_len
-Then CPU0 get a old cmp_len and write to disk. When cpu resume from S4,
-wrong cmp_len is loaded.
+stable-rc/linux-5.10.y baseline: 113 runs, 2 regressions (v5.10.200-192-g55=
+0b7e1fee20)
 
-To maintain data consistency between two threads, we should use the
-acquire/release ordering interface. So we change atomic_read/atomic_set
-to atomic_read_acquire/atomic_set_release.
+Regressions Summary
+-------------------
 
-Fixes: 081a9d043c98 ("PM / Hibernate: Improve performance of LZO/plain hibernation, checksum image")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Weihao Li <liweihao@loongson.cn>
----
-v1 -> v2:
-	1. add Cc: stable@vger.kernel.org in commit log
-	2. add Fixes: line in commit log
----
- kernel/power/swap.c | 38 +++++++++++++++++++-------------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
+    =
 
-diff --git a/kernel/power/swap.c b/kernel/power/swap.c
-index a2cb0babb5ec..d44f5937f1e5 100644
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -606,11 +606,11 @@ static int crc32_threadfn(void *data)
- 	unsigned i;
- 
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -619,7 +619,7 @@ static int crc32_threadfn(void *data)
- 		for (i = 0; i < d->run_threads; i++)
- 			*d->crc32 = crc32_le(*d->crc32,
- 			                     d->unc[i], *d->unc_len[i]);
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -649,12 +649,12 @@ static int lzo_compress_threadfn(void *data)
- 	struct cmp_data *d = data;
- 
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
- 			d->ret = -1;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -663,7 +663,7 @@ static int lzo_compress_threadfn(void *data)
- 		d->ret = lzo1x_1_compress(d->unc, d->unc_len,
- 		                          d->cmp + LZO_HEADER, &d->cmp_len,
- 		                          d->wrk);
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -798,7 +798,7 @@ static int save_image_lzo(struct swap_map_handle *handle,
- 
- 			data[thr].unc_len = off;
- 
--			atomic_set(&data[thr].ready, 1);
-+			atomic_set_release(&data[thr].ready, 1);
- 			wake_up(&data[thr].go);
- 		}
- 
-@@ -806,12 +806,12 @@ static int save_image_lzo(struct swap_map_handle *handle,
- 			break;
- 
- 		crc->run_threads = thr;
--		atomic_set(&crc->ready, 1);
-+		atomic_set_release(&crc->ready, 1);
- 		wake_up(&crc->go);
- 
- 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
- 			wait_event(data[thr].done,
--			           atomic_read(&data[thr].stop));
-+				atomic_read_acquire(&data[thr].stop));
- 			atomic_set(&data[thr].stop, 0);
- 
- 			ret = data[thr].ret;
-@@ -850,7 +850,7 @@ static int save_image_lzo(struct swap_map_handle *handle,
- 			}
- 		}
- 
--		wait_event(crc->done, atomic_read(&crc->stop));
-+		wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 		atomic_set(&crc->stop, 0);
- 	}
- 
-@@ -1132,12 +1132,12 @@ static int lzo_decompress_threadfn(void *data)
- 	struct dec_data *d = data;
- 
- 	while (1) {
--		wait_event(d->go, atomic_read(&d->ready) ||
-+		wait_event(d->go, atomic_read_acquire(&d->ready) ||
- 		                  kthread_should_stop());
- 		if (kthread_should_stop()) {
- 			d->thr = NULL;
- 			d->ret = -1;
--			atomic_set(&d->stop, 1);
-+			atomic_set_release(&d->stop, 1);
- 			wake_up(&d->done);
- 			break;
- 		}
-@@ -1150,7 +1150,7 @@ static int lzo_decompress_threadfn(void *data)
- 			flush_icache_range((unsigned long)d->unc,
- 					   (unsigned long)d->unc + d->unc_len);
- 
--		atomic_set(&d->stop, 1);
-+		atomic_set_release(&d->stop, 1);
- 		wake_up(&d->done);
- 	}
- 	return 0;
-@@ -1335,7 +1335,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 		}
- 
- 		if (crc->run_threads) {
--			wait_event(crc->done, atomic_read(&crc->stop));
-+			wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 			atomic_set(&crc->stop, 0);
- 			crc->run_threads = 0;
- 		}
-@@ -1371,7 +1371,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 					pg = 0;
- 			}
- 
--			atomic_set(&data[thr].ready, 1);
-+			atomic_set_release(&data[thr].ready, 1);
- 			wake_up(&data[thr].go);
- 		}
- 
-@@ -1390,7 +1390,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 
- 		for (run_threads = thr, thr = 0; thr < run_threads; thr++) {
- 			wait_event(data[thr].done,
--			           atomic_read(&data[thr].stop));
-+				atomic_read_acquire(&data[thr].stop));
- 			atomic_set(&data[thr].stop, 0);
- 
- 			ret = data[thr].ret;
-@@ -1421,7 +1421,7 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 				ret = snapshot_write_next(snapshot);
- 				if (ret <= 0) {
- 					crc->run_threads = thr + 1;
--					atomic_set(&crc->ready, 1);
-+					atomic_set_release(&crc->ready, 1);
- 					wake_up(&crc->go);
- 					goto out_finish;
- 				}
-@@ -1429,13 +1429,13 @@ static int load_image_lzo(struct swap_map_handle *handle,
- 		}
- 
- 		crc->run_threads = thr;
--		atomic_set(&crc->ready, 1);
-+		atomic_set_release(&crc->ready, 1);
- 		wake_up(&crc->go);
- 	}
- 
- out_finish:
- 	if (crc->run_threads) {
--		wait_event(crc->done, atomic_read(&crc->stop));
-+		wait_event(crc->done, atomic_read_acquire(&crc->stop));
- 		atomic_set(&crc->stop, 0);
- 	}
- 	stop = ktime_get();
--- 
-2.33.0
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
 
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
+nel/v5.10.200-192-g550b7e1fee20/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.10.y
+  Describe: v5.10.200-192-g550b7e1fee20
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      550b7e1fee20e8840f9c1028c89dd3fc9c959fff =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/6555480a94a83a7be97e4aaa
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+00-192-g550b7e1fee20/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-p=
+ine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+00-192-g550b7e1fee20/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-p=
+ine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6555480a94a83a7be97e4ab3
+        failing since 35 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
+t fail: v5.10.198)
+
+    2023-11-15T22:36:48.806844  <8>[   16.949774] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 444163_1.5.2.4.1>
+    2023-11-15T22:36:48.911795  / # #
+    2023-11-15T22:36:49.013398  export SHELL=3D/bin/sh
+    2023-11-15T22:36:49.014044  #
+    2023-11-15T22:36:49.114991  / # export SHELL=3D/bin/sh. /lava-444163/en=
+vironment
+    2023-11-15T22:36:49.115644  =
+
+    2023-11-15T22:36:49.216642  / # . /lava-444163/environment/lava-444163/=
+bin/lava-test-runner /lava-444163/1
+    2023-11-15T22:36:49.217545  =
+
+    2023-11-15T22:36:49.222090  / # /lava-444163/bin/lava-test-runner /lava=
+-444163/1
+    2023-11-15T22:36:49.289300  + export 'TESTRUN_ID=3D1_bootrr' =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/6555481c94a83a7be97e4b29
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+00-192-g550b7e1fee20/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h=
+6-pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+00-192-g550b7e1fee20/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h=
+6-pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6555481c94a83a7be97e4b32
+        failing since 35 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
+t fail: v5.10.198)
+
+    2023-11-15T22:43:32.479712  / # #
+
+    2023-11-15T22:43:32.582109  export SHELL=3D/bin/sh
+
+    2023-11-15T22:43:32.582880  #
+
+    2023-11-15T22:43:32.684259  / # export SHELL=3D/bin/sh. /lava-12012273/=
+environment
+
+    2023-11-15T22:43:32.685033  =
+
+
+    2023-11-15T22:43:32.786554  / # . /lava-12012273/environment/lava-12012=
+273/bin/lava-test-runner /lava-12012273/1
+
+    2023-11-15T22:43:32.787714  =
+
+
+    2023-11-15T22:43:32.802870  / # /lava-12012273/bin/lava-test-runner /la=
+va-12012273/1
+
+    2023-11-15T22:43:32.861501  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-11-15T22:43:32.861695  + cd /lava-1201227<8>[   18.183590] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 12012273_1.5.2.4.5>
+ =
+
+    ... (10 line(s) more)  =
+
+ =20
