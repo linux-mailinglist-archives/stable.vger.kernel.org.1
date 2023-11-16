@@ -2,119 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34B4C7EDD88
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 10:22:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0199A7EDDE0
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 10:45:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230215AbjKPJW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 04:22:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45760 "EHLO
+        id S1344968AbjKPJpz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 04:45:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229919AbjKPJW5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 04:22:57 -0500
-Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB06AA3
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 01:22:53 -0800 (PST)
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-        by cmsmtp with ESMTPS
-        id 3XIPr72zC8Hte3YaLrducm; Thu, 16 Nov 2023 09:22:53 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id 3YaKrikwgRGmS3YaKrD8yJ; Thu, 16 Nov 2023 09:22:52 +0000
-X-Authority-Analysis: v=2.4 cv=efcuwpIH c=1 sm=1 tr=0 ts=6555df6c
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=F7X9mGda89njDp2BEcwA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=NM8jkVwrFZLWiI+4u2fyE7GqD81oaTJvochMnd5GERE=; b=fy3PsvTLfv+cuiMFikKSTkyrU4
-        sKJktMJhra/FHv3E1/nl0PSVrTDqktI4ZpLgySDOJJyIsnaIC2psXpf3/s/f5e/Iqb8dcxOeODKWz
-        SVV3tpSI24rSblJccE3yndO1hOSPg/jP3FZa7DJ0o4OnEUP7Lzw1YgKp7Sl6No9uXMQpLdQp87hMM
-        00If9KdnxtPpiF+UnfgGsMJ14TOj7X4CisVTll60tdLQTYwhqzbv1eTr9aCido183eLMuebGXClBH
-        mEGZpSe/OyBfVEXCLT4+TIAGUyCJHnrBz+K+XScl++7S7bYz3Jr6Awkrpeb56v0dfrcRdyCQ+ckj6
-        KE6m8QzQ==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:55394 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.2)
-        (envelope-from <re@w6rz.net>)
-        id 1r3YaI-0047JX-0g;
-        Thu, 16 Nov 2023 02:22:50 -0700
-Subject: Re: [PATCH 6.6 000/603] 6.6.2-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S1344956AbjKPJpx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 04:45:53 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C7A196
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 01:45:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1700127950;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=zSzsA5SxyFLcplHAlbNRiGj1W1HdcMtXrU3K2DbJDWo=;
+        b=BS8cDv13tlnncvqz42L16ScaQGgJDbw+Zd7bntQm3tK4iJrLOspjNcK6+ItXvGWGiqyUsA
+        q3JmQTnlswQT37uy0uQUny4M+4Zs+ZQfJNBCXbqZXtsU9VKGlSx9L/pnrmytci0J4DcXCY
+        0DWpp2AuMrJlzU9s0wKQOndCH2eOddQ=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-626-DQ5asifhPcW3qDzDKRl8Rw-1; Thu, 16 Nov 2023 04:45:48 -0500
+X-MC-Unique: DQ5asifhPcW3qDzDKRl8Rw-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4084163ecd9so3515715e9.3
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 01:45:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700127947; x=1700732747;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zSzsA5SxyFLcplHAlbNRiGj1W1HdcMtXrU3K2DbJDWo=;
+        b=aL5H04WelC5AOjCAK9TERgGb1c5ttlU0W0Rp2qLcl6JKuxle7e+zntXNLFp3H9/K0a
+         2ZsEH39fKFpJIFXYx2aBPp1/ie57MvdLlsEpY5647RxY2GGov2IZTcjLn/0sgk4O93yO
+         89oDXow/VzAQX57BEZ5xgL3TEWkngvOlet9wKelqIpC9JEcu+elrIAbee4NxyAefC7SH
+         fg+DWJQUvLNZToJjbg8gZbJgtEfwvoqWkRgixCFFFI5AIo1Uc9LNfe1A/nQDpbS+sKUQ
+         1x/Ld3WNpsPYyDVOKs4FDAbB2RvScKmWVI8D4w2aVFgbP8w9or9hDuM1GzjuiIUypyif
+         oVXw==
+X-Gm-Message-State: AOJu0YxIsvyc5AjUaIhEzSykdWERTKUnoPQaFqXgkvmzFC52XG0jTRrG
+        jETkCnNMbB93doXjsL/8tugQ8VMN4LwHBePef1QBYgVxsSMqEEDyuXQMyPyZ8NiLZd/AVWXgGto
+        2nNCKe3zUF8PQgicO
+X-Received: by 2002:a05:600c:46cf:b0:3f5:fff8:d4f3 with SMTP id q15-20020a05600c46cf00b003f5fff8d4f3mr13564632wmo.7.1700127947455;
+        Thu, 16 Nov 2023 01:45:47 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHtLFlJthV6m1GTAAXrgTEAAU7vMTnuD+YdTz6edocexCaOzMz3U0re055aJeRbTrwW/zVrhw==
+X-Received: by 2002:a05:600c:46cf:b0:3f5:fff8:d4f3 with SMTP id q15-20020a05600c46cf00b003f5fff8d4f3mr13564617wmo.7.1700127947117;
+        Thu, 16 Nov 2023 01:45:47 -0800 (PST)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id je14-20020a05600c1f8e00b00405bbfd5d16sm2915620wmb.7.2023.11.16.01.45.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Nov 2023 01:45:46 -0800 (PST)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     Thomas Zimmermann <tzimmermann@suse.de>, deller@gmx.de
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Sam Ravnborg <sam@ravnborg.org>, Arnd Bergmann <arnd@arndb.de>,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231115191613.097702445@linuxfoundation.org>
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <a9c00e1d-2703-b178-aa09-11ab07790f2e@w6rz.net>
-Date:   Thu, 16 Nov 2023 01:22:47 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+Subject: Re: [PATCH 01/32] fbdev/acornfb: Fix name of fb_ops initializer macro
+In-Reply-To: <20231115102954.7102-2-tzimmermann@suse.de>
+References: <20231115102954.7102-1-tzimmermann@suse.de>
+ <20231115102954.7102-2-tzimmermann@suse.de>
+Date:   Thu, 16 Nov 2023 10:45:46 +0100
+Message-ID: <87h6lm58vp.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1r3YaI-0047JX-0g
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:55394
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfAadzOLyBM+jpmQvSUEdOiVY7Iuez9ZiR43Tfi8kyDULb5EVOE6zGOgyvqeT2nkgtGTf+R/fiH0tzUCutWCfCjXNKkI+NzR5kq9asxigtgOkKMT2N0V8
- IDfOiBlu5IIkwQkM+wsb7QU/xQnm/l/1rRtF1cNhiMsmhdjXR9P3f8VkC4JE8nfhMJ0qbKhsh/VjEw==
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/15/23 11:09 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.2 release.
-> There are 603 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 17 Nov 2023 19:14:03 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+> Fix build by using the correct name for the initializer macro
+> for struct fb_ops.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: 9037afde8b9d ("fbdev/acornfb: Use fbdev I/O helpers")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: <stable@vger.kernel.org> # v6.6+
+> ---
 
-Tested-by: Ron Economos <re@w6rz.net>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
+-- 
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
