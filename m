@@ -2,253 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81DB97EE2B5
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 15:24:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A611C7EE36D
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 15:56:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233253AbjKPOYG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 09:24:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
+        id S1345309AbjKPO4l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 09:56:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232517AbjKPOYG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 09:24:06 -0500
-Received: from mail-vk1-xa36.google.com (mail-vk1-xa36.google.com [IPv6:2607:f8b0:4864:20::a36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9577A98
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 06:24:02 -0800 (PST)
-Received: by mail-vk1-xa36.google.com with SMTP id 71dfb90a1353d-4ac20c41e82so351541e0c.1
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 06:24:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700144641; x=1700749441; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6KJkXeq1c0Mlv5gjaKW3vMtX+YJGSTJ76GSnkl3Srbw=;
-        b=ixVqA6Jy5M4i9cOdbqGjQrExnadQQhnP/jgjvn4dxKCQJAKjCIWqvVemzDSdZsYj6D
-         SRwhW4FlghP8UmxMUBtxSD9eLfc3JmLtCODtTme2VHdqZ5pyvl8EevvFOoHMkgXpSkTy
-         Zqccru9/HH1J8C+2BrWyO0fS74L9IwPlrjqnXrb4poWETa9W3tt/WvHAJ3qlZTJX5907
-         p4hirZZqkNmMAAjizxvYvO0RndMB8ZA7dBgm9/Bx91nTaJ18zxMV3D/bb5ra2jeKDRQq
-         PE0egO4MT0QPlGXja/5M181YwTFz5lCqm4gMl4DPH//8ofl/GiyA015/BtPmwKrMQLUM
-         2CqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700144641; x=1700749441;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6KJkXeq1c0Mlv5gjaKW3vMtX+YJGSTJ76GSnkl3Srbw=;
-        b=C03l6zcBRA43U63Kjv9xBp+9xlEuhls3DQptmGyGc+gClTYDcELv60OGbfDv973UVr
-         Nh4VO69Pnfjvsx/0nYdO4rM1pJjTwo1h6mgmze1zxOWYvL8cZuY4Wc3mgpRF3pt1Vmzi
-         BaWUoQFRrJF0KyDOp1TQlKyMVHP/Kf6p7E6uG6P2PJVnI7Q5eti6tyduTZ9FRy5ZpDFw
-         lvEr77BQJxEzE9MAlpU0oYd55tlETDdFccFLB+SRHm6WG/eoosXwj3cC4erk35ZXJ0xB
-         u8FXq/6MsUbwfCs8CfscVfULJDceemwWCnEZpy9ca36KgRY1Yn2wl1fEQz1/zUJOJSKJ
-         5vfg==
-X-Gm-Message-State: AOJu0YxpPYGOFw3/U52lE5iCWDFgBX7QYtIpzSV9M/EQgI6tjqS/KR4G
-        uU2chqxRtmQ9xEB27NXhwtgHljJQwfg+Q32mFN50cw==
-X-Google-Smtp-Source: AGHT+IFZ+gmH9ee3C9+IKGOdCpJK4UhHwKPQ41ZEfQJqJ3vOizJMchMwJ+8sAu4LvbhUcv+nzBns2e4KA8t1gGTjGJs=
-X-Received: by 2002:a1f:a084:0:b0:49b:289a:cc3f with SMTP id
- j126-20020a1fa084000000b0049b289acc3fmr15034872vke.3.1700144641588; Thu, 16
- Nov 2023 06:24:01 -0800 (PST)
+        with ESMTP id S1345319AbjKPO4k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 09:56:40 -0500
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398A719D;
+        Thu, 16 Nov 2023 06:56:37 -0800 (PST)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4SWNQm0DMdz9smv;
+        Thu, 16 Nov 2023 15:56:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+        t=1700146592;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3yUWRdWVzFsHuFxni3WD8C/C0FkQZr20qtDs5ikp/zE=;
+        b=xh2AQe0xUrjfUlssPBVy3kajBUviDJWiDKpIcLF/uoHsiSgqDG6RBYFq22aExSG9idOboB
+        UpCyUJw+/N5nB/DtC+cToz/5L7QJThArsBYZrbqR9JX+XrdGs73MdsJCGKjZLFdeQkFou4
+        kuCnJBNYxVWRCEppD6is8FahWy4GI4oCgFqrW1sPC2PoCibhG1o/TcaodOuaJ/hJVbBc+H
+        /v61kRbF9J/zRHMQz2Ol/Oi9kmXNlG0ShsrwTOIIaN90k4iWiCJyj6ztBUnjXFvmHLUdfo
+        HBGr/u8ISbmBr9Bb7cyIwf1YRLm2eNLTijgx5QCSmMb90bvXgGSlqovgN6e09w==
+Date:   Thu, 16 Nov 2023 15:56:27 +0100
+From:   Erhard Furtner <erhard_f@mailbox.org>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     Roman Gushchin <roman.gushchin@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, Shakeel Butt <shakeelb@google.com>,
+        David Rientjes <rientjes@google.com>,
+        Dennis Zhou <dennis@kernel.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Muchun Song <muchun.song@linux.dev>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm: kmem: properly initialize local objcg variable in
+ current_obj_cgroup()
+Message-ID: <20231116155627.3686da61@yea>
+In-Reply-To: <4bd106d5-c3e3-6731-9a74-cff81e2392de@suse.cz>
+References: <20231116025109.3775055-1-roman.gushchin@linux.dev>
+        <4bd106d5-c3e3-6731-9a74-cff81e2392de@suse.cz>
 MIME-Version: 1.0
-References: <20231115191613.097702445@linuxfoundation.org>
-In-Reply-To: <20231115191613.097702445@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 16 Nov 2023 19:53:49 +0530
-Message-ID: <CA+G9fYsS3r+mM1qQo4WHe4hp-xZBGhFsXyYWg2dLo-up_vzP8A@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/603] 6.6.2-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: aff93ffdac5d040c37e
+X-MBO-RS-META: g87qosyzznw96wykn5m39uyrjqc47iur
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 16 Nov 2023 at 01:01, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.2 release.
-> There are 603 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 17 Nov 2023 19:14:03 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.2-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Thu, 16 Nov 2023 08:04:18 +0100
+Vlastimil Babka <vbabka@suse.cz> wrote:
 
+> On 11/16/23 03:51, Roman Gushchin wrote:
+> > Actually the problem is caused by uninitialized local variable in
+> > current_obj_cgroup(). If the root memory cgroup is set as an active
+> > memory cgroup for a charging scope (as in the trace, where systemd
+> > tries to create the first non-root cgroup, so the parent cgroup is
+> > the root cgroup), the "for" loop is skipped and uninitialized objcg is
+> > returned, causing a panic down the accounting stack.
+> > 
+> > The fix is trivial: initialize the objcg variable to NULL
+> > unconditionally before the "for" loop.
+> > 
+> > Fixes: e86828e5446d ("mm: kmem: scoped objcg protection")
+> > Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+> > Closes: https://github.com/ClangBuiltLinux/linux/issues/1959
+> > Signed-off-by: Roman Gushchin (Cruise) <roman.gushchin@linux.dev>
+> > Cc: Shakeel Butt <shakeelb@google.com>
+> > Cc: Vlastimil Babka <vbabka@suse.cz>
+> > Cc: David Rientjes <rientjes@google.com>
+> > Cc: Dennis Zhou <dennis@kernel.org>
+> > Cc: Johannes Weiner <hannes@cmpxchg.org>
+> > Cc: Michal Hocko <mhocko@kernel.org>
+> > Cc: Muchun Song <muchun.song@linux.dev>
+> > Cc: stable@vger.kernel.org  
+> 
+> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> 
+> We could also do this to make it less confusing?
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 774bd6e21e27..a08bcec661b6 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -3175,7 +3175,6 @@ __always_inline struct obj_cgroup *current_obj_cgroup(void)
+>  		objcg = rcu_dereference_check(memcg->objcg, 1);
+>  		if (likely(objcg))
+>  			break;
+> -		objcg = NULL;
+>  	}
+>  
+>  	return objcg;
+> 
+> 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+I can confirm the 1st patch from Roman fixes the issue on my amd64 and on my i686 box.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+The 2nd patch from Vlastimil unfortunately does not (only tried on amd64).
 
-NOTE:
-Following kernel crash noticed while running selftests: ftrace on
-arm64 Juno-r2 device running stable-rc linux-6.6.y.
-
-Link:
- - https://lore.kernel.org/linux-trace-kernel/20231116123016.140576-1-nares=
-h.kamboju@linaro.org/T/#u
-
-## Build
-* kernel: 6.6.2-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.6.y
-* git commit: df34d612fd4ef266814366c8101094b7f83b6a92
-* git describe: v6.6.1-604-gdf34d612fd4e
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.1=
--604-gdf34d612fd4e
-
-## Test Regressions (compared to v6.6.1)
-
-## Metric Regressions (compared to v6.6.1)
-
-## Test Fixes (compared to v6.6.1)
-
-## Metric Fixes (compared to v6.6.1)
-
-## Test result summary
-total: 136854, pass: 118192, fail: 1765, skip: 16783, xfail: 114
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 142 total, 141 passed, 1 failed
-* arm64: 50 total, 47 passed, 3 failed
-* i386: 40 total, 35 passed, 5 failed
-* mips: 25 total, 25 passed, 0 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 32 passed, 4 failed
-* riscv: 25 total, 24 passed, 1 failed
-* s390: 13 total, 13 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 44 total, 43 passed, 1 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Regards,
+Erhard
