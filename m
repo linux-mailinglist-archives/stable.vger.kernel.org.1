@@ -2,53 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E1907EE604
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 18:36:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 514967EE60C
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 18:39:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229486AbjKPRgf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 12:36:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47278 "EHLO
+        id S231238AbjKPRjt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 12:39:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229464AbjKPRgf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 12:36:35 -0500
+        with ESMTP id S231294AbjKPRjq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 12:39:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2357181;
-        Thu, 16 Nov 2023 09:36:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D666C433CA;
-        Thu, 16 Nov 2023 17:36:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9A6D5E;
+        Thu, 16 Nov 2023 09:39:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A37C433C7;
+        Thu, 16 Nov 2023 17:39:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700156191;
-        bh=f1MamAR5SJ3kDTjLLdjTFc1hoxE9qI+fWDwWO5NMT60=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=Qi+VGp9KMuy53sSyo9JaYaStSahW4hFHR/Suwj+5r4y4WvPvgyrZInEteXBZcAoJs
-         f/rwFVrvf5FolsF2Hu9V1sUhCzA+Rg9M6AB9UGrsH6D69tVfsgM3uYFuqrmfQD0/B7
-         SEOTQpToXnIpqKBKKAzXOvaNGp3tZR2Poy1ajpotdPx7KXa0u4hmeriCrfiFhQ55TF
-         Pttk1+KPYB56y9H219EQFJFwjDrqGPn7AVC4UzYV6tiPFWc0ytcbf5F46iehDZTyjM
-         7xV3T/EWu/UXvhkyIsc/My0BtSIuagc1/3IpxkAA1Rsj03yFJVJlhi7920zJEEG+AC
-         fb2+zqpfbVp0A==
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2c5210a1515so14917731fa.0;
-        Thu, 16 Nov 2023 09:36:31 -0800 (PST)
-X-Gm-Message-State: AOJu0YystFm6zEjxmvJs6CRAdRfvWuYBzOUvzfQXFRLbuT5FCPnCx3/P
-        j3xos+2hhZV+LN4fNSSyAjlFHrR8meygV6s7bhE=
-X-Google-Smtp-Source: AGHT+IEGEYSC/DbWsT7Lwa1v58UFG92epJFXYtXet3tbtNwSzwgsxrNS1YZeQy4iAakQ8ia/3Yzb98ViUUY9IRlCU28=
-X-Received: by 2002:a2e:9bd7:0:b0:2c7:4220:56fc with SMTP id
- w23-20020a2e9bd7000000b002c7422056fcmr7417802ljj.11.1700156189690; Thu, 16
- Nov 2023 09:36:29 -0800 (PST)
+        s=k20201202; t=1700156380;
+        bh=Zgd5QCuzvKEJFDLFEKjM60EEmgTalFX8rouizgN0mfk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=YT2DIpaTL/Eiy2JY8VlYnI5iD/v6L2uFCfNsxeK3EPGEhUcUYlDWkQZ1dtcIOeCOL
+         wJe4OcPAfJkKyddrzmWmYkai++zzS8XhZeVQcev1JzQ0Zq+ymqDD49St0VsLwsmarT
+         pILUUFml2MuTk9CI1F2aN4k9MvP2fq8L8VFmEBYPTMxfDxEZcyrEcHEviXKT2bO6fQ
+         4O5MFVu1jtKZW7j8m8k4TXIc2QW9dzbdCy59Un6imvMj8ar1XxZXRtjnBlan7gXsi/
+         kpMFSd5lUJIiiPDk7hvPk3WM78Hf7aG4Ckk+hgVOnX3X0mT3hx7ae1B3t5ca16vMMs
+         7IBlvTg4FO1Qg==
+Date:   Thu, 16 Nov 2023 12:39:39 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Huacai Chen <chenhuacai@loongson.cn>, maobibo@loongson.cn,
+        palmer@rivosinc.com, yangtiezhu@loongson.cn, wangliupu@loongson.cn,
+        jpoimboe@kernel.org, zhoubinbin@loongson.cn,
+        loongarch@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.6 4/6] LoongArch/smp: Call
+ rcutree_report_cpu_starting() earlier
+Message-ID: <ZVZT27pS16Y7S9wQ@sashalap>
+References: <20231115033350.1228588-1-sashal@kernel.org>
+ <20231115033350.1228588-4-sashal@kernel.org>
+ <CAAhV-H61R006eHGN+ujvDqrT_6AYV0XBcSaT2zyVLJi1rR=kMA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231115095830.20607-1-quic_aiquny@quicinc.com> <20231116172418.GA174808@dev-arch.thelio-3990X>
-In-Reply-To: <20231116172418.GA174808@dev-arch.thelio-3990X>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Fri, 17 Nov 2023 03:36:17 +1000
-X-Gmail-Original-Message-ID: <CAMj1kXE4stcFikmxBMY19CR4J0+EpaNW8J=xVyFVY3A7F7BpRQ@mail.gmail.com>
-Message-ID: <CAMj1kXE4stcFikmxBMY19CR4J0+EpaNW8J=xVyFVY3A7F7BpRQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] ARM: kprobes: Explicitly reserve r7 for local variables
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Maria Yu <quic_aiquny@quicinc.com>, linux@armlinux.org.uk,
-        mhiramat@kernel.org, kernel@quicinc.com,
-        linux-arm-kernel@lists.infradead.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_lijuang@quicinc.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAAhV-H61R006eHGN+ujvDqrT_6AYV0XBcSaT2zyVLJi1rR=kMA@mail.gmail.com>
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -59,52 +54,14 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 17 Nov 2023 at 03:24, Nathan Chancellor <nathan@kernel.org> wrote:
+On Wed, Nov 15, 2023 at 11:55:24AM +0800, Huacai Chen wrote:
+>Hi, Sasha,
 >
-> On Wed, Nov 15, 2023 at 05:58:30PM +0800, Maria Yu wrote:
-> > Registers r7 is removed in clobber list, so compiler may choose r7 for
-> > local variables usage, while r7 will be actually updated by the inline asm
-> > code. This caused the runtime behavior wrong.
-> > While those kind of reserved registers cannot be set to clobber list
-> > because of error like "inline asm clobber list contains reserved
-> > registers".
-> > Explicitly reserve r7 by adding attribute no-omit-frame-pointer for needed
-> > function, then in T32 asm code r7 is used as a frame pointer and is not
-> > available for use as a general-purpose register.
-> > Note that "no-omit-frame-pointer" will make the code size a little bigger
-> > to store the stack frame pointer. So limited to needed functions can have
-> > the less impact than the full source file.
-> >
-> > Fixes: dd12e97f3c72 ("ARM: kprobes: treat R7 as the frame pointer register in Thumb2 builds")
-> > Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
-> > Cc: stable@vger.kernel.org
->
-> This causes warnings with clang:
->
->   arch/arm/probes/kprobes/actions-thumb.c:441:47: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
->     441 | static unsigned long __kprobes __attribute__((optimize("no-omit-frame-pointer")))
->         |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   arch/arm/probes/kprobes/actions-thumb.c:524:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
->     524 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
->         |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   arch/arm/probes/kprobes/actions-thumb.c:560:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
->     560 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
->         |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   arch/arm/probes/kprobes/actions-thumb.c:579:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
->     579 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
->         |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   4 warnings generated.
->
-> Furthermore, as far as I am aware, the optimize attribute has other issues so
-> its use is discouraged, see commits 080b6f407635 ("bpf: Don't rely on GCC
-> __attribute__((optimize)) to disable GCSE") and a7223f5bfcae ("powerpc: Avoid
-> broken GCC __attribute__((optimize))").
->
+>In 6.6 and earlier versions, rcutree_report_cpu_starting() should be
+>rcu_cpu_starting().
 
-Ah yes, apalogies for missing that. I did a test build with Clang but
-I did not spot the errors. So
+I'll drop this one. Happy to apply a backport...
 
-Unreviewed-by: ....
-
-Maria, please use the Makefile based per-file CFLAGS override that I
-suggested before. There is really no reason to make this per-function.
+-- 
+Thanks,
+Sasha
