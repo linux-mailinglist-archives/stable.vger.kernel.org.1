@@ -2,100 +2,158 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94B8B7EDD7D
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 10:19:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C1C07EDD81
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 10:21:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234879AbjKPJTN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 04:19:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51190 "EHLO
+        id S229984AbjKPJVJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 04:21:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbjKPJTM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 04:19:12 -0500
-X-Greylist: delayed 1027 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 16 Nov 2023 01:19:09 PST
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90477195
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 01:19:09 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4SWDG61L4Bz9yMLQ;
-        Thu, 16 Nov 2023 16:48:30 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.204.63.22])
-        by APP1 (Coremail) with SMTP id LxC2BwAnY3Nq2lVlSdzEAA--.16671S4;
-        Thu, 16 Nov 2023 10:01:48 +0100 (CET)
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     casey@schaufler-ca.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com
-Cc:     linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v3 2/5] smack: Handle SMACK64TRANSMUTE in smack_inode_setsecurity()
-Date:   Thu, 16 Nov 2023 10:01:22 +0100
-Message-Id: <20231116090125.187209-3-roberto.sassu@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231116090125.187209-1-roberto.sassu@huaweicloud.com>
-References: <20231116090125.187209-1-roberto.sassu@huaweicloud.com>
+        with ESMTP id S229919AbjKPJVI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 04:21:08 -0500
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B6001AB;
+        Thu, 16 Nov 2023 01:21:05 -0800 (PST)
+Received: from eldfell (cola.collaboradmins.com [195.201.22.229])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: pq)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 594036607337;
+        Thu, 16 Nov 2023 09:21:03 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1700126464;
+        bh=EKb5mjUvI6GYf6RTMmKQvl6BYz+R65vKj0PGe7EYqY0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=iQgbqLoDLSh5kczTuOEuRiaKb3C0qaRQCyxz/Zq2OeJ2Wip5bOiwco44b/1qZYw4T
+         eLj69aABTjhYVttVovqfx9kT/u2ifGppNWBs9N+zY/iMzcU8Q+lxJo2vq1Y8ADQBC+
+         u8JWqEo8I722GbNfzGjx87vY+0PtbfrArqxUXoXWIch3ySNlFMjtYTvwwjLHIIxlny
+         EKGEXRnUlVvgmAfgflDanqtxKS8SFcL+NBaRRb1faArI+FzgLDhaXAg8RmLerjN1lO
+         EsOME+Dbz0/782SdiGm1D7vTZFFtX0FiO9QEa3jPseezZLQZ9gWuKAP5YAbXTF88Nm
+         aq5LqaZVMaemQ==
+Date:   Thu, 16 Nov 2023 11:20:52 +0200
+From:   Pekka Paalanen <pekka.paalanen@collabora.com>
+To:     Javier Martinez Canillas <javierm@redhat.com>
+Cc:     Thomas Zimmermann <tzimmermann@suse.de>,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        nerdopolis <bluescreen_avenger@verizon.net>,
+        Bilal Elmoussaoui <belmouss@redhat.com>,
+        Maxime Ripard <mripard@kernel.org>, stable@vger.kernel.org,
+        Sima Vetter <daniel.vetter@ffwll.ch>,
+        Erico Nunes <nunes.erico@gmail.com>
+Subject: Re: [PATCH 2/6] drm: Add
+ drm_atomic_helper_buffer_damage_{iter_init, merged}() helpers
+Message-ID: <20231116112052.16d4d234.pekka.paalanen@collabora.com>
+In-Reply-To: <87zfzg5nif.fsf@minerva.mail-host-address-is-not-set>
+References: <20231109172449.1599262-1-javierm@redhat.com>
+        <20231109172449.1599262-3-javierm@redhat.com>
+        <6e663e37-b735-47f7-a841-fa0f93fdddaf@suse.de>
+        <87zfzg5nif.fsf@minerva.mail-host-address-is-not-set>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: LxC2BwAnY3Nq2lVlSdzEAA--.16671S4
-X-Coremail-Antispam: 1UD129KBjvdXoW7Wr15tF17uw4xtrWfZFyxXwb_yoWkZwb_u3
-        4jyFykXrs8Z3W3Xa97Ar1Fvrn2g3ykJr1Fg3Wfta43Zay5Xr4kta15JF98WFW5Aw4fJ393
-        CFn8WFyfAw17XjkaLaAFLSUrUUUUUb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-        9fnUUIcSsGvfJTRUUUbsAYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20E
-        Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l82xGYIkIc2x26280x7IE14v26r15M2
-        8IrcIa0xkI8VCY1x0267AKxVW8JVW5JwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK
-        021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r
-        4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j
-        6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7V
-        C0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j
-        6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r
-        4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF
-        67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2I
-        x0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2
-        z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnU
-        UI43ZEXa7IU8fcTPUUUUU==
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQADBF1jj5aE+QABsd
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; boundary="Sig_/2sUMloWcoyab3bwki.cTd8D";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roberto Sassu <roberto.sassu@huawei.com>
+--Sig_/2sUMloWcoyab3bwki.cTd8D
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-If the SMACK64TRANSMUTE xattr is provided, and the inode is a directory,
-update the in-memory inode flags by setting SMK_INODE_TRANSMUTE.
+On Tue, 14 Nov 2023 17:05:12 +0100
+Javier Martinez Canillas <javierm@redhat.com> wrote:
 
-Cc: stable@vger.kernel.org
-Fixes: 5c6d1125f8db ("Smack: Transmute labels on specified directories") # v2.6.38.x
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- security/smack/smack_lsm.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> Thomas Zimmermann <tzimmermann@suse.de> writes:
+>=20
+> > Hi
+> >
+> > Am 09.11.23 um 18:24 schrieb Javier Martinez Canillas: =20
+>=20
+> [...]
+>=20
+> >>   	struct drm_rect src;
+> >>   	memset(iter, 0, sizeof(*iter));
+> >> @@ -223,7 +224,8 @@ __drm_atomic_helper_damage_iter_init(struct drm_at=
+omic_helper_damage_iter *iter,
+> >>   	iter->plane_src.x2 =3D (src.x2 >> 16) + !!(src.x2 & 0xFFFF);
+> >>   	iter->plane_src.y2 =3D (src.y2 >> 16) + !!(src.y2 & 0xFFFF);
+> >>  =20
+> >> -	if (!iter->clips || !drm_rect_equals(&state->src, &old_state->src)) {
+> >> +	if (!iter->clips || !drm_rect_equals(&state->src, &old_state->src) ||
+> >> +	    (buffer_damage && old_state->fb !=3D state->fb)) { =20
+> >
+> > I'd assume that this change effectivly disables damage handling. AFAICT=
+=20
+> > user space often does a page flip with a new framebuffer plus damage=20
+> > data. Now, with each change of the framebuffer we ignore the damage=20
+> > information. It's not a blocker as that's the behavior before 6.4, but=
+=20
+> > we should be aware of it.
+> > =20
+>=20
+> Yes, which is the goal of this patch since page flip with a new framebuff=
+er
+> attached to a plane plus damage information can't be supported by drivers
+> that do per-buffer uploads.
+>=20
+> This was causing some weston and wlroots to have flickering artifacts, due
+> the framebuffers being changed since the last plane update.
+>=20
+> For now it was decided with Sima, Simon and Pekka that is the best we can
+> do and the reason why I add a TODO in patch #6.
+>=20
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 0027803a43ac..7b6d7ddd6d36 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -2855,6 +2855,15 @@ static int smack_inode_setsecurity(struct inode *inode, const char *name,
- 	if (value == NULL || size > SMK_LONGLABEL || size == 0)
- 		return -EINVAL;
- 
-+	if (strcmp(name, XATTR_SMACK_TRANSMUTE) == 0) {
-+		if (!S_ISDIR(inode->i_mode) || size != TRANS_TRUE_SIZE ||
-+		    strncmp(value, TRANS_TRUE, TRANS_TRUE_SIZE) != 0)
-+			return -EINVAL;
-+
-+		nsp->smk_flags |= SMK_INODE_TRANSMUTE;
-+		return 0;
-+	}
-+
- 	skp = smk_import_entry(value, size);
- 	if (IS_ERR(skp))
- 		return PTR_ERR(skp);
--- 
-2.34.1
+Hi all,
 
+this made me thinking...
+
+The per-buffer damage accumulation that would be needed is per
+upload-buffer, not per KMS FB from userspace. So it should not make any
+difference whether userspace flips to another FB or not, the damage
+will need to be accumulated per upload-buffer anyway if the driver is
+flipping upload-buffers, in order to make the upload-buffer fully
+up-to-date.
+
+Why was that not more broken than it already was?
+
+Is there a fixed 1:1 relationship between userspace KMS FBs and the
+driver upload-buffers?
+
+Userspace is already taking care that the KMS FB is always fully
+up-to-date, FWIW, so the kernel can certainly read areas outside of
+FB_DAMAGE_CLIPS if it wants to.
+
+
+Thanks,
+pq
+
+--Sig_/2sUMloWcoyab3bwki.cTd8D
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEJQjwWQChkWOYOIONI1/ltBGqqqcFAmVV3vQACgkQI1/ltBGq
+qqfB+A/+JFbdvfCh1ktxeGlmnuTRro8T3ArktRR8nAvkOnl31N41atMY/TacQZUO
+oEwmgdxyqbjs0tTw7UH5OON051w/GtistMNhXJ0KPoHrrUfUca7wl4XG8FZ9BPAd
+PzH1/paWneZWPe45/TkaMJE8HtZOjpuGQo61BLcCqo00fJCQ3G+QJ4JMixTuLJzL
+Gtsx0RzXTxiwiDUInKbJwj0UIoNlHle3AA/xOShGYe8eTLsfmr7u1OG0BGtwPVSu
+1IImxt/kH41g9/IFtMTqECxS0kILGGVMfJFpf/BnNf8pBXTwFf3kYz3Um6pXrnHD
+GcfVkytMbIBf6P9bFvfZvZhlv1BtcIbW9QQTzCFqs63qyg75xkGjbo0zC9hUaGl1
+8or7w5++ItvKF/KZJdD3uT38lgULaTgGFnO/AZfxzzOj3ueF+tmeMWzdGvKGWB7j
+PbhCf4to71fcdkgUxTZ0YvQNvltXu52IFNYVvoW0bV27ZSh6K8XbRSSA9qqG9vBv
+qPA5YDQf203/VaaFZCbzci7iwB3Zx4qMqhGNfvuO1UAyGG2ZPXchBE3d5hrJh6s5
+A6E//IAWkaewj2E3bGitv8GI0xvn3m4q0BAMqRTgvMKe6Jy8I5xTxVzJSQGBxF5f
+Mo2GaxdAnudxL0NkCGDn4HhvZJZvx/WJanI7Konp5An66OQrqD8=
+=iWrr
+-----END PGP SIGNATURE-----
+
+--Sig_/2sUMloWcoyab3bwki.cTd8D--
