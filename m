@@ -2,234 +2,210 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C38E47EE68F
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 19:18:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE3D7EE695
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 19:20:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345410AbjKPSSx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 13:18:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39708 "EHLO
+        id S1345401AbjKPSUT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 13:20:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231307AbjKPSSw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 13:18:52 -0500
-Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 454131AD
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:18:48 -0800 (PST)
-Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-45dae475aedso392445137.2
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:18:48 -0800 (PST)
+        with ESMTP id S231300AbjKPSUS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 13:20:18 -0500
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4709D49
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:20:14 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3b2ec5ee2e4so683685b6e.3
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:20:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700158727; x=1700763527; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2YAci+1wqiwB/kontdKmzRRGgE3fU/1zqtfW4K+RiiE=;
-        b=ESq1zj3jJff6EGWgZ2z+ZZmrHLPRtJJbYYX4/eZwdZBv5vyy/wyl/209/793d6mmIw
-         EA642agZeDReeQ2Afc0NNuYPdnP/rfd1W2vA+q9XT63hskZYQSLdgCMN8RXs6UUy7A1k
-         XFKNHlZ0AiL0JYSGQjO+sACn1sfJJ7kqCR6Sho+PTcyjdml0hYnaqEsaTtdse2I4tdLz
-         5C5QSkZQ+DTmRjJnZD0Gy/gZM4Oet6k7+J4mB5mhcVGWM+R1Df+J0Bzj8DYRSA5wwMT1
-         lrf0ZNyikYOGQS9NTvEeNSEHTXiYoX12LoCxR6PKda7qNsXszfV1mlGTHq6WS97XSxkU
-         etvg==
+        d=broadcom.com; s=google; t=1700158814; x=1700763614; darn=vger.kernel.org;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gfkRX5RA2s6y34G8uu9rJbFhoScUe6YPdoMycASWT6Q=;
+        b=Y6bJgN2u8GPpfDcFNXz6ByY7MgbQO/5jEhrM/ELwDFyUZMzzbbTzq/Nz9Jms+IWt8n
+         9jfXqNzbMST7kW9FBc3BVo5zLG+BKBDYTRQGXhUPBkZIbx4RwCxO14V7DUbZFHyggJA/
+         NtP1F4ECIpVriVkeKFHlcyFIIgHv6SZHRKPnM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700158727; x=1700763527;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2YAci+1wqiwB/kontdKmzRRGgE3fU/1zqtfW4K+RiiE=;
-        b=jO5ZqSX2pRaloK+u7y7AZwCCdspf+crROphO8wMotXI9xUn8HZ0lRhTNiAcqA4RaDa
-         MuHJvlh7UV3JNYTLenvZTJ929CQ+cQldOSe/WiCQC0Q8tWQTgXUciZbfOGIugEhiiqjM
-         WnGUiSP8WLBmZDiryphzQ0OczaOZ/TW69whSbHvq35ywldu+bbVnCaLiWZuJePbuze0G
-         tXt0IcMjwBU+1O3wU3ravXA7z/KIjOfMraCUgfGtGU5ax8yIRDsXjQKJjKuyMc5ssgZy
-         5fu4q6fI1KjvPN+eOZ9gN/BoWtj9xrympQQPYFRYkJfDWbczjRUQ58bZq2h7Vb5mM5i0
-         lgkw==
-X-Gm-Message-State: AOJu0Ywue4BTGtnobatJNDN3eYTqqUapP4oYJAE2i6YrHqw39SEYXJZ/
-        uxbfGbjpmCK/3Lh5JLsMZEmnCEzolNHF1MdwbW+saA==
-X-Google-Smtp-Source: AGHT+IGQEZ5wLUtlYPdF70kdQrc120i9IsEXXMv5n2+gnrkPnGz0H2wC/EneYGbqiS19pHHY6y5+0MTWWdIm4KZoiY8=
-X-Received: by 2002:a05:6102:4687:b0:44e:8626:71f2 with SMTP id
- dw7-20020a056102468700b0044e862671f2mr11397434vsb.13.1700158727243; Thu, 16
- Nov 2023 10:18:47 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700158814; x=1700763614;
+        h=mime-version:subject:user-agent:references:in-reply-to:message-id
+         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gfkRX5RA2s6y34G8uu9rJbFhoScUe6YPdoMycASWT6Q=;
+        b=QQloO+GcnJQsH4VyhEyTkGIsDAG0dpq82MVViholz3Xd8RvBRj1REFAHcjpOBs8b4H
+         uyUXB+E+AZNflgE4Iiha7ZKA7MlizwNR/u+dzlEFYFtVAGTQCMjxX+ul5g1QPmhz1Xe1
+         dm8qOkqtIh/SY1fZ1cjOHvCwNGOcW+GTTMcQlrXisoOlB2XSP0wdC0XHjNEuTJYDtVDU
+         D2QuM0hUk32kRDMtFVBZygIxcloT01xyIVV+3NSZkDpQJlH/KJAfXeqKEr30NCr9Tb1K
+         NnxaHv5SVet59LAVlxDENfzwKJ2J7VJI+wUMmX1uiutRMar7jjjgbHBvEZVacBxORzgi
+         lJ1g==
+X-Gm-Message-State: AOJu0YzVGW/a4iT57DsnpR30Tbo/yVjXNXY3nxvtU530HMSqfAtXv58Q
+        E+nwlUb0VazWyJ8NVE+w2K+cwA==
+X-Google-Smtp-Source: AGHT+IEk/N8I3jhB2UbSAIWAocP+igZaUkZvlRo6AdpXMF1cdSGb8qInDV/grLtjRK80656F8rn4XQ==
+X-Received: by 2002:a05:6358:e4a1:b0:16b:c810:667b with SMTP id by33-20020a056358e4a100b0016bc810667bmr9321225rwb.2.1700158813880;
+        Thu, 16 Nov 2023 10:20:13 -0800 (PST)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id m9-20020ad44b69000000b00677e9c852b7sm541060qvx.108.2023.11.16.10.20.07
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 16 Nov 2023 10:20:11 -0800 (PST)
+From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
+To:     Zheng Hacker <hackerzheng666@gmail.com>
+CC:     Kalle Valo <kvalo@kernel.org>, Zheng Wang <zyytlz.wz@163.com>,
+        <aspriel@gmail.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <johannes.berg@intel.com>,
+        <marcan@marcan.st>, <linus.walleij@linaro.org>,
+        <jisoo.jang@yonsei.ac.kr>, <linuxlovemin@yonsei.ac.kr>,
+        <wataru.gohda@cypress.com>, <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <linux-kernel@vger.kernel.org>,
+        <security@kernel.org>, <stable@vger.kernel.org>
+Date:   Thu, 16 Nov 2023 19:20:06 +0100
+Message-ID: <18bd95c97f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <CAJedcCzj9SFbx-=xDymqJyV2fu0xjmz2RH4+gT+Gxsqubg35ZA@mail.gmail.com>
+References: <20231106141704.866455-1-zyytlz.wz@163.com>
+ <87o7g7ueom.fsf@kernel.org>
+ <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com>
+ <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
+ <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com>
+ <CAJedcCzj9SFbx-=xDymqJyV2fu0xjmz2RH4+gT+Gxsqubg35ZA@mail.gmail.com>
+User-Agent: AquaMail/1.48.0 (build: 104800386)
+Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
 MIME-Version: 1.0
-References: <20231115204644.490636297@linuxfoundation.org>
-In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 16 Nov 2023 23:48:34 +0530
-Message-ID: <CA+G9fYsuoZdsy_biRqB0a+3pwTLK7z_xL3sYrJMsckivmxKimA@mail.gmail.com>
-Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+        boundary="000000000000304d15060a4912fe"
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 16 Nov 2023 at 02:23, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+--000000000000304d15060a4912fe
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+On November 15, 2023 4:00:46 PM Zheng Hacker <hackerzheng666@gmail.com> wrote:
+
+> Arend van Spriel <arend.vanspriel@broadcom.com> 于2023年11月13日周一 17:18写道：
+>>
+>> On November 8, 2023 4:03:26 AM Zheng Hacker <hackerzheng666@gmail.com>
+>> wrote:
+>>
+>>> Arend Van Spriel <arend.vanspriel@broadcom.com> 于2023年11月6日周一 23:48写道：
+>>>>
+>>>> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.com> wrote:
+>>>>
+>>>>> Thanks! I didn't test it for I don't have a device. Very appreciated
+>>>>> if anyone could help with that.
+>>>>
+>>>> I would volunteer, but it made me dig deep and not sure if there is a
+>>>> problem to solve here.
+>>>>
+>>>> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scanning() ->
+>>>> brcmf_notify_escan_complete() which does delete the timer.
+>>>>
+>>>> What am I missing here?
+>>>
+>>> Thanks four your detailed review. I did see the code and not sure if
+>>> brcmf_notify_escan_complete
+>>> would be triggered for sure. So in the first version I want to delete
+>>> the pending timer ahead of time.
+>>
+>> Why requesting a CVE when you are not sure? Seems a bit hasty to put it
+>> mildly.
 >
-> This is the start of the stable review cycle for the 5.10.201 release.
-> There are 191 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 17 Nov 2023 20:46:03 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.10.201-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> I'm sure the issue exists because there's only cancler of timer but not woker.
+> As there's similar CVEs before like : https://github.com/V4bel/CVE-2022-41218,
+> I submit it as soon as I found it.
+
+Ah, yes. The cancel_work_sync() can also be done in 
+brcmf_notify_escan_complete().
+
+Regards,
+Arend
 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+--000000000000304d15060a4912fe
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-## Build
-* kernel: 5.10.201-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.10.y
-* git commit: 550b7e1fee20e8840f9c1028c89dd3fc9c959fff
-* git describe: v5.10.200-192-g550b7e1fee20
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
-.200-192-g550b7e1fee20
-
-## Test Regressions (compared to v5.10.200)
-
-## Metric Regressions (compared to v5.10.200)
-
-## Test Fixes (compared to v5.10.200)
-
-## Metric Fixes (compared to v5.10.200)
-
-## Test result summary
-total: 82357, pass: 64836, fail: 2567, skip: 14910, xfail: 44
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 113 total, 110 passed, 3 failed
-* arm64: 43 total, 40 passed, 3 failed
-* i386: 34 total, 33 passed, 1 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 25 total, 25 passed, 0 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 37 total, 37 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+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
+2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
+Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
+HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
+Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
+KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
+Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
+dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
+OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
+MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
+BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
+ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
+zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
+sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
+BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
+N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
+p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
+YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCCEogqnRNtku8akJcOV
+/BRcd3rq78aGvYQrQETNNY9fgTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yMzExMTYxODIwMTRaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEA19NksM2NmnoLr4IsZ/H9fImc/Rt0qFiSWgWV
+ent2bF4/d2zFgxIy3XAGKGvsMvTiE5mVAJHvPVaIugWAXbIJySQbihU6yD2Hrf1tNqD+s8WJykpz
+lMZ4Jhw7rb+RNDUYoSmDZmhlhp2rVqpDoGV4C7f7aZGgtDnLbnMfGcEnbxbjfoDiwBxvebOAYK4Q
++frnM+Naidoc0wnnHPTy4S8n/CCN0n1KuXYMK94GoCfT0Op47+qxb4v+gtr9uacjtCh6h6843Nht
+IMpHvvCO7rfVb3EVl92ZEOasbcWZ6HJdURrLu5ia0DWf3kx3D2pXpT8+PHTozLU+dJIPSh55t0Fr
+gg==
+--000000000000304d15060a4912fe--
