@@ -2,57 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C5C97EE68C
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 19:17:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C38E47EE68F
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 19:18:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345324AbjKPSRF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 13:17:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34794 "EHLO
+        id S1345410AbjKPSSx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 13:18:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231284AbjKPSRE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 13:17:04 -0500
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51F00195
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:17:00 -0800 (PST)
-Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3b2f28caab9so703215b6e.1
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:17:00 -0800 (PST)
+        with ESMTP id S231307AbjKPSSw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 13:18:52 -0500
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 454131AD
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:18:48 -0800 (PST)
+Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-45dae475aedso392445137.2
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:18:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700158619; x=1700763419; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1700158727; x=1700763527; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=MDj+XBdAjS8rpp3nLic5C7ebUl0lQXibSRxWXdmfnSs=;
-        b=aMvWJBd1MaqwOuHpS24lPkBogNxQzfoDMlsyBq6V34nHJL1tfiY8fTOU6gXDrxcY2i
-         OjueWPsywovpNlOq7Rpp8r1M2vR6nfv5r//r4NK0OUofCH6C4VRyArWk7KuB7wgKUxot
-         LmQzFtjPBosUDF8x9OojSraHP6qXINHSIw/N85jWKh0voaNMf/kBDt8sVRdo9tHdXOwh
-         +6qF8ynqEwXa3b/4LIehswHDr87JNAPHoFZxNW9+QeyiSF8fc3i9KGDqwTgQODSl0/dm
-         sJDq5bs9KGzX49WcOSNKUKUmoXCwqAMwJEtP0k9+3hN+MqTuPVrmlMWNPD23wMGGSp5q
-         a3aw==
+        bh=2YAci+1wqiwB/kontdKmzRRGgE3fU/1zqtfW4K+RiiE=;
+        b=ESq1zj3jJff6EGWgZ2z+ZZmrHLPRtJJbYYX4/eZwdZBv5vyy/wyl/209/793d6mmIw
+         EA642agZeDReeQ2Afc0NNuYPdnP/rfd1W2vA+q9XT63hskZYQSLdgCMN8RXs6UUy7A1k
+         XFKNHlZ0AiL0JYSGQjO+sACn1sfJJ7kqCR6Sho+PTcyjdml0hYnaqEsaTtdse2I4tdLz
+         5C5QSkZQ+DTmRjJnZD0Gy/gZM4Oet6k7+J4mB5mhcVGWM+R1Df+J0Bzj8DYRSA5wwMT1
+         lrf0ZNyikYOGQS9NTvEeNSEHTXiYoX12LoCxR6PKda7qNsXszfV1mlGTHq6WS97XSxkU
+         etvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700158619; x=1700763419;
+        d=1e100.net; s=20230601; t=1700158727; x=1700763527;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MDj+XBdAjS8rpp3nLic5C7ebUl0lQXibSRxWXdmfnSs=;
-        b=gNI2RaVDI3R7kiUZVZ/aRh7ckAN0MQfgCeluf55SemhwpDNrbBA6uGcDTnsWS1Hrgt
-         KzI1W8A44quJMZaGfrgbpVUYvfp1Kcmr/8IRGz+Gn4tB8IKEDc8uFJJFYQqKS4uqf6ck
-         zZQLPfmQbO7CUI3eSRxOA3K8GlFGpZv/UmNI+tGvt9uhs6nd0uOCAT3dvx+VsqVdvPx8
-         nHSHPnqunivetDo3bD8oY0kz7s2vSv6UnWsF02S8jsCQTa9kVF+zTC9bztrjFSOltRnf
-         h4t3tcMlhD61URueSBD2fDZQ/bpZQRm6D4tKLLRvkgJXahHtJhH063rUrtkhmiT7wbE+
-         uzWw==
-X-Gm-Message-State: AOJu0YxAr2d4OeC7AwhUNSnbreGY/tgEqaXCpdxnjPFqFXly2hv+8ZGy
-        PYHoKeoL9iVvVV4mYzts6+MwqocDcaWR5RT9bejN8g==
-X-Google-Smtp-Source: AGHT+IFcnz1Plnm5GNybizW6I/9yZWOt/Gb/hNP9j/tUVyvus2SvjhwhUyg6qvQKcY9sCy2VUd24BpNcbGXLMPavw0M=
-X-Received: by 2002:a05:6358:e4a9:b0:16b:b4c5:b200 with SMTP id
- by41-20020a056358e4a900b0016bb4c5b200mr11503001rwb.19.1700158619486; Thu, 16
- Nov 2023 10:16:59 -0800 (PST)
+        bh=2YAci+1wqiwB/kontdKmzRRGgE3fU/1zqtfW4K+RiiE=;
+        b=jO5ZqSX2pRaloK+u7y7AZwCCdspf+crROphO8wMotXI9xUn8HZ0lRhTNiAcqA4RaDa
+         MuHJvlh7UV3JNYTLenvZTJ929CQ+cQldOSe/WiCQC0Q8tWQTgXUciZbfOGIugEhiiqjM
+         WnGUiSP8WLBmZDiryphzQ0OczaOZ/TW69whSbHvq35ywldu+bbVnCaLiWZuJePbuze0G
+         tXt0IcMjwBU+1O3wU3ravXA7z/KIjOfMraCUgfGtGU5ax8yIRDsXjQKJjKuyMc5ssgZy
+         5fu4q6fI1KjvPN+eOZ9gN/BoWtj9xrympQQPYFRYkJfDWbczjRUQ58bZq2h7Vb5mM5i0
+         lgkw==
+X-Gm-Message-State: AOJu0Ywue4BTGtnobatJNDN3eYTqqUapP4oYJAE2i6YrHqw39SEYXJZ/
+        uxbfGbjpmCK/3Lh5JLsMZEmnCEzolNHF1MdwbW+saA==
+X-Google-Smtp-Source: AGHT+IGQEZ5wLUtlYPdF70kdQrc120i9IsEXXMv5n2+gnrkPnGz0H2wC/EneYGbqiS19pHHY6y5+0MTWWdIm4KZoiY8=
+X-Received: by 2002:a05:6102:4687:b0:44e:8626:71f2 with SMTP id
+ dw7-20020a056102468700b0044e862671f2mr11397434vsb.13.1700158727243; Thu, 16
+ Nov 2023 10:18:47 -0800 (PST)
 MIME-Version: 1.0
-References: <20231115220132.607437515@linuxfoundation.org>
-In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
+References: <20231115204644.490636297@linuxfoundation.org>
+In-Reply-To: <20231115204644.490636297@linuxfoundation.org>
 From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 16 Nov 2023 23:46:47 +0530
-Message-ID: <CA+G9fYtXJJbQqzj8et66YSGsabELLMbodVkfyV93G2BcmfxW-A@mail.gmail.com>
-Subject: Re: [PATCH 5.4 000/119] 5.4.261-rc1 review
+Date:   Thu, 16 Nov 2023 23:48:34 +0530
+Message-ID: <CA+G9fYsuoZdsy_biRqB0a+3pwTLK7z_xL3sYrJMsckivmxKimA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
@@ -73,23 +73,23 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 16 Nov 2023 at 03:32, Greg Kroah-Hartman
+On Thu, 16 Nov 2023 at 02:23, Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 5.4.261 release.
-> There are 119 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 5.10.201 release.
+> There are 191 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
-> Responses should be made by Fri, 17 Nov 2023 22:01:17 +0000.
+> Responses should be made by Fri, 17 Nov 2023 20:46:03 +0000.
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
 >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.261-rc1.gz
+5.10.201-rc1.gz
 > or in the git tree and branch at:
 >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
+-rc.git linux-5.10.y
 > and the diffstat can be found below.
 >
 > thanks,
@@ -103,39 +103,39 @@ No regressions on arm64, arm, x86_64, and i386.
 Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
 ## Build
-* kernel: 5.4.261-rc1
+* kernel: 5.10.201-rc1
 * git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.4.y
-* git commit: 4e271d1d9d68c0508c93f7b906cb2daf293b4d70
-* git describe: v5.4.260-120-g4e271d1d9d68
+* git branch: linux-5.10.y
+* git commit: 550b7e1fee20e8840f9c1028c89dd3fc9c959fff
+* git describe: v5.10.200-192-g550b7e1fee20
 * test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-60-120-g4e271d1d9d68
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
+.200-192-g550b7e1fee20
 
-## Test Regressions (compared to v5.4.260)
+## Test Regressions (compared to v5.10.200)
 
-## Metric Regressions (compared to v5.4.260)
+## Metric Regressions (compared to v5.10.200)
 
-## Test Fixes (compared to v5.4.260)
+## Test Fixes (compared to v5.10.200)
 
-## Metric Fixes (compared to v5.4.260)
+## Metric Fixes (compared to v5.10.200)
 
 ## Test result summary
-total: 89529, pass: 69705, fail: 2000, skip: 17774, xfail: 50
+total: 82357, pass: 64836, fail: 2567, skip: 14910, xfail: 44
 
 ## Build Summary
 * arc: 5 total, 5 passed, 0 failed
-* arm: 145 total, 145 passed, 0 failed
-* arm64: 44 total, 42 passed, 2 failed
-* i386: 28 total, 22 passed, 6 failed
-* mips: 25 total, 25 passed, 0 failed
+* arm: 113 total, 110 passed, 3 failed
+* arm64: 43 total, 40 passed, 3 failed
+* i386: 34 total, 33 passed, 1 failed
+* mips: 24 total, 24 passed, 0 failed
 * parisc: 3 total, 0 passed, 3 failed
-* powerpc: 30 total, 26 passed, 4 failed
-* riscv: 12 total, 12 passed, 0 failed
-* s390: 6 total, 6 passed, 0 failed
+* powerpc: 25 total, 25 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
 * sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 38 total, 38 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 37 total, 37 passed, 0 failed
 
 ## Test suites summary
 * boot
@@ -189,25 +189,26 @@ total: 89529, pass: 69705, fail: 2000, skip: 17774, xfail: 50
 * kselftest-size
 * kselftest-tc-testing
 * kselftest-timens
-* kselftest-timers
 * kselftest-tmpfs
 * kselftest-tpm2
 * kselftest-user
 * kselftest-user_events
 * kselftest-vDSO
 * kselftest-vm
-* kselftest-watchdog
 * kselftest-x86
 * kselftest-zram
 * kunit
+* libgpiod
 * log-parser-boot
 * log-parser-test
 * ltp-cap_bounds
 * ltp-commands
 * ltp-containers
 * ltp-controllers
+* ltp-cpuhotplug
 * ltp-crypto
 * ltp-cve
+* ltp-dio
 * ltp-fcntl-locktests
 * ltp-filecaps
 * ltp-fs
