@@ -2,58 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96D727EE731
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 20:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D866E7EE813
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 21:05:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229573AbjKPTMG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 14:12:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47264 "EHLO
+        id S229628AbjKPUFn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 15:05:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbjKPTMF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 14:12:05 -0500
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E487ED4A;
-        Thu, 16 Nov 2023 11:12:02 -0800 (PST)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6c3363a2b93so1119872b3a.3;
-        Thu, 16 Nov 2023 11:12:02 -0800 (PST)
+        with ESMTP id S1345528AbjKPUFm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 15:05:42 -0500
+Received: from mail-qk1-x72f.google.com (mail-qk1-x72f.google.com [IPv6:2607:f8b0:4864:20::72f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A362196;
+        Thu, 16 Nov 2023 12:05:39 -0800 (PST)
+Received: by mail-qk1-x72f.google.com with SMTP id af79cd13be357-778711ee748so73066585a.2;
+        Thu, 16 Nov 2023 12:05:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700161922; x=1700766722; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1700165138; x=1700769938; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=r2cblImVlnKbNpSaIwvvqPSRGRUsM1AEekZ58ABcA3o=;
-        b=HYQF4bUE5yyoeYXWoOL+Ze0SQb+lt5zR9QZLXl2GXRj12PFeshPsPUWkpxmGfW3llC
-         9Hj4bYf3GtOSjXY6s0riO5YeXVDI5EZxz4VeGJa9VcT6NCgu8VokanLYoWkF5tYyn9ku
-         HY8b4pyvXeBfSiLUV6dsLgnpa9hkNWzK/DixcYk7JlWjcOFkMInHn8i9uvTKqmSneL3r
-         O0WGeDHIgjoSFgGI9iDMZRhXSNDM7UPqOMRfPCsKUjQpnv5hlcNT4IOLM/Ibfc1b8uwI
-         YxkcXC/xK05vHXbO06Y/kST0kHiP+eCUmabyS7AJsPTeWqPnzA7AwRcYIn6jew+dFYSW
-         pGZQ==
+        bh=XP8UF2SywWm6uvEiv3yQBU5bbISulYs0tmRsi39B+rQ=;
+        b=Oe460IPl3b9E7M8VT8XzIZoz5G2Su/VIb/LQZiwCwfh64E3qjiMRGft/+lZnB63d7y
+         XvF2y+aVzE7BKfmm09kFWaQ67c4fbx4K+vwysFkSovLNKjxspZt/QMgll4GoLpm4MWx6
+         vUluf4IcuLgiBLiaLA2VHBfUiemGzh0IJ40trcws3R4/c+KAIx9F299NEfor+VVtOLoJ
+         jIe9cqtVovxIjjJgScVo1bA15nKByz3lfz7aoMmBjk/ltEiB1Q0UVXxpqeOhMOJ9IQGx
+         TixTFWsPiZKjJBy/2uQP30QzgN6HrAwWlm1gJih6+sICgszazt+eZnETotrG8FQkvml0
+         Onxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700161922; x=1700766722;
+        d=1e100.net; s=20230601; t=1700165138; x=1700769938;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r2cblImVlnKbNpSaIwvvqPSRGRUsM1AEekZ58ABcA3o=;
-        b=boW6lIZWSJneW7TA/7l1NCmE0veQgOYvxV/JPCeuDsPde5uK8XnegvlL3WTSzYWTug
-         Et8rqZ4cwSYo9CD+4FgxJT4cXg3hNd0lTmybJeU2DryWmEK6YzI/+X+zBZpunAf+MfFk
-         CsJzqk/X6h0DXoJ0bkp5aIBSzi2XKOuIPcTxgE9iXfRdJjznKmurOTh9GgqQ4NLhjOKC
-         94zvxv4z7X8EgkPY6tTsJ3Y+WMmpbj5mVq6Vk7984mJMtJvxaruvEh8Kp8bvcC0D4igG
-         8EQ7ddigMu/vJDlkQsb2kQl2f7ODWSeIyhdCcMeTTeVZsdHMtOW6iJJGq8NJsv4tWBdS
-         alUg==
-X-Gm-Message-State: AOJu0YzioLweBJAJGtalsH1TAnpYAv/I0wiIdvph+EHAWwzVs1Vsdttp
-        oYJ3J8kaw2e1EVhziBJlo6g=
-X-Google-Smtp-Source: AGHT+IHljXn8CNIViSbTqu8jUg5uWKAMgIY9NhPSyqrB0LWUb28+6OTJH9Lt3SqhQ2ZX7wtujCOtZA==
-X-Received: by 2002:aa7:84d2:0:b0:6b2:6835:2a7f with SMTP id x18-20020aa784d2000000b006b268352a7fmr17373822pfn.22.1700161922269;
-        Thu, 16 Nov 2023 11:12:02 -0800 (PST)
+        bh=XP8UF2SywWm6uvEiv3yQBU5bbISulYs0tmRsi39B+rQ=;
+        b=F8Ofeib3dpPhIgB4sV1Iuin930rxCfUmvU3RBDI2eW/5qPDzMwi27n8D85xICp6fxt
+         8h6ClJ43JHuX079ZAnnUrmQJyWNpT5Z1lGpYP/rAC3FU4xxwUj5bytaHtfFyXAQkyWtX
+         xKTfBXqwv9PAheVwH78oCmkA1+3QkJRhoBmeY+mIclcrXt8KbgLhFtWo+M8YkOuwlwGj
+         4dHd8NSBgLlz/YzVKYn6dzxiVLkFQCY38mza8Ec/oUcYcJORy3P+E0jqlNgD2p3hejzB
+         HFM+Hb3z2/ZQG8PjaUlp3xe0hQfjImpV9WljRxosTr2zogDQaIUdZnrO8mGVrQa+tOqQ
+         q3Dw==
+X-Gm-Message-State: AOJu0YxjG33VsEPOXJ2TUDyh5G2MkLgSu4BmBFz2m+Q1BM6bkXveoDFX
+        xMK+vEh0xml3EDT/PwMS3WE=
+X-Google-Smtp-Source: AGHT+IE0rXw4mwZQi9/52TosY+1L9ojppFoOTRaT6/GO5DyaXFESEwXgi5vZk4i3eF/DKYcdk5ambA==
+X-Received: by 2002:a05:620a:bca:b0:76d:2725:f36f with SMTP id s10-20020a05620a0bca00b0076d2725f36fmr12213399qki.71.1700165138249;
+        Thu, 16 Nov 2023 12:05:38 -0800 (PST)
 Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id bn2-20020a056a00324200b0069ea08a2a99sm68710pfb.211.2023.11.16.11.12.00
+        by smtp.googlemail.com with ESMTPSA id tp9-20020a05620a3c8900b00775afce4235sm49161qkn.131.2023.11.16.12.05.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Nov 2023 11:12:01 -0800 (PST)
-Message-ID: <17487dc6-2c16-4065-8df1-7bb5b7696ca6@gmail.com>
-Date:   Thu, 16 Nov 2023 11:12:00 -0800
+        Thu, 16 Nov 2023 12:05:37 -0800 (PST)
+Message-ID: <7d953999-5303-4fb9-9a2f-66c31a54bffb@gmail.com>
+Date:   Thu, 16 Nov 2023 12:05:34 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/119] 5.4.261-rc1 review
+Subject: Re: [PATCH 6.5 000/550] 6.5.12-rc1 review
 Content-Language: en-US
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
@@ -63,9 +63,9 @@ Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
         conor@kernel.org
-References: <20231115220132.607437515@linuxfoundation.org>
+References: <20231115191600.708733204@linuxfoundation.org>
 From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20231115220132.607437515@linuxfoundation.org>
+In-Reply-To: <20231115191600.708733204@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -78,19 +78,19 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/15/23 13:59, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.261 release.
-> There are 119 patches in this series, all will be posted as a response
+On 11/15/23 11:09, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.12 release.
+> There are 550 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
-> Responses should be made by Fri, 17 Nov 2023 22:01:17 +0000.
+> Responses should be made by Fri, 17 Nov 2023 19:14:03 +0000.
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.261-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.12-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
 > and the diffstat can be found below.
 > 
 > thanks,
