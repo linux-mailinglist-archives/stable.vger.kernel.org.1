@@ -2,243 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D6697EE6A3
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 19:23:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3162A7EE6A8
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 19:25:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345445AbjKPSXU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 13:23:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44102 "EHLO
+        id S231181AbjKPSZQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 13:25:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345368AbjKPSXT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 13:23:19 -0500
-Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E126B19D
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:23:15 -0800 (PST)
-Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-45d9b477f7bso387637137.1
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 10:23:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700158995; x=1700763795; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mJMcVGwV0ZhksPb/kb7ya6aQUsXCXgCzibgQas3bEBg=;
-        b=q3r2uGE7x3Gbyu5ucExvbmYZgZSp5XWiBIkrilqhS5GseXy+Ohe5+CKdgBwoiJilsU
-         MrL/OKxNwUAoCXv40C+tjZGR6st66EWn2fSu1rjdDNVr59uJgpUyPtudZjJ26iBIABcz
-         yeaTJg0Mm0BqaraWJNKN/29/UAvpTMOfd4TASAducNQ0PWaPa9G/Xj30W+4GICYrEzJb
-         PPQiPGHB+hVvcj5n5lSjsX61zOKfLCM0AafQC4wz8fd6ZondRXu+BnLd2cQO72jismQ5
-         bpXxggwClvqU97DJJcwtlft11gLQKiD/3AMUOld6vGfoAretDKeAD5NTukw+cldCi6qU
-         /yeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700158995; x=1700763795;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mJMcVGwV0ZhksPb/kb7ya6aQUsXCXgCzibgQas3bEBg=;
-        b=Pf2ZZThHEEnU+CEZmw56VbBfXdLHfM51cuNdIPdMcda8mLSTuRMPOwsP5EBSLBQDtY
-         rnM1kmGiOlQYmHx9m+MRia4K7V8jPyTC37JX8TPvLvn36a3yQc6C3jJ4TqL//kINZMEh
-         rN2Ga2expbkGLbUYPA0I6A4UetDQNEKxepayhm4HJfTvl59SPlYtPGYYi2qOFgTseKEm
-         ZXwa6ug2EkAWbqv1dq4Ytbm5ImJNgXV3rQgMMJ9B3cXJ3wA75D0VZO/1dPA08IQxlsTT
-         tRjAaJPX6kxylJV5TRPnCbxS800x0rJh1b2JdL4WJ7PFnpXcJX4OEWz7dFYr9m4TtnIT
-         x+iw==
-X-Gm-Message-State: AOJu0Yz7vzhoLj3GAMb6HTnq7tfNxOCwJbwoZFtImpx0sVMCHo1q+tIm
-        5v2InqL7TG0HE6+VJc3LP/Oaz2mVwjA1s0iz8ljvjw==
-X-Google-Smtp-Source: AGHT+IEcMaXkeuHVRU3ZX/vb++TMtypZamKx9CSfQP8ESngpYGE22btaobl4qjxySaHBxzo5pYhEzgxe3DEwurxJIeA=
-X-Received: by 2002:a67:c29a:0:b0:45f:9fd2:71e0 with SMTP id
- k26-20020a67c29a000000b0045f9fd271e0mr17352673vsj.30.1700158994973; Thu, 16
- Nov 2023 10:23:14 -0800 (PST)
-MIME-Version: 1.0
-References: <20231115192645.143643130@linuxfoundation.org>
-In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Thu, 16 Nov 2023 23:53:03 +0530
-Message-ID: <CA+G9fYukdu+JryZd7yubwZYddrDNpDZyQXA772PisHiBvU77+A@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/379] 6.1.63-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229488AbjKPSZQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 13:25:16 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC938195;
+        Thu, 16 Nov 2023 10:25:12 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 591D720507;
+        Thu, 16 Nov 2023 18:25:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1700159111; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=82GRraZBW1WqfOlAqC5Ida9GyIWCqY+2MmQaziurGdw=;
+        b=D52pd84C8LYLp8mrmLl5+1EzXV2lujZv0cTb1aHy45wSCP3qgSyC7BJFcophdS734lDwTM
+        dQc1KqGEXjSla9QwsFt8F4gR8zQk4cs8fbgo5vzLPpGY7RJNYh/MQAaUKng/JXCd7vhC2I
+        D/zoLRC+MrgqU8t4umcTGGCuWNY/OUI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1700159111;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=82GRraZBW1WqfOlAqC5Ida9GyIWCqY+2MmQaziurGdw=;
+        b=FAR0N3ivyNbuus6yKNWFK4lDUs0NI7RcjC+8nLmNWA+tHHMUycBOqRqyY8efWCIbcxOtWl
+        3yD1/OZl1FMsVWBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id F3AB7139C4;
+        Thu, 16 Nov 2023 18:25:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id paWNOoZeVmU/NgAAMHmgww
+        (envelope-from <tiwai@suse.de>); Thu, 16 Nov 2023 18:25:10 +0000
+Date:   Thu, 16 Nov 2023 19:25:10 +0100
+Message-ID: <87h6llmu7t.wl-tiwai@suse.de>
+From:   Takashi Iwai <tiwai@suse.de>
+To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
+Cc:     Zheng Hacker <hackerzheng666@gmail.com>,
+        Kalle Valo <kvalo@kernel.org>, Zheng Wang <zyytlz.wz@163.com>,
+        <aspriel@gmail.com>, <franky.lin@broadcom.com>,
+        <hante.meuleman@broadcom.com>, <johannes.berg@intel.com>,
+        <marcan@marcan.st>, <linus.walleij@linaro.org>,
+        <jisoo.jang@yonsei.ac.kr>, <linuxlovemin@yonsei.ac.kr>,
+        <wataru.gohda@cypress.com>, <linux-wireless@vger.kernel.org>,
+        <brcm80211-dev-list.pdl@broadcom.com>,
+        <SHA-cyfmac-dev-list@infineon.com>, <linux-kernel@vger.kernel.org>,
+        <security@kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
+In-Reply-To: <18bd95c97f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+References: <20231106141704.866455-1-zyytlz.wz@163.com>
+        <87o7g7ueom.fsf@kernel.org>
+        <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com>
+        <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+        <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
+        <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com>
+        <CAJedcCzj9SFbx-=xDymqJyV2fu0xjmz2RH4+gT+Gxsqubg35ZA@mail.gmail.com>
+        <18bd95c97f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-2022-JP
+Authentication-Results: smtp-out2.suse.de;
+        none
+X-Spam-Level: 
+X-Spam-Score: 0.80
+X-Spamd-Result: default: False [0.80 / 50.00];
+         ARC_NA(0.00)[];
+         RCVD_VIA_SMTP_AUTH(0.00)[];
+         BAYES_SPAM(5.10)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         FREEMAIL_ENVRCPT(0.00)[163.com,gmail.com];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLY(-4.00)[];
+         NEURAL_HAM_LONG(-1.00)[-1.000];
+         DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+         NEURAL_HAM_SHORT(-0.20)[-1.000];
+         RCPT_COUNT_TWELVE(0.00)[19];
+         MID_CONTAINS_FROM(1.00)[];
+         FUZZY_BLOCKED(0.00)[rspamd.com];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         FREEMAIL_CC(0.00)[gmail.com,kernel.org,163.com,broadcom.com,intel.com,marcan.st,linaro.org,yonsei.ac.kr,cypress.com,vger.kernel.org,infineon.com];
+         RCVD_COUNT_TWO(0.00)[2];
+         RCVD_TLS_ALL(0.00)[]
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 16 Nov 2023 at 01:23, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.63 release.
-> There are 379 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 17 Nov 2023 19:25:27 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.63-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Thu, 16 Nov 2023 19:20:06 +0100,
+Arend Van Spriel wrote:
+> 
+> On November 15, 2023 4:00:46 PM Zheng Hacker <hackerzheng666@gmail.com> wrote:
+> 
+> > Arend van Spriel <arend.vanspriel@broadcom.com> 于2023年11月13日周一 17:18写道：
+> >> 
+> >> On November 8, 2023 4:03:26 AM Zheng Hacker <hackerzheng666@gmail.com>
+> >> wrote:
+> >> 
+> >>> Arend Van Spriel <arend.vanspriel@broadcom.com> 于2023年11月6日周一 23:48写道：
+> >>>> 
+> >>>> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.com> wrote:
+> >>>> 
+> >>>>> Thanks! I didn't test it for I don't have a device. Very appreciated
+> >>>>> if anyone could help with that.
+> >>>> 
+> >>>> I would volunteer, but it made me dig deep and not sure if there is a
+> >>>> problem to solve here.
+> >>>> 
+> >>>> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scanning() ->
+> >>>> brcmf_notify_escan_complete() which does delete the timer.
+> >>>> 
+> >>>> What am I missing here?
+> >>> 
+> >>> Thanks four your detailed review. I did see the code and not sure if
+> >>> brcmf_notify_escan_complete
+> >>> would be triggered for sure. So in the first version I want to delete
+> >>> the pending timer ahead of time.
+> >> 
+> >> Why requesting a CVE when you are not sure? Seems a bit hasty to put it
+> >> mildly.
+> > 
+> > I'm sure the issue exists because there's only cancler of timer but not woker.
+> > As there's similar CVEs before like : https://github.com/V4bel/CVE-2022-41218,
+> > I submit it as soon as I found it.
+> 
+> Ah, yes. The cancel_work_sync() can also be done in
+> brcmf_notify_escan_complete().
+
+AFAIUC, brcmf_notify_scan_complete() is called from the work itself,
+too, hence you can't issue cancel_work_sync() there (unless you make
+it conditional).
 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.1.63-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: 505b91175bcfcf16c4adc437901109bee0ab649f
-* git describe: v6.1.62-380-g505b91175bcf
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.6=
-2-380-g505b91175bcf
-
-## Test Regressions (compared to v6.1.62)
-
-## Metric Regressions (compared to v6.1.62)
-
-## Test Fixes (compared to v6.1.62)
-
-## Metric Fixes (compared to v6.1.62)
-
-## Test result summary
-total: 126938, pass: 108065, fail: 2482, skip: 16277, xfail: 114
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 147 total, 147 passed, 0 failed
-* arm64: 52 total, 52 passed, 0 failed
-* i386: 37 total, 33 passed, 4 failed
-* mips: 26 total, 26 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 36 total, 32 passed, 4 failed
-* riscv: 14 total, 14 passed, 0 failed
-* s390: 16 total, 15 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 44 total, 44 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Takashi
