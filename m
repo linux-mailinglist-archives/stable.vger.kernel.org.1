@@ -2,30 +2,30 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C19D27EE509
-	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 17:21:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18DA07EE512
+	for <lists+stable@lfdr.de>; Thu, 16 Nov 2023 17:23:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229619AbjKPQVW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 11:21:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33952 "EHLO
+        id S230371AbjKPQXD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 11:23:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229562AbjKPQVW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 11:21:22 -0500
+        with ESMTP id S229562AbjKPQXD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 11:23:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBFDA1
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 08:21:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9B4C433C8;
-        Thu, 16 Nov 2023 16:21:17 +0000 (UTC)
-Date:   Thu, 16 Nov 2023 11:21:14 -0500
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86FFF189
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 08:22:59 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657F6C433CC;
+        Thu, 16 Nov 2023 16:22:58 +0000 (UTC)
+Date:   Thu, 16 Nov 2023 11:22:56 -0500
 From:   Steven Rostedt <rostedt@goodmis.org>
 To:     <gregkh@linuxfoundation.org>
 Cc:     beaub@linux.microsoft.com, mark.rutland@arm.com,
         mhiramat@kernel.org, <stable@vger.kernel.org>
 Subject: [v2] Re: FAILED: patch "[PATCH] tracing: Have trace_event_file have
- ref counters" failed to apply to 6.5-stable tree
-Message-ID: <20231116112114.0370f356@rorschach.local.home>
-In-Reply-To: <2023110605-thirty-account-3d1a@gregkh>
-References: <2023110605-thirty-account-3d1a@gregkh>
+ ref counters" failed to apply to 6.1-stable tree
+Message-ID: <20231116112256.4f4da372@rorschach.local.home>
+In-Reply-To: <2023110607-destruct-footsore-9353@gregkh>
+References: <2023110607-destruct-footsore-9353@gregkh>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -112,10 +112,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  5 files changed, 53 insertions(+), 15 deletions(-)
 
 diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index faa579209a72..40436b7ddfd2 100644
+index 422f4ca656cf..c8b5e9781d01 100644
 --- a/include/linux/trace_events.h
 +++ b/include/linux/trace_events.h
-@@ -492,6 +492,7 @@ enum {
+@@ -478,6 +478,7 @@ enum {
  	EVENT_FILE_FL_TRIGGER_COND_BIT,
  	EVENT_FILE_FL_PID_FILTER_BIT,
  	EVENT_FILE_FL_WAS_ENABLED_BIT,
@@ -123,7 +123,7 @@ index faa579209a72..40436b7ddfd2 100644
  };
  
  extern struct trace_event_file *trace_get_event_file(const char *instance,
-@@ -630,6 +631,7 @@ extern int __kprobe_event_add_fields(struct dynevent_cmd *cmd, ...);
+@@ -616,6 +617,7 @@ extern int __kprobe_event_add_fields(struct dynevent_cmd *cmd, ...);
   *  TRIGGER_COND  - When set, one or more triggers has an associated filter
   *  PID_FILTER    - When set, the event is filtered based on pid
   *  WAS_ENABLED   - Set when enabled to know to clear trace on module removal
@@ -131,7 +131,7 @@ index faa579209a72..40436b7ddfd2 100644
   */
  enum {
  	EVENT_FILE_FL_ENABLED		= (1 << EVENT_FILE_FL_ENABLED_BIT),
-@@ -643,6 +645,7 @@ enum {
+@@ -629,6 +631,7 @@ enum {
  	EVENT_FILE_FL_TRIGGER_COND	= (1 << EVENT_FILE_FL_TRIGGER_COND_BIT),
  	EVENT_FILE_FL_PID_FILTER	= (1 << EVENT_FILE_FL_PID_FILTER_BIT),
  	EVENT_FILE_FL_WAS_ENABLED	= (1 << EVENT_FILE_FL_WAS_ENABLED_BIT),
@@ -139,7 +139,7 @@ index faa579209a72..40436b7ddfd2 100644
  };
  
  struct trace_event_file {
-@@ -671,6 +674,7 @@ struct trace_event_file {
+@@ -657,6 +660,7 @@ struct trace_event_file {
  	 * caching and such. Which is mostly OK ;-)
  	 */
  	unsigned long		flags;
@@ -148,10 +148,10 @@ index faa579209a72..40436b7ddfd2 100644
  	atomic_t		tm_ref;	/* trigger-mode reference counter */
  };
 diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 81c4dade3763..fa8bdedc7a06 100644
+index 9db92a6e1463..ddcfc78e93e0 100644
 --- a/kernel/trace/trace.c
 +++ b/kernel/trace/trace.c
-@@ -5000,6 +5000,20 @@ int tracing_open_file_tr(struct inode *inode, struct file *filp)
+@@ -4912,6 +4912,20 @@ int tracing_open_file_tr(struct inode *inode, struct file *filp)
  	if (ret)
  		return ret;
  
@@ -172,7 +172,7 @@ index 81c4dade3763..fa8bdedc7a06 100644
  	filp->private_data = inode->i_private;
  
  	return 0;
-@@ -5010,6 +5024,7 @@ int tracing_release_file_tr(struct inode *inode, struct file *filp)
+@@ -4922,6 +4936,7 @@ int tracing_release_file_tr(struct inode *inode, struct file *filp)
  	struct trace_event_file *file = inode->i_private;
  
  	trace_array_put(file->tr);
@@ -181,10 +181,10 @@ index 81c4dade3763..fa8bdedc7a06 100644
  	return 0;
  }
 diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index c98c3f42c386..2e4717a74185 100644
+index 7e6d5101bdb0..10aaafa2936d 100644
 --- a/kernel/trace/trace.h
 +++ b/kernel/trace/trace.h
-@@ -1656,6 +1656,9 @@ extern void event_trigger_unregister(struct event_command *cmd_ops,
+@@ -1631,6 +1631,9 @@ extern void event_trigger_unregister(struct event_command *cmd_ops,
  				     char *glob,
  				     struct event_trigger_data *trigger_data);
  
@@ -195,10 +195,10 @@ index c98c3f42c386..2e4717a74185 100644
   * struct event_trigger_ops - callbacks for trace event triggers
   *
 diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 9841589b4af7..2a9058c5068b 100644
+index 2e3dce5e2575..a6d2f99f847d 100644
 --- a/kernel/trace/trace_events.c
 +++ b/kernel/trace/trace_events.c
-@@ -990,26 +990,38 @@ static void remove_subsystem(struct trace_subsystem_dir *dir)
+@@ -988,26 +988,38 @@ static void remove_subsystem(struct trace_subsystem_dir *dir)
  	}
  }
  
@@ -249,7 +249,7 @@ index 9841589b4af7..2a9058c5068b 100644
  }
  
  /*
-@@ -1382,7 +1394,7 @@ event_enable_read(struct file *filp, char __user *ubuf, size_t cnt,
+@@ -1380,7 +1392,7 @@ event_enable_read(struct file *filp, char __user *ubuf, size_t cnt,
  		flags = file->flags;
  	mutex_unlock(&event_mutex);
  
@@ -258,7 +258,7 @@ index 9841589b4af7..2a9058c5068b 100644
  		return -ENODEV;
  
  	if (flags & EVENT_FILE_FL_ENABLED &&
-@@ -1420,7 +1432,7 @@ event_enable_write(struct file *filp, const char __user *ubuf, size_t cnt,
+@@ -1418,7 +1430,7 @@ event_enable_write(struct file *filp, const char __user *ubuf, size_t cnt,
  		ret = -ENODEV;
  		mutex_lock(&event_mutex);
  		file = event_file_data(filp);
@@ -267,7 +267,7 @@ index 9841589b4af7..2a9058c5068b 100644
  			ret = ftrace_event_enable_disable(file, val);
  		mutex_unlock(&event_mutex);
  		break;
-@@ -1694,7 +1706,7 @@ event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
+@@ -1692,7 +1704,7 @@ event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
  
  	mutex_lock(&event_mutex);
  	file = event_file_data(filp);
@@ -285,10 +285,10 @@ index 9841589b4af7..2a9058c5068b 100644
  	return file;
  }
 diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
-index 1dad64267878..5e2a422a5830 100644
+index 96acc2b71ac7..86a0531efd43 100644
 --- a/kernel/trace/trace_events_filter.c
 +++ b/kernel/trace/trace_events_filter.c
-@@ -2088,6 +2088,9 @@ int apply_event_filter(struct trace_event_file *file, char *filter_string)
+@@ -1997,6 +1997,9 @@ int apply_event_filter(struct trace_event_file *file, char *filter_string)
  	struct event_filter *filter = NULL;
  	int err;
  
