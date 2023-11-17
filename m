@@ -2,37 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D6A27EF062
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 11:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26F527EF10C
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 11:50:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230468AbjKQKao (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 05:30:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45236 "EHLO
+        id S1345858AbjKQKu2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 17 Nov 2023 05:50:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230240AbjKQKan (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 05:30:43 -0500
+        with ESMTP id S1345820AbjKQKuV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 05:50:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C798131;
-        Fri, 17 Nov 2023 02:30:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8B3C433C7;
-        Fri, 17 Nov 2023 10:30:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1333FD5A;
+        Fri, 17 Nov 2023 02:50:18 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0501CC433C8;
+        Fri, 17 Nov 2023 10:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700217040;
-        bh=5GTodjIFYK3+cnDn/z8EfJv/gMxH/BGnB0nWLlAzxEM=;
+        s=k20201202; t=1700218217;
+        bh=HvWpi6K5JMfOG02tS6wIaBqmihK/4R9WAkRywr1PWk0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QuSThNAwH1MfJunYOe28kslPlu44S5J0JAkJPuY3v4rgiTy5E6ZobP+TAr3bCm/cN
-         siDSE8JpO29RINiiQP5ViFcsohJ/ZQ4UEfcTxxJ+jCHr/5z5cr00DbHwmgbR362l26
-         OK6aTsrFZTRSSJRi+qju/VI5E6D6Bcj/6uICNYL6sK+ujEFALEVQNZKRlb4rgsxT5W
-         f/FzTXowZsumJ5FFwZPZHhNkEbUbgumNiwgg+2N1niiXSLf/4NM881jBUmbfmrv/xz
-         vO428BOnJamwe+M1mhRUW/2NKOEvYSmcSuG1kKfgQrz3RdO1YrwxpY6vjyQcYRcsMa
-         3n2En4M7aUp4g==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-        (envelope-from <johan@kernel.org>)
-        id 1r3w7T-0000av-0s;
-        Fri, 17 Nov 2023 11:30:40 +0100
-Date:   Fri, 17 Nov 2023 11:30:39 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Manivannan Sadhasivam <mani@kernel.org>
+        b=eVsv6nmFrCOWliGgEylZ3eoOcL1B5/EIqny6OK8ESrckYwnkPxK6aqSYHZ9CEGzCa
+         GGQpTgbrqmFdyE891FwxMfG1G4KVsyEEKTPFnjkJRor4Tv3sznOpH5R4+gWjeLR2a/
+         djecHn0lDy1Hqk7BLjpJwstd/jTkXhs4fpp7VXJuUWW07C9d+GBc5922K7Zpv46EER
+         eoiGZmr+BSlobU9naNZ+zpqGXUFnJCr4cwHMYZsbBD8MuaqSsaM3I6uvlFT6kuD3SE
+         y7FjuSVjofKwnc5UqvK7nXifpd2n3VVaurBW+68KBu6DDfVFrSwc/dmX0/TsQ6gzP5
+         yHb3gRw/hGd5w==
+Date:   Fri, 17 Nov 2023 16:20:07 +0530
+From:   Manivannan Sadhasivam <mani@kernel.org>
+To:     Johan Hovold <johan@kernel.org>
 Cc:     kernel test robot <lkp@intel.com>,
         Johan Hovold <johan+linaro@kernel.org>,
         Lorenzo Pieralisi <lpieralisi@kernel.org>,
@@ -49,15 +45,17 @@ Cc:     kernel test robot <lkp@intel.com>,
         Michael Bottini <michael.a.bottini@linux.intel.com>,
         "David E . Box" <david.e.box@linux.intel.com>
 Subject: Re: [PATCH 1/6] PCI/ASPM: Add locked helper for enabling link state
-Message-ID: <ZVdAz4glDioMx5Zw@hovoldconsulting.com>
+Message-ID: <20231117105007.GQ250770@thinkpad>
 References: <20231114135553.32301-2-johan+linaro@kernel.org>
  <202311152225.ZdVv0ufT-lkp@intel.com>
  <ZVTsf9A05HQ9UYT-@hovoldconsulting.com>
  <20231117102724.GI250770@thinkpad>
+ <ZVdAz4glDioMx5Zw@hovoldconsulting.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231117102724.GI250770@thinkpad>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZVdAz4glDioMx5Zw@hovoldconsulting.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -68,28 +66,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Nov 17, 2023 at 03:57:24PM +0530, Manivannan Sadhasivam wrote:
-> On Wed, Nov 15, 2023 at 05:06:23PM +0100, Johan Hovold wrote:
-> > On Wed, Nov 15, 2023 at 10:26:40PM +0800, kernel test robot wrote:
-> >  
-> > > >> drivers/pci/pcie/aspm.c:1186: warning: expecting prototype for pci_enable_link_state(). Prototype was for pci_enable_link_state_locked() instead
+On Fri, Nov 17, 2023 at 11:30:39AM +0100, Johan Hovold wrote:
+> On Fri, Nov 17, 2023 at 03:57:24PM +0530, Manivannan Sadhasivam wrote:
+> > On Wed, Nov 15, 2023 at 05:06:23PM +0100, Johan Hovold wrote:
+> > > On Wed, Nov 15, 2023 at 10:26:40PM +0800, kernel test robot wrote:
+> > >  
+> > > > >> drivers/pci/pcie/aspm.c:1186: warning: expecting prototype for pci_enable_link_state(). Prototype was for pci_enable_link_state_locked() instead
+> > > > 
+> > > > 
+> > > > vim +1186 drivers/pci/pcie/aspm.c
+> > > > 
+> > > >   1172	
+> > > >   1173	/**
+> > > >   1174	 * pci_enable_link_state - Clear and set the default device link state so that
 > > > 
+> > > I apparently forgot to update the name here to
 > > > 
-> > > vim +1186 drivers/pci/pcie/aspm.c
+> > > 	pci_enable_link_state_locked
 > > > 
-> > >   1172	
-> > >   1173	/**
-> > >   1174	 * pci_enable_link_state - Clear and set the default device link state so that
 > > 
-> > I apparently forgot to update the name here to
-> > 
-> > 	pci_enable_link_state_locked
-> > 
+> > While fixing the name, please add locking information in description as well.
 > 
-> While fixing the name, please add locking information in description as well.
+> It's already there:
+> 
+> 	Context: Caller holds pci_bus_sem read lock.
 
-It's already there:
+Ah, I was looking for it in the description. Fine then!
 
-	Context: Caller holds pci_bus_sem read lock.
+- Mani
 
-Johan
+> 
+> Johan
+
+-- 
+மணிவண்ணன் சதாசிவம்
