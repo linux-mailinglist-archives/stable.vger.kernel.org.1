@@ -2,134 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBC577EEB62
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 04:22:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A69F7EEB6B
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 04:28:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229888AbjKQDWR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 22:22:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
+        id S1345637AbjKQD2u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 22:28:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229790AbjKQDWR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 22:22:17 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEDCBB0
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 19:22:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1700191333;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=OZkIo3gmOmARkH9D6G/diT0yhlLPEb/bpyU7MwfHSdo=;
-        b=H3c+wAVc4M9HbQhr2TOH/Zx7OEI81FWNDlwKqDlRz5cC+CWUJGrYrG6fXDMhySreJbOem/
-        w6owFGmDsr/4AnPcNeGpGgyggQF4zFzepSfJYjoUJj7xabiGmaqhqph0Pia2BlB66FckX6
-        FvjQnUmE74VQnLqsFj1PUsgmktnSzqY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-7y-W_D6aNAqEyR9gY0rPQA-1; Thu,
- 16 Nov 2023 22:22:09 -0500
-X-MC-Unique: 7y-W_D6aNAqEyR9gY0rPQA-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 132F61C060E4;
-        Fri, 17 Nov 2023 03:22:09 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (unknown [10.72.112.63])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A60421C060AE;
-        Fri, 17 Nov 2023 03:22:05 +0000 (UTC)
-From:   xiubli@redhat.com
-To:     ceph-devel@vger.kernel.org
-Cc:     idryomov@gmail.com, jlayton@kernel.org, vshankar@redhat.com,
-        mchangir@redhat.com, Xiubo Li <xiubli@redhat.com>,
-        stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH] ceph: fix deadlock or deadcode of misusing dget()
-Date:   Fri, 17 Nov 2023 11:19:51 +0800
-Message-ID: <20231117031951.710177-1-xiubli@redhat.com>
+        with ESMTP id S229790AbjKQD2t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 22:28:49 -0500
+Received: from out203-205-221-235.mail.qq.com (out203-205-221-235.mail.qq.com [203.205.221.235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBA2B0;
+        Thu, 16 Nov 2023 19:28:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1700191722;
+        bh=t1QptpHB+j2hjtkZxMW66dbJO4vcH9gktTNMOo4SZM8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=endsVjoD/yjsuV0gPrvweXz68xdycKohLRDSx8f+mEL2URPffLmCRjs+fS5slelfg
+         jWcWNeE10wZYVgBm1c7dIufnDvUEdGt7WRH+8lHxKIawSew/Qmu09glu9B3esF8CJ5
+         zf9E4zBoXh7pzLK0vBHLFSyQJ6bEBUS+Z5FgJQ9g=
+Received: from [192.168.31.137] ([116.128.244.171])
+        by newxmesmtplogicsvrsza12-0.qq.com (NewEsmtp) with SMTP
+        id 7243DE1E; Fri, 17 Nov 2023 11:28:36 +0800
+X-QQ-mid: xmsmtpt1700191716tu68o2yw3
+Message-ID: <tencent_7081EC6CCB41F8B0966FCEB01B7AED66C409@qq.com>
+X-QQ-XMAILINFO: MX+1SEN3H+wAZ8oLfd06aJMpam71+X3o79wb4d4a3ttV8WyaYYa10p5AmZRBVD
+         zJuOWN3vKJFxXxc/yyZPPLXsY0CKTd117/GCz6d05d5xrKsi7VEXfjCU1tKrQk4G11uoyqiIwFpf
+         hwI5BxxXgdpNlT9dwCDLj65GmdsiwWQCEqKonaMfxZBVX34JBEYEiR1TiQCA3xuaESwj+iI48kaF
+         sIfe+0eACZ65KaBr4/AQ5MkERyo8Z6mjaq3jBYHMjszTrSwxlDhks3c02CEuhRqxTP0osKFFEVlv
+         YoOQ87g6hU9om2cq352Emev8o9nJCFreKRvqrHsxuW51wtIByQ0bzkisDHs03BC0MSIpMgWq0Nxc
+         s7rKv+OJJYeN3OeyU2kd+v32A9WXfS0SKDVOofuWW2z8xsH2rRs8VyAtGTui0wKl3IK1xkiKGZOx
+         PQCqhqvPYtRf5pl4bCB2cWLYyBSz2wHaKmhmahnQdl2sNzlOOvisqEeMt/zsND2thXgicrEw/Izn
+         Ui6Fv8lBrSKKVroUB2rCKiLg4trmXFySMb9c3Lkj7wmFWRWQy971UUELcRh9pX1kVh8D/uQ2zMzS
+         9P2fUhHt1PZ+twZdKxO2Vk7uI2/+dfxyDXHDnvW+f1JH4baptALWagHxP+WpyCPqRcgrzYJ4SbCF
+         uYSd8K/+gFnVtq/Bs2dnd6nNwuXSBNe4/PraG/eaRTUCvU4LoEzSflD/5skCTsGvHzfYwGJ3fhdX
+         CrkKd1AKuMEkDhQRtjjy0PTr9DfCmKEt33E9s/7241Dcx1UPnlZbFoT6Jxt58Ev9V+IYlE+tzlcA
+         GY0fmfYCYwGOSWiAWvPyD0AvwoAji0S3mE1SCalWi456hFjMhLUfGykkLyCcDpXq1Q6vT9Ls79nL
+         vOF9WgNTWJRLqn7jCbBju2oUwJzDlPo3hZ5SzbAVkIJ1MhanfNS8zVDF5iTenZJM11dXqQrxRK
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-OQ-MSGID: <835b2d65-0124-436f-9d31-21f0fb3bb48d@foxmail.com>
+Date:   Fri, 17 Nov 2023 11:28:30 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: Question about LTS 4.19 patch "89047634f5ce NFS: Don't interrupt
+ file writeout due to fatal errors"
+To:     Trond Myklebust <trondmy@hammerspace.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+Cc:     "linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>,
+        "chenxiaosong@kylinos.cn" <chenxiaosong@kylinos.cn>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "huangjinhui@kylinos.cn" <huangjinhui@kylinos.cn>,
+        "liuzhengyuan@kylinos.cn" <liuzhengyuan@kylinos.cn>,
+        "liuyun01@kylinos.cn" <liuyun01@kylinos.cn>,
+        "huhai@kylinos.cn" <huhai@kylinos.cn>,
+        "sashal@kernel.org" <sashal@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "Anna.Schumaker@netapp.com" <Anna.Schumaker@netapp.com>
+References: <tencent_BEDA418B8BD86995FBF3E92D4F9F5D342C0A@qq.com>
+ <2023103055-anaerobic-childhood-c1f1@gregkh>
+ <tencent_4CA081DD6E435CDA2EAB9C826F7899F78C05@qq.com>
+ <2023103055-saddled-payer-bd26@gregkh>
+ <tencent_21E20176E2E5AB7C33CB5E67F10D02763508@qq.com>
+ <3b8caab5918d06f436a889bc1dba09686fc0fad5.camel@hammerspace.com>
+Content-Language: en-US
+From:   ChenXiaoSong <chenxiaosongemail@foxmail.com>
+In-Reply-To: <3b8caab5918d06f436a889bc1dba09686fc0fad5.camel@hammerspace.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_MUA_MOZILLA,
+        FREEMAIL_FROM,HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+On 2023/10/30 22:56, Trond Myklebust wrote:
+> A refactoring is by definition a change that does not affect code
+> behaviour. It is obvious that this was never intended to be such a
+> patch.
+>
+> The reason that the bug is occurring in 4.19.x, and not in the latest
+> kernels, is because the former is missing another bugfix (one which
+> actually is missing a "Fixes:" tag).
+>
+> Can you therefore please check if applying commit 22876f540bdf ("NFS:
+> Don't call generic_error_remove_page() while holding locks") fixes the
+> issue.
+>
+> Note that the latter patch is needed in any case in order to fix a read
+> deadlock (as indicated on the label).
+>
+> Thanks,
+>    Trond
+>
+After applying commit 22876f540bdf ("NFS: Don't call 
+generic_error_remove_page() while holding locks"), I encountered an 
+issue of infinite loop:
 
-The lock order is incorrect between denty and its parent, we should
-always make sure that the parent get the lock first.
+write ... nfs_updatepage nfs_writepage_setup nfs_setup_write_request 
+nfs_try_to_update_request nfs_wb_page if (clear_page_dirty_for_io(page)) 
+// true nfs_writepage_locked // return 0 nfs_do_writepage // return 0 
+nfs_page_async_flush // return 0 nfs_error_is_fatal_on_server 
+nfs_write_error_remove_page SetPageError // instead of 
+generic_error_remove_page // loop begin if 
+(clear_page_dirty_for_io(page)) // false if (!PagePrivate(page)) // 
+false ret = nfs_commit_inode = 0 // loop again, never quit
 
-Switch to use the 'dget_parent()' to get the parent dentry and also
-keep holding the parent until the corresponding inode is not being
-refereenced.
+before applying commit 22876f540bdf ("NFS: Don't call 
+generic_error_remove_page() while holding locks"), 
+generic_error_remove_page() will clear PG_private, and infinite loop 
+will never happen:
 
-Cc: stable@vger.kernel.org
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-URL: https://www.spinics.net/lists/ceph-devel/msg58622.html
-Fixes: adf0d68701c7 ("ceph: fix unsafe dcache access in ceph_encode_dentry_release")
-Cc: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
----
- fs/ceph/caps.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+generic_error_remove_page truncate_inode_page truncate_cleanup_page 
+do_invalidatepage nfs_invalidate_page nfs_wb_page_cancel 
+nfs_inode_remove_request ClearPagePrivate(head->wb_page)
 
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index 284424659329..6f7a56a800c2 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -4923,6 +4923,11 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 	int force = 0;
- 	int ret;
- 
-+	if (!dir) {
-+		parent = dget_parent(dentry);
-+		dir = d_inode(parent);
-+	}
-+
- 	/*
- 	 * force an record for the directory caps if we have a dentry lease.
- 	 * this is racy (can't take i_ceph_lock and d_lock together), but it
-@@ -4932,14 +4937,9 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 	spin_lock(&dentry->d_lock);
- 	if (di->lease_session && di->lease_session->s_mds == mds)
- 		force = 1;
--	if (!dir) {
--		parent = dget(dentry->d_parent);
--		dir = d_inode(parent);
--	}
- 	spin_unlock(&dentry->d_lock);
- 
- 	ret = ceph_encode_inode_release(p, dir, mds, drop, unless, force);
--	dput(parent);
- 
- 	cl = ceph_inode_to_client(dir);
- 	spin_lock(&dentry->d_lock);
-@@ -4952,8 +4952,10 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 		if (IS_ENCRYPTED(dir) && fscrypt_has_encryption_key(dir)) {
- 			int ret2 = ceph_encode_encrypted_fname(dir, dentry, *p);
- 
--			if (ret2 < 0)
-+			if (ret2 < 0) {
-+				dput(parent);
- 				return ret2;
-+			}
- 
- 			rel->dname_len = cpu_to_le32(ret2);
- 			*p += ret2;
-@@ -4965,6 +4967,8 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 	} else {
- 		spin_unlock(&dentry->d_lock);
- 	}
-+
-+	dput(parent);
- 	return ret;
- }
- 
--- 
-2.39.1
+If applying this patch, are other patches required? And I cannot 
+reproducethe read deadlock bug that the patch want to fix, are there 
+specific conditions required to reproduce this read deadlock bug?
 
