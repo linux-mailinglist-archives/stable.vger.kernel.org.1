@@ -2,68 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5366B7EF800
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 20:47:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E27F77EF817
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 20:57:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231876AbjKQTrC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 14:47:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51328 "EHLO
+        id S230186AbjKQT5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 17 Nov 2023 14:57:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231201AbjKQTrB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 14:47:01 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E265D5C;
-        Fri, 17 Nov 2023 11:46:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918F1C433C8;
-        Fri, 17 Nov 2023 19:46:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700250417;
-        bh=/LhMOYd/JOXNFZ07PxWcoviKMP3G1QFUwtsQ6l2wVJg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nkMpN941PQpk3SOyyqtZfzKBpP77UWi57lCmpqAk4s1DM0uhDfgWyvbzkSo1ii5PJ
-         thwwYjHwv9sbP6v4nry2tDqhr93xGbxZJJLnD3Y9Hs7RUWCmuUI+lfExxPqH1jsc/p
-         IRPZgIg2sIy58V3DU8KJ33Bnu9Or+fV1/FSt/v3g=
-Date:   Fri, 17 Nov 2023 14:46:55 -0500
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ricardo Ribalda <ribalda@chromium.org>
-Cc:     Thinh Nguyen <thinh.nguyen@synopsys.com>,
-        Zubin Mithra <zsm@chromium.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] usb: dwc3: set the dma max_seg_size
-Message-ID: <2023111754-expand-facsimile-febe@gregkh>
-References: <20231026-dwc3-v2-1-1d4fd5c3e067@chromium.org>
- <20231031232227.xkk4ju3hxifj3vee@synopsys.com>
- <CANiDSCvEyjHFT3KQbsbURjUadpQYEfQ=M8esdcHnpWe9VsK=2w@mail.gmail.com>
- <20231110225507.cl6w6vkyb4dvj3uh@synopsys.com>
- <CANiDSCu1WdKu+2Erkj9iEnp21Cuk84MC_ow+8o-qETqJH1qMNg@mail.gmail.com>
+        with ESMTP id S229535AbjKQT5X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 14:57:23 -0500
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA71AD;
+        Fri, 17 Nov 2023 11:57:19 -0800 (PST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id C79BF1C006B; Fri, 17 Nov 2023 20:57:17 +0100 (CET)
+Date:   Fri, 17 Nov 2023 20:57:17 +0100
+From:   Pavel Machek <pavel@denx.de>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        tglozar@redhat.com, tglx@linutronix.de, phil@nwl.cc
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.1 000/379] 6.1.63-rc1 review
+Message-ID: <ZVfFnU1FU3V6IHJ5@duo.ucw.cz>
+References: <20231115192645.143643130@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="6GPu7+NXCR1QNfCW"
 Content-Disposition: inline
-In-Reply-To: <CANiDSCu1WdKu+2Erkj9iEnp21Cuk84MC_ow+8o-qETqJH1qMNg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Nov 17, 2023 at 01:48:47PM +0100, Ricardo Ribalda wrote:
-> Greg: Friendly ping, just want to make sure that the patch did not
-> fell into the cracks
 
-The merge window just ended, and we have been away at the plumbers
-conference all week long.  Give us a chance to travel back home and
-start to catch up in the next few weeks.
+--6GPu7+NXCR1QNfCW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In the meantime, please take some time and review the pending dwc3
-patches on the list to make my review process easier and allow me to get
-through them all to yours quicker.
+Hi!
 
-thanks,
+> This is the start of the stable review cycle for the 6.1.63 release.
+> There are 379 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-greg k-h
+
+> Tomas Glozar <tglozar@redhat.com>
+>     nd_btt: Make BTT lanes preemptible
+
+This is for preempt-rt only, and we don't really have that in
+-stable. This means we don't really need this in 4.19, either:
+
+d9ea9d2ff 666300 o: 4.19| sched/rt: Provide migrate_disable/enable()
+inlines
+
+> Phil Sutter <phil@nwl.cc>
+>     netfilter: nf_tables: Drop pointless memset when dumping rules
+
+A cleanup, but I don't believe we need it in -stable.
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--6GPu7+NXCR1QNfCW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZVfFnQAKCRAw5/Bqldv6
+8iBhAJ0cwhl170g8auTIHKASrVgXDMznqQCfTW/9XWjNoVVUwSBLE8vU/2nvt9E=
+=xxS+
+-----END PGP SIGNATURE-----
+
+--6GPu7+NXCR1QNfCW--
