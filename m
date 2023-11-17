@@ -2,61 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54B9A7EEA97
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 02:13:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F23F7EEAAC
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 02:25:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbjKQBNq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 20:13:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42158 "EHLO
+        id S229836AbjKQBZo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 20:25:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjKQBNq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 20:13:46 -0500
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E40C5;
-        Thu, 16 Nov 2023 17:13:43 -0800 (PST)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-1eb7a8e9dd0so752418fac.3;
-        Thu, 16 Nov 2023 17:13:43 -0800 (PST)
+        with ESMTP id S229884AbjKQBZn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 20:25:43 -0500
+Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45442182;
+        Thu, 16 Nov 2023 17:25:40 -0800 (PST)
+Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-1f4a9dd83d6so803979fac.0;
+        Thu, 16 Nov 2023 17:25:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700183622; x=1700788422; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tb/j8lYGcn1mOyOg9PPEH6m2FEKY37irMVBOlxYFInQ=;
-        b=VpALqpiN3K9NMa2Y1Q2rQV/uiIV4VlHBZPnHzDdMzPBcc/QPESb3OAL/vRL5TJNG8b
-         9SDF+7FWGxKumAo+/r4TNu3Z/JNs62NLuSrbwfW2QhgE1Mzpkaap+1RZraJO5rZeMbX3
-         Ec7uCZ8srl0iOIXN8K2yIJGbb75bdeGddk6g7UcCVg2HluocBqGIuYVuHnN8ehGM7ZT/
-         c96k3T2nGGa6K3KvlH8UtPNP3nP/jt8u6SHqE1WZe5n2aN1JOxawlKEsZ8w+1djK8Ap4
-         9p0zHlrajk27Q7gNiIxx0g2qXGqwdni4/Pzb0B3M/epgsU37C3yMyREQQ+pxzptBQhu3
-         a88w==
+        d=gmail.com; s=20230601; t=1700184339; x=1700789139; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=WKeX8QHzT5xr6BXfBhXLId9dWsY3VlMa6hhbkyDTa9o=;
+        b=nOvio6L2skNxTMIxeD1zD0ukEfhjiZ8WgEUp2H4meuuWmwRMwv4fWjrqpaaYEProZd
+         yH2HTAuzZpLAX6IOrTzJkPNPfCwc+P5G981Mx+yXgelLVF5vk3Hy6/FbqfUrRcOU1lP4
+         I0cGMzW7CqmjXNC94phoUY5wyb0DTrF/aZvoDh+BtOd2k6OE2NYUFndGg/TDFV5T38sW
+         DpdP+yYI88mKpGJjc96UqdP0f2e9kWQyU+YPhSDLmA3KGB+IGEoVdhZckmzIn3jucXHD
+         jBmAtpvCzyh9iBXsl6zj+K7Q2qkXH8NMPfkaNqRSnD1v/5q2XsjJIEMxb1iDYehDrMyk
+         vd8Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700183622; x=1700788422;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Tb/j8lYGcn1mOyOg9PPEH6m2FEKY37irMVBOlxYFInQ=;
-        b=QJAiRuChK5YbE4rYMhnWfSTQeICnCMVudl0XGuepYlSmAB0IEQIOV4NiSQ9NxRaS9f
-         rlIwdjh/YWjZzS2YQnKRWCcpbEaUx41Y2nJAbqYa6P9H0kDRlSJnvyPbozVEgYxp/dYG
-         tJhMOQpoHNoqKGrYDGAP3ir3OlCAQuuKIXI1GXkrtLvxZzGuX20OXOzbduQiCM+DT9MB
-         E9nlEWGIcoDiy87cowC6FYEXEaOhLWvqWe3wqImGNOvoPWkpOYH/U80koJNy3+lZbkNn
-         TFcDD8aXWqXheeaZm1VtrCQsm9nj+gTZqz5y28H5wY1DIq8f+Oi7K7ORedBcx08VilqH
-         wyNg==
-X-Gm-Message-State: AOJu0YyzoJI5pe04+jYCITL3JO/1VXYUw5XmAdhWUAF4Vd8Jcec4XzM3
-        OZfZcHU3/7cdT54ZB/zSn7I=
-X-Google-Smtp-Source: AGHT+IEZm8AJcFRt1piLXlyhYR0Qy4nFmv8JExNEV93A/DI339lEmh/FvapCNJqciPSxR7OwMExMjg==
-X-Received: by 2002:a05:6870:be8d:b0:1f0:3d9c:173a with SMTP id nx13-20020a056870be8d00b001f03d9c173amr20589356oab.56.1700183622377;
-        Thu, 16 Nov 2023 17:13:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700184339; x=1700789139;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WKeX8QHzT5xr6BXfBhXLId9dWsY3VlMa6hhbkyDTa9o=;
+        b=M4xlbGdHu5DSp0lVkxjn4Xb7kHQ4QSLvvgPWOfgke3q1s1Vn6gahbhrIH6MbwdVCRG
+         j3e/2/80ZzwZydj3ypP7KJs4pXHrpTaUwXdqtMLd1A7urfFWcjHNe+QVXTVtNAFnNcEc
+         rbQyGU3cNv0c74Gxe9Vrf9e8M1dbFpNGPIPBNCrHi/3xpl5q0wEaQvHNms3tKexn8yWA
+         Q5iHPuvxbv47klsygm0Bc8rQDoMtqG0Fsn3fY6UUKVarqexJ7SrlUnAVeWyN3psqsgzx
+         KKWtm0aBwX+iG0KKU/KAmw/0+rRFcetT1wCzFebx81ZysQvZXWxFmRNa3Y1JHwZP3Y3N
+         w4PQ==
+X-Gm-Message-State: AOJu0YzLCb9RrYjrZSP69/ywMTnfmfJ4Ri1KG3PENWK7Hyeya8lfepgG
+        U2YbhYjoW5il2J1V11s3rEA=
+X-Google-Smtp-Source: AGHT+IHVZfCoY6DZrNPuUIFzCQwR0gnLkJlylOsH1iukFRXnRgKhgIut3+ChVZhxhNZMkjhkJjjmrw==
+X-Received: by 2002:a05:6870:9d0e:b0:1ea:3f79:defb with SMTP id pp14-20020a0568709d0e00b001ea3f79defbmr20013084oab.52.1700184339500;
+        Thu, 16 Nov 2023 17:25:39 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k16-20020aa788d0000000b006c107a9e8f0sm337331pff.128.2023.11.16.17.13.40
+        by smtp.gmail.com with ESMTPSA id l187-20020a6325c4000000b0058ee60f8e4dsm337961pgl.34.2023.11.16.17.25.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Nov 2023 17:13:41 -0800 (PST)
+        Thu, 16 Nov 2023 17:25:39 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <b5367845-8d70-4fcf-861a-ff9b8849c9c9@roeck-us.net>
-Date:   Thu, 16 Nov 2023 17:13:39 -0800
+Message-ID: <e23be029-25b5-4bfc-a5b9-60eda0c214b6@roeck-us.net>
+Date:   Thu, 16 Nov 2023 17:25:37 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From:   Guenter Roeck <linux@roeck-us.net>
 Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
+Content-Language: en-US
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
 Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -66,7 +66,7 @@ Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
         f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
         srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
 References: <20231115204644.490636297@linuxfoundation.org>
-Content-Language: en-US
+From:   Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
  RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
@@ -135,11 +135,12 @@ On 11/15/23 12:44, Greg Kroah-Hartman wrote:
 > 
 
 Build results:
-	total: 159 pass: 155 fail: 4
+	total: 159 pass: 154 fail: 5
 Failed builds:
 	arm:allmodconfig
 	arm64:allmodconfig
 	i386:tools/perf
+	x86_64:allyesconfig
 	x86_64:tools/perf
 Qemu test results:
 	total: 495 pass: 495 fail: 0
@@ -161,9 +162,9 @@ Building i386:tools/perf ... failed
 
 util/evlist.c: In function ‘evlist__add_aux_dummy’:
 util/evlist.c:269:24: error: implicit declaration of function ‘evlist__dummy_event’; did you mean ‘evsel__is_dummy_event’? [-Werror=implicit-function-declaration]
-    269 |  struct evsel *evsel = evlist__dummy_event(evlist);
-        |                        ^~~~~~~~~~~~~~~~~~~
-        |                        evsel__is_dummy_event
+   269 |  struct evsel *evsel = evlist__dummy_event(evlist);
+       |                        ^~~~~~~~~~~~~~~~~~~
+       |                        evsel__is_dummy_event
 util/evlist.c:269:24: error: initialization of ‘struct evsel *’ from ‘int’ makes pointer from integer without a cast
 
 There is indeed no 'evlist__dummy_event' function in v5.10.y.
