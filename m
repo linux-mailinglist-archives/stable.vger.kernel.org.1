@@ -2,103 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 348B87EEADC
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 02:58:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06DC27EEB0F
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 03:31:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229487AbjKQB6Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 20:58:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49520 "EHLO
+        id S229771AbjKQCbo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 21:31:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjKQB6Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 20:58:25 -0500
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A178BBC;
-        Thu, 16 Nov 2023 17:58:20 -0800 (PST)
-Received: by nautica.notk.org (Postfix, from userid 108)
-        id F1927C009; Fri, 17 Nov 2023 02:58:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-        t=1700186298; bh=ZYscM4K0i/DYI5C23FGVV4gaI0ztfSb6cyBVRQzYaS8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=b0vbF4T+9DwQaW07UIf4vZ1UPVdXes9nrizOowKk5pPOPGmndhe3Em+wsHTp+S2ZB
-         8Tr375keRF2qhsMSYln6cJGtMPzkExbxKNMGFBCxyP5touwoP9kCzy7FRM7f8RSvit
-         Sl20GTCxVU+GyI9P+TAVscyw9z8TVtBrdnv0dPmF418/GoCZMuXP37Qc8Ec8raEW/3
-         BMgcxqB+rlwbnFF/PHqNvGSEOAJCW5pk6zTNH37OqN5hYOL7jsWz04bPdq1SAZSR7V
-         raSpZsOZAFfrRILAY9/tTudwEUi5pGdIRWCFVSs4kFwiazANy79wNRbm+xuz7SQnLV
-         9aUmRnnrMifxQ==
+        with ESMTP id S229437AbjKQCbn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 21:31:43 -0500
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C64CCE;
+        Thu, 16 Nov 2023 18:31:40 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-2802d218242so1286278a91.1;
+        Thu, 16 Nov 2023 18:31:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700188300; x=1700793100; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ShHjQysUBtuxNJ+pH62O9En8/VVV59KhlFkmqvEAWnQ=;
+        b=Qpv7NU8ZyGgmFckPiV2JBny6Kx8nOGRL9bZFfgRLvHxp+NzpHfqWRAOnSkFRYsQj+w
+         WZe5oWrryy6VU/SZkL2pbRyDtX+RCDH1/DO0EHUz5aTWZhnEJY4jsTJoWZNSRM7aGNx8
+         Lk7PkxBK0Z7i1Sg36l+BcBL2luoICaI3jjG/FXAdtutwhGqhkuCbUZjDnquoebQmIF+H
+         OizYsLWTUrpHTgInjt4tjzX98jdA+P/Ebuka9d0U5BLQld+ufAg8569CKMRgWD6wLdfd
+         B/LKP7WiQlHLLFh8i/WCREI/HmzcD194p9zhbsceZRgFj0K0/V756KaAWhcyhnYIbC6L
+         7JdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700188300; x=1700793100;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ShHjQysUBtuxNJ+pH62O9En8/VVV59KhlFkmqvEAWnQ=;
+        b=Q7yIpA1TQZypD4Oi+CChvC57LoE25FAkipG/jNpslKFjeiv5jY9XtSiCRDoLBK7408
+         sIrLYfaMlidXE7GkSyMba4ppSNrgnOgC2PmeVB257r4OAUTG5HTE/rfRpQl20j+hPyF8
+         n7J8xcxiqDocQRK2KNi4vXjnZN2xv34NU8HRgjez9q/SNg1BTrLK2Q0CgfMsalpR86ZD
+         fgp0qEoFfeynf1ILgtXgRmJ+z/4Ke1UNI/0h9uUuPWq/stah9pUrL+X3dBP+PNWmCGyd
+         USfO5K19I3CkUBTnRCQsrv4QPhjU5EuSeajpwetKQn3ovj8hjHlvWjZFcZFr4B0L4t52
+         GgbQ==
+X-Gm-Message-State: AOJu0YxZKRihEL+k49CD22OrnDSqmTBVK0y56Kvh9NjmpHifm6ahdiKY
+        5FWTy8Hddbphc61I1C0MFpAXEAXctRQ7r8bs0PU=
+X-Google-Smtp-Source: AGHT+IFzoGP+uMiVEu1AQsDTGoADAr9AfNfMW1RtojU6+Abv0tCKOjDTqiNoUIjGOCQyhiyrlqZzBZ2NHWvGGP6oOvs=
+X-Received: by 2002:a17:90b:1810:b0:280:2652:d42 with SMTP id
+ lw16-20020a17090b181000b0028026520d42mr20455528pjb.23.1700188299572; Thu, 16
+ Nov 2023 18:31:39 -0800 (PST)
+MIME-Version: 1.0
+References: <20231106141704.866455-1-zyytlz.wz@163.com> <87o7g7ueom.fsf@kernel.org>
+ <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com>
+ <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
+ <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com> <CAJedcCzj9SFbx-=xDymqJyV2fu0xjmz2RH4+gT+Gxsqubg35ZA@mail.gmail.com>
+ <18bd95c97f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com> <87h6llmu7t.wl-tiwai@suse.de>
+In-Reply-To: <87h6llmu7t.wl-tiwai@suse.de>
+From:   Zheng Hacker <hackerzheng666@gmail.com>
+Date:   Fri, 17 Nov 2023 10:31:26 +0800
+Message-ID: <CAJedcCzTv5oT-=+DaT6pCnor9QijUWGEkxg0PcZRWQDHxTWPeA@mail.gmail.com>
+Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
+To:     Takashi Iwai <tiwai@suse.de>
+Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Zheng Wang <zyytlz.wz@163.com>,
+        aspriel@gmail.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, johannes.berg@intel.com,
+        marcan@marcan.st, linus.walleij@linaro.org,
+        jisoo.jang@yonsei.ac.kr, linuxlovemin@yonsei.ac.kr,
+        wataru.gohda@cypress.com, linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        security@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
-Received: from gaia (localhost [127.0.0.1])
-        by nautica.notk.org (Postfix) with ESMTPS id E6D2DC009;
-        Fri, 17 Nov 2023 02:58:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-        t=1700186297; bh=ZYscM4K0i/DYI5C23FGVV4gaI0ztfSb6cyBVRQzYaS8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hHJp1NCACRehTXtGwyeWEpT0j/m0XCqcQyMqRYbYe/VtxyoAvgunHqaozr3NVc1VS
-         n5wYhOuLl9OnMABEXBXhz5/ij45cWlENqSvaOGt2y0zY/SMH6K/KeX9IqyzhjHTz5X
-         cbUmNiiG1sGyU3baCKs3+oxXOU6RVqdFV/zdIfOS6M35++/ISPPerXCJ5xmFApGUZ3
-         UR8Opi1b3lXMLa4M8GWZO+oPoDiTChiwvw4CBzx4K5VGf3D88iZ3GU/r5lO6lR/l0Y
-         hooSgKfsvq6MaNmEVdF3g2QbZ6xFakI/WImmBStjR8nsIw5yJuSehwJyf0VEZQfXJW
-         EcW0dFsdAtuzw==
-Received: from localhost (gaia [local])
-        by gaia (OpenSMTPD) with ESMTPA id 3930b9f6;
-        Fri, 17 Nov 2023 01:58:09 +0000 (UTC)
-Date:   Fri, 17 Nov 2023 10:57:54 +0900
-From:   Dominique Martinet <asmadeus@codewreck.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
-Message-ID: <ZVbIoqXjfn7V1NtT@codewreck.org>
-References: <20231115204644.490636297@linuxfoundation.org>
- <b5367845-8d70-4fcf-861a-ff9b8849c9c9@roeck-us.net>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b5367845-8d70-4fcf-861a-ff9b8849c9c9@roeck-us.net>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Guenter Roeck wrote on Thu, Nov 16, 2023 at 05:13:39PM -0800:
-> Failed builds:
-> 	arm:allmodconfig
-> 	arm64:allmodconfig
-> 	i386:tools/perf
-> 	x86_64:tools/perf
+Yes, that makes this issue hard to fix. I was wondering why it binds the
+worker with the timer rather than using just one of them.
 
-> This is with v5.10.200-192-g550b7e1fee20. I am a bit puzzled why others
-> don't seem to see those problems.
-
-The perf problem was reported by Florian Fainelli, but my current test
-build does not include userspace tools as we're not shipping them (and
-would rely on $distro packages when I need perf as a user rather than
-building it).
-
-Likewise, it looks like neither Linaro nor me build the qcom driver...
-I'm building kernels that have been trimmed down for our boards (with
-that exact config we're shipping and providing for our customers), and
-arm* drivers are especially fractured so it's a bit misleading to see
-"arm64 pass", that's just the tip of the actual setup tested.
-
-
-(Anyway, the main reason for me is mostly that $job is a small company
-that cannot afford extensive upstream testing, so I just don't have the
-time to do extended tests -- for the same reason we're only supporting
-the 5.10 tree so I'm focusing my limited time on just this branch, even
-if I'd love to do more.
-I'm just taking the stance that some test is better than no test and
-report back things we'd need to test before shipping customers a few
-weeks later anyway -- thank you for covering more!)
-
--- 
-Dominique Martinet | Asmadeus
+Takashi Iwai <tiwai@suse.de> =E4=BA=8E2023=E5=B9=B411=E6=9C=8817=E6=97=A5=
+=E5=91=A8=E4=BA=94 02:25=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Thu, 16 Nov 2023 19:20:06 +0100,
+> Arend Van Spriel wrote:
+> >
+> > On November 15, 2023 4:00:46 PM Zheng Hacker <hackerzheng666@gmail.com>=
+ wrote:
+> >
+> > > Arend van Spriel <arend.vanspriel@broadcom.com> =E4=BA=8E2023=E5=B9=
+=B411=E6=9C=8813=E6=97=A5=E5=91=A8=E4=B8=80 17:18=E5=86=99=E9=81=93=EF=BC=
+=9A
+> > >>
+> > >> On November 8, 2023 4:03:26 AM Zheng Hacker <hackerzheng666@gmail.co=
+m>
+> > >> wrote:
+> > >>
+> > >>> Arend Van Spriel <arend.vanspriel@broadcom.com> =E4=BA=8E2023=E5=B9=
+=B411=E6=9C=886=E6=97=A5=E5=91=A8=E4=B8=80 23:48=E5=86=99=E9=81=93=EF=BC=9A
+> > >>>>
+> > >>>> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.=
+com> wrote:
+> > >>>>
+> > >>>>> Thanks! I didn't test it for I don't have a device. Very apprecia=
+ted
+> > >>>>> if anyone could help with that.
+> > >>>>
+> > >>>> I would volunteer, but it made me dig deep and not sure if there i=
+s a
+> > >>>> problem to solve here.
+> > >>>>
+> > >>>> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scan=
+ning() ->
+> > >>>> brcmf_notify_escan_complete() which does delete the timer.
+> > >>>>
+> > >>>> What am I missing here?
+> > >>>
+> > >>> Thanks four your detailed review. I did see the code and not sure i=
+f
+> > >>> brcmf_notify_escan_complete
+> > >>> would be triggered for sure. So in the first version I want to dele=
+te
+> > >>> the pending timer ahead of time.
+> > >>
+> > >> Why requesting a CVE when you are not sure? Seems a bit hasty to put=
+ it
+> > >> mildly.
+> > >
+> > > I'm sure the issue exists because there's only cancler of timer but n=
+ot woker.
+> > > As there's similar CVEs before like : https://github.com/V4bel/CVE-20=
+22-41218,
+> > > I submit it as soon as I found it.
+> >
+> > Ah, yes. The cancel_work_sync() can also be done in
+> > brcmf_notify_escan_complete().
+>
+> AFAIUC, brcmf_notify_scan_complete() is called from the work itself,
+> too, hence you can't issue cancel_work_sync() there (unless you make
+> it conditional).
+>
+>
+> Takashi
