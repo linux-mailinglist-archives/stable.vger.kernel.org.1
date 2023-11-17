@@ -2,42 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E27F77EF817
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 20:57:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB2027EF8C9
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 21:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230186AbjKQT5Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 14:57:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48676 "EHLO
+        id S232287AbjKQUiP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 17 Nov 2023 15:38:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229535AbjKQT5X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 14:57:23 -0500
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFA71AD;
-        Fri, 17 Nov 2023 11:57:19 -0800 (PST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id C79BF1C006B; Fri, 17 Nov 2023 20:57:17 +0100 (CET)
-Date:   Fri, 17 Nov 2023 20:57:17 +0100
-From:   Pavel Machek <pavel@denx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        tglozar@redhat.com, tglx@linutronix.de, phil@nwl.cc
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.1 000/379] 6.1.63-rc1 review
-Message-ID: <ZVfFnU1FU3V6IHJ5@duo.ucw.cz>
-References: <20231115192645.143643130@linuxfoundation.org>
+        with ESMTP id S232311AbjKQUiO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 15:38:14 -0500
+X-Greylist: delayed 1349 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Nov 2023 12:38:10 PST
+Received: from coiirm.cetait.es (coiirm.cetait.es [217.160.168.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44C60D6D;
+        Fri, 17 Nov 2023 12:38:10 -0800 (PST)
+Received: from webmail.coiirm.es (localhost.localdomain [127.0.0.1])
+        by coiirm.cetait.es (Postfix) with ESMTPSA id 3B9CC3E5B67;
+        Fri, 17 Nov 2023 21:02:28 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=coiirm.es;
+        s=default; t=1700251361;
+        bh=nUp/bglnvvu+C/E73cLDgAAg4wdK/dLxL9RGipyD5BE=; h=From:To:Subject;
+        b=IZfbykQtemPGP1XjdfxT/YoWZl4DeS4bGB7jk3A/0R4nB+Lhvpfrxg+jsuHj5AO8G
+         PBaO2ZxAeCoP5Ko4pukhiBtKtPoIIlDdcsSqCgn8pBE3qOrUXuNo1nj78sTOpobUnu
+         U6uKUqHIgWe1itvteM1aqk0RebxjUWT80yJ8aiLk=
+Authentication-Results: coiirm.cetait.es;
+        spf=pass (sender IP is 127.0.0.1) smtp.mailfrom=josee.jimenezc@coiirm.es smtp.helo=webmail.coiirm.es
+Received-SPF: pass (coiirm.cetait.es: connection is authenticated)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="6GPu7+NXCR1QNfCW"
-Content-Disposition: inline
-In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
+Date:   Fri, 17 Nov 2023 20:02:28 +0000
+From:   Johnson Benjamin <josee.jimenezc@coiirm.es>
+To:     undisclosed-recipients:;
+Subject: Good afternoon from (TG),
+Reply-To: johnsonbenjamin7600@gmail.com
+User-Agent: Roundcube Webmail/1.4.15
+Message-ID: <da7d963f86210fd8d1cdd495aae6deeb@coiirm.es>
+X-Sender: josee.jimenezc@coiirm.es
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: <170025135403.19448.3808950220078232775@coiirm.cetait.es>
+X-PPP-Vhost: coiirm.es
+X-Spam-Status: No, score=2.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -45,47 +54,10 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---6GPu7+NXCR1QNfCW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Good afternoon from (TG),
 
-Hi!
+Did you receive the message I sent to you? Can I resend it to you?
 
-> This is the start of the stable review cycle for the 6.1.63 release.
-> There are 379 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Yours faithfully
 
-
-> Tomas Glozar <tglozar@redhat.com>
->     nd_btt: Make BTT lanes preemptible
-
-This is for preempt-rt only, and we don't really have that in
--stable. This means we don't really need this in 4.19, either:
-
-d9ea9d2ff 666300 o: 4.19| sched/rt: Provide migrate_disable/enable()
-inlines
-
-> Phil Sutter <phil@nwl.cc>
->     netfilter: nf_tables: Drop pointless memset when dumping rules
-
-A cleanup, but I don't believe we need it in -stable.
-
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---6GPu7+NXCR1QNfCW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZVfFnQAKCRAw5/Bqldv6
-8iBhAJ0cwhl170g8auTIHKASrVgXDMznqQCfTW/9XWjNoVVUwSBLE8vU/2nvt9E=
-=xxS+
------END PGP SIGNATURE-----
-
---6GPu7+NXCR1QNfCW--
+Barrister Johnson Benjamin
