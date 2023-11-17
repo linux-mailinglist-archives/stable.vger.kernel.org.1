@@ -2,140 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0340E7EEE32
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 10:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74EF07EEE3A
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 10:15:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233887AbjKQJOJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 04:14:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56950 "EHLO
+        id S235663AbjKQJPG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 17 Nov 2023 04:15:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230264AbjKQJOI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 04:14:08 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D61C7D51;
-        Fri, 17 Nov 2023 01:14:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700212444; x=1731748444;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=0pd5FK7X1xEUkFM/KdlwbN/4e1CbLaaCS11NMMmROLc=;
-  b=aH31Kp4oGSPI78KS2ukDYn7keLm8L2l42hMJNCAUuErGH2J9g4lwPqak
-   2jh1Ofjkel+eGAtFRoWTw3FGESlAPkrcOmsznh0FeeaQ8cM3jg69JzDvc
-   2rSkdHOgsw2gk9U4bDD+IeDq6oHRHo7svqwIQFJiOx6bePRtbUZhdVPWw
-   Zgc7Vb6wc54cKSMsvCXcbVW9IrD4bpZIHe9X/lWceMsFtD1qcn6vx6kFt
-   gl/7Rcy/w3Z9RwMAncs0qxgcFmjqaxrMOE5BJiZt2SzkdMXfy7MRQsvt2
-   eKeNSTeR5oj7DY7Bnh2eAJL5+aHa1vS4QLO5M1eg6nrfbQ1beribWfPv1
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="390119931"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; 
-   d="scan'208";a="390119931"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Nov 2023 01:14:04 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10896"; a="800443032"
-X-IronPort-AV: E=Sophos;i="6.04,206,1695711600"; 
-   d="scan'208";a="800443032"
-Received: from allen-box.sh.intel.com ([10.239.159.127])
-  by orsmga001.jf.intel.com with ESMTP; 17 Nov 2023 01:14:00 -0800
-From:   Lu Baolu <baolu.lu@linux.intel.com>
-To:     Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Kevin Tian <kevin.tian@intel.com>
-Cc:     iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-        Lu Baolu <baolu.lu@linux.intel.com>, stable@vger.kernel.org,
-        Huang Ying <ying.huang@intel.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Luo Yuzhang <yuzhang.luo@intel.com>,
-        Tony Zhu <tony.zhu@intel.com>
-Subject: [PATCH 1/1] iommu/vt-d: Fix incorrect cache invalidation for mm notification
-Date:   Fri, 17 Nov 2023 17:09:33 +0800
-Message-Id: <20231117090933.75267-1-baolu.lu@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S235036AbjKQJPF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 04:15:05 -0500
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 442C9D56
+        for <stable@vger.kernel.org>; Fri, 17 Nov 2023 01:15:01 -0800 (PST)
+Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
+        by cmsmtp with ESMTPS
+        id 3omJrr2agKOkL3uwGrziNP; Fri, 17 Nov 2023 09:15:00 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTPS
+        id 3uwFrx8a8RGmS3uwGrPUuB; Fri, 17 Nov 2023 09:15:00 +0000
+X-Authority-Analysis: v=2.4 cv=efcuwpIH c=1 sm=1 tr=0 ts=65572f14
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=pD9pM3iTfm6Mvc49FTUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=+ejxdtTr/HlQtdJJ1j7VJhMVHFW5j+vPPrQQB/cXjM4=; b=s136eFRNhOBKAYDwtcR6bqIEqV
+        yIzPpf0/tpTcB0+2s+Yjcr4+CvLCKCWQvki0arT2WWSGjw+jbyJ0PHARhqGFsvlTf2ddkknJ7zGUN
+        wNCy98f8wyHtYysygmUNxt+i+S8l53sX+YYRkVL3ELw16+ctWdFh9iwfUQ1jcS5tlrKwwU6M7IY6P
+        xmBJ1/7qK9/xEuTuh6+QGPkPzbFAQJ/9rCCywo38+W9PqqYa9+vKE1nKpmAULaZHpTmYq4paQAaUw
+        RK/TeXJ/al2VKm3apcSFBT57ww0hegGDvqrG6uF1fLtNMgXbAvat7oL0PWCfPZP+Bcvvf3LCZJGCK
+        cwRn6VhA==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:55510 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.2)
+        (envelope-from <re@w6rz.net>)
+        id 1r3uwD-000e9O-1c;
+        Fri, 17 Nov 2023 02:14:57 -0700
+Subject: Re: [PATCH 6.1 000/379] 6.1.63-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20231115192645.143643130@linuxfoundation.org>
+In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <1a09c18f-89d5-f389-c87e-d2f5ae1c1547@w6rz.net>
+Date:   Fri, 17 Nov 2023 01:14:55 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1r3uwD-000e9O-1c
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:55510
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org:  HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfMoiY6LwxHtNGx/cxsckegvOMyLZDYaDOP57GSrbIeNnAwuGRkigWu56aoPe3S/tFYQg8OBzO5gZTe7cO1w2ukL2MqzlXQ21nBXqcofyJEFZJ8pCI9Nx
+ IBLylaXANQdfyRjGEh1/HC9DwYcIXFMvWLTVn+WqmUCFJJe+EtW7KR6GP+flvNHr3Bt4ud5CprHQeQ==
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit 6bbd42e2df8f ("mmu_notifiers: call invalidate_range() when
-invalidating TLBs") moved the secondary TLB invalidations into the TLB
-invalidation functions to ensure that all secondary TLB invalidations
-happen at the same time as the CPU invalidation and added a flush-all
-type of secondary TLB invalidation for the batched mode, where a range
-of [0, -1UL) is used to indicates that the range extends to the end of
-the address space.
+On 11/15/23 11:21 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.63 release.
+> There are 379 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 17 Nov 2023 19:25:27 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.63-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-However, using an end address of -1UL caused an overflow in the Intel
-IOMMU driver, where the end address was rounded up to the next page.
-As a result, both the IOTLB and device ATC were not invalidated correctly.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Add a flush all helper function and call it when the invalidation range
-is from 0 to -1UL, ensuring that the entire caches are invalidated
-correctly.
-
-Fixes: 6bbd42e2df8f ("mmu_notifiers: call invalidate_range() when invalidating TLBs")
-Cc: stable@vger.kernel.org
-Cc: Huang Ying <ying.huang@intel.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Tested-by: Luo Yuzhang <yuzhang.luo@intel.com> # QAT
-Tested-by: Tony Zhu <tony.zhu@intel.com> # DSA
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
----
- drivers/iommu/intel/svm.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
-
-diff --git a/drivers/iommu/intel/svm.c b/drivers/iommu/intel/svm.c
-index 50a481c895b8..588385050a07 100644
---- a/drivers/iommu/intel/svm.c
-+++ b/drivers/iommu/intel/svm.c
-@@ -216,6 +216,27 @@ static void intel_flush_svm_range(struct intel_svm *svm, unsigned long address,
- 	rcu_read_unlock();
- }
- 
-+static void intel_flush_svm_all(struct intel_svm *svm)
-+{
-+	struct device_domain_info *info;
-+	struct intel_svm_dev *sdev;
-+
-+	rcu_read_lock();
-+	list_for_each_entry_rcu(sdev, &svm->devs, list) {
-+		info = dev_iommu_priv_get(sdev->dev);
-+
-+		qi_flush_piotlb(sdev->iommu, sdev->did, svm->pasid, 0, -1UL, 1);
-+		if (info->ats_enabled) {
-+			qi_flush_dev_iotlb_pasid(sdev->iommu, sdev->sid, info->pfsid,
-+						 svm->pasid, sdev->qdep,
-+						 0, 64 - VTD_PAGE_SHIFT);
-+			quirk_extra_dev_tlb_flush(info, 0, 64 - VTD_PAGE_SHIFT,
-+						  svm->pasid, sdev->qdep);
-+		}
-+	}
-+	rcu_read_unlock();
-+}
-+
- /* Pages have been freed at this point */
- static void intel_arch_invalidate_secondary_tlbs(struct mmu_notifier *mn,
- 					struct mm_struct *mm,
-@@ -223,6 +244,11 @@ static void intel_arch_invalidate_secondary_tlbs(struct mmu_notifier *mn,
- {
- 	struct intel_svm *svm = container_of(mn, struct intel_svm, notifier);
- 
-+	if (start == 0 && end == -1UL) {
-+		intel_flush_svm_all(svm);
-+		return;
-+	}
-+
- 	intel_flush_svm_range(svm, start,
- 			      (end - start + PAGE_SIZE - 1) >> VTD_PAGE_SHIFT, 0);
- }
--- 
-2.34.1
+Tested-by: Ron Economos <re@w6rz.net>
 
