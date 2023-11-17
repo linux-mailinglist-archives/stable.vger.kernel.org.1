@@ -2,239 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38AE67EEC35
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 07:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1517EECD8
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 08:41:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229912AbjKQGYk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 01:24:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49220 "EHLO
+        id S229905AbjKQHlb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 17 Nov 2023 02:41:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbjKQGYi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 01:24:38 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 988C7D55
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 22:24:32 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id 5b1f17b1804b1-4079ed65582so12551585e9.1
-        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 22:24:32 -0800 (PST)
+        with ESMTP id S230052AbjKQHla (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 02:41:30 -0500
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95C76D53
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 23:41:26 -0800 (PST)
+Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-45db31f9156so667290137.1
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 23:41:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1700202271; x=1700807071; darn=vger.kernel.org;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z1reITPMP7R8wPGXz/7dYrc2kmdmZHJv/ZAird1R1dM=;
-        b=H/NNjQ83bB++y5WSNYxkx7vDreSpPQaZkGqm4Q2z9JmV0VXizLOrTYnVrl4iA2AKgf
-         Yr9+IuPzxByMbYXIkkBAsjLvZu6PeUt6FPT9dTKLoh/ZbEQfHe+VwpJ2KbfxrjQEyGG1
-         fNWKxlqqs7deIjnMCJjMyXxNOJrH5WwzWDBRg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700202271; x=1700807071;
-        h=mime-version:subject:user-agent:references:in-reply-to:message-id
-         :date:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1700206885; x=1700811685; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Z1reITPMP7R8wPGXz/7dYrc2kmdmZHJv/ZAird1R1dM=;
-        b=hDE0Y6WgP6NRrCT8gRcGqARK1zNMDX1MJg8o18W+mnNQY9fl+FXGGCK4EfafxZbDg7
-         KMH3HNofYHCUALv98eCIuY6CvNtFfs0Xh1WP9E1K2dYKI4nWx2TEqUt8Z/UNrxg5GuB0
-         k+QeW54kick+NImry3Oi/hSc/CKMDrv4Rnh5A3RVd0S75jmD7WF6LurKK8sqh3pd4aPd
-         PYYbpDPwrBnWGzeDg9mJNQeId2Ky+jr+G6jOoRpLamGc0LZg3JICGM+sxDCwQ/9vx2L9
-         iMnDWlxvgdgihhjoRyOy/H4Q/Za6O6CfSwR93kGlJkHWFFfezjR2sZS1Bk9lhAxHUCh4
-         GH2Q==
-X-Gm-Message-State: AOJu0YyZ5GER8O1tzjctlDLlo7DatpgX7+gtI5BuRJjlNpP3/BZKR1f+
-        X0CZEuYqDe4nspj2KijbrnNJisyZVcORcy8Fglwpq2vd
-X-Google-Smtp-Source: AGHT+IHEIRIlgUuZyIEv/6VSJUAq60NYgD1Uojf5rvmhJwLYobmfKCR1AlKYGjvLeIE6AtPZpiRK7g==
-X-Received: by 2002:a05:600c:4e4c:b0:409:50b4:3da8 with SMTP id e12-20020a05600c4e4c00b0040950b43da8mr13984874wmq.38.1700202270911;
-        Thu, 16 Nov 2023 22:24:30 -0800 (PST)
-Received: from [10.230.35.166] ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id 14-20020a05600c22ce00b004053a6b8c41sm1516375wmg.12.2023.11.16.22.24.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 16 Nov 2023 22:24:29 -0800 (PST)
-From:   Arend Van Spriel <arend.vanspriel@broadcom.com>
-To:     Zheng Hacker <hackerzheng666@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-CC:     Kalle Valo <kvalo@kernel.org>, Zheng Wang <zyytlz.wz@163.com>,
-        <aspriel@gmail.com>, <franky.lin@broadcom.com>,
-        <hante.meuleman@broadcom.com>, <johannes.berg@intel.com>,
-        <marcan@marcan.st>, <linus.walleij@linaro.org>,
-        <jisoo.jang@yonsei.ac.kr>, <linuxlovemin@yonsei.ac.kr>,
-        <wataru.gohda@cypress.com>, <linux-wireless@vger.kernel.org>,
-        <brcm80211-dev-list.pdl@broadcom.com>,
-        <SHA-cyfmac-dev-list@infineon.com>, <linux-kernel@vger.kernel.org>,
-        <security@kernel.org>, <stable@vger.kernel.org>
-Date:   Fri, 17 Nov 2023 07:24:28 +0100
-Message-ID: <18bdbf3c560.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <CAJedcCzTv5oT-=+DaT6pCnor9QijUWGEkxg0PcZRWQDHxTWPeA@mail.gmail.com>
-References: <20231106141704.866455-1-zyytlz.wz@163.com>
- <87o7g7ueom.fsf@kernel.org>
- <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com>
- <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
- <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com>
- <CAJedcCzj9SFbx-=xDymqJyV2fu0xjmz2RH4+gT+Gxsqubg35ZA@mail.gmail.com>
- <18bd95c97f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <87h6llmu7t.wl-tiwai@suse.de>
- <CAJedcCzTv5oT-=+DaT6pCnor9QijUWGEkxg0PcZRWQDHxTWPeA@mail.gmail.com>
-User-Agent: AquaMail/1.48.0 (build: 104800386)
-Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
+        bh=DCDUD/ayWCyYX+V5eg8ErxP1HhH1oV9OubP3STgdWNA=;
+        b=rmyh5UxVTsrXdCrWkgVn4wvhuTQ50g/TCxmzM1HqPJz4Eo1jC9F3oaJPXP2Wmv9was
+         cpaFUWmMzf5DLq0JmzYl9OM1AndOSJlDLR0ku9kC9IyhlB6i2AO45ND4CeKE6OaTxoCX
+         62naYF01T90yZFf+4UMqyXLNLZduAtJfdfuaNmBgJItx2eTpbTrkmrbbDKtzkmP0fZkE
+         ddT0xRc2xC6Vz1E9XEw56XCexLVkRhg6H9nQDKHA067GB/FIGlq22ASq28E1ZDxvu5qr
+         MkRBbjciwy7Q2xsYKHI0i2W5U2EBjttkPzhVwz4JA0kaVHLuayJ01DxRgkA0r+8nz7aE
+         vIjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700206885; x=1700811685;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DCDUD/ayWCyYX+V5eg8ErxP1HhH1oV9OubP3STgdWNA=;
+        b=M1qDh5NsXV3TUkJLemcRXGAjh3i6pm0Pjxs4TlIDc2FSl8M0H1APrA1QgTpfleiRhn
+         KZF4Cv2t5GGaOyvQal8cmfhiWNeyG/YZO1GUbhyEp8HD2LZYUaA2tX1gieWcAiJ95Oev
+         6S5UtFvfJ+qwDgBCJMic9KO5FmLb2gFkIvf9c8VJ0xNY7j2Kns7EeejA6TOnsRQ1VOK0
+         BY7ltwY3/HilV0rzbMShqwck3oeGwaVkD4Zq+bekQVdSdXd2LS1cObrKh7ObMym6E8PJ
+         MZF90pwv22ZAwrbEBWYjQ6YGG7PU4U/x5QTO3QoPeFpD66kJRxEK/AN5DXASUDMnHWR0
+         f12A==
+X-Gm-Message-State: AOJu0YzsEd0t6Ze+HP7DtZhYpckgaPV814XdGU2TOKlyyuk7Nx59q7PQ
+        yezAu2Y6REw5aEYkXODObhPxdHB6FxpdZuQl94EanA==
+X-Google-Smtp-Source: AGHT+IFy4OUn5tiw3ME+e8seX8aG0i3Hz+uDvT0kxb9K92hvelXNsjLz3NHqivsCcZchdAAm0jaDeHfmaroVHuF2uc8=
+X-Received: by 2002:a67:b70b:0:b0:462:7c41:d00b with SMTP id
+ h11-20020a67b70b000000b004627c41d00bmr2581850vsf.4.1700206885545; Thu, 16 Nov
+ 2023 23:41:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-        boundary="0000000000006e148a060a533056"
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20231115204644.490636297@linuxfoundation.org> <b5367845-8d70-4fcf-861a-ff9b8849c9c9@roeck-us.net>
+In-Reply-To: <b5367845-8d70-4fcf-861a-ff9b8849c9c9@roeck-us.net>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Fri, 17 Nov 2023 13:11:14 +0530
+Message-ID: <CA+G9fYtOMKserwz7w_gpe4bZnEwrd_-zSyndSepFP_jO9X-o1w@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---0000000000006e148a060a533056
-Content-Type: text/plain; format=flowed; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-
-On November 17, 2023 3:31:40 AM Zheng Hacker <hackerzheng666@gmail.com> wrote:
-
-> Yes, that makes this issue hard to fix. I was wondering why it binds the
-> worker with the timer rather than using just one of them.
-
-No top posting please!
-
-The timer context is softirq and worker is thread context. The ability to 
-sleep is the big difference between the two or at least the reason for 
-using them here.
-
-Regards,
-Arend
-
+On Fri, 17 Nov 2023 at 06:43, Guenter Roeck <linux@roeck-us.net> wrote:
 >
-> Takashi Iwai <tiwai@suse.de> 于2023年11月17日周五 02:25写道：
->>
->> On Thu, 16 Nov 2023 19:20:06 +0100,
->> Arend Van Spriel wrote:
->>>
->>> On November 15, 2023 4:00:46 PM Zheng Hacker <hackerzheng666@gmail.com> wrote:
->>>
->>>> Arend van Spriel <arend.vanspriel@broadcom.com> 于2023年11月13日周一 17:18写道：
->>>>>
->>>>> On November 8, 2023 4:03:26 AM Zheng Hacker <hackerzheng666@gmail.com>
->>>>> wrote:
->>>>>
->>>>>> Arend Van Spriel <arend.vanspriel@broadcom.com> 于2023年11月6日周一 23:48写道：
->>>>>>>
->>>>>>> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.com> wrote:
->>>>>>>
->>>>>>>> Thanks! I didn't test it for I don't have a device. Very appreciated
->>>>>>>> if anyone could help with that.
->>>>>>>
->>>>>>> I would volunteer, but it made me dig deep and not sure if there is a
->>>>>>> problem to solve here.
->>>>>>>
->>>>>>> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scanning() ->
->>>>>>> brcmf_notify_escan_complete() which does delete the timer.
->>>>>>>
->>>>>>> What am I missing here?
->>>>>>
->>>>>> Thanks four your detailed review. I did see the code and not sure if
->>>>>> brcmf_notify_escan_complete
->>>>>> would be triggered for sure. So in the first version I want to delete
->>>>>> the pending timer ahead of time.
->>>>>
->>>>> Why requesting a CVE when you are not sure? Seems a bit hasty to put it
->>>>> mildly.
->>>>
->>>> I'm sure the issue exists because there's only cancler of timer but not woker.
->>>> As there's similar CVEs before like : https://github.com/V4bel/CVE-2022-41218,
->>>> I submit it as soon as I found it.
->>>
->>> Ah, yes. The cancel_work_sync() can also be done in
->>> brcmf_notify_escan_complete().
->>
->> AFAIUC, brcmf_notify_scan_complete() is called from the work itself,
->> too, hence you can't issue cancel_work_sync() there (unless you make
->> it conditional).
->>
->>
->> Takashi
+> On 11/15/23 12:44, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.10.201 release.
+> > There are 191 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Fri, 17 Nov 2023 20:46:03 +0000.
+> > Anything received after that time might be too late.
+> >
+>
+> Build results:
+>         total: 159 pass: 155 fail: 4
+> Failed builds:
+>         arm:allmodconfig
+>         arm64:allmodconfig
+>         i386:tools/perf
+>         x86_64:tools/perf
+> Qemu test results:
+>         total: 495 pass: 495 fail: 0
+>
+> with:
+>
+> Building arm64:allmodconfig ... failed
+> --------------
+> Error log:
+> drivers/interconnect/qcom/osm-l3.c:6:10: fatal error: linux/args.h: No su=
+ch file or directory
+>
+> There is no linux/args.h in v5.10.y.
+>
+> Caused by "interconnect: qcom: osm-l3: Replace custom implementation of C=
+OUNT_ARGS()".
+>
+> Also:
+>
+> Building i386:tools/perf ... failed
+>
+> util/evlist.c: In function =E2=80=98evlist__add_aux_dummy=E2=80=99:
+> util/evlist.c:269:24: error: implicit declaration of function =E2=80=98ev=
+list__dummy_event=E2=80=99; did you mean =E2=80=98evsel__is_dummy_event=E2=
+=80=99? [-Werror=3Dimplicit-function-declaration]
+>     269 |  struct evsel *evsel =3D evlist__dummy_event(evlist);
+>         |                        ^~~~~~~~~~~~~~~~~~~
+>         |                        evsel__is_dummy_event
+> util/evlist.c:269:24: error: initialization of =E2=80=98struct evsel *=E2=
+=80=99 from =E2=80=98int=E2=80=99 makes pointer from integer without a cast
+>
+> There is indeed no 'evlist__dummy_event' function in v5.10.y.
+>
+> This is with v5.10.200-192-g550b7e1fee20. I am a bit puzzled why others
+> don't seem to see those problems.
 
+Thanks for reporting allmodconfig build failures.
 
+My apologies.
+The LKFT found allmodconfig failure lately due to infra issues / timeouts,
+the builds have been re-triggered manually.
 
+        arm:allmodconfig - FAILED
+        arm64:allmodconfig - FAILED
 
---0000000000006e148a060a533056
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+LKFT have stopped building perf on 5.x and 4.x branches, because we
+reported several perf build issues and were not solved in the past.
 
-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
-2Gzj3QNJRLsZu1TLyOyBBIr/BE7UiY3RabgRzknBGAPmzhS+fmyM8OtM5BYBsFBrSUFtZZO2p/tf
-Nbc24J2zf2peoZ8MK+7WQqummYlOnz+FyDkA9EybeNMcS5C+xi/PAgMBAAGjggHdMIIB2TAOBgNV
-HQ8BAf8EBAMCBaAwgaMGCCsGAQUFBwEBBIGWMIGTME4GCCsGAQUFBzAChkJodHRwOi8vc2VjdXJl
-Lmdsb2JhbHNpZ24uY29tL2NhY2VydC9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAyMC5jcnQwQQYI
-KwYBBQUHMAGGNWh0dHA6Ly9vY3NwLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjNwZXJzb25hbHNpZ24y
-Y2EyMDIwME0GA1UdIARGMEQwQgYKKwYBBAGgMgEoCjA0MDIGCCsGAQUFBwIBFiZodHRwczovL3d3
-dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzAJBgNVHRMEAjAAMEkGA1UdHwRCMEAwPqA8oDqG
-OGh0dHA6Ly9jcmwuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFsc2lnbjJjYTIwMjAuY3Js
-MCcGA1UdEQQgMB6BHGFyZW5kLnZhbnNwcmllbEBicm9hZGNvbS5jb20wEwYDVR0lBAwwCgYIKwYB
-BQUHAwQwHwYDVR0jBBgwFoAUljPR5lgXWzR1ioFWZNW+SN6hj88wHQYDVR0OBBYEFIikAXd8CEtv
-ZbDflDRnf3tuStPuMA0GCSqGSIb3DQEBCwUAA4IBAQCdS5XCYx6k2GGZui9DlFsFm75khkqAU7rT
-zBX04sJU1+B1wtgmWTVIzW7ugdtDZ4gzaV0S9xRhpDErjJaltxPbCylb1DEsLj+AIvBR34caW6ZG
-sQk444t0HPb29HnWYj+OllIGMbdJWr0/P95ZrKk2bP24ub3ZP/8SyzrohfIba9WZKMq6g2nTLZE3
-BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
-N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
-p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
-YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCC3ukAAhTt+ttJkXkSA
-4spkeeOyph5TXyCvtaw5oZ+NcTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yMzExMTcwNjI0MzFaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
-AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAHUeINH4MifLXe9JfBSP+PFHJi3I4O62D5VIf
-v4NgZWsvfUA1UX5aHcmpVIaGkit+GIRDaJUpPxa+9VxfhH+wTsTkk2FnzB8mr2Cx33ockNBmPZil
-0UMoYdGCfPiN8YIGyvThxG5tVlGWdr2FWsBYiyq9EfGAp2lBKWhp9bNpZ6BGOKHVJoMXx8fXkMUP
-61JKgIwC8B2LpYlNMKh/7oEUvPcmtKqyq4pMXVudbPO0SXFCvcVeX4NdTNyLdlbXq+6iFkJULSKR
-0LcY9h7mOLjQTJGCPG4k+KSe7v0bTdwup6za//Zs8YZqdYSKf0YxKOAjRbHxRKNUi9D1zF6T/Vss
-uQ==
---0000000000006e148a060a533056--
+However, building perf tests from recent stable branches and testing
+that on older
+stable-rc branches.
+
+- Naresh
