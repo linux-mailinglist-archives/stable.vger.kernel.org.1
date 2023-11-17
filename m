@@ -2,170 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A6517EF4F6
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 16:15:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89AB47EF558
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 16:36:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229436AbjKQPPR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 10:15:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
+        id S231469AbjKQPgj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 17 Nov 2023 10:36:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjKQPPR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 10:15:17 -0500
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B301D56;
-        Fri, 17 Nov 2023 07:15:13 -0800 (PST)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1cc5916d578so18782435ad.2;
-        Fri, 17 Nov 2023 07:15:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700234113; x=1700838913; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=IQCcBRlGrNv8PpHXqM0OdJs3VT+KoaRRoFmGD2ZH7g0=;
-        b=OXVjII2ytceQgME09pCNzvsW0qXmdujIL+ja+uYUbv+AKGxgWWVxdbaLXXQVZOTN6n
-         cUSEeGTiroL3ZWcGRIJRvEIt+r1ozCRN3Ri3cZIRdXVW8JppfDAlCla3kUFlRIrPm0bS
-         w85tRyduM7s3lMe4GztYYFF0GA5G7CTJt2gkLIzV50uULiF/h+AqI0Nm7nTapRCxzLIt
-         eZBh0jaVANR0pWklhX7kO0cmZxOc9L+BE6ri5sve8t0HR43CxTg1DHod5F5MuWx5ukR+
-         Hn2vWhLsAf+KWl7Dz7Yen9g9zuBrcWUVIHNC7v97OWBTw6lOWY2XhG+Cr9qEXLVG/1C6
-         gHAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700234113; x=1700838913;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IQCcBRlGrNv8PpHXqM0OdJs3VT+KoaRRoFmGD2ZH7g0=;
-        b=eWT2wPvMwZbbOr/N/H+ICH/M9yWSvD1gQw+AP8DP5C50oXctg0vEgEVJ6aA7x2Yvkm
-         fy61F8fNUmD+wKHlqYNGGortXxZzpYMTj2G96nmtetuabMXOqCPXQdlFV/qPlfj9iGhn
-         JORQY/3Zkw0PN70TmvXIiJGyrATcDgQth7lc+ZwFTyoe+RtFqB6/s6MwU6/+7ru/qy6C
-         t2gJCXhbmUYH4Li3+nM5XJ+5gYDFSb73rgP++t9LujeNz2ePQtxdqrbwXB5oTopCMNQI
-         8+smZVb2ItwZkbhVgZoMWyJFk+iMTN4Ni9AVTxDVO/5Y8cBNXSf2ksFlw9w3gDU7/Ne7
-         y0hQ==
-X-Gm-Message-State: AOJu0YxpW95G1p3NjaKdqZVyWi9HXyd9zzetHXbiPMaWXIQl573UiQGm
-        DpF25DMklnVfqJEWa9bJyLk=
-X-Google-Smtp-Source: AGHT+IELT8ha/v+aHBi1cfw7SHMUmAKdxivsF+wc9Qvt9TQtgEAJJJov8uFVj/jG7au6Q9F707OgXg==
-X-Received: by 2002:a17:902:f707:b0:1cc:6e8f:c14e with SMTP id h7-20020a170902f70700b001cc6e8fc14emr15665557plo.15.1700234112780;
-        Fri, 17 Nov 2023 07:15:12 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y17-20020a63e251000000b005ab7b055573sm1513389pgj.79.2023.11.17.07.15.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 17 Nov 2023 07:15:12 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <826b241f-3d93-4585-bd22-90cff75f7bb0@roeck-us.net>
-Date:   Fri, 17 Nov 2023 07:15:10 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
-Content-Language: en-US
-To:     Dominique Martinet <asmadeus@codewreck.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231115204644.490636297@linuxfoundation.org>
- <b5367845-8d70-4fcf-861a-ff9b8849c9c9@roeck-us.net>
- <ZVbIoqXjfn7V1NtT@codewreck.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <ZVbIoqXjfn7V1NtT@codewreck.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S230379AbjKQPgj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 10:36:39 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB6E8127;
+        Fri, 17 Nov 2023 07:36:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285DAC433C8;
+        Fri, 17 Nov 2023 15:36:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1700235395;
+        bh=wXakN8pMOWsk0ZXqndIFqKlC9dd0Fuq6EXWTvhojRfQ=;
+        h=Date:To:From:Subject:From;
+        b=ql6qVPMV2s+iFM7wRpQW0V2vPIekA0r08CqAn1O0ICPEo6KsruOyeYMN3kBax68xI
+         OIWLvLmMbQlyS62xBTF0LofkF5ZRuCuA0ga23jFMffjof4v7TzAAkdGggy25Iv8tjP
+         NkgRp7+bcROmS7U/bdIoB88md+cDHi0/DvoA+D6A=
+Date:   Fri, 17 Nov 2023 07:36:34 -0800
+To:     mm-commits@vger.kernel.org, willy@infradead.org,
+        stable@vger.kernel.org, kirill.shutemov@linux.intel.com,
+        jose.pekkarinen@foxhound.fi, jannh@google.com, hughd@google.com,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-oops-when-filemap_map_pmd-without-prealloc_pte.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231117153635.285DAC433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-On 11/16/23 17:57, Dominique Martinet wrote:
-> Guenter Roeck wrote on Thu, Nov 16, 2023 at 05:13:39PM -0800:
->> Failed builds:
->> 	arm:allmodconfig
->> 	arm64:allmodconfig
->> 	i386:tools/perf
->> 	x86_64:tools/perf
-> 
->> This is with v5.10.200-192-g550b7e1fee20. I am a bit puzzled why others
->> don't seem to see those problems.
-> 
-> The perf problem was reported by Florian Fainelli, but my current test
-> build does not include userspace tools as we're not shipping them (and
-> would rely on $distro packages when I need perf as a user rather than
-> building it).
-> 
-> Likewise, it looks like neither Linaro nor me build the qcom driver...
-> I'm building kernels that have been trimmed down for our boards (with
-> that exact config we're shipping and providing for our customers), and
-> arm* drivers are especially fractured so it's a bit misleading to see
-> "arm64 pass", that's just the tip of the actual setup tested.
-> 
-> 
-> (Anyway, the main reason for me is mostly that $job is a small company
-> that cannot afford extensive upstream testing, so I just don't have the
-> time to do extended tests -- for the same reason we're only supporting
-> the 5.10 tree so I'm focusing my limited time on just this branch, even
-> if I'd love to do more.
-> I'm just taking the stance that some test is better than no test and
-> report back things we'd need to test before shipping customers a few
-> weeks later anyway -- thank you for covering more!)
-> 
+The patch titled
+     Subject: mm: fix oops when filemap_map_pmd() without prealloc_pte
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-fix-oops-when-filemap_map_pmd-without-prealloc_pte.patch
 
-Just to clarify, I wasn't assuming or expecting that _everyone_ would report
-those errors. I was just puzzled that I had not seen _any_ reports, especially
-since arm:allmodconfig and arm64:allmodconfig both failed to build for me
-(and I had somehow missed Florian's perf report).
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-oops-when-filemap_map_pmd-without-prealloc_pte.patch
 
-Thanks,
-Guenter
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Hugh Dickins <hughd@google.com>
+Subject: mm: fix oops when filemap_map_pmd() without prealloc_pte
+Date: Fri, 17 Nov 2023 00:49:18 -0800 (PST)
+
+syzbot reports oops in lockdep's __lock_acquire(), called from
+__pte_offset_map_lock() called from filemap_map_pages(); or when I run the
+repro, the oops comes in pmd_install(), called from filemap_map_pmd()
+called from filemap_map_pages(), just before the __pte_offset_map_lock().
+
+The problem is that filemap_map_pmd() has been assuming that when it finds
+pmd_none(), a page table has already been prepared in prealloc_pte; and
+indeed do_fault_around() has been careful to preallocate one there, when
+it finds pmd_none(): but what if *pmd became none in between?
+
+My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made it
+easy for *pmd to be cleared while servicing a page fault; but even before
+those, a huge *pmd might be zapped while a fault is serviced.
+
+The difference in symptomatic stack traces comes from the "memory model"
+in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
+models that is strict, and will oops on the NULL prealloc_pte; in other
+models, it will construct a bogus value to be populated into *pmd, then
+__pte_offset_map_lock() oops when trying to access split ptlock pointer
+(or some other symptom in normal case of ptlock embedded not pointer).
+
+Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekkarinen@foxhound.fi/
+Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@google.com
+Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepaths")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@google.com/
+Cc: Jann Horn <jannh@google.com>,
+Cc: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>    [5.12+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/filemap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/filemap.c~mm-fix-oops-when-filemap_map_pmd-without-prealloc_pte
++++ a/mm/filemap.c
+@@ -3371,7 +3371,7 @@ static bool filemap_map_pmd(struct vm_fa
+ 		}
+ 	}
+ 
+-	if (pmd_none(*vmf->pmd))
++	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte)
+ 		pmd_install(mm, vmf->pmd, &vmf->prealloc_pte);
+ 
+ 	return false;
+_
+
+Patches currently in -mm which might be from hughd@google.com are
+
+mm-fix-oops-when-filemap_map_pmd-without-prealloc_pte.patch
 
