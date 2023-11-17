@@ -2,92 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74EF07EEE3A
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 10:15:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AB257EEFA2
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 11:02:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235663AbjKQJPG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 04:15:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51008 "EHLO
+        id S230335AbjKQKCe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 17 Nov 2023 05:02:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235036AbjKQJPF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 04:15:05 -0500
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 442C9D56
-        for <stable@vger.kernel.org>; Fri, 17 Nov 2023 01:15:01 -0800 (PST)
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-        by cmsmtp with ESMTPS
-        id 3omJrr2agKOkL3uwGrziNP; Fri, 17 Nov 2023 09:15:00 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id 3uwFrx8a8RGmS3uwGrPUuB; Fri, 17 Nov 2023 09:15:00 +0000
-X-Authority-Analysis: v=2.4 cv=efcuwpIH c=1 sm=1 tr=0 ts=65572f14
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=pD9pM3iTfm6Mvc49FTUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=+ejxdtTr/HlQtdJJ1j7VJhMVHFW5j+vPPrQQB/cXjM4=; b=s136eFRNhOBKAYDwtcR6bqIEqV
-        yIzPpf0/tpTcB0+2s+Yjcr4+CvLCKCWQvki0arT2WWSGjw+jbyJ0PHARhqGFsvlTf2ddkknJ7zGUN
-        wNCy98f8wyHtYysygmUNxt+i+S8l53sX+YYRkVL3ELw16+ctWdFh9iwfUQ1jcS5tlrKwwU6M7IY6P
-        xmBJ1/7qK9/xEuTuh6+QGPkPzbFAQJ/9rCCywo38+W9PqqYa9+vKE1nKpmAULaZHpTmYq4paQAaUw
-        RK/TeXJ/al2VKm3apcSFBT57ww0hegGDvqrG6uF1fLtNMgXbAvat7oL0PWCfPZP+Bcvvf3LCZJGCK
-        cwRn6VhA==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:55510 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.2)
-        (envelope-from <re@w6rz.net>)
-        id 1r3uwD-000e9O-1c;
-        Fri, 17 Nov 2023 02:14:57 -0700
-Subject: Re: [PATCH 6.1 000/379] 6.1.63-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231115192645.143643130@linuxfoundation.org>
-In-Reply-To: <20231115192645.143643130@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <1a09c18f-89d5-f389-c87e-d2f5ae1c1547@w6rz.net>
-Date:   Fri, 17 Nov 2023 01:14:55 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S229952AbjKQKCe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 05:02:34 -0500
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AAB885;
+        Fri, 17 Nov 2023 02:02:27 -0800 (PST)
+X-QQ-mid: bizesmtp74t1700215208t84gf9pf
+Received: from wxdbg.localdomain.com ( [183.128.129.197])
+        by bizesmtp.qq.com (ESMTP) with 
+        id ; Fri, 17 Nov 2023 17:59:55 +0800 (CST)
+X-QQ-SSF: 01400000000000K0Z000000A0000000
+X-QQ-FEAT: RrZlkntZBfnLu0O2zBM0wuvxGlmC4CpbclQi4DdcfoRIXX/3azRKVAtAwoJ2K
+        CzyjIWfFOuTO+h2VfTYXgcQv0z2Twj9nX9JbKAhCGALJdwNKbnQdr0AndLa0aI0jbixVZYp
+        E7Im19LmuOP1D/wtobJ18A7/OOXhnUEYBN3onkBUFYic7tI1TpXlM3aV2FVyNjaHQDho58E
+        jyTqv4Km3J7Mlpz0Rq1LflpxFP9HGe/NZbzaxZqrgMYeFN3FyR/lGfqVM07Iag0j5Slzsk1
+        nFd6pN3xpT0kIRHQxFgaOMzZuKFO8YWdyPNawCX688qz/YT8f+WY9KEeUxzgbNSla/dMqNj
+        3tb8HOpJN4w9skO85dhwiMDKSk5eZ1gX6SOkAKfCIrbL7vj87JJU11VBsTZa6Nze/ToqUiC
+X-QQ-GoodBg: 2
+X-BIZMAIL-ID: 8508710331023806557
+From:   Jiawen Wu <jiawenwu@trustnetic.com>
+To:     davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, netdev@vger.kernel.org
+Cc:     mengyuanlou@net-swift.com, stable@vger.kernel.org,
+        Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net] net: wangxun: fix kernel panic due to null pointer
+Date:   Fri, 17 Nov 2023 18:11:08 +0800
+Message-Id: <20231117101108.893335-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1r3uwD-000e9O-1c
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:55510
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfMoiY6LwxHtNGx/cxsckegvOMyLZDYaDOP57GSrbIeNnAwuGRkigWu56aoPe3S/tFYQg8OBzO5gZTe7cO1w2ukL2MqzlXQ21nBXqcofyJEFZJ8pCI9Nx
- IBLylaXANQdfyRjGEh1/HC9DwYcIXFMvWLTVn+WqmUCFJJe+EtW7KR6GP+flvNHr3Bt4ud5CprHQeQ==
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz5a-1
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,26 +50,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/15/23 11:21 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.63 release.
-> There are 379 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 17 Nov 2023 19:25:27 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.63-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+When the device uses a custom subsystem vendor ID, the function
+wx_sw_init() returns before the memory of 'wx->mac_table' is allocated.
+The null pointer will causes the kernel panic.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Fixes: 79625f45ca73 ("net: wangxun: Move MAC address handling to libwx")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c      | 8 +++++---
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   | 4 +---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 4 +---
+ 3 files changed, 7 insertions(+), 9 deletions(-)
 
-Tested-by: Ron Economos <re@w6rz.net>
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index a3c5de9d547a..533e912af089 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1769,10 +1769,12 @@ int wx_sw_init(struct wx *wx)
+ 		wx->subsystem_device_id = pdev->subsystem_device;
+ 	} else {
+ 		err = wx_flash_read_dword(wx, 0xfffdc, &ssid);
+-		if (!err)
+-			wx->subsystem_device_id = swab16((u16)ssid);
++		if (err < 0) {
++			wx_err(wx, "read of internal subsystem device id failed\n");
++			return err;
++		}
+ 
+-		return err;
++		wx->subsystem_device_id = swab16((u16)ssid);
+ 	}
+ 
+ 	wx->mac_table = kcalloc(wx->mac.num_rar_entries,
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index 3d43f808c86b..8db804543e66 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -121,10 +121,8 @@ static int ngbe_sw_init(struct wx *wx)
+ 
+ 	/* PCI config space info */
+ 	err = wx_sw_init(wx);
+-	if (err < 0) {
+-		wx_err(wx, "read of internal subsystem device id failed\n");
++	if (err < 0)
+ 		return err;
+-	}
+ 
+ 	/* mac type, phy type , oem type */
+ 	ngbe_init_type_code(wx);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 70f0b5c01dac..526250102db2 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -364,10 +364,8 @@ static int txgbe_sw_init(struct wx *wx)
+ 
+ 	/* PCI config space info */
+ 	err = wx_sw_init(wx);
+-	if (err < 0) {
+-		wx_err(wx, "read of internal subsystem device id failed\n");
++	if (err < 0)
+ 		return err;
+-	}
+ 
+ 	txgbe_init_type_code(wx);
+ 
+-- 
+2.27.0
 
