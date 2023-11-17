@@ -2,148 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06DC27EEB0F
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 03:31:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBC577EEB62
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 04:22:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229771AbjKQCbo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 16 Nov 2023 21:31:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38226 "EHLO
+        id S229888AbjKQDWR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 16 Nov 2023 22:22:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjKQCbn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 21:31:43 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C64CCE;
-        Thu, 16 Nov 2023 18:31:40 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-2802d218242so1286278a91.1;
-        Thu, 16 Nov 2023 18:31:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700188300; x=1700793100; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ShHjQysUBtuxNJ+pH62O9En8/VVV59KhlFkmqvEAWnQ=;
-        b=Qpv7NU8ZyGgmFckPiV2JBny6Kx8nOGRL9bZFfgRLvHxp+NzpHfqWRAOnSkFRYsQj+w
-         WZe5oWrryy6VU/SZkL2pbRyDtX+RCDH1/DO0EHUz5aTWZhnEJY4jsTJoWZNSRM7aGNx8
-         Lk7PkxBK0Z7i1Sg36l+BcBL2luoICaI3jjG/FXAdtutwhGqhkuCbUZjDnquoebQmIF+H
-         OizYsLWTUrpHTgInjt4tjzX98jdA+P/Ebuka9d0U5BLQld+ufAg8569CKMRgWD6wLdfd
-         B/LKP7WiQlHLLFh8i/WCREI/HmzcD194p9zhbsceZRgFj0K0/V756KaAWhcyhnYIbC6L
-         7JdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700188300; x=1700793100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ShHjQysUBtuxNJ+pH62O9En8/VVV59KhlFkmqvEAWnQ=;
-        b=Q7yIpA1TQZypD4Oi+CChvC57LoE25FAkipG/jNpslKFjeiv5jY9XtSiCRDoLBK7408
-         sIrLYfaMlidXE7GkSyMba4ppSNrgnOgC2PmeVB257r4OAUTG5HTE/rfRpQl20j+hPyF8
-         n7J8xcxiqDocQRK2KNi4vXjnZN2xv34NU8HRgjez9q/SNg1BTrLK2Q0CgfMsalpR86ZD
-         fgp0qEoFfeynf1ILgtXgRmJ+z/4Ke1UNI/0h9uUuPWq/stah9pUrL+X3dBP+PNWmCGyd
-         USfO5K19I3CkUBTnRCQsrv4QPhjU5EuSeajpwetKQn3ovj8hjHlvWjZFcZFr4B0L4t52
-         GgbQ==
-X-Gm-Message-State: AOJu0YxZKRihEL+k49CD22OrnDSqmTBVK0y56Kvh9NjmpHifm6ahdiKY
-        5FWTy8Hddbphc61I1C0MFpAXEAXctRQ7r8bs0PU=
-X-Google-Smtp-Source: AGHT+IFzoGP+uMiVEu1AQsDTGoADAr9AfNfMW1RtojU6+Abv0tCKOjDTqiNoUIjGOCQyhiyrlqZzBZ2NHWvGGP6oOvs=
-X-Received: by 2002:a17:90b:1810:b0:280:2652:d42 with SMTP id
- lw16-20020a17090b181000b0028026520d42mr20455528pjb.23.1700188299572; Thu, 16
- Nov 2023 18:31:39 -0800 (PST)
+        with ESMTP id S229790AbjKQDWR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 16 Nov 2023 22:22:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEDCBB0
+        for <stable@vger.kernel.org>; Thu, 16 Nov 2023 19:22:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1700191333;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=OZkIo3gmOmARkH9D6G/diT0yhlLPEb/bpyU7MwfHSdo=;
+        b=H3c+wAVc4M9HbQhr2TOH/Zx7OEI81FWNDlwKqDlRz5cC+CWUJGrYrG6fXDMhySreJbOem/
+        w6owFGmDsr/4AnPcNeGpGgyggQF4zFzepSfJYjoUJj7xabiGmaqhqph0Pia2BlB66FckX6
+        FvjQnUmE74VQnLqsFj1PUsgmktnSzqY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-609-7y-W_D6aNAqEyR9gY0rPQA-1; Thu,
+ 16 Nov 2023 22:22:09 -0500
+X-MC-Unique: 7y-W_D6aNAqEyR9gY0rPQA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 132F61C060E4;
+        Fri, 17 Nov 2023 03:22:09 +0000 (UTC)
+Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (unknown [10.72.112.63])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A60421C060AE;
+        Fri, 17 Nov 2023 03:22:05 +0000 (UTC)
+From:   xiubli@redhat.com
+To:     ceph-devel@vger.kernel.org
+Cc:     idryomov@gmail.com, jlayton@kernel.org, vshankar@redhat.com,
+        mchangir@redhat.com, Xiubo Li <xiubli@redhat.com>,
+        stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH] ceph: fix deadlock or deadcode of misusing dget()
+Date:   Fri, 17 Nov 2023 11:19:51 +0800
+Message-ID: <20231117031951.710177-1-xiubli@redhat.com>
 MIME-Version: 1.0
-References: <20231106141704.866455-1-zyytlz.wz@163.com> <87o7g7ueom.fsf@kernel.org>
- <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com>
- <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
- <fa0e7536-9b05-42fb-9fff-acd2ffad9af9@broadcom.com> <CAJedcCzj9SFbx-=xDymqJyV2fu0xjmz2RH4+gT+Gxsqubg35ZA@mail.gmail.com>
- <18bd95c97f0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com> <87h6llmu7t.wl-tiwai@suse.de>
-In-Reply-To: <87h6llmu7t.wl-tiwai@suse.de>
-From:   Zheng Hacker <hackerzheng666@gmail.com>
-Date:   Fri, 17 Nov 2023 10:31:26 +0800
-Message-ID: <CAJedcCzTv5oT-=+DaT6pCnor9QijUWGEkxg0PcZRWQDHxTWPeA@mail.gmail.com>
-Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Arend Van Spriel <arend.vanspriel@broadcom.com>,
-        Kalle Valo <kvalo@kernel.org>, Zheng Wang <zyytlz.wz@163.com>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, johannes.berg@intel.com,
-        marcan@marcan.st, linus.walleij@linaro.org,
-        jisoo.jang@yonsei.ac.kr, linuxlovemin@yonsei.ac.kr,
-        wataru.gohda@cypress.com, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        security@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Yes, that makes this issue hard to fix. I was wondering why it binds the
-worker with the timer rather than using just one of them.
+From: Xiubo Li <xiubli@redhat.com>
 
-Takashi Iwai <tiwai@suse.de> =E4=BA=8E2023=E5=B9=B411=E6=9C=8817=E6=97=A5=
-=E5=91=A8=E4=BA=94 02:25=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Thu, 16 Nov 2023 19:20:06 +0100,
-> Arend Van Spriel wrote:
-> >
-> > On November 15, 2023 4:00:46 PM Zheng Hacker <hackerzheng666@gmail.com>=
- wrote:
-> >
-> > > Arend van Spriel <arend.vanspriel@broadcom.com> =E4=BA=8E2023=E5=B9=
-=B411=E6=9C=8813=E6=97=A5=E5=91=A8=E4=B8=80 17:18=E5=86=99=E9=81=93=EF=BC=
-=9A
-> > >>
-> > >> On November 8, 2023 4:03:26 AM Zheng Hacker <hackerzheng666@gmail.co=
-m>
-> > >> wrote:
-> > >>
-> > >>> Arend Van Spriel <arend.vanspriel@broadcom.com> =E4=BA=8E2023=E5=B9=
-=B411=E6=9C=886=E6=97=A5=E5=91=A8=E4=B8=80 23:48=E5=86=99=E9=81=93=EF=BC=9A
-> > >>>>
-> > >>>> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.=
-com> wrote:
-> > >>>>
-> > >>>>> Thanks! I didn't test it for I don't have a device. Very apprecia=
-ted
-> > >>>>> if anyone could help with that.
-> > >>>>
-> > >>>> I would volunteer, but it made me dig deep and not sure if there i=
-s a
-> > >>>> problem to solve here.
-> > >>>>
-> > >>>> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scan=
-ning() ->
-> > >>>> brcmf_notify_escan_complete() which does delete the timer.
-> > >>>>
-> > >>>> What am I missing here?
-> > >>>
-> > >>> Thanks four your detailed review. I did see the code and not sure i=
-f
-> > >>> brcmf_notify_escan_complete
-> > >>> would be triggered for sure. So in the first version I want to dele=
-te
-> > >>> the pending timer ahead of time.
-> > >>
-> > >> Why requesting a CVE when you are not sure? Seems a bit hasty to put=
- it
-> > >> mildly.
-> > >
-> > > I'm sure the issue exists because there's only cancler of timer but n=
-ot woker.
-> > > As there's similar CVEs before like : https://github.com/V4bel/CVE-20=
-22-41218,
-> > > I submit it as soon as I found it.
-> >
-> > Ah, yes. The cancel_work_sync() can also be done in
-> > brcmf_notify_escan_complete().
->
-> AFAIUC, brcmf_notify_scan_complete() is called from the work itself,
-> too, hence you can't issue cancel_work_sync() there (unless you make
-> it conditional).
->
->
-> Takashi
+The lock order is incorrect between denty and its parent, we should
+always make sure that the parent get the lock first.
+
+Switch to use the 'dget_parent()' to get the parent dentry and also
+keep holding the parent until the corresponding inode is not being
+refereenced.
+
+Cc: stable@vger.kernel.org
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+URL: https://www.spinics.net/lists/ceph-devel/msg58622.html
+Fixes: adf0d68701c7 ("ceph: fix unsafe dcache access in ceph_encode_dentry_release")
+Cc: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+---
+ fs/ceph/caps.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
+index 284424659329..6f7a56a800c2 100644
+--- a/fs/ceph/caps.c
++++ b/fs/ceph/caps.c
+@@ -4923,6 +4923,11 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
+ 	int force = 0;
+ 	int ret;
+ 
++	if (!dir) {
++		parent = dget_parent(dentry);
++		dir = d_inode(parent);
++	}
++
+ 	/*
+ 	 * force an record for the directory caps if we have a dentry lease.
+ 	 * this is racy (can't take i_ceph_lock and d_lock together), but it
+@@ -4932,14 +4937,9 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
+ 	spin_lock(&dentry->d_lock);
+ 	if (di->lease_session && di->lease_session->s_mds == mds)
+ 		force = 1;
+-	if (!dir) {
+-		parent = dget(dentry->d_parent);
+-		dir = d_inode(parent);
+-	}
+ 	spin_unlock(&dentry->d_lock);
+ 
+ 	ret = ceph_encode_inode_release(p, dir, mds, drop, unless, force);
+-	dput(parent);
+ 
+ 	cl = ceph_inode_to_client(dir);
+ 	spin_lock(&dentry->d_lock);
+@@ -4952,8 +4952,10 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
+ 		if (IS_ENCRYPTED(dir) && fscrypt_has_encryption_key(dir)) {
+ 			int ret2 = ceph_encode_encrypted_fname(dir, dentry, *p);
+ 
+-			if (ret2 < 0)
++			if (ret2 < 0) {
++				dput(parent);
+ 				return ret2;
++			}
+ 
+ 			rel->dname_len = cpu_to_le32(ret2);
+ 			*p += ret2;
+@@ -4965,6 +4967,8 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
+ 	} else {
+ 		spin_unlock(&dentry->d_lock);
+ 	}
++
++	dput(parent);
+ 	return ret;
+ }
+ 
+-- 
+2.39.1
+
