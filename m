@@ -2,37 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ADD17EF054
-	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 11:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6A27EF062
+	for <lists+stable@lfdr.de>; Fri, 17 Nov 2023 11:30:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235741AbjKQK2v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 05:28:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44052 "EHLO
+        id S230468AbjKQKao (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 17 Nov 2023 05:30:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235751AbjKQK2o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 05:28:44 -0500
+        with ESMTP id S230240AbjKQKan (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 05:30:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4581730;
-        Fri, 17 Nov 2023 02:28:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41CFC433C7;
-        Fri, 17 Nov 2023 10:28:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C798131;
+        Fri, 17 Nov 2023 02:30:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F8B3C433C7;
+        Fri, 17 Nov 2023 10:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700216918;
-        bh=QCversjCzEUGiXNxUKjPeJo0oZmncZLcMGfj60HFPUo=;
+        s=k20201202; t=1700217040;
+        bh=5GTodjIFYK3+cnDn/z8EfJv/gMxH/BGnB0nWLlAzxEM=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k4SzAmwx3eBIGuT+BHJFjLtE1f6T52HZLA5AJsUqVvtMEwIvFzcTw32U/to3g9NBD
-         /lTV9NBlQW7hqkM4qAEnC4ZPGF7/qouW4Y6CtN1T8WaWO8KmZhpG6ge25aI4LRDlTs
-         GSLFNnxtMBO3HedT+Tgk0Ms0R1ImLv9XBM2IdHG947Y3kNRYNsvfaJDRLMkfjvHyQO
-         OBatj4+Arc1qR/Uzue09On/rhS7f2W8yGKhKf3r7WA3wBaxFNMGv0v6MzhCDnHxilY
-         5k/uFcVrK0LaEPjpIEMp63Q+IHkOt8Bk1YqXgWw0BdvbMS9WfIgjA6MgN3wIaVWkiH
-         7moQrx0glT4XQ==
-Date:   Fri, 17 Nov 2023 15:58:29 +0530
-From:   Manivannan Sadhasivam <mani@kernel.org>
-To:     Johan Hovold <johan+linaro@kernel.org>
-Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        b=QuSThNAwH1MfJunYOe28kslPlu44S5J0JAkJPuY3v4rgiTy5E6ZobP+TAr3bCm/cN
+         siDSE8JpO29RINiiQP5ViFcsohJ/ZQ4UEfcTxxJ+jCHr/5z5cr00DbHwmgbR362l26
+         OK6aTsrFZTRSSJRi+qju/VI5E6D6Bcj/6uICNYL6sK+ujEFALEVQNZKRlb4rgsxT5W
+         f/FzTXowZsumJ5FFwZPZHhNkEbUbgumNiwgg+2N1niiXSLf/4NM881jBUmbfmrv/xz
+         vO428BOnJamwe+M1mhRUW/2NKOEvYSmcSuG1kKfgQrz3RdO1YrwxpY6vjyQcYRcsMa
+         3n2En4M7aUp4g==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+        (envelope-from <johan@kernel.org>)
+        id 1r3w7T-0000av-0s;
+        Fri, 17 Nov 2023 11:30:40 +0100
+Date:   Fri, 17 Nov 2023 11:30:39 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Manivannan Sadhasivam <mani@kernel.org>
+Cc:     kernel test robot <lkp@intel.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
         Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Andy Gross <agross@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>,
+        oe-kbuild-all@lists.linux.dev, Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
         Rob Herring <robh@kernel.org>,
@@ -42,15 +48,16 @@ Cc:     Lorenzo Pieralisi <lpieralisi@kernel.org>,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org,
         Michael Bottini <michael.a.bottini@linux.intel.com>,
         "David E . Box" <david.e.box@linux.intel.com>
-Subject: Re: [PATCH 2/6] PCI: vmd: Fix deadlock when enabling ASPM
-Message-ID: <20231117102829.GK250770@thinkpad>
-References: <20231114135553.32301-1-johan+linaro@kernel.org>
- <20231114135553.32301-3-johan+linaro@kernel.org>
+Subject: Re: [PATCH 1/6] PCI/ASPM: Add locked helper for enabling link state
+Message-ID: <ZVdAz4glDioMx5Zw@hovoldconsulting.com>
+References: <20231114135553.32301-2-johan+linaro@kernel.org>
+ <202311152225.ZdVv0ufT-lkp@intel.com>
+ <ZVTsf9A05HQ9UYT-@hovoldconsulting.com>
+ <20231117102724.GI250770@thinkpad>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231114135553.32301-3-johan+linaro@kernel.org>
+In-Reply-To: <20231117102724.GI250770@thinkpad>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -61,45 +68,28 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Nov 14, 2023 at 02:55:49PM +0100, Johan Hovold wrote:
-> The vmd_pm_enable_quirk() helper is called from pci_walk_bus() during
-> probe to enable ASPM for controllers with VMD_FEAT_BIOS_PM_QUIRK set.
+On Fri, Nov 17, 2023 at 03:57:24PM +0530, Manivannan Sadhasivam wrote:
+> On Wed, Nov 15, 2023 at 05:06:23PM +0100, Johan Hovold wrote:
+> > On Wed, Nov 15, 2023 at 10:26:40PM +0800, kernel test robot wrote:
+> >  
+> > > >> drivers/pci/pcie/aspm.c:1186: warning: expecting prototype for pci_enable_link_state(). Prototype was for pci_enable_link_state_locked() instead
+> > > 
+> > > 
+> > > vim +1186 drivers/pci/pcie/aspm.c
+> > > 
+> > >   1172	
+> > >   1173	/**
+> > >   1174	 * pci_enable_link_state - Clear and set the default device link state so that
+> > 
+> > I apparently forgot to update the name here to
+> > 
+> > 	pci_enable_link_state_locked
+> > 
 > 
-> Since pci_walk_bus() already holds a pci_bus_sem read lock, use the new
-> locked helper to enable link states in order to avoid a potential
-> deadlock (e.g. in case someone takes a write lock before reacquiring
-> the read lock).
-> 
-> Fixes: f492edb40b54 ("PCI: vmd: Add quirk to configure PCIe ASPM and LTR")
-> Cc: stable@vger.kernel.org      # 6.3
-> Cc: Michael Bottini <michael.a.bottini@linux.intel.com>
-> Cc: David E. Box <david.e.box@linux.intel.com>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> While fixing the name, please add locking information in description as well.
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+It's already there:
 
-- Mani
+	Context: Caller holds pci_bus_sem read lock.
 
-> ---
->  drivers/pci/controller/vmd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/controller/vmd.c b/drivers/pci/controller/vmd.c
-> index 94ba61fe1c44..0452cbc362ee 100644
-> --- a/drivers/pci/controller/vmd.c
-> +++ b/drivers/pci/controller/vmd.c
-> @@ -751,7 +751,7 @@ static int vmd_pm_enable_quirk(struct pci_dev *pdev, void *userdata)
->  	if (!(features & VMD_FEAT_BIOS_PM_QUIRK))
->  		return 0;
->  
-> -	pci_enable_link_state(pdev, PCIE_LINK_STATE_ALL);
-> +	pci_enable_link_state_locked(pdev, PCIE_LINK_STATE_ALL);
->  
->  	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_LTR);
->  	if (!pos)
-> -- 
-> 2.41.0
-> 
-
--- 
-மணிவண்ணன் சதாசிவம்
+Johan
