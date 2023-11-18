@@ -2,150 +2,227 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D4567F004F
-	for <lists+stable@lfdr.de>; Sat, 18 Nov 2023 16:37:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 469FA7F0057
+	for <lists+stable@lfdr.de>; Sat, 18 Nov 2023 16:39:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbjKRPhB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 18 Nov 2023 10:37:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37560 "EHLO
+        id S229668AbjKRPjW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 18 Nov 2023 10:39:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjKRPhA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 18 Nov 2023 10:37:00 -0500
-Received: from stravinsky.debian.org (stravinsky.debian.org [IPv6:2001:41b8:202:deb::311:108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB664C4;
-        Sat, 18 Nov 2023 07:36:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-        s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=nmqU21qbLBipYaRstMKAglKCu2uL8lE+8Hu6o1FhMEI=; b=I+6tloqdssaYDTvjf127c/KdoC
-        0ijQ7lvtFPm3q6J7iqH9NhXl1qNIGG3fIKug1TAMNjAJtvCOe/wUKhdf0DkfH2fzkcCT9p2NUzPCl
-        r6QwfjYgPl1A2qfXJEBfVPV3fDMs4aYk6MRjmU4gI6sKQ0mEVlV1FK3UEmkhD5orhOmMEEMnTl4hW
-        3PDJyW1VRNs+f5VXm/dfDd1m08/OQ1X94HGsDSq7P3ziiINrydAnApnTq6yPBHn2XG76Aj0S5gXQ3
-        jWYBAgxFS3arDVU4wRnjfdDewoz/KRA06t/LydyiKqDtVbtQaeEvUTRjlfs7PlLO8t88r+9PW/hQ8
-        YIl2IA8g==;
-Received: from authenticated user
-        by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-        (Exim 4.94.2)
-        (envelope-from <aurel32@debian.org>)
-        id 1r4NNK-002GW9-7M; Sat, 18 Nov 2023 15:36:50 +0000
-Received: from ohm.aurel32.net ([2001:bc8:30d7:111::2] helo=ohm.rr44.fr)
-        by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <aurel32@debian.org>)
-        id 1r4NNG-00AvqW-UC; Sat, 18 Nov 2023 16:36:46 +0100
-Received: from aurel32 by ohm.rr44.fr with local (Exim 4.97)
-        (envelope-from <aurel32@debian.org>)
-        id 1r4NNF-00000003iRQ-0d40;
-        Sat, 18 Nov 2023 16:36:45 +0100
-Date:   Sat, 18 Nov 2023 16:36:45 +0100
-From:   Aurelien Jarno <aurel32@debian.org>
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, tsbogend@alpha.franken.de,
-        syq@debian.org, stable@vger.kernel.org
-Subject: Re: [PATCH] MIPS: process: Remove lazy context flags for new kernel
- thread
-Message-ID: <ZVjaDTcjNpD3m0cC@aurel32.net>
-Mail-Followup-To: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        tsbogend@alpha.franken.de, syq@debian.org, stable@vger.kernel.org
-References: <20231026111715.1281728-1-jiaxun.yang@flygoat.com>
- <ZTvQGs/lEpizUFLh@aurel32.net>
+        with ESMTP id S229469AbjKRPjW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 18 Nov 2023 10:39:22 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74525131;
+        Sat, 18 Nov 2023 07:39:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700321958; x=1731857958;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SoEaugOlvtLEtzbNvKRSg3fDFOr14Tg3H/Xwo8luSdM=;
+  b=kruzKMwYW2rt6CBsieUnvmY2kPXBvdSwl8QTRMgF/E2g6iDKPtL1XdVB
+   InQfJw/43uW4Uha1POnI69/4b8F826AkoQC6OiWYo21zv7bq5h60ydDKa
+   Hpp4Ex7vnoJ9ZETSAzkg9v8T2NpVbaPQ9g1pmEbOCiYCgh+6U3TYxmdbq
+   GaEy9bqeStH0lbUMaGLKlue55ZsgjGERLtiUIrNfurz/4cVg6iiHAUhr7
+   Kemr8R9Vobr+Qn/xRR/Uw5/Q0ne88j2XLqF2KbkgyRKomjbYwiY7XxgPX
+   auWly2s8RwNKIW167mqeqszXP16qJI3fQ3vuGKmYdGwXO7beTbPAUWvHV
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10898"; a="390297620"
+X-IronPort-AV: E=Sophos;i="6.04,209,1695711600"; 
+   d="scan'208";a="390297620"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2023 07:39:18 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,209,1695711600"; 
+   d="scan'208";a="7298519"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by fmviesa002.fm.intel.com with ESMTP; 18 Nov 2023 07:39:16 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1r4NPd-000419-0A;
+        Sat, 18 Nov 2023 15:39:13 +0000
+Date:   Sat, 18 Nov 2023 23:38:21 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Prashanth K <quic_prashk@quicinc.com>, stable@vger.kernel.org,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Tejas Joglekar <joglekar@synopsys.com>,
+        linux-kernel@vger.kernel.org, linux-usbyy@vger.kernel.org,
+        Prashanth K <quic_prashk@quicinc.com>
+Subject: Re: [PATCH 1/2] usb: dwc3: core: Add support for
+ xhci-sg-trb-cache-size-quirk
+Message-ID: <202311182312.lJrwZFwZ-lkp@intel.com>
+References: <20231118055455.249088-2-quic_prashk@quicinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZTvQGs/lEpizUFLh@aurel32.net>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Debian-User: aurel32
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231118055455.249088-2-quic_prashk@quicinc.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Hi Prashanth,
 
-On 2023-10-27 16:58, Aurelien Jarno wrote:
-> On 2023-10-26 12:17, Jiaxun Yang wrote:
-> > We received a report from debian infra team, says their build machine
-> > crashes regularly with:
-> > 
-> > [ 4066.698500] do_cpu invoked from kernel context![#1]:
-> > [ 4066.703455] CPU: 1 PID: 76608 Comm: iou-sqp-76326 Not tainted 5.10.0-21-loongson-3 #1 Debian 5.10.162-1
-> > [ 4066.712793] Hardware name: Loongson Lemote-3A4000-7A-1w-V1.00-A1901/Lemote-3A4000-7A-1w-V1.00-A1901, BIOS Loongson-PMON-V3.3-20201222 12/22/2020
-> > [ 4066.725672] $ 0   : 0000000000000000 ffffffff80bf2e48 0000000000000001 9800000200804000
-> > [ 4066.733642] $ 4   : 9800000105115280 ffffffff80db4728 0000000000000008 0000020080000200
-> > [ 4066.741607] $ 8   : 0000000000000001 0000000000000001 0000000000000000 0000000002e85400
-> > [ 4066.749571] $12   : 000000005400cce0 ffffffff80199c00 000000000000036f 000000000000036f
-> > [ 4066.757536] $16   : 980000010025c080 ffffffff80ec4740 0000000000000000 980000000234b8c0
-> > [ 4066.765501] $20   : ffffffff80ec5ce0 9800000105115280 98000001051158a0 0000000000000000
-> > [ 4066.773466] $24   : 0000000000000028 9800000200807e58
-> > [ 4066.781431] $28   : 9800000200804000 9800000200807d40 980000000234b8c0 ffffffff80bf3074
-> > [ 4066.789395] Hi    : 00000000000002fb
-> > [ 4066.792943] Lo    : 00000000428f6816
-> > [ 4066.796500] epc   : ffffffff802177c0 _save_fp+0x10/0xa0
-> > [ 4066.801695] ra    : ffffffff80bf3074 __schedule+0x804/0xe08
-> > [ 4066.807230] Status: 5400cce2 KX SX UX KERNEL EXL
-> > [ 4066.811917] Cause : 1000002c (ExcCode 0b)
-> > [ 4066.815899] PrId  : 0014c004 (ICT Loongson-3)
-> > [ 4066.820228] Modules linked in: asix usbnet mii sg ip6t_REJECT nf_reject_ipv6 ip6table_filter ip6_tables nfnetlink_log nfnetlink xt_hashlimit ipt_REJECT nf_reject_ipv4 xt_NFLOG xt_multiport xt_tcpudp xt_state xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c iptable_filter sch_fq tcp_bbr fuse drm drm_panel_orientation_quirks configfs ip_tables x_tables autofs4 ext4 crc16 mbcache jbd2 crc32c_generic ohci_pci dm_mod r8169 realtek mdio_devres ohci_hcd ehci_pci of_mdio xhci_pci fixed_phy xhci_hcd ehci_hcd libphy usbcore usb_common
-> > [ 4066.868085] Process iou-sqp-76326 (pid: 76608, threadinfo=0000000056dd346c, task=000000001209ac62, tls=000000fff18298e0)
-> > [ 4066.878897] Stack : ffffffff80ec0000 0000000000000000 ffffffff80ec0000 980000010db34100
-> > [ 4066.886867]         9800000100000004 d253a55201683fdc 9800000105115280 0000000000000000
-> > [ 4066.894832]         0000000000000000 0000000000000001 980000010db340e8 0000000000000001
-> > [ 4066.902796]         0000000000000004 0000000000000000 980000010db33d28 ffffffff80bf36d0
-> > [ 4066.910761]         980000010db340e8 980000010db34100 980000010db340c8 ffffffff8070d740
-> > [ 4066.918726]         980000010946cc80 9800000104b56c80 980000010db340c0 0000000000000000
-> > [ 4066.926690]         ffffffff80ec0000 980000010db340c8 980000010025c080 ffffffff80ec5ce0
-> > [ 4066.934654]         0000000000000000 9800000105115280 ffffffff802c59b8 980000010db34108
-> > [ 4066.942619]         980000010db34108 2d7071732d756f69 ffff003632333637 d253a55201683fdc
-> > [ 4066.950585]         ffffffff8070d1c8 980000010db340c0 98000001092276c8 000000007400cce0
-> > [ 4066.958552]         ...
-> > [ 4066.960981] Call Trace:
-> > [ 4066.963414] [<ffffffff802177c0>] _save_fp+0x10/0xa0
-> > [ 4066.968270] [<ffffffff80bf3074>] __schedule+0x804/0xe08
-> > [ 4066.973462] [<ffffffff80bf36d0>] schedule+0x58/0x150
-> > [ 4066.978397] [<ffffffff8070d740>] io_sq_thread+0x578/0x5a0
-> > [ 4066.983764] [<ffffffff8020518c>] ret_from_kernel_thread+0x14/0x1c
-> > [ 4066.989823]
-> > [ 4066.991297] Code: 000c6940  05a10011  00000000 <f4810af0> f4830b10  f4850b30  f4870b50  f4890b70  f48b0b90
-> > 
-> > It seems like kernel is trying to save a FP context for a kthread.
-> > Since we don't use FPU in kernel for now, TIF_USEDFPU must be set
-> > accidentally for that kthread.
-> > 
-> > Inspecting the code it seems like create_io_thread may be invoked
-> > from threads that have FP context alive, causing TIF_USEDFPU to be
-> > copied from that context to kthread unexpectedly.
-> > 
-> > Move around code blocks to ensure flags regarding lazy hardware
-> > context get cleared for kernel threads as well.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Aurelien Jarno <aurel32@debian.org>
-> > Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> 
-> Thanks for the patch. In the meantime we have found that the problem is
-> reproducible by building the kitinerary package. The crash happens when
-> cmake starts the build. It's not impossible that other packages are able
-> to also trigger the crash, but we haven't identified them yet.
-> 
-> Anyway, I have been able to test a backport of the patch onto the 5.10
-> kernel (with minor adjustments) and I confirm it fixes the reported
-> issue.
-> 
-> Tested-by: Aurelien Jarno <aurel32@debian.org>
+kernel test robot noticed the following build errors:
 
-It seems that this patch hasn't been merged yet, either in Linus' tree
-or in the MIPS tree. Is there anything blocking?
+[auto build test ERROR on usb/usb-testing]
+[also build test ERROR on usb/usb-next usb/usb-linus linus/master v6.7-rc1 next-20231117]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Regards
-Aurelien
+url:    https://github.com/intel-lab-lkp/linux/commits/Prashanth-K/usb-dwc3-core-Add-support-for-xhci-sg-trb-cache-size-quirk/20231118-135837
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+patch link:    https://lore.kernel.org/r/20231118055455.249088-2-quic_prashk%40quicinc.com
+patch subject: [PATCH 1/2] usb: dwc3: core: Add support for xhci-sg-trb-cache-size-quirk
+config: hexagon-randconfig-002-20231118 (https://download.01.org/0day-ci/archive/20231118/202311182312.lJrwZFwZ-lkp@intel.com/config)
+compiler: clang version 17.0.0 (https://github.com/llvm/llvm-project.git 4a5ac14ee968ff0ad5d2cc1ffa0299048db4c88a)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231118/202311182312.lJrwZFwZ-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311182312.lJrwZFwZ-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from drivers/usb/dwc3/host.c:10:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:337:
+   include/asm-generic/io.h:547:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     547 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:560:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     560 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/usb/dwc3/host.c:10:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:337:
+   include/asm-generic/io.h:573:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     573 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/usb/dwc3/host.c:10:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:13:
+   In file included from arch/hexagon/include/asm/io.h:337:
+   include/asm-generic/io.h:584:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     584 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:594:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     594 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:604:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     604 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+>> drivers/usb/dwc3/host.c:66:26: error: variable has incomplete type 'struct xhci_plat_priv'
+      66 |         struct xhci_plat_priv   dwc3_xhci_plat_priv = {0};
+         |                                 ^
+   drivers/usb/dwc3/host.c:66:9: note: forward declaration of 'struct xhci_plat_priv'
+      66 |         struct xhci_plat_priv   dwc3_xhci_plat_priv = {0};
+         |                ^
+>> drivers/usb/dwc3/host.c:92:33: error: use of undeclared identifier 'XHCI_SG_TRB_CACHE_SIZE_QUIRK'
+      92 |                 dwc3_xhci_plat_priv.quirks |= XHCI_SG_TRB_CACHE_SIZE_QUIRK;
+         |                                               ^
+   6 warnings and 2 errors generated.
+
+
+vim +66 drivers/usb/dwc3/host.c
+
+    61	
+    62	int dwc3_host_init(struct dwc3 *dwc)
+    63	{
+    64		struct property_entry	props[4];
+    65		struct platform_device	*xhci;
+  > 66		struct xhci_plat_priv   dwc3_xhci_plat_priv = {0};
+    67		int			ret, irq;
+    68		int			prop_idx = 0;
+    69	
+    70		irq = dwc3_host_get_irq(dwc);
+    71		if (irq < 0)
+    72			return irq;
+    73	
+    74		xhci = platform_device_alloc("xhci-hcd", PLATFORM_DEVID_AUTO);
+    75		if (!xhci) {
+    76			dev_err(dwc->dev, "couldn't allocate xHCI device\n");
+    77			return -ENOMEM;
+    78		}
+    79	
+    80		xhci->dev.parent	= dwc->dev;
+    81	
+    82		dwc->xhci = xhci;
+    83	
+    84		ret = platform_device_add_resources(xhci, dwc->xhci_resources,
+    85							DWC3_XHCI_RESOURCES_NUM);
+    86		if (ret) {
+    87			dev_err(dwc->dev, "couldn't add resources to xHCI device\n");
+    88			goto err;
+    89		}
+    90	
+    91		if (dwc->xhci_sg_trb_cache_size_quirk)
+  > 92			dwc3_xhci_plat_priv.quirks |= XHCI_SG_TRB_CACHE_SIZE_QUIRK;
+    93	
+    94		ret = platform_device_add_data(xhci, &dwc3_xhci_plat_priv,
+    95						sizeof(dwc3_xhci_plat_priv));
+    96		if (ret)
+    97			goto err;
+    98	
+    99		memset(props, 0, sizeof(struct property_entry) * ARRAY_SIZE(props));
+   100	
+   101		if (dwc->usb3_lpm_capable)
+   102			props[prop_idx++] = PROPERTY_ENTRY_BOOL("usb3-lpm-capable");
+   103	
+   104		if (dwc->usb2_lpm_disable)
+   105			props[prop_idx++] = PROPERTY_ENTRY_BOOL("usb2-lpm-disable");
+   106	
+   107		/**
+   108		 * WORKAROUND: dwc3 revisions <=3.00a have a limitation
+   109		 * where Port Disable command doesn't work.
+   110		 *
+   111		 * The suggested workaround is that we avoid Port Disable
+   112		 * completely.
+   113		 *
+   114		 * This following flag tells XHCI to do just that.
+   115		 */
+   116		if (DWC3_VER_IS_WITHIN(DWC3, ANY, 300A))
+   117			props[prop_idx++] = PROPERTY_ENTRY_BOOL("quirk-broken-port-ped");
+   118	
+   119		if (prop_idx) {
+   120			ret = device_create_managed_software_node(&xhci->dev, props, NULL);
+   121			if (ret) {
+   122				dev_err(dwc->dev, "failed to add properties to xHCI\n");
+   123				goto err;
+   124			}
+   125		}
+   126	
+   127		ret = platform_device_add(xhci);
+   128		if (ret) {
+   129			dev_err(dwc->dev, "failed to register xHCI device\n");
+   130			goto err;
+   131		}
+   132	
+   133		return 0;
+   134	err:
+   135		platform_device_put(xhci);
+   136		return ret;
+   137	}
+   138	
 
 -- 
-Aurelien Jarno                          GPG: 4096R/1DDD8C9B
-aurelien@aurel32.net                     http://aurel32.net
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
