@@ -2,118 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA6D37EFCED
-	for <lists+stable@lfdr.de>; Sat, 18 Nov 2023 02:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 526017EFDEE
+	for <lists+stable@lfdr.de>; Sat, 18 Nov 2023 06:55:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232593AbjKRBSQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 17 Nov 2023 20:18:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56002 "EHLO
+        id S230036AbjKRFze (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 18 Nov 2023 00:55:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232479AbjKRBSP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 17 Nov 2023 20:18:15 -0500
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77D06194
-        for <stable@vger.kernel.org>; Fri, 17 Nov 2023 17:18:11 -0800 (PST)
-Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
-        by cmsmtp with ESMTPS
-        id 45y7ratpxWcCI49yMrDGkq; Sat, 18 Nov 2023 01:18:10 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id 49yLrxOMbqmEo49yLrUqfK; Sat, 18 Nov 2023 01:18:10 +0000
-X-Authority-Analysis: v=2.4 cv=P+8pOwMu c=1 sm=1 tr=0 ts=655810d2
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=XFdaU8tal97uqFnNbpwA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=hhRvX3KXz/8AkEk+OrqEncluUTlqt9mXbv+0o5iH0oc=; b=E7GJrUg5+IiB92oB18U99HLHTX
-        +QEaYtWucbDoZ9AsxNRuV0Hj3IFCHCVhUn3cEb4C4En6t9mU4S42a4FH8fLL15/VRNXSRkDu+ZEEK
-        XUseWMyYO5uHdz3XL9BP7qX916KO3Ua6oexyVVahExJFtMkmpBvK1oB4UTdfqzDf0xoOmbOR1hx5L
-        EavRqZ0my4Ez1vVeXEKRU7eaRTQKSKYlP3dIraX8Gw/MBZivsHn3j68BD/IqO/w2yh4cpTZsgg7DD
-        tb9cZoVt94Vxcfmxw31jgbTKy+3T2QmSUz7WaBqaz5zX1KIP4F3PCoDUQhXQ/FQNYI2xtFT+4PXar
-        lC/uUCjA==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:55590 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.2)
-        (envelope-from <re@w6rz.net>)
-        id 1r49yJ-001zmw-0W;
-        Fri, 17 Nov 2023 18:18:07 -0700
-Subject: Re: [PATCH 5.15 000/244] 5.15.139-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231115203548.387164783@linuxfoundation.org>
-In-Reply-To: <20231115203548.387164783@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <953bcc5f-a1bf-81a7-4307-09c115752156@w6rz.net>
-Date:   Fri, 17 Nov 2023 17:18:04 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S229737AbjKRFzd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 18 Nov 2023 00:55:33 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68C60A6;
+        Fri, 17 Nov 2023 21:55:30 -0800 (PST)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AI5tQuq012222;
+        Sat, 18 Nov 2023 05:55:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : mime-version : content-transfer-encoding :
+ content-type; s=qcppdkim1;
+ bh=XkzqL/v0aF/Xff++T7DKcmRyR6pAyMIgG6jmrte+QBw=;
+ b=gijVk/bg7Tp6kZHz1g54dmMFde+5Z3fvanFqFjVeOdc6J4mwY2gLLMY6V22yVitUSdPs
+ N/PWft+QasFbfC6Dn5SzZh+NbbleQ72yqfW7cnrQIv4IT2UmxpgJm3iuoi95qK3Z2j1S
+ lX/FuG5Eu5KUJvRl4NF6+qiz9ksr5aJ6TpBNxxYKHdD5RQAXR/YvGwmKLK6DCSTIjtHn
+ V4p4mhqCZa1ZrgHlux/X83nko9RfVern5IraA0GU9VZAbFfEqi62ABS6fQonWfV5r+S5
+ +WWs9zIuKvXusVLYhbUHG2XAv2JOgf2xLZWeu//Mjnoi/0tNBh4Q/VYTB6t0eeGhBLrq uQ== 
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uem80g7ny-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 18 Nov 2023 05:55:26 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AI5tPap014884
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sat, 18 Nov 2023 05:55:25 GMT
+Received: from hu-prashk-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Fri, 17 Nov 2023 21:55:22 -0800
+From:   Prashanth K <quic_prashk@quicinc.com>
+To:     <stable@vger.kernel.org>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+CC:     Mathias Nyman <mathias.nyman@intel.com>,
+        Tejas Joglekar <joglekar@synopsys.com>,
+        <linux-kernel@vger.kernel.org>, <linux-usbyy@vger.kernel.org>,
+        Prashanth K <quic_prashk@quicinc.com>
+Subject: [PATCH 0/2] Add support for xhci-sg-trb-cache-size-quirk
+Date:   Sat, 18 Nov 2023 11:24:53 +0530
+Message-ID: <20231118055455.249088-1-quic_prashk@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1r49yJ-001zmw-0W
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:55590
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfIyelMyYXeB/okunnubwwgDqo4zBaO1+YhfJrRcw4wuO8I/zGRCpL0SOxIwu/NTQVp6uwSG2KMMt+e3wQ9pm+iBFV233HN/Lnv8lMy8JRXd7I0tw9YkB
- TQiIuKNMKs+W6h7uE+5ububeYdmTUl8Hn6fysoKAXrkPmNQxKXxQLgYbYTAWHANmwzUsq0ayecsVgg==
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: MPo5qwPDp8812BjEAH0TRrqMOGTQWtIk
+X-Proofpoint-ORIG-GUID: MPo5qwPDp8812BjEAH0TRrqMOGTQWtIk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-18_04,2023-11-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxlogscore=643
+ adultscore=0 priorityscore=1501 phishscore=0 malwarescore=0
+ impostorscore=0 lowpriorityscore=0 mlxscore=0 spamscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311180041
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/15/23 12:33 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.139 release.
-> There are 244 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 17 Nov 2023 20:34:45 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.139-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+XHCI_SG_TRB_CACHE_SIZE_QUIRK was introduced in XHCI to resolve
+XHC timeout while using SG buffers, which was seen Synopsys XHCs.
+The support for this isn't present in DWC3 layer, this series
+enables XHCI_SG_TRB_CACHE_SIZE_QUIRK since this is needed for
+DWC3 controller.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Prashanth K (2):
+  usb: dwc3: core: Add support for xhci-sg-trb-cache-size-quirk
+  dt-bindings: usb: snps,dwc3: Add 'xhci-sg-trb-cache-size-quirk'
 
-Tested-by: Ron Economos <re@w6rz.net>
+ Documentation/devicetree/bindings/usb/snps,dwc3.yaml | 7 +++++++
+ drivers/usb/dwc3/core.c                              | 2 ++
+ drivers/usb/dwc3/core.h                              | 3 +++
+ drivers/usb/dwc3/host.c                              | 9 +++++++++
+ 4 files changed, 21 insertions(+)
+
+-- 
+2.7.4
 
