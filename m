@@ -2,57 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA9EC7F0831
-	for <lists+stable@lfdr.de>; Sun, 19 Nov 2023 18:56:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5727E7F0850
+	for <lists+stable@lfdr.de>; Sun, 19 Nov 2023 19:23:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231384AbjKSR4D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 19 Nov 2023 12:56:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39964 "EHLO
+        id S231373AbjKSSX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 19 Nov 2023 13:23:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjKSR4B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 12:56:01 -0500
-Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B75992;
-        Sun, 19 Nov 2023 09:55:57 -0800 (PST)
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2c87adce180so9666321fa.0;
-        Sun, 19 Nov 2023 09:55:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700416556; x=1701021356; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=VraNzXX1s89jJsaeErTb642CPhxkjKjIEcqW2csEjNA=;
-        b=VCi+O8RQBeYEjwSfBZHJTsaRKaXJe7BDY5e8osh85Tln2i8IJMhDoEUDNE+otq8eo+
-         oFnE3X4uG8eM8F1w6LQ9kCQePEINK4KDWZ2gdK2zEj0+jS6XCRadRNdGxUuvo/jKpKwK
-         +fM/lEkKu+yrEcGVj58+sTf3Ro6o7bJr9FICz6VtLF5Rbjx2YLiApzpa8OtZ+2xtKhYM
-         +MERoVaVA1XM5Cru+AJspQmBHFFXkjFyAyfVlnBnlhuKi4bAY5IrJO7i6OQ7omqsCRlC
-         ASNjD9OrzTvP6jHkAOQYrGWLPDB781HhaEtZbgGO4FsNhFCzea4jSGa7jr0+BanuqyGV
-         md5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700416556; x=1701021356;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VraNzXX1s89jJsaeErTb642CPhxkjKjIEcqW2csEjNA=;
-        b=r7FrfvXZBplJ3tgqySQQjnOVx/wZmPpeeUwpxNZBMLZ2qjH7h4xqTNrR60lsRKChKd
-         qtg2RKJAlKhaFGn+G2Cvj5N27r1IoENAI97eXGIdlS81oDtBL0PTEG3KzK8zJ5mNO0/U
-         AXMj6pxn0jI7CyNT2o0PkQCKiGr4y8mNx40abXMiKg5l131a4sCCtce3RGYZjmmFeUra
-         QCeGPJkK1DiE3WpZH82oh2u6lj6lrYEaQAldHt4UW69QKMRoT4r2zqB9Qxf2W0k3/xWM
-         /85DcJ04DVl4/ej9dfZ8nO8sX8by0lDvvExGP93+qYXy5hrsbI+haoWxMn7vL9Nm4DVs
-         bGCQ==
-X-Gm-Message-State: AOJu0YxmEDVvQWHXjKBHDADKbNTa2GDXEK498zWKH6A3V8QJElBJ0qOb
-        56aO0P8X7RJhrK2WL5wj3O4=
-X-Google-Smtp-Source: AGHT+IGgu10IQwTu+zTi/MTqlt+k+z8Jiv+tSG/OcaxjZ2N246urtxC/simwmc0ucnLnbfKMaWvmkQ==
-X-Received: by 2002:a05:651c:124f:b0:2c8:7132:d398 with SMTP id h15-20020a05651c124f00b002c87132d398mr3106547ljh.17.1700416555007;
-        Sun, 19 Nov 2023 09:55:55 -0800 (PST)
-Received: from Ansuel-xps. (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.gmail.com with ESMTPSA id z18-20020a5d4c92000000b00331424a1266sm8599729wrs.84.2023.11.19.09.55.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Nov 2023 09:55:54 -0800 (PST)
-Message-ID: <655a4c2a.5d0a0220.ead80.bb5d@mx.google.com>
-X-Google-Original-Message-ID: <ZVpMI1qAEGzklvVQ@Ansuel-xps.>
-Date:   Sun, 19 Nov 2023 18:55:47 +0100
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Andrew Lunn <andrew@lunn.ch>
+        with ESMTP id S229508AbjKSSX3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 13:23:29 -0500
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D536C2;
+        Sun, 19 Nov 2023 10:23:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+        Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+        Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+        bh=+8uIKvl0kla6HC02nY6mUS9xeIycT+TgAHwRn6pDWYQ=; b=Xbx596MY1btI8UJD6Kdskrd8b+
+        5zDwpCidjJmkyVlQ5kjn5u245gZeUnrn17PU9kWEInz5soKXjaZ1SB07/rgMWQ6gLUp8V0Y5D8Asp
+        j8KGFPc4U3o3Hxf0J7HJuiHVfa3RMXk0O1xLLOW5S4XbWQRli/c6OO9Tv/lBoG0v5SfU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1r4mRx-000a50-TY; Sun, 19 Nov 2023 19:23:17 +0100
+Date:   Sun, 19 Nov 2023 19:23:17 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Christian Marangi <ansuelsmth@gmail.com>
 Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
         Russell King <linux@armlinux.org.uk>,
         "David S. Miller" <davem@davemloft.net>,
@@ -64,55 +39,61 @@ Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
         stable@vger.kernel.org
 Subject: Re: [net PATCH] net: phy: correctly check soft_reset ret ONLY if
  defined for PHY
+Message-ID: <ca2dc1d5-ff3c-49c9-8b83-28d17c2e9138@lunn.ch>
 References: <20231119151258.20201-1-ansuelsmth@gmail.com>
  <5d35be32-58bb-465d-91d9-ca3e8029373e@lunn.ch>
+ <655a4c2a.5d0a0220.ead80.bb5d@mx.google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5d35be32-58bb-465d-91d9-ca3e8029373e@lunn.ch>
+In-Reply-To: <655a4c2a.5d0a0220.ead80.bb5d@mx.google.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Nov 19, 2023 at 05:24:00PM +0100, Andrew Lunn wrote:
-> On Sun, Nov 19, 2023 at 04:12:58PM +0100, Christian Marangi wrote:
-> > soft_reset call for phy_init_hw had multiple revision across the years
-> > and the implementation goes back to 2014. Originally was a simple call
-> > to write the generic PHY reset BIT, it was then moved to a dedicated
-> > function. It was then added the option for PHY driver to define their
-> > own special way to reset the PHY. Till this change, checking for ret was
-> > correct as it was always filled by either the generic reset or the
-> > custom implementation. This changed tho with commit 6e2d85ec0559 ("net:
-> > phy: Stop with excessive soft reset"), as the generic reset call to PHY
-> > was dropped but the ret check was never made entirely optional and
-> > dependent whether soft_reset was defined for the PHY driver or not.
+On Sun, Nov 19, 2023 at 06:55:47PM +0100, Christian Marangi wrote:
+> On Sun, Nov 19, 2023 at 05:24:00PM +0100, Andrew Lunn wrote:
+> > On Sun, Nov 19, 2023 at 04:12:58PM +0100, Christian Marangi wrote:
+> > > soft_reset call for phy_init_hw had multiple revision across the years
+> > > and the implementation goes back to 2014. Originally was a simple call
+> > > to write the generic PHY reset BIT, it was then moved to a dedicated
+> > > function. It was then added the option for PHY driver to define their
+> > > own special way to reset the PHY. Till this change, checking for ret was
+> > > correct as it was always filled by either the generic reset or the
+> > > custom implementation. This changed tho with commit 6e2d85ec0559 ("net:
+> > > phy: Stop with excessive soft reset"), as the generic reset call to PHY
+> > > was dropped but the ret check was never made entirely optional and
+> > > dependent whether soft_reset was defined for the PHY driver or not.
+> > > 
+> > > Luckly nothing was ever added before the soft_reset call so the ret
+> > > check (in the case where a PHY didn't had soft_reset defined) although
+> > > wrong, never caused problems as ret was init 0 at the start of
+> > > phy_init_hw.
+> > > 
+> > > To prevent any kind of problem and to make the function cleaner and more
+> > > robust, correctly move the ret check if the soft_reset section making it
+> > > optional and needed only with the function defined.
 > > 
-> > Luckly nothing was ever added before the soft_reset call so the ret
-> > check (in the case where a PHY didn't had soft_reset defined) although
-> > wrong, never caused problems as ret was init 0 at the start of
-> > phy_init_hw.
+> > I think this should target net-next, not net. It does not appear to be
+> > an problem which actually affects somebody using stable kernels.
 > > 
-> > To prevent any kind of problem and to make the function cleaner and more
-> > robust, correctly move the ret check if the soft_reset section making it
-> > optional and needed only with the function defined.
+> > The change itself looks O.K.
+> >
 > 
-> I think this should target net-next, not net. It does not appear to be
-> an problem which actually affects somebody using stable kernels.
-> 
-> The change itself looks O.K.
->
+> Ok to resubmit or should I wait 24h? (asking as it's a very simple
+> change)
 
-Ok to resubmit or should I wait 24h? (asking as it's a very simple
-change)
+Please wait 24 hours.
 
-Also is the stable Cc ok?
-(that was the main reason I added the net tag to this)
+> Also is the stable Cc ok?
+> (that was the main reason I added the net tag to this)
 
--- 
-	Ansuel
+No drop the Cc: Stable. Your description of the problem does not fit
+the rules for stable.
+
+    Andrew
