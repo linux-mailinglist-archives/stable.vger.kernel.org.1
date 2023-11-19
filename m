@@ -2,98 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A61B7F07A7
-	for <lists+stable@lfdr.de>; Sun, 19 Nov 2023 17:54:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA9EC7F0831
+	for <lists+stable@lfdr.de>; Sun, 19 Nov 2023 18:56:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231441AbjKSQyB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 19 Nov 2023 11:54:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43528 "EHLO
+        id S231384AbjKSR4D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 19 Nov 2023 12:56:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231435AbjKSQyB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 11:54:01 -0500
-Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43AAE11D
-        for <stable@vger.kernel.org>; Sun, 19 Nov 2023 08:53:56 -0800 (PST)
-Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-35ab17957c3so13769405ab.3
-        for <stable@vger.kernel.org>; Sun, 19 Nov 2023 08:53:56 -0800 (PST)
+        with ESMTP id S229508AbjKSR4B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 12:56:01 -0500
+Received: from mail-lj1-x22c.google.com (mail-lj1-x22c.google.com [IPv6:2a00:1450:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B75992;
+        Sun, 19 Nov 2023 09:55:57 -0800 (PST)
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2c87adce180so9666321fa.0;
+        Sun, 19 Nov 2023 09:55:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1700412835; x=1701017635; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gUS1v3wNMMoGJxYMVaBxxhfLYqoOUIyNu6oyB8+7CoY=;
-        b=wbzQOQcXZjPccipsqkggz9I7/TGZ7HrYMG6u5StgQPR/7lrAu0oK1CDxNdjYo4dFNM
-         yz1XWPaVCXhAXfPE1QRk8aGqqtYvJXdDpWNvt6l6hRjXt0jEadYcIhFqmRL6t8VsdsJD
-         7uglHbQUC4YRD3y9WUKVp2ePcZIMB5oVH2mNNXegVVj9JRGCXFjO3v5qAlZ+XCI+45a9
-         ZeRAJsEo/YP/l0XJm7xCjt7z0U/8IsYwGvSN0zUMXGnUmXPGR1AANwHwFOrWt0GcJ5LC
-         CInrVPuCDy0PcjfaTcOfVaXtit6hmJl+SBVckbveiuZor29rZfzKAtGLq0FiS/a/VkA7
-         dwwA==
+        d=gmail.com; s=20230601; t=1700416556; x=1701021356; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=VraNzXX1s89jJsaeErTb642CPhxkjKjIEcqW2csEjNA=;
+        b=VCi+O8RQBeYEjwSfBZHJTsaRKaXJe7BDY5e8osh85Tln2i8IJMhDoEUDNE+otq8eo+
+         oFnE3X4uG8eM8F1w6LQ9kCQePEINK4KDWZ2gdK2zEj0+jS6XCRadRNdGxUuvo/jKpKwK
+         +fM/lEkKu+yrEcGVj58+sTf3Ro6o7bJr9FICz6VtLF5Rbjx2YLiApzpa8OtZ+2xtKhYM
+         +MERoVaVA1XM5Cru+AJspQmBHFFXkjFyAyfVlnBnlhuKi4bAY5IrJO7i6OQ7omqsCRlC
+         ASNjD9OrzTvP6jHkAOQYrGWLPDB781HhaEtZbgGO4FsNhFCzea4jSGa7jr0+BanuqyGV
+         md5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700412835; x=1701017635;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gUS1v3wNMMoGJxYMVaBxxhfLYqoOUIyNu6oyB8+7CoY=;
-        b=lzFhoP09y8xW6DrGLw8WsD8FWidYGwThKVSpchUWLfrrhf+dgCqgBn/q8HgINZmIzi
-         dXHJwWDeg/6A5YubRJVB+4nL1UZwgoHXkpzu4Mw+z/rvixUZ51vrP6pPQAPeI3BupfQX
-         dHS95eZfwtiID26Xc6aF6AQ5LKMtuozSPl+LPlgixrHxQWuacdERMlfU7Cqa45BszVS+
-         c4YED0Vol1FimpGCy325tcAbG3K1tJ8WqX00GQWah2h28fCWawQq6OyvEocLW0/qTZv5
-         spwlDHmq3fJdZSLXbGd4edYNIgV20e4DjN+/WiWznExcunMo9JVXP5/AJKGWpsw0MCtV
-         oFfA==
-X-Gm-Message-State: AOJu0YyzPBxYVTjxRPVtKGpJX88tfJNF5z3FNs0oNfWZKJzv/qqMKFvz
-        QOitA0QUSVtM1j+ZtUM8HaSQFQ==
-X-Google-Smtp-Source: AGHT+IGZk8yR7OXDxLijh8akMDnL2tiCC7udbApOFmoHTqjULbw6221/2olHGvdVIKe0x5tKMk3c7w==
-X-Received: by 2002:a05:6e02:154f:b0:357:6bd2:b2ad with SMTP id j15-20020a056e02154f00b003576bd2b2admr7366973ilu.22.1700412835617;
-        Sun, 19 Nov 2023 08:53:55 -0800 (PST)
-Received: from hermes.local (204-195-123-141.wavecable.com. [204.195.123.141])
-        by smtp.gmail.com with ESMTPSA id fh6-20020a056a00390600b0069343e474bcsm4537415pfb.104.2023.11.19.08.53.54
+        d=1e100.net; s=20230601; t=1700416556; x=1701021356;
+        h=in-reply-to:content-disposition:mime-version:references:subject:cc
+         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VraNzXX1s89jJsaeErTb642CPhxkjKjIEcqW2csEjNA=;
+        b=r7FrfvXZBplJ3tgqySQQjnOVx/wZmPpeeUwpxNZBMLZ2qjH7h4xqTNrR60lsRKChKd
+         qtg2RKJAlKhaFGn+G2Cvj5N27r1IoENAI97eXGIdlS81oDtBL0PTEG3KzK8zJ5mNO0/U
+         AXMj6pxn0jI7CyNT2o0PkQCKiGr4y8mNx40abXMiKg5l131a4sCCtce3RGYZjmmFeUra
+         QCeGPJkK1DiE3WpZH82oh2u6lj6lrYEaQAldHt4UW69QKMRoT4r2zqB9Qxf2W0k3/xWM
+         /85DcJ04DVl4/ej9dfZ8nO8sX8by0lDvvExGP93+qYXy5hrsbI+haoWxMn7vL9Nm4DVs
+         bGCQ==
+X-Gm-Message-State: AOJu0YxmEDVvQWHXjKBHDADKbNTa2GDXEK498zWKH6A3V8QJElBJ0qOb
+        56aO0P8X7RJhrK2WL5wj3O4=
+X-Google-Smtp-Source: AGHT+IGgu10IQwTu+zTi/MTqlt+k+z8Jiv+tSG/OcaxjZ2N246urtxC/simwmc0ucnLnbfKMaWvmkQ==
+X-Received: by 2002:a05:651c:124f:b0:2c8:7132:d398 with SMTP id h15-20020a05651c124f00b002c87132d398mr3106547ljh.17.1700416555007;
+        Sun, 19 Nov 2023 09:55:55 -0800 (PST)
+Received: from Ansuel-xps. (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.gmail.com with ESMTPSA id z18-20020a5d4c92000000b00331424a1266sm8599729wrs.84.2023.11.19.09.55.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 19 Nov 2023 08:53:55 -0800 (PST)
-Date:   Sun, 19 Nov 2023 08:53:53 -0800
-From:   Stephen Hemminger <stephen@networkplumber.org>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-        kys@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        davem@davemloft.net, linux-kernel@vger.kernel.org,
-        Long Li <longli@microsoft.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net,v5, 3/3] hv_netvsc: Mark VF as slave before exposing
- it to user-mode
-Message-ID: <20231119085353.757792c1@hermes.local>
-In-Reply-To: <1700411023-14317-4-git-send-email-haiyangz@microsoft.com>
-References: <1700411023-14317-1-git-send-email-haiyangz@microsoft.com>
-        <1700411023-14317-4-git-send-email-haiyangz@microsoft.com>
+        Sun, 19 Nov 2023 09:55:54 -0800 (PST)
+Message-ID: <655a4c2a.5d0a0220.ead80.bb5d@mx.google.com>
+X-Google-Original-Message-ID: <ZVpMI1qAEGzklvVQ@Ansuel-xps.>
+Date:   Sun, 19 Nov 2023 18:55:47 +0100
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [net PATCH] net: phy: correctly check soft_reset ret ONLY if
+ defined for PHY
+References: <20231119151258.20201-1-ansuelsmth@gmail.com>
+ <5d35be32-58bb-465d-91d9-ca3e8029373e@lunn.ch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5d35be32-58bb-465d-91d9-ca3e8029373e@lunn.ch>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, 19 Nov 2023 08:23:43 -0800
-Haiyang Zhang <haiyangz@microsoft.com> wrote:
-
-> From: Long Li <longli@microsoft.com>
+On Sun, Nov 19, 2023 at 05:24:00PM +0100, Andrew Lunn wrote:
+> On Sun, Nov 19, 2023 at 04:12:58PM +0100, Christian Marangi wrote:
+> > soft_reset call for phy_init_hw had multiple revision across the years
+> > and the implementation goes back to 2014. Originally was a simple call
+> > to write the generic PHY reset BIT, it was then moved to a dedicated
+> > function. It was then added the option for PHY driver to define their
+> > own special way to reset the PHY. Till this change, checking for ret was
+> > correct as it was always filled by either the generic reset or the
+> > custom implementation. This changed tho with commit 6e2d85ec0559 ("net:
+> > phy: Stop with excessive soft reset"), as the generic reset call to PHY
+> > was dropped but the ret check was never made entirely optional and
+> > dependent whether soft_reset was defined for the PHY driver or not.
+> > 
+> > Luckly nothing was ever added before the soft_reset call so the ret
+> > check (in the case where a PHY didn't had soft_reset defined) although
+> > wrong, never caused problems as ret was init 0 at the start of
+> > phy_init_hw.
+> > 
+> > To prevent any kind of problem and to make the function cleaner and more
+> > robust, correctly move the ret check if the soft_reset section making it
+> > optional and needed only with the function defined.
 > 
-> When a VF is being exposed form the kernel, it should be marked as "slave"
-> before exposing to the user-mode. The VF is not usable without netvsc
-> running as master. The user-mode should never see a VF without the "slave"
-> flag.
+> I think this should target net-next, not net. It does not appear to be
+> an problem which actually affects somebody using stable kernels.
 > 
-> This commit moves the code of setting the slave flag to the time before
-> VF is exposed to user-mode.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
-> Signed-off-by: Long Li <longli@microsoft.com>
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+> The change itself looks O.K.
+>
 
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
+Ok to resubmit or should I wait 24h? (asking as it's a very simple
+change)
 
+Also is the stable Cc ok?
+(that was the main reason I added the net tag to this)
 
+-- 
+	Ansuel
