@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B68C57F1742
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:28:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67E7B7F1743
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:28:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233923AbjKTP2a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 10:28:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34506 "EHLO
+        id S233910AbjKTP2i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 10:28:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233733AbjKTP23 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:28:29 -0500
+        with ESMTP id S233733AbjKTP2i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:28:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3669B4
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:28:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0498FC433C9;
-        Mon, 20 Nov 2023 15:28:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97FB2A7
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:28:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA36BC433C8;
+        Mon, 20 Nov 2023 15:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700494105;
-        bh=a3sU15B9Knl0xjsUzJClLqAygC84cqpYGPh3/Im0ACs=;
+        s=korg; t=1700494114;
+        bh=rRth1FcDBPLgpP2TvRodh/V9vedkQFkMXWsycA9ytqw=;
         h=Subject:To:Cc:From:Date:From;
-        b=aGri1Xr8oeDAEO+aHoKs5eXiMVUW+eAHvDYC5vA+zQ6FmfxDI9emP8joLBoUtl7nU
-         n+Fknpa8ae8VV3lT1mLH2Sn1ADyxS9scq+KZTrKmVypweKFUIZivkIfxGQ5EdFPG7a
-         LerZLE/V1Lpu2ohRV5SYAnWOf467TvGmsORs+TBc=
-Subject: FAILED: patch "[PATCH] x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and" failed to apply to 6.1-stable tree
+        b=ZRVHYhp01QoRnxPttcMUkusA3GWt4btqnlHNMObsphdXsXXdAyd8hZhnn7pNa9SVU
+         Wrl6YiqxuOpQr1KLpX1lz/fe5LEmkAr+2AoYDQtcLmGtg8ZY1Qpp9KSk44c1qt6YJn
+         sO1VVcPl2UWGkD3M+gTTWgM2RzVPz8eeeWK0tQEs=
+Subject: FAILED: patch "[PATCH] x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and" failed to apply to 5.15-stable tree
 To:     mario.limonciello@amd.com, bhelgaas@google.com,
         iain@orangesquash.org.uk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 20 Nov 2023 16:28:22 +0100
-Message-ID: <2023112022-mutilated-twelve-7956@gregkh>
+Date:   Mon, 20 Nov 2023 16:28:23 +0100
+Message-ID: <2023112023-shifter-dividing-57a0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7d08f21f8c6307cb05cabb8d86e90ff6ccba57e9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112022-mutilated-twelve-7956@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112023-shifter-dividing-57a0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
