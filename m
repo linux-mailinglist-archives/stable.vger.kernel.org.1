@@ -2,86 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 120377F17FE
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:59:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07AD27F1842
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 17:16:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233230AbjKTP7J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 10:59:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48720 "EHLO
+        id S233132AbjKTQQY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 11:16:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232282AbjKTP7I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:59:08 -0500
-Received: from mail-io1-xd2f.google.com (mail-io1-xd2f.google.com [IPv6:2607:f8b0:4864:20::d2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00996ED
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:59:04 -0800 (PST)
-Received: by mail-io1-xd2f.google.com with SMTP id ca18e2360f4ac-7a66bf80fa3so34054939f.0
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:59:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1700495944; x=1701100744; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BBubMyXeMdXPmziILbLDJOUb23evjUP9zHHjc1m1UWU=;
-        b=kgmA+AVf1bqHdCcIeq04xHRa7SIKk9mZkp0aX9jE6fjDInfjNh1/bkr4ZQjGRs0Vuf
-         4WbKUfFUmZyPkW9eoVSTQSKXSBNoEvzfelmquMgjfcr5iIIurskd2j8ZOdrF+CZd/YJJ
-         Nvudq3O7pGhAdLOwDFqOJB9KNEuV9NvBiRR/2MB431cqmVUh1X+mKutocpRWzejItpxJ
-         fhqqF3zCpc53p8zABT0vvsjSmi1WyT5t8n9KN4NLr0zWEGMw7klF1Uba+bZL0+lzV3gd
-         sCes9BBdz54oAMT3xwZJPPRCfAJw0es3VTVVtp0yzGhWLPkQ1qRWWz55ZajBwCg3E34v
-         9rrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700495944; x=1701100744;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BBubMyXeMdXPmziILbLDJOUb23evjUP9zHHjc1m1UWU=;
-        b=Lu8MJYu6/MJPlNOneKy8Z206mso3GcA10YiYlJ0zkEl+AhjYJ5IE0BTiEjvMVWTGTB
-         1l9E/9eDtUfpZB42ydKMX1hF+a5g9eo7DSzNmh6IhSBVcyAR6YfkJ6+kyhfDBgvI+1UM
-         kgS9XORAzExhgVRUoe0NokcC3u7wkgsPoZtHWNaIZNCDuBqy5VXTUadwikEvELVOl8t9
-         2zRaSfoERYPkTvSpC7fNnI6odoRNlJZcSgl1qOKPL86E/uQSv7eGts3TEO8TOCYGTSdG
-         LI0+SwyUa64/WR/Xfir+C6UmuYJSmI8jyzL6m/JSHuT5Lg7JBrBErdPwCx7Q112/Klgx
-         Puvg==
-X-Gm-Message-State: AOJu0YxguC0SolIf35xJ2wroaqfoKIRKU8UmEv9cxRzPoPAeUOY8ZsyD
-        uBkS0q0yI9o0TfO3Z747T8vMjQ==
-X-Google-Smtp-Source: AGHT+IE5IFdCpMdxEiBvnNeLaVyJT3YUK2ggFvrK9aO4Q45E4aJI5sPQZ8IpJpBfrP5cXZo9/UGbnw==
-X-Received: by 2002:a92:dc81:0:b0:35b:cd8:7785 with SMTP id c1-20020a92dc81000000b0035b0cd87785mr997896iln.1.1700495944338;
-        Mon, 20 Nov 2023 07:59:04 -0800 (PST)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id v10-20020a056e0213ca00b003593297c253sm2522408ilj.75.2023.11.20.07.59.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 07:59:03 -0800 (PST)
-Message-ID: <8818a183-84a3-4460-a8ca-73a366ae6153@kernel.dk>
-Date:   Mon, 20 Nov 2023 08:59:02 -0700
+        with ESMTP id S231996AbjKTQQX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 11:16:23 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC09BF4;
+        Mon, 20 Nov 2023 08:16:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31264C433C7;
+        Mon, 20 Nov 2023 16:16:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700496979;
+        bh=0MaPFqn+cznucJKrIbyiZQIJbG+WLSHKNg43LW6FYzo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=f+M7JHDMHn8ZVIT2JxDub7nG01OiwBdMwf6+zh466edwZ60K1AAqZ1ZksTXL3hxiZ
+         MLK4KeLxSkakqe6D/mrFe48elNTGrewsWACuaJ0lazdJ+mEzQUbqbCTL+uGj3RsN3m
+         HecodNDE8QVfthebB1KO9Gz7/wvHdqbTksKGf1+sGZgbpWngA+D2HcGpy1+3xGvCfR
+         fHsmBoa7Sv2deofSjvPqwZZ84mF4G3MC2a2lM+OH0E5uuuXpqN9TA594gFju+HuDMV
+         cbkqKZgIWtUeCmKK94wgRU+N8EvCNgoGfQWkLixLSSt/qvzVsOU88JpkZpz+76nVEf
+         r94+ZqlFDwTNg==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1r56wm-0001vo-1x;
+        Mon, 20 Nov 2023 17:16:28 +0100
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH 2/3] USB: dwc3: qcom: fix wakeup after probe deferral
+Date:   Mon, 20 Nov 2023 17:16:06 +0100
+Message-ID: <20231120161607.7405-3-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231120161607.7405-1-johan+linaro@kernel.org>
+References: <20231120161607.7405-1-johan+linaro@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] io_uring/fs: consider link->flags when getting path for
- LINKAT
-Content-Language: en-US
-To:     Charles Mirabile <cmirabil@redhat.com>,
-        linux-kernel@vger.kernel.org
-Cc:     asml.silence@gmail.com, io-uring@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20231120105545.1209530-1-cmirabil@redhat.com>
-From:   Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20231120105545.1209530-1-cmirabil@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/20/23 3:55 AM, Charles Mirabile wrote:
-> In order for `AT_EMPTY_PATH` to work as expected, the fact
-> that the user wants that behavior needs to make it to `getname_flags`
-> or it will return ENOENT.
+The Qualcomm glue driver is overriding the interrupt trigger types
+defined by firmware when requesting the wakeup interrupts during probe.
 
-Looks good - do you have a liburing test case for this too?
+This can lead to a failure to map the DP/DM wakeup interrupts after a
+probe deferral as the firmware defined trigger types do not match the
+type used for the initial mapping:
 
+	irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
+	irq: type mismatch, failed to map hwirq-15 for interrupt-controller@b220000!
+
+Fix this by not overriding the firmware provided trigger types when
+requesting the wakeup interrupts.
+
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Cc: stable@vger.kernel.org      # 4.18
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/usb/dwc3/dwc3-qcom.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 10fb481d943b..82544374110b 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -549,7 +549,7 @@ static int dwc3_qcom_setup_irq(struct platform_device *pdev)
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "hs_phy_irq failed: %d\n", ret);
+@@ -564,7 +564,7 @@ static int dwc3_qcom_setup_irq(struct platform_device *pdev)
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DP_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dp_hs_phy_irq failed: %d\n", ret);
+@@ -579,7 +579,7 @@ static int dwc3_qcom_setup_irq(struct platform_device *pdev)
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DM_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dm_hs_phy_irq failed: %d\n", ret);
+@@ -594,7 +594,7 @@ static int dwc3_qcom_setup_irq(struct platform_device *pdev)
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 SS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "ss_phy_irq failed: %d\n", ret);
 -- 
-Jens Axboe
-
+2.41.0
 
