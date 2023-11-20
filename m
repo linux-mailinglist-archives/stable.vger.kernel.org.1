@@ -2,59 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AD717F0D9C
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 09:33:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F4C97F0EB7
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 10:14:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232131AbjKTIdz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 03:33:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48446 "EHLO
+        id S232419AbjKTJOR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 04:14:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231948AbjKTIdz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 03:33:55 -0500
+        with ESMTP id S232194AbjKTJOQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 04:14:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D13C690;
-        Mon, 20 Nov 2023 00:33:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FCF3C433C7;
-        Mon, 20 Nov 2023 08:33:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8A9A7;
+        Mon, 20 Nov 2023 01:14:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC520C433C7;
+        Mon, 20 Nov 2023 09:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700469231;
-        bh=tU2UJjlqk1vQaTQxeEVyYUCg/68DHf+RHTSnEAzmp30=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GMmOiQtDqsyX2qx/w3rA46nOXMSMvnjqG5phU3YtYOZ2YLebRcqXPID1lN4qDQS8l
-         R2ReKsdlGBapdPH9C9PkhLilqBqGhz2cH2A9xEDMak0zXCKfvTZVBKL99Fr4myfZdc
-         U2YzIdwsHsanLy+Cqj0lPDUngTA0izxoHjfRB/HX/eGM2JA+vStGuD5ZwwPB+o2wKT
-         91qx+9oUL8M6mae8O7nODkHTS1UWhGM/zKVw7GxldU4ZgR9IxENyiXkP8eIRtZ61HM
-         q7lj2lHs0s5iP7APHfq80VV6nHfvh9jdq5revRID+DVb1GC8ODnqedpC4pHrKRuDxZ
-         ryr8KSdsohzrw==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-        (envelope-from <johan@kernel.org>)
-        id 1r4zjD-0008NN-2v;
-        Mon, 20 Nov 2023 09:33:59 +0100
-Date:   Mon, 20 Nov 2023 09:33:59 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     "David E. Box" <david.e.box@linux.intel.com>
-Cc:     Johan Hovold <johan+linaro@kernel.org>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Nirmal Patel <nirmal.patel@linux.intel.com>,
-        Jonathan Derrick <jonathan.derrick@linux.dev>,
-        linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/6] PCI/ASPM: Add locked helper for enabling link state
-Message-ID: <ZVsZ9-v3r-GPfFhF@hovoldconsulting.com>
-References: <20231114135553.32301-1-johan+linaro@kernel.org>
- <20231114135553.32301-2-johan+linaro@kernel.org>
- <f2d1476199e974dd1d303b22c25594f066e85de5.camel@linux.intel.com>
+        s=k20201202; t=1700471652;
+        bh=YC2fBnzVsOvUYuHddpl1ZvoG6yqJit5mIfXZybSlNq8=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=AeODOxsJhBuNNjeY1sIQ2mI5oUhkz9zKF0v4KGKU/l040PVdnpKZPxBsvrSzlIpwA
+         pAXd6xlMDxcbQzGCLJlOuYB6VNCxEgsEJsQPC4fULMQJi9ngzxBOZs6YkshumlTuIY
+         A3KLI2SOYjA528btax1kMACN4ZUvQCCWVyVBBGnCuvvWtge4mpQUlNwjBgt8bZUBUb
+         ml1wOVtRFQ5c9KZgCVjxKsQKLj3nPEPC1FzjbmAlDMY8zaeDeN01s3hRvNn9nDSGoT
+         KE42u9k6G023XMhYBPit7nn6IQp/ChNZhwPPULQU3jYV0rDN3bBmu+W3NdV5Bcw+yW
+         8t5a+kwrh+dyw==
+Message-ID: <caccb6a2-643f-427e-a601-590a1ce88802@kernel.org>
+Date:   Mon, 20 Nov 2023 10:14:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f2d1476199e974dd1d303b22c25594f066e85de5.camel@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] dt-bindings: usb: snps,dwc3: Add
+ 'xhci-sg-trb-cache-size-quirk'
+Content-Language: en-US
+To:     Prashanth K <quic_prashk@quicinc.com>, stable@vger.kernel.org,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Mathias Nyman <mathias.nyman@intel.com>,
+        Tejas Joglekar <joglekar@synopsys.com>,
+        linux-kernel@vger.kernel.org, linux-usbyy@vger.kernel.org
+References: <20231120055803.224634-1-quic_prashk@quicinc.com>
+ <20231120055803.224634-3-quic_prashk@quicinc.com>
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20231120055803.224634-3-quic_prashk@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -65,33 +98,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Nov 17, 2023 at 04:00:46PM -0800, David E. Box wrote:
-> On Tue, 2023-11-14 at 14:55 +0100, Johan Hovold wrote:
-> > Add a helper for enabling link states that can be used in contexts where
-> > a pci_bus_sem read lock is already held (e.g. from pci_walk_bus()).
-> > 
-> > This helper will be used to fix a couple of potential deadlocks where
-> > the current helper is called with the lock already held, hence the CC
-> > stable tag.
+On 20/11/2023 06:58, Prashanth K wrote:
+> Add a new 'xhci-sg-trb-cache-size-quirk' DT quirk to dwc3 core
+> for preventing xhci hang issue while using SG buffers.
 
-> This solution is similar to the original one I proposed [1]. It just creates a
-> separate locked function rather than using a flag. While the API is consistent
-> with pci_disable_link_state_locked(), its usage is not. The vmd driver calls
-> pci_enable_link_state() from pci_walk_bus() which was problematic for Bjorn [2].
-> I owed an attempt to implement this as a fixup. However, now
-> qcom_pcie_enabled_aspm() is also using it from pci_walk_bus(). The fixup could
-> make sense for VMD since there it's fixing missing BIOS settings, but I'm not
-> sure about qcom. Bjorn, do you still see issues with the use in pci_bus_walk()?
+Neither commit msg nor property describes the hardware feature. Please
+describe the hardware, not OS behavior, in the property. Both in the
+property name and in its description.
 
-We need this for Qualcomm platforms where the boot firmware does not
-enable ASPM, and the hotplug inconsistency was also discussed with Bjorn
-here:
-
-	https://lore.kernel.org/linux-pci/20231018164731.GA1365588@bhelgaas/
-
-> [1]
-> https://lore.kernel.org/lkml/20230321233849.3408339-1-david.e.box@linux.intel.com/
 > 
-> [2] https://lore.kernel.org/lkml/20230322205702.GA2493123@bhelgaas/
+> Cc: <stable@vger.kernel.org> # 5.11
+> Fixes: bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
+> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+> ---
 
-Johan
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time, thus I will skip this patch entirely till you follow
+the process allowing the patch to be tested.
+
+Please kindly resend and include all necessary To/Cc entries.
+
+Also, use proper order of patches - first bindings, then their user.
+
+Best regards,
+Krzysztof
+
