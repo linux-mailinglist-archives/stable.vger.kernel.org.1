@@ -2,32 +2,32 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F4C97F0EB7
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 10:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A89497F0EBE
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 10:15:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232419AbjKTJOR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 04:14:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36992 "EHLO
+        id S232444AbjKTJPS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 04:15:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232194AbjKTJOQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 04:14:16 -0500
+        with ESMTP id S232505AbjKTJPR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 04:15:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8A9A7;
-        Mon, 20 Nov 2023 01:14:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC520C433C7;
-        Mon, 20 Nov 2023 09:14:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C535AC9;
+        Mon, 20 Nov 2023 01:15:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02A8C433C7;
+        Mon, 20 Nov 2023 09:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700471652;
-        bh=YC2fBnzVsOvUYuHddpl1ZvoG6yqJit5mIfXZybSlNq8=;
+        s=k20201202; t=1700471713;
+        bh=7Dewhy5XlOFjuIdJC8CAmCHtRFAeYWC/n+NK6cqyZhA=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=AeODOxsJhBuNNjeY1sIQ2mI5oUhkz9zKF0v4KGKU/l040PVdnpKZPxBsvrSzlIpwA
-         pAXd6xlMDxcbQzGCLJlOuYB6VNCxEgsEJsQPC4fULMQJi9ngzxBOZs6YkshumlTuIY
-         A3KLI2SOYjA528btax1kMACN4ZUvQCCWVyVBBGnCuvvWtge4mpQUlNwjBgt8bZUBUb
-         ml1wOVtRFQ5c9KZgCVjxKsQKLj3nPEPC1FzjbmAlDMY8zaeDeN01s3hRvNn9nDSGoT
-         KE42u9k6G023XMhYBPit7nn6IQp/ChNZhwPPULQU3jYV0rDN3bBmu+W3NdV5Bcw+yW
-         8t5a+kwrh+dyw==
-Message-ID: <caccb6a2-643f-427e-a601-590a1ce88802@kernel.org>
-Date:   Mon, 20 Nov 2023 10:14:06 +0100
+        b=iWAv1kTU+bhbOOPMRfwm1Ehs5iNBoHOF2z0b6xqNuslB5JKks9il4mw5NCA4Y0uFW
+         dUhIwMC4jj5oKEMJWgpXsBCa/i3obXlUGKio/VDg/Ah4cWQrpuI9uAXdWYbKgmiMa1
+         aUmgrCLA9VS2g1OEPPcHymdl/Hxjzt3CR6+EYG5faNf0gMMFT+6vDeitrtxlBQ2EQf
+         hwX8OGVABL97OySG7qulJOacdRlFKYKCUawK+QBwKEV5IV0NN2mK3OSjkCG+JRKPXW
+         EvU0DlhJ035/qWngTRyHShzxJqZEtig+StuDqE/qyxxuiO7mZ3X2LOZMxfcJ34lEW9
+         FQFlbpRejcHpA==
+Message-ID: <92e3cca3-e01d-4706-a670-795770bf5e51@kernel.org>
+Date:   Mon, 20 Nov 2023 10:15:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2 2/2] dt-bindings: usb: snps,dwc3: Add
@@ -101,30 +101,13 @@ X-Mailing-List: stable@vger.kernel.org
 On 20/11/2023 06:58, Prashanth K wrote:
 > Add a new 'xhci-sg-trb-cache-size-quirk' DT quirk to dwc3 core
 > for preventing xhci hang issue while using SG buffers.
-
-Neither commit msg nor property describes the hardware feature. Please
-describe the hardware, not OS behavior, in the property. Both in the
-property name and in its description.
-
 > 
 > Cc: <stable@vger.kernel.org> # 5.11
 > Fixes: bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
-> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-> ---
 
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
+Also, you need to describe the bug to justify backporting. Don't add
+useless stable-cc tags just because kernel robot asked you...
 
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time, thus I will skip this patch entirely till you follow
-the process allowing the patch to be tested.
-
-Please kindly resend and include all necessary To/Cc entries.
-
-Also, use proper order of patches - first bindings, then their user.
 
 Best regards,
 Krzysztof
