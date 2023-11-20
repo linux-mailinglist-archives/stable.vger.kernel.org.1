@@ -2,155 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F38C7F0A42
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 02:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A5F517F0A6B
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 03:01:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231607AbjKTBNH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 19 Nov 2023 20:13:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48378 "EHLO
+        id S231633AbjKTCBZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 19 Nov 2023 21:01:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjKTBNG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 20:13:06 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473D0115;
-        Sun, 19 Nov 2023 17:13:01 -0800 (PST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AJNINxM025177;
-        Mon, 20 Nov 2023 01:12:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : content-transfer-encoding : mime-version; s=pp1;
- bh=DT0NjgV5bxTqZenYJx9JCksF59hQvQ1XZaCB+iwtkUA=;
- b=eVyOuf3rxoTn8YNF+cZzvSmbbgcMosqKP1zoewRN9gprgpOchxUw6BnIqg6j6X9RaFRQ
- d+x31Jo7WoBxvzIBYG1w0+PDc4AHe5mtYtO1wjXViKhIWp6yVs73B//fwciYRy6gtHXE
- sW8PYsuZ+zbpOJTa1tewYWxYSVDPaoMKwRSaKb3D41w072AERjgYJxfk8Y1U2eGaT6Pd
- Ugpsp0Eq8MzXYcg0nL2wQQrg0jChGYtASN2hgBWi31b4OzL6o2vf54r6nS+cEHhUi6qd
- 69aGI+8iRvtsqy5OLzNX1Fnl34J0uyRZh2EHBIZ0E8FNutCWO1unhJxf28PUnx40dQKS WA== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ufuwrseka-1
+        with ESMTP id S231629AbjKTCBY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 21:01:24 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4478E136;
+        Sun, 19 Nov 2023 18:01:20 -0800 (PST)
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AK1euYn013633;
+        Mon, 20 Nov 2023 02:00:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=jovKGGjPM9h2UjswPH46XZgSaqKmCLFkmO95bIWrsdU=;
+ b=SNNCIFmK72sOnyR+tRJALjMLsAb0pJElUcIzDMBZRxPihrfdpLWHrgmSdstJRQ+oWZQ9
+ uaHYTfAx5oxvfCNAnJGTMh65Gb4fuV6zFiFUerV+YN8DvpHgdDzKTIentuIKwcIojNF0
+ bEhk6GHkDEmgoHK2J2Q/J4xTU/XUaakG5FpGg7ZGWHc7Er9sL+shJQrfO1JI0QiiUsia
+ WRs2742nMh4OLb5fZ8qQ9FMR55oc7i41DLdjqNaIoQOPRkls8kNgiGMPeqDacdMjZtpB
+ FBCikPB+2/E1QAzvX97+a1MR7zKjCxo94QxxK6mtDe6YFEOHko1gDfnKTOq1XZDFp2I+ 1g== 
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uenneakp4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Nov 2023 01:12:58 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AJM1s7F026556;
-        Mon, 20 Nov 2023 01:12:58 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf93kdv9q-1
+        Mon, 20 Nov 2023 02:00:50 +0000
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+        by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AK20nRc017322
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Nov 2023 01:12:58 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-        by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AK1CvEc26542732
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 20 Nov 2023 01:12:57 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 413FF58057;
-        Mon, 20 Nov 2023 01:12:57 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C5D7058058;
-        Mon, 20 Nov 2023 01:12:56 +0000 (GMT)
-Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
-        by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-        Mon, 20 Nov 2023 01:12:56 +0000 (GMT)
-From:   Stefan Berger <stefanb@linux.ibm.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     zohar@linux.ibm.com, gregkh@linuxfoundation.org,
-        initramfs@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>,
-        stable@vger.kernel.org, Rob Landley <rob@landley.net>
-Subject: [PATCH v3] rootfs: Fix support for rootfstype= when root= is given
-Date:   Sun, 19 Nov 2023 20:12:48 -0500
-Message-ID: <20231120011248.396012-1-stefanb@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: fLdhSeQwbeQka2ezh3TsY4brwYxLYmKq
-X-Proofpoint-GUID: fLdhSeQwbeQka2ezh3TsY4brwYxLYmKq
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+        Mon, 20 Nov 2023 02:00:49 GMT
+Received: from [10.239.133.73] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Sun, 19 Nov
+ 2023 18:00:43 -0800
+Message-ID: <3fbc49da-99ac-4499-84df-064f3dc429d2@quicinc.com>
+Date:   Mon, 20 Nov 2023 10:00:40 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] ARM: kprobes: Explicitly reserve r7 for local
+ variables
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>
+CC:     <linux@armlinux.org.uk>, <mhiramat@kernel.org>,
+        <kernel@quicinc.com>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_lijuang@quicinc.com>, <stable@vger.kernel.org>
+References: <20231115095830.20607-1-quic_aiquny@quicinc.com>
+ <20231116172418.GA174808@dev-arch.thelio-3990X>
+ <CAMj1kXE4stcFikmxBMY19CR4J0+EpaNW8J=xVyFVY3A7F7BpRQ@mail.gmail.com>
+From:   "Aiqun(Maria) Yu" <quic_aiquny@quicinc.com>
+In-Reply-To: <CAMj1kXE4stcFikmxBMY19CR4J0+EpaNW8J=xVyFVY3A7F7BpRQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: j0KCJ4ghVOg7mzkoXZdCrBZaDSakwziG
+X-Proofpoint-GUID: j0KCJ4ghVOg7mzkoXZdCrBZaDSakwziG
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2023-11-19_21,2023-11-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- adultscore=0 priorityscore=1501 lowpriorityscore=0 mlxlogscore=999
- spamscore=0 clxscore=1015 suspectscore=0 mlxscore=0 bulkscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311200007
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
+ clxscore=1011 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ spamscore=0 phishscore=0 mlxscore=0 malwarescore=0 adultscore=0
+ mlxlogscore=563 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311200013
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
+On 11/17/2023 1:36 AM, Ard Biesheuvel wrote:
+> On Fri, 17 Nov 2023 at 03:24, Nathan Chancellor <nathan@kernel.org> wrote:
+>>
+>> On Wed, Nov 15, 2023 at 05:58:30PM +0800, Maria Yu wrote:
+>>> Registers r7 is removed in clobber list, so compiler may choose r7 for
+>>> local variables usage, while r7 will be actually updated by the inline asm
+>>> code. This caused the runtime behavior wrong.
+>>> While those kind of reserved registers cannot be set to clobber list
+>>> because of error like "inline asm clobber list contains reserved
+>>> registers".
+>>> Explicitly reserve r7 by adding attribute no-omit-frame-pointer for needed
+>>> function, then in T32 asm code r7 is used as a frame pointer and is not
+>>> available for use as a general-purpose register.
+>>> Note that "no-omit-frame-pointer" will make the code size a little bigger
+>>> to store the stack frame pointer. So limited to needed functions can have
+>>> the less impact than the full source file.
+>>>
+>>> Fixes: dd12e97f3c72 ("ARM: kprobes: treat R7 as the frame pointer register in Thumb2 builds")
+>>> Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
+>>> Cc: stable@vger.kernel.org
+>>
+>> This causes warnings with clang:
+>>
+>>    arch/arm/probes/kprobes/actions-thumb.c:441:47: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+>>      441 | static unsigned long __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+>>          |                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>    arch/arm/probes/kprobes/actions-thumb.c:524:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+>>      524 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+>>          |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>    arch/arm/probes/kprobes/actions-thumb.c:560:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+>>      560 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+>>          |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>    arch/arm/probes/kprobes/actions-thumb.c:579:38: warning: unknown attribute 'optimize' ignored [-Wunknown-attributes]
+>>      579 | static void __kprobes __attribute__((optimize("no-omit-frame-pointer")))
+>>          |                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>    4 warnings generated.
+>>
+>> Furthermore, as far as I am aware, the optimize attribute has other issues so
+>> its use is discouraged, see commits 080b6f407635 ("bpf: Don't rely on GCC
+>> __attribute__((optimize)) to disable GCSE") and a7223f5bfcae ("powerpc: Avoid
+>> broken GCC __attribute__((optimize))").
 
-  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
-  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
-  line.
+Thx for trying this. I was tested with arm-linux-gnueabihf-gcc and not 
+notice this.
+>>
+> 
+> Ah yes, apalogies for missing that. I did a test build with Clang but
+> I did not spot the errors. So
+> 
+> Unreviewed-by: ....
+> 
+> Maria, please use the Makefile based per-file CFLAGS override that I
+> suggested before. There is really no reason to make this per-function.
+Ok. I will upload a new patchset.
 
-This currently does not work when root= is provided since then
-saved_root_name contains a string and rootfstype= is ignored. Therefore,
-ramfs is currently always chosen when root= is provided.
-
-The current behavior for rootfs's filesystem is:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs
-   unspecified | tmpfs       | tmpfs
-   unspecified | ramfs       | ramfs
-    provided   | ignored     | ramfs
-
-rootfstype= should be respected regardless whether root= is given,
-as shown below:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs  (as before)
-   unspecified | tmpfs       | tmpfs  (as before)
-   unspecified | ramfs       | ramfs  (as before)
-    provided   | unspecified | ramfs  (compatibility with before)
-    provided   | tmpfs       | tmpfs  (new)
-    provided   | ramfs       | ramfs  (new)
-
-This table represents the new behavior.
-
-Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root=  specified")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Rob Landley <rob@landley.net>
-Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-
----
-
-v3:
- - Changed initfstype= to rootfstype=
- - Remove my R-b
-
-v2:
- - Cc'ing stable mailing list now
----
- init/do_mounts.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/init/do_mounts.c b/init/do_mounts.c
-index 5fdef94f0864..279ad28bf4fb 100644
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -510,7 +510,10 @@ struct file_system_type rootfs_fs_type = {
- 
- void __init init_rootfs(void)
- {
--	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
--		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
--		is_tmpfs = true;
-+	if (IS_ENABLED(CONFIG_TMPFS)) {
-+		if (!saved_root_name[0] && !root_fs_names)
-+			is_tmpfs = true;
-+		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
-+			is_tmpfs = true;
-+	}
- }
 -- 
-2.41.0
+Thx and BRs,
+Aiqun(Maria) Yu
 
