@@ -2,90 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E827F19AE
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 18:19:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEBFB7F1AF3
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 18:40:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229886AbjKTRTs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 12:19:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40882 "EHLO
+        id S234168AbjKTRkP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 12:40:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233867AbjKTRTj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 12:19:39 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C20310E2;
-        Mon, 20 Nov 2023 09:19:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D57C433A9;
-        Mon, 20 Nov 2023 17:19:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700500771;
-        bh=RAeKfOq3hx5ITvrVyZaR6+ShwwWgbpoasmEVuSlet1w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BSf4mGEWdyIczk7ywiS4bsaE3anD0mCUqUyLz4F+U9qcVEKDC6bv2NyJXmJ9851Vj
-         YMHMxPPMUebuOBu+wnSBbOVXqmVH0SKf7NwF3n3vk3QMLa+5SRZ7jtQsWgD8Zpbe5N
-         M7e3T1B1cmvBymat7CskxNAwe+i8L4w5V9A8tLO0=
-Date:   Mon, 20 Nov 2023 18:19:28 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-        stable-commits@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jacopo Mondi <jacopo+renesas@jmondi.org>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Niklas =?iso-8859-1?Q?S=F6derlund?= 
-        <niklas.soderlund+renesas@ragnatech.se>,
-        Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-        Sylvain Petinot <sylvain.petinot@foss.st.com>,
-        Yong Zhi <yong.zhi@intel.com>,
-        Bingbu Cao <bingbu.cao@intel.com>,
-        Dan Scally <djrscally@gmail.com>,
-        Tianshu Qiu <tian.shu.qiu@intel.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Eugen Hristev <eugen.hristev@collabora.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Robert Foss <rfoss@kernel.org>,
-        Todor Tomov <todor.too@gmail.com>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+        with ESMTP id S234195AbjKTRjv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 12:39:51 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67C3B184
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 09:39:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1700501952;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=bhXhhVOgQcwszvCir7ZuwIMT/79o9ZyKYko3EUjNwGA=;
+        b=JpFtLpwIqh3H39y0REmRUnnGqQIVT7LSSvKV17Qw0KwPXtFCOUO1IfsIEJ/dl1hY7wRAw5
+        5genqXe9VrHHLWUKQyJpUZPSU5OKSyxU5sEb5NU2ov739gn0Z3HbzColp/RUpiBWFjrmpJ
+        5b4Z4SULWUbPEsnRUOAWDvDIEQef2Hw=
+Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
+ [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-237-KxJP5_nHPK6bU9TcNAxa5A-1; Mon, 20 Nov 2023 12:39:11 -0500
+X-MC-Unique: KxJP5_nHPK6bU9TcNAxa5A-1
+Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-41e1d05a5d7so48577271cf.2
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 09:39:11 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700501951; x=1701106751;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bhXhhVOgQcwszvCir7ZuwIMT/79o9ZyKYko3EUjNwGA=;
+        b=XF/kajCXMIWbrnI1Wm4YCgt0R5vzEu0azqCboX4U+dYhMrc2aG5t2ix/P7BcZBP0Tt
+         o+FYI/5POThYn53coh+WfFhHtodtMuDhIZ1s5SbQl+qjOQRQ+r+m4iEaXvWAPsJKkvuN
+         jpQr+JonUed1ES1Mf5gcexYi6VR3KDBQ/BWnHbFk3flYbAYGfaK3vXQanvixiPJpIE09
+         KSo/mmt1ajPo5dQvf0IrZnw9MlT3GXyE22m58luihH4m0KN7dqjWQ3I4u4jmdZAqSryH
+         Q3NlcJVlU0SvzE2+znWyt7zpCG6lgxtOd2T64IGbChesacvvRgy5U3P6k41IvKO/SnL6
+         oxgw==
+X-Gm-Message-State: AOJu0YzVeQGOMfcCVam4RCdWZ94/edG8xzSeo9Q2Y11TTGdJ7euBrHDB
+        pr8Kl/2LJ9LdlT6OcfQe2WXHndO1JM62z5OSVIwgtwduphYKZsT/Gg/bRLB3M0eH+ArZXPbHbVV
+        BpxzHJCrJn/72b2cw
+X-Received: by 2002:a05:622a:120f:b0:418:1c96:8ae9 with SMTP id y15-20020a05622a120f00b004181c968ae9mr7303257qtx.11.1700501950848;
+        Mon, 20 Nov 2023 09:39:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGJxvMsSQn+upSlfoe1AebhnWLm6yBcWBZBG02zXFFObgKKN1wx2M0hPEp8Q1VD76pdfOlXbA==
+X-Received: by 2002:a05:622a:120f:b0:418:1c96:8ae9 with SMTP id y15-20020a05622a120f00b004181c968ae9mr7303241qtx.11.1700501950580;
+        Mon, 20 Nov 2023 09:39:10 -0800 (PST)
+Received: from fedora ([2600:1700:1ff0:d0e0::37])
+        by smtp.gmail.com with ESMTPSA id u7-20020ac87507000000b00419b9b1b0b0sm2790034qtq.56.2023.11.20.09.39.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Nov 2023 09:39:10 -0800 (PST)
+Date:   Mon, 20 Nov 2023 11:39:07 -0600
+From:   Andrew Halaney <ahalaney@redhat.com>
+To:     Johan Hovold <johan+linaro@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andy Gross <agross@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Dafna Hirschfeld <dafna@fastmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Samuel Holland <samuel@sholland.org>,
-        Yong Deng <yong.deng@magewell.com>,
-        Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Michal Simek <michal.simek@amd.com>,
-        Steve Longerbeam <slongerbeam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Sowjanya Komatineni <skomatineni@nvidia.com>,
-        Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: Re: Patch "media: v4l: async: Rename async nf functions, clean up
- long lines" has been added to the 5.15-stable tree
-Message-ID: <2023112000-palatable-spokesman-d5da@gregkh>
-References: <20231120152238.707760-1-sashal@kernel.org>
- <ZVuJyREX0ETQWBgR@kekkonen.localdomain>
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] USB: dwc3: qcom: fix wakeup after probe deferral
+Message-ID: <pgmtla6j3dshuq5zdxstszbkkssxcthtzelv2etcbrlstdw4nu@wixz6v5dfpum>
+References: <20231120161607.7405-1-johan+linaro@kernel.org>
+ <20231120161607.7405-3-johan+linaro@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZVuJyREX0ETQWBgR@kekkonen.localdomain>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <20231120161607.7405-3-johan+linaro@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -93,23 +89,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 20, 2023 at 04:31:05PM +0000, Sakari Ailus wrote:
-> Hi folks,
+On Mon, Nov 20, 2023 at 05:16:06PM +0100, Johan Hovold wrote:
+> The Qualcomm glue driver is overriding the interrupt trigger types
+> defined by firmware when requesting the wakeup interrupts during probe.
 > 
-> On Mon, Nov 20, 2023 at 10:22:33AM -0500, Sasha Levin wrote:
-> > This is a note to let you know that I've just added the patch titled
-> > 
-> >     media: v4l: async: Rename async nf functions, clean up long lines
+> This can lead to a failure to map the DP/DM wakeup interrupts after a
+> probe deferral as the firmware defined trigger types do not match the
+> type used for the initial mapping:
 > 
-> This patch doesn't fix anything, it just renames a number of long function
-> names in a number of places. Why should it be backported to 5.15?
+> 	irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
+> 	irq: type mismatch, failed to map hwirq-15 for interrupt-controller@b220000!
+> 
+> Fix this by not overriding the firmware provided trigger types when
+> requesting the wakeup interrupts.
 
-Because, in the patch itself we added:
+This series looks good to me and makes sense except for one point that
+I'm struggling to understand. What exactly is the relationship with this
+failure and probe deferral?
 
-> >     Stable-dep-of: b2701715301a ("media: cadence: csi2rx: Unregister v4l2 async notifier")
+Thanks,
+Andrew
 
-Which shows the requirement here.
+> 
+> Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+> Cc: stable@vger.kernel.org      # 4.18
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/usb/dwc3/dwc3-qcom.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+> index 10fb481d943b..82544374110b 100644
+> --- a/drivers/usb/dwc3/dwc3-qcom.c
+> +++ b/drivers/usb/dwc3/dwc3-qcom.c
+> @@ -549,7 +549,7 @@ static int dwc3_qcom_setup_irq(struct platform_device *pdev)
+>  		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+>  		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+>  					qcom_dwc3_resume_irq,
+> -					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+> +					IRQF_ONESHOT,
+>  					"qcom_dwc3 HS", qcom);
+>  		if (ret) {
+>  			dev_err(qcom->dev, "hs_phy_irq failed: %d\n", ret);
+> @@ -564,7 +564,7 @@ static int dwc3_qcom_setup_irq(struct platform_device *pdev)
+>  		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+>  		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+>  					qcom_dwc3_resume_irq,
+> -					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+> +					IRQF_ONESHOT,
+>  					"qcom_dwc3 DP_HS", qcom);
+>  		if (ret) {
+>  			dev_err(qcom->dev, "dp_hs_phy_irq failed: %d\n", ret);
+> @@ -579,7 +579,7 @@ static int dwc3_qcom_setup_irq(struct platform_device *pdev)
+>  		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+>  		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+>  					qcom_dwc3_resume_irq,
+> -					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+> +					IRQF_ONESHOT,
+>  					"qcom_dwc3 DM_HS", qcom);
+>  		if (ret) {
+>  			dev_err(qcom->dev, "dm_hs_phy_irq failed: %d\n", ret);
+> @@ -594,7 +594,7 @@ static int dwc3_qcom_setup_irq(struct platform_device *pdev)
+>  		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+>  		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+>  					qcom_dwc3_resume_irq,
+> -					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
+> +					IRQF_ONESHOT,
+>  					"qcom_dwc3 SS", qcom);
+>  		if (ret) {
+>  			dev_err(qcom->dev, "ss_phy_irq failed: %d\n", ret);
+> -- 
+> 2.41.0
+> 
+> 
 
-thanks,
-
-greg k-h
