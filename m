@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F327A7F174A
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D305E7F174B
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:29:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234025AbjKTP3U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 10:29:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51384 "EHLO
+        id S234005AbjKTP33 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 10:29:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234007AbjKTP3T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:29:19 -0500
+        with ESMTP id S234007AbjKTP32 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:29:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6692DE8
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:29:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE82C433C7;
-        Mon, 20 Nov 2023 15:29:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7529FD8
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:29:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C4AC433C9;
+        Mon, 20 Nov 2023 15:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700494155;
-        bh=ENQHbADGbGuDspATEDMJS7rWtneiFEhKjfiRNVaWj0E=;
+        s=korg; t=1700494164;
+        bh=xo3Xfw1jrl+xQHdL1FqxkEacEmX9bppDTnuTYynM8xM=;
         h=Subject:To:Cc:From:Date:From;
-        b=s2EhSqeODpr0iYmRSGu5CiTYmLBQsDNVQzA1aLAt5jOg/CJTex8p8bi8dYqlT/iq/
-         6Tf0Og8G5IMGIJqP8LvFoC42T086YvSij+kf7I3r2gK2WmfqHSYudNupLZH8gQtkGD
-         GHj1wSYxREhp+9iO+Imhx7PrV1/EkYYB/SUEyeaI=
-Subject: FAILED: patch "[PATCH] KVM: x86: hyper-v: Don't auto-enable stimer on write from" failed to apply to 4.19-stable tree
+        b=hgddhv01V/G2zzFkIFGefae08D1ywYqiLwzX3IA3arrw58JKnXx6OFOxI/RWVas9x
+         wKC8zQTuPwraLJevA41Spncf+qr1ovR6WWkHT/jMPWnsHDQH6ZMDzG2scYlJLfAQMa
+         LUlOiym+iwn1pGsrdZH7F6d58TzyLrlVVd4D6bDc=
+Subject: FAILED: patch "[PATCH] KVM: x86: hyper-v: Don't auto-enable stimer on write from" failed to apply to 4.14-stable tree
 To:     nsaenz@amazon.com, seanjc@google.com, vkuznets@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 20 Nov 2023 16:29:12 +0100
-Message-ID: <2023112012-decency-frying-1e27@gregkh>
+Date:   Mon, 20 Nov 2023 16:29:13 +0100
+Message-ID: <2023112013-chemicals-trousers-113f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x d6800af51c76b6dae20e6023bbdc9b3da3ab5121
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112012-decency-frying-1e27@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112013-chemicals-trousers-113f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
