@@ -2,68 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE737F14FC
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 14:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 449F67F1556
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 15:09:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231961AbjKTNyz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 08:54:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56464 "EHLO
+        id S232764AbjKTOJ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 09:09:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232148AbjKTNyx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 08:54:53 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E49F9136
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 05:54:49 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1ce95f96edcso11081345ad.0
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 05:54:49 -0800 (PST)
+        with ESMTP id S232859AbjKTOJz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 09:09:55 -0500
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1666CA
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 06:09:51 -0800 (PST)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-4083f61312eso18479885e9.3
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 06:09:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700488489; x=1701093289; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1H6RUakWZzgRR5/wsbdm1edYwaR7kHZOvb7lCui583w=;
-        b=izSnvgVxX6EZ2Yk/WGC4CxGPPCYmsUS+kudLGtbvCMI/y3XEz5oLvKplmLXArVZKSD
-         Xus4aaPUYbEkYakY9feyywRXK9CHDpNHaUrEor90wbDQa5DlHwofawefg0/XzsV9GkBc
-         L7z1XptQuItXOlzDYzY42vsxjFuBs+z9+P568mg1TbK372EwVn9ad1blenEIgJHp55qo
-         qLb6hxYG0fvfqA1DEoXSo/QpD7HY/9y6HH8G0h1L+cK1LpYKwvElHoYQRDF/i//l4Fj4
-         i4oOvIPjCIn2eVGT8LOL6ECfCkEtfibY6oEsuk3Tj6Qw80xRJ1CRVQXW3Es3oQJv7oej
-         Tsig==
+        d=gmail.com; s=20230601; t=1700489390; x=1701094190; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qbIlp7SV0+H2O3jObbpSfHh9BdOWXzuYWUXUHiIfpzM=;
+        b=RizKEIQgWXMaEwXs91l8Ff8J+ZrjGAxeYv4iWNyILl1oiPuoqFBhu5ROBvITFrIuVb
+         Vrw7yyvokABMJEQVL964LnjKh8J8PP79yfIcvaf+C2cgrB1Dev3pbY/Mbh2ReFW8Fku9
+         LNBk2jxjSNX2vHvhCRTasGVEIRru32q9aCvlqw0U/y0MiwZgCWls/I79BMx/85jhvz2m
+         uLR2Mg5JqFwhmv6jJNy9G/yuan8uMfnnMhj2Mf7+giZ9YadR8EgtZ09IhSj4DwQV6fXG
+         JnIfITqiZEx37WcM3lRVaRydNvc6R804vvzrb84l2HMjiJMH2AEvpf6VQOMGmwgiVd5f
+         Kocg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700488489; x=1701093289;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1H6RUakWZzgRR5/wsbdm1edYwaR7kHZOvb7lCui583w=;
-        b=O6buZoC4wnsGfCPD8rDSZR8Izmr8RLHWIF00qgaz2e5B6h1h4pL94KWXcwg1lqdIlq
-         ym6dhISFfOhqZjt0FwjGKxMIxir5GFAdJ788wwz6KRqLK+hWAQ+fUPw7Z/fEqKLHrBah
-         fU0JIPHoYz6ymEP8FspGgwUrGtjoP4thqYulSdhB5tGu8E96544vKOFdIS+eyMqt5eqB
-         Hr/7w+fnJPynF7dT4i7UNE1v7U6uOWBdSHPyKJmw3yaMfPSLmUNDRECRob2UQoXpPJn3
-         u+T2Y4oVf0OKjbJwpol6+mP4DZ5GGXyTaIYs8jnSgKrTHQN6S/anNg8zTH2hUBmL1fHb
-         FQJg==
-X-Gm-Message-State: AOJu0YxsQffX0EYmNHqC57YaPFlclxmShlNuqoYUvtTamAe9+4X33+a0
-        CYu7buDeSJED13eXvOEyLKX/gZRpIV229JBPpQA=
-X-Google-Smtp-Source: AGHT+IEhZ4JpsBo3D6sgZ886nghlTVGzWbgbZROPTCYs4rHkXARF/9+Wjx2ydRp1m+TgndOl2mbtTQ==
-X-Received: by 2002:a17:903:22c3:b0:1cf:6453:b268 with SMTP id y3-20020a17090322c300b001cf6453b268mr1691054plg.53.1700488488764;
-        Mon, 20 Nov 2023 05:54:48 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id jk21-20020a170903331500b001cc311ef152sm6039478plb.286.2023.11.20.05.54.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Nov 2023 05:54:48 -0800 (PST)
-Message-ID: <655b6528.170a0220.b2438.ea20@mx.google.com>
-Date:   Mon, 20 Nov 2023 05:54:48 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1700489390; x=1701094190;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qbIlp7SV0+H2O3jObbpSfHh9BdOWXzuYWUXUHiIfpzM=;
+        b=w8EPz0RFvo4hYxV7CU8EcGOipYrLb2Ps/gqIML7qYE7QG5a+QDkCy0shItaN+AOmMG
+         /WDjooJLuQbgyZnivd1vDqA41BOilPPB56lThiFrKWx4V2yrpRKQKG1s+5PRjjiG0R9H
+         n9nnx3ggLRRJ1RNibTwW8e3H+EjM5xjRKV+O43MRv0wnkSM82G8Y3Eg445jfq5P3p/yX
+         J8m3pxTPyKUPshkdNw3VfMSNmyJAYl/RcKjtky5UeJQ2XUKgl5Ttg3x9ouiRD61LjzgR
+         lpzjyMxwM+9RGbKZmgEBCq1BOtnDdWbk/fdFpH12NzIuiJstBFtcNiAOvds99QYUvmEn
+         96Tw==
+X-Gm-Message-State: AOJu0YzIi8AoPFhT4dC9LRgfrvXF2Ax6AJN/S/wsZud9DnHuymCMWIpN
+        RGuWH1T0b+/qy32Wa3MHaRI9lo3rO3MTZkAeP95v3ZIXAV0=
+X-Google-Smtp-Source: AGHT+IGxFAJtFq10FiI16aGyRwozj+BvjpzXOsflu8TXYJ8/71x23n4iRS+SV+IiBRcl6B6i4ktgUVVampekfn0grD8=
+X-Received: by 2002:adf:a31c:0:b0:332:c669:8e81 with SMTP id
+ c28-20020adfa31c000000b00332c6698e81mr3163079wrb.30.1700489389863; Mon, 20
+ Nov 2023 06:09:49 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable
-X-Kernelci-Kernel: v6.1.63
-Subject: stable/linux-6.1.y build: 20 builds: 2 failed, 18 passed,
- 1 warning (v6.1.63)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
+From:   Ronald Monthero <debug.penguin32@gmail.com>
+Date:   Tue, 21 Nov 2023 00:09:38 +1000
+Message-ID: <CALk6Uxo5ymxu_P_7=LnLZwTgjYbrdE7gzwyeQVxeR431SPuxyw@mail.gmail.com>
+Subject: Backport submission - rcu: Avoid tracing a few functions executed in
+ stop machine
+To:     stable@vger.kernel.org
+Cc:     Ronald Monthero <debug.penguin32@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,163 +63,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-6.1.y build: 20 builds: 2 failed, 18 passed, 1 warning (v6.1.6=
-3)
+Dear stable maintainers,
+I like to indicate the oops encountered and request the below patch to
+be backported to v 5.15. The fix is important to avoid recurring oops
+in context of rcu detected stalls.
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
-rnel/v6.1.63/
+subject: rcu: Avoid tracing a few functions executed in stop machine
+commit  48f8070f5dd8
+Target kernel version   v 5.15
+Reason for Application: To avoid oops due to rcu_prempt detect stalls
+on cpus/tasks
 
-Tree: stable
-Branch: linux-6.1.y
-Git Describe: v6.1.63
-Git Commit: 69e434a1cb2146a70062d89d507b6132fa38bfe1
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 7 unique architectures
+Environment and oops context: Issue was observed in my environment on
+5.15.193 kernel (arm platform). The patch is helpful to avoid the
+below oops indicated in [1] and [2]
 
-Build Failures Detected:
+log :
+root@ls1021atwr:~# uname -r
+5.15.93-rt58+ge0f69a158d5b
 
-arm64:
-    defconfig+arm64-chromebook: (gcc-10) FAIL
+oops dump stack
 
-x86_64:
-    x86_64_defconfig+x86-board: (gcc-10) FAIL
+** ID_531 main/smp_fsm.c:1884 <inrcu: INFO: rcu_preempt detected
+stalls on CPUs/tasks:   <<< [1]
+rcu:    Tasks blocked on level-0 rcu_node (CPUs 0-1): P116/2:b..l
+        (detected by 1, t=2102 jiffies, g=12741, q=1154)
+task:irq/31-arm-irq1 state:D stack:    0 pid:  116 ppid:     2 flags:0x00000000
+[<8064b97f>] (__schedule) from [<8064bb01>] (schedule+0x8d/0xc2)
+[<8064bb01>] (schedule) from [<8064fa65>] (schedule_timeout+0x6d/0xa0)
+[<8064fa65>] (schedule_timeout) from [<804ba353>]
+(fsl_ifc_run_command+0x6f/0x178)
+[<804ba353>] (fsl_ifc_run_command) from [<804ba72f>]
+(fsl_ifc_cmdfunc+0x203/0x2b8)
+[<804ba72f>] (fsl_ifc_cmdfunc) from [<804b135f>] (nand_status_op+0xaf/0xe0)
+[<804b135f>] (nand_status_op) from [<804b13b3>] (nand_check_wp+0x23/0x48)
+....
+< snipped >
 
-Warnings Detected:
+Exception stack(0x822bbfb0 to 0x822bbff8)
+bfa0:                                     00000000 00000000 00000000 00000000
+bfc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+bfe0: 00000000 00000000 00000000 00000000 00000013 00000000
+rcu: rcu_preempt kthread timer wakeup didn't happen for 764 jiffies!
+g12741 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x1000
+rcu:    Possible timer handling issue on cpu=0 timer-softirq=1095
+rcu: rcu_preempt kthread starved for 765 jiffies! g12741 f0x0
+RCU_GP_WAIT_FQS(5) ->state=0x1000 ->cpu=0    <<< [2]
+rcu:    Unless rcu_preempt kthread gets sufficient CPU time, OOM is
+now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:D stack:    0 pid:   13 ppid:     2 flags:0x00000000
+[<8064b97f>] (__schedule) from [<8064ba03>] (schedule_rtlock+0x1b/0x2e)
+[<8064ba03>] (schedule_rtlock) from [<8064ea6f>]
+(rtlock_slowlock_locked+0x93/0x108)
+[<8064ea6f>] (rtlock_slowlock_locked) from [<8064eb1b>] (rt_spin_lock+0x37/0x4a)
+[<8064eb1b>] (rt_spin_lock) from [<8021b723>] (__local_bh_disable_ip+0x6b/0x110)
+[<8021b723>] (__local_bh_disable_ip) from [<8025a90f>]
+(del_timer_sync+0x7f/0xe0)
+[<8025a90f>] (del_timer_sync) from [<8064fa6b>] (schedule_timeout+0x73/0xa0)
+[<8064fa6b>] (schedule_timeout) from [<80254677>] (rcu_gp_fqs_loop+0x8b/0x1bc)
+[<80254677>] (rcu_gp_fqs_loop) from [<8025483f>] (rcu_gp_kthread+0x97/0xbc)
+[<8025483f>] (rcu_gp_kthread) from [<8022ca67>] (kthread+0xcf/0xe4)
+[<8022ca67>] (kthread) from [<80200149>] (ret_from_fork+0x11/0x28)
+Exception stack(0x820fffb0 to 0x820ffff8)
+ffa0:                                     00000000 00000000 00000000 00000000
+ffc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+ffe0: 00000000 00000000 00000000 00000000 00000013 00000000
+rcu: Stack dump where RCU GP kthread last ran:
+         <<
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+<  .. >
 
-arc:
+Thank you for your time and consideration.  Please let me know if you
+require any additional information
 
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+Best Regards,
+Ronald Monthero
