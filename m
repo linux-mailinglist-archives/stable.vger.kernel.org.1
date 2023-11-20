@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F89E7F1744
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:28:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED13A7F1745
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:28:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233946AbjKTP2m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 10:28:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57448 "EHLO
+        id S233948AbjKTP2s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 10:28:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233934AbjKTP2l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:28:41 -0500
+        with ESMTP id S233934AbjKTP2r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:28:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3DB4A7
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:28:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2577C433C7;
-        Mon, 20 Nov 2023 15:28:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE47DA7
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:28:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A29DC433C8;
+        Mon, 20 Nov 2023 15:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700494117;
-        bh=BYo/tPmf6OvSuZ/FdCjMPjfcsCY9yfisQu+Zn2vnTs0=;
+        s=korg; t=1700494123;
+        bh=8Hqy4S6899ihYLuecYvW0lUlHGukpcYLkQryCrgRUiY=;
         h=Subject:To:Cc:From:Date:From;
-        b=Gj6MKP1GuIXbPqA3Pnz0e66le2uj5L/DSzAZLisFXqMvnpYwftAFvsYQNmSOzgtvm
-         zRzTdIbQE57QspO+opQZfilhNc73IsEf+6pxBFc2fkIF/jvmLvF4wGSDEfPvHOSOSl
-         vXHWKxl0UJW+HYCH+9cLjvRPK+gUxVuBLE+H0Fx8=
-Subject: FAILED: patch "[PATCH] x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and" failed to apply to 5.10-stable tree
-To:     mario.limonciello@amd.com, bhelgaas@google.com,
-        iain@orangesquash.org.uk
+        b=P1R/RXBom8n2x6TvsdrUvkqziTvlRgUXf4HGHkDkPUfRWrk3a3nTpmyf/gh6So+3M
+         mXqTktwqGINhQENPiwQMmheRtVYXoOFZrXapCN1/mbMMn6Sx/WOkkuiWjQKHE7nyuA
+         8sNE2nAHDEsYpnLsHNs4AG7OLf3swt8wnUVrv/uE=
+Subject: FAILED: patch "[PATCH] x86/apic/msi: Fix misconfigured non-maskable MSI quirk" failed to apply to 6.1-stable tree
+To:     den@valinux.co.jp, tglx@linutronix.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 20 Nov 2023 16:28:24 +0100
-Message-ID: <2023112024-timing-octane-cc05@gregkh>
+Date:   Mon, 20 Nov 2023 16:28:40 +0100
+Message-ID: <2023112040-sudden-savanna-4847@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,24 +43,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7d08f21f8c6307cb05cabb8d86e90ff6ccba57e9
+git cherry-pick -x b56ebe7c896dc78b5865ec2c4b1dae3c93537517
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112024-timing-octane-cc05@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112040-sudden-savanna-4847@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-7d08f21f8c63 ("x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and Phoenix USB4")
-606012dddebb ("PCI: Fix up L1SS capability for Intel Apollo Lake Root Port")
+b56ebe7c896d ("x86/apic/msi: Fix misconfigured non-maskable MSI quirk")
+9c15eeb5362c ("genirq: Allow fasteoi handler to resend interrupts on concurrent handling")
+0cfb4a1af386 ("genirq: Use BIT() for the IRQD_* state flags")
+b6d5fc3a5245 ("x86/apic/vector: Provide MSI parent domain")
+2d958b02b04f ("genirq/msi: Rearrange MSI domain flags")
+3dad5f9ad99b ("genirq/msi: Move IRQ_DOMAIN_MSI_NOMASK_QUIRK to MSI flags")
+d474d92d7025 ("x86/apic: Remove X86_IRQ_ALLOC_CONTIGUOUS_VECTORS")
 
 thanks,
 
@@ -69,118 +73,193 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7d08f21f8c6307cb05cabb8d86e90ff6ccba57e9 Mon Sep 17 00:00:00 2001
-From: Mario Limonciello <mario.limonciello@amd.com>
-Date: Wed, 4 Oct 2023 09:49:59 -0500
-Subject: [PATCH] x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and
- Phoenix USB4
+From b56ebe7c896dc78b5865ec2c4b1dae3c93537517 Mon Sep 17 00:00:00 2001
+From: Koichiro Den <den@valinux.co.jp>
+Date: Thu, 26 Oct 2023 12:20:36 +0900
+Subject: [PATCH] x86/apic/msi: Fix misconfigured non-maskable MSI quirk
 
-Iain reports that USB devices can't be used to wake a Lenovo Z13 from
-suspend.  This occurs because on some AMD platforms, even though the Root
-Ports advertise PME_Support for D3hot and D3cold, wakeup events from
-devices on a USB4 controller don't result in wakeup interrupts from the
-Root Port when amd-pmc has put the platform in a hardware sleep state.
+commit ef8dd01538ea ("genirq/msi: Make interrupt allocation less
+convoluted"), reworked the code so that the x86 specific quirk for affinity
+setting of non-maskable PCI/MSI interrupts is not longer activated if
+necessary.
 
-If amd-pmc will be involved in the suspend, remove D3hot and D3cold from
-the PME_Support mask of Root Ports above USB4 controllers so we avoid those
-states if we need wakeups.
+This could be solved by restoring the original logic in the core MSI code,
+but after a deeper analysis it turned out that the quirk flag is not
+required at all.
 
-Restore D3 support at resume so that it can be used by runtime suspend.
+The quirk is only required when the PCI/MSI device cannot mask the MSI
+interrupts, which in turn also prevents reservation mode from being enabled
+for the affected interrupt.
 
-This affects both AMD Rembrandt and Phoenix SoCs.
+This allows ot remove the NOMASK quirk bit completely as msi_set_affinity()
+can instead check whether reservation mode is enabled for the interrupt,
+which gives exactly the same answer.
 
-"pm_suspend_target_state == PM_SUSPEND_ON" means we're doing runtime
-suspend, and amd-pmc will not be involved.  In that case PMEs work as
-advertised in D3hot/D3cold, so we don't need to do anything.
+Even in the momentary non-existing case that the reservation mode would be
+not set for a maskable MSI interrupt this would not cause any harm as it
+just would cause msi_set_affinity() to go needlessly through the
+functionaly equivalent slow path, which works perfectly fine with maskable
+interrupts as well.
 
-Note that amd-pmc is technically optional, and there's no need for this
-quirk if it's not present, but we assume it's always present because power
-consumption is so high without it.
+Rework msi_set_affinity() to query the reservation mode and remove all
+NOMASK quirk logic from the core code.
 
-Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-Link: https://lore.kernel.org/r/20231004144959.158840-1-mario.limonciello@amd.com
-Reported-by: Iain Lane <iain@orangesquash.org.uk>
-Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-[bhelgaas: commit log, move to arch/x86/pci/fixup.c, add #includes]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+[ tglx: Massaged changelog ]
+
+Fixes: ef8dd01538ea ("genirq/msi: Make interrupt allocation less convoluted")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231026032036.2462428-1-den@valinux.co.jp
 
-diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
-index e3ec02e6ac9f..f347c20247d3 100644
---- a/arch/x86/pci/fixup.c
-+++ b/arch/x86/pci/fixup.c
-@@ -3,9 +3,11 @@
-  * Exceptions for specific devices. Usually work-arounds for fatal design flaws.
-  */
+diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
+index 6b6b711678fe..d9651f15ae4f 100644
+--- a/arch/x86/kernel/apic/msi.c
++++ b/arch/x86/kernel/apic/msi.c
+@@ -55,14 +55,14 @@ msi_set_affinity(struct irq_data *irqd, const struct cpumask *mask, bool force)
+ 	 * caused by the non-atomic update of the address/data pair.
+ 	 *
+ 	 * Direct update is possible when:
+-	 * - The MSI is maskable (remapped MSI does not use this code path)).
+-	 *   The quirk bit is not set in this case.
++	 * - The MSI is maskable (remapped MSI does not use this code path).
++	 *   The reservation mode bit is set in this case.
+ 	 * - The new vector is the same as the old vector
+ 	 * - The old vector is MANAGED_IRQ_SHUTDOWN_VECTOR (interrupt starts up)
+ 	 * - The interrupt is not yet started up
+ 	 * - The new destination CPU is the same as the old destination CPU
+ 	 */
+-	if (!irqd_msi_nomask_quirk(irqd) ||
++	if (!irqd_can_reserve(irqd) ||
+ 	    cfg->vector == old_cfg.vector ||
+ 	    old_cfg.vector == MANAGED_IRQ_SHUTDOWN_VECTOR ||
+ 	    !irqd_is_started(irqd) ||
+@@ -215,8 +215,6 @@ static bool x86_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
+ 		if (WARN_ON_ONCE(domain != real_parent))
+ 			return false;
+ 		info->chip->irq_set_affinity = msi_set_affinity;
+-		/* See msi_set_affinity() for the gory details */
+-		info->flags |= MSI_FLAG_NOMASK_QUIRK;
+ 		break;
+ 	case DOMAIN_BUS_DMAR:
+ 	case DOMAIN_BUS_AMDVI:
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index d8a6fdce9373..90081afa10ce 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -215,8 +215,6 @@ struct irq_data {
+  * IRQD_SINGLE_TARGET		- IRQ allows only a single affinity target
+  * IRQD_DEFAULT_TRIGGER_SET	- Expected trigger already been set
+  * IRQD_CAN_RESERVE		- Can use reservation mode
+- * IRQD_MSI_NOMASK_QUIRK	- Non-maskable MSI quirk for affinity change
+- *				  required
+  * IRQD_HANDLE_ENFORCE_IRQCTX	- Enforce that handle_irq_*() is only invoked
+  *				  from actual interrupt context.
+  * IRQD_AFFINITY_ON_ACTIVATE	- Affinity is set on activation. Don't call
+@@ -247,11 +245,10 @@ enum {
+ 	IRQD_SINGLE_TARGET		= BIT(24),
+ 	IRQD_DEFAULT_TRIGGER_SET	= BIT(25),
+ 	IRQD_CAN_RESERVE		= BIT(26),
+-	IRQD_MSI_NOMASK_QUIRK		= BIT(27),
+-	IRQD_HANDLE_ENFORCE_IRQCTX	= BIT(28),
+-	IRQD_AFFINITY_ON_ACTIVATE	= BIT(29),
+-	IRQD_IRQ_ENABLED_ON_SUSPEND	= BIT(30),
+-	IRQD_RESEND_WHEN_IN_PROGRESS    = BIT(31),
++	IRQD_HANDLE_ENFORCE_IRQCTX	= BIT(27),
++	IRQD_AFFINITY_ON_ACTIVATE	= BIT(28),
++	IRQD_IRQ_ENABLED_ON_SUSPEND	= BIT(29),
++	IRQD_RESEND_WHEN_IN_PROGRESS    = BIT(30),
+ };
  
-+#include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <linux/dmi.h>
- #include <linux/pci.h>
-+#include <linux/suspend.h>
- #include <linux/vgaarb.h>
- #include <asm/amd_nb.h>
- #include <asm/hpet.h>
-@@ -904,3 +906,60 @@ static void chromeos_fixup_apl_pci_l1ss_capability(struct pci_dev *dev)
+ #define __irqd_to_state(d) ACCESS_PRIVATE((d)->common, state_use_accessors)
+@@ -426,21 +423,6 @@ static inline bool irqd_can_reserve(struct irq_data *d)
+ 	return __irqd_to_state(d) & IRQD_CAN_RESERVE;
  }
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x5ad6, chromeos_save_apl_pci_l1ss_capability);
- DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_INTEL, 0x5ad6, chromeos_fixup_apl_pci_l1ss_capability);
-+
-+#ifdef CONFIG_SUSPEND
-+/*
-+ * Root Ports on some AMD SoCs advertise PME_Support for D3hot and D3cold, but
-+ * if the SoC is put into a hardware sleep state by the amd-pmc driver, the
-+ * Root Ports don't generate wakeup interrupts for USB devices.
-+ *
-+ * When suspending, remove D3hot and D3cold from the PME_Support advertised
-+ * by the Root Port so we don't use those states if we're expecting wakeup
-+ * interrupts.  Restore the advertised PME_Support when resuming.
-+ */
-+static void amd_rp_pme_suspend(struct pci_dev *dev)
-+{
-+	struct pci_dev *rp;
-+
-+	/*
-+	 * PM_SUSPEND_ON means we're doing runtime suspend, which means
-+	 * amd-pmc will not be involved so PMEs during D3 work as advertised.
-+	 *
-+	 * The PMEs *do* work if amd-pmc doesn't put the SoC in the hardware
-+	 * sleep state, but we assume amd-pmc is always present.
-+	 */
-+	if (pm_suspend_target_state == PM_SUSPEND_ON)
-+		return;
-+
-+	rp = pcie_find_root_port(dev);
-+	if (!rp->pm_cap)
-+		return;
-+
-+	rp->pme_support &= ~((PCI_PM_CAP_PME_D3hot|PCI_PM_CAP_PME_D3cold) >>
-+				    PCI_PM_CAP_PME_SHIFT);
-+	dev_info_once(&rp->dev, "quirk: disabling D3cold for suspend\n");
-+}
-+
-+static void amd_rp_pme_resume(struct pci_dev *dev)
-+{
-+	struct pci_dev *rp;
-+	u16 pmc;
-+
-+	rp = pcie_find_root_port(dev);
-+	if (!rp->pm_cap)
-+		return;
-+
-+	pci_read_config_word(rp, rp->pm_cap + PCI_PM_PMC, &pmc);
-+	rp->pme_support = FIELD_GET(PCI_PM_CAP_PME_MASK, pmc);
-+}
-+/* Rembrandt (yellow_carp) */
-+DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162e, amd_rp_pme_suspend);
-+DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162e, amd_rp_pme_resume);
-+DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162f, amd_rp_pme_suspend);
-+DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162f, amd_rp_pme_resume);
-+/* Phoenix (pink_sardine) */
-+DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_suspend);
-+DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_resume);
-+DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_suspend);
-+DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_resume);
-+#endif /* CONFIG_SUSPEND */
+ 
+-static inline void irqd_set_msi_nomask_quirk(struct irq_data *d)
+-{
+-	__irqd_to_state(d) |= IRQD_MSI_NOMASK_QUIRK;
+-}
+-
+-static inline void irqd_clr_msi_nomask_quirk(struct irq_data *d)
+-{
+-	__irqd_to_state(d) &= ~IRQD_MSI_NOMASK_QUIRK;
+-}
+-
+-static inline bool irqd_msi_nomask_quirk(struct irq_data *d)
+-{
+-	return __irqd_to_state(d) & IRQD_MSI_NOMASK_QUIRK;
+-}
+-
+ static inline void irqd_set_affinity_on_activate(struct irq_data *d)
+ {
+ 	__irqd_to_state(d) |= IRQD_AFFINITY_ON_ACTIVATE;
+diff --git a/include/linux/msi.h b/include/linux/msi.h
+index a50ea79522f8..ddace8c34dcf 100644
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -547,12 +547,6 @@ enum {
+ 	MSI_FLAG_ALLOC_SIMPLE_MSI_DESCS	= (1 << 5),
+ 	/* Free MSI descriptors */
+ 	MSI_FLAG_FREE_MSI_DESCS		= (1 << 6),
+-	/*
+-	 * Quirk to handle MSI implementations which do not provide
+-	 * masking. Currently known to affect x86, but has to be partially
+-	 * handled in the core MSI code.
+-	 */
+-	MSI_FLAG_NOMASK_QUIRK		= (1 << 7),
+ 
+ 	/* Mask for the generic functionality */
+ 	MSI_GENERIC_FLAGS_MASK		= GENMASK(15, 0),
+diff --git a/kernel/irq/debugfs.c b/kernel/irq/debugfs.c
+index 5971a66be034..aae0402507ed 100644
+--- a/kernel/irq/debugfs.c
++++ b/kernel/irq/debugfs.c
+@@ -121,7 +121,6 @@ static const struct irq_bit_descr irqdata_states[] = {
+ 	BIT_MASK_DESCR(IRQD_AFFINITY_ON_ACTIVATE),
+ 	BIT_MASK_DESCR(IRQD_MANAGED_SHUTDOWN),
+ 	BIT_MASK_DESCR(IRQD_CAN_RESERVE),
+-	BIT_MASK_DESCR(IRQD_MSI_NOMASK_QUIRK),
+ 
+ 	BIT_MASK_DESCR(IRQD_FORWARDED_TO_VCPU),
+ 
+diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
+index b4c31a5c1147..79b4a58ba9c3 100644
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -1204,7 +1204,6 @@ static int msi_handle_pci_fail(struct irq_domain *domain, struct msi_desc *desc,
+ 
+ #define VIRQ_CAN_RESERVE	0x01
+ #define VIRQ_ACTIVATE		0x02
+-#define VIRQ_NOMASK_QUIRK	0x04
+ 
+ static int msi_init_virq(struct irq_domain *domain, int virq, unsigned int vflags)
+ {
+@@ -1213,8 +1212,6 @@ static int msi_init_virq(struct irq_domain *domain, int virq, unsigned int vflag
+ 
+ 	if (!(vflags & VIRQ_CAN_RESERVE)) {
+ 		irqd_clr_can_reserve(irqd);
+-		if (vflags & VIRQ_NOMASK_QUIRK)
+-			irqd_set_msi_nomask_quirk(irqd);
+ 
+ 		/*
+ 		 * If the interrupt is managed but no CPU is available to
+@@ -1275,15 +1272,8 @@ static int __msi_domain_alloc_irqs(struct device *dev, struct irq_domain *domain
+ 	 * Interrupt can use a reserved vector and will not occupy
+ 	 * a real device vector until the interrupt is requested.
+ 	 */
+-	if (msi_check_reservation_mode(domain, info, dev)) {
++	if (msi_check_reservation_mode(domain, info, dev))
+ 		vflags |= VIRQ_CAN_RESERVE;
+-		/*
+-		 * MSI affinity setting requires a special quirk (X86) when
+-		 * reservation mode is active.
+-		 */
+-		if (info->flags & MSI_FLAG_NOMASK_QUIRK)
+-			vflags |= VIRQ_NOMASK_QUIRK;
+-	}
+ 
+ 	xa_for_each_range(xa, idx, desc, ctrl->first, ctrl->last) {
+ 		if (!msi_desc_match(desc, MSI_DESC_NOTASSOCIATED))
 
