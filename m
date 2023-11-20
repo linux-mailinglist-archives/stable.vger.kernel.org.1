@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B1657F174C
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAB2F7F174D
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:30:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232702AbjKTPaD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 10:30:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58364 "EHLO
+        id S233396AbjKTPaN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 10:30:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233195AbjKTPaC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:30:02 -0500
+        with ESMTP id S233356AbjKTPaM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:30:12 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC82EA7
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:29:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0085C433C8;
-        Mon, 20 Nov 2023 15:29:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A6EFA7
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:30:08 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DE9C433C8;
+        Mon, 20 Nov 2023 15:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700494198;
-        bh=4eL9wei0CZkDreO2Pva3jQ80nGVrmtOy+RUhJeYcrmU=;
+        s=korg; t=1700494207;
+        bh=5Q4Kxq0Mc+/PiIfLhpYsYKrycacP6FUiU3xGvC0vhmA=;
         h=Subject:To:Cc:From:Date:From;
-        b=RVhFnxGFwdid+ejqhsM9OFX+MFsNJ/w9iAWK4w/0aNRE6ge4lO8Cy2s909Cp3QuO5
-         mS+7UHuHbt90sog8Zcg6/YMayuTeSHca3umsLlC5yoGNB44s5nCvLjbcl0AnGmzI2M
-         T5W+LAGv2KDEl+9Qu+yiDYklk3hpdJ3h0nJ2n184=
-Subject: FAILED: patch "[PATCH] KVM: x86: Fix lapic timer interrupt lost after loading a" failed to apply to 6.1-stable tree
+        b=xwoZ42V1+Vq66JhNcMC++4vASvfnxgJmZ+MvETNRCFRe0WOpAE1mSOLZqA+SKsx7Z
+         Ke0g/3bAceKsXxnCD/VrNS0r4NZcqecDy8lGwuSa/BW2fnS8uHhhOWIkJc+i1eB3ur
+         h97iHVyt2HBhUoY0dsUA11rqj6zsAvR4M2zd2e8k=
+Subject: FAILED: patch "[PATCH] KVM: x86: Fix lapic timer interrupt lost after loading a" failed to apply to 5.15-stable tree
 To:     hshan@google.com, seanjc@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 20 Nov 2023 16:29:55 +0100
-Message-ID: <2023112055-hardener-designer-a77b@gregkh>
+Date:   Mon, 20 Nov 2023 16:29:56 +0100
+Message-ID: <2023112056-opposing-bobbing-e37e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112055-hardener-designer-a77b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112056-opposing-bobbing-e37e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -66,6 +66,14 @@ b3f257a84696 ("KVM: x86: Track required APICv inhibits with variable, not callba
 2008fab34530 ("KVM: x86: Inhibit APIC memslot if x2APIC and AVIC are enabled")
 c482f2cebe2d ("KVM: x86: Move APIC access page helper to common x86 code")
 f651a0089548 ("KVM: x86: Don't inhibit APICv/AVIC if xAPIC ID mismatch is due to 32-bit ID")
+0e311d33bfbe ("KVM: SVM: Introduce hybrid-AVIC mode")
+4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
+d2fe6bf5b881 ("KVM: SVM: Update max number of vCPUs supported for x2AVIC mode")
+ec1d7e6ab9ff ("KVM: SVM: Drop unused AVIC / kvm_x86_ops declarations")
+5bdae49fc2f6 ("KVM: SEV: fix misplaced closing parenthesis")
+3743c2f02517 ("KVM: x86: inhibit APICv/AVIC on changes to APIC ID or APIC base")
+a9603ae0e4ee ("KVM: x86: document AVIC/APICv inhibit reasons")
+a4cfff3f0f8c ("Merge branch 'kvm-older-features' into HEAD")
 
 thanks,
 
