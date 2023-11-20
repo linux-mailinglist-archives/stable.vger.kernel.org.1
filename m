@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A937F18D4
+	by mail.lfdr.de (Postfix) with ESMTP id 9C4007F18D6
 	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 17:43:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232650AbjKTQnm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 11:43:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43820 "EHLO
+        id S232322AbjKTQnn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 11:43:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232445AbjKTQnm (ORCPT
+        with ESMTP id S232330AbjKTQnm (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 11:43:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB82F9;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF92810C;
         Mon, 20 Nov 2023 08:43:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56ED5C433CA;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5977EC433CC;
         Mon, 20 Nov 2023 16:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1700498618;
-        bh=SYbMLujvnC1QomLYjRaWpmwjslWrNBjazaxHhxstyBo=;
+        bh=soLRSfk9dWBkcgZLkRVitDVYBBQTpVFn3DtcV2Mfi/s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y5t0azr58Jw56/wu2u1d7LrQcCTP2P99/tv8+Suk8xP+Sj/688v3KImPl8GGyBroW
-         O04etj3VBmDH8MlXQFpSnuXwd6FAQRj4AHcyXfGzmZ/Y9f+trd98Bxdx7no06dr4Sa
-         MetS2nN7upGadL176X/hCB+dqbrpAmt5FbLViJlVxNatruFHjPEx1zBc3kQwHtPlqe
-         WAyXwEpzEgOxzw4LB44t8TV76TzF9GIw1ngqAWOt14zDwwtUp5CrQu4AsDOCck6P5T
-         UpUHJEH9WfGHLrSi9VqMvemmQs+7NnerD0SSH6mjaKNoqo2JfjosqzF5otkDWZ8jwM
-         S0OxMT6dhFj6Q==
+        b=rxiOuUX07VwT5hgKbOn9OVNCLqiRjI32vWvpSMMJpokImABHF4vKYY5mliGg8jmPw
+         4sUsYTd+3JrFhJX+XkKu66OFgxfFipV3ZFOxBh8ZxJiGRKbp4KkotW9bMPhHB5xaMv
+         HE2L9E+57J17qc49hnlq8XEfdATj/AdwvydSf/nMDDNpMamIA6mBbXrvbxUoxBeaAl
+         dcL87XHonGU8SMRfGXYQfDyRuY50I8CpgvFhNjMe/gW+louaYemfJcrRmbTH5DaarG
+         l9lnSPLpIUvU81waD0xUdKt8VV8PTl+ooNl4RFXCE2TBTcPZLLLGbCnk/0UyZxDSfQ
+         qdNdqDQrFJz+w==
 Received: from johan by xi.lan with local (Exim 4.96.2)
         (envelope-from <johan+linaro@kernel.org>)
-        id 1r57ND-00027T-3A;
+        id 1r57NE-00027X-0V;
         Mon, 20 Nov 2023 17:43:48 +0100
 From:   Johan Hovold <johan+linaro@kernel.org>
 To:     Bjorn Andersson <andersson@kernel.org>
@@ -39,11 +39,10 @@ Cc:     Andy Gross <agross@kernel.org>,
         Conor Dooley <conor+dt@kernel.org>,
         cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
         devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 01/11] ARM: dts: qcom: sdx55: fix USB wakeup interrupt types
-Date:   Mon, 20 Nov 2023 17:43:21 +0100
-Message-ID: <20231120164331.8116-2-johan+linaro@kernel.org>
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH 03/11] arm64: dts: qcom: sc7180: fix USB wakeup interrupt types
+Date:   Mon, 20 Nov 2023 17:43:23 +0100
+Message-ID: <20231120164331.8116-4-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231120164331.8116-1-johan+linaro@kernel.org>
 References: <20231120164331.8116-1-johan+linaro@kernel.org>
@@ -63,26 +62,25 @@ The DP/DM wakeup interrupts are edge triggered and which edge to trigger
 on depends on use-case and whether a Low speed or Full/High speed device
 is connected.
 
-Fixes: fea4b41022f3 ("ARM: dts: qcom: sdx55: Add USB3 and PHY support")
-Cc: stable@vger.kernel.org      # 5.12
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
+Cc: stable@vger.kernel.org      # 5.10
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- arch/arm/boot/dts/qcom/qcom-sdx55.dtsi | 4 ++--
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-index 2aa5089a8513..e30dbf12990a 100644
---- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-@@ -587,8 +587,8 @@ usb: usb@a6f8800 {
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index 11f353d416b4..8dc50d4afe29 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -2966,8 +2966,8 @@ usb_1: usb@a6f8800 {
  
- 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 158 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 158 IRQ_TYPE_EDGE_BOTH>,
-+				     <GIC_SPI 157 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&pdc 8 IRQ_TYPE_LEVEL_HIGH>,
+-					      <&pdc 9 IRQ_TYPE_LEVEL_HIGH>;
++					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
  			interrupt-names = "hs_phy_irq", "ss_phy_irq",
  					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
