@@ -2,133 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAB627F1CDE
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 19:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 283CD7F1D08
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 20:01:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229646AbjKTSph (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 13:45:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55130 "EHLO
+        id S231214AbjKTTBK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 14:01:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229676AbjKTSpg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 13:45:36 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B60EAD9;
-        Mon, 20 Nov 2023 10:45:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40098C433C8;
-        Mon, 20 Nov 2023 18:45:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1700505931;
-        bh=GpGpYdLDLb75GhDzghkpoSPZZujs8criHAgHLPp4cXw=;
-        h=Date:To:From:Subject:From;
-        b=Hnmov+UQbxWh0RNbNFyyv+rYgmhX1IrwFZSOH3GlhM101H+FYOb31WGkn+JPBvOWh
-         fRBPn/P1oig+gyp00dRXTC0LNDw7UGeyDD+iqNNn7pT5FPBpV0QypoAfIhRwvSKrTR
-         OpPxSCFLNKVaUhl+akfq907A6HAjlKJ87T/cYXqI=
-Date:   Mon, 20 Nov 2023 10:45:30 -0800
-To:     mm-commits@vger.kernel.org, v.narang@samsung.com,
-        stable@vger.kernel.org, masahiroy@kernel.org,
-        maninder1.s@samsung.com, hca@linux.ibm.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + checkstack-fix-printed-address.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231120184531.40098C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229570AbjKTTBK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 14:01:10 -0500
+Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34566CF
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 11:01:04 -0800 (PST)
+Received: from tux.applied-asynchrony.com (p5b07e88b.dip0.t-ipconnect.de [91.7.232.139])
+        by mail.itouring.de (Postfix) with ESMTPSA id 94066CF27A5;
+        Mon, 20 Nov 2023 20:01:02 +0100 (CET)
+Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
+        by tux.applied-asynchrony.com (Postfix) with ESMTP id 3AF53F01608;
+        Mon, 20 Nov 2023 20:01:02 +0100 (CET)
+Subject: Re: [PATCH 5.10 000/191] 5.10.201-rc1 review
+To:     Guenter Roeck <linux@roeck-us.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20231115204644.490636297@linuxfoundation.org>
+ <b5367845-8d70-4fcf-861a-ff9b8849c9c9@roeck-us.net>
+ <2023112039-reverse-careless-e646@gregkh>
+ <ffd98a9d-6db8-4d1e-b3ab-0c7159f91b6b@roeck-us.net>
+From:   =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
+Organization: Applied Asynchrony, Inc.
+Message-ID: <b4ec1c4a-bf03-0a2c-52a3-04e11ffe6c66@applied-asynchrony.com>
+Date:   Mon, 20 Nov 2023 20:01:02 +0100
+MIME-Version: 1.0
+In-Reply-To: <ffd98a9d-6db8-4d1e-b3ab-0c7159f91b6b@roeck-us.net>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 2023-11-20 19:17, Guenter Roeck wrote:
+> On 11/20/23 02:05, Greg Kroah-Hartman wrote:
+>> On Thu, Nov 16, 2023 at 05:13:39PM -0800, Guenter Roeck wrote:
+>>> On 11/15/23 12:44, Greg Kroah-Hartman wrote:
+>>>> This is the start of the stable review cycle for the 5.10.201 release.
+>>>> There are 191 patches in this series, all will be posted as a response
+>>>> to this one.  If anyone has any issues with these being applied, please
+>>>> let me know.
+>>>>
+>>>> Responses should be made by Fri, 17 Nov 2023 20:46:03 +0000.
+>>>> Anything received after that time might be too late.
+>>>>
+>>>
+>>> Build results:
+>>>     total: 159 pass: 155 fail: 4
+>>> Failed builds:
+>>>     arm:allmodconfig
+>>>     arm64:allmodconfig
+>>>     i386:tools/perf
+>>>     x86_64:tools/perf
+>>> Qemu test results:
+>>>     total: 495 pass: 495 fail: 0
+>>>
+>>> with:
+>>>
+>>> Building arm64:allmodconfig ... failed
+>>> --------------
+>>> Error log:
+>>> drivers/interconnect/qcom/osm-l3.c:6:10: fatal error: linux/args.h: No such file or directory
+>>>
+>>> There is no linux/args.h in v5.10.y.
+>>>
+>>> Caused by "interconnect: qcom: osm-l3: Replace custom implementation of COUNT_ARGS()".
+>>
+>> Now dropped, thanks.
+>>
+> 
+> v5.10.201 fails to build arm:allmodconfig and arm64:allmodconfig with
+> 
+> drivers/interconnect/qcom/sc7180.c:158:10: error: 'struct qcom_icc_bcm' has no member named 'enable_mask'
+> 
 
-The patch titled
-     Subject: checkstack: fix printed address
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     checkstack-fix-printed-address.patch
+Sam sent a note about that as well, probably got lost in the pile:
+https://lore.kernel.org/stable/87fs10k1ee.fsf@gentoo.org/
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/checkstack-fix-printed-address.patch
+Looks like it's missing a prerequisite patch.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Heiko Carstens <hca@linux.ibm.com>
-Subject: checkstack: fix printed address
-Date: Mon, 20 Nov 2023 19:37:17 +0100
-
-All addresses printed by checkstack have an extra incorrect 0 appended at
-the end.
-
-This was introduced with commit 677f1410e058 ("scripts/checkstack.pl: don't
-display $dre as different entity"): since then the address is taken from
-the line which contains the function name, instead of the line which
-contains stack consumption. E.g. on s390:
-
-0000000000100a30 <do_one_initcall>:
-...
-  100a44:       e3 f0 ff 70 ff 71       lay     %r15,-144(%r15)
-
-So the used regex which matches spaces and hexadecimal numbers to extract
-an address now matches a different substring. Subsequently replacing spaces
-with 0 appends a zero at the and, instead of replacing leading spaces.
-
-Fix this by using the proper regex, and simplify the code a bit.
-
-Link: https://lkml.kernel.org/r/20231120183719.2188479-2-hca@linux.ibm.com
-Fixes: 677f1410e058 ("scripts/checkstack.pl: don't display $dre as different entity")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Cc: Maninder Singh <maninder1.s@samsung.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Vaneet Narang <v.narang@samsung.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- scripts/checkstack.pl |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
-
---- a/scripts/checkstack.pl~checkstack-fix-printed-address
-+++ a/scripts/checkstack.pl
-@@ -139,15 +139,11 @@ $total_size = 0;
- while (my $line = <STDIN>) {
- 	if ($line =~ m/$funcre/) {
- 		$func = $1;
--		next if $line !~ m/^($xs*)/;
-+		next if $line !~ m/^($x*)/;
- 		if ($total_size > $min_stack) {
- 			push @stack, "$intro$total_size\n";
- 		}
--
--		$addr = $1;
--		$addr =~ s/ /0/g;
--		$addr = "0x$addr";
--
-+		$addr = "0x$1";
- 		$intro = "$addr $func [$file]:";
- 		my $padlen = 56 - length($intro);
- 		while ($padlen > 0) {
-_
-
-Patches currently in -mm which might be from hca@linux.ibm.com are
-
-checkstack-fix-printed-address.patch
-checkstack-sort-output-by-size-and-function-name.patch
-checkstack-allow-to-pass-minstacksize-parameter.patch
-arch-remove-arch_thread_stack_allocator.patch
-arch-remove-arch_task_struct_allocator.patch
-arch-remove-arch_task_struct_on_stack.patch
-
+-h
