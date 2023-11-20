@@ -2,55 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E072D7F0A32
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 02:00:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F38C7F0A42
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 02:13:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231558AbjKTBAr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 19 Nov 2023 20:00:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
+        id S231607AbjKTBNH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 19 Nov 2023 20:13:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjKTBAr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 20:00:47 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D63F0F2;
-        Sun, 19 Nov 2023 17:00:43 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D89C433C7;
-        Mon, 20 Nov 2023 01:00:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700442043;
-        bh=qKD5+xB13L+yKxPbKXW2Cb8GqEggWGwNhQxiXp/d6Mg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=PR1N5A/TRYt+FdNBdT/aQljkYnTiuZl8FfAHUL2HtCFdsajLwd7pxreAzZy6E93Hi
-         J+xQ3kEIgG3y5h0iB7E+F9BrmRDW7PvXL1KKvfFso9BTNL/ZKT1rW339I0qG3CN5yi
-         cHGL8UH5UMAvU0M7dL1l6tzZ2sD+1St4yEVMadjo1qCPJThr6gDxYY6dgPYqYW6IPY
-         0MFOnZXcqC92UPzz7HBkyWi/qPDq6vftiIA7j9AVfnIQr1HYsj2Mqu+mRpSp1oumKH
-         KzwIjqaySyDumhLRiJ3zkpxstwahynpBU7R1PWuA6h1vl8hZRmmimzdfc0zF0kYk9C
-         UrYGRSJKMZ2PQ==
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4083f61322fso12079095e9.1;
-        Sun, 19 Nov 2023 17:00:43 -0800 (PST)
-X-Gm-Message-State: AOJu0YzBbWooPEfHZU/1LRtZVIkwuA3b3UD8HMF7oGSs9scWMSkt3QYl
-        iK03ZThmbpjQTXHwFcNVeRL6aHoliXYlJsXCklo=
-X-Google-Smtp-Source: AGHT+IH1rNMohrbjoKjAMTzF4WUGMbCzZoxgcQJ3ZzPgbK4tBE9MCBt/UaR8gdUzxhVTOskSF4VuISH0zFGl3h1hjCc=
-X-Received: by 2002:a5d:6105:0:b0:32d:9b32:8a7e with SMTP id
- v5-20020a5d6105000000b0032d9b328a7emr3191978wrt.71.1700442041805; Sun, 19 Nov
- 2023 17:00:41 -0800 (PST)
+        with ESMTP id S229470AbjKTBNG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 20:13:06 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473D0115;
+        Sun, 19 Nov 2023 17:13:01 -0800 (PST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AJNINxM025177;
+        Mon, 20 Nov 2023 01:12:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : content-transfer-encoding : mime-version; s=pp1;
+ bh=DT0NjgV5bxTqZenYJx9JCksF59hQvQ1XZaCB+iwtkUA=;
+ b=eVyOuf3rxoTn8YNF+cZzvSmbbgcMosqKP1zoewRN9gprgpOchxUw6BnIqg6j6X9RaFRQ
+ d+x31Jo7WoBxvzIBYG1w0+PDc4AHe5mtYtO1wjXViKhIWp6yVs73B//fwciYRy6gtHXE
+ sW8PYsuZ+zbpOJTa1tewYWxYSVDPaoMKwRSaKb3D41w072AERjgYJxfk8Y1U2eGaT6Pd
+ Ugpsp0Eq8MzXYcg0nL2wQQrg0jChGYtASN2hgBWi31b4OzL6o2vf54r6nS+cEHhUi6qd
+ 69aGI+8iRvtsqy5OLzNX1Fnl34J0uyRZh2EHBIZ0E8FNutCWO1unhJxf28PUnx40dQKS WA== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ufuwrseka-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 20 Nov 2023 01:12:58 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3AJM1s7F026556;
+        Mon, 20 Nov 2023 01:12:58 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf93kdv9q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 20 Nov 2023 01:12:58 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+        by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3AK1CvEc26542732
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 20 Nov 2023 01:12:57 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 413FF58057;
+        Mon, 20 Nov 2023 01:12:57 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C5D7058058;
+        Mon, 20 Nov 2023 01:12:56 +0000 (GMT)
+Received: from sbct-3.pok.ibm.com (unknown [9.47.158.153])
+        by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Mon, 20 Nov 2023 01:12:56 +0000 (GMT)
+From:   Stefan Berger <stefanb@linux.ibm.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     zohar@linux.ibm.com, gregkh@linuxfoundation.org,
+        initramfs@vger.kernel.org, Stefan Berger <stefanb@linux.ibm.com>,
+        stable@vger.kernel.org, Rob Landley <rob@landley.net>
+Subject: [PATCH v3] rootfs: Fix support for rootfstype= when root= is given
+Date:   Sun, 19 Nov 2023 20:12:48 -0500
+Message-ID: <20231120011248.396012-1-stefanb@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: fLdhSeQwbeQka2ezh3TsY4brwYxLYmKq
+X-Proofpoint-GUID: fLdhSeQwbeQka2ezh3TsY4brwYxLYmKq
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-References: <20231119215635.52810-1-jiaxun.yang@flygoat.com>
-In-Reply-To: <20231119215635.52810-1-jiaxun.yang@flygoat.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Mon, 20 Nov 2023 09:00:34 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6wKMyAEJrRb4V+UzyFBjOQVtkrKCGC80D+_RoGf1h7qA@mail.gmail.com>
-Message-ID: <CAAhV-H6wKMyAEJrRb4V+UzyFBjOQVtkrKCGC80D+_RoGf1h7qA@mail.gmail.com>
-Subject: Re: [PATCH v5] pci: loongson: Workaround MIPS firmware MRRS settings
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-pci@vger.kernel.org, lpieralisi@kernel.org, kw@linux.com,
-        robh@kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-19_21,2023-11-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ adultscore=0 priorityscore=1501 lowpriorityscore=0 mlxlogscore=999
+ spamscore=0 clxscore=1015 suspectscore=0 mlxscore=0 bulkscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311200007
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,102 +82,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-LGTM, so
+Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
 
-Acked-by: Huacai Chen <chenhuacai@loongson.cn>
+  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
+  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
+  line.
 
-On Mon, Nov 20, 2023 at 5:56=E2=80=AFAM Jiaxun Yang <jiaxun.yang@flygoat.co=
-m> wrote:
->
-> This is a partial revert of commit 8b3517f88ff2 ("PCI:
-> loongson: Prevent LS7A MRRS increases") for MIPS based Loongson.
->
-> There are many MIPS based Loongson systems in wild that
-> shipped with firmware which does not set maximum MRRS properly.
->
-> Limiting MRRS to 256 for all as MIPS Loongson comes with higher
-> MRRS support is considered rare.
->
-> It must be done at device enablement stage because MRRS setting
-> may get lost if the parent bridge lost PCI_COMMAND_MASTER, and
-> we are only sure parent bridge is enabled at this point.
->
-> Cc: stable@vger.kernel.org
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217680
-> Fixes: 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases")
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
-> v4: Improve commit message
-> v5:
->         - Improve commit message and comments.
->         - Style fix from Huacai's off-list input.
-> ---
->  drivers/pci/controller/pci-loongson.c | 47 ++++++++++++++++++++++++---
->  1 file changed, 42 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controll=
-er/pci-loongson.c
-> index d45e7b8dc530..128cc95b236f 100644
-> --- a/drivers/pci/controller/pci-loongson.c
-> +++ b/drivers/pci/controller/pci-loongson.c
-> @@ -80,13 +80,50 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
->                         DEV_LS7A_LPC, system_bus_quirk);
->
-> +/*
-> + * Some Loongson PCIe ports have h/w limitations of maximum read
-> + * request size. They can't handle anything larger than this.
-> + * Sane firmware will set proper MRRS at boot, so we only need
-> + * no_inc_mrrs for bridges. However, some MIPS Loongson firmware
-> + * won't set MRRS properly, and we have to enforce maximum safe
-> + * MRRS, which is 256 bytes.
-> + */
-> +#ifdef CONFIG_MIPS
-> +static void loongson_set_min_mrrs_quirk(struct pci_dev *pdev)
-> +{
-> +       struct pci_bus *bus =3D pdev->bus;
-> +       struct pci_dev *bridge;
-> +       static const struct pci_device_id bridge_devids[] =3D {
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
-> +               { 0, },
-> +       };
-> +
-> +       /* look for the matching bridge */
-> +       while (!pci_is_root_bus(bus)) {
-> +               bridge =3D bus->self;
-> +               bus =3D bus->parent;
-> +
-> +               if (pci_match_id(bridge_devids, bridge)) {
-> +                       if (pcie_get_readrq(pdev) > 256) {
-> +                               pci_info(pdev, "limiting MRRS to 256\n");
-> +                               pcie_set_readrq(pdev, 256);
-> +                       }
-> +                       break;
-> +               }
-> +       }
-> +}
-> +DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_mrrs_quirk_old=
-);
-> +#endif
-> +
->  static void loongson_mrrs_quirk(struct pci_dev *pdev)
->  {
-> -       /*
-> -        * Some Loongson PCIe ports have h/w limitations of maximum read
-> -        * request size. They can't handle anything larger than this. So
-> -        * force this limit on any devices attached under these ports.
-> -        */
->         struct pci_host_bridge *bridge =3D pci_find_host_bridge(pdev->bus=
-);
->
->         bridge->no_inc_mrrs =3D 1;
-> --
-> 2.34.1
->
+This currently does not work when root= is provided since then
+saved_root_name contains a string and rootfstype= is ignored. Therefore,
+ramfs is currently always chosen when root= is provided.
+
+The current behavior for rootfs's filesystem is:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs
+   unspecified | tmpfs       | tmpfs
+   unspecified | ramfs       | ramfs
+    provided   | ignored     | ramfs
+
+rootfstype= should be respected regardless whether root= is given,
+as shown below:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs  (as before)
+   unspecified | tmpfs       | tmpfs  (as before)
+   unspecified | ramfs       | ramfs  (as before)
+    provided   | unspecified | ramfs  (compatibility with before)
+    provided   | tmpfs       | tmpfs  (new)
+    provided   | ramfs       | ramfs  (new)
+
+This table represents the new behavior.
+
+Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root=  specified")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Rob Landley <rob@landley.net>
+Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+
+---
+
+v3:
+ - Changed initfstype= to rootfstype=
+ - Remove my R-b
+
+v2:
+ - Cc'ing stable mailing list now
+---
+ init/do_mounts.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/init/do_mounts.c b/init/do_mounts.c
+index 5fdef94f0864..279ad28bf4fb 100644
+--- a/init/do_mounts.c
++++ b/init/do_mounts.c
+@@ -510,7 +510,10 @@ struct file_system_type rootfs_fs_type = {
+ 
+ void __init init_rootfs(void)
+ {
+-	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
+-		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
+-		is_tmpfs = true;
++	if (IS_ENABLED(CONFIG_TMPFS)) {
++		if (!saved_root_name[0] && !root_fs_names)
++			is_tmpfs = true;
++		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
++			is_tmpfs = true;
++	}
+ }
+-- 
+2.41.0
+
