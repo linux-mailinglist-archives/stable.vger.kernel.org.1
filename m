@@ -2,132 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78B2F7F0B5B
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 05:21:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB4307F0B8B
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 06:26:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229682AbjKTEVy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 19 Nov 2023 23:21:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45470 "EHLO
+        id S231815AbjKTF0T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 00:26:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbjKTEVx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 19 Nov 2023 23:21:53 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A9C4C5;
-        Sun, 19 Nov 2023 20:21:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700454110; x=1731990110;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6v/qk6XILJ+EShe/DB479gTNTuB+ktH4JpqYg6NOK44=;
-  b=Gri5v89c3emaAYFCIIK4RTwo7EropjZxTtjHnru0JhnqlzVbE0g4HQcQ
-   WR/Ae3/x7mvbx3nzRe6uCNlJ+yB/yoexsIn19utS9RhS9Ho7zBGvOtDgq
-   h6byLIlwaxHgMUyp6F7ljw8Fi+urVjDDWmztcDs8w9/2G6UIs731kkZ1S
-   2Q9LA+WX32noRNyIMlILVymHAwEnwziTvFWD/bJlhdhh5qcFnVPxQSYOv
-   f84dlK9qZ6smKg+vTEORGh+WgvWqBrAzXV2YF9B1lDtQGVykENmVd4SH4
-   3zejx7Esva3aic3xH02xSGIoP9arljI6Zt2ViECa1GvxgBsvMZ1w0d1il
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="381939857"
-X-IronPort-AV: E=Sophos;i="6.04,212,1695711600"; 
-   d="scan'208";a="381939857"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2023 20:21:49 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="716104605"
-X-IronPort-AV: E=Sophos;i="6.04,212,1695711600"; 
-   d="scan'208";a="716104605"
-Received: from allen-box.sh.intel.com (HELO [10.239.159.127]) ([10.239.159.127])
-  by orsmga003.jf.intel.com with ESMTP; 19 Nov 2023 20:21:46 -0800
-Message-ID: <c67754fc-9fff-43b4-82ce-078e71134815@linux.intel.com>
-Date:   Mon, 20 Nov 2023 12:17:28 +0800
+        with ESMTP id S229470AbjKTF0R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 00:26:17 -0500
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE9B5103;
+        Sun, 19 Nov 2023 21:26:13 -0800 (PST)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 36FEC1F74D;
+        Mon, 20 Nov 2023 05:26:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1700457972; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7nqNiOlAE7bus2fwY4NaNzeqwQIjz99V6eJfBfXnTss=;
+        b=sP5zz1Dtytg3dgeeE22ZJldk6F84PKmUOEXsQXp0/5IQJlaUqXRP7Xv+Y3VwefAS1YLH6t
+        rRQSGML+vKDWAjqNTgpCZBJ+9fgJyenDZ12BfgmN3vbaj2PqBnC1nrxhjW3QF8SP62WcQF
+        dC6QPxHZb02J4aC6FHXNkbKPDlSVfz4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1700457972;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=7nqNiOlAE7bus2fwY4NaNzeqwQIjz99V6eJfBfXnTss=;
+        b=IKV4iEzwAduaJsNeYPbAyokOFr1tMd0tI7QYh9vLkmxlt+MnU7dWyanXHSN4/aqxv+NDgV
+        ocPYZslSQHHmYFCw==
+Received: from localhost.localdomain (colyli.tcp.ovpn1.nue.suse.de [10.163.16.22])
+        by relay2.suse.de (Postfix) with ESMTP id 30C0A2C433;
+        Mon, 20 Nov 2023 05:26:09 +0000 (UTC)
+From:   Coly Li <colyli@suse.de>
+To:     axboe@kernel.dk
+Cc:     linux-block@vger.kernel.org, linux-bcache@vger.kernel.org,
+        Coly Li <colyli@suse.de>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH 02/10] bcache: check return value from btree_node_alloc_replacement()
+Date:   Mon, 20 Nov 2023 13:24:55 +0800
+Message-Id: <20231120052503.6122-3-colyli@suse.de>
+X-Mailer: git-send-email 2.35.3
+In-Reply-To: <20231120052503.6122-1-colyli@suse.de>
+References: <20231120052503.6122-1-colyli@suse.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc:     baolu.lu@linux.intel.com,
-        "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "Huang, Ying" <ying.huang@intel.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        "Luo, Yuzhang" <yuzhang.luo@intel.com>,
-        "Zhu, Tony" <tony.zhu@intel.com>
-Subject: Re: [PATCH 1/1] iommu/vt-d: Fix incorrect cache invalidation for mm
- notification
-Content-Language: en-US
-To:     "Tian, Kevin" <kevin.tian@intel.com>,
-        Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>
-References: <20231117090933.75267-1-baolu.lu@linux.intel.com>
- <BN9PR11MB52768C9149602718CD2EFC1B8CB4A@BN9PR11MB5276.namprd11.prod.outlook.com>
-From:   Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <BN9PR11MB52768C9149602718CD2EFC1B8CB4A@BN9PR11MB5276.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: +++++++++++++++++++++
+Authentication-Results: smtp-out2.suse.de;
+        dkim=none;
+        dmarc=none;
+        spf=softfail (smtp-out2.suse.de: 149.44.160.134 is neither permitted nor denied by domain of colyli@suse.de) smtp.mailfrom=colyli@suse.de
+X-Rspamd-Server: rspamd1
+X-Spamd-Result: default: False [21.99 / 50.00];
+         ARC_NA(0.00)[];
+         BAYES_SPAM(0.00)[38.60%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         R_MISSING_CHARSET(2.50)[];
+         NEURAL_SPAM_SHORT(3.00)[1.000];
+         MIME_GOOD(-0.10)[text/plain];
+         DMARC_NA(1.20)[suse.de];
+         BROKEN_CONTENT_TYPE(1.50)[];
+         R_SPF_SOFTFAIL(4.60)[~all:c];
+         RCPT_COUNT_FIVE(0.00)[6];
+         TO_MATCH_ENVRCPT_SOME(0.00)[];
+         DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+         MX_GOOD(-0.01)[];
+         NEURAL_SPAM_LONG(3.50)[1.000];
+         MID_CONTAINS_FROM(1.00)[];
+         RWL_MAILSPIKE_GOOD(-1.00)[149.44.160.134:from];
+         VIOLATED_DIRECT_SPF(3.50)[];
+         FUZZY_BLOCKED(0.00)[rspamd.com];
+         RCVD_NO_TLS_LAST(0.10)[];
+         FROM_EQ_ENVFROM(0.00)[];
+         R_DKIM_NA(2.20)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2]
+X-Spam-Score: 21.99
+X-Rspamd-Queue-Id: 36FEC1F74D
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/20/23 11:45 AM, Tian, Kevin wrote:
->> From: Lu Baolu<baolu.lu@linux.intel.com>
->> Sent: Friday, November 17, 2023 5:10 PM
->>
->> Commit 6bbd42e2df8f ("mmu_notifiers: call invalidate_range() when
->> invalidating TLBs") moved the secondary TLB invalidations into the TLB
->> invalidation functions to ensure that all secondary TLB invalidations
->> happen at the same time as the CPU invalidation and added a flush-all
->> type of secondary TLB invalidation for the batched mode, where a range
->> of [0, -1UL) is used to indicates that the range extends to the end of
->> the address space.
->>
->> However, using an end address of -1UL caused an overflow in the Intel
->> IOMMU driver, where the end address was rounded up to the next page.
->> As a result, both the IOTLB and device ATC were not invalidated correctly.
->>
->> Add a flush all helper function and call it when the invalidation range
->> is from 0 to -1UL, ensuring that the entire caches are invalidated
->> correctly.
->>
->> Fixes: 6bbd42e2df8f ("mmu_notifiers: call invalidate_range() when
->> invalidating TLBs")
->> Cc:stable@vger.kernel.org
->> Cc: Huang Ying<ying.huang@intel.com>
->> Cc: Alistair Popple<apopple@nvidia.com>
->> Tested-by: Luo Yuzhang<yuzhang.luo@intel.com>  # QAT
->> Tested-by: Tony Zhu<tony.zhu@intel.com>  # DSA
->> Signed-off-by: Lu Baolu<baolu.lu@linux.intel.com>
->> ---
->>   drivers/iommu/intel/svm.c | 26 ++++++++++++++++++++++++++
->>   1 file changed, 26 insertions(+)
->>
->> diff --git a/drivers/iommu/intel/svm.c b/drivers/iommu/intel/svm.c
->> index 50a481c895b8..588385050a07 100644
->> --- a/drivers/iommu/intel/svm.c
->> +++ b/drivers/iommu/intel/svm.c
->> @@ -216,6 +216,27 @@ static void intel_flush_svm_range(struct intel_svm
->> *svm, unsigned long address,
->>   	rcu_read_unlock();
->>   }
->>
->> +static void intel_flush_svm_all(struct intel_svm *svm)
->> +{
->> +	struct device_domain_info *info;
->> +	struct intel_svm_dev *sdev;
->> +
->> +	rcu_read_lock();
->> +	list_for_each_entry_rcu(sdev, &svm->devs, list) {
->> +		info = dev_iommu_priv_get(sdev->dev);
->> +
->> +		qi_flush_piotlb(sdev->iommu, sdev->did, svm->pasid, 0, -1UL,
->> 1);
-> Why setting 'ih' to skip invalidating page structure caches?
+In btree_gc_rewrite_node(), pointer 'n' is not checked after it returns
+from btree_gc_rewrite_node(). There is potential possibility that 'n' is
+a non NULL ERR_PTR(), referencing such error code is not permitted in
+following code. Therefore a return value checking is necessary after 'n'
+is back from btree_node_alloc_replacement().
 
-It should be set to '0'. Good catch! Thank you!
+Signed-off-by: Coly Li <colyli@suse.de>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+---
+ drivers/md/bcache/btree.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Best regards,
-baolu
+diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
+index ae5cbb55861f..de8d552201dc 100644
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1532,6 +1532,8 @@ static int btree_gc_rewrite_node(struct btree *b, struct btree_op *op,
+ 		return 0;
+ 
+ 	n = btree_node_alloc_replacement(replace, NULL);
++	if (IS_ERR(n))
++		return 0;
+ 
+ 	/* recheck reserve after allocating replacement node */
+ 	if (btree_check_reserve(b, NULL)) {
+-- 
+2.35.3
+
