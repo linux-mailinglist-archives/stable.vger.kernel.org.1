@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A89497F0EBE
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 10:15:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C4267F0F18
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 10:30:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232444AbjKTJPS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 04:15:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53346 "EHLO
+        id S232081AbjKTJao (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 04:30:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232505AbjKTJPR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 04:15:17 -0500
+        with ESMTP id S232180AbjKTJan (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 04:30:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C535AC9;
-        Mon, 20 Nov 2023 01:15:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02A8C433C7;
-        Mon, 20 Nov 2023 09:15:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C14799;
+        Mon, 20 Nov 2023 01:30:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0424C433C8;
+        Mon, 20 Nov 2023 09:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700471713;
-        bh=7Dewhy5XlOFjuIdJC8CAmCHtRFAeYWC/n+NK6cqyZhA=;
+        s=k20201202; t=1700472639;
+        bh=NNduXwruLZG7vBykm8Y9nVaUE2sWaB1rt07zEtO1Gjo=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=iWAv1kTU+bhbOOPMRfwm1Ehs5iNBoHOF2z0b6xqNuslB5JKks9il4mw5NCA4Y0uFW
-         dUhIwMC4jj5oKEMJWgpXsBCa/i3obXlUGKio/VDg/Ah4cWQrpuI9uAXdWYbKgmiMa1
-         aUmgrCLA9VS2g1OEPPcHymdl/Hxjzt3CR6+EYG5faNf0gMMFT+6vDeitrtxlBQ2EQf
-         hwX8OGVABL97OySG7qulJOacdRlFKYKCUawK+QBwKEV5IV0NN2mK3OSjkCG+JRKPXW
-         EvU0DlhJ035/qWngTRyHShzxJqZEtig+StuDqE/qyxxuiO7mZ3X2LOZMxfcJ34lEW9
-         FQFlbpRejcHpA==
-Message-ID: <92e3cca3-e01d-4706-a670-795770bf5e51@kernel.org>
-Date:   Mon, 20 Nov 2023 10:15:11 +0100
+        b=btYimXBkwHwocb9ikeiw+quDVIjq/QxYYdC0iVmodRHgOih0u8uqOB79wbvgkRy/6
+         EgSbTexFI8+JsJ4BV7gp+lkgP683HWGM9wx6NtciCMnQNNgJUDmFXl7dUbOi11EiA1
+         O6zgad6L+uojGO233/vhDw8fhICMO2k6HKt1EjSMvs7sHYtM2pywjosLqQo+HXKou7
+         ivn+Y5EcOlVovySz1jVuuO44ytfaB0flRywwLkgkqY6h1UA8SDk7nCQ5G/vaYj9rOK
+         U4bgh8dI/SX7OyoW8Fn6uCYXT5HT8HEH/p3CmVMK2jBcFz27v83p3tOLxoqnIygnw+
+         I2hzhgrRAPdeQ==
+Message-ID: <6e435e84-fea9-4f74-8977-d589cbc31ded@kernel.org>
+Date:   Mon, 20 Nov 2023 10:30:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] dt-bindings: usb: snps,dwc3: Add
- 'xhci-sg-trb-cache-size-quirk'
+Subject: Re: [PATCH v2 0/2] Add support for xhci-sg-trb-cache-size-quirk
 Content-Language: en-US
 To:     Prashanth K <quic_prashk@quicinc.com>, stable@vger.kernel.org,
         Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
@@ -40,7 +39,6 @@ Cc:     Mathias Nyman <mathias.nyman@intel.com>,
         Tejas Joglekar <joglekar@synopsys.com>,
         linux-kernel@vger.kernel.org, linux-usbyy@vger.kernel.org
 References: <20231120055803.224634-1-quic_prashk@quicinc.com>
- <20231120055803.224634-3-quic_prashk@quicinc.com>
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -85,7 +83,7 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20231120055803.224634-3-quic_prashk@quicinc.com>
+In-Reply-To: <20231120055803.224634-1-quic_prashk@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -99,15 +97,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 On 20/11/2023 06:58, Prashanth K wrote:
-> Add a new 'xhci-sg-trb-cache-size-quirk' DT quirk to dwc3 core
-> for preventing xhci hang issue while using SG buffers.
-> 
-> Cc: <stable@vger.kernel.org> # 5.11
-> Fixes: bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
+> XHCI_SG_TRB_CACHE_SIZE_QUIRK was introduced in XHCI to resolve
+> XHC timeout while using SG buffers, which was seen Synopsys XHCs.
+> The support for this isn't present in DWC3 layer, this series
+> enables XHCI_SG_TRB_CACHE_SIZE_QUIRK since this is needed for
+> DWC3 controller.
 
-Also, you need to describe the bug to justify backporting. Don't add
-useless stable-cc tags just because kernel robot asked you...
+You keep Cc-ing incorrect mailing lists (bogus addresses). Just use
+get_maintainers.pl  --no-git-fallback without changing its output.
 
+I repeated this comment multiple times to Qualcomm. It's awesome that
+Qualcomm participates so much in upstream development, I really
+appreciate this. However repeating the same comment over-and-over again,
+makes me quite tired. Can you instruct your colleagues to use b4 which
+solves this problem? If not, use script like:
+https://github.com/krzk/tools/blob/master/linux/.bash_aliases_linux#L91
+(or one of many other variants posted by multiple people on the mailing
+lists)
 
 Best regards,
 Krzysztof
