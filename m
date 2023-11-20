@@ -2,93 +2,232 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B3937F18B0
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 17:35:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC917F18BD
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 17:37:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231419AbjKTQfH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 11:35:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59092 "EHLO
+        id S231605AbjKTQhO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 11:37:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjKTQfG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 11:35:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB51ED
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 08:35:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1700498102;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=RZvczFxIKyKy6D2excjoW9QSNl/x+SIklQ2YwnPNLtE=;
-        b=N6SzkD2QNnvW7jhSSL6HGCAkF8WwQa0Uz8NVdWZq/Oxfg2vsFH1Ep3r0pKzuMJ2X15Hu9L
-        wpQdk42ES/K/GYfp9I5FjiN2jgCpW9YUJW/XUZndE30zYKajtipUQP7mRsJ8jmY2HnClUw
-        31ZjeKRF4xmcjF7AjnTzCqH+m55XnFM=
-Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com
- [209.85.161.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-135-iLcxUp8vMWiboKASdzNEcw-1; Mon, 20 Nov 2023 11:35:00 -0500
-X-MC-Unique: iLcxUp8vMWiboKASdzNEcw-1
-Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-58a276efa48so4357352eaf.1
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 08:35:00 -0800 (PST)
+        with ESMTP id S231444AbjKTQhO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 11:37:14 -0500
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5ECBB9
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 08:37:06 -0800 (PST)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-6b5af4662b7so3896068b3a.3
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 08:37:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700498226; x=1701103026; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=NaWruv9cJJUdlVvcv8ruke/O8XoH1Sx45EVJwrZT0kI=;
+        b=njMKnQvaYcSUd1ILiRbVxx1Epg2jP83OzC3mCn5lsqin3jKtu47epFhwgTrtxqvBc3
+         7XdMMOWZtwuOO7ByCxrMz0v8G4pf7jY71pRQFl8nhHNEwWW9tRDUFTb6hrcFBe6fmyTw
+         sMY3lebePJF5c/d2p1tJP8Rja4i6S8mkSy05k9Q8y7y+xR/OdTB43jsil3pQ3tuDT1Sg
+         5Pdl9t+50ilv3hOwo2acquzmHcP35SWvbwS5C1XMQ71L9SvtKqJu2NR5K7K160FUQA8Q
+         jHmLNFSq/Zl7myLCoumeDIruCRChoiidGyIIpnEQCL6q3PlRqBthtoN8p8YC9Oljf3sN
+         biow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700498100; x=1701102900;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RZvczFxIKyKy6D2excjoW9QSNl/x+SIklQ2YwnPNLtE=;
-        b=g9GW/0+C2uRW20DcMeUtHiycAbo5BCr0xwTgEpwItTvXImZbkeX2bJo8zsNsT9F1m6
-         Y0MoX8zYRQSkP+HzZ0P8acUTfCLnV3R2dOY6qhX2HdyfVVfZu6k2kKS4w/TfchSZQ+ky
-         VHaYiC1OCrSURT0lgozeUmWn6sxIWhxfaEJdwAliDroTKtA1E44e9s+PhNRh3q6iIJsQ
-         xB/LEnJBOmzjzuTXTUFycdEn0oTaoExhY9kD4VO5cYYE+GUPqlIVTbXEAXjOsOlz1Ngt
-         5akBo8DCfiP2HhfIRXJhbBrpZ7wBiyQVcZL913Y7eZIu9voN8woUPOgIk70N1Blis7FD
-         R+sA==
-X-Gm-Message-State: AOJu0YzGYZgqR7vI9nSG2jS9cN4rIhmyXu7ddYe3Q3sIcoB8TJvDbI1K
-        f7IK4quJ35epM+TQRDmcN/IsEE7FDSk5vqePd46k8ubgEWEZu+8lRnWugoVG67dJCXFzVQW6aee
-        F71USvaJcobGAi7i8KPQXDDi/WRVjNqdW
-X-Received: by 2002:a05:6358:726:b0:16b:4b12:1842 with SMTP id e38-20020a056358072600b0016b4b121842mr8647505rwj.6.1700498099541;
-        Mon, 20 Nov 2023 08:34:59 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFR0FE8SSbDLW3AevgsAwFEu6zOq5yK2N2TwdyzHuvhL6NWib3gECyjA5arteEcU++mTZz2XKREqHBK0HUJhqc=
-X-Received: by 2002:a05:6358:726:b0:16b:4b12:1842 with SMTP id
- e38-20020a056358072600b0016b4b121842mr8647488rwj.6.1700498099328; Mon, 20 Nov
- 2023 08:34:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1700498226; x=1701103026;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NaWruv9cJJUdlVvcv8ruke/O8XoH1Sx45EVJwrZT0kI=;
+        b=LIpbUFtG102qLIjtDgg9MeFjIWQQo/qP2sJSqBe26dV+0ZHvqjVIKDLltSjmTr2dtV
+         fKuNm8A3e9AIIwPRUBYRwehi6XHaIL3bKbsY5HRkjYjchdrwPY9Pvu6QqgszypOn1Z17
+         XkEVtCumaIrNE07Io5YGhcVkKoO38AuSyknFSzAdJUgiDS1SeBTgIuygi9cexjlSdD7b
+         JxUrRTLe/hj0Mwocz0aqcsQbCPmFh49v+E00I0Ll6WteTQNPKUSrkbiOzaM6OK2aIir1
+         jY6EotFSMqu+WF2p4h60J3gskFoavbxQ4KH8emxfk0ESK5m09cQHkc+TR5aoNALRAjtl
+         omFQ==
+X-Gm-Message-State: AOJu0YwgcjYJj5fn+NmWwUJ8GZIGSbNFyO9w1wQTHFsaavmHRLoBUDSX
+        n6/2gyZNEoVi5e9PcgM12vlvapgbi/69FChRfvw=
+X-Google-Smtp-Source: AGHT+IHFYMvjk9dI5MJ8zhSTj4hM1AfSG9Z8jTuR2gAnEivkZXnz8KMP+Ivj7pa/jajD3YoxEDCE6A==
+X-Received: by 2002:a05:6a20:430d:b0:189:3748:f060 with SMTP id h13-20020a056a20430d00b001893748f060mr6449647pzk.26.1700498225878;
+        Mon, 20 Nov 2023 08:37:05 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id d13-20020a056a00244d00b00690fe1c928csm6373716pfj.147.2023.11.20.08.37.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 20 Nov 2023 08:37:05 -0800 (PST)
+Message-ID: <655b8b31.050a0220.bfb5e.0006@mx.google.com>
+Date:   Mon, 20 Nov 2023 08:37:05 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20231120105545.1209530-1-cmirabil@redhat.com> <8818a183-84a3-4460-a8ca-73a366ae6153@kernel.dk>
-In-Reply-To: <8818a183-84a3-4460-a8ca-73a366ae6153@kernel.dk>
-From:   Charles Mirabile <cmirabil@redhat.com>
-Date:   Mon, 20 Nov 2023 11:34:48 -0500
-Message-ID: <CABe3_aHtkDm0y2mhKF0BJu5VUcMvzRWSd7sPeyTFCZEFZt05rA@mail.gmail.com>
-Subject: Re: [PATCH] io_uring/fs: consider link->flags when getting path for LINKAT
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     linux-kernel@vger.kernel.org, asml.silence@gmail.com,
-        io-uring@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v6.1.63
+Subject: stable-rc/linux-6.1.y build: 20 builds: 2 failed, 18 passed,
+ 1 warning (v6.1.63)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 20, 2023 at 10:59=E2=80=AFAM Jens Axboe <axboe@kernel.dk> wrote=
-:
->
-> On 11/20/23 3:55 AM, Charles Mirabile wrote:
-> > In order for `AT_EMPTY_PATH` to work as expected, the fact
-> > that the user wants that behavior needs to make it to `getname_flags`
-> > or it will return ENOENT.
->
-> Looks good - do you have a liburing test case for this too?
-Yes, see here https://github.com/axboe/liburing/issues/995 and here
-https://github.com/axboe/liburing/pull/996.
->
-> --
-> Jens Axboe
->
-Best - Charlie
+stable-rc/linux-6.1.y build: 20 builds: 2 failed, 18 passed, 1 warning (v6.=
+1.63)
 
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.63/
+
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.63
+Git Commit: 69e434a1cb2146a70062d89d507b6132fa38bfe1
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Build Failures Detected:
+
+arm64:
+    defconfig+arm64-chromebook: (gcc-10) FAIL
+
+x86_64:
+    x86_64_defconfig+x86-board: (gcc-10) FAIL
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
