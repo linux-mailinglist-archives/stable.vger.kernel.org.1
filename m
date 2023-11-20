@@ -2,130 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6618B7F10E9
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 11:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A2A7F10F5
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 11:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232841AbjKTKzX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 05:55:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32946 "EHLO
+        id S233161AbjKTK4P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 05:56:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232801AbjKTKzV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 05:55:21 -0500
+        with ESMTP id S233162AbjKTK4H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 05:56:07 -0500
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFFBCF
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 02:55:17 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F53510E
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 02:56:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1700477717;
+        s=mimecast20190719; t=1700477762;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=xSIGRF/7VBbZlLtEMWR+fp7S8tCj8dJX1So74Eiu2Zg=;
-        b=hYq5PJTpAOyMMxbF5CAcDC6q5lrmOunL3RX95n0PSu+F1Xu6xxxjYaF3GU6AEvJ7t1dBof
-        nAGSgXxFLkdNODwZwC4BTDOleJxDm0clHa+IOekpwQD8PB/gvw8i2vZPHCrjPTcooicrUV
-        7C5NrAKbusPmtJ1lXJSRW/ekYNZxUvc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=58d2U9xwG/dFDTm6m8iS0jLQCEukimChxPfpR9Nt88k=;
+        b=C1jPGUS1pQeoAu9IDUZyMYQxTuadi4yXWp8LWysslGajb/moW44IixkEN2fAWrWGmXrWS+
+        DHwqRkQzVfEKPa0k8ln9HOTMAp9nQAlxdpyKk+fBEmqaaM2dtx79nYIigCCoRt9w46dHm4
+        V8Fo2uk23ooGa1+0hV/SBca60Ifc6So=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-332-rPPipkolNNuGte2UleZHJg-1; Mon, 20 Nov 2023 05:55:15 -0500
-X-MC-Unique: rPPipkolNNuGte2UleZHJg-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4084e4ce543so10979135e9.3
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 02:55:15 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700477714; x=1701082514;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
-         :references:cc:to:content-language:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xSIGRF/7VBbZlLtEMWR+fp7S8tCj8dJX1So74Eiu2Zg=;
-        b=I9C3HOQSOoewQY/bTOPYlHPuA7gKcsqsnbq7iVVezj8pntwMgt59ZL3Kh2L2eh53gO
-         bc5SJyt2/87HotRYNPKACPSKITpsTsNVFI8dvyBgGROh9Lxu4F7p32z7SGjvcNQDiF6+
-         CnKSHIubhP6yqkM9qQVbJ52kFxgJsgTapvPG9Pof2p/nfZO4WZlCS/W+eFkF6/xTw+HJ
-         uzjpJJTIKa+fFP2bqOhtMYe2wFk8+DcMKlZtbxL6touzARNq10Pqa6UuGInrymLxmrXz
-         iJztkPPZjuAvVuiJ/ArRuZ8GRXdeRfhnUoMfKpY4uVijUd9vbU9Q50vzv+7mD7PokwX7
-         ti9g==
-X-Gm-Message-State: AOJu0YyVNZ+KktrDRlgaN7TAMoPnpuRdYw8dQk8eebfjoBP6swMRYL1D
-        8X2M4Cx41yy9/hd0MDNwZ6hj1qixizPlwFWH5/9F8dTs/XUFxtwi/FMQNEG2m4yoqwB3EbC5Kst
-        MLDut11TdqsUxpy96
-X-Received: by 2002:a05:600c:4289:b0:406:8496:bd8b with SMTP id v9-20020a05600c428900b004068496bd8bmr5056528wmc.9.1700477714100;
-        Mon, 20 Nov 2023 02:55:14 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH0McoI7xSESM8bl+W66YBAk/AMaRM4vUIiYOo17Iy5QLcM986P3yoIU3IsHbmFHdqPMzPgGA==
-X-Received: by 2002:a05:600c:4289:b0:406:8496:bd8b with SMTP id v9-20020a05600c428900b004068496bd8bmr5056500wmc.9.1700477713627;
-        Mon, 20 Nov 2023 02:55:13 -0800 (PST)
-Received: from ?IPV6:2003:cb:c746:7700:9885:6589:b1e3:f74c? (p200300cbc746770098856589b1e3f74c.dip0.t-ipconnect.de. [2003:cb:c746:7700:9885:6589:b1e3:f74c])
-        by smtp.gmail.com with ESMTPSA id h18-20020a05600c351200b004063ea92492sm13154818wmq.22.2023.11.20.02.55.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 20 Nov 2023 02:55:13 -0800 (PST)
-Message-ID: <ae9b6a15-9f9a-45f3-bbe1-bfbbaa45f3b1@redhat.com>
-Date:   Mon, 20 Nov 2023 11:55:12 +0100
+ us-mta-656-1JNkX8rcO2iydwKGkdNdiQ-1; Mon, 20 Nov 2023 05:55:58 -0500
+X-MC-Unique: 1JNkX8rcO2iydwKGkdNdiQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 78EC38007B3;
+        Mon, 20 Nov 2023 10:55:58 +0000 (UTC)
+Received: from cmirabil.redhat.com (unknown [10.22.8.164])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 1E4F65036;
+        Mon, 20 Nov 2023 10:55:58 +0000 (UTC)
+From:   Charles Mirabile <cmirabil@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     axboe@kernel.dk, asml.silence@gmail.com, io-uring@vger.kernel.org,
+        Charles Mirabile <cmirabil@redhat.com>, stable@vger.kernel.org
+Subject: [PATCH] io_uring/fs: consider link->flags when getting path for LINKAT
+Date:   Mon, 20 Nov 2023 05:55:45 -0500
+Message-ID: <20231120105545.1209530-1-cmirabil@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm: use vmem_altmap code without
- CONFIG_ZONE_DEVICE
-Content-Language: en-US
-To:     Sumanth Korikkar <sumanthk@linux.ibm.com>,
-        linux-mm <linux-mm@kvack.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Oscar Salvador <osalvador@suse.de>, Michal Hocko <mhocko@suse.com>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-References: <20231120102734.2001576-1-sumanthk@linux.ibm.com>
- <20231120102734.2001576-4-sumanthk@linux.ibm.com>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20231120102734.2001576-4-sumanthk@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
@@ -137,30 +58,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 20.11.23 11:27, Sumanth Korikkar wrote:
-> vmem_altmap_free() and vmem_altmap_offset() could be utlized without
-> CONFIG_ZONE_DEVICE enabled. For example,
-> mm/memory_hotplug.c:__add_pages() relies on that.  The altmap is no
-> longer restricted to ZONE_DEVICE handling, but instead depends on
-> CONFIG_SPARSEMEM_VMEMMAP.
-> 
-> When CONFIG_SPARSEMEM_VMEMMAP is disabled, these functions are defined
-> as inline stubs, ensuring compatibility with configurations that do not
-> use sparsemem vmemmap. Without it, lkp reported the following:
-> 
-> ld: arch/x86/mm/init_64.o: in function `remove_pagetable':
-> init_64.c:(.meminit.text+0xfc7): undefined reference to
-> `vmem_altmap_free'
-> 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202311180545.VeyRXEDq-lkp@intel.com/
-> Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+In order for `AT_EMPTY_PATH` to work as expected, the fact
+that the user wants that behavior needs to make it to `getname_flags`
+or it will return ENOENT.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Fixes: cf30da90bc3a ("io_uring: add support for IORING_OP_LINKAT")
+Cc: stable@vger.kernel.org
+Link: https://github.com/axboe/liburing/issues/995
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+---
+ io_uring/fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/io_uring/fs.c b/io_uring/fs.c
+index 08e3b175469c..eccea851dd5a 100644
+--- a/io_uring/fs.c
++++ b/io_uring/fs.c
+@@ -254,7 +254,7 @@ int io_linkat_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 	newf = u64_to_user_ptr(READ_ONCE(sqe->addr2));
+ 	lnk->flags = READ_ONCE(sqe->hardlink_flags);
+ 
+-	lnk->oldpath = getname(oldf);
++	lnk->oldpath = getname_uflags(oldf, lnk->flags);
+ 	if (IS_ERR(lnk->oldpath))
+ 		return PTR_ERR(lnk->oldpath);
+ 
 -- 
-Cheers,
-
-David / dhildenb
+2.41.0
 
