@@ -2,35 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 702127F10DD
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 11:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6618B7F10E9
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 11:55:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232683AbjKTKyA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 05:54:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34046 "EHLO
+        id S232841AbjKTKzX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 05:55:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232632AbjKTKx7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 05:53:59 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A027B85;
-        Mon, 20 Nov 2023 02:53:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6966BC433C7;
-        Mon, 20 Nov 2023 10:53:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700477635;
-        bh=HhF2KIDMcbbUUAZtfLMLqJsElj3AalZ+cqqnLIVIAng=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=fg6mfCLgufySQN6C9npx9P6b4RQCgtDXcdGM7+LeV2vo75d3dQQz2mKYMPXT/Uh5u
-         VrJ2/Uj3Ewc3rAq6bud1QRZFN7juG3uUHgRJyyyWM1irohx/bXivzpeybcz4IoL4U7
-         c1UrnWuC/2/ypX5BbEUi9fYxxPNmu9Eus/uIMuBs=
-Date:   Mon, 20 Nov 2023 11:53:52 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Sumanth Korikkar <sumanthk@linux.ibm.com>
-Cc:     linux-mm <linux-mm@kvack.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Hildenbrand <david@redhat.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Michal Hocko <mhocko@suse.com>,
+        with ESMTP id S232801AbjKTKzV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 05:55:21 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFFBCF
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 02:55:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1700477717;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+        bh=xSIGRF/7VBbZlLtEMWR+fp7S8tCj8dJX1So74Eiu2Zg=;
+        b=hYq5PJTpAOyMMxbF5CAcDC6q5lrmOunL3RX95n0PSu+F1Xu6xxxjYaF3GU6AEvJ7t1dBof
+        nAGSgXxFLkdNODwZwC4BTDOleJxDm0clHa+IOekpwQD8PB/gvw8i2vZPHCrjPTcooicrUV
+        7C5NrAKbusPmtJ1lXJSRW/ekYNZxUvc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-332-rPPipkolNNuGte2UleZHJg-1; Mon, 20 Nov 2023 05:55:15 -0500
+X-MC-Unique: rPPipkolNNuGte2UleZHJg-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4084e4ce543so10979135e9.3
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 02:55:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700477714; x=1701082514;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xSIGRF/7VBbZlLtEMWR+fp7S8tCj8dJX1So74Eiu2Zg=;
+        b=I9C3HOQSOoewQY/bTOPYlHPuA7gKcsqsnbq7iVVezj8pntwMgt59ZL3Kh2L2eh53gO
+         bc5SJyt2/87HotRYNPKACPSKITpsTsNVFI8dvyBgGROh9Lxu4F7p32z7SGjvcNQDiF6+
+         CnKSHIubhP6yqkM9qQVbJ52kFxgJsgTapvPG9Pof2p/nfZO4WZlCS/W+eFkF6/xTw+HJ
+         uzjpJJTIKa+fFP2bqOhtMYe2wFk8+DcMKlZtbxL6touzARNq10Pqa6UuGInrymLxmrXz
+         iJztkPPZjuAvVuiJ/ArRuZ8GRXdeRfhnUoMfKpY4uVijUd9vbU9Q50vzv+7mD7PokwX7
+         ti9g==
+X-Gm-Message-State: AOJu0YyVNZ+KktrDRlgaN7TAMoPnpuRdYw8dQk8eebfjoBP6swMRYL1D
+        8X2M4Cx41yy9/hd0MDNwZ6hj1qixizPlwFWH5/9F8dTs/XUFxtwi/FMQNEG2m4yoqwB3EbC5Kst
+        MLDut11TdqsUxpy96
+X-Received: by 2002:a05:600c:4289:b0:406:8496:bd8b with SMTP id v9-20020a05600c428900b004068496bd8bmr5056528wmc.9.1700477714100;
+        Mon, 20 Nov 2023 02:55:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH0McoI7xSESM8bl+W66YBAk/AMaRM4vUIiYOo17Iy5QLcM986P3yoIU3IsHbmFHdqPMzPgGA==
+X-Received: by 2002:a05:600c:4289:b0:406:8496:bd8b with SMTP id v9-20020a05600c428900b004068496bd8bmr5056500wmc.9.1700477713627;
+        Mon, 20 Nov 2023 02:55:13 -0800 (PST)
+Received: from ?IPV6:2003:cb:c746:7700:9885:6589:b1e3:f74c? (p200300cbc746770098856589b1e3f74c.dip0.t-ipconnect.de. [2003:cb:c746:7700:9885:6589:b1e3:f74c])
+        by smtp.gmail.com with ESMTPSA id h18-20020a05600c351200b004063ea92492sm13154818wmq.22.2023.11.20.02.55.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 20 Nov 2023 02:55:13 -0800 (PST)
+Message-ID: <ae9b6a15-9f9a-45f3-bbe1-bfbbaa45f3b1@redhat.com>
+Date:   Mon, 20 Nov 2023 11:55:12 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] mm: use vmem_altmap code without
+ CONFIG_ZONE_DEVICE
+Content-Language: en-US
+To:     Sumanth Korikkar <sumanthk@linux.ibm.com>,
+        linux-mm <linux-mm@kvack.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Oscar Salvador <osalvador@suse.de>, Michal Hocko <mhocko@suse.com>,
         "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
         Anshuman Khandual <anshuman.khandual@arm.com>,
         Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
@@ -39,249 +75,92 @@ Cc:     linux-mm <linux-mm@kvack.org>,
         Vasily Gorbik <gor@linux.ibm.com>,
         linux-s390 <linux-s390@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] mm/memory_hotplug: add missing mem_hotplug_lock
-Message-ID: <2023112041-kelp-properly-2b6e@gregkh>
 References: <20231120102734.2001576-1-sumanthk@linux.ibm.com>
- <20231120102734.2001576-2-sumanthk@linux.ibm.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231120102734.2001576-2-sumanthk@linux.ibm.com>
+ <20231120102734.2001576-4-sumanthk@linux.ibm.com>
+From:   David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20231120102734.2001576-4-sumanthk@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 20, 2023 at 11:27:32AM +0100, Sumanth Korikkar wrote:
-> >From Documentation/core-api/memory-hotplug.rst:
-> When adding/removing/onlining/offlining memory or adding/removing
-> heterogeneous/device memory, we should always hold the mem_hotplug_lock
-> in write mode to serialise memory hotplug (e.g. access to global/zone
-> variables).
+On 20.11.23 11:27, Sumanth Korikkar wrote:
+> vmem_altmap_free() and vmem_altmap_offset() could be utlized without
+> CONFIG_ZONE_DEVICE enabled. For example,
+> mm/memory_hotplug.c:__add_pages() relies on that.  The altmap is no
+> longer restricted to ZONE_DEVICE handling, but instead depends on
+> CONFIG_SPARSEMEM_VMEMMAP.
 > 
-> mhp_(de)init_memmap_on_memory() functions can change zone stats and
-> struct page content, but they are currently called w/o the
-> mem_hotplug_lock.
+> When CONFIG_SPARSEMEM_VMEMMAP is disabled, these functions are defined
+> as inline stubs, ensuring compatibility with configurations that do not
+> use sparsemem vmemmap. Without it, lkp reported the following:
 > 
-> When memory block is being offlined and when kmemleak goes through each
-> populated zone, the following theoretical race conditions could occur:
-> CPU 0:					     | CPU 1:
-> memory_offline()			     |
-> -> offline_pages()			     |
-> 	-> mem_hotplug_begin()		     |
-> 	   ...				     |
-> 	-> mem_hotplug_done()		     |
-> 					     | kmemleak_scan()
-> 					     | -> get_online_mems()
-> 					     |    ...
-> -> mhp_deinit_memmap_on_memory()	     |
->   [not protected by mem_hotplug_begin/done()]|
->   Marks memory section as offline,	     |   Retrieves zone_start_pfn
->   poisons vmemmap struct pages and updates   |   and struct page members.
->   the zone related data			     |
->    					     |    ...
->    					     | -> put_online_mems()
+> ld: arch/x86/mm/init_64.o: in function `remove_pagetable':
+> init_64.c:(.meminit.text+0xfc7): undefined reference to
+> `vmem_altmap_free'
 > 
-> Fix this by ensuring mem_hotplug_lock is taken before performing
-> mhp_init_memmap_on_memory(). Also ensure that
-> mhp_deinit_memmap_on_memory() holds the lock.
-> 
-> online/offline_pages() are currently only called from
-> memory_block_online/offline(), so it is safe to move the locking there.
-> 
-> Fixes: a08a2ae34613 ("mm,memory_hotplug: allocate memmap from the added memory range")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202311180545.VeyRXEDq-lkp@intel.com/
 > Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
 > Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-> ---
->  drivers/base/memory.c | 18 +++++++++++++++---
->  mm/memory_hotplug.c   | 13 ++++++-------
->  2 files changed, 21 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index f3b9a4d0fa3b..8a13babd826c 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -180,6 +180,9 @@ static inline unsigned long memblk_nr_poison(struct memory_block *mem)
->  }
->  #endif
->  
-> +/*
-> + * Must acquire mem_hotplug_lock in write mode.
-> + */
->  static int memory_block_online(struct memory_block *mem)
->  {
->  	unsigned long start_pfn = section_nr_to_pfn(mem->start_section_nr);
-> @@ -204,10 +207,11 @@ static int memory_block_online(struct memory_block *mem)
->  	if (mem->altmap)
->  		nr_vmemmap_pages = mem->altmap->free;
->  
-> +	mem_hotplug_begin();
->  	if (nr_vmemmap_pages) {
->  		ret = mhp_init_memmap_on_memory(start_pfn, nr_vmemmap_pages, zone);
->  		if (ret)
-> -			return ret;
-> +			goto out;
->  	}
->  
->  	ret = online_pages(start_pfn + nr_vmemmap_pages,
-> @@ -215,7 +219,7 @@ static int memory_block_online(struct memory_block *mem)
->  	if (ret) {
->  		if (nr_vmemmap_pages)
->  			mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
-> -		return ret;
-> +		goto out;
->  	}
->  
->  	/*
-> @@ -227,9 +231,14 @@ static int memory_block_online(struct memory_block *mem)
->  					  nr_vmemmap_pages);
->  
->  	mem->zone = zone;
-> +out:
-> +	mem_hotplug_done();
->  	return ret;
->  }
->  
-> +/*
-> + * Must acquire mem_hotplug_lock in write mode.
-> + */
->  static int memory_block_offline(struct memory_block *mem)
->  {
->  	unsigned long start_pfn = section_nr_to_pfn(mem->start_section_nr);
-> @@ -247,6 +256,7 @@ static int memory_block_offline(struct memory_block *mem)
->  	if (mem->altmap)
->  		nr_vmemmap_pages = mem->altmap->free;
->  
-> +	mem_hotplug_begin();
->  	if (nr_vmemmap_pages)
->  		adjust_present_page_count(pfn_to_page(start_pfn), mem->group,
->  					  -nr_vmemmap_pages);
-> @@ -258,13 +268,15 @@ static int memory_block_offline(struct memory_block *mem)
->  		if (nr_vmemmap_pages)
->  			adjust_present_page_count(pfn_to_page(start_pfn),
->  						  mem->group, nr_vmemmap_pages);
-> -		return ret;
-> +		goto out;
->  	}
->  
->  	if (nr_vmemmap_pages)
->  		mhp_deinit_memmap_on_memory(start_pfn, nr_vmemmap_pages);
->  
->  	mem->zone = NULL;
-> +out:
-> +	mem_hotplug_done();
->  	return ret;
->  }
->  
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 1b03f4ec6fd2..c8238fc5edcb 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1129,6 +1129,9 @@ void mhp_deinit_memmap_on_memory(unsigned long pfn, unsigned long nr_pages)
->  	kasan_remove_zero_shadow(__va(PFN_PHYS(pfn)), PFN_PHYS(nr_pages));
->  }
->  
-> +/*
-> + * Must be called with mem_hotplug_lock in write mode.
-> + */
->  int __ref online_pages(unsigned long pfn, unsigned long nr_pages,
->  		       struct zone *zone, struct memory_group *group)
->  {
-> @@ -1149,7 +1152,6 @@ int __ref online_pages(unsigned long pfn, unsigned long nr_pages,
->  			 !IS_ALIGNED(pfn + nr_pages, PAGES_PER_SECTION)))
->  		return -EINVAL;
->  
-> -	mem_hotplug_begin();
->  
->  	/* associate pfn range with the zone */
->  	move_pfn_range_to_zone(zone, pfn, nr_pages, NULL, MIGRATE_ISOLATE);
-> @@ -1208,7 +1210,6 @@ int __ref online_pages(unsigned long pfn, unsigned long nr_pages,
->  	writeback_set_ratelimit();
->  
->  	memory_notify(MEM_ONLINE, &arg);
-> -	mem_hotplug_done();
->  	return 0;
->  
->  failed_addition:
-> @@ -1217,7 +1218,6 @@ int __ref online_pages(unsigned long pfn, unsigned long nr_pages,
->  		 (((unsigned long long) pfn + nr_pages) << PAGE_SHIFT) - 1);
->  	memory_notify(MEM_CANCEL_ONLINE, &arg);
->  	remove_pfn_range_from_zone(zone, pfn, nr_pages);
-> -	mem_hotplug_done();
->  	return ret;
->  }
->  
-> @@ -1863,6 +1863,9 @@ static int count_system_ram_pages_cb(unsigned long start_pfn,
->  	return 0;
->  }
->  
-> +/*
-> + * Must be called with mem_hotplug_lock in write mode.
-> + */
->  int __ref offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->  			struct zone *zone, struct memory_group *group)
->  {
-> @@ -1885,8 +1888,6 @@ int __ref offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->  			 !IS_ALIGNED(start_pfn + nr_pages, PAGES_PER_SECTION)))
->  		return -EINVAL;
->  
-> -	mem_hotplug_begin();
-> -
->  	/*
->  	 * Don't allow to offline memory blocks that contain holes.
->  	 * Consequently, memory blocks with holes can never get onlined
-> @@ -2027,7 +2028,6 @@ int __ref offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->  
->  	memory_notify(MEM_OFFLINE, &arg);
->  	remove_pfn_range_from_zone(zone, start_pfn, nr_pages);
-> -	mem_hotplug_done();
->  	return 0;
->  
->  failed_removal_isolated:
-> @@ -2042,7 +2042,6 @@ int __ref offline_pages(unsigned long start_pfn, unsigned long nr_pages,
->  		 (unsigned long long) start_pfn << PAGE_SHIFT,
->  		 ((unsigned long long) end_pfn << PAGE_SHIFT) - 1,
->  		 reason);
-> -	mem_hotplug_done();
->  	return ret;
->  }
->  
-> -- 
-> 2.41.0
-> 
 
-Hi,
+Acked-by: David Hildenbrand <david@redhat.com>
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+-- 
+Cheers,
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+David / dhildenb
 
-- You have marked a patch with a "Fixes:" tag for a commit that is in an
-  older released kernel, yet you do not have a cc: stable line in the
-  signed-off-by area at all, which means that the patch will not be
-  applied to any older kernel releases.  To properly fix this, please
-  follow the documented rules in the
-  Documentation/process/stable-kernel-rules.rst file for how to resolve
-  this.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
