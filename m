@@ -2,110 +2,184 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B76B77F0BBE
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 06:58:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5ECA97F0D13
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 08:59:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231986AbjKTF6k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 00:58:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53812 "EHLO
+        id S231982AbjKTH71 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 02:59:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231982AbjKTF6e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 00:58:34 -0500
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC229139;
-        Sun, 19 Nov 2023 21:58:29 -0800 (PST)
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AK5AYUW024867;
-        Mon, 20 Nov 2023 05:58:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=nPz7PGc1k5AwEQJOQGJ+pvvjClsR4Vwtp2c3fi5rjcg=;
- b=BlaMwdTZTXIVgq3cbDAZUVzHQUtpnfUXBYYwhmfgph38Gjq7oMkoSSaTDo906FmyjrwM
- 0aIO4+5I36zgKUgz020cGGU3A7W7/zkF5Disr0RZI9+9Z2qV+pW/w/tkJsOya655Dick
- N5PEBK9qPfwz1KjKoDwI9AMPymIgy1omydCI/omy6kZIl9TXrfv8Rqor1gy6c8K3YDe3
- XeE+4OnjuqDn01rL7uUnjM1OtWuPHsEJhQKSv/CYHFIOlRtglRfmbJW6ezM6wj6d9mB3
- etQRu9aCwz0S7GNLNyF0Vvi37ghA+z7YqlLybMrRxqieAPwvTzTwOgHnD801QfrSPQHN oA== 
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uejmuu8nx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Nov 2023 05:58:24 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3AK5wNC1004528
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 20 Nov 2023 05:58:23 GMT
-Received: from hu-prashk-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sun, 19 Nov 2023 21:58:20 -0800
-From:   Prashanth K <quic_prashk@quicinc.com>
-To:     <stable@vger.kernel.org>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-CC:     Mathias Nyman <mathias.nyman@intel.com>,
-        Tejas Joglekar <joglekar@synopsys.com>,
-        <linux-kernel@vger.kernel.org>, <linux-usbyy@vger.kernel.org>,
-        Prashanth K <quic_prashk@quicinc.com>
-Subject: [PATCH v2 2/2] dt-bindings: usb: snps,dwc3: Add 'xhci-sg-trb-cache-size-quirk'
-Date:   Mon, 20 Nov 2023 11:28:03 +0530
-Message-ID: <20231120055803.224634-3-quic_prashk@quicinc.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231120055803.224634-1-quic_prashk@quicinc.com>
-References: <20231120055803.224634-1-quic_prashk@quicinc.com>
+        with ESMTP id S229483AbjKTH71 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 02:59:27 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FA60C0;
+        Sun, 19 Nov 2023 23:59:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700467163; x=1732003163;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JzSFdhpu4Z2Dl0iRmYFt0FhnPqgEZQkDIIi0hsLtfRY=;
+  b=K1jdFrhvb4x0CEMUALYXqV/qwg78WVvlBF3S50M/tut32YDnFc6aYgTs
+   cSO7YaO36lFSNAWRWxPnA9pA3tBvyv79/hn2OUJLKSPCmqLjin6PXUdLF
+   WRBxKr/9ZJFMrtu/fCcEQHkp0jTXi0iTdwW/rrBXf9PrI18kCH9WJZeXU
+   RP2WGGn11j11GKmJeSfFV9m3zVDLUPljphCB31h8yY/TRvogcYM46qXy5
+   8Z8plrub4BPGSbmOo2np9Rs27rMGISm5BbH19WHQLjmy1Sdsf0AFc4HAa
+   Os3jhURtws0wTqOJcuw0pS2Wjs93jX5gmrb7ZET4iEYq26Rx7wbA2ZPNl
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="390432918"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="390432918"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Nov 2023 23:59:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10899"; a="1097677168"
+X-IronPort-AV: E=Sophos;i="6.04,213,1695711600"; 
+   d="scan'208";a="1097677168"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by fmsmga005.fm.intel.com with ESMTP; 19 Nov 2023 23:59:19 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1r4zBc-0006CC-2s;
+        Mon, 20 Nov 2023 07:59:16 +0000
+Date:   Mon, 20 Nov 2023 15:58:49 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-pci@vger.kernel.org
+Cc:     oe-kbuild-all@lists.linux.dev, lpieralisi@kernel.org, kw@linux.com,
+        robh@kernel.org, linux-kernel@vger.kernel.org,
+        chenhuacai@kernel.org, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v5] pci: loongson: Workaround MIPS firmware MRRS settings
+Message-ID: <202311201537.u2ZGD7A8-lkp@intel.com>
+References: <20231119215635.52810-1-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: CBXN5eV2pTkjtgRJxFD7or0zSwOvBmpt
-X-Proofpoint-ORIG-GUID: CBXN5eV2pTkjtgRJxFD7or0zSwOvBmpt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-20_03,2023-11-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- malwarescore=0 spamscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=483
- impostorscore=0 priorityscore=1501 clxscore=1015 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311200036
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231119215635.52810-1-jiaxun.yang@flygoat.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Add a new 'xhci-sg-trb-cache-size-quirk' DT quirk to dwc3 core
-for preventing xhci hang issue while using SG buffers.
+Hi Jiaxun,
 
-Cc: <stable@vger.kernel.org> # 5.11
-Fixes: bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
----
- Documentation/devicetree/bindings/usb/snps,dwc3.yaml | 7 +++++++
- 1 file changed, 7 insertions(+)
+kernel test robot noticed the following build warnings:
 
-diff --git a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-index ee5af4b381b1..768fdb5b1f05 100644
---- a/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-+++ b/Documentation/devicetree/bindings/usb/snps,dwc3.yaml
-@@ -459,6 +459,13 @@ properties:
-     description:
-       Enable USB remote wakeup.
- 
-+  xhci-sg-trb-cache-size-quirk:
-+    description:
-+      When set, fixes the SNPS xHC hang issue when the data is scattered across
-+      small buffers which does not make at least MPS size for given controller
-+      TRB cache size.
-+    type: boolean
-+
- unevaluatedProperties: false
- 
- required:
+[auto build test WARNING on pci/next]
+[also build test WARNING on pci/for-linus linus/master v6.7-rc2 next-20231120]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Jiaxun-Yang/pci-loongson-Workaround-MIPS-firmware-MRRS-settings/20231120-055946
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20231119215635.52810-1-jiaxun.yang%40flygoat.com
+patch subject: [PATCH v5] pci: loongson: Workaround MIPS firmware MRRS settings
+config: mips-allmodconfig (https://download.01.org/0day-ci/archive/20231120/202311201537.u2ZGD7A8-lkp@intel.com/config)
+compiler: mips-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231120/202311201537.u2ZGD7A8-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311201537.u2ZGD7A8-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/pci/controller/pci-loongson.c:10:
+   drivers/pci/controller/pci-loongson.c:122:50: error: 'loongson_mrrs_quirk_old' undeclared here (not in a function)
+     122 | DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_mrrs_quirk_old);
+         |                                                  ^~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/pci.h:2241:57: note: in definition of macro 'DECLARE_PCI_FIXUP_SECTION'
+    2241 |                 = { vendor, device, class, class_shift, hook };
+         |                                                         ^~~~
+   drivers/pci/controller/pci-loongson.c:122:1: note: in expansion of macro 'DECLARE_PCI_FIXUP_ENABLE'
+     122 | DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_mrrs_quirk_old);
+         | ^~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/pci/controller/pci-loongson.c:92:13: warning: 'loongson_set_min_mrrs_quirk' defined but not used [-Wunused-function]
+      92 | static void loongson_set_min_mrrs_quirk(struct pci_dev *pdev)
+         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+vim +/loongson_set_min_mrrs_quirk +92 drivers/pci/controller/pci-loongson.c
+
+    54	
+    55	/* Fixup wrong class code in PCIe bridges */
+    56	static void bridge_class_quirk(struct pci_dev *dev)
+    57	{
+    58		dev->class = PCI_CLASS_BRIDGE_PCI_NORMAL;
+    59	}
+    60	DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
+    61				DEV_LS7A_PCIE_PORT0, bridge_class_quirk);
+    62	DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
+    63				DEV_LS7A_PCIE_PORT1, bridge_class_quirk);
+    64	DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
+    65				DEV_LS7A_PCIE_PORT2, bridge_class_quirk);
+    66	
+    67	static void system_bus_quirk(struct pci_dev *pdev)
+    68	{
+    69		/*
+    70		 * The address space consumed by these devices is outside the
+    71		 * resources of the host bridge.
+    72		 */
+    73		pdev->mmio_always_on = 1;
+    74		pdev->non_compliant_bars = 1;
+    75	}
+    76	DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
+    77				DEV_LS2K_APB, system_bus_quirk);
+    78	DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
+    79				DEV_LS7A_CONF, system_bus_quirk);
+    80	DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
+    81				DEV_LS7A_LPC, system_bus_quirk);
+    82	
+    83	/*
+    84	 * Some Loongson PCIe ports have h/w limitations of maximum read
+    85	 * request size. They can't handle anything larger than this.
+    86	 * Sane firmware will set proper MRRS at boot, so we only need
+    87	 * no_inc_mrrs for bridges. However, some MIPS Loongson firmware
+    88	 * won't set MRRS properly, and we have to enforce maximum safe
+    89	 * MRRS, which is 256 bytes.
+    90	 */
+    91	#ifdef CONFIG_MIPS
+  > 92	static void loongson_set_min_mrrs_quirk(struct pci_dev *pdev)
+    93	{
+    94		struct pci_bus *bus = pdev->bus;
+    95		struct pci_dev *bridge;
+    96		static const struct pci_device_id bridge_devids[] = {
+    97			{ PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
+    98			{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
+    99			{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
+   100			{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
+   101			{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
+   102			{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
+   103			{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
+   104			{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
+   105			{ 0, },
+   106		};
+   107	
+   108		/* look for the matching bridge */
+   109		while (!pci_is_root_bus(bus)) {
+   110			bridge = bus->self;
+   111			bus = bus->parent;
+   112	
+   113			if (pci_match_id(bridge_devids, bridge)) {
+   114				if (pcie_get_readrq(pdev) > 256) {
+   115					pci_info(pdev, "limiting MRRS to 256\n");
+   116					pcie_set_readrq(pdev, 256);
+   117				}
+   118				break;
+   119			}
+   120		}
+   121	}
+   122	DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_mrrs_quirk_old);
+   123	#endif
+   124	
+
 -- 
-2.25.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
