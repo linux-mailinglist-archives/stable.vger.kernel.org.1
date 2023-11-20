@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8D987F1740
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:27:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B68C57F1742
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:28:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233875AbjKTP1u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 10:27:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44886 "EHLO
+        id S233923AbjKTP2a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 10:28:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233710AbjKTP1t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:27:49 -0500
+        with ESMTP id S233733AbjKTP23 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:28:29 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315C8B4
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:27:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EE2C433C9;
-        Mon, 20 Nov 2023 15:27:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3669B4
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:28:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0498FC433C9;
+        Mon, 20 Nov 2023 15:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700494065;
-        bh=hQJkY7AbHXs/qsMuDcFQLTVHPuGKl35DaHBCE/m8vkc=;
+        s=korg; t=1700494105;
+        bh=a3sU15B9Knl0xjsUzJClLqAygC84cqpYGPh3/Im0ACs=;
         h=Subject:To:Cc:From:Date:From;
-        b=c7IdFPJEZTIbldSgudwGFyLL1As+kqe0u3hJCx1lOk+NIx1YTTZfwkA1lnCXk1AOZ
-         If0RxIBF6mkaytAxffl7bfL2XrPg04IATRpQudFCdNH7VBfQY4bRC9Sbk0TilxfAaV
-         GVMQIg9ZoKOdrl9li2jrYDgLGywIXw8G6mTo+e/4=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix system crash due to bad pointer access" failed to apply to 5.4-stable tree
-To:     qutran@marvell.com, martin.petersen@oracle.com, njavali@marvell.com
+        b=aGri1Xr8oeDAEO+aHoKs5eXiMVUW+eAHvDYC5vA+zQ6FmfxDI9emP8joLBoUtl7nU
+         n+Fknpa8ae8VV3lT1mLH2Sn1ADyxS9scq+KZTrKmVypweKFUIZivkIfxGQ5EdFPG7a
+         LerZLE/V1Lpu2ohRV5SYAnWOf467TvGmsORs+TBc=
+Subject: FAILED: patch "[PATCH] x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and" failed to apply to 6.1-stable tree
+To:     mario.limonciello@amd.com, bhelgaas@google.com,
+        iain@orangesquash.org.uk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 20 Nov 2023 16:27:35 +0100
-Message-ID: <2023112034-uplifted-unbroken-2689@gregkh>
+Date:   Mon, 20 Nov 2023 16:28:22 +0100
+Message-ID: <2023112022-mutilated-twelve-7956@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,26 +44,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 19597cad64d608aa8ac2f8aef50a50187a565223
+git cherry-pick -x 7d08f21f8c6307cb05cabb8d86e90ff6ccba57e9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112034-uplifted-unbroken-2689@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112022-mutilated-twelve-7956@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-19597cad64d6 ("scsi: qla2xxx: Fix system crash due to bad pointer access")
-c7d6b2c2cd56 ("scsi: qla2xxx: Use scsi_cmd_to_rq() instead of scsi_cmnd.request")
-c81ef0ed4477 ("scsi: qla2xxx: Simplify the code for aborting SCSI commands")
-f45bca8c5052 ("scsi: qla2xxx: Fix double scsi_done for abort path")
+7d08f21f8c63 ("x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and Phoenix USB4")
+606012dddebb ("PCI: Fix up L1SS capability for Intel Apollo Lake Root Port")
 
 thanks,
 
@@ -70,70 +69,118 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 19597cad64d608aa8ac2f8aef50a50187a565223 Mon Sep 17 00:00:00 2001
-From: Quinn Tran <qutran@marvell.com>
-Date: Mon, 30 Oct 2023 12:19:12 +0530
-Subject: [PATCH] scsi: qla2xxx: Fix system crash due to bad pointer access
+From 7d08f21f8c6307cb05cabb8d86e90ff6ccba57e9 Mon Sep 17 00:00:00 2001
+From: Mario Limonciello <mario.limonciello@amd.com>
+Date: Wed, 4 Oct 2023 09:49:59 -0500
+Subject: [PATCH] x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and
+ Phoenix USB4
 
-User experiences system crash when running AER error injection.  The
-perturbation causes the abort-all-I/O path to trigger. The driver assumes
-all I/O on this path is FCP only. If there is both NVMe & FCP traffic, a
-system crash happens. Add additional check to see if I/O is FCP or not
-before access.
+Iain reports that USB devices can't be used to wake a Lenovo Z13 from
+suspend.  This occurs because on some AMD platforms, even though the Root
+Ports advertise PME_Support for D3hot and D3cold, wakeup events from
+devices on a USB4 controller don't result in wakeup interrupts from the
+Root Port when amd-pmc has put the platform in a hardware sleep state.
 
-PID: 999019  TASK: ff35d769f24722c0  CPU: 53  COMMAND: "kworker/53:1"
- 0 [ff3f78b964847b58] machine_kexec at ffffffffae86973d
- 1 [ff3f78b964847ba8] __crash_kexec at ffffffffae9be29d
- 2 [ff3f78b964847c70] crash_kexec at ffffffffae9bf528
- 3 [ff3f78b964847c78] oops_end at ffffffffae8282ab
- 4 [ff3f78b964847c98] exc_page_fault at ffffffffaf2da502
- 5 [ff3f78b964847cc0] asm_exc_page_fault at ffffffffaf400b62
-   [exception RIP: qla2x00_abort_srb+444]
-   RIP: ffffffffc07b5f8c  RSP: ff3f78b964847d78  RFLAGS: 00010046
-   RAX: 0000000000000282  RBX: ff35d74a0195a200  RCX: ff35d76886fd03a0
-   RDX: 0000000000000001  RSI: ffffffffc07c5ec8  RDI: ff35d74a0195a200
-   RBP: ff35d76913d22080   R8: ff35d7694d103200   R9: ff35d7694d103200
-   R10: 0000000100000000  R11: ffffffffb05d6630  R12: 0000000000010000
-   R13: ff3f78b964847df8  R14: ff35d768d8754000  R15: ff35d768877248e0
-   ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
- 6 [ff3f78b964847d70] qla2x00_abort_srb at ffffffffc07b5f84 [qla2xxx]
- 7 [ff3f78b964847de0] __qla2x00_abort_all_cmds at ffffffffc07b6238 [qla2xxx]
- 8 [ff3f78b964847e38] qla2x00_abort_all_cmds at ffffffffc07ba635 [qla2xxx]
- 9 [ff3f78b964847e58] qla2x00_terminate_rport_io at ffffffffc08145eb [qla2xxx]
-10 [ff3f78b964847e70] fc_terminate_rport_io at ffffffffc045987e [scsi_transport_fc]
-11 [ff3f78b964847e88] process_one_work at ffffffffae914f15
-12 [ff3f78b964847ed0] worker_thread at ffffffffae9154c0
-13 [ff3f78b964847f10] kthread at ffffffffae91c456
-14 [ff3f78b964847f50] ret_from_fork at ffffffffae8036ef
+If amd-pmc will be involved in the suspend, remove D3hot and D3cold from
+the PME_Support mask of Root Ports above USB4 controllers so we avoid those
+states if we need wakeups.
 
+Restore D3 support at resume so that it can be used by runtime suspend.
+
+This affects both AMD Rembrandt and Phoenix SoCs.
+
+"pm_suspend_target_state == PM_SUSPEND_ON" means we're doing runtime
+suspend, and amd-pmc will not be involved.  In that case PMEs work as
+advertised in D3hot/D3cold, so we don't need to do anything.
+
+Note that amd-pmc is technically optional, and there's no need for this
+quirk if it's not present, but we assume it's always present because power
+consumption is so high without it.
+
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Link: https://lore.kernel.org/r/20231004144959.158840-1-mario.limonciello@amd.com
+Reported-by: Iain Lane <iain@orangesquash.org.uk>
+Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+[bhelgaas: commit log, move to arch/x86/pci/fixup.c, add #includes]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Fixes: f45bca8c5052 ("scsi: qla2xxx: Fix double scsi_done for abort path")
-Signed-off-by: Quinn Tran <qutran@marvell.com>
-Signed-off-by: Nilesh Javali <njavali@marvell.com>
-Link: https://lore.kernel.org/r/20231030064912.37912-1-njavali@marvell.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 7e103d711825..d24410944f7d 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -1837,8 +1837,16 @@ static void qla2x00_abort_srb(struct qla_qpair *qp, srb_t *sp, const int res,
- 		}
+diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
+index e3ec02e6ac9f..f347c20247d3 100644
+--- a/arch/x86/pci/fixup.c
++++ b/arch/x86/pci/fixup.c
+@@ -3,9 +3,11 @@
+  * Exceptions for specific devices. Usually work-arounds for fatal design flaws.
+  */
  
- 		spin_lock_irqsave(qp->qp_lock_ptr, *flags);
--		if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
--			sp->done(sp, res);
-+		switch (sp->type) {
-+		case SRB_SCSI_CMD:
-+			if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
-+				sp->done(sp, res);
-+			break;
-+		default:
-+			if (ret_cmd)
-+				sp->done(sp, res);
-+			break;
-+		}
- 	} else {
- 		sp->done(sp, res);
- 	}
++#include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <linux/dmi.h>
+ #include <linux/pci.h>
++#include <linux/suspend.h>
+ #include <linux/vgaarb.h>
+ #include <asm/amd_nb.h>
+ #include <asm/hpet.h>
+@@ -904,3 +906,60 @@ static void chromeos_fixup_apl_pci_l1ss_capability(struct pci_dev *dev)
+ }
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x5ad6, chromeos_save_apl_pci_l1ss_capability);
+ DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_INTEL, 0x5ad6, chromeos_fixup_apl_pci_l1ss_capability);
++
++#ifdef CONFIG_SUSPEND
++/*
++ * Root Ports on some AMD SoCs advertise PME_Support for D3hot and D3cold, but
++ * if the SoC is put into a hardware sleep state by the amd-pmc driver, the
++ * Root Ports don't generate wakeup interrupts for USB devices.
++ *
++ * When suspending, remove D3hot and D3cold from the PME_Support advertised
++ * by the Root Port so we don't use those states if we're expecting wakeup
++ * interrupts.  Restore the advertised PME_Support when resuming.
++ */
++static void amd_rp_pme_suspend(struct pci_dev *dev)
++{
++	struct pci_dev *rp;
++
++	/*
++	 * PM_SUSPEND_ON means we're doing runtime suspend, which means
++	 * amd-pmc will not be involved so PMEs during D3 work as advertised.
++	 *
++	 * The PMEs *do* work if amd-pmc doesn't put the SoC in the hardware
++	 * sleep state, but we assume amd-pmc is always present.
++	 */
++	if (pm_suspend_target_state == PM_SUSPEND_ON)
++		return;
++
++	rp = pcie_find_root_port(dev);
++	if (!rp->pm_cap)
++		return;
++
++	rp->pme_support &= ~((PCI_PM_CAP_PME_D3hot|PCI_PM_CAP_PME_D3cold) >>
++				    PCI_PM_CAP_PME_SHIFT);
++	dev_info_once(&rp->dev, "quirk: disabling D3cold for suspend\n");
++}
++
++static void amd_rp_pme_resume(struct pci_dev *dev)
++{
++	struct pci_dev *rp;
++	u16 pmc;
++
++	rp = pcie_find_root_port(dev);
++	if (!rp->pm_cap)
++		return;
++
++	pci_read_config_word(rp, rp->pm_cap + PCI_PM_PMC, &pmc);
++	rp->pme_support = FIELD_GET(PCI_PM_CAP_PME_MASK, pmc);
++}
++/* Rembrandt (yellow_carp) */
++DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162e, amd_rp_pme_suspend);
++DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162e, amd_rp_pme_resume);
++DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162f, amd_rp_pme_suspend);
++DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162f, amd_rp_pme_resume);
++/* Phoenix (pink_sardine) */
++DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_suspend);
++DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_resume);
++DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_suspend);
++DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_resume);
++#endif /* CONFIG_SUSPEND */
 
