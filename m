@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D305E7F174B
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:29:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1657F174C
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:30:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234005AbjKTP33 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 10:29:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41624 "EHLO
+        id S232702AbjKTPaD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 10:30:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234007AbjKTP32 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:29:28 -0500
+        with ESMTP id S233195AbjKTPaC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:30:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7529FD8
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:29:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C4AC433C9;
-        Mon, 20 Nov 2023 15:29:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC82EA7
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:29:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0085C433C8;
+        Mon, 20 Nov 2023 15:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700494164;
-        bh=xo3Xfw1jrl+xQHdL1FqxkEacEmX9bppDTnuTYynM8xM=;
+        s=korg; t=1700494198;
+        bh=4eL9wei0CZkDreO2Pva3jQ80nGVrmtOy+RUhJeYcrmU=;
         h=Subject:To:Cc:From:Date:From;
-        b=hgddhv01V/G2zzFkIFGefae08D1ywYqiLwzX3IA3arrw58JKnXx6OFOxI/RWVas9x
-         wKC8zQTuPwraLJevA41Spncf+qr1ovR6WWkHT/jMPWnsHDQH6ZMDzG2scYlJLfAQMa
-         LUlOiym+iwn1pGsrdZH7F6d58TzyLrlVVd4D6bDc=
-Subject: FAILED: patch "[PATCH] KVM: x86: hyper-v: Don't auto-enable stimer on write from" failed to apply to 4.14-stable tree
-To:     nsaenz@amazon.com, seanjc@google.com, vkuznets@redhat.com
+        b=RVhFnxGFwdid+ejqhsM9OFX+MFsNJ/w9iAWK4w/0aNRE6ge4lO8Cy2s909Cp3QuO5
+         mS+7UHuHbt90sog8Zcg6/YMayuTeSHca3umsLlC5yoGNB44s5nCvLjbcl0AnGmzI2M
+         T5W+LAGv2KDEl+9Qu+yiDYklk3hpdJ3h0nJ2n184=
+Subject: FAILED: patch "[PATCH] KVM: x86: Fix lapic timer interrupt lost after loading a" failed to apply to 6.1-stable tree
+To:     hshan@google.com, seanjc@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 20 Nov 2023 16:29:13 +0100
-Message-ID: <2023112013-chemicals-trousers-113f@gregkh>
+Date:   Mon, 20 Nov 2023 16:29:55 +0100
+Message-ID: <2023112055-hardener-designer-a77b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,38 +43,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x d6800af51c76b6dae20e6023bbdc9b3da3ab5121
+git cherry-pick -x 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112013-chemicals-trousers-113f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112055-hardener-designer-a77b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-d6800af51c76 ("KVM: x86: hyper-v: Don't auto-enable stimer on write from user-space")
-013cc6ebbf41 ("x86/kvm/hyper-v: avoid spurious pending stimer on vCPU init")
-87a8d795b2f1 ("x86/hyper-v: Stop caring about EOI for direct stimers")
-8644f771e07c ("x86/kvm/hyper-v: direct mode for synthetic timers")
-6a058a1eadc3 ("x86/kvm/hyper-v: use stimer config definition from hyperv-tlfs.h")
-0aa67255f54d ("x86/hyper-v: move synic/stimer control structures definitions to hyperv-tlfs.h")
-7deec5e0df74 ("x86: kvm: hyperv: don't retry message delivery for periodic timers")
-3a0e7731724f ("x86: kvm: hyperv: simplify SynIC message delivery")
-f21dd494506a ("KVM: x86: hyperv: optimize sparse VP set processing")
-e6b6c483ebe9 ("KVM: x86: hyperv: fix 'tlb_lush' typo")
-214ff83d4473 ("KVM: x86: hyperv: implement PV IPI send hypercalls")
-2cefc5feb80c ("KVM: x86: hyperv: optimize kvm_hv_flush_tlb() for vp_index == vcpu_idx case")
-0b0a31badb2d ("KVM: x86: hyperv: valid_bank_mask should be 'u64'")
-a812297c4fd9 ("KVM: x86: hyperv: optimize 'all cpus' case in kvm_hv_flush_tlb()")
-aa069a996951 ("KVM: PPC: Book3S HV: Add a VM capability to enable nested virtualization")
-9d67121a4fce ("Merge remote-tracking branch 'remotes/powerpc/topic/ppc-kvm' into kvm-ppc-next")
+9cfec6d097c6 ("KVM: x86: Fix lapic timer interrupt lost after loading a snapshot.")
+b3f257a84696 ("KVM: x86: Track required APICv inhibits with variable, not callback")
+9a364857ab4f ("KVM: SVM: Inhibit AVIC if vCPUs are aliased in logical mode")
+5063c41bebac ("KVM: x86: Inhibit APICv/AVIC if the optimized physical map is disabled")
+2008fab34530 ("KVM: x86: Inhibit APIC memslot if x2APIC and AVIC are enabled")
+c482f2cebe2d ("KVM: x86: Move APIC access page helper to common x86 code")
+f651a0089548 ("KVM: x86: Don't inhibit APICv/AVIC if xAPIC ID mismatch is due to 32-bit ID")
 
 thanks,
 
@@ -82,50 +73,119 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d6800af51c76b6dae20e6023bbdc9b3da3ab5121 Mon Sep 17 00:00:00 2001
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Date: Tue, 17 Oct 2023 15:51:02 +0000
-Subject: [PATCH] KVM: x86: hyper-v: Don't auto-enable stimer on write from
- user-space
+From 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2 Mon Sep 17 00:00:00 2001
+From: Haitao Shan <hshan@google.com>
+Date: Tue, 12 Sep 2023 16:55:45 -0700
+Subject: [PATCH] KVM: x86: Fix lapic timer interrupt lost after loading a
+ snapshot.
 
-Don't apply the stimer's counter side effects when modifying its
-value from user-space, as this may trigger spurious interrupts.
+When running android emulator (which is based on QEMU 2.12) on
+certain Intel hosts with kernel version 6.3-rc1 or above, guest
+will freeze after loading a snapshot. This is almost 100%
+reproducible. By default, the android emulator will use snapshot
+to speed up the next launching of the same android guest. So
+this breaks the android emulator badly.
 
-For example:
- - The stimer is configured in auto-enable mode.
- - The stimer's count is set and the timer enabled.
- - The stimer expires, an interrupt is injected.
- - The VM is live migrated.
- - The stimer config and count are deserialized, auto-enable is ON, the
-   stimer is re-enabled.
- - The stimer expires right away, and injects an unwarranted interrupt.
+I tested QEMU 8.0.4 from Debian 12 with an Ubuntu 22.04 guest by
+running command "loadvm" after "savevm". The same issue is
+observed. At the same time, none of our AMD platforms is impacted.
+More experiments show that loading the KVM module with
+"enable_apicv=false" can workaround it.
 
+The issue started to show up after commit 8e6ed96cdd50 ("KVM: x86:
+fire timer when it is migrated and expired, and in oneshot mode").
+However, as is pointed out by Sean Christopherson, it is introduced
+by commit 967235d32032 ("KVM: vmx: clear pending interrupts on
+KVM_SET_LAPIC"). commit 8e6ed96cdd50 ("KVM: x86: fire timer when
+it is migrated and expired, and in oneshot mode") just makes it
+easier to hit the issue.
+
+Having both commits, the oneshot lapic timer gets fired immediately
+inside the KVM_SET_LAPIC call when loading the snapshot. On Intel
+platforms with APIC virtualization and posted interrupt processing,
+this eventually leads to setting the corresponding PIR bit. However,
+the whole PIR bits get cleared later in the same KVM_SET_LAPIC call
+by apicv_post_state_restore. This leads to timer interrupt lost.
+
+The fix is to move vmx_apicv_post_state_restore to the beginning of
+the KVM_SET_LAPIC call and rename to vmx_apicv_pre_state_restore.
+What vmx_apicv_post_state_restore does is actually clearing any
+former apicv state and this behavior is more suitable to carry out
+in the beginning.
+
+Fixes: 967235d32032 ("KVM: vmx: clear pending interrupts on KVM_SET_LAPIC")
 Cc: stable@vger.kernel.org
-Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20231017155101.40677-1-nsaenz@amazon.com
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Haitao Shan <hshan@google.com>
+Link: https://lore.kernel.org/r/20230913000215.478387-1-hshan@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-diff --git a/arch/x86/kvm/hyperv.c b/arch/x86/kvm/hyperv.c
-index 7c2dac6824e2..238afd7335e4 100644
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -727,10 +727,12 @@ static int stimer_set_count(struct kvm_vcpu_hv_stimer *stimer, u64 count,
+diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
+index e3054e3e46d5..9b419f0de713 100644
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -108,6 +108,7 @@ KVM_X86_OP_OPTIONAL(vcpu_blocking)
+ KVM_X86_OP_OPTIONAL(vcpu_unblocking)
+ KVM_X86_OP_OPTIONAL(pi_update_irte)
+ KVM_X86_OP_OPTIONAL(pi_start_assignment)
++KVM_X86_OP_OPTIONAL(apicv_pre_state_restore)
+ KVM_X86_OP_OPTIONAL(apicv_post_state_restore)
+ KVM_X86_OP_OPTIONAL_RET0(dy_apicv_has_pending_interrupt)
+ KVM_X86_OP_OPTIONAL(set_hv_timer)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 17715cb8731d..f77568c6a326 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1709,6 +1709,7 @@ struct kvm_x86_ops {
+ 	int (*pi_update_irte)(struct kvm *kvm, unsigned int host_irq,
+ 			      uint32_t guest_irq, bool set);
+ 	void (*pi_start_assignment)(struct kvm *kvm);
++	void (*apicv_pre_state_restore)(struct kvm_vcpu *vcpu);
+ 	void (*apicv_post_state_restore)(struct kvm_vcpu *vcpu);
+ 	bool (*dy_apicv_has_pending_interrupt)(struct kvm_vcpu *vcpu);
  
- 	stimer_cleanup(stimer);
- 	stimer->count = count;
--	if (stimer->count == 0)
--		stimer->config.enable = 0;
--	else if (stimer->config.auto_enable)
--		stimer->config.enable = 1;
-+	if (!host) {
-+		if (stimer->count == 0)
-+			stimer->config.enable = 0;
-+		else if (stimer->config.auto_enable)
-+			stimer->config.enable = 1;
-+	}
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index dcd60b39e794..c6a5a5945021 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2670,6 +2670,8 @@ void kvm_lapic_reset(struct kvm_vcpu *vcpu, bool init_event)
+ 	u64 msr_val;
+ 	int i;
  
- 	if (stimer->config.enable)
- 		stimer_mark_pending(stimer, false);
++	static_call_cond(kvm_x86_apicv_pre_state_restore)(vcpu);
++
+ 	if (!init_event) {
+ 		msr_val = APIC_DEFAULT_PHYS_BASE | MSR_IA32_APICBASE_ENABLE;
+ 		if (kvm_vcpu_is_reset_bsp(vcpu))
+@@ -2977,6 +2979,8 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
+ 	struct kvm_lapic *apic = vcpu->arch.apic;
+ 	int r;
+ 
++	static_call_cond(kvm_x86_apicv_pre_state_restore)(vcpu);
++
+ 	kvm_lapic_set_base(vcpu, vcpu->arch.apic_base);
+ 	/* set SPIV separately to get count of SW disabled APICs right */
+ 	apic_set_spiv(apic, *((u32 *)(s->regs + APIC_SPIV)));
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 72e3943f3693..9bba5352582c 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6912,7 +6912,7 @@ static void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
+ 	vmcs_write64(EOI_EXIT_BITMAP3, eoi_exit_bitmap[3]);
+ }
+ 
+-static void vmx_apicv_post_state_restore(struct kvm_vcpu *vcpu)
++static void vmx_apicv_pre_state_restore(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
+@@ -8286,7 +8286,7 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+ 	.set_apic_access_page_addr = vmx_set_apic_access_page_addr,
+ 	.refresh_apicv_exec_ctrl = vmx_refresh_apicv_exec_ctrl,
+ 	.load_eoi_exitmap = vmx_load_eoi_exitmap,
+-	.apicv_post_state_restore = vmx_apicv_post_state_restore,
++	.apicv_pre_state_restore = vmx_apicv_pre_state_restore,
+ 	.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
+ 	.hwapic_irr_update = vmx_hwapic_irr_update,
+ 	.hwapic_isr_update = vmx_hwapic_isr_update,
 
