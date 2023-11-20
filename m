@@ -2,197 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BC287F1D29
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 20:11:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 742A97F1D4A
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 20:29:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbjKTTLf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 14:11:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59748 "EHLO
+        id S229553AbjKTT3G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 14:29:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229493AbjKTTLe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 14:11:34 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52FCB9C;
-        Mon, 20 Nov 2023 11:11:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D498CC433C8;
-        Mon, 20 Nov 2023 19:11:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700507490;
-        bh=ujeJaOiJuoUZVb/H4k+D6JtjBqaMk1BWtx1lxU08KcU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=h3+vlJvGo265XOiOCVTUZRaqafgf0iJcwUZwYgjzyZoMBYcT3inyL8NARj290j20K
-         1U2cHuodcce81gwEvxXJzcBbM+6RW5UU+Ylcb0eu1VkrGRKhgxtEWRcdKlmTtHS8Cp
-         i8v48TEQuo/1gfIf2KUqJqzo3gswmsYrCC8ucTZWSECzjFhMb05lcs37DELAj9/oHd
-         OCqG4ftA5ZtFk52/oa7EHPSLzWIqQY277XrhuFFJ/neC8Ywk/t9ubs+oywoXZ4vWhC
-         72DfLuZ4rX8eqNWfPtfdUKC/26olIIP2DcKg/Dwqdxwt7cn1PUgOGo9kZ1WQU3WenV
-         pRNpcgHZCW81w==
-Date:   Mon, 20 Nov 2023 11:11:30 -0800
-From:   "Darrick J. Wong" <djwong@kernel.org>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Leah Rumancik <leah.rumancik@gmail.com>, stable@vger.kernel.org,
-        linux-xfs@vger.kernel.org, amir73il@gmail.com,
-        chandan.babu@oracle.com, fred@cloudflare.com,
-        ChenXiaoSong <chenxiaosong2@huawei.com>,
-        Guo Xuenan <guoxuenan@huawei.com>,
-        Chandan Babu R <chandanbabu@kernel.org>
-Subject: Re: [PATCH 5.15 09/17] xfs: fix NULL pointer dereference in
- xfs_getbmap()
-Message-ID: <20231120191130.GE36190@frogsfrogsfrogs>
-References: <20231116022833.121551-1-leah.rumancik@gmail.com>
- <20231116022833.121551-9-leah.rumancik@gmail.com>
- <2023112053-monogamy-corned-68ba@gregkh>
+        with ESMTP id S229529AbjKTT3F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 14:29:05 -0500
+Received: from BN3PR00CU001.outbound.protection.outlook.com (mail-eastus2azon11020003.outbound.protection.outlook.com [52.101.56.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2981BB;
+        Mon, 20 Nov 2023 11:29:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TY0kVeuvbvPqjZJl0aWrgYcI8VZ8YeJJgPUrc+1pJR/qT8qshh2k3PFv0j9JMn/o1QHBWd8Ji9XAzRDBOU5GJvYxMlJL5NjMsDWm0BC9j76g3yxR4+EeUaT4Y6pDXqRmpT5/fQnOpgmxoS+m08DT7grK/qVC1sEn/i+TToETPcJ+RRI0k68xjX4xAHeAu45tu+b000aw7UvBO543uA2sA7DiVQhMhhPoxpOAJh2IdXxSFYd8ESoHmOranu1lTtIOjQjgfoju++s58XDkAZufNRkhy+H98v9XyrcAywwv/vMFXR0/c3A5tLzDBEFUIgquPaR+PaPSvv8fRLAB8Z8p7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v/W1J0RwVLdhjh7g+exSUQ7fiYwaYbqAyLxlIu4Ts7o=;
+ b=MKgwEdeb7OAn+UTK/b8CzrvRMoE9yBGZV9szK+KErB7gPzWjmA0OJRYLGosUkd2S/JRPoK35A2zA71RpOZuhBziuHafsCLcc9l1ZjsgwYxW/IRn/5a6D662QeQy2tNuo4Pdza0UVTk0oVYrFBmUyRL7dT6wcGK/zhVeUo8DT9RKQ5yno1I15/fdhfdwGmXUa8nDsrsh3xNQ098oR39Uhj5l+/KT7vwk5pyVhCX+j7u2i+JVDvOLnubq4zo69zhBA1r7D48G0DfyIJWQgACQXMIXrzYXUyJzcluUCtw0lS/egh+qi+Jm3xODNe+8Uv16pvp4lj945gca2bCDRoahnLw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v/W1J0RwVLdhjh7g+exSUQ7fiYwaYbqAyLxlIu4Ts7o=;
+ b=W1Qcwm1CQ+WGQuHCakBWxYAmVHPHbiEKM9WSlG7l8SR2QadNb+WKmDPGxKvLEzRLxEzm+qP/3uRC9cExnQ8Np9si+J2XeMBuRmxd/qc/bBxUcHXetbSKhdFR0Vivz2ydYadi4YZwy6dt/wMdruBZ6auePO/QzoXQI9faAfeqrhQ=
+Received: from SA1PR21MB1335.namprd21.prod.outlook.com (2603:10b6:806:1f2::11)
+ by SN3PEPF00013E00.namprd21.prod.outlook.com (2603:10b6:82c:400:0:4:0:16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.2; Mon, 20 Nov
+ 2023 19:28:59 +0000
+Received: from SA1PR21MB1335.namprd21.prod.outlook.com
+ ([fe80::c1de:d3e5:8e05:1e4a]) by SA1PR21MB1335.namprd21.prod.outlook.com
+ ([fe80::c1de:d3e5:8e05:1e4a%2]) with mapi id 15.20.7046.009; Mon, 20 Nov 2023
+ 19:28:59 +0000
+From:   Dexuan Cui <decui@microsoft.com>
+To:     Haiyang Zhang <haiyangz@microsoft.com>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     KY Srinivasan <kys@microsoft.com>,
+        "wei.liu@kernel.org" <wei.liu@kernel.org>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        stephen <stephen@networkplumber.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Long Li <longli@microsoft.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH net,v5, 3/3] hv_netvsc: Mark VF as slave before exposing
+ it to user-mode
+Thread-Topic: [PATCH net,v5, 3/3] hv_netvsc: Mark VF as slave before exposing
+ it to user-mode
+Thread-Index: AQHaGwTlL5e+wt6IJ0GCvjHxzi6t5LCDmTaA
+Date:   Mon, 20 Nov 2023 19:28:59 +0000
+Message-ID: <SA1PR21MB13356156EF05094FE9F9B02FBFB4A@SA1PR21MB1335.namprd21.prod.outlook.com>
+References: <1700411023-14317-1-git-send-email-haiyangz@microsoft.com>
+ <1700411023-14317-4-git-send-email-haiyangz@microsoft.com>
+In-Reply-To: <1700411023-14317-4-git-send-email-haiyangz@microsoft.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=cd8d42f2-1b18-45a6-b153-e0894e1e1d85;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2023-11-20T19:27:39Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR21MB1335:EE_|SN3PEPF00013E00:EE_
+x-ms-office365-filtering-correlation-id: e1b9f599-45f6-49c1-0a2f-08dbe9fef1d4
+x-ld-processed: 72f988bf-86f1-41af-91ab-2d7cd011db47,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: wtYQESJUsDtHLymgtlKRhPXkxtYE5rV/KF1N7ayz2JNQXVZYPL3ISq81iNJGQfNTra8a/67ZxuAXSO1Up8IQyDuqLg8xjO/zNQAu/hocRh57vgxpTQzBN3nuNVRHC/IBjPFoxEOk/KQ5YCNlfFpNmXB9GvR2Errc065ontVQhUObMTjhtDNA2ZHlkma6qMh+4Fw1mcym2pBYjP11EFfNATSyVtdcJYRcUCWkh7JZKLMAQjHcU6L7kkn+6ww6M8ER39veMQ3NMlpidM3mEFHO1ZfdufpM36IosAu+AB5UShaQSE5VCzBkGuFwkIgz+b2nDMRuJSkmRHjmapuHMClwR4izq/qjYxoWIpVAmuoHeTd40D+HyMp5fWaUKW1AdZOkJyEQ7leF/G2ipEU+SWkXBghkGjIOocQUdFvdrWGgG+KjfWASzM3CltgoKTTsasZx9IekOTQfKmsSW7BGVCjU6QUS7kCXUpd2oIsAnww+cOOIJtScf3dVJr6qY3OBn+0YFJ7adhCnmmJSvlEbwyWUq1tiK/LPH+mPiCWSnnmrKNZA1YHoFAy3yS5rL9Vu3hjXP2d0zCF3opnydTm542tcPoIcufevwuYcyYYFs/9dnFthD+ivMrJROBj6gYR8/msgT3a99m1bpL1zO70sD1emzA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB1335.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(39860400002)(366004)(396003)(346002)(376002)(230922051799003)(1800799012)(64100799003)(186009)(451199024)(55016003)(122000001)(82960400001)(52536014)(8990500004)(82950400001)(6506007)(9686003)(7696005)(33656002)(41300700001)(38100700002)(2906002)(478600001)(54906003)(66476007)(86362001)(71200400001)(110136005)(316002)(76116006)(66556008)(66946007)(66446008)(4744005)(8936002)(5660300002)(4326008)(8676002)(64756008)(10290500003)(7416002)(38070700009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?XXsTvn3XTby7T1EmIjQ0H3qOZCctb26dI4AnLPLLQZ0nuldKnEqiek704/K6?=
+ =?us-ascii?Q?NXgxvx+CRNgpB2qPSq/QzVFqVBi7XoTYiyyytHCgegghcxYlfaLJNMpAzcW4?=
+ =?us-ascii?Q?8OUP1NgqZv4LE+RJwfaDdxbp+8erljssfb7ccyuxCqL3RXoGsr6OmNgG1xx4?=
+ =?us-ascii?Q?3fiGBoZg4SEpY+HtTdiZh9tfnQyIt+s8kDbAfnfZuxzk2tZMHyObWokGhNUs?=
+ =?us-ascii?Q?3pGwLNtpexhwfYvXmpgmHVkuEHDJRIbk86RyyOogKrO5wE90i+FpCW/BII/L?=
+ =?us-ascii?Q?sAbKayE4JX+7Tn+Ou0rQAtfTZ1BhRkSGA1XuA7gCW+JMBGKPPVNL+/WBBSX4?=
+ =?us-ascii?Q?F7QZKSiVBcVH8LojgGSOJBbivksmlA62g2VVs8vn8sexmAXI/eMMjd4oSSB6?=
+ =?us-ascii?Q?z8LhVlHEi3Lkg7Q8ZH0+h5vYKXf1/LGEq6fBo7LuzenQ8PlEl2855+1QkrQb?=
+ =?us-ascii?Q?lCjKtnu4iXHLFHqOAOb6mZ2HZ4DIf/zerNFODu25YEohkP7s7xcBBatJVDiU?=
+ =?us-ascii?Q?XOBq05bYwYto9PeSRI2+rDRzVgM1iQm11W7mHnigdZd8iHWAtymIcIT2tqks?=
+ =?us-ascii?Q?Jf2vGeZChmO9L9HbRUKNOe+tHuEWTR4R41qyTgY6nzdsx/zzWflMNz5iKo69?=
+ =?us-ascii?Q?9JvS3n8UW4ibg86Fu7NbqvOr+0uzMzFvRm+NOsk6CLcuf9rZtopezMH0VyNP?=
+ =?us-ascii?Q?PyTxrUskrVwq6CoHyBzJw+lD9cmwA2BMPBs0uuL1V6WFl3QMUM191OMxJD2+?=
+ =?us-ascii?Q?+gfMwKZO5XNDN4IUOr3SMbcOUguYSeFHviEmLtlXTvtv0m7vqdhpKwqcqcfj?=
+ =?us-ascii?Q?igCSGmdIlTTuCqxeKSFkl/IMw2u9lYvcRPnhy+7nuhtzjE49as8PnwGk4hDI?=
+ =?us-ascii?Q?Zgiku1ge33fFgldwVrNTSq3B6Qen5vzTDUL6LM+NclCkbvHNkL27nIfTUyX4?=
+ =?us-ascii?Q?pVMmRCufLDIndkp/VjPCWxfvXv6fTAMEGkG8Iu3wiZHsEJFpQATWSAvJxjIS?=
+ =?us-ascii?Q?xEimFXsIebZoRJEII2nmPHyYRrYhENezBT9ysPq02h/wgxzj7LvVireJhrCj?=
+ =?us-ascii?Q?tBdsub0vYJOJMikNxTATyaYC9QVN0jqu2P1qnKVAXmuZJzCTMEp5vgSa6RNi?=
+ =?us-ascii?Q?K2Oge17CezjxjfGXRZuQg2Ld4YvWfW+gbBG5yvK72QE+YQHqqg14VlrfPtZf?=
+ =?us-ascii?Q?KQKoEoS8QVxAlnc2HuL3Lv6MN3bGf6UmbgoErEWIo4tWcpvvVG/Ms31EZLMY?=
+ =?us-ascii?Q?OZGx9sQzPI+p8GJQsafVSyUgZUcD+Dj8SDmN/o6wGBJ6tC189dUw1tzhhoFp?=
+ =?us-ascii?Q?zM8kE302n2xCRoRvxwVmOlOSv0JhwmYBAvKtRJ5gYOZmLJ1zfF2g1Arrp71z?=
+ =?us-ascii?Q?/W5eho2IO0kYer45zg3w3OL2NsKs0gPZUMU2vTeV19ihOdFvBMdlBIXbcRr9?=
+ =?us-ascii?Q?/49ZIc58eBaooAJBaggYYO+CGzSujAtsq0ryGzeT1ctKvqUPJD5ZHetpszKr?=
+ =?us-ascii?Q?FehgkFiaJgY1keM+YMUcaYtk/RAjHPv0gvU9F7hbyEM+lzOAkfyHqxwb6BN0?=
+ =?us-ascii?Q?RhWXWa+VARUKyq1MmbkQk+0wacflba/nRc/d5Bioqp31KVRTujhsuCCzyi8M?=
+ =?us-ascii?Q?Xzejcl9PxHOEWNMPb/K9sxk=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023112053-monogamy-corned-68ba@gregkh>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB1335.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1b9f599-45f6-49c1-0a2f-08dbe9fef1d4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2023 19:28:59.0945
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ZCmheX798N5yqUQQC8UmnBcS2qTBbmf+mZ8DL/icf79TecGOpsrW4dUJ8IyJfiJ5gLxhh6BiR/3vZP2AK46XVA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN3PEPF00013E00
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 20, 2023 at 04:38:24PM +0100, Greg KH wrote:
-> On Wed, Nov 15, 2023 at 06:28:25PM -0800, Leah Rumancik wrote:
-> > From: ChenXiaoSong <chenxiaosong2@huawei.com>
-> > 
-> > [ Upstream commit 001c179c4e26d04db8c9f5e3fef9558b58356be6 ]
-> > 
-> > Reproducer:
-> >  1. fallocate -l 100M image
-> >  2. mkfs.xfs -f image
-> >  3. mount image /mnt
-> >  4. setxattr("/mnt", "trusted.overlay.upper", NULL, 0, XATTR_CREATE)
-> >  5. char arg[32] = "\x01\xff\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00"
-> >                    "\x00\x00\x00\x00\x00\x08\x00\x00\x00\xc6\x2a\xf7";
-> >     fd = open("/mnt", O_RDONLY|O_DIRECTORY);
-> >     ioctl(fd, _IOC(_IOC_READ|_IOC_WRITE, 0x58, 0x2c, 0x20), arg);
-> > 
-> > NULL pointer dereference will occur when race happens between xfs_getbmap()
-> > and xfs_bmap_set_attrforkoff():
-> > 
-> >          ioctl               |       setxattr
-> >  ----------------------------|---------------------------
-> >  xfs_getbmap                 |
-> >    xfs_ifork_ptr             |
-> >      xfs_inode_has_attr_fork |
-> >        ip->i_forkoff == 0    |
-> >      return NULL             |
-> >    ifp == NULL               |
-> >                              | xfs_bmap_set_attrforkoff
-> >                              |   ip->i_forkoff > 0
-> >    xfs_inode_has_attr_fork   |
-> >      ip->i_forkoff > 0       |
-> >    ifp == NULL               |
-> >    ifp->if_format            |
-> > 
-> > Fix this by locking i_lock before xfs_ifork_ptr().
-> > 
-> > Fixes: abbf9e8a4507 ("xfs: rewrite getbmap using the xfs_iext_* helpers")
-> > Signed-off-by: ChenXiaoSong <chenxiaosong2@huawei.com>
-> > Signed-off-by: Guo Xuenan <guoxuenan@huawei.com>
-> > Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-> > [djwong: added fixes tag]
-> > Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-> > Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-> > Acked-by: Chandan Babu R <chandanbabu@kernel.org>
-> > ---
-> >  fs/xfs/xfs_bmap_util.c | 17 +++++++++--------
-> >  1 file changed, 9 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
-> > index fd2ad6a3019c..bea6cc26abf9 100644
-> > --- a/fs/xfs/xfs_bmap_util.c
-> > +++ b/fs/xfs/xfs_bmap_util.c
-> > @@ -439,29 +439,28 @@ xfs_getbmap(
-> >  		whichfork = XFS_COW_FORK;
-> >  	else
-> >  		whichfork = XFS_DATA_FORK;
-> > -	ifp = XFS_IFORK_PTR(ip, whichfork);
-> >  
-> >  	xfs_ilock(ip, XFS_IOLOCK_SHARED);
-> >  	switch (whichfork) {
-> >  	case XFS_ATTR_FORK:
-> > +		lock = xfs_ilock_attr_map_shared(ip);
-> >  		if (!XFS_IFORK_Q(ip))
-> > -			goto out_unlock_iolock;
-> > +			goto out_unlock_ilock;
-> >  
-> >  		max_len = 1LL << 32;
-> > -		lock = xfs_ilock_attr_map_shared(ip);
-> >  		break;
-> >  	case XFS_COW_FORK:
-> > +		lock = XFS_ILOCK_SHARED;
-> > +		xfs_ilock(ip, lock);
-> > +
-> >  		/* No CoW fork? Just return */
-> > -		if (!ifp)
-> > -			goto out_unlock_iolock;
-> > +		if (!XFS_IFORK_PTR(ip, whichfork))
+> From: LKML haiyangz <lkmlhyz@microsoft.com> On Behalf Of Haiyang
+> Zhang
+> [...]
+> From: Long Li <longli@microsoft.com>
+>=20
+> When a VF is being exposed form the kernel, it should be marked as
+> "slave"
+> before exposing to the user-mode. The VF is not usable without netvsc
+> running as master. The user-mode should never see a VF without the
+> "slave"
+> flag.
+>=20
+> This commit moves the code of setting the slave flag to the time before
+> VF is exposed to user-mode.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
+> Signed-off-by: Long Li <longli@microsoft.com>
+> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+> ---
+> v5:
+> Change function name netvsc_prepare_slave() to
+> netvsc_prepare_bonding().
+> v4:
+> Add comments in get_netvsc_byslot() explaining the need to check
+> dev_addr
+> v2:
+> Use a new function to handle NETDEV_POST_INIT.
 
-Is this the line 457 that the compiler complains about below?
-
-If so, then whichfork == XFS_COW_FORK here, because the code just
-switch()d on that.  The XFS_IFORK_PTR macro decomposes into:
-
-#define XFS_IFORK_PTR(ip,w)		\
-	((w) == XFS_DATA_FORK ? \
-		&(ip)->i_df : \
-		((w) == XFS_ATTR_FORK ? \
-			(ip)->i_afp : \
-			(ip)->i_cowfp))
-
-which means this test /should/ be turning into:
-
-		if (!(ip->i_cowfp))
-			goto out_unlock_ilock;
-
-I'm not sure why your compiler is whining about &ip->i_df; that's not
-what's being selected here for testing.  Unless your compiler is somehow
-deciding that XFS_DATA_FORK == XFS_COW_FORK?  This should not ever be
-possible.
-
---D
-
-> > +			goto out_unlock_ilock;
-> >  
-> >  		if (xfs_get_cowextsz_hint(ip))
-> >  			max_len = mp->m_super->s_maxbytes;
-> >  		else
-> >  			max_len = XFS_ISIZE(ip);
-> > -
-> > -		lock = XFS_ILOCK_SHARED;
-> > -		xfs_ilock(ip, lock);
-> >  		break;
-> >  	case XFS_DATA_FORK:
-> >  		if (!(iflags & BMV_IF_DELALLOC) &&
-> > @@ -491,6 +490,8 @@ xfs_getbmap(
-> >  		break;
-> >  	}
-> >  
-> > +	ifp = XFS_IFORK_PTR(ip, whichfork);
-> > +
-> >  	switch (ifp->if_format) {
-> >  	case XFS_DINODE_FMT_EXTENTS:
-> >  	case XFS_DINODE_FMT_BTREE:
-> > -- 
-> > 2.43.0.rc0.421.g78406f8d94-goog
-> > 
-> 
-> This patch breaks the build, how was it tested?
-> 
-> fs/xfs/xfs_bmap_util.c: In function ‘xfs_getbmap’:
-> fs/xfs/xfs_bmap_util.c:457:21: error: the comparison will always evaluate as ‘true’ for the address of ‘i_df’ will never be NULL [-Werror=address]
->   457 |                 if (!XFS_IFORK_PTR(ip, whichfork))
->       |                     ^
-> In file included from fs/xfs/xfs_bmap_util.c:16:
-> fs/xfs/xfs_inode.h:38:33: note: ‘i_df’ declared here
->    38 |         struct xfs_ifork        i_df;           /* data fork */
->       |                                 ^~~~
-> cc1: all warnings being treated as errors
-> 
-> 
+Acked-by: Dexuan Cui <decui@microsoft.com>
