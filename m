@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 672317F173E
-	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:27:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8D987F1740
+	for <lists+stable@lfdr.de>; Mon, 20 Nov 2023 16:27:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233166AbjKTP1l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 10:27:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47338 "EHLO
+        id S233875AbjKTP1u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 10:27:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233237AbjKTP1k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:27:40 -0500
+        with ESMTP id S233710AbjKTP1t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 10:27:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E073CF
-        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:27:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66383C433C8;
-        Mon, 20 Nov 2023 15:27:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315C8B4
+        for <stable@vger.kernel.org>; Mon, 20 Nov 2023 07:27:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EE2C433C9;
+        Mon, 20 Nov 2023 15:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700494056;
-        bh=r/WxJgNQ+zyyM6iWHhqGwkPia4lJTAJWNXwRcJ9Zq5Q=;
+        s=korg; t=1700494065;
+        bh=hQJkY7AbHXs/qsMuDcFQLTVHPuGKl35DaHBCE/m8vkc=;
         h=Subject:To:Cc:From:Date:From;
-        b=nGM+O+FC54NB6vLVxe4leOgZTbFOUy49EWw9kFJMrDU42EB/utaFcmFp28AoPgt0K
-         wVSJQ/pe56RAB+Fy9dz2Y7xgwohcMMJMt1zBrPZtH8nhVpTE85bZzUmGDVBG76yPtI
-         OxUdwE9L4C3QjWEBpaMtX2YR5PUgHeOQdf03SGNM=
-Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix system crash due to bad pointer access" failed to apply to 5.10-stable tree
+        b=c7IdFPJEZTIbldSgudwGFyLL1As+kqe0u3hJCx1lOk+NIx1YTTZfwkA1lnCXk1AOZ
+         If0RxIBF6mkaytAxffl7bfL2XrPg04IATRpQudFCdNH7VBfQY4bRC9Sbk0TilxfAaV
+         GVMQIg9ZoKOdrl9li2jrYDgLGywIXw8G6mTo+e/4=
+Subject: FAILED: patch "[PATCH] scsi: qla2xxx: Fix system crash due to bad pointer access" failed to apply to 5.4-stable tree
 To:     qutran@marvell.com, martin.petersen@oracle.com, njavali@marvell.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 20 Nov 2023 16:27:33 +0100
-Message-ID: <2023112033-sandworm-defrost-b47d@gregkh>
+Date:   Mon, 20 Nov 2023 16:27:35 +0100
+Message-ID: <2023112034-uplifted-unbroken-2689@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,24 +43,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 19597cad64d608aa8ac2f8aef50a50187a565223
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112033-sandworm-defrost-b47d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112034-uplifted-unbroken-2689@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 19597cad64d6 ("scsi: qla2xxx: Fix system crash due to bad pointer access")
 c7d6b2c2cd56 ("scsi: qla2xxx: Use scsi_cmd_to_rq() instead of scsi_cmnd.request")
+c81ef0ed4477 ("scsi: qla2xxx: Simplify the code for aborting SCSI commands")
+f45bca8c5052 ("scsi: qla2xxx: Fix double scsi_done for abort path")
 
 thanks,
 
