@@ -2,189 +2,160 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0350F7F2826
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 09:55:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AA627F2887
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 10:17:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229620AbjKUIzY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 03:55:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50526 "EHLO
+        id S230127AbjKUJRr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 04:17:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbjKUIzX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 03:55:23 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78A3E7
-        for <stable@vger.kernel.org>; Tue, 21 Nov 2023 00:55:19 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 9FFA62191A;
-        Tue, 21 Nov 2023 08:55:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1700556918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=CTV6ndlczfT4TlJVW1+NX9VdkkC3DHuxTE/CuAWfhZ4=;
-        b=N0CQo+ssbxSG66oET4ARVDBrETRyffme/MZVQr9e1l+Oim1kU8BezitG9H4UL1ACcPcRNp
-        u8zDzGg/EMA2E22NM+LLoV7Jr8wdkYK1HqaqPn6dXj2zYElkXzdk713bbPjL8u9ewleUfK
-        T7uINjJGJl+5eSmn8RIgCsjPg5V/vIw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1700556918;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=CTV6ndlczfT4TlJVW1+NX9VdkkC3DHuxTE/CuAWfhZ4=;
-        b=iXxln9r7K38rUj482BTrF//AwDQfdeITZp5lP55Wk1VgqkB68ATJ46gQ1H1jc0RGmqXQ9J
-        gaPdToViZXnnCCDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 5684E139FD;
-        Tue, 21 Nov 2023 08:55:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id yWMJE3ZwXGV+GAAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Tue, 21 Nov 2023 08:55:18 +0000
-Message-ID: <3844e6e8-4c65-441a-ac57-a1d4e8635977@suse.de>
-Date:   Tue, 21 Nov 2023 09:55:16 +0100
+        with ESMTP id S229454AbjKUJRq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 04:17:46 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06810C1;
+        Tue, 21 Nov 2023 01:17:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96403C433C7;
+        Tue, 21 Nov 2023 09:17:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700558262;
+        bh=KiJ/ru65Ua8lo4s4fh4OjLQfr8e6MLSoBb/RDxWensY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EY9G3e//vJF7k13VmW76Yg4tqo4bYwC2YfDojOjvxuSr9VIw4idRrZhBvYcNt5EFP
+         SHaFaNcHn3iQA/LpGwavpXPMJMW19y14mBeHfC8DLz/r8WAZBA3w6hBwEMwd3H3qVh
+         9ZKHx6kkjJ81fj5Dj5azu2nLiIaxaSeFlZWd9KFEosC8kjJPW6B3C9xuKYC8b3ETnh
+         VcyG/gcTVUImvNkZpZx881dhtUmhnH6cnWL+a5f/U4Q6n0otk6WOinYAZyvLu79cqT
+         +NdLMfiSgo7tuW7fllRQflnxVNvgMN2UX85GgfSolv6r7erH4kW+9Bux8cWc3ECHPp
+         SjA5WXIvgy4LQ==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+        (envelope-from <johan@kernel.org>)
+        id 1r5MtF-00047b-1C;
+        Tue, 21 Nov 2023 10:17:53 +0100
+Date:   Tue, 21 Nov 2023 10:17:53 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Andrew Halaney <ahalaney@redhat.com>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] USB: dwc3: qcom: fix wakeup after probe deferral
+Message-ID: <ZVx1wRefjNaN0byk@hovoldconsulting.com>
+References: <20231120161607.7405-1-johan+linaro@kernel.org>
+ <20231120161607.7405-3-johan+linaro@kernel.org>
+ <pgmtla6j3dshuq5zdxstszbkkssxcthtzelv2etcbrlstdw4nu@wixz6v5dfpum>
+ <3ff65t36p6n3k7faw2z75t2vfi6rb5p64x7wqosetsksbhhwli@5xaxnm7zz4tu>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/ast: Disconnect BMC if physical connector is
- connected
-Content-Language: en-US
-To:     Jocelyn Falempe <jfalempe@redhat.com>, airlied@redhat.com,
-        maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-        daniel@ffwll.ch
-Cc:     stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20231116130217.22931-1-tzimmermann@suse.de>
- <f5780fd6-ebfd-4fa9-afa0-412775c820c7@redhat.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <f5780fd6-ebfd-4fa9-afa0-412775c820c7@redhat.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------YUs47jPZ45nWOKGUfnWbq4nX"
-Authentication-Results: smtp-out1.suse.de;
-        none
-X-Spam-Level: 
-X-Spam-Score: -2.28
-X-Spamd-Result: default: False [-2.28 / 50.00];
-         ARC_NA(0.00)[];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         XM_UA_NO_VERSION(0.01)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         BAYES_HAM(-2.81)[99.18%];
-         MIME_GOOD(-0.20)[multipart/signed,multipart/mixed,text/plain];
-         HAS_ATTACHMENT(0.00)[];
-         NEURAL_HAM_LONG(-1.00)[-0.999];
-         MIME_BASE64_TEXT_BOGUS(1.00)[];
-         NEURAL_SPAM_SHORT(2.62)[0.874];
-         DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-         MIME_BASE64_TEXT(0.10)[];
-         RCPT_COUNT_SEVEN(0.00)[7];
-         SIGNED_PGP(-2.00)[];
-         FUZZY_BLOCKED(0.00)[rspamd.com];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+,1:+,2:+,3:~];
-         RCVD_COUNT_TWO(0.00)[2];
-         RCVD_TLS_ALL(0.00)[];
-         MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3ff65t36p6n3k7faw2z75t2vfi6rb5p64x7wqosetsksbhhwli@5xaxnm7zz4tu>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------YUs47jPZ45nWOKGUfnWbq4nX
-Content-Type: multipart/mixed; boundary="------------u5m0gt0EADHsZT4L48Uh6c6V";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Jocelyn Falempe <jfalempe@redhat.com>, airlied@redhat.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, daniel@ffwll.ch
-Cc: stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-Message-ID: <3844e6e8-4c65-441a-ac57-a1d4e8635977@suse.de>
-Subject: Re: [PATCH] drm/ast: Disconnect BMC if physical connector is
- connected
-References: <20231116130217.22931-1-tzimmermann@suse.de>
- <f5780fd6-ebfd-4fa9-afa0-412775c820c7@redhat.com>
-In-Reply-To: <f5780fd6-ebfd-4fa9-afa0-412775c820c7@redhat.com>
+On Mon, Nov 20, 2023 at 02:50:52PM -0600, Andrew Halaney wrote:
+> On Mon, Nov 20, 2023 at 11:39:07AM -0600, Andrew Halaney wrote:
+> > On Mon, Nov 20, 2023 at 05:16:06PM +0100, Johan Hovold wrote:
+> > > The Qualcomm glue driver is overriding the interrupt trigger types
+> > > defined by firmware when requesting the wakeup interrupts during probe.
+> > > 
+> > > This can lead to a failure to map the DP/DM wakeup interrupts after a
+> > > probe deferral as the firmware defined trigger types do not match the
+> > > type used for the initial mapping:
+> > > 
+> > > 	irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
+> > > 	irq: type mismatch, failed to map hwirq-15 for interrupt-controller@b220000!
+> > > 
+> > > Fix this by not overriding the firmware provided trigger types when
+> > > requesting the wakeup interrupts.
+> > 
+> > This series looks good to me and makes sense except for one point that
+> > I'm struggling to understand. What exactly is the relationship with this
+> > failure and probe deferral?
+> 
+> Eric Chanudet pointed out to me (thanks!) offlist that if you:
+> 
+>     1. Probe
+>     2. Grab the IRQ
+>     3. Request it (and muck with the trigger from the firmware default)
+>     4. Defer out
+>     5. Reprobe
+>     6. Grab the IRQ again
+> 
+> You get that error, which I played with some this afternoon...
+> and can confirm.
+> 
+> It really seems like maybe we should consider reworking messing with the
+> trigger type at all (which is done later for runtime/system suspend)
+> in a follow-up series?
+> 
+> As far as I can tell if you were to remove the driver and reprobe after
+> a suspend you'd hit similar.
 
---------------u5m0gt0EADHsZT4L48Uh6c6V
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Correct, but people don't go around unloading modules (unlike probe
+deferral which anyone can hit). It's a development (debugging) feature
+so there being some corner cases are not that big of a deal.
 
-SGkNCg0KQW0gMTYuMTEuMjMgdW0gMTQ6NDMgc2NocmllYiBKb2NlbHluIEZhbGVtcGU6DQo+
-IE9uIDE2LzExLzIwMjMgMTQ6MDIsIFRob21hcyBaaW1tZXJtYW5uIHdyb3RlOg0KPj4gTWFu
-eSB1c2VyLXNwYWNlIGNvbXBvc2l0b3JzIGZhaWwgd2l0aCBtb2RlIHNldHRpbmcgaWYgYSBD
-UlRDIGhhcw0KPj4gbW9yZSB0aGFuIG9uZSBjb25uZWN0ZWQgY29ubmVjdG9yLiBUaGlzIGlz
-IHRoZSBjYXNlIHdpdGggdGhlIEJNQw0KPj4gb24gQXNwZWVkIHN5c3RlbXMuIFdvcmsgYXJv
-dW5kIHRoaXMgcHJvYmxlbSBieSBzZXR0aW5nIHRoZSBCTUMncw0KPj4gY29ubmVjdG9yIHN0
-YXR1cyB0byBkaXNjb25uZWN0ZWQgd2hlbiB0aGUgcGh5c2ljYWwgY29ubmVjdG9yIGhhcw0K
-Pj4gYSBkaXNwbGF5IGF0dGFjaGVkLiBUaGlzIHdheSBjb21wb3NpdG9ycyB3aWxsIG9ubHkg
-c2VlIG9uZSBjb25uZWN0ZWQNCj4+IGNvbm5lY3RvciBhdCBhIHRpbWU7IGVpdGhlciB0aGUg
-cGh5c2ljYWwgb25lIG9yIHRoZSBCTUMuDQo+IA0KPiANCj4gVGhhbmtzIGZvciB0aGUgcGF0
-Y2guDQo+IEkgY2FuJ3QgdGVzdCBpdCBiZWNhdXNlIEkgZG9uJ3QgaGF2ZSBwaHlzaWNhbCBh
-Y2Nlc3MgdG8gYSBtYWNoaW5lIHdpdGggDQo+IGFzcGVlZCBHUFUsIGJ1dCBpdCBsb29rcyBn
-b29kIHRvIG1lLg0KPiANCj4gUmV2aWV3ZWQtYnk6IEpvY2VseW4gRmFsZW1wZSA8amZhbGVt
-cGVAcmVkaGF0LmNvbT4NCj4gDQoNClRoYW5rcy4gVGhlIHBhdGNoIGlzIG5vdyBpbiBkcm0t
-bWlzYy1maXhlcy4NCg0KQmVzdCByZWdhcmRzDQpUaG9tYXMNCg0KLS0gDQpUaG9tYXMgWmlt
-bWVybWFubg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1
-dGlvbnMgR2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJuYmVy
-ZywgR2VybWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNEb25h
-bGQsIEJvdWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJlcmcpDQo=
+> I've been sitting here scratching my head a
+> bit trying to reason out why keeping it as IRQ_TYPE_EDGE_BOTH isn't
+> acceptable in dwc3_qcom_enable_interrupts()... Correct me if you think
+> that playing with the trigger there is really ok, but it seems like you
+> run the same risks if you do that and then modprobe -r dwc3-qcom.
 
---------------u5m0gt0EADHsZT4L48Uh6c6V--
+Changing the trigger type during runtime depending on use-case should be
+fine. It just doesn't play well with the kernel's interrupt mapping
+code, which assumes that if an interrupt already has a mapping then it
+is a shared interrupt.
 
---------------YUs47jPZ45nWOKGUfnWbq4nX
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+I considered addressing that in the core code, but yeah, I don't want
+too much time since the remaining issue only affects module unload and
+there are other ways to avoid that issue too.
 
------BEGIN PGP SIGNATURE-----
+> I get that dwc3_qcom_enable_interrupts() limits the scope of what wakes us
+> up to what we expect given the current device (or lack thereof), but it
+> doesn't seem like you're really meant to play with the IRQ triggers,
+> or at least the warning you shared makes me think it is not a great idea
+> if you plan to probe the device ever again in the future.
+> 
+> I'll post the current comment in dwc3_qcom_enable_interrupts() to
+> explain the "limits the scope of what wakes us up" a bit more clearly:
+> 
+> 	/*
+> 	 * Configure DP/DM line interrupts based on the USB2 device attached to
+> 	 * the root hub port. When HS/FS device is connected, configure the DP line
+> 	 * as falling edge to detect both disconnect and remote wakeup scenarios. When
+> 	 * LS device is connected, configure DM line as falling edge to detect both
+> 	 * disconnect and remote wakeup. When no device is connected, configure both
+> 	 * DP and DM lines as rising edge to detect HS/HS/LS device connect scenario.
+> 	 */
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmVccHUFAwAAAAAACgkQlh/E3EQov+Cn
-1xAAq/maC4DethDUl/4oXf3sIxF4b68a+/axx2CUkrP8YVl8KipFRMJqPN2swv2fW57j4Vg3M+oq
-PsvBJ48mg3Gkpxcmd6qgyVEYqwJU5MUXu0zINta+ydMw15QTjVCmfJGmCfCIhV+7tuZPOtubAgd6
-hv/0wOasOyEnGeGSJp5ONfdAQdV47mCMVbPxudeh4yjHF0ppHs5WReFijTAXmoHRHTs0BNcawhzb
-kd0XNpbF1HZLoP1N0h00qofHMUg/hP4iI5Qz7Hxhs9tz8c/ykmp6huEmpiXAEFINy5qOv+O99jls
-qXkSfkyyntVT0eW8yDKbsRzmfcXp++r7+KgBeBF6WIn6uzI9v+BMYS22zWmQZzIW10b6T55Ykg6r
-P1pThRamh3b2sJu7wCIbZGpneUABuLptC/ZnXes5xQUGLOo6UIvwkLkyk+WEy7KqPCyCdZrmAG0J
-ADWsCncUe2Ll607VaHQjjhDaYgi2QKD82MK0ptEEsS46BT/ZNRmKg4syAbOwKXLHGlM5I9fSuP68
-DpyOp+OrwpIeCoWTValhKl8UQwtCmaV4MelUyrKJwRXeHl3e4yugKbNl72HVHkTe23w1bFsRCNUR
-o5sdxOpEZBqlULbIXMWJQMfVbUffR7AuW9WJ6rOLYGHlLT1hBcXv7CgOB8c5h0iX1tBm7NkmdAHB
-Er4=
-=uOmK
------END PGP SIGNATURE-----
+Yes, that is how it is currently implemented and I intend to change that
+shortly. I just wanted to get the fixes out first.
 
---------------YUs47jPZ45nWOKGUfnWbq4nX--
+Specifically, I consider the current implementation to be broken in that
+it generates wakeup events on disconnect which is generally not want you
+want. Consider closing the lid of your laptop and disconnecting a USB
+mouse before putting it in your backpack. Now it's no longer suspended
+as you would expect it to be.
+
+With the devictrees soon fixed, we could also do away with changing the
+trigger type, but since this is how it was implemented initially we now
+need to consider backward compatibility with the broken DTs. We've dealt
+with that before, but yeah, getting things right from the start would
+have been so much better.
+
+Johan
