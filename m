@@ -2,128 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0974C7F2E58
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 14:32:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F1AF7F2F33
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 14:50:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233754AbjKUNcB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 08:32:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49514 "EHLO
+        id S233844AbjKUNuB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 08:50:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233728AbjKUNcA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 08:32:00 -0500
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [IPv6:2607:fcd0:100:8a00::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A1F2D4B;
-        Tue, 21 Nov 2023 05:31:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1700573514;
-        bh=i0wLYaOPYdVNi/v8GJrh3T7Dl41RZhrj0CgcZP50xAU=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=tifmBJA9e2vKpjaPCnsvZmYUlQXcc4X3MAtoLBLFfhMVUCNfwERzt2iy5Aju1UAVT
-         /5/hflHF8goV30slXpz+FHTI+F57II+L/RNI4uw2S9HmLsxh9ByQwY8PwhftmBOVth
-         Xj31fgSUjmrQjynKsIfaUZS43flEESPZQ1xxz0ho=
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id EFCF11286B89;
-        Tue, 21 Nov 2023 08:31:54 -0500 (EST)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id us5JTmT0cmzc; Tue, 21 Nov 2023 08:31:54 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-        d=hansenpartnership.com; s=20151216; t=1700573514;
-        bh=i0wLYaOPYdVNi/v8GJrh3T7Dl41RZhrj0CgcZP50xAU=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-        b=tifmBJA9e2vKpjaPCnsvZmYUlQXcc4X3MAtoLBLFfhMVUCNfwERzt2iy5Aju1UAVT
-         /5/hflHF8goV30slXpz+FHTI+F57II+L/RNI4uw2S9HmLsxh9ByQwY8PwhftmBOVth
-         Xj31fgSUjmrQjynKsIfaUZS43flEESPZQ1xxz0ho=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 524AC1286B29;
-        Tue, 21 Nov 2023 08:31:53 -0500 (EST)
-Message-ID: <c4342441ddd27d587af3805dd9de882ee0b5cfd0.camel@HansenPartnership.com>
-Subject: Re: scsi regression that after months is still not addressed and
- now bothering 6.1.y users, too
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        John Garry <john.g.garry@oracle.com>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        Sagar Biradar <sagar.biradar@microchip.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Adaptec OEM Raid Solutions <aacraid@microsemi.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        scsi <linux-scsi@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Gilbert Wu <gilbert.wu@microchip.com>
-Date:   Tue, 21 Nov 2023 08:31:48 -0500
-In-Reply-To: <fe89fd29-562c-46c0-9a15-e3a5c43da9a1@leemhuis.info>
-References: <c6ff53dc-a001-48ee-8559-b69be8e4db81@leemhuis.info>
-         <47e8fd80-3f87-4b87-a875-035e69961392@oracle.com>
-         <a3ddbd03-7a94-4b6a-9be1-b268ce883551@leemhuis.info>
-         <18b3745d3e5de2ffd9b74f9cc826c2c3235dc6ca.camel@HansenPartnership.com>
-         <fe89fd29-562c-46c0-9a15-e3a5c43da9a1@leemhuis.info>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+        with ESMTP id S229514AbjKUNuA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 08:50:00 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED6D125;
+        Tue, 21 Nov 2023 05:49:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9A7C433C9;
+        Tue, 21 Nov 2023 13:49:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700574596;
+        bh=vF4LkQLYcuqRQJyYUrQVjvPfs/5O3qig6tC9j8drZog=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Clrx6vhzFPyv2yohZc47Qd06hxwulyJMXR0zF8G9mAcsExaH8j4bz0DLhcFG1fY46
+         h7G5U5C5rx1d3pE3of9XMYTBQAyoIBodIfiakp1AYhJGa+DSnJC+86JgjLmP0qmT8v
+         2QLaWXUwtfguQs4vf/7TMEt+cZBL+A7BEE5ROpl5seJ/9/x7xn0E8w0elP4pStnTar
+         G4iDjBKIl0lBh3K15cykqYtWH+xjDv01/F+GxJN4Hl2HuaIEtsn4zBs02BMikWMMkf
+         MsMUYD1FEeYJXX0/2lPrQ39Um2EYCL+YBp3pIYrw81TomowSnX1QJYszstRjcKySai
+         6IguUM2/CCpDw==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+        (envelope-from <johan@kernel.org>)
+        id 1r5R8i-0004sr-2u;
+        Tue, 21 Nov 2023 14:50:08 +0100
+Date:   Tue, 21 Nov 2023 14:50:08 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>
+Cc:     Andrew Halaney <ahalaney@redhat.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] USB: dwc3: qcom: fix wakeup after probe deferral
+Message-ID: <ZVy1kAslWYOQ6n9q@hovoldconsulting.com>
+References: <20231120161607.7405-1-johan+linaro@kernel.org>
+ <20231120161607.7405-3-johan+linaro@kernel.org>
+ <pgmtla6j3dshuq5zdxstszbkkssxcthtzelv2etcbrlstdw4nu@wixz6v5dfpum>
+ <3ff65t36p6n3k7faw2z75t2vfi6rb5p64x7wqosetsksbhhwli@5xaxnm7zz4tu>
+ <ZVx1wRefjNaN0byk@hovoldconsulting.com>
+ <0b627853-78fb-4320-84e4-f88695ac6a9e@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_FILL_THIS_FORM_SHORT,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0b627853-78fb-4320-84e4-f88695ac6a9e@quicinc.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 2023-11-21 at 14:24 +0100, Linux regression tracking (Thorsten
-Leemhuis) wrote:
-> On 21.11.23 14:05, James Bottomley wrote:
-> > On Tue, 2023-11-21 at 13:24 +0100, Linux regression tracking
-> > (Thorsten
-> > Leemhuis) wrote:
-> > > On 21.11.23 12:30, John Garry wrote:
-> > [...]
-> > > > Is there a full kernel log for this hanging system?
-> > > > I can only see snippets in the ticket.
-> > > > And what does /sys/class/scsi_host/host*/nr_hw_queues show?
-> > > 
-> > > Sorry, I'm just the man-in-the-middle: you need to ask in the
-> > > ticket, as  the privacy policy for bugzilla.kernel.org does not
-> > > allow to CC the reporters from the ticket here without their
-> > > consent.
-> > 
-> > How did you arrive at that conclusion?
-> 
-> To quote https://bugzilla.kernel.org/createaccount.cgi:
-> """
-> Note that your email address will never be displayed to logged out
-> users. Only registered users will be able to see it.
-> """
+On Tue, Nov 21, 2023 at 06:25:37PM +0530, Krishna Kurapati PSSNV wrote:
 
-OK, so someone needs to update that to reflect reality.
+> > Specifically, I consider the current implementation to be broken in that
+> > it generates wakeup events on disconnect which is generally not want you
+> > want. Consider closing the lid of your laptop and disconnecting a USB
+> > mouse before putting it in your backpack. Now it's no longer suspended
+> > as you would expect it to be.
 
-> Not sure since when it's there. Maybe it was added due to EU GDPR?
-> Konstantin should know. But for me that's enough to not CC people. I
-> even heard from one well known kernel developer that his company got
-> a
-> GDPR complaint because he had mentioning the reporters name and email
-> address in a Reported-by: tag.
-> 
-> Side note: bugbot afaics can solve the initial problem (e.g. interact
-> with reporters in bugzilla by mail without exposing their email
-> address). But to use bugbot one *afaik* still has to reassign a
-> ticket to a specific product and component in bugzilla. Some
-> subsystem maintainers don't want that, as that issues then does not
-> show up in the usual queries.
+>   Just one query. Even if it wakes up after closing the lid and removing 
+> the mouse, wouldn't pm suspend be triggered again later by the system 
+> once it sees that usb is also good to be suspended again ? I presume a 
+> laptop form factor would be having this facility of re-trigerring 
+> suspend. Let me know if this is not the case.
 
-I'm not sure we need to solve a problem that doesn't exist. Switching
-to email is a standard maintainer response:
+No, we generally don't use opportunistic suspend (e.g. unlike android)
+so the laptop will not suspend again.
 
-https://lore.kernel.org/all/20230324133646.16101dfa666f253c4715d965@linux-foundation.org/
-https://lore.kernel.org/all/20230314144145.07a3e680362eb77061fe6d0e@linux-foundation.org/
-...
+So this is an actual bug affecting, for example, the Lenovo ThinkPad
+X13s.
 
-James
+> Also, the warning you are mentioning in [1] comes because this is a 
+> laptop form factor and we have some firmware running (I don't know much 
+> about ACPI and stuff) ?
 
+No, the "firmware" in this case is just the devicetree which has the
+DP/DM interrupts defined as edge-triggered while the driver requests
+them as level triggered.
+
+(It would look similar with ACPI firmware which also has these declared
+as edge triggered.)
+
+Johan
