@@ -2,82 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AB2C7F3387
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 17:21:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68C527F33EC
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 17:38:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230256AbjKUQVN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 11:21:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55110 "EHLO
+        id S229558AbjKUQig (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 11:38:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbjKUQVM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 11:21:12 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B59A5CB
-        for <stable@vger.kernel.org>; Tue, 21 Nov 2023 08:21:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700583669; x=1732119669;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=bN0/tT3ID9thdu8ZN98YMx6TIdYYuKDHnRlzb6COkHQ=;
-  b=QPegALvi1gW/M+zMi7hWqvYnmeUT5Wcyn8vDftw7nKDBq3ve6CUtLeNo
-   7zNNUOeUVQC3VKwu7L6rkuPVz4p/L8iTXOzWfFh4HaeseRlXPFg7f4aBg
-   u0HuOEI29QTB0EZFZWw1Gps8SPySiv2M18XxI5XZKhiafg2xKjcXwfxUv
-   I/N5biWmd/ySRS1uOFj+rilkFuLl/fLPUCoCP0EMVQtxnnjgwEKw5KWAv
-   DR8u3jE82WKtNBVaH2Wh+1TLmByde82i6rFkaNmCZT0qJiaUFnb534izH
-   UmpdIRdf4Ye3Z15jBWADcm6jZJyiJNo5eDASt9Nn686is2wbatX6n2TIj
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="13415763"
-X-IronPort-AV: E=Sophos;i="6.04,216,1695711600"; 
-   d="scan'208";a="13415763"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 08:21:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="716578646"
-X-IronPort-AV: E=Sophos;i="6.04,216,1695711600"; 
-   d="scan'208";a="716578646"
-Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 21 Nov 2023 08:21:07 -0800
-Received: from kbuild by b8de5498638e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1r5TUm-00080w-1x;
-        Tue, 21 Nov 2023 16:21:04 +0000
-Date:   Wed, 22 Nov 2023 00:20:35 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Florian Westphal <fw@strlen.de>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] netfilter: nf_tables: split async and sync catchall
- in two functions
-Message-ID: <ZVzY02pFIdhp4TEw@4c37e47e6016>
+        with ESMTP id S231272AbjKUQig (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 11:38:36 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC829E7;
+        Tue, 21 Nov 2023 08:38:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1008C433C8;
+        Tue, 21 Nov 2023 16:38:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700584712;
+        bh=I9ZH/e6KtTHN2UHi0fUQgC/I219UZFtlAoAwKkrjbcE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CIuck4j4FS3Th2Qg6/yfyYjczl8E2bvtKdh8PF0v8/T1n7u5A3PTNFdZmXNNkVwY5
+         3lRB+7j8NjJHp4GSIMKmhmMO6UZs+6JnKEK4YK6avhOQ7k+Th+QxH9whbGIqzgeFHS
+         NFZQwEF5iHtTXdRDw1SYU8iSsfejNVCoDA6LSHiBCBT9CL6uQNU49cmrIc2Q6KwLKn
+         /drPNzhKzZbcBz0MTX9Bh4ek04c6IA887OqF08oLR7WtSdrW4sKrzZK8gm8xMAFGNf
+         BnQVtsjMLGUnys8OpppGt7itl83rfcA5+hzKjZ5dFi3oagDSHiPwbG7UjCSmyy5ZyX
+         OX64f7FCJfZAQ==
+Date:   Tue, 21 Nov 2023 09:38:30 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     Maria Yu <quic_aiquny@quicinc.com>, linux@armlinux.org.uk,
+        mhiramat@kernel.org, kernel@quicinc.com,
+        linux-arm-kernel@lists.infradead.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_lijuang@quicinc.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] ARM: kprobes: Explicitly reserve r7 for local
+ variables
+Message-ID: <20231121163830.GA3437094@dev-arch.thelio-3990X>
+References: <20231120032909.19186-1-quic_aiquny@quicinc.com>
+ <CAMj1kXHLT6PhT0v6=9DWS1bXDV+QSZDwnYDo=+KvpzrCBqPNrw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231121121431.8612-3-fw@strlen.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAMj1kXHLT6PhT0v6=9DWS1bXDV+QSZDwnYDo=+KvpzrCBqPNrw@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Tue, Nov 21, 2023 at 11:11:56AM -0500, Ard Biesheuvel wrote:
+> On Sun, 19 Nov 2023 at 22:29, Maria Yu <quic_aiquny@quicinc.com> wrote:
+> >
+> > Registers r7 is removed in clobber list, so compiler may choose r7 for
+> > local variables usage, while r7 will be actually updated by the inline asm
+> > code. This caused the runtime behavior wrong.
+> > While those kind of reserved registers cannot be set to clobber list
+> > because of error like "inline asm clobber list contains reserved
+> > registers".
+> > Explicitly reserve r7 by adding attribute no-omit-frame-pointer for this
+> > file, then in T32 asm code r7 is used as a frame pointer and is not
+> > available for use as a general-purpose register.
+> > Note that "no-omit-frame-pointer" will make the code size a little bigger
+> > to store the stack frame pointer.
+> >
+> > Fixes: dd12e97f3c72 ("ARM: kprobes: treat R7 as the frame pointer register in Thumb2 builds")
+> > Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> > Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
+> > Cc: stable@vger.kernel.org
+> > ---
+> >  arch/arm/probes/kprobes/Makefile | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/arch/arm/probes/kprobes/Makefile b/arch/arm/probes/kprobes/Makefile
+> > index 6159010dac4a..b1f21e78950b 100644
+> > --- a/arch/arm/probes/kprobes/Makefile
+> > +++ b/arch/arm/probes/kprobes/Makefile
+> > @@ -8,6 +8,7 @@ test-kprobes-objs               := test-core.o
+> >
+> >  ifdef CONFIG_THUMB2_KERNEL
+> >  obj-$(CONFIG_KPROBES)          += actions-thumb.o checkers-thumb.o
+> > +CFLAGS_actions-thumb.o         += -fno-omit-frame-pointer
+> >  test-kprobes-objs              += test-thumb.o
+> >  else
+> >  obj-$(CONFIG_KPROBES)          += actions-arm.o checkers-arm.o
+> >
+> 
+> If Nathan is happy with this, I think we can drop this into the patch tracker.
 
-Thanks for your patch.
+I have no qualms with this approach, there are no issues with the couple
+of LLVM versions that I tested.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 2/2] netfilter: nf_tables: split async and sync catchall in two functions
-Link: https://lore.kernel.org/stable/20231121121431.8612-3-fw%40strlen.de
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Cheers,
+Nathan
