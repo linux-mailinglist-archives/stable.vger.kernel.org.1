@@ -2,108 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B46127F377C
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 21:32:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F7E7F37A3
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 21:40:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234105AbjKUUcU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 15:32:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40334 "EHLO
+        id S229527AbjKUUkE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 15:40:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234266AbjKUUcT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 15:32:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32107D61
-        for <stable@vger.kernel.org>; Tue, 21 Nov 2023 12:32:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1700598734;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=g1AURt+ugmGBatqXZg8O5FjY9vBm0Sv0TBJTfoMcWtY=;
-        b=M+hB1ziapNXWtsv7OynI3uxa8VAY0YsqsZT2Fd90siMdigOjnmyiClEQh+CtX5WqXfpTD7
-        sxh7UwD1yQc+0llI6eCtcs76Nu6WZrCy1AtAp4G+Vnhv2DWQtjBS0ttTPom5dhsL4drot2
-        pDQ2qyZxz2bChLM1EuP26GABBfEJopU=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-140-lmxUKTilNO2zJfpMJYHgLA-1; Tue, 21 Nov 2023 15:32:11 -0500
-X-MC-Unique: lmxUKTilNO2zJfpMJYHgLA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6FCF485A58A;
-        Tue, 21 Nov 2023 20:32:10 +0000 (UTC)
-Received: from x1.nl (unknown [10.39.192.79])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 73E352166B26;
-        Tue, 21 Nov 2023 20:32:07 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Wentong Wu <wentong.wu@intel.com>
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Oliver Neukum <oneukum@suse.com>, linux-usb@vger.kernel.org,
+        with ESMTP id S229514AbjKUUkD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 15:40:03 -0500
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1993D49
+        for <stable@vger.kernel.org>; Tue, 21 Nov 2023 12:39:58 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5c59fa94f72so88537097b3.2
+        for <stable@vger.kernel.org>; Tue, 21 Nov 2023 12:39:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1700599198; x=1701203998; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gX/jHSjVMvQMuoAzLeVpINA8vcf/XXhZAAMF7Dr1Htw=;
+        b=aOCGaQgVUQo1071NiL6+IclGxNl0CzP6bVNYSy4hLK8RetBCFFhT472KqD5kyB05VX
+         teqbiboqAbslRIkKRe+R67k/7raJQBzgGb+tZYP0W2v8xTpsTpHNhtBDTtcovBhdsac/
+         +tc2iJ1hGq6k+7iVNorThplXqANAJfJmI7a7PpUMHdeLQtqI9sm6cOhAYk9tu6JvklMT
+         LH2n/Hc5yfyHQakYqNgMKHkxDR/z7B1Z7IBgUAsHftg8G9Pft3ESmAb4M1rjUbMgoKuS
+         ZZYYdOKZzvx8OVAkVnnde8A/7YnKt4AuhgUKHeTU3bpTqyhyjdN08S5QsNkQqEMV2IkL
+         6MQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700599198; x=1701203998;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gX/jHSjVMvQMuoAzLeVpINA8vcf/XXhZAAMF7Dr1Htw=;
+        b=fmLF5kvRlTSZnr6Z3aB+1bXBHEOtxPZkNNeRc3ofsgxZdwTeVObDuhScpVtoa+w7FA
+         rkMkuEbyv9K14UCreIBQblg4shuv0u/Lc78vGShZcUexO8nyLNit4krB6bA8UzONfcFX
+         uaia+Mg6ldrx85Pz3gRFGVUrH5be7LPs47auKqdGFy6nuN0L98hGP7qDPB0jif/rxG1s
+         UmbrVadMTqC2jMboI+fzF8KZVXwYItw6iYkiRC2k56YKnLbP83aMobuqRJwhvqrKr7g1
+         xani5v3HEyHOrqJr4vZggM+mixjwQuM+DjUGQKkrNZcqhqby8V/6C5gKjlBiiHNzgXYc
+         zBWw==
+X-Gm-Message-State: AOJu0YwBpWEtV+HHiYYtNR5e+swscKNhLxWT1lWovfkvJs5GJkPlSsAM
+        PC43zHt8xp3x+mrSuftCZG8IYZgy17GJlbg=
+X-Google-Smtp-Source: AGHT+IELPIuKhD/YAdrhnQZvEYt7QZu6NUG23WB70IGl5qV4jBVbzdeQNxFjRT6VdyJMnCt2MVuVZg50EBBOzjE=
+X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
+ (user=rdbabiera job=sendgmr) by 2002:a81:4f84:0:b0:5ca:4a99:7008 with SMTP id
+ d126-20020a814f84000000b005ca4a997008mr2821ywb.10.1700599198097; Tue, 21 Nov
+ 2023 12:39:58 -0800 (PST)
+Date:   Tue, 21 Nov 2023 20:39:55 +0000
+Mime-Version: 1.0
+X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2637; i=rdbabiera@google.com;
+ h=from:subject; bh=g3cATdDr31eccLe03DHQgAdZzg53ANBo3tzI1LoDz8E=;
+ b=owGbwMvMwCFW0bfok0KS4TbG02pJDKmxorMqPUL6W6ov9tm+8mlYddhft0n+7cGy60HTA+QE7
+ 85IsPjYUcrCIMbBICumyKLrn2dw40rqljmcNcYwc1iZQIYwcHEKwETihRkZei2t3rbxzJb1zuep
+ fqkQnLblpNvN43v2m3JyJufs+BmwnJHh796Q47Xak7i22gczPVD9yffhSs+uPzFrvBLtF3Lyzc1 iBQA=
+X-Mailer: git-send-email 2.43.0.rc1.413.gea7ed67945-goog
+Message-ID: <20231121203954.173364-2-rdbabiera@google.com>
+Subject: [PATCH v1] usb: typec: class: fix typec_altmode_put_partner to put plugs
+From:   RD Babiera <rdbabiera@google.com>
+To:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        badhri@google.com, RD Babiera <rdbabiera@google.com>,
         stable@vger.kernel.org
-Subject: [PATCH v3] usb: misc: ljca: Fix enumeration error on Dell Latitude 9420
-Date:   Tue, 21 Nov 2023 21:32:05 +0100
-Message-ID: <20231121203205.223047-1-hdegoede@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Not all LJCA chips implement SPI and on chips without SPI reading
-the SPI descriptors will timeout.
+When releasing an Alt Mode, typec_altmode_release called by a plug device
+will not release the plug Alt Mode, meaning that a port will hold a
+reference to a plug Alt Mode even if the port partner is unregistered.
+As a result, typec_altmode_get_plug() can return an old plug altmode.
 
-On laptop models like the Dell Latitude 9420, this is expected behavior
-and not an error.
+Currently, typec_altmode_put_partner does not raise issues
+when unregistering a partner altmode. Looking at the current
+implementation:
 
-Modify the driver to continue without instantiating a SPI auxbus child,
-instead of failing to probe() the whole LJCA chip.
+> static void typec_altmode_put_partner(struct altmode *altmode)
+> {
+>	struct altmode *partner = altmode->partner;
 
-Fixes: acd6199f195d ("usb: Add support for Intel LJCA device")
+When called by the partner Alt Mode, then partner evaluates to the port's
+Alt Mode. When called by the plug Alt Mode, this also evaluates to the
+port's Alt Mode.
+
+>	struct typec_altmode *adev;
+>
+>	if (!partner)
+>		return;
+>
+>	adev = &partner->adev;
+
+This always evaluates to the port's typec_altmode
+
+>	if (is_typec_plug(adev->dev.parent)) {
+>		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+>
+>		partner->plug[plug->index] = NULL;
+
+If the routine is called to put the plug's Alt mode and altmode refers to
+the plug, then adev referring to the port can never be a typec_plug. If
+altmode refers to the port, adev will always refer to the port partner,
+which runs the block below.
+
+>	} else {
+>		partner->partner = NULL;
+>	}
+>	put_device(&adev->dev);
+> }
+
+When calling typec_altmode_set_partner, a registration always calls
+get_device() on the port partner or the plug being registered, therefore
+typec_altmode_put_partner should put_device() the same device. By changing
+adev to altmode->adev, we make sure to put the correct device and properly
+unregister plugs. The reason port partners are always properly
+unregistered is because even when adev refers to the port, the port
+partner gets nullified in the else block. The port device currently gets
+put().
+
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Wentong Wu <wentong.wu@intel.com>
-Link: https://lore.kernel.org/r/20231104175104.38786-1-hdegoede@redhat.com
+Signed-off-by: RD Babiera <rdbabiera@google.com>
 ---
-Changes in v3:
-- Fix commit-id in fixes tag
+ drivers/usb/typec/class.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v2:
-- Small commit msg + comment fixes
-- Add Fixes tag + Cc: stable
----
- drivers/usb/misc/usb-ljca.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index 2e0451bd336e..803be1943445 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -267,7 +267,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
+ 	if (!partner)
+ 		return;
+ 
+-	adev = &partner->adev;
++	adev = &altmode->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
 
-diff --git a/drivers/usb/misc/usb-ljca.c b/drivers/usb/misc/usb-ljca.c
-index c9decd0396d4..a280d3a54b18 100644
---- a/drivers/usb/misc/usb-ljca.c
-+++ b/drivers/usb/misc/usb-ljca.c
-@@ -656,10 +656,11 @@ static int ljca_enumerate_spi(struct ljca_adapter *adap)
- 	unsigned int i;
- 	int ret;
- 
-+	/* Not all LJCA chips implement SPI, a timeout reading the descriptors is normal */
- 	ret = ljca_send(adap, LJCA_CLIENT_MNG, LJCA_MNG_ENUM_SPI, NULL, 0, buf,
- 			sizeof(buf), true, LJCA_ENUM_CLIENT_TIMEOUT_MS);
- 	if (ret < 0)
--		return ret;
-+		return (ret == -ETIMEDOUT) ? 0 : ret;
- 
- 	/* check firmware response */
- 	desc = (struct ljca_spi_descriptor *)buf;
+base-commit: b85ea95d086471afb4ad062012a4d73cd328fa86
 -- 
-2.41.0
+2.43.0.rc1.413.gea7ed67945-goog
 
