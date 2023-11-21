@@ -2,86 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DEBDE7F2D18
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 13:27:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 865787F2D46
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 13:35:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230497AbjKUM1f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 07:27:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48566 "EHLO
+        id S234755AbjKUMfT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 07:35:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230428AbjKUM1f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 07:27:35 -0500
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E78FE7;
-        Tue, 21 Nov 2023 04:27:31 -0800 (PST)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id DB2BC32014FC;
-        Tue, 21 Nov 2023 07:27:28 -0500 (EST)
-Received: from imap44 ([10.202.2.94])
-  by compute3.internal (MEProxy); Tue, 21 Nov 2023 07:27:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-        cc:content-transfer-encoding:content-type:content-type:date:date
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1700569648; x=1700656048; bh=sVBBvqTkj9q2vNx24eU0OMVGviLHmJMCGMu
-        iAotm8W0=; b=MyUt5DgjSax4zCgEeSm14lSY3UJKiScQT8sTh3VhPPjRKU6WXIy
-        orySfNt28HjamadVjM+TB2Tyitl9TN4cFHtK79GE/kJ5YlL8/CiD/KlEW42y8Cuk
-        C3IaSgg8LeJzxu6DvkOuOipl+h+bKyd8RmBdZg842CHgqinbDoPOGQjq2gCW8ySP
-        06y1L2GnRpbJ2g3FqWCc/ZmyQyYA9UiVeTvcsKA4UgYZ4IiFNRrxNBDhL98PB2oi
-        qE5KkV9E0XJPZfZbEYivK0FCpNDBCs/hb+KEfQ5HEaAMDQQNzLzglzJbTxEsUMfb
-        ychke6JmFyffNu0RY8AVn4Tc18T/LlRwOsg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1700569648; x=
-        1700656048; bh=sVBBvqTkj9q2vNx24eU0OMVGviLHmJMCGMuiAotm8W0=; b=T
-        sGfoFyfx+2UWmQwMeedGtOB1jlOt7Ejf2kfn+DXxl08Z0jnvnIT87YRXWPNYRui+
-        n/gJSyRBzC/Iiv4TPU1YuLaluZVyigO/lVj73zTjPsphBtsGBujlEQ7B03ny9A1x
-        bwu8DzfDbJk4dJ3dcKP7/5SGle8PRSBsqIMLHbfvvgSKHInnq7nlVBPJ5UKTwTUy
-        COGEelkCX47qCxZQJRgHpl1hqFM+p53edKU8miry+4O8aMUucencGSjI2zrX3t0E
-        m3lilzhn5QLEQyzjFzXv2Z1zNxxatZOjBKOMp6R5up1SlwwiN29VQr3gTCEf0XjJ
-        0Ka1/vnNHT9vmgl3vjQog==
-X-ME-Sender: <xms:L6JcZQoA5ZgkG04UM6euO_4UCMz06yBhDqrGcMsyO6bpTiINqeEgyA>
-    <xme:L6JcZWocuNQTOzN__OHrk5JJj55B_P9k8Q2bg83zgbnvavqTFx1FnxVU9_dO6uvUR
-    zow-a7_qIeb-kSsUKI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudegledgfeegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvffutgfgsehtqhertderreejnecuhfhrohhmpedflfhi
-    rgiguhhnucgjrghnghdfuceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-    eqnecuggftrfgrthhtvghrnhepfeetgeekveeftefhgfduheegvdeuuddvieefvddvlefh
-    feehkeetfeeukedtfeejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:L6JcZVOtAxFmHeQwsEJrdQ80v4bE7IJ0NFrsKEotXEIEKFBExTnccA>
-    <xmx:L6JcZX7KsJPGr1seGKgnUYB5w6RMhPVRz_4FU1g1qS3JXKT_i0MDIg>
-    <xmx:L6JcZf4vn-RkPVfss7NGf58cKeT7yrNy6Ekg8KMMpNwQTJFubi4kPw>
-    <xmx:MKJcZfH-1MUI_tbF3W-54F4ulJwuqB6sDV9xerC40DqcZ87le13Vag>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id CD83D36A0075; Tue, 21 Nov 2023 07:27:27 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1178-geeaf0069a7-fm-20231114.001-geeaf0069
+        with ESMTP id S234682AbjKUMfR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 07:35:17 -0500
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B0DB13D;
+        Tue, 21 Nov 2023 04:35:12 -0800 (PST)
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ALA9X8k022595;
+        Tue, 21 Nov 2023 12:35:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=PGU0MWzfni8uZCA1g4/HDHP1TtIUgmy0VuY7aaFWkT0=;
+ b=CG04AIpUnH1G2IPMbM3MNQdQ3IPP5M+Bqms2wZpeOCFZpq1yIsZTgAOyzcVNVHt3zHMR
+ C3nspEojD9c7CE/aKALeDPtNczINWpBo2p1oXCmqvPbizjSW9yfTImsIZVbQpN3lx2Mp
+ qP5VAgijE6asY6dLzUgblX7HVeIvyMMI367jprje0sI3hdXri/uowZke7jGqTUkUR4XA
+ 5YsgC4hilONJqd+ETTSV6/fsSAXvHJD6JLvaUG0ECnPCfs/RI+sy1A5PgOMr9LTq+KP2
+ 78Mb7xVYHVKixhRvtLRN7J6RECp9ubeC6v/JDexXhERoOPHxLHa079Lt1VgLj2k43oqD Lw== 
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uge0025wm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Nov 2023 12:35:05 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ALCZ5u8024985
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Nov 2023 12:35:05 GMT
+Received: from [10.218.35.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 21 Nov
+ 2023 04:35:02 -0800
+Message-ID: <8ffbb08a-730a-6b67-a22f-bbe009d5e2c3@quicinc.com>
+Date:   Tue, 21 Nov 2023 18:04:41 +0530
 MIME-Version: 1.0
-Message-Id: <c9e2daa2-65a8-445e-bace-ab750f04411a@app.fastmail.com>
-In-Reply-To: <ZVuuqAUJ7f2ELIYW@alpha.franken.de>
-References: <20231026111715.1281728-1-jiaxun.yang@flygoat.com>
- <ZTvQGs/lEpizUFLh@aurel32.net> <ZVjaDTcjNpD3m0cC@aurel32.net>
- <ZVuuqAUJ7f2ELIYW@alpha.franken.de>
-Date:   Tue, 21 Nov 2023 12:27:11 +0000
-From:   "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To:     "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, "YunQiang Su" <syq@debian.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: process: Remove lazy context flags for new kernel thread
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2 0/2] Add support for xhci-sg-trb-cache-size-quirk
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzk@kernel.org>, <stable@vger.kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Mathias Nyman <mathias.nyman@intel.com>,
+        Tejas Joglekar <joglekar@synopsys.com>,
+        <linux-kernel@vger.kernel.org>, <linux-usbyy@vger.kernel.org>
+References: <20231120055803.224634-1-quic_prashk@quicinc.com>
+ <6e435e84-fea9-4f74-8977-d589cbc31ded@kernel.org>
+From:   Prashanth K <quic_prashk@quicinc.com>
+In-Reply-To: <6e435e84-fea9-4f74-8977-d589cbc31ded@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: msbxiVd55hvgBas3noiNzGC4vBLbgUgB
+X-Proofpoint-ORIG-GUID: msbxiVd55hvgBas3noiNzGC4vBLbgUgB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-21_05,2023-11-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ bulkscore=0 malwarescore=0 spamscore=0 clxscore=1011 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=817 impostorscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311210098
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -90,38 +84,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 
-=E5=9C=A82023=E5=B9=B411=E6=9C=8820=E6=97=A5=E5=8D=81=E4=B8=80=E6=9C=88 =
-=E4=B8=8B=E5=8D=887:08=EF=BC=8CThomas Bogendoerfer=E5=86=99=E9=81=93=EF=BC=9A
-> On Sat, Nov 18, 2023 at 04:36:45PM +0100, Aurelien Jarno wrote:
->> > Anyway, I have been able to test a backport of the patch onto the 5=
-.10
->> > kernel (with minor adjustments) and I confirm it fixes the reported
->> > issue.
->> >=20
->> > Tested-by: Aurelien Jarno <aurel32@debian.org>
->>=20
->> It seems that this patch hasn't been merged yet, either in Linus' tree
->> or in the MIPS tree. Is there anything blocking?
->
-> sorry, took some time to get really back from vacation...
->
-> I don't like the patch doing too much code restructing. I can't
-> reproduce on my loongson machine, so I can't test below patch...
+On 20-11-23 03:00 pm, Krzysztof Kozlowski wrote:
+> On 20/11/2023 06:58, Prashanth K wrote:
+>> XHCI_SG_TRB_CACHE_SIZE_QUIRK was introduced in XHCI to resolve
+>> XHC timeout while using SG buffers, which was seen Synopsys XHCs.
+>> The support for this isn't present in DWC3 layer, this series
+>> enables XHCI_SG_TRB_CACHE_SIZE_QUIRK since this is needed for
+>> DWC3 controller.
+> 
+> You keep Cc-ing incorrect mailing lists (bogus addresses). Just use
+> get_maintainers.pl  --no-git-fallback without changing its output.
+> 
+> I repeated this comment multiple times to Qualcomm. It's awesome that
+> Qualcomm participates so much in upstream development, I really
+> appreciate this. However repeating the same comment over-and-over again,
+> makes me quite tired. Can you instruct your colleagues to use b4 which
+> solves this problem? If not, use script like:
+> https://github.com/krzk/tools/blob/master/linux/.bash_aliases_linux#L91
+> (or one of many other variants posted by multiple people on the mailing
+> lists)
+> 
+> Best regards,
+> Krzysztof
+> 
 
-I intentionally do code shuffle to match with other arches :-)
-To reproduce, you can just install Debian sid and build kitinerary with
-sbuild. However, it seems like loongson3_defconfig won't expose this
-problem, you'll have to build kernel with Debian's config.
 
-I'll test this patch later today.
 
-Thanks
-- Jiaxun
+Thanks for your comments! I accidentally added 'yy' in the USB mailing 
+list while configuring it. A careless mistake indeed :)
 
->
-> What cmake version do I need and what would be a package to
-> reproduce the bug ?
->
-> Thomas.
->
-[...]
+I will resend the the patch without adding the quirk (only driver 
+change) since this should be applicable for all the dwc3 devices.
+
+Thanks again,
+Prashanth K
