@@ -2,136 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A64A57F2D87
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 13:47:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCA9F7F2DCA
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 13:55:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233005AbjKUMre (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 07:47:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60278 "EHLO
+        id S233580AbjKUMz7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 07:55:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232663AbjKUMrd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 07:47:33 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0FEE1AA;
-        Tue, 21 Nov 2023 04:47:29 -0800 (PST)
-Date:   Tue, 21 Nov 2023 12:47:27 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1700570848;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Nm4rGOTIFKOao0hf47WFW6l4sHhRkc9cnu8zuTG+csc=;
-        b=dnZwKO/ji7wWRY8HTuoXrllWfJsRBDgEssJMuYxS19CjXzXvuEPJ/VkLyy5RZ4j0jrRPmV
-        tPib/EPv8XMhneK9v+QHWfcqRAFlyn1c4XO5WpsOxBXJxmr9KSdRcgEN6Cs+1wvPUcp7PZ
-        w5RnWBbOfWLANQdOZWmD08IlZAGRS7JLigmfuvuZ0YjkI539WfW3/I3GhWB3PlmDimlHau
-        qITZ3AedXEir9CrRjI9zxZUEPamDrzxvXH3qFjurItZpQWicV9w9jXPJ2PlaBmlQ5nzD0O
-        fY7q7l61JVQcH3WxGctRrtO46A4E1z983Jfw4ZY870PcfhdIsBt5zw5c/1skuA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1700570848;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Nm4rGOTIFKOao0hf47WFW6l4sHhRkc9cnu8zuTG+csc=;
-        b=3xYDM3xNkE7fJKwxuP5W0xTU/MM9NUMlRqJHAWn6YWJ4svrJN+Xs8a3rMYTuCUpmiP/dCV
-        HiqtonZOfX8uURCw==
-From:   "tip-bot2 for Dapeng Mi" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/urgent] perf/x86/intel: Correct incorrect 'or' operation
- for PMU capabilities
-Cc:     Dapeng Mi <dapeng1.mi@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231121014628.729989-1-dapeng1.mi@linux.intel.com>
-References: <20231121014628.729989-1-dapeng1.mi@linux.intel.com>
+        with ESMTP id S233336AbjKUMz7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 07:55:59 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7925EA2;
+        Tue, 21 Nov 2023 04:55:55 -0800 (PST)
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ALA9glV006337;
+        Tue, 21 Nov 2023 12:55:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=oo/8E+Gw44yuR+d9JINVYw3emQyGUhU4h+anNeHC+3o=;
+ b=jtiMS4RHnZsw/4afHOUMFex075JoXFsbz/UWxdCyRF2+u3GXU/KdWYjtlLWO5a3p3sKB
+ 5bYkJu3w6f9DO/fotUu0KZ5/enXRswRNQ9iheeawQIb1Znof1IQcgZJLX8QRZhykmmVh
+ yIWCmi7Oav3q8eJXOFClrJ5rOEHcCW5eP51XV+z5bx+yvrTYaisXZm1r2nOFXc1taadL
+ gAGGkhc3Baf6RPMRYrV0X6bYbL+MJE16GEZXZXphLjFiIintJxgX/sNllEp7v9otml78
+ ILX3r5Rr3vD8IYMzcM2yFG98cgHNnnWRlSvZxfuJxrAtPtzHHG9c+hnRuGHxEl1hDE3P eg== 
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ugge19whh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Nov 2023 12:55:48 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ALCtl7P012651
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Nov 2023 12:55:47 GMT
+Received: from [10.216.58.75] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 21 Nov
+ 2023 04:55:41 -0800
+Message-ID: <0b627853-78fb-4320-84e4-f88695ac6a9e@quicinc.com>
+Date:   Tue, 21 Nov 2023 18:25:37 +0530
 MIME-Version: 1.0
-Message-ID: <170057084740.398.2179310454610572769.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] USB: dwc3: qcom: fix wakeup after probe deferral
+To:     Johan Hovold <johan@kernel.org>,
+        Andrew Halaney <ahalaney@redhat.com>
+CC:     Johan Hovold <johan+linaro@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Wesley Cheng <quic_wcheng@quicinc.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20231120161607.7405-1-johan+linaro@kernel.org>
+ <20231120161607.7405-3-johan+linaro@kernel.org>
+ <pgmtla6j3dshuq5zdxstszbkkssxcthtzelv2etcbrlstdw4nu@wixz6v5dfpum>
+ <3ff65t36p6n3k7faw2z75t2vfi6rb5p64x7wqosetsksbhhwli@5xaxnm7zz4tu>
+ <ZVx1wRefjNaN0byk@hovoldconsulting.com>
+Content-Language: en-US
+From:   Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>
+In-Reply-To: <ZVx1wRefjNaN0byk@hovoldconsulting.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: yw1N5N56u4D570tpMa96h-cgcZ0q_GIE
+X-Proofpoint-ORIG-GUID: yw1N5N56u4D570tpMa96h-cgcZ0q_GIE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-21_05,2023-11-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ malwarescore=0 mlxscore=0 adultscore=0 mlxlogscore=479 phishscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 spamscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311210100
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the perf/urgent branch of tip:
+> 
+>> I get that dwc3_qcom_enable_interrupts() limits the scope of what wakes us
+>> up to what we expect given the current device (or lack thereof), but it
+>> doesn't seem like you're really meant to play with the IRQ triggers,
+>> or at least the warning you shared makes me think it is not a great idea
+>> if you plan to probe the device ever again in the future.
+>>
+>> I'll post the current comment in dwc3_qcom_enable_interrupts() to
+>> explain the "limits the scope of what wakes us up" a bit more clearly:
+>>
+>> 	/*
+>> 	 * Configure DP/DM line interrupts based on the USB2 device attached to
+>> 	 * the root hub port. When HS/FS device is connected, configure the DP line
+>> 	 * as falling edge to detect both disconnect and remote wakeup scenarios. When
+>> 	 * LS device is connected, configure DM line as falling edge to detect both
+>> 	 * disconnect and remote wakeup. When no device is connected, configure both
+>> 	 * DP and DM lines as rising edge to detect HS/HS/LS device connect scenario.
+>> 	 */
+> 
+> Yes, that is how it is currently implemented and I intend to change that
+> shortly. I just wanted to get the fixes out first.
+> 
+> Specifically, I consider the current implementation to be broken in that
+> it generates wakeup events on disconnect which is generally not want you
+> want. Consider closing the lid of your laptop and disconnecting a USB
+> mouse before putting it in your backpack. Now it's no longer suspended
+> as you would expect it to be.
+> 
+> With the devictrees soon fixed, we could also do away with changing the
+> trigger type, but since this is how it was implemented initially we now
+> need to consider backward compatibility with the broken DTs. We've dealt
+> with that before, but yeah, getting things right from the start would
+> have been so much better.
+> 
 
-Commit-ID:     e8df9d9f4209c04161321d8c12640ae560f65939
-Gitweb:        https://git.kernel.org/tip/e8df9d9f4209c04161321d8c12640ae560f65939
-Author:        Dapeng Mi <dapeng1.mi@linux.intel.com>
-AuthorDate:    Tue, 21 Nov 2023 09:46:28 +08:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Tue, 21 Nov 2023 13:44:36 +01:00
+Hi Johan,
 
-perf/x86/intel: Correct incorrect 'or' operation for PMU capabilities
+  Just one query. Even if it wakes up after closing the lid and removing 
+the mouse, wouldn't pm suspend be triggered again later by the system 
+once it sees that usb is also good to be suspended again ? I presume a 
+laptop form factor would be having this facility of re-trigerring 
+suspend. Let me know if this is not the case.
 
-When running perf-stat command on Intel hybrid platform, perf-stat
-reports the following errors:
+Also, the warning you are mentioning in [1] comes because this is a 
+laptop form factor and we have some firmware running (I don't know much 
+about ACPI and stuff) ?
 
-  sudo taskset -c 7 ./perf stat -vvvv -e cpu_atom/instructions/ sleep 1
+[1]: 
+https://lore.kernel.org/all/20231120161607.7405-3-johan+linaro@kernel.org/
 
-  Opening: cpu/cycles/:HG
-  ------------------------------------------------------------
-  perf_event_attr:
-    type                             0 (PERF_TYPE_HARDWARE)
-    config                           0xa00000000
-    disabled                         1
-  ------------------------------------------------------------
-  sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8
-  sys_perf_event_open failed, error -16
-
-   Performance counter stats for 'sleep 1':
-
-       <not counted>      cpu_atom/instructions/
-
-It looks the cpu_atom/instructions/ event can't be enabled on atom PMU
-even when the process is pinned on atom core. Investigation shows that
-exclusive_event_init() helper always returns -EBUSY error in the perf
-event creation. That's strange since the atom PMU should not be an
-exclusive PMU.
-
-Further investigation shows the issue was introduced by commit:
-
-  97588df87b56 ("perf/x86/intel: Add common intel_pmu_init_hybrid()")
-
-The commit originally intents to clear the bit PERF_PMU_CAP_AUX_OUTPUT
-from PMU capabilities if intel_cap.pebs_output_pt_available is not set,
-but it incorrectly uses 'or' operation and leads to all PMU capabilities
-bits are set to 1 except bit PERF_PMU_CAP_AUX_OUTPUT.
-
-Testing this fix on Intel hybrid platforms, the observed issues
-disappear.
-
-Fixes: 97588df87b56 ("perf/x86/intel: Add common intel_pmu_init_hybrid()")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231121014628.729989-1-dapeng1.mi@linux.intel.com
----
- arch/x86/events/intel/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index a08f794..ce1c777 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4660,7 +4660,7 @@ static void intel_pmu_check_hybrid_pmus(struct x86_hybrid_pmu *pmu)
- 	if (pmu->intel_cap.pebs_output_pt_available)
- 		pmu->pmu.capabilities |= PERF_PMU_CAP_AUX_OUTPUT;
- 	else
--		pmu->pmu.capabilities |= ~PERF_PMU_CAP_AUX_OUTPUT;
-+		pmu->pmu.capabilities &= ~PERF_PMU_CAP_AUX_OUTPUT;
- 
- 	intel_pmu_check_event_constraints(pmu->event_constraints,
- 					  pmu->num_counters,
+Regards,
+Krishna,
