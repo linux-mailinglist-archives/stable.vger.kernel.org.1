@@ -2,114 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBB8B7F2378
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 03:01:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB8047F244E
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 03:50:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233201AbjKUCB7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 20 Nov 2023 21:01:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52746 "EHLO
+        id S229679AbjKUCuv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 20 Nov 2023 21:50:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233186AbjKUCBf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 21:01:35 -0500
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A375100;
-        Mon, 20 Nov 2023 18:01:30 -0800 (PST)
-Received: by mail-qv1-xf2a.google.com with SMTP id 6a1803df08f44-66d0ceba445so13691316d6.0;
-        Mon, 20 Nov 2023 18:01:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700532089; x=1701136889; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ud2wbnDHnTrARrEBLi1hXnjXYj97H/dIcLoVNVIK3P4=;
-        b=Qo4VpbIxb5wlMARFUrDm6Jg5qG2tQBDi1AeAMq0w8eOGKIMYH6E1Wcff6BjZOqQCpc
-         YvEoNoJc7F7PrQVWwhxVZrR8Zn0HHA6x7WPQp8orldqx37hMxJi7NTtDz8RXkU8N7dWx
-         gJZxN51eclznOBT63M9t84MmZ2MvyTWhXfnU3WUgv0jWHE3rdqt2qLIYQW0LswU5D1yl
-         xlyAeWL+7EqUF/7N+8w13MwBv4pWRnO4f4nsGuc0c+gDE8f1sc7mEbkgVV1U0Ub2HE0T
-         5HqmanDWxbKAtmslEo44uD6o0sHDfUe+xRe/HRE++LQn8SpQe88heFm1Qr5mm21pm4+8
-         n06Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700532089; x=1701136889;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ud2wbnDHnTrARrEBLi1hXnjXYj97H/dIcLoVNVIK3P4=;
-        b=Pm+Wl1RbEhQem8wpeYRqvmS+Ab9XLnU5GlKog2OdB7a14sc0nT+4xmWgwYfnP88WwW
-         9Co5gIinZ2ZeWKSlwVGu0UOGwsLcXV6OxLUrque83PKtYBI+fUJUpUJfUTHpnp/rRs3N
-         owCbRUkq61KcSSW5O75AXAHmaTMnNuyfoNrEjsTaG0buIJk2CJBIH3PMmLvPpGL551+b
-         y10UcdxzE4IMnqwQ3IL7/LpIPdtYOrDqJGNFo6v6mbXgOrOIM41/mDtiQbjSwWLR9wEe
-         XtuxQ6q+u9Ekjz9PjfCoarVzFfP81A/F10+cg9UmnXUVe4sctPLdAOIc5gwkcTBFPvy6
-         eE1w==
-X-Gm-Message-State: AOJu0YwqOz22mEMQlauggAwHjImx/HiEvV5r5uGlzTeFK8c2Le20DnKS
-        zu+LmQ6rgTpLS5J2q0jxFVcp4COdfs+Xuw==
-X-Google-Smtp-Source: AGHT+IG3r61SWPQbDOGF+sdTnp+vfRXsKvmLw2YQ3Rx/gPRU/Ji7LfmlJdQ1x8w81yw48pn4BL8QHA==
-X-Received: by 2002:a05:6214:2b0e:b0:677:f341:c5a1 with SMTP id jx14-20020a0562142b0e00b00677f341c5a1mr10715687qvb.30.1700532089431;
-        Mon, 20 Nov 2023 18:01:29 -0800 (PST)
-Received: from localhost ([2607:fea8:529e:7800::80ec])
-        by smtp.gmail.com with ESMTPSA id j16-20020a0cc350000000b0066cf2423c79sm3509228qvi.139.2023.11.20.18.01.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 Nov 2023 18:01:28 -0800 (PST)
-Date:   Mon, 20 Nov 2023 21:01:27 -0500
-From:   Richard Acayan <mailingradian@gmail.com>
-To:     Johan Hovold <johan+linaro@kernel.org>
-Cc:     Bjorn Andersson <andersson@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        cros-qcom-dts-watchers@chromium.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 07/11] arm64: dts: qcom: sdm670: fix USB wakeup interrupt
- types
-Message-ID: <ZVwPd8OmjwMjtB3k@radian>
-References: <20231120164331.8116-1-johan+linaro@kernel.org>
- <20231120164331.8116-8-johan+linaro@kernel.org>
+        with ESMTP id S229522AbjKUCuu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 20 Nov 2023 21:50:50 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587B9BC;
+        Mon, 20 Nov 2023 18:50:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6589C433C9;
+        Tue, 21 Nov 2023 02:50:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700535046;
+        bh=uItyyBrHlmYRqbuInjqrR51CC24F/0OS4aIHR61emlA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T8R1nSUGnYZXOszXGBao+f/c2FTXTMJBeZluuBWKJC780NAKy5BIRYf65rr43mF8A
+         AaAol62685LB5ckNskckp8Zj1jaVtOK1hTYjFZFH40axcfFcnhNFxrLpbMEpVmKCwj
+         DGmHxSsuwS1WV3yKI3ptW+w/PSIv3gnVXWuqmA7mW3nfyJcI1bVBnnop7d5YtjDnav
+         GVYoYnmbAlVRlo3VAXQMXQa6AJVM4wIYgSR8ytCZdqY9WP2UNgMJDY0gKWYrJos72k
+         yLgIS1Ee6zJxbEjql0VfyqErtmGPG1q9f+bei5BNH+6je+pwsk7rF9TNGwdcN5hjnE
+         6/rFa2q2Ac/1Q==
+Date:   Mon, 20 Nov 2023 21:50:45 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Leah Rumancik <leah.rumancik@gmail.com>, stable@vger.kernel.org,
+        linux-xfs@vger.kernel.org, amir73il@gmail.com,
+        chandan.babu@oracle.com, fred@cloudflare.com,
+        ChenXiaoSong <chenxiaosong2@huawei.com>,
+        Guo Xuenan <guoxuenan@huawei.com>,
+        "Darrick J . Wong" <djwong@kernel.org>,
+        Chandan Babu R <chandanbabu@kernel.org>
+Subject: Re: [PATCH 5.15 09/17] xfs: fix NULL pointer dereference in
+ xfs_getbmap()
+Message-ID: <ZVwbBaNExKrc35jw@sashalap>
+References: <20231116022833.121551-1-leah.rumancik@gmail.com>
+ <20231116022833.121551-9-leah.rumancik@gmail.com>
+ <2023112053-monogamy-corned-68ba@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20231120164331.8116-8-johan+linaro@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2023112053-monogamy-corned-68ba@gregkh>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 20, 2023 at 05:43:27PM +0100, Johan Hovold wrote:
-> The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-> on depends on use-case and whether a Low speed or Full/High speed device
-> is connected.
+On Mon, Nov 20, 2023 at 04:38:24PM +0100, Greg KH wrote:
+>On Wed, Nov 15, 2023 at 06:28:25PM -0800, Leah Rumancik wrote:
+>> From: ChenXiaoSong <chenxiaosong2@huawei.com>
+>>
+>> [ Upstream commit 001c179c4e26d04db8c9f5e3fef9558b58356be6 ]
+>>
+>> Reproducer:
+>>  1. fallocate -l 100M image
+>>  2. mkfs.xfs -f image
+>>  3. mount image /mnt
+>>  4. setxattr("/mnt", "trusted.overlay.upper", NULL, 0, XATTR_CREATE)
+>>  5. char arg[32] = "\x01\xff\x00\x00\x00\x00\x03\x00\x00\x00\x00\x00\x00"
+>>                    "\x00\x00\x00\x00\x00\x08\x00\x00\x00\xc6\x2a\xf7";
+>>     fd = open("/mnt", O_RDONLY|O_DIRECTORY);
+>>     ioctl(fd, _IOC(_IOC_READ|_IOC_WRITE, 0x58, 0x2c, 0x20), arg);
+>>
+>> NULL pointer dereference will occur when race happens between xfs_getbmap()
+>> and xfs_bmap_set_attrforkoff():
+>>
+>>          ioctl               |       setxattr
+>>  ----------------------------|---------------------------
+>>  xfs_getbmap                 |
+>>    xfs_ifork_ptr             |
+>>      xfs_inode_has_attr_fork |
+>>        ip->i_forkoff == 0    |
+>>      return NULL             |
+>>    ifp == NULL               |
+>>                              | xfs_bmap_set_attrforkoff
+>>                              |   ip->i_forkoff > 0
+>>    xfs_inode_has_attr_fork   |
+>>      ip->i_forkoff > 0       |
+>>    ifp == NULL               |
+>>    ifp->if_format            |
+>>
+>> Fix this by locking i_lock before xfs_ifork_ptr().
+>>
+>> Fixes: abbf9e8a4507 ("xfs: rewrite getbmap using the xfs_iext_* helpers")
+>> Signed-off-by: ChenXiaoSong <chenxiaosong2@huawei.com>
+>> Signed-off-by: Guo Xuenan <guoxuenan@huawei.com>
+>> Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+>> [djwong: added fixes tag]
+>> Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+>> Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+>> Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+>> ---
+>>  fs/xfs/xfs_bmap_util.c | 17 +++++++++--------
+>>  1 file changed, 9 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
+>> index fd2ad6a3019c..bea6cc26abf9 100644
+>> --- a/fs/xfs/xfs_bmap_util.c
+>> +++ b/fs/xfs/xfs_bmap_util.c
+>> @@ -439,29 +439,28 @@ xfs_getbmap(
+>>  		whichfork = XFS_COW_FORK;
+>>  	else
+>>  		whichfork = XFS_DATA_FORK;
+>> -	ifp = XFS_IFORK_PTR(ip, whichfork);
+>>
+>>  	xfs_ilock(ip, XFS_IOLOCK_SHARED);
+>>  	switch (whichfork) {
+>>  	case XFS_ATTR_FORK:
+>> +		lock = xfs_ilock_attr_map_shared(ip);
+>>  		if (!XFS_IFORK_Q(ip))
+>> -			goto out_unlock_iolock;
+>> +			goto out_unlock_ilock;
+>>
+>>  		max_len = 1LL << 32;
+>> -		lock = xfs_ilock_attr_map_shared(ip);
+>>  		break;
+>>  	case XFS_COW_FORK:
+>> +		lock = XFS_ILOCK_SHARED;
+>> +		xfs_ilock(ip, lock);
+>> +
+>>  		/* No CoW fork? Just return */
+>> -		if (!ifp)
+>> -			goto out_unlock_iolock;
+>> +		if (!XFS_IFORK_PTR(ip, whichfork))
+>> +			goto out_unlock_ilock;
+>>
+>>  		if (xfs_get_cowextsz_hint(ip))
+>>  			max_len = mp->m_super->s_maxbytes;
+>>  		else
+>>  			max_len = XFS_ISIZE(ip);
+>> -
+>> -		lock = XFS_ILOCK_SHARED;
+>> -		xfs_ilock(ip, lock);
+>>  		break;
+>>  	case XFS_DATA_FORK:
+>>  		if (!(iflags & BMV_IF_DELALLOC) &&
+>> @@ -491,6 +490,8 @@ xfs_getbmap(
+>>  		break;
+>>  	}
+>>
+>> +	ifp = XFS_IFORK_PTR(ip, whichfork);
+>> +
+>>  	switch (ifp->if_format) {
+>>  	case XFS_DINODE_FMT_EXTENTS:
+>>  	case XFS_DINODE_FMT_BTREE:
+>> --
+>> 2.43.0.rc0.421.g78406f8d94-goog
+>>
 >
-> Fixes: 07c8ded6e373 ("arm64: dts: qcom: add sdm670 and pixel 3a device trees")
-> Cc: stable@vger.kernel.org      # 6.2
-> Cc: Richard Acayan <mailingradian@gmail.com>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
+>This patch breaks the build, how was it tested?
+>
+>fs/xfs/xfs_bmap_util.c: In function ‘xfs_getbmap’:
+>fs/xfs/xfs_bmap_util.c:457:21: error: the comparison will always evaluate as ‘true’ for the address of ‘i_df’ will never be NULL [-Werror=address]
+>  457 |                 if (!XFS_IFORK_PTR(ip, whichfork))
+>      |                     ^
+>In file included from fs/xfs/xfs_bmap_util.c:16:
+>fs/xfs/xfs_inode.h:38:33: note: ‘i_df’ declared here
+>   38 |         struct xfs_ifork        i_df;           /* data fork */
+>      |                                 ^~~~
+>cc1: all warnings being treated as errors
 
-Acked-by: Richard Acayan <mailingradian@gmail.com>
+That's odd. I actually ended up queueing these patches earlier, and I
+don't see any such warnings.
 
->  arch/arm64/boot/dts/qcom/sdm670.dtsi | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/arm64/boot/dts/qcom/sdm670.dtsi b/arch/arm64/boot/dts/qcom/sdm670.dtsi
-> index ba2043d67370..c873560ae9d5 100644
-> --- a/arch/arm64/boot/dts/qcom/sdm670.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/sdm670.dtsi
-> @@ -1297,8 +1297,8 @@ usb_1: usb@a6f8800 {
->  
->  			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
->  				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
-> -				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
-> +				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
-> +				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
->  			interrupt-names = "hs_phy_irq", "ss_phy_irq",
->  					  "dm_hs_phy_irq", "dp_hs_phy_irq";
->  
-> -- 
-> 2.41.0
->
+Looking at the code, this is a bit weird too - do you see these warnings
+with the current 5.15 queue?
+
+-- 
+Thanks,
+Sasha
