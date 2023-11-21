@@ -2,156 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C0787F2CE1
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 13:15:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 634B17F2D0A
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 13:24:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234206AbjKUMPD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 07:15:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60594 "EHLO
+        id S233161AbjKUMYM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 07:24:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234732AbjKUMPC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 07:15:02 -0500
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [IPv6:2a0a:51c0:0:237:300::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E872188;
-        Tue, 21 Nov 2023 04:14:59 -0800 (PST)
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-        (envelope-from <fw@breakpoint.cc>)
-        id 1r5Pec-00056S-3s; Tue, 21 Nov 2023 13:14:58 +0100
-From:   Florian Westphal <fw@strlen.de>
-To:     stable@vger.kernel.org
-Cc:     <netfilter-devel@vger.kernel.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.6.y 2/2] netfilter: nf_tables: split async and sync catchall in two functions
-Date:   Tue, 21 Nov 2023 13:14:22 +0100
-Message-ID: <20231121121431.8612-3-fw@strlen.de>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231121121431.8612-1-fw@strlen.de>
-References: <20231121121431.8612-1-fw@strlen.de>
+        with ESMTP id S230497AbjKUMYM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 07:24:12 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31464192;
+        Tue, 21 Nov 2023 04:24:08 -0800 (PST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1r5PnQ-0002fg-83; Tue, 21 Nov 2023 13:24:04 +0100
+Message-ID: <a3ddbd03-7a94-4b6a-9be1-b268ce883551@leemhuis.info>
+Date:   Tue, 21 Nov 2023 13:24:02 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: scsi regression that after months is still not addressed and now
+ bothering 6.1.y users, too
+Content-Language: en-US, de-DE
+To:     John Garry <john.g.garry@oracle.com>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        Sagar Biradar <sagar.biradar@microchip.com>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Adaptec OEM Raid Solutions <aacraid@microsemi.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Hannes Reinecke <hare@suse.de>,
+        scsi <linux-scsi@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Gilbert Wu <gilbert.wu@microchip.com>
+References: <c6ff53dc-a001-48ee-8559-b69be8e4db81@leemhuis.info>
+ <47e8fd80-3f87-4b87-a875-035e69961392@oracle.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <47e8fd80-3f87-4b87-a875-035e69961392@oracle.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1700569448;81e4f0a3;
+X-HE-SMSGID: 1r5PnQ-0002fg-83
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+On 21.11.23 12:30, John Garry wrote:
+> On 21/11/2023 09:50, Thorsten Leemhuis wrote:
+>> Quite a few machines with Adaptec controllers seems to hang for a few
+>> tens of seconds to a few minutes before things start to work normally
+>> again for a while:
+>> https://urldefense.com/v3/__https://bugzilla.kernel.org/show_bug.cgi?id=217599__;!!ACWV5N9M2RV99hQ!L26RD0hu99l3f709EFnXU_V7OaB1jG4Hi7BjKvxRuhDWKFmjrgfksLuXA6eBrBCRtOT8JcRRUvzRsHbyEm41r7tL_pbDfw$ 
+>> That problem is apparently caused by 9dc704dcc09eae ("scsi: aacraid:
+>> Reply queue mapping to CPUs based on IRQ affinity") [v6.4-rc7]. That
+>> commit despite a warning of mine to Sasha recently made it into 6.1.53
+>> -- and that way apparently recently reached more users recently, as
+>> quite a few joined that ticket.
+> 
+> Is there a full kernel log for this hanging system?
+> 
+> I can only see snippets in the ticket.
+> 
+> And what does /sys/class/scsi_host/host*/nr_hw_queues show?
 
-[ Upstream commit 8837ba3e58ea1e3d09ae36db80b1e80853aada95 ]
+Sorry, I'm just the man-in-the-middle: you need to ask in the ticket, as
+ the privacy policy for bugzilla.kernel.org does not allow to CC the
+reporters from the ticket here without their consent.
 
-list_for_each_entry_safe() does not work for the async case which runs
-under RCU, therefore, split GC logic for catchall in two functions
-instead, one for each of the sync and async GC variants.
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-The catchall sync GC variant never sees a _DEAD bit set on ever, thus,
-this handling is removed in such case, moreover, allocate GC sync batch
-via GFP_KERNEL.
 
-Fixes: 93995bf4af2c ("netfilter: nf_tables: remove catchall element in GC sync path")
-Reported-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
----
- net/netfilter/nf_tables_api.c | 61 ++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 29 deletions(-)
-
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index d300e9fc5d62..f51876bc0947 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9639,16 +9639,14 @@ void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
- 	call_rcu(&trans->rcu, nft_trans_gc_trans_free);
- }
- 
--static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
--						  unsigned int gc_seq,
--						  bool sync)
-+struct nft_trans_gc *nft_trans_gc_catchall_async(struct nft_trans_gc *gc,
-+						 unsigned int gc_seq)
- {
--	struct nft_set_elem_catchall *catchall, *next;
-+	struct nft_set_elem_catchall *catchall;
- 	const struct nft_set *set = gc->set;
--	struct nft_elem_priv *elem_priv;
- 	struct nft_set_ext *ext;
- 
--	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
-+	list_for_each_entry_rcu(catchall, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
- 
- 		if (!nft_set_elem_expired(ext))
-@@ -9658,39 +9656,44 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
- 
- 		nft_set_elem_dead(ext);
- dead_elem:
--		if (sync)
--			gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
--		else
--			gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
--
-+		gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
- 		if (!gc)
- 			return NULL;
- 
--		elem_priv = catchall->elem;
--		if (sync) {
--			struct nft_set_elem elem = {
--				.priv = elem_priv,
--			};
--
--			nft_setelem_data_deactivate(gc->net, gc->set, &elem);
--			nft_setelem_catchall_destroy(catchall);
--		}
--
--		nft_trans_gc_elem_add(gc, elem_priv);
-+		nft_trans_gc_elem_add(gc, catchall->elem);
- 	}
- 
- 	return gc;
- }
- 
--struct nft_trans_gc *nft_trans_gc_catchall_async(struct nft_trans_gc *gc,
--						 unsigned int gc_seq)
--{
--	return nft_trans_gc_catchall(gc, gc_seq, false);
--}
--
- struct nft_trans_gc *nft_trans_gc_catchall_sync(struct nft_trans_gc *gc)
- {
--	return nft_trans_gc_catchall(gc, 0, true);
-+	struct nft_set_elem_catchall *catchall, *next;
-+	const struct nft_set *set = gc->set;
-+	struct nft_set_elem elem;
-+	struct nft_set_ext *ext;
-+
-+	WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net));
-+
-+	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
-+		ext = nft_set_elem_ext(set, catchall->elem);
-+
-+		if (!nft_set_elem_expired(ext))
-+			continue;
-+
-+		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
-+		if (!gc)
-+			return NULL;
-+
-+		memset(&elem, 0, sizeof(elem));
-+		elem.priv = catchall->elem;
-+
-+		nft_setelem_data_deactivate(gc->net, gc->set, &elem);
-+		nft_setelem_catchall_destroy(catchall);
-+		nft_trans_gc_elem_add(gc, elem.priv);
-+	}
-+
-+	return gc;
- }
- 
- static void nf_tables_module_autoload_cleanup(struct net *net)
--- 
-2.41.0
 
