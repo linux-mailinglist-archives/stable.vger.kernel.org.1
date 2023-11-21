@@ -2,145 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6005A7F3612
-	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 19:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 273407F3643
+	for <lists+stable@lfdr.de>; Tue, 21 Nov 2023 19:40:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234357AbjKUSg6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 13:36:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56510 "EHLO
+        id S231178AbjKUSku (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 13:40:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231131AbjKUSg5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 13:36:57 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A9398;
-        Tue, 21 Nov 2023 10:36:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6610C433C7;
-        Tue, 21 Nov 2023 18:36:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700591812;
-        bh=pWuDQ59uPEfBjFMTjgUcZ8je0YmKAaZY2YBS88kvYBc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BOI8lHHo+cShXXbkN9hUVNV6xcoPgxi6T9uoyZuaygotASAvLVPt90j9/qha5EQYi
-         jhKUYdK30UmaXXEF8K2zQzyJfnZzyBl0zk9xYVwDl0pjULCaqJb6+G2WTEv0wascYn
-         E/Bp3tMNG7Tv0NDMZq4Nu0/3fOsxVrbQjruGVk/CvN9Tr/EgRVkWBg0nw7KrOIhKWB
-         b80a5++hMfF800x7fDgVoPMRD/f+VX6AwiMZmAzy4PAPL15tWX/5HCNDAjVijRZEjS
-         wkqyuGjYSbgAa62nsXwfnmBOYmS7ZiuMLx9GPuiJ+b1N1MO8PjJgunq6OI1ZcYirU2
-         Lw2/rvIpvstOA==
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     linux-pci@vger.kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Yunying Sun <yunying.sun@intel.com>,
-        Tomasz Pala <gotar@polanet.pl>,
-        Sebastian Manciulea <manciuleas@protonmail.com>,
-        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>,
-        stable@vger.kernel.org
-Subject: [PATCH 1/9] x86/pci: Reserve ECAM if BIOS didn't include it in PNP0C02 _CRS
-Date:   Tue, 21 Nov 2023 12:36:35 -0600
-Message-Id: <20231121183643.249006-2-helgaas@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231121183643.249006-1-helgaas@kernel.org>
-References: <20231121183643.249006-1-helgaas@kernel.org>
+        with ESMTP id S234541AbjKUSkt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 13:40:49 -0500
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E7C18C;
+        Tue, 21 Nov 2023 10:40:45 -0800 (PST)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ALI8I5L025601;
+        Tue, 21 Nov 2023 18:40:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=/BDvp/+M7FtxKsx5CnIFoAzu3HuceD6Uf8E03fkbYkA=;
+ b=i/Rk3o69ico5qI1Tig/uqM4BYf7psKCNrG5hpYwkiiGXyOuH98L3f8ewszv6hLvtb61L
+ eJEPRtOep6O+7uX+bEEVs7LYzSyRNV+Qp5LHQ2iad2AVtDZXDknY7hIJh4YAqtQpfw9I
+ RqlGymSfgzGp+vj5umrg+0XAS7zyvQTz4Y6nPLmKHambrsp4nCPGjFxo4EgcMwJXKOen
+ CBM3hKQ/apJ36m1KA523dHDsOTZBJbxpXyZotYUAMNkX8Wk6wSXxJZqO1s5y3sZrqqL1
+ VYwPy+nmBVcRSzw9gYRcjGxt2C7+KiPPcjKBZI/aUI7cZmXWTiqy83CqhOyxK4nFwqc+ sQ== 
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ugu549grx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Nov 2023 18:40:35 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3ALIeYnZ003920
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Nov 2023 18:40:34 GMT
+Received: from abhinavk-linux.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Tue, 21 Nov 2023 10:40:34 -0800
+From:   Abhinav Kumar <quic_abhinavk@quicinc.com>
+To:     Rob Clark <robdclark@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>,
+        "Daniel Vetter" <daniel@ffwll.ch>,
+        Bjorn Andersson <andersson@kernel.org>,
+        "Kuogee Hsieh" <quic_khsieh@quicinc.com>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>
+CC:     Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Johan Hovold <johan@kernel.org>,
+        <linux-arm-msm@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>, Doug Anderson <dianders@chromium.org>,
+        Rob Clark <robdclark@chromium.org>
+Subject: Re: [PATCH] drm/msm/dpu: Add missing safe_lut_tbl in sc8280xp catalog
+Date:   Tue, 21 Nov 2023 10:40:23 -0800
+Message-ID: <170059186277.16750.2750065361264739153.b4-ty@quicinc.com>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20231030-sc8280xp-dpu-safe-lut-v1-1-6d485d7b428f@quicinc.com>
+References: <20231030-sc8280xp-dpu-safe-lut-v1-1-6d485d7b428f@quicinc.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: z8cXBg5gRK5Y5TZnNLPlm5OXcrOHnwPd
+X-Proofpoint-ORIG-GUID: z8cXBg5gRK5Y5TZnNLPlm5OXcrOHnwPd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-21_10,2023-11-21_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ bulkscore=0 phishscore=0 impostorscore=0 priorityscore=1501 spamscore=0
+ lowpriorityscore=0 mlxlogscore=782 adultscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311210146
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
 
-Tomasz, Sebastian, and some Proxmox users reported problems initializing
-ixgbe NICs.
+On Mon, 30 Oct 2023 16:23:20 -0700, Bjorn Andersson wrote:
+> During USB transfers on the SC8280XP __arm_smmu_tlb_sync() is seen to
+> typically take 1-2ms to complete. As expected this results in poor
+> performance, something that has been mitigated by proposing running the
+> iommu in non-strict mode (boot with iommu.strict=0).
+> 
+> This turns out to be related to the SAFE logic, and programming the QOS
+> SAFE values in the DPU (per suggestion from Rob and Doug) reduces the
+> TLB sync time to below 10us, which means significant less time spent
+> with interrupts disabled and a significant boost in throughput.
+> 
+> [...]
 
-I think the problem is that ECAM space described in the ACPI MCFG table is
-not reserved via a PNP0C02 _CRS method as required by the PCI Firmware spec
-(r3.3, sec 4.1.2), but it *is* included in the PNP0A03 host bridge _CRS as
-part of the MMIO aperture.
+Applied, thanks!
 
-If we allocate space for a PCI BAR, we're likely to allocate it from that
-ECAM space, which obviously cannot work.
+[1/1] drm/msm/dpu: Add missing safe_lut_tbl in sc8280xp catalog
+      https://gitlab.freedesktop.org/drm/msm/-/commit/a33b2431d11b
 
-This could happen for any device, but in the ixgbe case it happens because
-it's an SR-IOV device and the BIOS didn't allocate space for the VF BARs,
-so Linux reallocated the bridge window leading to ixgbe and put it on top
-of the ECAM space.  From Tomasz' system:
-
-  PCI: MMCONFIG for domain 0000 [bus 00-ff] at [mem 0x80000000-0x8fffffff] (base 0x80000000)
-  PCI: MMCONFIG at [mem 0x80000000-0x8fffffff] not reserved in ACPI motherboard resources
-  pci_bus 0000:00: root bus resource [mem 0x80000000-0xfbffffff window]
-
-  pci 0000:00:01.1: PCI bridge to [bus 02-03]
-  pci 0000:00:01.1:   bridge window [mem 0xfb900000-0xfbbfffff]
-  pci 0000:02:00.0: [8086:10fb] type 00 class 0x020000  # ixgbe
-  pci 0000:02:00.0: reg 0x10: [mem 0xfba80000-0xfbafffff 64bit]
-  pci 0000:02:00.0: VF(n) BAR0 space: [mem 0x00000000-0x000fffff 64bit] (contains BAR0 for 64 VFs)
-  pci 0000:02:00.0: BAR 7: no space for [mem size 0x00100000 64bit]   # VF BAR 0
-
-  pci_bus 0000:00: No. 2 try to assign unassigned res
-  pci 0000:00:01.1: resource 14 [mem 0xfb900000-0xfbbfffff] released
-  pci 0000:00:01.1: BAR 14: assigned [mem 0x80000000-0x806fffff]
-  pci 0000:02:00.0: BAR 0: assigned [mem 0x80000000-0x8007ffff 64bit]
-  pci 0000:02:00.0: BAR 7: assigned [mem 0x80204000-0x80303fff 64bit] # VF BAR 0
-
-Fixes: 07eab0901ede ("efi/x86: Remove EfiMemoryMappedIO from E820 map")
-Fixes: fd3a8cff4d4a ("x86/pci: Treat EfiMemoryMappedIO as reservation of ECAM space")
-Reported-by: Tomasz Pala <gotar@polanet.pl>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218050
-Sebastian Manciulea <manciuleas@protonmail.com>
-Reported-by: Sebastian Manciulea <manciuleas@protonmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218107
-Link: https://forum.proxmox.com/threads/proxmox-8-kernel-6-2-16-4-pve-ixgbe-driver-fails-to-load-due-to-pci-device-probing-failure.131203/
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org	# v6.2+
----
- arch/x86/pci/mmconfig-shared.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/pci/mmconfig-shared.c b/arch/x86/pci/mmconfig-shared.c
-index 4b3efaa82ab7..e9497ee0f854 100644
---- a/arch/x86/pci/mmconfig-shared.c
-+++ b/arch/x86/pci/mmconfig-shared.c
-@@ -525,6 +525,8 @@ static bool __ref is_mmconf_reserved(check_reserved_t is_reserved,
- static bool __ref
- pci_mmcfg_check_reserved(struct device *dev, struct pci_mmcfg_region *cfg, int early)
- {
-+	struct resource *conflict;
-+
- 	if (!early && !acpi_disabled) {
- 		if (is_mmconf_reserved(is_acpi_reserved, cfg, dev,
- 				       "ACPI motherboard resource"))
-@@ -542,8 +544,17 @@ pci_mmcfg_check_reserved(struct device *dev, struct pci_mmcfg_region *cfg, int e
- 			       &cfg->res);
- 
- 		if (is_mmconf_reserved(is_efi_mmio, cfg, dev,
--				       "EfiMemoryMappedIO"))
-+				       "EfiMemoryMappedIO")) {
-+			conflict = insert_resource_conflict(&iomem_resource,
-+							    &cfg->res);
-+			if (conflict)
-+				pr_warn("MMCONFIG %pR conflicts with %s %pR\n",
-+					&cfg->res, conflict->name, conflict);
-+			else
-+				pr_info("MMCONFIG %pR reserved to work around lack of ACPI motherboard _CRS\n",
-+					&cfg->res);
- 			return true;
-+		}
- 	}
- 
- 	/*
+Best regards,
 -- 
-2.34.1
-
+Abhinav Kumar <quic_abhinavk@quicinc.com>
