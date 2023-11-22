@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D45A37F4E4D
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:24:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96C017F4E4E
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:24:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344017AbjKVRYb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:24:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52972 "EHLO
+        id S1344066AbjKVRYh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:24:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344066AbjKVRYb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:24:31 -0500
+        with ESMTP id S1344070AbjKVRYg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:24:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11CD592
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:24:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6090FC433C7;
-        Wed, 22 Nov 2023 17:24:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81BEA1A4
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:24:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F1AC433C7;
+        Wed, 22 Nov 2023 17:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673866;
-        bh=11hzewtXKWbaDur2brlpznkDkoRAZ+bPEN20cP66YOo=;
+        s=korg; t=1700673872;
+        bh=1KUpajgDNcNnZV/haOs8/ERaqSz1A7hOfyb2d9hD3Mk=;
         h=Subject:To:Cc:From:Date:From;
-        b=FYANUV0RUxcatVwuJcmzCbk6q3db+q27arl+dOZWlgWB4FUG/Nka/ow0eJ3V9MmwR
-         x4zIJKLLs0R6mgJGOdSX0G5DW9hz7pAW6/grXN1HRF+8568zv9ATdVTwh8lULg/mKE
-         UM8nmXKvXpBv1jr1dTtLa7M4diXUDG3Rq22i9pL4=
-Subject: FAILED: patch "[PATCH] acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0" failed to apply to 4.14-stable tree
-To:     roger.pau@citrix.com, jandryuk@gmail.com, jgross@suse.com,
-        michal.wilczynski@intel.com
+        b=VaNWJViFWm3zjiMOG/Be2B6ePredMSgLzAdZQ+PepdpZGSUGZESFrfC2QsWPRqt4N
+         uk/IYIRIal5jVgtWPAjVaSISxnjSDutCHEmuWsBpf4zV2n7TxIBoXs6xutSJJeiYzM
+         zLUuqRffO5amGuN2t8N0pIiALUhjVmf5Nyo/wxnQ=
+Subject: FAILED: patch "[PATCH] hvc/xen: fix console unplug" failed to apply to 5.4-stable tree
+To:     dwmw@amazon.co.uk, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:24:15 +0000
-Message-ID: <2023112215-letter-postwar-91df@gregkh>
+Date:   Wed, 22 Nov 2023 17:24:29 +0000
+Message-ID: <2023112229-slicing-deceiving-2f7c@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -44,25 +43,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x bfa993b355d33a438a746523e7129391c8664e8a
+git cherry-pick -x a30badfd7c13fc8763a9e10c5a12ba7f81515a55
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112215-letter-postwar-91df@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112229-slicing-deceiving-2f7c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-bfa993b355d3 ("acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0")
-a4a7644c1509 ("x86/xen: move paravirt lazy code")
-9bd0c413b90c ("Merge branch 'acpi-processor'")
+a30badfd7c13 ("hvc/xen: fix console unplug")
+df561f6688fe ("treewide: Use fallthrough pseudo-keyword")
+37711e5e2325 ("Merge tag 'nfs-for-5.9-1' of git://git.linux-nfs.org/projects/trondmy/linux-nfs")
 
 thanks,
 
@@ -70,127 +69,119 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bfa993b355d33a438a746523e7129391c8664e8a Mon Sep 17 00:00:00 2001
-From: Roger Pau Monne <roger.pau@citrix.com>
-Date: Wed, 8 Nov 2023 16:25:15 -0500
-Subject: [PATCH] acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From a30badfd7c13fc8763a9e10c5a12ba7f81515a55 Mon Sep 17 00:00:00 2001
+From: David Woodhouse <dwmw@amazon.co.uk>
+Date: Fri, 20 Oct 2023 17:15:29 +0100
+Subject: [PATCH] hvc/xen: fix console unplug
 
-The Processor capability bits notify ACPI of the OS capabilities, and
-so ACPI can adjust the return of other Processor methods taking the OS
-capabilities into account.
+On unplug of a Xen console, xencons_disconnect_backend() unconditionally
+calls free_irq() via unbind_from_irqhandler(), causing a warning of
+freeing an already-free IRQ:
 
-When Linux is running as a Xen dom0, the hypervisor is the entity
-in charge of processor power management, and hence Xen needs to make
-sure the capabilities reported by _OSC/_PDC match the capabilities of
-the driver in Xen.
+(qemu) device_del con1
+[   32.050919] ------------[ cut here ]------------
+[   32.050942] Trying to free already-free IRQ 33
+[   32.050990] WARNING: CPU: 0 PID: 51 at kernel/irq/manage.c:1895 __free_irq+0x1d4/0x330
 
-Introduce a small helper to sanitize the buffer when running as Xen
-dom0.
+It should be using evtchn_put() to tear down the event channel binding,
+and let the Linux IRQ side of it be handled by notifier_del_irq() through
+the HVC code.
 
-When Xen supports HWP, this serves as the equivalent of commit
-a21211672c9a ("ACPI / processor: Request native thermal interrupt
-handling via _OSC") to avoid SMM crashes.  Xen will set bit
-ACPI_PROC_CAP_COLLAB_PROC_PERF (bit 12) in the capability bits and the
-_OSC/_PDC call will apply it.
+On which topic... xencons_disconnect_backend() should call hvc_remove()
+*first*, rather than tearing down the event channel and grant mapping
+while they are in use. And then the IRQ is guaranteed to be freed by
+the time it's torn down by evtchn_put().
 
-[ jandryuk: Mention Xen HWP's need.  Support _OSC & _PDC ]
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Since evtchn_put() also closes the actual event channel, avoid calling
+xenbus_free_evtchn() except in the failure path where the IRQ was not
+successfully set up.
+
+However, calling hvc_remove() at the start of xencons_disconnect_backend()
+still isn't early enough. An unplug request is indicated by the backend
+setting its state to XenbusStateClosing, which triggers a notification
+to xencons_backend_changed(), which... does nothing except set its own
+frontend state directly to XenbusStateClosed without *actually* tearing
+down the HVC device or, you know, making sure it isn't actively in use.
+
+So the backend sees the guest frontend set its state to XenbusStateClosed
+and stops servicing the interrupt... and the guest spins for ever in the
+domU_write_console() function waiting for the ring to drain.
+
+Fix that one by calling hvc_remove() from xencons_backend_changed() before
+signalling to the backend that it's OK to proceed with the removal.
+
+Tested with 'dd if=/dev/zero of=/dev/hvc1' while telling Qemu to remove
+the console device.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
-Reviewed-by: Michal Wilczynski <michal.wilczynski@intel.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/20231108212517.72279-1-jandryuk@gmail.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20231020161529.355083-4-dwmw2@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-index c8a7fc23f63c..f896eed4516c 100644
---- a/arch/x86/include/asm/acpi.h
-+++ b/arch/x86/include/asm/acpi.h
-@@ -16,6 +16,9 @@
- #include <asm/x86_init.h>
- #include <asm/cpufeature.h>
- #include <asm/irq_vectors.h>
-+#include <asm/xen/hypervisor.h>
-+
-+#include <xen/xen.h>
+diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
+index 4a768b504263..34c01874f45b 100644
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -377,18 +377,21 @@ void xen_console_resume(void)
+ #ifdef CONFIG_HVC_XEN_FRONTEND
+ static void xencons_disconnect_backend(struct xencons_info *info)
+ {
+-	if (info->irq > 0)
+-		unbind_from_irqhandler(info->irq, NULL);
+-	info->irq = 0;
++	if (info->hvc != NULL)
++		hvc_remove(info->hvc);
++	info->hvc = NULL;
++	if (info->irq > 0) {
++		evtchn_put(info->evtchn);
++		info->irq = 0;
++		info->evtchn = 0;
++	}
++	/* evtchn_put() will also close it so this is only an error path */
+ 	if (info->evtchn > 0)
+ 		xenbus_free_evtchn(info->xbdev, info->evtchn);
+ 	info->evtchn = 0;
+ 	if (info->gntref > 0)
+ 		gnttab_free_grant_references(info->gntref);
+ 	info->gntref = 0;
+-	if (info->hvc != NULL)
+-		hvc_remove(info->hvc);
+-	info->hvc = NULL;
+ }
  
- #ifdef CONFIG_ACPI_APEI
- # include <asm/pgtable_types.h>
-@@ -127,6 +130,17 @@ static inline void arch_acpi_set_proc_cap_bits(u32 *cap)
- 	if (!cpu_has(c, X86_FEATURE_MWAIT) ||
- 	    boot_option_idle_override == IDLE_NOMWAIT)
- 		*cap &= ~(ACPI_PROC_CAP_C_C1_FFH | ACPI_PROC_CAP_C_C2C3_FFH);
+ static void xencons_free(struct xencons_info *info)
+@@ -553,10 +556,23 @@ static void xencons_backend_changed(struct xenbus_device *dev,
+ 		if (dev->state == XenbusStateClosed)
+ 			break;
+ 		fallthrough;	/* Missed the backend's CLOSING state */
+-	case XenbusStateClosing:
++	case XenbusStateClosing: {
++		struct xencons_info *info = dev_get_drvdata(&dev->dev);;
 +
-+	if (xen_initial_domain()) {
 +		/*
-+		 * When Linux is running as Xen dom0, the hypervisor is the
-+		 * entity in charge of the processor power management, and so
-+		 * Xen needs to check the OS capabilities reported in the
-+		 * processor capabilities buffer matches what the hypervisor
-+		 * driver supports.
++		 * Don't tear down the evtchn and grant ref before the other
++		 * end has disconnected, but do stop userspace from trying
++		 * to use the device before we allow the backend to close.
 +		 */
-+		xen_sanitize_proc_cap_bits(cap);
++		if (info->hvc) {
++			hvc_remove(info->hvc);
++			info->hvc = NULL;
++		}
++
+ 		xenbus_frontend_closed(dev);
+ 		break;
+ 	}
 +	}
  }
  
- static inline bool acpi_has_cpu_in_madt(void)
-diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-index 7048dfacc04b..a9088250770f 100644
---- a/arch/x86/include/asm/xen/hypervisor.h
-+++ b/arch/x86/include/asm/xen/hypervisor.h
-@@ -100,4 +100,13 @@ static inline void leave_lazy(enum xen_lazy_mode mode)
- 
- enum xen_lazy_mode xen_get_lazy_mode(void);
- 
-+#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI)
-+void xen_sanitize_proc_cap_bits(uint32_t *buf);
-+#else
-+static inline void xen_sanitize_proc_cap_bits(uint32_t *buf)
-+{
-+	BUG();
-+}
-+#endif
-+
- #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
-index b3e3d1bb37f3..508655273145 100644
---- a/drivers/xen/pcpu.c
-+++ b/drivers/xen/pcpu.c
-@@ -47,6 +47,9 @@
- #include <asm/xen/hypervisor.h>
- #include <asm/xen/hypercall.h>
- 
-+#ifdef CONFIG_ACPI
-+#include <acpi/processor.h>
-+#endif
- 
- /*
-  * @cpu_id: Xen physical cpu logic number
-@@ -400,4 +403,23 @@ bool __init xen_processor_present(uint32_t acpi_id)
- 
- 	return online;
- }
-+
-+void xen_sanitize_proc_cap_bits(uint32_t *cap)
-+{
-+	struct xen_platform_op op = {
-+		.cmd			= XENPF_set_processor_pminfo,
-+		.u.set_pminfo.id	= -1,
-+		.u.set_pminfo.type	= XEN_PM_PDC,
-+	};
-+	u32 buf[3] = { ACPI_PDC_REVISION_ID, 1, *cap };
-+	int ret;
-+
-+	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
-+	ret = HYPERVISOR_platform_op(&op);
-+	if (ret)
-+		pr_err("sanitize of _PDC buffer bits from Xen failed: %d\n",
-+		       ret);
-+	else
-+		*cap = buf[2];
-+}
- #endif
+ static const struct xenbus_device_id xencons_ids[] = {
+@@ -616,7 +632,7 @@ static int __init xen_hvc_init(void)
+ 		list_del(&info->list);
+ 		spin_unlock_irqrestore(&xencons_lock, flags);
+ 		if (info->irq)
+-			unbind_from_irqhandler(info->irq, NULL);
++			evtchn_put(info->evtchn);
+ 		kfree(info);
+ 		return r;
+ 	}
 
