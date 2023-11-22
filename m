@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D4377F4E3B
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FBA77F4E3D
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344038AbjKVRXS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:23:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
+        id S233871AbjKVRXj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:23:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235097AbjKVRXR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:17 -0500
+        with ESMTP id S232615AbjKVRXi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243AF1BE
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD35C433C7;
-        Wed, 22 Nov 2023 17:23:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B51651B2
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1142DC433C7;
+        Wed, 22 Nov 2023 17:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673789;
-        bh=x0pERHk9wNRpdChHDo4RYPHysh30TJHvK92euaWieUU=;
+        s=korg; t=1700673814;
+        bh=1z+tB7qVMKcB0ziNUGcascEF6IGqQX9/UkZzUANgkgg=;
         h=Subject:To:Cc:From:Date:From;
-        b=l6mxHaRzfrRgTqLCffSHO/DUCOkJEEwryI8uu906YmMHd6ivHuS5ZOt1f1sUSxvtF
-         BXNwK7yDIfYJrqGD2eg3vkBQLnHcmTugVeaHtM7+x1Wh/8fEHY6EOZqjm6EnKrkgx/
-         T3b9MFEgRL+3aorYN3gmnrthECRB7NNX5/b5MCVI=
-Subject: FAILED: patch "[PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()" failed to apply to 4.14-stable tree
-To:     usama.anjum@collabora.com, gregkh@linuxfoundation.org
+        b=pUToKFInEtSIue4pW4uj2UCzTvQro+iv23EiiDcBO9bN2ehMI1dDKBfBq1jR/cOZo
+         DfPRzzvX/kX6oqlHhVbbKX2O0OSL7Ds1Y55Ck/4gLXOWg+oR9aR8JFzha9DIaEBbcg
+         IQfjzpswFjQDEYG1C0XMRjl/9IWKFNkaU2VRgXzY=
+Subject: FAILED: patch "[PATCH] tty: serial: meson: fix hard LOCKUP on crtscts mode" failed to apply to 5.15-stable tree
+To:     pkrasavin@imaqliq.com, ddrokosov@salutedevices.com,
+        gregkh@linuxfoundation.org, neil.armstrong@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:23:04 +0000
-Message-ID: <2023112204-slum-smell-3e68@gregkh>
+Date:   Wed, 22 Nov 2023 17:23:31 +0000
+Message-ID: <2023112231-onward-matter-44c6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,25 +44,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x dd976a97d15b47656991e185a94ef42a0fa5cfd4
+git cherry-pick -x 2a1d728f20edeee7f26dc307ed9df4e0d23947ab
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112204-slum-smell-3e68@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112231-onward-matter-44c6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-dd976a97d15b ("tty/sysrq: replace smp_processor_id() with get_cpu()")
-5390e7f46b9d ("sysrq: do not omit current cpu when showing backtrace of all active CPUs")
-b00bebbc301c ("sysrq : fix Show Regs call trace on ARM")
+2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+5b6806198347 ("serial: meson: Use platform_get_irq() to get the interrupt")
 
 thanks,
 
@@ -69,70 +69,94 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From dd976a97d15b47656991e185a94ef42a0fa5cfd4 Mon Sep 17 00:00:00 2001
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Date: Mon, 9 Oct 2023 21:20:20 +0500
-Subject: [PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()
+From 2a1d728f20edeee7f26dc307ed9df4e0d23947ab Mon Sep 17 00:00:00 2001
+From: Pavel Krasavin <pkrasavin@imaqliq.com>
+Date: Sat, 14 Oct 2023 11:39:26 +0000
+Subject: [PATCH] tty: serial: meson: fix hard LOCKUP on crtscts mode
 
-The smp_processor_id() shouldn't be called from preemptible code.
-Instead use get_cpu() and put_cpu() which disables preemption in
-addition to getting the processor id. Enable preemption back after
-calling schedule_work() to make sure that the work gets scheduled on all
-cores other than the current core. We want to avoid a scenario where
-current core's stack trace is printed multiple times and one core's
-stack trace isn't printed because of scheduling of current task.
+There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
 
-This fixes the following bug:
+# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
+[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
+[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
+[   95.906972] Task dump for CPU 3:
+[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
+[   95.920059] Call trace:
+[   95.922485]  __switch_to+0xe4/0x168
+[   95.925951]  0xffffff8003477508
+[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
+[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
 
-[  119.143590] sysrq: Show backtrace of all active CPUs
-[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
-[  119.144586] caller is debug_smp_processor_id+0x20/0x30
-[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
-[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
-[  119.145053] Call trace:
-[  119.145093]  dump_backtrace+0x0/0x1a0
-[  119.145122]  show_stack+0x18/0x70
-[  119.145141]  dump_stack+0xc4/0x11c
-[  119.145159]  check_preemption_disabled+0x100/0x110
-[  119.145175]  debug_smp_processor_id+0x20/0x30
-[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
-[  119.145211]  __handle_sysrq+0x8c/0x1a0
-[  119.145227]  write_sysrq_trigger+0x94/0x12c
-[  119.145247]  proc_reg_write+0xa8/0xe4
-[  119.145266]  vfs_write+0xec/0x280
-[  119.145282]  ksys_write+0x6c/0x100
-[  119.145298]  __arm64_sys_write+0x20/0x30
-[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
-[  119.145332]  do_el0_svc+0x24/0x8c
-[  119.145348]  el0_svc+0x10/0x20
-[  119.145364]  el0_sync_handler+0x134/0x140
-[  119.145381]  el0_sync+0x180/0x1c0
+Possible solution would be to not allow to setup crtscts on such port.
 
-Cc: jirislaby@kernel.org
+Tested on S905X3 based board.
+
+Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
 Cc: stable@vger.kernel.org
-Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20231009162021.3607632-1-usama.anjum@collabora.com
+Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
+
+v6: stable tag added
+v5: https://lore.kernel.org/lkml/OF43DA36FF.2BD3BB21-ON00258A47.005A8125-00258A47.005A9513@gdc.ru/
+added missed Reviewed-by tags, Fixes tag added according to Dmitry and Neil notes
+v4: https://lore.kernel.org/lkml/OF55521400.7512350F-ON00258A47.003F7254-00258A47.0040E15C@gdc.ru/
+More correct patch subject according to Jiri's note
+v3: https://lore.kernel.org/lkml/OF6CF5FFA0.CCFD0E8E-ON00258A46.00549EDF-00258A46.0054BB62@gdc.ru/
+"From:" line added to the mail
+v2: https://lore.kernel.org/lkml/OF950BEF72.7F425944-ON00258A46.00488A76-00258A46.00497D44@gdc.ru/
+braces for single statement removed according to Dmitry's note
+v1: https://lore.kernel.org/lkml/OF28B2B8C9.5BC0CD28-ON00258A46.0037688F-00258A46.0039155B@gdc.ru/
+Link: https://lore.kernel.org/r/OF66360032.51C36182-ON00258A48.003F656B-00258A48.0040092C@gdc.ru
+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
-index 23198e3f1461..6b4a28bcf2f5 100644
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
- 		if (in_hardirq())
- 			regs = get_irq_regs();
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index de298bf75d9b..8dd84617e715 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -380,10 +380,14 @@ static void meson_uart_set_termios(struct uart_port *port,
+ 	else
+ 		val |= AML_UART_STOP_BIT_1SB;
  
--		pr_info("CPU%d:\n", smp_processor_id());
-+		pr_info("CPU%d:\n", get_cpu());
- 		if (regs)
- 			show_regs(regs);
- 		else
- 			show_stack(NULL, NULL, KERN_INFO);
+-	if (cflags & CRTSCTS)
+-		val &= ~AML_UART_TWO_WIRE_EN;
+-	else
++	if (cflags & CRTSCTS) {
++		if (port->flags & UPF_HARD_FLOW)
++			val &= ~AML_UART_TWO_WIRE_EN;
++		else
++			termios->c_cflag &= ~CRTSCTS;
++	} else {
+ 		val |= AML_UART_TWO_WIRE_EN;
++	}
  
- 		schedule_work(&sysrq_showallcpus);
-+		put_cpu();
- 	}
- }
+ 	writel(val, port->membase + AML_UART_CONTROL);
  
+@@ -705,6 +709,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
+ 	int ret = 0;
+ 	int irq;
++	bool has_rtscts;
+ 
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
+@@ -732,6 +737,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 		return irq;
+ 
+ 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
++	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
+ 
+ 	if (meson_ports[pdev->id]) {
+ 		return dev_err_probe(&pdev->dev, -EBUSY,
+@@ -762,6 +768,8 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	port->mapsize = resource_size(res_mem);
+ 	port->irq = irq;
+ 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
++	if (has_rtscts)
++		port->flags |= UPF_HARD_FLOW;
+ 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+ 	port->dev = &pdev->dev;
+ 	port->line = pdev->id;
 
