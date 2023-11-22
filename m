@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CE207F5029
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F747F5030
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:06:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231562AbjKVTEn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 14:04:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40496 "EHLO
+        id S235189AbjKVTGF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:06:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235189AbjKVTEm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:04:42 -0500
+        with ESMTP id S235222AbjKVTGE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:06:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045F583
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:04:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5527EC433B7;
-        Wed, 22 Nov 2023 19:04:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDA391
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:06:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6576C433C8;
+        Wed, 22 Nov 2023 19:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700679878;
-        bh=eye19tI2iBOgyNbY7wGEebDuH2T3sg3qpfaziTf3J2s=;
+        s=korg; t=1700679960;
+        bh=DuVY6Wcu3HoI26EI5hgsPWfNskJA2FSzmPsjDXZ50OI=;
         h=Subject:To:Cc:From:Date:From;
-        b=Q/IrDL+1wGVpQ3rH88KqhX5uo8eIqAiQINLvYUHUc8HEzBk9rxOktc6ib6XK6xKv2
-         9JZPzaVjkpUWdl6YAnuvF7NXpKcRegGvS5bQ8MYdSygQNzSwbBPQcQ1/FOthfwlhx6
-         2k4MgEY9b70WIMx5l/zgDqI9COhtrLOgrFeHrt6s=
-Subject: FAILED: patch "[PATCH] regmap: Ensure range selector registers are updated after" failed to apply to 4.19-stable tree
+        b=j17Ueci19cFZ3PjdYhi0Xa3Q0ub50q38yM2NLxTWN9+GygbrBRXK7e5h8LLNQujRD
+         Vnsl3v+A+j2b0JZB5Gzhh6sUNzIXv1G9ZtlcnWPleirVkZ1CUrgG+svXNHG9IxZfD+
+         w02n1cIzY7aw2vQ4o1p6QLBMeEeSe9Vv1czW3ZiQ=
+Subject: FAILED: patch "[PATCH] regmap: Ensure range selector registers are updated after" failed to apply to 5.4-stable tree
 To:     broonie@kernel.org, marcan@marcan.st
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 19:04:36 +0000
-Message-ID: <2023112236-grumble-repose-10b5@gregkh>
+Date:   Wed, 22 Nov 2023 19:05:57 +0000
+Message-ID: <2023112257-fracture-enlisted-b500@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0ec7731655de196bc1e4af99e495b38778109d22
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112236-grumble-repose-10b5@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112257-fracture-enlisted-b500@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
