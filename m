@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 358A17F5118
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:06:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 415467F511F
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:06:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344486AbjKVUGP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 15:06:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41160 "EHLO
+        id S232170AbjKVUGU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 15:06:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344167AbjKVUGO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:06:14 -0500
+        with ESMTP id S234945AbjKVUGS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:06:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA731D48
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:06:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E9AEC433CA;
-        Wed, 22 Nov 2023 20:06:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 747471BE
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:06:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F00C433CA;
+        Wed, 22 Nov 2023 20:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700683570;
-        bh=L2np9z7xk9ZYEdRZbc6IWUWeJB3qwRTu4qeABpmbUA4=;
+        s=korg; t=1700683574;
+        bh=QM8Qxk/OFqnPFDwOo9eIDUrtWTiwfxD85DzAJJ/No7M=;
         h=Subject:To:Cc:From:Date:From;
-        b=qgtJRjUMLRrV0zS4sGIhJKBQtlnzn5doBQDdA329yVcurquDsiMVbpwUYTci2kM5M
-         61cZl0QTm2zI//sLYrm2zaACAKtS8HkgfAGyO3ReHfa4jDvsa1XKeWcl2zLj9t3OSS
-         7pKHX3PZta+XRQ2u8w0Tlo45h3Q4PsvH8X+BOfDc=
-Subject: FAILED: patch "[PATCH] PCI: exynos: Don't discard .remove() callback" failed to apply to 5.10-stable tree
+        b=hs3/8XYAfJxHeBqJD8a2ysPWLDXc8bYTqCbhA6AileYZI9qNOeHBhsYu/G2+ozdhk
+         hEeAOeWhpipUyHOONy6jUC6QvZaKePhlGlb9wE+IHvtyoSyiCORhLcgj7lCp/LgUgX
+         1Ni+1GxzwuTQF4caEoQS/sItfl27sPSp1mdD7Gsc=
+Subject: FAILED: patch "[PATCH] PCI: exynos: Don't discard .remove() callback" failed to apply to 5.4-stable tree
 To:     u.kleine-koenig@pengutronix.de, alim.akhtar@samsung.com,
         bhelgaas@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 20:06:08 +0000
-Message-ID: <2023112207-dealmaker-frigidly-e080@gregkh>
+Date:   Wed, 22 Nov 2023 20:06:09 +0000
+Message-ID: <2023112209-antics-unreached-451a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 83a939f0fdc208ff3639dd3d42ac9b3c35607fd2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112207-dealmaker-frigidly-e080@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112209-antics-unreached-451a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,19 @@ b9ac0f9dc8ea ("PCI: dwc: Move dw_pcie_setup_rc() to DWC common code")
 886a9c134755 ("PCI: dwc: Move link handling into common code")
 331e9bcead52 ("PCI: dwc: Drop the .set_num_vectors() host op")
 a0fd361db8e5 ("PCI: dwc: Move "dbi", "dbi2", and "addr_space" resource setup into common code")
+1b6a0e43a1a1 ("PCI: layerscape: Add EP mode support for ls1088a and ls2088a")
+cc255eb0bfbe ("PCI: layerscape: Modify the way of getting capability with different PEX")
+20e458fb92af ("PCI: layerscape: Fix some format issue of the code")
+47a062609a30 ("PCI: designware-ep: Modify MSI and MSIX CAP way of finding")
+6bfc9c3a2c70 ("PCI: designware-ep: Move the function of getting MSI capability forward")
+24ede430fa49 ("PCI: designware-ep: Add multiple PFs support for DWC")
+fdd056ff7af4 ("PCI: dwc: Use DBI accessors")
+aeaa0bfe8965 ("PCI: dwc: Move N_FTS setup to common setup")
+d439e7edd134 ("PCI: dwc/intel-gw: Drop unused max_width")
+441e48fdf0b4 ("PCI: dwc: Set PORT_LINK_DLL_LINK_EN in common setup code")
+39bc5006501c ("PCI: dwc: Centralize link gen setting")
+84667a416d42 ("PCI: dwc/tegra: Use common Designware port logic register definitions")
+fb7652327101 ("PCI: dwc: Remove hardcoded PCI_CAP_ID_EXP offset")
 
 thanks,
 
