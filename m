@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7B9F7F4FFC
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 19:54:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E6117F4FFF
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 19:55:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233910AbjKVSyo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 13:54:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57384 "EHLO
+        id S1344333AbjKVSzM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 13:55:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231470AbjKVSyn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 13:54:43 -0500
+        with ESMTP id S1343602AbjKVSzL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 13:55:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 989A491
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 10:54:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE0EC433C8;
-        Wed, 22 Nov 2023 18:54:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD6E2D5A
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 10:55:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101C3C433C9;
+        Wed, 22 Nov 2023 18:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700679279;
-        bh=CDDhdqXj90zij1OI03ZAdp72w9Guq+xRS8BFXvA33AY=;
+        s=korg; t=1700679307;
+        bh=MoJtgl9C3OGKVrne8hkaGWjuWlbDHvFrDYrvEWTspCU=;
         h=Subject:To:Cc:From:Date:From;
-        b=z+GD1aibTAx59LGr79i1Yeo/C2lho9sV4qridF5uuzVsX3ini+9kYjSSgeBIuavHI
-         ijMcUa5pdEjGe1KWpwxVPVjh8jOM0o3wp7aPtWuCS23yoi61UoWMRg/yrwGPRPrF0j
-         VM1wiWrKUDt7YUMsXRc8GTIIDLf94Pbdx90xp4Q8=
-Subject: FAILED: patch "[PATCH] PCI: keystone: Don't discard .remove() callback" failed to apply to 4.14-stable tree
+        b=GIcWipiifSzLvF+kGIqNlgWjZZTy0MMkFsFnTFt2CuJ9ZwXn4WYshwHeduA7wcb6P
+         GPkP+xcfwSxdF3JoSp05sptkwTyG47WB4JMCM8H5Kz6S3k7rbm0YG3DEqsRo1elX8O
+         egGcGaHXce8tMK3X/rkuD6fM70bC80dG/738NT7M=
+Subject: FAILED: patch "[PATCH] PCI: keystone: Don't discard .probe() callback" failed to apply to 4.14-stable tree
 To:     u.kleine-koenig@pengutronix.de, bhelgaas@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 18:54:36 +0000
-Message-ID: <2023112236-scone-stinking-706f@gregkh>
+Date:   Wed, 22 Nov 2023 18:55:04 +0000
+Message-ID: <2023112204-jeeringly-remake-6ff6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -52,21 +52,33 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x 200bddbb3f5202bbce96444fdc416305de14f547
+git cherry-pick -x 7994db905c0fd692cf04c527585f08a91b560144
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112236-scone-stinking-706f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112204-jeeringly-remake-6ff6@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
-200bddbb3f52 ("PCI: keystone: Don't discard .remove() callback")
+7994db905c0f ("PCI: keystone: Don't discard .probe() callback")
+18b0415bc802 ("PCI: keystone: Add support for PCIe RC in AM654x Platforms")
+156c6fef75a4 ("PCI: keystone: Explicitly set the PCIe mode")
+b1dee41b7692 ("PCI: keystone: Move resources initialization to prepare for EP support")
+2341ab4fd5d7 ("PCI: keystone: Use platform_get_resource_byname() to get memory resources")
+f3560a9f88ae ("PCI: keystone: Perform host initialization in a single function")
+0790eb175ee0 ("PCI: keystone: Cleanup error_irq configuration")
+1146c2953dcb ("PCI: keystone: Add separate functions for configuring MSI and legacy interrupt")
+1beb55126937 ("PCI: keystone: Cleanup interrupt related macros")
+261de72f0169 ("PCI: keystone: Cleanup macros defined in pci-keystone.c")
+c0b8558648c2 ("PCI: keystone: Reorder header file in alphabetical order")
+daaaa665ca01 ("PCI: keystone: Add debug error message for all errors")
+0523cdc6e775 ("PCI: keystone: Use ERR_IRQ_STATUS instead of ERR_IRQ_STATUS_RAW to get interrupt status")
+23fe5bd4be90 ("PCI: keystone: Cleanup ks_pcie_link_up()")
+f9127db9fbad ("PCI: keystone: Cleanup set_dbi_mode() and get_dbi_mode()")
+e75043ad9792 ("PCI: keystone: Cleanup outbound window configuration")
+b4f1af8352fd ("PCI: keystone: Get number of outbound windows from DT")
+44c747af2be7 ("PCI: keystone: Cleanup configuration space access")
+8047eb55129a ("PCI: keystone: Invoke runtime PM APIs to enable clock")
 49229238ab47 ("PCI: keystone: Cleanup PHY handling")
-b51a625b784a ("PCI: keystone: Use SYSCON APIs to get device ID from control module")
-b492aca35c98 ("PCI: keystone: Merge pci-keystone-dw.c and pci-keystone.c")
-1f79f98f0575 ("PCI: keystone: Remove unused argument from ks_dw_pcie_host_init()")
-00a2c4094f8e ("PCI: keystone: Use quirk to set MRRS for PCI host bridge")
-6e0832fa432e ("PCI: Collect all native drivers under drivers/pci/controller/")
-e52d38f4abf4 ("Merge branch 'lorenzo/pci/rockchip'")
 
 thanks,
 
@@ -74,50 +86,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 200bddbb3f5202bbce96444fdc416305de14f547 Mon Sep 17 00:00:00 2001
+From 7994db905c0fd692cf04c527585f08a91b560144 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sun, 1 Oct 2023 19:02:53 +0200
-Subject: [PATCH] PCI: keystone: Don't discard .remove() callback
+Date: Sun, 1 Oct 2023 19:02:54 +0200
+Subject: [PATCH] PCI: keystone: Don't discard .probe() callback
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-With CONFIG_PCIE_KEYSTONE=y and ks_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
+The __init annotation makes the ks_pcie_probe() function disappear after
+booting completes. However a device can also be bound later. In that case,
+we try to call ks_pcie_probe(), but the backing memory is likely already
+overwritten.
 
-The right thing to do is do always have the remove callback available.
-Note that this driver cannot be compiled as a module, so ks_pcie_remove()
-was always discarded before this change and modpost couldn't warn about
-this issue. Furthermore the __ref annotation also prevents a warning.
+The right thing to do is do always have the probe callback available.  Note
+that the (wrong) __refdata annotation prevented this issue to be noticed by
+modpost.
 
 Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
-Link: https://lore.kernel.org/r/20231001170254.2506508-4-u.kleine-koenig@pengutronix.de
+Link: https://lore.kernel.org/r/20231001170254.2506508-5-u.kleine-koenig@pengutronix.de
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
 
 diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 49aea6ce3e87..eb3fa17b243f 100644
+index eb3fa17b243f..0def919f89fa 100644
 --- a/drivers/pci/controller/dwc/pci-keystone.c
 +++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1302,7 +1302,7 @@ static int __init ks_pcie_probe(struct platform_device *pdev)
- 	return ret;
+@@ -1100,7 +1100,7 @@ static const struct of_device_id ks_pcie_of_match[] = {
+ 	{ },
+ };
+ 
+-static int __init ks_pcie_probe(struct platform_device *pdev)
++static int ks_pcie_probe(struct platform_device *pdev)
+ {
+ 	const struct dw_pcie_host_ops *host_ops;
+ 	const struct dw_pcie_ep_ops *ep_ops;
+@@ -1318,7 +1318,7 @@ static int ks_pcie_remove(struct platform_device *pdev)
+ 	return 0;
  }
  
--static int __exit ks_pcie_remove(struct platform_device *pdev)
-+static int ks_pcie_remove(struct platform_device *pdev)
- {
- 	struct keystone_pcie *ks_pcie = platform_get_drvdata(pdev);
- 	struct device_link **link = ks_pcie->link;
-@@ -1320,7 +1320,7 @@ static int __exit ks_pcie_remove(struct platform_device *pdev)
- 
- static struct platform_driver ks_pcie_driver __refdata = {
+-static struct platform_driver ks_pcie_driver __refdata = {
++static struct platform_driver ks_pcie_driver = {
  	.probe  = ks_pcie_probe,
--	.remove = __exit_p(ks_pcie_remove),
-+	.remove = ks_pcie_remove,
+ 	.remove = ks_pcie_remove,
  	.driver = {
- 		.name	= "keystone-pcie",
- 		.of_match_table = ks_pcie_of_match,
 
