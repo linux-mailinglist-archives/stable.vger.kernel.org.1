@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7D737F4E5C
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1BA57F4E5D
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:26:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344204AbjKVRZx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:25:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37524 "EHLO
+        id S1344279AbjKVRZ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:25:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344217AbjKVRZv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:51 -0500
+        with ESMTP id S1344130AbjKVRZx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53D491B3
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:47 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B51C433C8;
-        Wed, 22 Nov 2023 17:25:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4D231BF
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5C5C433C9;
+        Wed, 22 Nov 2023 17:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673947;
-        bh=B3DYHJRejcfrK7wDTYuntK/LrzAd/ex/IB1OD9Q2YlU=;
+        s=korg; t=1700673949;
+        bh=P0vzOqCzIJ6PCfks6BgcaAqbnPoDj0JDxH+iBFEBlCw=;
         h=Subject:To:Cc:From:Date:From;
-        b=tUj7PGj6CTVXRuz4Sl1mmCDDwQffTHfZMs8/wT8FZYxOclFlBQjskkl9wkI+nYrBp
-         1GOAxjM3azS/btsFZDodKbsAL59IXQ4t040rxit5KOKbl/izTxy2HCUYPuC7VLzUhu
-         tK0hKRSLEZxDS7Ioh6C8p/JvNiutB4dULESOC57g=
-Subject: FAILED: patch "[PATCH] apparmor: Fix regression in mount mediation" failed to apply to 5.10-stable tree
+        b=kIYB/Q0rgr59XjDQdfgHL4dOAFH1AqghIybZeE+jT8C5nYVQz5UFU+MqdLfghCUG/
+         X36LDymzvuZAxcu8h9CUBqR5ikDMkx2OqK9dtZkaaDaAEKpV22f2Cyi6AkTt5gPzyB
+         NgSgDO9WafSKe5hhEOi6OTaDI7YHmfcbDa++3B2E=
+Subject: FAILED: patch "[PATCH] apparmor: Fix regression in mount mediation" failed to apply to 5.4-stable tree
 To:     john.johansen@canonical.com, anstein99@googlemail.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:25:36 +0000
-Message-ID: <2023112236-payphone-economic-a97d@gregkh>
+Date:   Wed, 22 Nov 2023 17:25:37 +0000
+Message-ID: <2023112237-headsman-unshackle-d1e3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 157a3537d6bc28ceb9a11fc8cb67f2152d860146
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112236-payphone-economic-a97d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112237-headsman-unshackle-d1e3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
