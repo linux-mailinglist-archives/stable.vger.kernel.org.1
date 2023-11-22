@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE57A7F5002
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 19:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 026E87F5024
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:04:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344317AbjKVS4f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 13:56:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40410 "EHLO
+        id S232473AbjKVTER (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:04:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235411AbjKVS4X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 13:56:23 -0500
+        with ESMTP id S231601AbjKVTEQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:04:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F061130D0
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 10:56:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA86C433C8;
-        Wed, 22 Nov 2023 18:56:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23D8F93
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:04:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E518C433C7;
+        Wed, 22 Nov 2023 19:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700679370;
-        bh=zlS1c8kbR6HbqfFphYIrO1cH503icPoVuML13xb7ToI=;
+        s=korg; t=1700679852;
+        bh=Wzae74Fa0oaAHrngcQtbJQDiW55FYEeAJChtnCHF3T0=;
         h=Subject:To:Cc:From:Date:From;
-        b=DB+3OdBTsgrtoWXeA//xi4A6q94zKkiUjaSuQwSbuGJCUTytCYczPxcqHhdc48h98
-         dWhDyG9bD+nZobEPT2+XOBzwI3tmtvMDr9Ve6bEWvJB+0gHHCUOpx/yks9NM2Cv1eU
-         2YP42EfGNbNJOSFGaXn6CO5ezcRy4tCLG6m/mCeQ=
-Subject: FAILED: patch "[PATCH] pmdomain: amlogic: Fix mask for the second NNA mem PD domain" failed to apply to 6.5-stable tree
-To:     tomeu@tomeuvizoso.net, neil.armstrong@linaro.org,
-        ulf.hansson@linaro.org
+        b=XIuxF8Tq1hVp1JPkgSG6UdmA8LbMOCsE258P2SjU6wpQy6fxmfpi66f2bKwcUMHqs
+         Iy2kAdZZnsrC+cekKRk/uB/4RKTuxV0yFfwnhke28CcGBP6W5s78qi419XmLFFGr+L
+         1+n4tE+4a+UE2wGOIGOmwkxe55WylimnMmTxT2HE=
+Subject: FAILED: patch "[PATCH] regmap: Ensure range selector registers are updated after" failed to apply to 4.14-stable tree
+To:     broonie@kernel.org, marcan@marcan.st
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 18:56:07 +0000
-Message-ID: <2023112207-docile-knoll-50f6@gregkh>
+Date:   Wed, 22 Nov 2023 19:04:10 +0000
+Message-ID: <2023112209-procreate-flop-2437@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,23 +43,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x b131329b9bfbd1b4c0c5e088cb0c6ec03a12930f
+git cherry-pick -x 0ec7731655de196bc1e4af99e495b38778109d22
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112207-docile-knoll-50f6@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112209-procreate-flop-2437@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
-b131329b9bfb ("pmdomain: amlogic: Fix mask for the second NNA mem PD domain")
+0ec7731655de ("regmap: Ensure range selector registers are updated after cache sync")
 
 thanks,
 
@@ -68,33 +67,89 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b131329b9bfbd1b4c0c5e088cb0c6ec03a12930f Mon Sep 17 00:00:00 2001
-From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
-Date: Mon, 16 Oct 2023 10:02:04 +0200
-Subject: [PATCH] pmdomain: amlogic: Fix mask for the second NNA mem PD domain
+From 0ec7731655de196bc1e4af99e495b38778109d22 Mon Sep 17 00:00:00 2001
+From: Mark Brown <broonie@kernel.org>
+Date: Thu, 26 Oct 2023 16:49:19 +0100
+Subject: [PATCH] regmap: Ensure range selector registers are updated after
+ cache sync
 
-Without this change, the NPU hangs when the 8th NN core is used.
+When we sync the register cache we do so with the cache bypassed in order
+to avoid overhead from writing the synced values back into the cache. If
+the regmap has ranges and the selector register for those ranges is in a
+register which is cached this has the unfortunate side effect of meaning
+that the physical and cached copies of the selector register can be out of
+sync after a cache sync. The cache will have whatever the selector was when
+the sync started and the hardware will have the selector for the register
+that was synced last.
 
-It matches what the out-of-tree driver does.
+Fix this by rewriting all cached selector registers after every sync,
+ensuring that the hardware and cache have the same content. This will
+result in extra writes that wouldn't otherwise be needed but is simple
+so hopefully robust. We don't read from the hardware since not all
+devices have physical read support.
 
-Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
-Fixes: 9a217b7e8953 ("soc: amlogic: meson-pwrc: Add NNA power domain for A311D")
-Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
+Given that nobody noticed this until now it is likely that we are rarely if
+ever hitting this case.
+
+Reported-by: Hector Martin <marcan@marcan.st>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231016080205.41982-2-tomeu@tomeuvizoso.net
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231026-regmap-fix-selector-sync-v1-1-633ded82770d@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/pmdomain/amlogic/meson-ee-pwrc.c b/drivers/pmdomain/amlogic/meson-ee-pwrc.c
-index cfb796d40d9d..0dd71cd814c5 100644
---- a/drivers/pmdomain/amlogic/meson-ee-pwrc.c
-+++ b/drivers/pmdomain/amlogic/meson-ee-pwrc.c
-@@ -228,7 +228,7 @@ static struct meson_ee_pwrc_mem_domain sm1_pwrc_mem_audio[] = {
+diff --git a/drivers/base/regmap/regcache.c b/drivers/base/regmap/regcache.c
+index c5d151e9c481..92592f944a3d 100644
+--- a/drivers/base/regmap/regcache.c
++++ b/drivers/base/regmap/regcache.c
+@@ -334,6 +334,11 @@ static int regcache_default_sync(struct regmap *map, unsigned int min,
+ 	return 0;
+ }
  
- static struct meson_ee_pwrc_mem_domain g12a_pwrc_mem_nna[] = {
- 	{ G12A_HHI_NANOQ_MEM_PD_REG0, GENMASK(31, 0) },
--	{ G12A_HHI_NANOQ_MEM_PD_REG1, GENMASK(23, 0) },
-+	{ G12A_HHI_NANOQ_MEM_PD_REG1, GENMASK(31, 0) },
- };
++static int rbtree_all(const void *key, const struct rb_node *node)
++{
++	return 0;
++}
++
+ /**
+  * regcache_sync - Sync the register cache with the hardware.
+  *
+@@ -351,6 +356,7 @@ int regcache_sync(struct regmap *map)
+ 	unsigned int i;
+ 	const char *name;
+ 	bool bypass;
++	struct rb_node *node;
  
- #define VPU_PD(__name, __top_pd, __mem, __is_pwr_off, __resets, __clks)	\
+ 	if (WARN_ON(map->cache_type == REGCACHE_NONE))
+ 		return -EINVAL;
+@@ -392,6 +398,30 @@ int regcache_sync(struct regmap *map)
+ 	/* Restore the bypass state */
+ 	map->cache_bypass = bypass;
+ 	map->no_sync_defaults = false;
++
++	/*
++	 * If we did any paging with cache bypassed and a cached
++	 * paging register then the register and cache state might
++	 * have gone out of sync, force writes of all the paging
++	 * registers.
++	 */
++	rb_for_each(node, 0, &map->range_tree, rbtree_all) {
++		struct regmap_range_node *this =
++			rb_entry(node, struct regmap_range_node, node);
++
++		/* If there's nothing in the cache there's nothing to sync */
++		ret = regcache_read(map, this->selector_reg, &i);
++		if (ret != 0)
++			continue;
++
++		ret = _regmap_write(map, this->selector_reg, i);
++		if (ret != 0) {
++			dev_err(map->dev, "Failed to write %x = %x: %d\n",
++				this->selector_reg, i, ret);
++			break;
++		}
++	}
++
+ 	map->unlock(map->lock_arg);
+ 
+ 	regmap_async_complete(map);
 
