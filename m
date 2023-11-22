@@ -2,30 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA6C7F4D1C
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 17:46:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FD987F4D32
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 17:49:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229481AbjKVQq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 11:46:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
+        id S1343819AbjKVQtp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 11:49:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjKVQqz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 11:46:55 -0500
+        with ESMTP id S235122AbjKVQtg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 11:49:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED2B1B5;
-        Wed, 22 Nov 2023 08:46:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B59C433C8;
-        Wed, 22 Nov 2023 16:46:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700671611;
-        bh=Ixoj1ZvTEGh811u0GLno9LmWU1DPcMeaYdUrYC39smM=;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3787110E6;
+        Wed, 22 Nov 2023 08:49:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8454C433CA;
+        Wed, 22 Nov 2023 16:49:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700671760;
+        bh=2eaEiOuJiPmI83K90hZDYAc0bHogYH21CSUhgSS445U=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KkQr7SMNtfyyFwIKjw6EOSmHJbvc0I2sZal2yPuXSVOCs9VmQTOaz/e82zJ4vBzPD
-         voPmwsbHXAH2IMnbHy72vG+BHz596cjPYEadMhXNKEU9+b2ulS5yaA8FG5HMFzNVdJ
-         KaUGbuRjwUjGcMjJnI0k4D3OCh4JG7Fpu55gefeg=
-Date:   Wed, 22 Nov 2023 16:46:49 +0000
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Johan Hovold <johan@kernel.org>
+        b=ORj1pfHG383ZfGaFkbkiJgiyVzT867/J3dvmvSCkgZjFKYDqfDi1r0OZVm/DgP6Pc
+         ViDz4j7NPKGSEHCU89SrvFBF26SpBNuujZefGAI3o59WqwP5mDCxAJyQfHf0SsDk8o
+         /7cBjVVVl+wR4K/Bw3d5CMQi3JMdYWoNMT1YjlJ9kR7rv9F7OSDtbCMy4Hu8H5oky0
+         6VAS0OsnEAZ67VYK/If2gZXlU8RbpjZtBiyaw0NZ8Pzwm33LSt99itdWXw2Kajo1RE
+         +xzRw9Cu3yotvsq/wa0g9kfhYSXWGN6+k5gCsNKBvUkeKUPeFNIR/CWtWM7pgBIeHQ
+         BAglB2rz/XVaQ==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+        (envelope-from <johan@kernel.org>)
+        id 1r5qPv-00031n-0F;
+        Wed, 22 Nov 2023 17:49:35 +0100
+Date:   Wed, 22 Nov 2023 17:49:35 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Sasha Levin <sashal@kernel.org>, broonie@kernel.org,
         perex@perex.cz, tiwai@suse.com, lgirdwood@gmail.com,
         linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
@@ -33,7 +40,7 @@ Cc:     Sasha Levin <sashal@kernel.org>, broonie@kernel.org,
         stable@vger.kernel.org
 Subject: Re: [RFC PATCH 0/2] ASoC: soc-dai: add flag to mute and unmute
  stream during trigger.
-Message-ID: <2023112230-emphases-stardom-3d3a@gregkh>
+Message-ID: <ZV4xH0lBhlwWYtLO@hovoldconsulting.com>
 References: <20231027105747.32450-1-srinivas.kandagatla@linaro.org>
  <ZTukaxUhgY4WLgEs@hovoldconsulting.com>
  <ZV4hMR8oGQBSbnMl@hovoldconsulting.com>
@@ -54,42 +61,20 @@ X-Mailing-List: stable@vger.kernel.org
 
 On Wed, Nov 22, 2023 at 04:35:17PM +0000, Greg Kroah-Hartman wrote:
 > On Wed, Nov 22, 2023 at 04:41:37PM +0100, Johan Hovold wrote:
-> > Hi Greg and Sasha,
-> > 
-> > On Fri, Oct 27, 2023 at 01:52:11PM +0200, Johan Hovold wrote:
-> > > On Fri, Oct 27, 2023 at 11:57:45AM +0100, Srinivas Kandagatla wrote:
-> > > > Click/Pop Noise was a long pending issue with WSA Codecs which are prone
-> > > > to accumlate DC when ports are active but without any data streams.
-> > > > There are multiple places in the current setup, where this could happen
-> > > > in both startup as well as shutdown path.
-> > > > 
-> > > > This patchset adds a new flag mute_unmute_on_trigger to dai_ops to let
-> > > > generic code do the mute/unmute on trigger.
-> > > > 
-> > > > This patches help fix those issues by making sure the PA is Muted/Unmuted
-> > > > inline with the stream start/stop events.
-> > > >
-> > > > Srinivas Kandagatla (2):
-> > > >   ASoC: soc-dai: add flag to mute and unmute stream during trigger
-> > > >   ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag
-> > > 
-> > > I've verified that this fixes the pop sounds when starting and stopping
-> > > a stream on the X13s, even if the click sound when killing pulseaudio
-> > > (e.g. on reboot) is still there (as with the previous fixes).
-> > > 
-> > > Tested-by: Johan Hovold <johan+linaro@kernel.org>
-> > > 
-> > > If these are accepted, can we get them backported to 6.5 as well?
-> > 
+
 > > These fixes are now in 6.7-rc1 as
 > > 
 > > 	f0220575e65a ("ASoC: soc-dai: add flag to mute and unmute stream during trigger")
 > 
 > This doesn't backport cleanly, can you provide a working backport?
-> 
+
+Sure, I'll do that tomorrow.
+ 
 > > 	805ce81826c8 ("ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag")
 > 
 > Now queued up, thanks.
 
-And that broke the build, I'll go drop that too :(
+I don't think this one will build without the former so better to drop
+it from your queues and I'll send backports of both patches tomorrow.
 
+Johan
