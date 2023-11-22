@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96C017F4E4E
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:24:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 459757F4E4F
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:24:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344066AbjKVRYh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:24:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35192 "EHLO
+        id S1344070AbjKVRYk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:24:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344070AbjKVRYg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:24:36 -0500
+        with ESMTP id S1344060AbjKVRYj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:24:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81BEA1A4
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:24:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F1AC433C7;
-        Wed, 22 Nov 2023 17:24:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC12583
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:24:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B153C433C8;
+        Wed, 22 Nov 2023 17:24:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673872;
-        bh=1KUpajgDNcNnZV/haOs8/ERaqSz1A7hOfyb2d9hD3Mk=;
+        s=korg; t=1700673875;
+        bh=HPn9YJC9+hsx6kftNPCqyZq3iCHb53dS+gDWbbQiRHg=;
         h=Subject:To:Cc:From:Date:From;
-        b=VaNWJViFWm3zjiMOG/Be2B6ePredMSgLzAdZQ+PepdpZGSUGZESFrfC2QsWPRqt4N
-         uk/IYIRIal5jVgtWPAjVaSISxnjSDutCHEmuWsBpf4zV2n7TxIBoXs6xutSJJeiYzM
-         zLUuqRffO5amGuN2t8N0pIiALUhjVmf5Nyo/wxnQ=
-Subject: FAILED: patch "[PATCH] hvc/xen: fix console unplug" failed to apply to 5.4-stable tree
+        b=xaHealSFpHXw1mT2H66KykSyeKNpdefygvKIxU63yBEPKBrfHNrcUmG/aZ6vyNQqt
+         bejJzSfYqZnJ5u3515nX1ytJfjcA8+OzCfJCnCTqyefqzu6XR9RX/Vg8D/rDydpHHq
+         vinFush6++8BM/eQ0dRxMeTtZkktRYDkDeicn/QI=
+Subject: FAILED: patch "[PATCH] hvc/xen: fix console unplug" failed to apply to 4.19-stable tree
 To:     dwmw@amazon.co.uk, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:24:29 +0000
-Message-ID: <2023112229-slicing-deceiving-2f7c@gregkh>
+Date:   Wed, 22 Nov 2023 17:24:31 +0000
+Message-ID: <2023112231-graves-congress-59af@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x a30badfd7c13fc8763a9e10c5a12ba7f81515a55
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112229-slicing-deceiving-2f7c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112231-graves-congress-59af@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
