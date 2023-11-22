@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8B757F4B2A
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 16:41:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 972847F4B8D
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 16:50:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344573AbjKVPkD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 10:40:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47864 "EHLO
+        id S235234AbjKVPuC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 10:50:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344631AbjKVPjl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 10:39:41 -0500
+        with ESMTP id S235237AbjKVPto (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 10:49:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D83D49C4;
-        Wed, 22 Nov 2023 07:37:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0BDC433CB;
-        Wed, 22 Nov 2023 15:37:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE301D42;
+        Wed, 22 Nov 2023 07:41:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC11C433CD;
+        Wed, 22 Nov 2023 15:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700667431;
-        bh=iqmGAQ90O89w0fdshBkivkNhkoMkooUfoJ/1xS+9voA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dmy8jgGgeBuTJ9/5DjVbw46sbvEQuIJpXAEeqHoSVaEhhL8o8M1npYyfxKb0l9GpM
-         iON2oqp8scpuwI57qkJ7yy+T8rOkM1cQRHN3GjIHlYwP/LbThbjaJGcWsjcazhB9jd
-         Y6uHkpUuMaiF07FcD5gyF2A8ONE82JvrmB+MPmoi6vL9QTFNb+xn+3Nfp65B1pU/R3
-         /e7zh2uccrWEdKuXx0qn2LvXYxewT1SG6Je4G4Lj0qKaQ3i/DYF6n3XFDYC2+RI3A6
-         BOGs9nWpUYP0AdPKA0/vqx+fnUj7MIhV/iimNW1OO6dHZ7xtbGVP0Bvo4947K17YT3
-         lz1MFcQ8+tMWA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     YuanShang <YuanShang.Mao@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>, Xinhui.Pan@amd.com,
-        airlied@gmail.com, daniel@ffwll.ch, guchun.chen@amd.com,
-        luben.tuikov@amd.com, srinivasan.shanmugam@amd.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 4.14 3/3] drm/amdgpu: correct chunk_ptr to a pointer to chunk.
-Date:   Wed, 22 Nov 2023 10:36:55 -0500
-Message-ID: <20231122153658.853640-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231122153658.853640-1-sashal@kernel.org>
-References: <20231122153658.853640-1-sashal@kernel.org>
+        s=k20201202; t=1700667683;
+        bh=nb+vxqjeyabcUI2vBsYP+73P7f/0NpuXBP4xRLAjd7A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=BBTuAfhePpAotX7sRSqIyitfMkRt+aflL8y0NeRPu/6y8rucwCNTj5e3HzqmtmchV
+         5j2g1w3B5cXxxpSGUESksw5sS32gyNtJNwxbVbq2DizpTz7JiCNfN58/UXpEiYwNi3
+         QC51V/vyzOT0+dogzVgjEfH+9QjcAzNDe8n1QVpribmvrhyQjdZeaWYQ7d2GBNMwyT
+         Kn0Pt3SS1Iv4O1OMeFxLfEDaYZ64qb1oJ4lIycwKFV0EeWXm3H9oWZIzpwZnpmG0e2
+         IHO/pvW3UcLwS1b989ZaksrlU63RrN0ZgE0eLqQKBad7csdka4mJTU/Ufz4npRWNSL
+         4B9cH0yUTP/jA==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+        (envelope-from <johan@kernel.org>)
+        id 1r5pM9-0002ln-2i;
+        Wed, 22 Nov 2023 16:41:38 +0100
+Date:   Wed, 22 Nov 2023 16:41:37 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+        lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
+        alsa-devel@alsa-project.org,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        stable@vger.kernel.org
+Subject: Re: [RFC PATCH 0/2] ASoC: soc-dai: add flag to mute and unmute
+ stream during trigger.
+Message-ID: <ZV4hMR8oGQBSbnMl@hovoldconsulting.com>
+References: <20231027105747.32450-1-srinivas.kandagatla@linaro.org>
+ <ZTukaxUhgY4WLgEs@hovoldconsulting.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.330
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZTukaxUhgY4WLgEs@hovoldconsulting.com>
 X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -57,35 +58,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YuanShang <YuanShang.Mao@amd.com>
+Hi Greg and Sasha,
 
-[ Upstream commit 50d51374b498457c4dea26779d32ccfed12ddaff ]
+On Fri, Oct 27, 2023 at 01:52:11PM +0200, Johan Hovold wrote:
+> On Fri, Oct 27, 2023 at 11:57:45AM +0100, Srinivas Kandagatla wrote:
+> > Click/Pop Noise was a long pending issue with WSA Codecs which are prone
+> > to accumlate DC when ports are active but without any data streams.
+> > There are multiple places in the current setup, where this could happen
+> > in both startup as well as shutdown path.
+> > 
+> > This patchset adds a new flag mute_unmute_on_trigger to dai_ops to let
+> > generic code do the mute/unmute on trigger.
+> > 
+> > This patches help fix those issues by making sure the PA is Muted/Unmuted
+> > inline with the stream start/stop events.
+> >
+> > Srinivas Kandagatla (2):
+> >   ASoC: soc-dai: add flag to mute and unmute stream during trigger
+> >   ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag
+> 
+> I've verified that this fixes the pop sounds when starting and stopping
+> a stream on the X13s, even if the click sound when killing pulseaudio
+> (e.g. on reboot) is still there (as with the previous fixes).
+> 
+> Tested-by: Johan Hovold <johan+linaro@kernel.org>
+> 
+> If these are accepted, can we get them backported to 6.5 as well?
 
-The variable "chunk_ptr" should be a pointer pointing
-to a struct drm_amdgpu_cs_chunk instead of to a pointer
-of that.
+These fixes are now in 6.7-rc1 as
 
-Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	f0220575e65a ("ASoC: soc-dai: add flag to mute and unmute stream during trigger")
+	805ce81826c8 ("ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag")
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 7bad519aaae08..d24ef103471b9 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -113,7 +113,7 @@ static int amdgpu_cs_parser_init(struct amdgpu_cs_parser *p, void *data)
- 	}
- 
- 	for (i = 0; i < p->nchunks; i++) {
--		struct drm_amdgpu_cs_chunk __user **chunk_ptr = NULL;
-+		struct drm_amdgpu_cs_chunk __user *chunk_ptr = NULL;
- 		struct drm_amdgpu_cs_chunk user_chunk;
- 		uint32_t __user *cdata;
- 
--- 
-2.42.0
+As these fix a loud scary crackling noise on the Lenovo ThinkPad X13s,
+is it possible to get these backported at least to stable 6.6 and 6.5?
 
+Johan
