@@ -2,135 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CFDE7F5136
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA397F5137
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:08:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231459AbjKVUIM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 15:08:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59638 "EHLO
+        id S231430AbjKVUIW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 15:08:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbjKVUIL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:08:11 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C62CB18E
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:08:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2472CC433C8;
-        Wed, 22 Nov 2023 20:08:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700683687;
-        bh=9m9vYcgjeOLMd8OAHUG/6iZCF7BP+HGvKmHGZWcoz30=;
-        h=Subject:To:Cc:From:Date:From;
-        b=GmykwonvLWOi7REJhp9uuTnuLhezxL3PU48G4GI5y4TB/9LYepvDoH5CBfhTplt9e
-         kOxFJW6uOJ7bcXdKIsdauCaUJwwdz6Xtw12gbURmxnwp63x2rEnjnyh1cLdVgHu1XF
-         EaCXo/TrbwlPqPilKnItbbx5XWNY3DFdbp46FMW8=
-Subject: FAILED: patch "[PATCH] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e" failed to apply to 5.4-stable tree
-To:     lukas@wunner.de, CSchroeder@sonifi.com, bhelgaas@google.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 20:08:00 +0000
-Message-ID: <2023112200-barcode-wasp-98d7@gregkh>
+        with ESMTP id S230377AbjKVUIV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:08:21 -0500
+Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 077671B6;
+        Wed, 22 Nov 2023 12:08:18 -0800 (PST)
+Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-50aab3bf71fso125891e87.3;
+        Wed, 22 Nov 2023 12:08:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700683696; x=1701288496; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s8AYC5b9thtMS85qgD6tw6luscvzIXZBbdfYYJ8NDCg=;
+        b=j0lr5iMML+ZfzIlKvFagrkAyPIMBcl6MP92HjUquiBC9xWHZv5hLcfKsfkqoJeQs7l
+         iI5FgwlLorr5KwvtV8s2EXEB2QKjNnVqhFhgRSbyGm1Erv2FFZzwi0Oi65vmwdXUs9xU
+         55JHAUzTaO8CQ26jUA3dKanSzVt9j0RbqtfHhROzomxEmoi8i3rTG+FC3E2qPKb7BnW6
+         bzSRBTSiU6weisHhxGY1p8AEGog7A4ts9xLEYd7rKt/Gs5+80SszhI+wi0YE+bHH8oPV
+         9ysuvD6dmrpd6jKFqjeId3Ue4SU7XVcoONyUSIYMwJ7cMknvOfqqywsffnmA+30DJbd5
+         ikGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700683696; x=1701288496;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s8AYC5b9thtMS85qgD6tw6luscvzIXZBbdfYYJ8NDCg=;
+        b=QM7XFbtBkvYQUNwgG6jXMUpoWbIz6B4cK7TJmTar4NjnXGkIf5OxKTtkFKTs7xWzNy
+         20DHAiHlMWlz1DjXcPHKe8i1Zy3urACyeN5tSRgqJDKKf5YIU83k4xVf4aYoeITBLi+A
+         BFGW5yHKp6bctx69kqcTpDc/cnzJqrH6IMPprW9k3qNsfUyoqfxAjK+rdaOG2rokAb+y
+         bdPukuwurUg+RMPHqP5Pu7SZP+WXMV8HLYkvd/ihv51jK/40AYpEgN04fQElGZxNHUq5
+         0eKz0NjKsEdMJjFZM/jayglW5txwu3NQ4977bAj35gRTImgU9UewpC1oL03WStPa57bJ
+         suRg==
+X-Gm-Message-State: AOJu0YzQ3yQ1LUJN57YXKFNxZuLGbhBQpta8oSwHZoZT3zZo0OHDPHWb
+        OxKpGGgR4CN6hL2vSJbNCxZFYytTiQ7Bdb0jyYw=
+X-Google-Smtp-Source: AGHT+IHeOS+BuzcW69z2sOufuTCIe9lZXesx/pE1nfP+T+0BS6Ue+nm/AB56N3vDCdXJGvNkWhfr3dUprALYEYSo3aE=
+X-Received: by 2002:a05:6512:3fc:b0:50a:6793:6954 with SMTP id
+ n28-20020a05651203fc00b0050a67936954mr2037700lfq.9.1700683696006; Wed, 22 Nov
+ 2023 12:08:16 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20231122153340.852434-1-sashal@kernel.org> <20231122153340.852434-10-sashal@kernel.org>
+In-Reply-To: <20231122153340.852434-10-sashal@kernel.org>
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date:   Wed, 22 Nov 2023 21:08:04 +0100
+Message-ID: <CAKXUXMyzvx_9Vn0orKWTMFP1iMxY050EV+WT3hWLaKcGRAtkBQ@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.5 10/15] linux/export: clean up the IA-64
+ KSYM_FUNC macro
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>, deller@gmx.de,
+        ndesaulniers@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, Nov 22, 2023 at 4:34=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+>
+> [ Upstream commit 9e0be3f50c0e8517d0238b62409c20bcb8cd8785 ]
+>
+> With commit cf8e8658100d ("arch: Remove Itanium (IA-64) architecture"),
+> there is no need to keep the IA-64 definition of the KSYM_FUNC macro.
+>
+> Clean up the IA-64 definition of the KSYM_FUNC macro.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Same as I wrote for v6.6 applies to v6.5:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+I am a bit surprised that this is picked up for v6.5. This commit only
+makes sense after IA-64 architecture is removed and I do not think we
+want to backport that change to v6.5. So, this change here should not
+be backported as well.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x c9260693aa0c1e029ed23693cfd4d7814eee6624
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112200-barcode-wasp-98d7@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+Lukas
 
-Possible dependencies:
 
-c9260693aa0c ("PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e card")
-26409dd04589 ("of: unittest: Add pci_dt_testdrv pci driver")
-ae9813db1dc5 ("PCI: Add quirks to generate device tree node for Xilinx Alveo U50")
-74df14cd301a ("of: unittest: add node lifecycle tests")
-e87cacadebaf ("of: overlay: rename overlay source files from .dts to .dtso")
-5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root Ports")
-3cc30140dbe2 ("Merge tag 'pci-v5.19-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c9260693aa0c1e029ed23693cfd4d7814eee6624 Mon Sep 17 00:00:00 2001
-From: Lukas Wunner <lukas@wunner.de>
-Date: Thu, 21 Sep 2023 16:23:34 +0200
-Subject: [PATCH] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e
- card
-
-Commit ac91e6980563 ("PCI: Unify delay handling for reset and resume")
-shortened an unconditional 1 sec delay after a Secondary Bus Reset to 100
-msec for PCIe (per PCIe r6.1 sec 6.6.1).  The 1 sec delay is only required
-for Conventional PCI.
-
-But it turns out that there are PCIe devices which require a longer delay
-than prescribed before first config space access after reset recovery or
-resume from D3cold:
-
-Chad reports that a "VideoPropulsion Torrent QN16e" MPEG QAM Modulator
-"raises a PCI system error (PERR), as reported by the IPMI event log, and
-the hardware itself would suffer a catastrophic event, cycling the server"
-unless the longer delay is observed.
-
-The card is specified to conform to PCIe r1.0 and indeed only supports Gen1
-speed (2.5 GT/s) according to lspci.  PCIe r1.0 sec 7.6 prescribes the same
-100 msec delay as PCIe r6.1 sec 6.6.1:
-
-  To allow components to perform internal initialization, system software
-  must wait for at least 100 ms from the end of a reset (cold/warm/hot)
-  before it is permitted to issue Configuration Requests
-
-The behavior of the Torrent QN16e card thus appears to be a quirk.  Treat
-it as such and lengthen the reset delay for this specific device.
-
-Fixes: ac91e6980563 ("PCI: Unify delay handling for reset and resume")
-Link: https://lore.kernel.org/r/47727e792c7f0282dc144e3ec8ce8eb6e713394e.1695304512.git.lukas@wunner.de
-Reported-by: Chad Schroeder <CSchroeder@sonifi.com>
-Closes: https://lore.kernel.org/linux-pci/DM6PR16MB2844903E34CAB910082DF019B1FAA@DM6PR16MB2844.namprd16.prod.outlook.com/
-Tested-by: Chad Schroeder <CSchroeder@sonifi.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org # v5.4+
-
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index eeec1d6f9023..91a15d79c7c4 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6188,3 +6188,15 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005, of_pci_make_dev_node);
-+
-+/*
-+ * Devices known to require a longer delay before first config space access
-+ * after reset recovery or resume from D3cold:
-+ *
-+ * VideoPropulsion (aka Genroco) Torrent QN16e MPEG QAM Modulator
-+ */
-+static void pci_fixup_d3cold_delay_1sec(struct pci_dev *pdev)
-+{
-+	pdev->d3cold_delay = 1000;
-+}
-+DECLARE_PCI_FIXUP_FINAL(0x5555, 0x0004, pci_fixup_d3cold_delay_1sec);
-
+>  include/linux/export-internal.h | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/include/linux/export-internal.h b/include/linux/export-inter=
+nal.h
+> index 45fca09b23194..69501e0ec239f 100644
+> --- a/include/linux/export-internal.h
+> +++ b/include/linux/export-internal.h
+> @@ -50,9 +50,7 @@
+>             "   .previous"                                              "=
+\n"    \
+>         )
+>
+> -#ifdef CONFIG_IA64
+> -#define KSYM_FUNC(name)                @fptr(name)
+> -#elif defined(CONFIG_PARISC) && defined(CONFIG_64BIT)
+> +#if defined(CONFIG_PARISC) && defined(CONFIG_64BIT)
+>  #define KSYM_FUNC(name)                P%name
+>  #else
+>  #define KSYM_FUNC(name)                name
+> --
+> 2.42.0
+>
