@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 795E07F4F12
+	by mail.lfdr.de (Postfix) with ESMTP id CAC4E7F4F13
 	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 19:15:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231410AbjKVSOj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 13:14:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45662 "EHLO
+        id S1343706AbjKVSOk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 13:14:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344162AbjKVRZl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:41 -0500
+        with ESMTP id S1344199AbjKVRZp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:45 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5551919D
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FA9C433C8;
-        Wed, 22 Nov 2023 17:25:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC995191
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5BCC433C7;
+        Wed, 22 Nov 2023 17:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673938;
-        bh=EE4YqKL77n9Q1KH6sx7LohwT73ACCE8OZIyiXP7+Rtk=;
+        s=korg; t=1700673940;
+        bh=L3/eARbAhz3c3UmFLvPXee9EbpPmi739tAff1b8sD7E=;
         h=Subject:To:Cc:From:Date:From;
-        b=LM5iTywu5Rz9FneLExWPuzl7ZqXwTPhc/It4TO5Y7K0KabUM8HwKmxvaZjs91b6FB
-         sil/m0UYiIvaihPTNRSD9opb0s4O81MjFqJEz9ntlcwmxtq1cHT3qoeN79+CjCTy6/
-         QTUVnNSXEabW+N1Nc5L2YKZLVLVyEdCVGgRKdef0=
-Subject: FAILED: patch "[PATCH] apparmor: Fix regression in mount mediation" failed to apply to 6.5-stable tree
+        b=Dd56JxlL9KtKw9RDIg1V2XyY5OdQSjF0x7bU2WFGAXd26CxcA9TNHt4MbpJup9rpQ
+         9yEbM7Up+Wy9SK42h9tzEsQeK55TuQPfwe3TIigDU/iDSWEPmVNCnnclC6BBytJz8V
+         aRHl17wWMeEcYl93IrAcZ0pPSP0K/d07couMUZ88=
+Subject: FAILED: patch "[PATCH] apparmor: Fix regression in mount mediation" failed to apply to 6.1-stable tree
 To:     john.johansen@canonical.com, anstein99@googlemail.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:25:33 +0000
-Message-ID: <2023112233-dreary-equal-0d84@gregkh>
+Date:   Wed, 22 Nov 2023 17:25:34 +0000
+Message-ID: <2023112234-footpath-shaping-b259@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 157a3537d6bc28ceb9a11fc8cb67f2152d860146
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112233-dreary-equal-0d84@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112234-footpath-shaping-b259@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,18 @@ bd7bd201ca46 ("apparmor: combine common_audit_data and apparmor_audit_data")
 13c1748e2170 ("apparmor: Fix kernel-doc warnings in apparmor/resource.c")
 892148228611 ("apparmor: Fix kernel-doc warnings in apparmor/lib.c")
 26c9ecb34f5f ("apparmor: Fix kernel-doc warnings in apparmor/audit.c")
+76862af5d1ad ("apparmor: fix kernel-doc complaints")
+665b1856dc23 ("apparmor: Fix loading of child before parent")
+2f7a29debae2 ("apparmor: remove useless static inline functions")
+65f7f666f21c ("apparmor: make __aa_path_perm() static")
+1ad22fcc4d0d ("apparmor: rework profile->rules to be a list")
+217af7e2f4de ("apparmor: refactor profile rules and attachments")
+3bf3d728a58d ("apparmor: verify loaded permission bits masks don't overlap")
+3dfd16ab697f ("apparmor: cleanup: move perm accumulation into perms.h")
+0bece4fa97a2 ("apparmor: make sure perm indexes are accumulated")
+670f31774ab6 ("apparmor: verify permission table indexes")
+371e50a0b19f ("apparmor: make unpack_array return a trianary value")
+ad596ea74e74 ("apparmor: group dfa policydb unpacking")
 
 thanks,
 
