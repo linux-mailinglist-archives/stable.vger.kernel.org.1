@@ -1,34 +1,34 @@
 Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CAC4E7F4F13
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 19:15:14 +0100 (CET)
+Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
+	by mail.lfdr.de (Postfix) with ESMTP id B93347F4E59
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:25:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343706AbjKVSOk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 13:14:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37448 "EHLO
+        id S1344111AbjKVRZs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:25:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344199AbjKVRZp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:45 -0500
+        with ESMTP id S1344228AbjKVRZq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC995191
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5BCC433C7;
-        Wed, 22 Nov 2023 17:25:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52F0B83
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA144C433C7;
+        Wed, 22 Nov 2023 17:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673940;
-        bh=L3/eARbAhz3c3UmFLvPXee9EbpPmi739tAff1b8sD7E=;
+        s=korg; t=1700673943;
+        bh=CoYWXf0W6j9yJoJ+oKD69scu7AsR8CgzUhbRzWIIZic=;
         h=Subject:To:Cc:From:Date:From;
-        b=Dd56JxlL9KtKw9RDIg1V2XyY5OdQSjF0x7bU2WFGAXd26CxcA9TNHt4MbpJup9rpQ
-         9yEbM7Up+Wy9SK42h9tzEsQeK55TuQPfwe3TIigDU/iDSWEPmVNCnnclC6BBytJz8V
-         aRHl17wWMeEcYl93IrAcZ0pPSP0K/d07couMUZ88=
-Subject: FAILED: patch "[PATCH] apparmor: Fix regression in mount mediation" failed to apply to 6.1-stable tree
+        b=ZBQ1g88q6SnCHgUsbx9bOuHsoxcjhkBdvpFD7sGa/S/oeX2/Vk3B7k21J37oW5Y+o
+         RdxahSqwN5eZkY3sejQLqP3ZD6Wvrd0mj+6hDjfWprgL7eAtf0uksJ/RBUMzRFZNWm
+         Z4pVxmFNHUdzktUKjyd1uR0XCnQRi6kjev54RgfA=
+Subject: FAILED: patch "[PATCH] apparmor: Fix regression in mount mediation" failed to apply to 5.15-stable tree
 To:     john.johansen@canonical.com, anstein99@googlemail.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:25:34 +0000
-Message-ID: <2023112234-footpath-shaping-b259@gregkh>
+Date:   Wed, 22 Nov 2023 17:25:35 +0000
+Message-ID: <2023112235-lumpish-zap-8c3f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 157a3537d6bc28ceb9a11fc8cb67f2152d860146
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112234-footpath-shaping-b259@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112235-lumpish-zap-8c3f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
