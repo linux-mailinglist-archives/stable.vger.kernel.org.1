@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C104B7F50B4
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:35:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 781757F50B7
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:36:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232096AbjKVTfn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 14:35:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57052 "EHLO
+        id S231738AbjKVTg1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:36:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235098AbjKVTfi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:35:38 -0500
+        with ESMTP id S231459AbjKVTg0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:36:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B341A4
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:35:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8ACAC433C8;
-        Wed, 22 Nov 2023 19:35:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A4C12A
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:36:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7475DC433C8;
+        Wed, 22 Nov 2023 19:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700681732;
-        bh=ttwIPmX8WOLsrVyelPuExlfthQa2ifWosFOe6puna8s=;
+        s=korg; t=1700681782;
+        bh=GU1ROVxpfRBaPDx/G5VOdhtMgY9q/cL6XrDc3aw/RmM=;
         h=Subject:To:Cc:From:Date:From;
-        b=G8w8YNBje9AeoCjebveV/vsSEkVxzxYQNtk/noi0+o85IyUV+NrYxAz2CkEWPSoY1
-         Ja2j1DBkKoxSisszn6QitP3XwzcCUzom4V4XPcqeWshMvaHfRVf5XnlJjrQehFFgNt
-         QSEo6m+929/AbhDAJRsg+W4FGKrKBTN4rku+MT+E=
-Subject: FAILED: patch "[PATCH] Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE" failed to apply to 4.14-stable tree
-To:     guanwentao@uniontech.com, luiz.von.dentz@intel.com,
-        tangmeng@uniontech.com
+        b=zAsVhiMIjtQkQaOdM71OXRmYiwtsCz8K27K2NIBcMMbWnaBB6tn+eFLJHT61Ut5rA
+         gK53HSkFkNPj8522dEp8lLW+y8PYSVV6yLhcuzSpV4hfmP+1VOfcViCxZDzb1cuNcW
+         hA/k+dzy2FG1o7A7RzWIzAwqzA3nAgowQvd69JJo=
+Subject: FAILED: patch "[PATCH] drm/amd/display: enable dsc_clk even if dsc_pg disabled" failed to apply to 6.6-stable tree
+To:     ahmed.ahmed@amd.com, alexander.deucher@amd.com,
+        aurabindo.pillai@amd.com, charlene.liu@amd.com,
+        daniel.wheeler@amd.com, mario.limonciello@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 19:35:23 +0000
-Message-ID: <2023112223-mountable-drainable-f2f4@gregkh>
+Date:   Wed, 22 Nov 2023 19:36:20 +0000
+Message-ID: <2023112220-immovable-squirt-1044@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -44,28 +45,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x da06ff1f585ea784c79f80e7fab0e0c4ebb49c1c
+git cherry-pick -x 40255df370e94d44f0f0a924400d68db0ee31bec
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112223-mountable-drainable-f2f4@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112220-immovable-squirt-1044@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-da06ff1f585e ("Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE")
-02be109d3a40 ("Bluetooth: btusb: Add RTW8852BE device 13d3:3570 to device tables")
-069f534247bb ("bluetooth: Add device 13d3:3571 to device tables")
-730a1d1a93a3 ("bluetooth: Add device 0bda:887b to device tables")
-393b4916b7b5 ("Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x0cb8:0xc559")
-33bfd94a05ab ("Bluetooth: btusb: add Realtek 8822CE to usb_device_id table")
+40255df370e9 ("drm/amd/display: enable dsc_clk even if dsc_pg disabled")
+0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
 
 thanks,
 
@@ -73,68 +70,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From da06ff1f585ea784c79f80e7fab0e0c4ebb49c1c Mon Sep 17 00:00:00 2001
-From: Guan Wentao <guanwentao@uniontech.com>
-Date: Thu, 12 Oct 2023 19:21:17 +0800
-Subject: [PATCH] Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE
+From 40255df370e94d44f0f0a924400d68db0ee31bec Mon Sep 17 00:00:00 2001
+From: Muhammad Ahmed <ahmed.ahmed@amd.com>
+Date: Mon, 18 Sep 2023 16:52:54 -0400
+Subject: [PATCH] drm/amd/display: enable dsc_clk even if dsc_pg disabled
 
-Add PID/VID 0bda:b85b for Realtek RTL8852BE USB bluetooth part.
-The PID/VID was reported by the patch last year. [1]
-Some SBCs like rockpi 5B A8 module contains the device.
-And it`s founded in website. [2] [3]
+[why]
+need to enable dsc_clk regardless dsc_pg
 
-Here is the device tables in /sys/kernel/debug/usb/devices .
-
-T:  Bus=07 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=b85b Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-
-Link: https://lore.kernel.org/all/20220420052402.19049-1-tangmeng@uniontech.com/ [1]
-Link: https://forum.radxa.com/t/bluetooth-on-ubuntu/13051/4 [2]
-Link: https://ubuntuforums.org/showthread.php?t=2489527 [3]
-
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Meng Tang <tangmeng@uniontech.com>
-Signed-off-by: Guan Wentao <guanwentao@uniontech.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Muhammad Ahmed <ahmed.ahmed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index d793dcd06687..b8e9de887b5d 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -544,6 +544,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3570), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 72dffb7a49f9..39e291a467e2 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1853,7 +1853,7 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
+ 	if (dc->hwss.subvp_pipe_control_lock)
+ 		dc->hwss.subvp_pipe_control_lock(dc, context, true, true, NULL, subvp_prev_use);
+ 
+-	if (dc->debug.enable_double_buffered_dsc_pg_support)
++	if (dc->hwss.update_dsc_pg)
+ 		dc->hwss.update_dsc_pg(dc, context, false);
+ 
+ 	disable_dangling_plane(dc, context);
+@@ -1960,7 +1960,7 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
+ 		dc->hwss.optimize_bandwidth(dc, context);
+ 	}
+ 
+-	if (dc->debug.enable_double_buffered_dsc_pg_support)
++	if (dc->hwss.update_dsc_pg)
+ 		dc->hwss.update_dsc_pg(dc, context, true);
+ 
+ 	if (dc->ctx->dce_version >= DCE_VERSION_MAX)
+@@ -2207,7 +2207,7 @@ void dc_post_update_surfaces_to_stream(struct dc *dc)
+ 
+ 		dc->hwss.optimize_bandwidth(dc, context);
+ 
+-		if (dc->debug.enable_double_buffered_dsc_pg_support)
++		if (dc->hwss.update_dsc_pg)
+ 			dc->hwss.update_dsc_pg(dc, context, true);
+ 	}
+ 
+@@ -3565,7 +3565,7 @@ static void commit_planes_for_stream(struct dc *dc,
+ 		if (get_seamless_boot_stream_count(context) == 0)
+ 			dc->hwss.prepare_bandwidth(dc, context);
+ 
+-		if (dc->debug.enable_double_buffered_dsc_pg_support)
++		if (dc->hwss.update_dsc_pg)
+ 			dc->hwss.update_dsc_pg(dc, context, false);
+ 
+ 		context_clock_trace(dc, context);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
+index 76fd7a41bdbf..45b557d8e089 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
+@@ -77,6 +77,9 @@ void dcn32_dsc_pg_control(
+ 	if (hws->ctx->dc->debug.disable_dsc_power_gate)
+ 		return;
+ 
++	if (!hws->ctx->dc->debug.enable_double_buffered_dsc_pg_support)
++		return;
++
+ 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
+ 	if (org_ip_request_cntl == 0)
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_resource.c
+index 10ae1b3da751..6214866916c7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_resource.c
+@@ -742,7 +742,7 @@ static const struct dc_debug_options debug_defaults_drv = {
+ 	.disable_mem_low_power = false,
+ 	.enable_hpo_pg_support = false,
+ 	//must match enable_single_display_2to1_odm_policy to support dynamic ODM transitions
+-	.enable_double_buffered_dsc_pg_support = false,
++	.enable_double_buffered_dsc_pg_support = true,
+ 	.enable_dp_dig_pixel_rate_div_policy = 1,
+ 	.disable_z10 = false,
+ 	.ignore_pg = true,
 
