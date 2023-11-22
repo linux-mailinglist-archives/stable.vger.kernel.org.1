@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B4DA7F4E37
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:22:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F2417F4E38
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:22:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232077AbjKVRWf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:22:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38504 "EHLO
+        id S231797AbjKVRWo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:22:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbjKVRWe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:22:34 -0500
+        with ESMTP id S231793AbjKVRWn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:22:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D391B5
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:22:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E43BC433C7;
-        Wed, 22 Nov 2023 17:22:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCE283
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:22:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEF4C433C7;
+        Wed, 22 Nov 2023 17:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673750;
-        bh=l8q4zsOB//RgPiSgoASHJUel7b7rZqxLhG5qyrE6gts=;
+        s=korg; t=1700673760;
+        bh=26AO9xs2LQKrRaRm0a3FBZHA5edNXo99y6OE9oa+HLA=;
         h=Subject:To:Cc:From:Date:From;
-        b=rzP7hLYTrZeW+hfV1ZSQjfVwAvHawgr6CbjJTsGcmbpzZMsFncsw7ZEubWvl4eRom
-         /YKKQJpj6tGhWeLXJd3eaY/rFRWPcYdCKwG2qotsIjq7MwVMJPeBe+TJ/dNdjQBUK5
-         MElNdinq5pNE7wAdZfLCHdFesCvcFsQNCk8/ar6Q=
-Subject: FAILED: patch "[PATCH] proc: sysctl: prevent aliased sysctls from getting passed to" failed to apply to 5.15-stable tree
+        b=iCLPbc4kbTWOYcIJXES5Qe1CD6j9jmxR7NEuWxtYGrX4jY95cwJG0pu4Fh7AHZD6a
+         CpVeEWv8RIkLPs3orTmfdTgBG0ulKslfwcE6hUesn9dn39cLFsiM8cuUcphMThzraw
+         Wdag2+gD9jr21X1FL4qK6x1o6SXnXV9K1wRiaO2Y=
+Subject: FAILED: patch "[PATCH] proc: sysctl: prevent aliased sysctls from getting passed to" failed to apply to 5.10-stable tree
 To:     kjlx@templeofstupid.com, mcgrof@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:22:28 +0000
-Message-ID: <2023112228-racoon-mossy-ce5e@gregkh>
+Date:   Wed, 22 Nov 2023 17:22:29 +0000
+Message-ID: <2023112229-gosling-ditzy-fbf3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8001f49394e353f035306a45bcf504f06fca6355
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112228-racoon-mossy-ce5e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112229-gosling-ditzy-fbf3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,10 @@ f628867da46f ("sysctl: make ngroups_max const")
 bbe7a10ed83a ("hung_task: move hung_task sysctl interface to hung_task.c")
 78e36f3b0dae ("sysctl: move some boundary constants from sysctl.c to sysctl_vals")
 39c65a94cd96 ("mm/pagealloc: sysctl: change watermark_scale_factor max limit to 30%")
+6e7c1770a212 ("fs: simplify get_filesystem_list / get_all_fs_names")
+f9259be6a9e7 ("init: allow mounting arbitrary non-blockdevice filesystems as root")
+e24d12b7442a ("init: split get_fs_names")
+08389d888287 ("bpf: Add kconfig knob for disabling unpriv bpf by default")
 
 thanks,
 
