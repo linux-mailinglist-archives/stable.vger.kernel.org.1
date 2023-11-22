@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A08587F4E4B
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB2167F4E4C
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:24:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344056AbjKVRYZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:24:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52898 "EHLO
+        id S1344043AbjKVRY2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:24:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344043AbjKVRYZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:24:25 -0500
+        with ESMTP id S1344017AbjKVRY1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:24:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 839FC191
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:24:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECC8C433C9;
-        Wed, 22 Nov 2023 17:24:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A3C783
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:24:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD7EC433C7;
+        Wed, 22 Nov 2023 17:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673861;
-        bh=kO+1xjIM/pRywbPwpsehibC38RPunraUVyhmxMe1Inc=;
+        s=korg; t=1700673863;
+        bh=fFgsR7Df+wQ4r/dBWcoe29/fb9ZtER9bIY16tz9kn14=;
         h=Subject:To:Cc:From:Date:From;
-        b=mTMjuERVKGGgXayLBJibj3dDWQ/QIGM9GCX3/oVBRSAsFzVPQ5DGLAyev6ON3Cnn9
-         /zDNUQH4D0M+zuPTUus28JLCklIZoOPeyEX7QeRJV0vsN72DHj+tcN2tM/8SrlBUQ3
-         WEMuOL8iWnp0H0fuxRZ9mVlPhmcdjAO6RjbuPdZU=
-Subject: FAILED: patch "[PATCH] acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0" failed to apply to 5.4-stable tree
+        b=eb1bPXXTvIQp5J8XIj0mcD4QVkaIbR/y90oxZexzpmBT28O13u4KqPqmnzx6WXgI+
+         XDavt/oxLqYTeJIlVxHUfjn5aRV3Wk+FOtTfbHOeSW4ST/MK+ilTwutzxSjEStGscz
+         FPGGZHMtu6BEP2poTyx90xAv80FN7/G2/rlUu/H0=
+Subject: FAILED: patch "[PATCH] acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0" failed to apply to 4.19-stable tree
 To:     roger.pau@citrix.com, jandryuk@gmail.com, jgross@suse.com,
         michal.wilczynski@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:24:12 +0000
-Message-ID: <2023112212-yoyo-stoplight-03b7@gregkh>
+Date:   Wed, 22 Nov 2023 17:24:14 +0000
+Message-ID: <2023112213-control-spent-ad42@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x bfa993b355d33a438a746523e7129391c8664e8a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112212-yoyo-stoplight-03b7@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112213-control-spent-ad42@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
