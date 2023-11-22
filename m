@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2927F7F4E3E
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 291027F4E40
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233978AbjKVRXm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:23:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60022 "EHLO
+        id S234695AbjKVRXp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:23:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232615AbjKVRXl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:41 -0500
+        with ESMTP id S234605AbjKVRXo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E9511F
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A67C433C8;
-        Wed, 22 Nov 2023 17:23:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF0C711F
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D3BC433C9;
+        Wed, 22 Nov 2023 17:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673817;
-        bh=UbSLGtG42lNo0v5st2DYYQO3oMkvPMnrUIpTgLFvXsk=;
+        s=korg; t=1700673820;
+        bh=/VI6QPIsKCPMmDlzssoFKtiVWQYqj64yMK5C+hcEeSg=;
         h=Subject:To:Cc:From:Date:From;
-        b=WFTyHDZiocrjk/RPBrXe8LZVnxwrlB04iXgo8qmtv22A1AZnqGYTHaxnGVssFdSKk
-         D5J54Q/BmCK5ilgd9TEHtGaXNCzF5sei+kO+1MIFM7zkcrO1SGBUwj9tLXh+WzHJYq
-         41GwHT/51GX7pYBLvXP8dHnZM8pdHri9o9ahnlDw=
-Subject: FAILED: patch "[PATCH] tty: serial: meson: fix hard LOCKUP on crtscts mode" failed to apply to 5.10-stable tree
+        b=kJ5scPKbJSFlGsyqQbQW0eQxqSp6wDxv8SXz4a8jeRLwr8k/oGRbmnVtYQAolkk8t
+         1NBfjREsJdVSzNDuT9gx7u3fS5B84gx0Z8sUHJmQB2tCT93y2GVnx4atndjuMZTWLA
+         p1gUhzhVwNr2NBeZFpjk7GJ164KGuSBASP6adpgY=
+Subject: FAILED: patch "[PATCH] tty: serial: meson: fix hard LOCKUP on crtscts mode" failed to apply to 5.4-stable tree
 To:     pkrasavin@imaqliq.com, ddrokosov@salutedevices.com,
         gregkh@linuxfoundation.org, neil.armstrong@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:23:33 +0000
-Message-ID: <2023112233-axis-track-6846@gregkh>
+Date:   Wed, 22 Nov 2023 17:23:35 +0000
+Message-ID: <2023112235-kettle-curdle-baee@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2a1d728f20edeee7f26dc307ed9df4e0d23947ab
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112233-axis-track-6846@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112235-kettle-curdle-baee@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -64,6 +64,7 @@ Possible dependencies:
 5b6806198347 ("serial: meson: Use platform_get_irq() to get the interrupt")
 27d44e05d7b8 ("tty: serial: meson: retrieve port FIFO size from DT")
 021212f53352 ("serial: meson: remove redundant initialization of variable id")
+dca3ac8d3bc9 ("tty/serial: Migrate meson_uart to use has_sysrq")
 
 thanks,
 
