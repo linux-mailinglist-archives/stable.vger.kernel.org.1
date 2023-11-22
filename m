@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82BAD7F4FF7
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 19:53:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E707B7F4FF8
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 19:53:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344178AbjKVSxH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 13:53:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40736 "EHLO
+        id S235029AbjKVSxO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 13:53:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344353AbjKVSxF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 13:53:05 -0500
+        with ESMTP id S1344332AbjKVSxN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 13:53:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8801D44
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 10:53:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83A8C433C8;
-        Wed, 22 Nov 2023 18:52:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030E193
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 10:53:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E97C433C8;
+        Wed, 22 Nov 2023 18:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700679180;
-        bh=zxMgGobUnjmIDsLTMvbZdiXxDfoThC0jw/QQ93IEQV8=;
+        s=korg; t=1700679189;
+        bh=8SK9oW7s5PCp1Sj+Ykjvae6md7Sawg76t3cU6fCjFOY=;
         h=Subject:To:Cc:From:Date:From;
-        b=y6HKmOuSPfzASVpCy/6w8xP7Brhf9csjVnUugFgPHwita14bHkl8TQZw18YBxQ3D3
-         wmDyBYZXN/3Fw2uR3Rs/MPlhojcxy0stnqdpcDCLFU20iONSEFFNp3KkJ1Ugxtk+wI
-         6K/OnUDdJ3cstgf/yQ+YBrPXHIoQc2vrr+4zMbLo=
-Subject: FAILED: patch "[PATCH] pmdomain: bcm: bcm2835-power: check if the ASB register is" failed to apply to 6.5-stable tree
+        b=B7EqteS9UrLNALAswJV+2KKRK5Pf4/H7kN7aBy+SE5yJxihnkyPvew+cxOArFtBnM
+         aHKBOHRLsv1xOQCC2GWCej4UOqHiLy3+dE73TUZTwi1hhdYhH/ZftAy8zCam5UZLQU
+         z86I63mmfZ2/sNoLNLKCkE7ZyTrc8/Fw4L0uSPbA=
+Subject: FAILED: patch "[PATCH] pmdomain: bcm: bcm2835-power: check if the ASB register is" failed to apply to 6.1-stable tree
 To:     mcanal@igalia.com, florian.fainelli@broadcom.com,
         stefan.wahren@i2se.com, ulf.hansson@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 18:52:57 +0000
-Message-ID: <2023112257-putdown-prozac-affa@gregkh>
+Date:   Wed, 22 Nov 2023 18:52:58 +0000
+Message-ID: <2023112258-embezzle-unspoiled-01c4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2e75396f1df61e1f1d26d0d703fc7292c4ae4371
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112257-putdown-prozac-affa@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112258-embezzle-unspoiled-01c4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
