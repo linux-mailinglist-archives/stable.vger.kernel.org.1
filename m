@@ -2,126 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C71AB7F3A9F
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 01:18:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7193F7F3B3A
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 02:25:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229488AbjKVASB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 21 Nov 2023 19:18:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43792 "EHLO
+        id S235008AbjKVBZg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 21 Nov 2023 20:25:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbjKVASA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 19:18:00 -0500
-Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31F71F4
-        for <stable@vger.kernel.org>; Tue, 21 Nov 2023 16:17:57 -0800 (PST)
-Received: by mail-pj1-x1042.google.com with SMTP id 98e67ed59e1d1-28098ebd5aeso4970993a91.0
-        for <stable@vger.kernel.org>; Tue, 21 Nov 2023 16:17:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700612276; x=1701217076; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=UHAcpvU+eVs0NsKFjWhxOoa97l9fKN/fj+2hBaE0nLQ=;
-        b=INoQGanciceM/o3DPjJNJVa5HIPEru75kLOvgYUxGH1yQAg0Li/Rqj1evzx124/Wpw
-         7EFlkkfHfWA/GOUWPItmJbueWzc4Wdks6GFH8iG7+ieElUxaOTitD+wRcudJwq3uUrCd
-         e4S7gpPNVMbMiLj6qHy8RSL97luojkBpByAqlK2FF4OTrYr73So1vpsVlUwMruQXdrtg
-         q+VdmMLiHbmkJ4TH/byUxi72tLvVk+KJbz5owEsbsEQTjmCF3MY3+U2jHOQ5+5lohQQw
-         In3Tu3/KEz+AQt7VIZzj0+GUBmMuwJs48viqj32spUfxfwKji7nT5xsdKjqKxtXd1ouL
-         IcYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700612276; x=1701217076;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UHAcpvU+eVs0NsKFjWhxOoa97l9fKN/fj+2hBaE0nLQ=;
-        b=Hr1BtFLRXA0FhY+Vpd3p6VZqfc9IlLx6ayRhbKOyWJ3KxR4aieuOKpJAIkiI/qrRm1
-         FpA386+auITWKd0A3nL6IYOm0f2kFk2YiqSVk+t4Kn7B7BktqV/u12OpS45h7Dv/iqNU
-         QHMQtYuRQMHpBaib/GTeQdxiX1Tlb++vDRaX/9f1Cns/8SXcYnmRX6RJQNjC9pN3jXNx
-         I5PiW4VdBFigPH/KvW2ahAKGW4fDWaxpclkR/Tco2UmfqX1bWO+vwE8tTs8obm/5KaIx
-         +YAD7fe/jj5SVahArfNOP/Ib4cE2msBI5vrZtr9bcMTy1D8ImQ8npr5AX9az26V4AgqE
-         A7lA==
-X-Gm-Message-State: AOJu0YyVOpnukrvVHKeEppRBMcvf7UHErHp+0quUkUd3MhRw9t3YJHj2
-        59PEB0Pg7wvIMWz3swj1xuU=
-X-Google-Smtp-Source: AGHT+IHdTG1bdssvL0ItH/m2SWWyIRlteZKjU2+a0/kgWMy/s/iUya8vyiLYqh8SKJodmYSHP38V4A==
-X-Received: by 2002:a17:90b:4a4e:b0:280:cd15:9684 with SMTP id lb14-20020a17090b4a4e00b00280cd159684mr1026246pjb.37.1700612276170;
-        Tue, 21 Nov 2023 16:17:56 -0800 (PST)
-Received: from [10.10.13.50] ([136.226.64.177])
-        by smtp.gmail.com with ESMTPSA id jw11-20020a170903278b00b001cc3a6813f8sm8569741plb.154.2023.11.21.16.17.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 21 Nov 2023 16:17:55 -0800 (PST)
-Message-ID: <8b130415-4f70-495c-85dc-355e3cd2db17@gmail.com>
-Date:   Tue, 21 Nov 2023 16:17:54 -0800
+        with ESMTP id S234922AbjKVBZf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 21 Nov 2023 20:25:35 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4D351A3;
+        Tue, 21 Nov 2023 17:25:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700616331; x=1732152331;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=t8oT6RUsi73gqqA7YznCIrpliumT0ylzF6sXsPx7xLk=;
+  b=gb0fzyw1SpfYez0a5WJQtg2x6KTxCkaUiE9YLB5IhJ/jsq8M1r8Lql4s
+   cV7X1sY24EoxBtKnQbT1L0mNlNYq7FoxR1R3P4LN4EULb5DI5XNtLis4A
+   l5c17LBfhtcNhlorL6JmhRhRL57HAVcd2NOw5CSRfu59kBSxM/0Mugmbz
+   gXIzIcner2p8k+zgtqAt3LOxuWekVGTzPOKk8TbsHu6r+bMGY2Z0cv+in
+   URnmWn38M0aVaQNEMj7p9t2iRau2b5ALFwCsCmSy5P94qw7cnrlQK8nLN
+   pkNUN55bwmHYjObvRXlo6QzQesBxHRi4Au8RlJ35E3a0wbdO0V3fsehv0
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="382354354"
+X-IronPort-AV: E=Sophos;i="6.04,217,1695711600"; 
+   d="scan'208";a="382354354"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2023 17:25:31 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10901"; a="766827289"
+X-IronPort-AV: E=Sophos;i="6.04,217,1695711600"; 
+   d="scan'208";a="766827289"
+Received: from lkp-server02.sh.intel.com (HELO b8de5498638e) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 21 Nov 2023 17:25:27 -0800
+Received: from kbuild by b8de5498638e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1r5bzH-0008UM-0y;
+        Wed, 22 Nov 2023 01:25:24 +0000
+Date:   Wed, 22 Nov 2023 09:24:43 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Sanath S <Sanath.S@amd.com>, andreas.noever@gmail.com,
+        michael.jamet@intel.com, mika.westerberg@linux.intel.com,
+        YehezkelShB@gmail.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+        Sanath S <Sanath.S@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        stable@vger.kernel.org
+Subject: Re: [Patch] thunderbolt: Add quirk to reset downstream port
+Message-ID: <202311220931.2IqiKNXr-lkp@intel.com>
+References: <20231121174701.3922587-1-Sanath.S@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.5 153/191] Input: xpad - add HyperX Clutch Gladiate
- Support
-From:   "Nguyen, Max" <hphyperxdev@gmail.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, "Nguyen, Max" <maxwell.nguyen@hyperx.com>,
-        carl.ng@hp.com
-References: <20231016084015.400031271@linuxfoundation.org>
- <20231016084018.949398466@linuxfoundation.org>
- <MW4PR84MB17804D57BB57C0E2FB66EFC6EBADA@MW4PR84MB1780.NAMPRD84.PROD.OUTLOOK.COM>
- <MW4PR84MB178083997D411DFFD45BEFCDEBB7A@MW4PR84MB1780.NAMPRD84.PROD.OUTLOOK.COM>
- <6b2973c5-469a-4af8-995b-ee9196d0818b@gmail.com>
- <2023111814-impeach-sweep-aa30@gregkh>
- <9c3e4b65-4781-4d45-a270-f1b75dfb48d3@gmail.com>
-Content-Language: en-US
-In-Reply-To: <9c3e4b65-4781-4d45-a270-f1b75dfb48d3@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231121174701.3922587-1-Sanath.S@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Sanath,
 
-On 11/20/2023 3:52 PM, Nguyen, Max wrote:
->
-> On 11/18/2023 3:32 AM, Greg KH wrote:
->> On Fri, Nov 17, 2023 at 03:42:22PM -0800, Nguyen, Max wrote:
->>>> Hi,
->>>>
->>>> We would like to apply this patch to version 6.1 of the LTS branch.
->>>> This is to add a project ID for Android support for a gamepad
->>>> controller.  We would like it to apply sooner than waiting for the 
->>>> next
->>>> LTS branch due to project schedules.
->>>>
->>>> commite28a0974d749e5105d77233c0a84d35c37da047e
->>>>
->>>> Regards,
->>>>
->>>> Max
->>>>
->>> Hi Linux team,
->>>
->>> We would like to have this patch backported to LTS versions 4.19, 
->>> 5.4, 5.10,
->>> and 5.15 as well.  The main purpose would to add our device ID for 
->>> support
->>> across older android devices.  Feel free to let us know if there are 
->>> any
->>> concerns or issues.
->> Please provide a working backport that you have tested as I think it did
->> not apply cleanly on its own, right?
->>
->> thanks,
->>
->> greg k-h
->
-> Hi Greg,
->
-> Do you have any general suggestions or instructions on how I can 
-> create a backport to test?  I apologize as this is new to me.
->
-> Also, what do you mean by the patch did not apply cleanly on its own?
->
-We found that the patch does not apply correctly to the previous LTS 
-kernels.  This is most likely due to addition of newer devices over 
-time.  We will be sending separate patches for each kernel shortly.
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on westeri-thunderbolt/next]
+[also build test WARNING on linus/master v6.7-rc2 next-20231121]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Sanath-S/thunderbolt-Add-quirk-to-reset-downstream-port/20231122-014913
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/westeri/thunderbolt.git next
+patch link:    https://lore.kernel.org/r/20231121174701.3922587-1-Sanath.S%40amd.com
+patch subject: [Patch] thunderbolt: Add quirk to reset downstream port
+config: x86_64-buildonly-randconfig-003-20231122 (https://download.01.org/0day-ci/archive/20231122/202311220931.2IqiKNXr-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231122/202311220931.2IqiKNXr-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202311220931.2IqiKNXr-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/thunderbolt/switch.c:1556:2: warning: variable 'ret' is used uninitialized whenever 'for' loop exits because its condition is false [-Wsometimes-uninitialized]
+           tb_switch_for_each_port(sw, port) {
+           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/thunderbolt/tb.h:821:7: note: expanded from macro 'tb_switch_for_each_port'
+                (p) <= &(sw)->ports[(sw)->config.max_port_number]; (p)++)
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/thunderbolt/switch.c:1564:9: note: uninitialized use occurs here
+           return ret;
+                  ^~~
+   drivers/thunderbolt/switch.c:1556:2: note: remove the condition if it is always true
+           tb_switch_for_each_port(sw, port) {
+           ^
+   drivers/thunderbolt/tb.h:821:7: note: expanded from macro 'tb_switch_for_each_port'
+                (p) <= &(sw)->ports[(sw)->config.max_port_number]; (p)++)
+                ^
+   drivers/thunderbolt/switch.c:1554:9: note: initialize the variable 'ret' to silence this warning
+           int ret;
+                  ^
+                   = 0
+   1 warning generated.
+
+
+vim +1556 drivers/thunderbolt/switch.c
+
+  1549	
+  1550	static int tb_switch_reset_downstream_port(struct tb_switch *sw)
+  1551	{
+  1552		struct tb_port *port;
+  1553		uint32_t val = 0;
+  1554		int ret;
+  1555	
+> 1556		tb_switch_for_each_port(sw, port) {
+  1557			if (port->config.type == TB_TYPE_PORT) {
+  1558				val = val | PORT_CS_19_DPR;
+  1559				ret = tb_port_write(port, &val, TB_CFG_PORT,
+  1560						port->cap_usb4 + PORT_CS_19, 1);
+  1561				break;
+  1562			}
+  1563		}
+  1564		return ret;
+  1565	}
+  1566	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
