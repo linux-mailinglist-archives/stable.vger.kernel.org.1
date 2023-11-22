@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A267F5133
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CDD2A7F5134
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:08:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231354AbjKVUID (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 15:08:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59558 "EHLO
+        id S231359AbjKVUIF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 15:08:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbjKVUID (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:08:03 -0500
+        with ESMTP id S230377AbjKVUIF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:08:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19133A3
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:07:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B642C433C7;
-        Wed, 22 Nov 2023 20:07:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0381B3
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:08:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF25C433C7;
+        Wed, 22 Nov 2023 20:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700683678;
-        bh=FJ04AgJJYzgv8Vr20K0OoNnqxxTgw2/FdDkRpCD5maY=;
+        s=korg; t=1700683681;
+        bh=vg68F//zYWl8eWanW4zcTXkOSbwOjAK669QCHVleQI4=;
         h=Subject:To:Cc:From:Date:From;
-        b=Y/XedGHkFUuUJnb8dbPkDML8w74xthyGt4xM6/lUmZyJJdcDg+r1FN+c9rSe67sS5
-         bM9E1+mtc3qDKuVjHYfEfzFdGk8mn2mRMgspaKLqSLSHAufUK7RCPH57LBfv21qXC0
-         ww5wV+thTLQccU7QXlCeyM1KlzcDuMG8Sr8aHFJQ=
-Subject: FAILED: patch "[PATCH] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e" failed to apply to 6.1-stable tree
+        b=tRerrGQkhIkQz93EBe0XvOQmhOFCPnKfX38GRE90xFjj2r88/VEvtwHqNru7oSMFL
+         peVYogSTR54+PgefNlJX9TedRp+KgNbSob+Uzae8OgSlYm9qMXA+gvEgrrKsmyFXbu
+         bRaDLWGIP9Nu+vbPhvf2lSPDEspCOkVbv2yvywfk=
+Subject: FAILED: patch "[PATCH] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e" failed to apply to 5.15-stable tree
 To:     lukas@wunner.de, CSchroeder@sonifi.com, bhelgaas@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 20:07:54 +0000
-Message-ID: <2023112254-work-demystify-2b7c@gregkh>
+Date:   Wed, 22 Nov 2023 20:07:56 +0000
+Message-ID: <2023112256-fancy-quintet-036e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x c9260693aa0c1e029ed23693cfd4d7814eee6624
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112254-work-demystify-2b7c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112256-fancy-quintet-036e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -64,6 +64,8 @@ c9260693aa0c ("PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e card"
 ae9813db1dc5 ("PCI: Add quirks to generate device tree node for Xilinx Alveo U50")
 74df14cd301a ("of: unittest: add node lifecycle tests")
 e87cacadebaf ("of: overlay: rename overlay source files from .dts to .dtso")
+5459c0b70467 ("PCI/DPC: Quirk PIO log size for certain Intel Root Ports")
+3cc30140dbe2 ("Merge tag 'pci-v5.19-changes' of git://git.kernel.org/pub/scm/linux/kernel/git/helgaas/pci")
 
 thanks,
 
