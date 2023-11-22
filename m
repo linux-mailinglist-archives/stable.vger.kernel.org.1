@@ -2,174 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFFCB7F50BA
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:36:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDE897F50D4
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:38:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235124AbjKVTgl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 14:36:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48380 "EHLO
+        id S1344675AbjKVTh7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:37:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231459AbjKVTgk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:36:40 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05B5212A
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:36:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EFDC433C7;
-        Wed, 22 Nov 2023 19:36:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700681796;
-        bh=JMDu8tGkmhgen6WS/9ZFbzMJLUViGFEPza6fjzVrVWM=;
-        h=Subject:To:Cc:From:Date:From;
-        b=HPM/2Yc6RoMPMz4pSBKJ154MT+iqGCdVzQKXoQa7ox05sjYkrK/aN6d9msv2CWmTL
-         /2XNyWkY5Sgsh2K2SV5LLMQud6FpYrp5JWZRsBOt40KcnOR7Qh3JRgQfuzKHVAMnK5
-         +BeC2U6LZ/f7XXL06m7EOW4Rwy2EfC3xUJa24lMQ=
-Subject: FAILED: patch "[PATCH] drm/amd/display: enable dsc_clk even if dsc_pg disabled" failed to apply to 5.15-stable tree
-To:     ahmed.ahmed@amd.com, alexander.deucher@amd.com,
-        aurabindo.pillai@amd.com, charlene.liu@amd.com,
-        daniel.wheeler@amd.com, mario.limonciello@amd.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 19:36:22 +0000
-Message-ID: <2023112222-sympathy-saline-7f28@gregkh>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S1344672AbjKVThq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:37:46 -0500
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 526C81990;
+        Wed, 22 Nov 2023 11:37:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+        ; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+        :Date:subject:date:message-id:reply-to;
+        bh=nnReJhtIcwOcFZeVn/VC0p9TnG4qk2MuKVj6f7dJ0tA=; b=mRehwylAmHADJsSc6Nrnp3zhM1
+        DhODm3bYwDRmtW/qcPicRA61nZAqpl1+4aC/kpuyf3rIZYMk6JQkZTBR3nLvFei6ZdzEe4RU9RS6Z
+        58RBi9eszvdPxgg1dJvTJMUmr9b7uzwZ5AVGprmKT7lNHDZZx8beZNjHmZmJekMYYb0A=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:39316 helo=pettiford)
+        by mail.hugovil.com with esmtpa (Exim 4.92)
+        (envelope-from <hugo@hugovil.com>)
+        id 1r5t21-0001bL-T2; Wed, 22 Nov 2023 14:37:07 -0500
+Date:   Wed, 22 Nov 2023 14:37:05 -0500
+From:   Hugo Villeneuve <hugo@hugovil.com>
+To:     Daniel Mack <daniel@zonque.org>
+Cc:     gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        lech.perczak@camlingroup.com, u.kleine-koenig@pengutronix.de,
+        linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Maxim Popov <maxim.snafu@gmail.com>, stable@vger.kernel.org
+Message-Id: <20231122143705.ecb6cd9a9ff6dcca7a3397ed@hugovil.com>
+In-Reply-To: <20231122073541.1200457-1-daniel@zonque.org>
+References: <20231122073541.1200457-1-daniel@zonque.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH v4] serial: sc16is7xx: address RX timeout interrupt
+ errata
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, 22 Nov 2023 08:35:41 +0100
+Daniel Mack <daniel@zonque.org> wrote:
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> This device has a silicon bug that makes it report a timeout interrupt
+> but no data in the FIFO.
+> 
+> The datasheet states the following in the errata section 18.1.4:
+> 
+>   "If the host reads the receive FIFO at the same time as a
+>   time-out interrupt condition happens, the host might read 0xCC
+>   (time-out) in the Interrupt Indication Register (IIR), but bit 0
+>   of the Line Status Register (LSR) is not set (means there is no
+>   data in the receive FIFO)."
+> 
+> The errata doesn't explicitly mention that, but tests have shown
+> and the vendor has confirmed that the RXLVL register is equally
+> affected.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Hi Daniel,
+thank you for the feedback from NXP.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 40255df370e94d44f0f0a924400d68db0ee31bec
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112222-sympathy-saline-7f28@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+I would suggest to replace this paragraph with something like this:
 
-Possible dependencies:
+------
+The errata description seems to indicate it affects only polled mode of
+operation when reading bit 0 of the LSR register. But when using
+interrupt mode (IRQ) like this driver does, reading RXLVL gives a value
+of zero even if there is data in the Rx FIFO (confirmed by tests and
+NXP).
+------
 
-40255df370e9 ("drm/amd/display: enable dsc_clk even if dsc_pg disabled")
-0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
-17e349e6841b ("drm/amd/display: Implement interface for notify cursor support change")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
-e013864479f7 ("drm/amd/display: Add structs for Freesync Panel Replay")
+> This bug has hit us on production units and when it does, sc16is7xx_irq()
+> would spin forever because sc16is7xx_port_irq() keeps seeing an
+> interrupt in the IIR register that is not cleared because the driver
+> does not call into sc16is7xx_handle_rx() unless the RXLVL register
+> reports at least one byte in the FIFO.
+> 
+> Fix this by always reading one byte when this condition is detected
 
-thanks,
+Change "reading one byte" to "reading one byte from the Rx FIFO".
 
-greg k-h
 
------------------- original commit in Linus's tree ------------------
+> in order to clear the interrupt. This approach was confirmed to be
+> correct by NXP through their support channels.
+> 
+> Signed-off-by: Daniel Mack <daniel@zonque.org>
+> Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
+> Cc: stable@vger.kernel.org
 
-From 40255df370e94d44f0f0a924400d68db0ee31bec Mon Sep 17 00:00:00 2001
-From: Muhammad Ahmed <ahmed.ahmed@amd.com>
-Date: Mon, 18 Sep 2023 16:52:54 -0400
-Subject: [PATCH] drm/amd/display: enable dsc_clk even if dsc_pg disabled
+I tested your patch for the last few days, and I was not able to
+reproduce the problem (I put a trace to detect the condition). But
+at the same time, it has not caused any regressions.
 
-[why]
-need to enable dsc_clk regardless dsc_pg
+With the above changes, feel free to add:
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Muhammad Ahmed <ahmed.ahmed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Tested by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 72dffb7a49f9..39e291a467e2 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1853,7 +1853,7 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
- 	if (dc->hwss.subvp_pipe_control_lock)
- 		dc->hwss.subvp_pipe_control_lock(dc, context, true, true, NULL, subvp_prev_use);
- 
--	if (dc->debug.enable_double_buffered_dsc_pg_support)
-+	if (dc->hwss.update_dsc_pg)
- 		dc->hwss.update_dsc_pg(dc, context, false);
- 
- 	disable_dangling_plane(dc, context);
-@@ -1960,7 +1960,7 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
- 		dc->hwss.optimize_bandwidth(dc, context);
- 	}
- 
--	if (dc->debug.enable_double_buffered_dsc_pg_support)
-+	if (dc->hwss.update_dsc_pg)
- 		dc->hwss.update_dsc_pg(dc, context, true);
- 
- 	if (dc->ctx->dce_version >= DCE_VERSION_MAX)
-@@ -2207,7 +2207,7 @@ void dc_post_update_surfaces_to_stream(struct dc *dc)
- 
- 		dc->hwss.optimize_bandwidth(dc, context);
- 
--		if (dc->debug.enable_double_buffered_dsc_pg_support)
-+		if (dc->hwss.update_dsc_pg)
- 			dc->hwss.update_dsc_pg(dc, context, true);
- 	}
- 
-@@ -3565,7 +3565,7 @@ static void commit_planes_for_stream(struct dc *dc,
- 		if (get_seamless_boot_stream_count(context) == 0)
- 			dc->hwss.prepare_bandwidth(dc, context);
- 
--		if (dc->debug.enable_double_buffered_dsc_pg_support)
-+		if (dc->hwss.update_dsc_pg)
- 			dc->hwss.update_dsc_pg(dc, context, false);
- 
- 		context_clock_trace(dc, context);
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-index 76fd7a41bdbf..45b557d8e089 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-@@ -77,6 +77,9 @@ void dcn32_dsc_pg_control(
- 	if (hws->ctx->dc->debug.disable_dsc_power_gate)
- 		return;
- 
-+	if (!hws->ctx->dc->debug.enable_double_buffered_dsc_pg_support)
-+		return;
-+
- 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
- 	if (org_ip_request_cntl == 0)
- 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_resource.c
-index 10ae1b3da751..6214866916c7 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_resource.c
-@@ -742,7 +742,7 @@ static const struct dc_debug_options debug_defaults_drv = {
- 	.disable_mem_low_power = false,
- 	.enable_hpo_pg_support = false,
- 	//must match enable_single_display_2to1_odm_policy to support dynamic ODM transitions
--	.enable_double_buffered_dsc_pg_support = false,
-+	.enable_double_buffered_dsc_pg_support = true,
- 	.enable_dp_dig_pixel_rate_div_policy = 1,
- 	.disable_z10 = false,
- 	.ignore_pg = true,
+Hugo.
 
+
+> ---
+> Meanwhile, NXP has confirmed this fix to be correct.
+> 
+> v4: NXP has confirmed the fix; update the commit log accordingly
+> v3: re-added the additional Co-Developed-by and stable@ tags
+> v2: reworded the commit log a bit for more context.
+> 
+>  drivers/tty/serial/sc16is7xx.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+> index 289ca7d4e566..76f76e510ed1 100644
+> --- a/drivers/tty/serial/sc16is7xx.c
+> +++ b/drivers/tty/serial/sc16is7xx.c
+> @@ -765,6 +765,18 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+>  		case SC16IS7XX_IIR_RTOI_SRC:
+>  		case SC16IS7XX_IIR_XOFFI_SRC:
+>  			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
+> +
+> +			/*
+> +			 * There is a silicon bug that makes the chip report a
+> +			 * time-out interrupt but no data in the FIFO. This is
+> +			 * described in errata section 18.1.4.
+> +			 *
+> +			 * When this happens, read one byte from the FIFO to
+> +			 * clear the interrupt.
+> +			 */
+> +			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
+> +				rxlen = 1;
+> +
+>  			if (rxlen)
+>  				sc16is7xx_handle_rx(port, rxlen, iir);
+>  			break;
+> -- 
+> 2.41.0
+> 
+> 
