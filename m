@@ -2,138 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 199287F512A
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:06:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64CB47F512E
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:07:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344560AbjKVUGa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 15:06:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40268 "EHLO
+        id S235250AbjKVUHP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 15:07:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344565AbjKVUGY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:06:24 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E312D69
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:06:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE78AC433C7;
-        Wed, 22 Nov 2023 20:06:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700683579;
-        bh=3RcTpLn4kEPFKFseVu8kg+K8HQVdDAdf825bcBhfOUU=;
-        h=Subject:To:Cc:From:Date:From;
-        b=XeI6JX2bzjKTY1pCFCBXnSELVpFDUtjUdiBPf8CvW/VCSjvFv+Q4iQswRq7KKvvEW
-         A7XN9JDnixUbcB+9thIUP7+odLHqQ4cbLRORLkmfansGCEZdjns6TQn3wO/g+xahS8
-         /pdymy7gIBKclvHC0Asd0Ua/JOcBTwhGxWYQ29DM=
-Subject: FAILED: patch "[PATCH] PCI: exynos: Don't discard .remove() callback" failed to apply to 4.14-stable tree
-To:     u.kleine-koenig@pengutronix.de, alim.akhtar@samsung.com,
-        bhelgaas@google.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 20:06:11 +0000
-Message-ID: <2023112211-carded-sake-3ee5@gregkh>
+        with ESMTP id S235262AbjKVUHO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:07:14 -0500
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2AC51B9;
+        Wed, 22 Nov 2023 12:07:09 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-a00cbb83c80so20364466b.0;
+        Wed, 22 Nov 2023 12:07:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700683626; x=1701288426; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+L61SKuaqdPJ0pWGJ+zDllcaQ6DEfFaFPXxIkSYtNiQ=;
+        b=QhyE6oSjlQ57Rl43QucuzGfb4m/Q/eL79VXSvVv40/ALWBtpAnHkyv8R4FW9XkTRsv
+         Hgy3VEh0jnF1noKmg/956DJvc0/00U2i80lewSsQ5LKJNZASomBvjsBbYoPUOB6fufHx
+         H1Ai/Ap0xhF++gyo2J2FC9X8YVdxtSHiHbC4kaltk+LPoyg7GzxhrXW7O95CfMIKa6Dk
+         U6O61TlqLRMYOT7Enqy/XfLDJbAnAp8HPO4Dp1vqtw5Bi9kK8zaOxk1/LupNw+J7SxIR
+         pOHBJuBVnVlIIz31IYKTX+kJamBglqmiVIb7nBCbDGi1ysxGz1pQJVr6q+iMB+b/JIrc
+         MHSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700683626; x=1701288426;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+L61SKuaqdPJ0pWGJ+zDllcaQ6DEfFaFPXxIkSYtNiQ=;
+        b=WEgxn1JHZJL+nrTVTAYuA2e01p/w6M75m2nHzk7NTMR7fzVIKM6j3hNlSdMLbdZ5q1
+         ev0ux01Gbc8E6CF5SIeWbv4m8g1h8oJVxB2d+/7HlGMBPX7Y2+CRof0I8b9n7armq53Y
+         4ebmGEKgHNvHJTyJRgFV6J4etiXugDyu2J+JC5OW6Oczfkp7k9HfO5f5YGGMFReEzaKl
+         CWDImGQoeNIS7xvlN9NpZJyhqkbrtWC+R/zfRODljibbx0unlhESSSMWWbKCQ6siXzCX
+         Pf9lPc2Vc09baKyTx6zR28lKYl6bNR73UcT7/4DJe3d8GHz10t8JvEruD/S2IsK0ty8K
+         QUug==
+X-Gm-Message-State: AOJu0YxRYmwHim0W/B4vY23lQYIz6qyhb5zH+hEUSPs1eJTCYJR4wuwu
+        7fsyx45SiOKUkcaDzYvfCzZR71Nf94bzE9WeQk8=
+X-Google-Smtp-Source: AGHT+IEH461L+MOzwH1bI62kSWPMlLrms+mgJrNtM9dVtt6dBKiT4eWKM/iPdNgdqvSic24FnKIs5t1RipucM1sLvyQ=
+X-Received: by 2002:a17:906:308a:b0:9fe:5d39:41c6 with SMTP id
+ 10-20020a170906308a00b009fe5d3941c6mr2441746ejv.51.1700683625887; Wed, 22 Nov
+ 2023 12:07:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20231122153212.852040-1-sashal@kernel.org> <20231122153212.852040-12-sashal@kernel.org>
+In-Reply-To: <20231122153212.852040-12-sashal@kernel.org>
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date:   Wed, 22 Nov 2023 21:06:54 +0100
+Message-ID: <CAKXUXMxiRL-ay9eMz4AZNORbO-mhyZECGE2SDg0rTB7wZdHSRA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.6 12/17] linux/export: clean up the IA-64
+ KSYM_FUNC macro
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>, deller@gmx.de,
+        ndesaulniers@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, Nov 22, 2023 at 4:32=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+>
+> [ Upstream commit 9e0be3f50c0e8517d0238b62409c20bcb8cd8785 ]
+>
+> With commit cf8e8658100d ("arch: Remove Itanium (IA-64) architecture"),
+> there is no need to keep the IA-64 definition of the KSYM_FUNC macro.
+>
+> Clean up the IA-64 definition of the KSYM_FUNC macro.
+>
+> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+> Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+I am a bit surprised that this is picked up for v6.6. This commit only
+makes sense after IA-64 architecture is removed and I do not think we
+want to backport that change to v6.6. So, this change here should not
+be backported as well.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Lukas
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 83a939f0fdc208ff3639dd3d42ac9b3c35607fd2
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112211-carded-sake-3ee5@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
-
-Possible dependencies:
-
-83a939f0fdc2 ("PCI: exynos: Don't discard .remove() callback")
-778f7c194b1d ("PCI: dwc: exynos: Rework the driver to support Exynos5433 variant")
-b9ac0f9dc8ea ("PCI: dwc: Move dw_pcie_setup_rc() to DWC common code")
-59fbab1ae40e ("PCI: dwc: Move dw_pcie_msi_init() into core")
-886a9c134755 ("PCI: dwc: Move link handling into common code")
-331e9bcead52 ("PCI: dwc: Drop the .set_num_vectors() host op")
-a0fd361db8e5 ("PCI: dwc: Move "dbi", "dbi2", and "addr_space" resource setup into common code")
-1b6a0e43a1a1 ("PCI: layerscape: Add EP mode support for ls1088a and ls2088a")
-cc255eb0bfbe ("PCI: layerscape: Modify the way of getting capability with different PEX")
-20e458fb92af ("PCI: layerscape: Fix some format issue of the code")
-47a062609a30 ("PCI: designware-ep: Modify MSI and MSIX CAP way of finding")
-6bfc9c3a2c70 ("PCI: designware-ep: Move the function of getting MSI capability forward")
-24ede430fa49 ("PCI: designware-ep: Add multiple PFs support for DWC")
-fdd056ff7af4 ("PCI: dwc: Use DBI accessors")
-aeaa0bfe8965 ("PCI: dwc: Move N_FTS setup to common setup")
-d439e7edd134 ("PCI: dwc/intel-gw: Drop unused max_width")
-441e48fdf0b4 ("PCI: dwc: Set PORT_LINK_DLL_LINK_EN in common setup code")
-39bc5006501c ("PCI: dwc: Centralize link gen setting")
-84667a416d42 ("PCI: dwc/tegra: Use common Designware port logic register definitions")
-fb7652327101 ("PCI: dwc: Remove hardcoded PCI_CAP_ID_EXP offset")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 83a939f0fdc208ff3639dd3d42ac9b3c35607fd2 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Date: Sun, 1 Oct 2023 19:02:51 +0200
-Subject: [PATCH] PCI: exynos: Don't discard .remove() callback
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-With CONFIG_PCI_EXYNOS=y and exynos_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
-
-The right thing to do is do always have the remove callback available.
-This fixes the following warning by modpost:
-
-  WARNING: modpost: drivers/pci/controller/dwc/pci-exynos: section mismatch in reference: exynos_pcie_driver+0x8 (section: .data) -> exynos_pcie_remove (section: .exit.text)
-
-(with ARCH=x86_64 W=1 allmodconfig).
-
-Fixes: 340cba6092c2 ("pci: Add PCIe driver for Samsung Exynos")
-Link: https://lore.kernel.org/r/20231001170254.2506508-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Cc: stable@vger.kernel.org
-
-diff --git a/drivers/pci/controller/dwc/pci-exynos.c b/drivers/pci/controller/dwc/pci-exynos.c
-index 6319082301d6..c6bede346932 100644
---- a/drivers/pci/controller/dwc/pci-exynos.c
-+++ b/drivers/pci/controller/dwc/pci-exynos.c
-@@ -375,7 +375,7 @@ static int exynos_pcie_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int __exit exynos_pcie_remove(struct platform_device *pdev)
-+static int exynos_pcie_remove(struct platform_device *pdev)
- {
- 	struct exynos_pcie *ep = platform_get_drvdata(pdev);
- 
-@@ -431,7 +431,7 @@ static const struct of_device_id exynos_pcie_of_match[] = {
- 
- static struct platform_driver exynos_pcie_driver = {
- 	.probe		= exynos_pcie_probe,
--	.remove		= __exit_p(exynos_pcie_remove),
-+	.remove		= exynos_pcie_remove,
- 	.driver = {
- 		.name	= "exynos-pcie",
- 		.of_match_table = exynos_pcie_of_match,
-
+>  include/linux/export-internal.h | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/include/linux/export-internal.h b/include/linux/export-inter=
+nal.h
+> index 45fca09b23194..69501e0ec239f 100644
+> --- a/include/linux/export-internal.h
+> +++ b/include/linux/export-internal.h
+> @@ -50,9 +50,7 @@
+>             "   .previous"                                              "=
+\n"    \
+>         )
+>
+> -#ifdef CONFIG_IA64
+> -#define KSYM_FUNC(name)                @fptr(name)
+> -#elif defined(CONFIG_PARISC) && defined(CONFIG_64BIT)
+> +#if defined(CONFIG_PARISC) && defined(CONFIG_64BIT)
+>  #define KSYM_FUNC(name)                P%name
+>  #else
+>  #define KSYM_FUNC(name)                name
+> --
+> 2.42.0
+>
