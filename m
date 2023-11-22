@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1C27F4E56
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1B257F4E57
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:25:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344109AbjKVRZX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:25:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55018 "EHLO
+        id S1344128AbjKVRZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:25:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344121AbjKVRZW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:22 -0500
+        with ESMTP id S1344111AbjKVRZ1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84E831B5
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A73C433C8;
-        Wed, 22 Nov 2023 17:25:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 382911A8
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3BAC433CA;
+        Wed, 22 Nov 2023 17:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673918;
-        bh=tBGcAK8143/4Jevwm1ICTFVtgftsFAw/bGbSOGEwuS0=;
+        s=korg; t=1700673922;
+        bh=/BwO8r6zRTYPDSnJM5tGNXEkje/TibUCDN+FTu/I4AI=;
         h=Subject:To:Cc:From:Date:From;
-        b=efuHGb4s2MjJwUBYXfmnCmSCKwj07acl1rQUtD4NQJWc9yRrFFJ4Fws4HvzGzuizO
-         2R2JlwRYZ4hKqzASUp6ODoV5hJghWS/lEMpIyNLNauQtKTADo2a2vwy6z742ljf6v5
-         nNZJZZbgUo0J5ZfOBaC0lU8g4ksAaWkesOkCRKEQ=
-Subject: FAILED: patch "[PATCH] hvc/xen: fix event channel handling for secondary consoles" failed to apply to 4.19-stable tree
+        b=ZaNDeFi6XgS4W/7ZbfmMx7iTTyfN4aLTeOy7JsuTpvif5uMZP8UH5jsedjvV+jFyr
+         tjW5hOkumt0Qxtu7vjhMzJy9q7pUCohaqdexeY6WzLToQCsm7p8NLYR+3GYtNRIwY4
+         jiycYCvV9+KzRononPf+xaA/TaTTy3yDdS4StqtU=
+Subject: FAILED: patch "[PATCH] hvc/xen: fix event channel handling for secondary consoles" failed to apply to 4.14-stable tree
 To:     dwmw@amazon.co.uk, gregkh@linuxfoundation.org, jgross@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:25:13 +0000
-Message-ID: <2023112213-ladybug-starter-d2c2@gregkh>
+Date:   Wed, 22 Nov 2023 17:25:14 +0000
+Message-ID: <2023112214-slaw-bootlace-8f7a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x ef5dd8ec88ac11e8e353164407d55b73c988b369
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112213-ladybug-starter-d2c2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112214-slaw-bootlace-8f7a@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,11 @@ fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
 bce5963bcb4f ("xen/events: fix binding user event channels to cpus")
 9f51c05dc41a ("pvcalls-front: Avoid get_free_pages(GFP_KERNEL) under spinlock")
 975ef94a0284 ("pvcalls-front: fixes incorrect error handling")
+1d3145675538 ("xen/gntdev: Make private routines/structures accessible")
+975ef7ff81bb ("xen/gntdev: Allow mappings for DMA buffers")
+64d6871827b1 ("pvcalls-front: introduce a per sock_mapping refcount")
+a9a08845e9ac ("vfs: do bulk POLL* -> EPOLL* replacement")
+68c5735eaa5e ("Merge tag 'media/v4.16-2' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media")
 
 thanks,
 
