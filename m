@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDD2A7F5134
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC327F5135
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:08:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231359AbjKVUIF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 15:08:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59576 "EHLO
+        id S231513AbjKVUIJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 15:08:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230377AbjKVUIF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:08:05 -0500
+        with ESMTP id S230377AbjKVUIJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:08:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A0381B3
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:08:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF25C433C7;
-        Wed, 22 Nov 2023 20:08:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4689F92
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:08:05 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BB8C433C7;
+        Wed, 22 Nov 2023 20:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700683681;
-        bh=vg68F//zYWl8eWanW4zcTXkOSbwOjAK669QCHVleQI4=;
+        s=korg; t=1700683684;
+        bh=GUi9R8fXvXWFqumBsaqw/323Pfpfj/rGYKsuAWXqm5U=;
         h=Subject:To:Cc:From:Date:From;
-        b=tRerrGQkhIkQz93EBe0XvOQmhOFCPnKfX38GRE90xFjj2r88/VEvtwHqNru7oSMFL
-         peVYogSTR54+PgefNlJX9TedRp+KgNbSob+Uzae8OgSlYm9qMXA+gvEgrrKsmyFXbu
-         bRaDLWGIP9Nu+vbPhvf2lSPDEspCOkVbv2yvywfk=
-Subject: FAILED: patch "[PATCH] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e" failed to apply to 5.15-stable tree
+        b=ye1ANp5DlWRkafZIb+wRRxQ7esc9dioSNucV8OZMeU1DL85LQx2KYqqgAk6lnpW2n
+         xQ8+8Iz61dby6Nmmh1tOivt7kat5xvPo8n2NvldT3tPzu8Ie5e+B/QXAbBHuXSdQul
+         d5gUx1Jgk8rYD/RaXfLESGrHk/1gKPGrxvnScgbQ=
+Subject: FAILED: patch "[PATCH] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e" failed to apply to 5.10-stable tree
 To:     lukas@wunner.de, CSchroeder@sonifi.com, bhelgaas@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 20:07:56 +0000
-Message-ID: <2023112256-fancy-quintet-036e@gregkh>
+Date:   Wed, 22 Nov 2023 20:07:58 +0000
+Message-ID: <2023112258-saddlebag-vantage-48b3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x c9260693aa0c1e029ed23693cfd4d7814eee6624
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112256-fancy-quintet-036e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112258-saddlebag-vantage-48b3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
