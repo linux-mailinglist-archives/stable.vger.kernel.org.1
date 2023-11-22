@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 502B67F5215
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 22:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E97087F5216
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 22:11:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229535AbjKVVLi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 16:11:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56084 "EHLO
+        id S231429AbjKVVLr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 16:11:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231429AbjKVVLh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 16:11:37 -0500
+        with ESMTP id S230377AbjKVVLq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 16:11:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA4C1A5
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 13:11:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4AD3C433C8;
-        Wed, 22 Nov 2023 21:11:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F49C101
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 13:11:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06FDC433C8;
+        Wed, 22 Nov 2023 21:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700687494;
-        bh=OcY8DWQ9sg6H3SdVJWdo4j5ySkqhcaCmMl1UHOyQu9I=;
+        s=korg; t=1700687503;
+        bh=phSJxtNQawst6k6FGa3t2JqCUnxREdEKuIP0h4YDeP0=;
         h=Subject:To:Cc:From:Date:From;
-        b=O+BlyXuzOuu7tVqhGORQRj6PkXQsUECkRmI18dDE5afRvkW2mezZB6m72+v8MJufB
-         F/K5cx8cH8A63jeU2FrKluh+pjT8RcmWqIEKVWTxMJwuSQGex9NDDyVcSPZEnGvkzZ
-         QMg8w43WK8yCVApsDZHi7pbhd+dayCFiaGjAFr+E=
-Subject: FAILED: patch "[PATCH] arm64: dts: qcom: ipq6018: Fix tcsr_mutex register size" failed to apply to 5.15-stable tree
+        b=hwa2T7k2XOkpTiWIYHwBH49Uif5VVEBAuOZTWN9Di3YwjDm2Y4idgNtSooJLzJWoR
+         rDPkvTa2rrSrDVvnoCeE+OO2cT6qiNiG/FZI8NQBdPZ1Lr+To6U+NvrpQK52hwqs5R
+         EtMlaVemhjpgqupcdiQ+ocyfcb56jE14XmuQnlLw=
+Subject: FAILED: patch "[PATCH] arm64: dts: qcom: ipq6018: Fix tcsr_mutex register size" failed to apply to 5.10-stable tree
 To:     quic_viswanat@quicinc.com, andersson@kernel.org,
         konrad.dybcio@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 21:11:31 +0000
-Message-ID: <2023112231-perfectly-matching-31e1@gregkh>
+Date:   Wed, 22 Nov 2023 21:11:32 +0000
+Message-ID: <2023112232-tinker-opponent-62c7@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 72fc3d58b87b0d622039c6299b89024fbb7b420f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112231-perfectly-matching-31e1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112232-tinker-opponent-62c7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
