@@ -2,38 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84AA57F52D6
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 22:47:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4986D7F5330
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 23:18:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344414AbjKVVri (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 16:47:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58824 "EHLO
+        id S1344639AbjKVWSX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 17:18:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235216AbjKVVri (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 16:47:38 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF0CA9;
-        Wed, 22 Nov 2023 13:47:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BADCC433C8;
-        Wed, 22 Nov 2023 21:47:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1700689654;
-        bh=Bmjdv91puLAvFx9mmbLU/75H09mDUEUw9NSYD1epyT8=;
-        h=Date:To:From:Subject:From;
-        b=pqTJrY99pm6OxmtjY0QdbZDNyhwGJ7g5X8i+Hu3hk0LN3WWZ61veRfYfXxewWQS3W
-         U67gv5UF71chLaQO/5r88HrLuDnH5g9G9Pj768OPsl+0LraSobQghM+fg8ZZkp1FGj
-         Ak4QTBLKP1SqQsHey2Opdwsdip5IQF+fSBCXxlrw=
-Date:   Wed, 22 Nov 2023 13:47:33 -0800
-To:     mm-commits@vger.kernel.org, surenb@google.com,
-        stable@vger.kernel.org, mhocko@suse.com, gaoxu2@hihonor.com,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231122214734.0BADCC433C8@smtp.kernel.org>
+        with ESMTP id S1343586AbjKVWSU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 17:18:20 -0500
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A013E1A5
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 14:18:15 -0800 (PST)
+Received: by mail-pf1-x441.google.com with SMTP id d2e1a72fcca58-6be0277c05bso320527b3a.0
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 14:18:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700691495; x=1701296295; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M1SpqJqPEK0HKjMWOwWd0RTX2RpCriEx/eCEsJOAXHY=;
+        b=mwuwztrKT1OdM+fua0Z12LtI+uP1szuQ2eJaYUO6yChQ2DHA3l0mhl080svab+W/ZU
+         tv1uH5smZE1riYoGrRPLEtnZ/ENG+kFC352B4Gu18OMrDgutZ/8ONMFo3NdJGa2tvoTI
+         ODEPUm4wE7v8tnRwQAPCoyDPt1qFr4190MUMLYp3MSmpq2zxSXhqlL+G9BW4mlmUPsXU
+         KjgNilOjfqRRr6tM1O3eXC/s9TAbUvCEYse6ZuKnqekfah51WM/ieZ4DtP4nxiMhwiLk
+         M4QzGU+XsxGQ8l5xAvrXAplGXVeNIHfW/1UbFeKT4BYMnGQYqMNXw42g8ypbB5D2YQkn
+         +VfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700691495; x=1701296295;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M1SpqJqPEK0HKjMWOwWd0RTX2RpCriEx/eCEsJOAXHY=;
+        b=kJHUI6A9/Le63/WUoFUkjlxseEUeOMoglTpWnCsauiVUQ9TvSRPZC+WaYu+Z0lWCGI
+         rSOnXa666n7Jyc/SC6zEPGumPsKDQT+1q0qEg3M2jMqChtZfKWB29tLiEXZln9wXcrOE
+         b/dujSLEODnUX0+jI/XEHATkwdmiF/089t6YiAYJEg3umib1aET5BpDoxnDO1bWK/37H
+         hcFPYXe4a/1GVQ9uvvTTsR3GHDYVJUq1NIaEyq0qhN3CgjbQyEvOwKMbsOrgsEqU2u6d
+         0OAKJqnaIVdorndOCVET35UJmYBu6/eZbNhtwOantmpchOVZ3hRHJFn8/SbLb0WgNP0/
+         R17A==
+X-Gm-Message-State: AOJu0YxojpzprP3/pQjRh89/OdplIJn6FSnoPobWYOdSf3hS11BS4m5N
+        LKyNKHuOuwYJMN+UXV9IWe8=
+X-Google-Smtp-Source: AGHT+IE9zFIQ6f/L9vM1NZnAtpU8Py+/aOWkpLQdguS0VkRDJ7gkoUA0V1/UNeLoPzZ8m6F6dhrf5Q==
+X-Received: by 2002:a05:6a20:daa8:b0:188:569:855 with SMTP id iy40-20020a056a20daa800b0018805690855mr4769327pzb.51.1700691494922;
+        Wed, 22 Nov 2023 14:18:14 -0800 (PST)
+Received: from [10.10.13.50] ([104.129.198.116])
+        by smtp.gmail.com with ESMTPSA id y34-20020a056a00182200b006cb88a284f0sm202890pfa.201.2023.11.22.14.18.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Nov 2023 14:18:14 -0800 (PST)
+Message-ID: <3d7d9872-e569-4821-b0e2-39c8c7be53c9@gmail.com>
+Date:   Wed, 22 Nov 2023 14:18:12 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.5 153/191] Input: xpad - add HyperX Clutch Gladiate
+ Support
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, "Nguyen, Max" <maxwell.nguyen@hyperx.com>,
+        carl.ng@hp.com
+References: <20231016084015.400031271@linuxfoundation.org>
+ <20231016084018.949398466@linuxfoundation.org>
+ <MW4PR84MB17804D57BB57C0E2FB66EFC6EBADA@MW4PR84MB1780.NAMPRD84.PROD.OUTLOOK.COM>
+ <MW4PR84MB178083997D411DFFD45BEFCDEBB7A@MW4PR84MB1780.NAMPRD84.PROD.OUTLOOK.COM>
+ <6b2973c5-469a-4af8-995b-ee9196d0818b@gmail.com>
+ <2023111814-impeach-sweep-aa30@gregkh>
+ <9c3e4b65-4781-4d45-a270-f1b75dfb48d3@gmail.com>
+ <8b130415-4f70-495c-85dc-355e3cd2db17@gmail.com>
+ <2023112205-viselike-barracuda-f0c6@gregkh>
+Content-Language: en-US
+From:   "Nguyen, Max" <hphyperxdev@gmail.com>
+In-Reply-To: <2023112205-viselike-barracuda-f0c6@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -41,95 +83,64 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch titled
-     Subject: mm,oom_reaper: avoid run queue_oom_reaper if task is not oom
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom.patch
+On 11/21/2023 10:39 PM, Greg KH wrote:
+> On Tue, Nov 21, 2023 at 04:17:54PM -0800, Nguyen, Max wrote:
+>> On 11/20/2023 3:52 PM, Nguyen, Max wrote:
+>>> On 11/18/2023 3:32 AM, Greg KH wrote:
+>>>> On Fri, Nov 17, 2023 at 03:42:22PM -0800, Nguyen, Max wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> We would like to apply this patch to version 6.1 of the LTS branch.
+>>>>>> This is to add a project ID for Android support for a gamepad
+>>>>>> controller.  We would like it to apply sooner than waiting
+>>>>>> for the next
+>>>>>> LTS branch due to project schedules.
+>>>>>>
+>>>>>> commite28a0974d749e5105d77233c0a84d35c37da047e
+>>>>>>
+>>>>>> Regards,
+>>>>>>
+>>>>>> Max
+>>>>>>
+>>>>> Hi Linux team,
+>>>>>
+>>>>> We would like to have this patch backported to LTS versions
+>>>>> 4.19, 5.4, 5.10,
+>>>>> and 5.15 as well.  The main purpose would to add our device ID
+>>>>> for support
+>>>>> across older android devices.  Feel free to let us know if there
+>>>>> are any
+>>>>> concerns or issues.
+>>>> Please provide a working backport that you have tested as I think it did
+>>>> not apply cleanly on its own, right?
+>>>>
+>>>> thanks,
+>>>>
+>>>> greg k-h
+>>> Hi Greg,
+>>>
+>>> Do you have any general suggestions or instructions on how I can create
+>>> a backport to test?  I apologize as this is new to me.
+>>>
+>>> Also, what do you mean by the patch did not apply cleanly on its own?
+>>>
+>> We found that the patch does not apply correctly to the previous LTS
+>> kernels.  This is most likely due to addition of newer devices over time.
+>> We will be sending separate patches for each kernel shortly.
+> Why not send a series adding all of the missing backported patches?
+> That makes it better so that all of the supported devices are now
+> working on the older kernels, not just this one.
+>
+> thanks,
+>
+> greg k-h
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom.patch
+Hi Greg,
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+I am planning to send a patch for LTS versions 4.19 through 5.15 since 
+the single patch can apply to all of these versions with no issues.  I 
+plan to send a separate patch for LTS 6.1 since this patch could not 
+apply to the older LTS versions.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: gaoxu <gaoxu2@hihonor.com>
-Subject: mm,oom_reaper: avoid run queue_oom_reaper if task is not oom
-Date: Wed, 22 Nov 2023 12:46:44 +0000
-
-queue_oom_reaper() tests and sets tsk->signal->oom_mm->flags.  However, it
-is necessary to check if 'tsk' is an OOM victim before executing
-'queue_oom_reaper' because the variable may be NULL.
-
-We encountered such an issue, and the log is as follows:
-[3701:11_see]Out of memory: Killed process 3154 (system_server)
-total-vm:23662044kB, anon-rss:0kB, file-rss:0kB, shmem-rss:0kB,
-UID:1000 pgtables:4056kB oom_score_adj:-900
-[3701:11_see][RB/E]rb_sreason_str_set: sreason_str set null_pointer
-[3701:11_see][RB/E]rb_sreason_str_set: sreason_str set unknown_addr
-[3701:11_see]Unable to handle kernel NULL pointer dereference at virtual
-address 0000000000000328
-[3701:11_see]user pgtable: 4k pages, 39-bit VAs, pgdp=3D00000000821de000
-[3701:11_see][0000000000000328] pgd=3D0000000000000000,
-p4d=3D0000000000000000,pud=3D0000000000000000
-[3701:11_see]tracing off
-[3701:11_see]Internal error: Oops: 96000005 [#1] PREEMPT SMP
-[3701:11_see]Call trace:
-[3701:11_see] queue_oom_reaper+0x30/0x170
-[3701:11_see] __oom_kill_process+0x590/0x860
-[3701:11_see] oom_kill_process+0x140/0x274
-[3701:11_see] out_of_memory+0x2f4/0x54c
-[3701:11_see] __alloc_pages_slowpath+0x5d8/0xaac
-[3701:11_see] __alloc_pages+0x774/0x800
-[3701:11_see] wp_page_copy+0xc4/0x116c
-[3701:11_see] do_wp_page+0x4bc/0x6fc
-[3701:11_see] handle_pte_fault+0x98/0x2a8
-[3701:11_see] __handle_mm_fault+0x368/0x700
-[3701:11_see] do_handle_mm_fault+0x160/0x2cc
-[3701:11_see] do_page_fault+0x3e0/0x818
-[3701:11_see] do_mem_abort+0x68/0x17c
-[3701:11_see] el0_da+0x3c/0xa0
-[3701:11_see] el0t_64_sync_handler+0xc4/0xec
-[3701:11_see] el0t_64_sync+0x1b4/0x1b8
-[3701:11_see]tracing off
-
-Link: https://lkml.kernel.org/r/400d13bddb524ef6af37cb2220808c75@hihonor.com
-Signed-off-by: Gao Xu <gaoxu2@hihonor.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/oom_kill.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/oom_kill.c~mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom
-+++ a/mm/oom_kill.c
-@@ -984,7 +984,7 @@ static void __oom_kill_process(struct ta
- 	}
- 	rcu_read_unlock();
- 
--	if (can_oom_reap)
-+	if (can_oom_reap && tsk_is_oom_victim(victim))
- 		queue_oom_reaper(victim);
- 
- 	mmdrop(mm);
-_
-
-Patches currently in -mm which might be from gaoxu2@hihonor.com are
-
-mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom.patch
+Is this what you had in mind when you mentioned series?
 
