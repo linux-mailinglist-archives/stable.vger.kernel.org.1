@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E62837F5110
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:05:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A50227F5111
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 21:05:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232295AbjKVUFT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 15:05:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36890 "EHLO
+        id S231892AbjKVUF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 15:05:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231767AbjKVUFS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:05:18 -0500
+        with ESMTP id S231767AbjKVUF0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 15:05:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFDF0A3
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:05:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E23C433C8;
-        Wed, 22 Nov 2023 20:05:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A9B2191
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 12:05:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2F1C433C7;
+        Wed, 22 Nov 2023 20:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700683513;
-        bh=xZrtd203HWaEDu6baupSwlQx2mZM4vflx9lKRDZq3HY=;
+        s=korg; t=1700683522;
+        bh=yp151PRVNOc3DtcNgivSP25923bum9iQhVwFgCE7180=;
         h=Subject:To:Cc:From:Date:From;
-        b=qivv/BqR1eh0tVwZmyzi5lZbHoy+HedMJuAOL8Wr4kLd9Xc2ipZu/22hS1XUraKNL
-         InM+cJygmOjwGppLUXhwuY/g3hxb314ZSeoPKSXNJ/IDARKIpNTzZvtGNSuaSkQpQR
-         k2VHyNc8T6N8MkHdwiEbGFTdpbymPr7UsWE+nF9A=
-Subject: FAILED: patch "[PATCH] PCI: qcom-ep: Add dedicated callback for writing to DBI2" failed to apply to 6.5-stable tree
+        b=qEQHlyPCTA68EI6nWr/ENpiG+bqzm6RUOdbT9OMRRpjMSHHJHNePlahSz6l0NVivl
+         pEPzzVFfVaUrr7U5jOpfpG4I4J1mY/YBM4p4qH9T8G1mfHKHA0z1t23WIQm4iNEpMP
+         UdiJZfXX/xeArukFCye4KwHaiXstmoup4GMOnklU=
+Subject: FAILED: patch "[PATCH] PCI: qcom-ep: Add dedicated callback for writing to DBI2" failed to apply to 6.1-stable tree
 To:     mani@kernel.org, fancer.lancer@gmail.com, kwilczynski@kernel.org,
         manivannan.sadhasivam@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 20:05:11 +0000
-Message-ID: <2023112211-rush-provolone-6433@gregkh>
+Date:   Wed, 22 Nov 2023 20:05:12 +0000
+Message-ID: <2023112212-decimal-recapture-1786@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -44,24 +44,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x a07d2497ed657eb2efeb967af47e22f573dcd1d6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112211-rush-provolone-6433@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112212-decimal-recapture-1786@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 a07d2497ed65 ("PCI: qcom-ep: Add dedicated callback for writing to DBI2 registers")
 01794236666a ("PCI: qcom-ep: Add ICC bandwidth voting support")
+8f05cd35c73b ("PCI: qcom-ep: Add support for BME notification")
 
 thanks,
 
