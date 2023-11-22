@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1B257F4E57
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C6A7F4E58
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:25:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344128AbjKVRZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:25:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60068 "EHLO
+        id S234988AbjKVRZr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:25:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344111AbjKVRZ1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:27 -0500
+        with ESMTP id S1344114AbjKVRZj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 382911A8
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3BAC433CA;
-        Wed, 22 Nov 2023 17:25:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D1851BF
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB181C433C8;
+        Wed, 22 Nov 2023 17:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673922;
-        bh=/BwO8r6zRTYPDSnJM5tGNXEkje/TibUCDN+FTu/I4AI=;
+        s=korg; t=1700673935;
+        bh=RYHSP0fAxxcM2vRBaglPNzgaRzzrmGz/HTOBGbhWPRY=;
         h=Subject:To:Cc:From:Date:From;
-        b=ZaNDeFi6XgS4W/7ZbfmMx7iTTyfN4aLTeOy7JsuTpvif5uMZP8UH5jsedjvV+jFyr
-         tjW5hOkumt0Qxtu7vjhMzJy9q7pUCohaqdexeY6WzLToQCsm7p8NLYR+3GYtNRIwY4
-         jiycYCvV9+KzRononPf+xaA/TaTTy3yDdS4StqtU=
-Subject: FAILED: patch "[PATCH] hvc/xen: fix event channel handling for secondary consoles" failed to apply to 4.14-stable tree
-To:     dwmw@amazon.co.uk, gregkh@linuxfoundation.org, jgross@suse.com
+        b=0Cr36doGrbHfay9H6aUexjUHxa6Guro0icLjPTvMAIlUHJXNXncGYOcuqscG5+Fk9
+         JlCIDELTr65DE1XF29p7f/+6RZVMkvNtbEp90BZwKqAdzNcTkSxIZYemi3l9btzOtr
+         YfOs6JGWgsZht0c3f5w2nt5FkeM02nPjlkCVTl8c=
+Subject: FAILED: patch "[PATCH] apparmor: Fix regression in mount mediation" failed to apply to 6.6-stable tree
+To:     john.johansen@canonical.com, anstein99@googlemail.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:25:14 +0000
-Message-ID: <2023112214-slaw-bootlace-8f7a@gregkh>
+Date:   Wed, 22 Nov 2023 17:25:32 +0000
+Message-ID: <2023112232-copy-ventricle-f1b9@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -43,35 +43,30 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x ef5dd8ec88ac11e8e353164407d55b73c988b369
+git cherry-pick -x 157a3537d6bc28ceb9a11fc8cb67f2152d860146
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112214-slaw-bootlace-8f7a@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112232-copy-ventricle-f1b9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-ef5dd8ec88ac ("hvc/xen: fix event channel handling for secondary consoles")
-fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
-3bd5371a4da6 ("xen/events: Remove unused bind_evtchn_to_irq_lateeoi()")
-54c9de89895e ("xen/events: add a new "late EOI" evtchn framework")
-0102e4efda76 ("xen: Use evtchn_type_t as a type for event channels")
-bce5963bcb4f ("xen/events: fix binding user event channels to cpus")
-9f51c05dc41a ("pvcalls-front: Avoid get_free_pages(GFP_KERNEL) under spinlock")
-975ef94a0284 ("pvcalls-front: fixes incorrect error handling")
-1d3145675538 ("xen/gntdev: Make private routines/structures accessible")
-975ef7ff81bb ("xen/gntdev: Allow mappings for DMA buffers")
-64d6871827b1 ("pvcalls-front: introduce a per sock_mapping refcount")
-a9a08845e9ac ("vfs: do bulk POLL* -> EPOLL* replacement")
-68c5735eaa5e ("Merge tag 'media/v4.16-2' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media")
+157a3537d6bc ("apparmor: Fix regression in mount mediation")
+90c436a64a6e ("apparmor: pass cred through to audit info.")
+d20f5a1a6e79 ("apparmor: rename audit_data->label to audit_data->subj_label")
+bd7bd201ca46 ("apparmor: combine common_audit_data and apparmor_audit_data")
+25ff0ff2d628 ("apparmor: Fix kernel-doc warnings in apparmor/policy.c")
+13c1748e2170 ("apparmor: Fix kernel-doc warnings in apparmor/resource.c")
+892148228611 ("apparmor: Fix kernel-doc warnings in apparmor/lib.c")
+26c9ecb34f5f ("apparmor: Fix kernel-doc warnings in apparmor/audit.c")
 
 thanks,
 
@@ -79,51 +74,156 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ef5dd8ec88ac11e8e353164407d55b73c988b369 Mon Sep 17 00:00:00 2001
-From: David Woodhouse <dwmw@amazon.co.uk>
-Date: Fri, 20 Oct 2023 17:15:27 +0100
-Subject: [PATCH] hvc/xen: fix event channel handling for secondary consoles
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 157a3537d6bc28ceb9a11fc8cb67f2152d860146 Mon Sep 17 00:00:00 2001
+From: John Johansen <john.johansen@canonical.com>
+Date: Sun, 10 Sep 2023 03:35:22 -0700
+Subject: [PATCH] apparmor: Fix regression in mount mediation
 
-The xencons_connect_backend() function allocates a local interdomain
-event channel with xenbus_alloc_evtchn(), then calls
-bind_interdomain_evtchn_to_irq_lateeoi() to bind to that port# on the
-*remote* domain.
+commit 2db154b3ea8e ("vfs: syscall: Add move_mount(2) to move mounts around")
 
-That doesn't work very well:
+introduced a new move_mount(2) system call and a corresponding new LSM
+security_move_mount hook but did not implement this hook for any
+existing LSM. This creates a regression for AppArmor mediation of
+mount. This patch provides a base mapping of the move_mount syscall to
+the existing mount mediation. In the future we may introduce
+additional mediations around the new mount calls.
 
-(qemu) device_add xen-console,id=con1,chardev=pty0
-[   44.323872] xenconsole console-1: 2 xenbus_dev_probe on device/console/1
-[   44.323995] xenconsole: probe of console-1 failed with error -2
+Fixes: 2db154b3ea8e ("vfs: syscall: Add move_mount(2) to move mounts around")
+CC: stable@vger.kernel.org
+Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 
-Fix it to use bind_evtchn_to_irq_lateeoi(), which does the right thing
-by just binding that *local* event channel to an irq. The backend will
-do the interdomain binding.
-
-This didn't affect the primary console because the setup for that is
-special — the toolstack allocates the guest event channel and the guest
-discovers it with HVMOP_get_param.
-
-Fixes: fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020161529.355083-2-dwmw2@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
-index 98764e740c07..f24e285b6441 100644
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -433,7 +433,7 @@ static int xencons_connect_backend(struct xenbus_device *dev,
- 	if (ret)
- 		return ret;
- 	info->evtchn = evtchn;
--	irq = bind_interdomain_evtchn_to_irq_lateeoi(dev, evtchn);
-+	irq = bind_evtchn_to_irq_lateeoi(evtchn);
- 	if (irq < 0)
- 		return irq;
- 	info->irq = irq;
+diff --git a/security/apparmor/include/mount.h b/security/apparmor/include/mount.h
+index 10c76f906a65..46834f828179 100644
+--- a/security/apparmor/include/mount.h
++++ b/security/apparmor/include/mount.h
+@@ -38,9 +38,12 @@ int aa_mount_change_type(const struct cred *subj_cred,
+ 			 struct aa_label *label, const struct path *path,
+ 			 unsigned long flags);
+ 
++int aa_move_mount_old(const struct cred *subj_cred,
++		      struct aa_label *label, const struct path *path,
++		      const char *old_name);
+ int aa_move_mount(const struct cred *subj_cred,
+-		  struct aa_label *label, const struct path *path,
+-		  const char *old_name);
++		  struct aa_label *label, const struct path *from_path,
++		  const struct path *to_path);
+ 
+ int aa_new_mount(const struct cred *subj_cred,
+ 		 struct aa_label *label, const char *dev_name,
+diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
+index ce4f3e7a784d..b047d1d355a9 100644
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -722,8 +722,8 @@ static int apparmor_sb_mount(const char *dev_name, const struct path *path,
+ 			error = aa_mount_change_type(current_cred(), label,
+ 						     path, flags);
+ 		else if (flags & MS_MOVE)
+-			error = aa_move_mount(current_cred(), label, path,
+-					      dev_name);
++			error = aa_move_mount_old(current_cred(), label, path,
++						  dev_name);
+ 		else
+ 			error = aa_new_mount(current_cred(), label, dev_name,
+ 					     path, type, flags, data);
+@@ -733,6 +733,21 @@ static int apparmor_sb_mount(const char *dev_name, const struct path *path,
+ 	return error;
+ }
+ 
++static int apparmor_move_mount(const struct path *from_path,
++			       const struct path *to_path)
++{
++	struct aa_label *label;
++	int error = 0;
++
++	label = __begin_current_label_crit_section();
++	if (!unconfined(label))
++		error = aa_move_mount(current_cred(), label, from_path,
++				      to_path);
++	__end_current_label_crit_section(label);
++
++	return error;
++}
++
+ static int apparmor_sb_umount(struct vfsmount *mnt, int flags)
+ {
+ 	struct aa_label *label;
+@@ -1376,6 +1391,7 @@ static struct security_hook_list apparmor_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(capget, apparmor_capget),
+ 	LSM_HOOK_INIT(capable, apparmor_capable),
+ 
++	LSM_HOOK_INIT(move_mount, apparmor_move_mount),
+ 	LSM_HOOK_INIT(sb_mount, apparmor_sb_mount),
+ 	LSM_HOOK_INIT(sb_umount, apparmor_sb_umount),
+ 	LSM_HOOK_INIT(sb_pivotroot, apparmor_sb_pivotroot),
+diff --git a/security/apparmor/mount.c b/security/apparmor/mount.c
+index 3455dd4b1f99..fb30204c761a 100644
+--- a/security/apparmor/mount.c
++++ b/security/apparmor/mount.c
+@@ -483,36 +483,46 @@ int aa_mount_change_type(const struct cred *subj_cred,
+ }
+ 
+ int aa_move_mount(const struct cred *subj_cred,
+-		  struct aa_label *label, const struct path *path,
+-		  const char *orig_name)
++		  struct aa_label *label, const struct path *from_path,
++		  const struct path *to_path)
+ {
+ 	struct aa_profile *profile;
+-	char *buffer = NULL, *old_buffer = NULL;
+-	struct path old_path;
++	char *to_buffer = NULL, *from_buffer = NULL;
+ 	int error;
+ 
+ 	AA_BUG(!label);
+-	AA_BUG(!path);
++	AA_BUG(!from_path);
++	AA_BUG(!to_path);
++
++	to_buffer = aa_get_buffer(false);
++	from_buffer = aa_get_buffer(false);
++	error = -ENOMEM;
++	if (!to_buffer || !from_buffer)
++		goto out;
++	error = fn_for_each_confined(label, profile,
++			match_mnt(subj_cred, profile, to_path, to_buffer,
++				  from_path, from_buffer,
++				  NULL, MS_MOVE, NULL, false));
++out:
++	aa_put_buffer(to_buffer);
++	aa_put_buffer(from_buffer);
++
++	return error;
++}
++
++int aa_move_mount_old(const struct cred *subj_cred, struct aa_label *label,
++		      const struct path *path, const char *orig_name)
++{
++	struct path old_path;
++	int error;
+ 
+ 	if (!orig_name || !*orig_name)
+ 		return -EINVAL;
+-
+ 	error = kern_path(orig_name, LOOKUP_FOLLOW, &old_path);
+ 	if (error)
+ 		return error;
+ 
+-	buffer = aa_get_buffer(false);
+-	old_buffer = aa_get_buffer(false);
+-	error = -ENOMEM;
+-	if (!buffer || !old_buffer)
+-		goto out;
+-	error = fn_for_each_confined(label, profile,
+-			match_mnt(subj_cred, profile, path, buffer, &old_path,
+-				  old_buffer,
+-				  NULL, MS_MOVE, NULL, false));
+-out:
+-	aa_put_buffer(buffer);
+-	aa_put_buffer(old_buffer);
++	error = aa_move_mount(subj_cred, label, &old_path, path);
+ 	path_put(&old_path);
+ 
+ 	return error;
 
