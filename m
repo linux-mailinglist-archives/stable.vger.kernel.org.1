@@ -2,290 +2,195 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D34307F491F
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 15:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EED117F4A4E
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 16:32:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231179AbjKVOkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 09:40:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43136 "EHLO
+        id S231491AbjKVPcZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 10:32:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229541AbjKVOkY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 09:40:24 -0500
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9564112
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 06:40:19 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1cf80a7be0aso614015ad.1
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 06:40:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700664019; x=1701268819; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=sB5h4sRcTqZbQgHsMWPDQ1Zoko+lG0XipOA5BU4rIUE=;
-        b=r4Z1sn++Ax57lPnjjWbiBlc2nqwp+Pb/LrO008owYsGvrB5w6i7hVe/sGDDmAxSfBX
-         L3JZqq4EzEtLZj2nUMAZEe2VJwsSaMeCVdmv7gDyztQQbYta24zRhHfFsdPCtQQbixDK
-         c8l00Tazyo0uFAceUZbcUrhVrmdTP7/FO9Jhrgef3XmtStd2b7SgnuTD0Zbjo4Ov5/w/
-         eYGTLebCh20FssGEWKunG34FK+dDcIelqPTNUZn3YLHyig68AHgVpazwM8p/Qee+k5cT
-         DvvtzoUunhrRTisUk1vy44ROmSMi2J/AHNYerE5x/UF6XmuFyp7WkHcN47m0OU6ha0X+
-         OMWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700664019; x=1701268819;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sB5h4sRcTqZbQgHsMWPDQ1Zoko+lG0XipOA5BU4rIUE=;
-        b=TYOdgl5znTpLN23pH4COJxMU7XKxBhkRGCViU5+w1nV8BT6UPUqjp8Zgvo9lEemo+/
-         GoH2qVgu5YiP1SIxmVYOMnaaPzCJkyWz20Qvss8PvAKJtV9/pPR13uqCiDH0iN4qA4p6
-         ZWqjPkelne+SyefAk6A1SvWWaMN9EZCOHqSwge6IuexqmtL8c9hrX8ODM/K7ks5bhDQn
-         ZcVBMLMfl8h7oip1NhNhPMWrh07V0czHjXUJIXKJ/JHxKeJ2iY+W9W5lykF3uASTrXi+
-         qRhElyWTU0pjuRaVxmQ4+rfzlPHxgF/R+pxOE5x+kg6gmeqN+boLdsLKswq7Ip2eDGO5
-         DXHA==
-X-Gm-Message-State: AOJu0YxuBChCVCa7I/BREOi7PhkodFIuDzfi82jrzDCdNXoXOAjG+Bei
-        XA4tecfeuAECjEeEtsAkl1/Vevzm36I8Lv4aV3Y=
-X-Google-Smtp-Source: AGHT+IHWnpNsVpLkgHyc1e/nICzEEtbyGS5OGF14Q020MDViKSEdGpRtcnJ53cnfmEmCmfHVlVaQRQ==
-X-Received: by 2002:a17:902:ce8c:b0:1cc:787f:fb7 with SMTP id f12-20020a170902ce8c00b001cc787f0fb7mr2786100plg.19.1700664018720;
-        Wed, 22 Nov 2023 06:40:18 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id y4-20020a17090322c400b001bbb7af4963sm9858599plg.68.2023.11.22.06.40.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Nov 2023 06:40:18 -0800 (PST)
-Message-ID: <655e12d2.170a0220.962b6.a50a@mx.google.com>
-Date:   Wed, 22 Nov 2023 06:40:18 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229634AbjKVPcY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 10:32:24 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E45041BD;
+        Wed, 22 Nov 2023 07:32:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD26C433C8;
+        Wed, 22 Nov 2023 15:32:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1700667140;
+        bh=wkCvBo8jEkVfRTkbglYo4Y8OHDg05/CV6/9Vs8YdR8g=;
+        h=From:To:Cc:Subject:Date:From;
+        b=se6rW82kVocMdGPK4qlRzBGluXE4h2xOM+5IM4DNM/SZuKhc12aoeCC9ZnIjH2NKk
+         4EZ6tb7r+IPal0h//+fZpmr3hIdurkjsGRf3DSWPrvwrLUzdi6znEeySKbhnlPlnhH
+         KTHrvQr5jekdTbDfsIW2UyE0lYvDQwRv51XV98i+PAdjfIhg9Ea2z3PMEKCccrZCtJ
+         nSYR+4qg7hm/sXzvgMbbTRAw647A6BrOCPhPzdfrfxrA/8N4SFzYrgs67ZzbKErj3o
+         P2RWhv9dowUX6pD0UWpvRqOEKPxR9zfPFUDXxB5euSPIre0ZBOy2B5G0fzBCMhxZNn
+         Pzqh7ocbdvrHQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Mike Christie <michael.christie@oracle.com>,
+        Christoph Hellwig <hch@lst.de>, Martin Wilck <mwilck@suse.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, jejb@linux.ibm.com,
+        linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/17] scsi: sd: Fix sshdr use in sd_suspend_common()
+Date:   Wed, 22 Nov 2023 10:31:30 -0500
+Message-ID: <20231122153212.852040-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: queue/4.19
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.19.299-50-gaa3fbf0e1c59
-Subject: stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed,
- 20 warnings (v4.19.299-50-gaa3fbf0e1c59)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.2
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed, 20 warnings (v4=
-.19.299-50-gaa3fbf0e1c59)
+From: Mike Christie <michael.christie@oracle.com>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-9/kernel/v4.19.299-50-gaa3fbf0e1c59/
+[ Upstream commit 3b83486399a6a9feb9c681b74c21a227d48d7020 ]
 
-Tree: stable-rc
-Branch: queue/4.19
-Git Describe: v4.19.299-50-gaa3fbf0e1c59
-Git Commit: aa3fbf0e1c59ca82ef95e6009142dd913905face
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+If scsi_execute_cmd() returns < 0, it doesn't initialize the sshdr, so we
+shouldn't access the sshdr. If it returns 0, then the cmd executed
+successfully, so there is no need to check the sshdr. sd_sync_cache() will
+only access the sshdr if it's been setup because it calls
+scsi_status_is_check_condition() before accessing it. However, the
+sd_sync_cache() caller, sd_suspend_common(), does not check.
 
-Build Failures Detected:
+sd_suspend_common() is only checking for ILLEGAL_REQUEST which it's using
+to determine if the command is supported. If it's not it just ignores the
+error. So to fix its sshdr use this patch just moves that check to
+sd_sync_cache() where it converts ILLEGAL_REQUEST to success/0.
+sd_suspend_common() was ignoring that error and sd_shutdown() doesn't check
+for errors so there will be no behavior changes.
 
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
-
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 2 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
-nings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20231106231304.5694-2-michael.christie@oracle.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-For more info write to <info@kernelci.org>
+ drivers/scsi/sd.c | 53 ++++++++++++++++++++---------------------------
+ 1 file changed, 23 insertions(+), 30 deletions(-)
+
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 6effa13039f39..ac5e917f7abd6 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -1642,24 +1642,21 @@ static unsigned int sd_check_events(struct gendisk *disk, unsigned int clearing)
+ 	return disk_changed ? DISK_EVENT_MEDIA_CHANGE : 0;
+ }
+ 
+-static int sd_sync_cache(struct scsi_disk *sdkp, struct scsi_sense_hdr *sshdr)
++static int sd_sync_cache(struct scsi_disk *sdkp)
+ {
+ 	int retries, res;
+ 	struct scsi_device *sdp = sdkp->device;
+ 	const int timeout = sdp->request_queue->rq_timeout
+ 		* SD_FLUSH_TIMEOUT_MULTIPLIER;
+-	struct scsi_sense_hdr my_sshdr;
++	struct scsi_sense_hdr sshdr;
+ 	const struct scsi_exec_args exec_args = {
+ 		.req_flags = BLK_MQ_REQ_PM,
+-		/* caller might not be interested in sense, but we need it */
+-		.sshdr = sshdr ? : &my_sshdr,
++		.sshdr = &sshdr,
+ 	};
+ 
+ 	if (!scsi_device_online(sdp))
+ 		return -ENODEV;
+ 
+-	sshdr = exec_args.sshdr;
+-
+ 	for (retries = 3; retries > 0; --retries) {
+ 		unsigned char cmd[16] = { 0 };
+ 
+@@ -1684,15 +1681,23 @@ static int sd_sync_cache(struct scsi_disk *sdkp, struct scsi_sense_hdr *sshdr)
+ 			return res;
+ 
+ 		if (scsi_status_is_check_condition(res) &&
+-		    scsi_sense_valid(sshdr)) {
+-			sd_print_sense_hdr(sdkp, sshdr);
++		    scsi_sense_valid(&sshdr)) {
++			sd_print_sense_hdr(sdkp, &sshdr);
+ 
+ 			/* we need to evaluate the error return  */
+-			if (sshdr->asc == 0x3a ||	/* medium not present */
+-			    sshdr->asc == 0x20 ||	/* invalid command */
+-			    (sshdr->asc == 0x74 && sshdr->ascq == 0x71))	/* drive is password locked */
++			if (sshdr.asc == 0x3a ||	/* medium not present */
++			    sshdr.asc == 0x20 ||	/* invalid command */
++			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+ 				/* this is no error here */
+ 				return 0;
++			/*
++			 * This drive doesn't support sync and there's not much
++			 * we can do because this is called during shutdown
++			 * or suspend so just return success so those operations
++			 * can proceed.
++			 */
++			if (sshdr.sense_key == ILLEGAL_REQUEST)
++				return 0;
+ 		}
+ 
+ 		switch (host_byte(res)) {
+@@ -3847,7 +3852,7 @@ static void sd_shutdown(struct device *dev)
+ 
+ 	if (sdkp->WCE && sdkp->media_present) {
+ 		sd_printk(KERN_NOTICE, sdkp, "Synchronizing SCSI cache\n");
+-		sd_sync_cache(sdkp, NULL);
++		sd_sync_cache(sdkp);
+ 	}
+ 
+ 	if ((system_state != SYSTEM_RESTART &&
+@@ -3868,7 +3873,6 @@ static inline bool sd_do_start_stop(struct scsi_device *sdev, bool runtime)
+ static int sd_suspend_common(struct device *dev, bool runtime)
+ {
+ 	struct scsi_disk *sdkp = dev_get_drvdata(dev);
+-	struct scsi_sense_hdr sshdr;
+ 	int ret = 0;
+ 
+ 	if (!sdkp)	/* E.g.: runtime suspend following sd_remove() */
+@@ -3877,24 +3881,13 @@ static int sd_suspend_common(struct device *dev, bool runtime)
+ 	if (sdkp->WCE && sdkp->media_present) {
+ 		if (!sdkp->device->silence_suspend)
+ 			sd_printk(KERN_NOTICE, sdkp, "Synchronizing SCSI cache\n");
+-		ret = sd_sync_cache(sdkp, &sshdr);
+-
+-		if (ret) {
+-			/* ignore OFFLINE device */
+-			if (ret == -ENODEV)
+-				return 0;
+-
+-			if (!scsi_sense_valid(&sshdr) ||
+-			    sshdr.sense_key != ILLEGAL_REQUEST)
+-				return ret;
++		ret = sd_sync_cache(sdkp);
++		/* ignore OFFLINE device */
++		if (ret == -ENODEV)
++			return 0;
+ 
+-			/*
+-			 * sshdr.sense_key == ILLEGAL_REQUEST means this drive
+-			 * doesn't support sync. There's not much to do and
+-			 * suspend shouldn't fail.
+-			 */
+-			ret = 0;
+-		}
++		if (ret)
++			return ret;
+ 	}
+ 
+ 	if (sd_do_start_stop(sdkp->device, runtime)) {
+-- 
+2.42.0
+
