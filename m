@@ -2,202 +2,160 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3190D7F4E29
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:19:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B4DA7F4E37
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:22:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231708AbjKVRTa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:19:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55892 "EHLO
+        id S232077AbjKVRWf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:22:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231793AbjKVRTa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:19:30 -0500
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4EA9C83;
-        Wed, 22 Nov 2023 09:19:26 -0800 (PST)
-Received: from [192.168.2.39] (77-166-152-30.fixed.kpn.net [77.166.152.30])
-        by linux.microsoft.com (Postfix) with ESMTPSA id BF0E720B74C0;
-        Wed, 22 Nov 2023 09:19:21 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BF0E720B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1700673565;
-        bh=3LZ9zzeuLYlI71EPLuHTSgdCNU++nYBhxEZHJbsDSlY=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=FNbbciuyWCaA9TZyyEjX7d7DkZgEQKBFsmxLo1LiA3Jvi+6vHmrWZOH1gV+NeKDDb
-         awySjemfomgKj1xLIpgE4rr02YE7Le1qQnjEgZqb1n9SSbtUzvywHYQp/Eh9EIIvna
-         vUDSo7AuFhfJhv42JxDDyPmWaLsJVvg8qBnw4i+E=
-Message-ID: <0799b692-4b26-4e00-9cec-fdc4c929ea58@linux.microsoft.com>
-Date:   Wed, 22 Nov 2023 18:19:20 +0100
+        with ESMTP id S231797AbjKVRWe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:22:34 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D391B5
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:22:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E43BC433C7;
+        Wed, 22 Nov 2023 17:22:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1700673750;
+        bh=l8q4zsOB//RgPiSgoASHJUel7b7rZqxLhG5qyrE6gts=;
+        h=Subject:To:Cc:From:Date:From;
+        b=rzP7hLYTrZeW+hfV1ZSQjfVwAvHawgr6CbjJTsGcmbpzZMsFncsw7ZEubWvl4eRom
+         /YKKQJpj6tGhWeLXJd3eaY/rFRWPcYdCKwG2qotsIjq7MwVMJPeBe+TJ/dNdjQBUK5
+         MElNdinq5pNE7wAdZfLCHdFesCvcFsQNCk8/ar6Q=
+Subject: FAILED: patch "[PATCH] proc: sysctl: prevent aliased sysctls from getting passed to" failed to apply to 5.15-stable tree
+To:     kjlx@templeofstupid.com, mcgrof@kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Wed, 22 Nov 2023 17:22:28 +0000
+Message-ID: <2023112228-racoon-mossy-ce5e@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
-Content-Language: en-US
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     linux-hyperv@vger.kernel.org, stefan.bader@canonical.com,
-        tim.gardner@canonical.com, roxana.nicolescu@canonical.com,
-        cascardo@canonical.com, kys@microsoft.com, haiyangz@microsoft.com,
-        wei.liu@kernel.org, sashal@kernel.org, stable@vger.kernel.org,
-        linux-kernel@vger.kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Michael Kelley <mhkelley58@gmail.com>,
-        Nikolay Borisov <nik.borisov@suse.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
-        Dexuan Cui <decui@microsoft.com>
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
-From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 22/11/2023 18:01, Jeremi Piotrowski wrote:
-> Check for additional CPUID bits to identify TDX guests running with Trust
-> Domain (TD) partitioning enabled. TD partitioning is like nested virtualization
-> inside the Trust Domain so there is a L1 TD VM(M) and there can be L2 TD VM(s).
-> 
-> In this arrangement we are not guaranteed that the TDX_CPUID_LEAF_ID is visible
-> to Linux running as an L2 TD VM. This is because a majority of TDX facilities
-> are controlled by the L1 VMM and the L2 TDX guest needs to use TD partitioning
-> aware mechanisms for what's left. So currently such guests do not have
-> X86_FEATURE_TDX_GUEST set.
-> 
-> We want the kernel to have X86_FEATURE_TDX_GUEST set for all TDX guests so we
-> need to check these additional CPUID bits, but we skip further initialization
-> in the function as we aren't guaranteed access to TDX module calls.
-> 
-> Cc: <stable@vger.kernel.org> # v6.5+
-> Signed-off-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-> ---
->  arch/x86/coco/tdx/tdx.c    | 29 ++++++++++++++++++++++++++---
->  arch/x86/include/asm/tdx.h |  3 +++
->  2 files changed, 29 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 1d6b863c42b0..c7bbbaaf654d 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-> @@ -8,6 +8,7 @@
->  #include <linux/export.h>
->  #include <linux/io.h>
->  #include <asm/coco.h>
-> +#include <asm/hyperv-tlfs.h>
->  #include <asm/tdx.h>
->  #include <asm/vmx.h>
->  #include <asm/insn.h>
-> @@ -37,6 +38,8 @@
->  
->  #define TDREPORT_SUBTYPE_0	0
->  
-> +bool tdx_partitioning_active;
-> +
->  /* Called from __tdx_hypercall() for unrecoverable failure */
->  noinstr void __tdx_hypercall_failed(void)
->  {
-> @@ -757,19 +760,38 @@ static bool tdx_enc_status_change_finish(unsigned long vaddr, int numpages,
->  	return true;
->  }
->  
-> +
-> +static bool early_is_hv_tdx_partitioning(void)
-> +{
-> +	u32 eax, ebx, ecx, edx;
-> +	cpuid(HYPERV_CPUID_ISOLATION_CONFIG, &eax, &ebx, &ecx, &edx);
-> +	return eax & HV_PARAVISOR_PRESENT &&
-> +	       (ebx & HV_ISOLATION_TYPE) == HV_ISOLATION_TYPE_TDX;
-> +}
-> +
->  void __init tdx_early_init(void)
->  {
->  	u64 cc_mask;
->  	u32 eax, sig[3];
->  
->  	cpuid_count(TDX_CPUID_LEAF_ID, 0, &eax, &sig[0], &sig[2],  &sig[1]);
-> -
-> -	if (memcmp(TDX_IDENT, sig, sizeof(sig)))
-> -		return;
-> +	if (memcmp(TDX_IDENT, sig, sizeof(sig))) {
-> +		tdx_partitioning_active = early_is_hv_tdx_partitioning();
-> +		if (!tdx_partitioning_active)
-> +			return;
-> +	}
 
-Hi Borislav,
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Just wanted to run another option by you. Instead of checking the CPUID here we
-could accomplish the same result by doing _this_ in the hyperv cc init:
+To reproduce the conflict and resubmit, you may use the following commands:
 
-diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-index 8c6bf07f7d2b..705794642d34 100644
---- a/arch/x86/hyperv/ivm.c
-+++ b/arch/x86/hyperv/ivm.c
-@@ -595,6 +595,8 @@ void __init hv_vtom_init(void)
- #endif
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8001f49394e353f035306a45bcf504f06fca6355
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112228-racoon-mossy-ce5e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+8001f49394e3 ("proc: sysctl: prevent aliased sysctls from getting passed to init")
+1998f19324d2 ("fs: move pipe sysctls to is own file")
+66ad398634c2 ("fs: move fs/exec.c sysctls into its own file")
+d1d8ac9edf10 ("fs: move shared sysctls to fs/sysctls.c")
+54771613e8a7 ("sysctl: move maxolduid as a sysctl specific const")
+c8c0c239d5ab ("fs: move dcache sysctls to its own file")
+204d5a24e155 ("fs: move fs stat sysctls to file_table.c")
+1d67fe585049 ("fs: move inode sysctls to its own file")
+b1f2aff888af ("sysctl: share unsigned long const values")
+3ba442d5331f ("fs: move binfmt_misc sysctl to its own file")
+2452dcb9f7f2 ("sysctl: use SYSCTL_ZERO to replace some static int zero uses")
+d73840ec2f74 ("sysctl: use const for typically used max/min proc sysctls")
+f628867da46f ("sysctl: make ngroups_max const")
+bbe7a10ed83a ("hung_task: move hung_task sysctl interface to hung_task.c")
+78e36f3b0dae ("sysctl: move some boundary constants from sysctl.c to sysctl_vals")
+39c65a94cd96 ("mm/pagealloc: sysctl: change watermark_scale_factor max limit to 30%")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 8001f49394e353f035306a45bcf504f06fca6355 Mon Sep 17 00:00:00 2001
+From: Krister Johansen <kjlx@templeofstupid.com>
+Date: Fri, 27 Oct 2023 14:46:40 -0700
+Subject: [PATCH] proc: sysctl: prevent aliased sysctls from getting passed to
+ init
+
+The code that checks for unknown boot options is unaware of the sysctl
+alias facility, which maps bootparams to sysctl values.  If a user sets
+an old value that has a valid alias, a message about an invalid
+parameter will be printed during boot, and the parameter will get passed
+to init.  Fix by checking for the existence of aliased parameters in the
+unknown boot parameter code.  If an alias exists, don't return an error
+or pass the value to init.
+
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Cc: stable@vger.kernel.org
+Fixes: 0a477e1ae21b ("kernel/sysctl: support handling command line aliases")
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index c88854df0b62..1c9635dddb70 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1592,6 +1592,13 @@ static const char *sysctl_find_alias(char *param)
+ 	return NULL;
+ }
  
- 	case HV_ISOLATION_TYPE_TDX:
-+		setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
-+		tdx_partitioning_active = true;
- 		cc_vendor = CC_VENDOR_INTEL;
- 		break;
++bool sysctl_is_alias(char *param)
++{
++	const char *alias = sysctl_find_alias(param);
++
++	return alias != NULL;
++}
++
+ /* Set sysctl value passed on kernel command line. */
+ static int process_sysctl_arg(char *param, char *val,
+ 			       const char *unused, void *arg)
+diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
+index 09d7429d67c0..61b40ea81f4d 100644
+--- a/include/linux/sysctl.h
++++ b/include/linux/sysctl.h
+@@ -242,6 +242,7 @@ extern void __register_sysctl_init(const char *path, struct ctl_table *table,
+ extern struct ctl_table_header *register_sysctl_mount_point(const char *path);
  
-
-Which approach do you prefer?
-
-Thanks,
-Jeremi
-
->  
->  	setup_force_cpu_cap(X86_FEATURE_TDX_GUEST);
->  
->  	cc_vendor = CC_VENDOR_INTEL;
-> +
-> +	/*
-> +	 * Need to defer cc_mask and page visibility callback initializations
-> +	 * to a TD-partitioning aware implementation.
-> +	 */
-> +	if (tdx_partitioning_active)
-> +		goto exit;
-> +
->  	tdx_parse_tdinfo(&cc_mask);
->  	cc_set_mask(cc_mask);
->  
-> @@ -820,5 +842,6 @@ void __init tdx_early_init(void)
->  	 */
->  	x86_cpuinit.parallel_bringup = false;
->  
-> +exit:
->  	pr_info("Guest detected\n");
->  }
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index 603e6d1e9d4a..fe22f8675859 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -52,6 +52,7 @@ bool tdx_early_handle_ve(struct pt_regs *regs);
->  
->  int tdx_mcall_get_report0(u8 *reportdata, u8 *tdreport);
->  
-> +extern bool tdx_partitioning_active;
->  #else
->  
->  static inline void tdx_early_init(void) { };
-> @@ -71,6 +72,8 @@ static inline long tdx_kvm_hypercall(unsigned int nr, unsigned long p1,
->  {
->  	return -ENODEV;
->  }
-> +
-> +#define tdx_partitioning_active false
->  #endif /* CONFIG_INTEL_TDX_GUEST && CONFIG_KVM_GUEST */
->  #endif /* !__ASSEMBLY__ */
->  #endif /* _ASM_X86_TDX_H */
+ void do_sysctl_args(void);
++bool sysctl_is_alias(char *param);
+ int do_proc_douintvec(struct ctl_table *table, int write,
+ 		      void *buffer, size_t *lenp, loff_t *ppos,
+ 		      int (*conv)(unsigned long *lvalp,
+@@ -287,6 +288,11 @@ static inline void setup_sysctl_set(struct ctl_table_set *p,
+ static inline void do_sysctl_args(void)
+ {
+ }
++
++static inline bool sysctl_is_alias(char *param)
++{
++	return false;
++}
+ #endif /* CONFIG_SYSCTL */
+ 
+ int sysctl_max_threads(struct ctl_table *table, int write, void *buffer,
+diff --git a/init/main.c b/init/main.c
+index 436d73261810..e24b0780fdff 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -530,6 +530,10 @@ static int __init unknown_bootoption(char *param, char *val,
+ {
+ 	size_t len = strlen(param);
+ 
++	/* Handle params aliased to sysctls */
++	if (sysctl_is_alias(param))
++		return 0;
++
+ 	repair_env_string(param, val);
+ 
+ 	/* Handle obsolete-style parameters */
 
