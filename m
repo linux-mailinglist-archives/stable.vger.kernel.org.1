@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 555697F4E45
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBD0C7F4E46
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:24:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235103AbjKVRXz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:23:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41016 "EHLO
+        id S232615AbjKVRYS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:24:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235119AbjKVRXx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:53 -0500
+        with ESMTP id S234605AbjKVRYS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:24:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 632151BE
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:47 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC99C433C9;
-        Wed, 22 Nov 2023 17:23:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E3CD60
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:24:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB7AC433C7;
+        Wed, 22 Nov 2023 17:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673826;
-        bh=dHG3d/liLfpoX9gYwxp5qhxn7RO2WNm78lTLIo6SsH8=;
+        s=korg; t=1700673849;
+        bh=5Hn+Q4QKHqvlIV+4fj8mTYCxrmowLvclP1505xDdOgk=;
         h=Subject:To:Cc:From:Date:From;
-        b=ZvNGfN/qMbLos9mhenHtxxbI2yzOmV9HTwYGdVDeOt9rVbTPKL3+v+74IpS+6OFkN
-         Peg2Rrk4gO2NyA2UfKOMTHdnfHWsqqdGbCTo+p07v/NgkjSxMfAaANWRWIpFZVz6Q8
-         bLPBy8YBg9mJhe08AUxUrMPyGvjfltaj9S3lBSf8=
-Subject: FAILED: patch "[PATCH] tty: serial: meson: fix hard LOCKUP on crtscts mode" failed to apply to 4.14-stable tree
-To:     pkrasavin@imaqliq.com, ddrokosov@salutedevices.com,
-        gregkh@linuxfoundation.org, neil.armstrong@linaro.org
+        b=VqDX1D+Vm3U2+7R2dvvpMZQQJVm3AfYVxEzFmAQxL7oz9kI1xwtoZHW2icTaAY34V
+         38UlV388QMLtPL+pGVeY7Di+mNL/GNTkt/Ms4v/ieOhyj/HvjqB3FXHN9A/qoOXT4v
+         Ln0qiaZvIOF2SvKMGxQd06S57rs1kybvhsMBNTi4=
+Subject: FAILED: patch "[PATCH] acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0" failed to apply to 6.5-stable tree
+To:     roger.pau@citrix.com, jandryuk@gmail.com, jgross@suse.com,
+        michal.wilczynski@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:23:38 +0000
-Message-ID: <2023112238-rebate-cupcake-a38b@gregkh>
+Date:   Wed, 22 Nov 2023 17:24:07 +0000
+Message-ID: <2023112207-canary-unit-5577@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -44,28 +44,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x 2a1d728f20edeee7f26dc307ed9df4e0d23947ab
+git cherry-pick -x bfa993b355d33a438a746523e7129391c8664e8a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112238-rebate-cupcake-a38b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112207-canary-unit-5577@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
-2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
-5b6806198347 ("serial: meson: Use platform_get_irq() to get the interrupt")
-27d44e05d7b8 ("tty: serial: meson: retrieve port FIFO size from DT")
-021212f53352 ("serial: meson: remove redundant initialization of variable id")
-dca3ac8d3bc9 ("tty/serial: Migrate meson_uart to use has_sysrq")
-a26988e8fef4 ("tty: serial: meson: if no alias specified use an available id")
+bfa993b355d3 ("acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0")
+a4a7644c1509 ("x86/xen: move paravirt lazy code")
+9bd0c413b90c ("Merge branch 'acpi-processor'")
 
 thanks,
 
@@ -73,94 +70,127 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 2a1d728f20edeee7f26dc307ed9df4e0d23947ab Mon Sep 17 00:00:00 2001
-From: Pavel Krasavin <pkrasavin@imaqliq.com>
-Date: Sat, 14 Oct 2023 11:39:26 +0000
-Subject: [PATCH] tty: serial: meson: fix hard LOCKUP on crtscts mode
+From bfa993b355d33a438a746523e7129391c8664e8a Mon Sep 17 00:00:00 2001
+From: Roger Pau Monne <roger.pau@citrix.com>
+Date: Wed, 8 Nov 2023 16:25:15 -0500
+Subject: [PATCH] acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
+The Processor capability bits notify ACPI of the OS capabilities, and
+so ACPI can adjust the return of other Processor methods taking the OS
+capabilities into account.
 
-# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
-[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
-[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
-[   95.906972] Task dump for CPU 3:
-[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
-[   95.920059] Call trace:
-[   95.922485]  __switch_to+0xe4/0x168
-[   95.925951]  0xffffff8003477508
-[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
-[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
+When Linux is running as a Xen dom0, the hypervisor is the entity
+in charge of processor power management, and hence Xen needs to make
+sure the capabilities reported by _OSC/_PDC match the capabilities of
+the driver in Xen.
 
-Possible solution would be to not allow to setup crtscts on such port.
+Introduce a small helper to sanitize the buffer when running as Xen
+dom0.
 
-Tested on S905X3 based board.
+When Xen supports HWP, this serves as the equivalent of commit
+a21211672c9a ("ACPI / processor: Request native thermal interrupt
+handling via _OSC") to avoid SMM crashes.  Xen will set bit
+ACPI_PROC_CAP_COLLAB_PROC_PERF (bit 12) in the capability bits and the
+_OSC/_PDC call will apply it.
 
-Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
+[ jandryuk: Mention Xen HWP's need.  Support _OSC & _PDC ]
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
+Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
+Reviewed-by: Michal Wilczynski <michal.wilczynski@intel.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20231108212517.72279-1-jandryuk@gmail.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
 
-v6: stable tag added
-v5: https://lore.kernel.org/lkml/OF43DA36FF.2BD3BB21-ON00258A47.005A8125-00258A47.005A9513@gdc.ru/
-added missed Reviewed-by tags, Fixes tag added according to Dmitry and Neil notes
-v4: https://lore.kernel.org/lkml/OF55521400.7512350F-ON00258A47.003F7254-00258A47.0040E15C@gdc.ru/
-More correct patch subject according to Jiri's note
-v3: https://lore.kernel.org/lkml/OF6CF5FFA0.CCFD0E8E-ON00258A46.00549EDF-00258A46.0054BB62@gdc.ru/
-"From:" line added to the mail
-v2: https://lore.kernel.org/lkml/OF950BEF72.7F425944-ON00258A46.00488A76-00258A46.00497D44@gdc.ru/
-braces for single statement removed according to Dmitry's note
-v1: https://lore.kernel.org/lkml/OF28B2B8C9.5BC0CD28-ON00258A46.0037688F-00258A46.0039155B@gdc.ru/
-Link: https://lore.kernel.org/r/OF66360032.51C36182-ON00258A48.003F656B-00258A48.0040092C@gdc.ru
-
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
-index de298bf75d9b..8dd84617e715 100644
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -380,10 +380,14 @@ static void meson_uart_set_termios(struct uart_port *port,
- 	else
- 		val |= AML_UART_STOP_BIT_1SB;
+diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
+index c8a7fc23f63c..f896eed4516c 100644
+--- a/arch/x86/include/asm/acpi.h
++++ b/arch/x86/include/asm/acpi.h
+@@ -16,6 +16,9 @@
+ #include <asm/x86_init.h>
+ #include <asm/cpufeature.h>
+ #include <asm/irq_vectors.h>
++#include <asm/xen/hypervisor.h>
++
++#include <xen/xen.h>
  
--	if (cflags & CRTSCTS)
--		val &= ~AML_UART_TWO_WIRE_EN;
--	else
-+	if (cflags & CRTSCTS) {
-+		if (port->flags & UPF_HARD_FLOW)
-+			val &= ~AML_UART_TWO_WIRE_EN;
-+		else
-+			termios->c_cflag &= ~CRTSCTS;
-+	} else {
- 		val |= AML_UART_TWO_WIRE_EN;
+ #ifdef CONFIG_ACPI_APEI
+ # include <asm/pgtable_types.h>
+@@ -127,6 +130,17 @@ static inline void arch_acpi_set_proc_cap_bits(u32 *cap)
+ 	if (!cpu_has(c, X86_FEATURE_MWAIT) ||
+ 	    boot_option_idle_override == IDLE_NOMWAIT)
+ 		*cap &= ~(ACPI_PROC_CAP_C_C1_FFH | ACPI_PROC_CAP_C_C2C3_FFH);
++
++	if (xen_initial_domain()) {
++		/*
++		 * When Linux is running as Xen dom0, the hypervisor is the
++		 * entity in charge of the processor power management, and so
++		 * Xen needs to check the OS capabilities reported in the
++		 * processor capabilities buffer matches what the hypervisor
++		 * driver supports.
++		 */
++		xen_sanitize_proc_cap_bits(cap);
 +	}
+ }
  
- 	writel(val, port->membase + AML_UART_CONTROL);
+ static inline bool acpi_has_cpu_in_madt(void)
+diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
+index 7048dfacc04b..a9088250770f 100644
+--- a/arch/x86/include/asm/xen/hypervisor.h
++++ b/arch/x86/include/asm/xen/hypervisor.h
+@@ -100,4 +100,13 @@ static inline void leave_lazy(enum xen_lazy_mode mode)
  
-@@ -705,6 +709,7 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
- 	int ret = 0;
- 	int irq;
-+	bool has_rtscts;
+ enum xen_lazy_mode xen_get_lazy_mode(void);
  
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
-@@ -732,6 +737,7 @@ static int meson_uart_probe(struct platform_device *pdev)
- 		return irq;
++#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI)
++void xen_sanitize_proc_cap_bits(uint32_t *buf);
++#else
++static inline void xen_sanitize_proc_cap_bits(uint32_t *buf)
++{
++	BUG();
++}
++#endif
++
+ #endif /* _ASM_X86_XEN_HYPERVISOR_H */
+diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
+index b3e3d1bb37f3..508655273145 100644
+--- a/drivers/xen/pcpu.c
++++ b/drivers/xen/pcpu.c
+@@ -47,6 +47,9 @@
+ #include <asm/xen/hypervisor.h>
+ #include <asm/xen/hypercall.h>
  
- 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
-+	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
++#ifdef CONFIG_ACPI
++#include <acpi/processor.h>
++#endif
  
- 	if (meson_ports[pdev->id]) {
- 		return dev_err_probe(&pdev->dev, -EBUSY,
-@@ -762,6 +768,8 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	port->mapsize = resource_size(res_mem);
- 	port->irq = irq;
- 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
-+	if (has_rtscts)
-+		port->flags |= UPF_HARD_FLOW;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
- 	port->dev = &pdev->dev;
- 	port->line = pdev->id;
+ /*
+  * @cpu_id: Xen physical cpu logic number
+@@ -400,4 +403,23 @@ bool __init xen_processor_present(uint32_t acpi_id)
+ 
+ 	return online;
+ }
++
++void xen_sanitize_proc_cap_bits(uint32_t *cap)
++{
++	struct xen_platform_op op = {
++		.cmd			= XENPF_set_processor_pminfo,
++		.u.set_pminfo.id	= -1,
++		.u.set_pminfo.type	= XEN_PM_PDC,
++	};
++	u32 buf[3] = { ACPI_PDC_REVISION_ID, 1, *cap };
++	int ret;
++
++	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
++	ret = HYPERVISOR_platform_op(&op);
++	if (ret)
++		pr_err("sanitize of _PDC buffer bits from Xen failed: %d\n",
++		       ret);
++	else
++		*cap = buf[2];
++}
+ #endif
 
