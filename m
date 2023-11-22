@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8067F50AF
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:35:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 279C77F50B0
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:35:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235027AbjKVTf2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 14:35:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45262 "EHLO
+        id S1344448AbjKVTfc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:35:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232105AbjKVTf2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:35:28 -0500
+        with ESMTP id S1344050AbjKVTfb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:35:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76E7B18E
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:35:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCB6C433C9;
-        Wed, 22 Nov 2023 19:35:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2771B6
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:35:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C385C433C7;
+        Wed, 22 Nov 2023 19:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700681724;
-        bh=93jC2HQSP2dxdNPdy4VHfA2p48MLrOHf3CIw2zmWfDU=;
+        s=korg; t=1700681726;
+        bh=j9ypfPNxax4t2h49N2EGuvGgePbNdkwLUK7/a4dd1Jg=;
         h=Subject:To:Cc:From:Date:From;
-        b=jet7AU3vMuaAnMmuIEvtiH4SoHDuph/xQXtPDIOw4tAHs1vP7R5LoIsuuCPNGA0Cn
-         KN1RTA7d+RlBFnxid44Rm5D5q5RvCt3q9dTQuzi0y4fBTs7E33eg8ZOCKkeE4D0iPr
-         XOirlQD7XZ8CEPmKbAOjGR4uCqnNnre7R9Gztfro=
-Subject: FAILED: patch "[PATCH] Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE" failed to apply to 5.10-stable tree
+        b=bpHPUit7t9lGfU+65fctAmoDG3pfJVD0T7tzg8az0P0uy2WJj+NgYZrGljlfbVMoJ
+         xbdlDqX1/6DPeh36Ibj48+GAQMmxDa0n1B1FMb1FKJy0mxHibEDUV+e2ERNuLnuPJi
+         jqTSA9EKnZYSqFiDm3GyiCjpyBeQ9Cu2vWpOdLqk=
+Subject: FAILED: patch "[PATCH] Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE" failed to apply to 5.4-stable tree
 To:     guanwentao@uniontech.com, luiz.von.dentz@intel.com,
         tangmeng@uniontech.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 19:35:17 +0000
-Message-ID: <2023112217-suspect-reliable-3bf8@gregkh>
+Date:   Wed, 22 Nov 2023 19:35:19 +0000
+Message-ID: <2023112219-human-native-8c29@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x da06ff1f585ea784c79f80e7fab0e0c4ebb49c1c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112217-suspect-reliable-3bf8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112219-human-native-8c29@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -65,6 +65,7 @@ da06ff1f585e ("Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE")
 069f534247bb ("bluetooth: Add device 13d3:3571 to device tables")
 730a1d1a93a3 ("bluetooth: Add device 0bda:887b to device tables")
 393b4916b7b5 ("Bluetooth: btusb: Add Realtek RTL8852BE support ID 0x0cb8:0xc559")
+33bfd94a05ab ("Bluetooth: btusb: add Realtek 8822CE to usb_device_id table")
 
 thanks,
 
