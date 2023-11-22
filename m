@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DDA57F5027
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:04:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CE207F5029
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:04:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234713AbjKVTEk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 14:04:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35134 "EHLO
+        id S231562AbjKVTEn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:04:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231562AbjKVTEj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:04:39 -0500
+        with ESMTP id S235189AbjKVTEm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:04:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E92AD83
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:04:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D9BC433C9;
-        Wed, 22 Nov 2023 19:04:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045F583
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:04:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5527EC433B7;
+        Wed, 22 Nov 2023 19:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700679875;
-        bh=9UDh6QQDSt5FAM1ngjFi+vMofs1bA/JgEBLAi6ON03M=;
+        s=korg; t=1700679878;
+        bh=eye19tI2iBOgyNbY7wGEebDuH2T3sg3qpfaziTf3J2s=;
         h=Subject:To:Cc:From:Date:From;
-        b=mldHwee1WtAj7AXkCeDqisLuA93VoVI4wIfLLm7vOWBXWQxsVsxJh/97DHO4TL8kO
-         uHcEOAvz0SdcTVdaVH2pxEcF4Vfknk5uR9qGpo7UnT5sDAub2Y+b23FEppzh195F0Y
-         3P8SdWUjqYCW6FCKmzl55hvOadwQqg5MkxOm5QOg=
-Subject: FAILED: patch "[PATCH] regmap: Ensure range selector registers are updated after" failed to apply to 4.109-stable tree
+        b=Q/IrDL+1wGVpQ3rH88KqhX5uo8eIqAiQINLvYUHUc8HEzBk9rxOktc6ib6XK6xKv2
+         9JZPzaVjkpUWdl6YAnuvF7NXpKcRegGvS5bQ8MYdSygQNzSwbBPQcQ1/FOthfwlhx6
+         2k4MgEY9b70WIMx5l/zgDqI9COhtrLOgrFeHrt6s=
+Subject: FAILED: patch "[PATCH] regmap: Ensure range selector registers are updated after" failed to apply to 4.19-stable tree
 To:     broonie@kernel.org, marcan@marcan.st
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 19:04:33 +0000
-Message-ID: <2023112233-huddle-harmony-d181@gregkh>
+Date:   Wed, 22 Nov 2023 19:04:36 +0000
+Message-ID: <2023112236-grumble-repose-10b5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,23 +43,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.109-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.109.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0ec7731655de196bc1e4af99e495b38778109d22
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112233-huddle-harmony-d181@gregkh' --subject-prefix 'PATCH 4.109.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112236-grumble-repose-10b5@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-
+0ec7731655de ("regmap: Ensure range selector registers are updated after cache sync")
 
 thanks,
 
