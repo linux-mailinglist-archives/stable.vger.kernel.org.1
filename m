@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF7177F4E51
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC0EE7F4E54
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:25:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344099AbjKVRYq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:24:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47916 "EHLO
+        id S1344084AbjKVRZT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:25:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344097AbjKVRYp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:24:45 -0500
+        with ESMTP id S1344115AbjKVRZS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:25:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA39019D
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:24:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A8FC433C7;
-        Wed, 22 Nov 2023 17:24:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 643DA11F
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:25:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD54C433C8;
+        Wed, 22 Nov 2023 17:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673880;
-        bh=wJ1vQNln3USsPXsjZAI1MLFE8nVaEdsuI/eYZK5Y+wY=;
+        s=korg; t=1700673913;
+        bh=jEHGYboK0haG3aoXfgmhkpSaVevmbl64K5OzF2inIaI=;
         h=Subject:To:Cc:From:Date:From;
-        b=NTGBMumUNklsWYAzjvwPjAIqhHqpknQchekdTrDE87ARzudhoCNa8a4HQIuMuMhTx
-         beKC8+6WyTJ2qeqf00L2ejvHssJeInj077AGUlQ3VeM4GOY32Cm0HDJFPXXPQn+ibt
-         om6dg6BgmnJ68wyEhT90my2Q4XaeRclyzhLumkl0=
-Subject: FAILED: patch "[PATCH] hvc/xen: fix console unplug" failed to apply to 4.14-stable tree
-To:     dwmw@amazon.co.uk, gregkh@linuxfoundation.org
+        b=CLcSOTKg0X0Xs6nEDN2rHXEgCyxOKwOHKtMsxIWVyMT7+jmVwnouUXJUrZBB65Uqj
+         2BfULxNKvmmxxBxTrUi6tMgfVHdLwfmBrw+1bwy62AGHY3Ewalv+5D1lBlTLFkcG5u
+         KZxe+YlpuiTM1CEfoCfMbTaAZ8E6jzbyMq5ptpYs=
+Subject: FAILED: patch "[PATCH] hvc/xen: fix event channel handling for secondary consoles" failed to apply to 5.10-stable tree
+To:     dwmw@amazon.co.uk, gregkh@linuxfoundation.org, jgross@suse.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:24:33 +0000
-Message-ID: <2023112233-haggler-coma-5bfd@gregkh>
+Date:   Wed, 22 Nov 2023 17:25:10 +0000
+Message-ID: <2023112210-salt-repossess-a9d7@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -43,25 +43,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x a30badfd7c13fc8763a9e10c5a12ba7f81515a55
+git cherry-pick -x ef5dd8ec88ac11e8e353164407d55b73c988b369
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112233-haggler-coma-5bfd@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112210-salt-repossess-a9d7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-a30badfd7c13 ("hvc/xen: fix console unplug")
-df561f6688fe ("treewide: Use fallthrough pseudo-keyword")
-37711e5e2325 ("Merge tag 'nfs-for-5.9-1' of git://git.linux-nfs.org/projects/trondmy/linux-nfs")
+ef5dd8ec88ac ("hvc/xen: fix event channel handling for secondary consoles")
+fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
+3bd5371a4da6 ("xen/events: Remove unused bind_evtchn_to_irq_lateeoi()")
 
 thanks,
 
@@ -69,119 +69,51 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a30badfd7c13fc8763a9e10c5a12ba7f81515a55 Mon Sep 17 00:00:00 2001
+From ef5dd8ec88ac11e8e353164407d55b73c988b369 Mon Sep 17 00:00:00 2001
 From: David Woodhouse <dwmw@amazon.co.uk>
-Date: Fri, 20 Oct 2023 17:15:29 +0100
-Subject: [PATCH] hvc/xen: fix console unplug
+Date: Fri, 20 Oct 2023 17:15:27 +0100
+Subject: [PATCH] hvc/xen: fix event channel handling for secondary consoles
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On unplug of a Xen console, xencons_disconnect_backend() unconditionally
-calls free_irq() via unbind_from_irqhandler(), causing a warning of
-freeing an already-free IRQ:
+The xencons_connect_backend() function allocates a local interdomain
+event channel with xenbus_alloc_evtchn(), then calls
+bind_interdomain_evtchn_to_irq_lateeoi() to bind to that port# on the
+*remote* domain.
 
-(qemu) device_del con1
-[   32.050919] ------------[ cut here ]------------
-[   32.050942] Trying to free already-free IRQ 33
-[   32.050990] WARNING: CPU: 0 PID: 51 at kernel/irq/manage.c:1895 __free_irq+0x1d4/0x330
+That doesn't work very well:
 
-It should be using evtchn_put() to tear down the event channel binding,
-and let the Linux IRQ side of it be handled by notifier_del_irq() through
-the HVC code.
+(qemu) device_add xen-console,id=con1,chardev=pty0
+[   44.323872] xenconsole console-1: 2 xenbus_dev_probe on device/console/1
+[   44.323995] xenconsole: probe of console-1 failed with error -2
 
-On which topic... xencons_disconnect_backend() should call hvc_remove()
-*first*, rather than tearing down the event channel and grant mapping
-while they are in use. And then the IRQ is guaranteed to be freed by
-the time it's torn down by evtchn_put().
+Fix it to use bind_evtchn_to_irq_lateeoi(), which does the right thing
+by just binding that *local* event channel to an irq. The backend will
+do the interdomain binding.
 
-Since evtchn_put() also closes the actual event channel, avoid calling
-xenbus_free_evtchn() except in the failure path where the IRQ was not
-successfully set up.
+This didn't affect the primary console because the setup for that is
+special — the toolstack allocates the guest event channel and the guest
+discovers it with HVMOP_get_param.
 
-However, calling hvc_remove() at the start of xencons_disconnect_backend()
-still isn't early enough. An unplug request is indicated by the backend
-setting its state to XenbusStateClosing, which triggers a notification
-to xencons_backend_changed(), which... does nothing except set its own
-frontend state directly to XenbusStateClosed without *actually* tearing
-down the HVC device or, you know, making sure it isn't actively in use.
-
-So the backend sees the guest frontend set its state to XenbusStateClosed
-and stops servicing the interrupt... and the guest spins for ever in the
-domU_write_console() function waiting for the ring to drain.
-
-Fix that one by calling hvc_remove() from xencons_backend_changed() before
-signalling to the backend that it's OK to proceed with the removal.
-
-Tested with 'dd if=/dev/zero of=/dev/hvc1' while telling Qemu to remove
-the console device.
-
+Fixes: fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Juergen Gross <jgross@suse.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020161529.355083-4-dwmw2@infradead.org
+Link: https://lore.kernel.org/r/20231020161529.355083-2-dwmw2@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 diff --git a/drivers/tty/hvc/hvc_xen.c b/drivers/tty/hvc/hvc_xen.c
-index 4a768b504263..34c01874f45b 100644
+index 98764e740c07..f24e285b6441 100644
 --- a/drivers/tty/hvc/hvc_xen.c
 +++ b/drivers/tty/hvc/hvc_xen.c
-@@ -377,18 +377,21 @@ void xen_console_resume(void)
- #ifdef CONFIG_HVC_XEN_FRONTEND
- static void xencons_disconnect_backend(struct xencons_info *info)
- {
--	if (info->irq > 0)
--		unbind_from_irqhandler(info->irq, NULL);
--	info->irq = 0;
-+	if (info->hvc != NULL)
-+		hvc_remove(info->hvc);
-+	info->hvc = NULL;
-+	if (info->irq > 0) {
-+		evtchn_put(info->evtchn);
-+		info->irq = 0;
-+		info->evtchn = 0;
-+	}
-+	/* evtchn_put() will also close it so this is only an error path */
- 	if (info->evtchn > 0)
- 		xenbus_free_evtchn(info->xbdev, info->evtchn);
- 	info->evtchn = 0;
- 	if (info->gntref > 0)
- 		gnttab_free_grant_references(info->gntref);
- 	info->gntref = 0;
--	if (info->hvc != NULL)
--		hvc_remove(info->hvc);
--	info->hvc = NULL;
- }
- 
- static void xencons_free(struct xencons_info *info)
-@@ -553,10 +556,23 @@ static void xencons_backend_changed(struct xenbus_device *dev,
- 		if (dev->state == XenbusStateClosed)
- 			break;
- 		fallthrough;	/* Missed the backend's CLOSING state */
--	case XenbusStateClosing:
-+	case XenbusStateClosing: {
-+		struct xencons_info *info = dev_get_drvdata(&dev->dev);;
-+
-+		/*
-+		 * Don't tear down the evtchn and grant ref before the other
-+		 * end has disconnected, but do stop userspace from trying
-+		 * to use the device before we allow the backend to close.
-+		 */
-+		if (info->hvc) {
-+			hvc_remove(info->hvc);
-+			info->hvc = NULL;
-+		}
-+
- 		xenbus_frontend_closed(dev);
- 		break;
- 	}
-+	}
- }
- 
- static const struct xenbus_device_id xencons_ids[] = {
-@@ -616,7 +632,7 @@ static int __init xen_hvc_init(void)
- 		list_del(&info->list);
- 		spin_unlock_irqrestore(&xencons_lock, flags);
- 		if (info->irq)
--			unbind_from_irqhandler(info->irq, NULL);
-+			evtchn_put(info->evtchn);
- 		kfree(info);
- 		return r;
- 	}
+@@ -433,7 +433,7 @@ static int xencons_connect_backend(struct xenbus_device *dev,
+ 	if (ret)
+ 		return ret;
+ 	info->evtchn = evtchn;
+-	irq = bind_interdomain_evtchn_to_irq_lateeoi(dev, evtchn);
++	irq = bind_evtchn_to_irq_lateeoi(evtchn);
+ 	if (irq < 0)
+ 		return irq;
+ 	info->irq = irq;
 
