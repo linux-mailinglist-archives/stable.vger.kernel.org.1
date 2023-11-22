@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B3157F4E3A
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D4377F4E3B
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343950AbjKVRXR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:23:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45736 "EHLO
+        id S1344038AbjKVRXS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:23:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234695AbjKVRXR (ORCPT
+        with ESMTP id S235097AbjKVRXR (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941B01B6
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35D3C433C9;
-        Wed, 22 Nov 2023 17:23:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243AF1BE
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD35C433C7;
+        Wed, 22 Nov 2023 17:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673787;
-        bh=PpmZrWpfNt+PvfNvPGqCw/nXepMG4mwsRa73yRFCk6c=;
+        s=korg; t=1700673789;
+        bh=x0pERHk9wNRpdChHDo4RYPHysh30TJHvK92euaWieUU=;
         h=Subject:To:Cc:From:Date:From;
-        b=1Ff+Nqu2xwD1e+smdTV7N0/rUDihYx3M19SZbg6XHrBxLzR7Nl+TbMlk94NIwkpX7
-         bCfcfVuOdW0BmoCGcYXFai4T4VkhoEhv0vcKD8YpAwhaJurpYLbhBoQHuxBNbLeWPf
-         WRPfqSvcQVyT8mbRBQEWuwctuBSAG47SfPgsACkw=
-Subject: FAILED: patch "[PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()" failed to apply to 4.19-stable tree
+        b=l6mxHaRzfrRgTqLCffSHO/DUCOkJEEwryI8uu906YmMHd6ivHuS5ZOt1f1sUSxvtF
+         BXNwK7yDIfYJrqGD2eg3vkBQLnHcmTugVeaHtM7+x1Wh/8fEHY6EOZqjm6EnKrkgx/
+         T3b9MFEgRL+3aorYN3gmnrthECRB7NNX5/b5MCVI=
+Subject: FAILED: patch "[PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()" failed to apply to 4.14-stable tree
 To:     usama.anjum@collabora.com, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:23:02 +0000
-Message-ID: <2023112202-scared-apply-b238@gregkh>
+Date:   Wed, 22 Nov 2023 17:23:04 +0000
+Message-ID: <2023112204-slum-smell-3e68@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,24 +43,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x dd976a97d15b47656991e185a94ef42a0fa5cfd4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112202-scared-apply-b238@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112204-slum-smell-3e68@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
 dd976a97d15b ("tty/sysrq: replace smp_processor_id() with get_cpu()")
 5390e7f46b9d ("sysrq: do not omit current cpu when showing backtrace of all active CPUs")
+b00bebbc301c ("sysrq : fix Show Regs call trace on ARM")
 
 thanks,
 
