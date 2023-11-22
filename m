@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F2417F4E38
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 32F667F4E39
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231797AbjKVRWo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:22:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47760 "EHLO
+        id S231793AbjKVRXP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:23:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231793AbjKVRWn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:22:43 -0500
+        with ESMTP id S233111AbjKVRXP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:15 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CCE283
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:22:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEF4C433C7;
-        Wed, 22 Nov 2023 17:22:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E2419D
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82ABCC433C8;
+        Wed, 22 Nov 2023 17:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673760;
-        bh=26AO9xs2LQKrRaRm0a3FBZHA5edNXo99y6OE9oa+HLA=;
+        s=korg; t=1700673783;
+        bh=LMoNpTYHOHwmUdlqXEzwWTO/g37QYA1iRelcj5Dk2mU=;
         h=Subject:To:Cc:From:Date:From;
-        b=iCLPbc4kbTWOYcIJXES5Qe1CD6j9jmxR7NEuWxtYGrX4jY95cwJG0pu4Fh7AHZD6a
-         CpVeEWv8RIkLPs3orTmfdTgBG0ulKslfwcE6hUesn9dn39cLFsiM8cuUcphMThzraw
-         Wdag2+gD9jr21X1FL4qK6x1o6SXnXV9K1wRiaO2Y=
-Subject: FAILED: patch "[PATCH] proc: sysctl: prevent aliased sysctls from getting passed to" failed to apply to 5.10-stable tree
-To:     kjlx@templeofstupid.com, mcgrof@kernel.org
+        b=uRjpkeZIh69bs5p6QYw90gCo+Hq/RODBZgHAPEiUH2BEMk3wId1UcwIWDOC1n+f/G
+         EY6C0eziJeLr5X2u1ft0LaSuBsVLUH9uhzsO5xCPzCOVu7DEj6qsVlPArYMnMcdcK1
+         XF5lk3guITDUt6yrnChTsm6k1LLgAs7IoPVLN6Fk=
+Subject: FAILED: patch "[PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()" failed to apply to 5.4-stable tree
+To:     usama.anjum@collabora.com, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:22:29 +0000
-Message-ID: <2023112229-gosling-ditzy-fbf3@gregkh>
+Date:   Wed, 22 Nov 2023 17:23:01 +0000
+Message-ID: <2023112201-yiddish-limes-21d5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,42 +43,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8001f49394e353f035306a45bcf504f06fca6355
+git cherry-pick -x dd976a97d15b47656991e185a94ef42a0fa5cfd4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112229-gosling-ditzy-fbf3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112201-yiddish-limes-21d5@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-8001f49394e3 ("proc: sysctl: prevent aliased sysctls from getting passed to init")
-1998f19324d2 ("fs: move pipe sysctls to is own file")
-66ad398634c2 ("fs: move fs/exec.c sysctls into its own file")
-d1d8ac9edf10 ("fs: move shared sysctls to fs/sysctls.c")
-54771613e8a7 ("sysctl: move maxolduid as a sysctl specific const")
-c8c0c239d5ab ("fs: move dcache sysctls to its own file")
-204d5a24e155 ("fs: move fs stat sysctls to file_table.c")
-1d67fe585049 ("fs: move inode sysctls to its own file")
-b1f2aff888af ("sysctl: share unsigned long const values")
-3ba442d5331f ("fs: move binfmt_misc sysctl to its own file")
-2452dcb9f7f2 ("sysctl: use SYSCTL_ZERO to replace some static int zero uses")
-d73840ec2f74 ("sysctl: use const for typically used max/min proc sysctls")
-f628867da46f ("sysctl: make ngroups_max const")
-bbe7a10ed83a ("hung_task: move hung_task sysctl interface to hung_task.c")
-78e36f3b0dae ("sysctl: move some boundary constants from sysctl.c to sysctl_vals")
-39c65a94cd96 ("mm/pagealloc: sysctl: change watermark_scale_factor max limit to 30%")
-6e7c1770a212 ("fs: simplify get_filesystem_list / get_all_fs_names")
-f9259be6a9e7 ("init: allow mounting arbitrary non-blockdevice filesystems as root")
-e24d12b7442a ("init: split get_fs_names")
-08389d888287 ("bpf: Add kconfig knob for disabling unpriv bpf by default")
+dd976a97d15b ("tty/sysrq: replace smp_processor_id() with get_cpu()")
+5390e7f46b9d ("sysrq: do not omit current cpu when showing backtrace of all active CPUs")
 
 thanks,
 
@@ -86,80 +68,70 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8001f49394e353f035306a45bcf504f06fca6355 Mon Sep 17 00:00:00 2001
-From: Krister Johansen <kjlx@templeofstupid.com>
-Date: Fri, 27 Oct 2023 14:46:40 -0700
-Subject: [PATCH] proc: sysctl: prevent aliased sysctls from getting passed to
- init
+From dd976a97d15b47656991e185a94ef42a0fa5cfd4 Mon Sep 17 00:00:00 2001
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Date: Mon, 9 Oct 2023 21:20:20 +0500
+Subject: [PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()
 
-The code that checks for unknown boot options is unaware of the sysctl
-alias facility, which maps bootparams to sysctl values.  If a user sets
-an old value that has a valid alias, a message about an invalid
-parameter will be printed during boot, and the parameter will get passed
-to init.  Fix by checking for the existence of aliased parameters in the
-unknown boot parameter code.  If an alias exists, don't return an error
-or pass the value to init.
+The smp_processor_id() shouldn't be called from preemptible code.
+Instead use get_cpu() and put_cpu() which disables preemption in
+addition to getting the processor id. Enable preemption back after
+calling schedule_work() to make sure that the work gets scheduled on all
+cores other than the current core. We want to avoid a scenario where
+current core's stack trace is printed multiple times and one core's
+stack trace isn't printed because of scheduling of current task.
 
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+This fixes the following bug:
+
+[  119.143590] sysrq: Show backtrace of all active CPUs
+[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
+[  119.144586] caller is debug_smp_processor_id+0x20/0x30
+[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
+[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
+[  119.145053] Call trace:
+[  119.145093]  dump_backtrace+0x0/0x1a0
+[  119.145122]  show_stack+0x18/0x70
+[  119.145141]  dump_stack+0xc4/0x11c
+[  119.145159]  check_preemption_disabled+0x100/0x110
+[  119.145175]  debug_smp_processor_id+0x20/0x30
+[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
+[  119.145211]  __handle_sysrq+0x8c/0x1a0
+[  119.145227]  write_sysrq_trigger+0x94/0x12c
+[  119.145247]  proc_reg_write+0xa8/0xe4
+[  119.145266]  vfs_write+0xec/0x280
+[  119.145282]  ksys_write+0x6c/0x100
+[  119.145298]  __arm64_sys_write+0x20/0x30
+[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
+[  119.145332]  do_el0_svc+0x24/0x8c
+[  119.145348]  el0_svc+0x10/0x20
+[  119.145364]  el0_sync_handler+0x134/0x140
+[  119.145381]  el0_sync+0x180/0x1c0
+
+Cc: jirislaby@kernel.org
 Cc: stable@vger.kernel.org
-Fixes: 0a477e1ae21b ("kernel/sysctl: support handling command line aliases")
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20231009162021.3607632-1-usama.anjum@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
-index c88854df0b62..1c9635dddb70 100644
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1592,6 +1592,13 @@ static const char *sysctl_find_alias(char *param)
- 	return NULL;
+diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
+index 23198e3f1461..6b4a28bcf2f5 100644
+--- a/drivers/tty/sysrq.c
++++ b/drivers/tty/sysrq.c
+@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
+ 		if (in_hardirq())
+ 			regs = get_irq_regs();
+ 
+-		pr_info("CPU%d:\n", smp_processor_id());
++		pr_info("CPU%d:\n", get_cpu());
+ 		if (regs)
+ 			show_regs(regs);
+ 		else
+ 			show_stack(NULL, NULL, KERN_INFO);
+ 
+ 		schedule_work(&sysrq_showallcpus);
++		put_cpu();
+ 	}
  }
  
-+bool sysctl_is_alias(char *param)
-+{
-+	const char *alias = sysctl_find_alias(param);
-+
-+	return alias != NULL;
-+}
-+
- /* Set sysctl value passed on kernel command line. */
- static int process_sysctl_arg(char *param, char *val,
- 			       const char *unused, void *arg)
-diff --git a/include/linux/sysctl.h b/include/linux/sysctl.h
-index 09d7429d67c0..61b40ea81f4d 100644
---- a/include/linux/sysctl.h
-+++ b/include/linux/sysctl.h
-@@ -242,6 +242,7 @@ extern void __register_sysctl_init(const char *path, struct ctl_table *table,
- extern struct ctl_table_header *register_sysctl_mount_point(const char *path);
- 
- void do_sysctl_args(void);
-+bool sysctl_is_alias(char *param);
- int do_proc_douintvec(struct ctl_table *table, int write,
- 		      void *buffer, size_t *lenp, loff_t *ppos,
- 		      int (*conv)(unsigned long *lvalp,
-@@ -287,6 +288,11 @@ static inline void setup_sysctl_set(struct ctl_table_set *p,
- static inline void do_sysctl_args(void)
- {
- }
-+
-+static inline bool sysctl_is_alias(char *param)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SYSCTL */
- 
- int sysctl_max_threads(struct ctl_table *table, int write, void *buffer,
-diff --git a/init/main.c b/init/main.c
-index 436d73261810..e24b0780fdff 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -530,6 +530,10 @@ static int __init unknown_bootoption(char *param, char *val,
- {
- 	size_t len = strlen(param);
- 
-+	/* Handle params aliased to sysctls */
-+	if (sysctl_is_alias(param))
-+		return 0;
-+
- 	repair_env_string(param, val);
- 
- 	/* Handle obsolete-style parameters */
 
