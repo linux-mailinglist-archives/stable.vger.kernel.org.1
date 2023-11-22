@@ -2,95 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CD4E7F4173
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 10:19:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2AD07F42C5
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 10:50:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231378AbjKVJTB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 04:19:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32992 "EHLO
+        id S235367AbjKVJuO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 04:50:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235236AbjKVJSs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 04:18:48 -0500
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30912D6F;
-        Wed, 22 Nov 2023 01:18:19 -0800 (PST)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id A7B6B21904;
-        Wed, 22 Nov 2023 09:18:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1700644697; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=CiaCWu6M5Ny8VB31ACB+zfudr+a6ts/Ir0FirRERD6s=;
-        b=oQB5dNGl/NkLVwyZokXfuuaD/tgRPRiiaL8WSMMAwnLdHazGLSJ6R6Jo6ZHXH5/tooE2aC
-        rtxaSV0TjTerMyx7gRau551qxiRS9S7D0Q8jbGvU6atsszntxfj+XC8CZOyJZj4fziB+CD
-        FZGovDpG/BNgSTCn+Uihwf/RB8TAgqE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1700644697;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=CiaCWu6M5Ny8VB31ACB+zfudr+a6ts/Ir0FirRERD6s=;
-        b=FcH5BjGI/v+e0pmCZmoXTGabmVIYFgWep7pGGd43P5kMz2S3X3pbj931xNWFKL+F8Y8zYD
-        EKeLyCLThTNW5vDA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9029B139FD;
-        Wed, 22 Nov 2023 09:18:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 4ewwI1nHXWXEcAAAMHmgww
-        (envelope-from <jack@suse.cz>); Wed, 22 Nov 2023 09:18:17 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id 15349A07DC; Wed, 22 Nov 2023 10:18:17 +0100 (CET)
-Date:   Wed, 22 Nov 2023 10:18:17 +0100
-From:   Jan Kara <jack@suse.cz>
-To:     "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc:     linux-ext4@vger.kernel.org, Jan Kara <jack@suse.cz>,
-        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org,
-        Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCHv2] ext2: Fix ki_pos update for DIO buffered-io fallback
- case
-Message-ID: <20231122091817.ktp5kojucsnhs3dd@quack3>
-References: <d595bee9f2475ed0e8a2e7fb94f7afc2c6ffc36a.1700643443.git.ritesh.list@gmail.com>
+        with ESMTP id S1343769AbjKVJtx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 04:49:53 -0500
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D21C2133
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 01:48:34 -0800 (PST)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-db3a09e96daso2863532276.3
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 01:48:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700646513; x=1701251313; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PK84ms7FIdVTsWWVQYLYZx3PA5nxXbNykyMrmNGcMno=;
+        b=KNQRS8NL8IsmuTVzFZwfYdbMjbi3vDIsR2prWjyS9ZlkFqPbXaAzwTzmD6R7Wa0GSz
+         EFAJLT8iy+E47G4w/adtkViXdXQzScJmiK/Qn8wp8cJKdiZAt64r/xYjqT3QcCyKUL2Y
+         CtbPsW4Xs8vN2g2tzVLsQY9dlnzmciwdsf4v8baxluBe0db4tvRjHEug0ZlrD4J0x0kO
+         O6VLCTV4cSjN0uWbyRXRu2TmuZKaZHsre6XiDduFtPIS37w3uz1EP+dLAfH3qTpuzM+F
+         engiaK/xea8F1cmVVXu0PPZ3B14TRDJHjh6EEncxUDUyEmtLLSR499/GJuXgr15I6JQW
+         jC+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700646513; x=1701251313;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PK84ms7FIdVTsWWVQYLYZx3PA5nxXbNykyMrmNGcMno=;
+        b=FHjrDeDBAc3sSE1blJCJHRQti3Q4k/XucMKdlivZk14IoooTQV5Lahku2jPnNKEx0D
+         HAwZuoZXDfnhhwom2CVXWIGzMq9j7eFnsDSfGZ5BUFpesWThVbn6F56JwRxpE4WhUiAA
+         CPCP8X+M45Mi8805ZxyCanD0FEhKMsESPQZV4TbeseepPgeCqP7v4MCvfJ1aFnjojax6
+         xPn8sSnqAEcYeDAtpoceRXnyRT2VzQPpl2PYNH3Ip9YsC1Rx6Pkytg+tqJaTYACqOhiB
+         LmMdjMjW7cMsa/SMRaw1lg/UoRK8BvESh1BJrQx3IPUQo4BdrBsc8mRWsHEn55FIeeWA
+         ECcw==
+X-Gm-Message-State: AOJu0YyKSjGyb7IfvPJyeyrOmFNjdjLRG0vnZ76drr6mKPNUtbvhMBAT
+        sO12D4fdn23UOEIiLtdpIfnt95+Ffrw3dtHqsIqmrQ==
+X-Google-Smtp-Source: AGHT+IHdTV/0/uZlSh9c9qAIbY49um8FRdZxhgynjgw4EjeHTUqDJf8dzPOKOyax7hcrRcwOpVSAULDyg7MeFztEyxc=
+X-Received: by 2002:a25:c547:0:b0:db3:8b55:1951 with SMTP id
+ v68-20020a25c547000000b00db38b551951mr1542151ybe.63.1700646513271; Wed, 22
+ Nov 2023 01:48:33 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d595bee9f2475ed0e8a2e7fb94f7afc2c6ffc36a.1700643443.git.ritesh.list@gmail.com>
-Authentication-Results: smtp-out1.suse.de;
-        none
-X-Spam-Level: 
-X-Spam-Score: -2.28
-X-Spamd-Result: default: False [-2.28 / 50.00];
-         ARC_NA(0.00)[];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         BAYES_HAM(-2.98)[99.91%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[gmail.com];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         TAGGED_RCPT(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         NEURAL_HAM_LONG(-1.00)[-1.000];
-         RCPT_COUNT_FIVE(0.00)[6];
-         DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-         NEURAL_HAM_SHORT(-0.20)[-1.000];
-         FREEMAIL_TO(0.00)[gmail.com];
-         FUZZY_BLOCKED(0.00)[rspamd.com];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         MID_RHS_NOT_FQDN(0.50)[];
-         RCVD_COUNT_TWO(0.00)[2];
-         RCVD_TLS_ALL(0.00)[];
-         SUSPICIOUS_RECIPS(1.50)[]
+References: <20231114-msm8909-cpufreq-v3-0-926097a6e5c1@kernkonzept.com> <20231114-msm8909-cpufreq-v3-1-926097a6e5c1@kernkonzept.com>
+In-Reply-To: <20231114-msm8909-cpufreq-v3-1-926097a6e5c1@kernkonzept.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Wed, 22 Nov 2023 10:47:56 +0100
+Message-ID: <CAPDyKFqa2U3g-7xVjxmsiYHsxujvJc0QCXWXHxPZAQR0ZJJo8g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] cpufreq: qcom-nvmem: Enable virtual power domain devices
+To:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -98,42 +76,153 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed 22-11-23 14:32:15, Ritesh Harjani (IBM) wrote:
-> Commit "filemap: update ki_pos in generic_perform_write", made updating
-> of ki_pos into common code in generic_perform_write() function.
-> This also causes generic/091 to fail.
-> This happened due to an in-flight collision with:
-> fb5de4358e1a ("ext2: Move direct-io to use iomap"). I have chosen fixes tag
-> based on which commit got landed later to upstream kernel.
-> 
-> Fixes: 182c25e9c157 ("filemap: update ki_pos in generic_perform_write")
+On Tue, 14 Nov 2023 at 11:08, Stephan Gerhold
+<stephan.gerhold@kernkonzept.com> wrote:
+>
+> The genpd core caches performance state votes from devices that are
+> runtime suspended as of commit 3c5a272202c2 ("PM: domains: Improve
+> runtime PM performance state handling"). They get applied once the
+> device becomes active again.
+>
+> To attach the power domains needed by qcom-cpufreq-nvmem the OPP core
+> calls genpd_dev_pm_attach_by_id(). This results in "virtual" dummy
+> devices that use runtime PM only to control the enable and performance
+> state for the attached power domain.
+>
+> However, at the moment nothing ever resumes the virtual devices created
+> for qcom-cpufreq-nvmem. They remain permanently runtime suspended. This
+> means that performance state votes made during cpufreq scaling get
+> always cached and never applied to the hardware.
+>
+> Fix this by enabling the devices after attaching them.
+>
+> Without this fix performance states votes are silently ignored, and the
+> CPU/CPR voltage is never adjusted. This has been broken since 5.14 but
+> for some reason no one noticed this on QCS404 so far.
+>
 > Cc: stable@vger.kernel.org
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Fixes: 1cb8339ca225 ("cpufreq: qcom: Add support for qcs404 on nvmem driver")
+> Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-Thanks! I've applied the patch to my tree and will push it to Linus soon.
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-								Honza
+Kind regards
+Uffe
+
 
 > ---
->  fs/ext2/file.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/fs/ext2/file.c b/fs/ext2/file.c
-> index 1039e5bf90af..4ddc36f4dbd4 100644
-> --- a/fs/ext2/file.c
-> +++ b/fs/ext2/file.c
-> @@ -258,7 +258,6 @@ static ssize_t ext2_dio_write_iter(struct kiocb *iocb, struct iov_iter *from)
->  			goto out_unlock;
->  		}
->  
-> -		iocb->ki_pos += status;
->  		ret += status;
->  		endbyte = pos + status - 1;
->  		ret2 = filemap_write_and_wait_range(inode->i_mapping, pos,
-> -- 
-> 2.41.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>  drivers/cpufreq/qcom-cpufreq-nvmem.c | 46 +++++++++++++++++++++++++++++++++---
+>  1 file changed, 43 insertions(+), 3 deletions(-)
+>
+> diff --git a/drivers/cpufreq/qcom-cpufreq-nvmem.c b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> index 6355a39418c5..d239a45ed497 100644
+> --- a/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> +++ b/drivers/cpufreq/qcom-cpufreq-nvmem.c
+> @@ -25,6 +25,7 @@
+>  #include <linux/platform_device.h>
+>  #include <linux/pm_domain.h>
+>  #include <linux/pm_opp.h>
+> +#include <linux/pm_runtime.h>
+>  #include <linux/slab.h>
+>  #include <linux/soc/qcom/smem.h>
+>
+> @@ -55,6 +56,7 @@ struct qcom_cpufreq_match_data {
+>
+>  struct qcom_cpufreq_drv_cpu {
+>         int opp_token;
+> +       struct device **virt_devs;
+>  };
+>
+>  struct qcom_cpufreq_drv {
+> @@ -424,6 +426,18 @@ static const struct qcom_cpufreq_match_data match_data_ipq8074 = {
+>         .get_version = qcom_cpufreq_ipq8074_name_version,
+>  };
+>
+> +static void qcom_cpufreq_put_virt_devs(struct qcom_cpufreq_drv *drv, unsigned int cpu)
+> +{
+> +       const char * const *name = drv->data->genpd_names;
+> +       int i;
+> +
+> +       if (!drv->cpus[cpu].virt_devs)
+> +               return;
+> +
+> +       for (i = 0; *name; i++, name++)
+> +               pm_runtime_put(drv->cpus[cpu].virt_devs[i]);
+> +}
+> +
+>  static int qcom_cpufreq_probe(struct platform_device *pdev)
+>  {
+>         struct qcom_cpufreq_drv *drv;
+> @@ -478,6 +492,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
+>         of_node_put(np);
+>
+>         for_each_possible_cpu(cpu) {
+> +               struct device **virt_devs = NULL;
+>                 struct dev_pm_opp_config config = {
+>                         .supported_hw = NULL,
+>                 };
+> @@ -498,7 +513,7 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
+>
+>                 if (drv->data->genpd_names) {
+>                         config.genpd_names = drv->data->genpd_names;
+> -                       config.virt_devs = NULL;
+> +                       config.virt_devs = &virt_devs;
+>                 }
+>
+>                 if (config.supported_hw || config.genpd_names) {
+> @@ -509,6 +524,27 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
+>                                 goto free_opp;
+>                         }
+>                 }
+> +
+> +               if (virt_devs) {
+> +                       const char * const *name = config.genpd_names;
+> +                       int i, j;
+> +
+> +                       for (i = 0; *name; i++, name++) {
+> +                               ret = pm_runtime_resume_and_get(virt_devs[i]);
+> +                               if (ret) {
+> +                                       dev_err(cpu_dev, "failed to resume %s: %d\n",
+> +                                               *name, ret);
+> +
+> +                                       /* Rollback previous PM runtime calls */
+> +                                       name = config.genpd_names;
+> +                                       for (j = 0; *name && j < i; j++, name++)
+> +                                               pm_runtime_put(virt_devs[j]);
+> +
+> +                                       goto free_opp;
+> +                               }
+> +                       }
+> +                       drv->cpus[cpu].virt_devs = virt_devs;
+> +               }
+>         }
+>
+>         cpufreq_dt_pdev = platform_device_register_simple("cpufreq-dt", -1,
+> @@ -522,8 +558,10 @@ static int qcom_cpufreq_probe(struct platform_device *pdev)
+>         dev_err(cpu_dev, "Failed to register platform device\n");
+>
+>  free_opp:
+> -       for_each_possible_cpu(cpu)
+> +       for_each_possible_cpu(cpu) {
+> +               qcom_cpufreq_put_virt_devs(drv, cpu);
+>                 dev_pm_opp_clear_config(drv->cpus[cpu].opp_token);
+> +       }
+>         return ret;
+>  }
+>
+> @@ -534,8 +572,10 @@ static void qcom_cpufreq_remove(struct platform_device *pdev)
+>
+>         platform_device_unregister(cpufreq_dt_pdev);
+>
+> -       for_each_possible_cpu(cpu)
+> +       for_each_possible_cpu(cpu) {
+> +               qcom_cpufreq_put_virt_devs(drv, cpu);
+>                 dev_pm_opp_clear_config(drv->cpus[cpu].opp_token);
+> +       }
+>  }
+>
+>  static struct platform_driver qcom_cpufreq_driver = {
+>
+> --
+> 2.39.2
+>
