@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32F667F4E39
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B3157F4E3A
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 18:23:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231793AbjKVRXP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 12:23:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45688 "EHLO
+        id S1343950AbjKVRXR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 12:23:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233111AbjKVRXP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:15 -0500
+        with ESMTP id S234695AbjKVRXR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 12:23:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33E2419D
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82ABCC433C8;
-        Wed, 22 Nov 2023 17:23:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 941B01B6
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 09:23:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E35D3C433C9;
+        Wed, 22 Nov 2023 17:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700673783;
-        bh=LMoNpTYHOHwmUdlqXEzwWTO/g37QYA1iRelcj5Dk2mU=;
+        s=korg; t=1700673787;
+        bh=PpmZrWpfNt+PvfNvPGqCw/nXepMG4mwsRa73yRFCk6c=;
         h=Subject:To:Cc:From:Date:From;
-        b=uRjpkeZIh69bs5p6QYw90gCo+Hq/RODBZgHAPEiUH2BEMk3wId1UcwIWDOC1n+f/G
-         EY6C0eziJeLr5X2u1ft0LaSuBsVLUH9uhzsO5xCPzCOVu7DEj6qsVlPArYMnMcdcK1
-         XF5lk3guITDUt6yrnChTsm6k1LLgAs7IoPVLN6Fk=
-Subject: FAILED: patch "[PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()" failed to apply to 5.4-stable tree
+        b=1Ff+Nqu2xwD1e+smdTV7N0/rUDihYx3M19SZbg6XHrBxLzR7Nl+TbMlk94NIwkpX7
+         bCfcfVuOdW0BmoCGcYXFai4T4VkhoEhv0vcKD8YpAwhaJurpYLbhBoQHuxBNbLeWPf
+         WRPfqSvcQVyT8mbRBQEWuwctuBSAG47SfPgsACkw=
+Subject: FAILED: patch "[PATCH] tty/sysrq: replace smp_processor_id() with get_cpu()" failed to apply to 4.19-stable tree
 To:     usama.anjum@collabora.com, gregkh@linuxfoundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 17:23:01 +0000
-Message-ID: <2023112201-yiddish-limes-21d5@gregkh>
+Date:   Wed, 22 Nov 2023 17:23:02 +0000
+Message-ID: <2023112202-scared-apply-b238@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x dd976a97d15b47656991e185a94ef42a0fa5cfd4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112201-yiddish-limes-21d5@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112202-scared-apply-b238@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
