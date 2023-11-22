@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 279C77F50B0
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:35:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF5BC7F50B2
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:35:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344448AbjKVTfc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 14:35:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45364 "EHLO
+        id S1344475AbjKVTff (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:35:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344050AbjKVTfb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:35:31 -0500
+        with ESMTP id S1344050AbjKVTfe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:35:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E2771B6
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:35:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C385C433C7;
-        Wed, 22 Nov 2023 19:35:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B721A4
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:35:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AD8C433C8;
+        Wed, 22 Nov 2023 19:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700681726;
-        bh=j9ypfPNxax4t2h49N2EGuvGgePbNdkwLUK7/a4dd1Jg=;
+        s=korg; t=1700681729;
+        bh=LVNhSehA0aWAk+gY/3oLHz0v6/BS3/7JXXnYttaAKmU=;
         h=Subject:To:Cc:From:Date:From;
-        b=bpHPUit7t9lGfU+65fctAmoDG3pfJVD0T7tzg8az0P0uy2WJj+NgYZrGljlfbVMoJ
-         xbdlDqX1/6DPeh36Ibj48+GAQMmxDa0n1B1FMb1FKJy0mxHibEDUV+e2ERNuLnuPJi
-         jqTSA9EKnZYSqFiDm3GyiCjpyBeQ9Cu2vWpOdLqk=
-Subject: FAILED: patch "[PATCH] Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE" failed to apply to 5.4-stable tree
+        b=hVNdTFOHBqE/zrE4BNjQYb8wXFcSrPa7TKT8TavQSGMSoFA0F4wELccUbIypp80vl
+         oP4dMpBWsYDumdUbGd2ne2uotViqPEeT7MwKnILKQYoa0fStddOONulY7mNcHrXhrv
+         rE5OF/A0m2xmFRW3BWXFcMM+4pLn7fB1vwZDjZzY=
+Subject: FAILED: patch "[PATCH] Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE" failed to apply to 4.19-stable tree
 To:     guanwentao@uniontech.com, luiz.von.dentz@intel.com,
         tangmeng@uniontech.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 19:35:19 +0000
-Message-ID: <2023112219-human-native-8c29@gregkh>
+Date:   Wed, 22 Nov 2023 19:35:21 +0000
+Message-ID: <2023112221-facecloth-annually-92d1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x da06ff1f585ea784c79f80e7fab0e0c4ebb49c1c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112219-human-native-8c29@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112221-facecloth-annually-92d1@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
