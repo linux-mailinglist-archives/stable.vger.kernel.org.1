@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B411C7F5031
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:06:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F7F07F509C
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:33:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231424AbjKVTG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 14:06:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50522 "EHLO
+        id S1344392AbjKVTdH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:33:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231853AbjKVTGZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:06:25 -0500
+        with ESMTP id S1344414AbjKVTdG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:33:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00A891B3
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:06:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33341C433C9;
-        Wed, 22 Nov 2023 19:06:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BB68D72
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:33:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F65C433CB;
+        Wed, 22 Nov 2023 19:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700679980;
-        bh=Oq/3gkPJQhTsECrh5unEys148VcncyGbrM+wvd2+Qto=;
+        s=korg; t=1700681580;
+        bh=Kdc9Tr1cC5fAywYgx8hm+fV1DfcpFbze3ojsznbARsw=;
         h=Subject:To:Cc:From:Date:From;
-        b=DJSAOG1RZWxqhfq6cJ0+RjbYZ+OLg1lhPTG5+9yFGaUzQW/2/S1gLFR70Q/sgHNzV
-         0eq6XoUVjLoMv24SEaNgoPWb1gxHm+HalJNFhjz+WztDlm0M3+L9Kq3FPvIwr8vQM2
-         089w27siZChCKmJJIMh0m6vpN637UOfffo2y5lj4=
-Subject: FAILED: patch "[PATCH] regmap: Ensure range selector registers are updated after" failed to apply to 5.10-stable tree
-To:     broonie@kernel.org, marcan@marcan.st
+        b=wKWTBoL9ySQBkl1dvnlZy9idoeOe2le5H9czVWF7xR6gAbkLIIfv1ASm+i7zAy28B
+         lGKLYodf/8vPX1WG/7bE4GF1fUCR1evUoS+4tJVRMXLd2JYRJZj2eMqM27kTpn/r7n
+         PnCiY3V9SjD1irEKlYPgQaBEHalII2G7WLOKh3T0=
+Subject: FAILED: patch "[PATCH] pmdomain: imx: Make imx pgc power domain also set the fwnode" failed to apply to 6.5-stable tree
+To:     pengfei.li_1@nxp.com, emil.kronborg@protonmail.com,
+        ulf.hansson@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 19:06:17 +0000
-Message-ID: <2023112217-steersman-frosted-7a48@gregkh>
+Date:   Wed, 22 Nov 2023 19:32:57 +0000
+Message-ID: <2023112257-armless-stump-64b8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,23 +44,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x 0ec7731655de196bc1e4af99e495b38778109d22
+git cherry-pick -x 374de39d38f97b0e58cfee88da590b2d056ccf7f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112217-steersman-frosted-7a48@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112257-armless-stump-64b8@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
-0ec7731655de ("regmap: Ensure range selector registers are updated after cache sync")
+374de39d38f9 ("pmdomain: imx: Make imx pgc power domain also set the fwnode")
 
 thanks,
 
@@ -67,89 +68,40 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 0ec7731655de196bc1e4af99e495b38778109d22 Mon Sep 17 00:00:00 2001
-From: Mark Brown <broonie@kernel.org>
-Date: Thu, 26 Oct 2023 16:49:19 +0100
-Subject: [PATCH] regmap: Ensure range selector registers are updated after
- cache sync
+From 374de39d38f97b0e58cfee88da590b2d056ccf7f Mon Sep 17 00:00:00 2001
+From: Pengfei Li <pengfei.li_1@nxp.com>
+Date: Sat, 21 Oct 2023 02:59:49 +0800
+Subject: [PATCH] pmdomain: imx: Make imx pgc power domain also set the fwnode
 
-When we sync the register cache we do so with the cache bypassed in order
-to avoid overhead from writing the synced values back into the cache. If
-the regmap has ranges and the selector register for those ranges is in a
-register which is cached this has the unfortunate side effect of meaning
-that the physical and cached copies of the selector register can be out of
-sync after a cache sync. The cache will have whatever the selector was when
-the sync started and the hardware will have the selector for the register
-that was synced last.
+Currently, The imx pgc power domain doesn't set the fwnode
+pointer, which results in supply regulator device can't get
+consumer imx pgc power domain device from fwnode when creating
+a link.
 
-Fix this by rewriting all cached selector registers after every sync,
-ensuring that the hardware and cache have the same content. This will
-result in extra writes that wouldn't otherwise be needed but is simple
-so hopefully robust. We don't read from the hardware since not all
-devices have physical read support.
+This causes the driver core to instead try to create a link
+between the parent gpc device of imx pgc power domain device and
+supply regulator device. However, at this point, the gpc device
+has already been bound, and the link creation will fail. So adding
+the fwnode pointer to the imx pgc power domain device will fix
+this issue.
 
-Given that nobody noticed this until now it is likely that we are rarely if
-ever hitting this case.
-
-Reported-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+Tested-by: Emil Kronborg <emil.kronborg@protonmail.com>
+Fixes: 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231026-regmap-fix-selector-sync-v1-1-633ded82770d@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231020185949.537083-1-pengfei.li_1@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 
-diff --git a/drivers/base/regmap/regcache.c b/drivers/base/regmap/regcache.c
-index c5d151e9c481..92592f944a3d 100644
---- a/drivers/base/regmap/regcache.c
-+++ b/drivers/base/regmap/regcache.c
-@@ -334,6 +334,11 @@ static int regcache_default_sync(struct regmap *map, unsigned int min,
- 	return 0;
- }
+diff --git a/drivers/pmdomain/imx/gpc.c b/drivers/pmdomain/imx/gpc.c
+index 90a8b2c0676f..419ed15cc10c 100644
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -498,6 +498,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
  
-+static int rbtree_all(const void *key, const struct rb_node *node)
-+{
-+	return 0;
-+}
-+
- /**
-  * regcache_sync - Sync the register cache with the hardware.
-  *
-@@ -351,6 +356,7 @@ int regcache_sync(struct regmap *map)
- 	unsigned int i;
- 	const char *name;
- 	bool bypass;
-+	struct rb_node *node;
+ 			pd_pdev->dev.parent = &pdev->dev;
+ 			pd_pdev->dev.of_node = np;
++			pd_pdev->dev.fwnode = of_fwnode_handle(np);
  
- 	if (WARN_ON(map->cache_type == REGCACHE_NONE))
- 		return -EINVAL;
-@@ -392,6 +398,30 @@ int regcache_sync(struct regmap *map)
- 	/* Restore the bypass state */
- 	map->cache_bypass = bypass;
- 	map->no_sync_defaults = false;
-+
-+	/*
-+	 * If we did any paging with cache bypassed and a cached
-+	 * paging register then the register and cache state might
-+	 * have gone out of sync, force writes of all the paging
-+	 * registers.
-+	 */
-+	rb_for_each(node, 0, &map->range_tree, rbtree_all) {
-+		struct regmap_range_node *this =
-+			rb_entry(node, struct regmap_range_node, node);
-+
-+		/* If there's nothing in the cache there's nothing to sync */
-+		ret = regcache_read(map, this->selector_reg, &i);
-+		if (ret != 0)
-+			continue;
-+
-+		ret = _regmap_write(map, this->selector_reg, i);
-+		if (ret != 0) {
-+			dev_err(map->dev, "Failed to write %x = %x: %d\n",
-+				this->selector_reg, i, ret);
-+			break;
-+		}
-+	}
-+
- 	map->unlock(map->lock_arg);
- 
- 	regmap_async_complete(map);
+ 			ret = platform_device_add(pd_pdev);
+ 			if (ret) {
 
