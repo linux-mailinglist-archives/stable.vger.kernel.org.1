@@ -2,107 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 191A57F5431
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 00:08:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E3BD7F5450
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 00:10:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232195AbjKVXIT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 18:08:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41478 "EHLO
+        id S232448AbjKVXKt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 18:10:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235224AbjKVXIS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 18:08:18 -0500
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 466F31BE
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 15:08:14 -0800 (PST)
-Received: by mail-pf1-x441.google.com with SMTP id d2e1a72fcca58-6cb55001124so1030471b3a.0
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 15:08:14 -0800 (PST)
+        with ESMTP id S1344480AbjKVXKs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 18:10:48 -0500
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98EBD101
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 15:10:41 -0800 (PST)
+Received: by mail-pl1-x642.google.com with SMTP id d9443c01a7336-1cf6af8588fso2517065ad.0
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 15:10:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700694493; x=1701299293; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rZSSohd/WPwZ3GJcYplBt61TdHf9+hAJUKT3c1Clmmo=;
-        b=cMjugwYJCt/nKR1G6T+55779btrF34qHEBVv6pFCXtcXvkFS9ivTdA+vnSh/Sg6fo8
-         CmbXM+4fdzB+AI4NRRju1IGSGkey88qZUaRPM5zF2J1r3mPS5WE0egZbCBiGTPpJxyVA
-         eSA/Je8n66+7sZhtqxwt1eT1ZQxFQtjZd9vjbXZeJmOFiJpqfn2f1z1ZbFMjLRnxwoTg
-         Q03P7KFRtLfi2q4aRAHF6omSoY5ezeMyGsWT3LmRHvWnbnOiqizhOn9mU+sCv6dUFxT6
-         KnODBVmcVBYfIA87VCsN1VkRj2FX2rr856qil0Z7SXZuMYW7M0K2CrZJ2CiW7F11UrbU
-         2NvA==
+        d=gmail.com; s=20230601; t=1700694641; x=1701299441; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4VmGqLwu6+0aUcoKQWivq4WWqkcBsHai2MtZwYLGo3Q=;
+        b=EUQ6XEwiMh8Lj0GcjWXfJBFAp36NNb6YiAd9O5ljEFpP42bbA1CXDhWsSDxQXDhe9w
+         9euLnf6YMq1eKcvzd1BSr10kGX0RW3g0Mch2tgnZi/ouNF3psdn0t1OVheS+INrxGB1i
+         uyCeeyPi+Rwbpht2HdRKB0GMqCxwhzohrw+bv4cFAuP4EBZEzqAtOsy1RXRwGDUePKE9
+         VrSpn5Xernm2y5agJg8u1CuPL9dAaoNDWRn+FLhgIE2OmG725GHiQo+1QbiYdI53/yFM
+         Ea7yVG8/xBgw5o9GKQvzHR3riOd6DGFGHG31Y8wJ/y5NOC5ivfWofIP1IMGrYZzdQP6c
+         Nekg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700694493; x=1701299293;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rZSSohd/WPwZ3GJcYplBt61TdHf9+hAJUKT3c1Clmmo=;
-        b=OWWJWYvXLpE6vZDqJAFVAK+pqoIAH8VULROXbjWaSUj5osD4rmaWWoUXjpt+pouTpK
-         mk0vcwv0cH8wKyHqCcUxnRXwa35IBj4Ef3I+GGblmH8bJ4/4GwR6sHx6+X30s0nb5zRJ
-         H1WXE+FdS5zH0eiZBJ4aGctxJNrJwk7qShD2csPeq9VVA6QFMGFGyE8XNz5IBnqDwvhd
-         xh08k+KGmiiI7WP63u4V/X/iScmicxeNEuyXP0N56VUp2QQ+V6K7VVr8jzI58+nDiQbo
-         U3MorQ4JmI86kf9aEP9EItbMBM0lmouZjEdhWKKZ0qqxdRhU+PC69TtdJkZZsyhYqNvY
-         /46w==
-X-Gm-Message-State: AOJu0YzKLxMG0Y35ufDIViMKv54zQBu4OUdia8t9aG2hxtH0B28op2gs
-        DeGA8IcvV2ozEuU6OuyPJuXjgz2r/wTytQ==
-X-Google-Smtp-Source: AGHT+IGGyXFrEf2T93z0pQUcGuazngUBRUT0ge0ZbA8GbjDMyK9Ze5I5trR2XrYK1UFEFSwLcinpkQ==
-X-Received: by 2002:a05:6a20:ba28:b0:185:d125:ea70 with SMTP id fa40-20020a056a20ba2800b00185d125ea70mr833517pzb.19.1700694492741;
-        Wed, 22 Nov 2023 15:08:12 -0800 (PST)
-Received: from google.com ([104.129.198.116])
-        by smtp.gmail.com with ESMTPSA id b2-20020a056a00114200b0068fece22469sm17332pfm.4.2023.11.22.15.08.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Nov 2023 15:08:12 -0800 (PST)
-From:   Maxwell Nguyen <hphyperxdev@gmail.com>
-To:     stable@vger.kernel.org
-Cc:     Maxwell Nguyen <hphyperxdev@gmail.com>,
-        Chris Toledanes <chris.toledanes@hp.com>,
-        Carl Ng <carl.ng@hp.com>, Max Nguyen <maxwell.nguyen@hp.com>
-Subject: [PATCH 2/2] Input: xpad - Add HyperX Clutch Gladiate Support for v6.1
-Date:   Wed, 22 Nov 2023 15:04:06 -0800
-Message-Id: <20231122230405.13775-1-hphyperxdev@gmail.com>
-X-Mailer: git-send-email 2.39.3
+        d=1e100.net; s=20230601; t=1700694641; x=1701299441;
+        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4VmGqLwu6+0aUcoKQWivq4WWqkcBsHai2MtZwYLGo3Q=;
+        b=RYOiCt5IjhpJrJkbLvzZxDpb5JDo6S8NJ0w04EJwLH9618iwO6UVfd0tP2EeySxiYd
+         Akoe2raEy6NdIaA8BkR0ceVbof88fVkxSSgRBeZ2KC5fT2arR2y7DW6Ii3k/Lid0yIcZ
+         gJJqdzBdQNEfzON9cQk6TDeh4r2Mcq2gBDm1Zs5Q034PWIOhYDEzXlnxnjhFF0hNwh2g
+         /oBl2wy+ZP3XjBC0hXPq+3U0xhxO4V1iCSkswzFkAqVX3VzdRgcFQ8mtp/Z1oHdXR0Ro
+         wZLLc7HYZbcBUO2dcmcS00P56V6p6THi448Iwno04zi3vzxLyo5D+00oo6qs8jx6oC2q
+         cBWA==
+X-Gm-Message-State: AOJu0Yzuh/8/zUUy/gZ2wauOhmO/Ipjed5mF8KGNZ7LUPCNs6Y1lqZFH
+        FiO4BKp4xgVhTWj9F9ABzts=
+X-Google-Smtp-Source: AGHT+IEKw1C90WRay6Mx6gyz36yJAUnjoXbMnogFREWLiEbxF27oLlQqvyaPTmw0O6sj2czeq08xwQ==
+X-Received: by 2002:a17:902:e802:b0:1cf:7eec:86dc with SMTP id u2-20020a170902e80200b001cf7eec86dcmr1862890plg.23.1700694640957;
+        Wed, 22 Nov 2023 15:10:40 -0800 (PST)
+Received: from [10.10.13.50] ([104.129.198.116])
+        by smtp.gmail.com with ESMTPSA id l12-20020a170902f68c00b001c61901ed2esm209624plg.219.2023.11.22.15.10.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Nov 2023 15:10:40 -0800 (PST)
+Message-ID: <0d6f1468-e10f-434c-aeb8-53b1c06ed289@gmail.com>
+Date:   Wed, 22 Nov 2023 15:10:39 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.5 153/191] Input: xpad - add HyperX Clutch Gladiate
+ Support
+Content-Language: en-US
+From:   "Nguyen, Max" <hphyperxdev@gmail.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, "Nguyen, Max" <maxwell.nguyen@hyperx.com>,
+        carl.ng@hp.com
+References: <20231016084015.400031271@linuxfoundation.org>
+ <20231016084018.949398466@linuxfoundation.org>
+ <MW4PR84MB17804D57BB57C0E2FB66EFC6EBADA@MW4PR84MB1780.NAMPRD84.PROD.OUTLOOK.COM>
+ <MW4PR84MB178083997D411DFFD45BEFCDEBB7A@MW4PR84MB1780.NAMPRD84.PROD.OUTLOOK.COM>
+ <6b2973c5-469a-4af8-995b-ee9196d0818b@gmail.com>
+ <2023111814-impeach-sweep-aa30@gregkh>
+ <9c3e4b65-4781-4d45-a270-f1b75dfb48d3@gmail.com>
+ <8b130415-4f70-495c-85dc-355e3cd2db17@gmail.com>
+ <2023112205-viselike-barracuda-f0c6@gregkh>
+ <3d7d9872-e569-4821-b0e2-39c8c7be53c9@gmail.com>
+In-Reply-To: <3d7d9872-e569-4821-b0e2-39c8c7be53c9@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FSL_HELO_FAKE,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Add HyperX controller support to xpad_device and xpad_table 
 
-Add to LTS version 6.1.
-
-commit e28a0974d749e5105d77233c0a84d35c37da047e upstream
-Separate patch to account for added functions in later LTS version that are not present.
-
-Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
-Reviewed-by: Carl Ng <carl.ng@hp.com>
-Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
----
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 2959d80f7fdb..597a21a7e6bb 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -129,6 +129,7 @@ static const struct xpad_device {
- 	u8 packet_type;
- } xpad_device[] = {
- 	{ 0x0079, 0x18d4, "GPD Win 2 X-Box Controller", 0, XTYPE_XBOX360 },
-+	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
- 	{ 0x03eb, 0xff01, "Wooting One (Legacy)", 0, XTYPE_XBOX360 },
- 	{ 0x03eb, 0xff02, "Wooting Two (Legacy)", 0, XTYPE_XBOX360 },
- 	{ 0x044f, 0x0f00, "Thrustmaster Wheel", 0, XTYPE_XBOX },
-@@ -457,6 +458,7 @@ static const signed short xpad_btn_paddles[] = {
- static const struct usb_device_id xpad_table[] = {
- 	{ USB_INTERFACE_INFO('X', 'B', 0) },	/* X-Box USB-IF not approved class */
- 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 Controller */
-+	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One Controllers */
- 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
- 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft X-Box 360 controllers */
--- 
-2.39.3
-
+On 11/22/2023 2:18 PM, Nguyen, Max wrote:
+>
+> On 11/21/2023 10:39 PM, Greg KH wrote:
+>> On Tue, Nov 21, 2023 at 04:17:54PM -0800, Nguyen, Max wrote:
+>>> On 11/20/2023 3:52 PM, Nguyen, Max wrote:
+>>>> On 11/18/2023 3:32 AM, Greg KH wrote:
+>>>>> On Fri, Nov 17, 2023 at 03:42:22PM -0800, Nguyen, Max wrote:
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> We would like to apply this patch to version 6.1 of the LTS branch.
+>>>>>>> This is to add a project ID for Android support for a gamepad
+>>>>>>> controller.  We would like it to apply sooner than waiting
+>>>>>>> for the next
+>>>>>>> LTS branch due to project schedules.
+>>>>>>>
+>>>>>>> commite28a0974d749e5105d77233c0a84d35c37da047e
+>>>>>>>
+>>>>>>> Regards,
+>>>>>>>
+>>>>>>> Max
+>>>>>>>
+>>>>>> Hi Linux team,
+>>>>>>
+>>>>>> We would like to have this patch backported to LTS versions
+>>>>>> 4.19, 5.4, 5.10,
+>>>>>> and 5.15 as well.  The main purpose would to add our device ID
+>>>>>> for support
+>>>>>> across older android devices.  Feel free to let us know if there
+>>>>>> are any
+>>>>>> concerns or issues.
+>>>>> Please provide a working backport that you have tested as I think 
+>>>>> it did
+>>>>> not apply cleanly on its own, right?
+>>>>>
+>>>>> thanks,
+>>>>>
+>>>>> greg k-h
+>>>> Hi Greg,
+>>>>
+>>>> Do you have any general suggestions or instructions on how I can 
+>>>> create
+>>>> a backport to test?  I apologize as this is new to me.
+>>>>
+>>>> Also, what do you mean by the patch did not apply cleanly on its own?
+>>>>
+>>> We found that the patch does not apply correctly to the previous LTS
+>>> kernels.  This is most likely due to addition of newer devices over 
+>>> time.
+>>> We will be sending separate patches for each kernel shortly.
+>> Why not send a series adding all of the missing backported patches?
+>> That makes it better so that all of the supported devices are now
+>> working on the older kernels, not just this one.
+>>
+>> thanks,
+>>
+>> greg k-h
+>
+> Hi Greg,
+>
+> I am planning to send a patch for LTS versions 4.19 through 5.15 since 
+> the single patch can apply to all of these versions with no issues.  I 
+> plan to send a separate patch for LTS 6.1 since this patch could not 
+> apply to the older LTS versions.
+>
+> Is this what you had in mind when you mentioned series?
+>
+I resent the patches as a series as described in the patch submission 
+process on the kernel webpage.  I reviewed and believe it should be 
+formatted correctly now.  Let me know if there are any issues.
