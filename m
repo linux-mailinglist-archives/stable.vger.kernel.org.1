@@ -2,50 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 413FE7F4B2E
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 16:41:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9000B7F4B33
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 16:42:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344549AbjKVPlG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 10:41:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38356 "EHLO
+        id S235346AbjKVPmA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 10:42:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235208AbjKVPkV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 10:40:21 -0500
+        with ESMTP id S235319AbjKVPlp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 10:41:45 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E8183C12;
-        Wed, 22 Nov 2023 07:36:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488C8C4339A;
-        Wed, 22 Nov 2023 15:36:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA98E4493;
+        Wed, 22 Nov 2023 07:36:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6093AC433AB;
+        Wed, 22 Nov 2023 15:36:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1700667389;
-        bh=FoIw5VvJHDv7aQ+BhGyZIk95Ir5doh8KqK4oFhz2+mU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UgbVXxuYcz6WgsHHSqePN4gL/pYq+yb0tgDCYjAZ+Cb1PH9m9ifmJ/MbQR3f6YkUf
-         pBpo+7O0CE2WYVWv8K5MQTioyaJwGtYZIvCtxGW7pxlc+Q5j1LcKSw5YjD4E4rsPKm
-         mc70epm+GQAyl4bMLN7Fx1xgdva1dId9ElEl57NG9B+hP0g7jeQnyGzR399sdNFcDv
-         uNP//3uUYLxVNLzrABsiCABkeLc3LgJbKZFdrlzMpzXPr7p4AAjWbhMh4YkcYdo/Ti
-         PUulALkrySp3RKxOmmxCKqRitf78LaYq6mJTwJNJ5g626GKFKdMSr3L2U9Psd8N+jL
-         HR53z2wd4ljtg==
+        s=k20201202; t=1700667401;
+        bh=M/B2hoXU9RlZ1NNwu7UoF9IIYyDAQaQFAsbsbSU1IvA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=QqmQNa++ndwSZSuhGkBM4Cd0zGoT1qrPt9I2ssbu/HWhhbVe24dFl3T95e0tQeLMe
+         hkgaUFbUwhbe4q9wG3z/Ry6Y6CJhzYzO4mNVUaY9zPwBTxSFnrqzA9oP/8/RfFaYpO
+         uVleGnc7pLkZ/YcX+HwDxssoIt3ICJQipimA8dFIoBirQDbrpg4N2H1ByIzFQQvLJh
+         q0iLnsSeiLJUo0x19nDkqSqChkoo7YqGb94dCVr463EpAS4TXV+s95ryemWVIQHvPr
+         k1wwxKIIXQLqN+gyTXpsuHIziTdAKgO4+hKL4SkF0CdB9lSc3Q6qFDrWzDxGST3iqL
+         4wYcszTXpRt8g==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     YuanShang <YuanShang.Mao@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>, Xinhui.Pan@amd.com,
-        airlied@gmail.com, daniel@ffwll.ch, guchun.chen@amd.com,
-        luben.tuikov@amd.com, srinivasan.shanmugam@amd.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.4 6/6] drm/amdgpu: correct chunk_ptr to a pointer to chunk.
-Date:   Wed, 22 Nov 2023 10:36:05 -0500
-Message-ID: <20231122153610.853350-6-sashal@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Yu Liao <liaoyu15@huawei.com>, Liu Tie <liutie4@huawei.com>,
+        Sasha Levin <sashal@kernel.org>, peterz@infradead.org
+Subject: [PATCH AUTOSEL 4.19 1/6] hrtimers: Push pending hrtimers away from outgoing CPU earlier
+Date:   Wed, 22 Nov 2023 10:36:25 -0500
+Message-ID: <20231122153635.853495-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231122153610.853350-1-sashal@kernel.org>
-References: <20231122153610.853350-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.261
+X-stable-base: Linux 4.19.299
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -57,34 +50,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: YuanShang <YuanShang.Mao@amd.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 50d51374b498457c4dea26779d32ccfed12ddaff ]
+[ Upstream commit 5c0930ccaad5a74d74e8b18b648c5eb21ed2fe94 ]
 
-The variable "chunk_ptr" should be a pointer pointing
-to a struct drm_amdgpu_cs_chunk instead of to a pointer
-of that.
+2b8272ff4a70 ("cpu/hotplug: Prevent self deadlock on CPU hot-unplug")
+solved the straight forward CPU hotplug deadlock vs. the scheduler
+bandwidth timer. Yu discovered a more involved variant where a task which
+has a bandwidth timer started on the outgoing CPU holds a lock and then
+gets throttled. If the lock required by one of the CPU hotplug callbacks
+the hotplug operation deadlocks because the unthrottling timer event is not
+handled on the dying CPU and can only be recovered once the control CPU
+reaches the hotplug state which pulls the pending hrtimers from the dead
+CPU.
 
-Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Solve this by pushing the hrtimers away from the dying CPU in the dying
+callbacks. Nothing can queue a hrtimer on the dying CPU at that point because
+all other CPUs spin in stop_machine() with interrupts disabled and once the
+operation is finished the CPU is marked offline.
+
+Reported-by: Yu Liao <liaoyu15@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Liu Tie <liutie4@huawei.com>
+Link: https://lore.kernel.org/r/87a5rphara.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/cpuhotplug.h |  1 +
+ include/linux/hrtimer.h    |  4 ++--
+ kernel/cpu.c               |  8 +++++++-
+ kernel/time/hrtimer.c      | 33 ++++++++++++---------------------
+ 4 files changed, 22 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 1a83055211762..f9c725a8991b7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -141,7 +141,7 @@ static int amdgpu_cs_parser_init(struct amdgpu_cs_parser *p, union drm_amdgpu_cs
- 	}
+diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+index 71a0a5ffdbb1a..dd9f035be63f7 100644
+--- a/include/linux/cpuhotplug.h
++++ b/include/linux/cpuhotplug.h
+@@ -139,6 +139,7 @@ enum cpuhp_state {
+ 	CPUHP_AP_ARM_CORESIGHT_STARTING,
+ 	CPUHP_AP_ARM64_ISNDEP_STARTING,
+ 	CPUHP_AP_SMPCFD_DYING,
++	CPUHP_AP_HRTIMERS_DYING,
+ 	CPUHP_AP_X86_TBOOT_DYING,
+ 	CPUHP_AP_ARM_CACHE_B15_RAC_DYING,
+ 	CPUHP_AP_ONLINE,
+diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
+index 542b4fa2cda9b..3bdaa92a2cab3 100644
+--- a/include/linux/hrtimer.h
++++ b/include/linux/hrtimer.h
+@@ -508,9 +508,9 @@ extern void sysrq_timer_list_show(void);
  
- 	for (i = 0; i < p->nchunks; i++) {
--		struct drm_amdgpu_cs_chunk __user **chunk_ptr = NULL;
-+		struct drm_amdgpu_cs_chunk __user *chunk_ptr = NULL;
- 		struct drm_amdgpu_cs_chunk user_chunk;
- 		uint32_t __user *cdata;
+ int hrtimers_prepare_cpu(unsigned int cpu);
+ #ifdef CONFIG_HOTPLUG_CPU
+-int hrtimers_dead_cpu(unsigned int cpu);
++int hrtimers_cpu_dying(unsigned int cpu);
+ #else
+-#define hrtimers_dead_cpu	NULL
++#define hrtimers_cpu_dying	NULL
+ #endif
+ 
+ #endif
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index c9ca190ec0347..34c09c3d37bc6 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -1418,7 +1418,7 @@ static struct cpuhp_step cpuhp_hp_states[] = {
+ 	[CPUHP_HRTIMERS_PREPARE] = {
+ 		.name			= "hrtimers:prepare",
+ 		.startup.single		= hrtimers_prepare_cpu,
+-		.teardown.single	= hrtimers_dead_cpu,
++		.teardown.single	= NULL,
+ 	},
+ 	[CPUHP_SMPCFD_PREPARE] = {
+ 		.name			= "smpcfd:prepare",
+@@ -1485,6 +1485,12 @@ static struct cpuhp_step cpuhp_hp_states[] = {
+ 		.startup.single		= NULL,
+ 		.teardown.single	= smpcfd_dying_cpu,
+ 	},
++	[CPUHP_AP_HRTIMERS_DYING] = {
++		.name			= "hrtimers:dying",
++		.startup.single		= NULL,
++		.teardown.single	= hrtimers_cpu_dying,
++	},
++
+ 	/* Entry state on starting. Interrupts enabled from here on. Transient
+ 	 * state for synchronsization */
+ 	[CPUHP_AP_ONLINE] = {
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 8512f06f0ebef..bf74f43e42af0 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1922,29 +1922,22 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
+ 	}
+ }
+ 
+-int hrtimers_dead_cpu(unsigned int scpu)
++int hrtimers_cpu_dying(unsigned int dying_cpu)
+ {
+ 	struct hrtimer_cpu_base *old_base, *new_base;
+-	int i;
++	int i, ncpu = cpumask_first(cpu_active_mask);
+ 
+-	BUG_ON(cpu_online(scpu));
+-	tick_cancel_sched_timer(scpu);
++	tick_cancel_sched_timer(dying_cpu);
++
++	old_base = this_cpu_ptr(&hrtimer_bases);
++	new_base = &per_cpu(hrtimer_bases, ncpu);
+ 
+-	/*
+-	 * this BH disable ensures that raise_softirq_irqoff() does
+-	 * not wakeup ksoftirqd (and acquire the pi-lock) while
+-	 * holding the cpu_base lock
+-	 */
+-	local_bh_disable();
+-	local_irq_disable();
+-	old_base = &per_cpu(hrtimer_bases, scpu);
+-	new_base = this_cpu_ptr(&hrtimer_bases);
+ 	/*
+ 	 * The caller is globally serialized and nobody else
+ 	 * takes two locks at once, deadlock is not possible.
+ 	 */
+-	raw_spin_lock(&new_base->lock);
+-	raw_spin_lock_nested(&old_base->lock, SINGLE_DEPTH_NESTING);
++	raw_spin_lock(&old_base->lock);
++	raw_spin_lock_nested(&new_base->lock, SINGLE_DEPTH_NESTING);
+ 
+ 	for (i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
+ 		migrate_hrtimer_list(&old_base->clock_base[i],
+@@ -1955,15 +1948,13 @@ int hrtimers_dead_cpu(unsigned int scpu)
+ 	 * The migration might have changed the first expiring softirq
+ 	 * timer on this CPU. Update it.
+ 	 */
+-	hrtimer_update_softirq_timer(new_base, false);
++	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
++	/* Tell the other CPU to retrigger the next event */
++	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
+ 
+-	raw_spin_unlock(&old_base->lock);
+ 	raw_spin_unlock(&new_base->lock);
++	raw_spin_unlock(&old_base->lock);
+ 
+-	/* Check, if we got expired work to do */
+-	__hrtimer_peek_ahead_timers();
+-	local_irq_enable();
+-	local_bh_enable();
+ 	return 0;
+ }
  
 -- 
 2.42.0
