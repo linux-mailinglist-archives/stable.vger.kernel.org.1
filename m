@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A161A7F50A1
-	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:34:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A8727F50A2
+	for <lists+stable@lfdr.de>; Wed, 22 Nov 2023 20:34:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344255AbjKVTeO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 22 Nov 2023 14:34:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40132 "EHLO
+        id S1344342AbjKVTeQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 22 Nov 2023 14:34:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343554AbjKVTeN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:34:13 -0500
+        with ESMTP id S1343554AbjKVTeQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 22 Nov 2023 14:34:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5E719D
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:34:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C5C4C433C8;
-        Wed, 22 Nov 2023 19:34:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CE5109
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 11:34:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1D74C433C8;
+        Wed, 22 Nov 2023 19:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1700681649;
-        bh=BcNE7XEe0+77TacLgsCeKZSpJ9lWMcqx5smD1uiFN0w=;
+        s=korg; t=1700681652;
+        bh=r63/4LG7S0SMqPwa7SaZihVoVXQNvJFGfc50GOQbVzw=;
         h=Subject:To:Cc:From:Date:From;
-        b=NpW4q4dGGLRlclmeUguXS0skUTrdyW7zQsjEHW55eyP4ayKYMB9RhjevKgf3RjqIQ
-         uIEoACeAIDPJZ5gcl2vx5SH0kbblzPAY5pPEaVnTNO16Gb5QnJWRkcFUWEVOuBStsA
-         Ts8LgXBUqIQwOciEP9NzkJdcl3z3kKnVwdMpFG20=
-Subject: FAILED: patch "[PATCH] cpufreq: stats: Fix buffer overflow detection in" failed to apply to 5.15-stable tree
+        b=A2jeu4CsTZYVB4hwuSIRfVIk3Ft9geKuXh9eaYcEAqBrerTlFXIhbKmWkmqUBVEtb
+         obeBVy1KdnFHy0kwdq/JiWJcUfddkfrRkRvPd97cfg36FIzM0Emu/ZHhbjamZqcsx2
+         EgK015xyKVHgudto2JrFIAJwOc3LQVRHg7rYTmLA=
+Subject: FAILED: patch "[PATCH] cpufreq: stats: Fix buffer overflow detection in" failed to apply to 5.10-stable tree
 To:     ansuelsmth@gmail.com, rafael.j.wysocki@intel.com,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 22 Nov 2023 19:33:59 +0000
-Message-ID: <2023112259-willpower-movable-0aa9@gregkh>
+Date:   Wed, 22 Nov 2023 19:34:00 +0000
+Message-ID: <2023112200-frenzied-liking-978f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x ea167a7fc2426f7685c3735e104921c1a20a6d3f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112259-willpower-movable-0aa9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112200-frenzied-liking-978f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
