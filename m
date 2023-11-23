@@ -1,144 +1,152 @@
-Return-Path: <stable+bounces-22-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB7F7F5AAE
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 09:59:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7897F5AEB
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:20:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B0A028176B
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 08:59:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DD7E1C20961
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 09:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A886E1C6B8;
-	Thu, 23 Nov 2023 08:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D9021108;
+	Thu, 23 Nov 2023 09:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR60Bk72"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BKqERmlc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6909A1C6A8
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 08:59:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 429F3C433C7;
-	Thu, 23 Nov 2023 08:59:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700729944;
-	bh=2uIPzsbnNQfB0/V6Y4lvaHivp+nP0CPphppEwqOxRHg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=VR60Bk72PgiCXyzM3HlOxZtrcZcSTkEdz5OCPU7PxnCmcFcVMAHT6SOwHDVexee/p
-	 OE89siDz/cKH7OuLjsHDFUIh4umcKnmryQ+rNb9unzchejw9aX/xy9xJwKFvStgaM+
-	 VZY2Inv2/dKbSLezuN0F9R/ajzUfmVe5Nr8u6sLc=
-Date: Thu, 23 Nov 2023 08:59:01 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Nguyen, Max" <hphyperxdev@gmail.com>
-Cc: stable@vger.kernel.org, "Nguyen, Max" <maxwell.nguyen@hyperx.com>,
-	carl.ng@hp.com
-Subject: Re: [PATCH 6.5 153/191] Input: xpad - add HyperX Clutch Gladiate
- Support
-Message-ID: <2023112300-static-encourage-1b8d@gregkh>
-References: <20231016084018.949398466@linuxfoundation.org>
- <MW4PR84MB17804D57BB57C0E2FB66EFC6EBADA@MW4PR84MB1780.NAMPRD84.PROD.OUTLOOK.COM>
- <MW4PR84MB178083997D411DFFD45BEFCDEBB7A@MW4PR84MB1780.NAMPRD84.PROD.OUTLOOK.COM>
- <6b2973c5-469a-4af8-995b-ee9196d0818b@gmail.com>
- <2023111814-impeach-sweep-aa30@gregkh>
- <9c3e4b65-4781-4d45-a270-f1b75dfb48d3@gmail.com>
- <8b130415-4f70-495c-85dc-355e3cd2db17@gmail.com>
- <2023112205-viselike-barracuda-f0c6@gregkh>
- <3d7d9872-e569-4821-b0e2-39c8c7be53c9@gmail.com>
- <0d6f1468-e10f-434c-aeb8-53b1c06ed289@gmail.com>
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E29F71AE;
+	Thu, 23 Nov 2023 01:20:11 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-4094301d505so3746615e9.2;
+        Thu, 23 Nov 2023 01:20:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1700731210; x=1701336010; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=agWSrKHOHYuZjNUZSTGfhGdN53IKkDI5ATnREaAaw0E=;
+        b=BKqERmlcT/e/kUtq4+VGfNxG4rVteZyxvLM+2RFXpHfRvvCcJmUJl3EKNshqU8Eekx
+         O51iK2kpfwiBYr/lwJvIh7ScT3YRP2zHD6+Nv+uPCN5UirTH6m0nGRw2uiGqdYJIrs41
+         G8RwpbC03gJ2iCaQafxQRkHca5jjkszLaRfdawNsXBmATfarTZp+/41CbVbbd//9e1De
+         50Hck6lp30kP/PmWxXfpPdTPG7sbElaPDFCnxqmHo7FfCYdQdT7uQWUd8kE74GP7Cv6E
+         TFUqeZbm1qaNAeunp9nGSep8K+sg4X36hRWAX2Q+eyOYP7qTR9fbNLA8SFctDxOuMxzg
+         UQvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700731210; x=1701336010;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=agWSrKHOHYuZjNUZSTGfhGdN53IKkDI5ATnREaAaw0E=;
+        b=dvSckkugIXlZpqUhOBNdTc0F3HqFt3obXfIEU7q4s87ZxXGEmYD8NVAY7sfot+CMot
+         Vngg/zDApbrZP82MPI6XLOl9JSdvCdOXcAHvB2zl6YVZVU0hNckVhZQXZOpqE0MvJI78
+         OYnWxYrIC1hVGPJIKzAk1NlVg71LpTqKC0BV9rw+vT/2TUnyuWVvvpG/RVhicExt67zJ
+         jAbYZoQKsnzei6B0QZ423XTGpAeVflawaAPd0BctAEdMCqOKkceo0n00AnYCibZBUPQO
+         Xgvo5ixCiSqL70MyQfqXyZwYB7AI7jsgOl1F2bFa3vlHv6bIpZD6iJt1M/g4RnJuWykl
+         fpYA==
+X-Gm-Message-State: AOJu0YxtbOUoZpXySIHCJQVfxobatGG16JQgY6nk+bK4UYHmMxQAvM9s
+	3IEfyxiMCnAOiv3AMnf39P7MnkPofBI=
+X-Google-Smtp-Source: AGHT+IFCzqERQRf3kI6frXxEB17qyukCZx9xxj2dvuRXtr7+/PbpuiA3nV5Olnycm/GRCR4ZJI+Tzw==
+X-Received: by 2002:a05:600c:4514:b0:409:787b:5ab5 with SMTP id t20-20020a05600c451400b00409787b5ab5mr3682862wmo.23.1700731210011;
+        Thu, 23 Nov 2023 01:20:10 -0800 (PST)
+Received: from amir-ThinkPad-T480.lan ([5.29.249.86])
+        by smtp.gmail.com with ESMTPSA id x12-20020adff64c000000b0032dcb08bf94sm1094868wrp.60.2023.11.23.01.20.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Nov 2023 01:20:09 -0800 (PST)
+From: Amir Goldstein <amir73il@gmail.com>
+To: "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jan Kara <jack@suse.cz>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Howells <dhowells@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Miklos Szeredi <miklos@szeredi.hu>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: target: core: add missing file_{start,end}_write()
+Date: Thu, 23 Nov 2023 11:20:00 +0200
+Message-Id: <20231123092000.2665902-1-amir73il@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0d6f1468-e10f-434c-aeb8-53b1c06ed289@gmail.com>
 
-On Wed, Nov 22, 2023 at 03:10:39PM -0800, Nguyen, Max wrote:
-> 
-> On 11/22/2023 2:18 PM, Nguyen, Max wrote:
-> > 
-> > On 11/21/2023 10:39 PM, Greg KH wrote:
-> > > On Tue, Nov 21, 2023 at 04:17:54PM -0800, Nguyen, Max wrote:
-> > > > On 11/20/2023 3:52 PM, Nguyen, Max wrote:
-> > > > > On 11/18/2023 3:32 AM, Greg KH wrote:
-> > > > > > On Fri, Nov 17, 2023 at 03:42:22PM -0800, Nguyen, Max wrote:
-> > > > > > > > Hi,
-> > > > > > > > 
-> > > > > > > > We would like to apply this patch to version 6.1 of the LTS branch.
-> > > > > > > > This is to add a project ID for Android support for a gamepad
-> > > > > > > > controller.  We would like it to apply sooner than waiting
-> > > > > > > > for the next
-> > > > > > > > LTS branch due to project schedules.
-> > > > > > > > 
-> > > > > > > > commite28a0974d749e5105d77233c0a84d35c37da047e
-> > > > > > > > 
-> > > > > > > > Regards,
-> > > > > > > > 
-> > > > > > > > Max
-> > > > > > > > 
-> > > > > > > Hi Linux team,
-> > > > > > > 
-> > > > > > > We would like to have this patch backported to LTS versions
-> > > > > > > 4.19, 5.4, 5.10,
-> > > > > > > and 5.15 as well.  The main purpose would to add our device ID
-> > > > > > > for support
-> > > > > > > across older android devices.  Feel free to let us know if there
-> > > > > > > are any
-> > > > > > > concerns or issues.
-> > > > > > Please provide a working backport that you have tested
-> > > > > > as I think it did
-> > > > > > not apply cleanly on its own, right?
-> > > > > > 
-> > > > > > thanks,
-> > > > > > 
-> > > > > > greg k-h
-> > > > > Hi Greg,
-> > > > > 
-> > > > > Do you have any general suggestions or instructions on how I
-> > > > > can create
-> > > > > a backport to test?  I apologize as this is new to me.
-> > > > > 
-> > > > > Also, what do you mean by the patch did not apply cleanly on its own?
-> > > > > 
-> > > > We found that the patch does not apply correctly to the previous LTS
-> > > > kernels.  This is most likely due to addition of newer devices
-> > > > over time.
-> > > > We will be sending separate patches for each kernel shortly.
-> > > Why not send a series adding all of the missing backported patches?
-> > > That makes it better so that all of the supported devices are now
-> > > working on the older kernels, not just this one.
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > 
-> > Hi Greg,
-> > 
-> > I am planning to send a patch for LTS versions 4.19 through 5.15 since
-> > the single patch can apply to all of these versions with no issues.  I
-> > plan to send a separate patch for LTS 6.1 since this patch could not
-> > apply to the older LTS versions.
-> > 
-> > Is this what you had in mind when you mentioned series?
-> > 
-> I resent the patches as a series as described in the patch submission
-> process on the kernel webpage.  I reviewed and believe it should be
-> formatted correctly now.  Let me know if there are any issues.
+The callers of vfs_iter_write() are required to hold file_start_write().
+file_start_write() is a no-op for the S_ISBLK() case, but it is really
+needed when the backing file is a regular file.
 
-No, I mean, for each stable kernel version/tree/whatever, send a patch
-series that adds all of the missing ids to the table, not just your one
-specific device you are asking for here.  That way the trees are all in
-sync proper AND any future patches will also apply cleanly/properly to
-the older kernel versions.
+We are going to move file_{start,end}_write() into vfs_iter_write(), but
+we need to fix this first, so that the fix could be backported to stable
+kernels.
 
-Does that help?
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/ZV8ETIpM+wZa33B5@infradead.org/
+Cc: stable@vger.kernel.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+---
 
-thanks,
+Hi Martin,
 
-greg k-h
+This bug is already fixed by commit "fs: move file_start_write() into
+vfs_iter_write()" on the vfs.rw branch in Christian's vfs tree, but
+Christoph suggested that I post a separate backportable fix for the scsi
+target code.
+
+You may decide if this is worth expediting to v6.7-rc or not.
+If not, then I think it would be best if Christian insert this patch
+at the bottom of the vfs.rw branch and revert in the later aformentioned
+commit.
+
+If you prefer to expedite it to v6.7-rc, then it's probably best to
+rebase vfs.rw branch after the fix hits master.
+
+Please let us know how you prefer to handle this patch.
+
+Thanks,
+Amir.
+
+ drivers/target/target_core_file.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/target/target_core_file.c b/drivers/target/target_core_file.c
+index 4d447520bab8..4e4cf6c34a77 100644
+--- a/drivers/target/target_core_file.c
++++ b/drivers/target/target_core_file.c
+@@ -332,11 +332,13 @@ static int fd_do_rw(struct se_cmd *cmd, struct file *fd,
+ 	}
+ 
+ 	iov_iter_bvec(&iter, is_write, bvec, sgl_nents, len);
+-	if (is_write)
++	if (is_write) {
++		file_start_write(fd);
+ 		ret = vfs_iter_write(fd, &iter, &pos, 0);
+-	else
++		file_end_write(fd);
++	} else {
+ 		ret = vfs_iter_read(fd, &iter, &pos, 0);
+-
++	}
+ 	if (is_write) {
+ 		if (ret < 0 || ret != data_length) {
+ 			pr_err("%s() write returned %d\n", __func__, ret);
+@@ -467,7 +469,9 @@ fd_execute_write_same(struct se_cmd *cmd)
+ 	}
+ 
+ 	iov_iter_bvec(&iter, ITER_SOURCE, bvec, nolb, len);
++	file_start_write(fd_dev->fd_file);
+ 	ret = vfs_iter_write(fd_dev->fd_file, &iter, &pos, 0);
++	file_end_write(fd_dev->fd_file);
+ 
+ 	kfree(bvec);
+ 	if (ret < 0 || ret != len) {
+-- 
+2.34.1
+
 
