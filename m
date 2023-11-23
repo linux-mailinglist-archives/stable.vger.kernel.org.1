@@ -1,111 +1,116 @@
-Return-Path: <stable+bounces-20-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A27137F5935
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 08:28:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0885E7F596E
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 08:39:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DFEB281788
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 07:28:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3505C1C20D54
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 07:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B08168B2;
-	Thu, 23 Nov 2023 07:28:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B434E1775F;
+	Thu, 23 Nov 2023 07:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="UYtVk2yq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.bugwerft.de (mail.bugwerft.de [46.23.86.59])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id A030EE7;
-	Wed, 22 Nov 2023 23:28:27 -0800 (PST)
-Received: from hq-00595.holoplot.net (unknown [62.214.9.170])
-	by mail.bugwerft.de (Postfix) with ESMTPSA id 1041A2806ED;
-	Thu, 23 Nov 2023 07:28:26 +0000 (UTC)
-From: Daniel Mack <daniel@zonque.org>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	lech.perczak@camlingroup.com,
-	u.kleine-koenig@pengutronix.de
-Cc: linux-serial@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Daniel Mack <daniel@zonque.org>,
-	Maxim Popov <maxim.snafu@gmail.com>,
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66CE51B5
+	for <stable@vger.kernel.org>; Wed, 22 Nov 2023 23:39:04 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6cbb71c3020so1217233b3a.1
+        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 23:39:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700725144; x=1701329944; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xnV2yqKOcPNVU/h0qUFRaNBNtVv3KcbN9dof9BEc7kQ=;
+        b=UYtVk2yqDQ7Lu8oprclAEfT45nJrY2hJQ+/whB1lYpT4jsWMHZTo9zV8s1KMwYEFI+
+         H9wldtNcJzz2lTj1n9RsUjIRry705tibUHePkOA1CiQNM5tTxR9rhjbUv0vxyEaEglOD
+         ywKF4p6MzQJmBsuZ7h+TmYLp7FVpeWP/JEYdtth7vn4zNSBDbrMqodENcXCzq7eBYGlC
+         ycnsZ0jZ/LLIN+iCMYzDGj3RFEijzXSNE2CJ5soiOq206BpVd8SA6Je2HSdlxrFPSlIQ
+         LYpFXr74dG+cKgiLumwzQD37DSUl4lA/DtODqeWb+q/V4LdyZd8+vEzKnXbAvvMfIBnN
+         G/Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700725144; x=1701329944;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xnV2yqKOcPNVU/h0qUFRaNBNtVv3KcbN9dof9BEc7kQ=;
+        b=kZ4XmDM2GUHh60OIcyQiDDKAouF3AdL3PhItjleErBcxzvV1Rz+oGjJT4+wDS4MKfI
+         6x3F95vkdn1lZIj78mOXOriwDjbBVfhrJBHjAUsxjQY018H0UJxGa8T9X3ExtrD3pmOS
+         Gsypa16s6ROahIGLYtzWZrm0PBznR8atE2SgymmJEEcmMl8wi+wquy7JRsWcSkY3Ubyv
+         83m+OOgq5Y1xh8zZe9ZjhYZ7V4FdBeoo243/c9REbHAPCKZNu19stwQnfpcr2p6YevB4
+         jdtWEp2ZT5e13oH0vF/sDi3U/Jcb18Gynt7mfN5p9P+/YRAAyjeznbhEQxHhKccUn3/O
+         GTOg==
+X-Gm-Message-State: AOJu0YwEIkh/nxBAY7EZcHJEuDcqwOC7TfB4YBB1D4ERe0+9RFIUopt1
+	vr8TEb/abln8C59RnHq+lkul2w==
+X-Google-Smtp-Source: AGHT+IESFAAMDlqgKalFBUEpZJ78OIYtfPl0UuU+VSp5kr/47KyUaSkNptVf7zlPgQwcjCQST2ym6A==
+X-Received: by 2002:a05:6a21:6da3:b0:187:bb9c:569 with SMTP id wl35-20020a056a216da300b00187bb9c0569mr2883617pzb.5.1700725143897;
+        Wed, 22 Nov 2023 23:39:03 -0800 (PST)
+Received: from localhost ([122.172.82.6])
+        by smtp.gmail.com with ESMTPSA id v13-20020aa7808d000000b006c0fe2cf26csm615737pff.107.2023.11.22.23.39.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Nov 2023 23:39:03 -0800 (PST)
+Date: Thu, 23 Nov 2023 13:09:01 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Cc: Ulf Hansson <ulf.hansson@linaro.org>, Andy Gross <agross@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Ilia Lin <ilia.lin@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
 	stable@vger.kernel.org
-Subject: [PATCH v5] serial: sc16is7xx: address RX timeout interrupt errata
-Date: Thu, 23 Nov 2023 08:28:18 +0100
-Message-ID: <20231123072818.1394539-1-daniel@zonque.org>
-X-Mailer: git-send-email 2.41.0
+Subject: Re: [PATCH v3 0/3] cpufreq: qcom-nvmem: Fix power domain scaling
+Message-ID: <20231123073901.meb7p4yzueg2lkou@vireshk-i7>
+References: <20231114-msm8909-cpufreq-v3-0-926097a6e5c1@kernkonzept.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231114-msm8909-cpufreq-v3-0-926097a6e5c1@kernkonzept.com>
+X-Spam-Level: *
 
-This device has a silicon bug that makes it report a timeout interrupt
-but no data in the FIFO.
+On 14-11-23, 11:07, Stephan Gerhold wrote:
+> The power domain scaling setup for QCS404 and MSM8909 in
+> cpufreq-com-nvmem does not work correctly at the moment because the
+> genpd core ignores all the performance state votes that are specified in
+> the CPU OPP table. This happens because nothing in the driver makes the
+> genpd core aware that the power domains are actively being consumed by
+> the CPU.
+> 
+> Fix this by marking the devices as runtime active. Also mark the devices
+> to be in the "awake path" during system suspend so that performance
+> state votes necessary for the CPU are preserved during system suspend.
+> 
+> While all the patches in this series are needed for full functionality,
+> the cpufreq and pmdomain patches can be merged independently. There is
+> no compile-time dependency between those two.
+> 
+> Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+> ---
+> Changes in v3:
+> - Drop patches with MSM8909 definitions that were applied already
+> - Add extra patch to fix system suspend properly by using
+>   device_set_awake_path() instead of dev_pm_syscore_device()
+> - Set GENPD_FLAG_ACTIVE_WAKEUP for rpmpd so that performance state votes
+>   needed by the CPU are preserved during suspend
+> - Link to v2: https://lore.kernel.org/r/20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com
 
-The datasheet states the following in the errata section 18.1.4:
+Applied. Thanks.
 
-  "If the host reads the receive FIFO at the same time as a
-  time-out interrupt condition happens, the host might read 0xCC
-  (time-out) in the Interrupt Indication Register (IIR), but bit 0
-  of the Line Status Register (LSR) is not set (means there is no
-  data in the receive FIFO)."
+I picked the pmdomain patch too, lemme know if that needs to go via
+some other tree.
 
-The errata description seems to indicate it concerns only polled mode of
-operation when reading bit 0 of the LSR register. However, tests have
-shown and NXP has confirmed that the RXLVL register also yields 0 when
-the bug is triggered, and hence the IRQ driven implementation in this
-driver is equally affected.
-
-This bug has hit us on production units and when it does, sc16is7xx_irq()
-would spin forever because sc16is7xx_port_irq() keeps seeing an
-interrupt in the IIR register that is not cleared because the driver
-does not call into sc16is7xx_handle_rx() unless the RXLVL register
-reports at least one byte in the FIFO.
-
-Fix this by always reading one byte from the FIFO when this condition
-is detected in order to clear the interrupt. This approach was
-confirmed to be correct by NXP through their support channels.
-
-Signed-off-by: Daniel Mack <daniel@zonque.org>
-Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
-Tested by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Cc: stable@vger.kernel.org
----
-v5: slightly reworded commit log again, added Hugo's Tested-By
-v4: NXP has confirmed the fix; update the commit log accordingly
-v3: re-added the additional Co-Developed-by and stable@ tags
-v2: reworded the commit log a bit for more context.
-
- drivers/tty/serial/sc16is7xx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 289ca7d4e566..76f76e510ed1 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -765,6 +765,18 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
- 		case SC16IS7XX_IIR_RTOI_SRC:
- 		case SC16IS7XX_IIR_XOFFI_SRC:
- 			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
-+
-+			/*
-+			 * There is a silicon bug that makes the chip report a
-+			 * time-out interrupt but no data in the FIFO. This is
-+			 * described in errata section 18.1.4.
-+			 *
-+			 * When this happens, read one byte from the FIFO to
-+			 * clear the interrupt.
-+			 */
-+			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
-+				rxlen = 1;
-+
- 			if (rxlen)
- 				sc16is7xx_handle_rx(port, rxlen, iir);
- 			break;
 -- 
-2.41.0
-
+viresh
 
