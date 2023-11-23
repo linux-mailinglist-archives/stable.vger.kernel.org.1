@@ -1,116 +1,239 @@
-Return-Path: <stable+bounces-77-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE197F63B6
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 17:14:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E983A7F643A
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 17:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7DF6281721
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 16:14:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5CD2281AAC
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 16:42:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D4C3E495;
-	Thu, 23 Nov 2023 16:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4119833CC3;
+	Thu, 23 Nov 2023 16:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TB1au32u"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="wYyaP3hJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 987DFD48
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 08:14:37 -0800 (PST)
-Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-5cc69df1b9aso10041327b3.3
-        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 08:14:37 -0800 (PST)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC35910D0
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 08:42:20 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1cf89e31773so6804015ad.0
+        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 08:42:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700756077; x=1701360877; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ipzMNGrGtolaTuN+LIIgKEncct0aftDF2s8V+J8A68E=;
-        b=TB1au32u8m8eCO3UzV/gibdFPsdh5WsVOoeM3EqADr21c22opVoMNQkCvOooM127Wl
-         G2PJ0otm4EnQfy67H383gMAr32cNWvbLl/3MRk4APIVR1FMIIHaW1kFVbtM/ZcUXv/ly
-         h9SYLETXEGUx6WsYR0JhLnky5U+FlS1h6cyS6bEHtoQGxrqPxukBk44oWX59lQw1Bt7I
-         nrnZ++FSyM8TCdYoM3u0bBFrekieYqQ7RlbejqgHKprziT3+EBV5YAecmZndOhXeZu1m
-         xxMRujogWdPBWjC9Zjjale10DjBU9NtADu1hE39BWJkrOc/ioNJsXoEQ4wWbXu0lp/C6
-         Y4gA==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700757740; x=1701362540; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=QwNnyCLsZiUC1V++eDiiOFL9Y2FD5AIw9phIIVNpjXU=;
+        b=wYyaP3hJbXo7uYQyLZncudg08QgEGObSOEXKMq5cWMPb+V0QE1mi/xQ/9kcvt38svl
+         /wbAdR1ng7nnmqOoz6oy8nmaUZpKdPH+hhGqJx5fqgwcJ2BT0HnZEKGK5WW7SiSkLRWn
+         Fva/sS0Jptpe67Xf7d0hz49Rxlq1yi+MsCBITRYK5XfHyfLtYwbUhAdLJ6vTwDL+F8vA
+         pcuNdIn6wz7z5PXA5jQ/psh8cVmVDKVFQTBP9whAtHg2BkUlqIi5jNYGJhu2AGWsNLSi
+         9F90Y5pd/LboepePSWo6SkBhIAVYJpUQQcs8ciktmLZDfr/c5tDhGxMaVbqbfnYuGisl
+         hBFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700756077; x=1701360877;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1700757740; x=1701362540;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ipzMNGrGtolaTuN+LIIgKEncct0aftDF2s8V+J8A68E=;
-        b=nJwzHRC6Ie3Y410Q+km7hp3BinI/xGpIcJfTESG1e+rHHFsB/Dp115TeLN/8dpQbw0
-         SeRan2LfsmmWnDYr3zcAU8d4yb1MwQiIHSpZ3TsVMcRQpsPGs4PqouYIQAYMeKgblGPr
-         YhtPmP/Je0oJyEoR68vbxDBHV6QiLEQDFK7pxllOf8T76x0ODu2k3BDRIobikE1rmwSN
-         kMHEdv9QJl7FEaWktYQbBi+02IuRb4yCU+PPle4Nb/s0ZM+ZYcmXaO97rY+OFoy4zaD+
-         h3udsnGYmj1ERVu1zOA1PopjltRWFMuzcBBamqCqjSO6KCspOi9BGioVd1P6ouIMkM8s
-         9r5A==
-X-Gm-Message-State: AOJu0YxvamuN9oiymbBEX0eaifw0yWL7HpJMN9Y8qUGOXk5f4j2QaXoA
-	IIg2S7ifboln4KixhijxTeMfDAdT2zOeMJVY+WBBqKrUHUp/ODnv
-X-Google-Smtp-Source: AGHT+IGVXCCNObF5Fssf2rOst5kdMHeHaWlMqNi98aNmC9WRf3QJ62k48s/V/HjbQ+uLlCBO8r4oX3qbTumAUwJj8zw=
-X-Received: by 2002:a05:690c:2891:b0:5cd:6004:3549 with SMTP id
- ee17-20020a05690c289100b005cd60043549mr1455172ywb.27.1700756076780; Thu, 23
- Nov 2023 08:14:36 -0800 (PST)
+        bh=QwNnyCLsZiUC1V++eDiiOFL9Y2FD5AIw9phIIVNpjXU=;
+        b=Z1CDfz+TsOMLCm6oS12TvJoDU7cmY2jed/3wldMFaR48alqzG0g5thIVIxiou8hiir
+         5VgAFlb1cpSa+jwr7v/HQjOpYDDK2OYJuGB0qII6BzwGHXC8FQb3AjW3MrnVMmo8CGye
+         Bwk2GLF1Z6URC+ME5BPJUVK4A50W6FK8Us37c8ZcAOiSN1inxHoARwQnsTMUPgZDhvW1
+         ebDVjsnKxlP8+bttE6SNwUymK3e74p54UQlkbwNRVnZsTdGKjnDX+JSb25y+YztOvm3z
+         zd907nopbtjGicfWo0du6ObKScBnyT1OAiEHqUnVsqmW5HaQrVtmTMseDyWf5VvnWmni
+         G2ZA==
+X-Gm-Message-State: AOJu0YwQ3YZr/5l83srx/cYOk4kU3Vlk3rrIh/q+vcCjOkTmpb+eWEtC
+	VAO4lNuB7n37rN+Pr9zTM+lrLbu9UZ6ddKxQPlg=
+X-Google-Smtp-Source: AGHT+IHS6k/1MDJ1bTNbx0hAlQPJPWjyW4HKylCCx3XBumKS0wwOR+vVHVspSmCrmtobvnsN9dSSfw==
+X-Received: by 2002:a17:903:234c:b0:1cf:7e0b:e808 with SMTP id c12-20020a170903234c00b001cf7e0be808mr16221plh.53.1700757739992;
+        Thu, 23 Nov 2023 08:42:19 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id h7-20020a170902b94700b001cc2ebd2c2csm1548039pls.256.2023.11.23.08.42.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Nov 2023 08:42:19 -0800 (PST)
+Message-ID: <655f80eb.170a0220.44d96.34b8@mx.google.com>
+Date: Thu, 23 Nov 2023 08:42:19 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231114-msm8909-cpufreq-v3-0-926097a6e5c1@kernkonzept.com> <20231123073901.meb7p4yzueg2lkou@vireshk-i7>
-In-Reply-To: <20231123073901.meb7p4yzueg2lkou@vireshk-i7>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Thu, 23 Nov 2023 17:14:00 +0100
-Message-ID: <CAPDyKFrst+j89nPsrfAmkzGBLAwZ86WWQ_agnd6MHCfR+7FeFw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/3] cpufreq: qcom-nvmem: Fix power domain scaling
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: Stephan Gerhold <stephan.gerhold@kernkonzept.com>, Andy Gross <agross@kernel.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	Ilia Lin <ilia.lin@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-pm@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
-	Stephan Gerhold <stephan@gerhold.net>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/5.15
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.15.139-235-ga5c4e9d1cfc8
+Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.139-235-ga5c4e9d1cfc8)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Thu, 23 Nov 2023 at 08:39, Viresh Kumar <viresh.kumar@linaro.org> wrote:
->
-> On 14-11-23, 11:07, Stephan Gerhold wrote:
-> > The power domain scaling setup for QCS404 and MSM8909 in
-> > cpufreq-com-nvmem does not work correctly at the moment because the
-> > genpd core ignores all the performance state votes that are specified in
-> > the CPU OPP table. This happens because nothing in the driver makes the
-> > genpd core aware that the power domains are actively being consumed by
-> > the CPU.
-> >
-> > Fix this by marking the devices as runtime active. Also mark the devices
-> > to be in the "awake path" during system suspend so that performance
-> > state votes necessary for the CPU are preserved during system suspend.
-> >
-> > While all the patches in this series are needed for full functionality,
-> > the cpufreq and pmdomain patches can be merged independently. There is
-> > no compile-time dependency between those two.
-> >
-> > Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-> > ---
-> > Changes in v3:
-> > - Drop patches with MSM8909 definitions that were applied already
-> > - Add extra patch to fix system suspend properly by using
-> >   device_set_awake_path() instead of dev_pm_syscore_device()
-> > - Set GENPD_FLAG_ACTIVE_WAKEUP for rpmpd so that performance state votes
-> >   needed by the CPU are preserved during suspend
-> > - Link to v2: https://lore.kernel.org/r/20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com
->
-> Applied. Thanks.
->
-> I picked the pmdomain patch too, lemme know if that needs to go via
-> some other tree.
+stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 3 warnings (v5.=
+15.139-235-ga5c4e9d1cfc8)
 
-Usually I should pick the pmdomain patches. Although, I thought it may
-be better to keep this series together.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+5/kernel/v5.15.139-235-ga5c4e9d1cfc8/
 
-Assuming you are going to send these as fixes for 6.7-rc[n]? In that
-case, I can just rebase my tree on a later rc if I find any problems.
+Tree: stable-rc
+Branch: queue/5.15
+Git Describe: v5.15.139-235-ga5c4e9d1cfc8
+Git Commit: a5c4e9d1cfc86ab7f9cb2741a33b76f8f4de03a2
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Kind regards
-Uffe
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
 
