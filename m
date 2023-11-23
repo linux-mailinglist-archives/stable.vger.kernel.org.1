@@ -1,131 +1,183 @@
-Return-Path: <stable+bounces-89-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-91-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0E37F6886
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 21:46:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A137F68E3
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 23:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C00801C20A23
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 20:46:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5D6EB20DAA
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 22:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B52E13AF3;
-	Thu, 23 Nov 2023 20:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E443D1401C;
+	Thu, 23 Nov 2023 22:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D1VACNqg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ipv1Iy51"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-xc33.google.com (mail-oo1-xc33.google.com [IPv6:2607:f8b0:4864:20::c33])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D67D54;
-	Thu, 23 Nov 2023 12:46:25 -0800 (PST)
-Received: by mail-oo1-xc33.google.com with SMTP id 006d021491bc7-58d26808c0cso377761eaf.0;
-        Thu, 23 Nov 2023 12:46:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1700772385; x=1701377185; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hmi2ZZptlGD8jWl5fmw9s/Qi1QCFiZAILpkynqKKJDc=;
-        b=D1VACNqgS5g9FaNCJFV4RQvNmXdxnWf3e9mGym8p9aQpo4OOtJnMMUVCFe6yHYBeKa
-         yCvrgOU+c0WRY5AH2ue03PKq1pKz8h7OijZZeEJ2pS0HDIUOEqpjv/jv+CkagsgLgU6q
-         loxqyHAIU0V9VLmAiQd+IGbSKVd1Niv7STAPUUmZaCGZgwsQPu9m/XVtNE7zn6tRsBu+
-         vHvxKLmrFIhk6MNBNm4Znq/2DUFLwzHpRC4L1XtT5+WjV6h2hz0iqBzQb4mDNOOi+xGH
-         g4PTYN4IOxxD8sRNa7osNkF4husz9pZ0wvLU/Sdw2NRnbrzLPgl7DmJfb17K8fJO4KLV
-         miNA==
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7AA210C9
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 14:13:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1700777607;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NNr7AyogBLBECN5NVEc3sDwHAg2qPYRl5gFzwIza95Q=;
+	b=Ipv1Iy5122PEMFm8/8jKSTXKJ6P5hCcAiaugXJWoe+MSDood2Kdu/8+maWPPHq2jDMiWFD
+	eRv27xuRmh6fBGeApTczn8ER1j5wW9pqqkDYGMCgk+xjr2IFhD6cD+wBxHMs7DcmpPe6nQ
+	Awz32XNyQ2r4o60Fc0WgpqDlma5RQ/I=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-437-ZGq8Yi7fPXe7MF0h9yer-g-1; Thu, 23 Nov 2023 17:13:25 -0500
+X-MC-Unique: ZGq8Yi7fPXe7MF0h9yer-g-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-40b349b990fso6276175e9.3
+        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 14:13:25 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700772385; x=1701377185;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1700777604; x=1701382404;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Hmi2ZZptlGD8jWl5fmw9s/Qi1QCFiZAILpkynqKKJDc=;
-        b=kebKkq0NyQemafv4Yj5nXlqq0ga4XEYrZVb20mh32KsYcuthH/O3GE1XyUSYbo6Uc8
-         eLFSmCk77UtaO8mg0T/43VJl1bUsrwOt1TCjjelbsvWMYry36w/Uz10RxWZBK2EdmcdH
-         JJ1UywKVK/J648Fv/+K6lolHq4gmi7JQq7Y7OtDpSvVEvrJSrxko9sXdbMOVRnFwXFny
-         p6YsJAE2L56kuvbhD4LAF2pRd6OhhpM7niK6VCB38dnc+ftxLXqpo0+CXdDsyy5Kal2e
-         wkQ/IbeMuj1j855amu6KzzdVc9xnXyRYeikBGMn27q9hHvhykbt/0uZNPzvyRPghYYFg
-         UzvA==
-X-Gm-Message-State: AOJu0YxlHMRl5x5MdqUMtpg7oT7z5NX4b3cr2adOO6zdbSIViXVGhL/g
-	qyWl7KGtxUylgiPYNAUjOdBrEr0kkcpvcMNo+yQ=
-X-Google-Smtp-Source: AGHT+IFosH156j+hwgsIfTA+AcmCQxhOJnCWseaSONNiW6tXcdViJapGXbh7zTFDjyxipX37PBLVLKgJJhyQKjod/Rs=
-X-Received: by 2002:a05:6820:2204:b0:581:ea96:f800 with SMTP id
- cj4-20020a056820220400b00581ea96f800mr606085oob.6.1700772385183; Thu, 23 Nov
- 2023 12:46:25 -0800 (PST)
+        bh=NNr7AyogBLBECN5NVEc3sDwHAg2qPYRl5gFzwIza95Q=;
+        b=D8NMBXz5TTGAmW0XIPIv67sjJGGJWiS6DGBzbTVJQagpbuGmtwJyfri18vqIr6fQHu
+         H5/2TMGeICkzhMvwhlyg51nuyMrRaF9lOOgSF4znSHUZTOY4bzPQlrpxjqM1pUGuaCFG
+         H+/o97KCLTZCkxLS5JT/1Er5i797Uf+Gd3LM7I7RGIj/toFUmmxQf0IjQVqYNXJLDKzR
+         BD35U3swjypgcerjFAcZVSuTkvb2iblWmMpMTiN/G4wurIo4voWt8InwBQs0HUJis3wE
+         5tg9CDShKH2WIGCylWpV0M8QAGSfOC6YPaBQkA5ZLp1hAiL7kkm4TMW2+e8lRIcVwRhf
+         1VmQ==
+X-Gm-Message-State: AOJu0YwSQvN54nFvEFP/8TbIdke6VO86wgrGj0bgXj7STtt0KDro9a0y
+	sC4Zh8Uf27ht0F0v3IL1nd5UjsxMzXwNf7UPsLVIt2YILQFrOV3ZvDhDNTxJwqHxHBuHVhYj3a9
+	2U4+BbOFY/LYde88u
+X-Received: by 2002:a05:600c:1c9d:b0:408:434c:dae7 with SMTP id k29-20020a05600c1c9d00b00408434cdae7mr695841wms.2.1700777599761;
+        Thu, 23 Nov 2023 14:13:19 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGsLgt3C+76rwt6+lTv0sowa6U49h5FFZqfpVdWRCJlUnBufhPrTXVPA1hV/im8nsFEBKfIcQ==
+X-Received: by 2002:a05:600c:1c9d:b0:408:434c:dae7 with SMTP id k29-20020a05600c1c9d00b00408434cdae7mr695832wms.2.1700777599346;
+        Thu, 23 Nov 2023 14:13:19 -0800 (PST)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id r7-20020a05600c35c700b0040b30be6244sm3233457wmq.24.2023.11.23.14.13.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Nov 2023 14:13:18 -0800 (PST)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Maxime Ripard <mripard@kernel.org>,
+	Zack Rusin <zackr@vmware.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Pekka Paalanen <pekka.paalanen@collabora.com>,
+	Bilal Elmoussaoui <belmouss@redhat.com>,
+	Simon Ser <contact@emersion.fr>,
+	Erico Nunes <nunes.erico@gmail.com>,
+	Sima Vetter <daniel.vetter@ffwll.ch>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	stable@vger.kernel.org,
+	nerdopolis <bluescreen_avenger@verizon.net>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	David Airlie <airlied@gmail.com>,
+	Gerd Hoffmann <kraxel@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH v4 1/5] drm: Allow drivers to indicate the damage helpers to ignore damage clips
+Date: Thu, 23 Nov 2023 23:13:00 +0100
+Message-ID: <20231123221315.3579454-2-javierm@redhat.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231123221315.3579454-1-javierm@redhat.com>
+References: <20231123221315.3579454-1-javierm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231123030838.46158-1-ebiggers@kernel.org> <9df30dc2-bc1c-b0fc-156f-baad37def05b@redhat.com>
-In-Reply-To: <9df30dc2-bc1c-b0fc-156f-baad37def05b@redhat.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Thu, 23 Nov 2023 21:46:13 +0100
-Message-ID: <CAOi1vP89X18T3oPWqhQqkpN-MY2LJJAhX2ms-OFTaV7dn8G8Zg@mail.gmail.com>
-Subject: Re: [PATCH] ceph: select FS_ENCRYPTION_ALGS if FS_ENCRYPTION
-To: Xiubo Li <xiubli@redhat.com>
-Cc: Eric Biggers <ebiggers@kernel.org>, ceph-devel@vger.kernel.org, 
-	linux-fscrypt@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 23, 2023 at 5:32=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wrote:
->
->
-> On 11/23/23 11:08, Eric Biggers wrote:
-> > From: Eric Biggers <ebiggers@google.com>
-> >
-> > The kconfig options for filesystems that support FS_ENCRYPTION are
-> > supposed to select FS_ENCRYPTION_ALGS.  This is needed to ensure that
-> > required crypto algorithms get enabled as loadable modules or builtin a=
-s
-> > is appropriate for the set of enabled filesystems.  Do this for CEPH_FS
-> > so that there aren't any missing algorithms if someone happens to have
-> > CEPH_FS as their only enabled filesystem that supports encryption.
-> >
-> > Fixes: f061feda6c54 ("ceph: add fscrypt ioctls and ceph.fscrypt.auth vx=
-attr")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > ---
-> >   fs/ceph/Kconfig | 1 +
-> >   1 file changed, 1 insertion(+)
-> >
-> > diff --git a/fs/ceph/Kconfig b/fs/ceph/Kconfig
-> > index 94df854147d35..7249d70e1a43f 100644
-> > --- a/fs/ceph/Kconfig
-> > +++ b/fs/ceph/Kconfig
-> > @@ -1,19 +1,20 @@
-> >   # SPDX-License-Identifier: GPL-2.0-only
-> >   config CEPH_FS
-> >       tristate "Ceph distributed file system"
-> >       depends on INET
-> >       select CEPH_LIB
-> >       select LIBCRC32C
-> >       select CRYPTO_AES
-> >       select CRYPTO
-> >       select NETFS_SUPPORT
-> > +     select FS_ENCRYPTION_ALGS if FS_ENCRYPTION
-> >       default n
-> >       help
-> >         Choose Y or M here to include support for mounting the
-> >         experimental Ceph distributed file system.  Ceph is an extremel=
-y
-> >         scalable file system designed to provide high performance,
-> >         reliable access to petabytes of storage.
-> >
-> >         More information at https://ceph.io/.
-> >
-> >         If unsure, say N.
-> >
-> > base-commit: 9b6de136b5f0158c60844f85286a593cb70fb364
->
-> Thanks Eric. This looks good to me.
->
-> Reviewed-by: Xiubo Li <xiubli@redhat.com>
+It allows drivers to set a struct drm_plane_state .ignore_damage_clips in
+their plane's .atomic_check callback, as an indication to damage helpers
+such as drm_atomic_helper_damage_iter_init() that the damage clips should
+be ignored.
 
-Applied.
+To be used by drivers that do per-buffer (e.g: virtio-gpu) uploads (rather
+than per-plane uploads), since these type of drivers need to handle buffer
+damages instead of frame damages.
 
-Thanks,
+That way, these drivers could force a full plane update if the framebuffer
+attached to a plane's state has changed since the last update (page-flip).
 
-                Ilya
+Fixes: 01f05940a9a7 ("drm/virtio: Enable fb damage clips property for the primary plane")
+Cc: <stable@vger.kernel.org> # v6.4+
+Reported-by: nerdopolis <bluescreen_avenger@verizon.net>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218115
+Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Acked-by: Sima Vetter <daniel.vetter@ffwll.ch>
+---
+
+Changes in v4:
+- Refer in ignore_damage_clips kernel-doc to "Damage Tracking Properties"
+  KMS documentation section (Sima Vetter).
+
+Changes in v2:
+- Add a struct drm_plane_state .ignore_damage_clips to set in the plane's
+  .atomic_check, instead of having different helpers (Thomas Zimmermann).
+
+ Documentation/gpu/drm-kms.rst       |  2 ++
+ drivers/gpu/drm/drm_damage_helper.c |  3 ++-
+ include/drm/drm_plane.h             | 10 ++++++++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/gpu/drm-kms.rst b/Documentation/gpu/drm-kms.rst
+index 270d320407c7..a98a7e04e86f 100644
+--- a/Documentation/gpu/drm-kms.rst
++++ b/Documentation/gpu/drm-kms.rst
+@@ -548,6 +548,8 @@ Plane Composition Properties
+ .. kernel-doc:: drivers/gpu/drm/drm_blend.c
+    :doc: overview
+ 
++.. _damage_tracking_properties:
++
+ Damage Tracking Properties
+ --------------------------
+ 
+diff --git a/drivers/gpu/drm/drm_damage_helper.c b/drivers/gpu/drm/drm_damage_helper.c
+index d8b2955e88fd..afb02aae707b 100644
+--- a/drivers/gpu/drm/drm_damage_helper.c
++++ b/drivers/gpu/drm/drm_damage_helper.c
+@@ -241,7 +241,8 @@ drm_atomic_helper_damage_iter_init(struct drm_atomic_helper_damage_iter *iter,
+ 	iter->plane_src.x2 = (src.x2 >> 16) + !!(src.x2 & 0xFFFF);
+ 	iter->plane_src.y2 = (src.y2 >> 16) + !!(src.y2 & 0xFFFF);
+ 
+-	if (!iter->clips || !drm_rect_equals(&state->src, &old_state->src)) {
++	if (!iter->clips || state->ignore_damage_clips ||
++	    !drm_rect_equals(&state->src, &old_state->src)) {
+ 		iter->clips = NULL;
+ 		iter->num_clips = 0;
+ 		iter->full_update = true;
+diff --git a/include/drm/drm_plane.h b/include/drm/drm_plane.h
+index 79d62856defb..fef775200a81 100644
+--- a/include/drm/drm_plane.h
++++ b/include/drm/drm_plane.h
+@@ -190,6 +190,16 @@ struct drm_plane_state {
+ 	 */
+ 	struct drm_property_blob *fb_damage_clips;
+ 
++	/**
++	 * @ignore_damage_clips:
++	 *
++	 * Set by drivers to indicate the drm_atomic_helper_damage_iter_init()
++	 * helper that the @fb_damage_clips blob property should be ignored.
++	 *
++	 * See :ref:`damage_tracking_properties` for more information.
++	 */
++	bool ignore_damage_clips;
++
+ 	/**
+ 	 * @src:
+ 	 *
+-- 
+2.41.0
+
 
