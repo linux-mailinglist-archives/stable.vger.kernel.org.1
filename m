@@ -1,95 +1,75 @@
-Return-Path: <stable+bounces-29-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-30-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164747F5BB9
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:54:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605387F5C76
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C100B2818B6
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 09:54:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D1D2819FE
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92BA221119;
-	Thu, 23 Nov 2023 09:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OEOul13w"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DB32137A;
+	Thu, 23 Nov 2023 10:36:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5457422303
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 09:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE9CC433C8;
-	Thu, 23 Nov 2023 09:54:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700733265;
-	bh=h4u+Z4PevK+HccYSFyk9MZh1m/3uRe4+K6fsxaTqZzY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OEOul13wUWM1V1seWURR8g8h66cbFpwNNVN7LH0fFQNPSjTpFQHZChPKKLDhOsuHU
-	 XESZktq2bXQFoApB41k1Ru89s7tRN1HgK8OnRK3FOFkbzfDQznhseFn8iKEHeP5BQW
-	 vsZiykJEYqpPwrZrIaKLPzRbAJvo3WxQwhHDqG9r5r9AhBDaB+BOyxnWDsVBsPOBdn
-	 X67kHRdFPAFABq+Gr0110OtPcG0JLmWhv1MEJU+4rKs0zClbMBFzUyPese7y/h1pEw
-	 QhY2rs283QA8Rc7KwrJPyVLMpfOpl8mlgnnOpR0J3SPGWjsfcIQXjDqZwasWklqHLl
-	 4iSTpyCzbg55Q==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1r66Py-0005N4-1e;
-	Thu, 23 Nov 2023 10:54:43 +0100
-Date: Thu, 23 Nov 2023 10:54:42 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, broonie@kernel.org, perex@perex.cz,
-	tiwai@suse.com, lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [IPv6:2001:780:45:1d:225:90ff:fe52:c662])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4496B10C0;
+	Thu, 23 Nov 2023 02:36:45 -0800 (PST)
+Received: from [78.30.43.141] (port=41374 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1r674Y-00H9rv-8C; Thu, 23 Nov 2023 11:36:40 +0100
+Date: Thu, 23 Nov 2023 11:36:36 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: netfilter-devel@vger.kernel.org, gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
-Subject: Re: [RFC PATCH 0/2] ASoC: soc-dai: add flag to mute and unmute
- stream during trigger.
-Message-ID: <ZV8hYid_Gc0hE4xg@hovoldconsulting.com>
-References: <20231027105747.32450-1-srinivas.kandagatla@linaro.org>
- <ZTukaxUhgY4WLgEs@hovoldconsulting.com>
- <ZV4hMR8oGQBSbnMl@hovoldconsulting.com>
- <2023112225-crop-uncle-9097@gregkh>
- <ZV4xH0lBhlwWYtLO@hovoldconsulting.com>
+Subject: Re: [PATCH -stable,5.4 23/26] netfilter: nftables: update table
+ flags from the commit phase
+Message-ID: <ZV8rNDHAdttpYrAJ@calendula>
+References: <20231121121333.294238-1-pablo@netfilter.org>
+ <20231121121333.294238-24-pablo@netfilter.org>
+ <ZV4qn2RI8a8cg3bL@sashalap>
+ <ZV47LThJC3LMXmFp@calendula>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZV4xH0lBhlwWYtLO@hovoldconsulting.com>
+In-Reply-To: <ZV47LThJC3LMXmFp@calendula>
+X-Spam-Score: -1.9 (-)
 
-On Wed, Nov 22, 2023 at 05:49:35PM +0100, Johan Hovold wrote:
-> On Wed, Nov 22, 2023 at 04:35:17PM +0000, Greg Kroah-Hartman wrote:
-> > On Wed, Nov 22, 2023 at 04:41:37PM +0100, Johan Hovold wrote:
-> 
-> > > These fixes are now in 6.7-rc1 as
+Hi again Sasha,
+
+On Wed, Nov 22, 2023 at 06:32:32PM +0100, Pablo Neira Ayuso wrote:
+> On Wed, Nov 22, 2023 at 11:21:51AM -0500, Sasha Levin wrote:
+> > On Tue, Nov 21, 2023 at 01:13:30PM +0100, Pablo Neira Ayuso wrote:
+> > > commit 0ce7cf4127f14078ca598ba9700d813178a59409 upstream.
 > > > 
-> > > 	f0220575e65a ("ASoC: soc-dai: add flag to mute and unmute stream during trigger")
+> > > Do not update table flags from the preparation phase. Store the flags
+> > > update into the transaction, then update the flags from the commit
+> > > phase.
 > > 
-> > This doesn't backport cleanly, can you provide a working backport?
+> > We don't seem to have this or the following commits in the 5.10 tree,
+> > are they just not needed there?
 > 
-> Sure, I'll do that tomorrow.
->  
-> > > 	805ce81826c8 ("ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag")
-> > 
-> > Now queued up, thanks.
+> Let me have a look at 5.10, 23/26, 24/26 and 25/26 are likely
+> candidates.
 > 
-> I don't think this one will build without the former so better to drop
-> it from your queues and I'll send backports of both patches tomorrow.
+> But not 26/26 in this series.
+> 
+> Let me test them and I will send you a specific patch series in
+> another mail thread for 5.10 if they are required.
 
-I've just posted backports of these commits to 6.6.2 here:
+You can apply 23/26, 24/26 and 25/26 to 5.10 -stable coming in this
+series for -stable 5.4. I haved tested here on -stable 5.10, they also
+apply cleanly.
 
-	https://lore.kernel.org/lkml/20231123094749.20462-1-johan+linaro@kernel.org/
-
-They should apply to 6.5.12 as well.
-
-Turns out we had a conflict with commit 3efcb471f871 ("ASoC: soc-pcm.c:
-Make sure DAI parameters cleared if the DAI becomes inactive") which was
-just backported to 6.6.2 and 6.5.12.
-
-Johan
+Thanks.
 
