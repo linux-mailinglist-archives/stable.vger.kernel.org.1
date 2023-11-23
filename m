@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-33-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-34-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FB77F5D11
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:57:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C43D77F5D1B
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A0FBB2105D
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:57:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CE91B21090
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF736224FB;
-	Thu, 23 Nov 2023 10:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4D322EE0;
+	Thu, 23 Nov 2023 10:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M1f+F4tC"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Uqs+mu2k"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4B01BF
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 02:57:42 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-32fdc5be26dso400762f8f.2
-        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 02:57:42 -0800 (PST)
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22581D53
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 02:58:23 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-332e40315bdso229312f8f.1
+        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 02:58:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700737061; x=1701341861; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1700737101; x=1701341901; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=+y8GqhplESEfvOMr6yusQxqrSvhQKePmum3wvwP/q1E=;
-        b=M1f+F4tC+fWJAryB96uDHg2geNecTmnMExPz8MIrPmuLMFCylEwamwjqunb0yvNRhp
-         Ak93byBgqLYn6TVylsJ87M1IgQ0Ip6xx/GNoZRRodfu+ztpJEG5nSZaJ3MCm96IPVvBE
-         lQauoS0xY3+Lukg2WczKv/9g3QJYjPlUV6SUSJ7LgAgpY6muiXX63ScZXruPffua9iBa
-         IpnbL+yKl4+n64qKrg+6SuMyaaKgocEcCbvJc71EJV1xpbb3Mj/OnsqFDO6Cqilmpi5D
-         QFqbXOiOMrq5FWsRc2ev3Z1WschIrkO54Idb4wFs8CE6a1OSU1Q5oedrt8AVRyezRyay
-         lWrw==
+        bh=tqBAdO1zKF8ljfRCPt++e5LSU5ewUNxfyiSB8BZlHv8=;
+        b=Uqs+mu2kG8b/nMSexlMAHw9CLCQHKwZcETJ8y8H4fnk9J1IS4bDHFJlJRYjdna+5+n
+         y/KICZFlfF8O/Xo1CCQGJM7+WuuQGoqQm0XlwMhwzd2Z0pGNO4Lha2DqGmip6xaLZC6p
+         mRw082WTqYvKoG9l0w+LxTcdlbV/ylz3+NCHG4CdJb14xcwvC5gp/HWAE9HLjAVRKqjR
+         /CLx+cz9jXDKfS8SlCRx3YYmNR387E6FDbLoGJvwMd9IEf4YF6R2LQjMYlB3GeCK9IB1
+         lmZRNyuGKbhxt6xBQPO77jkk5IS2UuJ49ktLcGUIXbETxiUGqSnGpZHDefX3/INzFahm
+         KJTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700737061; x=1701341861;
+        d=1e100.net; s=20230601; t=1700737101; x=1701341901;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+y8GqhplESEfvOMr6yusQxqrSvhQKePmum3wvwP/q1E=;
-        b=d0sMjUR+4tog0L9TcR+Sbs1T02ez/qW0lXj6SOex3uxr/zKL4fSW1NAs9Qad3tNO9p
-         qRIDR+SYdbAIAYqeSU2szlZdOXlg4Sk5MyjqMaQQ0k6lOfEHnCNWDICwSq7Sy4b7T265
-         mo43Bo+P3fn3yis/Qrqjv+kggZEKjlymWFcTar4WQLsbf2og+UutGMtmdMiRIuJI4JGp
-         T8HVxcsoDuqZwi0XV66T3oeJAbdt3uF3TwuryshZG18gb5Z3iN1cSUQrmNS9TAr4Uyv1
-         G2W+4i8JrTED+uEHginG57bOs3BaI1JGIJolvIvqASI96Cb0ym1p3X28FSZW9A855NaC
-         ReRw==
-X-Gm-Message-State: AOJu0Yyh+23AUKqlPQs72rY/hXKwK2129u2Ma9fD+XhadlbFZfz1CW+k
-	nieDXfovaKKR+7zljj/kABIn2CYqpOjIngNtHmM=
-X-Google-Smtp-Source: AGHT+IFobX8x5JuXdPLKT7AZWEuvVw5rHD4gknMa/X0TH24W9CCMFaJ5M0eNMQY2ARLhbwdrcBTKQA==
-X-Received: by 2002:adf:db02:0:b0:332:cc85:70ce with SMTP id s2-20020adfdb02000000b00332cc8570cemr2239543wri.33.1700737061193;
-        Thu, 23 Nov 2023 02:57:41 -0800 (PST)
+        bh=tqBAdO1zKF8ljfRCPt++e5LSU5ewUNxfyiSB8BZlHv8=;
+        b=Etga5n6R8ZL4FonRJIhAsYBf0IOtgwceMob1SJOqbV/jueRzbk7RuhSXcqhgpja3vI
+         FfIbCQjUq4QKz/Tydrj5unIgMG0UbVTY0KMTm4wKJuOZsYXIVD4RUTms7hCLpuztdZ63
+         21EMlK4DNZRFGPMwJCZa8w7KHA6BwTQmEqNT2/sMTEqhpPxUb4dufliQt61TJGh2hOMX
+         6QD1olxQljO8RNyB2NRaKs6EE+wQEtPG2xTGLmFRrdqD5RLdDUBwbKn3B5au5TgLElXq
+         /ad26jqZlPsgJgFz8Y37GdW/aWhhJqQWIUBHuGyLptmTIIilb+06uuGk2vc7o33DCSkE
+         wtnQ==
+X-Gm-Message-State: AOJu0YxrAAqPJCTO+Cu7EFMBDr7yqIRT71eV1nbBty0HEAAyzn9Eg+7F
+	cCdl/jsRRvpRc4LczANTr2dtZQ==
+X-Google-Smtp-Source: AGHT+IELTh4W/0QfNa+Lv0THyhTcZGP5fMjTa/b5guLAwCq4ZLSHuz9cdQCs/FgTb+jDmOXapE1JAQ==
+X-Received: by 2002:adf:ee8b:0:b0:331:3426:4c2c with SMTP id b11-20020adfee8b000000b0033134264c2cmr3627632wro.41.1700737101658;
+        Thu, 23 Nov 2023 02:58:21 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.218.100])
-        by smtp.gmail.com with ESMTPSA id c11-20020a5d4f0b000000b00332e67d6564sm185067wru.67.2023.11.23.02.57.39
+        by smtp.gmail.com with ESMTPSA id c11-20020a5d4f0b000000b00332e67d6564sm185067wru.67.2023.11.23.02.58.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Nov 2023 02:57:40 -0800 (PST)
-Message-ID: <2bf64582-b7c6-469a-858a-f83b2d50f12a@linaro.org>
-Date: Thu, 23 Nov 2023 11:57:38 +0100
+        Thu, 23 Nov 2023 02:58:21 -0800 (PST)
+Message-ID: <479c16ce-da90-4571-bd08-b592d63f06cf@linaro.org>
+Date: Thu, 23 Nov 2023 11:58:19 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +62,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/2] soundwire: bus: introduce controller_id
+Subject: Re: [RFC PATCH 2/2] soundwire: fix initializing sysfs for same
+ devices on different buses
 Content-Language: en-US
 To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
  alsa-devel@alsa-project.org, srinivas.kandagatla@linaro.org
@@ -72,7 +73,7 @@ Cc: tiwai@suse.de, broonie@kernel.org, vkoul@kernel.org,
  <pombredanne@nexb.com>, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org, Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 References: <20231017160933.12624-1-pierre-louis.bossart@linux.intel.com>
- <20231017160933.12624-2-pierre-louis.bossart@linux.intel.com>
+ <20231017160933.12624-3-pierre-louis.bossart@linux.intel.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -118,35 +119,41 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20231017160933.12624-2-pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <20231017160933.12624-3-pierre-louis.bossart@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 17/10/2023 18:09, Pierre-Louis Bossart wrote:
-> The existing SoundWire support misses a clear Controller/Manager
-> hiearchical definition to deal with all variants across SOC vendors.
+> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
-> a) Intel platforms have one controller with 4 or more Managers.
-> b) AMD platforms have two controllers with one Manager each, but due
-> to BIOS issues use two different link_id values within the scope of a
-> single controller.
-> c) QCOM platforms have one or more controller with one Manager each.
+> If same devices with same device IDs are present on different soundwire
+> buses, the probe fails due to conflicting device names and sysfs
+> entries:
 > 
-> This patch adds a 'controller_id' which can be set by higher
-> levels. If assigned to -1, the controller_id will be set to the
-> system-unique IDA-assigned bus->id.
+>   sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
 > 
-> The main change is that the bus->id is no longer used for any device
-> name, which makes the definition completely predictable and not
-> dependent on any enumeration order. The bus->id is only used to insert
-> the Managers in the stream rt context.
+> The link ID is 0 for both devices, so they should be differentiated by
+> the controller ID. Add the controller ID so, the device names and sysfs entries look
+> like:
 > 
+>   sdw:1:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6ab0000.soundwire-controller/sdw-master-1-0/sdw:1:0:0217:0204:00:0
+>   sdw:3:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6b10000.soundwire-controller/sdw-master-3-0/sdw:3:0:0217:0204:00:0
+> 
+> [PLB changes: use bus->controller_id instead of bus->id]
+> 
+> Fixes: 7c3cd189b86d ("soundwire: Add Master registration")
+> Cc: <stable@vger.kernel.org>
 > Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
 > Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+> Co-developed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 > Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+The order of SoB is not correct. Author's goes before co-developed.
 
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
 Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
