@@ -1,310 +1,158 @@
-Return-Path: <stable+bounces-71-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4701D7F61D3
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 15:45:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4C87F6254
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 16:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B932B21586
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 14:45:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D95A2B214A3
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 15:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B762E843;
-	Thu, 23 Nov 2023 14:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8320533CFC;
+	Thu, 23 Nov 2023 15:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="fumc/vgV"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SM/6TxLm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED4671B3
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 06:45:13 -0800 (PST)
-Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-35b0fc91c81so3003215ab.1
-        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 06:45:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700750713; x=1701355513; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=LLeABsJzOPJ3qror8PweXB944CNSV58aAntkfypgKR8=;
-        b=fumc/vgVwahl8Dsle3XFpvQvvSt3SI23i6/qJ7BQUiIxBo6xY+jWhW0ceoqFKm7aGy
-         tfUNklnAcng1HqF9ll9paf+sq3RvJMNbcSpBoa+7zcajMWZb7iT6wEsOF8t701m4F9ou
-         7G8+4x+mAYqm6Y+Su/RR2lTITF71KXbf80k5Nk3aHN5CjRAd6ajWZtdz96pqemnkuxGc
-         evyQkZmF0CagRpwoNiWEzM+8yufcGpsnxAn3qb6HWaqZvuLqd8i4tuayDqKDGEws8D9Z
-         p6FHt7os6fn7E4MfgI2DT7YAWZA2Qo3I2vrhtETPYdqVEsODkVUXzf7bnQvETbSfwELx
-         pJFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700750713; x=1701355513;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LLeABsJzOPJ3qror8PweXB944CNSV58aAntkfypgKR8=;
-        b=eMH0ty2EJoT4Emwuuvv3ukOdN5EKEpd4m/SQ6Ddjbr7u4u0x5Ja7GevXsT0KQYaJJs
-         Hjx98Kv7R7RqGI5PHKMlNqSZ71LKo2WTBFl1YWbxKbjau+yKMJ7omC6uUp5OY6KeVW4O
-         klYR90esB/91rJbDSW9P8ZFnDx+doj2JKQRTsL/DArdBguKRF8QurHOM2iIDkz8nTIxM
-         wtaITQIfC0EG9xKLELh66mRqv/5UaMZMSMGxoMx3g+2QNy5Pw0yv+G5hRRAAeDFBYmae
-         0PQblHfSEUeYyJG1ruw1veq/K9HyLLbjG/SZC2/3pleSNYEzDr7kU97sE6xyyBD++HEc
-         T16g==
-X-Gm-Message-State: AOJu0Yz06xWn/bE6S7VUy35AjwPhNEsSIfZBo2lu//BnBR97vCJlpm1n
-	Iiyw0IhKxxJ7ufk2sEkSfgP5OI/eT5DIcgbPVWc=
-X-Google-Smtp-Source: AGHT+IHfwQ9Xv0PssQQJutBvfwzv0rRGKAhLCA2hG+Cly5WPFSpXQVXrVj10KzkGMY4BfbT+hdJXog==
-X-Received: by 2002:a92:dac6:0:b0:35b:28e3:9023 with SMTP id o6-20020a92dac6000000b0035b28e39023mr5825432ilq.21.1700750712688;
-        Thu, 23 Nov 2023 06:45:12 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id b38-20020a630c26000000b005b7dd356f75sm1396881pgl.32.2023.11.23.06.45.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Nov 2023 06:45:12 -0800 (PST)
-Message-ID: <655f6578.630a0220.ab70e.2fd8@mx.google.com>
-Date: Thu, 23 Nov 2023 06:45:12 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BDD1D64;
+	Thu, 23 Nov 2023 07:07:53 -0800 (PST)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F2CDC40E0257;
+	Thu, 23 Nov 2023 15:07:50 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id m5sjdodFMcPV; Thu, 23 Nov 2023 15:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1700752069; bh=GZioNhBqPoaVW6r9VNgUDTxDc/9WQFahtmtDcDv1jQk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SM/6TxLmCLeeCMJ4E7eAn6aIauEZQYDF368OVQdaxtJMkCf3CvIxti5slID2BVG8T
+	 7vlw2LVVbk1bS3DnCn8J6Tm8te6+efi6FDcjzlIjoC5+f+QG27JxLjHfBHheYGcQut
+	 bcOXtX8ftoC4YUDrQFAKRPkmwTfJpRrkbI/0OTy7nU2hjzvU4t6tY69JbHucTrYPhW
+	 8wP8EdCI9dHTom0ATgsb5RTUjJiC/9JbjriV6R+OowpPSQCgBYWZzYiUbUXaXXGBTV
+	 Lnp1aVp6+K9DwYxKXo/kCkQMMAl0tSwCDo0vI+gV7IYDVnOj/tgn58Qmck734jvle8
+	 s1qX7K27uPhTo8tutx/KBwdLgam7VR46wBo204py/FLWXvyjkS5KbwYeqcRf4ds/vv
+	 189WaejXxC4zyMAngHPMVWdfiH/srNz8tUIUbyYdk5Sw02kWFghaX6yseQsJKvSDmy
+	 n7CbsMRUZtQ/55hbbKcNiSVnH6BwIDxaRfmIxV2EURLNtKr/8PjKsI4/oozYuoREDy
+	 WYRCFGP/z/hq+4RWfu0JFOyZywYRt0OoPMUhYmMyFHV0v7q+T4g8v19Ulkm8Kfu1Gn
+	 n5kP3VMwL0iPvOkOfUoEqDF875T1CllORUq1wJebvge1tYzhwHHP8sFcRsrR3YZ3oE
+	 ej22VW8rwDIqG1Ea0/a5GaHE=
+Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9922540E0195;
+	Thu, 23 Nov 2023 15:07:14 +0000 (UTC)
+Date: Thu, 23 Nov 2023 16:07:10 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Shuai Xue <xueshuai@linux.alibaba.com>
+Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+	mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+	naoya.horiguchi@nec.com, james.morse@arm.com,
+	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org,
+	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+	stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
+	ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
+	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+	zhuo.song@linux.alibaba.com
+Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task
+ work with proper si_code
+Message-ID: <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231007072818.58951-1-xueshuai@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v6.1.63-262-gc57a2560e7ce
-Subject: stable-rc/queue/6.1 build: 22 builds: 6 failed, 16 passed, 6 errors,
- 5 warnings (v6.1.63-262-gc57a2560e7ce)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231007072818.58951-1-xueshuai@linux.alibaba.com>
 
-stable-rc/queue/6.1 build: 22 builds: 6 failed, 16 passed, 6 errors, 5 warn=
-ings (v6.1.63-262-gc57a2560e7ce)
+On Sat, Oct 07, 2023 at 03:28:16PM +0800, Shuai Xue wrote:
+> However, this trick is not always be effective
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
-/kernel/v6.1.63-262-gc57a2560e7ce/
+So far so good.
 
-Tree: stable-rc
-Branch: queue/6.1
-Git Describe: v6.1.63-262-gc57a2560e7ce
-Git Commit: c57a2560e7ce0f2a2c5ef9429fe1146b6fd191c8
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+What's missing here is why "this trick" is not always effective.
 
-Build Failures Detected:
+Basically to explain what exactly the problem is.
 
-arm64:
-    tinyconfig: (gcc-10) FAIL
+> For example, hwpoison-aware user-space processes use the si_code:
+> BUS_MCEERR_AO for 'action optional' early notifications, and BUS_MCEERR_AR
+> for 'action required' synchronous/late notifications. Specifically, when a
+> signal with SIGBUS_MCEERR_AR is delivered to QEMU, it will inject a vSEA to
+> Guest kernel. In contrast, a signal with SIGBUS_MCEERR_AO will be ignored
+> by QEMU.[1]
+> 
+> Fix it by seting memory failure flags as MF_ACTION_REQUIRED on synchronous events. (PATCH 1)
 
-i386:
-    tinyconfig: (gcc-10) FAIL
+So you're fixing qemu by "fixing" the kernel?
 
-riscv:
-    defconfig: (gcc-10) FAIL
-    rv32_defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
+This doesn't make any sense.
 
-x86_64:
-    tinyconfig: (gcc-10) FAIL
+Make errors which are ACPI_HEST_NOTIFY_SEA type return
+MF_ACTION_REQUIRED so that it *happens* to fix your use case.
 
-Errors and Warnings Detected:
+Sounds like a lot of nonsense to me.
 
-arc:
+What is the issue here you're trying to solve?
 
-arm64:
-    tinyconfig (gcc-10): 1 error, 1 warning
+> 2. Handle memory_failure() abnormal fails to avoid a unnecessary reboot
+> 
+> If process mapping fault page, but memory_failure() abnormal return before
+> try_to_unmap(), for example, the fault page process mapping is KSM page.
+> In this case, arm64 cannot use the page fault process to terminate the
+> synchronous exception loop.[4]
+> 
+> This loop can potentially exceed the platform firmware threshold or even trigger
+> a kernel hard lockup, leading to a system reboot. However, kernel has the
+> capability to recover from this error.
+> 
+> Fix it by performing a force kill when memory_failure() abnormal fails or when
+> other abnormal synchronous errors occur.
 
-arm:
+Just like that?
 
-i386:
-    tinyconfig (gcc-10): 1 error, 1 warning
+Without giving the process the opportunity to even save its other data?
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
+So this all is still very confusing, patches definitely need splitting
+and this whole thing needs restraint.
 
-riscv:
-    defconfig (gcc-10): 1 error
-    rv32_defconfig (gcc-10): 1 error
-    tinyconfig (gcc-10): 1 error, 1 warning
-
-x86_64:
-    tinyconfig (gcc-10): 1 error, 1 warning
-
-Errors summary:
-
-    4    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =
-=E2=80=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=
-=99? [-Werror=3Dimplicit-function-declaration]
-    2    drivers/perf/riscv_pmu_sbi.c:582:26: error: =E2=80=98riscv_pmu_irq=
-_num=E2=80=99 undeclared (first use in this function); did you mean =E2=80=
-=98riscv_pmu_irq=E2=80=99?
-
-Warnings summary:
-
-    4    cc1: some warnings being treated as errors
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 section mi=
-smatches
-
-Errors:
-    drivers/perf/riscv_pmu_sbi.c:582:26: error: =E2=80=98riscv_pmu_irq_num=
-=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98ri=
-scv_pmu_irq=E2=80=99?
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 secti=
-on mismatches
-
-Errors:
-    drivers/perf/riscv_pmu_sbi.c:582:26: error: =E2=80=98riscv_pmu_irq_num=
-=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98ri=
-scv_pmu_irq=E2=80=99?
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mi=
-smatches
-
-Errors:
-    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
-=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=99? [-W=
-error=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section m=
-ismatches
-
-Errors:
-    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
-=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=99? [-W=
-error=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mis=
-matches
-
-Errors:
-    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
-=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=99? [-W=
-error=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-tinyconfig (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mi=
-smatches
-
-Errors:
-    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
-=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=99? [-W=
-error=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
+You go and do this: you split *each* issue you're addressing into
+a separate patch and explain it like this:
 
 ---
-For more info write to <info@kernelci.org>
+1. Prepare the context for the explanation briefly.
+
+2. Explain the problem at hand.
+
+3. "It happens because of <...>"
+
+4. "Fix it by doing X"
+
+5. "(Potentially do Y)."
+---
+
+and each patch explains *exactly* *one* issue, what happens, why it
+happens and just the fix for it and *why* it is needed.
+
+Otherwise, this is unreviewable.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
