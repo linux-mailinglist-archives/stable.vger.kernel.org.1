@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-64-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-65-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2417F5FBC
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 14:11:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20BD97F603E
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 14:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C1AE1C21033
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:11:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 524BB1C21053
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8161224A08;
-	Thu, 23 Nov 2023 13:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="eCoWDSs5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6811224A0D;
+	Thu, 23 Nov 2023 13:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804521A8
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 05:11:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
-	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=gXgV0F4FOx7+c/DG+6FQ4iMI7j7o6yeU8FnZx9OdG7E=; b=eCoWDSs5o1umKRJnuo/jt0xXli
-	xZ+QlzbJE3o9Yl+nbVStWX0TcNb0yB0Qtq+dOFfsi4n0vHYvZ2WyOYu8rwjivfIdWJKY7qkqo4f1q
-	bny9W1HELp7UaSA8SspezpI39v6FPOkWqPigUJZchJvW+lo6sSAJ4sdZM1yEkdeehQfqFWf64REKJ
-	Zq0lq1ftLg9bpUuS4/mDyrSLt+CCG2xiPARj9vMlKkk79DBqyS3T2UIkfNneHEddmkxKieDJj9BIr
-	UVJl+TGXRZzUt7F6mZSYiKzxJ674PpHAgue6t0+dcVIDz0ts+QYBfHaYOnQhkEirYc2ncSsoLPgi1
-	H6cvSo0w==;
-Received: from [177.34.168.16] (helo=morissey..)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1r69Uc-006Nqb-Mq; Thu, 23 Nov 2023 14:11:43 +0100
-From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49DC6D42
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 05:28:56 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r69lG-0001nt-Q7; Thu, 23 Nov 2023 14:28:54 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r69lD-00B3G0-HM; Thu, 23 Nov 2023 14:28:51 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r69lD-006gWD-7r; Thu, 23 Nov 2023 14:28:51 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: stable@vger.kernel.org
-Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Stefan Wahren <stefan.wahren@i2se.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1.y] soc: bcm: bcm2835-power: check if the ASB register is equal to enable
-Date: Thu, 23 Nov 2023 10:11:15 -0300
-Message-ID: <20231123131114.562016-2-mcanal@igalia.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023112258-embezzle-unspoiled-01c4@gregkh>
-References: <2023112258-embezzle-unspoiled-01c4@gregkh>
+Cc: Saravana Kannan <saravanak@google.com>,
+	stable <stable@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	James Clark <james.clark@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 5.15.y] driver core: Release all resources during unbind before updating device links
+Date: Thu, 23 Nov 2023 14:28:36 +0100
+Message-ID: <20231123132835.486026-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.42.0.586.gbc5204569f7d.dirty
+In-Reply-To: <2023112330-squealer-strife-0ecc@gregkh>
+References: <2023112330-squealer-strife-0ecc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,45 +55,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2333; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=tLqLw9nPrNrHmGPU3gYP04t83UUZBzC03u1RcLJXdrU=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlX1OEBUv0BYWTJWkhz5+E3cAZaukruZC5RYugd xyC4DrbaPOJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZV9ThAAKCRCPgPtYfRL+ Tp7ZCACnVwD2VxDr+Rsfo5/nlLnABYb3rOEtj90/VrhBqSoYv57yAa0GX+xx2ybBdXPZclif0lo IMp7j7e3toEt3BYJSXhMQLT7ovfbyQ7iqfror6J0hzMhyrc80EVId7ssVB1YHW9IaG1XQWBglzP 3D/2IUdQKrDdAZxqQ2Td77Z779LK5vo+B/RrTazNCrhRt1T+1kcB4kjQLqBe9+tEx9DY/J8+Mpd w5wuvQt7pfypSjP6pHC7QFInu8ASF0s0mqmxdX/Y1VmFppv+NDwOTk1Thnk4A8KEN6b05e+j7zD 14X6g/y+fgXvPejn/zWQcHD3PcnVhj7OL2TUpWGpXzBAeHZ5
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-The commit c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
-refactored the ASB control by using a general function to handle both
-the enable and disable. But this patch introduced a subtle regression:
-we need to check if !!(readl(base + reg) & ASB_ACK) == enable, not just
-check if (readl(base + reg) & ASB_ACK) == true.
+From: Saravana Kannan <saravanak@google.com>
 
-Currently, this is causing an invalid register state in V3D when
-unloading and loading the driver, because `bcm2835_asb_disable()` will
-return -ETIMEDOUT and `bcm2835_asb_power_off()` will fail to disable the
-ASB slave for V3D.
+[ Upstream commit 2e84dc37920012b458e9458b19fc4ed33f81bc74 ]
 
-Fixes: c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Stefan Wahren <stefan.wahren@i2se.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231024101251.6357-2-mcanal@igalia.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-(cherry picked from commit 2e75396f1df61e1f1d26d0d703fc7292c4ae4371)
+This commit fixes a bug in commit 9ed9895370ae ("driver core: Functional
+dependencies tracking support") where the device link status was
+incorrectly updated in the driver unbind path before all the device's
+resources were released.
+
+Fixes: 9ed9895370ae ("driver core: Functional dependencies tracking support")
+Cc: stable <stable@kernel.org>
+Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Closes: https://lore.kernel.org/all/20231014161721.f4iqyroddkcyoefo@pengutronix.de/
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Yang Yingliang <yangyingliang@huawei.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: James Clark <james.clark@arm.com>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Tested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231018013851.3303928-1-saravanak@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/soc/bcm/bcm2835-power.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hello,
 
-diff --git a/drivers/soc/bcm/bcm2835-power.c b/drivers/soc/bcm/bcm2835-power.c
-index 5bcd047768b6..cbcd1298ef5b 100644
---- a/drivers/soc/bcm/bcm2835-power.c
-+++ b/drivers/soc/bcm/bcm2835-power.c
-@@ -175,7 +175,7 @@ static int bcm2835_asb_control(struct bcm2835_power *power, u32 reg, bool enable
- 	}
- 	writel(PM_PASSWORD | val, base + reg);
+this needed some conflict resolution around commit
+9ad307213fa4 ("driver core: Refactor multiple copies of device
+cleanup").
 
--	while (readl(base + reg) & ASB_ACK) {
-+	while (!!(readl(base + reg) & ASB_ACK) == enable) {
- 		cpu_relax();
- 		if (ktime_get_ns() - start >= 1000)
- 			return -ETIMEDOUT;
---
-2.41.0
+Best regards
+Uwe
+
+ drivers/base/dd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index ab0b2eb5fa07..0bd166ad6f13 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -1228,8 +1228,6 @@ static void __device_release_driver(struct device *dev, struct device *parent)
+ 		else if (drv->remove)
+ 			drv->remove(dev);
+ 
+-		device_links_driver_cleanup(dev);
+-
+ 		devres_release_all(dev);
+ 		arch_teardown_dma_ops(dev);
+ 		kfree(dev->dma_range_map);
+@@ -1241,6 +1239,8 @@ static void __device_release_driver(struct device *dev, struct device *parent)
+ 		pm_runtime_reinit(dev);
+ 		dev_pm_set_driver_flags(dev, 0);
+ 
++		device_links_driver_cleanup(dev);
++
+ 		klist_remove(&dev->p->knode_driver);
+ 		device_pm_check_callbacks(dev);
+ 		if (dev->bus)
+
+base-commit: 2a910f4af54d11deaefdc445f895724371645a97
+-- 
+2.42.0
 
 
