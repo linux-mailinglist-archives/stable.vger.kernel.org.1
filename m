@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-46-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-47-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05627F5E7B
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:57:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6EB7F5E7E
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7B51C20F2F
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:57:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0420B2137C
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304D8241E0;
-	Thu, 23 Nov 2023 11:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F75F241E9;
+	Thu, 23 Nov 2023 11:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hi/Wh/gx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThRQcKa1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E425023767
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 11:57:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38F6C433C7;
-	Thu, 23 Nov 2023 11:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38FE2377E
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 11:57:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDDFC433C9;
+	Thu, 23 Nov 2023 11:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700740663;
-	bh=G3fNASSomwbz5qRtd9kXvGgQX46UDfEyp3unkkIOeNw=;
+	s=korg; t=1700740668;
+	bh=qrBcbcFjL4TMs+fT+FI9UNkllF7U5PzYcr0ndiUvHwQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hi/Wh/gxy5mQ1f6GN5G23QUq9+7j++IN2HAnsw6dQTRy/7hx1szQ9EsSeI8pk88sf
-	 o+dB7xZo9eoyS5pQ2aojtH1oArEggIztVK+y9zRFOKwIvU38NH7CGg9PufPkILHuwS
-	 C5NXLijRbIUfqZve55TccuFD86aqAAKl2xuHhIMI=
-Subject: FAILED: patch "[PATCH] hid: lenovo: Resend all settings on reset_resume for compact" failed to apply to 4.19-stable tree
+	b=ThRQcKa1zNwoj492R/C+dqLbIR/DDfFi5kbFI3JLTq55+ELLAJOPGseuxXwVeZuT5
+	 erqdSl5ZOCu5pneAZmTwamaBzF7qtbs8pYkyzjmiyHmd8TKxc0WsJaDG04lj1htnEc
+	 1/cQVsA0/GD4NHBVevqLS4eoE1xBVvE8mV5+vl+E=
+Subject: FAILED: patch "[PATCH] hid: lenovo: Resend all settings on reset_resume for compact" failed to apply to 4.14-stable tree
 To: jm@lentin.co.uk,bentiss@kernel.org,martink@posteo.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 Nov 2023 11:57:28 +0000
-Message-ID: <2023112328-amusing-smudgy-28d6@gregkh>
+Date: Thu, 23 Nov 2023 11:57:30 +0000
+Message-ID: <2023112330-nervous-pavement-2c10@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2f2bd7cbd1d1548137b351040dc4e037d18cdfdc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112328-amusing-smudgy-28d6@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112330-nervous-pavement-2c10@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -65,6 +65,7 @@ Possible dependencies:
 24401f291dcc ("HID: lenovo: Add support for ThinkPad TrackPoint Keyboard II")
 ef550c5d0a8e ("HID: lenovo: Rename fn_lock sysfs attr handlers to make them generic")
 b72cdfa82424 ("HID: lenovo: Merge tpkbd and cptkbd data structures")
+a230cd52b8a2 ("HID: lenovo: Add support for IBM/Lenovo Scrollpoint mice")
 
 thanks,
 
