@@ -1,123 +1,97 @@
-Return-Path: <stable+bounces-62-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-63-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 579BC7F5F96
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:56:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333267F5FB4
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 14:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D05A4B213D0
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:56:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1695281DBB
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBA9241F5;
-	Thu, 23 Nov 2023 12:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405C622F02;
+	Thu, 23 Nov 2023 13:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FuAKoOZT"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="JT0lYrkx"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7A291;
-	Thu, 23 Nov 2023 04:56:25 -0800 (PST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ANCIDQa031579;
-	Thu, 23 Nov 2023 12:56:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : reply-to : to : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=DQVPNWAVHATOwJ43a3rPhj1rzRAJZ4VgfHy4rm+zPeI=;
- b=FuAKoOZTBMLTqQmIdsRRVG8wEemVbDVEyvSUFU0Fwth0eIxbCreNAAzS0K/sd12h+Ypb
- TspDt1hAjHrOAvI3kcON8N3x+DA3EIx901N9Y63Xh24HSE6s6KsvK/pFbaVluMalJxQP
- yFSvLxcChEIlL2aSJATiv3gGlRDEq9Gw9uHyag/X83cO6NftGITO3yEGtCqNLW4Y5pp0
- VAtm34GiRAQduV0qqBIuBOt3IldTre44NuycaT4sDXRnl1aIxq3UCpVhWB/zISByZEhk
- ddWbcptrQXNtvbMEdH6mK7FLUDEt+K8q9RnniP3n7df/porL7O1KQIFbo7rZzUtT+BqP mg== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uj6ma0vda-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Nov 2023 12:56:10 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3ANBIhU5022418;
-	Thu, 23 Nov 2023 12:51:59 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3uf7yyyawf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Nov 2023 12:51:59 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3ANCpwH014680746
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Nov 2023 12:51:59 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D5D9158059;
-	Thu, 23 Nov 2023 12:51:58 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5B0C058057;
-	Thu, 23 Nov 2023 12:51:56 +0000 (GMT)
-Received: from [IPv6:2601:5c4:4302:c21::a774] (unknown [9.67.0.97])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Nov 2023 12:51:56 +0000 (GMT)
-Message-ID: <d3ec8bb44e69f1dbc0a0cc31077b5a8e09a277ef.camel@linux.ibm.com>
-Subject: Re: [PATCH v4] aacraid: reply queue mapping to CPUs based of IRQ
- affinity
-From: James Bottomley <jejb@linux.ibm.com>
-Reply-To: jejb@linux.ibm.com
-To: John Garry <john.g.garry@oracle.com>,
-        Sagar Biradar
- <sagar.biradar@microchip.com>,
-        Don Brace <don.brace@microchip.com>,
-        Gilbert
- Wu <gilbert.wu@microchip.com>, linux-scsi@vger.kernel.org,
-        Martin Petersen
- <martin.petersen@oracle.com>,
-        Brian King <brking@linux.vnet.ibm.com>, stable@vger.kernel.org,
-        Tom White <tom.white@microchip.com>, regressions@leemhuis.info,
-        hare@suse.com
-Date: Thu, 23 Nov 2023 07:51:54 -0500
-In-Reply-To: <c830058d-8d03-4da4-bdd4-0e56c567308f@oracle.com>
-References: <20230519230834.27436-1-sagar.biradar@microchip.com>
-	 <c830058d-8d03-4da4-bdd4-0e56c567308f@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0jdFhNeqTRlIFi1uF3zX_YQ3I0a_E5wB
-X-Proofpoint-ORIG-GUID: 0jdFhNeqTRlIFi1uF3zX_YQ3I0a_E5wB
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30831A1
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 05:08:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=jesyfwqDtZ8s0xRKaSN7YvNd1V2pDAq/Sy55zlnO7J0=; b=JT0lYrkxshcy2ZqB/te6rHZtkt
+	//xLELPrh85ZUUK/MYbAWcpkIZhssd3HWnTfQIYRLQ7d58p8wanS0FUvVQk5Uhc3a5odAI9VfNPEH
+	G0YC9Znh2ubVPyr7gMPnC6uptyGfyzjelgdtMfqhGXQgswuTMhlFN73Wn4W5holEKe8DumMAuxRXS
+	pUSc50Y9aNrCi9mn3YD5Bs0oLoFffUQWbnB8zKC9QlEWTgOZt9KjwL48g3UxVakcfyKZ2Jt7Uivz3
+	p8NckV+ZGGi1FIqvKL57kmYo/ojSVUjXGcJEmiHByYX/B/4Dlg7wmxVJMb+1wAvZ88inV5ScgYGBZ
+	c3MagWCw==;
+Received: from [177.34.168.16] (helo=morissey..)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1r69Ru-006NbZ-Jy; Thu, 23 Nov 2023 14:08:55 +0100
+From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stefan Wahren <stefan.wahren@i2se.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.5.y] soc: bcm: bcm2835-power: check if the ASB register is equal to enable
+Date: Thu, 23 Nov 2023 10:06:55 -0300
+Message-ID: <20231123130839.561235-1-mcanal@igalia.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <2023112257-putdown-prozac-affa@gregkh>
+References: <2023112257-putdown-prozac-affa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-23_11,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=733
- malwarescore=0 bulkscore=0 spamscore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 adultscore=0 clxscore=1011 mlxscore=0
- priorityscore=1501 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311230092
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2023-11-23 at 12:01 +0000, John Garry wrote:
-> On 20/05/2023 00:08, Sagar Biradar wrote:
-> > Fix the IO hang that arises because of MSIx vector not
-> > having a mapped online CPU upon receiving completion.
-> > 
-> > The SCSI cmds take the blk_mq route, which is setup during the
-> > init. The reserved cmds fetch the vector_no from mq_map after the
-> > init is complete and before the init, they use 0 - as per the norm.
-> > 
-> > Reviewed-by: Gilbert Wu <gilbert.wu@microchip.com>
-> > Signed-off-by: Sagar Biradar <Sagar.Biradar@microchip.com>
-> 
-> This the patch which seems to be causing the issue in 
-> https://bugzilla.kernel.org/show_bug.cgi?id=217599
-> 
-> I will comment here since I got no response there...
+The commit c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
+refactored the ASB control by using a general function to handle both
+the enable and disable. But this patch introduced a subtle regression:
+we need to check if !!(readl(base + reg) & ASB_ACK) == enable, not just
+check if (readl(base + reg) & ASB_ACK) == true.
 
-We can still do a clean revert of this commit if no other solution is
-found before the end of the 6.7 rc cycle.
+Currently, this is causing an invalid register state in V3D when
+unloading and loading the driver, because `bcm2835_asb_disable()` will
+return -ETIMEDOUT and `bcm2835_asb_power_off()` will fail to disable the
+ASB slave for V3D.
 
-Regards,
+Fixes: c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231024101251.6357-2-mcanal@igalia.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+(cherry picked from commit 2e75396f1df61e1f1d26d0d703fc7292c4ae4371)
+---
+ drivers/soc/bcm/bcm2835-power.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-James
+diff --git a/drivers/soc/bcm/bcm2835-power.c b/drivers/soc/bcm/bcm2835-power.c
+index 1a179d4e011c..d2f0233cb620 100644
+--- a/drivers/soc/bcm/bcm2835-power.c
++++ b/drivers/soc/bcm/bcm2835-power.c
+@@ -175,7 +175,7 @@ static int bcm2835_asb_control(struct bcm2835_power *power, u32 reg, bool enable
+ 	}
+ 	writel(PM_PASSWORD | val, base + reg);
+
+-	while (readl(base + reg) & ASB_ACK) {
++	while (!!(readl(base + reg) & ASB_ACK) == enable) {
+ 		cpu_relax();
+ 		if (ktime_get_ns() - start >= 1000)
+ 			return -ETIMEDOUT;
+--
+2.41.0
 
 
