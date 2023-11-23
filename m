@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-53-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-54-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407D87F5EA8
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:04:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 206617F5EA9
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71C871C20F28
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:04:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 518631C20F90
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3874241F7;
-	Thu, 23 Nov 2023 12:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E84241FE;
+	Thu, 23 Nov 2023 12:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bzyteork"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdfjyAyw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92463241ED
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 12:04:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695FAC433C7;
-	Thu, 23 Nov 2023 12:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3905E241ED
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 12:04:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2133DC433C8;
+	Thu, 23 Nov 2023 12:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700741047;
-	bh=vm3BNaF4ZuTbG4Sc7uCGezZxYaCZR6HnKJZzdvFdK9c=;
+	s=korg; t=1700741055;
+	bh=uRQohVlCOR7FQL08JJGJ/I7p5Q4ud9yaML/GqMDcjUg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Bzyteork2XB49lQwcfP8TSPY+46jV5TFdOBxri/wNBo/dBpH467Vd/zfeW7b1bJaA
-	 wUCm3wocSvX1g0cqvVrWiiPYOdB3UuncmjLR6Klu8hm3h4UG+L3JDyM/1s5zWMcBxN
-	 0E9G76JB2uCz3VJbCGQUbuyk9iLet+XlndGEqdOI=
-Subject: FAILED: patch "[PATCH] mm/memory_hotplug: use pfn math in place of direct struct" failed to apply to 5.4-stable tree
+	b=OdfjyAywz4euEs3sg7rdx1lzyJavS7xgQ8HfCIQGqTlEjSr1XwPutdkbfERI/pQO1
+	 GpTUMcMX9m/bq7Noc8GXAyeGm9fTr3GxkdeueYcd//x+tmAIZoprWj1ReevaInF2lJ
+	 M35LtDkUiPBQvfbBRPS3QXZOEC57cABSxRpOz89Q=
+Subject: FAILED: patch "[PATCH] mm/memory_hotplug: use pfn math in place of direct struct" failed to apply to 4.19-stable tree
 To: ziy@nvidia.com,akpm@linux-foundation.org,david@redhat.com,mike.kravetz@oracle.com,rppt@kernel.org,songmuchun@bytedance.com,stable@vger.kernel.org,tsbogend@alpha.franken.de,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 Nov 2023 12:03:51 +0000
-Message-ID: <2023112351-skipping-barman-8e9a@gregkh>
+Date: Thu, 23 Nov 2023 12:03:53 +0000
+Message-ID: <2023112353-revival-badness-110c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1640a0ef80f6d572725f5b0330038c18e98ea168
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112351-skipping-barman-8e9a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112353-revival-badness-110c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-
+1640a0ef80f6 ("mm/memory_hotplug: use pfn math in place of direct struct page manipulation")
+aa218795cb5f ("mm: Allow to offline unmovable PageOffline() pages via MEM_GOING_OFFLINE")
+fe4c86c916d9 ("mm: remove "count" parameter from has_unmovable_pages()")
+3f9903b9ca5e ("mm: remove the memory isolate notifier")
+756d25be457f ("mm/page_isolation.c: convert SKIP_HWPOISON to MEMORY_OFFLINE")
+d8c6546b1aea ("mm: introduce compound_nr()")
+a50b854e073c ("mm: introduce page_size()")
+dd625285910d ("drivers/base/memory.c: get rid of find_memory_block_hinted()")
+ea8846411ad6 ("mm/memory_hotplug: move and simplify walk_memory_blocks()")
+fbcf73ce6582 ("mm/memory_hotplug: rename walk_memory_range() and pass start+size instead of pfns")
+90ec010fe0d6 ("drivers/base/memory: use "unsigned long" for block ids")
+2491f0a2c0b1 ("mm: section numbers use the type "unsigned long"")
+4c4b7f9ba948 ("mm/memory_hotplug: remove memory block devices before arch_remove_memory()")
+db051a0dac13 ("mm/memory_hotplug: create memory block devices after arch_add_memory()")
+80ec922dbd87 ("mm/memory_hotplug: allow arch_remove_memory() without CONFIG_MEMORY_HOTREMOVE")
+1811582587c4 ("drivers/base/memory: pass a block_id to init_memory_block()")
+22eb634632a2 ("arm64/mm: add temporary arch_remove_memory() implementation")
+eca499ab3749 ("mm/hotplug: make remove_memory() interface usable")
+98879b3b9edc ("mm: vmscan: correct some vmscan counters for THP swapout")
+aa712399c1e8 ("mm/gup: speed up check_and_migrate_cma_pages() on huge page")
 
 thanks,
 
