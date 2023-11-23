@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-32-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-33-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7BDA7F5CDF
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:50:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8FB77F5D11
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7331A28195D
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:50:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A0FBB2105D
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1B42207F;
-	Thu, 23 Nov 2023 10:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF736224FB;
+	Thu, 23 Nov 2023 10:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wOEoa3ft"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M1f+F4tC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8C6019D
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 02:50:24 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-a02d12a2444so94538566b.3
-        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 02:50:24 -0800 (PST)
+Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA4B01BF
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 02:57:42 -0800 (PST)
+Received: by mail-wr1-x432.google.com with SMTP id ffacd0b85a97d-32fdc5be26dso400762f8f.2
+        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 02:57:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700736623; x=1701341423; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=linaro.org; s=google; t=1700737061; x=1701341861; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=OWmsEY1Lz0iuLAhKZp25wl97iTeJOnsV2iHbTLKdd7A=;
-        b=wOEoa3ftwf0/QNhrOjF+Lr2PWC16AByfxoW6U+BRRovXRjxIMP/5bBrRoLLV2uyI57
-         EZtzFLZxfMAS8BlXt7ql6ID22qIiTpD+xL0/IizinUusG4K53CKeanp+2uFQDj6jk+6V
-         rnl6iCPKJA/26WbKixGLyAG6kVK21y+3b5fXUc5ACu0vlXIRELb3gmS7UMj8CNJ2pBPm
-         vodSKoG9ON3izOSsmKRRjg7koK4hDC5gqV9quIFrLZoPLbGZSwlguNSeNQrbMmix0c3X
-         AImZ6/pin6ZbcO9QBhUNFnmjM/NiR0hf91XzUs4R0JX7BCxcOpyiBH4xbknsFveQtTzg
-         NBjg==
+        bh=+y8GqhplESEfvOMr6yusQxqrSvhQKePmum3wvwP/q1E=;
+        b=M1f+F4tC+fWJAryB96uDHg2geNecTmnMExPz8MIrPmuLMFCylEwamwjqunb0yvNRhp
+         Ak93byBgqLYn6TVylsJ87M1IgQ0Ip6xx/GNoZRRodfu+ztpJEG5nSZaJ3MCm96IPVvBE
+         lQauoS0xY3+Lukg2WczKv/9g3QJYjPlUV6SUSJ7LgAgpY6muiXX63ScZXruPffua9iBa
+         IpnbL+yKl4+n64qKrg+6SuMyaaKgocEcCbvJc71EJV1xpbb3Mj/OnsqFDO6Cqilmpi5D
+         QFqbXOiOMrq5FWsRc2ev3Z1WschIrkO54Idb4wFs8CE6a1OSU1Q5oedrt8AVRyezRyay
+         lWrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700736623; x=1701341423;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1700737061; x=1701341861;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OWmsEY1Lz0iuLAhKZp25wl97iTeJOnsV2iHbTLKdd7A=;
-        b=EHG81esZjPDs4yYTlF4PdS8Wmd+aiPFXIUOhTl030kkILCtsMQZaDg5ho24ANbR+iZ
-         cvD+J9TybW11ctOVLIQNFt10zsKWZo2g7b2w3zdotB1wxw4/YUu9MQMrLlZgst1V3lNM
-         ponWTXNrnAfoluT7Vcdsvk8iWSIEC2v2+8DTtygRzNfeWl3QPYab88TvwT9LskTKQN3H
-         DPq72UAIZmHkv21AkqYy2t0+nCx45GA6yU7gXfRW/qTosBrOchNTwp6KnZNI+s980tJG
-         aGL6bXJVNH7m8ewszRos+OvO7T53U7OueG3eTm2JZsMba2wo89TxyHFyj+jiZvyjWE2l
-         atIg==
-X-Gm-Message-State: AOJu0YzxXopZtmch4P00crfxUIRB9iEH2d33jmcXVeduq1CfOBuL5uhQ
-	AsFRkRQ34RGh+SUWLTjyf+rlEA==
-X-Google-Smtp-Source: AGHT+IEraM1i8wpahcqSKpNjXQf1ubzx9722VwGXlJdd0hjgZjfDv9ahWVogiErf9rtLA+YfTT4uCA==
-X-Received: by 2002:a17:907:d046:b0:9b2:6d09:847c with SMTP id vb6-20020a170907d04600b009b26d09847cmr4337532ejc.10.1700736623254;
-        Thu, 23 Nov 2023 02:50:23 -0800 (PST)
-Received: from [192.168.86.103] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id j27-20020a170906255b00b009e5db336137sm619208ejb.196.2023.11.23.02.50.21
+        bh=+y8GqhplESEfvOMr6yusQxqrSvhQKePmum3wvwP/q1E=;
+        b=d0sMjUR+4tog0L9TcR+Sbs1T02ez/qW0lXj6SOex3uxr/zKL4fSW1NAs9Qad3tNO9p
+         qRIDR+SYdbAIAYqeSU2szlZdOXlg4Sk5MyjqMaQQ0k6lOfEHnCNWDICwSq7Sy4b7T265
+         mo43Bo+P3fn3yis/Qrqjv+kggZEKjlymWFcTar4WQLsbf2og+UutGMtmdMiRIuJI4JGp
+         T8HVxcsoDuqZwi0XV66T3oeJAbdt3uF3TwuryshZG18gb5Z3iN1cSUQrmNS9TAr4Uyv1
+         G2W+4i8JrTED+uEHginG57bOs3BaI1JGIJolvIvqASI96Cb0ym1p3X28FSZW9A855NaC
+         ReRw==
+X-Gm-Message-State: AOJu0Yyh+23AUKqlPQs72rY/hXKwK2129u2Ma9fD+XhadlbFZfz1CW+k
+	nieDXfovaKKR+7zljj/kABIn2CYqpOjIngNtHmM=
+X-Google-Smtp-Source: AGHT+IFobX8x5JuXdPLKT7AZWEuvVw5rHD4gknMa/X0TH24W9CCMFaJ5M0eNMQY2ARLhbwdrcBTKQA==
+X-Received: by 2002:adf:db02:0:b0:332:cc85:70ce with SMTP id s2-20020adfdb02000000b00332cc8570cemr2239543wri.33.1700737061193;
+        Thu, 23 Nov 2023 02:57:41 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.218.100])
+        by smtp.gmail.com with ESMTPSA id c11-20020a5d4f0b000000b00332e67d6564sm185067wru.67.2023.11.23.02.57.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Nov 2023 02:50:22 -0800 (PST)
-Message-ID: <11e09282-186b-43bd-b7ef-a179a4fe8f03@linaro.org>
-Date: Thu, 23 Nov 2023 10:50:21 +0000
+        Thu, 23 Nov 2023 02:57:40 -0800 (PST)
+Message-ID: <2bf64582-b7c6-469a-858a-f83b2d50f12a@linaro.org>
+Date: Thu, 23 Nov 2023 11:57:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,85 +65,91 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH 1/2] soundwire: bus: introduce controller_id
 Content-Language: en-US
 To: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
- alsa-devel@alsa-project.org
+ alsa-devel@alsa-project.org, srinivas.kandagatla@linaro.org
 Cc: tiwai@suse.de, broonie@kernel.org, vkoul@kernel.org,
  gregkh@linuxfoundation.org, Bard liao <yung-chuan.liao@linux.intel.com>,
- Jaroslav Kysela <perex@perex.cz>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Philippe Ombredanne <pombredanne@nexb.com>, linux-kernel@vger.kernel.org,
+ Jaroslav Kysela <perex@perex.cz>, Philippe Ombredanne
+ <pombredanne@nexb.com>, linux-kernel@vger.kernel.org,
  stable@vger.kernel.org, Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 References: <20231017160933.12624-1-pierre-louis.bossart@linux.intel.com>
  <20231017160933.12624-2-pierre-louis.bossart@linux.intel.com>
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
 In-Reply-To: <20231017160933.12624-2-pierre-louis.bossart@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Thanks Pierre for the patch,
-
-On 17/10/2023 17:09, Pierre-Louis Bossart wrote:
-> diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
-> index 55be9f4b8d59..e3ae4e4e07ac 100644
-> --- a/drivers/soundwire/qcom.c
-> +++ b/drivers/soundwire/qcom.c
-> @@ -1612,6 +1612,9 @@ static int qcom_swrm_probe(struct platform_device *pdev)
->   		}
->   	}
->   
-> +	/* FIXME: is there a DT-defined value to use ? */
-> +	ctrl->bus.controller_id = -1;
-> +
-
-We could do a better than this, on Qcom IP we have a dedicated register 
-to provide a master id value. I will send a patch to add this change on 
-top of this patchset.
-
---------------------------------->cut<-------------------------------
- From 78c516995d652324daadbe848fa787dabcede73f Mon Sep 17 00:00:00 2001
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Date: Thu, 23 Nov 2023 10:43:02 +0000
-Subject: [PATCH] soundwire: qcom: set controller id to hw master id
-
-Qualcomm Soundwire Controllers IP version after 1.3 have a dedicated
-master id register which will provide a unique id value for each
-controller instance. Use this value instead of artificially generated
-value from idr. Versions 1.3 and below only have one instance of
-soundwire controller which does no have this register, so let them use
-value from idr.
-
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
----
-  drivers/soundwire/qcom.c | 6 +++++-
-  1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
-index 8e027eee8b73..48291fbaf674 100644
---- a/drivers/soundwire/qcom.c
-+++ b/drivers/soundwire/qcom.c
-@@ -1624,9 +1624,13 @@ static int qcom_swrm_probe(struct platform_device 
-*pdev)
-  		}
-  	}
-
--	/* FIXME: is there a DT-defined value to use ? */
-  	ctrl->bus.controller_id = -1;
-
-+	if (ctrl->version > SWRM_VERSION_1_3_0) {
-+		ctrl->reg_read(ctrl, SWRM_COMP_MASTER_ID, &val);
-+		ctrl->bus.controller_id = val;
-+	}
-+
-  	ret = sdw_bus_master_add(&ctrl->bus, dev, dev->fwnode);
-  	if (ret) {
-  		dev_err(dev, "Failed to register Soundwire controller (%d)\n",
--- 
-2.42.0
---------------------------------->cut<-------------------------------
+On 17/10/2023 18:09, Pierre-Louis Bossart wrote:
+> The existing SoundWire support misses a clear Controller/Manager
+> hiearchical definition to deal with all variants across SOC vendors.
+> 
+> a) Intel platforms have one controller with 4 or more Managers.
+> b) AMD platforms have two controllers with one Manager each, but due
+> to BIOS issues use two different link_id values within the scope of a
+> single controller.
+> c) QCOM platforms have one or more controller with one Manager each.
+> 
+> This patch adds a 'controller_id' which can be set by higher
+> levels. If assigned to -1, the controller_id will be set to the
+> system-unique IDA-assigned bus->id.
+> 
+> The main change is that the bus->id is no longer used for any device
+> name, which makes the definition completely predictable and not
+> dependent on any enumeration order. The bus->id is only used to insert
+> the Managers in the stream rt context.
+> 
+> Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+> Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+> Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
 
-thanks,
-Srini
->   	ret = sdw_bus_master_add(&ctrl->bus, dev, dev->fwnode);
->   	if (ret) {
->   		dev_err(dev, "Failed to register Soundwire controller (%d)\n",
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+Best regards,
+Krzysztof
+
 
