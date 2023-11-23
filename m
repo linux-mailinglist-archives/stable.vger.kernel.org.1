@@ -1,289 +1,223 @@
-Return-Path: <stable+bounces-16-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D2A7F57F4
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 07:00:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C24FB7F5802
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 07:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2167FB20EB6
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 06:00:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE3321C20C9F
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 06:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5210ABE4A;
-	Thu, 23 Nov 2023 06:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE806C2D8;
+	Thu, 23 Nov 2023 06:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="LSWCj4aY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bQCLBAxY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A75DB19D
-	for <stable@vger.kernel.org>; Wed, 22 Nov 2023 22:00:43 -0800 (PST)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3b83398cfc7so351864b6e.3
-        for <stable@vger.kernel.org>; Wed, 22 Nov 2023 22:00:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700719242; x=1701324042; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=SpftHuvlJiR4rkLap79XvgsZwaCNdjwYXMTs/zRgyqs=;
-        b=LSWCj4aY8HU21IcuMGwjL1dxfGr0w0Uw/81Bah1D5xDwuAvz2XORv7VXnM59wMHPqm
-         iFyO2NktDIINi9N4n4oszZnXZ+zVGPISKmltGp77Qv0cfJB/MKb0dFiYQsHZ/eNzuYuH
-         JT7cnFuvUH7ow5sqYv6Mm4hCJz5DAqnrq4XaEi4yC0B9emiyn+Wmtlsoqbw6IKy1uupk
-         w+/PzXYc19ccSkqmo+Wpj1SLu4RCxzJC8GQCUbaj8M5sWxxprfqy+LHS2EiBC6CZa5I1
-         2whx37eWhcuenRPmJhemk/JULnS5ifkTWgRaWR9ZXjpP7a37YTXRa8B7m/LDAFiSuV/5
-         75cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700719242; x=1701324042;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SpftHuvlJiR4rkLap79XvgsZwaCNdjwYXMTs/zRgyqs=;
-        b=Jlg4TnAwi4uCo/cH2NeedPjWNRcOwtwkGRYZb3pBvLHqhjKfWBudUM+Th6fB+w4Fp5
-         wblLlR5zd5jzmxvSuXNDHcN7HGPtZtm6X9/om8B3SfMGEVwz7qelryIvOLlh0yKea9MZ
-         +IcQw/p+8V236sXP3206WH0KZCmxqoNn293uvICVjH/+exichFhhhoHESZBxSXPKCRkz
-         GS1d3fYwrJIhCYbkOBElhW6NE6f/t0Uq8fOm/Wr+MZ4/k8tjSBqsc/OQPPslStvjIkv6
-         anskfKmT7lVgMKN77jGxM6IzCMeWQejcsb0rVd3HgvTmmXy2a2xQkLKUHgVHVWUnMTE4
-         WKEA==
-X-Gm-Message-State: AOJu0YzfVewkqhGyoaVNK/aB+DcEL/AAPKThXown94EX86Ph/+lwyq0w
-	BDp9CxT0Fn61K1f4vpTyAW/1tv65QCT0nvU/czk=
-X-Google-Smtp-Source: AGHT+IGTegos68cX6BKVUSPSNuJ0aFATtNz9od19TTj3oAY7qrbpi+ONbKXv/m12yzfGMt3xwwQtlg==
-X-Received: by 2002:a05:6808:1288:b0:3b8:4d0b:54f6 with SMTP id a8-20020a056808128800b003b84d0b54f6mr515212oiw.23.1700719242543;
-        Wed, 22 Nov 2023 22:00:42 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id t3-20020a632d03000000b005897bfc2ed3sm483390pgt.93.2023.11.22.22.00.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Nov 2023 22:00:41 -0800 (PST)
-Message-ID: <655eea89.630a0220.fce21.14ca@mx.google.com>
-Date: Wed, 22 Nov 2023 22:00:41 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64B5C191;
+	Wed, 22 Nov 2023 22:05:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700719521; x=1732255521;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=Yr+1TmW4F+rsKSkU4sHlrHj98hszXJZ1OdJBTd24Dpo=;
+  b=bQCLBAxYj4bKPVV+yJMUeUi/mfoaAcpDr/QU9XxO/rwxM4f36Wnmaocs
+   4qDFvJkOeJJJv/X39NtcS0B+if41CLGObaoRaeY+mTHZiFvVfwCyoWco8
+   uvKm6dH/Wiy5lF7fjrs2d3ekOW3v5uUBB3SZkU+xd9mr6csac3TtoOqLU
+   zFimnef9vcJBNX57o+z9G0VjSQj/tFmSDQT6pWdBAABKnUIMxnF3nCBpJ
+   v/bjL9iH4SMeWokVeyqHzZW5HQgvdSl6yLVslLWxKoYbX85gJlBGpN4Le
+   3+paUfmOTUD9DFgJi4cpi9v4y6nbuXYbWRA2vSLNm3FUb3zj7f8CJsfTk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="13759430"
+X-IronPort-AV: E=Sophos;i="6.04,220,1695711600"; 
+   d="scan'208";a="13759430"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 22:05:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="1014517211"
+X-IronPort-AV: E=Sophos;i="6.04,220,1695711600"; 
+   d="scan'208";a="1014517211"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga006.fm.intel.com with ESMTP; 22 Nov 2023 22:05:18 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 23BC82A6; Thu, 23 Nov 2023 08:05:16 +0200 (EET)
+Date: Thu, 23 Nov 2023 08:05:16 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Sanath S <sanaths2@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
+	Sanath S <Sanath.S@amd.com>, andreas.noever@gmail.com,
+	michael.jamet@intel.com, YehezkelShB@gmail.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [Patch v2] thunderbolt: Add quirk to reset downstream port
+Message-ID: <20231123060516.GB1074920@black.fi.intel.com>
+References: <20231122050639.19651-1-Sanath.S@amd.com>
+ <20231122060316.GT1074920@black.fi.intel.com>
+ <95ceae27-f88d-4915-870a-36cf9418f244@amd.com>
+ <efb152bc-fd17-a374-4303-20aa9bde698d@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.15.139-213-g8d3198b02d3c
-Subject: stable-rc/queue/5.15 baseline: 142 runs,
- 3 regressions (v5.15.139-213-g8d3198b02d3c)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/queue/5.15 baseline: 142 runs, 3 regressions (v5.15.139-213-g8d31=
-98b02d3c)
-
-Regressions Summary
--------------------
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.15/ker=
-nel/v5.15.139-213-g8d3198b02d3c/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/5.15
-  Describe: v5.15.139-213-g8d3198b02d3c
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      8d3198b02d3c3be212203b83e9fc2772e2edfe6a =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/655eb891b7159270687e4b6a
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--213-g8d3198b02d3c/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
-lcb.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--213-g8d3198b02d3c/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-u=
-lcb.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/655eb891b7159270687e4b73
-        failing since 0 day (last pass: v5.15.114-13-g095e387c3889, first f=
-ail: v5.15.139-172-gb60494a37c0c)
-
-    2023-11-23T02:33:49.638270  / # #
-
-    2023-11-23T02:33:49.738854  export SHELL=3D/bin/sh
-
-    2023-11-23T02:33:49.738988  #
-
-    2023-11-23T02:33:49.839502  / # export SHELL=3D/bin/sh. /lava-12064382/=
-environment
-
-    2023-11-23T02:33:49.839629  =
-
-
-    2023-11-23T02:33:49.940447  / # . /lava-12064382/environment/lava-12064=
-382/bin/lava-test-runner /lava-12064382/1
-
-    2023-11-23T02:33:49.941658  =
-
-
-    2023-11-23T02:33:49.946772  / # /lava-12064382/bin/lava-test-runner /la=
-va-12064382/1
-
-    2023-11-23T02:33:50.007385  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-11-23T02:33:50.007880  + cd /lav<8>[   16.133435] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 12064382_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/655eb884b7159270687e4b0b
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--213-g8d3198b02d3c/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
-e-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--213-g8d3198b02d3c/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pin=
-e-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/655eb884b7159270687e4b14
-        failing since 0 day (last pass: v5.15.105-206-g4548859116b8, first =
-fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-11-23T02:27:07.290052  <8>[   16.181356] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 444973_1.5.2.4.1>
-    2023-11-23T02:27:07.395129  / # #
-    2023-11-23T02:27:07.496767  export SHELL=3D/bin/sh
-    2023-11-23T02:27:07.497372  #
-    2023-11-23T02:27:07.598375  / # export SHELL=3D/bin/sh. /lava-444973/en=
-vironment
-    2023-11-23T02:27:07.598969  =
-
-    2023-11-23T02:27:07.699987  / # . /lava-444973/environment/lava-444973/=
-bin/lava-test-runner /lava-444973/1
-    2023-11-23T02:27:07.700886  =
-
-    2023-11-23T02:27:07.705344  / # /lava-444973/bin/lava-test-runner /lava=
--444973/1
-    2023-11-23T02:27:07.737425  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/655eb8a5818913315d7e4a84
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--213-g8d3198b02d3c/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
-pine-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--213-g8d3198b02d3c/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-=
-pine-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/655eb8a5818913315d7e4a8d
-        failing since 0 day (last pass: v5.15.105-206-g4548859116b8, first =
-fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-11-23T02:34:03.799287  / # #
-
-    2023-11-23T02:34:03.901293  export SHELL=3D/bin/sh
-
-    2023-11-23T02:34:03.901997  #
-
-    2023-11-23T02:34:04.003411  / # export SHELL=3D/bin/sh. /lava-12064386/=
-environment
-
-    2023-11-23T02:34:04.004122  =
-
-
-    2023-11-23T02:34:04.105572  / # . /lava-12064386/environment/lava-12064=
-386/bin/lava-test-runner /lava-12064386/1
-
-    2023-11-23T02:34:04.106661  =
-
-
-    2023-11-23T02:34:04.123289  / # /lava-12064386/bin/lava-test-runner /la=
-va-12064386/1
-
-    2023-11-23T02:34:04.181110  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-11-23T02:34:04.181694  + cd /lava-1206438<8>[   16.810433] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12064386_1.5.2.4.5>
- =
-
-    ... (10 line(s) more)  =
-
- =20
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <efb152bc-fd17-a374-4303-20aa9bde698d@amd.com>
+
+On Thu, Nov 23, 2023 at 10:46:27AM +0530, Sanath S wrote:
+> 
+> On 11/22/2023 9:13 PM, Mario Limonciello wrote:
+> > On 11/22/2023 00:03, Mika Westerberg wrote:
+> > > Hi,
+> > > 
+> > > On Wed, Nov 22, 2023 at 10:36:39AM +0530, Sanath S wrote:
+> > > > Boot firmware on AMD's Yellow Carp and Pink Sardine allocates
+> > > > very minimal buses for PCIe downstream ports. This results in
+> > > > failure to extend the daisy chain.
+> > > > 
+> > > > Add quirk to reset the downstream port to help reset the topology
+> > > > created by boot firmware.
+> > > 
+> > > But this resets the USB4 side of ports, how does this help with the PCIe
+> > > side? Or this also resets the PCIe side? Please add this information to
+> > > the changelog too.
+> > 
+> Sure, I'll add the PCIe side reset in changelog.
+> > IIUC the PCIe side will be implicitly reset as well.
+> > 
+> > > 
+> > > I suppose it is not possible to fix the boot firmware?
+> > 
+> > It's a really difficult case to make with firmware team.  Windows and
+> > Linux have a different behavior here.  The Windows CM doesn't take the
+> > existing tunnels from firmware and instead always resets them.
+> > So Windows "isn't affected" by this problem.
+> > 
+> > Furthermore there are already lots of systems out "in the wild" as these
+> > are already both production silicon with shipping OEM products.
+> > 
+> > > 
+> > > > Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+> > > > Signed-off-by: Sanath S <Sanath.S@amd.com>
+> > > > Fixes: e390909ac763 ("thunderbolt: Add vendor specific NHI quirk
+> > > > for auto-clearing interrupt status")
+> > > > Cc: <stable@vger.kernel.org>
+> > > > ---
+> > > > Changes since v1:
+> > > >   - Initialize ret variable to avoid compiler warning.
+> > > >   - Add Fixes tag with commit id.
+> > > > ---
+> > > > 
+> > > >   drivers/thunderbolt/quirks.c  | 14 ++++++++++++++
+> > > >   drivers/thunderbolt/switch.c  | 28 ++++++++++++++++++++++++++++
+> > > >   drivers/thunderbolt/tb.h      |  2 ++
+> > > >   drivers/thunderbolt/tb_regs.h |  1 +
+> > > >   4 files changed, 45 insertions(+)
+> > > > 
+> > > > diff --git a/drivers/thunderbolt/quirks.c
+> > > > b/drivers/thunderbolt/quirks.c
+> > > > index e6bfa63b40ae..45e9d6c43e4a 100644
+> > > > --- a/drivers/thunderbolt/quirks.c
+> > > > +++ b/drivers/thunderbolt/quirks.c
+> > > > @@ -27,6 +27,12 @@ static void quirk_clx_disable(struct tb_switch *sw)
+> > > >       tb_sw_dbg(sw, "disabling CL states\n");
+> > > >   }
+> > > >   +static void quirk_amd_downstream_port_reset(struct tb_switch *sw)
+> > > > +{
+> > > > +    sw->quirks |= QUIRK_DPR;
+> > > > +    tb_sw_dbg(sw, "Resetting Down Stream Port\n");
+> > > 
+> > > That's "resetting downstream ports\n"
+> > > 
+> Ack, Will take care in v3.
+> > > > +}
+> > > > +
+> > > >   static void quirk_usb3_maximum_bandwidth(struct tb_switch *sw)
+> > > >   {
+> > > >       struct tb_port *port;
+> > > > @@ -93,6 +99,14 @@ static const struct tb_quirk tb_quirks[] = {
+> > > >       { 0x0438, 0x0209, 0x0000, 0x0000, quirk_clx_disable },
+> > > >       { 0x0438, 0x020a, 0x0000, 0x0000, quirk_clx_disable },
+> > > >       { 0x0438, 0x020b, 0x0000, 0x0000, quirk_clx_disable },
+> > > > +    /*
+> > > > +     * Reset Down Stream Ports on AMD USB4 Yellow Carp and
+> > > > +     * Pink Sardine platforms.
+> > > > +     */
+> > > > +    { 0x0438, 0x0208, 0x0000, 0x0000,
+> > > > quirk_amd_downstream_port_reset },
+> > > > +    { 0x0438, 0x0209, 0x0000, 0x0000,
+> > > > quirk_amd_downstream_port_reset },
+> > > > +    { 0x0438, 0x020a, 0x0000, 0x0000,
+> > > > quirk_amd_downstream_port_reset },
+> > > > +    { 0x0438, 0x020b, 0x0000, 0x0000,
+> > > > quirk_amd_downstream_port_reset },
+> > > >   };
+> > > >     /**
+> > > > diff --git a/drivers/thunderbolt/switch.c
+> > > > b/drivers/thunderbolt/switch.c
+> > > > index 1e15ffa79295..1c4b1dd5f472 100644
+> > > > --- a/drivers/thunderbolt/switch.c
+> > > > +++ b/drivers/thunderbolt/switch.c
+> > > > @@ -1547,6 +1547,23 @@ static void tb_dump_switch(const struct
+> > > > tb *tb, const struct tb_switch *sw)
+> > > >              regs->__unknown1, regs->__unknown4);
+> > > >   }
+> > > >   +static int tb_switch_reset_downstream_port(struct tb_switch *sw)
+> > > > +{
+> > > > +    struct tb_port *port;
+> > > > +    uint32_t val = 0;
+> > > 
+> > > u32
+> > > 
+> Ack.
+> > > > +    int ret = -1;
+> > > 
+> > > What is -1? Please use proper error codes.
+> > > 
+> Ack, It'll be ret = -ENODEV;
+> > > > +
+> > > > +    tb_switch_for_each_port(sw, port) {
+> > > > +        if (port->config.type == TB_TYPE_PORT) {
+> > > 
+> > > You mean
+> > > 
+> > >     tb_port_is_null()
+> > > 
+> > > also please make it a separate function, tb_port_reset() following the
+> > > similar tb_port_unlock() and friends. With the matching kernel-doc and
+> > > everything.
+> > > 
+> Sure, I'll handle this and send a v3.
+> Will also take case of 10ms delay as per spec.
+> > > > +            val = val | PORT_CS_19_DPR;
+> > > > +            ret = tb_port_write(port, &val, TB_CFG_PORT,
+> > > > +                    port->cap_usb4 + PORT_CS_19, 1);
+> > > 
+> > > Since it is using cap_usb4 you probably need to make usb4_port_reset()
+> > > as well that gets called from tb_port_reset() (try to make it as simple
+> > > as possible though).
+> > > 
+> > > > +            break;
+> > > 
+> > > It is OK just to reset one port?
+> > > 
+> As per spec, setting the DPR bit of downstream port would help us
+> reconfigure
+> 
+> the USB4 link, So had a condition check only for downstream port.
+
+It can be used to re-configure the link but also simple reset.
+
+Actually can we instead of the quirk in quirks.c add this to nhi.c and
+"host_reset". So that on these AMD controllers trigger host reset in the
+same way Windows would?
+
+That's DPR and probably host interface reset. In other words tie this to
+the host reset we are doing for USB4 v2 routers (this one adds it for
+USB4 v1 routers and enables it by default for AMD).
 
