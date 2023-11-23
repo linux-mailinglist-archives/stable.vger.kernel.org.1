@@ -1,125 +1,158 @@
-Return-Path: <stable+bounces-26-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-28-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CD597F5BA6
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:48:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3DB87F5BB0
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0236B21034
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 09:48:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B0AD1F20EFF
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 09:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC4722307;
-	Thu, 23 Nov 2023 09:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D2022304;
+	Thu, 23 Nov 2023 09:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxK873z9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gzKzYi8j"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D4A2136F;
-	Thu, 23 Nov 2023 09:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289A2C433C7;
-	Thu, 23 Nov 2023 09:48:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700732904;
-	bh=pELa/XBC4kyNB8u1kflNMwjk+/SZYf22SC/MJTU/Rms=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bxK873z9MGKN+nmq7GNaEn6JO+vbS23uhNOuHBYtn5pW+6Zhvxue4XVghRVMlLP2c
-	 TYPorzPHbuwejVJeh9Zlm92q3PPrbn6NZAn/GmRWHh5CGzFp0xRLLL11TqD2H1Mplc
-	 FTxpxigrVZaO7MA4/NwxA55dNd1LNTNxeCUONavU7TQjsOx8/ZJr2OHF/KPNP10jgB
-	 fmCdrxQ7EFo9TnZGBPPC/jRYcKw5bCa4FInNkZ/d4HQAWqiOtd+fOEnior3W9kqeBo
-	 BUDGFjZY1WJU5YMgmU7OblNhy9tGz0b+joEyoOuzH9BoZECYM1ADMdqX7tpX88YiqN
-	 m0jFhTOvHKJwA==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1r66K9-0005KS-2V;
-	Thu, 23 Nov 2023 10:48:41 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	linux-sound@vger.kernel.org,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH stable-6.6 2/2] ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag
-Date: Thu, 23 Nov 2023 10:47:49 +0100
-Message-ID: <20231123094749.20462-3-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231123094749.20462-1-johan+linaro@kernel.org>
-References: <20231123094749.20462-1-johan+linaro@kernel.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A43FBD4A;
+	Thu, 23 Nov 2023 01:52:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700733142; x=1732269142;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JwTeH5mEKbp0ZeiZEBaFKb7pQPftaaqLxXwbXFYJjBs=;
+  b=gzKzYi8jAqFQSoR2dnZW4pcxGuBdzw3Sz8QbBygekkW9JcWqgTcSIpeD
+   1TW+7a2fIYtwrtRAHRKncOrqFrCwutWpVrCS+th3L8xlNb2I0R3rKjbC9
+   B1f4YhWMcAi3o7o1RFLCNCLBgCuSUCgkOaE0TLmVc2/emKC4YFwLlQh5u
+   EQ0DEKXui3AtGPmcmFMZN93QoppumRp7zURPTIKVp1LyxlHacaqTJViui
+   /vcFOV4YGe4VvJiC+HDyPUos9mtQBdrJxR71iQSNvKC/w3dmF1mNrmyqB
+   4pGfWLIwkmfUUVHt5N0ikJCyHOI7QFfsubFiJtd+Wmpojku9a0lvH+s9u
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="371587155"
+X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
+   d="scan'208";a="371587155"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Nov 2023 01:52:22 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="770946423"
+X-IronPort-AV: E=Sophos;i="6.04,221,1695711600"; 
+   d="scan'208";a="770946423"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga007.fm.intel.com with SMTP; 23 Nov 2023 01:52:19 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 23 Nov 2023 11:52:18 +0200
+Date: Thu, 23 Nov 2023 11:52:18 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: RD Babiera <rdbabiera@google.com>
+Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, badhri@google.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: class: fix typec_altmode_put_partner to
+ put plugs
+Message-ID: <ZV8g0nkZSLI8YXyd@kuha.fi.intel.com>
+References: <20231121203954.173364-2-rdbabiera@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231121203954.173364-2-rdbabiera@google.com>
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+On Tue, Nov 21, 2023 at 08:39:55PM +0000, RD Babiera wrote:
+> When releasing an Alt Mode, typec_altmode_release called by a plug device
+> will not release the plug Alt Mode, meaning that a port will hold a
+> reference to a plug Alt Mode even if the port partner is unregistered.
+> As a result, typec_altmode_get_plug() can return an old plug altmode.
+> 
+> Currently, typec_altmode_put_partner does not raise issues
+> when unregistering a partner altmode. Looking at the current
+> implementation:
+> 
+> > static void typec_altmode_put_partner(struct altmode *altmode)
+> > {
+> >	struct altmode *partner = altmode->partner;
+> 
+> When called by the partner Alt Mode, then partner evaluates to the port's
+> Alt Mode. When called by the plug Alt Mode, this also evaluates to the
+> port's Alt Mode.
+> 
+> >	struct typec_altmode *adev;
+> >
+> >	if (!partner)
+> >		return;
+> >
+> >	adev = &partner->adev;
+> 
+> This always evaluates to the port's typec_altmode
+> 
+> >	if (is_typec_plug(adev->dev.parent)) {
+> >		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+> >
+> >		partner->plug[plug->index] = NULL;
+> 
+> If the routine is called to put the plug's Alt mode and altmode refers to
+> the plug, then adev referring to the port can never be a typec_plug. If
+> altmode refers to the port, adev will always refer to the port partner,
+> which runs the block below.
+> 
+> >	} else {
+> >		partner->partner = NULL;
+> >	}
+> >	put_device(&adev->dev);
+> > }
+> 
+> When calling typec_altmode_set_partner, a registration always calls
+> get_device() on the port partner or the plug being registered, therefore
+> typec_altmode_put_partner should put_device() the same device. By changing
+> adev to altmode->adev, we make sure to put the correct device and properly
+> unregister plugs. The reason port partners are always properly
+> unregistered is because even when adev refers to the port, the port
+> partner gets nullified in the else block. The port device currently gets
+> put().
+> 
+> Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
+> ---
+>  drivers/usb/typec/class.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+> index 2e0451bd336e..803be1943445 100644
+> --- a/drivers/usb/typec/class.c
+> +++ b/drivers/usb/typec/class.c
+> @@ -267,7 +267,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
+>  	if (!partner)
+>  		return;
+>  
+> -	adev = &partner->adev;
+> +	adev = &altmode->adev;
+>  
+>  	if (is_typec_plug(adev->dev.parent)) {
+>  		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
 
-commit 805ce81826c896dd3c351a32814b28557f9edf54 upstream.
+Sorry, I may have missed something, but do we need to call this
+function with ports at all?
 
-In the current setup the PA is left unmuted even when the
-Soundwire ports are not started streaming. This can lead to click
-and pop sounds during start.
-There is a same issue in the reverse order where in the PA is
-left unmute even after the data stream is stopped, the time
-between data stream stopping and port closing is long enough
-to accumulate DC on the line resulting in Click/Pop noise
-during end of stream.
-
-making use of new mute_unmute_on_trigger flag is helping a
-lot with this Click/Pop issues reported on this Codec
-
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231027105747.32450-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- sound/soc/codecs/wsa883x.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
-index 197fae23762f..cb83c569e18d 100644
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -1203,9 +1203,6 @@ static int wsa883x_spkr_event(struct snd_soc_dapm_widget *w,
- 			break;
- 		}
+static void typec_altmode_release(struct device *dev)
+{
+        struct altmode *alt = to_altmode(to_typec_altmode(dev));
  
--		snd_soc_component_write_field(component, WSA883X_DRE_CTL_1,
--					      WSA883X_DRE_GAIN_EN_MASK,
--					      WSA883X_DRE_GAIN_FROM_CSR);
- 		if (wsa883x->port_enable[WSA883X_PORT_COMP])
- 			snd_soc_component_write_field(component, WSA883X_DRE_CTL_0,
- 						      WSA883X_DRE_OFFSET_MASK,
-@@ -1218,9 +1215,6 @@ static int wsa883x_spkr_event(struct snd_soc_dapm_widget *w,
- 		snd_soc_component_write_field(component, WSA883X_PDM_WD_CTL,
- 					      WSA883X_PDM_EN_MASK,
- 					      WSA883X_PDM_ENABLE);
--		snd_soc_component_write_field(component, WSA883X_PA_FSM_CTL,
--					      WSA883X_GLOBAL_PA_EN_MASK,
--					      WSA883X_GLOBAL_PA_ENABLE);
+-       typec_altmode_put_partner(alt);
++       if (!is_typec_port(dev->parent))
++               typec_altmode_put_partner(alt);
  
- 		break;
- 	case SND_SOC_DAPM_PRE_PMD:
-@@ -1346,6 +1340,7 @@ static const struct snd_soc_dai_ops wsa883x_dai_ops = {
- 	.hw_free = wsa883x_hw_free,
- 	.mute_stream = wsa883x_digital_mute,
- 	.set_stream = wsa883x_set_sdw_stream,
-+	.mute_unmute_on_trigger = true,
- };
- 
- static struct snd_soc_dai_driver wsa883x_dais[] = {
+        altmode_id_remove(alt->adev.dev.parent, alt->id);
+        kfree(alt);
+        ...
+
+thanks,
+
 -- 
-2.41.0
-
+heikki
 
