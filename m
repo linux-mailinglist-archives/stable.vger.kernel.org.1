@@ -1,92 +1,111 @@
-Return-Path: <stable+bounces-19-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A59B7F58B5
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 07:57:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A27137F5935
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 08:28:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C6581C20C9F
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 06:57:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DFEB281788
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 07:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D33213ACF;
-	Thu, 23 Nov 2023 06:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ajJzcNbj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B08168B2;
+	Thu, 23 Nov 2023 07:28:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDD76D5A;
-	Wed, 22 Nov 2023 22:57:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700722669; x=1732258669;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=vSSKqxFMQeGyy+U4Vp/A4nwnDKKfSQTSbRhi17Xi79c=;
-  b=ajJzcNbj1TRGG8uF7Mu+lH7uLLYyICMA4PGgKNf9JMC9MoUmgKBKDsdw
-   qSe3vaTPon8rHbMWpGkrzXi1frDy3RbBq48u0kRjoJDhRgi8HEHPSfq7z
-   1CF0kE477VzuKaKQB717PT3fnvCVX38c886dpMYGThrx6rH0lwkLn95r2
-   C7OlJvtPMVBIhbxtsAp1RCCb+Ux9sobEjcI/P0O8bYwIi/VUDwtJaVUfG
-   hNoSXn1pV6LN551Xa8tsCJY7jIjq2DmZ23BEzc9Y7MJu0pgT+HC+xlDpv
-   PV923F+Y9ROrHk+XAZ7ktOma60jqX1m0+A9vqRBJIYPaYa3PPRffM67F2
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="456544969"
-X-IronPort-AV: E=Sophos;i="6.04,220,1695711600"; 
-   d="scan'208";a="456544969"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Nov 2023 22:57:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="911079181"
-X-IronPort-AV: E=Sophos;i="6.04,220,1695711600"; 
-   d="scan'208";a="911079181"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 22 Nov 2023 22:57:40 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 4F8CC2A6; Thu, 23 Nov 2023 08:57:39 +0200 (EET)
-Date: Thu, 23 Nov 2023 08:57:39 +0200
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Sanath S <sanaths2@amd.com>, Sanath S <Sanath.S@amd.com>,
-	andreas.noever@gmail.com, michael.jamet@intel.com,
-	YehezkelShB@gmail.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [Patch v2] thunderbolt: Add quirk to reset downstream port
-Message-ID: <20231123065739.GC1074920@black.fi.intel.com>
-References: <20231122050639.19651-1-Sanath.S@amd.com>
- <20231122060316.GT1074920@black.fi.intel.com>
- <95ceae27-f88d-4915-870a-36cf9418f244@amd.com>
- <efb152bc-fd17-a374-4303-20aa9bde698d@amd.com>
- <20231123060516.GB1074920@black.fi.intel.com>
- <1687d5aa-3c79-4bbf-ae4f-891208edab9b@amd.com>
+Received: from mail.bugwerft.de (mail.bugwerft.de [46.23.86.59])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id A030EE7;
+	Wed, 22 Nov 2023 23:28:27 -0800 (PST)
+Received: from hq-00595.holoplot.net (unknown [62.214.9.170])
+	by mail.bugwerft.de (Postfix) with ESMTPSA id 1041A2806ED;
+	Thu, 23 Nov 2023 07:28:26 +0000 (UTC)
+From: Daniel Mack <daniel@zonque.org>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	lech.perczak@camlingroup.com,
+	u.kleine-koenig@pengutronix.de
+Cc: linux-serial@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daniel Mack <daniel@zonque.org>,
+	Maxim Popov <maxim.snafu@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v5] serial: sc16is7xx: address RX timeout interrupt errata
+Date: Thu, 23 Nov 2023 08:28:18 +0100
+Message-ID: <20231123072818.1394539-1-daniel@zonque.org>
+X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1687d5aa-3c79-4bbf-ae4f-891208edab9b@amd.com>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 23, 2023 at 12:23:36AM -0600, Mario Limonciello wrote:
-> > It can be used to re-configure the link but also simple reset.
-> > 
-> > Actually can we instead of the quirk in quirks.c add this to nhi.c and
-> > "host_reset". So that on these AMD controllers trigger host reset in the
-> > same way Windows would?
-> > 
-> > That's DPR and probably host interface reset. In other words tie this to
-> > the host reset we are doing for USB4 v2 routers (this one adds it for
-> > USB4 v1 routers and enables it by default for AMD).
-> 
-> Assuming this "works" how would you feel about just "aligning the behavior"
-> with Windows for all USB4 routers instead of just these AMD controllers and
-> USB4v2?
+This device has a silicon bug that makes it report a timeout interrupt
+but no data in the FIFO.
 
-I was thinking the same pretty much after I wrote the reply ;-) Yeah, I
-think it is worth a try.
+The datasheet states the following in the errata section 18.1.4:
 
-It may need some additional code from Intel side to get the host fully
-reset but I can do that myself on top.
+  "If the host reads the receive FIFO at the same time as a
+  time-out interrupt condition happens, the host might read 0xCC
+  (time-out) in the Interrupt Indication Register (IIR), but bit 0
+  of the Line Status Register (LSR) is not set (means there is no
+  data in the receive FIFO)."
+
+The errata description seems to indicate it concerns only polled mode of
+operation when reading bit 0 of the LSR register. However, tests have
+shown and NXP has confirmed that the RXLVL register also yields 0 when
+the bug is triggered, and hence the IRQ driven implementation in this
+driver is equally affected.
+
+This bug has hit us on production units and when it does, sc16is7xx_irq()
+would spin forever because sc16is7xx_port_irq() keeps seeing an
+interrupt in the IIR register that is not cleared because the driver
+does not call into sc16is7xx_handle_rx() unless the RXLVL register
+reports at least one byte in the FIFO.
+
+Fix this by always reading one byte from the FIFO when this condition
+is detected in order to clear the interrupt. This approach was
+confirmed to be correct by NXP through their support channels.
+
+Signed-off-by: Daniel Mack <daniel@zonque.org>
+Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
+Tested by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Cc: stable@vger.kernel.org
+---
+v5: slightly reworded commit log again, added Hugo's Tested-By
+v4: NXP has confirmed the fix; update the commit log accordingly
+v3: re-added the additional Co-Developed-by and stable@ tags
+v2: reworded the commit log a bit for more context.
+
+ drivers/tty/serial/sc16is7xx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 289ca7d4e566..76f76e510ed1 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -765,6 +765,18 @@ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+ 		case SC16IS7XX_IIR_RTOI_SRC:
+ 		case SC16IS7XX_IIR_XOFFI_SRC:
+ 			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
++
++			/*
++			 * There is a silicon bug that makes the chip report a
++			 * time-out interrupt but no data in the FIFO. This is
++			 * described in errata section 18.1.4.
++			 *
++			 * When this happens, read one byte from the FIFO to
++			 * clear the interrupt.
++			 */
++			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
++				rxlen = 1;
++
+ 			if (rxlen)
+ 				sc16is7xx_handle_rx(port, rxlen, iir);
+ 			break;
+-- 
+2.41.0
+
 
