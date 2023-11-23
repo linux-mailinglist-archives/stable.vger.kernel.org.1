@@ -1,68 +1,70 @@
-Return-Path: <stable+bounces-57-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-58-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4D3D7F5EC2
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:08:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B8EF7F5F1F
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:39:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CE22281C8B
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:08:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C635D1C21014
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3EC3241F7;
-	Thu, 23 Nov 2023 12:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16487241E3;
+	Thu, 23 Nov 2023 12:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4+Bm9iz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhyc1A7e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B620F241ED
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 12:08:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACC7C433C7;
-	Thu, 23 Nov 2023 12:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C835524B38
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 12:39:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967B2C433C8;
+	Thu, 23 Nov 2023 12:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700741295;
-	bh=md+uvvO4GFiLoXOK/Vn5pZ73GPnoGKYnG+5bj3FnkWU=;
+	s=korg; t=1700743166;
+	bh=IkRmzgHGB5KjaOxpK7jLAl440z3us70vd4aG7SIxrNo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Z4+Bm9iz/ReBeTY50EgSNmabG8ZUl4hE9o/U1arComvAgDADiJWpfAH/I6tGYxmro
-	 Q9jtoE9K1kVZVmiO695Qf5Gf4AJFsi4SKk7D0FSl8wam2e8ecw1DaaasOJcEXgXFaA
-	 TGOtk8jIRr2Jr5TWG2vFzlLuhrDjxP2NBCaA5DcA=
-Subject: FAILED: patch "[PATCH] i3c: master: svc: fix random hot join failure since timeout" failed to apply to 5.15-stable tree
-To: Frank.Li@nxp.com,alexandre.belloni@bootlin.com,miquel.raynal@bootlin.com,stable@vger.kernel.org
+	b=rhyc1A7eB0JUGdyUNIU4M2W/JLbVrh0s9hErRK3Uyexuq8daG5q5G+//hPkAvk2ue
+	 27oYeKjI3KZDcGWTrb0boLj6Iu5hsE8Ezh6T4C9Bn9sj0LwYOBNCSdyPL6m3DqfeJH
+	 JMsABYI7/ABeYm1Ajf9+Fp+SRtNFVqls4fp7FHPk=
+Subject: FAILED: patch "[PATCH] cxl/region: Fix x1 root-decoder granularity calculations" failed to apply to 6.1-stable tree
+To: jim.harris@samsung.com,dan.j.williams@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 Nov 2023 12:08:02 +0000
-Message-ID: <2023112301-donation-geology-7740@gregkh>
+Date: Thu, 23 Nov 2023 12:27:37 +0000
+Message-ID: <2023112337-oxford-balcony-2137@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9aaeef113c55248ecf3ab941c2e4460aaa8b8b9a
+git cherry-pick -x 98a04c7aced2b43b3ac4befe216c4eecc7257d4b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112301-donation-geology-7740@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112337-oxford-balcony-2137@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-9aaeef113c55 ("i3c: master: svc: fix random hot join failure since timeout error")
-49b472ebc61d ("i3c: master: svc: add NACK check after start byte sent")
+98a04c7aced2 ("cxl/region: Fix x1 root-decoder granularity calculations")
+3d8f7ccaa611 ("tools/testing/cxl: Define a fixed volatile configuration to parse")
+7592d935b7ae ("cxl/mem: Move devm_cxl_add_endpoint() from cxl_core to cxl_mem")
+f3cd264c4ec1 ("cxl: Unify debug messages when calling devm_cxl_add_port()")
 
 thanks,
 
@@ -70,62 +72,86 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9aaeef113c55248ecf3ab941c2e4460aaa8b8b9a Mon Sep 17 00:00:00 2001
-From: Frank Li <Frank.Li@nxp.com>
-Date: Mon, 23 Oct 2023 12:16:58 -0400
-Subject: [PATCH] i3c: master: svc: fix random hot join failure since timeout
- error
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 98a04c7aced2b43b3ac4befe216c4eecc7257d4b Mon Sep 17 00:00:00 2001
+From: Jim Harris <jim.harris@samsung.com>
+Date: Thu, 26 Oct 2023 10:09:06 -0700
+Subject: [PATCH] cxl/region: Fix x1 root-decoder granularity calculations
 
-master side report:
-  silvaco-i3c-master 44330000.i3c-master: Error condition: MSTATUS 0x020090c7, MERRWARN 0x00100000
+Root decoder granularity must match value from CFWMS, which may not
+be the region's granularity for non-interleaved root decoders.
 
-BIT 20: TIMEOUT error
-  The module has stalled too long in a frame. This happens when:
-  - The TX FIFO or RX FIFO is not handled and the bus is stuck in the
-middle of a message,
-  - No STOP was issued and between messages,
-  - IBI manual is used and no decision was made.
-  The maximum stall period is 100 μs.
+So when calculating granularities for host bridge decoders, use the
+region's granularity instead of the root decoder's granularity to ensure
+the correct granularities are set for the host bridge decoders and any
+downstream switch decoders.
 
-This can be considered as being just a warning as the system IRQ latency
-can easily be greater than 100us.
+Test configuration is 1 host bridge * 2 switches * 2 endpoints per switch.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-7-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Region created with 2048 granularity using following command line:
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 18843e07d175..b192a8b91e5d 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -93,6 +93,7 @@
- #define SVC_I3C_MINTMASKED   0x098
- #define SVC_I3C_MERRWARN     0x09C
- #define   SVC_I3C_MERRWARN_NACK BIT(2)
-+#define   SVC_I3C_MERRWARN_TIMEOUT BIT(20)
- #define SVC_I3C_MDMACTRL     0x0A0
- #define SVC_I3C_MDATACTRL    0x0AC
- #define   SVC_I3C_MDATACTRL_FLUSHTB BIT(0)
-@@ -227,6 +228,14 @@ static bool svc_i3c_master_error(struct svc_i3c_master *master)
- 	if (SVC_I3C_MSTATUS_ERRWARN(mstatus)) {
- 		merrwarn = readl(master->regs + SVC_I3C_MERRWARN);
- 		writel(merrwarn, master->regs + SVC_I3C_MERRWARN);
-+
-+		/* Ignore timeout error */
-+		if (merrwarn & SVC_I3C_MERRWARN_TIMEOUT) {
-+			dev_dbg(master->dev, "Warning condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
-+				mstatus, merrwarn);
-+			return false;
-+		}
-+
- 		dev_err(master->dev,
- 			"Error condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
- 			mstatus, merrwarn);
+cxl create-region -m -d decoder0.0 -w 4 mem0 mem2 mem1 mem3 \
+		  -g 2048 -s 2048M
+
+Use "cxl list -PDE | grep granularity" to get a view of the granularity
+set at each level of the topology.
+
+Before this patch:
+        "interleave_granularity":2048,
+        "interleave_granularity":2048,
+    "interleave_granularity":512,
+        "interleave_granularity":2048,
+        "interleave_granularity":2048,
+    "interleave_granularity":512,
+"interleave_granularity":256,
+
+After:
+        "interleave_granularity":2048,
+        "interleave_granularity":2048,
+    "interleave_granularity":4096,
+        "interleave_granularity":2048,
+        "interleave_granularity":2048,
+    "interleave_granularity":4096,
+"interleave_granularity":2048,
+
+Fixes: 27b3f8d13830 ("cxl/region: Program target lists")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jim Harris <jim.harris@samsung.com>
+Link: https://lore.kernel.org/r/169824893473.1403938.16110924262989774582.stgit@bgt-140510-bm03.eng.stellus.in
+[djbw: fixup the prebuilt cxl_test region]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 3167b19f4081..a1eac592c66a 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1127,7 +1127,14 @@ static int cxl_port_setup_targets(struct cxl_port *port,
+ 	}
+ 
+ 	if (is_cxl_root(parent_port)) {
+-		parent_ig = cxlrd->cxlsd.cxld.interleave_granularity;
++		/*
++		 * Root decoder IG is always set to value in CFMWS which
++		 * may be different than this region's IG.  We can use the
++		 * region's IG here since interleave_granularity_store()
++		 * does not allow interleaved host-bridges with
++		 * root IG != region IG.
++		 */
++		parent_ig = p->interleave_granularity;
+ 		parent_iw = cxlrd->cxlsd.cxld.interleave_ways;
+ 		/*
+ 		 * For purposes of address bit routing, use power-of-2 math for
+diff --git a/tools/testing/cxl/test/cxl.c b/tools/testing/cxl/test/cxl.c
+index fb6ab9cef84f..b88546299902 100644
+--- a/tools/testing/cxl/test/cxl.c
++++ b/tools/testing/cxl/test/cxl.c
+@@ -831,7 +831,7 @@ static void mock_init_hdm_decoder(struct cxl_decoder *cxld)
+ 			cxld->interleave_ways = 2;
+ 		else
+ 			cxld->interleave_ways = 1;
+-		cxld->interleave_granularity = 256;
++		cxld->interleave_granularity = 4096;
+ 		cxld->hpa_range = (struct range) {
+ 			.start = base,
+ 			.end = base + size - 1,
 
 
