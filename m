@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-54-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-55-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206617F5EA9
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:04:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F50E7F5EB6
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 13:06:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 518631C20F90
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:04:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDAB3281C46
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E84241FE;
-	Thu, 23 Nov 2023 12:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 210B622069;
+	Thu, 23 Nov 2023 12:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OdfjyAyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbqn+jRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3905E241ED
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 12:04:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2133DC433C8;
-	Thu, 23 Nov 2023 12:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB36922307
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 12:06:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BCBC433C8;
+	Thu, 23 Nov 2023 12:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700741055;
-	bh=uRQohVlCOR7FQL08JJGJ/I7p5Q4ud9yaML/GqMDcjUg=;
+	s=korg; t=1700741173;
+	bh=mboHwWdM5k2x0Buwoa2OkdqsiupIJ+JRlNK+k1sO1OM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OdfjyAywz4euEs3sg7rdx1lzyJavS7xgQ8HfCIQGqTlEjSr1XwPutdkbfERI/pQO1
-	 GpTUMcMX9m/bq7Noc8GXAyeGm9fTr3GxkdeueYcd//x+tmAIZoprWj1ReevaInF2lJ
-	 M35LtDkUiPBQvfbBRPS3QXZOEC57cABSxRpOz89Q=
-Subject: FAILED: patch "[PATCH] mm/memory_hotplug: use pfn math in place of direct struct" failed to apply to 4.19-stable tree
-To: ziy@nvidia.com,akpm@linux-foundation.org,david@redhat.com,mike.kravetz@oracle.com,rppt@kernel.org,songmuchun@bytedance.com,stable@vger.kernel.org,tsbogend@alpha.franken.de,willy@infradead.org
+	b=qbqn+jRxl1/FCRp/v3eY5IjlcytWCDK8MVTwZHfvRLnCRydIFYpO/UOvwEaZEmLE0
+	 BBhB95oC23NoZc7uK0O79/VFyiMQwhh2EyFRCOQ1z49ZF6Smh83ZsZrDq7GtKW5FDV
+	 VHpQsQMpa3IWVgNvJ2+v1ZscO3+UC92Gx9JEBanA=
+Subject: FAILED: patch "[PATCH] cxl/region: Do not try to cleanup after" failed to apply to 6.1-stable tree
+To: jim.harris@samsung.com,Jonathan.Cameron@huawei.com,dan.carpenter@linaro.org,dan.j.williams@intel.com,dave.jiang@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 Nov 2023 12:03:53 +0000
-Message-ID: <2023112353-revival-badness-110c@gregkh>
+Date: Thu, 23 Nov 2023 12:06:07 +0000
+Message-ID: <2023112307-hardened-pureblood-48c1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,42 +45,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1640a0ef80f6d572725f5b0330038c18e98ea168
+git cherry-pick -x 0718588c7aaa7a1510b4de972370535b61dddd0d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112353-revival-badness-110c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112307-hardened-pureblood-48c1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-1640a0ef80f6 ("mm/memory_hotplug: use pfn math in place of direct struct page manipulation")
-aa218795cb5f ("mm: Allow to offline unmovable PageOffline() pages via MEM_GOING_OFFLINE")
-fe4c86c916d9 ("mm: remove "count" parameter from has_unmovable_pages()")
-3f9903b9ca5e ("mm: remove the memory isolate notifier")
-756d25be457f ("mm/page_isolation.c: convert SKIP_HWPOISON to MEMORY_OFFLINE")
-d8c6546b1aea ("mm: introduce compound_nr()")
-a50b854e073c ("mm: introduce page_size()")
-dd625285910d ("drivers/base/memory.c: get rid of find_memory_block_hinted()")
-ea8846411ad6 ("mm/memory_hotplug: move and simplify walk_memory_blocks()")
-fbcf73ce6582 ("mm/memory_hotplug: rename walk_memory_range() and pass start+size instead of pfns")
-90ec010fe0d6 ("drivers/base/memory: use "unsigned long" for block ids")
-2491f0a2c0b1 ("mm: section numbers use the type "unsigned long"")
-4c4b7f9ba948 ("mm/memory_hotplug: remove memory block devices before arch_remove_memory()")
-db051a0dac13 ("mm/memory_hotplug: create memory block devices after arch_add_memory()")
-80ec922dbd87 ("mm/memory_hotplug: allow arch_remove_memory() without CONFIG_MEMORY_HOTREMOVE")
-1811582587c4 ("drivers/base/memory: pass a block_id to init_memory_block()")
-22eb634632a2 ("arm64/mm: add temporary arch_remove_memory() implementation")
-eca499ab3749 ("mm/hotplug: make remove_memory() interface usable")
-98879b3b9edc ("mm: vmscan: correct some vmscan counters for THP swapout")
-aa712399c1e8 ("mm/gup: speed up check_and_migrate_cma_pages() on huge page")
+0718588c7aaa ("cxl/region: Do not try to cleanup after cxl_region_setup_targets() fails")
+9995576cef48 ("cxl/region: Move region-position validation to a helper")
+86987c766276 ("cxl/region: Cleanup target list on attach error")
+1b9b7a6fd618 ("cxl/region: Validate region mode vs decoder mode")
 
 thanks,
 
@@ -88,46 +72,90 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1640a0ef80f6d572725f5b0330038c18e98ea168 Mon Sep 17 00:00:00 2001
-From: Zi Yan <ziy@nvidia.com>
-Date: Wed, 13 Sep 2023 16:12:46 -0400
-Subject: [PATCH] mm/memory_hotplug: use pfn math in place of direct struct
- page manipulation
+From 0718588c7aaa7a1510b4de972370535b61dddd0d Mon Sep 17 00:00:00 2001
+From: Jim Harris <jim.harris@samsung.com>
+Date: Wed, 11 Oct 2023 14:51:31 +0000
+Subject: [PATCH] cxl/region: Do not try to cleanup after
+ cxl_region_setup_targets() fails
 
-When dealing with hugetlb pages, manipulating struct page pointers
-directly can get to wrong struct page, since struct page is not guaranteed
-to be contiguous on SPARSEMEM without VMEMMAP.  Use pfn calculation to
-handle it properly.
+Commit 5e42bcbc3fef ("cxl/region: decrement ->nr_targets on error in
+cxl_region_attach()") tried to avoid 'eiw' initialization errors when
+->nr_targets exceeded 16, by just decrementing ->nr_targets when
+cxl_region_setup_targets() failed.
 
-Without the fix, a wrong number of page might be skipped. Since skip cannot be
-negative, scan_movable_page() will end early and might miss a movable page with
--ENOENT. This might fail offline_pages(). No bug is reported. The fix comes
-from code inspection.
+Commit 86987c766276 ("cxl/region: Cleanup target list on attach error")
+extended that cleanup to also clear cxled->pos and p->targets[pos]. The
+initialization error was incidentally fixed separately by:
+Commit 8d4285425714 ("cxl/region: Fix port setup uninitialized variable
+warnings") which was merged a few days after 5e42bcbc3fef.
 
-Link: https://lkml.kernel.org/r/20230913201248.452081-4-zi.yan@sent.com
-Fixes: eeb0efd071d8 ("mm,memory_hotplug: fix scan_movable_pages() for gigantic hugepages")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+But now the original cleanup when cxl_region_setup_targets() fails
+prevents endpoint and switch decoder resources from being reused:
+
+1) the cleanup does not set the decoder's region to NULL, which results
+   in future dpa_size_store() calls returning -EBUSY
+2) the decoder is not properly freed, which results in future commit
+   errors associated with the upstream switch
+
+Now that the initialization errors were fixed separately, the proper
+cleanup for this case is to just return immediately. Then the resources
+associated with this target get cleanup up as normal when the failed
+region is deleted.
+
+The ->nr_targets decrement in the error case also helped prevent
+a p->targets[] array overflow, so add a new check to prevent against
+that overflow.
+
+Tested by trying to create an invalid region for a 2 switch * 2 endpoint
+topology, and then following up with creating a valid region.
+
+Fixes: 5e42bcbc3fef ("cxl/region: decrement ->nr_targets on error in cxl_region_attach()")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Jim Harris <jim.harris@samsung.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/169703589120.1202031.14696100866518083806.stgit@bgt-140510-bm03.eng.stellus.in
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 1b03f4ec6fd2..3b301c4023ff 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1689,7 +1689,7 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
- 		 */
- 		if (HPageMigratable(head))
- 			goto found;
--		skip = compound_nr(head) - (page - head);
-+		skip = compound_nr(head) - (pfn - page_to_pfn(head));
- 		pfn += skip - 1;
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index d74bf1b664b6..a3bc6424f175 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1652,6 +1652,12 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+ 		return -ENXIO;
  	}
- 	return -ENOENT;
+ 
++	if (p->nr_targets >= p->interleave_ways) {
++		dev_dbg(&cxlr->dev, "region already has %d endpoints\n",
++			p->nr_targets);
++		return -EINVAL;
++	}
++
+ 	ep_port = cxled_to_port(cxled);
+ 	root_port = cxlrd_to_port(cxlrd);
+ 	dport = cxl_find_dport_by_dev(root_port, ep_port->host_bridge);
+@@ -1744,7 +1750,7 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+ 	if (p->nr_targets == p->interleave_ways) {
+ 		rc = cxl_region_setup_targets(cxlr);
+ 		if (rc)
+-			goto err_decrement;
++			return rc;
+ 		p->state = CXL_CONFIG_ACTIVE;
+ 	}
+ 
+@@ -1756,12 +1762,6 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+ 	};
+ 
+ 	return 0;
+-
+-err_decrement:
+-	p->nr_targets--;
+-	cxled->pos = -1;
+-	p->targets[pos] = NULL;
+-	return rc;
+ }
+ 
+ static int cxl_region_detach(struct cxl_endpoint_decoder *cxled)
 
 
