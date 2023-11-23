@@ -1,159 +1,75 @@
-Return-Path: <stable+bounces-35-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-36-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFABD7F5E23
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:45:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EAF7F5E4B
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96DC61F207C1
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:45:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 059361C20C86
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DD52375F;
-	Thu, 23 Nov 2023 11:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F322377E;
+	Thu, 23 Nov 2023 11:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="pFS7VoaA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bow/JHz0"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C791A5
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 03:45:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=GNgjeWbyLFQk/G/r5S5rkunrrjHURbTvd/4xVmqaNHs=; b=pFS7VoaAutSRNvCbt7eLRQv51A
-	SrAUifA+9uE7Nahu/FzKw09Z2vuxMkWIo0Yw2D0UTQorzfW+OgvixjNAU+hDx4v7/HlZkPdeMKSZv
-	rKOSxKba9FPkTFR+wqSkVHs6yBIFm/w0ASkk/fs8a5UTXTrAFIt1aDTgI8X+a6jIrR4nBgkWuF3Ni
-	vHPPKbC0UYVazw3NZMN7nKL0180dft9wIK9c2NFMZH4Kz7jyNXCGsGCFLWHms/97LK/oUk5OHgAMM
-	9rvSwby8MzGXMlEdGql8jvGjxSaFIg2T8xorA2i4T5yX7STkAC7Sl4yFvBGjcdzwk1MJetLT36WWG
-	+vsZZ+cg==;
-Received: from [177.34.168.16] (helo=[192.168.0.8])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1r688e-006KhC-C8; Thu, 23 Nov 2023 12:44:56 +0100
-Message-ID: <f3db22c3-a0c8-0f7f-0d57-07a013941d3c@igalia.com>
-Date: Thu, 23 Nov 2023 08:44:51 -0300
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D735F23774;
+	Thu, 23 Nov 2023 11:53:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB92C433C9;
+	Thu, 23 Nov 2023 11:53:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700740413;
+	bh=g/xxUt9OQ1Xbt4EL/8qo6tjBYgOoMtRu6Y2H3RCsEtQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bow/JHz0AWyZQMydFd3kvcnBkHRjgkGZmB89CI+9BMAQ7FiznLXuK3FVrW+afu6qp
+	 meyTRqjCcJnPJAzv2dIfgszGWP26395waSd7wh/7tlM+/iNu15erqqzng5G/bvce7i
+	 Tuz7gARZBIoL97n0F9TqdDHPZ9pq2K8Nn3bfCLu0=
+Date: Thu, 23 Nov 2023 11:53:20 +0000
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	linux-sound@vger.kernel.org, stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH stable-6.6 0/2] ASoC: codecs: wsa883x: fix pops and clicks
+Message-ID: <2023112313-handlebar-handwash-b263@gregkh>
+References: <20231123094749.20462-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: FAILED: patch "[PATCH] pmdomain: bcm: bcm2835-power: check if the
- ASB register is" failed to apply to 6.5-stable tree
-To: Stefan Wahren <wahrenst@gmx.net>, gregkh@linuxfoundation.org,
- florian.fainelli@broadcom.com, ulf.hansson@linaro.org
-Cc: stable@vger.kernel.org
-References: <2023112257-putdown-prozac-affa@gregkh>
- <ab40f12c-47bf-4915-bdd4-587561563382@gmx.net>
-Content-Language: en-US
-From: Maira Canal <mcanal@igalia.com>
-In-Reply-To: <ab40f12c-47bf-4915-bdd4-587561563382@gmx.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231123094749.20462-1-johan+linaro@kernel.org>
 
-Hi Stefan,
+On Thu, Nov 23, 2023 at 10:47:47AM +0100, Johan Hovold wrote:
+> This is a backport of commits
+> 
+> 	0220575e65a ("ASoC: soc-dai: add flag to mute and unmute stream during trigger")
+> 	805ce81826c8 ("ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag")
+> 
+> which specifically fix a loud crackling noise when starting a stream on
+> the Lenovo ThinkPad X13s.
+> 
+> These backports should apply to any stable tree which already has commit
+> 3efcb471f871 ("ASoC: soc-pcm.c: Make sure DAI parameters cleared if the
+> DAI becomes inactive") backported (e.g. 6.6.2 and 6.5.12).
+> 
+> Note that the interaction of these commits resulted in a bad merge in
+> mainline which is fixed up here:
+> 
+> 	https://lore.kernel.org/lkml/20231123091815.21933-1-johan+linaro@kernel.org/
 
-On 11/23/23 06:30, Stefan Wahren wrote:
-> Hi,
-> 
-> Am 22.11.23 um 19:52 schrieb gregkh@linuxfoundation.org:
->>
->> The patch below does not apply to the 6.5-stable tree.
->> If someone wants it applied there, or to any other stable or longterm
->> tree, then please email the backport, including the original git commit
->> id to <stable@vger.kernel.org>.
->>
->> To reproduce the conflict and resubmit, you may use the following 
->> commands:
->>
->> git fetch 
->> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ 
->> linux-6.5.y
->> git checkout FETCH_HEAD
->> git cherry-pick -x 2e75396f1df61e1f1d26d0d703fc7292c4ae4371
->> # <resolve conflicts, build, test, etc.>
->> git commit -s
->> git send-email --to '<stable@vger.kernel.org>' --in-reply-to 
->> '2023112257-putdown-prozac-affa@gregkh' --subject-prefix 'PATCH 6.5.y' 
->> HEAD^..
->>
->> Possible dependencies:
->>
->> 2e75396f1df6 ("pmdomain: bcm: bcm2835-power: check if the ASB register 
->> is equal to enable")
-> 
-> the reason why this doesn't apply is that the driver has been moved
-> recently from soc/bcm/ to pmdomain/bcm/ . In this tree the directory
-> pmdomain doesn't exist.
-> 
-> @Maíra Do you want to send the adapted patch to linux-stable?
+Thanks, now queued up.
 
-Yeah, I will work on that.
-
-Best Regards,
-- Maíra
-
-> 
-> https://www.kernel.org/doc/Documentation/process/stable-kernel-rules.rst
-> 
-> Best regards
-> 
->>
->> thanks,
->>
->> greg k-h
->>
->> ------------------ original commit in Linus's tree ------------------
->>
->>  From 2e75396f1df61e1f1d26d0d703fc7292c4ae4371 Mon Sep 17 00:00:00 2001
->> From: =?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
->> Date: Tue, 24 Oct 2023 07:10:40 -0300
->> Subject: [PATCH] pmdomain: bcm: bcm2835-power: check if the ASB 
->> register is
->>   equal to enable
->> MIME-Version: 1.0
->> Content-Type: text/plain; charset=UTF-8
->> Content-Transfer-Encoding: 8bit
->>
->> The commit c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
->> refactored the ASB control by using a general function to handle both
->> the enable and disable. But this patch introduced a subtle regression:
->> we need to check if !!(readl(base + reg) & ASB_ACK) == enable, not just
->> check if (readl(base + reg) & ASB_ACK) == true.
->>
->> Currently, this is causing an invalid register state in V3D when
->> unloading and loading the driver, because `bcm2835_asb_disable()` will
->> return -ETIMEDOUT and `bcm2835_asb_power_off()` will fail to disable the
->> ASB slave for V3D.
->>
->> Fixes: c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
->> Signed-off-by: Maíra Canal <mcanal@igalia.com>
->> Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
->> Reviewed-by: Stefan Wahren <stefan.wahren@i2se.com>
->> Cc: stable@vger.kernel.org
->> Link: https://lore.kernel.org/r/20231024101251.6357-2-mcanal@igalia.com
->> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
->>
->> diff --git a/drivers/pmdomain/bcm/bcm2835-power.c 
->> b/drivers/pmdomain/bcm/bcm2835-power.c
->> index 1a179d4e011c..d2f0233cb620 100644
->> --- a/drivers/pmdomain/bcm/bcm2835-power.c
->> +++ b/drivers/pmdomain/bcm/bcm2835-power.c
->> @@ -175,7 +175,7 @@ static int bcm2835_asb_control(struct 
->> bcm2835_power *power, u32 reg, bool enable
->>       }
->>       writel(PM_PASSWORD | val, base + reg);
->>
->> -    while (readl(base + reg) & ASB_ACK) {
->> +    while (!!(readl(base + reg) & ASB_ACK) == enable) {
->>           cpu_relax();
->>           if (ktime_get_ns() - start >= 1000)
->>               return -ETIMEDOUT;
->>
+greg k-h
 
