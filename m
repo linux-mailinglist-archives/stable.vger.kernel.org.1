@@ -1,158 +1,304 @@
-Return-Path: <stable+bounces-72-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4C87F6254
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 16:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C9277F6273
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 16:14:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D95A2B214A3
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 15:08:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C48CB21660
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 15:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8320533CFC;
-	Thu, 23 Nov 2023 15:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A76D35EE3;
+	Thu, 23 Nov 2023 15:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SM/6TxLm"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="MvEOzTVU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BDD1D64;
-	Thu, 23 Nov 2023 07:07:53 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id F2CDC40E0257;
-	Thu, 23 Nov 2023 15:07:50 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id m5sjdodFMcPV; Thu, 23 Nov 2023 15:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1700752069; bh=GZioNhBqPoaVW6r9VNgUDTxDc/9WQFahtmtDcDv1jQk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SM/6TxLmCLeeCMJ4E7eAn6aIauEZQYDF368OVQdaxtJMkCf3CvIxti5slID2BVG8T
-	 7vlw2LVVbk1bS3DnCn8J6Tm8te6+efi6FDcjzlIjoC5+f+QG27JxLjHfBHheYGcQut
-	 bcOXtX8ftoC4YUDrQFAKRPkmwTfJpRrkbI/0OTy7nU2hjzvU4t6tY69JbHucTrYPhW
-	 8wP8EdCI9dHTom0ATgsb5RTUjJiC/9JbjriV6R+OowpPSQCgBYWZzYiUbUXaXXGBTV
-	 Lnp1aVp6+K9DwYxKXo/kCkQMMAl0tSwCDo0vI+gV7IYDVnOj/tgn58Qmck734jvle8
-	 s1qX7K27uPhTo8tutx/KBwdLgam7VR46wBo204py/FLWXvyjkS5KbwYeqcRf4ds/vv
-	 189WaejXxC4zyMAngHPMVWdfiH/srNz8tUIUbyYdk5Sw02kWFghaX6yseQsJKvSDmy
-	 n7CbsMRUZtQ/55hbbKcNiSVnH6BwIDxaRfmIxV2EURLNtKr/8PjKsI4/oozYuoREDy
-	 WYRCFGP/z/hq+4RWfu0JFOyZywYRt0OoPMUhYmMyFHV0v7q+T4g8v19Ulkm8Kfu1Gn
-	 n5kP3VMwL0iPvOkOfUoEqDF875T1CllORUq1wJebvge1tYzhwHHP8sFcRsrR3YZ3oE
-	 ej22VW8rwDIqG1Ea0/a5GaHE=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9922540E0195;
-	Thu, 23 Nov 2023 15:07:14 +0000 (UTC)
-Date: Thu, 23 Nov 2023 16:07:10 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
-	mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
-	naoya.horiguchi@nec.com, james.morse@arm.com,
-	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-	stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
-	ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task
- work with proper si_code
-Message-ID: <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-1-xueshuai@linux.alibaba.com>
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF431A5
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 07:14:34 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1cf89df1eecso6693885ad.3
+        for <stable@vger.kernel.org>; Thu, 23 Nov 2023 07:14:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700752473; x=1701357273; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=XIb7ym+9f9Sd54K762YPWLjBI7K6H/yVICGjKOja1Qs=;
+        b=MvEOzTVUVNIIQ7FH2gYE+LOAliD5k2sMQ5h5HIGJZEZx/HSKeHSAzcO2JQNxc7yBlr
+         6W+rSNbKlhKuwKkKGjDdC19SvPgACObfeZOn0kchW5eW0rZimiU4YkxkITVqjsjnG3bf
+         G43Sy9r3sR8dJPpEj7rmOpoiWpM2HlYOKLrNEO/t60mUB0NWDvt92tTaNS5EdnYjZ7qq
+         Ce58Uj8d8GeaJOlx/jSCvUCmrU9EPSm6ORlxv7IgGdk5EL1AJLIaXNLeaUHSpXbo8msa
+         LgjttM/8HN5+WbvTkVEjz+LapQI1/ri24qojDiFoOhIydsc1UGJsm3HR303y09oqWSb3
+         yCMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700752473; x=1701357273;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XIb7ym+9f9Sd54K762YPWLjBI7K6H/yVICGjKOja1Qs=;
+        b=LTd4JzCBJkv+xHCNX2PDw57/TO8C5UuXMY9JWZEl2yWkMrmnyT3htuN8JdcSZdh+l/
+         9CWcV48tvgAyAurIJffg31ntG2Z+QDsDPn/OWyfnwblX/AapqBsdYz32ekgq2djY7gEC
+         89nHohdimGTbJPSKWUFx4Mrf27RxycALkdcsIxHV7djGSZNar5suObxJXJmjIChmWlXN
+         D7OtM47bv7FsXtaJJIuDl3Gi6Zhvvz3RbnamAR1Rk2HESMHG/v+cFNY2ZXwI9G7W2GvA
+         mfe8aKn6rt4D8nME/DBYTFq+iTI3+2rihag5xTuU+Gzc8LKUfNEkS0QBB1MsbE3rSUta
+         cB8w==
+X-Gm-Message-State: AOJu0YxEi28tG9N/c/rVX9J6Vv61sIYL2gRppybgkYM3ZZL3W1neoa6g
+	5SIUoaaZ4oyqXaAMNZ5jylmJmtr7ENURXEw59io=
+X-Google-Smtp-Source: AGHT+IFh7DzA3Kc+kPaoL9YnkOTaqQF/WeTaEbH4d6Lf1QYaSyDC2dlr1gNwiplV2LcmpqLHO+G66g==
+X-Received: by 2002:a17:902:d301:b0:1ca:200b:8dce with SMTP id b1-20020a170902d30100b001ca200b8dcemr5378472plc.41.1700752472932;
+        Thu, 23 Nov 2023 07:14:32 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id q3-20020a170902bd8300b001cf68e9f5d5sm1465428pls.165.2023.11.23.07.14.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Nov 2023 07:14:32 -0800 (PST)
+Message-ID: <655f6c58.170a0220.a4480.2fd3@mx.google.com>
+Date: Thu, 23 Nov 2023 07:14:32 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231007072818.58951-1-xueshuai@linux.alibaba.com>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/5.4
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.4.261-99-g6352c92155bc
+Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.261-99-g6352c92155bc)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Sat, Oct 07, 2023 at 03:28:16PM +0800, Shuai Xue wrote:
-> However, this trick is not always be effective
+stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
+4.261-99-g6352c92155bc)
 
-So far so good.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.261-99-g6352c92155bc/
 
-What's missing here is why "this trick" is not always effective.
+Tree: stable-rc
+Branch: queue/5.4
+Git Describe: v5.4.261-99-g6352c92155bc
+Git Commit: 6352c92155bce899c5860a90df9e36c0b2fb8faa
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Basically to explain what exactly the problem is.
+Warnings Detected:
 
-> For example, hwpoison-aware user-space processes use the si_code:
-> BUS_MCEERR_AO for 'action optional' early notifications, and BUS_MCEERR_AR
-> for 'action required' synchronous/late notifications. Specifically, when a
-> signal with SIGBUS_MCEERR_AR is delivered to QEMU, it will inject a vSEA to
-> Guest kernel. In contrast, a signal with SIGBUS_MCEERR_AO will be ignored
-> by QEMU.[1]
-> 
-> Fix it by seting memory failure flags as MF_ACTION_REQUIRED on synchronous events. (PATCH 1)
+arc:
 
-So you're fixing qemu by "fixing" the kernel?
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
 
-This doesn't make any sense.
+arm:
 
-Make errors which are ACPI_HEST_NOTIFY_SEA type return
-MF_ACTION_REQUIRED so that it *happens* to fix your use case.
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
 
-Sounds like a lot of nonsense to me.
+mips:
 
-What is the issue here you're trying to solve?
+riscv:
 
-> 2. Handle memory_failure() abnormal fails to avoid a unnecessary reboot
-> 
-> If process mapping fault page, but memory_failure() abnormal return before
-> try_to_unmap(), for example, the fault page process mapping is KSM page.
-> In this case, arm64 cannot use the page fault process to terminate the
-> synchronous exception loop.[4]
-> 
-> This loop can potentially exceed the platform firmware threshold or even trigger
-> a kernel hard lockup, leading to a system reboot. However, kernel has the
-> capability to recover from this error.
-> 
-> Fix it by performing a force kill when memory_failure() abnormal fails or when
-> other abnormal synchronous errors occur.
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
 
-Just like that?
 
-Without giving the process the opportunity to even save its other data?
+Warnings summary:
 
-So this all is still very confusing, patches definitely need splitting
-and this whole thing needs restraint.
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
 
-You go and do this: you split *each* issue you're addressing into
-a separate patch and explain it like this:
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
 ---
-1. Prepare the context for the explanation briefly.
-
-2. Explain the problem at hand.
-
-3. "It happens because of <...>"
-
-4. "Fix it by doing X"
-
-5. "(Potentially do Y)."
----
-
-and each patch explains *exactly* *one* issue, what happens, why it
-happens and just the fix for it and *why* it is needed.
-
-Otherwise, this is unreviewable.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+For more info write to <info@kernelci.org>
 
