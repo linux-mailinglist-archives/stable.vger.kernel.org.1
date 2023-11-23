@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-41-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-42-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31F67F5E71
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:57:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B02C27F5E73
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 12:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AAF3B213C0
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:57:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34A72B21375
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 11:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E38D2375C;
-	Thu, 23 Nov 2023 11:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B13241E1;
+	Thu, 23 Nov 2023 11:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2HK1t9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBUxbdIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8E82377F
-	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 11:57:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DC3C433C8;
-	Thu, 23 Nov 2023 11:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847BF2377F
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 11:57:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E1EC433C8;
+	Thu, 23 Nov 2023 11:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700740624;
-	bh=PbuceJTZQruri8PUcPbNVsK++1gxTFJwp8K+vkoXUFI=;
+	s=korg; t=1700740629;
+	bh=BFsg8UqefYOINJHpmq6i0GdFMK8xp4o0Ox5mATpHaCE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=x2HK1t9sSLx1VAXOLM4IczdePxmsx3VQmHJ2eRjvdSIWPPqcxC2o3H4q2a415Pzmp
-	 qmnsgEiGgT9jZ/pfQk/WEmo1ai353M4qLt/dD52XNSoFeBXWTq4wR3w+0pBEmPoNmd
-	 WkgknbPBMyxpzBWZeck8m7q6v3rZUy+Ti0HSK2bE=
-Subject: FAILED: patch "[PATCH] selftests/resctrl: Fix feature checks" failed to apply to 5.15-stable tree
+	b=zBUxbdIpXuFZgnVciuGDE4+qs4VdaxkhmW5LavKmi/NzmEMB9QnEbE2kVSFuMcEYA
+	 yWC2fiZo28WyvcCx7a5Qg2fk73VHNXjaGWoqWrG9dJ3UzCBBmvbHyLO6Ppnk5wuqS2
+	 sjMoRA9t/BeOIWpzWOthUiQ34OxsT6mhN+LL6u9E=
+Subject: FAILED: patch "[PATCH] selftests/resctrl: Fix feature checks" failed to apply to 5.10-stable tree
 To: ilpo.jarvinen@linux.intel.com,reinette.chatre@intel.com,skhan@linuxfoundation.org,stable@vger.kernel.org,tan.shaopeng@jp.fujitsu.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 23 Nov 2023 11:56:52 +0000
-Message-ID: <2023112352-mountable-parameter-9b0d@gregkh>
+Date: Thu, 23 Nov 2023 11:56:54 +0000
+Message-ID: <2023112354-accurate-robin-211c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 06035f019422ba17e85c11e70d6d8bdbe9fa1afd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112352-mountable-parameter-9b0d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112354-accurate-robin-211c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,17 @@ a967e17f9184 ("selftests/resctrl: Use remount_resctrlfs() consistently with bool
 e48c32306bce ("selftests/resctrl: Change name from CBM_MASK_PATH to INFO_PATH")
 d577380da04e ("selftests/resctrl: Print a message if the result of MBM&CMT tests is failed on Intel CPU")
 6220f69e72a5 ("selftests/resctrl: Extend CPU vendor detection")
+4e5cb354c85e ("selftests/resctrl: Fix unmount resctrl FS")
+f1dd71982d19 ("selftests/resctrl: Skip the test if requested resctrl feature is not supported")
+c9fb4e7cee1e ("selftests/resctrl: Modularize resctrl test suite main() function")
+09a67934625a ("selftests/resctrl: Don't hard code value of "no_of_bits" variable")
+ee0415681eb6 ("selftests/resctrl: Use resctrl/info for feature detection")
+03216ed7bb4d ("selftests/resctrl: Share show_cache_info() by CAT and CMT tests")
+ca2f4214f967 ("selftests/resctrl: Call kselftest APIs to log test results")
+2f320911d9fa ("selftests/resctrl: Rename CQM test as CMT test")
+2428673638ea ("selftests/resctrl: Clean up resctrl features check")
+896016d2ad05 ("selftests/resctrl: Fix compilation issues for other global variables")
+8236c51d85a6 ("selftests/resctrl: Fix compilation issues for global variables")
 
 thanks,
 
