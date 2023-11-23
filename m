@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-27-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1DEC7F5BA7
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:48:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD597F5BA6
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 10:48:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45BECB20F71
-	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 09:48:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0236B21034
+	for <lists+stable@lfdr.de>; Thu, 23 Nov 2023 09:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB42B22326;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC4722307;
 	Thu, 23 Nov 2023 09:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSQDGinf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bxK873z9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9564822303;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D4A2136F;
 	Thu, 23 Nov 2023 09:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16E2DC433C8;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289A2C433C7;
 	Thu, 23 Nov 2023 09:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1700732904;
-	bh=7h/OjemTqWiGjvlLQ2Q4DPbNg34lkEWYu0P40v5ltJE=;
+	bh=pELa/XBC4kyNB8u1kflNMwjk+/SZYf22SC/MJTU/Rms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSQDGinf7W7+Ko2okkgxKhrW84M3Se1kcjwB5H+600QcKJdCesFEaWucBHPwJHMye
-	 xQzbl5OO3dWoYPuspyLDCjD0LzCRoMciFwrWFb1urpFctgC6I8ilAzVolMV2X0lVyN
-	 B9NbIfoZj7CvNU0P3K6ru2L2n8y6uONQPThWAdUXfet4IRQt/dMqklWa9Bymx+fVLH
-	 Bt6suHoEsEd2CBfgMOb1yb0nJpcbzz95RHXX6aJnTH7B5D3ShAStPfUdBTWVE7b8FL
-	 Orh8XsP78XVlucZA4mEYhSL67q/HWTsBANNMSsM3eWu58RMpOONSZruSML17R3RIph
-	 44CEoaxU5eyKw==
+	b=bxK873z9MGKN+nmq7GNaEn6JO+vbS23uhNOuHBYtn5pW+6Zhvxue4XVghRVMlLP2c
+	 TYPorzPHbuwejVJeh9Zlm92q3PPrbn6NZAn/GmRWHh5CGzFp0xRLLL11TqD2H1Mplc
+	 FTxpxigrVZaO7MA4/NwxA55dNd1LNTNxeCUONavU7TQjsOx8/ZJr2OHF/KPNP10jgB
+	 fmCdrxQ7EFo9TnZGBPPC/jRYcKw5bCa4FInNkZ/d4HQAWqiOtd+fOEnior3W9kqeBo
+	 BUDGFjZY1WJU5YMgmU7OblNhy9tGz0b+joEyoOuzH9BoZECYM1ADMdqX7tpX88YiqN
+	 m0jFhTOvHKJwA==
 Received: from johan by xi.lan with local (Exim 4.96.2)
 	(envelope-from <johan+linaro@kernel.org>)
-	id 1r66K9-0005KQ-2E;
+	id 1r66K9-0005KS-2V;
 	Thu, 23 Nov 2023 10:48:41 +0100
 From: Johan Hovold <johan+linaro@kernel.org>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -48,9 +48,9 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	stable@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH stable-6.6 1/2] ASoC: soc-dai: add flag to mute and unmute stream during trigger
-Date: Thu, 23 Nov 2023 10:47:48 +0100
-Message-ID: <20231123094749.20462-2-johan+linaro@kernel.org>
+Subject: [PATCH stable-6.6 2/2] ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag
+Date: Thu, 23 Nov 2023 10:47:49 +0100
+Message-ID: <20231123094749.20462-3-johan+linaro@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231123094749.20462-1-johan+linaro@kernel.org>
 References: <20231123094749.20462-1-johan+linaro@kernel.org>
@@ -64,92 +64,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-commit f0220575e65abe09c09cd17826a3cdea76e8d58f upstream.
+commit 805ce81826c896dd3c351a32814b28557f9edf54 upstream.
 
-In some setups like Speaker amps which are very sensitive, ex: keeping them
-unmute without actual data stream for very short duration results in a
-static charge and results in pop and clicks. To minimize this, provide a way
-to mute and unmute such codecs during trigger callbacks.
+In the current setup the PA is left unmuted even when the
+Soundwire ports are not started streaming. This can lead to click
+and pop sounds during start.
+There is a same issue in the reverse order where in the PA is
+left unmute even after the data stream is stopped, the time
+between data stream stopping and port closing is long enough
+to accumulate DC on the line resulting in Click/Pop noise
+during end of stream.
+
+making use of new mute_unmute_on_trigger flag is helping a
+lot with this Click/Pop issues reported on this Codec
 
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231027105747.32450-2-srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20231027105747.32450-3-srinivas.kandagatla@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
-[ johan: backport to v6.6.2 ]
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- include/sound/soc-dai.h |  1 +
- sound/soc/soc-dai.c     |  7 +++++++
- sound/soc/soc-pcm.c     | 12 ++++++++----
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ sound/soc/codecs/wsa883x.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/include/sound/soc-dai.h b/include/sound/soc-dai.h
-index 5fcfba47d98c..adcd8719d343 100644
---- a/include/sound/soc-dai.h
-+++ b/include/sound/soc-dai.h
-@@ -370,6 +370,7 @@ struct snd_soc_dai_ops {
+diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
+index 197fae23762f..cb83c569e18d 100644
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -1203,9 +1203,6 @@ static int wsa883x_spkr_event(struct snd_soc_dapm_widget *w,
+ 			break;
+ 		}
  
- 	/* bit field */
- 	unsigned int no_capture_mute:1;
-+	unsigned int mute_unmute_on_trigger:1;
+-		snd_soc_component_write_field(component, WSA883X_DRE_CTL_1,
+-					      WSA883X_DRE_GAIN_EN_MASK,
+-					      WSA883X_DRE_GAIN_FROM_CSR);
+ 		if (wsa883x->port_enable[WSA883X_PORT_COMP])
+ 			snd_soc_component_write_field(component, WSA883X_DRE_CTL_0,
+ 						      WSA883X_DRE_OFFSET_MASK,
+@@ -1218,9 +1215,6 @@ static int wsa883x_spkr_event(struct snd_soc_dapm_widget *w,
+ 		snd_soc_component_write_field(component, WSA883X_PDM_WD_CTL,
+ 					      WSA883X_PDM_EN_MASK,
+ 					      WSA883X_PDM_ENABLE);
+-		snd_soc_component_write_field(component, WSA883X_PA_FSM_CTL,
+-					      WSA883X_GLOBAL_PA_EN_MASK,
+-					      WSA883X_GLOBAL_PA_ENABLE);
+ 
+ 		break;
+ 	case SND_SOC_DAPM_PRE_PMD:
+@@ -1346,6 +1340,7 @@ static const struct snd_soc_dai_ops wsa883x_dai_ops = {
+ 	.hw_free = wsa883x_hw_free,
+ 	.mute_stream = wsa883x_digital_mute,
+ 	.set_stream = wsa883x_set_sdw_stream,
++	.mute_unmute_on_trigger = true,
  };
  
- struct snd_soc_cdai_ops {
-diff --git a/sound/soc/soc-dai.c b/sound/soc/soc-dai.c
-index 3f33f0630ad8..9a828e55c4f9 100644
---- a/sound/soc/soc-dai.c
-+++ b/sound/soc/soc-dai.c
-@@ -658,6 +658,10 @@ int snd_soc_pcm_dai_trigger(struct snd_pcm_substream *substream,
- 			ret = soc_dai_trigger(dai, substream, cmd);
- 			if (ret < 0)
- 				break;
-+
-+			if (dai->driver->ops && dai->driver->ops->mute_unmute_on_trigger)
-+				snd_soc_dai_digital_mute(dai, 0, substream->stream);
-+
- 			soc_dai_mark_push(dai, substream, trigger);
- 		}
- 		break;
-@@ -668,6 +672,9 @@ int snd_soc_pcm_dai_trigger(struct snd_pcm_substream *substream,
- 			if (rollback && !soc_dai_mark_match(dai, substream, trigger))
- 				continue;
- 
-+			if (dai->driver->ops && dai->driver->ops->mute_unmute_on_trigger)
-+				snd_soc_dai_digital_mute(dai, 1, substream->stream);
-+
- 			r = soc_dai_trigger(dai, substream, cmd);
- 			if (r < 0)
- 				ret = r; /* use last ret */
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 0a20122b3e55..511446a30c05 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -896,8 +896,10 @@ static int __soc_pcm_prepare(struct snd_soc_pcm_runtime *rtd,
- 	snd_soc_dapm_stream_event(rtd, substream->stream,
- 			SND_SOC_DAPM_STREAM_START);
- 
--	for_each_rtd_dais(rtd, i, dai)
--		snd_soc_dai_digital_mute(dai, 0, substream->stream);
-+	for_each_rtd_dais(rtd, i, dai) {
-+		if (dai->driver->ops && !dai->driver->ops->mute_unmute_on_trigger)
-+			snd_soc_dai_digital_mute(dai, 0, substream->stream);
-+	}
- 
- out:
- 	return soc_pcm_ret(rtd, ret);
-@@ -939,8 +941,10 @@ static int soc_pcm_hw_clean(struct snd_soc_pcm_runtime *rtd,
- 		if (snd_soc_dai_active(dai) == 1)
- 			soc_pcm_set_dai_params(dai, NULL);
- 
--		if (snd_soc_dai_stream_active(dai, substream->stream) == 1)
--			snd_soc_dai_digital_mute(dai, 1, substream->stream);
-+		if (snd_soc_dai_stream_active(dai, substream->stream) == 1) {
-+			if (dai->driver->ops && !dai->driver->ops->mute_unmute_on_trigger)
-+				snd_soc_dai_digital_mute(dai, 1, substream->stream);
-+		}
- 	}
- 
- 	/* run the stream event */
+ static struct snd_soc_dai_driver wsa883x_dais[] = {
 -- 
 2.41.0
 
