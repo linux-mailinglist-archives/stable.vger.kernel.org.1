@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-1411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4797F7F85
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63BDC7F8114
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4FE87B218DE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE9F8B208A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F968364BE;
-	Fri, 24 Nov 2023 18:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B04D321AD;
+	Fri, 24 Nov 2023 18:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qi4z8hv8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhYjARS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E074F2D626;
-	Fri, 24 Nov 2023 18:42:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBAEC433C7;
-	Fri, 24 Nov 2023 18:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10AD33CC2;
+	Fri, 24 Nov 2023 18:55:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF43C433C8;
+	Fri, 24 Nov 2023 18:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851331;
-	bh=ifaAyk5ygZJH25X27x7blYTmzWTycFU2S3mTgenxKIo=;
+	s=korg; t=1700852124;
+	bh=T7KjMSi+nN0EqmmjwTIuDVO9HdE4mqbzvCt73XeUKzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qi4z8hv83K0tIf/ePqzGPboqXEyrkyjc87Z70BI2lLmBvhRykcv7U7WT4dIoNYVbv
-	 GwiDjjDK913kOGf/IvABf6+/JsZwp4v/+97AMPDF+uj2asCwoSNxBSu2WoDs40LIlZ
-	 5mEyXSUvD7wtKkGNSm3LaBjRE7V3EpRsbejAVmKE=
+	b=OhYjARS7rk8WORWfbz7Ghni57bb9pbjEuvpplFCMXlH1kK+2W7dxEa6SWYGoclZdn
+	 ibaT8EcLlQir9sTzq/so9GtgvJ0bAOEdZ0Q7E2X8ND5eGtGb6uv//0JREyUi8imalT
+	 7A9O81OLEiLtosb71EYuQhUZwu+RfcE01jHD8Yhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.5 381/491] parisc: Prevent booting 64-bit kernels on PA1.x machines
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 230/372] arm64: dts: qcom: ipq6018: Fix tcsr_mutex register size
 Date: Fri, 24 Nov 2023 17:50:17 +0000
-Message-ID: <20231124172036.045468399@linuxfoundation.org>
+Message-ID: <20231124172018.171853523@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +53,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-commit a406b8b424fa01f244c1aab02ba186258448c36b upstream.
+commit 72fc3d58b87b0d622039c6299b89024fbb7b420f upstream.
 
-Bail out early with error message when trying to boot a 64-bit kernel on
-32-bit machines. This fixes the previous commit to include the check for
-true 64-bit kernels as well.
+IPQ6018's TCSR Mutex HW lock register has 32 locks of size 4KB each.
+Total size of the TCSR Mutex registers is 128KB.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 591d2108f3abc ("parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines")
-Cc:  <stable@vger.kernel.org> # v6.0+
+Fix size of the tcsr_mutex hwlock register to 0x20000.
+
+Changes in v2:
+ - Drop change to remove qcom,ipq6018-tcsr-mutex compatible string
+ - Added Fixes and stable tags
+
+Cc: stable@vger.kernel.org
+Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230905095535.1263113-2-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/head.S |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/head.S
-+++ b/arch/parisc/kernel/head.S
-@@ -70,9 +70,8 @@ $bss_loop:
- 	stw,ma          %arg2,4(%r1)
- 	stw,ma          %arg3,4(%r1)
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -248,7 +248,7 @@
  
--#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
--	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
--	 * and halt kernel if we detect a PA1.x CPU. */
-+#if defined(CONFIG_PA20)
-+	/* check for 64-bit capable CPU as required by current kernel */
- 	ldi		32,%r10
- 	mtctl		%r10,%cr11
- 	.level 2.0
+ 		tcsr_mutex: hwlock@1905000 {
+ 			compatible = "qcom,ipq6018-tcsr-mutex", "qcom,tcsr-mutex";
+-			reg = <0x0 0x01905000 0x0 0x1000>;
++			reg = <0x0 0x01905000 0x0 0x20000>;
+ 			#hwlock-cells = <1>;
+ 		};
+ 
 
 
 
