@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-1030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 914487F7DA7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9037F7B96
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C26211C20975
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3667DB21376
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFED39FE9;
-	Fri, 24 Nov 2023 18:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACA139FEF;
+	Fri, 24 Nov 2023 18:06:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnEI175c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rvv9zuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED9439FE3;
-	Fri, 24 Nov 2023 18:26:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB009C433C7;
-	Fri, 24 Nov 2023 18:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4881239FDD;
+	Fri, 24 Nov 2023 18:06:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1AFC433C8;
+	Fri, 24 Nov 2023 18:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850384;
-	bh=qjEugjxdST+Bc2IDZ3kSlcmNfMp4wRIFmfOVe4p5m1k=;
+	s=korg; t=1700849196;
+	bh=iD/JX1NPGRMhPUsfZBJbvQK4r+3vqlet2wvWOiMnSK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qnEI175ctn8DcycHksh5zeMtAAo+H/XnTd5yIOJXiTGMHUtV26jgFgQASoKvB85QZ
-	 Xzz91+mAzkRWB81ODkrUZYZ+hz8aLNPA31dPDy0h/lkWRrxLwkjfIrg6c/7wNbotrc
-	 qgB0KuBBHyacQy2fFryD3PYD2pra/gwoXBJmI9QY=
+	b=2rvv9zuGWhedO8VIWeOjnDiis9Ph3RvZ3YVG+0kfWj+sqDSx/Ew1hE6zesfHo2c3/
+	 mQGKoeWD4ByoIvd8eSv+VM7+VXV64A0mGPZT04912mGZfPbCKMTVtacllo23Fhv3iX
+	 gjHTvLh/RfL21+JPg6EvMFGxiAoFheLn2q/dR0ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	David Laight <David.Laight@aculab.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Lu Hongfei <luhongfei@vivo.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 007/491] srcu: Fix srcu_struct node grpmask overflow on 64-bit systems
-Date: Fri, 24 Nov 2023 17:44:03 +0000
-Message-ID: <20231124172024.892564462@linuxfoundation.org>
+Subject: [PATCH 6.6 078/530] soc: qcom: pmic: Fix resource leaks in a device_for_each_child_node() loop
+Date: Fri, 24 Nov 2023 17:44:04 +0000
+Message-ID: <20231124172030.450953673@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,68 +53,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Lu Hongfei <luhongfei@vivo.com>
 
-[ Upstream commit d8d5b7bf6f2105883bbd91bbd4d5b67e4e3dff71 ]
+[ Upstream commit 5692aeea5bcb9331e956628c3bc8fc9afcc9765d ]
 
-The value of a bitwise expression 1 << (cpu - sdp->mynode->grplo)
-is subject to overflow due to a failure to cast operands to a larger
-data type before performing the bitwise operation.
+The device_for_each_child_node loop should call fwnode_handle_put()
+before return in the error cases, to avoid resource leaks.
 
-The maximum result of this subtraction is defined by the RCU_FANOUT_LEAF
-Kconfig option, which on 64-bit systems defaults to 16 (resulting in a
-maximum shift of 15), but which can be set up as high as 64 (resulting
-in a maximum shift of 63).  A value of 31 can result in sign extension,
-resulting in 0xffffffff80000000 instead of the desired 0x80000000.
-A value of 32 or greater triggers undefined behavior per the C standard.
+Let's fix this bug in pmic_glink_altmode_probe().
 
-This bug has not been known to cause issues because almost all kernels
-take the default CONFIG_RCU_FANOUT_LEAF=16.  Furthermore, as long as a
-given compiler gives a deterministic non-zero result for 1<<N for N>=32,
-the code correctly invokes all SRCU callbacks, albeit wasting CPU time
-along the way.
-
-This commit therefore substitutes the correct 1UL for the buggy 1.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Cc: David Laight <David.Laight@aculab.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Lu Hongfei <luhongfei@vivo.com>
+Link: https://lore.kernel.org/r/20230612133452.47315-1-luhongfei@vivo.com
+[bjorn: Rebased patch, moved fw_handle_put() from jump target into the loop]
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/srcutree.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/pmic_glink_altmode.c | 30 ++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index c6481032d42be..7522517b63b6f 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -223,7 +223,7 @@ static bool init_srcu_struct_nodes(struct srcu_struct *ssp, gfp_t gfp_flags)
- 				snp->grplo = cpu;
- 			snp->grphi = cpu;
+diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+index 974c14d1e0bfc..6f8b2f7ae3cc1 100644
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -444,6 +444,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 		ret = fwnode_property_read_u32(fwnode, "reg", &port);
+ 		if (ret < 0) {
+ 			dev_err(dev, "missing reg property of %pOFn\n", fwnode);
++			fwnode_handle_put(fwnode);
+ 			return ret;
  		}
--		sdp->grpmask = 1 << (cpu - sdp->mynode->grplo);
-+		sdp->grpmask = 1UL << (cpu - sdp->mynode->grplo);
- 	}
- 	smp_store_release(&ssp->srcu_sup->srcu_size_state, SRCU_SIZE_WAIT_BARRIER);
- 	return true;
-@@ -833,7 +833,7 @@ static void srcu_schedule_cbs_snp(struct srcu_struct *ssp, struct srcu_node *snp
- 	int cpu;
  
- 	for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
--		if (!(mask & (1 << (cpu - snp->grplo))))
-+		if (!(mask & (1UL << (cpu - snp->grplo))))
- 			continue;
- 		srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
+@@ -454,6 +455,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 
+ 		if (altmode->ports[port].altmode) {
+ 			dev_err(dev, "multiple connector definition for port %u\n", port);
++			fwnode_handle_put(fwnode);
+ 			return -EINVAL;
+ 		}
+ 
+@@ -468,45 +470,59 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 		alt_port->bridge.type = DRM_MODE_CONNECTOR_DisplayPort;
+ 
+ 		ret = devm_drm_bridge_add(dev, &alt_port->bridge);
+-		if (ret)
++		if (ret) {
++			fwnode_handle_put(fwnode);
+ 			return ret;
++		}
+ 
+ 		alt_port->dp_alt.svid = USB_TYPEC_DP_SID;
+ 		alt_port->dp_alt.mode = USB_TYPEC_DP_MODE;
+ 		alt_port->dp_alt.active = 1;
+ 
+ 		alt_port->typec_mux = fwnode_typec_mux_get(fwnode);
+-		if (IS_ERR(alt_port->typec_mux))
++		if (IS_ERR(alt_port->typec_mux)) {
++			fwnode_handle_put(fwnode);
+ 			return dev_err_probe(dev, PTR_ERR(alt_port->typec_mux),
+ 					     "failed to acquire mode-switch for port: %d\n",
+ 					     port);
++		}
+ 
+ 		ret = devm_add_action_or_reset(dev, pmic_glink_altmode_put_mux,
+ 					       alt_port->typec_mux);
+-		if (ret)
++		if (ret) {
++			fwnode_handle_put(fwnode);
+ 			return ret;
++		}
+ 
+ 		alt_port->typec_retimer = fwnode_typec_retimer_get(fwnode);
+-		if (IS_ERR(alt_port->typec_retimer))
++		if (IS_ERR(alt_port->typec_retimer)) {
++			fwnode_handle_put(fwnode);
+ 			return dev_err_probe(dev, PTR_ERR(alt_port->typec_retimer),
+ 					     "failed to acquire retimer-switch for port: %d\n",
+ 					     port);
++		}
+ 
+ 		ret = devm_add_action_or_reset(dev, pmic_glink_altmode_put_retimer,
+ 					       alt_port->typec_retimer);
+-		if (ret)
++		if (ret) {
++			fwnode_handle_put(fwnode);
+ 			return ret;
++		}
+ 
+ 		alt_port->typec_switch = fwnode_typec_switch_get(fwnode);
+-		if (IS_ERR(alt_port->typec_switch))
++		if (IS_ERR(alt_port->typec_switch)) {
++			fwnode_handle_put(fwnode);
+ 			return dev_err_probe(dev, PTR_ERR(alt_port->typec_switch),
+ 					     "failed to acquire orientation-switch for port: %d\n",
+ 					     port);
++		}
+ 
+ 		ret = devm_add_action_or_reset(dev, pmic_glink_altmode_put_switch,
+ 					       alt_port->typec_switch);
+-		if (ret)
++		if (ret) {
++			fwnode_handle_put(fwnode);
+ 			return ret;
++		}
  	}
+ 
+ 	altmode->client = devm_pmic_glink_register_client(dev,
 -- 
 2.42.0
 
