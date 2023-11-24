@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCF17F7F08
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFED7F7CCD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF6B11C2141D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0A4DB214C4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EC43307D;
-	Fri, 24 Nov 2023 18:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7463A8C3;
+	Fri, 24 Nov 2023 18:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsMlOSOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPEEj/WT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9426828DC3;
-	Fri, 24 Nov 2023 18:37:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C81FC433C8;
-	Fri, 24 Nov 2023 18:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C5839FEA;
+	Fri, 24 Nov 2023 18:18:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5EFC433C8;
+	Fri, 24 Nov 2023 18:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851078;
-	bh=9vdQmh6O/mUDrLwtzMpTesqCzKfM6ooym4OrNGeTQ1c=;
+	s=korg; t=1700849908;
+	bh=/qnipRgx0bfA3BLk0i2vCD2P2sLBwtwYXTletGg6jOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsMlOSOMASjLOru7ddipybCV5JNTt4lmHOYrCczRheGAH7KGs1U/CEGiV61QjcAch
-	 KO2cTKEZzll60zFYrrO1hAncGbKVKXEf5rwvBfZQf3CdqgbzNZUgehF9NpePue7rKP
-	 NJpU5tojD+Dr6maQ5fu26VaRLJPvDhaMFoWLrFCY=
+	b=aPEEj/WTWYvbfkcFsaKM8OOZww8W2R9u9EqADSHuAoBY2ZOa/4vBxAfxLd7T2TVp/
+	 4iE7BOcj2AY1GO8vcYC7d3AabMZFb5rlFGqpKnV9WqBNrg0/wlpgogtpahr+Cqmdbi
+	 Q1jOBBbM4ABtBeW/xXQngis6roUGQekk14WcWrZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 297/491] ksmbd: fix recursive locking in vfs helpers
-Date: Fri, 24 Nov 2023 17:48:53 +0000
-Message-ID: <20231124172033.500445185@linuxfoundation.org>
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Benjamin Bara <benjamin.bara@skidata.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 368/530] i2c: core: Run atomic i2c xfer when !preemptible
+Date: Fri, 24 Nov 2023 17:48:54 +0000
+Message-ID: <20231124172039.209700849@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,145 +55,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Benjamin Bara <benjamin.bara@skidata.com>
 
-commit 807252f028c59b9a3bac4d62ad84761548c10f11 upstream.
+commit aa49c90894d06e18a1ee7c095edbd2f37c232d02 upstream.
 
-Running smb2.rename test from Samba smbtorture suite against a kernel built
-with lockdep triggers a "possible recursive locking detected" warning.
+Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
+disabled. However, non-atomic i2c transfers require preemption (e.g. in
+wait_for_completion() while waiting for the DMA).
 
-This is because mnt_want_write() is called twice with no mnt_drop_write()
-in between:
-  -> ksmbd_vfs_mkdir()
-    -> ksmbd_vfs_kern_path_create()
-       -> kern_path_create()
-          -> filename_create()
-            -> mnt_want_write()
-       -> mnt_want_write()
+panic() calls preempt_disable_notrace() before calling
+emergency_restart(). Therefore, if an i2c device is used for the
+restart, the xfer should be atomic. This avoids warnings like:
 
-Fix this by removing the mnt_want_write/mnt_drop_write calls from vfs
-helpers that call kern_path_create().
+[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+[   12.676926] Voluntary context switch within RCU read-side critical section!
+...
+[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+...
+[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+[   13.001050]  machine_restart from panic+0x2a8/0x32c
 
-Full lockdep trace below:
+Use !preemptible() instead, which is basically the same check as
+pre-v5.2.
 
-============================================
-WARNING: possible recursive locking detected
-6.6.0-rc5 #775 Not tainted
---------------------------------------------
-kworker/1:1/32 is trying to acquire lock:
-ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: ksmbd_vfs_mkdir+0xe1/0x410
-
-but task is already holding lock:
-ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: filename_create+0xb6/0x260
-
-other info that might help us debug this:
- Possible unsafe locking scenario:
-
-       CPU0
-       ----
-  lock(sb_writers#5);
-  lock(sb_writers#5);
-
- *** DEADLOCK ***
-
- May be due to missing lock nesting notation
-
-4 locks held by kworker/1:1/32:
- #0: ffff8880064e4138 ((wq_completion)ksmbd-io){+.+.}-{0:0}, at: process_one_work+0x40e/0x980
- #1: ffff888005b0fdd0 ((work_completion)(&work->work)){+.+.}-{0:0}, at: process_one_work+0x40e/0x980
- #2: ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: filename_create+0xb6/0x260
- #3: ffff8880057ce760 (&type->i_mutex_dir_key#3/1){+.+.}-{3:3}, at: filename_create+0x123/0x260
-
-Cc: stable@vger.kernel.org
-Fixes: 40b268d384a2 ("ksmbd: add mnt_want_write to ksmbd vfs functions")
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+Cc: stable@vger.kernel.org # v5.2+
+Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Acked-by: Wolfram Sang <wsa@kernel.org>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |   23 +++--------------------
- 1 file changed, 3 insertions(+), 20 deletions(-)
+ drivers/i2c/i2c-core.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -173,10 +173,6 @@ int ksmbd_vfs_create(struct ksmbd_work *
- 		return err;
- 	}
- 
--	err = mnt_want_write(path.mnt);
--	if (err)
--		goto out_err;
--
- 	mode |= S_IFREG;
- 	err = vfs_create(mnt_idmap(path.mnt), d_inode(path.dentry),
- 			 dentry, mode, true);
-@@ -186,9 +182,7 @@ int ksmbd_vfs_create(struct ksmbd_work *
- 	} else {
- 		pr_err("File(%s): creation failed (err:%d)\n", name, err);
- 	}
--	mnt_drop_write(path.mnt);
- 
--out_err:
- 	done_path_create(&path, dentry);
- 	return err;
+--- a/drivers/i2c/i2c-core.h
++++ b/drivers/i2c/i2c-core.h
+@@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const str
+  */
+ static inline bool i2c_in_atomic_xfer_mode(void)
+ {
+-	return system_state > SYSTEM_RUNNING && irqs_disabled();
++	return system_state > SYSTEM_RUNNING && !preemptible();
  }
-@@ -219,10 +213,6 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *w
- 		return err;
- 	}
  
--	err = mnt_want_write(path.mnt);
--	if (err)
--		goto out_err2;
--
- 	idmap = mnt_idmap(path.mnt);
- 	mode |= S_IFDIR;
- 	err = vfs_mkdir(idmap, d_inode(path.dentry), dentry, mode);
-@@ -233,21 +223,19 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *w
- 			       dentry->d_name.len);
- 		if (IS_ERR(d)) {
- 			err = PTR_ERR(d);
--			goto out_err1;
-+			goto out_err;
- 		}
- 		if (unlikely(d_is_negative(d))) {
- 			dput(d);
- 			err = -ENOENT;
--			goto out_err1;
-+			goto out_err;
- 		}
- 
- 		ksmbd_vfs_inherit_owner(work, d_inode(path.dentry), d_inode(d));
- 		dput(d);
- 	}
- 
--out_err1:
--	mnt_drop_write(path.mnt);
--out_err2:
-+out_err:
- 	done_path_create(&path, dentry);
- 	if (err)
- 		pr_err("mkdir(%s): creation failed (err:%d)\n", name, err);
-@@ -665,16 +653,11 @@ int ksmbd_vfs_link(struct ksmbd_work *wo
- 		goto out3;
- 	}
- 
--	err = mnt_want_write(newpath.mnt);
--	if (err)
--		goto out3;
--
- 	err = vfs_link(oldpath.dentry, mnt_idmap(newpath.mnt),
- 		       d_inode(newpath.dentry),
- 		       dentry, NULL);
- 	if (err)
- 		ksmbd_debug(VFS, "vfs_link failed err %d\n", err);
--	mnt_drop_write(newpath.mnt);
- 
- out3:
- 	done_path_create(&newpath, dentry);
+ static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
 
 
 
