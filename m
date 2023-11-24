@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-1986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3C07F8245
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8207F835C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6545B284AAD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AAF01C2560A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29DA364AE;
-	Fri, 24 Nov 2023 19:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AB3381A2;
+	Fri, 24 Nov 2023 19:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srikiqsz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BBm7YZbj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB4E2EAEA;
-	Fri, 24 Nov 2023 19:06:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B290C433C8;
-	Fri, 24 Nov 2023 19:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271843173F;
+	Fri, 24 Nov 2023 19:16:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A533CC433C8;
+	Fri, 24 Nov 2023 19:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852767;
-	bh=NJYynJBzlz6vtCjfjGK5DAH0ioeYBA+rYcQ4wEW0foo=;
+	s=korg; t=1700853407;
+	bh=1lQ3cxbEbLGYBK+kRNcQuVYUfNJV+LkH2EsQ8GbyTJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srikiqszaUxLOMBThKgjzBORVn/CId6UKv2zg6GULFHGOViRBjJuFI8t1cv94d7nX
-	 nAj43ZzE75LYmJmPqcCK0Fnzdhcq1DPapv8kHo84v9KIxfWXJhpp7drjbiM70oJ+PV
-	 brHC1GKyuk/8352GbkcTLxntTFaeYVp15kdmlKtc=
+	b=BBm7YZbja899356ZjIyQall4bCnwI57kLgXmCgsD661g4cADuwbIb8G8gU7ObUfpZ
+	 /4yT+di4Rlx4J4V/Cq1ZzrVF/VK2Rq/cFPL76Iu7/MfK6qu/eRqdPW+vS8ty2PIsgK
+	 NgbZICw9iMeTw2IcozWkcCLIKlQOBnngowalVYbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.10 090/193] powerpc/perf: Fix disabling BHRB and instruction sampling
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 5.15 175/297] watchdog: move softlockup_panic back to early_param
 Date: Fri, 24 Nov 2023 17:53:37 +0000
-Message-ID: <20231124171950.858824553@linuxfoundation.org>
+Message-ID: <20231124172006.379962897@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +52,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-commit ea142e590aec55ba40c5affb4d49e68c713c63dc upstream.
+commit 8b793bcda61f6c3ed4f5b2ded7530ef6749580cb upstream.
 
-When the PMU is disabled, MMCRA is not updated to disable BHRB and
-instruction sampling. This can lead to those features remaining enabled,
-which can slow down a real or emulated CPU.
+Setting softlockup_panic from do_sysctl_args() causes it to take effect
+later in boot.  The lockup detector is enabled before SMP is brought
+online, but do_sysctl_args runs afterwards.  If a user wants to set
+softlockup_panic on boot and have it trigger should a softlockup occur
+during onlining of the non-boot processors, they could do this prior to
+commit f117955a2255 ("kernel/watchdog.c: convert {soft/hard}lockup boot
+parameters to sysctl aliases").  However, after this commit the value
+of softlockup_panic is set too late to be of help for this type of
+problem.  Restore the prior behavior.
 
-Fixes: 1cade527f6e9 ("powerpc/perf: BHRB control to disable BHRB logic when not used")
-Cc: stable@vger.kernel.org # v5.9+
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231018153423.298373-1-npiggin@gmail.com
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Cc: stable@vger.kernel.org
+Fixes: f117955a2255 ("kernel/watchdog.c: convert {soft/hard}lockup boot parameters to sysctl aliases")
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/perf/core-book3s.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/proc/proc_sysctl.c |    1 -
+ kernel/watchdog.c     |    7 +++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -1289,8 +1289,7 @@ static void power_pmu_disable(struct pmu
- 		/*
- 		 * Disable instruction sampling if it was enabled
- 		 */
--		if (cpuhw->mmcr.mmcra & MMCRA_SAMPLE_ENABLE)
--			val &= ~MMCRA_SAMPLE_ENABLE;
-+		val &= ~MMCRA_SAMPLE_ENABLE;
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1765,7 +1765,6 @@ static const struct sysctl_alias sysctl_
+ 	{"hung_task_panic",			"kernel.hung_task_panic" },
+ 	{"numa_zonelist_order",			"vm.numa_zonelist_order" },
+ 	{"softlockup_all_cpu_backtrace",	"kernel.softlockup_all_cpu_backtrace" },
+-	{"softlockup_panic",			"kernel.softlockup_panic" },
+ 	{ }
+ };
  
- 		/* Disable BHRB via mmcra (BHRBRD) for p10 */
- 		if (ppmu->flags & PPMU_ARCH_31)
-@@ -1301,7 +1300,7 @@ static void power_pmu_disable(struct pmu
- 		 * instruction sampling or BHRB.
- 		 */
- 		if (val != mmcra) {
--			mtspr(SPRN_MMCRA, mmcra);
-+			mtspr(SPRN_MMCRA, val);
- 			mb();
- 			isync();
- 		}
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -183,6 +183,13 @@ static DEFINE_PER_CPU(unsigned long, hrt
+ static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts_saved);
+ static unsigned long soft_lockup_nmi_warn;
+ 
++static int __init softlockup_panic_setup(char *str)
++{
++	softlockup_panic = simple_strtoul(str, NULL, 0);
++	return 1;
++}
++__setup("softlockup_panic=", softlockup_panic_setup);
++
+ static int __init nowatchdog_setup(char *str)
+ {
+ 	watchdog_user_enabled = 0;
 
 
 
