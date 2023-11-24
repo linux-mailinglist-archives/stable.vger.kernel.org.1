@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 354C37F8090
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052C17F7EFF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E507A28104E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 671E8B21723
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C35028DBB;
-	Fri, 24 Nov 2023 18:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEBF2E858;
+	Fri, 24 Nov 2023 18:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3A6v4Wh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPSKoVwO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5BD22F1D;
-	Fri, 24 Nov 2023 18:50:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90EF8C433C8;
-	Fri, 24 Nov 2023 18:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A99733CC7;
+	Fri, 24 Nov 2023 18:37:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F1EC433C7;
+	Fri, 24 Nov 2023 18:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851850;
-	bh=Qn8UPmX6RoqPcIH71tzNBz8Ucu4X91ZU08vtZ3F8m0o=;
+	s=korg; t=1700851061;
+	bh=HyHi3By6Zv9DmWwe+UWLe2YO4P1l0LWSmHDSVTrXmkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3A6v4WhBNrRvbIJnq1bd4rklgKgVZzj85QvojXXGYbpmHo0gnNG8PL/1LOk5+74A
-	 YW1UCuSJu3QvDL2TkKhMN9oNwsG+8W5ac5VvdvZf5OD6Gz9zz+iyYUCwuafgd4aky0
-	 pAUUeWKSIPGegWKlpMPcryrTC+3dZwWb9qXHY/7I=
+	b=uPSKoVwOLLj2lpdclbujRud3ZEVywYUYTiErrza1MY/t2jyatSQcA/zEXLE/pi2tU
+	 uP7eOS792mZ17cJJLKlww4ixmjICwkStPnM3WbGIYUBwLBpQZZtJd3elp2iC8P/FOV
+	 LR95Zzja0ViMWqo5qal+uVeVmecjIW7ML6OlrQao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/372] SUNRPC: Add an IS_ERR() check back to where it was
-Date: Fri, 24 Nov 2023 17:48:28 +0000
-Message-ID: <20231124172014.511200242@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.5 273/491] wifi: ath11k: fix temperature event locking
+Date: Fri, 24 Nov 2023 17:48:29 +0000
+Message-ID: <20231124172032.777795227@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +53,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 4f3ed837186fc0d2722ba8d2457a594322e9c2ef ]
+commit 1a5352a81b4720ba43d9c899974e3bddf7ce0ce8 upstream.
 
-This IS_ERR() check was deleted during in a cleanup because, at the time,
-the rpcb_call_async() function could not return an error pointer.  That
-changed in commit 25cf32ad5dba ("SUNRPC: Handle allocation failure in
-rpc_new_task()") and now it can return an error pointer.  Put the check
-back.
+The ath11k active pdevs are protected by RCU but the temperature event
+handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section as reported by RCU lockdep:
 
-A related revert was done in commit 13bd90141804 ("Revert "SUNRPC:
-Remove unreachable error condition"").
+	=============================
+	WARNING: suspicious RCU usage
+	6.6.0-rc6 #7 Not tainted
+	-----------------------------
+	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
 
-Fixes: 037e910b52b0 ("SUNRPC: Remove unreachable error condition in rpcb_getport_async()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	other info that might help us debug this:
+
+	rcu_scheduler_active = 2, debug_locks = 1
+	no locks held by swapper/0/0.
+	...
+	Call trace:
+	...
+	 lockdep_rcu_suspicious+0x16c/0x22c
+	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
+	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
+	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
+
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+
+Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
+Cc: stable@vger.kernel.org      # 5.7
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019153115.26401-2-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/rpcb_clnt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/ath/ath11k/wmi.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
-index 5a8e6d46809ae..82afb56695f8d 100644
---- a/net/sunrpc/rpcb_clnt.c
-+++ b/net/sunrpc/rpcb_clnt.c
-@@ -746,6 +746,10 @@ void rpcb_getport_async(struct rpc_task *task)
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -8383,15 +8383,19 @@ ath11k_wmi_pdev_temperature_event(struct
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI, "event pdev temperature ev temp %d pdev_id %d\n",
+ 		   ev->temp, ev->pdev_id);
  
- 	child = rpcb_call_async(rpcb_clnt, map, proc);
- 	rpc_release_client(rpcb_clnt);
-+	if (IS_ERR(child)) {
-+		/* rpcb_map_release() has freed the arguments */
-+		return;
-+	}
++	rcu_read_lock();
++
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+ 	if (!ar) {
+ 		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
+-		kfree(tb);
+-		return;
++		goto exit;
+ 	}
  
- 	xprt->stat.bind_count++;
- 	rpc_put_task(child);
--- 
-2.42.0
-
+ 	ath11k_thermal_event_temperature(ar, ev->temp);
+ 
++exit:
++	rcu_read_unlock();
++
+ 	kfree(tb);
+ }
+ 
 
 
 
