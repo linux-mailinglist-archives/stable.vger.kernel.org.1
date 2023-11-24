@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2868C7F7C8D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CFC7F7ECD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6D67281ECD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C680D1C213F2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7559E39FF7;
-	Fri, 24 Nov 2023 18:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02FD9321AD;
+	Fri, 24 Nov 2023 18:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fatcLgkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/9Eh+FP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398AE39FC3;
-	Fri, 24 Nov 2023 18:16:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92ACC433C7;
-	Fri, 24 Nov 2023 18:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FCB35F04;
+	Fri, 24 Nov 2023 18:36:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D438C433C8;
+	Fri, 24 Nov 2023 18:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849773;
-	bh=F81TUhiXx8Fy8/WKzxeSReiaqzrOIYVQmd3DYr4Ax14=;
+	s=korg; t=1700850970;
+	bh=BhwG92GQGWmQgsWj5KjmwN4UrHuWGj5ySaRSn37Rl8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fatcLgkXm2zicQZpWPOdqLIMP7XqjSU1Mzg/5P3gweuoKZbh8Ih1heNMXmeZ1d4ni
-	 OCKrcnzR07P9hV3a+sM42pFRfY3zRiR99BI3qndWU0h4Pu7K20RAED/MsOi3qYwmca
-	 Y/ivKC5zGR8I9QxogmKorBttGSYPducfuZQp836s=
+	b=z/9Eh+FP5sRoa+vbA+RtU5J7DYWKfyLAGaJyzQPEd8OcJzSCRm1WHfsTdxGS8ykib
+	 rxIC3xdt2yvWSxlObqiH19l8p3dZ10g32+mbVb+f0NRSdNjqbvvThenfS5//IazAb5
+	 LM3RpfGIC2Wu5xgHe/joGNIzgPrwxPcv7cpHkGX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.6 314/530] clk: visconti: Fix undefined behavior bug in struct visconti_pll_provider
+	Tao Su <tao1.su@linux.intel.com>,
+	Yi Lai <yi1.lai@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.5 244/491] KVM: x86: Clear bit12 of ICR after APIC-write VM-exit
 Date: Fri, 24 Nov 2023 17:48:00 +0000
-Message-ID: <20231124172037.596425233@linuxfoundation.org>
+Message-ID: <20231124172031.892219187@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,114 +54,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Tao Su <tao1.su@linux.intel.com>
 
-commit 5ad1e217a2b23aa046b241183bd9452d259d70d0 upstream.
+commit 629d3698f6958ee6f8131ea324af794f973b12ac upstream.
 
-`struct clk_hw_onecell_data` is a flexible structure, which means that
-it contains flexible-array member at the bottom, in this case array
-`hws`:
+When IPI virtualization is enabled, a WARN is triggered if bit12 of ICR
+MSR is set after APIC-write VM-exit. The reason is kvm_apic_send_ipi()
+thinks the APIC_ICR_BUSY bit should be cleared because KVM has no delay,
+but kvm_apic_write_nodecode() doesn't clear the APIC_ICR_BUSY bit.
 
-include/linux/clk-provider.h:
-1380 struct clk_hw_onecell_data {
-1381         unsigned int num;
-1382         struct clk_hw *hws[] __counted_by(num);
-1383 };
+Under the x2APIC section, regarding ICR, the SDM says:
 
-This could potentially lead to an overwrite of the objects following
-`clk_data` in `struct visconti_pll_provider`, in this case
-`struct device_node *node;`, at run-time:
+  It remains readable only to aid in debugging; however, software should
+  not assume the value returned by reading the ICR is the last written
+  value.
 
-drivers/clk/visconti/pll.h:
- 16 struct visconti_pll_provider {
- 17         void __iomem *reg_base;
- 18         struct clk_hw_onecell_data clk_data;
- 19         struct device_node *node;
- 20 };
+I.e. the guest is allowed to set bit 12.  However, the SDM also gives KVM
+free reign to do whatever it wants with the bit, so long as KVM's behavior
+doesn't confuse userspace or break KVM's ABI.
 
-Notice that a total of 56 bytes are allocated for flexible-array `hws`
-at line 328. See below:
+Clear bit 12 so that it reads back as '0'. This approach is safer than
+"do nothing" and is consistent with the case where IPI virtualization is
+disabled or not supported, i.e.,
 
-include/dt-bindings/clock/toshiba,tmpv770x.h:
- 14 #define TMPV770X_NR_PLL		7
+  handle_fastpath_set_x2apic_icr_irqoff() -> kvm_x2apic_icr_write()
 
-drivers/clk/visconti/pll-tmpv770x.c:
- 69 ctx = visconti_init_pll(np, reg_base, TMPV770X_NR_PLL);
+Opportunistically replace the TODO with a comment calling out that eating
+the write is likely faster than a conditional branch around the busy bit.
 
-drivers/clk/visconti/pll.c:
-321 struct visconti_pll_provider * __init visconti_init_pll(struct device_node *np,
-322                                                         void __iomem *base,
-323                                                         unsigned long nr_plls)
-324 {
-325         struct visconti_pll_provider *ctx;
-...
-328         ctx = kzalloc(struct_size(ctx, clk_data.hws, nr_plls), GFP_KERNEL);
-
-`struct_size(ctx, clk_data.hws, nr_plls)` above translates to
-sizeof(struct visconti_pll_provider) + sizeof(struct clk_hw *) * 7 ==
-24 + 8 * 7 == 24 + 56
-		  ^^^^
-		   |
-	allocated bytes for flex array `hws`
-
-$ pahole -C visconti_pll_provider drivers/clk/visconti/pll.o
-struct visconti_pll_provider {
-	void *                     reg_base;             /*     0     8 */
-	struct clk_hw_onecell_data clk_data;             /*     8     8 */
-	struct device_node *       node;                 /*    16     8 */
-
-	/* size: 24, cachelines: 1, members: 3 */
-	/* last cacheline: 24 bytes */
-};
-
-And then, after the allocation, some data is written into all members
-of `struct visconti_pll_provider`:
-
-332         for (i = 0; i < nr_plls; ++i)
-333                 ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
-334
-335         ctx->node = np;
-336         ctx->reg_base = base;
-337         ctx->clk_data.num = nr_plls;
-
-Fix all these by placing the declaration of object `clk_data` at the
-end of `struct visconti_pll_provider`. Also, add a comment to make it
-clear that this object must always be last in the structure, and
-prevent this bug from being introduced again in the future.
-
--Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
-ready to enable it globally.
-
-Fixes: b4cbe606dc36 ("clk: visconti: Add support common clock driver and reset driver")
+Link: https://lore.kernel.org/all/ZPj6iF0Q7iynn62p@google.com/
+Fixes: 5413bcba7ed5 ("KVM: x86: Add support for vICR APIC-write VM-Exits in x2APIC mode")
 Cc: stable@vger.kernel.org
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/57a831d94ee2b3889b11525d4ad500356f89576f.1697492890.git.gustavoars@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20230914055504.151365-1-tao1.su@linux.intel.com
+[sean: tweak changelog, replace TODO with comment, drop local "val"]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/visconti/pll.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kvm/lapic.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/clk/visconti/pll.h
-+++ b/drivers/clk/visconti/pll.h
-@@ -15,8 +15,10 @@
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2423,22 +2423,22 @@ EXPORT_SYMBOL_GPL(kvm_lapic_set_eoi);
+ void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
+ {
+ 	struct kvm_lapic *apic = vcpu->arch.apic;
+-	u64 val;
  
- struct visconti_pll_provider {
- 	void __iomem *reg_base;
--	struct clk_hw_onecell_data clk_data;
- 	struct device_node *node;
-+
-+	/* Must be last */
-+	struct clk_hw_onecell_data clk_data;
- };
+ 	/*
+-	 * ICR is a single 64-bit register when x2APIC is enabled.  For legacy
+-	 * xAPIC, ICR writes need to go down the common (slightly slower) path
+-	 * to get the upper half from ICR2.
++	 * ICR is a single 64-bit register when x2APIC is enabled, all others
++	 * registers hold 32-bit values.  For legacy xAPIC, ICR writes need to
++	 * go down the common path to get the upper half from ICR2.
++	 *
++	 * Note, using the write helpers may incur an unnecessary write to the
++	 * virtual APIC state, but KVM needs to conditionally modify the value
++	 * in certain cases, e.g. to clear the ICR busy bit.  The cost of extra
++	 * conditional branches is likely a wash relative to the cost of the
++	 * maybe-unecessary write, and both are in the noise anyways.
+ 	 */
+-	if (apic_x2apic_mode(apic) && offset == APIC_ICR) {
+-		val = kvm_lapic_get_reg64(apic, APIC_ICR);
+-		kvm_apic_send_ipi(apic, (u32)val, (u32)(val >> 32));
+-		trace_kvm_apic_write(APIC_ICR, val);
+-	} else {
+-		/* TODO: optimize to just emulate side effect w/o one more write */
+-		val = kvm_lapic_get_reg(apic, offset);
+-		kvm_lapic_reg_write(apic, offset, (u32)val);
+-	}
++	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
++		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
++	else
++		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
+ }
+ EXPORT_SYMBOL_GPL(kvm_apic_write_nodecode);
  
- #define VISCONTI_PLL_RATE(_rate, _dacen, _dsmen, \
 
 
 
