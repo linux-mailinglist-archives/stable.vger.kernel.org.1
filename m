@@ -1,49 +1,45 @@
-Return-Path: <stable+bounces-385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4D77F7ADB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F178D7F7F88
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC2B128196D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78F81B219CD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D7F39FD0;
-	Fri, 24 Nov 2023 17:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0501D689;
+	Fri, 24 Nov 2023 18:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UsfzL35S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLe2DAA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5642C381D8;
-	Fri, 24 Nov 2023 17:59:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861F1C433C8;
-	Fri, 24 Nov 2023 17:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B562D787;
+	Fri, 24 Nov 2023 18:42:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B46C433C8;
+	Fri, 24 Nov 2023 18:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848760;
-	bh=p0A7+05LVx1nDbXamfzaps/KtbAg1KbD+5oE8bdGecw=;
+	s=korg; t=1700851336;
+	bh=U7T5VksooxVobSFD/Y4DE//tqRd2/i2eBQ2GoatIlNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UsfzL35SVP7DVsUgA0VqsVAv8Cv980wX5bTGp7EIQVDniGXC2icIhuvitfWIK1+4Y
-	 ZeISFM55fjaBaQzTpf66Y2U2hoOBcW+svX1493mCB5XCvcs8MPDy2ZILe8P1Qr6K5j
-	 4m50PUed7y5SznL4HiGtNvrHUSnwiRri23TDzReQ=
+	b=fLe2DAA7FfrcCzS+2zmuVGix/4L9pNGXG4nUSmcCo3HNAEs/+yA5k/AzjRiHT3S9t
+	 /yxGlZfQ8QJ+fJs0RdpebZQ8+h1MfliROapXobIMKhx+RSePrZcJB4rgCjCqp7kLUC
+	 c8KK+QprPegMDLQfmgtu85nFG1rTc07mICEjAYak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 46/97] macvlan: Dont propagate promisc change to lower dev in passthru
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.5 383/491] parisc/power: Fix power soft-off when running on qemu
 Date: Fri, 24 Nov 2023 17:50:19 +0000
-Message-ID: <20231124171935.881220586@linuxfoundation.org>
+Message-ID: <20231124172036.107415853@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,66 +51,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 7e1caeace0418381f36b3aa8403dfd82fc57fc53 ]
+commit 6ad6e15a9c46b8f0932cd99724f26f3db4db1cdf upstream.
 
-Macvlan device in passthru mode sets its lower device promiscuous mode
-according to its MACVLAN_FLAG_NOPROMISC flag instead of synchronizing it to
-its own promiscuity setting. However, macvlan_change_rx_flags() function
-doesn't check the mode before propagating such changes to the lower device
-which can cause net_device->promiscuity counter overflow as illustrated by
-reproduction example [0] and resulting dmesg log [1]. Fix the issue by
-first verifying the mode in macvlan_change_rx_flags() function before
-propagating promiscuous mode change to the lower device.
+Firmware returns the physical address of the power switch,
+so need to use gsc_writel() instead of direct memory access.
 
-[0]:
-ip link add macvlan1 link enp8s0f0 type macvlan mode passthru
-ip link set macvlan1 promisc on
-ip l set dev macvlan1 up
-ip link set macvlan1 promisc off
-ip l set dev macvlan1 down
-ip l set dev macvlan1 up
-
-[1]:
-[ 5156.281724] macvlan1: entered promiscuous mode
-[ 5156.285467] mlx5_core 0000:08:00.0 enp8s0f0: entered promiscuous mode
-[ 5156.287639] macvlan1: left promiscuous mode
-[ 5156.288339] mlx5_core 0000:08:00.0 enp8s0f0: left promiscuous mode
-[ 5156.290907] mlx5_core 0000:08:00.0 enp8s0f0: entered promiscuous mode
-[ 5156.317197] mlx5_core 0000:08:00.0 enp8s0f0: promiscuity touches roof, set promiscuity failed. promiscuity feature of device might be broken.
-
-Fixes: efdbd2b30caa ("macvlan: Propagate promiscuity setting to lower devices.")
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231114175915.1649154-1-vladbu@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d0c219472980 ("parisc/power: Add power soft-off when running on qemu")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/macvlan.c | 2 +-
+ drivers/parisc/power.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index e1f95fd08d721..29d5fd46c09a0 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -769,7 +769,7 @@ static void macvlan_change_rx_flags(struct net_device *dev, int change)
- 	if (dev->flags & IFF_UP) {
- 		if (change & IFF_ALLMULTI)
- 			dev_set_allmulti(lowerdev, dev->flags & IFF_ALLMULTI ? 1 : -1);
--		if (change & IFF_PROMISC)
-+		if (!macvlan_passthru(vlan->port) && change & IFF_PROMISC)
- 			dev_set_promiscuity(lowerdev,
- 					    dev->flags & IFF_PROMISC ? 1 : -1);
- 
--- 
-2.42.0
-
+--- a/drivers/parisc/power.c
++++ b/drivers/parisc/power.c
+@@ -201,7 +201,7 @@ static struct notifier_block parisc_pani
+ static int qemu_power_off(struct sys_off_data *data)
+ {
+ 	/* this turns the system off via SeaBIOS */
+-	*(int *)data->cb_data = 0;
++	gsc_writel(0, (unsigned long) data->cb_data);
+ 	pdc_soft_power_button(1);
+ 	return NOTIFY_DONE;
+ }
 
 
 
