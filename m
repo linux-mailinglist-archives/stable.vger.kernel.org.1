@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5F97F75B1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:54:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA017F75B3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:54:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA11E2824E4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:54:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 179E7282502
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EDC28E26;
-	Fri, 24 Nov 2023 13:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DA52C1BA;
+	Fri, 24 Nov 2023 13:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEAbubHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8VuOTrM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F266418041
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:54:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7632AC433C7;
-	Fri, 24 Nov 2023 13:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61642286B9
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E145AC433C8;
+	Fri, 24 Nov 2023 13:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700834051;
-	bh=+vtEihLDa6b0FyhA+lNj80g4UjldDDiH0L57yu0OS9o=;
+	s=korg; t=1700834054;
+	bh=75emIipprBAK4nNf1mZtcLy+dHoIXhSMUfPUZjFU23c=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HEAbubHPZTEZjGTXUdnAw9rHuSh03QTXrey0XydQpA9jcpKLkijerCHUPfxGwZATZ
-	 0DuXb4MiFYbGiZzdihi81JFeWBIbrwQ49nmRwrwZKyXnoUHdelsqScvLtoJO//eXvq
-	 1hB6xGzrNvS2REt1In4RjKW5SI7qIfDNkc2yZKcY=
-Subject: FAILED: patch "[PATCH] drm/amd: Fix detection of _PR3 on the PCIe root port" failed to apply to 6.1-stable tree
+	b=y8VuOTrM1l3PingHPfCFyOkUc0Qbw294jB9XYzLzOF1Yq0fvbwq0F7KhQEhzi26tJ
+	 GyRJA2dXDGm1bjggkobTpVBRs7TNUPiacQI8E1+i9zz9vRypjOPCAIrQhuJRiJ5wJO
+	 8XiqMFfTsCjXwhMsZ/gKJtWkTo3zjgAOOkUaBiAk=
+Subject: FAILED: patch "[PATCH] drm/amd: Fix detection of _PR3 on the PCIe root port" failed to apply to 5.15-stable tree
 To: mario.limonciello@amd.com,David.Perry@amd.com,Jun.Ma2@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:54:05 +0000
-Message-ID: <2023112405-verify-maternity-3f0a@gregkh>
+Date: Fri, 24 Nov 2023 13:54:07 +0000
+Message-ID: <2023112406-gonad-amuser-aab3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x c4c8955b8acb4d88d2ca02a7dc6010e5f0c5288d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112405-verify-maternity-3f0a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112406-gonad-amuser-aab3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 c4c8955b8acb ("drm/amd: Fix detection of _PR3 on the PCIe root port")
+85ac2021fe3a ("drm/amdgpu: only check for _PR3 on dGPUs")
+901e2be20dc5 ("drm/amdgpu: move PX checking into amdgpu_device_ip_early_init")
+4a74c38cd67b ("drm/amdgpu: Detect if amdgpu in IOMMU direct map mode")
+fe9c5c9affc9 ("drm/amdgpu: Use MAX_HWIP instead of HW_ID_MAX")
+1d789535a036 ("drm/amdgpu: convert IP version array to include instances")
+5c3720be7d46 ("drm/amdgpu: get VCN and SDMA instances from IP discovery table")
+2cbc6f4259f6 ("drm/amd/display: fix error case handling")
+75a07bcd1d30 ("drm/amdgpu/soc15: convert to IP version checking")
+0b64a5a85229 ("drm/amdgpu/vcn2.5: convert to IP version checking")
+96b8dd4423e7 ("drm/amdgpu/amdgpu_vcn: convert to IP version checking")
+50638f7dbd0b ("drm/amdgpu/pm/amdgpu_smu: convert more IP version checking")
+61b396b91196 ("drm/amdgpu/pm/smu_v13.0: convert IP version checking")
+6b726a0a52cc ("drm/amdgpu/pm/smu_v11.0: update IP version checking")
+1fcc208cd780 ("drm/amdgpu/psp_v13.0: convert to IP version checking")
+e47868ea15cb ("drm/amdgpu/psp_v11.0: convert to IP version checking")
+82d05736c47b ("drm/amdgpu/amdgpu_psp: convert to IP version checking")
+9d0cb2c31891 ("drm/amdgpu/gfx9.0: convert to IP version checking")
+24be2d70048b ("drm/amdgpu/hdp4.0: convert to IP version checking")
+43bf00f21eaf ("drm/amdgpu/sdma4.0: convert to IP version checking")
 
 thanks,
 
