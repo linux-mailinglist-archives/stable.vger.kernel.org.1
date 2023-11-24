@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8ADA7F8001
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582D17F8196
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1634E1C214DC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1325B28285B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9534D28E3A;
-	Fri, 24 Nov 2023 18:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3077364A6;
+	Fri, 24 Nov 2023 18:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lnSab5Vp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJ/wYmqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FFB2E40E;
-	Fri, 24 Nov 2023 18:45:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1671C433C7;
-	Fri, 24 Nov 2023 18:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED7B33CC2;
+	Fri, 24 Nov 2023 18:59:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A21BC433C7;
+	Fri, 24 Nov 2023 18:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851556;
-	bh=Sa3D56r3A2oTsvhJMmKraA+Jc56LjNU6801wh4yVK7Q=;
+	s=korg; t=1700852389;
+	bh=IzwoVa6TI8/pPW8gxiH36syM73Qnh3Ezxlv/881zTVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lnSab5Vp9Q5XCMrc9jGAS9AkxWAEtuMQ6IVo6mj4s5ewH0FWy+YSQtEu+JD4CjQTw
-	 r610ua3QOf9Y/90MHnEKeqil6DRaH/NRtLpaFRmlF9DMjMfWD46vRF1iPv2+1a8F+7
-	 mZdwj8r3kQwWpbjYHFXIgpQS0w+HrddzNyqjnIzM=
+	b=JJ/wYmquBiPilGMrx8Xs4lLYsttwEccpCG/objx8hBCH4QXv76TFlvCvWx0vpwxeN
+	 BdTrqkQCLKYYLlDZ7iwjjZk3+lBzBISM5/f1rH01oVgM49n16FwecPxEMdWxHbNpVD
+	 LgHkiKresBSqiCe7amoPE4UZm/YWRKC/4zHh38/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.5 487/491] drm/amd/display: fix a NULL pointer dereference in amdgpu_dm_i2c_xfer()
-Date: Fri, 24 Nov 2023 17:52:03 +0000
-Message-ID: <20231124172039.268283857@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 337/372] mptcp: fix setsockopt(IP_TOS) subflow locking
+Date: Fri, 24 Nov 2023 17:52:04 +0000
+Message-ID: <20231124172021.624375166@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +54,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit b71f4ade1b8900d30c661d6c27f87c35214c398c upstream.
+commit 7679d34f97b7a09fd565f5729f79fd61b7c55329 upstream.
 
-When ddc_service_construct() is called, it explicitly checks both the
-link type and whether there is something on the link which will
-dictate whether the pin is marked as hw_supported.
+The MPTCP implementation of the IP_TOS socket option uses the lockless
+variant of the TOS manipulation helper and does not hold such lock at
+the helper invocation time.
 
-If the pin isn't set or the link is not set (such as from
-unloading/reloading amdgpu in an IGT test) then fail the
-amdgpu_dm_i2c_xfer() call.
+Add the required locking.
 
+Fixes: ffcacff87cd6 ("mptcp: Support for IP_TOS for MPTCP setsockopt()")
 Cc: stable@vger.kernel.org
-Fixes: 22676bc500c2 ("drm/amd/display: Fix dmub soft hang for PSR 1")
-Link: https://github.com/fwupd/fwupd/issues/6327
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/457
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-4-7b9cd6a7b7f4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
+ net/mptcp/sockopt.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7394,6 +7394,9 @@ static int amdgpu_dm_i2c_xfer(struct i2c
- 	int i;
- 	int result = -EIO;
+--- a/net/mptcp/sockopt.c
++++ b/net/mptcp/sockopt.c
+@@ -735,8 +735,11 @@ static int mptcp_setsockopt_v4_set_tos(s
+ 	val = inet_sk(sk)->tos;
+ 	mptcp_for_each_subflow(msk, subflow) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		bool slow;
  
-+	if (!ddc_service->ddc_pin || !ddc_service->ddc_pin->hw_info.hw_supported)
-+		return result;
-+
- 	cmd.payloads = kcalloc(num, sizeof(struct i2c_payload), GFP_KERNEL);
++		slow = lock_sock_fast(ssk);
+ 		__ip_sock_set_tos(ssk, val);
++		unlock_sock_fast(ssk, slow);
+ 	}
+ 	release_sock(sk);
  
- 	if (!cmd.payloads)
 
 
 
