@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50D67F7FAF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00A47F7AFC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A584B21AC4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1F631C20918
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD5B33E9;
-	Fri, 24 Nov 2023 18:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470FE39FF8;
+	Fri, 24 Nov 2023 18:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/nlOxMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V09qRRu6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52355381CD;
-	Fri, 24 Nov 2023 18:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB76BC433C8;
-	Fri, 24 Nov 2023 18:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37D539FEA;
+	Fri, 24 Nov 2023 18:00:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F5DC433C8;
+	Fri, 24 Nov 2023 18:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851409;
-	bh=om4xUXS2iGsz1HqKec+QS9EVKDlZml3qjgdtBS4InSY=;
+	s=korg; t=1700848842;
+	bh=EDRnqxepnqG6ISc/UnqOUZifRHU0UgVcdSR1n6oiROY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/nlOxMQmZAQFK0aSNkxK1T807tv3FsHPsJTABmG7peFli58OMJjBXLW8KBJq5Mi1
-	 mvrxfhzHPrXfCF9jWGj/1BPiabALvRKh3yAsk6UmnrvddO3Bz2AqVmuoX12/d7Qf6q
-	 +giZIb742NWwx/nNSvQA0qrYb4zQ89SwBfNPjobs=
+	b=V09qRRu6lAIG3j0Rjs/Ikz0olWUulM6YEQKURF+/9uIdgSz2YEU7ffYAd6uI9fsRJ
+	 IVWtAV1+gc05YNkgGR6dPs7l+hoFHeEv1+7VixEaUaD+yrkyjCfONqZ2VDuqQTTBxy
+	 /aFDn87/Qmypid02/r6EHApvja3DJ4Fa+cuiaa/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.5 412/491] net: ethtool: Fix documentation of ethtool_sprintf()
-Date: Fri, 24 Nov 2023 17:50:48 +0000
-Message-ID: <20231124172036.987452066@linuxfoundation.org>
+	Rob Herring <robh@kernel.org>,
+	Loys Ollivier <lollivier@baylibre.com>,
+	Neil Armstrong <narmstrong@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 76/97] tty: serial: meson: if no alias specified use an available id
+Date: Fri, 24 Nov 2023 17:50:49 +0000
+Message-ID: <20231124171937.001263843@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +54,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Loys Ollivier <lollivier@baylibre.com>
 
-commit f55d8e60f10909dbc5524e261041e1d28d7d20d8 upstream.
+[ Upstream commit a26988e8fef4b258d1b771e0f4b2e3b67cb2e044 ]
 
-This function takes a pointer to a pointer, unlike sprintf() which is
-passed a plain pointer. Fix up the documentation to make this clear.
+At probe, the uart driver tries to get an id from a device tree alias.
+When no alias was specified, the driver would return an error and probing
+would fail.
 
-Fixes: 7888fe53b706 ("ethtool: Add common function for filling out strings")
-Cc: Alexander Duyck <alexanderduyck@fb.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Link: https://lore.kernel.org/r/20231028192511.100001-1-andrew@lunn.ch
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Providing an alias for registering a serial device should not be mandatory.
+If the device tree does not specify an alias, provide an id from a reserved
+range so that the probing can continue.
+
+Suggested-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Loys Ollivier <lollivier@baylibre.com>
+Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ethtool.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/meson_uart.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
---- a/include/linux/ethtool.h
-+++ b/include/linux/ethtool.h
-@@ -1045,10 +1045,10 @@ static inline int ethtool_mm_frag_size_m
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index 1838d0be37044..849ce8c1ef392 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -72,7 +72,8 @@
+ #define AML_UART_BAUD_USE		BIT(23)
+ #define AML_UART_BAUD_XTAL		BIT(24)
  
- /**
-  * ethtool_sprintf - Write formatted string to ethtool string data
-- * @data: Pointer to start of string to update
-+ * @data: Pointer to a pointer to the start of string to update
-  * @fmt: Format of string to write
-  *
-- * Write formatted string to data. Update data to point at start of
-+ * Write formatted string to *data. Update *data to point at start of
-  * next string.
-  */
- extern __printf(2, 3) void ethtool_sprintf(u8 **data, const char *fmt, ...);
+-#define AML_UART_PORT_NUM		6
++#define AML_UART_PORT_NUM		12
++#define AML_UART_PORT_OFFSET		6
+ #define AML_UART_DEV_NAME		"ttyAML"
+ 
+ 
+@@ -667,10 +668,20 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	struct resource *res_mem, *res_irq;
+ 	struct uart_port *port;
+ 	int ret = 0;
++	int id = -1;
+ 
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
+ 
++	if (pdev->id < 0) {
++		for (id = AML_UART_PORT_OFFSET; id < AML_UART_PORT_NUM; id++) {
++			if (!meson_ports[id]) {
++				pdev->id = id;
++				break;
++			}
++		}
++	}
++
+ 	if (pdev->id < 0 || pdev->id >= AML_UART_PORT_NUM)
+ 		return -EINVAL;
+ 
+-- 
+2.42.0
+
 
 
 
