@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9FB7F7F0D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0087F80C2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A157282446
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA711282516
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE69233075;
-	Fri, 24 Nov 2023 18:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEB933075;
+	Fri, 24 Nov 2023 18:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMKGRrUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kuz+P7eL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885AF35F04;
-	Fri, 24 Nov 2023 18:38:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193A4C433C7;
-	Fri, 24 Nov 2023 18:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBB92C87B;
+	Fri, 24 Nov 2023 18:52:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605C3C433C8;
+	Fri, 24 Nov 2023 18:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851088;
-	bh=W4Do+OA7L1yUjWdYguPj5ws83DjdZPBSAhu0BQaTxRw=;
+	s=korg; t=1700851948;
+	bh=MX4kyyJA37hioBzVZT2yU3Fu38QYTVeKMmN1aqOBe9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fMKGRrUUmkCfoKZ9aFR5VP9cJ9i/rrvyvjzyLDxtzZzjxlfNmZdEZLHOgAHWnauMB
-	 CqOHbvU5AQcZ7KmQnSuXIJuLlT6T5mw9f/b0xlaMxoX2Hdnc23JKOyTBSMbTp4oWB8
-	 tb0RxUDYwP/9BtMbWAv2eLpKttzH6MQtNltfD1OI=
+	b=Kuz+P7eLRYeH9s1bTpH4f+Ss2be4/XR5zVmzUyGCEBjlakBc1MN8BrnOHarA2gx0G
+	 NsBLvRI2MP/WHWz7sP/Yq0OyaGl+xi5FCIjb5pnc+GRq4jI/NTDi7UOvdo7hdQlhKl
+	 1XGRZ9+Ch0PFVVGXcf5pQJgQxEMUhd6k/R9TQ5BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.5 309/491] arm64: dts: qcom: ipq6018: Fix hwlock index for SMEM
-Date: Fri, 24 Nov 2023 17:49:05 +0000
-Message-ID: <20231124172033.850873545@linuxfoundation.org>
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Anastasia Belova <abelova@astralinux.ru>,
+	Ekaterina Esina <eesina@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 159/372] cifs: spnego: add ; in HOST_KEY_LEN
+Date: Fri, 24 Nov 2023 17:49:06 +0000
+Message-ID: <20231124172015.784406009@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +55,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Anastasia Belova <abelova@astralinux.ru>
 
-commit 95d97b111e1e184b0c8656137033ed64f2cf21e4 upstream.
+[ Upstream commit ff31ba19d732efb9aca3633935d71085e68d5076 ]
 
-SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-in SMEM region shared by the Host and FW.
+"host=" should start with ';' (as in cifs_get_spnego_key)
+So its length should be 6.
 
-Fix the SMEM hwlock index to 3 for IPQ6018.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cc: stable@vger.kernel.org
-Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230904172516.479866-3-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Fixes: 7c9c3760b3a5 ("[CIFS] add constants for string lengths of keynames in SPNEGO upcall string")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Co-developed-by: Ekaterina Esina <eesina@astralinux.ru>
+Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/cifs_spnego.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -207,7 +207,7 @@
- 	smem {
- 		compatible = "qcom,smem";
- 		memory-region = <&smem_region>;
--		hwlocks = <&tcsr_mutex 0>;
-+		hwlocks = <&tcsr_mutex 3>;
- 	};
+diff --git a/fs/smb/client/cifs_spnego.c b/fs/smb/client/cifs_spnego.c
+index 342717bf1dc28..1e6819daaaa7e 100644
+--- a/fs/smb/client/cifs_spnego.c
++++ b/fs/smb/client/cifs_spnego.c
+@@ -64,8 +64,8 @@ struct key_type cifs_spnego_key_type = {
+  * strlen(";sec=ntlmsspi") */
+ #define MAX_MECH_STR_LEN	13
  
- 	soc: soc@0 {
+-/* strlen of "host=" */
+-#define HOST_KEY_LEN		5
++/* strlen of ";host=" */
++#define HOST_KEY_LEN		6
+ 
+ /* strlen of ";ip4=" or ";ip6=" */
+ #define IP_KEY_LEN		5
+-- 
+2.42.0
+
 
 
 
