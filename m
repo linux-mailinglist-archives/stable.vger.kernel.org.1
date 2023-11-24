@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89D87F7B0F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4887F8122
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84D4628137C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B424B21BEC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C13239FF2;
-	Fri, 24 Nov 2023 18:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD3035F1A;
+	Fri, 24 Nov 2023 18:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lc0H2DKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L46QQcTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3A1F39FC6;
-	Fri, 24 Nov 2023 18:01:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E77EC433C8;
-	Fri, 24 Nov 2023 18:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE76933E9;
+	Fri, 24 Nov 2023 18:55:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C391C433C8;
+	Fri, 24 Nov 2023 18:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848885;
-	bh=OSBJtRypN8KI+sjRAlh8sND2cBjaXhaSUDFiogs7i0E=;
+	s=korg; t=1700852154;
+	bh=VSpk8DEcCh9Hdzu/oQK54rAfPJUhDFtvoH0NQYxFJxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lc0H2DKAAMXYGuQdM91hAHrYEkRJeQTKBpb8gpHhs4+Msc4ScqDM9lX9vNW0/T4Bu
-	 7AIKS/J+zRaF8wqTr04Cnh4QbolJRpCZwy2clqCZ8Dr7ZYDbrwox4VoCUE9oa2qZkx
-	 CgkoggSLvUc3/aFRR+xh3Oh5ubHSf6QnG4hOgLN8=
+	b=L46QQcTD86Tc0nZfoC/cUmiI9GQ8klNE2VmY2Ui/tANQ9eusNXDh2CTFAYzNDLkG0
+	 jB0neMw32Op7te3CwrPZ5uZsVmKxb/N6rClvo7yTW7uWdS1OYdGUmVgJheNDqbNVxP
+	 MTPkbX5D5P0Sbjeg+GmYlg/pPanIr1TPtlBPhshE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 03/57] clocksource/drivers/timer-atmel-tcb: Fix initialization on SAM9 hardware
-Date: Fri, 24 Nov 2023 17:50:27 +0000
-Message-ID: <20231124171930.399827279@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 241/372] ASoC: codecs: wsa-macro: fix uninitialized stack variables with name prefix
+Date: Fri, 24 Nov 2023 17:50:28 +0000
+Message-ID: <20231124172018.561984845@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,60 +52,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 6d3bc4c02d59996d1d3180d8ed409a9d7d5900e0 ]
+commit 72151ad0cba8a07df90130ff62c979520d71f23b upstream.
 
-On SAM9 hardware two cascaded 16 bit timers are used to form a 32 bit
-high resolution timer that is used as scheduler clock when the kernel
-has been configured that way (CONFIG_ATMEL_CLOCKSOURCE_TCB).
+Driver compares widget name in wsa_macro_spk_boost_event() widget event
+callback, however it does not handle component's name prefix.  This
+leads to using uninitialized stack variables as registers and register
+values.  Handle gracefully such case.
 
-The driver initially triggers a reset-to-zero of the two timers but this
-reset is only performed on the next rising clock. For the first timer
-this is ok - it will be in the next 60ns (16MHz clock). For the chained
-second timer this will only happen after the first timer overflows, i.e.
-after 2^16 clocks (~4ms with a 16MHz clock). So with other words the
-scheduler clock resets to 0 after the first 2^16 clock cycles.
-
-It looks like that the scheduler does not like this and behaves wrongly
-over its lifetime, e.g. some tasks are scheduled with a long delay. Why
-that is and if there are additional requirements for this behaviour has
-not been further analysed.
-
-There is a simple fix for resetting the second timer as well when the
-first timer is reset and this is to set the ATMEL_TC_ASWTRG_SET bit in
-the Channel Mode register (CMR) of the first timer. This will also rise
-the TIOA line (clock input of the second timer) when a software trigger
-respective SYNC is issued.
-
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20231007161803.31342-1-rwahl@gmx.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231003155422.801160-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/tcb_clksrc.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/lpass-wsa-macro.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/clocksource/tcb_clksrc.c b/drivers/clocksource/tcb_clksrc.c
-index 9de47d4d2d9ef..e489730331a23 100644
---- a/drivers/clocksource/tcb_clksrc.c
-+++ b/drivers/clocksource/tcb_clksrc.c
-@@ -294,6 +294,7 @@ static void __init tcb_setup_dual_chan(struct atmel_tc *tc, int mck_divisor_idx)
- 	writel(mck_divisor_idx			/* likely divide-by-8 */
- 			| ATMEL_TC_WAVE
- 			| ATMEL_TC_WAVESEL_UP		/* free-run */
-+			| ATMEL_TC_ASWTRG_SET		/* TIOA0 rises at software trigger */
- 			| ATMEL_TC_ACPA_SET		/* TIOA0 rises at 0 */
- 			| ATMEL_TC_ACPC_CLEAR,		/* (duty cycle 50%) */
- 			tcaddr + ATMEL_TC_REG(0, CMR));
--- 
-2.42.0
-
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -1682,6 +1682,9 @@ static int wsa_macro_spk_boost_event(str
+ 		boost_path_cfg1 = CDC_WSA_RX1_RX_PATH_CFG1;
+ 		reg = CDC_WSA_RX1_RX_PATH_CTL;
+ 		reg_mix = CDC_WSA_RX1_RX_PATH_MIX_CTL;
++	} else {
++		dev_warn(component->dev, "Incorrect widget name in the driver\n");
++		return -EINVAL;
+ 	}
+ 
+ 	switch (event) {
 
 
 
