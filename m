@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC6C7F7AE0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8AD7F7D42
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 709641C20969
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87AD628217C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FFA39FE3;
-	Fri, 24 Nov 2023 17:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA62139FE8;
+	Fri, 24 Nov 2023 18:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqOGsFaw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxRoNuoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6157381D8;
-	Fri, 24 Nov 2023 17:59:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F80C433C8;
-	Fri, 24 Nov 2023 17:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1638F39FF7;
+	Fri, 24 Nov 2023 18:22:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCF6C433C7;
+	Fri, 24 Nov 2023 18:22:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848775;
-	bh=T+t1B0eJMqPTE3uhWyBrmHgnRfUFxAYxO1SlFELHWig=;
+	s=korg; t=1700850174;
+	bh=u6LfNIy72pPLU4IEYo6HcJw999soTLeCyvv5ZRzohJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OqOGsFawhHv784a5j5LDogsB01ilgNh5gigx0N6rX/YRh+Trfau/lYjgeiU4iPGGO
-	 qNdbObRhku5hIxSDLOI8RE1hoBuj/+/4Vy/BGVMKSLTU3ivyGsd/L8KaX1CgQiYH4D
-	 oyvqranyzdn4TXK87x4ggSWYBekV/5BdLf78JHII=
+	b=FxRoNuoPztrJNwewIqQW6jeOVODjUnqJooF8t8DBwSSaB7EX8git3zs/CkUQ5jWog
+	 GWGlp5GESce/dMOQR2gglMf8nlrEMAkC931sEUJ/JQ7b/nowqVKK4YcEfv6NEdUwwg
+	 Kqp0TTh7cYH+D+iQjlgyYlJW4Y/WIGNqExsOV/2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 4.19 68/97] dmaengine: stm32-mdma: correct desc prep when channel running
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 475/530] mmc: sdhci-pci-gli: A workaround to allow GL9750 to enter ASPM L1.2
 Date: Fri, 24 Nov 2023 17:50:41 +0000
-Message-ID: <20231124171936.675877767@linuxfoundation.org>
+Message-ID: <20231124172042.528430606@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +52,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit 03f25d53b145bc2f7ccc82fc04e4482ed734f524 upstream.
+commit d7133797e9e1b72fd89237f68cb36d745599ed86 upstream.
 
-In case of the prep descriptor while the channel is already running, the
-CCR register value stored into the channel could already have its EN bit
-set.  This would lead to a bad transfer since, at start transfer time,
-enabling the channel while other registers aren't yet properly set.
-To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
-into the mdma channel structure.
+When GL9750 enters ASPM L1 sub-states, it will stay at L1.1 and will not
+enter L1.2. The workaround is to toggle PM state to allow GL9750 to enter
+ASPM L1.2.
 
-Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Tested-by: Alain Volmat <alain.volmat@foss.st.com>
-Link: https://lore.kernel.org/r/20231009082450.452877-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Link: https://lore.kernel.org/r/20230912091710.7797-1-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/stm32-mdma.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/dma/stm32-mdma.c
-+++ b/drivers/dma/stm32-mdma.c
-@@ -520,7 +520,7 @@ static int stm32_mdma_set_xfer_param(str
- 	src_maxburst = chan->dma_config.src_maxburst;
- 	dst_maxburst = chan->dma_config.dst_maxburst;
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -25,6 +25,9 @@
+ #define   GLI_9750_WT_EN_ON	    0x1
+ #define   GLI_9750_WT_EN_OFF	    0x0
  
--	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
-+	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
- 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
- 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
++#define PCI_GLI_9750_PM_CTRL	0xFC
++#define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
++
+ #define SDHCI_GLI_9750_CFG2          0x848
+ #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
+ #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
+@@ -539,8 +542,12 @@ static void sdhci_gl9750_set_clock(struc
  
-@@ -948,7 +948,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_ch
- 	if (!desc)
- 		return NULL;
+ static void gl9750_hw_setting(struct sdhci_host *host)
+ {
++	struct sdhci_pci_slot *slot = sdhci_priv(host);
++	struct pci_dev *pdev;
+ 	u32 value;
  
--	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
-+	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
- 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
- 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
- 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
++	pdev = slot->chip->pdev;
++
+ 	gl9750_wt_on(host);
+ 
+ 	value = sdhci_readl(host, SDHCI_GLI_9750_CFG2);
+@@ -550,6 +557,13 @@ static void gl9750_hw_setting(struct sdh
+ 			    GLI_9750_CFG2_L1DLY_VALUE);
+ 	sdhci_writel(host, value, SDHCI_GLI_9750_CFG2);
+ 
++	/* toggle PM state to allow GL9750 to enter ASPM L1.2 */
++	pci_read_config_dword(pdev, PCI_GLI_9750_PM_CTRL, &value);
++	value |= PCI_GLI_9750_PM_STATE;
++	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
++	value &= ~PCI_GLI_9750_PM_STATE;
++	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
++
+ 	gl9750_wt_off(host);
+ }
+ 
 
 
 
