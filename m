@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-1929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD1B7F8208
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:03:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8B27F8339
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:15:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 658D3283E1C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE56BB23697
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A6733CC2;
-	Fri, 24 Nov 2023 19:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A2D381CC;
+	Fri, 24 Nov 2023 19:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrZsXqrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rDM3rMUL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56A23173F;
-	Fri, 24 Nov 2023 19:03:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD9DC433C8;
-	Fri, 24 Nov 2023 19:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B283418E;
+	Fri, 24 Nov 2023 19:15:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D17C433C7;
+	Fri, 24 Nov 2023 19:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852623;
-	bh=pcwgwCY77hjfQmU9IkO53C9ElxKvdvFEd2G6IQ92hec=;
+	s=korg; t=1700853320;
+	bh=PDe5nBe/iyMNVsSzepLQ+zYJg+ACYWExn4L5/u4cncg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PrZsXqrs9OGpcV7CD321MNpCFHb/Ej3pmyEDBii3alIwtCyEtxMVKVYm+NPS2THrf
-	 KqVTPodtQIXjiSbO8c+HoSZpo21xL4yUDQ2d/5FBzKuEheRFkzzQ4Xff2SULzIMPa3
-	 luCDQ9Eg9migUcTPVg+smL9rX4Ne0ZkZe58EDiK4=
+	b=rDM3rMULr40l2I9jQUUg8soDB9AIU+iyz9lYYhmTSwymc2f5pexdo4NnowoYkgGKQ
+	 UPTyjNR1vEBJGAx+MKAt50QquvEeEPfXuk9H8Txj5NLfmLs53d7DdjBCzQJa94Kmw4
+	 /+lzyvbkKlkBuCdJRATVehdzdhZ30E0xgwwUieGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	Kaixu Xia <kaixuxia@tencent.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 057/193] pwm: Fix double shift bug
+Subject: [PATCH 5.15 142/297] xfs: use invalidate_lock to check the state of mmap_lock
 Date: Fri, 24 Nov 2023 17:53:04 +0000
-Message-ID: <20231124171949.548683723@linuxfoundation.org>
+Message-ID: <20231124172005.242033789@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +54,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kaixu Xia <kaixuxia@tencent.com>
 
-[ Upstream commit d27abbfd4888d79dd24baf50e774631046ac4732 ]
+[ Upstream commit 82af88063961da9425924d9aec3fb67a4ebade3e ]
 
-These enums are passed to set/test_bit().  The set/test_bit() functions
-take a bit number instead of a shifted value.  Passing a shifted value
-is a double shift bug like doing BIT(BIT(1)).  The double shift bug
-doesn't cause a problem here because we are only checking 0 and 1 but
-if the value was 5 or above then it can lead to a buffer overflow.
+We should use invalidate_lock and XFS_MMAPLOCK_SHARED to check the state
+of mmap_lock rw_semaphore in xfs_isilocked(), rather than i_rwsem and
+XFS_IOLOCK_SHARED.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Fixes: 2433480a7e1d ("xfs: Convert to use invalidate_lock")
+Signed-off-by: Kaixu Xia <kaixuxia@tencent.com>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pwm.h | 4 ++--
+ fs/xfs/xfs_inode.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/pwm.h b/include/linux/pwm.h
-index a13ff383fa1d5..c0cf6613373f9 100644
---- a/include/linux/pwm.h
-+++ b/include/linux/pwm.h
-@@ -44,8 +44,8 @@ struct pwm_args {
- };
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index b2ea853182141..df64b902842dd 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -378,8 +378,8 @@ xfs_isilocked(
+ 	}
  
- enum {
--	PWMF_REQUESTED = 1 << 0,
--	PWMF_EXPORTED = 1 << 1,
-+	PWMF_REQUESTED = 0,
-+	PWMF_EXPORTED = 1,
- };
+ 	if (lock_flags & (XFS_MMAPLOCK_EXCL|XFS_MMAPLOCK_SHARED)) {
+-		return __xfs_rwsem_islocked(&VFS_I(ip)->i_rwsem,
+-				(lock_flags & XFS_IOLOCK_SHARED));
++		return __xfs_rwsem_islocked(&VFS_I(ip)->i_mapping->invalidate_lock,
++				(lock_flags & XFS_MMAPLOCK_SHARED));
+ 	}
  
- /*
+ 	if (lock_flags & (XFS_IOLOCK_EXCL | XFS_IOLOCK_SHARED)) {
 -- 
 2.42.0
 
