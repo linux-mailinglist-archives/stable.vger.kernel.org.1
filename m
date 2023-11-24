@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFED7F7CCD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 796F37F80AE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0A4DB214C4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 355742810EA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7463A8C3;
-	Fri, 24 Nov 2023 18:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7EF33CD1;
+	Fri, 24 Nov 2023 18:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPEEj/WT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZXVwdSF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C5839FEA;
-	Fri, 24 Nov 2023 18:18:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5EFC433C8;
-	Fri, 24 Nov 2023 18:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D552321AD;
+	Fri, 24 Nov 2023 18:51:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB487C433C8;
+	Fri, 24 Nov 2023 18:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849908;
-	bh=/qnipRgx0bfA3BLk0i2vCD2P2sLBwtwYXTletGg6jOc=;
+	s=korg; t=1700851916;
+	bh=F4KHUDjs2eVo5lz2FOUB3Ia64SmVPte3nHL6vrOpa4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPEEj/WTWYvbfkcFsaKM8OOZww8W2R9u9EqADSHuAoBY2ZOa/4vBxAfxLd7T2TVp/
-	 4iE7BOcj2AY1GO8vcYC7d3AabMZFb5rlFGqpKnV9WqBNrg0/wlpgogtpahr+Cqmdbi
-	 Q1jOBBbM4ABtBeW/xXQngis6roUGQekk14WcWrZQ=
+	b=WZXVwdSFzERuYA9LturAJLGttrcuoS4XkEtShjRKkHoWXJeoErrEvjJIdAgAPquMd
+	 jsw1jd1jSYJcbFscfS7Bh5y2Kkb8iDf4bg2tAA64FYwu0Z88EnJlt89B8jvXUk6hIC
+	 TZ5ssysoU+6Rj3EFkxkbQmp8YPoZGwkAB5L+ZiH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Benjamin Bara <benjamin.bara@skidata.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 368/530] i2c: core: Run atomic i2c xfer when !preemptible
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 147/372] netfilter: nf_tables: fix pointer math issue in nft_byteorder_eval()
 Date: Fri, 24 Nov 2023 17:48:54 +0000
-Message-ID: <20231124172039.209700849@linuxfoundation.org>
+Message-ID: <20231124172015.379448167@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,59 +53,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Bara <benjamin.bara@skidata.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit aa49c90894d06e18a1ee7c095edbd2f37c232d02 upstream.
+[ Upstream commit c301f0981fdd3fd1ffac6836b423c4d7a8e0eb63 ]
 
-Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
-disabled. However, non-atomic i2c transfers require preemption (e.g. in
-wait_for_completion() while waiting for the DMA).
+The problem is in nft_byteorder_eval() where we are iterating through a
+loop and writing to dst[0], dst[1], dst[2] and so on...  On each
+iteration we are writing 8 bytes.  But dst[] is an array of u32 so each
+element only has space for 4 bytes.  That means that every iteration
+overwrites part of the previous element.
 
-panic() calls preempt_disable_notrace() before calling
-emergency_restart(). Therefore, if an i2c device is used for the
-restart, the xfer should be atomic. This avoids warnings like:
+I spotted this bug while reviewing commit caf3ef7468f7 ("netfilter:
+nf_tables: prevent OOB access in nft_byteorder_eval") which is a related
+issue.  I think that the reason we have not detected this bug in testing
+is that most of time we only write one element.
 
-[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-[   12.676926] Voluntary context switch within RCU read-side critical section!
-...
-[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-...
-[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-[   13.001050]  machine_restart from panic+0x2a8/0x32c
-
-Use !preemptible() instead, which is basically the same check as
-pre-v5.2.
-
-Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-Cc: stable@vger.kernel.org # v5.2+
-Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Acked-by: Wolfram Sang <wsa@kernel.org>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ce1e7989d989 ("netfilter: nft_byteorder: provide 64bit le/be conversion")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h | 4 ++--
+ net/netfilter/nft_byteorder.c     | 5 +++--
+ net/netfilter/nft_meta.c          | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/i2c/i2c-core.h
-+++ b/drivers/i2c/i2c-core.h
-@@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const str
-  */
- static inline bool i2c_in_atomic_xfer_mode(void)
- {
--	return system_state > SYSTEM_RUNNING && irqs_disabled();
-+	return system_state > SYSTEM_RUNNING && !preemptible();
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index d1f81a6d7773b..c726da3b7d68a 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -177,9 +177,9 @@ static inline __be32 nft_reg_load_be32(const u32 *sreg)
+ 	return *(__force __be32 *)sreg;
  }
  
- static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
+-static inline void nft_reg_store64(u32 *dreg, u64 val)
++static inline void nft_reg_store64(u64 *dreg, u64 val)
+ {
+-	put_unaligned(val, (u64 *)dreg);
++	put_unaligned(val, dreg);
+ }
+ 
+ static inline u64 nft_reg_load64(const u32 *sreg)
+diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
+index 2e2eb2cb17bc7..605178133d9eb 100644
+--- a/net/netfilter/nft_byteorder.c
++++ b/net/netfilter/nft_byteorder.c
+@@ -38,13 +38,14 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 
+ 	switch (priv->size) {
+ 	case 8: {
++		u64 *dst64 = (void *)dst;
+ 		u64 src64;
+ 
+ 		switch (priv->op) {
+ 		case NFT_BYTEORDER_NTOH:
+ 			for (i = 0; i < priv->len / 8; i++) {
+ 				src64 = nft_reg_load64(&src[i]);
+-				nft_reg_store64(&dst[i],
++				nft_reg_store64(&dst64[i],
+ 						be64_to_cpu((__force __be64)src64));
+ 			}
+ 			break;
+@@ -52,7 +53,7 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 			for (i = 0; i < priv->len / 8; i++) {
+ 				src64 = (__force __u64)
+ 					cpu_to_be64(nft_reg_load64(&src[i]));
+-				nft_reg_store64(&dst[i], src64);
++				nft_reg_store64(&dst64[i], src64);
+ 			}
+ 			break;
+ 		}
+diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
+index 55d2d49c34259..6e83321926229 100644
+--- a/net/netfilter/nft_meta.c
++++ b/net/netfilter/nft_meta.c
+@@ -63,7 +63,7 @@ nft_meta_get_eval_time(enum nft_meta_keys key,
+ {
+ 	switch (key) {
+ 	case NFT_META_TIME_NS:
+-		nft_reg_store64(dest, ktime_get_real_ns());
++		nft_reg_store64((u64 *)dest, ktime_get_real_ns());
+ 		break;
+ 	case NFT_META_TIME_DAY:
+ 		nft_reg_store8(dest, nft_meta_weekday());
+-- 
+2.42.0
+
 
 
 
