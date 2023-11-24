@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61AE77F7E76
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4997F7C35
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 054C1B217DD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F5721C21164
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801A433063;
-	Fri, 24 Nov 2023 18:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C84D4381D7;
+	Fri, 24 Nov 2023 18:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtW47PK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNIgJOSh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3511D34197;
-	Fri, 24 Nov 2023 18:33:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B553EC433C7;
-	Fri, 24 Nov 2023 18:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8988439FC2;
+	Fri, 24 Nov 2023 18:12:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165BDC433C8;
+	Fri, 24 Nov 2023 18:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850792;
-	bh=ainKb1olIA+rVlVjHyb6BlO+KAjmccsr6dfZs52YMOI=;
+	s=korg; t=1700849576;
+	bh=hRopyKMJ0giuZsG3Jg4GwK52LnqHW4w5i5xHNZuMknI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NtW47PK0PcehPh9lVZl0sc4WdNdwedMWQtde24B1pQxyPadZ0xeXdgTUi7Tr3PdbK
-	 7YGogTtQ89asRMrml3eDmvbMwZAjoJj2jaw6LjUgG4Lhs1N1XBlz/n2/WS2Eg+vgso
-	 0lorSar4c1mDi1k/I+GUGLnvRv9753moaj4vQP1c=
+	b=UNIgJOSh6CcFC1S4fcNK9135vMPs8kJLj3kq/bEgFlNWFQ1Q43tP3bUkglwhHDH9i
+	 G0lhSR4qiuwUx3z0zBSM4YOOfO0JEJF7j3C2FRGRF3qhYZoP4CJCtKReCso8EqDG0p
+	 Ui3PghJrt37fFLf9SIhGu8eVR5lorqQ0t/KVgsYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3e5130844b0c0e2b4948@syzkaller.appspotmail.com,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 166/491] gfs2: Silence "suspicious RCU usage in gfs2_permission" warning
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.6 236/530] perf/core: Fix cpuctx refcounting
 Date: Fri, 24 Nov 2023 17:46:42 +0000
-Message-ID: <20231124172029.456785962@linuxfoundation.org>
+Message-ID: <20231124172035.237752763@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,64 +52,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 074d7306a4fe22fcac0b53f699f92757ab1cee99 ]
+commit 889c58b3155ff4c8e8671c95daef63d6fabbb6b1 upstream.
 
-Commit 0abd1557e21c added rcu_dereference() for dereferencing ip->i_gl
-in gfs2_permission.  This now causes lockdep to complain when
-gfs2_permission is called in non-RCU context:
+Audit of the refcounting turned up that perf_pmu_migrate_context()
+fails to migrate the ctx refcount.
 
-    WARNING: suspicious RCU usage in gfs2_permission
-
-Switch to rcu_dereference_check() and check for the MAY_NOT_BLOCK flag
-to shut up lockdep when we know that dereferencing ip->i_gl is safe.
-
-Fixes: 0abd1557e21c ("gfs2: fix an oops in gfs2_permission")
-Reported-by: syzbot+3e5130844b0c0e2b4948@syzkaller.appspotmail.com
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bd2756811766 ("perf: Rewrite core context handling")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20230612093539.085862001@infradead.org
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/inode.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ include/linux/perf_event.h |   13 ++++++++-----
+ kernel/events/core.c       |   17 +++++++++++++++++
+ 2 files changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 117b4b5a03072..28c3711628805 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1860,6 +1860,7 @@ static const char *gfs2_get_link(struct dentry *dentry,
- int gfs2_permission(struct mnt_idmap *idmap, struct inode *inode,
- 		    int mask)
- {
-+	int may_not_block = mask & MAY_NOT_BLOCK;
- 	struct gfs2_inode *ip;
- 	struct gfs2_holder i_gh;
- 	struct gfs2_glock *gl;
-@@ -1867,14 +1868,14 @@ int gfs2_permission(struct mnt_idmap *idmap, struct inode *inode,
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -843,11 +843,11 @@ struct perf_event {
+ };
  
- 	gfs2_holder_mark_uninitialized(&i_gh);
- 	ip = GFS2_I(inode);
--	gl = rcu_dereference(ip->i_gl);
-+	gl = rcu_dereference_check(ip->i_gl, !may_not_block);
- 	if (unlikely(!gl)) {
- 		/* inode is getting torn down, must be RCU mode */
--		WARN_ON_ONCE(!(mask & MAY_NOT_BLOCK));
-+		WARN_ON_ONCE(!may_not_block);
- 		return -ECHILD;
-         }
- 	if (gfs2_glock_is_locked_by_me(gl) == NULL) {
--		if (mask & MAY_NOT_BLOCK)
-+		if (may_not_block)
- 			return -ECHILD;
- 		error = gfs2_glock_nq_init(gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
- 		if (error)
--- 
-2.42.0
-
+ /*
+- *           ,-----------------------[1:n]----------------------.
+- *           V                                                  V
+- * perf_event_context <-[1:n]-> perf_event_pmu_context <--- perf_event
+- *           ^                      ^     |                     |
+- *           `--------[1:n]---------'     `-[n:1]-> pmu <-[1:n]-'
++ *           ,-----------------------[1:n]------------------------.
++ *           V                                                    V
++ * perf_event_context <-[1:n]-> perf_event_pmu_context <-[1:n]- perf_event
++ *                                        |                       |
++ *                                        `--[n:1]-> pmu <-[1:n]--'
+  *
+  *
+  * struct perf_event_pmu_context  lifetime is refcount based and RCU freed
+@@ -865,6 +865,9 @@ struct perf_event {
+  * ctx->mutex pinning the configuration. Since we hold a reference on
+  * group_leader (through the filedesc) it can't go away, therefore it's
+  * associated pmu_ctx must exist and cannot change due to ctx->mutex.
++ *
++ * perf_event holds a refcount on perf_event_context
++ * perf_event holds a refcount on perf_event_pmu_context
+  */
+ struct perf_event_pmu_context {
+ 	struct pmu			*pmu;
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -4816,6 +4816,11 @@ find_get_pmu_context(struct pmu *pmu, st
+ 	void *task_ctx_data = NULL;
+ 
+ 	if (!ctx->task) {
++		/*
++		 * perf_pmu_migrate_context() / __perf_pmu_install_event()
++		 * relies on the fact that find_get_pmu_context() cannot fail
++		 * for CPU contexts.
++		 */
+ 		struct perf_cpu_pmu_context *cpc;
+ 
+ 		cpc = per_cpu_ptr(pmu->cpu_pmu_context, event->cpu);
+@@ -12877,6 +12882,9 @@ static void __perf_pmu_install_event(str
+ 				     int cpu, struct perf_event *event)
+ {
+ 	struct perf_event_pmu_context *epc;
++	struct perf_event_context *old_ctx = event->ctx;
++
++	get_ctx(ctx); /* normally find_get_context() */
+ 
+ 	event->cpu = cpu;
+ 	epc = find_get_pmu_context(pmu, ctx, event);
+@@ -12885,6 +12893,11 @@ static void __perf_pmu_install_event(str
+ 	if (event->state >= PERF_EVENT_STATE_OFF)
+ 		event->state = PERF_EVENT_STATE_INACTIVE;
+ 	perf_install_in_context(ctx, event, cpu);
++
++	/*
++	 * Now that event->ctx is updated and visible, put the old ctx.
++	 */
++	put_ctx(old_ctx);
+ }
+ 
+ static void __perf_pmu_install(struct perf_event_context *ctx,
+@@ -12923,6 +12936,10 @@ void perf_pmu_migrate_context(struct pmu
+ 	struct perf_event_context *src_ctx, *dst_ctx;
+ 	LIST_HEAD(events);
+ 
++	/*
++	 * Since per-cpu context is persistent, no need to grab an extra
++	 * reference.
++	 */
+ 	src_ctx = &per_cpu_ptr(&perf_cpu_context, src_cpu)->ctx;
+ 	dst_ctx = &per_cpu_ptr(&perf_cpu_context, dst_cpu)->ctx;
+ 
 
 
 
