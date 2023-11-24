@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AF27F7E22
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 191DC7F7C21
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01EE91C212D9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23EE1F20FA0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311983A8E7;
-	Fri, 24 Nov 2023 18:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85D43A8C6;
+	Fri, 24 Nov 2023 18:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5do4TBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RX8Zpuph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23DA33E9;
-	Fri, 24 Nov 2023 18:30:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D513C433C7;
-	Fri, 24 Nov 2023 18:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E2339FDD;
+	Fri, 24 Nov 2023 18:12:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E5AC433C8;
+	Fri, 24 Nov 2023 18:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850619;
-	bh=OEgZpvJ2P1IadqKeti0AS30rS5JQBc9IG/heAW9KeaQ=;
+	s=korg; t=1700849526;
+	bh=xzOvNITvcrWhqheJBRmnpe61h721I7mT4pjllDCCMmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5do4TBrCkLIp/zcCwiqJhGagt15nmM54J6btlF5sJIAx+7k9q3XZf/DTBAiOFWGI
-	 A1p8Uexd7I661BCxbebtKLc9UOjp4T7xuFjEpj/FhE3qirKVnrk1WmCgO6P/Wx7GZH
-	 p/Q/vCCMGdrERQytX2qTkMWW3KiyCU2o6cKhL5dg=
+	b=RX8ZpuphYwSkp1YJCePAnOUvDE3W9R00ZkkYtV8/JfS1UyNOZONEXdL33CMlU2b68
+	 XkuAM32rO+lx9ODZoOt3Il0WJaNqFUAz8E4wl4oiGUuYmIxhbsMlEVoGm70zhNN/7l
+	 Ik5YhdGCPumSpZY7cEZFxnP6mQOPt30c/mH+j86w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 122/491] f2fs: fix error handling of __get_node_page
+Subject: [PATCH 6.6 192/530] net: hns3: fix variable may not initialized problem in hns3_init_mac_addr()
 Date: Fri, 24 Nov 2023 17:45:58 +0000
-Message-ID: <20231124172028.183809533@linuxfoundation.org>
+Message-ID: <20231124172033.914457140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +54,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-[ Upstream commit 9b4c8dd99fe48721410741651d426015e03a4b7a ]
+[ Upstream commit dbd2f3b20c6ae425665b6975d766e3653d453e73 ]
 
-Use f2fs_handle_error to record inconsistent node block error
-and return -EFSCORRUPTED instead of -EINVAL.
+When a VF is calling hns3_init_mac_addr(), get_mac_addr() may
+return fail, then the value of mac_addr_temp is not initialized.
 
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 248764badcde8..ed963c56ac32a 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1467,7 +1467,8 @@ static struct page *__get_node_page(struct f2fs_sb_info *sbi, pgoff_t nid,
- 			  ofs_of_node(page), cpver_of_node(page),
- 			  next_blkaddr_of_node(page));
- 	set_sbi_flag(sbi, SBI_NEED_FSCK);
--	err = -EINVAL;
-+	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
-+	err = -EFSCORRUPTED;
- out_err:
- 	ClearPageUptodate(page);
- out_put_err:
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index cf50368441b78..677cfaa5fe08c 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -5140,7 +5140,7 @@ static int hns3_init_mac_addr(struct net_device *netdev)
+ 	struct hns3_nic_priv *priv = netdev_priv(netdev);
+ 	char format_mac_addr[HNAE3_FORMAT_MAC_ADDR_LEN];
+ 	struct hnae3_handle *h = priv->ae_handle;
+-	u8 mac_addr_temp[ETH_ALEN];
++	u8 mac_addr_temp[ETH_ALEN] = {0};
+ 	int ret = 0;
+ 
+ 	if (h->ae_algo->ops->get_mac_addr)
 -- 
 2.42.0
 
