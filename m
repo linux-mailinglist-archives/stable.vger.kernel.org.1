@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206C27F7D87
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8043B7F7FBA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399D51C21124
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F416B21626
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D0E39FE8;
-	Fri, 24 Nov 2023 18:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4852C85B;
+	Fri, 24 Nov 2023 18:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IR4Mm1iN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GaRR0IVr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EE339FF3;
-	Fri, 24 Nov 2023 18:25:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F07C433C8;
-	Fri, 24 Nov 2023 18:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04DE381D4;
+	Fri, 24 Nov 2023 18:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE0EC433C8;
+	Fri, 24 Nov 2023 18:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850324;
-	bh=7/vj06eLL1kuiUMmqOCGGhPgT8fTj022D/941adxfqA=;
+	s=korg; t=1700851431;
+	bh=Qsig54j9SSl40im/B/ZiKbD0L3JAikAPhXSfPjwe7DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IR4Mm1iN968mChN/ynvsQpX9Gg9JmSdt91jb2mMnNBF8zCE8Zrub9Y3OtJnCGiEW6
-	 qRurYDrXG0HbaNRjh4KUabMhkpGPBGCHqLONJhMnMMeRqI9sqs96RA/8PveWnmmTOV
-	 IvFBIecM3Ea1/pEVz/3q3Jwc0gyA+ivYDHYTtp2Q=
+	b=GaRR0IVrQXr6yTXVQyQ/tnKn2agbt9YfrhFwZUTamEwgBDZts0PjONHQUILwQ2Utk
+	 LenBC3+ZPpdUzOiIYP2gYVFL4JzApF889Stz4TXxOLu5sGhpPduRLV0xQhbWCROwBr
+	 VC+vBPnIEkwFtaExzES4a+5TznF1FmCjaFHH+BPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 516/530] drm/amdgpu/smu13: drop compute workload workaround
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	ChunHao Lin <hau@realtek.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.5 446/491] r8169: fix network lost after resume on DASH systems
 Date: Fri, 24 Nov 2023 17:51:22 +0000
-Message-ID: <20231124172043.889676545@linuxfoundation.org>
+Message-ID: <20231124172038.007344683@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,68 +53,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: ChunHao Lin <hau@realtek.com>
 
-commit 23170863ea0a0965d224342c0eb2ad8303b1f267 upstream.
+commit 868c3b95afef4883bfb66c9397482da6840b5baf upstream.
 
-This was fixed in PMFW before launch and is no longer
-required.
+Device that support DASH may be reseted or powered off during suspend.
+So driver needs to handle DASH during system suspend and resume. Or
+DASH firmware will influence device behavior and causes network lost.
 
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
+Fixes: b646d90053f8 ("r8169: magic.")
+Cc: stable@vger.kernel.org
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Link: https://lore.kernel.org/r/20231109173400.4573-3-hau@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   32 +------------------
- 1 file changed, 2 insertions(+), 30 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2163,38 +2163,10 @@ static int smu_v13_0_0_set_power_profile
- 		}
- 	}
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4648,10 +4648,16 @@ static void rtl8169_down(struct rtl8169_
+ 	rtl8169_cleanup(tp);
+ 	rtl_disable_exit_l1(tp);
+ 	rtl_prepare_power_down(tp);
++
++	if (tp->dash_type != RTL_DASH_NONE)
++		rtl8168_driver_stop(tp);
+ }
  
--	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_COMPUTE &&
--		(((smu->adev->pdev->device == 0x744C) && (smu->adev->pdev->revision == 0xC8)) ||
--		((smu->adev->pdev->device == 0x744C) && (smu->adev->pdev->revision == 0xCC)))) {
--		ret = smu_cmn_update_table(smu,
--					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
--					   WORKLOAD_PPLIB_COMPUTE_BIT,
--					   (void *)(&activity_monitor_external),
--					   false);
--		if (ret) {
--			dev_err(smu->adev->dev, "[%s] Failed to get activity monitor!", __func__);
--			return ret;
--		}
--
--		ret = smu_cmn_update_table(smu,
--					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
--					   WORKLOAD_PPLIB_CUSTOM_BIT,
--					   (void *)(&activity_monitor_external),
--					   true);
--		if (ret) {
--			dev_err(smu->adev->dev, "[%s] Failed to set activity monitor!", __func__);
--			return ret;
--		}
--
--		workload_type = smu_cmn_to_asic_specific_index(smu,
--						       CMN2ASIC_MAPPING_WORKLOAD,
--						       PP_SMC_POWER_PROFILE_CUSTOM);
--	} else {
--		/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
--		workload_type = smu_cmn_to_asic_specific_index(smu,
-+	/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
-+	workload_type = smu_cmn_to_asic_specific_index(smu,
- 						       CMN2ASIC_MAPPING_WORKLOAD,
- 						       smu->power_profile_mode);
--	}
- 
- 	if (workload_type < 0)
- 		return -EINVAL;
+ static void rtl8169_up(struct rtl8169_private *tp)
+ {
++	if (tp->dash_type != RTL_DASH_NONE)
++		rtl8168_driver_start(tp);
++
+ 	pci_set_master(tp->pci_dev);
+ 	phy_init_hw(tp->phydev);
+ 	phy_resume(tp->phydev);
 
 
 
