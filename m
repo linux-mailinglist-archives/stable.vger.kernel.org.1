@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6E97F7C5B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A5A7F803D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F77228219C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74F761C2154D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8CB3A8C5;
-	Fri, 24 Nov 2023 18:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B1D381D2;
+	Fri, 24 Nov 2023 18:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YExYU8Tk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQn0ndrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B0531740;
-	Fri, 24 Nov 2023 18:14:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE451C433C8;
-	Fri, 24 Nov 2023 18:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73944364A5;
+	Fri, 24 Nov 2023 18:47:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD34EC433C8;
+	Fri, 24 Nov 2023 18:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849667;
-	bh=8I0qXYDScVL3OjnAjnJVFb/oxGEhMQSn5glUTcwIvaM=;
+	s=korg; t=1700851678;
+	bh=lVk+u6XM+1O7oVhF+MKczn3W8WgqSSpmzhPbvyHsk4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YExYU8TkYSneQxVy4XXLe/GvLV8YABApvQWKnsD8Vg13+kUgNv67aIdnNNyO1SD2Q
-	 EpZg6wCoZ51QLVnm9W2xvNTjfzMdN8iKNC01a6njncBp3IqEEFcbcrtL15TdJGHyBz
-	 MiNw0yZHiyn49R1/henkUjYHaxt6mxHEuhS0vin0=
+	b=bQn0ndrdH6pzlg8M/8ewWhpr8q/QSIlL5QOuxAJJA5IHXeiHxYAxGhXO9p21RxL52
+	 wzLagl4D14rKbMDVZlytzq1n+hyfT9jhkcs5J8sndRJH/972nQ9S4Unltx6+CV+Cgw
+	 +C5MoFjaay4svrlLCA67I5UOr6ACs61/1vsVKCS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 248/530] scsi: megaraid_sas: Increase register read retry rount from 3 to 30 for selected registers
+	Jonathan Denose <jdenose@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/372] ACPI: EC: Add quirk for HP 250 G7 Notebook PC
 Date: Fri, 24 Nov 2023 17:46:54 +0000
-Message-ID: <20231124172035.602594318@linuxfoundation.org>
+Message-ID: <20231124172011.383442345@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+From: Jonathan Denose <jdenose@chromium.org>
 
-commit 8e3ed9e786511ad800c33605ed904b9de49323cf upstream.
+[ Upstream commit 891ddc03e2f4395e24795596e032f57d5ab37fe7 ]
 
-In BMC environments with concurrent access to multiple registers, certain
-registers occasionally yield a value of 0 even after 3 retries due to
-hardware errata. As a fix, we have extended the retry count from 3 to 30.
+Add GPE quirk entry for HP 250 G7 Notebook PC.
 
-The same errata applies to the mpt3sas driver, and a similar patch has
-been accepted. Please find more details in the mpt3sas patch reference
-link.
+This change allows the lid switch to be identified as the lid switch
+and not a keyboard button. With the lid switch properly identified, the
+device triggers suspend correctly on lid close.
 
-Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
-Fixes: 272652fcbf1a ("scsi: megaraid_sas: add retry logic in megasas_readl")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Link: https://lore.kernel.org/r/20231003110021.168862-2-chandrakanth.patil@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jonathan Denose <jdenose@google.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/ec.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -263,13 +263,13 @@ u32 megasas_readl(struct megasas_instanc
- 	 * Fusion registers could intermittently return all zeroes.
- 	 * This behavior is transient in nature and subsequent reads will
- 	 * return valid value. As a workaround in driver, retry readl for
--	 * upto three times until a non-zero value is read.
-+	 * up to thirty times until a non-zero value is read.
- 	 */
- 	if (instance->adapter_type == AERO_SERIES) {
- 		do {
- 			ret_val = readl(addr);
- 			i++;
--		} while (ret_val == 0 && i < 3);
-+		} while (ret_val == 0 && i < 30);
- 		return ret_val;
- 	} else {
- 		return readl(addr);
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 8bb233d2d1e48..77d1f2cb89ef3 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1897,6 +1897,16 @@ static const struct dmi_system_id ec_dmi_table[] __initconst = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion Gaming Laptop 15-dk1xxx"),
+ 		},
+ 	},
++	{
++		/*
++		 * HP 250 G7 Notebook PC
++		 */
++		.callback = ec_honor_dsdt_gpe,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP 250 G7 Notebook PC"),
++		},
++	},
+ 	{
+ 		/*
+ 		 * Samsung hardware
+-- 
+2.42.0
+
 
 
 
