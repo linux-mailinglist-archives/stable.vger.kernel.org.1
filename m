@@ -1,49 +1,45 @@
-Return-Path: <stable+bounces-2280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431567F8384
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A10827F8236
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C786BB26128
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56AE128440F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DB2364C4;
-	Fri, 24 Nov 2023 19:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A85364AE;
+	Fri, 24 Nov 2023 19:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwf5Z8hG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqnlfWsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2FF2FC36;
-	Fri, 24 Nov 2023 19:18:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D02DC433D9;
-	Fri, 24 Nov 2023 19:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B78733076;
+	Fri, 24 Nov 2023 19:05:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4023C433C7;
+	Fri, 24 Nov 2023 19:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853498;
-	bh=zMxC1133JzdG7ZrnvDY9ZZDQSEMQ0ut8KWKJGUuyRrw=;
+	s=korg; t=1700852735;
+	bh=eOz/pFuE5JRrIZmkAub9MK97UrBSN/GARLOTQZtwsn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dwf5Z8hGviUh5DhAhcQX5JG/ih2SDfduIdisnEjje41LFKOadpG6XbaH0kpXDiUpD
-	 GTseErCcHy820gshE3eiSqzgI6rulBM0RlFl4LMpOlMeNf/4B1wkYLg92cI8Y0grpS
-	 ahHve4tPoM7czDE6uMY0AdiIwwLfQ7+toPw3IB4w=
+	b=yqnlfWsiblkhJIUSQs9yQW4qlwDWiCQC2ItMwJZG+sRjOt5LfMOeEJWp+sdV1ku2l
+	 qYkNyTcQfiWHl8+7gwKWoHL9s3ArK4xHR0H4FNEwUzrvwuM4UZultJ1OuAAEvM+jmz
+	 w5Z0Y90ZQnm51OhazA+vwKxzmXXK7mtVhoeBmYcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Michael Walle <mwalle@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.15 187/297] wifi: wilc1000: use vmm_table as array in wilc struct
+	David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH 5.10 102/193] hvc/xen: fix console unplug
 Date: Fri, 24 Nov 2023 17:53:49 +0000
-Message-ID: <20231124172006.774937085@linuxfoundation.org>
+Message-ID: <20231124171951.329889643@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +49,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ajay Singh <ajay.kathat@microchip.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit 05ac1a198a63ad66bf5ae8b7321407c102d40ef3 upstream.
+commit a30badfd7c13fc8763a9e10c5a12ba7f81515a55 upstream.
 
-Enabling KASAN and running some iperf tests raises some memory issues with
-vmm_table:
+On unplug of a Xen console, xencons_disconnect_backend() unconditionally
+calls free_irq() via unbind_from_irqhandler(), causing a warning of
+freeing an already-free IRQ:
 
-BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
-Write of size 4 at addr c3a61540 by task wlan0-tx/95
+(qemu) device_del con1
+[   32.050919] ------------[ cut here ]------------
+[   32.050942] Trying to free already-free IRQ 33
+[   32.050990] WARNING: CPU: 0 PID: 51 at kernel/irq/manage.c:1895 __free_irq+0x1d4/0x330
 
-KASAN detects that we are writing data beyond range allocated to vmm_table.
-There is indeed a mismatch between the size passed to allocator in
-wilc_wlan_init, and the range of possible indexes used later: allocation
-size is missing a multiplication by sizeof(u32)
+It should be using evtchn_put() to tear down the event channel binding,
+and let the Linux IRQ side of it be handled by notifier_del_irq() through
+the HVC code.
 
-Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
+On which topic... xencons_disconnect_backend() should call hvc_remove()
+*first*, rather than tearing down the event channel and grant mapping
+while they are in use. And then the IRQ is guaranteed to be freed by
+the time it's torn down by evtchn_put().
+
+Since evtchn_put() also closes the actual event channel, avoid calling
+xenbus_free_evtchn() except in the failure path where the IRQ was not
+successfully set up.
+
+However, calling hvc_remove() at the start of xencons_disconnect_backend()
+still isn't early enough. An unplug request is indicated by the backend
+setting its state to XenbusStateClosing, which triggers a notification
+to xencons_backend_changed(), which... does nothing except set its own
+frontend state directly to XenbusStateClosed without *actually* tearing
+down the HVC device or, you know, making sure it isn't actively in use.
+
+So the backend sees the guest frontend set its state to XenbusStateClosed
+and stops servicing the interrupt... and the guest spins for ever in the
+domU_write_console() function waiting for the ring to drain.
+
+Fix that one by calling hvc_remove() from xencons_backend_changed() before
+signalling to the backend that it's OK to proceed with the removal.
+
+Tested with 'dd if=/dev/zero of=/dev/hvc1' while telling Qemu to remove
+the console device.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Reviewed-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com
+Link: https://lore.kernel.org/r/20231020161529.355083-4-dwmw2@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/microchip/wilc1000/wlan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/hvc/hvc_xen.c |   32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -1458,7 +1458,7 @@ int wilc_wlan_init(struct net_device *de
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -363,18 +363,21 @@ void xen_console_resume(void)
+ #ifdef CONFIG_HVC_XEN_FRONTEND
+ static void xencons_disconnect_backend(struct xencons_info *info)
+ {
+-	if (info->irq > 0)
+-		unbind_from_irqhandler(info->irq, NULL);
+-	info->irq = 0;
++	if (info->hvc != NULL)
++		hvc_remove(info->hvc);
++	info->hvc = NULL;
++	if (info->irq > 0) {
++		evtchn_put(info->evtchn);
++		info->irq = 0;
++		info->evtchn = 0;
++	}
++	/* evtchn_put() will also close it so this is only an error path */
+ 	if (info->evtchn > 0)
+ 		xenbus_free_evtchn(info->xbdev, info->evtchn);
+ 	info->evtchn = 0;
+ 	if (info->gntref > 0)
+ 		gnttab_free_grant_references(info->gntref);
+ 	info->gntref = 0;
+-	if (info->hvc != NULL)
+-		hvc_remove(info->hvc);
+-	info->hvc = NULL;
+ }
+ 
+ static void xencons_free(struct xencons_info *info)
+@@ -538,10 +541,23 @@ static void xencons_backend_changed(stru
+ 		if (dev->state == XenbusStateClosed)
+ 			break;
+ 		fallthrough;	/* Missed the backend's CLOSING state */
+-	case XenbusStateClosing:
++	case XenbusStateClosing: {
++		struct xencons_info *info = dev_get_drvdata(&dev->dev);;
++
++		/*
++		 * Don't tear down the evtchn and grant ref before the other
++		 * end has disconnected, but do stop userspace from trying
++		 * to use the device before we allow the backend to close.
++		 */
++		if (info->hvc) {
++			hvc_remove(info->hvc);
++			info->hvc = NULL;
++		}
++
+ 		xenbus_frontend_closed(dev);
+ 		break;
  	}
++	}
+ }
  
- 	if (!wilc->vmm_table)
--		wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE, GFP_KERNEL);
-+		wilc->vmm_table = kcalloc(WILC_VMM_TBL_SIZE, sizeof(u32), GFP_KERNEL);
- 
- 	if (!wilc->vmm_table) {
- 		ret = -ENOBUFS;
+ static const struct xenbus_device_id xencons_ids[] = {
+@@ -600,7 +616,7 @@ static int __init xen_hvc_init(void)
+ 		list_del(&info->list);
+ 		spin_unlock_irqrestore(&xencons_lock, flags);
+ 		if (info->irq)
+-			unbind_from_irqhandler(info->irq, NULL);
++			evtchn_put(info->evtchn);
+ 		kfree(info);
+ 		return r;
+ 	}
 
 
 
