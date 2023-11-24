@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B5D7F7FEF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4957F81A8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3E62B214ED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8A01C21BE5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06DC933CC2;
-	Fri, 24 Nov 2023 18:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D59A33076;
+	Fri, 24 Nov 2023 19:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXOof2ZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6MAt6//"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CEE33E9;
-	Fri, 24 Nov 2023 18:45:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3011FC433C7;
-	Fri, 24 Nov 2023 18:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDC92EAEA;
+	Fri, 24 Nov 2023 19:00:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAE5C433C8;
+	Fri, 24 Nov 2023 19:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851521;
-	bh=eaiACMf7YlAw3qnGcPTLDxsE4JgDA5uOGuZZiC2oHfI=;
+	s=korg; t=1700852431;
+	bh=l8QiR5CSVVUAI+STAIy9mYEEMk4QNaDuA62cQ48COQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXOof2ZK4+YiP4+cMXRZrki+t5jygG3K5Cv2O4S2WijoHd+ds5LZoEUnv/CDScc1U
-	 2A/e4Fu+KfNjY5jvIqmyRn8uJU8zJh9eVxWncA2AyaXhPUDtwUCcXPsKrVqIo6HVqd
-	 brpfSefZraym4Ncca4wO1ichN7R8O1CSEjY6rxB4=
+	b=k6MAt6//VPZqA3uvUFvzXBqRpsK7GN3mYyLrkfZLEv8jHPZYPi33OoVgvg2sGpyj2
+	 ctes3E73xk245dynXCOMJ2LaNj/chK1d1lc1aVEPCT1z1odKesrO6WXR8U2aVftFqp
+	 XlCmKTCKT9rXrAjdWhFx/TpJHOZqpRp/bFLQ5J54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.5 480/491] drm/amdgpu: dont use ATRM for external devices
-Date: Fri, 24 Nov 2023 17:51:56 +0000
-Message-ID: <20231124172039.057339109@linuxfoundation.org>
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Song Shuai <suagrfillet@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.1 330/372] riscv: correct pt_level name via pgtable_l5/4_enabled
+Date: Fri, 24 Nov 2023 17:51:57 +0000
+Message-ID: <20231124172021.385520892@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,53 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Song Shuai <suagrfillet@gmail.com>
 
-commit 432e664e7c98c243fab4c3c95bd463bea3aeed28 upstream.
+commit e59e5e2754bf983fc58ad18f99b5eec01f1a0745 upstream.
 
-The ATRM ACPI method is for fetching the dGPU vbios rom
-image on laptops and all-in-one systems.  It should not be
-used for external add in cards.  If the dGPU is thunderbolt
-connected, don't try ATRM.
+The pt_level uses CONFIG_PGTABLE_LEVELS to display page table names.
+But if page mode is downgraded from kernel cmdline or restricted by
+the hardware in 64BIT, it will give a wrong name.
 
-v2: pci_is_thunderbolt_attached only works for Intel.  Use
-    pdev->external_facing instead.
-v3: dev_is_removable() seems to be what we want
+Like, using no4lvl for sv39, ptdump named the 1G-mapping as "PUD"
+that should be "PGD":
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+0xffffffd840000000-0xffffffd900000000    0x00000000c0000000         3G PUD     D A G . . W R V
+
+So select "P4D/PUD" or "PGD" via pgtable_l5/4_enabled to correct it.
+
+Fixes: e8a62cc26ddf ("riscv: Implement sv48 support")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Song Shuai <suagrfillet@gmail.com>
+Link: https://lore.kernel.org/r/20230712115740.943324-1-suagrfillet@gmail.com
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230830044129.11481-3-palmer@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/riscv/mm/ptdump.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-@@ -29,6 +29,7 @@
- #include "amdgpu.h"
- #include "atom.h"
+diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
+index 20a9f991a6d7..e9090b38f811 100644
+--- a/arch/riscv/mm/ptdump.c
++++ b/arch/riscv/mm/ptdump.c
+@@ -384,6 +384,9 @@ static int __init ptdump_init(void)
  
-+#include <linux/device.h>
- #include <linux/pci.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
-@@ -287,6 +288,10 @@ static bool amdgpu_atrm_get_bios(struct
- 	if (adev->flags & AMD_IS_APU)
- 		return false;
+ 	kernel_ptd_info.base_addr = KERN_VIRT_START;
  
-+	/* ATRM is for on-platform devices only */
-+	if (dev_is_removable(&adev->pdev->dev))
-+		return false;
++	pg_level[1].name = pgtable_l5_enabled ? "P4D" : "PGD";
++	pg_level[2].name = pgtable_l4_enabled ? "PUD" : "PGD";
 +
- 	while ((pdev = pci_get_class(PCI_CLASS_DISPLAY_VGA << 8, pdev)) != NULL) {
- 		dhandle = ACPI_HANDLE(&pdev->dev);
- 		if (!dhandle)
+ 	for (i = 0; i < ARRAY_SIZE(pg_level); i++)
+ 		for (j = 0; j < ARRAY_SIZE(pte_bits); j++)
+ 			pg_level[i].mask |= pte_bits[j].mask;
+-- 
+2.43.0
+
 
 
 
