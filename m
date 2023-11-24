@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-2422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E4A7F841B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB84B7F8394
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BE0F1C270A7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 286331C25E59
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C55364C4;
-	Fri, 24 Nov 2023 19:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633CC37170;
+	Fri, 24 Nov 2023 19:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuW8kxOc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vl6SjGs9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6112C1A2;
-	Fri, 24 Nov 2023 19:24:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD98C433C7;
-	Fri, 24 Nov 2023 19:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA23339BE;
+	Fri, 24 Nov 2023 19:18:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861E0C433CB;
+	Fri, 24 Nov 2023 19:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853843;
-	bh=hWwjQDszAfDkIf6reA85yaWXYnaVzGuBvUZoqf4nHiQ=;
+	s=korg; t=1700853535;
+	bh=S3rpVHOGrQ87LpdRUgHcTzx+l01tw08vUT6Rsg8nwYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuW8kxOcxLvheHAjbZD/EXoXRr2kyv0liBcBpXxsv0mMFP7FzMHhCP+XtmFsFmmDO
-	 hsRH7y5TQnh2SZe5oBtR+PUm53irajRTV5W+v5vP4fVPnGv0S8a2BzxZOepfH5CvV7
-	 FAx7i6j7uaBMEJ9dYAir4g+HzGMU/I72aIrxMA/g=
+	b=Vl6SjGs9MBLeBt4PkFCfVlYqcDA48H09SOgP2JC7dQ0q8xnVsvagDdKXqeSfrbqfX
+	 XjfFzmXqWXbWAFm40TJrJQODenQYonjlUSHsaAUdyH9RjVOb/DgOkWPsLXdFJo0Ojr
+	 BTrOxuZGCLmeEaehQL+5CSpWJquGYqzzkmbCjtOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 053/159] ptp: annotate data-race around q->head and q->tail
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.15 228/297] i3c: master: svc: fix ibi may not return mandatory data byte
 Date: Fri, 24 Nov 2023 17:54:30 +0000
-Message-ID: <20231124171944.144887804@linuxfoundation.org>
+Message-ID: <20231124172008.175668697@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,103 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 73bde5a3294853947252cd9092a3517c7cb0cd2d ]
+commit c85e209b799f12d18a90ae6353b997b1bb1274a5 upstream.
 
-As I was working on a syzbot report, I found that KCSAN would
-probably complain that reading q->head or q->tail without
-barriers could lead to invalid results.
+MSTATUS[RXPEND] is only updated after the data transfer cycle started. This
+creates an issue when the I3C clock is slow, and the CPU is running fast
+enough that MSTATUS[RXPEND] may not be updated when the code reaches
+checking point. As a result, mandatory data can be missed.
 
-Add corresponding READ_ONCE() and WRITE_ONCE() to avoid
-load-store tearing.
+Add a wait for MSTATUS[COMPLETE] to ensure that all mandatory data is
+already in FIFO. It also works without mandatory data.
 
-Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20231109174859.3995880-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231023161658.3890811-4-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_chardev.c | 3 ++-
- drivers/ptp/ptp_clock.c   | 5 +++--
- drivers/ptp/ptp_private.h | 8 ++++++--
- drivers/ptp/ptp_sysfs.c   | 3 ++-
- 4 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index 9d72ab593f13f..87bd6c072ac2f 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -443,7 +443,8 @@ ssize_t ptp_read(struct posix_clock *pc,
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -294,6 +294,7 @@ static int svc_i3c_master_handle_ibi(str
+ 	struct i3c_ibi_slot *slot;
+ 	unsigned int count;
+ 	u32 mdatactrl;
++	int ret, val;
+ 	u8 *buf;
  
- 	for (i = 0; i < cnt; i++) {
- 		event[i] = queue->buf[queue->head];
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		/* Paired with READ_ONCE() in queue_cnt() */
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 	}
+ 	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
+@@ -303,6 +304,13 @@ static int svc_i3c_master_handle_ibi(str
+ 	slot->len = 0;
+ 	buf = slot->data;
  
- 	spin_unlock_irqrestore(&queue->lock, flags);
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index eedf067ee8e35..a6ff02a02cab1 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -55,10 +55,11 @@ static void enqueue_external_timestamp(struct timestamp_event_queue *queue,
- 	dst->t.sec = seconds;
- 	dst->t.nsec = remainder;
- 
-+	/* Both WRITE_ONCE() are paired with READ_ONCE() in queue_cnt() */
- 	if (!queue_free(queue))
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 
--	queue->tail = (queue->tail + 1) % PTP_MAX_TIMESTAMPS;
-+	WRITE_ONCE(queue->tail, (queue->tail + 1) % PTP_MAX_TIMESTAMPS);
- 
- 	spin_unlock_irqrestore(&queue->lock, flags);
- }
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index 6b97155148f11..d2cb956706763 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -55,9 +55,13 @@ struct ptp_clock {
-  * that a writer might concurrently increment the tail does not
-  * matter, since the queue remains nonempty nonetheless.
-  */
--static inline int queue_cnt(struct timestamp_event_queue *q)
-+static inline int queue_cnt(const struct timestamp_event_queue *q)
- {
--	int cnt = q->tail - q->head;
-+	/*
-+	 * Paired with WRITE_ONCE() in enqueue_external_timestamp(),
-+	 * ptp_read(), extts_fifo_show().
-+	 */
-+	int cnt = READ_ONCE(q->tail) - READ_ONCE(q->head);
- 	return cnt < 0 ? PTP_MAX_TIMESTAMPS + cnt : cnt;
- }
- 
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index 8cd59e8481631..8d52815e05b31 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -78,7 +78,8 @@ static ssize_t extts_fifo_show(struct device *dev,
- 	qcnt = queue_cnt(queue);
- 	if (qcnt) {
- 		event = queue->buf[queue->head];
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		/* Paired with READ_ONCE() in queue_cnt() */
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 	}
- 	spin_unlock_irqrestore(&queue->lock, flags);
- 
--- 
-2.42.0
-
++	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
++						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
++	if (ret) {
++		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
++		return ret;
++	}
++
+ 	while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS))  &&
+ 	       slot->len < SVC_I3C_FIFO_SIZE) {
+ 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
 
 
 
