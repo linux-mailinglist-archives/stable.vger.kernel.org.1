@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92447F757C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:47:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF217F757E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:47:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3DDE281FEB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:47:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F78D1C20FE8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADC928E2C;
-	Fri, 24 Nov 2023 13:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04D628E2C;
+	Fri, 24 Nov 2023 13:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIgMDrjs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUNxzISY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F0A28E2A
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:47:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B258C433C8;
-	Fri, 24 Nov 2023 13:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB82200B2
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52ECC433CC;
+	Fri, 24 Nov 2023 13:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700833643;
-	bh=jo+FHcg9jWJkWr4ObPglvSCOT/6Si3XLdvy73mpWSjE=;
+	s=korg; t=1700833646;
+	bh=Z0ytmVrZsu1jS4KwD37wn5wXhHdp7MLzwJa6yiJ3VSQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PIgMDrjsvJ2mcnQclRJo57uKmIIYej8qHrXvF4d439JI/Bqq2w56L0thCjrbJPCF8
-	 Nh2DkfnwMRZ++vQWXYxjZh46IcIo/qbfnEQlrvGFspkFwDPm/eUlZsbg7jHCsQoBAT
-	 XxF6rAvPnPSXcVobkqNyJnMCZJcLBUU7n/b31LjM=
-Subject: FAILED: patch "[PATCH] ext4: no need to generate from free list in mballoc" failed to apply to 5.15-stable tree
+	b=VUNxzISYOmGr+Xx2BZeOVZY442wWDF5PfesBCZAQ9nizQhS20es0YUnKyU+FLpClc
+	 oFgHFJuQC+MiMqAKl0uSNntg7k38MNEXVOeq2GGeKy/V/K7FKmxPGZKMZ2xjaLI2AP
+	 p2Jgd4hN2IWLdI5OruunT7X9T+mUmIYG9YcEZVfk=
+Subject: FAILED: patch "[PATCH] ext4: no need to generate from free list in mballoc" failed to apply to 5.10-stable tree
 To: wangjianjian0@foxmail.com,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:47:17 +0000
-Message-ID: <2023112417-onscreen-purify-30ed@gregkh>
+Date: Fri, 24 Nov 2023 13:47:18 +0000
+Message-ID: <2023112418-embattled-polio-b4b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x ebf6cb7c6e1241984f75f29f1bdbfa2fe7168f88
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112417-onscreen-purify-30ed@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112418-embattled-polio-b4b2@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,11 @@ fa08a7b61dff ("ext4: fix WARNING in mb_find_extent")
 8ac3939db99f ("ext4: refactor ext4_free_blocks() to pull out ext4_mb_clear_bb()")
 bfdc502a4a4c ("ext4: fix ext4_mb_mark_bb() with flex_bg with fast_commit")
 a5c0e2fdf7ce ("ext4: correct cluster len and clusters changed accounting in ext4_mb_mark_bb")
+196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+4b68f6df1059 ("ext4: add MB_NUM_ORDERS macro")
+a6c75eaf1103 ("ext4: add mballoc stats proc file")
+b237e3044450 ("ext4: add ability to return parsed options from parse_options")
+67d251860461 ("ext4: drop s_mb_bal_lock and convert protected fields to atomic")
 
 thanks,
 
