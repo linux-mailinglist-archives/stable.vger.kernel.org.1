@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 431167F7C08
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 373AC7F7BED
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7362D1C210C6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68F8E1C210E8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6893E3A8C3;
-	Fri, 24 Nov 2023 18:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78F7381D5;
+	Fri, 24 Nov 2023 18:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/HgFw4s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSYjCXQA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12C12511F;
-	Fri, 24 Nov 2023 18:11:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3813BC433C8;
-	Fri, 24 Nov 2023 18:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BCF39FF7;
+	Fri, 24 Nov 2023 18:10:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0103BC433C8;
+	Fri, 24 Nov 2023 18:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849466;
-	bh=zwaiwd0EPTSVr1Sg8THub5X5M4i9rHdy7aoTTrHYmUU=;
+	s=korg; t=1700849401;
+	bh=cinJjO1jmu5xG2tbNxufV3sYEBPPNrDHFQB3IIrfkDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/HgFw4sYfWwI4/Nyx7aXdAPZ6A5XW8ZSR6uXVrMa6ndhBBhH0/0FZ2YCvioBDT82
-	 U3R+EWFHUOPwSShwDRZYuXBnbjA/sz7qGADFkzNu1BK00d+Xg9sxI3XNMKKd5EDhrU
-	 tdHai3c6f4+o/xRKEBLVuR0uEQnEVNmRZvj5ITOk=
+	b=eSYjCXQAQhXCXmB9g3ICM2lkRLPMOfxGJMUhF43R1q8bzF3y73fdLJIkxH9HDHaEL
+	 nZDxBHItEdlBwiXjXMafK+CYhW16yFNCRVkEucqHSpel7avIXIH/ZUDjjTo2rJmSr1
+	 SClL/QtjDmlP55A2EiKylGCq/gXhhSZkNxHfXJE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/530] wifi: iwlwifi: Use FW rate for non-data frames
-Date: Fri, 24 Nov 2023 17:45:24 +0000
-Message-ID: <20231124172032.899026832@linuxfoundation.org>
+Subject: [PATCH 6.6 159/530] sched/core: Optimize in_task() and in_interrupt() a bit
+Date: Fri, 24 Nov 2023 17:45:25 +0000
+Message-ID: <20231124172032.924925978@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -58,62 +57,98 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 499d02790495958506a64f37ceda7e97345a50a8 ]
+[ Upstream commit 87c3a5893e865739ce78aa7192d36011022e0af7 ]
 
-Currently we are setting the rate in the tx cmd for
-mgmt frames (e.g. during connection establishment).
-This was problematic when sending mgmt frames in eSR mode,
-as we don't know what link this frame will be sent on
-(This is decided by the FW), so we don't know what is the
-lowest rate.
-Fix this by not setting the rate in tx cmd and rely
-on FW to choose the right one.
-Set rate only for injected frames with fixed rate,
-or when no sta is given.
-Also set for important frames (EAPOL etc.) the High Priority flag.
+Except on x86, preempt_count is always accessed with READ_ONCE().
+Repeated invocations in macros like irq_count() produce repeated loads.
+These redundant instructions appear in various fast paths. In the one
+shown below, for example, irq_count() is evaluated during kernel entry
+if !tick_nohz_full_cpu(smp_processor_id()).
 
-Fixes: 055b22e770dd ("iwlwifi: mvm: Set Tx rate and flags when there is not station")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230913145231.6c7e59620ee0.I6eaed3ccdd6dd62b9e664facc484081fc5275843@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+0001ed0a <irq_enter_rcu>:
+   1ed0a:       4e56 0000       linkw %fp,#0
+   1ed0e:       200f            movel %sp,%d0
+   1ed10:       0280 ffff e000  andil #-8192,%d0
+   1ed16:       2040            moveal %d0,%a0
+   1ed18:       2028 0008       movel %a0@(8),%d0
+   1ed1c:       0680 0001 0000  addil #65536,%d0
+   1ed22:       2140 0008       movel %d0,%a0@(8)
+   1ed26:       082a 0001 000f  btst #1,%a2@(15)
+   1ed2c:       670c            beqs 1ed3a <irq_enter_rcu+0x30>
+   1ed2e:       2028 0008       movel %a0@(8),%d0
+   1ed32:       2028 0008       movel %a0@(8),%d0
+   1ed36:       2028 0008       movel %a0@(8),%d0
+   1ed3a:       4e5e            unlk %fp
+   1ed3c:       4e75            rts
+
+This patch doesn't prevent the pointless btst and beqs instructions
+above, but it does eliminate 2 of the 3 pointless move instructions
+here and elsewhere.
+
+On x86, preempt_count is per-cpu data and the problem does not arise
+presumably because the compiler is free to optimize more effectively.
+
+This patch was tested on m68k and x86. I was expecting no changes
+to object code for x86 and mostly that's what I saw. However, there
+were a few places where code generation was perturbed for some reason.
+
+The performance issue addressed here is minor on uniprocessor m68k. I
+got a 0.01% improvement from this patch for a simple "find /sys -false"
+benchmark. For architectures and workloads susceptible to cache line bounce
+the improvement is expected to be larger. The only SMP architecture I have
+is x86, and as x86 unaffected I have not done any further measurements.
+
+Fixes: 15115830c887 ("preempt: Cleanup the macro maze a bit")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/0a403120a682a525e6db2d81d1a3ffcc137c3742.1694756831.git.fthain@linux-m68k.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ include/linux/preempt.h | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 2ede69132fee9..177a4628a913e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -536,16 +536,20 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			flags |= IWL_TX_FLAGS_ENCRYPT_DIS;
+diff --git a/include/linux/preempt.h b/include/linux/preempt.h
+index 1424670df161d..9aa6358a1a16b 100644
+--- a/include/linux/preempt.h
++++ b/include/linux/preempt.h
+@@ -99,14 +99,21 @@ static __always_inline unsigned char interrupt_context_level(void)
+ 	return level;
+ }
  
- 		/*
--		 * For data packets rate info comes from the fw. Only
--		 * set rate/antenna during connection establishment or in case
--		 * no station is given.
-+		 * For data and mgmt packets rate info comes from the fw. Only
-+		 * set rate/antenna for injected frames with fixed rate, or
-+		 * when no sta is given.
- 		 */
--		if (!sta || !ieee80211_is_data(hdr->frame_control) ||
--		    mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
-+		if (unlikely(!sta ||
-+			     info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT)) {
- 			flags |= IWL_TX_FLAGS_CMD_RATE;
- 			rate_n_flags =
- 				iwl_mvm_get_tx_rate_n_flags(mvm, info, sta,
- 							    hdr->frame_control);
-+		} else if (!ieee80211_is_data(hdr->frame_control) ||
-+			   mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
-+			/* These are important frames */
-+			flags |= IWL_TX_FLAGS_HIGH_PRI;
- 		}
++/*
++ * These macro definitions avoid redundant invocations of preempt_count()
++ * because such invocations would result in redundant loads given that
++ * preempt_count() is commonly implemented with READ_ONCE().
++ */
++
+ #define nmi_count()	(preempt_count() & NMI_MASK)
+ #define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
+ #ifdef CONFIG_PREEMPT_RT
+ # define softirq_count()	(current->softirq_disable_cnt & SOFTIRQ_MASK)
++# define irq_count()		((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | softirq_count())
+ #else
+ # define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
++# define irq_count()		(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_MASK))
+ #endif
+-#define irq_count()	(nmi_count() | hardirq_count() | softirq_count())
  
- 		if (mvm->trans->trans_cfg->device_family >=
+ /*
+  * Macros to retrieve the current execution context:
+@@ -119,7 +126,11 @@ static __always_inline unsigned char interrupt_context_level(void)
+ #define in_nmi()		(nmi_count())
+ #define in_hardirq()		(hardirq_count())
+ #define in_serving_softirq()	(softirq_count() & SOFTIRQ_OFFSET)
+-#define in_task()		(!(in_nmi() | in_hardirq() | in_serving_softirq()))
++#ifdef CONFIG_PREEMPT_RT
++# define in_task()		(!((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | in_serving_softirq()))
++#else
++# define in_task()		(!(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET)))
++#endif
+ 
+ /*
+  * The following macros are deprecated and should not be used in new code:
 -- 
 2.42.0
 
