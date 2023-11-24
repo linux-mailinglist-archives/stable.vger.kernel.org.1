@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-2074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB4EF7F82AB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D607F8435
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 284EC1C23CBA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4247C28AB80
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7274735F1A;
-	Fri, 24 Nov 2023 19:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A721D3307D;
+	Fri, 24 Nov 2023 19:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3A3sUVH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAkx+fCa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FC8339BE;
-	Fri, 24 Nov 2023 19:09:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A813EC433C9;
-	Fri, 24 Nov 2023 19:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138E631748;
+	Fri, 24 Nov 2023 19:25:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789FCC433C8;
+	Fri, 24 Nov 2023 19:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852985;
-	bh=BgyvIlohnO1wme7nnxIBDzIX6trc760T80A1goMxzts=;
+	s=korg; t=1700853902;
+	bh=58w9MRsew/OZ7PjOa2ErG5teyUUAPU1Nu/QcMUyOSIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X3A3sUVHwHQZglctWHpPnSgKnphnmQrkKfpIEtik3BYLU3y/ZoeKHeN66W1cSs0a0
-	 /oEEoB44J8dmAVeSS+WpbrcW/hpVxa4Hz/iy+tgeshRLCFW08U/9jZW9Ouw3l4gf0I
-	 3OA1158hhfPxPt4+vOzMBcbrDDA+fp+utPMgJo0k=
+	b=rAkx+fCaC3GJJwklGnT4gYrB7FTxPkKpVlu6o7VZzEAHJhts35fD2QDEKpl4B+X7f
+	 gCM03NXfPHgE+Njm45g9vOSQv+V42HJzk2NgGpRL/8CrHwxh4oDkmlz1b0/vfBmsce
+	 paXzrT8wCRFvjf/0vVg+UtwNaqrs8m8utJX7/ceU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 167/193] net: phylink: initialize carrier state at creation
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 5.4 077/159] PCI/sysfs: Protect drivers D3cold preference from user space
 Date: Fri, 24 Nov 2023 17:54:54 +0000
-Message-ID: <20231124171953.860314850@linuxfoundation.org>
+Message-ID: <20231124171945.146011381@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Klaus Kudielka <klaus.kudielka@gmail.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 02d5fdbf4f2b8c406f7a4c98fa52aa181a11d733 upstream.
+commit 70b70a4307cccebe91388337b1c85735ce4de6ff upstream.
 
-Background: Turris Omnia (Armada 385); eth2 (mvneta) connected to SFP bus;
-SFP module is present, but no fiber connected, so definitely no carrier.
+struct pci_dev contains two flags which govern whether the device may
+suspend to D3cold:
 
-After booting, eth2 is down, but netdev LED trigger surprisingly reports
-link active. Then, after "ip link set eth2 up", the link indicator goes
-away - as I would have expected it from the beginning.
+* no_d3cold provides an opt-out for drivers (e.g. if a device is known
+  to not wake from D3cold)
 
-It turns out, that the default carrier state after netdev creation is
-"carrier ok". Some ethernet drivers explicitly call netif_carrier_off
-during probing, others (like mvneta) don't - which explains the current
-behaviour: only when the device is brought up, phylink_start calls
-netif_carrier_off.
+* d3cold_allowed provides an opt-out for user space (default is true,
+  user space may set to false)
 
-Fix this for all drivers using phylink, by calling netif_carrier_off in
-phylink_create.
+Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend"),
+the user space setting overwrites the driver setting.  Essentially user
+space is trusted to know better than the driver whether D3cold is
+working.
 
-Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
-Cc: stable@vger.kernel.org
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+That feels unsafe and wrong.  Assume that the change was introduced
+inadvertently and do not overwrite no_d3cold when d3cold_allowed is
+modified.  Instead, consider d3cold_allowed in addition to no_d3cold
+when choosing a suspend state for the device.
+
+That way, user space may opt out of D3cold if the driver hasn't, but it
+may no longer force an opt in if the driver has opted out.
+
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Link: https://lore.kernel.org/r/b8a7f4af2b73f6b506ad8ddee59d747cbf834606.1695025365.git.lukas@wunner.de
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org	# v4.8+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phylink.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/pci-acpi.c  |    2 +-
+ drivers/pci/pci-sysfs.c |    5 +----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -838,6 +838,7 @@ struct phylink *phylink_create(struct ph
- 	pl->config = config;
- 	if (config->type == PHYLINK_NETDEV) {
- 		pl->netdev = to_net_dev(config->dev);
-+		netif_carrier_off(pl->netdev);
- 	} else if (config->type == PHYLINK_DEV) {
- 		pl->dev = config->dev;
- 	} else {
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -909,7 +909,7 @@ static pci_power_t acpi_pci_choose_state
+ {
+ 	int acpi_state, d_max;
+ 
+-	if (pdev->no_d3cold)
++	if (pdev->no_d3cold || !pdev->d3cold_allowed)
+ 		d_max = ACPI_STATE_D3_HOT;
+ 	else
+ 		d_max = ACPI_STATE_D3_COLD;
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -517,10 +517,7 @@ static ssize_t d3cold_allowed_store(stru
+ 		return -EINVAL;
+ 
+ 	pdev->d3cold_allowed = !!val;
+-	if (pdev->d3cold_allowed)
+-		pci_d3cold_enable(pdev);
+-	else
+-		pci_d3cold_disable(pdev);
++	pci_bridge_d3_update(pdev);
+ 
+ 	pm_runtime_resume(dev);
+ 
 
 
 
