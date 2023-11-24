@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-2318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D166C7F83AA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A157F8432
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 714C4B268E9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D25D51C273A2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AAA381A2;
-	Fri, 24 Nov 2023 19:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E0B2E64F;
+	Fri, 24 Nov 2023 19:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXLA/BN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWNX5lj5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CEF1A5A4;
-	Fri, 24 Nov 2023 19:19:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1397CC433C7;
-	Fri, 24 Nov 2023 19:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A7E1A5A4;
+	Fri, 24 Nov 2023 19:24:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B80C433C7;
+	Fri, 24 Nov 2023 19:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853588;
-	bh=p4i51Mk+f2CDNSLS1HR3nVIGW3kQf25WieVs8+QQ254=;
+	s=korg; t=1700853895;
+	bh=ZqKqZfPNOZhFwlZVFvCjIZ+M7HxrDGxRHo5T+4FFjo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXLA/BN/7ocJk4rSNLy8JGgngfV/5CJj9y5Qut643KWDxhI/nQ2TTen+8oTXNxKjo
-	 WBHLUqJSUbo0MuIBwS1iru0VQZnxSW47CEuogEBCUn+ttYuUmhjqd9J5zGeHBIB56D
-	 DIVdYCbX3GhLWBthyE5XRwrJ5IWS/8x9EQHCePbc=
+	b=YWNX5lj5Ya2fw1v7FmYJqHr9OwTFYvfFxIpkTs7M7PnlYOU7k2JN54cAnJicpVm8i
+	 U4djQV2sxNZz7JZAV5kUB8YJySdbaj/aOaJw//idkKDctcbEqk8mlwdLMzUGRhxcuk
+	 4vxMCZmKza+JTy75gNUEK19lK0sdgzjwpRpSendw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 249/297] arm64: dts: qcom: ipq6018: Fix tcsr_mutex register size
+	Andreas Steinmetz <anstein99@googlemail.com>,
+	John Johansen <john.johanse@canonical.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.4 074/159] audit: dont take task_lock() in audit_exe_compare() code path
 Date: Fri, 24 Nov 2023 17:54:51 +0000
-Message-ID: <20231124172008.895541797@linuxfoundation.org>
+Message-ID: <20231124171945.047429016@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,50 +54,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Paul Moore <paul@paul-moore.com>
 
-[ Upstream commit 72fc3d58b87b0d622039c6299b89024fbb7b420f ]
+commit 47846d51348dd62e5231a83be040981b17c955fa upstream.
 
-IPQ6018's TCSR Mutex HW lock register has 32 locks of size 4KB each.
-Total size of the TCSR Mutex registers is 128KB.
+The get_task_exe_file() function locks the given task with task_lock()
+which when used inside audit_exe_compare() can cause deadlocks on
+systems that generate audit records when the task_lock() is held. We
+resolve this problem with two changes: ignoring those cases where the
+task being audited is not the current task, and changing our approach
+to obtaining the executable file struct to not require task_lock().
 
-Fix size of the tcsr_mutex hwlock register to 0x20000.
+With the intent of the audit exe filter being to filter on audit events
+generated by processes started by the specified executable, it makes
+sense that we would only want to use the exe filter on audit records
+associated with the currently executing process, e.g. @current.  If
+we are asked to filter records using a non-@current task_struct we can
+safely ignore the exe filter without negatively impacting the admin's
+expectations for the exe filter.
 
-Changes in v2:
- - Drop change to remove qcom,ipq6018-tcsr-mutex compatible string
- - Added Fixes and stable tags
+Knowing that we only have to worry about filtering the currently
+executing task in audit_exe_compare() we can do away with the
+task_lock() and call get_mm_exe_file() with @current->mm directly.
 
-Cc: stable@vger.kernel.org
-Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230905095535.1263113-2-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 5efc244346f9 ("audit: fix exe_file access in audit_exe_compare")
+Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
+Reviewed-by: John Johansen <john.johanse@canonical.com>
+Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/audit_watch.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-index 43339557d7e5a..dde6fde10f8d3 100644
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -249,7 +249,7 @@
+--- a/kernel/audit_watch.c
++++ b/kernel/audit_watch.c
+@@ -542,11 +542,18 @@ int audit_exe_compare(struct task_struct
+ 	unsigned long ino;
+ 	dev_t dev;
  
- 		tcsr_mutex: hwlock@1905000 {
- 			compatible = "qcom,ipq6018-tcsr-mutex", "qcom,tcsr-mutex";
--			reg = <0x0 0x01905000 0x0 0x1000>;
-+			reg = <0x0 0x01905000 0x0 0x20000>;
- 			#hwlock-cells = <1>;
- 		};
- 
--- 
-2.42.0
-
+-	exe_file = get_task_exe_file(tsk);
++	/* only do exe filtering if we are recording @current events/records */
++	if (tsk != current)
++		return 0;
++
++	if (WARN_ON_ONCE(!current->mm))
++		return 0;
++	exe_file = get_mm_exe_file(current->mm);
+ 	if (!exe_file)
+ 		return 0;
+ 	ino = file_inode(exe_file)->i_ino;
+ 	dev = file_inode(exe_file)->i_sb->s_dev;
+ 	fput(exe_file);
++
+ 	return audit_mark_compare(mark, ino, dev);
+ }
 
 
 
