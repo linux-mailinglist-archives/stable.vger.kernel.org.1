@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0FC7F7BE5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CEC7F7DDA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CDA81C210A2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C38DE282240
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E5339FF7;
-	Fri, 24 Nov 2023 18:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E6539FFD;
+	Fri, 24 Nov 2023 18:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9JDeUzP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DOTe6W5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730732AF00;
-	Fri, 24 Nov 2023 18:09:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002B7C433C8;
-	Fri, 24 Nov 2023 18:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142FF34197;
+	Fri, 24 Nov 2023 18:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F44C433C9;
+	Fri, 24 Nov 2023 18:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849381;
-	bh=WtwxF5/GHATmn08Y/R8I2u1AuPa5f6kPT/ilYjSrLCc=;
+	s=korg; t=1700850476;
+	bh=f2y8eXbaTwBxftAKhfqGFTP2Ak8PDoDJ+5a6O1FeBig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9JDeUzPLeZ4GFQHEjKsIRdHpqjQ8QQiT1QmpTIAi+r2fIMv/faz4ZN3belf+gx4h
-	 RFkCRqZG3gO/7Ltl7O84+6eAi5rB2zr7i6Kut7YXIrkd090GxyFo2stirk0Uykq8pq
-	 w2FWiTu/wNE68rOIFb1dzp60W42PM/RFCkHC4VxQ=
+	b=DOTe6W5rJ/BYgk6UUSjFoiomIi1PeVcUNj8cEecNLOf+k6LD5SF5lGyaPotKe0gyd
+	 0KbGa6DqfXzWCtPVimWM0/pnDEmzAKgOsr/YMut9x5NBouDJWPNRrTudUqyOcPB00k
+	 wZybbKYOXRf6pNDiyjeZriQFVosmcfBPYmYM4Jvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jean Delvare <jdelvare@suse.de>,
-	Wolfram Sang <wsa@kernel.org>,
+	"Stanley.Yang" <Stanley.Yang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/530] i2c: i801: Add support for Intel Birch Stream SoC
-Date: Fri, 24 Nov 2023 17:45:00 +0000
-Message-ID: <20231124172032.169193904@linuxfoundation.org>
+Subject: [PATCH 6.5 065/491] drm/amdgpu: Fix potential null pointer derefernce
+Date: Fri, 24 Nov 2023 17:45:01 +0000
+Message-ID: <20231124172026.608912244@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,79 +54,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Stanley.Yang <Stanley.Yang@amd.com>
 
-[ Upstream commit 8c56f9ef25a33e51f09a448d25cf863b61c9658d ]
+[ Upstream commit 80285ae1ec8717b597b20de38866c29d84d321a1 ]
 
-Add SMBus PCI ID on Intel Birch Stream SoC.
+The amdgpu_ras_get_context may return NULL if device
+not support ras feature, so add check before using.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/i2c/busses/i2c-i801.rst | 1 +
- drivers/i2c/busses/Kconfig            | 1 +
- drivers/i2c/busses/i2c-i801.c         | 3 +++
- 3 files changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/i2c/busses/i2c-i801.rst b/Documentation/i2c/busses/i2c-i801.rst
-index e76e68ccf7182..10eced6c2e462 100644
---- a/Documentation/i2c/busses/i2c-i801.rst
-+++ b/Documentation/i2c/busses/i2c-i801.rst
-@@ -47,6 +47,7 @@ Supported adapters:
-   * Intel Alder Lake (PCH)
-   * Intel Raptor Lake (PCH)
-   * Intel Meteor Lake (SOC and PCH)
-+  * Intel Birch Stream (SOC)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 8940ee73f2dfe..ecc61a6d13e13 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5399,7 +5399,8 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
+ 	 * Flush RAM to disk so that after reboot
+ 	 * the user can read log and see why the system rebooted.
+ 	 */
+-	if (need_emergency_restart && amdgpu_ras_get_context(adev)->reboot) {
++	if (need_emergency_restart && amdgpu_ras_get_context(adev) &&
++		amdgpu_ras_get_context(adev)->reboot) {
+ 		DRM_WARN("Emergency reboot.");
  
-    Datasheets: Publicly available at the Intel website
- 
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 6644eebedaf3b..97d27e01a6ee2 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -158,6 +158,7 @@ config I2C_I801
- 	    Alder Lake (PCH)
- 	    Raptor Lake (PCH)
- 	    Meteor Lake (SOC and PCH)
-+	    Birch Stream (SOC)
- 
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called i2c-i801.
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 1d855258a45dc..89631fdf6e2fe 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -79,6 +79,7 @@
-  * Meteor Lake-P (SOC)		0x7e22	32	hard	yes	yes	yes
-  * Meteor Lake SoC-S (SOC)	0xae22	32	hard	yes	yes	yes
-  * Meteor Lake PCH-S (PCH)	0x7f23	32	hard	yes	yes	yes
-+ * Birch Stream (SOC)		0x5796	32	hard	yes	yes	yes
-  *
-  * Features supported by this driver:
-  * Software PEC				no
-@@ -231,6 +232,7 @@
- #define PCI_DEVICE_ID_INTEL_JASPER_LAKE_SMBUS		0x4da3
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_P_SMBUS		0x51a3
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_M_SMBUS		0x54a3
-+#define PCI_DEVICE_ID_INTEL_BIRCH_STREAM_SMBUS		0x5796
- #define PCI_DEVICE_ID_INTEL_BROXTON_SMBUS		0x5ad4
- #define PCI_DEVICE_ID_INTEL_RAPTOR_LAKE_S_SMBUS		0x7a23
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_S_SMBUS		0x7aa3
-@@ -1044,6 +1046,7 @@ static const struct pci_device_id i801_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_SOC_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
-+	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ 0, }
- };
- 
+ 		ksys_sync_helper();
 -- 
 2.42.0
 
