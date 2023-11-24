@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-1191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDFC7F7E72
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DC87F802A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE89E1C213B8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 174F31C214E3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0734134197;
-	Fri, 24 Nov 2023 18:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205B3364BA;
+	Fri, 24 Nov 2023 18:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3L5bD2T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXn93bo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82453A8C6;
-	Fri, 24 Nov 2023 18:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AD3C433C8;
-	Fri, 24 Nov 2023 18:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16F42E858;
+	Fri, 24 Nov 2023 18:47:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1467DC433C8;
+	Fri, 24 Nov 2023 18:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850784;
-	bh=ksfFhcyhzqvEJ69QUyjLf8ji6St9ygaLRIIM9AFY2ZQ=;
+	s=korg; t=1700851638;
+	bh=TQNpBSAJKwW52FqL5fdNzoIcbyaZLtl5bEOMXAnI6G0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3L5bD2TTX87Qf4954zkaxwbGIarEm2DhDp40zq/D3VxJCA0+53C+xlMYQOUZAZeS
-	 ZN1FeCwY9Z2Ga8ejggBy5gQeEf+Z/9zABtgnIqmyzlkwWk5kR2o9xeMwS1tkrjAD6P
-	 NDeOfr20XgBNAlwM/aoY8lgRXKnLq4Sy+Inx4sGw=
+	b=iXn93bo0mn+3Y6QKaq6vJfsOxpxrNIAlp1qmjFhHOOCCDBZnRJ6v9FLgJo1Nkuf3N
+	 Nv4cWnmD9oZppTtc4q+yuvNKby13Oe3qOk/eY3EQAZIt4Ag3YaAZX3jStuygdbiRBd
+	 RZ7Y5OXX4fAZRQn0ITouNrD1Cum0f7X1sZ5fbPGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Jun Lei <jun.lei@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 187/491] xen/events: fix delayed eoi list handling
+Subject: [PATCH 6.1 036/372] drm/amd/display: use full update for clip size increase of large plane source
 Date: Fri, 24 Nov 2023 17:47:03 +0000
-Message-ID: <20231124172030.096972952@linuxfoundation.org>
+Message-ID: <20231124172011.696957511@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +56,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-[ Upstream commit 47d970204054f859f35a2237baa75c2d84fcf436 ]
+[ Upstream commit 05b78277ef0efc1deebc8a22384fffec29a3676e ]
 
-When delaying eoi handling of events, the related elements are queued
-into the percpu lateeoi list. In case the list isn't empty, the
-elements should be sorted by the time when eoi handling is to happen.
+[why]
+Clip size increase will increase viewport, which could cause us to
+switch  to MPC combine.
+If we skip full update, we are not able to change to MPC combine in
+fast update. This will cause corruption showing on the video plane.
 
-Unfortunately a new element will never be queued at the start of the
-list, even if it has a handling time lower than all other list
-elements.
+[how]
+treat clip size increase of a surface larger than 5k as a full update.
 
-Fix that by handling that case the same way as for an empty list.
-
-Fixes: e99502f76271 ("xen/events: defer eoi in case of excessive number of events")
-Reported-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 12 ++++++++++--
+ drivers/gpu/drm/amd/display/dc/dc.h      |  5 +++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 5de10d291a1cb..87482b3428bf6 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -604,7 +604,9 @@ static void lateeoi_list_add(struct irq_info *info)
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 15d3caf3d6d72..9d321f4f486e2 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -996,7 +996,8 @@ static bool dc_construct(struct dc *dc,
+ 	/* set i2c speed if not done by the respective dcnxxx__resource.c */
+ 	if (dc->caps.i2c_speed_in_khz_hdcp == 0)
+ 		dc->caps.i2c_speed_in_khz_hdcp = dc->caps.i2c_speed_in_khz;
+-
++	if (dc->caps.max_optimizable_video_width == 0)
++		dc->caps.max_optimizable_video_width = 5120;
+ 	dc->clk_mgr = dc_clk_mgr_create(dc->ctx, dc->res_pool->pp_smu, dc->res_pool->dccg);
+ 	if (!dc->clk_mgr)
+ 		goto fail;
+@@ -2438,6 +2439,7 @@ static enum surface_update_type get_plane_info_update_type(const struct dc_surfa
+ }
  
- 	spin_lock_irqsave(&eoi->eoi_list_lock, flags);
+ static enum surface_update_type get_scaling_info_update_type(
++		const struct dc *dc,
+ 		const struct dc_surface_update *u)
+ {
+ 	union surface_update_flags *update_flags = &u->surface->update_flags;
+@@ -2472,6 +2474,12 @@ static enum surface_update_type get_scaling_info_update_type(
+ 			update_flags->bits.clock_change = 1;
+ 	}
  
--	if (list_empty(&eoi->eoi_list)) {
-+	elem = list_first_entry_or_null(&eoi->eoi_list, struct irq_info,
-+					eoi_list);
-+	if (!elem || info->eoi_time < elem->eoi_time) {
- 		list_add(&info->eoi_list, &eoi->eoi_list);
- 		mod_delayed_work_on(info->eoi_cpu, system_wq,
- 				    &eoi->delayed, delay);
++	if (u->scaling_info->src_rect.width > dc->caps.max_optimizable_video_width &&
++		(u->scaling_info->clip_rect.width > u->surface->clip_rect.width ||
++		 u->scaling_info->clip_rect.height > u->surface->clip_rect.height))
++		 /* Changing clip size of a large surface may result in MPC slice count change */
++		update_flags->bits.bandwidth_change = 1;
++
+ 	if (u->scaling_info->src_rect.x != u->surface->src_rect.x
+ 			|| u->scaling_info->src_rect.y != u->surface->src_rect.y
+ 			|| u->scaling_info->clip_rect.x != u->surface->clip_rect.x
+@@ -2509,7 +2517,7 @@ static enum surface_update_type det_surface_update(const struct dc *dc,
+ 	type = get_plane_info_update_type(u);
+ 	elevate_update_type(&overall_type, type);
+ 
+-	type = get_scaling_info_update_type(u);
++	type = get_scaling_info_update_type(dc, u);
+ 	elevate_update_type(&overall_type, type);
+ 
+ 	if (u->flip_addr) {
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index a4540f83aae59..f773a467fef54 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -230,6 +230,11 @@ struct dc_caps {
+ 	uint32_t dmdata_alloc_size;
+ 	unsigned int max_cursor_size;
+ 	unsigned int max_video_width;
++	/*
++	 * max video plane width that can be safely assumed to be always
++	 * supported by single DPP pipe.
++	 */
++	unsigned int max_optimizable_video_width;
+ 	unsigned int min_horizontal_blanking_period;
+ 	int linear_pitch_alignment;
+ 	bool dcc_const_color;
 -- 
 2.42.0
 
