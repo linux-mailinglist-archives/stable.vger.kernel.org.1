@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B587F7B36
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0EF7F7D68
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAE991C20993
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7FEEB21533
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E2039FFD;
-	Fri, 24 Nov 2023 18:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DC93A8D8;
+	Fri, 24 Nov 2023 18:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4AbkK7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hx+pA7i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E6A39FD7;
-	Fri, 24 Nov 2023 18:02:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C52FC433C9;
-	Fri, 24 Nov 2023 18:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ED039FFD;
+	Fri, 24 Nov 2023 18:24:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F0FC433C7;
+	Fri, 24 Nov 2023 18:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848976;
-	bh=bVOf6ykizHlY6kILmv25sHkMooZkYK5vkudQxpSOXyE=;
+	s=korg; t=1700850256;
+	bh=JI1i/ZauOX4/9BA8ayG/O95Xw4geM8kPun6fElVQD3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X4AbkK7Ve7bxjYJxj/KMKJNODdHbzSjo2KwU2clCB/ab9fMhtXxSuju/g5gb4Arcd
-	 kYDHWEUW/E90hQZVDUqs5WLNoOaa1F8BvjBOdlV3cwnc+dLMPa29DCcyPInFJ+YyH+
-	 U8/tX0pbgCAgeUxbD8mWCItqosEsY3ys+AwABcm0=
+	b=2hx+pA7iv5OYuHeD3RcxFbfdoPXOR56canK5p3rolB2JNDWJN8euAJRixgSGLmeQf
+	 qOivXGJ3ATI1J3/7H9e+h52wUKqxz+9VWnXxXZQcK18DDAvvI5QZuORHFhLcApHyce
+	 xYoNxIFOaPCcGhHBygc11eTL7bwZmVQt4cSeuA40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean Delvare <jdelvare@suse.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jean Delvare <jdelvare@suse.de>,
-	Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 4.14 49/57] i2c: i801: fix potential race in i801_block_transaction_byte_by_byte
+	Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 507/530] drm/amd/pm: Handle non-terminated overdrive commands.
 Date: Fri, 24 Nov 2023 17:51:13 +0000
-Message-ID: <20231124171932.125003539@linuxfoundation.org>
+Message-ID: <20231124172043.591944504@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,71 +52,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 
-commit f78ca48a8ba9cdec96e8839351e49eec3233b177 upstream.
+commit 08e9ebc75b5bcfec9d226f9e16bab2ab7b25a39a upstream.
 
-Currently we set SMBHSTCNT_LAST_BYTE only after the host has started
-receiving the last byte. If we get e.g. preempted before setting
-SMBHSTCNT_LAST_BYTE, the host may be finished with receiving the byte
-before SMBHSTCNT_LAST_BYTE is set.
-Therefore change the code to set SMBHSTCNT_LAST_BYTE before writing
-SMBHSTSTS_BYTE_DONE for the byte before the last byte. Now the code
-is also consistent with what we do in i801_isr_byte_done().
+The incoming strings might not be terminated by a newline
+or a 0.
 
-Reported-by: Jean Delvare <jdelvare@suse.com>
-Closes: https://lore.kernel.org/linux-i2c/20230828152747.09444625@endymion.delvare/
+(found while testing a program that just wrote the string
+ itself, causing a crash)
+
 Cc: stable@vger.kernel.org
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: e3933f26b657 ("drm/amd/pp: Add edit/commit/show OD clock/voltage support in sysfs")
+Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-i801.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -707,15 +707,11 @@ static int i801_block_transaction_byte_b
- 		return i801_check_post(priv, status);
- 	}
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -734,7 +734,7 @@ static ssize_t amdgpu_set_pp_od_clk_volt
+ 	if (adev->in_suspend && !adev->in_runpm)
+ 		return -EPERM;
  
--	for (i = 1; i <= len; i++) {
--		if (i == len && read_write == I2C_SMBUS_READ)
--			smbcmd |= SMBHSTCNT_LAST_BYTE;
--		outb_p(smbcmd, SMBHSTCNT(priv));
--
--		if (i == 1)
--			outb_p(inb(SMBHSTCNT(priv)) | SMBHSTCNT_START,
--			       SMBHSTCNT(priv));
-+	if (len == 1 && read_write == I2C_SMBUS_READ)
-+		smbcmd |= SMBHSTCNT_LAST_BYTE;
-+	outb_p(smbcmd | SMBHSTCNT_START, SMBHSTCNT(priv));
+-	if (count > 127)
++	if (count > 127 || count == 0)
+ 		return -EINVAL;
  
-+	for (i = 1; i <= len; i++) {
- 		status = i801_wait_byte_done(priv);
- 		if (status)
- 			goto exit;
-@@ -738,9 +734,12 @@ static int i801_block_transaction_byte_b
- 			data->block[0] = len;
- 		}
+ 	if (*buf == 's')
+@@ -754,7 +754,8 @@ static ssize_t amdgpu_set_pp_od_clk_volt
+ 	else
+ 		return -EINVAL;
  
--		/* Retrieve/store value in SMBBLKDAT */
--		if (read_write == I2C_SMBUS_READ)
-+		if (read_write == I2C_SMBUS_READ) {
- 			data->block[i] = inb_p(SMBBLKDAT(priv));
-+			if (i == len - 1)
-+				outb_p(smbcmd | SMBHSTCNT_LAST_BYTE, SMBHSTCNT(priv));
-+		}
+-	memcpy(buf_cpy, buf, count+1);
++	memcpy(buf_cpy, buf, count);
++	buf_cpy[count] = 0;
+ 
+ 	tmp_str = buf_cpy;
+ 
+@@ -771,6 +772,9 @@ static ssize_t amdgpu_set_pp_od_clk_volt
+ 			return -EINVAL;
+ 		parameter_size++;
+ 
++		if (!tmp_str)
++			break;
 +
- 		if (read_write == I2C_SMBUS_WRITE && i+1 <= len)
- 			outb_p(data->block[i+1], SMBBLKDAT(priv));
- 
+ 		while (isspace(*tmp_str))
+ 			tmp_str++;
+ 	}
 
 
 
