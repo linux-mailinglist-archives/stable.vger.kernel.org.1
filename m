@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0737F8040
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958CF7F7E67
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29B241C21550
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39407B20FD2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6FB364DE;
-	Fri, 24 Nov 2023 18:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F8C3A8C6;
+	Fri, 24 Nov 2023 18:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o30OI0YO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfLahmmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1479C364A5;
-	Fri, 24 Nov 2023 18:48:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99AA3C433C7;
-	Fri, 24 Nov 2023 18:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA7F33E9;
+	Fri, 24 Nov 2023 18:32:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E058C433C7;
+	Fri, 24 Nov 2023 18:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851682;
-	bh=PBI0N4EKOKE1jTCtfpl1zJopt1jtL3MXHdsp7Y1ogfo=;
+	s=korg; t=1700850763;
+	bh=iuT4QHJMrODfJaNMK0OCW/Lbu6PESeAI4mD3RtV92xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o30OI0YOw632MjmbLyHnn74h6hU+pL3ezCm2gVRh4SlDnHRcaUFTou42BUFisuTBg
-	 Z3McLvSbkw8su2jzbPL97tGEIhNfS/kQQwTsuuMiF/oUOOGLn2661AqPUsoc1icboF
-	 Jc58bym1D79aXmGufpEr0Fzs0jRcS4OsO370OA7I=
+	b=zfLahmmRErBXIjZHj9HbCEPOKCGMYKWD9NPs7C/aelANWWEdNimb08DEp4bC8uS+k
+	 eRyM60P9iuDIQZIo5dZidN0azIWXr5q8rT21UB5zHJTJkcQ372oh9xvut3gvIqUJFV
+	 Lg5fZpDX5WxqXCiLaH4vin29wSQBO8RInPsGlKq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <groeck@chromium.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/372] platform/chrome: kunit: initialize lock for fake ec_dev
+Subject: [PATCH 6.5 180/491] net: hns3: fix out-of-bounds access may occur when coalesce info is read via debugfs
 Date: Fri, 24 Nov 2023 17:46:56 +0000
-Message-ID: <20231124172011.451595736@linuxfoundation.org>
+Message-ID: <20231124172029.888924385@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +54,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-[ Upstream commit e410b4ade83d06a046f6e32b5085997502ba0559 ]
+[ Upstream commit 53aba458f23846112c0d44239580ff59bc5c36c3 ]
 
-cros_ec_cmd_xfer() uses ec_dev->lock.  Initialize it.
+The hns3 driver define an array of string to show the coalesce
+info, but if the kernel adds a new mode or a new state,
+out-of-bounds access may occur when coalesce info is read via
+debugfs, this patch fix the problem.
 
-Otherwise, dmesg shows the following:
-> DEBUG_LOCKS_WARN_ON(lock->magic != lock)
-> ...
-> Call Trace:
->  ? __mutex_lock
->  ? __warn
->  ? __mutex_lock
->  ...
->  ? cros_ec_cmd_xfer
-
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Link: https://lore.kernel.org/r/20231003080504.4011337-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Fixes: c99fead7cb07 ("net: hns3: add debugfs support for interrupt coalesce")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/chrome/cros_ec_proto_test.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/chrome/cros_ec_proto_test.c b/drivers/platform/chrome/cros_ec_proto_test.c
-index c6a83df91ae1e..b46a8bc2196fe 100644
---- a/drivers/platform/chrome/cros_ec_proto_test.c
-+++ b/drivers/platform/chrome/cros_ec_proto_test.c
-@@ -2667,6 +2667,7 @@ static int cros_ec_proto_test_init(struct kunit *test)
- 	ec_dev->dev->release = cros_ec_proto_test_release;
- 	ec_dev->cmd_xfer = cros_kunit_ec_xfer_mock;
- 	ec_dev->pkt_xfer = cros_kunit_ec_xfer_mock;
-+	mutex_init(&ec_dev->lock);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index 26fb6fefcb9d9..5d1814ed51427 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -500,11 +500,14 @@ static void hns3_get_coal_info(struct hns3_enet_tqp_vector *tqp_vector,
+ 	}
  
- 	priv->msg = (struct cros_ec_command *)priv->_msg;
- 
+ 	sprintf(result[j++], "%d", i);
+-	sprintf(result[j++], "%s", dim_state_str[dim->state]);
++	sprintf(result[j++], "%s", dim->state < ARRAY_SIZE(dim_state_str) ?
++		dim_state_str[dim->state] : "unknown");
+ 	sprintf(result[j++], "%u", dim->profile_ix);
+-	sprintf(result[j++], "%s", dim_cqe_mode_str[dim->mode]);
++	sprintf(result[j++], "%s", dim->mode < ARRAY_SIZE(dim_cqe_mode_str) ?
++		dim_cqe_mode_str[dim->mode] : "unknown");
+ 	sprintf(result[j++], "%s",
+-		dim_tune_stat_str[dim->tune_state]);
++		dim->tune_state < ARRAY_SIZE(dim_tune_stat_str) ?
++		dim_tune_stat_str[dim->tune_state] : "unknown");
+ 	sprintf(result[j++], "%u", dim->steps_left);
+ 	sprintf(result[j++], "%u", dim->steps_right);
+ 	sprintf(result[j++], "%u", dim->tired);
 -- 
 2.42.0
 
