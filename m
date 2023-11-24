@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F097F8119
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E15E7F7D2D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8379BB21A97
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 912291C211D0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D449833CC2;
-	Fri, 24 Nov 2023 18:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9953A8C9;
+	Fri, 24 Nov 2023 18:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUJngm6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKvQw/g1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96096286B5;
-	Fri, 24 Nov 2023 18:55:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23937C433C7;
-	Fri, 24 Nov 2023 18:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F759364C8;
+	Fri, 24 Nov 2023 18:22:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA77EC433C7;
+	Fri, 24 Nov 2023 18:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852132;
-	bh=7YQA+a4zzxXSBnicgM07s0mPp73nwDPbF0Cb4eAaK2k=;
+	s=korg; t=1700850125;
+	bh=fEHUO6K60p15HGgCJK8Dgj7L6cBGJ1L7ExYPiXFppn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUJngm6z0YqCwm4LZDVXk4Eb5a0RRyWfZQeUtF6akgd7ag0t+i9l/rZZML3O6BfhZ
-	 2fncG+aOCyNe3SWrbHwAccPi8Clm/PIyzi21tackQM4Bt31VKPAk4sOnyozzEbWKWt
-	 C4JXo+Wn/F+TriK9CFQqc6Lm9Y2IgrvyQny3g3JM=
+	b=yKvQw/g1b3HbW/iCPBzBCWVXYqUBETWlZx5luzB60saQrea+AD2cxvNzBGX7RwsLT
+	 izAygE8i15zaTrvwNSVz0Fp4ejX2VAD/ZRoa2YwbYoN//DQDOLunzA0yccnmUrS0Zq
+	 f5AlPR0K/9I7PGuxzcKNM/7Rp75b/uUiWyfk2xaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 233/372] ima: annotate iint mutex to avoid lockdep false positive warnings
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 454/530] media: lirc: drop trailing space from scancode transmit
 Date: Fri, 24 Nov 2023 17:50:20 +0000
-Message-ID: <20231124172018.280052882@linuxfoundation.org>
+Message-ID: <20231124172041.902102805@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,117 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Sean Young <sean@mess.org>
 
-commit e044374a8a0a99e46f4e6d6751d3042b6d9cc12e upstream.
+commit c8a489f820179fb12251e262b50303c29de991ac upstream.
 
-It is not clear that IMA should be nested at all, but as long is it
-measures files both on overlayfs and on underlying fs, we need to
-annotate the iint mutex to avoid lockdep false positives related to
-IMA + overlayfs, same as overlayfs annotates the inode mutex.
+When transmitting, infrared drivers expect an odd number of samples; iow
+without a trailing space. No problems have been observed so far, so
+this is just belt and braces.
 
-Reported-and-tested-by: syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Fixes: 9b6192589be7 ("media: lirc: implement scancode sending")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/iint.c |   48 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 37 insertions(+), 11 deletions(-)
+ drivers/media/rc/lirc_dev.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/security/integrity/iint.c
-+++ b/security/integrity/iint.c
-@@ -66,9 +66,32 @@ struct integrity_iint_cache *integrity_i
- 	return iint;
- }
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -276,7 +276,11 @@ static ssize_t lirc_transmit(struct file
+ 		if (ret < 0)
+ 			goto out_kfree_raw;
  
--static void iint_free(struct integrity_iint_cache *iint)
-+#define IMA_MAX_NESTING (FILESYSTEM_MAX_STACK_DEPTH+1)
-+
-+/*
-+ * It is not clear that IMA should be nested at all, but as long is it measures
-+ * files both on overlayfs and on underlying fs, we need to annotate the iint
-+ * mutex to avoid lockdep false positives related to IMA + overlayfs.
-+ * See ovl_lockdep_annotate_inode_mutex_key() for more details.
-+ */
-+static inline void iint_lockdep_annotate(struct integrity_iint_cache *iint,
-+					 struct inode *inode)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	static struct lock_class_key iint_mutex_key[IMA_MAX_NESTING];
-+
-+	int depth = inode->i_sb->s_stack_depth;
-+
-+	if (WARN_ON_ONCE(depth < 0 || depth >= IMA_MAX_NESTING))
-+		depth = 0;
-+
-+	lockdep_set_class(&iint->mutex, &iint_mutex_key[depth]);
-+#endif
-+}
-+
-+static void iint_init_always(struct integrity_iint_cache *iint,
-+			     struct inode *inode)
- {
--	kfree(iint->ima_hash);
- 	iint->ima_hash = NULL;
- 	iint->version = 0;
- 	iint->flags = 0UL;
-@@ -80,6 +103,14 @@ static void iint_free(struct integrity_i
- 	iint->ima_creds_status = INTEGRITY_UNKNOWN;
- 	iint->evm_status = INTEGRITY_UNKNOWN;
- 	iint->measured_pcrs = 0;
-+	mutex_init(&iint->mutex);
-+	iint_lockdep_annotate(iint, inode);
-+}
-+
-+static void iint_free(struct integrity_iint_cache *iint)
-+{
-+	kfree(iint->ima_hash);
-+	mutex_destroy(&iint->mutex);
- 	kmem_cache_free(iint_cache, iint);
- }
+-		count = ret;
++		/* drop trailing space */
++		if (!(ret % 2))
++			count = ret - 1;
++		else
++			count = ret;
  
-@@ -112,6 +143,8 @@ struct integrity_iint_cache *integrity_i
- 	if (!iint)
- 		return NULL;
- 
-+	iint_init_always(iint, inode);
-+
- 	write_lock(&integrity_iint_lock);
- 
- 	p = &integrity_iint_tree.rb_node;
-@@ -161,25 +194,18 @@ void integrity_inode_free(struct inode *
- 	iint_free(iint);
- }
- 
--static void init_once(void *foo)
-+static void iint_init_once(void *foo)
- {
- 	struct integrity_iint_cache *iint = (struct integrity_iint_cache *) foo;
- 
- 	memset(iint, 0, sizeof(*iint));
--	iint->ima_file_status = INTEGRITY_UNKNOWN;
--	iint->ima_mmap_status = INTEGRITY_UNKNOWN;
--	iint->ima_bprm_status = INTEGRITY_UNKNOWN;
--	iint->ima_read_status = INTEGRITY_UNKNOWN;
--	iint->ima_creds_status = INTEGRITY_UNKNOWN;
--	iint->evm_status = INTEGRITY_UNKNOWN;
--	mutex_init(&iint->mutex);
- }
- 
- static int __init integrity_iintcache_init(void)
- {
- 	iint_cache =
- 	    kmem_cache_create("iint_cache", sizeof(struct integrity_iint_cache),
--			      0, SLAB_PANIC, init_once);
-+			      0, SLAB_PANIC, iint_init_once);
- 	return 0;
- }
- DEFINE_LSM(integrity) = {
+ 		txbuf = kmalloc_array(count, sizeof(unsigned int), GFP_KERNEL);
+ 		if (!txbuf) {
 
 
 
