@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62937F7F56
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 782767F7AB0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E61C41C214A1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34F2328156E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 006D8364CB;
-	Fri, 24 Nov 2023 18:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BDE39FC3;
+	Fri, 24 Nov 2023 17:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KlclaWje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6aTIqRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C12C33075;
-	Fri, 24 Nov 2023 18:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A54C433C7;
-	Fri, 24 Nov 2023 18:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75640381DE;
+	Fri, 24 Nov 2023 17:57:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047C2C433C8;
+	Fri, 24 Nov 2023 17:57:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851234;
-	bh=oZBDgy+384IfvhR5QuMMVinnlTq0cR9C/jYn+hvL6gc=;
+	s=korg; t=1700848658;
+	bh=dI355BmJQBiOzG7a9FxV+RhnJLdGbS4XRXuhBlOjDkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KlclaWje0OQxnb6Cj3D7uqlDdy1L0BAzXCJq95ai3WEqJuQiKx6uC8oHIEXhi27b1
-	 zjrJxc3BaJlLoLoKAxsIRGNpf7tos3+0RsEZqPLu5OF9EDLDNdqQ/jhE07K+SEtQyG
-	 tOlV+y7ZNVnJ5VdVLxbBeJACL2xjAbXoFTvN0e44=
+	b=Y6aTIqRWVruk1V+pks8rOafQgxGxELK8M5JNUWTDX5PFucepzO/KhVonibmKw/AhA
+	 j4SmSpok8wJiVnG7bYNcpgKBAcepgTF2RQBzdOYqi7uLeNDHGHmU4j0Ekx8zobI5+h
+	 O1SViisK28mI9izYIf+wOMdQOZEHqA0CocEx0TFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Li <pengfei.li_1@nxp.com>,
-	Emil Kronborg <emil.kronborg@protonmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Axel Lin <axel.lin@ingics.com>,
+	Boris Brezillon <boris.brezillon@free-electrons.com>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 367/491] pmdomain: imx: Make imx pgc power domain also set the fwnode
+Subject: [PATCH 4.19 30/97] i2c: sun6i-p2wi: Prevent potential division by zero
 Date: Fri, 24 Nov 2023 17:50:03 +0000
-Message-ID: <20231124172035.606560597@linuxfoundation.org>
+Message-ID: <20231124171935.278568512@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengfei Li <pengfei.li_1@nxp.com>
+From: Axel Lin <axel.lin@ingics.com>
 
-[ Upstream commit 374de39d38f97b0e58cfee88da590b2d056ccf7f ]
+[ Upstream commit 5ac61d26b8baff5b2e5a9f3dc1ef63297e4b53e7 ]
 
-Currently, The imx pgc power domain doesn't set the fwnode
-pointer, which results in supply regulator device can't get
-consumer imx pgc power domain device from fwnode when creating
-a link.
+Make sure we don't OOPS in case clock-frequency is set to 0 in a DT. The
+variable set here is later used as a divisor.
 
-This causes the driver core to instead try to create a link
-between the parent gpc device of imx pgc power domain device and
-supply regulator device. However, at this point, the gpc device
-has already been bound, and the link creation will fail. So adding
-the fwnode pointer to the imx pgc power domain device will fix
-this issue.
-
-Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-Tested-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Fixes: 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020185949.537083-1-pengfei.li_1@nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Axel Lin <axel.lin@ingics.com>
+Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/imx/gpc.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-sun6i-p2wi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/soc/imx/gpc.c b/drivers/soc/imx/gpc.c
-index 90a8b2c0676ff..419ed15cc10c4 100644
---- a/drivers/soc/imx/gpc.c
-+++ b/drivers/soc/imx/gpc.c
-@@ -498,6 +498,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
+diff --git a/drivers/i2c/busses/i2c-sun6i-p2wi.c b/drivers/i2c/busses/i2c-sun6i-p2wi.c
+index 7c07ce116e384..540c33f4e3500 100644
+--- a/drivers/i2c/busses/i2c-sun6i-p2wi.c
++++ b/drivers/i2c/busses/i2c-sun6i-p2wi.c
+@@ -202,6 +202,11 @@ static int p2wi_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
  
- 			pd_pdev->dev.parent = &pdev->dev;
- 			pd_pdev->dev.of_node = np;
-+			pd_pdev->dev.fwnode = of_fwnode_handle(np);
- 
- 			ret = platform_device_add(pd_pdev);
- 			if (ret) {
++	if (clk_freq == 0) {
++		dev_err(dev, "clock-frequency is set to 0 in DT\n");
++		return -EINVAL;
++	}
++
+ 	if (of_get_child_count(np) > 1) {
+ 		dev_err(dev, "P2WI only supports one slave device\n");
+ 		return -EINVAL;
 -- 
 2.42.0
 
