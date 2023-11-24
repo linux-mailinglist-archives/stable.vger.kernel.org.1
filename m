@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958CF7F7E67
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2C17F7C44
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39407B20FD2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A1B01C2113B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F8C3A8C6;
-	Fri, 24 Nov 2023 18:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B723A8C5;
+	Fri, 24 Nov 2023 18:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfLahmmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRqjKqXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA7F33E9;
-	Fri, 24 Nov 2023 18:32:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E058C433C7;
-	Fri, 24 Nov 2023 18:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6038739FDD;
+	Fri, 24 Nov 2023 18:13:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3D7C433C8;
+	Fri, 24 Nov 2023 18:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850763;
-	bh=iuT4QHJMrODfJaNMK0OCW/Lbu6PESeAI4mD3RtV92xs=;
+	s=korg; t=1700849612;
+	bh=aq488A2fSnHTRicZsnRlnvA+3JlX1fYXZIkubSaVg+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zfLahmmRErBXIjZHj9HbCEPOKCGMYKWD9NPs7C/aelANWWEdNimb08DEp4bC8uS+k
-	 eRyM60P9iuDIQZIo5dZidN0azIWXr5q8rT21UB5zHJTJkcQ372oh9xvut3gvIqUJFV
-	 Lg5fZpDX5WxqXCiLaH4vin29wSQBO8RInPsGlKq4=
+	b=iRqjKqXB5dBGryQjRjIATnFHxL2ut03U+Ysk8z+XEmGV4KUpLBRbU2QfxyDpVVeXo
+	 inWaj49kgKTSaGa9A5oP9pILP8Dp9dMwaAqwTVIVV0f+pDrb0gDwJoXRC6gKPk9Sj0
+	 2mYBFeqkOoqBhg6SSyzVf/kpAIPjn9dMjBZMVQnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 180/491] net: hns3: fix out-of-bounds access may occur when coalesce info is read via debugfs
-Date: Fri, 24 Nov 2023 17:46:56 +0000
-Message-ID: <20231124172029.888924385@linuxfoundation.org>
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 251/530] scsi: ufs: core: Fix racing issue between ufshcd_mcq_abort() and ISR
+Date: Fri, 24 Nov 2023 17:46:57 +0000
+Message-ID: <20231124172035.701304779@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-[ Upstream commit 53aba458f23846112c0d44239580ff59bc5c36c3 ]
+commit 27900d7119c464b43cd9eac69c85884d17bae240 upstream.
 
-The hns3 driver define an array of string to show the coalesce
-info, but if the kernel adds a new mode or a new state,
-out-of-bounds access may occur when coalesce info is read via
-debugfs, this patch fix the problem.
+If command timeout happens and cq complete IRQ is raised at the same time,
+ufshcd_mcq_abort clears lprb->cmd and a NULL pointer deref happens in the
+ISR. Error log:
 
-Fixes: c99fead7cb07 ("net: hns3: add debugfs support for interrupt coalesce")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ufshcd_abort: Device abort task at tag 18
+Unable to handle kernel NULL pointer dereference at virtual address
+0000000000000108
+pc : [0xffffffe27ef867ac] scsi_dma_unmap+0xc/0x44
+lr : [0xffffffe27f1b898c] ufshcd_release_scsi_cmd+0x24/0x114
+
+Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20231106075117.8995-1-peter.wang@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/ufs/core/ufs-mcq.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-index 26fb6fefcb9d9..5d1814ed51427 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -500,11 +500,14 @@ static void hns3_get_coal_info(struct hns3_enet_tqp_vector *tqp_vector,
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -630,6 +630,7 @@ int ufshcd_mcq_abort(struct scsi_cmnd *c
+ 	int tag = scsi_cmd_to_rq(cmd)->tag;
+ 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
+ 	struct ufs_hw_queue *hwq;
++	unsigned long flags;
+ 	int err = FAILED;
+ 
+ 	if (!ufshcd_cmd_inflight(lrbp->cmd)) {
+@@ -670,8 +671,10 @@ int ufshcd_mcq_abort(struct scsi_cmnd *c
  	}
  
- 	sprintf(result[j++], "%d", i);
--	sprintf(result[j++], "%s", dim_state_str[dim->state]);
-+	sprintf(result[j++], "%s", dim->state < ARRAY_SIZE(dim_state_str) ?
-+		dim_state_str[dim->state] : "unknown");
- 	sprintf(result[j++], "%u", dim->profile_ix);
--	sprintf(result[j++], "%s", dim_cqe_mode_str[dim->mode]);
-+	sprintf(result[j++], "%s", dim->mode < ARRAY_SIZE(dim_cqe_mode_str) ?
-+		dim_cqe_mode_str[dim->mode] : "unknown");
- 	sprintf(result[j++], "%s",
--		dim_tune_stat_str[dim->tune_state]);
-+		dim->tune_state < ARRAY_SIZE(dim_tune_stat_str) ?
-+		dim_tune_stat_str[dim->tune_state] : "unknown");
- 	sprintf(result[j++], "%u", dim->steps_left);
- 	sprintf(result[j++], "%u", dim->steps_right);
- 	sprintf(result[j++], "%u", dim->tired);
--- 
-2.42.0
-
+ 	err = SUCCESS;
++	spin_lock_irqsave(&hwq->cq_lock, flags);
+ 	if (ufshcd_cmd_inflight(lrbp->cmd))
+ 		ufshcd_release_scsi_cmd(hba, lrbp);
++	spin_unlock_irqrestore(&hwq->cq_lock, flags);
+ 
+ out:
+ 	return err;
 
 
 
