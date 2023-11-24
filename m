@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-2060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE7F7F829B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCE707F8467
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F6CAB24A73
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7813628B2AB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B42364CB;
-	Fri, 24 Nov 2023 19:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06870381CB;
+	Fri, 24 Nov 2023 19:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2xt5aHZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pp9YQ1OK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F40B33076;
-	Fri, 24 Nov 2023 19:09:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7ADC433C7;
-	Fri, 24 Nov 2023 19:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CAE33CCA;
+	Fri, 24 Nov 2023 19:26:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B24C433C7;
+	Fri, 24 Nov 2023 19:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852950;
-	bh=ySgF5rFmRN9XwkeoL6lfTTlMb15xETAgxtjpTIoBp9w=;
+	s=korg; t=1700854014;
+	bh=rA9JBAQKHTkRLsqXb60EVn8k4qdTIytWsk4kJCPLvfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2xt5aHZ8uABJ+tNc2m+OSv4GyF6VymwjhFRVSRceVkPeh88NTjWbIXhO5Ny20/sO
-	 k76LxbZgvgcM9t950I42Cc3CrEcwfqhYcixsPQB141e1QKd2jhFcfhbDsbCItCQ9B9
-	 of6X07Bmxb7b4oAqA1OfL3saTL5mNtbl5WRNYkuk=
+	b=Pp9YQ1OKtuRBlQuXHLALH/EZvuQUhuDYU3bC+jy50qtXsa1NgATaBsJbCxo+JP7oh
+	 YpxkBABDounRwvBUGmtOiezXDqrPVeJFHPURGyZNb6Lj57XNfxsvZW3eKfTXPoUlxg
+	 c/FdlN/G7+yg19c341H/vP4bPmmE4jKy6bqC5OpI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Lewis Huang <lewis.huang@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 5.10 187/193] drm/amd/display: Change the DMCUB mailbox memory location from FB to inbox
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 5.4 097/159] s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
 Date: Fri, 24 Nov 2023 17:55:14 +0000
-Message-ID: <20231124171954.670219878@linuxfoundation.org>
+Message-ID: <20231124171945.932094043@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,213 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lewis Huang <lewis.huang@amd.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 5911d02cac70d7fb52009fbd37423e63f8f6f9bc upstream.
+commit 84bb41d5df48868055d159d9247b80927f1f70f9 upstream.
 
-[WHY]
-Flush command sent to DMCUB spends more time for execution on
-a dGPU than on an APU. This causes cursor lag when using high
-refresh rate mouses.
+If the cmma no-dat feature is available the kernel page tables are walked
+to identify and mark all pages which are used for address translation (all
+region, segment, and page tables). In a subsequent loop all other pages are
+marked as "no-dat" pages with the ESSA instruction.
 
-[HOW]
-1. Change the DMCUB mailbox memory location from FB to inbox.
-2. Only change windows memory to inbox.
+This information is visible to the hypervisor, so that the hypervisor can
+optimize purging of guest TLB entries. All pages used for swapper_pg_dir
+and invalid_pg_dir are incorrectly marked as no-dat, which in turn can
+result in incorrect guest TLB flushes.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Lewis Huang <lewis.huang@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix this by marking those pages correctly as being used for DAT.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   13 ++++----
- drivers/gpu/drm/amd/display/dmub/dmub_srv.h       |   22 +++++++++------
- drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c   |   32 ++++++++++++++++------
- 3 files changed, 45 insertions(+), 22 deletions(-)
+ arch/s390/mm/page-states.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1293,7 +1293,7 @@ static int dm_dmub_sw_init(struct amdgpu
- 	struct dmub_srv_create_params create_params;
- 	struct dmub_srv_region_params region_params;
- 	struct dmub_srv_region_info region_info;
--	struct dmub_srv_fb_params fb_params;
-+	struct dmub_srv_memory_params memory_params;
- 	struct dmub_srv_fb_info *fb_info;
- 	struct dmub_srv *dmub_srv;
- 	const struct dmcub_firmware_header_v1_0 *hdr;
-@@ -1389,6 +1389,7 @@ static int dm_dmub_sw_init(struct amdgpu
- 		adev->dm.dmub_fw->data +
- 		le32_to_cpu(hdr->header.ucode_array_offset_bytes) +
- 		PSP_HEADER_BYTES;
-+	region_params.is_mailbox_in_inbox = false;
+--- a/arch/s390/mm/page-states.c
++++ b/arch/s390/mm/page-states.c
+@@ -198,6 +198,12 @@ void __init cmma_init_nodat(void)
+ 		return;
+ 	/* Mark pages used in kernel page tables */
+ 	mark_kernel_pgd();
++	page = virt_to_page(&swapper_pg_dir);
++	for (i = 0; i < 4; i++)
++		set_bit(PG_arch_1, &page[i].flags);
++	page = virt_to_page(&invalid_pg_dir);
++	for (i = 0; i < 4; i++)
++		set_bit(PG_arch_1, &page[i].flags);
  
- 	status = dmub_srv_calc_region_info(dmub_srv, &region_params,
- 					   &region_info);
-@@ -1410,10 +1411,10 @@ static int dm_dmub_sw_init(struct amdgpu
- 		return r;
- 
- 	/* Rebase the regions on the framebuffer address. */
--	memset(&fb_params, 0, sizeof(fb_params));
--	fb_params.cpu_addr = adev->dm.dmub_bo_cpu_addr;
--	fb_params.gpu_addr = adev->dm.dmub_bo_gpu_addr;
--	fb_params.region_info = &region_info;
-+	memset(&memory_params, 0, sizeof(memory_params));
-+	memory_params.cpu_fb_addr = adev->dm.dmub_bo_cpu_addr;
-+	memory_params.gpu_fb_addr = adev->dm.dmub_bo_gpu_addr;
-+	memory_params.region_info = &region_info;
- 
- 	adev->dm.dmub_fb_info =
- 		kzalloc(sizeof(*adev->dm.dmub_fb_info), GFP_KERNEL);
-@@ -1425,7 +1426,7 @@ static int dm_dmub_sw_init(struct amdgpu
- 		return -ENOMEM;
- 	}
- 
--	status = dmub_srv_calc_fb_info(dmub_srv, &fb_params, fb_info);
-+	status = dmub_srv_calc_mem_info(dmub_srv, &memory_params, fb_info);
- 	if (status != DMUB_STATUS_OK) {
- 		DRM_ERROR("Error calculating DMUB FB info: %d\n", status);
- 		return -EINVAL;
---- a/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
-+++ b/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
-@@ -152,6 +152,7 @@ struct dmub_srv_region_params {
- 	uint32_t vbios_size;
- 	const uint8_t *fw_inst_const;
- 	const uint8_t *fw_bss_data;
-+	bool is_mailbox_in_inbox;
- };
- 
- /**
-@@ -171,20 +172,25 @@ struct dmub_srv_region_params {
-  */
- struct dmub_srv_region_info {
- 	uint32_t fb_size;
-+	uint32_t inbox_size;
- 	uint8_t num_regions;
- 	struct dmub_region regions[DMUB_WINDOW_TOTAL];
- };
- 
- /**
-- * struct dmub_srv_fb_params - parameters used for driver fb setup
-+ * struct dmub_srv_memory_params - parameters used for driver fb setup
-  * @region_info: region info calculated by dmub service
-- * @cpu_addr: base cpu address for the framebuffer
-- * @gpu_addr: base gpu virtual address for the framebuffer
-+ * @cpu_fb_addr: base cpu address for the framebuffer
-+ * @cpu_inbox_addr: base cpu address for the gart
-+ * @gpu_fb_addr: base gpu virtual address for the framebuffer
-+ * @gpu_inbox_addr: base gpu virtual address for the gart
-  */
--struct dmub_srv_fb_params {
-+struct dmub_srv_memory_params {
- 	const struct dmub_srv_region_info *region_info;
--	void *cpu_addr;
--	uint64_t gpu_addr;
-+	void *cpu_fb_addr;
-+	void *cpu_inbox_addr;
-+	uint64_t gpu_fb_addr;
-+	uint64_t gpu_inbox_addr;
- };
- 
- /**
-@@ -398,8 +404,8 @@ dmub_srv_calc_region_info(struct dmub_sr
-  *   DMUB_STATUS_OK - success
-  *   DMUB_STATUS_INVALID - unspecified error
-  */
--enum dmub_status dmub_srv_calc_fb_info(struct dmub_srv *dmub,
--				       const struct dmub_srv_fb_params *params,
-+enum dmub_status dmub_srv_calc_mem_info(struct dmub_srv *dmub,
-+				       const struct dmub_srv_memory_params *params,
- 				       struct dmub_srv_fb_info *out);
- 
- /**
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-@@ -250,7 +250,7 @@ dmub_srv_calc_region_info(struct dmub_sr
- 	uint32_t fw_state_size = DMUB_FW_STATE_SIZE;
- 	uint32_t trace_buffer_size = DMUB_TRACE_BUFFER_SIZE;
- 	uint32_t scratch_mem_size = DMUB_SCRATCH_MEM_SIZE;
--
-+	uint32_t previous_top = 0;
- 	if (!dmub->sw_init)
- 		return DMUB_STATUS_INVALID;
- 
-@@ -275,8 +275,15 @@ dmub_srv_calc_region_info(struct dmub_sr
- 	bios->base = dmub_align(stack->top, 256);
- 	bios->top = bios->base + params->vbios_size;
- 
--	mail->base = dmub_align(bios->top, 256);
--	mail->top = mail->base + DMUB_MAILBOX_SIZE;
-+	if (params->is_mailbox_in_inbox) {
-+		mail->base = 0;
-+		mail->top = mail->base + DMUB_MAILBOX_SIZE;
-+		previous_top = bios->top;
-+	} else {
-+		mail->base = dmub_align(bios->top, 256);
-+		mail->top = mail->base + DMUB_MAILBOX_SIZE;
-+		previous_top = mail->top;
-+	}
- 
- 	fw_info = dmub_get_fw_meta_info(params);
- 
-@@ -295,7 +302,7 @@ dmub_srv_calc_region_info(struct dmub_sr
- 			dmub->fw_version = fw_info->fw_version;
- 	}
- 
--	trace_buff->base = dmub_align(mail->top, 256);
-+	trace_buff->base = dmub_align(previous_top, 256);
- 	trace_buff->top = trace_buff->base + dmub_align(trace_buffer_size, 64);
- 
- 	fw_state->base = dmub_align(trace_buff->top, 256);
-@@ -306,11 +313,14 @@ dmub_srv_calc_region_info(struct dmub_sr
- 
- 	out->fb_size = dmub_align(scratch_mem->top, 4096);
- 
-+	if (params->is_mailbox_in_inbox)
-+		out->inbox_size = dmub_align(mail->top, 4096);
-+
- 	return DMUB_STATUS_OK;
- }
- 
--enum dmub_status dmub_srv_calc_fb_info(struct dmub_srv *dmub,
--				       const struct dmub_srv_fb_params *params,
-+enum dmub_status dmub_srv_calc_mem_info(struct dmub_srv *dmub,
-+				       const struct dmub_srv_memory_params *params,
- 				       struct dmub_srv_fb_info *out)
- {
- 	uint8_t *cpu_base;
-@@ -325,8 +335,8 @@ enum dmub_status dmub_srv_calc_fb_info(s
- 	if (params->region_info->num_regions != DMUB_NUM_WINDOWS)
- 		return DMUB_STATUS_INVALID;
- 
--	cpu_base = (uint8_t *)params->cpu_addr;
--	gpu_base = params->gpu_addr;
-+	cpu_base = (uint8_t *)params->cpu_fb_addr;
-+	gpu_base = params->gpu_fb_addr;
- 
- 	for (i = 0; i < DMUB_NUM_WINDOWS; ++i) {
- 		const struct dmub_region *reg =
-@@ -334,6 +344,12 @@ enum dmub_status dmub_srv_calc_fb_info(s
- 
- 		out->fb[i].cpu_addr = cpu_base + reg->base;
- 		out->fb[i].gpu_addr = gpu_base + reg->base;
-+
-+		if (i == DMUB_WINDOW_4_MAILBOX && params->cpu_inbox_addr != 0) {
-+			out->fb[i].cpu_addr = (uint8_t *)params->cpu_inbox_addr + reg->base;
-+			out->fb[i].gpu_addr = params->gpu_inbox_addr + reg->base;
-+		}
-+
- 		out->fb[i].size = reg->top - reg->base;
- 	}
- 
+ 	/* Set all kernel pages not used for page tables to stable/no-dat */
+ 	for_each_memblock(memory, reg) {
 
 
 
