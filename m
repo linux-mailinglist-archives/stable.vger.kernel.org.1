@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB497F7BAD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C37B17F7D94
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCE5B2820D4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6A871C21211
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F463A260;
-	Fri, 24 Nov 2023 18:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5A139FE8;
+	Fri, 24 Nov 2023 18:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBc1EVqB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6Me2Cxs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9D939FE1;
-	Fri, 24 Nov 2023 18:07:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2ABC433C8;
-	Fri, 24 Nov 2023 18:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C6839FDD;
+	Fri, 24 Nov 2023 18:25:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B129DC433C8;
+	Fri, 24 Nov 2023 18:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849251;
-	bh=VTDvpVwIHv2r1DmkXEoE5uTBRTdyN4LFXFccOwBi0BM=;
+	s=korg; t=1700850349;
+	bh=3t0sI8l4c7pqso3+hEyPeezJKpfI8BolcClPXEhN7Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KBc1EVqBD0V3Zd0ncfxCu1WI2Yyr13YuI22WeyxOlTNeYiNiSq5mIjo+isQbkC/cD
-	 BdlYMNZYlcbhwjoVbv+g5HZ0nDCSVhUTiNafmquA4t4uHCv2eqGpbtNNTbihKUfQbG
-	 R6SnucgG7WLXYgxwo/Fc11631YGtycvDJ5Y13w6w=
+	b=G6Me2CxsrSudmlS3FMdBsGSD7A9CLq+XVALn0Ff0euin1NYVK4/UrYeNmZm0IQV5U
+	 2/ByzbS4LDLL78YIhroG11hQVrhbOSgAnAnf8YWLpIryi2G2W0lvH8a8Fg9AEzNNOX
+	 5TkKpq6tHR7g77CZmZ5YUfmKjIe8XUPWUUmzGirQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/530] ASoC: soc-card: Add storage for PCI SSID
-Date: Fri, 24 Nov 2023 17:44:09 +0000
-Message-ID: <20231124172030.604102226@linuxfoundation.org>
+	Frederic Weisbecker <frederic@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	"Paul E . McKenney" <paulmck@kernel.org>
+Subject: [PATCH 6.5 014/491] workqueue: Provide one lock class key per work_on_cpu() callsite
+Date: Fri, 24 Nov 2023 17:44:10 +0000
+Message-ID: <20231124172025.117466556@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,124 +54,301 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 47f56e38a199bd45514b8e0142399cba4feeaf1a ]
+[ Upstream commit 265f3ed077036f053981f5eea0b5b43e7c5b39ff ]
 
-Add members to struct snd_soc_card to store the PCI subsystem ID (SSID)
-of the soundcard.
+All callers of work_on_cpu() share the same lock class key for all the
+functions queued. As a result the workqueue related locking scenario for
+a function A may be spuriously accounted as an inversion against the
+locking scenario of function B such as in the following model:
 
-The PCI specification provides two registers to store a vendor-specific
-SSID that can be read by drivers to uniquely identify a particular
-"soundcard". This is defined in the PCI specification to distinguish
-products that use the same silicon (and therefore have the same silicon
-ID) so that product-specific differences can be applied.
+	long A(void *arg)
+	{
+		mutex_lock(&mutex);
+		mutex_unlock(&mutex);
+	}
 
-PCI only defines 0xFFFF as an invalid value. 0x0000 is not defined as
-invalid. So the usual pattern of zero-filling the struct and then
-assuming a zero value unset will not work. A flag is included to
-indicate when the SSID information has been filled in.
+	long B(void *arg)
+	{
+	}
 
-Unlike DMI information, which has a free-format entirely up to the vendor,
-the PCI SSID has a strictly defined format and a registry of vendor IDs.
+	void launchA(void)
+	{
+		work_on_cpu(0, A, NULL);
+	}
 
-It is usual in Windows drivers that the SSID is used as the sole identifier
-of the specific end-product and the Windows driver contains tables mapping
-that to information about the hardware setup, rather than using ACPI
-properties.
+	void launchB(void)
+	{
+		mutex_lock(&mutex);
+		work_on_cpu(1, B, NULL);
+		mutex_unlock(&mutex);
+	}
 
-This SSID is important information for ASoC components that need to apply
-hardware-specific configuration on PCI-based systems.
+launchA and launchB running concurrently have no chance to deadlock.
+However the above can be reported by lockdep as a possible locking
+inversion because the works containing A() and B() are treated as
+belonging to the same locking class.
 
-As the SSID is a generic part of the PCI specification and is treated as
-identifying the "soundcard", it is reasonable to include this information
-in struct snd_soc_card, instead of components inventing their own custom
-ways to pass this information around.
+The following shows an existing example of such a spurious lockdep splat:
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230912163207.3498161-2-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+	 ======================================================
+	 WARNING: possible circular locking dependency detected
+	 6.6.0-rc1-00065-g934ebd6e5359 #35409 Not tainted
+	 ------------------------------------------------------
+	 kworker/0:1/9 is trying to acquire lock:
+	 ffffffff9bc72f30 (cpu_hotplug_lock){++++}-{0:0}, at: _cpu_down+0x57/0x2b0
+
+	 but task is already holding lock:
+	 ffff9e3bc0057e60 ((work_completion)(&wfc.work)){+.+.}-{0:0}, at: process_scheduled_works+0x216/0x500
+
+	 which lock already depends on the new lock.
+
+	 the existing dependency chain (in reverse order) is:
+
+	 -> #2 ((work_completion)(&wfc.work)){+.+.}-{0:0}:
+			__flush_work+0x83/0x4e0
+			work_on_cpu+0x97/0xc0
+			rcu_nocb_cpu_offload+0x62/0xb0
+			rcu_nocb_toggle+0xd0/0x1d0
+			kthread+0xe6/0x120
+			ret_from_fork+0x2f/0x40
+			ret_from_fork_asm+0x1b/0x30
+
+	 -> #1 (rcu_state.barrier_mutex){+.+.}-{3:3}:
+			__mutex_lock+0x81/0xc80
+			rcu_nocb_cpu_deoffload+0x38/0xb0
+			rcu_nocb_toggle+0x144/0x1d0
+			kthread+0xe6/0x120
+			ret_from_fork+0x2f/0x40
+			ret_from_fork_asm+0x1b/0x30
+
+	 -> #0 (cpu_hotplug_lock){++++}-{0:0}:
+			__lock_acquire+0x1538/0x2500
+			lock_acquire+0xbf/0x2a0
+			percpu_down_write+0x31/0x200
+			_cpu_down+0x57/0x2b0
+			__cpu_down_maps_locked+0x10/0x20
+			work_for_cpu_fn+0x15/0x20
+			process_scheduled_works+0x2a7/0x500
+			worker_thread+0x173/0x330
+			kthread+0xe6/0x120
+			ret_from_fork+0x2f/0x40
+			ret_from_fork_asm+0x1b/0x30
+
+	 other info that might help us debug this:
+
+	 Chain exists of:
+	   cpu_hotplug_lock --> rcu_state.barrier_mutex --> (work_completion)(&wfc.work)
+
+	  Possible unsafe locking scenario:
+
+			CPU0                    CPU1
+			----                    ----
+	   lock((work_completion)(&wfc.work));
+									lock(rcu_state.barrier_mutex);
+									lock((work_completion)(&wfc.work));
+	   lock(cpu_hotplug_lock);
+
+	  *** DEADLOCK ***
+
+	 2 locks held by kworker/0:1/9:
+	  #0: ffff900481068b38 ((wq_completion)events){+.+.}-{0:0}, at: process_scheduled_works+0x212/0x500
+	  #1: ffff9e3bc0057e60 ((work_completion)(&wfc.work)){+.+.}-{0:0}, at: process_scheduled_works+0x216/0x500
+
+	 stack backtrace:
+	 CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.6.0-rc1-00065-g934ebd6e5359 #35409
+	 Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+	 Workqueue: events work_for_cpu_fn
+	 Call Trace:
+	 rcu-torture: rcu_torture_read_exit: Start of episode
+	  <TASK>
+	  dump_stack_lvl+0x4a/0x80
+	  check_noncircular+0x132/0x150
+	  __lock_acquire+0x1538/0x2500
+	  lock_acquire+0xbf/0x2a0
+	  ? _cpu_down+0x57/0x2b0
+	  percpu_down_write+0x31/0x200
+	  ? _cpu_down+0x57/0x2b0
+	  _cpu_down+0x57/0x2b0
+	  __cpu_down_maps_locked+0x10/0x20
+	  work_for_cpu_fn+0x15/0x20
+	  process_scheduled_works+0x2a7/0x500
+	  worker_thread+0x173/0x330
+	  ? __pfx_worker_thread+0x10/0x10
+	  kthread+0xe6/0x120
+	  ? __pfx_kthread+0x10/0x10
+	  ret_from_fork+0x2f/0x40
+	  ? __pfx_kthread+0x10/0x10
+	  ret_from_fork_asm+0x1b/0x30
+	  </TASK
+
+Fix this with providing one lock class key per work_on_cpu() caller.
+
+Reported-and-tested-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc-card.h | 37 +++++++++++++++++++++++++++++++++++++
- include/sound/soc.h      | 11 +++++++++++
- 2 files changed, 48 insertions(+)
+ include/linux/workqueue.h | 46 +++++++++++++++++++++++++++++++++------
+ kernel/workqueue.c        | 20 ++++++++++-------
+ 2 files changed, 51 insertions(+), 15 deletions(-)
 
-diff --git a/include/sound/soc-card.h b/include/sound/soc-card.h
-index fc94dfb0021fd..e8ff2e089cd00 100644
---- a/include/sound/soc-card.h
-+++ b/include/sound/soc-card.h
-@@ -59,6 +59,43 @@ int snd_soc_card_add_dai_link(struct snd_soc_card *card,
- void snd_soc_card_remove_dai_link(struct snd_soc_card *card,
- 				  struct snd_soc_dai_link *dai_link);
+diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+index 683efe29fa698..ca26c1f94f044 100644
+--- a/include/linux/workqueue.h
++++ b/include/linux/workqueue.h
+@@ -222,18 +222,16 @@ static inline unsigned int work_static(struct work_struct *work) { return 0; }
+  * to generate better code.
+  */
+ #ifdef CONFIG_LOCKDEP
+-#define __INIT_WORK(_work, _func, _onstack)				\
++#define __INIT_WORK_KEY(_work, _func, _onstack, _key)			\
+ 	do {								\
+-		static struct lock_class_key __key;			\
+-									\
+ 		__init_work((_work), _onstack);				\
+ 		(_work)->data = (atomic_long_t) WORK_DATA_INIT();	\
+-		lockdep_init_map(&(_work)->lockdep_map, "(work_completion)"#_work, &__key, 0); \
++		lockdep_init_map(&(_work)->lockdep_map, "(work_completion)"#_work, (_key), 0); \
+ 		INIT_LIST_HEAD(&(_work)->entry);			\
+ 		(_work)->func = (_func);				\
+ 	} while (0)
+ #else
+-#define __INIT_WORK(_work, _func, _onstack)				\
++#define __INIT_WORK_KEY(_work, _func, _onstack, _key)			\
+ 	do {								\
+ 		__init_work((_work), _onstack);				\
+ 		(_work)->data = (atomic_long_t) WORK_DATA_INIT();	\
+@@ -242,12 +240,22 @@ static inline unsigned int work_static(struct work_struct *work) { return 0; }
+ 	} while (0)
+ #endif
  
-+#ifdef CONFIG_PCI
-+static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
-+					     unsigned short vendor,
-+					     unsigned short device)
-+{
-+	card->pci_subsystem_vendor = vendor;
-+	card->pci_subsystem_device = device;
-+	card->pci_subsystem_set = true;
-+}
++#define __INIT_WORK(_work, _func, _onstack)				\
++	do {								\
++		static __maybe_unused struct lock_class_key __key;	\
++									\
++		__INIT_WORK_KEY(_work, _func, _onstack, &__key);	\
++	} while (0)
 +
-+static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
-+					    unsigned short *vendor,
-+					    unsigned short *device)
-+{
-+	if (!card->pci_subsystem_set)
-+		return -ENOENT;
-+
-+	*vendor = card->pci_subsystem_vendor;
-+	*device = card->pci_subsystem_device;
-+
-+	return 0;
-+}
-+#else /* !CONFIG_PCI */
-+static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
-+					     unsigned short vendor,
-+					     unsigned short device)
-+{
-+}
-+
-+static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
-+					    unsigned short *vendor,
-+					    unsigned short *device)
-+{
-+	return -ENOENT;
-+}
-+#endif /* CONFIG_PCI */
-+
- /* device driver data */
- static inline void snd_soc_card_set_drvdata(struct snd_soc_card *card,
- 					    void *data)
-diff --git a/include/sound/soc.h b/include/sound/soc.h
-index 37f9d3fe302a6..49ec688eed606 100644
---- a/include/sound/soc.h
-+++ b/include/sound/soc.h
-@@ -932,6 +932,17 @@ struct snd_soc_card {
- #ifdef CONFIG_DMI
- 	char dmi_longname[80];
- #endif /* CONFIG_DMI */
-+
-+#ifdef CONFIG_PCI
-+	/*
-+	 * PCI does not define 0 as invalid, so pci_subsystem_set indicates
-+	 * whether a value has been written to these fields.
-+	 */
-+	unsigned short pci_subsystem_vendor;
-+	unsigned short pci_subsystem_device;
-+	bool pci_subsystem_set;
-+#endif /* CONFIG_PCI */
-+
- 	char topology_shortname[32];
+ #define INIT_WORK(_work, _func)						\
+ 	__INIT_WORK((_work), (_func), 0)
  
- 	struct device *dev;
+ #define INIT_WORK_ONSTACK(_work, _func)					\
+ 	__INIT_WORK((_work), (_func), 1)
+ 
++#define INIT_WORK_ONSTACK_KEY(_work, _func, _key)			\
++	__INIT_WORK_KEY((_work), (_func), 1, _key)
++
+ #define __INIT_DELAYED_WORK(_work, _func, _tflags)			\
+ 	do {								\
+ 		INIT_WORK(&(_work)->work, (_func));			\
+@@ -683,8 +691,32 @@ static inline long work_on_cpu_safe(int cpu, long (*fn)(void *), void *arg)
+ 	return fn(arg);
+ }
+ #else
+-long work_on_cpu(int cpu, long (*fn)(void *), void *arg);
+-long work_on_cpu_safe(int cpu, long (*fn)(void *), void *arg);
++long work_on_cpu_key(int cpu, long (*fn)(void *),
++		     void *arg, struct lock_class_key *key);
++/*
++ * A new key is defined for each caller to make sure the work
++ * associated with the function doesn't share its locking class.
++ */
++#define work_on_cpu(_cpu, _fn, _arg)			\
++({							\
++	static struct lock_class_key __key;		\
++							\
++	work_on_cpu_key(_cpu, _fn, _arg, &__key);	\
++})
++
++long work_on_cpu_safe_key(int cpu, long (*fn)(void *),
++			  void *arg, struct lock_class_key *key);
++
++/*
++ * A new key is defined for each caller to make sure the work
++ * associated with the function doesn't share its locking class.
++ */
++#define work_on_cpu_safe(_cpu, _fn, _arg)		\
++({							\
++	static struct lock_class_key __key;		\
++							\
++	work_on_cpu_safe_key(_cpu, _fn, _arg, &__key);	\
++})
+ #endif /* CONFIG_SMP */
+ 
+ #ifdef CONFIG_FREEZER
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index e4a37d7a6752d..a7fcb25417726 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5571,50 +5571,54 @@ static void work_for_cpu_fn(struct work_struct *work)
+ }
+ 
+ /**
+- * work_on_cpu - run a function in thread context on a particular cpu
++ * work_on_cpu_key - run a function in thread context on a particular cpu
+  * @cpu: the cpu to run on
+  * @fn: the function to run
+  * @arg: the function arg
++ * @key: The lock class key for lock debugging purposes
+  *
+  * It is up to the caller to ensure that the cpu doesn't go offline.
+  * The caller must not hold any locks which would prevent @fn from completing.
+  *
+  * Return: The value @fn returns.
+  */
+-long work_on_cpu(int cpu, long (*fn)(void *), void *arg)
++long work_on_cpu_key(int cpu, long (*fn)(void *),
++		     void *arg, struct lock_class_key *key)
+ {
+ 	struct work_for_cpu wfc = { .fn = fn, .arg = arg };
+ 
+-	INIT_WORK_ONSTACK(&wfc.work, work_for_cpu_fn);
++	INIT_WORK_ONSTACK_KEY(&wfc.work, work_for_cpu_fn, key);
+ 	schedule_work_on(cpu, &wfc.work);
+ 	flush_work(&wfc.work);
+ 	destroy_work_on_stack(&wfc.work);
+ 	return wfc.ret;
+ }
+-EXPORT_SYMBOL_GPL(work_on_cpu);
++EXPORT_SYMBOL_GPL(work_on_cpu_key);
+ 
+ /**
+- * work_on_cpu_safe - run a function in thread context on a particular cpu
++ * work_on_cpu_safe_key - run a function in thread context on a particular cpu
+  * @cpu: the cpu to run on
+  * @fn:  the function to run
+  * @arg: the function argument
++ * @key: The lock class key for lock debugging purposes
+  *
+  * Disables CPU hotplug and calls work_on_cpu(). The caller must not hold
+  * any locks which would prevent @fn from completing.
+  *
+  * Return: The value @fn returns.
+  */
+-long work_on_cpu_safe(int cpu, long (*fn)(void *), void *arg)
++long work_on_cpu_safe_key(int cpu, long (*fn)(void *),
++			  void *arg, struct lock_class_key *key)
+ {
+ 	long ret = -ENODEV;
+ 
+ 	cpus_read_lock();
+ 	if (cpu_online(cpu))
+-		ret = work_on_cpu(cpu, fn, arg);
++		ret = work_on_cpu_key(cpu, fn, arg, key);
+ 	cpus_read_unlock();
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(work_on_cpu_safe);
++EXPORT_SYMBOL_GPL(work_on_cpu_safe_key);
+ #endif /* CONFIG_SMP */
+ 
+ #ifdef CONFIG_FREEZER
 -- 
 2.42.0
 
