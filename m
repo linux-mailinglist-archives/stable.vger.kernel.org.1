@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3297F82A1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3467D7F83CB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A168A285BDF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66E641C26595
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB06381D2;
-	Fri, 24 Nov 2023 19:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920142511F;
+	Fri, 24 Nov 2023 19:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOOtxih8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hifJL/q9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239DC364AE;
-	Fri, 24 Nov 2023 19:09:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40526C433C8;
-	Fri, 24 Nov 2023 19:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B00F35EE6;
+	Fri, 24 Nov 2023 19:21:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC821C433C9;
+	Fri, 24 Nov 2023 19:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852962;
-	bh=fR2UctejlNUZP98nWnEnz1iqWDLzrIZ7u2gf+swFezs=;
+	s=korg; t=1700853661;
+	bh=/ir7rg4zc6X1SH1X2L3iU8mSwEhal0FmGhbP6bGuOD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VOOtxih8yyucMepJaxvpDR31uMwaxQqJfLqC+RccMIV/9dV3pmMfB/Wvx+QUNzzra
-	 xSLlVdGjyKlng8BZk1aE2Kh+/9wMI79ap36EcDIS98UpwfpEgZmKmguXy2DGPImuww
-	 bf4Xun0cAtWTfr9LDta1CiMR1EAUDrGyp9Jv7Xio=
+	b=hifJL/q9VrNeFfhu1c7JAE7zmXrAl7U/Jzi5rMILWRNbhTiLVpMDI/P4VTGy6UmkC
+	 Idzubn/gdqu1iV7HS7R/TsyFH2lK1FI4lWnizkG54FrBPkYLObN3gIo5H4KDyffv6U
+	 +PjVmL8l5B5G60dGLvKk7uhkJjK+vaErkCklZ9xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7ad5cd1615f2d89c6e7e@syzkaller.appspotmail.com,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 192/193] netfilter: nf_tables: fix table flag updates
-Date: Fri, 24 Nov 2023 17:55:19 +0000
-Message-ID: <20231124171954.873147319@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.15 278/297] media: qcom: camss: Fix VFE-17x vfe_disable_output()
+Date: Fri, 24 Nov 2023 17:55:20 +0000
+Message-ID: <20231124172009.856511773@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,196 +52,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 179d9ba5559a756f4322583388b3213fe4e391b0 upstream.
+commit 3143ad282fc08bf995ee73e32a9e40c527bf265d upstream.
 
-The dormant flag need to be updated from the preparation phase,
-otherwise, two consecutive requests to dorm a table in the same batch
-might try to remove the same hooks twice, resulting in the following
-warning:
+There are two problems with the current vfe_disable_output() routine.
 
- hook not found, pf 3 num 0
- WARNING: CPU: 0 PID: 334 at net/netfilter/core.c:480 __nf_unregister_net_hook+0x1eb/0x610 net/netfilter/core.c:480
- Modules linked in:
- CPU: 0 PID: 334 Comm: kworker/u4:5 Not tainted 5.12.0-syzkaller #0
- Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
- Workqueue: netns cleanup_net
- RIP: 0010:__nf_unregister_net_hook+0x1eb/0x610 net/netfilter/core.c:480
+Firstly we rightly use a spinlock to protect output->gen2.active_num
+everywhere except for in the IDLE timeout path of vfe_disable_output().
+Even if that is not racy "in practice" somehow it is by happenstance not
+by design.
 
-This patch is a partial revert of 0ce7cf4127f1 ("netfilter: nftables:
-update table flags from the commit phase") to restore the previous
-behaviour.
+Secondly we do not get consistent behaviour from this routine. On
+sc8280xp 50% of the time I get "VFE idle timeout - resetting". In this
+case the subsequent capture will succeed. The other 50% of the time, we
+don't hit the idle timeout, never do the VFE reset and subsequent
+captures stall indefinitely.
 
-However, there is still another problem: A batch containing a series of
-dorm-wakeup-dorm table and vice-versa also trigger the warning above
-since hook unregistration happens from the preparation phase, while hook
-registration occurs from the commit phase.
+Rewrite the vfe_disable_output() routine to
 
-To fix this problem, this patch adds two internal flags to annotate the
-original dormant flag status which are __NFT_TABLE_F_WAS_DORMANT and
-__NFT_TABLE_F_WAS_AWAKEN, to restore it from the abort path.
+- Quiesce write masters with vfe_wm_stop()
+- Set active_num = 0
 
-The __NFT_TABLE_F_UPDATE bitmask allows to handle the dormant flag update
-with one single transaction.
+remembering to hold the spinlock when we do so followed by
 
-Reported-by: syzbot+7ad5cd1615f2d89c6e7e@syzkaller.appspotmail.com
-Fixes: 0ce7cf4127f1 ("netfilter: nftables: update table flags from the commit phase")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+- Reset the VFE
+
+Testing on sc8280xp and sdm845 shows this to be a valid fix.
+
+Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h        |    6 ---
- include/uapi/linux/netfilter/nf_tables.h |    1 
- net/netfilter/nf_tables_api.c            |   59 +++++++++++++++++++++----------
- 3 files changed, 41 insertions(+), 25 deletions(-)
+ drivers/media/platform/qcom/camss/camss-vfe-170.c |   22 +++-------------------
+ 1 file changed, 3 insertions(+), 19 deletions(-)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1479,16 +1479,10 @@ struct nft_trans_chain {
+--- a/drivers/media/platform/qcom/camss/camss-vfe-170.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe-170.c
+@@ -7,7 +7,6 @@
+  * Copyright (C) 2020-2021 Linaro Ltd.
+  */
  
- struct nft_trans_table {
- 	bool				update;
--	u8				state;
--	u32				flags;
- };
- 
- #define nft_trans_table_update(trans)	\
- 	(((struct nft_trans_table *)trans->data)->update)
--#define nft_trans_table_state(trans)	\
--	(((struct nft_trans_table *)trans->data)->state)
--#define nft_trans_table_flags(trans)	\
--	(((struct nft_trans_table *)trans->data)->flags)
- 
- struct nft_trans_elem {
- 	struct nft_set			*set;
---- a/include/uapi/linux/netfilter/nf_tables.h
-+++ b/include/uapi/linux/netfilter/nf_tables.h
-@@ -165,6 +165,7 @@ enum nft_hook_attributes {
- enum nft_table_flags {
- 	NFT_TABLE_F_DORMANT	= 0x1,
- };
-+#define NFT_TABLE_F_MASK       (NFT_TABLE_F_DORMANT)
- 
- /**
-  * enum nft_table_attributes - nf_tables table netlink attributes
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -863,7 +863,8 @@ static int nf_tables_fill_table_info(str
- 		goto nla_put_failure;
- 
- 	if (nla_put_string(skb, NFTA_TABLE_NAME, table->name) ||
--	    nla_put_be32(skb, NFTA_TABLE_FLAGS, htonl(table->flags)) ||
-+	    nla_put_be32(skb, NFTA_TABLE_FLAGS,
-+			 htonl(table->flags & NFT_TABLE_F_MASK)) ||
- 	    nla_put_be32(skb, NFTA_TABLE_USE, htonl(table->use)) ||
- 	    nla_put_be64(skb, NFTA_TABLE_HANDLE, cpu_to_be64(table->handle),
- 			 NFTA_TABLE_PAD))
-@@ -1071,20 +1072,22 @@ err_register_hooks:
- 
- static void nf_tables_table_disable(struct net *net, struct nft_table *table)
- {
-+	table->flags &= ~NFT_TABLE_F_DORMANT;
- 	nft_table_disable(net, table, 0);
-+	table->flags |= NFT_TABLE_F_DORMANT;
- }
- 
--enum {
--	NFT_TABLE_STATE_UNCHANGED	= 0,
--	NFT_TABLE_STATE_DORMANT,
--	NFT_TABLE_STATE_WAKEUP
--};
-+#define __NFT_TABLE_F_INTERNAL		(NFT_TABLE_F_MASK + 1)
-+#define __NFT_TABLE_F_WAS_DORMANT	(__NFT_TABLE_F_INTERNAL << 0)
-+#define __NFT_TABLE_F_WAS_AWAKEN	(__NFT_TABLE_F_INTERNAL << 1)
-+#define __NFT_TABLE_F_UPDATE		(__NFT_TABLE_F_WAS_DORMANT | \
-+					 __NFT_TABLE_F_WAS_AWAKEN)
- 
- static int nf_tables_updtable(struct nft_ctx *ctx)
- {
- 	struct nft_trans *trans;
- 	u32 flags;
--	int ret = 0;
-+	int ret;
- 
- 	if (!ctx->nla[NFTA_TABLE_FLAGS])
- 		return 0;
-@@ -1103,21 +1106,27 @@ static int nf_tables_updtable(struct nft
- 
- 	if ((flags & NFT_TABLE_F_DORMANT) &&
- 	    !(ctx->table->flags & NFT_TABLE_F_DORMANT)) {
--		nft_trans_table_state(trans) = NFT_TABLE_STATE_DORMANT;
-+		ctx->table->flags |= NFT_TABLE_F_DORMANT;
-+		if (!(ctx->table->flags & __NFT_TABLE_F_UPDATE))
-+			ctx->table->flags |= __NFT_TABLE_F_WAS_AWAKEN;
- 	} else if (!(flags & NFT_TABLE_F_DORMANT) &&
- 		   ctx->table->flags & NFT_TABLE_F_DORMANT) {
--		ret = nf_tables_table_enable(ctx->net, ctx->table);
--		if (ret >= 0)
--			nft_trans_table_state(trans) = NFT_TABLE_STATE_WAKEUP;
-+		ctx->table->flags &= ~NFT_TABLE_F_DORMANT;
-+		if (!(ctx->table->flags & __NFT_TABLE_F_UPDATE)) {
-+			ret = nf_tables_table_enable(ctx->net, ctx->table);
-+			if (ret < 0)
-+				goto err_register_hooks;
-+
-+			ctx->table->flags |= __NFT_TABLE_F_WAS_DORMANT;
-+		}
- 	}
--	if (ret < 0)
--		goto err;
- 
--	nft_trans_table_flags(trans) = flags;
- 	nft_trans_table_update(trans) = true;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
-+
+-#include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+@@ -498,35 +497,20 @@ static int vfe_enable_output(struct vfe_
  	return 0;
--err:
-+
-+err_register_hooks:
- 	nft_trans_destroy(trans);
- 	return ret;
  }
-@@ -8479,10 +8488,14 @@ static int nf_tables_commit(struct net *
- 		switch (trans->msg_type) {
- 		case NFT_MSG_NEWTABLE:
- 			if (nft_trans_table_update(trans)) {
--				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_DORMANT)
-+				if (!(trans->ctx.table->flags & __NFT_TABLE_F_UPDATE)) {
-+					nft_trans_destroy(trans);
-+					break;
-+				}
-+				if (trans->ctx.table->flags & NFT_TABLE_F_DORMANT)
- 					nf_tables_table_disable(net, trans->ctx.table);
  
--				trans->ctx.table->flags = nft_trans_table_flags(trans);
-+				trans->ctx.table->flags &= ~__NFT_TABLE_F_UPDATE;
- 			} else {
- 				nft_clear(net, trans->ctx.table);
- 			}
-@@ -8731,9 +8744,17 @@ static int __nf_tables_abort(struct net
- 		switch (trans->msg_type) {
- 		case NFT_MSG_NEWTABLE:
- 			if (nft_trans_table_update(trans)) {
--				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_WAKEUP)
-+				if (!(trans->ctx.table->flags & __NFT_TABLE_F_UPDATE)) {
-+					nft_trans_destroy(trans);
-+					break;
-+				}
-+				if (trans->ctx.table->flags & __NFT_TABLE_F_WAS_DORMANT) {
- 					nf_tables_table_disable(net, trans->ctx.table);
+-static int vfe_disable_output(struct vfe_line *line)
++static void vfe_disable_output(struct vfe_line *line)
+ {
+ 	struct vfe_device *vfe = to_vfe(line);
+ 	struct vfe_output *output = &line->output;
+ 	unsigned long flags;
+ 	unsigned int i;
+-	bool done;
+-	int timeout = 0;
 -
-+					trans->ctx.table->flags |= NFT_TABLE_F_DORMANT;
-+				} else if (trans->ctx.table->flags & __NFT_TABLE_F_WAS_AWAKEN) {
-+					trans->ctx.table->flags &= ~NFT_TABLE_F_DORMANT;
-+				}
-+				trans->ctx.table->flags &= ~__NFT_TABLE_F_UPDATE;
- 				nft_trans_destroy(trans);
- 			} else {
- 				list_del_rcu(&trans->ctx.table->list);
+-	do {
+-		spin_lock_irqsave(&vfe->output_lock, flags);
+-		done = !output->gen2.active_num;
+-		spin_unlock_irqrestore(&vfe->output_lock, flags);
+-		usleep_range(10000, 20000);
+-
+-		if (timeout++ == 100) {
+-			dev_err(vfe->camss->dev, "VFE idle timeout - resetting\n");
+-			vfe_reset(vfe);
+-			output->gen2.active_num = 0;
+-			return 0;
+-		}
+-	} while (!done);
+ 
+ 	spin_lock_irqsave(&vfe->output_lock, flags);
+ 	for (i = 0; i < output->wm_num; i++)
+ 		vfe_wm_stop(vfe, output->wm_idx[i]);
++	output->gen2.active_num = 0;
+ 	spin_unlock_irqrestore(&vfe->output_lock, flags);
+ 
+-	return 0;
++	vfe_reset(vfe);
+ }
+ 
+ /*
 
 
 
