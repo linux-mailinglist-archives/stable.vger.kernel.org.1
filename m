@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B847F7C87
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6247F7EB7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80DEA28108B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 400A9B217D1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F8A2AF00;
-	Fri, 24 Nov 2023 18:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EDD28DC3;
+	Fri, 24 Nov 2023 18:35:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aA1dwFQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDEcnT8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B055739FD4;
-	Fri, 24 Nov 2023 18:16:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA8CC433C7;
-	Fri, 24 Nov 2023 18:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC06321AD;
+	Fri, 24 Nov 2023 18:35:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A3DC433C7;
+	Fri, 24 Nov 2023 18:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849760;
-	bh=cHwITJ9tsFKkrqWV2/cCxNfRx8u1gKllHiaI9gISmkY=;
+	s=korg; t=1700850921;
+	bh=OWNNPsI3j9xXi6YBaCD5nAp/E953/AjJo00TMqjHxmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aA1dwFQ58JtDTyQ1OnYmB3I0euVv/djRW1cM5476kdNK/VlhpN89tcZCdnurbEW/o
-	 aezLdK5ifipEDXAJrOMQkC6lxGvoPuMqqsgXT8stDdKhboCtZEFgbfFv9cKNExE7HT
-	 YtPOFHsQ//0hB6bI8BTEw/YdTOytAXf7ZWw/NN10=
+	b=sDEcnT8YkCW/snA7I77amFz0tZVWes+7uBPUBlCTgiPpKTQ4o65WrWSYbI/CkL4MN
+	 02RuWfzD1VOGCJYdzdqHMZRKnE3hN+LUkT6zlhdaRvIrMcshterQtu+Q4OstDkQldM
+	 j1jECo56+Qp/P8SjFrnQbLDWd1P3FTr8AQsrpOBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 310/530] parisc/power: Add power soft-off when running on qemu
-Date: Fri, 24 Nov 2023 17:47:56 +0000
-Message-ID: <20231124172037.467133266@linuxfoundation.org>
+	Pu Wen <puwen@hygon.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.5 241/491] x86/cpu/hygon: Fix the CPU topology evaluation for real
+Date: Fri, 24 Nov 2023 17:47:57 +0000
+Message-ID: <20231124172031.801067101@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Pu Wen <puwen@hygon.cn>
 
-commit d0c219472980d15f5cbc5c8aec736848bda3f235 upstream.
+commit ee545b94d39a00c93dc98b1dbcbcf731d2eadeb4 upstream.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+Hygon processors with a model ID > 3 have CPUID leaf 0xB correctly
+populated and don't need the fixed package ID shift workaround. The fixup
+is also incorrect when running in a guest.
+
+Fixes: e0ceeae708ce ("x86/CPU/hygon: Fix phys_proc_id calculation logic for multi-die processors")
+Signed-off-by: Pu Wen <puwen@hygon.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/tencent_594804A808BD93A4EBF50A994F228E3A7F07@qq.com
+Link: https://lore.kernel.org/r/20230814085112.089607918@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/power.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/hygon.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -197,6 +197,14 @@ static struct notifier_block parisc_pani
- 	.priority	= INT_MAX,
- };
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -86,8 +86,12 @@ static void hygon_get_topology(struct cp
+ 		if (!err)
+ 			c->x86_coreid_bits = get_count_order(c->x86_max_cores);
  
-+/* qemu soft power-off function */
-+static int qemu_power_off(struct sys_off_data *data)
-+{
-+	/* this turns the system off via SeaBIOS */
-+	*(int *)data->cb_data = 0;
-+	pdc_soft_power_button(1);
-+	return NOTIFY_DONE;
-+}
+-		/* Socket ID is ApicId[6] for these processors. */
+-		c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
++		/*
++		 * Socket ID is ApicId[6] for the processors with model <= 0x3
++		 * when running on host.
++		 */
++		if (!boot_cpu_has(X86_FEATURE_HYPERVISOR) && c->x86_model <= 0x3)
++			c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
  
- static int __init power_init(void)
- {
-@@ -226,7 +234,13 @@ static int __init power_init(void)
- 				soft_power_reg);
- 	}
- 
--	power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
-+	power_task = NULL;
-+	if (running_on_qemu && soft_power_reg)
-+		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
-+					qemu_power_off, (void *)soft_power_reg);
-+	else
-+		power_task = kthread_run(kpowerswd, (void*)soft_power_reg,
-+					KTHREAD_NAME);
- 	if (IS_ERR(power_task)) {
- 		printk(KERN_ERR DRIVER_NAME ": thread creation failed.  Driver not loaded.\n");
- 		pdc_soft_power_button(0);
+ 		cacheinfo_hygon_init_llc_id(c, cpu);
+ 	} else if (cpu_has(c, X86_FEATURE_NODEID_MSR)) {
 
 
 
