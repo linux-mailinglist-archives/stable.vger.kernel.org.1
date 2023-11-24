@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-1531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544427F8029
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B84A77F7E70
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85A9A1C21503
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4E61C2139B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C391534189;
-	Fri, 24 Nov 2023 18:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160E939FE8;
+	Fri, 24 Nov 2023 18:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11PSTZPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYymoM8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9C364AE;
-	Fri, 24 Nov 2023 18:47:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09914C433C7;
-	Fri, 24 Nov 2023 18:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C827728DA1;
+	Fri, 24 Nov 2023 18:32:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5489AC433C8;
+	Fri, 24 Nov 2023 18:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851633;
-	bh=JzeJowYvSd3teqjbkXNVOzdi8In3KPqJzFpgTL06xVA=;
+	s=korg; t=1700850779;
+	bh=yNaGIkdgzUuwFcRm99v63Uel2eTwIywDy5Udws/PSXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11PSTZPLXIBz147yblLMsYWPI7c02K3cosgTORQ0Dpn651NYUt6J0+5ZXP+HE2H28
-	 M6KWMxgu7zhpJCjst+dr9WL6xJjD35le1q0GiEZiFNyuVefV2kHJA1WxILN7ZcLgM6
-	 uIKkdN0nQ/d19ZczFQyq0+bbI3kPHkCP8nSkhu2s=
+	b=cYymoM8k7bBRCStPOWTs+qwqn+4aXD1ulUlX3WoUyPVRMd1lqkEgnYwNTZzXOtJTn
+	 i7xVfouMLc/JflTjX6e9g7IQ7sHhTucBs5ldOQ1S3ENOqsW/m7zaymmLrUFqL7fBMP
+	 /yEZsKgEFwUMOjvupYsxnVM8ogKloqiLYfZBe3I4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaogang Chen <xiaogang.chen@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sven Auhagen <sven.auhagen@voleatech.de>,
+	Paulo Da Silva <Paulo.DaSilva@kyberna.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/372] drm/amdkfd: Fix a race condition of vram buffer unref in svm code
+Subject: [PATCH 6.5 185/491] net: mvneta: fix calls to page_pool_get_stats
 Date: Fri, 24 Nov 2023 17:47:01 +0000
-Message-ID: <20231124172011.624193859@linuxfoundation.org>
+Message-ID: <20231124172030.040550692@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,50 +55,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaogang Chen <xiaogang.chen@amd.com>
+From: Sven Auhagen <sven.auhagen@voleatech.de>
 
-[ Upstream commit 709c348261618da7ed89d6c303e2ceb9e453ba74 ]
+[ Upstream commit ca8add922f9c7f6e2e3c71039da8e0dcc64b87ed ]
 
-prange->svm_bo unref can happen in both mmu callback and a callback after
-migrate to system ram. Both are async call in different tasks. Sync svm_bo
-unref operation to avoid random "use-after-free".
+Calling page_pool_get_stats in the mvneta driver without checks
+leads to kernel crashes.
+First the page pool is only available if the bm is not used.
+The page pool is also not allocated when the port is stopped.
+It can also be not allocated in case of errors.
 
-Signed-off-by: Xiaogang Chen <xiaogang.chen@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Tested-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The current implementation leads to the following crash calling
+ethstats on a port that is down or when calling it at the wrong moment:
+
+ble to handle kernel NULL pointer dereference at virtual address 00000070
+[00000070] *pgd=00000000
+Internal error: Oops: 5 [#1] SMP ARM
+Hardware name: Marvell Armada 380/385 (Device Tree)
+PC is at page_pool_get_stats+0x18/0x1cc
+LR is at mvneta_ethtool_get_stats+0xa0/0xe0 [mvneta]
+pc : [<c0b413cc>]    lr : [<bf0a98d8>]    psr: a0000013
+sp : f1439d48  ip : f1439dc0  fp : 0000001d
+r10: 00000100  r9 : c4816b80  r8 : f0d75150
+r7 : bf0b400c  r6 : c238f000  r5 : 00000000  r4 : f1439d68
+r3 : c2091040  r2 : ffffffd8  r1 : f1439d68  r0 : 00000000
+Flags: NzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
+Control: 10c5387d  Table: 066b004a  DAC: 00000051
+Register r0 information: NULL pointer
+Register r1 information: 2-page vmalloc region starting at 0xf1438000 allocated at kernel_clone+0x9c/0x390
+Register r2 information: non-paged memory
+Register r3 information: slab kmalloc-2k start c2091000 pointer offset 64 size 2048
+Register r4 information: 2-page vmalloc region starting at 0xf1438000 allocated at kernel_clone+0x9c/0x390
+Register r5 information: NULL pointer
+Register r6 information: slab kmalloc-cg-4k start c238f000 pointer offset 0 size 4096
+Register r7 information: 15-page vmalloc region starting at 0xbf0a8000 allocated at load_module+0xa30/0x219c
+Register r8 information: 1-page vmalloc region starting at 0xf0d75000 allocated at ethtool_get_stats+0x138/0x208
+Register r9 information: slab task_struct start c4816b80 pointer offset 0
+Register r10 information: non-paged memory
+Register r11 information: non-paged memory
+Register r12 information: 2-page vmalloc region starting at 0xf1438000 allocated at kernel_clone+0x9c/0x390
+Process snmpd (pid: 733, stack limit = 0x38de3a88)
+Stack: (0xf1439d48 to 0xf143a000)
+9d40:                   000000c0 00000001 c238f000 bf0b400c f0d75150 c4816b80
+9d60: 00000100 bf0a98d8 00000000 00000000 00000000 00000000 00000000 00000000
+9d80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+9da0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+9dc0: 00000dc0 5335509c 00000035 c238f000 bf0b2214 01067f50 f0d75000 c0b9b9c8
+9de0: 0000001d 00000035 c2212094 5335509c c4816b80 c238f000 c5ad6e00 01067f50
+9e00: c1b0be80 c4816b80 00014813 c0b9d7f0 00000000 00000000 0000001d 0000001d
+9e20: 00000000 00001200 00000000 00000000 c216ed90 c73943b8 00000000 00000000
+9e40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+9e60: 00000000 c0ad9034 00000000 00000000 00000000 00000000 00000000 00000000
+9e80: 00000000 00000000 00000000 5335509c c1b0be80 f1439ee4 00008946 c1b0be80
+9ea0: 01067f50 f1439ee3 00000000 00000046 b6d77ae0 c0b383f0 00008946 becc83e8
+9ec0: c1b0be80 00000051 0000000b c68ca480 c7172d00 c0ad8ff0 f1439ee3 cf600e40
+9ee0: 01600e40 32687465 00000000 00000000 00000000 01067f50 00000000 00000000
+9f00: 00000000 5335509c 00008946 00008946 00000000 c68ca480 becc83e8 c05e2de0
+9f20: f1439fb0 c03002f0 00000006 5ac3c35a c4816b80 00000006 b6d77ae0 c030caf0
+9f40: c4817350 00000014 f1439e1c 0000000c 00000000 00000051 01000000 00000014
+9f60: 00003fec f1439edc 00000001 c0372abc b6d77ae0 c0372abc cf600e40 5335509c
+9f80: c21e6800 01015c9c 0000000b 00008946 00000036 c03002f0 c4816b80 00000036
+9fa0: b6d77ae0 c03000c0 01015c9c 0000000b 0000000b 00008946 becc83e8 00000000
+9fc0: 01015c9c 0000000b 00008946 00000036 00000035 010678a0 b6d797ec b6d77ae0
+9fe0: b6dbf738 becc838c b6d186d7 b6baa858 40000030 0000000b 00000000 00000000
+ page_pool_get_stats from mvneta_ethtool_get_stats+0xa0/0xe0 [mvneta]
+ mvneta_ethtool_get_stats [mvneta] from ethtool_get_stats+0x154/0x208
+ ethtool_get_stats from dev_ethtool+0xf48/0x2480
+ dev_ethtool from dev_ioctl+0x538/0x63c
+ dev_ioctl from sock_ioctl+0x49c/0x53c
+ sock_ioctl from sys_ioctl+0x134/0xbd8
+ sys_ioctl from ret_fast_syscall+0x0/0x1c
+Exception stack(0xf1439fa8 to 0xf1439ff0)
+9fa0:                   01015c9c 0000000b 0000000b 00008946 becc83e8 00000000
+9fc0: 01015c9c 0000000b 00008946 00000036 00000035 010678a0 b6d797ec b6d77ae0
+9fe0: b6dbf738 becc838c b6d186d7 b6baa858
+Code: e28dd004 e1a05000 e2514000 0a00006a (e5902070)
+
+This commit adds the proper checks before calling page_pool_get_stats.
+
+Fixes: b3fc79225f05 ("net: mvneta: add support for page_pool_get_stats")
+Signed-off-by: Sven Auhagen <sven.auhagen@voleatech.de>
+Reported-by: Paulo Da Silva <Paulo.DaSilva@kyberna.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/mvneta.c | 28 +++++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index d7e758c86a0b8..6281d370bb448 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -612,8 +612,15 @@ svm_range_vram_node_new(struct amdgpu_device *adev, struct svm_range *prange,
- 
- void svm_range_vram_node_free(struct svm_range *prange)
+diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
+index acf4f6ba73a6f..f4692a8726b1c 100644
+--- a/drivers/net/ethernet/marvell/mvneta.c
++++ b/drivers/net/ethernet/marvell/mvneta.c
+@@ -4790,14 +4790,17 @@ static void mvneta_ethtool_get_strings(struct net_device *netdev, u32 sset,
+ 				       u8 *data)
  {
--	svm_range_bo_unref(prange->svm_bo);
--	prange->ttm_res = NULL;
-+	/* serialize prange->svm_bo unref */
-+	mutex_lock(&prange->lock);
-+	/* prange->svm_bo has not been unref */
-+	if (prange->ttm_res) {
-+		prange->ttm_res = NULL;
-+		mutex_unlock(&prange->lock);
-+		svm_range_bo_unref(prange->svm_bo);
-+	} else
-+		mutex_unlock(&prange->lock);
+ 	if (sset == ETH_SS_STATS) {
++		struct mvneta_port *pp = netdev_priv(netdev);
+ 		int i;
+ 
+ 		for (i = 0; i < ARRAY_SIZE(mvneta_statistics); i++)
+ 			memcpy(data + i * ETH_GSTRING_LEN,
+ 			       mvneta_statistics[i].name, ETH_GSTRING_LEN);
+ 
+-		data += ETH_GSTRING_LEN * ARRAY_SIZE(mvneta_statistics);
+-		page_pool_ethtool_stats_get_strings(data);
++		if (!pp->bm_priv) {
++			data += ETH_GSTRING_LEN * ARRAY_SIZE(mvneta_statistics);
++			page_pool_ethtool_stats_get_strings(data);
++		}
+ 	}
  }
  
- struct amdgpu_device *
+@@ -4915,8 +4918,10 @@ static void mvneta_ethtool_pp_stats(struct mvneta_port *pp, u64 *data)
+ 	struct page_pool_stats stats = {};
+ 	int i;
+ 
+-	for (i = 0; i < rxq_number; i++)
+-		page_pool_get_stats(pp->rxqs[i].page_pool, &stats);
++	for (i = 0; i < rxq_number; i++) {
++		if (pp->rxqs[i].page_pool)
++			page_pool_get_stats(pp->rxqs[i].page_pool, &stats);
++	}
+ 
+ 	page_pool_ethtool_stats_get(data, &stats);
+ }
+@@ -4932,14 +4937,21 @@ static void mvneta_ethtool_get_stats(struct net_device *dev,
+ 	for (i = 0; i < ARRAY_SIZE(mvneta_statistics); i++)
+ 		*data++ = pp->ethtool_stats[i];
+ 
+-	mvneta_ethtool_pp_stats(pp, data);
++	if (!pp->bm_priv)
++		mvneta_ethtool_pp_stats(pp, data);
+ }
+ 
+ static int mvneta_ethtool_get_sset_count(struct net_device *dev, int sset)
+ {
+-	if (sset == ETH_SS_STATS)
+-		return ARRAY_SIZE(mvneta_statistics) +
+-		       page_pool_ethtool_stats_get_count();
++	if (sset == ETH_SS_STATS) {
++		int count = ARRAY_SIZE(mvneta_statistics);
++		struct mvneta_port *pp = netdev_priv(dev);
++
++		if (!pp->bm_priv)
++			count += page_pool_ethtool_stats_get_count();
++
++		return count;
++	}
+ 
+ 	return -EOPNOTSUPP;
+ }
 -- 
 2.42.0
 
