@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 664A67F7C84
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEB47F8088
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 983A31C210C0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551A91F20F3F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD873A8C7;
-	Fri, 24 Nov 2023 18:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A3333CC7;
+	Fri, 24 Nov 2023 18:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAShc26i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHnBwL83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9906A39FEA;
-	Fri, 24 Nov 2023 18:15:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDFDC433C8;
-	Fri, 24 Nov 2023 18:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7BA2E40E;
+	Fri, 24 Nov 2023 18:50:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10BBC433C9;
+	Fri, 24 Nov 2023 18:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849753;
-	bh=z0tIe70DQcj/c0QevsCLPrJ76QhZdU8cUSPXBVQC7fA=;
+	s=korg; t=1700851831;
+	bh=isDHBcE92cLAfezNygcr2wHeC6aXh85rxKHtOu9cgg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cAShc26iJ6AR/EVtkL6M6qetbgzz0SaKEYg7BapafKTi6RsAMkDnMCm7Zpi+tDsbB
-	 DXTmpsJylQl0BGe+e1fXUvtISx9WjyDLEk/wh0rllr/KKoyiWndJWEAL+E5Dwup/eq
-	 h/dVN0RiUCLNM5nc6WRI4bLLDIUeYibv1NkbsL1M=
+	b=RHnBwL832X5O9M4N/1c/zCHRZa8MMLzZgO25hwSLrgDs22xOvVTit758jEQKAEJ6u
+	 vOqcST4wTWEo/zWhUg7aPiRjinvS8BfVmdEqsRQeDtWmBq4orbCyjWa8NjJxSCRDx1
+	 c81eUUVhPKa4xpzsnS1+V/etok83ZZdPJ4Pl9ZK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Li <pengfei.li_1@nxp.com>,
-	Emil Kronborg <emil.kronborg@protonmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 307/530] pmdomain: imx: Make imx pgc power domain also set the fwnode
-Date: Fri, 24 Nov 2023 17:47:53 +0000
-Message-ID: <20231124172037.378894276@linuxfoundation.org>
+	Yi Yang <yiyang13@huawei.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 087/372] tty: vcc: Add check for kstrdup() in vcc_probe()
+Date: Fri, 24 Nov 2023 17:47:54 +0000
+Message-ID: <20231124172013.430616277@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +53,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengfei Li <pengfei.li_1@nxp.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-commit 374de39d38f97b0e58cfee88da590b2d056ccf7f upstream.
+[ Upstream commit d81ffb87aaa75f842cd7aa57091810353755b3e6 ]
 
-Currently, The imx pgc power domain doesn't set the fwnode
-pointer, which results in supply regulator device can't get
-consumer imx pgc power domain device from fwnode when creating
-a link.
+Add check for the return value of kstrdup() and return the error, if it
+fails in order to avoid NULL pointer dereference.
 
-This causes the driver core to instead try to create a link
-between the parent gpc device of imx pgc power domain device and
-supply regulator device. However, at this point, the gpc device
-has already been bound, and the link creation will fail. So adding
-the fwnode pointer to the imx pgc power domain device will fix
-this issue.
-
-Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
-Tested-by: Emil Kronborg <emil.kronborg@protonmail.com>
-Fixes: 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020185949.537083-1-pengfei.li_1@nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230904035220.48164-1-yiyang13@huawei.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/gpc.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/vcc.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/drivers/pmdomain/imx/gpc.c
-+++ b/drivers/pmdomain/imx/gpc.c
-@@ -498,6 +498,7 @@ static int imx_gpc_probe(struct platform
+diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
+index 34ba6e54789a7..b8b832c75b856 100644
+--- a/drivers/tty/vcc.c
++++ b/drivers/tty/vcc.c
+@@ -579,18 +579,22 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 		return -ENOMEM;
  
- 			pd_pdev->dev.parent = &pdev->dev;
- 			pd_pdev->dev.of_node = np;
-+			pd_pdev->dev.fwnode = of_fwnode_handle(np);
+ 	name = kstrdup(dev_name(&vdev->dev), GFP_KERNEL);
++	if (!name) {
++		rv = -ENOMEM;
++		goto free_port;
++	}
  
- 			ret = platform_device_add(pd_pdev);
- 			if (ret) {
+ 	rv = vio_driver_init(&port->vio, vdev, VDEV_CONSOLE_CON, vcc_versions,
+ 			     ARRAY_SIZE(vcc_versions), NULL, name);
+ 	if (rv)
+-		goto free_port;
++		goto free_name;
+ 
+ 	port->vio.debug = vcc_dbg_vio;
+ 	vcc_ldc_cfg.debug = vcc_dbg_ldc;
+ 
+ 	rv = vio_ldc_alloc(&port->vio, &vcc_ldc_cfg, port);
+ 	if (rv)
+-		goto free_port;
++		goto free_name;
+ 
+ 	spin_lock_init(&port->lock);
+ 
+@@ -624,6 +628,11 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 		goto unreg_tty;
+ 	}
+ 	port->domain = kstrdup(domain, GFP_KERNEL);
++	if (!port->domain) {
++		rv = -ENOMEM;
++		goto unreg_tty;
++	}
++
+ 
+ 	mdesc_release(hp);
+ 
+@@ -653,8 +662,9 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
+ 	vcc_table_remove(port->index);
+ free_ldc:
+ 	vio_ldc_free(&port->vio);
+-free_port:
++free_name:
+ 	kfree(name);
++free_port:
+ 	kfree(port);
+ 
+ 	return rv;
+-- 
+2.42.0
+
 
 
 
