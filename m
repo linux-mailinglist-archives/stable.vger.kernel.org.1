@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 309AF7F83FD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3B817F8377
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB6121F214B5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 580B31F2103F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288F033E9;
-	Fri, 24 Nov 2023 19:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF41364C4;
+	Fri, 24 Nov 2023 19:17:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpIGEOih"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4s7bp8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7E435F04;
-	Fri, 24 Nov 2023 19:22:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B71C433C8;
-	Fri, 24 Nov 2023 19:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DC933CCA;
+	Fri, 24 Nov 2023 19:17:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6465C433C8;
+	Fri, 24 Nov 2023 19:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853775;
-	bh=R6zBERxDCLWuMN/ZmaOkF1g5AL/T9bJBjK1YOtIA540=;
+	s=korg; t=1700853471;
+	bh=Kpu4WbCfhAJOniBUmi0h1vdkdtRC+UYEawWONzM6U+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpIGEOih1BErlcZpy/SnLjIj9UtYpY0+KKwrbSD1BlBP3wcAMYnH5QjAVAbacLYlv
-	 wW2+j+ULceXpmc2g0uvjzaSX0rl4B9u/9polq3wAvB/+VxPpfcVxuxvG/x0q0rJPZ4
-	 FmcvyLa7CTg14yLImQHKrHiULOv3Kn2F7FIxZwF4=
+	b=E4s7bp8doQSvMTzSi9rd9znjlB4iru7k025p3ZEN8Z+V4nPsSZxYOXOhlV5xEPvhs
+	 uIZYhac/DhfEdvJ4dAk6LOOy/hZXIoNWuuv/4FiHlT/iP7mPnMl75fH5+H+XLp2n39
+	 lBMB0wQbb2vAMe65hs5EiD+vHSXo1Q3QP81VBUYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <vincent.whitchurch@axis.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 026/159] ARM: 9320/1: fix stack depot IRQ stack filter
+	Johan Hovold <johan+linaro@kernel.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 5.15 201/297] wifi: ath11k: fix htt pktlog locking
 Date: Fri, 24 Nov 2023 17:54:03 +0000
-Message-ID: <20231124171942.948387263@linuxfoundation.org>
+Message-ID: <20231124172007.241605744@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Whitchurch <vincent.whitchurch@axis.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit b0150014878c32197cfa66e3e2f79e57f66babc0 ]
+commit 3f77c7d605b29df277d77e9ee75d96e7ad145d2d upstream.
 
-Place IRQ handlers such as gic_handle_irq() in the irqentry section even
-if FUNCTION_GRAPH_TRACER is not enabled.  Without this, the stack
-depot's filter_irq_stacks() does not correctly filter out IRQ stacks in
-those configurations, which hampers deduplication and eventually leads
-to "Stack depot reached limit capacity" splats with KASAN.
+The ath11k active pdevs are protected by RCU but the htt pktlog handling
+code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section.
 
-A similar fix was done for arm64 in commit f6794950f0e5ba37e3bbed
-("arm64: set __exception_irq_entry with __irq_entry as a default").
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-Link: https://lore.kernel.org/r/20230803-arm-irqentry-v1-1-8aad8e260b1c@axis.com
+Compile tested only.
 
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019112521.2071-1-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/include/asm/exception.h | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/exception.h b/arch/arm/include/asm/exception.h
-index 58e039a851af0..3c82975d46db3 100644
---- a/arch/arm/include/asm/exception.h
-+++ b/arch/arm/include/asm/exception.h
-@@ -10,10 +10,6 @@
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1603,14 +1603,20 @@ static void ath11k_htt_pktlog(struct ath
+ 	u8 pdev_id;
  
- #include <linux/interrupt.h>
+ 	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
++
++	rcu_read_lock();
++
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
+ 	if (!ar) {
+ 		ath11k_warn(ab, "invalid pdev id %d on htt pktlog\n", pdev_id);
+-		return;
++		goto out;
+ 	}
  
--#ifdef CONFIG_FUNCTION_GRAPH_TRACER
- #define __exception_irq_entry	__irq_entry
--#else
--#define __exception_irq_entry
--#endif
+ 	trace_ath11k_htt_pktlog(ar, data->payload, hdr->size,
+ 				ar->ab->pktlog_defs_checksum);
++
++out:
++	rcu_read_unlock();
+ }
  
- #endif /* __ASM_ARM_EXCEPTION_H */
--- 
-2.42.0
-
+ static void ath11k_htt_backpressure_event_handler(struct ath11k_base *ab,
 
 
 
