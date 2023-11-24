@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD147F7EE4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66E8B7F809B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 534E1B215DC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B3131C215B7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6EF33E9;
-	Fri, 24 Nov 2023 18:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A46339BE;
+	Fri, 24 Nov 2023 18:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FF306CZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGF4C/9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1E828DC3;
-	Fri, 24 Nov 2023 18:36:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC154C433C8;
-	Fri, 24 Nov 2023 18:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696AF2E40E;
+	Fri, 24 Nov 2023 18:51:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC85AC433C8;
+	Fri, 24 Nov 2023 18:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851016;
-	bh=AdQBaj3Qt8EDrOusV7jsSXMHlfjrM6HhLSSBRlrColo=;
+	s=korg; t=1700851873;
+	bh=yBMgT48CpPInHKHxLExHUO2V5gsAyNAcgbbSkwRGGmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FF306CZaRJqHWSmOFMGEZBxYoYDO4qLnDmJOp4g2NLW+rlrLygdecqFnIo1jbdgay
-	 5g8io4degLzXS6kcmzMSO4VbDQyF1guMiKmVSh1XgEoXCy18ByS0O0qjaUijr36VJJ
-	 NaQuz0I4qQhRYJeQIR6qbcQemC4s6ht9lCJU5kBo=
+	b=qGF4C/9/43ZRZQcYeP93PKOAhcqNzvBOKVwgK8lDapc8jFSuAUWCXOo6Rh5lr35Qh
+	 WrWGpTRbHu2SM1HIRCJooUR5FVZtHrX4z4yTJMUUdp8qPb3wSnUoWHwTI6GACOuuLJ
+	 s3p9G3way6VvqlqNNoVkX6IBY81x7GFeeIxMOX/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.5 280/491] genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 129/372] net: hns3: fix add VLAN fail issue
 Date: Fri, 24 Nov 2023 17:48:36 +0000
-Message-ID: <20231124172032.987002012@linuxfoundation.org>
+Message-ID: <20231124172014.780487819@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,89 +52,197 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-commit 5e7afb2eb7b2a7c81e9f608cbdf74a07606fd1b5 upstream.
+[ Upstream commit 472a2ff63efb30234cbf6b2cdaf8117f21b4f8bc ]
 
-irq_remove_generic_chip() calculates the Linux interrupt number for removing the
-handler and interrupt chip based on gc::irq_base as a linear function of
-the bit positions of set bits in the @msk argument.
+The hclge_sync_vlan_filter is called in periodic task,
+trying to remove VLAN from vlan_del_fail_bmap. It can
+be concurrence with VLAN adding operation from user.
+So once user failed to delete a VLAN id, and add it
+again soon, it may be removed by the periodic task,
+which may cause the software configuration being
+inconsistent with hardware. So add mutex handling
+to avoid this.
 
-When the generic chip is present in an irq domain, i.e. created with a call
-to irq_alloc_domain_generic_chips(), gc::irq_base contains not the base
-Linux interrupt number.  It contains the base hardware interrupt for this
-chip. It is set to 0 for the first chip in the domain, 0 + N for the next
-chip, where $N is the number of hardware interrupts per chip.
+     user                        hns3 driver
 
-That means the Linux interrupt number cannot be calculated based on
-gc::irq_base for irqdomain based chips without a domain map lookup, which
-is currently missing.
+                                           periodic task
+                                                │
+  add vlan 10 ───── hns3_vlan_rx_add_vid        │
+       │             (suppose success)          │
+       │                                        │
+  del vlan 10 ─────  hns3_vlan_rx_kill_vid      │
+       │           (suppose fail,add to         │
+       │             vlan_del_fail_bmap)        │
+       │                                        │
+  add vlan 10 ───── hns3_vlan_rx_add_vid        │
+                     (suppose success)          │
+                                       foreach vlan_del_fail_bmp
+                                            del vlan 10
 
-Rework the code to take the irqdomain case into account and calculate the
-Linux interrupt number by a irqdomain lookup of the domain specific
-hardware interrupt number.
-
-[ tglx: Massage changelog. Reshuffle the logic and add a proper comment. ]
-
-Fixes: cfefd21e693d ("genirq: Add chip suspend and resume callbacks")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231024150335.322282-1-herve.codina@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fe4144d47eef ("net: hns3: sync VLAN filter entries when kill VLAN ID failed")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/generic-chip.c |   25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 28 +++++++++++++------
+ .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 11 ++++++--
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
---- a/kernel/irq/generic-chip.c
-+++ b/kernel/irq/generic-chip.c
-@@ -544,21 +544,34 @@ EXPORT_SYMBOL_GPL(irq_setup_alt_chip);
- void irq_remove_generic_chip(struct irq_chip_generic *gc, u32 msk,
- 			     unsigned int clr, unsigned int set)
- {
--	unsigned int i = gc->irq_base;
-+	unsigned int i, virq;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 3e1d202d60ce1..51998a4d732d3 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -10132,8 +10132,6 @@ static void hclge_rm_vport_vlan_table(struct hclge_vport *vport, u16 vlan_id,
+ 	struct hclge_vport_vlan_cfg *vlan, *tmp;
+ 	struct hclge_dev *hdev = vport->back;
  
- 	raw_spin_lock(&gc_lock);
- 	list_del(&gc->list);
- 	raw_spin_unlock(&gc_lock);
- 
--	for (; msk; msk >>= 1, i++) {
-+	for (i = 0; msk; msk >>= 1, i++) {
- 		if (!(msk & 0x01))
- 			continue;
- 
-+		/*
-+		 * Interrupt domain based chips store the base hardware
-+		 * interrupt number in gc::irq_base. Otherwise gc::irq_base
-+		 * contains the base Linux interrupt number.
-+		 */
-+		if (gc->domain) {
-+			virq = irq_find_mapping(gc->domain, gc->irq_base + i);
-+			if (!virq)
-+				continue;
-+		} else {
-+			virq = gc->irq_base + i;
-+		}
-+
- 		/* Remove handler first. That will mask the irq line */
--		irq_set_handler(i, NULL);
--		irq_set_chip(i, &no_irq_chip);
--		irq_set_chip_data(i, NULL);
--		irq_modify_status(i, clr, set);
-+		irq_set_handler(virq, NULL);
-+		irq_set_chip(virq, &no_irq_chip);
-+		irq_set_chip_data(virq, NULL);
-+		irq_modify_status(virq, clr, set);
+-	mutex_lock(&hdev->vport_lock);
+-
+ 	list_for_each_entry_safe(vlan, tmp, &vport->vlan_list, node) {
+ 		if (vlan->vlan_id == vlan_id) {
+ 			if (is_write_tbl && vlan->hd_tbl_status)
+@@ -10148,8 +10146,6 @@ static void hclge_rm_vport_vlan_table(struct hclge_vport *vport, u16 vlan_id,
+ 			break;
+ 		}
  	}
+-
+-	mutex_unlock(&hdev->vport_lock);
  }
- EXPORT_SYMBOL_GPL(irq_remove_generic_chip);
+ 
+ void hclge_rm_vport_all_vlan_table(struct hclge_vport *vport, bool is_del_list)
+@@ -10558,11 +10554,16 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
+ 	 * handle mailbox. Just record the vlan id, and remove it after
+ 	 * reset finished.
+ 	 */
++	mutex_lock(&hdev->vport_lock);
+ 	if ((test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) ||
+ 	     test_bit(HCLGE_STATE_RST_FAIL, &hdev->state)) && is_kill) {
+ 		set_bit(vlan_id, vport->vlan_del_fail_bmap);
++		mutex_unlock(&hdev->vport_lock);
+ 		return -EBUSY;
++	} else if (!is_kill && test_bit(vlan_id, vport->vlan_del_fail_bmap)) {
++		clear_bit(vlan_id, vport->vlan_del_fail_bmap);
+ 	}
++	mutex_unlock(&hdev->vport_lock);
+ 
+ 	/* when port base vlan enabled, we use port base vlan as the vlan
+ 	 * filter entry. In this case, we don't update vlan filter table
+@@ -10577,17 +10578,22 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
+ 	}
+ 
+ 	if (!ret) {
+-		if (!is_kill)
++		if (!is_kill) {
+ 			hclge_add_vport_vlan_table(vport, vlan_id,
+ 						   writen_to_tbl);
+-		else if (is_kill && vlan_id != 0)
++		} else if (is_kill && vlan_id != 0) {
++			mutex_lock(&hdev->vport_lock);
+ 			hclge_rm_vport_vlan_table(vport, vlan_id, false);
++			mutex_unlock(&hdev->vport_lock);
++		}
+ 	} else if (is_kill) {
+ 		/* when remove hw vlan filter failed, record the vlan id,
+ 		 * and try to remove it from hw later, to be consistence
+ 		 * with stack
+ 		 */
++		mutex_lock(&hdev->vport_lock);
+ 		set_bit(vlan_id, vport->vlan_del_fail_bmap);
++		mutex_unlock(&hdev->vport_lock);
+ 	}
+ 
+ 	hclge_set_vport_vlan_fltr_change(vport);
+@@ -10627,6 +10633,7 @@ static void hclge_sync_vlan_filter(struct hclge_dev *hdev)
+ 	int i, ret, sync_cnt = 0;
+ 	u16 vlan_id;
+ 
++	mutex_lock(&hdev->vport_lock);
+ 	/* start from vport 1 for PF is always alive */
+ 	for (i = 0; i < hdev->num_alloc_vport; i++) {
+ 		struct hclge_vport *vport = &hdev->vport[i];
+@@ -10637,21 +10644,26 @@ static void hclge_sync_vlan_filter(struct hclge_dev *hdev)
+ 			ret = hclge_set_vlan_filter_hw(hdev, htons(ETH_P_8021Q),
+ 						       vport->vport_id, vlan_id,
+ 						       true);
+-			if (ret && ret != -EINVAL)
++			if (ret && ret != -EINVAL) {
++				mutex_unlock(&hdev->vport_lock);
+ 				return;
++			}
+ 
+ 			clear_bit(vlan_id, vport->vlan_del_fail_bmap);
+ 			hclge_rm_vport_vlan_table(vport, vlan_id, false);
+ 			hclge_set_vport_vlan_fltr_change(vport);
+ 
+ 			sync_cnt++;
+-			if (sync_cnt >= HCLGE_MAX_SYNC_COUNT)
++			if (sync_cnt >= HCLGE_MAX_SYNC_COUNT) {
++				mutex_unlock(&hdev->vport_lock);
+ 				return;
++			}
+ 
+ 			vlan_id = find_first_bit(vport->vlan_del_fail_bmap,
+ 						 VLAN_N_VID);
+ 		}
+ 	}
++	mutex_unlock(&hdev->vport_lock);
+ 
+ 	hclge_sync_vlan_fltr_state(hdev);
+ }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 72cf5145e15a2..90ceec730d5bd 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -1258,6 +1258,8 @@ static int hclgevf_set_vlan_filter(struct hnae3_handle *handle,
+ 	     test_bit(HCLGEVF_STATE_RST_FAIL, &hdev->state)) && is_kill) {
+ 		set_bit(vlan_id, hdev->vlan_del_fail_bmap);
+ 		return -EBUSY;
++	} else if (!is_kill && test_bit(vlan_id, hdev->vlan_del_fail_bmap)) {
++		clear_bit(vlan_id, hdev->vlan_del_fail_bmap);
+ 	}
+ 
+ 	hclgevf_build_send_msg(&send_msg, HCLGE_MBX_SET_VLAN,
+@@ -1285,20 +1287,25 @@ static void hclgevf_sync_vlan_filter(struct hclgevf_dev *hdev)
+ 	int ret, sync_cnt = 0;
+ 	u16 vlan_id;
+ 
++	if (bitmap_empty(hdev->vlan_del_fail_bmap, VLAN_N_VID))
++		return;
++
++	rtnl_lock();
+ 	vlan_id = find_first_bit(hdev->vlan_del_fail_bmap, VLAN_N_VID);
+ 	while (vlan_id != VLAN_N_VID) {
+ 		ret = hclgevf_set_vlan_filter(handle, htons(ETH_P_8021Q),
+ 					      vlan_id, true);
+ 		if (ret)
+-			return;
++			break;
+ 
+ 		clear_bit(vlan_id, hdev->vlan_del_fail_bmap);
+ 		sync_cnt++;
+ 		if (sync_cnt >= HCLGEVF_MAX_SYNC_COUNT)
+-			return;
++			break;
+ 
+ 		vlan_id = find_first_bit(hdev->vlan_del_fail_bmap, VLAN_N_VID);
+ 	}
++	rtnl_unlock();
+ }
+ 
+ static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
+-- 
+2.42.0
+
 
 
 
