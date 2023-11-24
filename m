@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FCB7F7D67
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D777F8155
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57B111C212A1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 938F01C21666
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881AC39FC3;
-	Fri, 24 Nov 2023 18:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30C933CC2;
+	Fri, 24 Nov 2023 18:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqBM0Icn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRwl1Kzf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E103A8C9;
-	Fri, 24 Nov 2023 18:24:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82A7C433C8;
-	Fri, 24 Nov 2023 18:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931B52C87B;
+	Fri, 24 Nov 2023 18:57:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D61C433C8;
+	Fri, 24 Nov 2023 18:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850254;
-	bh=vBzNS6K7WKWgQEbXgg5UV/pUP4niivt72DXiYxj/wig=;
+	s=korg; t=1700852261;
+	bh=oVSenwr5DPQFSZmCu/ScwD1aL0YPtngCkNORLgmTCDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqBM0IcnjThIzIvu26FET3QS0AVCt7xXdCziDdI9DcDrI3FYUeBVQTlYyhM00LV6l
-	 vb/3viVnbTvUSFlRaLYM319WjDHkQXY+q7wEP/zCdfDPwSCxi6wWYwL+rIJpbaQfJB
-	 63xh5nFlQA/oYDoQYDuPYMj0PBuylgbsQO/pH88o=
+	b=aRwl1KzfWFN1UsAYmLiNz6zawjZ3c159qgrj4TigiItd9sbsANWFcqU2KJSn9IhDK
+	 750+IBzcNSAi9XhYN0SszdtCYByBtId+8qcgMu7We2ek28AX3bzewL7yEgGp9NJLcD
+	 vT9cbWHQvOpK+H5dYxZJew9F9xKEPjq5jTIWwP18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com,
-	Brian Foster <bfoster@redhat.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 506/530] ext4: fix racy may inline data check in dio write
+	Pengfei Li <pengfei.li_1@nxp.com>,
+	Emil Kronborg <emil.kronborg@protonmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 285/372] pmdomain: imx: Make imx pgc power domain also set the fwnode
 Date: Fri, 24 Nov 2023 17:51:12 +0000
-Message-ID: <20231124172043.561807103@linuxfoundation.org>
+Message-ID: <20231124172019.932503678@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Foster <bfoster@redhat.com>
+From: Pengfei Li <pengfei.li_1@nxp.com>
 
-commit ce56d21355cd6f6937aca32f1f44ca749d1e4808 upstream.
+[ Upstream commit 374de39d38f97b0e58cfee88da590b2d056ccf7f ]
 
-syzbot reports that the following warning from ext4_iomap_begin()
-triggers as of the commit referenced below:
+Currently, The imx pgc power domain doesn't set the fwnode
+pointer, which results in supply regulator device can't get
+consumer imx pgc power domain device from fwnode when creating
+a link.
 
-        if (WARN_ON_ONCE(ext4_has_inline_data(inode)))
-                return -ERANGE;
+This causes the driver core to instead try to create a link
+between the parent gpc device of imx pgc power domain device and
+supply regulator device. However, at this point, the gpc device
+has already been bound, and the link creation will fail. So adding
+the fwnode pointer to the imx pgc power domain device will fix
+this issue.
 
-This occurs during a dio write, which is never expected to encounter
-an inode with inline data. To enforce this behavior,
-ext4_dio_write_iter() checks the current inline state of the inode
-and clears the MAY_INLINE_DATA state flag to either fall back to
-buffered writes, or enforce that any other writers in progress on
-the inode are not allowed to create inline data.
-
-The problem is that the check for existing inline data and the state
-flag can span a lock cycle. For example, if the ilock is originally
-locked shared and subsequently upgraded to exclusive, another writer
-may have reacquired the lock and created inline data before the dio
-write task acquires the lock and proceeds.
-
-The commit referenced below loosens the lock requirements to allow
-some forms of unaligned dio writes to occur under shared lock, but
-AFAICT the inline data check was technically already racy for any
-dio write that would have involved a lock cycle. Regardless, lift
-clearing of the state bit to the same lock critical section that
-checks for preexisting inline data on the inode to close the race.
-
-Cc: stable@kernel.org
-Reported-by: syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com
-Fixes: 310ee0902b8d ("ext4: allow concurrent unaligned dio overwrites")
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Link: https://lore.kernel.org/r/20231002185020.531537-1-bfoster@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+Tested-by: Emil Kronborg <emil.kronborg@protonmail.com>
+Fixes: 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231020185949.537083-1-pengfei.li_1@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/file.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/soc/imx/gpc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -537,18 +537,20 @@ static ssize_t ext4_dio_write_iter(struc
- 		return ext4_buffered_write_iter(iocb, from);
- 	}
+diff --git a/drivers/soc/imx/gpc.c b/drivers/soc/imx/gpc.c
+index 90a8b2c0676ff..419ed15cc10c4 100644
+--- a/drivers/soc/imx/gpc.c
++++ b/drivers/soc/imx/gpc.c
+@@ -498,6 +498,7 @@ static int imx_gpc_probe(struct platform_device *pdev)
  
-+	/*
-+	 * Prevent inline data from being created since we are going to allocate
-+	 * blocks for DIO. We know the inode does not currently have inline data
-+	 * because ext4_should_use_dio() checked for it, but we have to clear
-+	 * the state flag before the write checks because a lock cycle could
-+	 * introduce races with other writers.
-+	 */
-+	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
-+
- 	ret = ext4_dio_write_checks(iocb, from, &ilock_shared, &extend,
- 				    &unwritten, &dio_flags);
- 	if (ret <= 0)
- 		return ret;
+ 			pd_pdev->dev.parent = &pdev->dev;
+ 			pd_pdev->dev.of_node = np;
++			pd_pdev->dev.fwnode = of_fwnode_handle(np);
  
--	/*
--	 * Make sure inline data cannot be created anymore since we are going
--	 * to allocate blocks for DIO. We know the inode does not have any
--	 * inline data now because ext4_dio_supported() checked for that.
--	 */
--	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
--
- 	offset = iocb->ki_pos;
- 	count = ret;
- 
+ 			ret = platform_device_add(pd_pdev);
+ 			if (ret) {
+-- 
+2.42.0
+
 
 
 
