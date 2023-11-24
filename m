@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-1204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F5E7F7E81
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6FA7F803C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313A31C213C5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8593F2824FE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A66C3A8C6;
-	Fri, 24 Nov 2023 18:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1086F381CB;
+	Fri, 24 Nov 2023 18:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCLf5vAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1PS6iVi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174D02E621;
-	Fri, 24 Nov 2023 18:33:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CB0C433C8;
-	Fri, 24 Nov 2023 18:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE638364A7;
+	Fri, 24 Nov 2023 18:47:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4869DC433C8;
+	Fri, 24 Nov 2023 18:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850817;
-	bh=iagWXwayRQGSU6JhYdch3FlZvR+v4rdGJphssj6XX28=;
+	s=korg; t=1700851675;
+	bh=fqn0WOWdg/x3A31UY4hKodgj7sBX+keOT53lv+mCgjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCLf5vApunkv/YyuZuc2Do3IULqZAUi63s7uk8lrfAeQUfTDjjQsFYs0XvgUOEk+8
-	 9bc9FotZ7eLfuxvfwgzLbANEGecQf04iPipRB9w6sFj1omFLxdlc7NEStlT8VtJap9
-	 xkWQlblB+jB+zI40b6AtWmkRhyTKmUGdH4nG5UGw=
+	b=K1PS6iViqaLC7+vTR9wYdcQ9Hls0W9BioDyfhy6igqPb1iqyU1aYQD5fRLA+qlvuJ
+	 yS3Qir7RazHhnOuUrWKLbu9l9bC76xx143RM9o5RK+kiZgLL7dDd0kGseLTYbWrn07
+	 dUo0ohwb6qjx0Wldd4FOW60BYtw8pzKb5Ka4qx34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ondrej Jirman <megi@xff.cz>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Samuel Holland <samuel@sholland.org>,
+	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 201/491] pds_core: fix up some format-truncation complaints
+Subject: [PATCH 6.1 050/372] drm/panel: st7703: Pick different reset sequence
 Date: Fri, 24 Nov 2023 17:47:17 +0000
-Message-ID: <20231124172030.542720020@linuxfoundation.org>
+Message-ID: <20231124172012.148015869@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,80 +53,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Ondrej Jirman <megi@xff.cz>
 
-[ Upstream commit 7c02f6ae676a954216a192612040f9a0cde3adf7 ]
+[ Upstream commit d12d635bb03c7cb4830acb641eb176ee9ff2aa89 ]
 
-Our friendly kernel test robot pointed out a couple of potential
-string truncation issues.  None of which were we worried about,
-but can be relatively easily fixed to quiet the complaints.
+Switching to a different reset sequence, enabling IOVCC before enabling
+VCC.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310211736.66syyDpp-lkp@intel.com/
-Fixes: 45d76f492938 ("pds_core: set up device and adminq")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20231113183257.71110-3-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+There also needs to be a delay after enabling the supplies and before
+deasserting the reset. The datasheet specifies 1ms after the supplies
+reach the required voltage. Use 10-20ms to also give the power supplies
+some time to reach the required voltage, too.
+
+This fixes intermittent panel initialization failures and screen
+corruption during resume from sleep on panel xingbangda,xbd599 (e.g.
+used in PinePhone).
+
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+Reported-by: Samuel Holland <samuel@sholland.org>
+Reviewed-by: Guido Günther <agx@sigxcpu.org>
+Tested-by: Guido Günther <agx@sigxcpu.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230211171748.36692-2-frank@oltmanns.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/core.h    | 2 +-
- drivers/net/ethernet/amd/pds_core/dev.c     | 8 ++++++--
- drivers/net/ethernet/amd/pds_core/devlink.c | 2 +-
- 3 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-sitronix-st7703.c | 25 ++++++++++---------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index e545fafc48196..b1c1f1007b065 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -15,7 +15,7 @@
- #define PDSC_DRV_DESCRIPTION	"AMD/Pensando Core Driver"
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7703.c b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+index 86a472b01360b..b6e514aabe1d3 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7703.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+@@ -428,29 +428,30 @@ static int st7703_prepare(struct drm_panel *panel)
+ 		return 0;
  
- #define PDSC_WATCHDOG_SECS	5
--#define PDSC_QUEUE_NAME_MAX_SZ  32
-+#define PDSC_QUEUE_NAME_MAX_SZ  16
- #define PDSC_ADMINQ_MIN_LENGTH	16	/* must be a power of two */
- #define PDSC_NOTIFYQ_LENGTH	64	/* must be a power of two */
- #define PDSC_TEARDOWN_RECOVERY	false
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index f77cd9f5a2fda..eb178728edba9 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -254,10 +254,14 @@ static int pdsc_identify(struct pdsc *pdsc)
- 	struct pds_core_drv_identity drv = {};
- 	size_t sz;
- 	int err;
-+	int n;
+ 	dev_dbg(ctx->dev, "Resetting the panel\n");
+-	ret = regulator_enable(ctx->vcc);
++	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++
++	ret = regulator_enable(ctx->iovcc);
+ 	if (ret < 0) {
+-		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
++		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
+ 		return ret;
+ 	}
+-	ret = regulator_enable(ctx->iovcc);
++
++	ret = regulator_enable(ctx->vcc);
+ 	if (ret < 0) {
+-		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
+-		goto disable_vcc;
++		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
++		regulator_disable(ctx->iovcc);
++		return ret;
+ 	}
  
- 	drv.drv_type = cpu_to_le32(PDS_DRIVER_LINUX);
--	snprintf(drv.driver_ver_str, sizeof(drv.driver_ver_str),
--		 "%s %s", PDS_CORE_DRV_NAME, utsname()->release);
-+	/* Catching the return quiets a Wformat-truncation complaint */
-+	n = snprintf(drv.driver_ver_str, sizeof(drv.driver_ver_str),
-+		     "%s %s", PDS_CORE_DRV_NAME, utsname()->release);
-+	if (n > sizeof(drv.driver_ver_str))
-+		dev_dbg(pdsc->dev, "release name truncated, don't care\n");
+-	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+-	usleep_range(20, 40);
++	/* Give power supplies time to stabilize before deasserting reset. */
++	usleep_range(10000, 20000);
++
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+-	msleep(20);
++	usleep_range(15000, 20000);
  
- 	/* Next let's get some info about the device
- 	 * We use the devcmd_lock at this level in order to
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index d9607033bbf21..d2abf32b93fe3 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -104,7 +104,7 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
- 	struct pds_core_fw_list_info fw_list;
- 	struct pdsc *pdsc = devlink_priv(dl);
- 	union pds_core_dev_comp comp;
--	char buf[16];
-+	char buf[32];
- 	int listlen;
- 	int err;
- 	int i;
+ 	ctx->prepared = true;
+ 
+ 	return 0;
+-
+-disable_vcc:
+-	regulator_disable(ctx->vcc);
+-	return ret;
+ }
+ 
+ static const u32 mantix_bus_formats[] = {
 -- 
 2.42.0
 
