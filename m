@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AECD7F7B3B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCB37F7D74
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B607AB20EFB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:03:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DA571C212B7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16EEF39FFC;
-	Fri, 24 Nov 2023 18:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9B73A8D0;
+	Fri, 24 Nov 2023 18:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvGIESGU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeCRujvV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7B0381DF;
-	Fri, 24 Nov 2023 18:03:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBCDC433C8;
-	Fri, 24 Nov 2023 18:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F4C39FF7;
+	Fri, 24 Nov 2023 18:24:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D51C433C7;
+	Fri, 24 Nov 2023 18:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848986;
-	bh=lFoqJNl7mQ3O93TWE8fCeY4OFBHE2P7eKHnqwG4RCOc=;
+	s=korg; t=1700850283;
+	bh=usc3e2nZc31IKxrKa1fZklIKwRAC2a1Pzj2Xzf7dUdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvGIESGUQt1R4NOpXTU+srWvAEJwEfLP2nFHqgVc5y3FmD8dtnnaHeZYkUg2U6mAj
-	 zErzRsJrryKCJmnbTfocevKxs7kXxQui6EZbYa/AGceKpAnXfXEGebJf/EyABctyWK
-	 wQ0BhWsisYzMtiooT5H4w+qGj69LN8WWwuRlpFoc=
+	b=DeCRujvVZJ7HOsMfc3P+I++o1wk8Rdrr3wPpuW79myPeWdlnjO8cSUMZ3BqDPYDvL
+	 SeLPta0jwbp+7t0w3BkMgzDGW6y/6D9dbn5S9xuH0aeQDOVbcSTKWkdZJnu90BWxUc
+	 7d8/T/oFcPlO6BGIv8KLRo5y1CbEpE+OGqPfMxMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 4.14 53/57] ext4: correct offset of gdb backup in non meta_bg group to update_backups
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 511/530] drm/i915/mtl: Support HBR3 rate with C10 phy and eDP in MTL
 Date: Fri, 24 Nov 2023 17:51:17 +0000
-Message-ID: <20231124171932.292655930@linuxfoundation.org>
+Message-ID: <20231124172043.719551794@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-commit 31f13421c004a420c0e9d288859c9ea9259ea0cc upstream.
+commit ce4941c2d6459664761c9854701015d8e99414fb upstream.
 
-Commit 0aeaa2559d6d5 ("ext4: fix corruption when online resizing a 1K
-bigalloc fs") found that primary superblock's offset in its group is
-not equal to offset of backup superblock in its group when block size
-is 1K and bigalloc is enabled. As group descriptor blocks are right
-after superblock, we can't pass block number of gdb to update_backups
-for the same reason.
+eDP specification supports HBR3 link rate since v1.4a. Moreover,
+C10 phy can support HBR3 link rate for both DP and eDP. Therefore,
+do not clamp the supported rates for eDP at 6.75Gbps.
 
-The root casue of the issue above is that leading 1K padding block is
-count as data block offset for primary block while backup block has no
-padding block offset in its group.
+Cc: <stable@vger.kernel.org>
 
-Remove padding data block count to fix the issue for gdb backups.
+BSpec: 70073 74224
 
-For meta_bg case, update_backups treat blk_off as block number, do no
-conversion in this case.
-
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230826174712.4059355-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231018113622.2761997-1-chaitanya.kumar.borah@intel.com
+(cherry picked from commit a3431650f30a94b179d419ef87c21213655c28cd)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/resize.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -1538,6 +1538,8 @@ exit_journal:
- 		int gdb_num_end = ((group + flex_gd->count - 1) /
- 				   EXT4_DESC_PER_BLOCK(sb));
- 		int meta_bg = ext4_has_feature_meta_bg(sb);
-+		sector_t padding_blocks = meta_bg ? 0 : sbi->s_sbh->b_blocknr -
-+					 ext4_group_first_block_no(sb, 0);
- 		sector_t old_gdb = 0;
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -430,7 +430,7 @@ static int mtl_max_source_rate(struct in
+ 	enum phy phy = intel_port_to_phy(i915, dig_port->base.port);
  
- 		update_backups(sb, sbi->s_sbh->b_blocknr, (char *)es,
-@@ -1549,8 +1551,8 @@ exit_journal:
- 						     gdb_num);
- 			if (old_gdb == gdb_bh->b_blocknr)
- 				continue;
--			update_backups(sb, gdb_bh->b_blocknr, gdb_bh->b_data,
--				       gdb_bh->b_size, meta_bg);
-+			update_backups(sb, gdb_bh->b_blocknr - padding_blocks,
-+				       gdb_bh->b_data, gdb_bh->b_size, meta_bg);
- 			old_gdb = gdb_bh->b_blocknr;
- 		}
- 	}
+ 	if (intel_is_c10phy(i915, phy))
+-		return intel_dp_is_edp(intel_dp) ? 675000 : 810000;
++		return 810000;
+ 
+ 	return 2000000;
+ }
 
 
 
