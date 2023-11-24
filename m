@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1DB7F7D49
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C75C7F811E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E379BB214CC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAFE28108B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FECA39FE7;
-	Fri, 24 Nov 2023 18:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D6435F04;
+	Fri, 24 Nov 2023 18:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuSKCKe3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EL9yWhqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFD534197;
-	Fri, 24 Nov 2023 18:23:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E8EC433C8;
-	Fri, 24 Nov 2023 18:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9499228DBA;
+	Fri, 24 Nov 2023 18:55:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6EAC433C7;
+	Fri, 24 Nov 2023 18:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850194;
-	bh=pozgSwTcJud/SywNBFmuIh6Etrn2QODrh3dRe84P+3o=;
+	s=korg; t=1700852147;
+	bh=Sy6eQ96qvx9Z4XPMDUB+NvUokJzynF0xT3pimHnPHAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GuSKCKe3I24yavA7PPTn77oQIPKt0E+ITuVSgcqFxBkgg4CAc4IIHRjtScVx+UOK3
-	 GN4l7O54YOQE8454p7mpkw4w52aNrDuFoDE/nMQPwbkQnEyCr3XUqVrXF9yQJvRD6T
-	 22jtbu+9LhrueehRtNitFelWHNU+uFWb09pViL6A=
+	b=EL9yWhqpQs7XGFjUpXmmqsjO+L0TgLHSUD93iizUZF954lYgSa+HFM1G5O3DRMIYB
+	 uqDuQIfDXwqM3Q+wQuSe9gIpWV7tlJcw5Z0khLXFFx55VsevYUq8tlUNK05ZDAO0pG
+	 8ijmKLiXI6uPkFmxj3pn9ajOGHnt4c6K4aMQzkXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 459/530] media: ccs: Correctly initialise try compose rectangle
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.1 238/372] selftests/resctrl: Move _GNU_SOURCE define into Makefile
 Date: Fri, 24 Nov 2023 17:50:25 +0000
-Message-ID: <20231124172042.052339153@linuxfoundation.org>
+Message-ID: <20231124172018.459313668@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +52,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 724ff68e968b19d786870d333f9952bdd6b119cb upstream.
+commit 3a1e4a91aa454a1c589a9824d54179fdbfccde45 upstream.
 
-Initialise the try sink compose rectangle size to the sink compose
-rectangle for binner and scaler sub-devices. This was missed due to the
-faulty condition that lead to the compose rectangles to be initialised for
-the pixel array sub-device where it is not relevant.
+_GNU_SOURCE is defined in resctrl.h. Defining _GNU_SOURCE has a large
+impact on what gets defined when including headers either before or
+after it. This can result in compile failures if .c file decides to
+include a standard header file before resctrl.h.
 
-Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+It is safer to define _GNU_SOURCE in Makefile so it is always defined
+regardless of in which order includes are done.
+
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/Makefile  |    2 +-
+ tools/testing/selftests/resctrl/resctrl.h |    1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3097,7 +3097,7 @@ static int ccs_open(struct v4l2_subdev *
- 		try_fmt->code = sensor->internal_csi_format->code;
- 		try_fmt->field = V4L2_FIELD_NONE;
+--- a/tools/testing/selftests/resctrl/Makefile
++++ b/tools/testing/selftests/resctrl/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
  
--		if (ssd != sensor->pixel_array)
-+		if (ssd == sensor->pixel_array)
- 			continue;
+-CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
++CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE
+ CFLAGS += $(KHDR_INCLUDES)
  
- 		try_comp = v4l2_subdev_get_try_compose(sd, fh->state, i);
+ TEST_GEN_PROGS := resctrl_tests
+--- a/tools/testing/selftests/resctrl/resctrl.h
++++ b/tools/testing/selftests/resctrl/resctrl.h
+@@ -1,5 +1,4 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+-#define _GNU_SOURCE
+ #ifndef RESCTRL_H
+ #define RESCTRL_H
+ #include <stdio.h>
 
 
 
