@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CDC97F7C04
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E63087F7E04
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12FFF1F20F97
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 234E71C2130B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E54939FFD;
-	Fri, 24 Nov 2023 18:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9E23A8E4;
+	Fri, 24 Nov 2023 18:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGRRaP2k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPn+fSkS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFC028DA1;
-	Fri, 24 Nov 2023 18:10:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20331C433C8;
-	Fri, 24 Nov 2023 18:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F110333CFD;
+	Fri, 24 Nov 2023 18:29:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A978C433C8;
+	Fri, 24 Nov 2023 18:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849456;
-	bh=+Q9tpDc46q0tfSrhNf5RE8ZB1TNRFonQ38VptLRQJwM=;
+	s=korg; t=1700850549;
+	bh=DqhSdZqBpq3sChMKnr8DF6SclGfpfPT+oiBkNBy1uog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGRRaP2kbWehB9EfXv7FehILrt2PM6ZW1uAsOk6q4asameIERLn0pQYJgfXYJLCkD
-	 YO3P787RY1NOaTEDPqCrsIyrZjq5McOF9y8z8kvfKvdw9RuKreNy6XxnFE9qklkvWU
-	 N0sHglPJ106bxeXA1l7xZtRVKVY7UOW2wMm07X7k=
+	b=YPn+fSkShURGNjlykQLz67501rVBzMKjv2Qix6g9lOU/+sS/30H43vAALy3NFEEte
+	 EbFghoUm+zlqrr4OwaqQtYxyf/Brz1CS2uSvDw/Rt/VwN35hiPKsXPMRXB7pVIknIQ
+	 5RQQNSyqbBoZELD1UfcJmdVMNC+lDmpL4UmsMYh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/530] mtd: rawnand: intel: check return value of devm_kasprintf()
+Subject: [PATCH 6.5 094/491] gpiolib: of: Add quirk for mt2701-cs42448 ASoC sound
 Date: Fri, 24 Nov 2023 17:45:30 +0000
-Message-ID: <20231124172033.070975533@linuxfoundation.org>
+Message-ID: <20231124172027.409403033@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +55,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 74ac5b5e2375f1e8ef797ac7770887e9969f2516 ]
+[ Upstream commit 9e189e80dcb68528dea9e061d9704993f98cb84f ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful by
-checking the pointer validity.
+These gpio names are due to old DT bindings not following the
+"-gpio"/"-gpios" conventions. Handle it using a quirk so the
+driver can just look up the GPIOs.
 
-Fixes: 0b1039f016e8 ("mtd: rawnand: Add NAND controller support on Intel LGM SoC")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231019065537.318391-1-yiyang13@huawei.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20231006-descriptors-asoc-mediatek-v1-1-07fe79f337f5@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/intel-nand-controller.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/gpio/gpiolib-of.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/intel-nand-controller.c b/drivers/mtd/nand/raw/intel-nand-controller.c
-index cb5d88f42297b..f0ad2308f6d50 100644
---- a/drivers/mtd/nand/raw/intel-nand-controller.c
-+++ b/drivers/mtd/nand/raw/intel-nand-controller.c
-@@ -619,6 +619,11 @@ static int ebu_nand_probe(struct platform_device *pdev)
- 	ebu_host->cs_num = cs;
- 
- 	resname = devm_kasprintf(dev, GFP_KERNEL, "nand_cs%d", cs);
-+	if (!resname) {
-+		ret = -ENOMEM;
-+		goto err_of_node_put;
-+	}
-+
- 	ebu_host->cs[cs].chipaddr = devm_platform_ioremap_resource_byname(pdev,
- 									  resname);
- 	if (IS_ERR(ebu_host->cs[cs].chipaddr)) {
-@@ -649,6 +654,11 @@ static int ebu_nand_probe(struct platform_device *pdev)
- 	}
- 
- 	resname = devm_kasprintf(dev, GFP_KERNEL, "addr_sel%d", cs);
-+	if (!resname) {
-+		ret = -ENOMEM;
-+		goto err_cleanup_dma;
-+	}
-+
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, resname);
- 	if (!res) {
- 		ret = -EINVAL;
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index 1436cdb5fa268..219bf8a82d8f9 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -496,6 +496,10 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
+ #if IS_ENABLED(CONFIG_SND_SOC_CS42L56)
+ 		{ "reset",	"cirrus,gpio-nreset",	"cirrus,cs42l56" },
+ #endif
++#if IS_ENABLED(CONFIG_SND_SOC_MT2701_CS42448)
++		{ "i2s1-in-sel-gpio1",	NULL,	"mediatek,mt2701-cs42448-machine" },
++		{ "i2s1-in-sel-gpio2",	NULL,	"mediatek,mt2701-cs42448-machine" },
++#endif
+ #if IS_ENABLED(CONFIG_SND_SOC_TLV320AIC3X)
+ 		{ "reset",	"gpio-reset",	"ti,tlv320aic3x" },
+ 		{ "reset",	"gpio-reset",	"ti,tlv320aic33" },
 -- 
 2.42.0
 
