@@ -1,52 +1,47 @@
-Return-Path: <stable+bounces-839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D7B7F7CCB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCF17F7F08
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70FDC2820AC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF6B11C2141D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837213A8D0;
-	Fri, 24 Nov 2023 18:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EC43307D;
+	Fri, 24 Nov 2023 18:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFF0QLnP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsMlOSOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE6E39FF7;
-	Fri, 24 Nov 2023 18:18:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F2FC433C9;
-	Fri, 24 Nov 2023 18:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9426828DC3;
+	Fri, 24 Nov 2023 18:37:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C81FC433C8;
+	Fri, 24 Nov 2023 18:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849905;
-	bh=z+JBOQYqlrutSEEci0F7w74eMoVb8UN2mqJuykmIm5M=;
+	s=korg; t=1700851078;
+	bh=9vdQmh6O/mUDrLwtzMpTesqCzKfM6ooym4OrNGeTQ1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFF0QLnPAtidjqbUcGvbl6d524vlAU+kxX0UJvzrPRsjpNgKwSpxnxmMVhloTgh5y
-	 KKCN6+2iPbf4ufSnDBQ7MwWuOz688ARMxt3kWQobj0+tzdU7hjSgHpH4MAZcG+sHBi
-	 BAcA2Xc04FeSKZfM+kis4gbbaZJMyUCBoE2pizZc=
+	b=HsMlOSOMASjLOru7ddipybCV5JNTt4lmHOYrCczRheGAH7KGs1U/CEGiV61QjcAch
+	 KO2cTKEZzll60zFYrrO1hAncGbKVKXEf5rwvBfZQf3CdqgbzNZUgehF9NpePue7rKP
+	 NJpU5tojD+Dr6maQ5fu26VaRLJPvDhaMFoWLrFCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 367/530] mips: use nth_page() in place of direct struct page manipulation
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.5 297/491] ksmbd: fix recursive locking in vfs helpers
 Date: Fri, 24 Nov 2023 17:48:53 +0000
-Message-ID: <20231124172039.178554120@linuxfoundation.org>
+Message-ID: <20231124172033.500445185@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,50 +53,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-commit aa5fe31b6b59210cb4ea28a59e68781f48eeca74 upstream.
+commit 807252f028c59b9a3bac4d62ad84761548c10f11 upstream.
 
-__flush_dcache_pages() is called during hugetlb migration via
-migrate_pages() -> migrate_hugetlbs() -> unmap_and_move_huge_page() ->
-move_to_new_folio() -> flush_dcache_folio().  And with hugetlb and without
-sparsemem vmemmap, struct page is not guaranteed to be contiguous beyond a
-section.  Use nth_page() instead.
+Running smb2.rename test from Samba smbtorture suite against a kernel built
+with lockdep triggers a "possible recursive locking detected" warning.
 
-Without the fix, a wrong address might be used for data cache page flush.
-No bug is reported. The fix comes from code inspection.
+This is because mnt_want_write() is called twice with no mnt_drop_write()
+in between:
+  -> ksmbd_vfs_mkdir()
+    -> ksmbd_vfs_kern_path_create()
+       -> kern_path_create()
+          -> filename_create()
+            -> mnt_want_write()
+       -> mnt_want_write()
 
-Link: https://lkml.kernel.org/r/20230913201248.452081-6-zi.yan@sent.com
-Fixes: 15fa3e8e3269 ("mips: implement the new page table range API")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fix this by removing the mnt_want_write/mnt_drop_write calls from vfs
+helpers that call kern_path_create().
+
+Full lockdep trace below:
+
+============================================
+WARNING: possible recursive locking detected
+6.6.0-rc5 #775 Not tainted
+--------------------------------------------
+kworker/1:1/32 is trying to acquire lock:
+ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: ksmbd_vfs_mkdir+0xe1/0x410
+
+but task is already holding lock:
+ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: filename_create+0xb6/0x260
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(sb_writers#5);
+  lock(sb_writers#5);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+4 locks held by kworker/1:1/32:
+ #0: ffff8880064e4138 ((wq_completion)ksmbd-io){+.+.}-{0:0}, at: process_one_work+0x40e/0x980
+ #1: ffff888005b0fdd0 ((work_completion)(&work->work)){+.+.}-{0:0}, at: process_one_work+0x40e/0x980
+ #2: ffff888005ac83f8 (sb_writers#5){.+.+}-{0:0}, at: filename_create+0xb6/0x260
+ #3: ffff8880057ce760 (&type->i_mutex_dir_key#3/1){+.+.}-{3:3}, at: filename_create+0x123/0x260
+
+Cc: stable@vger.kernel.org
+Fixes: 40b268d384a2 ("ksmbd: add mnt_want_write to ksmbd vfs functions")
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/cache.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/vfs.c |   23 +++--------------------
+ 1 file changed, 3 insertions(+), 20 deletions(-)
 
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -117,7 +117,7 @@ void __flush_dcache_pages(struct page *p
- 	 * get faulted into the tlb (and thus flushed) anyways.
- 	 */
- 	for (i = 0; i < nr; i++) {
--		addr = (unsigned long)kmap_local_page(page + i);
-+		addr = (unsigned long)kmap_local_page(nth_page(page, i));
- 		flush_data_cache_page(addr);
- 		kunmap_local((void *)addr);
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -173,10 +173,6 @@ int ksmbd_vfs_create(struct ksmbd_work *
+ 		return err;
  	}
+ 
+-	err = mnt_want_write(path.mnt);
+-	if (err)
+-		goto out_err;
+-
+ 	mode |= S_IFREG;
+ 	err = vfs_create(mnt_idmap(path.mnt), d_inode(path.dentry),
+ 			 dentry, mode, true);
+@@ -186,9 +182,7 @@ int ksmbd_vfs_create(struct ksmbd_work *
+ 	} else {
+ 		pr_err("File(%s): creation failed (err:%d)\n", name, err);
+ 	}
+-	mnt_drop_write(path.mnt);
+ 
+-out_err:
+ 	done_path_create(&path, dentry);
+ 	return err;
+ }
+@@ -219,10 +213,6 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *w
+ 		return err;
+ 	}
+ 
+-	err = mnt_want_write(path.mnt);
+-	if (err)
+-		goto out_err2;
+-
+ 	idmap = mnt_idmap(path.mnt);
+ 	mode |= S_IFDIR;
+ 	err = vfs_mkdir(idmap, d_inode(path.dentry), dentry, mode);
+@@ -233,21 +223,19 @@ int ksmbd_vfs_mkdir(struct ksmbd_work *w
+ 			       dentry->d_name.len);
+ 		if (IS_ERR(d)) {
+ 			err = PTR_ERR(d);
+-			goto out_err1;
++			goto out_err;
+ 		}
+ 		if (unlikely(d_is_negative(d))) {
+ 			dput(d);
+ 			err = -ENOENT;
+-			goto out_err1;
++			goto out_err;
+ 		}
+ 
+ 		ksmbd_vfs_inherit_owner(work, d_inode(path.dentry), d_inode(d));
+ 		dput(d);
+ 	}
+ 
+-out_err1:
+-	mnt_drop_write(path.mnt);
+-out_err2:
++out_err:
+ 	done_path_create(&path, dentry);
+ 	if (err)
+ 		pr_err("mkdir(%s): creation failed (err:%d)\n", name, err);
+@@ -665,16 +653,11 @@ int ksmbd_vfs_link(struct ksmbd_work *wo
+ 		goto out3;
+ 	}
+ 
+-	err = mnt_want_write(newpath.mnt);
+-	if (err)
+-		goto out3;
+-
+ 	err = vfs_link(oldpath.dentry, mnt_idmap(newpath.mnt),
+ 		       d_inode(newpath.dentry),
+ 		       dentry, NULL);
+ 	if (err)
+ 		ksmbd_debug(VFS, "vfs_link failed err %d\n", err);
+-	mnt_drop_write(newpath.mnt);
+ 
+ out3:
+ 	done_path_create(&newpath, dentry);
 
 
 
