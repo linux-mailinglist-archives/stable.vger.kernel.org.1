@@ -1,52 +1,48 @@
-Return-Path: <stable+bounces-2290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D986C7F838E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC6167F8415
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16D4B1C25D91
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7639728A3D5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDF6364C4;
-	Fri, 24 Nov 2023 19:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA8C381A2;
+	Fri, 24 Nov 2023 19:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZC9Q52I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbPI4EdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA8A339BE;
-	Fri, 24 Nov 2023 19:18:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93647C433C7;
-	Fri, 24 Nov 2023 19:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EA2339BE;
+	Fri, 24 Nov 2023 19:23:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB43C433C8;
+	Fri, 24 Nov 2023 19:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853520;
-	bh=tRuOBqxXAax/47gngJuEJzrmVe0tjX2+eAz81Hp8lE8=;
+	s=korg; t=1700853830;
+	bh=aN5KWpKLsA9xwwMs8K4vD/3vmIqWaRWeCeqpqIaLj/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZC9Q52Itw1G7HCs2iXpzoAtKTvVxUwm2I/LNN5em/8L0V2G8+vEGCsBER72VmYCX
-	 eZxV3m4OaeXzT6KOvkRcd0LqgnJZPlPvCYrqvYRQM34Yws28tgh7DJ81QoOqIGDdxd
-	 lfprzlKHWXW+vMelqA7ZDuetzWJox5HHTQxQpKBM=
+	b=vbPI4EdAalEbxQokyBzzd7v322GdOXEeAq/+AozOdIbefpAtiHBFT42W2ipaM2o4J
+	 shdu6NpVHF1/Fj0MefDJxh70kORespYE9g/fFQMoEsA1E3MhTCljp/EBkQmgOb/hdX
+	 YvDsZL4DeU2MOdh90iZQONTOdjLJ1e2v8EoruHBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 222/297] mm/cma: use nth_page() in place of direct struct page manipulation
-Date: Fri, 24 Nov 2023 17:54:24 +0000
-Message-ID: <20231124172007.976479283@linuxfoundation.org>
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 048/159] tty: Fix uninit-value access in ppp_sync_receive()
+Date: Fri, 24 Nov 2023 17:54:25 +0000
+Message-ID: <20231124171943.946667986@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,64 +54,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit 2e7cfe5cd5b6b0b98abf57a3074885979e187c1c upstream.
+[ Upstream commit 719639853d88071dfdfd8d9971eca9c283ff314c ]
 
-Patch series "Use nth_page() in place of direct struct page manipulation",
-v3.
+KMSAN reported the following uninit-value access issue:
 
-On SPARSEMEM without VMEMMAP, struct page is not guaranteed to be
-contiguous, since each memory section's memmap might be allocated
-independently.  hugetlb pages can go beyond a memory section size, thus
-direct struct page manipulation on hugetlb pages/subpages might give wrong
-struct page.  Kernel provides nth_page() to do the manipulation properly.
-Use that whenever code can see hugetlb pages.
+=====================================================
+BUG: KMSAN: uninit-value in ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
+BUG: KMSAN: uninit-value in ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
+ ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
+ tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:871 [inline]
+ __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
+ __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
+Uninit was created at:
+ __alloc_pages+0x75d/0xe80 mm/page_alloc.c:4591
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ __page_frag_cache_refill+0x9a/0x2c0 mm/page_alloc.c:4691
+ page_frag_alloc_align+0x91/0x5d0 mm/page_alloc.c:4722
+ page_frag_alloc include/linux/gfp.h:322 [inline]
+ __netdev_alloc_skb+0x215/0x6d0 net/core/skbuff.c:728
+ netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
+ dev_alloc_skb include/linux/skbuff.h:3238 [inline]
+ ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
+ ppp_sync_receive+0x237/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
+ tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:871 [inline]
+ __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
+ __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-This patch (of 5):
+CPU: 0 PID: 12950 Comm: syz-executor.1 Not tainted 6.6.0-14500-g1c41041124bd #10
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
+=====================================================
 
-When dealing with hugetlb pages, manipulating struct page pointers
-directly can get to wrong struct page, since struct page is not guaranteed
-to be contiguous on SPARSEMEM without VMEMMAP.  Use nth_page() to handle
-it properly.
+ppp_sync_input() checks the first 2 bytes of the data are PPP_ALLSTATIONS
+and PPP_UI. However, if the data length is 1 and the first byte is
+PPP_ALLSTATIONS, an access to an uninitialized value occurs when checking
+PPP_UI. This patch resolves this issue by checking the data length.
 
-Without the fix, page_kasan_tag_reset() could reset wrong page tags,
-causing a wrong kasan result.  No related bug is reported.  The fix
-comes from code inspection.
-
-Link: https://lkml.kernel.org/r/20230913201248.452081-1-zi.yan@sent.com
-Link: https://lkml.kernel.org/r/20230913201248.452081-2-zi.yan@sent.com
-Fixes: 2813b9c02962 ("kasan, mm, arm64: tag non slab memory allocated via pagealloc")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/cma.c |    2 +-
+ drivers/net/ppp/ppp_synctty.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -503,7 +503,7 @@ struct page *cma_alloc(struct cma *cma,
- 	 */
- 	if (page) {
- 		for (i = 0; i < count; i++)
--			page_kasan_tag_reset(page + i);
-+			page_kasan_tag_reset(nth_page(page, i));
- 	}
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index 0f338752c38b9..d5af6b06a66a4 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -698,7 +698,7 @@ ppp_sync_input(struct syncppp *ap, const unsigned char *buf,
  
- 	if (ret && !no_warn) {
+ 	/* strip address/control field if present */
+ 	p = skb->data;
+-	if (p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
++	if (skb->len >= 2 && p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
+ 		/* chop off address/control */
+ 		if (skb->len < 3)
+ 			goto err;
+-- 
+2.42.0
+
 
 
 
