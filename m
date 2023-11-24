@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-2022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68AD87F826E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F827F83C4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B4A6B24249
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF534B26AC9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B06E364B7;
-	Fri, 24 Nov 2023 19:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B1235F1A;
+	Fri, 24 Nov 2023 19:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mq0zUxBJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of0z5X7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012E235F1A;
-	Fri, 24 Nov 2023 19:07:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA6FC433C8;
-	Fri, 24 Nov 2023 19:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB81731748;
+	Fri, 24 Nov 2023 19:20:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367AAC433C8;
+	Fri, 24 Nov 2023 19:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852854;
-	bh=7hZLCHOYtic5IEOD760JoopkEXhJP2nDMnOhbZhq754=;
+	s=korg; t=1700853643;
+	bh=0EX7k71m/Vy/DkiKf/WDxXhaXzFVQmt1z6F9x3QcP0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mq0zUxBJKIEoI7sqgngocxzSP/tkykfutmH24MG3Q56ylFDEVY8YPk5MbkLVMFH8K
-	 T+rX7pLoeiM2Y7le1h1/janLph4IV/sqYtJtkjYUXYvZPqWh7U0zwUUDIIZjAjhYuy
-	 v/Rlp04yHlB7JVVgo2iZ4plVU/lYnYCVM2PdS67k=
+	b=of0z5X7cPjOlrW+M28cexgE8k+bmWwSISIMBdEmrJjCNkDurP33k5gLoihejT5kxA
+	 uA3a//TWOtti+stfuMqwI/+hjwOlerU4Goe60xaKBNZ2PTAYo4Yq3MUGs0bNUJbBE1
+	 iiRKw7EOmFkBv3ksPnn209C8lEolthnPPsdHLlxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 150/193] serial: meson: Use platform_get_irq() to get the interrupt
-Date: Fri, 24 Nov 2023 17:54:37 +0000
-Message-ID: <20231124171953.199503473@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 236/297] ALSA: hda/realtek - Add Dell ALC295 to pin fall back table
+Date: Fri, 24 Nov 2023 17:54:38 +0000
+Message-ID: <20231124172008.450349642@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,74 +52,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 5b68061983471470d4109bac776145245f06bc09 ]
+commit 4b21a669ca21ed8f24ef4530b2918be5730114de upstream.
 
-platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
-allocation of IRQ resources in DT core code, this causes an issue
-when using hierarchical interrupt domains using "interrupts" property
-in the node as this bypasses the hierarchical setup and messes up the
-irq chaining.
+Add ALC295 to pin fall back table.
+Remove 5 pin quirks for Dell ALC295.
+ALC295 was only support MIC2 for external MIC function.
+ALC295 assigned model "ALC269_FIXUP_DELL1_MIC_NO_PRESENCE" for pin
+fall back table.
+It was assigned wrong model. So, let's remove it.
 
-In preparation for removal of static setup of IRQ resource from DT core
-code use platform_get_irq().
-
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20211224142917.6966-5-prabhakar.mahadev-lad.rj@bp.renesas.com
+Fixes: fbc571290d9f ("ALSA: hda/realtek - Fixed Headphone Mic can't record on Dell platform")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/7c1998e873834df98d59bd7e0d08c72e@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/meson_uart.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c |   19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
-index 78bda91a6bf15..bdc394afec5be 100644
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -726,10 +726,11 @@ static int meson_uart_probe_clocks(struct platform_device *pdev,
- 
- static int meson_uart_probe(struct platform_device *pdev)
- {
--	struct resource *res_mem, *res_irq;
-+	struct resource *res_mem;
- 	struct uart_port *port;
- 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
- 	int ret = 0;
-+	int irq;
- 
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
-@@ -752,9 +753,9 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	if (!res_mem)
- 		return -ENODEV;
- 
--	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!res_irq)
--		return -ENODEV;
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return irq;
- 
- 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
- 
-@@ -779,7 +780,7 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	port->iotype = UPIO_MEM;
- 	port->mapbase = res_mem->start;
- 	port->mapsize = resource_size(res_mem);
--	port->irq = res_irq->start;
-+	port->irq = irq;
- 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
- 	port->dev = &pdev->dev;
--- 
-2.42.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9963,22 +9963,6 @@ static const struct snd_hda_pin_quirk al
+ 		{0x12, 0x90a60130},
+ 		{0x17, 0x90170110},
+ 		{0x21, 0x03211020}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+-		{0x14, 0x90170110},
+-		{0x21, 0x04211020}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+-		{0x14, 0x90170110},
+-		{0x21, 0x04211030}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
+-		ALC295_STANDARD_PINS,
+-		{0x17, 0x21014020},
+-		{0x18, 0x21a19030}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
+-		ALC295_STANDARD_PINS,
+-		{0x17, 0x21014040},
+-		{0x18, 0x21a19050}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
+-		ALC295_STANDARD_PINS),
+ 	SND_HDA_PIN_QUIRK(0x10ec0298, 0x1028, "Dell", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE,
+ 		ALC298_STANDARD_PINS,
+ 		{0x17, 0x90170110}),
+@@ -10022,6 +10006,9 @@ static const struct snd_hda_pin_quirk al
+ 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1b, 0x40000000}),
++	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
++		{0x19, 0x40000000},
++		{0x1b, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1a, 0x40000000}),
 
 
 
