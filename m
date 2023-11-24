@@ -1,43 +1,44 @@
-Return-Path: <stable+bounces-2507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E34D7F847D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:27:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5237F848D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:28:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0936A28B9FE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB2E828BBBD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A9F2C1A2;
-	Fri, 24 Nov 2023 19:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1281E39FE7;
+	Fri, 24 Nov 2023 19:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCQ5ym2o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WEywkQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1BE2EB15;
-	Fri, 24 Nov 2023 19:27:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C05DC433C7;
-	Fri, 24 Nov 2023 19:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9729239FD6;
+	Fri, 24 Nov 2023 19:27:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C46C433C8;
+	Fri, 24 Nov 2023 19:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700854054;
-	bh=sY9JYUGF/Q9kj0WNjNCzZafV2C2YAVtzjw5XA+oa8uk=;
+	s=korg; t=1700854074;
+	bh=5zwjE03Rve8E26LNBz/OkzIu+Bd7hFsrfNPSzA3/b3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCQ5ym2oLMvmkXHjeN6n9sD5v1qHS0U0twF2f/J8SCPZS+MnHHH9JytYXAt1MLrOD
-	 WqOunqNxDdQSK3VkoiT2uddCuNGEYSSSJF9jq3sLnOdjAiYAXX83HyE0cpn9D1ylka
-	 RE601Ago/dBz1J8cGlu4zYZNr/kMZe9I5Ns9bkvA=
+	b=1WEywkQ2vVashT+lE2teWDwZn240rg4z/GcVOX+zCm5nPKEb8qGx4d4NZZyw/bfoy
+	 bXVnHj3IPhypN5eg6swvAn+uiZbr256l3k6xKozkj2N0/nJMaiEmaqWC22Hbs/B1Mf
+	 Utbihp8ZvlcIQwpOg4xejokLR+9IjTTPMSA4/GGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Joe Ferner <joe.m.ferner@gmail.com>,
 	Sean Young <sean@mess.org>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.4 120/159] media: lirc: drop trailing space from scancode transmit
-Date: Fri, 24 Nov 2023 17:55:37 +0000
-Message-ID: <20231124171946.834129073@linuxfoundation.org>
+Subject: [PATCH 5.4 121/159] media: sharp: fix sharp encoding
+Date: Fri, 24 Nov 2023 17:55:38 +0000
+Message-ID: <20231124171946.874838141@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
 References: <20231124171941.909624388@linuxfoundation.org>
@@ -58,36 +59,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Sean Young <sean@mess.org>
 
-commit c8a489f820179fb12251e262b50303c29de991ac upstream.
+commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
 
-When transmitting, infrared drivers expect an odd number of samples; iow
-without a trailing space. No problems have been observed so far, so
-this is just belt and braces.
+The Sharp protocol[1] encoding has incorrect timings for bit space.
 
-Fixes: 9b6192589be7 ("media: lirc: implement scancode sending")
+[1] https://www.sbprojects.net/knowledge/ir/sharp.php
+
+Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
 Cc: stable@vger.kernel.org
+Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
+Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
 Signed-off-by: Sean Young <sean@mess.org>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/lirc_dev.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -292,7 +292,11 @@ static ssize_t ir_lirc_transmit_ir(struc
- 		if (ret < 0)
- 			goto out_kfree_raw;
+--- a/drivers/media/rc/ir-sharp-decoder.c
++++ b/drivers/media/rc/ir-sharp-decoder.c
+@@ -15,7 +15,9 @@
+ #define SHARP_UNIT		40000  /* ns */
+ #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
+ #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
+-#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
++#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
++#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
++#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
+ #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
+ #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
  
--		count = ret;
-+		/* drop trailing space */
-+		if (!(ret % 2))
-+			count = ret - 1;
-+		else
-+			count = ret;
- 
- 		txbuf = kmalloc_array(count, sizeof(unsigned int), GFP_KERNEL);
- 		if (!txbuf) {
+@@ -168,8 +170,8 @@ static const struct ir_raw_timings_pd ir
+ 	.header_pulse  = 0,
+ 	.header_space  = 0,
+ 	.bit_pulse     = SHARP_BIT_PULSE,
+-	.bit_space[0]  = SHARP_BIT_0_PERIOD,
+-	.bit_space[1]  = SHARP_BIT_1_PERIOD,
++	.bit_space[0]  = SHARP_BIT_0_SPACE,
++	.bit_space[1]  = SHARP_BIT_1_SPACE,
+ 	.trailer_pulse = SHARP_BIT_PULSE,
+ 	.trailer_space = SHARP_ECHO_SPACE,
+ 	.msb_first     = 1,
 
 
 
