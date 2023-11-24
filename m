@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE127F7F14
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0EB7F80B0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DC7D1C213EF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC2AF1C215DB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCD0364CB;
-	Fri, 24 Nov 2023 18:38:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCD133CCA;
+	Fri, 24 Nov 2023 18:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1R58pnN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14yBsQCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3AD35F1A;
-	Fri, 24 Nov 2023 18:38:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A89C433C7;
-	Fri, 24 Nov 2023 18:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE59C2E64F;
+	Fri, 24 Nov 2023 18:51:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C501C433C7;
+	Fri, 24 Nov 2023 18:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851106;
-	bh=L0S10EUq8BQ+dV3Fi0bhhWIdfbvR0ULk6yQJUIoHd0o=;
+	s=korg; t=1700851918;
+	bh=C4I6Yp/1XaOnvQEqCXdgsIWiRiH1+8faOKJxWDLzT2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1R58pnN8ceZJchjJFytXRannqVdgOuAODGEyqmr1ljDl9pQd7240R7oLhXRsCVAlo
-	 aJNf7NRVsaNj0DqYqHvflUeoQVKmLdhWWZ/Qcnzt7kmUR9tdX4AH8hYQh3v5v0v2pW
-	 duYsUaHeb5LpMfWK+xkDmeTnBvMwjZp+B6rSfGTE=
+	b=14yBsQCu9s2ItsxQtsi1GO9V3IDOOexKKx2GDL3qxiPBGI84zxjWMghEGZzMXGM8s
+	 /R/vG9/Jhv1Vi9ots/75fD/LBGWIn5KCQLblMG4nB6PPkALOAxWF1MABc8B1wdV5px
+	 Mej5UULnwxcQFvreGqUOK1rPfM3TH0+NVi+FNGsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 298/491] ksmbd: handle malformed smb1 message
-Date: Fri, 24 Nov 2023 17:48:54 +0000
-Message-ID: <20231124172033.525718629@linuxfoundation.org>
+	Baruch Siach <baruch@tkos.co.il>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 148/372] net: stmmac: fix rx budget limit check
+Date: Fri, 24 Nov 2023 17:48:55 +0000
+Message-ID: <20231124172015.415397449@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +54,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Baruch Siach <baruch@tkos.co.il>
 
-commit 5a5409d90bd05f87fe5623a749ccfbf3f7c7d400 upstream.
+[ Upstream commit fa02de9e75889915b554eda1964a631fd019973b ]
 
-If set_smb1_rsp_status() is not implemented, It will cause NULL pointer
-dereferece error when client send malformed smb1 message.
-This patch add set_smb1_rsp_status() to ignore malformed smb1 message.
+The while loop condition verifies 'count < limit'. Neither value change
+before the 'count >= limit' check. As is this check is dead code. But
+code inspection reveals a code path that modifies 'count' and then goto
+'drain_data' and back to 'read_again'. So there is a need to verify
+count value sanity after 'read_again'.
 
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move 'read_again' up to fix the count limit check.
+
+Fixes: ec222003bd94 ("net: stmmac: Prepare to add Split Header support")
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/r/d9486296c3b6b12ab3a0515fcd47d56447a07bfc.1699897370.git.baruch@tkos.co.il
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb_common.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -372,11 +372,22 @@ static int smb1_allocate_rsp_buf(struct
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 1559a4dafd413..ab49cbf8801c7 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5233,10 +5233,10 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 			len = 0;
+ 		}
  
-+/**
-+ * set_smb1_rsp_status() - set error type in smb response header
-+ * @work:	smb work containing smb response header
-+ * @err:	error code to set in response
-+ */
-+static void set_smb1_rsp_status(struct ksmbd_work *work, __le32 err)
-+{
-+	work->send_no_response = 1;
-+}
-+
- static struct smb_version_ops smb1_server_ops = {
- 	.get_cmd_val = get_smb1_cmd_val,
- 	.init_rsp_hdr = init_smb1_rsp_hdr,
- 	.allocate_rsp_buf = smb1_allocate_rsp_buf,
- 	.check_user_session = smb1_check_user_session,
-+	.set_rsp_status = set_smb1_rsp_status,
- };
++read_again:
+ 		if (count >= limit)
+ 			break;
  
- static int smb1_negotiate(struct ksmbd_work *work)
+-read_again:
+ 		buf1_len = 0;
+ 		buf2_len = 0;
+ 		entry = next_entry;
+-- 
+2.42.0
+
 
 
 
