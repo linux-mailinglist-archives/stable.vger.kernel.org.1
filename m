@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1EDC7F7D04
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00B297F7AC2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D0D1281D72
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF1FE281874
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076E539FF3;
-	Fri, 24 Nov 2023 18:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6E831740;
+	Fri, 24 Nov 2023 17:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmX7C68X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5ByPLtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EC539FD9;
-	Fri, 24 Nov 2023 18:20:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A971C433C7;
-	Fri, 24 Nov 2023 18:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0262D381D6;
+	Fri, 24 Nov 2023 17:58:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83924C433C7;
+	Fri, 24 Nov 2023 17:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850035;
-	bh=RxneErGgQomPeOh2VjD8VhJaa9WOjGOFRWIjTuXtJO0=;
+	s=korg; t=1700848703;
+	bh=IIyLfpBsPuAoxRiZ/WdPYbcd1p3Ji+XJEwIYq/rFqAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmX7C68XidxzZcDOzzenLNB0IiaHHhtlmocTTCkoZfTVmKu8NNjCFeOMPAv9QKlSy
-	 O+6gNV++Uxyi9mNQrrwAs9+PQZjojMh2LFBnqjfS0YWgLtkHmLqxqxBImlqbHMDYSh
-	 pYbbOAo/stpxH03e3Tep+8Qm+FlgISM2ILJ/UEzA=
+	b=u5ByPLtD7UDaC5OhBBxiUBDprjz9FsevC6+k4kBEyXCPVsQO+aIV54g/16MvormIi
+	 EZq7i4ZOy1DhVi6AgO/+RQiifz+LY4FFUocXqLkiOifMlU9y8xr9/OXAxJUZBT/TmK
+	 c+w0ouuF9Y3IplX8LEgiJFCyaKWKbOnKo15QRJHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 420/530] smb3: fix caching of ctime on setxattr
+	Felix Held <felix.held@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 13/97] drm/amd: Fix UBSAN array-index-out-of-bounds for SMU7
 Date: Fri, 24 Nov 2023 17:49:46 +0000
-Message-ID: <20231124172040.856031751@linuxfoundation.org>
+Message-ID: <20231124171934.627467816@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 5923d6686a100c2b4cabd4c2ca9d5a12579c7614 upstream.
+[ Upstream commit 760efbca74a405dc439a013a5efaa9fadc95a8c3 ]
 
-Fixes xfstest generic/728 which had been failing due to incorrect
-ctime after setxattr and removexattr
+For pptable structs that use flexible array sizes, use flexible arrays.
 
-Update ctime on successful set of xattr
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Felix Held <felix.held@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2874
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/xattr.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/include/pptable.h              | 4 ++--
+ drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/xattr.c
-+++ b/fs/smb/client/xattr.c
-@@ -150,10 +150,13 @@ static int cifs_xattr_set(const struct x
- 		if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_XATTR)
- 			goto out;
+diff --git a/drivers/gpu/drm/amd/include/pptable.h b/drivers/gpu/drm/amd/include/pptable.h
+index 0b6a057e0a4c4..5aac8d545bdc6 100644
+--- a/drivers/gpu/drm/amd/include/pptable.h
++++ b/drivers/gpu/drm/amd/include/pptable.h
+@@ -78,7 +78,7 @@ typedef struct _ATOM_PPLIB_THERMALCONTROLLER
+ typedef struct _ATOM_PPLIB_STATE
+ {
+     UCHAR ucNonClockStateIndex;
+-    UCHAR ucClockStateIndices[1]; // variable-sized
++    UCHAR ucClockStateIndices[]; // variable-sized
+ } ATOM_PPLIB_STATE;
  
--		if (pTcon->ses->server->ops->set_EA)
-+		if (pTcon->ses->server->ops->set_EA) {
- 			rc = pTcon->ses->server->ops->set_EA(xid, pTcon,
- 				full_path, name, value, (__u16)size,
- 				cifs_sb->local_nls, cifs_sb);
-+			if (rc == 0)
-+				inode_set_ctime_current(inode);
-+		}
- 		break;
  
- 	case XATTR_CIFS_ACL:
+@@ -473,7 +473,7 @@ typedef struct _ATOM_PPLIB_STATE_V2
+       /**
+       * Driver will read the first ucNumDPMLevels in this array
+       */
+-      UCHAR clockInfoIndex[1];
++      UCHAR clockInfoIndex[];
+ } ATOM_PPLIB_STATE_V2;
+ 
+ typedef struct _StateArray{
+diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
+index 1e870f58dd12a..d5a4a08c6d392 100644
+--- a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
++++ b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
+@@ -179,7 +179,7 @@ typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
+ typedef struct _ATOM_Tonga_MCLK_Dependency_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_MCLK_Dependency_Record entries[1];				/* Dynamically allocate entries. */
++	ATOM_Tonga_MCLK_Dependency_Record entries[];				/* Dynamically allocate entries. */
+ } ATOM_Tonga_MCLK_Dependency_Table;
+ 
+ typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
+@@ -194,7 +194,7 @@ typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
+ typedef struct _ATOM_Tonga_SCLK_Dependency_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
++	ATOM_Tonga_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
+ } ATOM_Tonga_SCLK_Dependency_Table;
+ 
+ typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
+-- 
+2.42.0
+
 
 
 
