@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B804C7F7B1B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2D47F7F95
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71BF828137C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DA261C214AD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 044C02AF00;
-	Fri, 24 Nov 2023 18:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D923734189;
+	Fri, 24 Nov 2023 18:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tfji/mUT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt08m5fW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655BF39FE1;
-	Fri, 24 Nov 2023 18:01:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CCEC433C7;
-	Fri, 24 Nov 2023 18:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06D633090;
+	Fri, 24 Nov 2023 18:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552FDC433C7;
+	Fri, 24 Nov 2023 18:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848913;
-	bh=c6o3w954suhCSX+7ws/FerQRUbplTG51T9+IVNnp5XE=;
+	s=korg; t=1700851366;
+	bh=TjmonLLObtEAI2TPFjFuqvHKVJZTSmzqwa+VG0MgL2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tfji/mUTgdmI3zpOGYReXXpWs+hNvYYrQZ8Pt/uNThT18v2YAzSqk46vU9BpUTumc
-	 V9fCDo0H4x+gxoflMhnFHJ58wx5y11VL/8hPFpoJyi7Is/+WdnkOjYyS0khuPHYPvC
-	 yx95kPIzEegogMal9D91blLUN/hcidV0GDFy3Wxo=
+	b=vt08m5fWkQCxYqI1RA35lsyUNxKZK+F4+AjrcJ07thLWD/TdZSWRNOjjrCP50X+0Q
+	 2HTjJaJnx24Be0zoZp3a8+mLRDTTsWQa4SUwnwEjZmswjXioWiAxQ2PpYfdPkm5/F1
+	 WP3yFtXNeguTmBNv69eal2JrHUlb9Zr4XjpxFBiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 4.14 32/57] hvc/xen: fix error path in xen_hvc_init() to always register frontend driver
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	syzbot+d342e330a37b48c094b7@syzkaller.appspotmail.com
+Subject: [PATCH 6.5 420/491] f2fs: split initial and dynamic conditions for extent_cache
 Date: Fri, 24 Nov 2023 17:50:56 +0000
-Message-ID: <20231124171931.464180408@linuxfoundation.org>
+Message-ID: <20231124172037.225691169@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +50,140 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-commit 2704c9a5593f4a47620c12dad78838ca62b52f48 upstream.
+commit f803982190f0265fd36cf84670aa6daefc2b0768 upstream.
 
-The xen_hvc_init() function should always register the frontend driver,
-even when there's no primary console — as there may be secondary consoles.
-(Qemu can always add secondary consoles, but only the toolstack can add
-the primary because it's special.)
+Let's allocate the extent_cache tree without dynamic conditions to avoid a
+missing condition causing a panic as below.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Juergen Gross <jgross@suse.com>
+ # create a file w/ a compressed flag
+ # disable the compression
+ # panic while updating extent_cache
+
+F2FS-fs (dm-64): Swapfile: last extent is not aligned to section
+F2FS-fs (dm-64): Swapfile (3) is not align to section: 1) creat(), 2) ioctl(F2FS_IOC_SET_PIN_FILE), 3) fallocate(2097152 * N)
+Adding 124996k swap on ./swap-file.  Priority:0 extents:2 across:17179494468k
+==================================================================
+BUG: KASAN: null-ptr-deref in instrument_atomic_read_write out/common/include/linux/instrumented.h:101 [inline]
+BUG: KASAN: null-ptr-deref in atomic_try_cmpxchg_acquire out/common/include/asm-generic/atomic-instrumented.h:705 [inline]
+BUG: KASAN: null-ptr-deref in queued_write_lock out/common/include/asm-generic/qrwlock.h:92 [inline]
+BUG: KASAN: null-ptr-deref in __raw_write_lock out/common/include/linux/rwlock_api_smp.h:211 [inline]
+BUG: KASAN: null-ptr-deref in _raw_write_lock+0x5a/0x110 out/common/kernel/locking/spinlock.c:295
+Write of size 4 at addr 0000000000000030 by task syz-executor154/3327
+
+CPU: 0 PID: 3327 Comm: syz-executor154 Tainted: G           O      5.10.185 #1
+Hardware name: emulation qemu-x86/qemu-x86, BIOS 2023.01-21885-gb3cc1cd24d 01/01/2023
+Call Trace:
+ __dump_stack out/common/lib/dump_stack.c:77 [inline]
+ dump_stack_lvl+0x17e/0x1c4 out/common/lib/dump_stack.c:118
+ __kasan_report+0x16c/0x260 out/common/mm/kasan/report.c:415
+ kasan_report+0x51/0x70 out/common/mm/kasan/report.c:428
+ kasan_check_range+0x2f3/0x340 out/common/mm/kasan/generic.c:186
+ __kasan_check_write+0x14/0x20 out/common/mm/kasan/shadow.c:37
+ instrument_atomic_read_write out/common/include/linux/instrumented.h:101 [inline]
+ atomic_try_cmpxchg_acquire out/common/include/asm-generic/atomic-instrumented.h:705 [inline]
+ queued_write_lock out/common/include/asm-generic/qrwlock.h:92 [inline]
+ __raw_write_lock out/common/include/linux/rwlock_api_smp.h:211 [inline]
+ _raw_write_lock+0x5a/0x110 out/common/kernel/locking/spinlock.c:295
+ __drop_extent_tree+0xdf/0x2f0 out/common/fs/f2fs/extent_cache.c:1155
+ f2fs_drop_extent_tree+0x17/0x30 out/common/fs/f2fs/extent_cache.c:1172
+ f2fs_insert_range out/common/fs/f2fs/file.c:1600 [inline]
+ f2fs_fallocate+0x19fd/0x1f40 out/common/fs/f2fs/file.c:1764
+ vfs_fallocate+0x514/0x9b0 out/common/fs/open.c:310
+ ksys_fallocate out/common/fs/open.c:333 [inline]
+ __do_sys_fallocate out/common/fs/open.c:341 [inline]
+ __se_sys_fallocate out/common/fs/open.c:339 [inline]
+ __x64_sys_fallocate+0xb8/0x100 out/common/fs/open.c:339
+ do_syscall_64+0x35/0x50 out/common/arch/x86/entry/common.c:46
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020161529.355083-3-dwmw2@infradead.org
+Fixes: 72840cccc0a1 ("f2fs: allocate the extent_cache by default")
+Reported-and-tested-by: syzbot+d342e330a37b48c094b7@syzkaller.appspotmail.com
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/hvc/hvc_xen.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/f2fs/extent_cache.c |   53 +++++++++++++++++++------------------------------
+ 1 file changed, 21 insertions(+), 32 deletions(-)
 
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -600,7 +600,7 @@ static int __init xen_hvc_init(void)
- 		ops = &dom0_hvc_ops;
- 		r = xen_initial_domain_console_init();
- 		if (r < 0)
--			return r;
-+			goto register_fe;
- 		info = vtermno_to_xencons(HVC_COOKIE);
- 	} else {
- 		ops = &domU_hvc_ops;
-@@ -609,7 +609,7 @@ static int __init xen_hvc_init(void)
- 		else
- 			r = xen_pv_console_init();
- 		if (r < 0)
--			return r;
-+			goto register_fe;
- 
- 		info = vtermno_to_xencons(HVC_COOKIE);
- 		info->irq = bind_evtchn_to_irq_lateeoi(info->evtchn);
-@@ -634,6 +634,7 @@ static int __init xen_hvc_init(void)
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -74,40 +74,14 @@ static void __set_extent_info(struct ext
  	}
+ }
  
- 	r = 0;
-+ register_fe:
- #ifdef CONFIG_HVC_XEN_FRONTEND
- 	r = xenbus_register_frontend(&xencons_driver);
- #endif
+-static bool __may_read_extent_tree(struct inode *inode)
+-{
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+-
+-	if (!test_opt(sbi, READ_EXTENT_CACHE))
+-		return false;
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT))
+-		return false;
+-	if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+-			 !f2fs_sb_has_readonly(sbi))
+-		return false;
+-	return S_ISREG(inode->i_mode);
+-}
+-
+-static bool __may_age_extent_tree(struct inode *inode)
+-{
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+-
+-	if (!test_opt(sbi, AGE_EXTENT_CACHE))
+-		return false;
+-	if (is_inode_flag_set(inode, FI_COMPRESSED_FILE))
+-		return false;
+-	if (file_is_cold(inode))
+-		return false;
+-
+-	return S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode);
+-}
+-
+ static bool __init_may_extent_tree(struct inode *inode, enum extent_type type)
+ {
+ 	if (type == EX_READ)
+-		return __may_read_extent_tree(inode);
+-	else if (type == EX_BLOCK_AGE)
+-		return __may_age_extent_tree(inode);
++		return test_opt(F2FS_I_SB(inode), READ_EXTENT_CACHE) &&
++			S_ISREG(inode->i_mode);
++	if (type == EX_BLOCK_AGE)
++		return test_opt(F2FS_I_SB(inode), AGE_EXTENT_CACHE) &&
++			(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode));
+ 	return false;
+ }
+ 
+@@ -120,7 +94,22 @@ static bool __may_extent_tree(struct ino
+ 	if (list_empty(&F2FS_I_SB(inode)->s_list))
+ 		return false;
+ 
+-	return __init_may_extent_tree(inode, type);
++	if (!__init_may_extent_tree(inode, type))
++		return false;
++
++	if (type == EX_READ) {
++		if (is_inode_flag_set(inode, FI_NO_EXTENT))
++			return false;
++		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
++				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
++			return false;
++	} else if (type == EX_BLOCK_AGE) {
++		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE))
++			return false;
++		if (file_is_cold(inode))
++			return false;
++	}
++	return true;
+ }
+ 
+ static void __try_update_largest_extent(struct extent_tree *et,
 
 
 
