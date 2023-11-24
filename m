@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9006D7F75AA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:53:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED59F7F75AD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2233FB214BA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:53:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A11091F20EF4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A25D28E2C;
-	Fri, 24 Nov 2023 13:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0EA2C1BC;
+	Fri, 24 Nov 2023 13:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0k3eI1oY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xk2gWF9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1EC28E24
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:53:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6880C433C8;
-	Fri, 24 Nov 2023 13:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6E82C849
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:53:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798FAC433C7;
+	Fri, 24 Nov 2023 13:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700834022;
-	bh=K82VQf4/12s59UOSy29HWy6O0VNvtW8XjcOpefyuHAM=;
+	s=korg; t=1700834030;
+	bh=x+4oEP+F3/K3giIjeKrQcW9lXTAMjqZ6UgIBOwGdFds=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0k3eI1oY6Z0B07DWtlsRDMeZFvLRKc9RDvFJEy62IlEc54Tio9rCWInB6g85NqFoS
-	 cWBnzQPVQbWcZHWbhJeuzpyZAUcDLTvKa8AGBM4qhfVECCkSUfKUk922vJ0rJYOqQb
-	 +heJLe71Y2NPBFPl7fjJpb7uMS1VhjmxqeUT622s=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: correct gpu clock counter query on cyan skilfish" failed to apply to 5.15-stable tree
-To: Lang.Yu@amd.com,aaron.liu@amd.com,alexander.deucher@amd.com,stable@vger.kernel.org
+	b=Xk2gWF9WcwFHLtM3P+88GCeqvW0oWvE9fg30saqiFq2RuMWpTCVSGTqHqFFgxA0kS
+	 lTDHbQcjIs+5U0EyPIhpn1RQWfRl8RjC/CkdpVAdxTxrtR/Lja2HfMuJ5FdsI4o6MB
+	 8faXUck+ql9EwWPDfxEkrnREMlE2DPiT22wJrFdo=
+Subject: FAILED: patch "[PATCH] drm/amd: Fix logic error in" failed to apply to 6.6-stable tree
+To: mario.limonciello@amd.com,alexander.deucher@amd.com,coelacanth_dream@protonmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:53:28 +0000
-Message-ID: <2023112428-engine-vegan-8b2e@gregkh>
+Date: Fri, 24 Nov 2023 13:53:48 +0000
+Message-ID: <2023112448-mandate-district-9ea2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,42 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x a19d934986b0f750ca95b5da2ebe54ee27fc25e8
+git cherry-pick -x ade134ddaee5baa1fa35cc66a12d2489213a26e0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112428-engine-vegan-8b2e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112448-mandate-district-9ea2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-a19d934986b0 ("drm/amdgpu: correct gpu clock counter query on cyan skilfish")
-4e8303cf2c4d ("drm/amdgpu: Use function for IP version check")
-6b7d211740da ("drm/amdgpu: Fix refclk reporting for SMU v13.0.6")
-1b8e56b99459 ("drm/amdgpu: Restrict bootloader wait to SMUv13.0.6")
-983ac45a06ae ("drm/amdgpu: update SET_HW_RESOURCES definition for UMSCH")
-822f7808291f ("drm/amdgpu/discovery: enable UMSCH 4.0 in IP discovery")
-3488c79beafa ("drm/amdgpu: add initial support for UMSCH")
-2da1b04a2096 ("drm/amdgpu: add UMSCH 4.0 api definition")
-3ee8fb7005ef ("drm/amdgpu: enable VPE for VPE 6.1.0")
-9d4346bdbc64 ("drm/amdgpu: add VPE 6.1.0 support")
-e370f8f38976 ("drm/amdgpu: Add bootloader wait for PSP v13")
-aba2be41470a ("drm/amdgpu: add mmhub 3.3.0 support")
-15e7cbd91de6 ("drm/amdgpu/gfx11: initialize gfx11.5.0")
-f56c1941ebb7 ("drm/amdgpu: use 6.1.0 register offset for HDP CLK_CNTL")
-15c5c5f57514 ("drm/amdgpu: Add bootloader status check")
-3cce0bfcd0f9 ("drm/amd/display: Enable Replay for static screen use cases")
-e20ff051707c ("drm/amdgpu: Add memory vendor information")
-603b9a575d57 ("drm/amdgpu: skip fence GFX interrupts disable/enable for S0ix")
-15419813f2ef ("drm/amd: Hide unsupported power attributes")
-47f1724db4fe ("drm/amd: Introduce `AMDGPU_PP_SENSOR_GPU_INPUT_POWER`")
+ade134ddaee5 ("drm/amd: Fix logic error in sienna_cichlid_update_pcie_parameters()")
 
 thanks,
 
@@ -88,56 +69,91 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a19d934986b0f750ca95b5da2ebe54ee27fc25e8 Mon Sep 17 00:00:00 2001
-From: Lang Yu <Lang.Yu@amd.com>
-Date: Thu, 21 Sep 2023 12:29:52 +0800
-Subject: [PATCH] drm/amdgpu: correct gpu clock counter query on cyan skilfish
+From ade134ddaee5baa1fa35cc66a12d2489213a26e0 Mon Sep 17 00:00:00 2001
+From: Mario Limonciello <mario.limonciello@amd.com>
+Date: Tue, 26 Sep 2023 21:07:43 -0500
+Subject: [PATCH] drm/amd: Fix logic error in
+ sienna_cichlid_update_pcie_parameters()
 
-Cayn skilfish uses SMUIO v11.0.8 offset.
+While aligning SMU11 with SMU13 implementation an assumption was made that
+`dpm_context->dpm_tables.pcie_table` was populated in dpm table initialization
+like in SMU13 but it isn't.
 
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-Reviewed-by: Aaron Liu <aaron.liu@amd.com>
+So restore some of the original logic and instead just check for
+amdgpu_device_pcie_dynamic_switching_supported() to decide whether to hardcode
+values; erring on the side of performance.
+
+Cc: stable@vger.kernel.org # 6.1+
+Reported-and-tested-by: Umio Yasuno <coelacanth_dream@protonmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1447#note_2101382
+Fixes: e701156ccc6c ("drm/amd: Align SMU11 SMU_MSG_OverridePcieParameters implementation with SMU13")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: <stable@vger.kernel.org> # v5.15+
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 35357364b5b3..d9ccacd06fba 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -102,6 +102,11 @@
- #define mmGCR_GENERAL_CNTL_Sienna_Cichlid			0x1580
- #define mmGCR_GENERAL_CNTL_Sienna_Cichlid_BASE_IDX	0
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 164c2264027d..1f05bfb7d473 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -2089,36 +2089,41 @@ static int sienna_cichlid_display_disable_memory_clock_switch(struct smu_context
+ 	return ret;
+ }
  
-+#define mmGOLDEN_TSC_COUNT_UPPER_Cyan_Skillfish                0x0105
-+#define mmGOLDEN_TSC_COUNT_UPPER_Cyan_Skillfish_BASE_IDX       1
-+#define mmGOLDEN_TSC_COUNT_LOWER_Cyan_Skillfish                0x0106
-+#define mmGOLDEN_TSC_COUNT_LOWER_Cyan_Skillfish_BASE_IDX       1
++#define MAX(a, b)	((a) > (b) ? (a) : (b))
 +
- #define mmGOLDEN_TSC_COUNT_UPPER_Vangogh                0x0025
- #define mmGOLDEN_TSC_COUNT_UPPER_Vangogh_BASE_IDX       1
- #define mmGOLDEN_TSC_COUNT_LOWER_Vangogh                0x0026
-@@ -7316,6 +7321,22 @@ static uint64_t gfx_v10_0_get_gpu_clock_counter(struct amdgpu_device *adev)
- 	uint64_t clock, clock_lo, clock_hi, hi_check;
+ static int sienna_cichlid_update_pcie_parameters(struct smu_context *smu,
+ 					 uint32_t pcie_gen_cap,
+ 					 uint32_t pcie_width_cap)
+ {
+ 	struct smu_11_0_dpm_context *dpm_context = smu->smu_dpm.dpm_context;
+ 	struct smu_11_0_pcie_table *pcie_table = &dpm_context->dpm_tables.pcie_table;
+-	u32 smu_pcie_arg;
++	uint8_t *table_member1, *table_member2;
++	uint32_t min_gen_speed, max_gen_speed;
++	uint32_t min_lane_width, max_lane_width;
++	uint32_t smu_pcie_arg;
+ 	int ret, i;
  
- 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
-+	case IP_VERSION(10, 1, 3):
-+	case IP_VERSION(10, 1, 4):
-+		preempt_disable();
-+		clock_hi = RREG32_SOC15_NO_KIQ(SMUIO, 0, mmGOLDEN_TSC_COUNT_UPPER_Cyan_Skillfish);
-+		clock_lo = RREG32_SOC15_NO_KIQ(SMUIO, 0, mmGOLDEN_TSC_COUNT_LOWER_Cyan_Skillfish);
-+		hi_check = RREG32_SOC15_NO_KIQ(SMUIO, 0, mmGOLDEN_TSC_COUNT_UPPER_Cyan_Skillfish);
-+		/* The SMUIO TSC clock frequency is 100MHz, which sets 32-bit carry over
-+		 * roughly every 42 seconds.
-+		 */
-+		if (hi_check != clock_hi) {
-+			clock_lo = RREG32_SOC15_NO_KIQ(SMUIO, 0, mmGOLDEN_TSC_COUNT_LOWER_Cyan_Skillfish);
-+			clock_hi = hi_check;
-+		}
-+		preempt_enable();
-+		clock = clock_lo | (clock_hi << 32ULL);
-+		break;
- 	case IP_VERSION(10, 3, 1):
- 	case IP_VERSION(10, 3, 3):
- 	case IP_VERSION(10, 3, 7):
+-	/* PCIE gen speed and lane width override */
+-	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
+-		if (pcie_table->pcie_gen[NUM_LINK_LEVELS - 1] < pcie_gen_cap)
+-			pcie_gen_cap = pcie_table->pcie_gen[NUM_LINK_LEVELS - 1];
++	GET_PPTABLE_MEMBER(PcieGenSpeed, &table_member1);
++	GET_PPTABLE_MEMBER(PcieLaneCount, &table_member2);
+ 
+-		if (pcie_table->pcie_lane[NUM_LINK_LEVELS - 1] < pcie_width_cap)
+-			pcie_width_cap = pcie_table->pcie_lane[NUM_LINK_LEVELS - 1];
++	min_gen_speed = MAX(0, table_member1[0]);
++	max_gen_speed = MIN(pcie_gen_cap, table_member1[1]);
++	min_gen_speed = min_gen_speed > max_gen_speed ?
++			max_gen_speed : min_gen_speed;
++	min_lane_width = MAX(1, table_member2[0]);
++	max_lane_width = MIN(pcie_width_cap, table_member2[1]);
++	min_lane_width = min_lane_width > max_lane_width ?
++			 max_lane_width : min_lane_width;
+ 
+-		/* Force all levels to use the same settings */
+-		for (i = 0; i < NUM_LINK_LEVELS; i++) {
+-			pcie_table->pcie_gen[i] = pcie_gen_cap;
+-			pcie_table->pcie_lane[i] = pcie_width_cap;
+-		}
++	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
++		pcie_table->pcie_gen[0] = max_gen_speed;
++		pcie_table->pcie_lane[0] = max_lane_width;
+ 	} else {
+-		for (i = 0; i < NUM_LINK_LEVELS; i++) {
+-			if (pcie_table->pcie_gen[i] > pcie_gen_cap)
+-				pcie_table->pcie_gen[i] = pcie_gen_cap;
+-			if (pcie_table->pcie_lane[i] > pcie_width_cap)
+-				pcie_table->pcie_lane[i] = pcie_width_cap;
+-		}
++		pcie_table->pcie_gen[0] = min_gen_speed;
++		pcie_table->pcie_lane[0] = min_lane_width;
+ 	}
++	pcie_table->pcie_gen[1] = max_gen_speed;
++	pcie_table->pcie_lane[1] = max_lane_width;
+ 
+ 	for (i = 0; i < NUM_LINK_LEVELS; i++) {
+ 		smu_pcie_arg = (i << 16 |
 
 
