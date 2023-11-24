@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49C9C7F7597
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:51:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D707F7596
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C81BB214D6
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D971C20FD8
 	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA3C2C840;
-	Fri, 24 Nov 2023 13:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2B9028E26;
+	Fri, 24 Nov 2023 13:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjlkT8+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQ8k2iOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A80C2C1BE
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:51:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8393C433CC;
-	Fri, 24 Nov 2023 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B293C28E24
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:51:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D303C433C7;
+	Fri, 24 Nov 2023 13:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700833880;
-	bh=x/LY1ebyKavvgxE+WSvb+z0ZkqZyAClL2GfvzLFE9ow=;
+	s=korg; t=1700833882;
+	bh=uB92QrbEOX7KgaxAeIkHRG+irxKULrlbHX88EXkjspo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bjlkT8+YxcVinfS3PyL+TXSNjEjvtehF5vGPjn8KCL8MrZ5KQYHZD501bQyj5e8K6
-	 2yCZaZQfPLTVr3wcKlDqE4nZuwbszvBcB+E3Q5+dilVx16LrcSVQS9yd5ehHGCtUjN
-	 tHlCrJkZg9WzlFABdgEaOUaYVpY0XapsFbVnZMys=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust the MST resume flow" failed to apply to 6.5-stable tree
+	b=DQ8k2iOItFVG0yfHPSyR6xI6EuJgslQHLAov0QD+tHnYJ4EuLMlgefP3tzrbD9YOf
+	 /dOlNxY/HSxj4vy+TJTn5J4MsdlQrEZriK4BfLkA/BQgTI06c4kDtycRWA9CAHYDqO
+	 KN/k/83oPLtlVh7kTjut4CrQBaFcVyVs8vcgbq4Q=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust the MST resume flow" failed to apply to 6.1-stable tree
 To: wayne.lin@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,stylon.wang@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:51:16 +0000
-Message-ID: <2023112416-gliding-depose-7862@gregkh>
+Date: Fri, 24 Nov 2023 13:51:17 +0000
+Message-ID: <2023112417-palace-parkway-a8a2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 73c57a0aa7f672110d3f28c0ac03ec778a21d9d4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112416-gliding-depose-7862@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112417-palace-parkway-a8a2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 73c57a0aa7f6 ("drm/amd/display: Adjust the MST resume flow")
+1e5d4d8eb8c0 ("drm/amd/display: Ext displays with dock can't recognized after resume")
+028c4ccfb812 ("drm/amd/display: force connector state when bpc changes during compliance")
+d5a43956b73b ("drm/amd/display: move dp capability related logic to link_dp_capability")
+94dfeaa46925 ("drm/amd/display: move dp phy related logic to link_dp_phy")
+630168a97314 ("drm/amd/display: move dp link training logic to link_dp_training")
+d144b40a4833 ("drm/amd/display: move dc_link_dpia logic to link_dp_dpia")
+a28d0bac0956 ("drm/amd/display: move dpcd logic from dc_link_dpcd to link_dpcd")
+a98cdd8c4856 ("drm/amd/display: refactor ddc logic from dc_link_ddc to link_ddc")
+4370f72e3845 ("drm/amd/display: refactor hpd logic from dc_link to link_hpd")
+0e8cf83a2b47 ("drm/amd/display: allow hpo and dio encoder switching during dp retrain test")
+7462475e3a06 ("drm/amd/display: move dccg programming from link hwss hpo dp to hwss")
+e85d59885409 ("drm/amd/display: use encoder type independent hwss instead of accessing enc directly")
+ebf13b72020a ("drm/amd/display: Revert Scaler HCBlank issue workaround")
+639f6ad6df7f ("drm/amd/display: Revert Reduce delay when sink device not able to ACK 00340h write")
+e3aa827e2ab3 ("drm/amd/display: Avoid setting pixel rate divider to N/A")
+180f33d27a55 ("drm/amd/display: Adjust DP 8b10b LT exit behavior")
+b7ada7ee61d3 ("drm/amd/display: Populate DP2.0 output type for DML pipe")
+ea192af507d9 ("drm/amd/display: Only update link settings after successful MST link train")
+be9f6b222c52 ("drm/amd/display: Fix fallback issues for DP LL 1.4a tests")
 
 thanks,
 
