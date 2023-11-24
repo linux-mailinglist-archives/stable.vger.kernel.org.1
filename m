@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626F47F7325
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:56:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CD07F7327
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93BBF1C20DAB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:56:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C60181F20D49
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5B7200BF;
-	Fri, 24 Nov 2023 11:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0161200B2;
+	Fri, 24 Nov 2023 11:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CmD8Z8z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwfZ7vVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF58B1F95A
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE883C433C8;
-	Fri, 24 Nov 2023 11:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00441EB50
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C0EC433C8;
+	Fri, 24 Nov 2023 11:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700826960;
-	bh=zFGrl+iRbNUV5GIQEApcY4bptbqkFGs1NARC49BKYaE=;
+	s=korg; t=1700826983;
+	bh=iSS9fPGSWTiwmKcuY1km72CMFPl6SmENBZgYGly5oZ0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0CmD8Z8zc0BXjgb7id7tBHdAnB7NvuzEOeUVNJeqc6zHnqHyCctvPH5W1HWstKcxz
-	 kXo1/9IHbnOdC17M/LfGXYqHVWPr1g+FLvO7/qwqIXhiEYlE6PzcDsVW4VMCdRjwuY
-	 gSR0cCa9uZEeQeHNCOPFqlc7sg2HTjZwfKr5fp+Y=
-Subject: FAILED: patch "[PATCH] cifs: do not pass cifs_sb when trying to add channels" failed to apply to 6.1-stable tree
+	b=wwfZ7vVUmM/cHAB5pvSQhqE2OwerTWCZYpk+TgQDc0vETk8rT/HSLxzKLNrjKQRfK
+	 SAhopnxNmda40cWtdP3he7HA/upS/S8WCkFUBPZnzckKiVpjRauEOHPYr4olW3NQ8I
+	 d3MrKyzX5tKSSOe5Pc9k17H9owhT5//X2NGSInOs=
+Subject: FAILED: patch "[PATCH] cifs: account for primary channel in the interface list" failed to apply to 6.6-stable tree
 To: sprasad@microsoft.com,pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 11:55:49 +0000
-Message-ID: <2023112449-playtime-muskiness-789d@gregkh>
+Date: Fri, 24 Nov 2023 11:56:21 +0000
+Message-ID: <2023112421-anguished-egomaniac-cc70@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9599d59eb8fc0c0fd9480c4f22901533d08965ee
+git cherry-pick -x fa1d0508bdd4a68c5e40f85f635712af8c12f180
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112449-playtime-muskiness-789d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112421-anguished-egomaniac-cc70@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-9599d59eb8fc ("cifs: do not pass cifs_sb when trying to add channels")
-69a4e06c0e7b ("smb: client: reduce stack usage in cifs_try_adding_channels()")
+fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
+a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
 
 thanks,
 
@@ -70,107 +70,111 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9599d59eb8fc0c0fd9480c4f22901533d08965ee Mon Sep 17 00:00:00 2001
+From fa1d0508bdd4a68c5e40f85f635712af8c12f180 Mon Sep 17 00:00:00 2001
 From: Shyam Prasad N <sprasad@microsoft.com>
-Date: Mon, 6 Nov 2023 16:22:11 +0000
-Subject: [PATCH] cifs: do not pass cifs_sb when trying to add channels
+Date: Tue, 14 Mar 2023 11:14:58 +0000
+Subject: [PATCH] cifs: account for primary channel in the interface list
 
-The only reason why cifs_sb gets passed today to cifs_try_adding_channels
-is to pass the local_nls field for the new channels and binding session.
-However, the ses struct already has local_nls field that is setup during
-the first cifs_setup_session. So there is no need to pass cifs_sb.
-
-This change removes cifs_sb from the arg list for this and the functions
-that it calls and uses ses->local_nls instead.
+The refcounting of server interfaces should account
+for the primary channel too. Although this is not
+strictly necessary, doing so will account for the primary
+channel in DebugData.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index c1f71c6be7e3..eed8dbb6b2fb 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -610,7 +610,7 @@ void cifs_free_hash(struct shash_desc **sdesc);
- 
- struct cifs_chan *
- cifs_ses_find_chan(struct cifs_ses *ses, struct TCP_Server_Info *server);
--int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses);
-+int cifs_try_adding_channels(struct cifs_ses *ses);
- bool is_server_using_iface(struct TCP_Server_Info *server,
- 			   struct cifs_server_iface *iface);
- bool is_ses_using_iface(struct cifs_ses *ses, struct cifs_server_iface *iface);
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 3ff82f0aa00e..947e3c362beb 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3564,7 +3564,7 @@ int cifs_mount(struct cifs_sb_info *cifs_sb, struct smb3_fs_context *ctx)
- 	ctx->prepath = NULL;
- 
- out:
--	cifs_try_adding_channels(cifs_sb, mnt_ctx.ses);
-+	cifs_try_adding_channels(mnt_ctx.ses);
- 	rc = mount_setup_tlink(cifs_sb, mnt_ctx.ses, mnt_ctx.tcon);
- 	if (rc)
- 		goto error;
 diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index e716d046fb5f..fe45ccfdc802 100644
+index 336b64d93e41..e716d046fb5f 100644
 --- a/fs/smb/client/sess.c
 +++ b/fs/smb/client/sess.c
-@@ -24,7 +24,7 @@
- #include "fs_context.h"
+@@ -303,6 +303,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 	struct cifs_server_iface *iface = NULL;
+ 	struct cifs_server_iface *old_iface = NULL;
+ 	struct cifs_server_iface *last_iface = NULL;
++	struct sockaddr_storage ss;
+ 	int rc = 0;
  
- static int
--cifs_ses_add_channel(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses,
-+cifs_ses_add_channel(struct cifs_ses *ses,
- 		     struct cifs_server_iface *iface);
+ 	spin_lock(&ses->chan_lock);
+@@ -321,6 +322,10 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 	}
+ 	spin_unlock(&ses->chan_lock);
  
- bool
-@@ -172,7 +172,7 @@ cifs_chan_is_iface_active(struct cifs_ses *ses,
- }
++	spin_lock(&server->srv_lock);
++	ss = server->dstaddr;
++	spin_unlock(&server->srv_lock);
++
+ 	spin_lock(&ses->iface_lock);
+ 	if (!ses->iface_count) {
+ 		spin_unlock(&ses->iface_lock);
+@@ -334,6 +339,16 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
  
- /* returns number of channels added */
--int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
-+int cifs_try_adding_channels(struct cifs_ses *ses)
- {
- 	struct TCP_Server_Info *server = ses->server;
- 	int old_chan_count, new_chan_count;
-@@ -255,7 +255,7 @@ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- 			kref_get(&iface->refcount);
+ 	/* then look for a new one */
+ 	list_for_each_entry(iface, &ses->iface_list, iface_head) {
++		if (!chan_index) {
++			/* if we're trying to get the updated iface for primary channel */
++			if (!cifs_match_ipaddr((struct sockaddr *) &ss,
++					       (struct sockaddr *) &iface->sockaddr))
++				continue;
++
++			kref_get(&iface->refcount);
++			break;
++		}
++
+ 		/* do not mix rdma and non-rdma interfaces */
+ 		if (iface->rdma_capable != server->rdma)
+ 			continue;
+@@ -360,6 +375,13 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 		cifs_dbg(FYI, "unable to find a suitable iface\n");
+ 	}
  
- 			spin_unlock(&ses->iface_lock);
--			rc = cifs_ses_add_channel(cifs_sb, ses, iface);
-+			rc = cifs_ses_add_channel(ses, iface);
- 			spin_lock(&ses->iface_lock);
++	if (!chan_index && !iface) {
++		cifs_dbg(FYI, "unable to get the interface matching: %pIS\n",
++			 &ss);
++		spin_unlock(&ses->iface_lock);
++		return 0;
++	}
++
+ 	/* now drop the ref to the current iface */
+ 	if (old_iface && iface) {
+ 		cifs_dbg(FYI, "replacing iface: %pIS with %pIS\n",
+@@ -382,6 +404,12 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 			old_iface->weight_fulfilled--;
  
- 			if (rc) {
-@@ -458,7 +458,7 @@ cifs_ses_find_chan(struct cifs_ses *ses, struct TCP_Server_Info *server)
- }
+ 		kref_put(&old_iface->refcount, release_iface);
++	} else if (!chan_index) {
++		/* special case: update interface for primary channel */
++		cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
++			 &iface->sockaddr);
++		iface->num_channels++;
++		iface->weight_fulfilled++;
+ 	} else {
+ 		WARN_ON(!iface);
+ 		cifs_dbg(FYI, "adding new iface: %pIS\n", &iface->sockaddr);
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 601e7a187f87..a959ed2c9b22 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -756,6 +756,7 @@ SMB3_request_interfaces(const unsigned int xid, struct cifs_tcon *tcon, bool in_
+ 	unsigned int ret_data_len = 0;
+ 	struct network_interface_info_ioctl_rsp *out_buf = NULL;
+ 	struct cifs_ses *ses = tcon->ses;
++	struct TCP_Server_Info *pserver;
  
- static int
--cifs_ses_add_channel(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses,
-+cifs_ses_add_channel(struct cifs_ses *ses,
- 		     struct cifs_server_iface *iface)
- {
- 	struct TCP_Server_Info *chan_server;
-@@ -537,7 +537,7 @@ cifs_ses_add_channel(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses,
- 	 * This will be used for encoding/decoding user/domain/pw
- 	 * during sess setup auth.
- 	 */
--	ctx->local_nls = cifs_sb->local_nls;
-+	ctx->local_nls = ses->local_nls;
+ 	/* do not query too frequently */
+ 	if (ses->iface_last_update &&
+@@ -780,6 +781,11 @@ SMB3_request_interfaces(const unsigned int xid, struct cifs_tcon *tcon, bool in_
+ 	if (rc)
+ 		goto out;
  
- 	/* Use RDMA if possible */
- 	ctx->rdma = iface->rdma_capable;
-@@ -583,7 +583,7 @@ cifs_ses_add_channel(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses,
- 
- 	rc = cifs_negotiate_protocol(xid, ses, chan->server);
- 	if (!rc)
--		rc = cifs_setup_session(xid, ses, chan->server, cifs_sb->local_nls);
-+		rc = cifs_setup_session(xid, ses, chan->server, ses->local_nls);
- 
- 	mutex_unlock(&ses->session_mutex);
- 
++	/* check if iface is still active */
++	pserver = ses->chans[0].server;
++	if (pserver && !cifs_chan_is_iface_active(ses, pserver))
++		cifs_chan_update_iface(ses, pserver);
++
+ out:
+ 	kfree(out_buf);
+ 	return rc;
 
 
