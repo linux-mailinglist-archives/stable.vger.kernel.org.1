@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-2404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5463D7F8407
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1737F8395
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E96CFB277CA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36B9A2887C2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1C6364B7;
-	Fri, 24 Nov 2023 19:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB8F364C1;
+	Fri, 24 Nov 2023 19:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6kU1jGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMNYfR58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3E5135EE6;
-	Fri, 24 Nov 2023 19:23:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8366EC433C8;
-	Fri, 24 Nov 2023 19:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CECE33CC2;
+	Fri, 24 Nov 2023 19:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B87AC433C7;
+	Fri, 24 Nov 2023 19:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853800;
-	bh=OTHTmmNSB1yb/YWrKdtiabNwMWe9SJxbD5tw4NGhVAw=;
+	s=korg; t=1700853538;
+	bh=USK+q5gP56JFZICMEzDoHG63Hm77YIewjAtWG8gnosA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6kU1jGhxRL+a2ASvr+b4kg33k2FsicWSXzjnENRjYa5eZsOdTiaANT8JLDoqRn2w
-	 /DWXbAhE2ZG6WJbOGGUnb5lZWU6E1F4dGxAJQpcC+jLsrzwGA1BAoMP3eOvMSutM93
-	 LOSaFjfj0kH9WBSaTnRZdEXiPdQW5BrV9Q37fNDw=
+	b=MMNYfR58bT2luXVt0cPvGyyq2RBEOS1xzhHLjFiR+Dvileh3w8trcAdHU5uM/rSea
+	 2zDnT/csEcFYtmBoACKjbyOY+ct7VRK/HBfCmPZCNhfpkZNcqQPmz5rsfpJjaofAT5
+	 XGNT4/VtSg2NJCZ0MsHp8WptO35sF5fzEb9NndFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e27f3dbdab04e43b9f73@syzkaller.appspotmail.com,
-	Rajeshwar R Shinde <coolrrsh@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/159] media: gspca: cpia1: shift-out-of-bounds in set_flicker
-Date: Fri, 24 Nov 2023 17:54:12 +0000
-Message-ID: <20231124171943.360905910@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 211/297] ASoC: codecs: wsa-macro: fix uninitialized stack variables with name prefix
+Date: Fri, 24 Nov 2023 17:54:13 +0000
+Message-ID: <20231124172007.606361180@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,58 +52,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajeshwar R Shinde <coolrrsh@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 099be1822d1f095433f4b08af9cc9d6308ec1953 ]
+commit 72151ad0cba8a07df90130ff62c979520d71f23b upstream.
 
-Syzkaller reported the following issue:
-UBSAN: shift-out-of-bounds in drivers/media/usb/gspca/cpia1.c:1031:27
-shift exponent 245 is too large for 32-bit type 'int'
+Driver compares widget name in wsa_macro_spk_boost_event() widget event
+callback, however it does not handle component's name prefix.  This
+leads to using uninitialized stack variables as registers and register
+values.  Handle gracefully such case.
 
-When the value of the variable "sd->params.exposure.gain" exceeds the
-number of bits in an integer, a shift-out-of-bounds error is reported. It
-is triggered because the variable "currentexp" cannot be left-shifted by
-more than the number of bits in an integer. In order to avoid invalid
-range during left-shift, the conditional expression is added.
-
-Reported-by: syzbot+e27f3dbdab04e43b9f73@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/20230818164522.12806-1-coolrrsh@gmail.com
-Link: https://syzkaller.appspot.com/bug?extid=e27f3dbdab04e43b9f73
-Signed-off-by: Rajeshwar R Shinde <coolrrsh@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231003155422.801160-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/gspca/cpia1.c | 3 +++
+ sound/soc/codecs/lpass-wsa-macro.c |    3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/usb/gspca/cpia1.c b/drivers/media/usb/gspca/cpia1.c
-index d93d384286c16..de945e13c7c6b 100644
---- a/drivers/media/usb/gspca/cpia1.c
-+++ b/drivers/media/usb/gspca/cpia1.c
-@@ -18,6 +18,7 @@
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -1678,6 +1678,9 @@ static int wsa_macro_spk_boost_event(str
+ 		boost_path_cfg1 = CDC_WSA_RX1_RX_PATH_CFG1;
+ 		reg = CDC_WSA_RX1_RX_PATH_CTL;
+ 		reg_mix = CDC_WSA_RX1_RX_PATH_MIX_CTL;
++	} else {
++		dev_warn(component->dev, "Incorrect widget name in the driver\n");
++		return -EINVAL;
+ 	}
  
- #include <linux/input.h>
- #include <linux/sched/signal.h>
-+#include <linux/bitops.h>
- 
- #include "gspca.h"
- 
-@@ -1027,6 +1028,8 @@ static int set_flicker(struct gspca_dev *gspca_dev, int on, int apply)
- 			sd->params.exposure.expMode = 2;
- 			sd->exposure_status = EXPOSURE_NORMAL;
- 		}
-+		if (sd->params.exposure.gain >= BITS_PER_TYPE(currentexp))
-+			return -EINVAL;
- 		currentexp = currentexp << sd->params.exposure.gain;
- 		sd->params.exposure.gain = 0;
- 		/* round down current exposure to nearest value */
--- 
-2.42.0
-
+ 	switch (event) {
 
 
 
