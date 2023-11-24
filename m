@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-2390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BEF7F83F9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D6B7F826B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67A6F1C26BAF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 541241C2348E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1951364B7;
-	Fri, 24 Nov 2023 19:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A189A35F1A;
+	Fri, 24 Nov 2023 19:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7vJelek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/jdseFk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A8D33CCA;
-	Fri, 24 Nov 2023 19:22:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DAA4C433C7;
-	Fri, 24 Nov 2023 19:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613352C1A2;
+	Fri, 24 Nov 2023 19:07:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2A3C433C7;
+	Fri, 24 Nov 2023 19:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853765;
-	bh=YHs52qRlxHQogTKvlT0O+uSYzfkojPLz/gGKkh5iu48=;
+	s=korg; t=1700852847;
+	bh=RGqM+Q2F9Y+G7MfXjz77o6i6aePogWCFqsQV+4htNuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7vJelekJO3DNgyQGLHHB7wKc30dtD6RaCKUVPZpqI5UIm4xkHTEb1aJ/BxqhV3hK
-	 w3EMems9jMf85vW870iSVJV0Vbm+ecTqLJZTszEyngXs2/+sPrKlA8QGMhPUAJ7mJa
-	 ybbkzV9wK6jcc4Xz7ghoPYgegxZbdO/+UQXp0DOg=
+	b=1/jdseFkTqpxuUbhla2OMpVRM6jKwPAvWKQhSrZ8ndA5W8bqyJRYzF//GlifaIPku
+	 NILMz5w4asV4pyjFu9iu2aRITfcydydAr9lHFAlAu8JOMfW1oo9JrTXL4Zr8soRPgy
+	 ue7SzZ3Q2IoYW80vUqI8ivvclwajiFcD4whOp/U8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+debee9ab7ae2b34b0307@syzkaller.appspotmail.com,
-	Juntong Deng <juntong.deng@outlook.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 022/159] fs/jfs: Add check for negative db_l2nbperpage
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 112/193] mmc: vub300: fix an error code
 Date: Fri, 24 Nov 2023 17:53:59 +0000
-Message-ID: <20231124171942.776685861@linuxfoundation.org>
+Message-ID: <20231124171951.728035960@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,51 +52,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juntong Deng <juntong.deng@outlook.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 525b861a008143048535011f3816d407940f4bfa ]
+commit b44f9da81783fda72632ef9b0d05ea3f3ca447a5 upstream.
 
-l2nbperpage is log2(number of blks per page), and the minimum legal
-value should be 0, not negative.
+This error path should return -EINVAL instead of success.
 
-In the case of l2nbperpage being negative, an error will occur
-when subsequently used as shift exponent.
-
-Syzbot reported this bug:
-
-UBSAN: shift-out-of-bounds in fs/jfs/jfs_dmap.c:799:12
-shift exponent -16777216 is negative
-
-Reported-by: syzbot+debee9ab7ae2b34b0307@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=debee9ab7ae2b34b0307
-Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/0769d30c-ad80-421b-bf5d-7d6f5d85604e@moroto.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/vub300.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index a785c747a8cbb..495a1c6e5fd46 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -180,7 +180,8 @@ int dbMount(struct inode *ipbmap)
- 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
- 
- 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
--	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) {
-+	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
-+		bmp->db_l2nbperpage < 0) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -2311,6 +2311,7 @@ static int vub300_probe(struct usb_inter
+ 		vub300->read_only =
+ 			(0x0010 & vub300->system_port_status.port_flags) ? 1 : 0;
+ 	} else {
++		retval = -EINVAL;
+ 		goto error5;
  	}
--- 
-2.42.0
-
+ 	usb_set_intfdata(interface, vub300);
 
 
 
