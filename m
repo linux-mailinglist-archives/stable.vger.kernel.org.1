@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37557F81C2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D68DD7F81F2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:03:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 116621C21EBF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9FD1C224AE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589563418B;
-	Fri, 24 Nov 2023 19:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65783364C1;
+	Fri, 24 Nov 2023 19:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVMxfbcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJy86sCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9E033E9;
-	Fri, 24 Nov 2023 19:01:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F76C433C7;
-	Fri, 24 Nov 2023 19:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2563B33076;
+	Fri, 24 Nov 2023 19:02:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB27C433C8;
+	Fri, 24 Nov 2023 19:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852478;
-	bh=gddMZUZv3ffaXqpBc8uDm5PVjhPajYpuxv2MhePZtwg=;
+	s=korg; t=1700852578;
+	bh=mTCpkm38ulKHddp57X/Mu5pzhHnezDFsoqK6ih8f+2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVMxfbcYYGtGfy5Sibj+irDp5PXgI2zr8cHzkfKIt0CeomsNhFB+LztX7b6xOKdeh
-	 lNb/mA1jWX6XjnZDDquD4621/q1IVu+HczE/CQBHLNBieZI/+YwNp8j4vd3YlnMxCj
-	 yGRKblyWAUltHyH5WPOtlUN6PNGBRRgMArm4enlc=
+	b=xJy86sCcUQAijOZnTfJtntJBzbUZfcgFl2A9iFNX/JdISLDR3SEwwh83w+s3ec22m
+	 F3HWQ4YLFt/2zjkG7aGSmnZk90qfVRk70d1NHboGUNixA7rTiH9ZL/ithOGDrw+mXT
+	 JAQPn6/rR9RvZNMaf317M+qhjDDv6VG3p51fAh5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kai-Heng Feng <kai.heng.geng@canonical.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 372/372] mmc: sdhci-pci-gli: GL9755: Mask the replay timer timeout of AER
-Date: Fri, 24 Nov 2023 17:52:39 +0000
-Message-ID: <20231124172022.649579980@linuxfoundation.org>
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 040/193] misc: pci_endpoint_test: Add Device ID for R-Car S4-8 PCIe controller
+Date: Fri, 24 Nov 2023 17:52:47 +0000
+Message-ID: <20231124171948.843451612@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,58 +52,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-commit 85dd3af64965c1c0eb7373b340a1b1f7773586b0 upstream.
+[ Upstream commit 6c4b39937f4e65688ea294725ae432b2565821ff ]
 
-Due to a flaw in the hardware design, the GL9755 replay timer frequently
-times out when ASPM is enabled. As a result, the warning messages will
-often appear in the system log when the system accesses the GL9755
-PCI config. Therefore, the replay timer timeout must be masked.
+Add Renesas R8A779F0 in pci_device_id table so that pci-epf-test
+can be used for testing PCIe EP on R-Car S4-8.
 
-Fixes: 36ed2fd32b2c ("mmc: sdhci-pci-gli: A workaround to allow GL9755 to enter ASPM L1.2")
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Kai-Heng Feng <kai.heng.geng@canonical.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231107095741.8832-3-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-16-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/misc/pci_endpoint_test.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -154,6 +154,9 @@
- #define PCI_GLI_9755_PM_CTRL     0xFC
- #define   PCI_GLI_9755_PM_STATE    GENMASK(1, 0)
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index 6c4c85eb71479..b4a07a166605a 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -79,6 +79,7 @@
+ #define PCI_DEVICE_ID_RENESAS_R8A774B1		0x002b
+ #define PCI_DEVICE_ID_RENESAS_R8A774C0		0x002d
+ #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
++#define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
  
-+#define PCI_GLI_9755_CORRERR_MASK				0x214
-+#define   PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
-+
- #define GLI_MAX_TUNING_LOOP 40
+ static DEFINE_IDA(pci_endpoint_test_ida);
  
- /* Genesys Logic chipset */
-@@ -711,6 +714,11 @@ static void gl9755_hw_setting(struct sdh
- 	value &= ~PCI_GLI_9755_PM_STATE;
- 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
- 
-+	/* mask the replay timer timeout of AER */
-+	pci_read_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, &value);
-+	value |= PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
-+	pci_write_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, value);
-+
- 	gl9755_wt_off(pdev);
- }
- 
+@@ -993,6 +994,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774B1),},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774C0),},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774E1),},
++	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A779F0),
++	  .driver_data = (kernel_ulong_t)&default_data,
++	},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
+ 	  .driver_data = (kernel_ulong_t)&j721e_data,
+ 	},
+-- 
+2.42.0
+
 
 
 
