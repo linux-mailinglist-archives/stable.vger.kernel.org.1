@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60CD27F7F9A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18BD7F7B20
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908D11C21447
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90E6DB20B6F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B0A2D787;
-	Fri, 24 Nov 2023 18:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F27339FFD;
+	Fri, 24 Nov 2023 18:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRhW6bgn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfKM84Py"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C1B364C1;
-	Fri, 24 Nov 2023 18:42:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8979C433C8;
-	Fri, 24 Nov 2023 18:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0A5939FE8;
+	Fri, 24 Nov 2023 18:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DA2C433CB;
+	Fri, 24 Nov 2023 18:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851374;
-	bh=L1i3RITl47cD3NmIRTu3hAeIpAVec2p0Y6Db3E5HP24=;
+	s=korg; t=1700848920;
+	bh=Ka500qMB0Ejb2pN+kXBy9C8OqQGx24eyJkgYnKO57ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRhW6bgn6yENyfYi5HacQfvQ0CJFqOh1MzWdr/3qNU3X7EG3pxeS9YMvTJT+DwX3e
-	 6Zff3jSa6D/nBOkS0MmQhOqxxUegTrSm2Ml4n2NzwlC3AeOytxy28mSEtNm4GiNUzk
-	 vc0rk+PwB4A9KGb2GZv2pUehxH2T5HM+48C+LkMI=
+	b=cfKM84PyMMqpK48E0nsB6j4x8CndenW6P/CUghvETIqY1tcNBhu8b324SShqZKBAu
+	 aXzSfzFB0ySRU39PTFYHWO+sv4o42uWCiBi2BviH1aElO1x5JPknfZ4nD/TUu2jswZ
+	 nz6DoZPAcFEvNhk9I9/rxS03fljfm7W/P2f8d474=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.5 423/491] media: venus: hfi_parser: Add check to keep the number of codecs within range
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.14 35/57] mmc: vub300: fix an error code
 Date: Fri, 24 Nov 2023 17:50:59 +0000
-Message-ID: <20231124172037.322262821@linuxfoundation.org>
+Message-ID: <20231124171931.587780261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +52,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 0768a9dd809ef52440b5df7dce5a1c1c7e97abbd upstream.
+commit b44f9da81783fda72632ef9b0d05ea3f3ca447a5 upstream.
 
-Supported codec bitmask is populated from the payload from venus firmware.
-There is a possible case when all the bits in the codec bitmask is set. In
-such case, core cap for decoder is filled  and MAX_CODEC_NUM is utilized.
-Now while filling the caps for encoder, it can lead to access the caps
-array beyong 32 index. Hence leading to OOB write.
-The fix counts the supported encoder and decoder. If the count is more than
-max, then it skips accessing the caps.
+This error path should return -EINVAL instead of success.
 
+Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Link: https://lore.kernel.org/r/0769d30c-ad80-421b-bf5d-7d6f5d85604e@moroto.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/vub300.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -19,6 +19,9 @@ static void init_codecs(struct venus_cor
- 	struct hfi_plat_caps *caps = core->caps, *cap;
- 	unsigned long bit;
- 
-+	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
-+		return;
-+
- 	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
- 		cap = &caps[core->codecs_count++];
- 		cap->codec = BIT(bit);
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -2321,6 +2321,7 @@ static int vub300_probe(struct usb_inter
+ 		vub300->read_only =
+ 			(0x0010 & vub300->system_port_status.port_flags) ? 1 : 0;
+ 	} else {
++		retval = -EINVAL;
+ 		goto error5;
+ 	}
+ 	usb_set_intfdata(interface, vub300);
 
 
 
