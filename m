@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFAC97F7AD0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AC27F8146
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95FD21F20F0E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04DF12825CA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECF139FF2;
-	Fri, 24 Nov 2023 17:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F1E35F04;
+	Fri, 24 Nov 2023 18:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umMdX3Lf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjMoTcvi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF1A39FE9;
-	Fri, 24 Nov 2023 17:58:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF34C433C7;
-	Fri, 24 Nov 2023 17:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F6533CD1;
+	Fri, 24 Nov 2023 18:57:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADECBC433C7;
+	Fri, 24 Nov 2023 18:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848735;
-	bh=u3LgN/YJ8hgLC/Uk/E+gbv2+d/RhFfzIvRp8djNvFFo=;
+	s=korg; t=1700852227;
+	bh=JIU44eoLhHKSBFymy4/Rek9l9yrJBWA8ECcZd6xONEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=umMdX3LfPx8OfG8z1P0FFe1roI8L1oLfuU3VEOZLy0VelF1xt6OqWy9h0sDpevHo8
-	 4/hf8q7kLR1Wpo8QWPdhD0YlBvQAPxI1nWlCCGWO8nCs0maZIDFmmDj+H6klO4DuEa
-	 gBdxLEeP4vOc0dmGqlScXPwNCmBjP7TVvc/lh940=
+	b=pjMoTcvipLS1k9UZ+JYuTmqLGf/oMRQRF4tN6gYE24csDSYWs9WyIkp/az/XmIJLc
+	 ElzExlA9sdSmGQx62bG8HBP3c/xKLZzOikQBE24tBNzetV/94svTD9lv28Wgvkrbon
+	 nWQt8Rti59VuPFdrZUvabGw6X9e5i1O3ktesS5YM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.19 60/97] parisc/power: Add power soft-off when running on qemu
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	kernel test robot <lkp@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 246/372] tracing: Have the user copy of synthetic event address use correct context
 Date: Fri, 24 Nov 2023 17:50:33 +0000
-Message-ID: <20231124171936.385294100@linuxfoundation.org>
+Message-ID: <20231124172018.737112780@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit d0c219472980d15f5cbc5c8aec736848bda3f235 upstream.
+commit 4f7969bcd6d33042d62e249b41b5578161e4c868 upstream.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+A synthetic event is created by the synthetic event interface that can
+read both user or kernel address memory. In reality, it reads any
+arbitrary memory location from within the kernel. If the address space is
+in USER (where CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE is set) then
+it uses strncpy_from_user_nofault() to copy strings otherwise it uses
+strncpy_from_kernel_nofault().
+
+But since both functions use the same variable there's no annotation to
+what that variable is (ie. __user). This makes sparse complain.
+
+Quiet sparse by typecasting the strncpy_from_user_nofault() variable to
+a __user pointer.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231031151033.73c42e23@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Fixes: 0934ae9977c2 ("tracing: Fix reading strings from synthetic events");
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311010013.fm8WTxa5-lkp@intel.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/power.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events_synth.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -192,6 +192,14 @@ static struct notifier_block parisc_pani
- 	.priority	= INT_MAX,
- };
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -473,7 +473,7 @@ static unsigned int trace_string(struct
  
-+/* qemu soft power-off function */
-+static int qemu_power_off(struct sys_off_data *data)
-+{
-+	/* this turns the system off via SeaBIOS */
-+	*(int *)data->cb_data = 0;
-+	pdc_soft_power_button(1);
-+	return NOTIFY_DONE;
-+}
- 
- static int __init power_init(void)
- {
-@@ -221,7 +229,13 @@ static int __init power_init(void)
- 				soft_power_reg);
- 	}
- 
--	power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
-+	power_task = NULL;
-+	if (running_on_qemu && soft_power_reg)
-+		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
-+					qemu_power_off, (void *)soft_power_reg);
-+	else
-+		power_task = kthread_run(kpowerswd, (void*)soft_power_reg,
-+					KTHREAD_NAME);
- 	if (IS_ERR(power_task)) {
- 		printk(KERN_ERR DRIVER_NAME ": thread creation failed.  Driver not loaded.\n");
- 		pdc_soft_power_button(0);
+ #ifdef CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 		if ((unsigned long)str_val < TASK_SIZE)
+-			ret = strncpy_from_user_nofault(str_field, str_val, STR_VAR_LEN_MAX);
++			ret = strncpy_from_user_nofault(str_field, (const void __user *)str_val, STR_VAR_LEN_MAX);
+ 		else
+ #endif
+ 			ret = strncpy_from_kernel_nofault(str_field, str_val, STR_VAR_LEN_MAX);
 
 
 
