@@ -1,178 +1,274 @@
-Return-Path: <stable+bounces-168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 507697F740D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:43:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CABF7F742B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:47:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BC86281DF5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:43:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21956281203
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A423817735;
-	Fri, 24 Nov 2023 12:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D56B11733;
+	Fri, 24 Nov 2023 12:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfNKLrxB"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Q3AnmyTV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B7D28382
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:43:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A29C433C7;
-	Fri, 24 Nov 2023 12:43:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700829822;
-	bh=6Rb+lKX4Q3S+pJwBTPVSLm3qTg58+BRfg3RM0ZwGOH8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=GfNKLrxBMdoqxTJ1W/Aam36iLyB8iHNrGOL9f2HV9JCefyar4oHliwmpToAh/TpQ7
-	 4PyW31QG8rilIfg6BQaycuyp+pYJxBIQcEqvftTtIx23jpCD9w93Fruq1pyig/hp7b
-	 50Sz8NnuUShcyGxG+YopYC3YmO9V5SKo61th8Hek=
-Subject: FAILED: patch "[PATCH] dm-delay: fix a race between delay_presuspend and delay_bio" failed to apply to 4.14-stable tree
-To: mpatocka@redhat.com,snitzer@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:43:28 +0000
-Message-ID: <2023112428-shun-contents-91d0@gregkh>
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9642BC
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 04:47:31 -0800 (PST)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1cfa36bfe0cso4252565ad.1
+        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 04:47:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700830051; x=1701434851; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=+qhBI0orIysdcBvnsdb12nHZxBH7KHQ4x4C4Xy8SGjE=;
+        b=Q3AnmyTVN2DQl/+TUj8g9ky9/GLqrFYK8Zff+6JAhYNlHCKuNte8prGufwtCeXLZDy
+         wgL/BxiuNGx5f1TsdtD3biOm1ZM53+EFEfgHihfQZH3Cwx7s5mSwm4nwvJuLoj/RCTxJ
+         yF1RYRrljLyBT6IXWVzydwTMkq2j94j9BnSqa+49bsyUSzopmbFOjlljHgncC62LoZLB
+         yKZ7z8fweRT0GV0jhnGG/RQWgjXYOMqEDXUQ99seVJ23tjSm7x+JOOMoMTvfZcHUvj63
+         YAbQQpkW3IyJc1nME6lmRPU1buf0lCeBHLyicOHst1PNs1TRj9eDTZqHX2HCcR0448mo
+         kY0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700830051; x=1701434851;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+qhBI0orIysdcBvnsdb12nHZxBH7KHQ4x4C4Xy8SGjE=;
+        b=D1z3+poUbQQC9ZVtyXcGWZuQnAOlg4EpZ+YnFcRYt4RzDTh3MY/IUaMxm4Ecvcilia
+         QOOjwhwhw0mbMz4k4tBYIekCdCMO1mK3j0Sdd1aVxPqEo6inlYYn4zLMb5pi3zxyRsX4
+         K0wvsA8c3LyIFe6RGuLvei4gDH9znHGi/AmxqHNZFHaOjn/KTGeSP/1Kur5HpmwKNpHk
+         N+Dj3eOaEHJkmesJ9SgdThSExxAJwWYh02Ahvci/iAscBAxDSKkWKQhtC9hkuvjhOwtG
+         HWJAh/zTHOFRSgu6b/neFHX/STlCx5GSQGe7tK9OdRcPbNEn7IwlYPf2G/p3rmHTlwhw
+         KZHA==
+X-Gm-Message-State: AOJu0YzZm+JzNSprXMFMQt3Xs0aqH8N4U/OYuBIAM2G5RZN1+6pmVp6b
+	DfqsWkbjRpsNhRTV9allu4saXJQ/GXXrROoTUB8=
+X-Google-Smtp-Source: AGHT+IFxl1F4kb9dkB1aIBlbQvXOar4TBFLUCTy0002LmphIk4BbRaPAIUZhah1DEjKYmqFF4+ccxg==
+X-Received: by 2002:a17:902:d384:b0:1cf:932e:8691 with SMTP id e4-20020a170902d38400b001cf932e8691mr5194824pld.28.1700830050742;
+        Fri, 24 Nov 2023 04:47:30 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id j6-20020a17090276c600b001c9b384731esm3087217plt.270.2023.11.24.04.47.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Nov 2023 04:47:30 -0800 (PST)
+Message-ID: <65609b62.170a0220.1b733.71cd@mx.google.com>
+Date: Fri, 24 Nov 2023 04:47:30 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.14.330-46-gf3d4b2ebd4eb3
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.330-46-gf3d4b2ebd4eb3)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
+
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.330-46-gf3d4b2ebd4eb3)
+
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.330-46-gf3d4b2ebd4eb3/
+
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.330-46-gf3d4b2ebd4eb3
+Git Commit: f3d4b2ebd4eb3a793a1db9b1e64f9b1990220160
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
 
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Warnings summary:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x 6fc45b6ed921dc00dfb264dc08c7d67ee63d2656
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112428-shun-contents-91d0@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+Section mismatches summary:
 
-Possible dependencies:
+    3    WARNING: modpost: Found 1 section mismatch(es).
 
-6fc45b6ed921 ("dm-delay: fix a race between delay_presuspend and delay_bio")
-70bbeb29fab0 ("dm delay: for short delays, use kthread instead of timers and wq")
-c357342186dc ("dm delay: use dm_submit_bio_remap")
-ed00aabd5eb9 ("block: rename generic_make_request to submit_bio_noacct")
-c62b37d96b6e ("block: move ->make_request_fn to struct block_device_operations")
-dcacbc1242c7 ("bcache: check and adjust logical block size for backing devices")
-ac7c5675fa45 ("blk-mq: allow blk_mq_make_request to consume the q_usage_counter reference")
-488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
-a892c8d52c02 ("block: Inline encryption support for blk-mq")
-1b2628397058 ("block: Keyslot Manager for Inline Encryption")
-71ac860af824 ("block: move blk_io_schedule() out of header file")
-0512a75b98f8 ("block: Introduce REQ_OP_ZONE_APPEND")
-e4581105771b ("block: rename __bio_add_pc_page to bio_add_hw_page")
-accea322f543 ("block: add a bio_queue_enter helper")
-760f83ea63a7 ("block: cleanup the memory stall accounting in submit_bio")
-3fdd40861d80 ("block: improve the submit_bio and generic_make_request documentation")
-8cf7961dab42 ("block: bypass ->make_request_fn for blk-mq drivers")
-cc97923a5bcc ("block: move dma drain handling to scsi")
-0475bd6c6597 ("scsi: merge scsi_init_sgtable into scsi_init_io")
-89de1504d53b ("block: provide a blk_rq_map_sg variant that returns the last element")
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-thanks,
+Detailed per-defconfig build reports:
 
-greg k-h
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
------------------- original commit in Linus's tree ------------------
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
 
-From 6fc45b6ed921dc00dfb264dc08c7d67ee63d2656 Mon Sep 17 00:00:00 2001
-From: Mikulas Patocka <mpatocka@redhat.com>
-Date: Fri, 17 Nov 2023 18:21:14 +0100
-Subject: [PATCH] dm-delay: fix a race between delay_presuspend and delay_bio
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
-In delay_presuspend, we set the atomic variable may_delay and then stop
-the timer and flush pending bios. The intention here is to prevent the
-delay target from re-arming the timer again.
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
 
-However, this test is racy. Suppose that one thread goes to delay_bio,
-sees that dc->may_delay is one and proceeds; now, another thread executes
-delay_presuspend, it sets dc->may_delay to zero, deletes the timer and
-flushes pending bios. Then, the first thread continues and adds the bio to
-delayed->list despite the fact that dc->may_delay is false.
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
-Fix this bug by changing may_delay's type from atomic_t to bool and
-only access it while holding the delayed_bios_lock mutex. Note that we
-don't have to grab the mutex in delay_resume because there are no bios
-in flight at this point.
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
 
-diff --git a/drivers/md/dm-delay.c b/drivers/md/dm-delay.c
-index efd510984e25..2d6b900e4353 100644
---- a/drivers/md/dm-delay.c
-+++ b/drivers/md/dm-delay.c
-@@ -33,7 +33,7 @@ struct delay_c {
- 	struct work_struct flush_expired_bios;
- 	struct list_head delayed_bios;
- 	struct task_struct *worker;
--	atomic_t may_delay;
-+	bool may_delay;
- 
- 	struct delay_class read;
- 	struct delay_class write;
-@@ -236,7 +236,7 @@ static int delay_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 
- 	ti->private = dc;
- 	INIT_LIST_HEAD(&dc->delayed_bios);
--	atomic_set(&dc->may_delay, 1);
-+	dc->may_delay = true;
- 	dc->argc = argc;
- 
- 	ret = delay_class_ctr(ti, &dc->read, argv);
-@@ -312,7 +312,7 @@ static int delay_bio(struct delay_c *dc, struct delay_class *c, struct bio *bio)
- 	struct dm_delay_info *delayed;
- 	unsigned long expires = 0;
- 
--	if (!c->delay || !atomic_read(&dc->may_delay))
-+	if (!c->delay)
- 		return DM_MAPIO_REMAPPED;
- 
- 	delayed = dm_per_bio_data(bio, sizeof(struct dm_delay_info));
-@@ -321,6 +321,10 @@ static int delay_bio(struct delay_c *dc, struct delay_class *c, struct bio *bio)
- 	delayed->expires = expires = jiffies + msecs_to_jiffies(c->delay);
- 
- 	mutex_lock(&delayed_bios_lock);
-+	if (unlikely(!dc->may_delay)) {
-+		mutex_unlock(&delayed_bios_lock);
-+		return DM_MAPIO_REMAPPED;
-+	}
- 	c->ops++;
- 	list_add_tail(&delayed->list, &dc->delayed_bios);
- 	mutex_unlock(&delayed_bios_lock);
-@@ -337,7 +341,9 @@ static void delay_presuspend(struct dm_target *ti)
- {
- 	struct delay_c *dc = ti->private;
- 
--	atomic_set(&dc->may_delay, 0);
-+	mutex_lock(&delayed_bios_lock);
-+	dc->may_delay = false;
-+	mutex_unlock(&delayed_bios_lock);
- 
- 	if (delay_is_fast(dc))
- 		flush_delayed_bios_fast(dc, true);
-@@ -351,7 +357,7 @@ static void delay_resume(struct dm_target *ti)
- {
- 	struct delay_c *dc = ti->private;
- 
--	atomic_set(&dc->may_delay, 1);
-+	dc->may_delay = true;
- }
- 
- static int delay_map(struct dm_target *ti, struct bio *bio)
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
 
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
