@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A478C7F7B30
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABBE57F7FB0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43407B20F37
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD7811C214DF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E96364A4;
-	Fri, 24 Nov 2023 18:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AFB837170;
+	Fri, 24 Nov 2023 18:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4Lo/1U+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xN1pjoPV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEAF39FC2;
-	Fri, 24 Nov 2023 18:02:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF563C433C8;
-	Fri, 24 Nov 2023 18:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA7DB1A5A4;
+	Fri, 24 Nov 2023 18:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56201C433BA;
+	Fri, 24 Nov 2023 18:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848958;
-	bh=luo+iK7dL4+gbnXuoSKo6RAZ+wEgCpnixphdgkNAVsM=;
+	s=korg; t=1700851411;
+	bh=182qz/qnm79BhlfJnXfL7vIVqcMBL1shN4goBz2CZv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4Lo/1U+SRN1f0wPrOhN3cxTvAidQx5VFCp8BljOYGAq8QBpQK3Z6tEqF37ucqcOR
-	 0N6ezFwKMGnT3MHpviZ6txi4NV6nTp3+gzs8OobUVsqKd4azxUqxYrh4+Eu/EkznYr
-	 WfEuinH1ApCiJ1zDX+OmXIIajo9Iu6vyl+OcUFVo=
+	b=xN1pjoPVaTBlGnMPAX3otH9XlI8hLk0hLwcIChY/H+nEJvJfMi8/1AxWCZdQIpMkS
+	 7iTS5EnNIHScH4n05JUSxB2RHtLmZCTZDvEceBoA0ErBu7/zK5mpUuTfYv/gUjnvG4
+	 XyunHtESERUkE8zl25Be5d7gBR5Ke/0UrKH1O0jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Peterson <rpeterso@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 25/57] gfs2: ignore negated quota changes
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.5 413/491] net: dsa: lan9303: consequently nested-lock physical MDIO
 Date: Fri, 24 Nov 2023 17:50:49 +0000
-Message-ID: <20231124171931.195562923@linuxfoundation.org>
+Message-ID: <20231124172037.019036865@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,96 +53,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Peterson <rpeterso@redhat.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 4c6a08125f2249531ec01783a5f4317d7342add5 ]
+commit 5a22fbcc10f3f7d94c5d88afbbffa240a3677057 upstream.
 
-When lots of quota changes are made, there may be cases in which an
-inode's quota information is increased and then decreased, such as when
-blocks are added to a file, then deleted from it. If the timing is
-right, function do_qc can add pending quota changes to a transaction,
-then later, another call to do_qc can negate those changes, resulting
-in a net gain of 0. The quota_change information is recorded in the qc
-buffer (and qd element of the inode as well). The buffer is added to the
-transaction by the first call to do_qc, but a subsequent call changes
-the value from non-zero back to zero. At that point it's too late to
-remove the buffer_head from the transaction. Later, when the quota sync
-code is called, the zero-change qd element is discovered and flagged as
-an assert warning. If the fs is mounted with errors=panic, the kernel
-will panic.
+When LAN9303 is MDIO-connected two callchains exist into
+mdio->bus->write():
 
-This is usually seen when files are truncated and the quota changes are
-negated by punch_hole/truncate which uses gfs2_quota_hold and
-gfs2_quota_unhold rather than block allocations that use gfs2_quota_lock
-and gfs2_quota_unlock which automatically do quota sync.
+1. switch ports 1&2 ("physical" PHYs):
 
-This patch solves the problem by adding a check to qd_check_sync such
-that net-zero quota changes already added to the transaction are no
-longer deemed necessary to be synced, and skipped.
+virtual (switch-internal) MDIO bus (lan9303_switch_ops->phy_{read|write})->
+  lan9303_mdio_phy_{read|write} -> mdiobus_{read|write}_nested
 
-In this case references are taken for the qd and the slot from do_qc
-so those need to be put. The normal sequence of events for a normal
-non-zero quota change is as follows:
+2. LAN9303 virtual PHY:
 
-gfs2_quota_change
-   do_qc
-      qd_hold
-      slot_hold
+virtual MDIO bus (lan9303_phy_{read|write}) ->
+  lan9303_virt_phy_reg_{read|write} -> regmap -> lan9303_mdio_{read|write}
 
-Later, when the changes are to be synced:
+If the latter functions just take
+mutex_lock(&sw_dev->device->bus->mdio_lock) it triggers a LOCKDEP
+false-positive splat. It's false-positive because the first
+mdio_lock in the second callchain above belongs to virtual MDIO bus, the
+second mdio_lock belongs to physical MDIO bus.
 
-gfs2_quota_sync
-   qd_fish
-      qd_check_sync
-         gets qd ref via lockref_get_not_dead
-   do_sync
-      do_qc(QC_SYNC)
-         qd_put
-	    lockref_put_or_lock
-   qd_unlock
-      qd_put
-         lockref_put_or_lock
+Consequent annotation in lan9303_mdio_{read|write} as nested lock
+(similar to lan9303_mdio_phy_{read|write}, it's the same physical MDIO bus)
+prevents the following splat:
 
-In the net-zero change case, we add a check to qd_check_sync so it puts
-the qd and slot references acquired in gfs2_quota_change and skip the
-unneeded sync.
+WARNING: possible circular locking dependency detected
+5.15.71 #1 Not tainted
+------------------------------------------------------
+kworker/u4:3/609 is trying to acquire lock:
+ffff000011531c68 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}, at: regmap_lock_mutex
+but task is already holding lock:
+ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
+which lock already depends on the new lock.
+the existing dependency chain (in reverse order) is:
+-> #1 (&bus->mdio_lock){+.+.}-{3:3}:
+       lock_acquire
+       __mutex_lock
+       mutex_lock_nested
+       lan9303_mdio_read
+       _regmap_read
+       regmap_read
+       lan9303_probe
+       lan9303_mdio_probe
+       mdio_probe
+       really_probe
+       __driver_probe_device
+       driver_probe_device
+       __device_attach_driver
+       bus_for_each_drv
+       __device_attach
+       device_initial_probe
+       bus_probe_device
+       deferred_probe_work_func
+       process_one_work
+       worker_thread
+       kthread
+       ret_from_fork
+-> #0 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}:
+       __lock_acquire
+       lock_acquire.part.0
+       lock_acquire
+       __mutex_lock
+       mutex_lock_nested
+       regmap_lock_mutex
+       regmap_read
+       lan9303_phy_read
+       dsa_slave_phy_read
+       __mdiobus_read
+       mdiobus_read
+       get_phy_device
+       mdiobus_scan
+       __mdiobus_register
+       dsa_register_switch
+       lan9303_probe
+       lan9303_mdio_probe
+       mdio_probe
+       really_probe
+       __driver_probe_device
+       driver_probe_device
+       __device_attach_driver
+       bus_for_each_drv
+       __device_attach
+       device_initial_probe
+       bus_probe_device
+       deferred_probe_work_func
+       process_one_work
+       worker_thread
+       kthread
+       ret_from_fork
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+       CPU0                    CPU1
+       ----                    ----
+  lock(&bus->mdio_lock);
+                               lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
+                               lock(&bus->mdio_lock);
+  lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
+*** DEADLOCK ***
+5 locks held by kworker/u4:3/609:
+ #0: ffff000002842938 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work
+ #1: ffff80000bacbd60 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work
+ #2: ffff000007645178 (&dev->mutex){....}-{3:3}, at: __device_attach
+ #3: ffff8000096e6e78 (dsa2_mutex){+.+.}-{3:3}, at: dsa_register_switch
+ #4: ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
+stack backtrace:
+CPU: 1 PID: 609 Comm: kworker/u4:3 Not tainted 5.15.71 #1
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+ dump_backtrace
+ show_stack
+ dump_stack_lvl
+ dump_stack
+ print_circular_bug
+ check_noncircular
+ __lock_acquire
+ lock_acquire.part.0
+ lock_acquire
+ __mutex_lock
+ mutex_lock_nested
+ regmap_lock_mutex
+ regmap_read
+ lan9303_phy_read
+ dsa_slave_phy_read
+ __mdiobus_read
+ mdiobus_read
+ get_phy_device
+ mdiobus_scan
+ __mdiobus_register
+ dsa_register_switch
+ lan9303_probe
+ lan9303_mdio_probe
+...
 
-Signed-off-by: Bob Peterson <rpeterso@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: dc7005831523 ("net: dsa: LAN9303: add MDIO managed mode support")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20231027065741.534971-1-alexander.sverdlin@siemens.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/quota.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/dsa/lan9303_mdio.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index a833e2e071675..9cef9f1ab63fa 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -434,6 +434,17 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
- 	    (sync_gen && (qd->qd_sync_gen >= *sync_gen)))
- 		return 0;
+--- a/drivers/net/dsa/lan9303_mdio.c
++++ b/drivers/net/dsa/lan9303_mdio.c
+@@ -32,7 +32,7 @@ static int lan9303_mdio_write(void *ctx,
+ 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
  
-+	/*
-+	 * If qd_change is 0 it means a pending quota change was negated.
-+	 * We should not sync it, but we still have a qd reference and slot
-+	 * reference taken by gfs2_quota_change -> do_qc that need to be put.
-+	 */
-+	if (!qd->qd_change && test_and_clear_bit(QDF_CHANGE, &qd->qd_flags)) {
-+		slot_put(qd);
-+		qd_put(qd);
-+		return 0;
-+	}
-+
- 	if (!lockref_get_not_dead(&qd->qd_lockref))
- 		return 0;
+ 	reg <<= 2; /* reg num to offset */
+-	mutex_lock(&sw_dev->device->bus->mdio_lock);
++	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
+ 	lan9303_mdio_real_write(sw_dev->device, reg, val & 0xffff);
+ 	lan9303_mdio_real_write(sw_dev->device, reg + 2, (val >> 16) & 0xffff);
+ 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
+@@ -50,7 +50,7 @@ static int lan9303_mdio_read(void *ctx,
+ 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
  
--- 
-2.42.0
-
+ 	reg <<= 2; /* reg num to offset */
+-	mutex_lock(&sw_dev->device->bus->mdio_lock);
++	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
+ 	*val = lan9303_mdio_real_read(sw_dev->device, reg);
+ 	*val |= (lan9303_mdio_real_read(sw_dev->device, reg + 2) << 16);
+ 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
 
 
 
