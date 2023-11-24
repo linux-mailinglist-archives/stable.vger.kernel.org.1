@@ -1,167 +1,112 @@
-Return-Path: <stable+bounces-284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD467F762E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:18:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F8927F7628
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAE3028197C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:18:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1F8AB21345
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE972D03D;
-	Fri, 24 Nov 2023 14:18:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1CE2C866;
+	Fri, 24 Nov 2023 14:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/74532Q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE1919A5;
-	Fri, 24 Nov 2023 06:18:05 -0800 (PST)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6E0E01FE7D;
-	Fri, 24 Nov 2023 14:18:04 +0000 (UTC)
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id BCFCE139E8;
-	Fri, 24 Nov 2023 14:18:00 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id l0A5GpiwYGXWIAAAn2gu4w
-	(envelope-from <colyli@suse.de>); Fri, 24 Nov 2023 14:18:00 +0000
-Content-Type: text/plain;
-	charset=utf-8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DF82C1AE
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:17:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D2EC433C7;
+	Fri, 24 Nov 2023 14:17:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700835476;
+	bh=F7kB71zpQ45Rk0KcIMp84S35d+S25A4d76HqZlrKNJI=;
+	h=Subject:To:Cc:From:Date:From;
+	b=B/74532QHblQ/L2nqOsP+l+2xwk34iJCwzrgGPMmnzSajxAUpTbiOGN9YFvGTvzCn
+	 4ClkUh3FyjbfItquzVdx+lnximOSvZk2tFRf23bLEgf3hleCzuOBq0aWBS5v/RIjCd
+	 u855MTGBDq9XfN36VrwTPY/9mnuoZCT4eAx5io/k=
+Subject: FAILED: patch "[PATCH] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy" failed to apply to 6.6-stable tree
+To: mwen@igalia.com,alexander.deucher@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Nov 2023 14:17:54 +0000
+Message-ID: <2023112453-implicate-dimly-d0a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.200.91.1.1\))
-Subject: Re: bcache: kernel NULL pointer dereference since 6.1.39
-From: Coly Li <colyli@suse.de>
-In-Reply-To: <1c2a1f362d667d36d83a5ba43218bad199855b11.camel@gekmihesg.de>
-Date: Fri, 24 Nov 2023 22:17:46 +0800
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>,
- Zheng Wang <zyytlz.wz@163.com>,
- linux-kernel@vger.kernel.org,
- =?utf-8?Q?Stefan_F=C3=B6rster?= <cite@incertum.net>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Jens Axboe <axboe@kernel.dk>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- Bcache Linux <linux-bcache@vger.kernel.org>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de>
-References: <ZV9ZSyDLNDlzutgQ@pharmakeia.incertum.net>
- <be371028-efeb-44af-90ea-5c307f27d4c6@leemhuis.info>
- <71576a9ff7398bfa4b8c0a1a1a2523383b056168.camel@gekmihesg.de>
- <989C39B9-A05D-4E4F-A842-A4943A29FFD6@suse.de>
- <1c2a1f362d667d36d83a5ba43218bad199855b11.camel@gekmihesg.de>
-To: Markus Weippert <markus@gekmihesg.de>
-X-Mailer: Apple Mail (2.3774.200.91.1.1)
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Rspamd-Server: rspamd2
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: 6E0E01FE7D
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> 2023=E5=B9=B411=E6=9C=8824=E6=97=A5 21:55=EF=BC=8CMarkus Weippert =
-<markus@gekmihesg.de> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Fri, 2023-11-24 at 21:46 +0800, Coly Li wrote:
->>=20
->>=20
->>> 2023=E5=B9=B411=E6=9C=8824=E6=97=A5 21:29=EF=BC=8CMarkus Weippert =
-<markus@gekmihesg.de> =E5=86=99=E9=81=93=EF=BC=9A
->>>=20
->>>> On 23.11.23 14:53, Stefan F=C3=B6rster wrote:
->>>>>=20
->>>>> starting with kernel 6.1.39, we see the following error message
->>>>> with
->>>>> heavy I/O loads. We needed to revert
->>>>=20
->>>> Thx for the report. I assume that problem still occurs with the
->>>> latest
->>>> 6.1.y kernel?
->>>>=20
->>>>> =
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=
-=3Dv6.1.39&id=3D68118c339c6e1e16ae017bef160dbe28a27ae9c8
->>>>=20
->>>> FWIW, that is mainline commit 028ddcac477b69 ("bcache: Remove
->>>> unnecessary NULL point check in node allocations") [v6.5-rc1].
->>>>=20
->>>> Did a quick check and noticed a fix for that change was recently
->>>> mainlined as f72f4312d43883 ("bcache: replace a mistaken IS_ERR()
->>>> by
->>>> IS_ERR_OR_NULL() in btree_gc_coalesce()") [v6.7-rc2-post]:
->>>> https://lore.kernel.org/all/20231118163852.9692-1-colyli@suse.de/
->>>>=20
->>>> It is expected to soon be interegrated into a 6.1.y kernel.
->>>>=20
->>>> But maybe it's something else. I CCed the involved people, they
->>>> might
->>>> know.
->>>=20
->>> We applied f72f4312d43883 to the current Debian kernel (based on
->>> 6.1.55) but it didn't help, same stack trace.
->>> Looking at the description, __bch_btree_node_alloc() should never
->>> be
->>> able to return NULL anyway after
->>> =
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=
-=3Dv6.1.39&id=3D7ecea5ce3dc17339c280c75b58ac93d8c8620d9f
->>> But I didn't verify all callers, so this might still be correct, if
->>> it's not always initialized with the return value of
->>> __bch_btree_node_alloc().
->>>=20
->>> Anyway, I think we fixed it by applying this:
->>>=20
->>> diff -Naurp a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
->>> --- a/drivers/md/bcache/btree.c 2023-09-23 11:11:13.000000000 +0200
->>> +++ b/drivers/md/bcache/btree.c 2023-11-24 13:13:09.840013759 +0100
->>> @@ -1489,7 +1489,7 @@ out_nocoalesce:
->>> bch_keylist_free(&keylist);
->>>=20
->>> for (i =3D 0; i < nodes; i++)
->>> - if (!IS_ERR(new_nodes[i])) {
->>> + if (!IS_ERR_OR_NULL(new_nodes[i])) {
->>> btree_node_free(new_nodes[i]);
->>> rw_unlock(true, new_nodes[i]);
->>> }
->>>=20
->>=20
->> The above change is what commit f72f4312d43883 ("bcache: replace a
->> mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_coalesce()=E2=80=9D =
-does.
->=20
-> But f72f4312d43883 reverts @@ -1340,7 +1340,7 @@, while the patch we
-> applied reverts @@ -1487,7 +1487,7 @@ instead.
-> Applying f72f4312d43883 didn't help for us.
->=20
+To reproduce the conflict and resubmit, you may use the following commands:
 
-OK, I know what you mean.  Yes, your fix is necessary too.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x fabd2165d11649ecca5012d786a62ac149e9d83f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112453-implicate-dimly-d0a5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Would you like to post patch for your fix?
+Possible dependencies:
 
-Thanks.
+fabd2165d116 ("drm/amd/display: enable cursor degamma for DCN3+ DRM legacy gamma")
 
-Coly Li
+thanks,
 
+greg k-h
 
->>=20
->> Although the above patch is suggested to go into 6.5+ kernel, for
->> this condition it should go into all stable kernels where commit
->> 028ddcac477b69 ("bcache: Remove unnecessary NULL point check in node
->> allocations=E2=80=9D) were merged into.
-[snipped]=
+------------------ original commit in Linus's tree ------------------
+
+From fabd2165d11649ecca5012d786a62ac149e9d83f Mon Sep 17 00:00:00 2001
+From: Melissa Wen <mwen@igalia.com>
+Date: Thu, 31 Aug 2023 15:12:28 -0100
+Subject: [PATCH] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy
+ gamma
+
+For DRM legacy gamma, AMD display manager applies implicit sRGB degamma
+using a pre-defined sRGB transfer function. It works fine for DCN2
+family where degamma ROM and custom curves go to the same color block.
+But, on DCN3+, degamma is split into two blocks: degamma ROM for
+pre-defined TFs and `gamma correction` for user/custom curves and
+degamma ROM settings doesn't apply to cursor plane. To get DRM legacy
+gamma working as expected, enable cursor degamma ROM for implict sRGB
+degamma on HW with this configuration.
+
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2803
+Fixes: 96b020e2163f ("drm/amd/display: check attr flag before set cursor degamma on DCN3+")
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index df568a7cd005..b97cbc4e5477 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1270,6 +1270,13 @@ void amdgpu_dm_plane_handle_cursor_update(struct drm_plane *plane,
+ 	attributes.rotation_angle    = 0;
+ 	attributes.attribute_flags.value = 0;
+ 
++	/* Enable cursor degamma ROM on DCN3+ for implicit sRGB degamma in DRM
++	 * legacy gamma setup.
++	 */
++	if (crtc_state->cm_is_degamma_srgb &&
++	    adev->dm.dc->caps.color.dpp.gamma_corr)
++		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
++
+ 	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
+ 
+ 	if (crtc_state->stream) {
+
 
