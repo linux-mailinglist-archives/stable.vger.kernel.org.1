@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-1762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202E77F813E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421677F7F90
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C96F01F20FD3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D91B8B21A54
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0F535F04;
-	Fri, 24 Nov 2023 18:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAA52EAEA;
+	Fri, 24 Nov 2023 18:42:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gw7JN9Y/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gIWC+t+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814533173F;
-	Fri, 24 Nov 2023 18:56:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10752C433C8;
-	Fri, 24 Nov 2023 18:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2E035F04;
+	Fri, 24 Nov 2023 18:42:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1EFC433C7;
+	Fri, 24 Nov 2023 18:42:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852212;
-	bh=/TP5QvuCTIXWMargJY5plJLGqV6wvjaAykeWl5H5JhE=;
+	s=korg; t=1700851354;
+	bh=rfCFxeGSs2UFOZJyiZnm5lHLix8fHlICM4D09YiMw9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gw7JN9Y/yi7qmS3B6ybFx1auzoxHNI4wOZkWA4c6UmxF0MhnonQL2KwhkNaaHaB7C
-	 bgshf1XENXowK2toK4O0nkhIto5dadKrzb3fdSNYylhMnJqQ569JIHMPPnCpgTgmRP
-	 K6VKcAlJfALTvECcVWASisQLS4SVvTgmYzkM670E=
+	b=0gIWC+t+f+kmS65Oscmf6MgAeIxxntyVTwqcmRXstD+VtUuAq1Hv8lTuLeZz05BSI
+	 MEZirlkxr40YA66fJqqFhCBqpwCyJzhY4+BuHzTEIw71WgfroPJ1uUuu4kyAts7iDC
+	 u3Dc1dpBD79jTNmYfwsWur12Cc5DMIOXntgR9iDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 264/372] parisc/pgtable: Do not drop upper 5 address bits of physical address
+	Alexander Aring <aahringo@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 6.5 415/491] gfs2: dont withdraw if init_threads() got interrupted
 Date: Fri, 24 Nov 2023 17:50:51 +0000
-Message-ID: <20231124172019.291702048@linuxfoundation.org>
+Message-ID: <20231124172037.077557666@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +52,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 166b0110d1ee53290bd11618df6e3991c117495a upstream.
+commit 0cdc6f44e9fdc2d20d720145bf99a39f611f6d61 upstream.
 
-When calculating the pfn for the iitlbt/idtlbt instruction, do not
-drop the upper 5 address bits. This doesn't seem to have an effect
-on physical hardware which uses less physical address bits, but in
-qemu the missing bits are visible.
+In gfs2_fill_super(), when mounting a gfs2 filesystem is interrupted,
+kthread_create() can return -EINTR.  When that happens, we roll back
+what has already been done and abort the mount.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc:  <stable@vger.kernel.org>
+Since commit 62dd0f98a0e5 ("gfs2: Flag a withdraw if init_threads()
+fails), we are calling gfs2_withdraw_delayed() in gfs2_fill_super();
+first via gfs2_make_fs_rw(), then directly.  But gfs2_withdraw_delayed()
+only marks the filesystem as withdrawing and relies on a caller further
+up the stack to do the actual withdraw, which doesn't exist in the
+gfs2_fill_super() case.  Because the filesystem is marked as withdrawing
+/ withdrawn, function gfs2_lm_unmount() doesn't release the dlm
+lockspace, so when we try to mount that filesystem again, we get:
+
+    gfs2: fsid=gohan:gohan0: Trying to join cluster "lock_dlm", "gohan:gohan0"
+    gfs2: fsid=gohan:gohan0: dlm_new_lockspace error -17
+
+Since commit b77b4a4815a9 ("gfs2: Rework freeze / thaw logic"), the
+deadlock this gfs2_withdraw_delayed() call was supposed to work around
+cannot occur anymore because freeze_go_callback() won't take the
+sb->s_umount semaphore unconditionally anymore, so we can get rid of the
+gfs2_withdraw_delayed() in gfs2_fill_super() entirely.
+
+Reported-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: stable@vger.kernel.org # v6.5+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/entry.S |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ fs/gfs2/ops_fstype.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -462,13 +462,13 @@
- 	 * to a CPU TLB 4k PFN (4k => 12 bits to shift) */
- 	#define PAGE_ADD_SHIFT		(PAGE_SHIFT-12)
- 	#define PAGE_ADD_HUGE_SHIFT	(REAL_HPAGE_SHIFT-12)
-+	#define PFN_START_BIT	(63-ASM_PFN_PTE_SHIFT+(63-58)-PAGE_ADD_SHIFT)
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1261,10 +1261,8 @@ static int gfs2_fill_super(struct super_
  
- 	/* Drop prot bits and convert to page addr for iitlbt and idtlbt */
- 	.macro		convert_for_tlb_insert20 pte,tmp
- #ifdef CONFIG_HUGETLB_PAGE
- 	copy		\pte,\tmp
--	extrd,u		\tmp,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\tmp,PFN_START_BIT,PFN_START_BIT+1,\pte
+ 	if (!sb_rdonly(sb)) {
+ 		error = init_threads(sdp);
+-		if (error) {
+-			gfs2_withdraw_delayed(sdp);
++		if (error)
+ 			goto fail_per_node;
+-		}
+ 	}
  
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
-@@ -476,8 +476,7 @@
- 	depdi		_HUGE_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_HUGE_SHIFT,\pte
- #else /* Huge pages disabled */
--	extrd,u		\pte,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\pte,PFN_START_BIT,PFN_START_BIT+1,\pte
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
- #endif
+ 	error = gfs2_freeze_lock_shared(sdp);
 
 
 
