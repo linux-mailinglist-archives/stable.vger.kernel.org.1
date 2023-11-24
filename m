@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53EAD7F7E07
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3217F7C09
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8D6EB20AE6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7083281E14
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054F939FE3;
-	Fri, 24 Nov 2023 18:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C64B3A8C2;
+	Fri, 24 Nov 2023 18:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/SYkQw/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/ONzzuv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56E433063;
-	Fri, 24 Nov 2023 18:29:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407E7C433C8;
-	Fri, 24 Nov 2023 18:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D79B39FC2;
+	Fri, 24 Nov 2023 18:11:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65E4C433C8;
+	Fri, 24 Nov 2023 18:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850554;
-	bh=TWkAEsTHiW+29oS7/szXFONRSISLCzixIYWwXgc6uu8=;
+	s=korg; t=1700849464;
+	bh=0lBOECk9YfEo/1ZE0QrH7Mdehqrj63guZMHZfm7wv0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/SYkQw/a4LmLjkcAiCGY4DZqG3KXimuwK7DQ9vqVDZ+lAIpK4m+Z/6T2HeaCcNaB
-	 tqUEL1VZHmrwVyM/zcmR6ZZiN9BQdHni2j1gowCiA51BOMdeZDtqzkkXpPsjbC00F9
-	 358IKlQojUNb2sr+4qujz/5B7eFPeH8AKvMkdB2s=
+	b=W/ONzzuvFxPylMtcGcVDrtPjgHU3/v3L7zATidMkzk1xQH7m6mnwH6BoZuaq+Ls86
+	 j9ykph8Vz5GEEE8+7jWYSlY2tB5XRhpkwwgzJAqaKTn2adkcCmz0k6o/Y0YDvsOQBi
+	 EgHN2RRQJiTLsi4vVCTzA4P0GBn3bPFWxbNtc2CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 096/491] PCI: mvebu: Use FIELD_PREP() with Link Width
-Date: Fri, 24 Nov 2023 17:45:32 +0000
-Message-ID: <20231124172027.463003678@linuxfoundation.org>
+Subject: [PATCH 6.6 167/530] NFSv4.1: fix handling NFS4ERR_DELAY when testing for session trunking
+Date: Fri, 24 Nov 2023 17:45:33 +0000
+Message-ID: <20231124172033.157630853@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +51,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit 408599ec561ad5862cda4f107626009f6fa97a74 ]
+[ Upstream commit 6bd1a77dc72dea0b0d8b6014f231143984d18f6d ]
 
-mvebu_pcie_setup_hw() setups the Maximum Link Width field in the Link
-Capabilities registers using an open-coded variant of FIELD_PREP() with
-a literal in shift. Improve readability by using
-FIELD_PREP(PCI_EXP_LNKCAP_MLW, ...).
+Currently when client sends an EXCHANGE_ID for a possible trunked
+connection, for any error that happened, the trunk will be thrown
+out. However, an NFS4ERR_DELAY is a transient error that should be
+retried instead.
 
-Link: https://lore.kernel.org/r/20230919125648.1920-6-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: e818bd085baf ("NFSv4.1 remove xprt from xprt_switch if session trunking test fails")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-mvebu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pci-mvebu.c b/drivers/pci/controller/pci-mvebu.c
-index c931b1b07b1d8..0cacd58f6c05e 100644
---- a/drivers/pci/controller/pci-mvebu.c
-+++ b/drivers/pci/controller/pci-mvebu.c
-@@ -265,7 +265,7 @@ static void mvebu_pcie_setup_hw(struct mvebu_pcie_port *port)
- 	 */
- 	lnkcap = mvebu_readl(port, PCIE_CAP_PCIEXP + PCI_EXP_LNKCAP);
- 	lnkcap &= ~PCI_EXP_LNKCAP_MLW;
--	lnkcap |= (port->is_x4 ? 4 : 1) << 4;
-+	lnkcap |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, port->is_x4 ? 4 : 1);
- 	mvebu_writel(port, lnkcap, PCIE_CAP_PCIEXP + PCI_EXP_LNKCAP);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 5ee283eb9660b..c3ff98eb6177b 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -8934,6 +8934,7 @@ void nfs4_test_session_trunk(struct rpc_clnt *clnt, struct rpc_xprt *xprt,
  
- 	/* Disable Root Bridge I/O space, memory space and bus mastering. */
+ 	sp4_how = (adata->clp->cl_sp4_flags == 0 ? SP4_NONE : SP4_MACH_CRED);
+ 
++try_again:
+ 	/* Test connection for session trunking. Async exchange_id call */
+ 	task = nfs4_run_exchange_id(adata->clp, adata->cred, sp4_how, xprt);
+ 	if (IS_ERR(task))
+@@ -8946,11 +8947,15 @@ void nfs4_test_session_trunk(struct rpc_clnt *clnt, struct rpc_xprt *xprt,
+ 
+ 	if (status == 0)
+ 		rpc_clnt_xprt_switch_add_xprt(clnt, xprt);
+-	else if (rpc_clnt_xprt_switch_has_addr(clnt,
++	else if (status != -NFS4ERR_DELAY && rpc_clnt_xprt_switch_has_addr(clnt,
+ 				(struct sockaddr *)&xprt->addr))
+ 		rpc_clnt_xprt_switch_remove_xprt(clnt, xprt);
+ 
+ 	rpc_put_task(task);
++	if (status == -NFS4ERR_DELAY) {
++		ssleep(1);
++		goto try_again;
++	}
+ }
+ EXPORT_SYMBOL_GPL(nfs4_test_session_trunk);
+ 
 -- 
 2.42.0
 
