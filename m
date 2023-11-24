@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B191F7F7D31
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED11E7F7F53
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFB041C2114E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FD171C2146D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B35B39FF3;
-	Fri, 24 Nov 2023 18:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA4C33CC7;
+	Fri, 24 Nov 2023 18:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUBq/nuV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+qGIYdX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D6439FF7;
-	Fri, 24 Nov 2023 18:22:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A615FC433C8;
-	Fri, 24 Nov 2023 18:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8D1364C3;
+	Fri, 24 Nov 2023 18:40:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EB7C433C7;
+	Fri, 24 Nov 2023 18:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850135;
-	bh=tEZRWzNzys3RzkOD35xm5yWwWoOBnyXvOhtQ5V7iAtQ=;
+	s=korg; t=1700851226;
+	bh=P+Muma2NpoIB8HNjgiBSj2nvjWsqH3SZsx8X+5TN784=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUBq/nuVyJjE3Lkq4VhQZV4CmCbx7OzPiMCnL2T/M4+blzBpBCxB01YhoLCAGCOX6
-	 QZhd+6rXWHFwuSZrKuQJfQwHPwtC+HkOB7cCFWtGJ22f9Rq18u86Q4rwqlkGbW3kWX
-	 1ciFjBNi0ywt7qkxv2B7qcRoUfpUTdiHsuXsX3pE=
+	b=G+qGIYdX58o8PnaNli1nG3ow2h8SVt3Rucp7mV0xS009VMnNUPdtgVudEIaY4lOcY
+	 OzciH6FYn+nhY1HwSVJt4BF3VBrbazZxVco2ny1Mb+FuwPJs0ppQHAaROyFoodTqEC
+	 UI7EG070M/J/h2EKeikjA37giAf21IzVQc1+q62U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eymen Yigit <eymenyg01@gmail.com>,
-	Luka Guzenko <l.guzenko@web.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 433/530] ALSA: hda/realtek: Enable Mute LED on HP 255 G8
-Date: Fri, 24 Nov 2023 17:49:59 +0000
-Message-ID: <20231124172041.258799982@linuxfoundation.org>
+	Robert Richter <rrichter@amd.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.5 364/491] cxl/port: Fix delete_endpoint() vs parent unregistration race
+Date: Fri, 24 Nov 2023 17:50:00 +0000
+Message-ID: <20231124172035.519047714@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,37 +52,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eymen Yigit <eymenyg01@gmail.com>
+From: Dan Williams <dan.j.williams@intel.com>
 
-commit 8384c0baf223e1c3bc7b1c711d80a4c6106d210e upstream.
+commit 8d2ad999ca3c64cb08cf6a58d227b9d9e746d708 upstream.
 
-This HP Notebook uses ALC236 codec with COEF 0x07 idx 1 controlling
-the mute LED. Enable already existing quirk for this device.
+The CXL subsystem, at cxl_mem ->probe() time, establishes a lineage of
+ports (struct cxl_port objects) between an endpoint and the root of a
+CXL topology. Each port including the endpoint port is attached to the
+cxl_port driver.
 
-Signed-off-by: Eymen Yigit <eymenyg01@gmail.com>
-Cc: Luka Guzenko <l.guzenko@web.de>
+Given that setup, it follows that when either any port in that lineage
+goes through a cxl_port ->remove() event, or the memdev goes through a
+cxl_mem ->remove() event. The hierarchy below the removed port, or the
+entire hierarchy if the memdev is removed needs to come down.
+
+The delete_endpoint() callback is careful to check whether it is being
+called to tear down the hierarchy, or if it is only being called to
+teardown the memdev because an ancestor port is going through
+->remove().
+
+That care needs to take the device_lock() of the endpoint's parent.
+Which requires 2 bugs to be fixed:
+
+1/ A reference on the parent is needed to prevent use-after-free
+   scenarios like this signature:
+
+    BUG: spinlock bad magic on CPU#0, kworker/u56:0/11
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc38 05/24/2023
+    Workqueue: cxl_port detach_memdev [cxl_core]
+    RIP: 0010:spin_bug+0x65/0xa0
+    Call Trace:
+      do_raw_spin_lock+0x69/0xa0
+     __mutex_lock+0x695/0xb80
+     delete_endpoint+0xad/0x150 [cxl_core]
+     devres_release_all+0xb8/0x110
+     device_unbind_cleanup+0xe/0x70
+     device_release_driver_internal+0x1d2/0x210
+     detach_memdev+0x15/0x20 [cxl_core]
+     process_one_work+0x1e3/0x4c0
+     worker_thread+0x1dd/0x3d0
+
+2/ In the case of RCH topologies, the parent device that needs to be
+   locked is not always @port->dev as returned by cxl_mem_find_port(), use
+   endpoint->dev.parent instead.
+
+Fixes: 8dd2bc0f8e02 ("cxl/mem: Add the cxl_mem driver")
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231110150715.5141-1-eymenyg01@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Robert Richter <rrichter@amd.com>
+Closes: http://lore.kernel.org/r/20231018171713.1883517-2-rrichter@amd.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/cxl/core/port.c |   34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9746,6 +9746,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8898, "HP EliteBook 845 G8 Notebook PC", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x103c, 0x88d0, "HP Pavilion 15-eh1xxx (mainboard 88D0)", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8902, "HP OMEN 16", ALC285_FIXUP_HP_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x890e, "HP 255 G8 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8919, "HP Pavilion Aero Laptop 13-be0xxx", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x896d, "HP ZBook Firefly 16 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x896e, "HP EliteBook x360 830 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -1242,35 +1242,39 @@ static struct device *grandparent(struct
+ 	return NULL;
+ }
+ 
++static struct device *endpoint_host(struct cxl_port *endpoint)
++{
++	struct cxl_port *port = to_cxl_port(endpoint->dev.parent);
++
++	if (is_cxl_root(port))
++		return port->uport_dev;
++	return &port->dev;
++}
++
+ static void delete_endpoint(void *data)
+ {
+ 	struct cxl_memdev *cxlmd = data;
+ 	struct cxl_port *endpoint = cxlmd->endpoint;
+-	struct cxl_port *parent_port;
+-	struct device *parent;
++	struct device *host = endpoint_host(endpoint);
+ 
+-	parent_port = cxl_mem_find_port(cxlmd, NULL);
+-	if (!parent_port)
+-		goto out;
+-	parent = &parent_port->dev;
+-
+-	device_lock(parent);
+-	if (parent->driver && !endpoint->dead) {
+-		devm_release_action(parent, cxl_unlink_parent_dport, endpoint);
+-		devm_release_action(parent, cxl_unlink_uport, endpoint);
+-		devm_release_action(parent, unregister_port, endpoint);
++	device_lock(host);
++	if (host->driver && !endpoint->dead) {
++		devm_release_action(host, cxl_unlink_parent_dport, endpoint);
++		devm_release_action(host, cxl_unlink_uport, endpoint);
++		devm_release_action(host, unregister_port, endpoint);
+ 	}
+ 	cxlmd->endpoint = NULL;
+-	device_unlock(parent);
+-	put_device(parent);
+-out:
++	device_unlock(host);
+ 	put_device(&endpoint->dev);
++	put_device(host);
+ }
+ 
+ int cxl_endpoint_autoremove(struct cxl_memdev *cxlmd, struct cxl_port *endpoint)
+ {
++	struct device *host = endpoint_host(endpoint);
+ 	struct device *dev = &cxlmd->dev;
+ 
++	get_device(host);
+ 	get_device(&endpoint->dev);
+ 	cxlmd->endpoint = endpoint;
+ 	cxlmd->depth = endpoint->depth;
 
 
 
