@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-1911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68DD7F81F2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:03:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75627F81F4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:03:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9FD1C224AE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13FBF1C224E4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65783364C1;
-	Fri, 24 Nov 2023 19:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DCDA35F1A;
+	Fri, 24 Nov 2023 19:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJy86sCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QoiorQ8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2563B33076;
-	Fri, 24 Nov 2023 19:02:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB27C433C8;
-	Fri, 24 Nov 2023 19:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2B834189;
+	Fri, 24 Nov 2023 19:03:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD387C433C7;
+	Fri, 24 Nov 2023 19:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852578;
-	bh=mTCpkm38ulKHddp57X/Mu5pzhHnezDFsoqK6ih8f+2c=;
+	s=korg; t=1700852581;
+	bh=6JwTQUlnM/jbyYgj8b52R9BbJcFsnoRH0+ztwWuEJf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJy86sCcUQAijOZnTfJtntJBzbUZfcgFl2A9iFNX/JdISLDR3SEwwh83w+s3ec22m
-	 F3HWQ4YLFt/2zjkG7aGSmnZk90qfVRk70d1NHboGUNixA7rTiH9ZL/ithOGDrw+mXT
-	 JAQPn6/rR9RvZNMaf317M+qhjDDv6VG3p51fAh5Y=
+	b=QoiorQ8IK4zdE6l8eeYagmPl65s0JF1M+UxCeAmFBfgWhuwYQU+mW3MxIaiFDDC6X
+	 qXQ0hVA4DVqnZcBSvnZZMMysrFY7sf+YGxdEnZFP6jEuENfgugsmQyQsOQXogR50Z8
+	 qJqUNpCKfugvhnTUjNK/5pdOA+XWa80zTz4CQhQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Robert Ayrapetyan <robert.ayrapetyan@gmail.com>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/193] misc: pci_endpoint_test: Add Device ID for R-Car S4-8 PCIe controller
-Date: Fri, 24 Nov 2023 17:52:47 +0000
-Message-ID: <20231124171948.843451612@linuxfoundation.org>
+Subject: [PATCH 5.10 041/193] HID: Add quirk for Dell Pro Wireless Keyboard and Mouse KM5221W
+Date: Fri, 24 Nov 2023 17:52:48 +0000
+Message-ID: <20231124171948.890263417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
 References: <20231124171947.127438872@linuxfoundation.org>
@@ -52,51 +51,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Jiri Kosina <jkosina@suse.cz>
 
-[ Upstream commit 6c4b39937f4e65688ea294725ae432b2565821ff ]
+[ Upstream commit 62cc9c3cb3ec1bf31cc116146185ed97b450836a ]
 
-Add Renesas R8A779F0 in pci_device_id table so that pci-epf-test
-can be used for testing PCIe EP on R-Car S4-8.
+This device needs ALWAYS_POLL quirk, otherwise it keeps reconnecting
+indefinitely.
 
-Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-16-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Reported-by: Robert Ayrapetyan <robert.ayrapetyan@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pci_endpoint_test.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 6c4c85eb71479..b4a07a166605a 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -79,6 +79,7 @@
- #define PCI_DEVICE_ID_RENESAS_R8A774B1		0x002b
- #define PCI_DEVICE_ID_RENESAS_R8A774C0		0x002d
- #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
-+#define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 6712d99ad80da..7c688d7f8ccff 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -345,6 +345,7 @@
  
- static DEFINE_IDA(pci_endpoint_test_ida);
+ #define USB_VENDOR_ID_DELL				0x413c
+ #define USB_DEVICE_ID_DELL_PIXART_USB_OPTICAL_MOUSE	0x301a
++#define USB_DEVICE_ID_DELL_PRO_WIRELESS_KM5221W		0x4503
  
-@@ -993,6 +994,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774B1),},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774C0),},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774E1),},
-+	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A779F0),
-+	  .driver_data = (kernel_ulong_t)&default_data,
-+	},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
- 	  .driver_data = (kernel_ulong_t)&j721e_data,
- 	},
+ #define USB_VENDOR_ID_DELORME		0x1163
+ #define USB_DEVICE_ID_DELORME_EARTHMATE	0x0100
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 4229e5de06745..787349f2de01d 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -66,6 +66,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_STRAFE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CREATIVELABS, USB_DEVICE_ID_CREATIVE_SB_OMNI_SURROUND_51), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DELL, USB_DEVICE_ID_DELL_PIXART_USB_OPTICAL_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_DELL, USB_DEVICE_ID_DELL_PRO_WIRELESS_KM5221W), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DMI, USB_DEVICE_ID_DMI_ENC), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRACAL_RAPHNET, USB_DEVICE_ID_RAPHNET_2NES2SNES), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRACAL_RAPHNET, USB_DEVICE_ID_RAPHNET_4NES4SNES), HID_QUIRK_MULTI_INPUT },
 -- 
 2.42.0
 
