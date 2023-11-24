@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1D27F822A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02997F8342
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:15:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40BDAB20430
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77FCA1F21039
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D75334189;
-	Fri, 24 Nov 2023 19:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD958364AE;
+	Fri, 24 Nov 2023 19:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skm5cLD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFo8ZWc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9912828DBB;
-	Fri, 24 Nov 2023 19:05:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290C7C433C7;
-	Fri, 24 Nov 2023 19:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC2C33CC2;
+	Fri, 24 Nov 2023 19:15:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43E6C433C9;
+	Fri, 24 Nov 2023 19:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852703;
-	bh=Yh7tf1gXEpco01Zw+x45C+cEQA0yUTiQIJpYD7pxJh8=;
+	s=korg; t=1700853343;
+	bh=rYh5XjtaZ0UqcnJ5Ad2ab5kUqn3WjeOo6MBWiZVamU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=skm5cLD1oKA0ndlLbb3bvOZBQSHqPiwxvOlhFCQ0xEDd4SnCnGg607XHp57Ju3skf
-	 k62B86x7rU0Xg54L06k7LwdSp/9YPw5BPNy2hVyi9ZydTzKzSjN3QFc++IQfhbU4Q4
-	 P8hk6K4w7PZb0qGXabtKsKzlwi8XeBJA21V7MHZs=
+	b=AFo8ZWc3l9nwgzX7MPJSxMsb2Idpkz5Xvs0E4ixtST2UYBFwlZbGl/Wm0Ehy/aOMa
+	 57/SMBPESpMAdHo7JBqDFCJTeCQKtNl/bagnXgIz0U4wXEjG9fiOqUYjRnnoGJdjpq
+	 fyYy8xE/UkFBQegqxaYvUVATPSzkOM4UrTyDE+E8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	hexiaole <hexiaole@kylinos.cn>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/193] NFSv4.1: fix SP4_MACH_CRED protection for pnfs IO
+Subject: [PATCH 5.15 150/297] xfs: fix inode reservation space for removing transaction
 Date: Fri, 24 Nov 2023 17:53:12 +0000
-Message-ID: <20231124171949.839421929@linuxfoundation.org>
+Message-ID: <20231124172005.512215069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +55,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: hexiaole <hexiaole@kylinos.cn>
 
-[ Upstream commit 5cc7688bae7f0757c39c1d3dfdd827b724061067 ]
+[ Upstream commit 031d166f968efba6e4f091ff75d0bb5206bb3918 ]
 
-If the client is doing pnfs IO and Kerberos is configured and EXCHANGEID
-successfully negotiated SP4_MACH_CRED and WRITE/COMMIT are on the
-list of state protected operations, then we need to make sure to
-choose the DS's rpc_client structure instead of the MDS's one.
+In 'fs/xfs/libxfs/xfs_trans_resv.c', the comment for transaction of removing a
+directory entry writes:
 
-Fixes: fb91fb0ee7b2 ("NFS: Move call to nfs4_state_protect_write() to nfs4_write_setup()")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+/* fs/xfs/libxfs/xfs_trans_resv.c begin */
+/*
+ * For removing a directory entry we can modify:
+ *    the parent directory inode: inode size
+ *    the removed inode: inode size
+...
+xfs_calc_remove_reservation(
+        struct xfs_mount        *mp)
+{
+        return XFS_DQUOT_LOGRES(mp) +
+                xfs_calc_iunlink_add_reservation(mp) +
+                max((xfs_calc_inode_res(mp, 1) +
+...
+/* fs/xfs/libxfs/xfs_trans_resv.c end */
+
+There has 2 inode size of space to be reserverd, but the actual code
+for inode reservation space writes.
+
+There only count for 1 inode size to be reserved in
+'xfs_calc_inode_res(mp, 1)', rather than 2.
+
+Signed-off-by: hexiaole <hexiaole@kylinos.cn>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+[djwong: remove redundant code citations]
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/xfs/libxfs/xfs_trans_resv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 1c2ed14bccef2..f3f41027f6977 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -5508,7 +5508,7 @@ static void nfs4_proc_write_setup(struct nfs_pgio_header *hdr,
- 
- 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_WRITE];
- 	nfs4_init_sequence(&hdr->args.seq_args, &hdr->res.seq_res, 0, 0);
--	nfs4_state_protect_write(server->nfs_client, clnt, msg, hdr);
-+	nfs4_state_protect_write(hdr->ds_clp ? hdr->ds_clp : server->nfs_client, clnt, msg, hdr);
- }
- 
- static void nfs4_proc_commit_rpc_prepare(struct rpc_task *task, struct nfs_commit_data *data)
-@@ -5549,7 +5549,8 @@ static void nfs4_proc_commit_setup(struct nfs_commit_data *data, struct rpc_mess
- 	data->res.server = server;
- 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_COMMIT];
- 	nfs4_init_sequence(&data->args.seq_args, &data->res.seq_res, 1, 0);
--	nfs4_state_protect(server->nfs_client, NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
-+	nfs4_state_protect(data->ds_clp ? data->ds_clp : server->nfs_client,
-+			NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
- }
- 
- static int _nfs4_proc_commit(struct file *dst, struct nfs_commitargs *args,
+diff --git a/fs/xfs/libxfs/xfs_trans_resv.c b/fs/xfs/libxfs/xfs_trans_resv.c
+index 5e300daa25593..2db9d9d123444 100644
+--- a/fs/xfs/libxfs/xfs_trans_resv.c
++++ b/fs/xfs/libxfs/xfs_trans_resv.c
+@@ -423,7 +423,7 @@ xfs_calc_remove_reservation(
+ {
+ 	return XFS_DQUOT_LOGRES(mp) +
+ 		xfs_calc_iunlink_add_reservation(mp) +
+-		max((xfs_calc_inode_res(mp, 1) +
++		max((xfs_calc_inode_res(mp, 2) +
+ 		     xfs_calc_buf_res(XFS_DIROP_LOG_COUNT(mp),
+ 				      XFS_FSB_TO_B(mp, 1))),
+ 		    (xfs_calc_buf_res(4, mp->m_sb.sb_sectsize) +
 -- 
 2.42.0
 
