@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E11F7F8263
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309AF7F83FD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C509EB23F7D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB6121F214B5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232EE33E9;
-	Fri, 24 Nov 2023 19:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288F033E9;
+	Fri, 24 Nov 2023 19:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVwyx9qN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpIGEOih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50BA2E84A;
-	Fri, 24 Nov 2023 19:07:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B27C433C8;
-	Fri, 24 Nov 2023 19:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7E435F04;
+	Fri, 24 Nov 2023 19:22:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B71C433C8;
+	Fri, 24 Nov 2023 19:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852829;
-	bh=iaLDceU8vodkIsCar/t/Lm9/BAVPyI3I3scM19y9Pc4=;
+	s=korg; t=1700853775;
+	bh=R6zBERxDCLWuMN/ZmaOkF1g5AL/T9bJBjK1YOtIA540=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVwyx9qNbDDqgqgYMQ6O6WI8Mm5jKVNmp3BcfybItvQxcsytxrwmK4xBT8EXCZ08H
-	 GjWiq+ciWouE/pIeFg3Bcma7d1saai9s+GX+UqNH6ZsAPxxlTO8sxUMXjZahVm4WfZ
-	 zC+IilbQMdsvoZXNjf6PPgorjmf1VhThWgXjmWjM=
+	b=tpIGEOih1BErlcZpy/SnLjIj9UtYpY0+KKwrbSD1BlBP3wcAMYnH5QjAVAbacLYlv
+	 wW2+j+ULceXpmc2g0uvjzaSX0rl4B9u/9polq3wAvB/+VxPpfcVxuxvG/x0q0rJPZ4
+	 FmcvyLa7CTg14yLImQHKrHiULOv3Kn2F7FIxZwF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 115/193] arm64: dts: qcom: ipq6018: Fix hwlock index for SMEM
-Date: Fri, 24 Nov 2023 17:54:02 +0000
-Message-ID: <20231124171951.835887028@linuxfoundation.org>
+	Vincent Whitchurch <vincent.whitchurch@axis.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 026/159] ARM: 9320/1: fix stack depot IRQ stack filter
+Date: Fri, 24 Nov 2023 17:54:03 +0000
+Message-ID: <20231124171942.948387263@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-commit 95d97b111e1e184b0c8656137033ed64f2cf21e4 upstream.
+[ Upstream commit b0150014878c32197cfa66e3e2f79e57f66babc0 ]
 
-SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-in SMEM region shared by the Host and FW.
+Place IRQ handlers such as gic_handle_irq() in the irqentry section even
+if FUNCTION_GRAPH_TRACER is not enabled.  Without this, the stack
+depot's filter_irq_stacks() does not correctly filter out IRQ stacks in
+those configurations, which hampers deduplication and eventually leads
+to "Stack depot reached limit capacity" splats with KASAN.
 
-Fix the SMEM hwlock index to 3 for IPQ6018.
+A similar fix was done for arm64 in commit f6794950f0e5ba37e3bbed
+("arm64: set __exception_irq_entry with __irq_entry as a default").
 
-Cc: stable@vger.kernel.org
-Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230904172516.479866-3-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230803-arm-irqentry-v1-1-8aad8e260b1c@axis.com
+
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/include/asm/exception.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -175,7 +175,7 @@
- 	smem {
- 		compatible = "qcom,smem";
- 		memory-region = <&smem_region>;
--		hwlocks = <&tcsr_mutex 0>;
-+		hwlocks = <&tcsr_mutex 3>;
- 	};
+diff --git a/arch/arm/include/asm/exception.h b/arch/arm/include/asm/exception.h
+index 58e039a851af0..3c82975d46db3 100644
+--- a/arch/arm/include/asm/exception.h
++++ b/arch/arm/include/asm/exception.h
+@@ -10,10 +10,6 @@
  
- 	soc: soc {
+ #include <linux/interrupt.h>
+ 
+-#ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ #define __exception_irq_entry	__irq_entry
+-#else
+-#define __exception_irq_entry
+-#endif
+ 
+ #endif /* __ASM_ARM_EXCEPTION_H */
+-- 
+2.42.0
+
 
 
 
