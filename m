@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8D87F7C7F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B19797F7EAF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AC501C21185
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C52E61C213AC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A784139FF3;
-	Fri, 24 Nov 2023 18:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D7328DA1;
+	Fri, 24 Nov 2023 18:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZF7YiTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L33jn2Pq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FCB72AF00;
-	Fri, 24 Nov 2023 18:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AA9C433C7;
-	Fri, 24 Nov 2023 18:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52832D626;
+	Fri, 24 Nov 2023 18:35:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EC5C433C7;
+	Fri, 24 Nov 2023 18:35:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849743;
-	bh=vNVkjM3gcGlR3gNxJ4/uvsOdC4Ugk+qClBBxms3LH74=;
+	s=korg; t=1700850901;
+	bh=2c9vLcy9XZLD7IlUggQh70YEJ5KAi+OuYfLeFu2arsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZF7YiTULB0gQJMMkXDdgPd5boKQh6dWi2iCCxyY+eH/JFY5u0ExUpQIqXrrw9iwv
-	 SP9yafkzi3ZyKh/Wf+4zUITwSudOz3PDbkx4KruQ8FmoOwrRoNovnFo0XAGrHc/Wox
-	 9Z9YogzsWrcYzkpvq+bTPlOe6qAuwZZGCT428qLE=
+	b=L33jn2Pq5d+WW9R63moXjuOmOi9pDMwcSrlF+5ATDaKnIObx5KsVJ+r6babcp582Y
+	 aOua74hMlNqkXK3ZaL0ArfS5qXRKQZS72566tIO4DhsyzNAmf4rmz3bJtnNODEqNRO
+	 ftpTowTi+9Jozegu+HLNeuhoovG6S/4R6PIkNZ8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.6 303/530] PCI: keystone: Dont discard .probe() callback
-Date: Fri, 24 Nov 2023 17:47:49 +0000
-Message-ID: <20231124172037.259818954@linuxfoundation.org>
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.5 234/491] scsi: megaraid_sas: Increase register read retry rount from 3 to 30 for selected registers
+Date: Fri, 24 Nov 2023 17:47:50 +0000
+Message-ID: <20231124172031.589660113@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +51,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-commit 7994db905c0fd692cf04c527585f08a91b560144 upstream.
+commit 8e3ed9e786511ad800c33605ed904b9de49323cf upstream.
 
-The __init annotation makes the ks_pcie_probe() function disappear after
-booting completes. However a device can also be bound later. In that case,
-we try to call ks_pcie_probe(), but the backing memory is likely already
-overwritten.
+In BMC environments with concurrent access to multiple registers, certain
+registers occasionally yield a value of 0 even after 3 retries due to
+hardware errata. As a fix, we have extended the retry count from 3 to 30.
 
-The right thing to do is do always have the probe callback available.  Note
-that the (wrong) __refdata annotation prevented this issue to be noticed by
-modpost.
+The same errata applies to the mpt3sas driver, and a similar patch has
+been accepted. Please find more details in the mpt3sas patch reference
+link.
 
-Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
-Link: https://lore.kernel.org/r/20231001170254.2506508-5-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
+Fixes: 272652fcbf1a ("scsi: megaraid_sas: add retry logic in megasas_readl")
 Cc: stable@vger.kernel.org
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Link: https://lore.kernel.org/r/20231003110021.168862-2-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
+ drivers/scsi/megaraid/megaraid_sas_base.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1100,7 +1100,7 @@ static const struct of_device_id ks_pcie
- 	{ },
- };
- 
--static int __init ks_pcie_probe(struct platform_device *pdev)
-+static int ks_pcie_probe(struct platform_device *pdev)
- {
- 	const struct dw_pcie_host_ops *host_ops;
- 	const struct dw_pcie_ep_ops *ep_ops;
-@@ -1318,7 +1318,7 @@ static int ks_pcie_remove(struct platfor
- 	return 0;
- }
- 
--static struct platform_driver ks_pcie_driver __refdata = {
-+static struct platform_driver ks_pcie_driver = {
- 	.probe  = ks_pcie_probe,
- 	.remove = ks_pcie_remove,
- 	.driver = {
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -263,13 +263,13 @@ u32 megasas_readl(struct megasas_instanc
+ 	 * Fusion registers could intermittently return all zeroes.
+ 	 * This behavior is transient in nature and subsequent reads will
+ 	 * return valid value. As a workaround in driver, retry readl for
+-	 * upto three times until a non-zero value is read.
++	 * up to thirty times until a non-zero value is read.
+ 	 */
+ 	if (instance->adapter_type == AERO_SERIES) {
+ 		do {
+ 			ret_val = readl(addr);
+ 			i++;
+-		} while (ret_val == 0 && i < 3);
++		} while (ret_val == 0 && i < 30);
+ 		return ret_val;
+ 	} else {
+ 		return readl(addr);
 
 
 
