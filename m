@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90B8C7F7E03
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A16B7F7C03
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C052282275
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13FDC281B77
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FCC364C8;
-	Fri, 24 Nov 2023 18:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7829839FE1;
+	Fri, 24 Nov 2023 18:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnlkVS9Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkbQ/ewg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76557364A4;
-	Fri, 24 Nov 2023 18:29:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01723C433C7;
-	Fri, 24 Nov 2023 18:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF06381D7;
+	Fri, 24 Nov 2023 18:10:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D038C433C7;
+	Fri, 24 Nov 2023 18:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850547;
-	bh=G21ioJ3KxOUKWlyibpap79nLI1ij6STtT7uRhvZvkxI=;
+	s=korg; t=1700849453;
+	bh=EZFoSwhdBjlzj9K17tUqXXfY8jYXUFcK774zipXUwrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnlkVS9YYW5zf0NgcTdvrslxxAZrCUEJwNtjdIp6CskwPYGuE4EwxrAk6mdV9KNNv
-	 BThdrzqwrkFlkj/zMl+TWdiifGY/HYSEQjzC2u5E7/mexbG9fTJceDkUjf6KDuaUPJ
-	 q9XlNmYCiNnxwQkMCrUxV4XevZ57vNJmcq8DaXGI=
+	b=CkbQ/ewgdE6VTCr6x5TZyIQPNFqDwHW3qXdGypcyfQt41IgTeKS/yUFEbgOu5vqi1
+	 67Ng2btLoY3wa9RZur14JLzym2VpOLW36aChX+b7TKb4chq1o84ZQiPIyn7OVeIcHN
+	 8SrLyJAlx7b1BNDZH2Wi+AFk8U5JscrZTP1FWJUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 093/491] ALSA: hda: Fix possible null-ptr-deref when assigning a stream
+Subject: [PATCH 6.6 163/530] SUNRPC: ECONNRESET might require a rebind
 Date: Fri, 24 Nov 2023 17:45:29 +0000
-Message-ID: <20231124172027.385493265@linuxfoundation.org>
+Message-ID: <20231124172033.041797172@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +52,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit f93dc90c2e8ed664985e366aa6459ac83cdab236 ]
+[ Upstream commit 4b09ca1508a60be30b2e3940264e93d7aeb5c97e ]
 
-While AudioDSP drivers assign streams exclusively of HOST or LINK type,
-nothing blocks a user to attempt to assign a COUPLED stream. As
-supplied substream instance may be a stub, what is the case when
-code-loading, such scenario ends with null-ptr-deref.
+If connect() is returning ECONNRESET, it usually means that nothing is
+listening on that port. If so, a rebind might be required in order to
+obtain the new port on which the RPC service is listening.
 
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://lore.kernel.org/r/20231006102857.749143-2-cezary.rojewski@intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: fd01b2597941 ("SUNRPC: ECONNREFUSED should cause a rebind.")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdac_stream.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/sunrpc/clnt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
-index 2633a4bb1d85d..214a0680524b0 100644
---- a/sound/hda/hdac_stream.c
-+++ b/sound/hda/hdac_stream.c
-@@ -354,8 +354,10 @@ struct hdac_stream *snd_hdac_stream_assign(struct hdac_bus *bus,
- 	struct hdac_stream *res = NULL;
- 
- 	/* make a non-zero unique key for the substream */
--	int key = (substream->pcm->device << 16) | (substream->number << 2) |
--		(substream->stream + 1);
-+	int key = (substream->number << 2) | (substream->stream + 1);
-+
-+	if (substream->pcm)
-+		key |= (substream->pcm->device << 16);
- 
- 	spin_lock_irq(&bus->reg_lock);
- 	list_for_each_entry(azx_dev, &bus->stream_list, list) {
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 9c210273d06b7..f6074a4b9eabf 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2171,6 +2171,7 @@ call_connect_status(struct rpc_task *task)
+ 	task->tk_status = 0;
+ 	switch (status) {
+ 	case -ECONNREFUSED:
++	case -ECONNRESET:
+ 		/* A positive refusal suggests a rebind is needed. */
+ 		if (RPC_IS_SOFTCONN(task))
+ 			break;
+@@ -2179,7 +2180,6 @@ call_connect_status(struct rpc_task *task)
+ 			goto out_retry;
+ 		}
+ 		fallthrough;
+-	case -ECONNRESET:
+ 	case -ECONNABORTED:
+ 	case -ENETDOWN:
+ 	case -ENETUNREACH:
 -- 
 2.42.0
 
