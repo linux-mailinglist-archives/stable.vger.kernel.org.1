@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C3C97F8156
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88B587F7B36
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBC2728251D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAE991C20993
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587FB33CFD;
-	Fri, 24 Nov 2023 18:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E2039FFD;
+	Fri, 24 Nov 2023 18:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnqqjcww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4AbkK7V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F50F2C87B;
-	Fri, 24 Nov 2023 18:57:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91259C433C8;
-	Fri, 24 Nov 2023 18:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E6A39FD7;
+	Fri, 24 Nov 2023 18:02:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C52FC433C9;
+	Fri, 24 Nov 2023 18:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852263;
-	bh=imM91HP0c0jcrJWRjDlA8q7DMgIFj7OpIUav+9PhzTc=;
+	s=korg; t=1700848976;
+	bh=bVOf6ykizHlY6kILmv25sHkMooZkYK5vkudQxpSOXyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnqqjcwwQfaldgUfmKjuBdE6XDt4G9/3O+hDFVIwR3qu8L1n5BfYB14SWvXsSMCJF
-	 QxYUSg7vkxWuN+fsUREk29+oLvjn9dq11kUiuE7Pio2f21PO7MLTKyAqKws0JB0nzp
-	 ZOU7ram+qNybPfAiVTWyJ1V+57KOz3WRcJxDTSQE=
+	b=X4AbkK7Ve7bxjYJxj/KMKJNODdHbzSjo2KwU2clCB/ab9fMhtXxSuju/g5gb4Arcd
+	 kYDHWEUW/E90hQZVDUqs5WLNoOaa1F8BvjBOdlV3cwnc+dLMPa29DCcyPInFJ+YyH+
+	 U8/tX0pbgCAgeUxbD8mWCItqosEsY3ys+AwABcm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 286/372] cpufreq: stats: Fix buffer overflow detection in trans_stats()
+	Jean Delvare <jdelvare@suse.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 4.14 49/57] i2c: i801: fix potential race in i801_block_transaction_byte_by_byte
 Date: Fri, 24 Nov 2023 17:51:13 +0000
-Message-ID: <20231124172019.961063761@linuxfoundation.org>
+Message-ID: <20231124171932.125003539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,92 +55,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit ea167a7fc2426f7685c3735e104921c1a20a6d3f ]
+commit f78ca48a8ba9cdec96e8839351e49eec3233b177 upstream.
 
-Commit 3c0897c180c6 ("cpufreq: Use scnprintf() for avoiding potential
-buffer overflow") switched from snprintf to the more secure scnprintf
-but never updated the exit condition for PAGE_SIZE.
+Currently we set SMBHSTCNT_LAST_BYTE only after the host has started
+receiving the last byte. If we get e.g. preempted before setting
+SMBHSTCNT_LAST_BYTE, the host may be finished with receiving the byte
+before SMBHSTCNT_LAST_BYTE is set.
+Therefore change the code to set SMBHSTCNT_LAST_BYTE before writing
+SMBHSTSTS_BYTE_DONE for the byte before the last byte. Now the code
+is also consistent with what we do in i801_isr_byte_done().
 
-As the commit say and as scnprintf document, what scnprintf returns what
-is actually written not counting the '\0' end char. This results in the
-case of len exceeding the size, len set to PAGE_SIZE - 1, as it can be
-written at max PAGE_SIZE - 1 (as '\0' is not counted)
-
-Because of len is never set to PAGE_SIZE, the function never break early,
-never prints the warning and never return -EFBIG.
-
-Fix this by changing the condition to PAGE_SIZE - 1 to correctly trigger
-the error.
-
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
-Fixes: 3c0897c180c6 ("cpufreq: Use scnprintf() for avoiding potential buffer overflow")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Jean Delvare <jdelvare@suse.com>
+Closes: https://lore.kernel.org/linux-i2c/20230828152747.09444625@endymion.delvare/
+Cc: stable@vger.kernel.org
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq_stats.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/i2c-i801.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq_stats.c b/drivers/cpufreq/cpufreq_stats.c
-index 1570d6f3e75d3..6e57df7a2249f 100644
---- a/drivers/cpufreq/cpufreq_stats.c
-+++ b/drivers/cpufreq/cpufreq_stats.c
-@@ -131,25 +131,25 @@ static ssize_t show_trans_table(struct cpufreq_policy *policy, char *buf)
- 	len += scnprintf(buf + len, PAGE_SIZE - len, "   From  :    To\n");
- 	len += scnprintf(buf + len, PAGE_SIZE - len, "         : ");
- 	for (i = 0; i < stats->state_num; i++) {
--		if (len >= PAGE_SIZE)
-+		if (len >= PAGE_SIZE - 1)
- 			break;
- 		len += scnprintf(buf + len, PAGE_SIZE - len, "%9u ",
- 				stats->freq_table[i]);
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -707,15 +707,11 @@ static int i801_block_transaction_byte_b
+ 		return i801_check_post(priv, status);
  	}
--	if (len >= PAGE_SIZE)
--		return PAGE_SIZE;
-+	if (len >= PAGE_SIZE - 1)
-+		return PAGE_SIZE - 1;
  
- 	len += scnprintf(buf + len, PAGE_SIZE - len, "\n");
+-	for (i = 1; i <= len; i++) {
+-		if (i == len && read_write == I2C_SMBUS_READ)
+-			smbcmd |= SMBHSTCNT_LAST_BYTE;
+-		outb_p(smbcmd, SMBHSTCNT(priv));
+-
+-		if (i == 1)
+-			outb_p(inb(SMBHSTCNT(priv)) | SMBHSTCNT_START,
+-			       SMBHSTCNT(priv));
++	if (len == 1 && read_write == I2C_SMBUS_READ)
++		smbcmd |= SMBHSTCNT_LAST_BYTE;
++	outb_p(smbcmd | SMBHSTCNT_START, SMBHSTCNT(priv));
  
- 	for (i = 0; i < stats->state_num; i++) {
--		if (len >= PAGE_SIZE)
-+		if (len >= PAGE_SIZE - 1)
- 			break;
- 
- 		len += scnprintf(buf + len, PAGE_SIZE - len, "%9u: ",
- 				stats->freq_table[i]);
- 
- 		for (j = 0; j < stats->state_num; j++) {
--			if (len >= PAGE_SIZE)
-+			if (len >= PAGE_SIZE - 1)
- 				break;
- 
- 			if (pending)
-@@ -159,12 +159,12 @@ static ssize_t show_trans_table(struct cpufreq_policy *policy, char *buf)
- 
- 			len += scnprintf(buf + len, PAGE_SIZE - len, "%9u ", count);
++	for (i = 1; i <= len; i++) {
+ 		status = i801_wait_byte_done(priv);
+ 		if (status)
+ 			goto exit;
+@@ -738,9 +734,12 @@ static int i801_block_transaction_byte_b
+ 			data->block[0] = len;
  		}
--		if (len >= PAGE_SIZE)
-+		if (len >= PAGE_SIZE - 1)
- 			break;
- 		len += scnprintf(buf + len, PAGE_SIZE - len, "\n");
- 	}
  
--	if (len >= PAGE_SIZE) {
-+	if (len >= PAGE_SIZE - 1) {
- 		pr_warn_once("cpufreq transition table exceeds PAGE_SIZE. Disabling\n");
- 		return -EFBIG;
- 	}
--- 
-2.42.0
-
+-		/* Retrieve/store value in SMBBLKDAT */
+-		if (read_write == I2C_SMBUS_READ)
++		if (read_write == I2C_SMBUS_READ) {
+ 			data->block[i] = inb_p(SMBBLKDAT(priv));
++			if (i == len - 1)
++				outb_p(smbcmd | SMBHSTCNT_LAST_BYTE, SMBHSTCNT(priv));
++		}
++
+ 		if (read_write == I2C_SMBUS_WRITE && i+1 <= len)
+ 			outb_p(data->block[i+1], SMBBLKDAT(priv));
+ 
 
 
 
