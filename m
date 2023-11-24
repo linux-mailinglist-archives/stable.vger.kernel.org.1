@@ -1,145 +1,317 @@
-Return-Path: <stable+bounces-447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889757F7B1E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F37847F7E6E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15C351F20EF8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA02B2179C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6A839FE3;
-	Fri, 24 Nov 2023 18:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900902D792;
+	Fri, 24 Nov 2023 18:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OJg5E7Mz"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="MIqEpXpQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0AB719BE
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 10:01:40 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-5482df11e73so2979710a12.0
-        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 10:01:40 -0800 (PST)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 095A21BC2
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 10:31:04 -0800 (PST)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1cfa36bfe0cso6439545ad.1
+        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 10:31:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700848899; x=1701453699; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nMxbVR2rLfAZt5vPU+lVR4wGuvIRl6WENNaqc0E73kg=;
-        b=OJg5E7MzJPj/XknQ1CDmY8DoUtfbmvTequeSFNmbX5G5XmluhYnnB50gct0FfoiwU8
-         5k7Izwn6ae8L+CQqdwDxiK5D13fV0AdjTb2gtsrdaGNqM4KvCw9ru75MhZonj5jt1cnQ
-         8DnkN+5+RSfbT3haFXkzS7AG5kwSd6P4D106WG2RrMm3aWCPpBuSRKM1b6mmhze4EE5F
-         ydx6qvrydOLUCNOofQszOrH7R5oAOKlvrTqgPAhZLVvjpCsbr5+BguimVhFFalWcVtJS
-         oX+M4uDhNz+CqA0/ZWYmbc6AlgqXZURT9b8vXHc7qX4Bthltt5jb1mZpFtCOMx9/bH50
-         fv1A==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700850663; x=1701455463; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=PjOJMrJdTP3N64Aueews0X6nnNenN5B5dWEI4M8Hb/I=;
+        b=MIqEpXpQZdRerNJ+IBKS0sKVLGQT7/i90pE/nEl47T7Je3eefhmQL5zQ9hPT+Vzr4k
+         s9nX1brF2VLC0At86FVQ1CkJ567nDrxSp3L8rPePEK+vcjjUUuvKUyGCGjuWwYpU7kzK
+         StRnlWm3i64fn58Sja4n4JFe2+ns8O2ykqEsCdV1fPyD+EMbOtSX/z3ImZZdfgH76oxn
+         PC58eICiiufTq2Nxi0PMsfkmI3jOuJEk/qa1NN/xtWqOXTDzsCExWspmQTeZKtXjxX6i
+         nTalSDCM+wjfLifBFy3MtE1+449WQI1BhMkYrbQjapkLghpJKGk+UvsbWx0F2IiGAtMS
+         TKrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700848899; x=1701453699;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1700850663; x=1701455463;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nMxbVR2rLfAZt5vPU+lVR4wGuvIRl6WENNaqc0E73kg=;
-        b=d6ozMyzWQk7/Y/p610myM/zPGEfzXM1iB+/7P4uM8maEthJbpbatFgyAiS4K1PyIIW
-         IgzWBvC2Ge5kNofQcAJdBH/kD6IrMoKMwLbh+ZAlmJGu5YqaFceN1cbiXurn6OY3yd02
-         RN1Tve1f/QjKPX4s2l3L+rBkny/wavzFr+HXDKqKTy4O+WHnMrREaWzJW7/+H3E2udZE
-         a0TnVUcGoAaT58FegYDSazS2QW/AJZBW7h9Jbp6PDNuzEXXMPlc8E4pUjCeh4nqzmct9
-         7EnCgrAtPD1FnOd3xUcppJjo+BD1y5aruIv+xf3s0fVGnBeUvZv9brJqnc9xsb4hSaD/
-         QbjA==
-X-Gm-Message-State: AOJu0Yw2ffl6MkEk8eX8R5Qel9yWKL65gkYBfKYCT1LEcgq2I7q8/1vp
-	34wQaGMkblLXqAMZppMonbqdXQ==
-X-Google-Smtp-Source: AGHT+IHsz3LcGDH3Rt86rCdvS80rKeIS5a4qh2ZQvdfnBPgmrONEFonUhMa3/w580MfYUG2pVVWF3Q==
-X-Received: by 2002:a50:c042:0:b0:543:bf55:248b with SMTP id u2-20020a50c042000000b00543bf55248bmr2619735edd.13.1700848899134;
-        Fri, 24 Nov 2023 10:01:39 -0800 (PST)
-Received: from krzk-bin.. ([178.197.218.100])
-        by smtp.gmail.com with ESMTPSA id bq2-20020a056402214200b00548a0e8c316sm2010965edb.20.2023.11.24.10.01.38
+        bh=PjOJMrJdTP3N64Aueews0X6nnNenN5B5dWEI4M8Hb/I=;
+        b=E/BLCnCmk5mcZfrSF776qho6PdTGuAqzrRnf9eYA3mkvrbPtqlfn5jnuH6up4twwrz
+         I7D3YcUr6XxX3GOBGoFFjM8zobWNLJbnmZ2jDt3PK0c8pzIG3gR3mUkvfe9wiMEdyEXG
+         SLqfQZdbnFkF0ssdAfqNyEcUPk2m6WMFKy7CNrcNxx7RiIlbB3mkGsjVVntWXu1tzGwA
+         Wp3/1AHGpy7GSF+c4qQRgG7EeTFQX9quuTIDmraWBzNhmrCE9LwrBwn6gwmYLLvHtkmv
+         C06HGIwcX7O+G1RRRf/JMlBIEwy9G7LPb/PvhAdDCEU81KsX3f4iFuxi/QekgID9VN6z
+         V6Sw==
+X-Gm-Message-State: AOJu0Yy03r3UZZBQl6+QgLJ/ODNVJ5bYfvXvFrxfoO38fF4edxAIUrrI
+	8U8lE51ZPvSJKEhaFB7zBjmKwDVd+744UawtIVk=
+X-Google-Smtp-Source: AGHT+IFaL9ZQV1kRVD4GtX5lRqyZ+5E+74LfJiVLIKJN0zwdoy4VWAU7KGW7Y02j6lsDeMocclSJjw==
+X-Received: by 2002:a17:903:1207:b0:1c6:11ca:8861 with SMTP id l7-20020a170903120700b001c611ca8861mr9622155plh.21.1700850662974;
+        Fri, 24 Nov 2023 10:31:02 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id c12-20020a170902c1cc00b001cf96a0e4e6sm2829972plc.242.2023.11.24.10.31.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Nov 2023 10:01:38 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Vinod Koul <vkoul@kernel.org>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Sanyog Kale <sanyog.r.kale@intel.com>,
-	Shreyas NC <shreyas.nc@intel.com>,
-	alsa-devel@alsa-project.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] soundwire: stream: fix NULL pointer dereference for multi_link
-Date: Fri, 24 Nov 2023 19:01:36 +0100
-Message-Id: <20231124180136.390621-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        Fri, 24 Nov 2023 10:31:02 -0800 (PST)
+Message-ID: <6560ebe6.170a0220.11552.7407@mx.google.com>
+Date: Fri, 24 Nov 2023 10:31:02 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v6.1.63-373-g1c7c44f0ebc86
+Subject: stable-rc/linux-6.1.y build: 22 builds: 6 failed, 16 passed, 7 errors,
+ 6 warnings (v6.1.63-373-g1c7c44f0ebc86)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-If bus is marked as multi_link, but number of masters in the stream is
-not higher than bus->hw_sync_min_links (bus->multi_link && m_rt_count >=
-bus->hw_sync_min_links), bank switching should not happen.  The first
-part of do_bank_switch() code properly takes these conditions into
-account, but second part (sdw_ml_sync_bank_switch()) relies purely on
-bus->multi_link property.  This is not balanced and leads to NULL
-pointer dereference:
+stable-rc/linux-6.1.y build: 22 builds: 6 failed, 16 passed, 7 errors, 6 wa=
+rnings (v6.1.63-373-g1c7c44f0ebc86)
 
-  Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-  ...
-  Call trace:
-   wait_for_completion_timeout+0x124/0x1f0
-   do_bank_switch+0x370/0x6f8
-   sdw_prepare_stream+0x2d0/0x438
-   qcom_snd_sdw_prepare+0xa0/0x118
-   sm8450_snd_prepare+0x128/0x148
-   snd_soc_link_prepare+0x5c/0xe8
-   __soc_pcm_prepare+0x28/0x1ec
-   dpcm_be_dai_prepare+0x1e0/0x2c0
-   dpcm_fe_dai_prepare+0x108/0x28c
-   snd_pcm_do_prepare+0x44/0x68
-   snd_pcm_action_single+0x54/0xc0
-   snd_pcm_action_nonatomic+0xe4/0xec
-   snd_pcm_prepare+0xc4/0x114
-   snd_pcm_common_ioctl+0x1154/0x1cc0
-   snd_pcm_ioctl+0x54/0x74
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.63-373-g1c7c44f0ebc86/
 
-Fixes: ce6e74d008ff ("soundwire: Add support for multi link bank switch")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.63-373-g1c7c44f0ebc86
+Git Commit: 1c7c44f0ebc86aed1ff4cb85ea5ef3507e6e3ca8
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Build Failures Detected:
+
+arm64:
+    tinyconfig: (gcc-10) FAIL
+
+i386:
+    tinyconfig: (gcc-10) FAIL
+
+riscv:
+    defconfig: (gcc-10) FAIL
+    rv32_defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
+
+x86_64:
+    tinyconfig: (gcc-10) FAIL
+
+Errors and Warnings Detected:
+
+arc:
+
+arm64:
+    tinyconfig (gcc-10): 1 error, 1 warning
+
+arm:
+
+i386:
+    tinyconfig (gcc-10): 1 error, 1 warning
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    defconfig (gcc-10): 1 error
+    rv32_defconfig (gcc-10): 1 error
+    tinyconfig (gcc-10): 2 errors, 2 warnings
+
+x86_64:
+    tinyconfig (gcc-10): 1 error, 1 warning
+
+Errors summary:
+
+    4    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =
+=E2=80=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=
+=99? [-Werror=3Dimplicit-function-declaration]
+    2    drivers/perf/riscv_pmu_sbi.c:582:26: error: =E2=80=98riscv_pmu_irq=
+_num=E2=80=99 undeclared (first use in this function); did you mean =E2=80=
+=98riscv_pmu_irq=E2=80=99?
+    1    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =
+=E2=80=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98kmemdup_nul=E2=80=99=
+? [-Werror=3Dimplicit-function-declaration]
+
+Warnings summary:
+
+    5    cc1: some warnings being treated as errors
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 section mi=
+smatches
+
+Errors:
+    drivers/perf/riscv_pmu_sbi.c:582:26: error: =E2=80=98riscv_pmu_irq_num=
+=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98ri=
+scv_pmu_irq=E2=80=99?
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 secti=
+on mismatches
+
+Errors:
+    drivers/perf/riscv_pmu_sbi.c:582:26: error: =E2=80=98riscv_pmu_irq_num=
+=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98ri=
+scv_pmu_irq=E2=80=99?
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section m=
+ismatches
+
+Errors:
+    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
+=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=99? [-W=
+error=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 2 errors, 2 warnings, 0 section =
+mismatches
+
+Errors:
+    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
+=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=99? [-W=
+error=3Dimplicit-function-declaration]
+    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
+=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98kmemdup_nul=E2=80=99? [-We=
+rror=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mis=
+matches
+
+Errors:
+    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
+=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=99? [-W=
+error=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mi=
+smatches
+
+Errors:
+    kernel/rcu/rcu.h:218:3: error: implicit declaration of function =E2=80=
+=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_obj=E2=80=99? [-W=
+error=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
 ---
- drivers/soundwire/stream.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
-index 9dc6399f206a..f9c0adc0738d 100644
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -742,14 +742,15 @@ static int sdw_bank_switch(struct sdw_bus *bus, int m_rt_count)
-  * sdw_ml_sync_bank_switch: Multilink register bank switch
-  *
-  * @bus: SDW bus instance
-+ * @multi_link: whether this is a multi-link stream with hardware-based sync
-  *
-  * Caller function should free the buffers on error
-  */
--static int sdw_ml_sync_bank_switch(struct sdw_bus *bus)
-+static int sdw_ml_sync_bank_switch(struct sdw_bus *bus, bool multi_link)
- {
- 	unsigned long time_left;
- 
--	if (!bus->multi_link)
-+	if (!multi_link)
- 		return 0;
- 
- 	/* Wait for completion of transfer */
-@@ -847,7 +848,7 @@ static int do_bank_switch(struct sdw_stream_runtime *stream)
- 			bus->bank_switch_timeout = DEFAULT_BANK_SWITCH_TIMEOUT;
- 
- 		/* Check if bank switch was successful */
--		ret = sdw_ml_sync_bank_switch(bus);
-+		ret = sdw_ml_sync_bank_switch(bus, multi_link);
- 		if (ret < 0) {
- 			dev_err(bus->dev,
- 				"multi link bank switch failed: %d\n", ret);
--- 
-2.34.1
-
+For more info write to <info@kernelci.org>
 
