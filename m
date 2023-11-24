@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4741E7F7E63
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BD5E7F8027
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F50282306
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FA60B219AA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917652EAFB;
-	Fri, 24 Nov 2023 18:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A0B381D4;
+	Fri, 24 Nov 2023 18:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uObAUoGE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKFUWCvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492B333E9;
-	Fri, 24 Nov 2023 18:32:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7BBC433C8;
-	Fri, 24 Nov 2023 18:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108BE2FC21;
+	Fri, 24 Nov 2023 18:47:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDF0C433C9;
+	Fri, 24 Nov 2023 18:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850753;
-	bh=QFZvCDmsTpKnAHPAzjhycSxoBEtEQjFxE3YlEBS7Srg=;
+	s=korg; t=1700851630;
+	bh=tgXET1yJ6iFgtlL5zkPXeWhFcpbEi9iBLlaQ7CzWXRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uObAUoGEBy/3SK6h2xfrtKZl6Ldg3peYeBpKp0Uo0O6TyKF0dVtiXNKkOUJii4G9L
-	 QTaEjqfkK8LR4AG3auhpMPzaQD1nniuVGMZB1iINwo38qhr9GnWVB8F8f2uzxuppKE
-	 +6RXLBtfxAuiEFBaU0qIzRV5jjUDAiwU7kHOhHOs=
+	b=fKFUWCvLjOcZISRiHAwKMSClKtDVK8eJLVaKEx5Rq31SV60YbvRmYSurDk5eVVZJj
+	 PwrY3AcGgdg1LaP87INbdjGH9gDg3iVFPrWxl79D8N0HVJ3hkS7lRpUjkBK3AW+I8W
+	 3wGZf9pcdC14hFxaRAeAsMcz9ThfE2Z2X0JE5Ph4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
+	youwan Wang <wangyouwan@126.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 176/491] xen/events: avoid using info_for_irq() in xen_send_IPI_one()
+Subject: [PATCH 6.1 025/372] Bluetooth: btusb: Add date->evt_skb is NULL check
 Date: Fri, 24 Nov 2023 17:46:52 +0000
-Message-ID: <20231124172029.762698456@linuxfoundation.org>
+Message-ID: <20231124172011.324340998@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,89 +53,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: youwan Wang <wangyouwan@126.com>
 
-[ Upstream commit e64e7c74b99ec9e439abca75f522f4b98f220bd1 ]
+[ Upstream commit 624820f7c8826dd010e8b1963303c145f99816e9 ]
 
-xen_send_IPI_one() is being used by cpuhp_report_idle_dead() after
-it calls rcu_report_dead(), meaning that any RCU usage by
-xen_send_IPI_one() is a bad idea.
+fix crash because of null pointers
 
-Unfortunately xen_send_IPI_one() is using notify_remote_via_irq()
-today, which is using irq_get_chip_data() via info_for_irq(). And
-irq_get_chip_data() in turn is using a maple-tree lookup requiring
-RCU.
+[ 6104.969662] BUG: kernel NULL pointer dereference, address: 00000000000000c8
+[ 6104.969667] #PF: supervisor read access in kernel mode
+[ 6104.969668] #PF: error_code(0x0000) - not-present page
+[ 6104.969670] PGD 0 P4D 0
+[ 6104.969673] Oops: 0000 [#1] SMP NOPTI
+[ 6104.969684] RIP: 0010:btusb_mtk_hci_wmt_sync+0x144/0x220 [btusb]
+[ 6104.969688] RSP: 0018:ffffb8d681533d48 EFLAGS: 00010246
+[ 6104.969689] RAX: 0000000000000000 RBX: ffff8ad560bb2000 RCX: 0000000000000006
+[ 6104.969691] RDX: 0000000000000000 RSI: ffffb8d681533d08 RDI: 0000000000000000
+[ 6104.969692] RBP: ffffb8d681533d70 R08: 0000000000000001 R09: 0000000000000001
+[ 6104.969694] R10: 0000000000000001 R11: 00000000fa83b2da R12: ffff8ad461d1d7c0
+[ 6104.969695] R13: 0000000000000000 R14: ffff8ad459618c18 R15: ffffb8d681533d90
+[ 6104.969697] FS:  00007f5a1cab9d40(0000) GS:ffff8ad578200000(0000) knlGS:00000
+[ 6104.969699] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 6104.969700] CR2: 00000000000000c8 CR3: 000000018620c001 CR4: 0000000000760ef0
+[ 6104.969701] PKRU: 55555554
+[ 6104.969702] Call Trace:
+[ 6104.969708]  btusb_mtk_shutdown+0x44/0x80 [btusb]
+[ 6104.969732]  hci_dev_do_close+0x470/0x5c0 [bluetooth]
+[ 6104.969748]  hci_rfkill_set_block+0x56/0xa0 [bluetooth]
+[ 6104.969753]  rfkill_set_block+0x92/0x160
+[ 6104.969755]  rfkill_fop_write+0x136/0x1e0
+[ 6104.969759]  __vfs_write+0x18/0x40
+[ 6104.969761]  vfs_write+0xdf/0x1c0
+[ 6104.969763]  ksys_write+0xb1/0xe0
+[ 6104.969765]  __x64_sys_write+0x1a/0x20
+[ 6104.969769]  do_syscall_64+0x51/0x180
+[ 6104.969771]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[ 6104.969773] RIP: 0033:0x7f5a21f18fef
+[ 6104.9] RSP: 002b:00007ffeefe39010 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+[ 6104.969780] RAX: ffffffffffffffda RBX: 000055c10a7560a0 RCX: 00007f5a21f18fef
+[ 6104.969781] RDX: 0000000000000008 RSI: 00007ffeefe39060 RDI: 0000000000000012
+[ 6104.969782] RBP: 00007ffeefe39060 R08: 0000000000000000 R09: 0000000000000017
+[ 6104.969784] R10: 00007ffeefe38d97 R11: 0000000000000293 R12: 0000000000000002
+[ 6104.969785] R13: 00007ffeefe39220 R14: 00007ffeefe391a0 R15: 000055c10a72acf0
 
-Avoid this problem by caching the ipi event channels in another
-percpu variable, allowing the use notify_remote_via_evtchn() in
-xen_send_IPI_one().
-
-Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
-Reported-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: David Woodhouse <dwmw@amazon.co.uk>
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: youwan Wang <wangyouwan@126.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btusb.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index c803714d0f0d1..5de10d291a1cb 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -164,6 +164,8 @@ static DEFINE_PER_CPU(int [NR_VIRQS], virq_to_irq) = {[0 ... NR_VIRQS-1] = -1};
- 
- /* IRQ <-> IPI mapping */
- static DEFINE_PER_CPU(int [XEN_NR_IPIS], ipi_to_irq) = {[0 ... XEN_NR_IPIS-1] = -1};
-+/* Cache for IPI event channels - needed for hot cpu unplug (avoid RCU usage). */
-+static DEFINE_PER_CPU(evtchn_port_t [XEN_NR_IPIS], ipi_to_evtchn) = {[0 ... XEN_NR_IPIS-1] = 0};
- 
- /* Event channel distribution data */
- static atomic_t channels_on_cpu[NR_CPUS];
-@@ -366,6 +368,7 @@ static int xen_irq_info_ipi_setup(unsigned cpu,
- 	info->u.ipi = ipi;
- 
- 	per_cpu(ipi_to_irq, cpu)[ipi] = irq;
-+	per_cpu(ipi_to_evtchn, cpu)[ipi] = evtchn;
- 
- 	return xen_irq_info_common_setup(info, irq, IRQT_IPI, evtchn, 0);
- }
-@@ -981,6 +984,7 @@ static void __unbind_from_irq(unsigned int irq)
- 			break;
- 		case IRQT_IPI:
- 			per_cpu(ipi_to_irq, cpu)[ipi_from_irq(irq)] = -1;
-+			per_cpu(ipi_to_evtchn, cpu)[ipi_from_irq(irq)] = 0;
- 			break;
- 		case IRQT_EVTCHN:
- 			dev = info->u.interdomain;
-@@ -1631,7 +1635,7 @@ EXPORT_SYMBOL_GPL(evtchn_put);
- 
- void xen_send_IPI_one(unsigned int cpu, enum ipi_vector vector)
- {
--	int irq;
-+	evtchn_port_t evtchn;
- 
- #ifdef CONFIG_X86
- 	if (unlikely(vector == XEN_NMI_VECTOR)) {
-@@ -1642,9 +1646,9 @@ void xen_send_IPI_one(unsigned int cpu, enum ipi_vector vector)
- 		return;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 96d4f48e36011..4a6369d1dd171 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2638,6 +2638,9 @@ static int btusb_mtk_hci_wmt_sync(struct hci_dev *hdev,
+ 		goto err_free_wc;
  	}
- #endif
--	irq = per_cpu(ipi_to_irq, cpu)[vector];
--	BUG_ON(irq < 0);
--	notify_remote_via_irq(irq);
-+	evtchn = per_cpu(ipi_to_evtchn, cpu)[vector];
-+	BUG_ON(evtchn == 0);
-+	notify_remote_via_evtchn(evtchn);
- }
  
- struct evtchn_loop_ctrl {
++	if (data->evt_skb == NULL)
++		goto err_free_wc;
++
+ 	/* Parse and handle the return WMT event */
+ 	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
+ 	if (wmt_evt->whdr.op != hdr->op) {
 -- 
 2.42.0
 
