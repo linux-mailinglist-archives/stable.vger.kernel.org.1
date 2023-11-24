@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-2271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97B87F8379
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195947F8401
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A458B25E8F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9E5C289ECC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB6C381D4;
-	Fri, 24 Nov 2023 19:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FA1364C4;
+	Fri, 24 Nov 2023 19:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJ0wQgvN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMLkfqxe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F45935EE6;
-	Fri, 24 Nov 2023 19:17:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D542AC433C9;
-	Fri, 24 Nov 2023 19:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A74F33E9;
+	Fri, 24 Nov 2023 19:23:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA23C433CB;
+	Fri, 24 Nov 2023 19:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853476;
-	bh=TsG4MFf+e71QS8Lto60vpXPYaSMfd4gysJVn/S2Sjx0=;
+	s=korg; t=1700853785;
+	bh=j4sao/GlXl6eygAmoFRO11thY1UFaHj+vIuL3WMpel8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJ0wQgvNokkzRA3mOVFFjjq8UAdWPVmDO7sWCTkylbI/rwzg5F0LK4zmTy0Kfo2hX
-	 uztab2lK/6H6G/sWJuiniAnxSS6J2kuBMjk77o3zk9rMCsideke2NtT3zHPNMrXVcH
-	 f0o8RbixmzXxBAVoTfBn3fUYNPLOjxdjxBoIl4oY=
+	b=xMLkfqxeT/ex6SjDaJep7HoBXfOPJ7trfj9EEwxuBmH8Vgwh9KUKOzhby8UoWVXAA
+	 M4OO+PdNxMJRchQe/ZY5Y9H6ak7jcGr+4h2HLoBX+O5KzGvi7GmgkkH3//26X/pYx3
+	 C2ARv9QwCWee90MEvD+EYGVm7v6RUbHic6V6vSGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.15 203/297] genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
-Date: Fri, 24 Nov 2023 17:54:05 +0000
-Message-ID: <20231124172007.314539292@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 029/159] atm: iphase: Do PCI error checks on own line
+Date: Fri, 24 Nov 2023 17:54:06 +0000
+Message-ID: <20231124171943.094364026@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,89 +51,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 5e7afb2eb7b2a7c81e9f608cbdf74a07606fd1b5 upstream.
+[ Upstream commit c28742447ca9879b52fbaf022ad844f0ffcd749c ]
 
-irq_remove_generic_chip() calculates the Linux interrupt number for removing the
-handler and interrupt chip based on gc::irq_base as a linear function of
-the bit positions of set bits in the @msk argument.
+In get_esi() PCI errors are checked inside line-split "if" conditions (in
+addition to the file not following the coding style). To make the code in
+get_esi() more readable, fix the coding style and use the usual error
+handling pattern with a separate variable.
 
-When the generic chip is present in an irq domain, i.e. created with a call
-to irq_alloc_domain_generic_chips(), gc::irq_base contains not the base
-Linux interrupt number.  It contains the base hardware interrupt for this
-chip. It is set to 0 for the first chip in the domain, 0 + N for the next
-chip, where $N is the number of hardware interrupts per chip.
+In addition, initialization of 'error' variable at declaration is not
+needed.
 
-That means the Linux interrupt number cannot be calculated based on
-gc::irq_base for irqdomain based chips without a domain map lookup, which
-is currently missing.
+No functional changes intended.
 
-Rework the code to take the irqdomain case into account and calculate the
-Linux interrupt number by a irqdomain lookup of the domain specific
-hardware interrupt number.
-
-[ tglx: Massage changelog. Reshuffle the logic and add a proper comment. ]
-
-Fixes: cfefd21e693d ("genirq: Add chip suspend and resume callbacks")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231024150335.322282-1-herve.codina@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230911125354.25501-4-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/irq/generic-chip.c |   25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ drivers/atm/iphase.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/kernel/irq/generic-chip.c
-+++ b/kernel/irq/generic-chip.c
-@@ -541,21 +541,34 @@ EXPORT_SYMBOL_GPL(irq_setup_alt_chip);
- void irq_remove_generic_chip(struct irq_chip_generic *gc, u32 msk,
- 			     unsigned int clr, unsigned int set)
- {
--	unsigned int i = gc->irq_base;
-+	unsigned int i, virq;
- 
- 	raw_spin_lock(&gc_lock);
- 	list_del(&gc->list);
- 	raw_spin_unlock(&gc_lock);
- 
--	for (; msk; msk >>= 1, i++) {
-+	for (i = 0; msk; msk >>= 1, i++) {
- 		if (!(msk & 0x01))
- 			continue;
- 
-+		/*
-+		 * Interrupt domain based chips store the base hardware
-+		 * interrupt number in gc::irq_base. Otherwise gc::irq_base
-+		 * contains the base Linux interrupt number.
-+		 */
-+		if (gc->domain) {
-+			virq = irq_find_mapping(gc->domain, gc->irq_base + i);
-+			if (!virq)
-+				continue;
-+		} else {
-+			virq = gc->irq_base + i;
-+		}
-+
- 		/* Remove handler first. That will mask the irq line */
--		irq_set_handler(i, NULL);
--		irq_set_chip(i, &no_irq_chip);
--		irq_set_chip_data(i, NULL);
--		irq_modify_status(i, clr, set);
-+		irq_set_handler(virq, NULL);
-+		irq_set_chip(virq, &no_irq_chip);
-+		irq_set_chip_data(virq, NULL);
-+		irq_modify_status(virq, clr, set);
- 	}
- }
- EXPORT_SYMBOL_GPL(irq_remove_generic_chip);
+diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
+index 46990352b5d3f..bfc889367d5e3 100644
+--- a/drivers/atm/iphase.c
++++ b/drivers/atm/iphase.c
+@@ -2290,19 +2290,21 @@ static int get_esi(struct atm_dev *dev)
+ static int reset_sar(struct atm_dev *dev)  
+ {  
+ 	IADEV *iadev;  
+-	int i, error = 1;  
++	int i, error;
+ 	unsigned int pci[64];  
+ 	  
+ 	iadev = INPH_IA_DEV(dev);  
+-	for(i=0; i<64; i++)  
+-	  if ((error = pci_read_config_dword(iadev->pci,  
+-				i*4, &pci[i])) != PCIBIOS_SUCCESSFUL)  
+-  	      return error;  
++	for (i = 0; i < 64; i++) {
++		error = pci_read_config_dword(iadev->pci, i * 4, &pci[i]);
++		if (error != PCIBIOS_SUCCESSFUL)
++			return error;
++	}
+ 	writel(0, iadev->reg+IPHASE5575_EXT_RESET);  
+-	for(i=0; i<64; i++)  
+-	  if ((error = pci_write_config_dword(iadev->pci,  
+-					i*4, pci[i])) != PCIBIOS_SUCCESSFUL)  
+-	    return error;  
++	for (i = 0; i < 64; i++) {
++		error = pci_write_config_dword(iadev->pci, i * 4, pci[i]);
++		if (error != PCIBIOS_SUCCESSFUL)
++			return error;
++	}
+ 	udelay(5);  
+ 	return 0;  
+ }  
+-- 
+2.42.0
+
 
 
 
