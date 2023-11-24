@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818627F7EB1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC427F804D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9BF9B217F8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBDACB2161F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F0933CDB;
-	Fri, 24 Nov 2023 18:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B983381D4;
+	Fri, 24 Nov 2023 18:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/wsA0cM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZF/dPB+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9B32E655;
-	Fri, 24 Nov 2023 18:35:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C4DC433C7;
-	Fri, 24 Nov 2023 18:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7311D364BA;
+	Fri, 24 Nov 2023 18:48:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936F6C433C9;
+	Fri, 24 Nov 2023 18:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850903;
-	bh=8tiTggMb3brTZ1Y1TV+P9Rboi1yQHGKUzxyRyqO046M=;
+	s=korg; t=1700851712;
+	bh=meq6cS9Ns9eFgdQCEUZ9VE1H32wBBBGf6pAmQMtyCjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/wsA0cM6UNiAev4Ge8XE1L73GPygYBQHtcLmNmrdY7yGa7+37O4nai5ldFiDhR0d
-	 eCK1+SQCHHeyykQYc53OLnxv+DefJdJAOPZFFYlqWcgmm//AgQdEWnhXuZUI4bAFML
-	 +ctzC7+M+xShH2dZDk1yFdqqjLWmyNy9IPN1/q28=
+	b=xZF/dPB+XfCZMtwsr2wNdkxEvwi2Y1lBUZOfjEptY7uYTLLd3i0Ca0ROWqDya9aCk
+	 c7dzkV11KaFWLELJNFhhKGmAsrX+7Gu21A4T34n/rFu/VGpsbwz0QFkyQ+smWXPOLx
+	 j957uPBtqMnIiWPo+6vK/qcMZgIJeLmoWpF0AczQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+79d792676d8ac050949f@syzkaller.appspotmail.com,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 217/491] macvlan: Dont propagate promisc change to lower dev in passthru
+Subject: [PATCH 6.1 066/372] jfs: fix array-index-out-of-bounds in diAlloc
 Date: Fri, 24 Nov 2023 17:47:33 +0000
-Message-ID: <20231124172031.062217664@linuxfoundation.org>
+Message-ID: <20231124172012.675453448@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,63 +54,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-[ Upstream commit 7e1caeace0418381f36b3aa8403dfd82fc57fc53 ]
+[ Upstream commit 05d9ea1ceb62a55af6727a69269a4fd310edf483 ]
 
-Macvlan device in passthru mode sets its lower device promiscuous mode
-according to its MACVLAN_FLAG_NOPROMISC flag instead of synchronizing it to
-its own promiscuity setting. However, macvlan_change_rx_flags() function
-doesn't check the mode before propagating such changes to the lower device
-which can cause net_device->promiscuity counter overflow as illustrated by
-reproduction example [0] and resulting dmesg log [1]. Fix the issue by
-first verifying the mode in macvlan_change_rx_flags() function before
-propagating promiscuous mode change to the lower device.
+Currently there is not check against the agno of the iag while
+allocating new inodes to avoid fragmentation problem. Added the check
+which is required.
 
-[0]:
-ip link add macvlan1 link enp8s0f0 type macvlan mode passthru
-ip link set macvlan1 promisc on
-ip l set dev macvlan1 up
-ip link set macvlan1 promisc off
-ip l set dev macvlan1 down
-ip l set dev macvlan1 up
-
-[1]:
-[ 5156.281724] macvlan1: entered promiscuous mode
-[ 5156.285467] mlx5_core 0000:08:00.0 enp8s0f0: entered promiscuous mode
-[ 5156.287639] macvlan1: left promiscuous mode
-[ 5156.288339] mlx5_core 0000:08:00.0 enp8s0f0: left promiscuous mode
-[ 5156.290907] mlx5_core 0000:08:00.0 enp8s0f0: entered promiscuous mode
-[ 5156.317197] mlx5_core 0000:08:00.0 enp8s0f0: promiscuity touches roof, set promiscuity failed. promiscuity feature of device might be broken.
-
-Fixes: efdbd2b30caa ("macvlan: Propagate promiscuity setting to lower devices.")
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231114175915.1649154-1-vladbu@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+79d792676d8ac050949f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=79d792676d8ac050949f
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macvlan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_imap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
-index ed908165a8b4e..347f288350619 100644
---- a/drivers/net/macvlan.c
-+++ b/drivers/net/macvlan.c
-@@ -780,7 +780,7 @@ static void macvlan_change_rx_flags(struct net_device *dev, int change)
- 	if (dev->flags & IFF_UP) {
- 		if (change & IFF_ALLMULTI)
- 			dev_set_allmulti(lowerdev, dev->flags & IFF_ALLMULTI ? 1 : -1);
--		if (change & IFF_PROMISC)
-+		if (!macvlan_passthru(vlan->port) && change & IFF_PROMISC)
- 			dev_set_promiscuity(lowerdev,
- 					    dev->flags & IFF_PROMISC ? 1 : -1);
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 4899663996d81..6ed2e1d4c894f 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -1320,7 +1320,7 @@ diInitInode(struct inode *ip, int iagno, int ino, int extno, struct iag * iagp)
+ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
+ {
+ 	int rc, ino, iagno, addext, extno, bitno, sword;
+-	int nwords, rem, i, agno;
++	int nwords, rem, i, agno, dn_numag;
+ 	u32 mask, inosmap, extsmap;
+ 	struct inode *ipimap;
+ 	struct metapage *mp;
+@@ -1356,6 +1356,9 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
  
+ 	/* get the ag number of this iag */
+ 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
++	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
++	if (agno < 0 || agno > dn_numag)
++		return -EIO;
+ 
+ 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
+ 		/*
 -- 
 2.42.0
 
