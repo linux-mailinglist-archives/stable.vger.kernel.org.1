@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BBBE7F8144
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D627F7D6F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D62C1C21666
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8B0F282200
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8975F35F04;
-	Fri, 24 Nov 2023 18:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEE53A8D6;
+	Fri, 24 Nov 2023 18:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1C0DXjF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T02gKX1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460A42EAEA;
-	Fri, 24 Nov 2023 18:57:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58B4C433C8;
-	Fri, 24 Nov 2023 18:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E33C381BF;
+	Fri, 24 Nov 2023 18:24:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0433C433C7;
+	Fri, 24 Nov 2023 18:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852222;
-	bh=Mu9w67G/hVG5FCjiLPFJ1WT0XHjLYicHOdS14QGfmI8=;
+	s=korg; t=1700850273;
+	bh=JQYihaSfpUzg7orPlW2bZOYJFdVAcu1T0CnCoJ90KL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X1C0DXjFEzGsFQ7gwMjPJsacPAcbjsdmduzOpilEe/T82N7xZ69XvRyTh7LGBhSKn
-	 swFLdUFjlqJ4jR/pVCT1Gv7xe7902+Q0E/y9OSnXAlU7RMyorxvfyt4pwAeutWZpnc
-	 mA7Z/GReOfu0G2sFWNRhabXZZSXcKIPSL56Ce634=
+	b=T02gKX1PeSfizGBGIPLv/rdjnnBfqUogwMKkrp4Vc0oCpfyrVNy6t/6KroWfF6kJs
+	 WVtjPqmxDNq9hT6rcmijmdYb4tBsxwS21dx0DWGQk24hGxp+cROLGJ+/My+1mOocAx
+	 Qe159bo3nGJa33L3qoxYDermKQJmoRAAN9ukZB+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 268/372] smb3: fix creating FIFOs when mounting with "sfu" mount option
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 489/530] media: qcom: camss: Fix missing vfe_lite clocks check
 Date: Fri, 24 Nov 2023 17:50:55 +0000
-Message-ID: <20231124172019.412644058@linuxfoundation.org>
+Message-ID: <20231124172042.998342785@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,86 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 72bc63f5e23a38b65ff2a201bdc11401d4223fa9 upstream.
+commit b6e1bdca463a932c1ac02caa7d3e14bf39288e0c upstream.
 
-Fixes some xfstests including generic/564 and generic/157
+check_clock doesn't account for vfe_lite which means that vfe_lite will
+never get validated by this routine. Add the clock name to the expected set
+to remediate.
 
-The "sfu" mount option can be useful for creating special files (character
-and block devices in particular) but could not create FIFOs. It did
-recognize existing empty files with the "system" attribute flag as FIFOs
-but this is too general, so to support creating FIFOs more safely use a new
-tag (but the same length as those for char and block devices ie "IntxLNK"
-and "IntxBLK") "LnxFIFO" to indicate that the file should be treated as a
-FIFO (when mounted with the "sfu").   For some additional context note that
-"sfu" followed the way that "Services for Unix" on Windows handled these
-special files (at least for character and block devices and symlinks),
-which is different than newer Windows which can handle special files
-as reparse points (which isn't an option to many servers).
-
+Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
 Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifspdu.h |    2 +-
- fs/smb/client/inode.c   |    4 ++++
- fs/smb/client/smb2ops.c |    8 +++++++-
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/camss/camss-vfe.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/cifspdu.h
-+++ b/fs/smb/client/cifspdu.h
-@@ -2570,7 +2570,7 @@ typedef struct {
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -535,7 +535,8 @@ static int vfe_check_clock_rates(struct
+ 		struct camss_clock *clock = &vfe->clock[i];
  
+ 		if (!strcmp(clock->name, "vfe0") ||
+-		    !strcmp(clock->name, "vfe1")) {
++		    !strcmp(clock->name, "vfe1") ||
++		    !strcmp(clock->name, "vfe_lite")) {
+ 			u64 min_rate = 0;
+ 			unsigned long rate;
  
- struct win_dev {
--	unsigned char type[8]; /* IntxCHR or IntxBLK */
-+	unsigned char type[8]; /* IntxCHR or IntxBLK or LnxFIFO*/
- 	__le64 major;
- 	__le64 minor;
- } __attribute__((packed));
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -567,6 +567,10 @@ cifs_sfu_type(struct cifs_fattr *fattr,
- 			cifs_dbg(FYI, "Symlink\n");
- 			fattr->cf_mode |= S_IFLNK;
- 			fattr->cf_dtype = DT_LNK;
-+		} else if (memcmp("LnxFIFO", pbuf, 8) == 0) {
-+			cifs_dbg(FYI, "FIFO\n");
-+			fattr->cf_mode |= S_IFIFO;
-+			fattr->cf_dtype = DT_FIFO;
- 		} else {
- 			fattr->cf_mode |= S_IFREG; /* file? */
- 			fattr->cf_dtype = DT_REG;
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -5215,7 +5215,7 @@ smb2_make_node(unsigned int xid, struct
- 	 * over SMB2/SMB3 and Samba will do this with SMB3.1.1 POSIX Extensions
- 	 */
- 
--	if (!S_ISCHR(mode) && !S_ISBLK(mode))
-+	if (!S_ISCHR(mode) && !S_ISBLK(mode) && !S_ISFIFO(mode))
- 		return rc;
- 
- 	cifs_dbg(FYI, "sfu compat create special file\n");
-@@ -5263,6 +5263,12 @@ smb2_make_node(unsigned int xid, struct
- 		pdev->minor = cpu_to_le64(MINOR(dev));
- 		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
- 							&bytes_written, iov, 1);
-+	} else if (S_ISFIFO(mode)) {
-+		memcpy(pdev->type, "LnxFIFO", 8);
-+		pdev->major = 0;
-+		pdev->minor = 0;
-+		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
-+							&bytes_written, iov, 1);
- 	}
- 	tcon->ses->server->ops->close(xid, tcon, &fid);
- 	d_drop(dentry);
 
 
 
