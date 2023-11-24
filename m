@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1894E7F7AEB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60CD27F7F9A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACC7DB2103F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908D11C21447
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E506D39FEF;
-	Fri, 24 Nov 2023 18:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B0A2D787;
+	Fri, 24 Nov 2023 18:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6KsXeKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRhW6bgn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E28D39FD9;
-	Fri, 24 Nov 2023 18:00:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABC7C433C8;
-	Fri, 24 Nov 2023 18:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C1B364C1;
+	Fri, 24 Nov 2023 18:42:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8979C433C8;
+	Fri, 24 Nov 2023 18:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848801;
-	bh=tLbKj48GaaxA68sw+q2MZ56+8M3MgVP8q3ozOKeC0F4=;
+	s=korg; t=1700851374;
+	bh=L1i3RITl47cD3NmIRTu3hAeIpAVec2p0Y6Db3E5HP24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6KsXeKSo2IX6BG7Io+BHE87swYFKlrT/4gRu0wZ5yxUv1UYqEP9jmMP1x/f9SRZc
-	 KpE22OxMVVEViK+mijFadpAqzXTD1+dYlHOkWBwIfWUo3/r+XiGPeguKEthCKwC0Th
-	 kvhIRDUuIWRazhhhWZnMIheW7ZHOnjIJYBNBke7Q=
+	b=aRhW6bgn6yENyfYi5HacQfvQ0CJFqOh1MzWdr/3qNU3X7EG3pxeS9YMvTJT+DwX3e
+	 6Zff3jSa6D/nBOkS0MmQhOqxxUegTrSm2Ml4n2NzwlC3AeOytxy28mSEtNm4GiNUzk
+	 vc0rk+PwB4A9KGb2GZv2pUehxH2T5HM+48C+LkMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vikash Garodia <quic_vgarodia@quicinc.com>,
 	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 4.19 86/97] media: venus: hfi_parser: Add check to keep the number of codecs within range
+Subject: [PATCH 6.5 423/491] media: venus: hfi_parser: Add check to keep the number of codecs within range
 Date: Fri, 24 Nov 2023 17:50:59 +0000
-Message-ID: <20231124171937.400700755@linuxfoundation.org>
+Message-ID: <20231124172037.322262821@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -82,7 +82,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 --- a/drivers/media/platform/qcom/venus/hfi_parser.c
 +++ b/drivers/media/platform/qcom/venus/hfi_parser.c
 @@ -19,6 +19,9 @@ static void init_codecs(struct venus_cor
- 	struct venus_caps *caps = core->caps, *cap;
+ 	struct hfi_plat_caps *caps = core->caps, *cap;
  	unsigned long bit;
  
 +	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
