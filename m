@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-2091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78FB7F82BD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:10:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C97C7F82B1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:10:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05A621C23E62
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07B98285E54
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE923364C8;
-	Fri, 24 Nov 2023 19:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F7335F04;
+	Fri, 24 Nov 2023 19:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afEFV82A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFv4t1yZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FFE2E64F;
-	Fri, 24 Nov 2023 19:10:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1714FC43391;
-	Fri, 24 Nov 2023 19:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FC3364A7;
+	Fri, 24 Nov 2023 19:09:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EFCC433D9;
+	Fri, 24 Nov 2023 19:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853025;
-	bh=xNXHf0GVgaoJbCFTBzH7+70z7HPRyUT6VVQQRkY89YM=;
+	s=korg; t=1700852997;
+	bh=Gb0zasWQLpYNTfwR6/8xC533yLLpudLbfkYz69gXwU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afEFV82AOfRa6ozKiLUrcYYy8iA9yRoVSpURN2FUww+wtTPC8/hMKWfwcaBWex5ET
-	 S90qjYsZoIwY6Nx4WrttQBGp91N6dZsm07XEOX6YswaKKbhl8dEEJYasSxBt3POiC8
-	 +JuGj/uwe30xJkX86yMvv+bL6XxnY2GXueBaQk0Y=
+	b=YFv4t1yZkd/MjVVRh4eJhA/Ubkn3gNRJeK121rBNWrmbG7qZ5GG4pomGQ/vatnO1W
+	 sC9xuIowmJWnNma78AfgbZhlruaNuOLmGEwnJnmM8R3Y26AMtM6YmWVapytDKv2hC8
+	 izB9PjDyyIu1TLw9jyLSMIChDt/ho5QaAFXm/zPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/297] wifi: ath10k: fix clang-specific fortify warning
-Date: Fri, 24 Nov 2023 17:50:54 +0000
-Message-ID: <20231124172000.536533625@linuxfoundation.org>
+Subject: [PATCH 5.15 013/297] net: annotate data-races around sk->sk_tx_queue_mapping
+Date: Fri, 24 Nov 2023 17:50:55 +0000
+Message-ID: <20231124172000.567634147@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
 References: <20231124172000.087816911@linuxfoundation.org>
@@ -58,58 +57,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cb4c132ebfeac5962f7258ffc831caa0c4dada1a ]
+[ Upstream commit 0bb4d124d34044179b42a769a0c76f389ae973b6 ]
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+This field can be read or written without socket lock being held.
 
-In file included from drivers/net/wireless/ath/ath10k/debug.c:8:
-In file included from ./include/linux/module.h:13:
-In file included from ./include/linux/stat.h:19:
-In file included from ./include/linux/time.h:60:
-In file included from ./include/linux/time32.h:13:
-In file included from ./include/linux/timex.h:67:
-In file included from ./arch/x86/include/asm/timex.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+Add annotations to avoid load-store tearing.
 
-The compiler actually complains on 'ath10k_debug_get_et_strings()' where
-fortification logic inteprets call to 'memcpy()' as an attempt to copy
-the whole 'ath10k_gstrings_stats' array from it's first member and so
-issues an overread warning. This warning may be silenced by passing
-an address of the whole array and not the first member to 'memcpy()'.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230829093652.234537-1-dmantipov@yandex.ru
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/sock.h | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index 39378e3f9b2bb..6e1b65b8ae656 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -1139,7 +1139,7 @@ void ath10k_debug_get_et_strings(struct ieee80211_hw *hw,
- 				 u32 sset, u8 *data)
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 640bd7a367779..d148dc95c9e9c 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1923,21 +1923,33 @@ static inline void sk_tx_queue_set(struct sock *sk, int tx_queue)
+ 	/* sk_tx_queue_mapping accept only upto a 16-bit value */
+ 	if (WARN_ON_ONCE((unsigned short)tx_queue >= USHRT_MAX))
+ 		return;
+-	sk->sk_tx_queue_mapping = tx_queue;
++	/* Paired with READ_ONCE() in sk_tx_queue_get() and
++	 * other WRITE_ONCE() because socket lock might be not held.
++	 */
++	WRITE_ONCE(sk->sk_tx_queue_mapping, tx_queue);
+ }
+ 
+ #define NO_QUEUE_MAPPING	USHRT_MAX
+ 
+ static inline void sk_tx_queue_clear(struct sock *sk)
  {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath10k_gstrings_stats,
-+		memcpy(data, ath10k_gstrings_stats,
- 		       sizeof(ath10k_gstrings_stats));
+-	sk->sk_tx_queue_mapping = NO_QUEUE_MAPPING;
++	/* Paired with READ_ONCE() in sk_tx_queue_get() and
++	 * other WRITE_ONCE() because socket lock might be not held.
++	 */
++	WRITE_ONCE(sk->sk_tx_queue_mapping, NO_QUEUE_MAPPING);
+ }
+ 
+ static inline int sk_tx_queue_get(const struct sock *sk)
+ {
+-	if (sk && sk->sk_tx_queue_mapping != NO_QUEUE_MAPPING)
+-		return sk->sk_tx_queue_mapping;
++	if (sk) {
++		/* Paired with WRITE_ONCE() in sk_tx_queue_clear()
++		 * and sk_tx_queue_set().
++		 */
++		int val = READ_ONCE(sk->sk_tx_queue_mapping);
+ 
++		if (val != NO_QUEUE_MAPPING)
++			return val;
++	}
+ 	return -1;
  }
  
 -- 
