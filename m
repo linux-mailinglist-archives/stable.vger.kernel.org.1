@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803E47F8157
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE9887F7B38
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A11E28262E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8104EB20EE0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF68E33CC2;
-	Fri, 24 Nov 2023 18:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950F42AF00;
+	Fri, 24 Nov 2023 18:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0x3gYz0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+KmluZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837BD2C87B;
-	Fri, 24 Nov 2023 18:57:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10174C433C7;
-	Fri, 24 Nov 2023 18:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 477F82D787;
+	Fri, 24 Nov 2023 18:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5036C433C9;
+	Fri, 24 Nov 2023 18:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852266;
-	bh=Czh9FNdNN8BqurtTGUUYoVnCMdGB4ihBSSNmjfFkpzY=;
+	s=korg; t=1700848979;
+	bh=6UhsmQXdPZiHGmOxwdWqWoZrrILameD6ptxu+YkThg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0x3gYz0RQMzqAMI31Ka626N98rIaVCB7xGNTwKsZokJZ7kB7ZYgLu9trSIo6mkhP
-	 xch4Vkiz5DYiXdEYRUdbYQN3EFIiEBHp7+VBUEK/pY9/5TFNfOQiBOrqJjRjBD/svv
-	 IXJKzzx4LqbJZOHeIRrGJSaqKYaBhanTrDaY0mmE=
+	b=L+KmluZs6Y28HWTadDGiJm7lStp8SpHrssJ72XkySca1zwMGrwcIGiudXkhGQH8qw
+	 h+gRTnBJBUQqwP/lJa9dY7fsRh7q96K7iOT+n0YW81m5+DlLlDGNaKc5fmdFzCDETn
+	 729c4IxQvp1c+MeoGy+LOOOzycUpipe2C8X/X7ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 287/372] clk: visconti: remove unused visconti_pll_provider::regmap
+	Joe Ferner <joe.m.ferner@gmail.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 4.14 50/57] media: sharp: fix sharp encoding
 Date: Fri, 24 Nov 2023 17:51:14 +0000
-Message-ID: <20231124172019.989239191@linuxfoundation.org>
+Message-ID: <20231124171932.159789782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+From: Sean Young <sean@mess.org>
 
-[ Upstream commit 7e626a080bb2db47c27c29fea569ff18afec52ed ]
+commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
 
-Field regmap of struct visconti_pll_provider is never used. Remove it.
+The Sharp protocol[1] encoding has incorrect timings for bit space.
 
-Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+[1] https://www.sbprojects.net/knowledge/ir/sharp.php
 
-Link: https://lore.kernel.org/r/20230302205028.2539197-1-dario.binacchi@amarulasolutions.com
-Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 5ad1e217a2b2 ("clk: visconti: Fix undefined behavior bug in struct visconti_pll_provider")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
+Cc: stable@vger.kernel.org
+Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
+Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/visconti/pll.h | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/visconti/pll.h b/drivers/clk/visconti/pll.h
-index 16dae35ab3701..01d07f1bf01b1 100644
---- a/drivers/clk/visconti/pll.h
-+++ b/drivers/clk/visconti/pll.h
-@@ -15,7 +15,6 @@
+--- a/drivers/media/rc/ir-sharp-decoder.c
++++ b/drivers/media/rc/ir-sharp-decoder.c
+@@ -23,7 +23,9 @@
+ #define SHARP_UNIT		40000  /* ns */
+ #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
+ #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
+-#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
++#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
++#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
++#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
+ #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
+ #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
  
- struct visconti_pll_provider {
- 	void __iomem *reg_base;
--	struct regmap *regmap;
- 	struct clk_hw_onecell_data clk_data;
- 	struct device_node *node;
- };
--- 
-2.42.0
-
+@@ -177,8 +179,8 @@ static const struct ir_raw_timings_pd ir
+ 	.header_pulse  = 0,
+ 	.header_space  = 0,
+ 	.bit_pulse     = SHARP_BIT_PULSE,
+-	.bit_space[0]  = SHARP_BIT_0_PERIOD,
+-	.bit_space[1]  = SHARP_BIT_1_PERIOD,
++	.bit_space[0]  = SHARP_BIT_0_SPACE,
++	.bit_space[1]  = SHARP_BIT_1_SPACE,
+ 	.trailer_pulse = SHARP_BIT_PULSE,
+ 	.trailer_space = SHARP_ECHO_SPACE,
+ 	.msb_first     = 1,
 
 
 
