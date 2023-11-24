@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E29F7F7335
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:57:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45D257F7336
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE2F281599
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:56:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA5ADB21274
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FED1200DE;
-	Fri, 24 Nov 2023 11:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BC1200BA;
+	Fri, 24 Nov 2023 11:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zX9WOHoO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BU/2eIGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0058208BD
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089C7C433C8;
-	Fri, 24 Nov 2023 11:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EE41EB50
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B93C433C8;
+	Fri, 24 Nov 2023 11:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700827017;
-	bh=24eRI5bujXwHym439Ra7GT10YUiz5O/r624ZqH9yB6c=;
+	s=korg; t=1700827019;
+	bh=9dU/whr5oGKwfmk/ZIjM4XRkR/mzYc/lVBlEZhbjLZ4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zX9WOHoONmUQfoGTblzUwGUUs9u8jmE/iLLJD/gYpxOmEQOHcQ9OJTPDWzrrlvziD
-	 CdA0bLqHrtC5pzG/o7g6sjJYxs1eWXNY3f3ePJBmidt9Ma75+KoDn+HAszL7yj1LB/
-	 e1YIGGoHVso1PAm8pGq7qWZy+UIeo3eSoG/qokEE=
-Subject: FAILED: patch "[PATCH] cifs: fix leak of iface for primary channel" failed to apply to 5.4-stable tree
+	b=BU/2eIGooHVnY1EyFhgnLy17TcBfTo3NTyAxZqppx6M3wpE8StJCWTpvBrTNkMls6
+	 /KF9xDjHRt92ssMsJXqT+fMyrtjbD0njE0aY9YuwKXAJImAFXzmx2HS1/Wn4CCmz5+
+	 95Ao94AUR79dRibYy1IO2Y8eC2YvMma0eHl+aAgs=
+Subject: FAILED: patch "[PATCH] cifs: fix leak of iface for primary channel" failed to apply to 4.19-stable tree
 To: sprasad@microsoft.com,pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 11:56:37 +0000
-Message-ID: <2023112437-trophy-audibly-8c57@gregkh>
+Date: Fri, 24 Nov 2023 11:56:38 +0000
+Message-ID: <2023112438-prankster-similarly-0617@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 29954d5b1e0d67a4cd61c30c2201030c97e94b1e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112437-trophy-audibly-8c57@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112438-prankster-similarly-0617@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
