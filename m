@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-1524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853947F8021
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A466D7F7E4D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7A291C214FA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3CA31C21380
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3E0364DE;
-	Fri, 24 Nov 2023 18:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC253A8C3;
+	Fri, 24 Nov 2023 18:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRlAMn1L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3wu5wWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E2933CC2;
-	Fri, 24 Nov 2023 18:46:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCECC433C8;
-	Fri, 24 Nov 2023 18:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97CB3A8C9;
+	Fri, 24 Nov 2023 18:31:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389DDC433C7;
+	Fri, 24 Nov 2023 18:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851615;
-	bh=RFH9b+6uWYWxhdVvCCkTMFNNxGJIe6zQp635WZVCy+8=;
+	s=korg; t=1700850706;
+	bh=2GOdE/JN6gcHKTjbSPI7yEnGVG28J9fv3h6rFDB68Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WRlAMn1Lzw8d111J0I6cxE3mUThz/AqBHCFEIOk1qFjNt5PUOHyXHlpBCgGDFNCkE
-	 Qx2ebPq9IuNEs4AQrF1qOuZ0nUCIoUG3TJYoab+5wS/Mtrtk4b0l8NbDEw1LKQOVBI
-	 MZaV5kSR4uitDnxPOhBR2/VZaaqavvNsZbOYoiIg=
+	b=W3wu5wWNMCyrp2aaojRqRNnTYLUh/Y1yOJ/Dm0yzgbbG1vPMceMmUrmYi7TkrtyxZ
+	 q44XpAQuQ4xjD/dyFjYLtqI/hYpXSRKIiAulWGdPlxJZbbjvqvPi0lt7Ih7qy9Flen
+	 IQLjyM2ieHhBgklRzARD97dNtbOggCdr/jRcHJfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Denis Arefev <arefev@swemel.ru>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	David Laight <David.Laight@aculab.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/372] srcu: Fix srcu_struct node grpmask overflow on 64-bit systems
+Subject: [PATCH 6.5 156/491] SUNRPC: ECONNRESET might require a rebind
 Date: Fri, 24 Nov 2023 17:46:32 +0000
-Message-ID: <20231124172010.615359939@linuxfoundation.org>
+Message-ID: <20231124172029.159829496@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,68 +52,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Denis Arefev <arefev@swemel.ru>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit d8d5b7bf6f2105883bbd91bbd4d5b67e4e3dff71 ]
+[ Upstream commit 4b09ca1508a60be30b2e3940264e93d7aeb5c97e ]
 
-The value of a bitwise expression 1 << (cpu - sdp->mynode->grplo)
-is subject to overflow due to a failure to cast operands to a larger
-data type before performing the bitwise operation.
+If connect() is returning ECONNRESET, it usually means that nothing is
+listening on that port. If so, a rebind might be required in order to
+obtain the new port on which the RPC service is listening.
 
-The maximum result of this subtraction is defined by the RCU_FANOUT_LEAF
-Kconfig option, which on 64-bit systems defaults to 16 (resulting in a
-maximum shift of 15), but which can be set up as high as 64 (resulting
-in a maximum shift of 63).  A value of 31 can result in sign extension,
-resulting in 0xffffffff80000000 instead of the desired 0x80000000.
-A value of 32 or greater triggers undefined behavior per the C standard.
-
-This bug has not been known to cause issues because almost all kernels
-take the default CONFIG_RCU_FANOUT_LEAF=16.  Furthermore, as long as a
-given compiler gives a deterministic non-zero result for 1<<N for N>=32,
-the code correctly invokes all SRCU callbacks, albeit wasting CPU time
-along the way.
-
-This commit therefore substitutes the correct 1UL for the buggy 1.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Cc: David Laight <David.Laight@aculab.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Fixes: fd01b2597941 ("SUNRPC: ECONNREFUSED should cause a rebind.")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/srcutree.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sunrpc/clnt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index ce60cdf069e3a..94da8e13b71fb 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -223,7 +223,7 @@ static bool init_srcu_struct_nodes(struct srcu_struct *ssp, gfp_t gfp_flags)
- 				snp->grplo = cpu;
- 			snp->grphi = cpu;
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index 9fb0ccabc1a26..2e3b7b2c1b431 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -2169,6 +2169,7 @@ call_connect_status(struct rpc_task *task)
+ 	task->tk_status = 0;
+ 	switch (status) {
+ 	case -ECONNREFUSED:
++	case -ECONNRESET:
+ 		/* A positive refusal suggests a rebind is needed. */
+ 		if (RPC_IS_SOFTCONN(task))
+ 			break;
+@@ -2177,7 +2178,6 @@ call_connect_status(struct rpc_task *task)
+ 			goto out_retry;
  		}
--		sdp->grpmask = 1 << (cpu - sdp->mynode->grplo);
-+		sdp->grpmask = 1UL << (cpu - sdp->mynode->grplo);
- 	}
- 	smp_store_release(&ssp->srcu_size_state, SRCU_SIZE_WAIT_BARRIER);
- 	return true;
-@@ -722,7 +722,7 @@ static void srcu_schedule_cbs_snp(struct srcu_struct *ssp, struct srcu_node *snp
- 	int cpu;
- 
- 	for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
--		if (!(mask & (1 << (cpu - snp->grplo))))
-+		if (!(mask & (1UL << (cpu - snp->grplo))))
- 			continue;
- 		srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
- 	}
+ 		fallthrough;
+-	case -ECONNRESET:
+ 	case -ECONNABORTED:
+ 	case -ENETDOWN:
+ 	case -ENETUNREACH:
 -- 
 2.42.0
 
