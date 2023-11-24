@@ -1,333 +1,119 @@
-Return-Path: <stable+bounces-421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74F2B7F7B01
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631E77F7AC5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5919B210D8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94F8D1C20932
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73EA39FEA;
-	Fri, 24 Nov 2023 18:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F1E39FD0;
+	Fri, 24 Nov 2023 17:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVKjc0HA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r29FxDFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8655B39FD9;
-	Fri, 24 Nov 2023 18:00:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26C7C433C8;
-	Fri, 24 Nov 2023 18:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDED381DF;
+	Fri, 24 Nov 2023 17:58:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA49EC433C8;
+	Fri, 24 Nov 2023 17:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848855;
-	bh=xBr4XeOuzK4FAy5mOcDeA+gxsPVqVEpf2nAAaLpY9kI=;
-	h=From:To:Cc:Subject:Date:From;
-	b=hVKjc0HADlDQqXfEicGt8J6MJsI0Xuf7hQj76p1fbeSxMbaVCN1euiN0mdPGjwr2l
-	 aoksd+m4l3s4ikRhlCcka0B4+4+l0pUvtgqYaaeahjYL1Xt76nZFno1gQkukjjDKxy
-	 WCeyNYO7HPBrugSQoW8AyHQYbiC2VdQLWY93JRVc=
+	s=korg; t=1700848711;
+	bh=BoOcRgJxO4hitAJjFU5Di/qrTTjHEIvBnstmGDd3HIc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=r29FxDFv0V19gaCd46tK+VSpPC0+jM0zZs3qRvKOEji3QeygKyEYeiz/Ofq8rUMw+
+	 s2Er2DiFs+5aS/iWv1ACNXr1h0pdZLh30chNgMWM+gJTlXPduXhhP8aIWlXtuHSSG9
+	 4sNxrO6+/sGHGgBGq6GISkWuM02MRjg5m8llWN24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org
-Subject: [PATCH 4.14 00/57] 4.14.331-rc1 review
+	Andreas Steinmetz <anstein99@googlemail.com>,
+	John Johansen <john.johanse@canonical.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 4.19 51/97] audit: dont take task_lock() in audit_exe_compare() code path
 Date: Fri, 24 Nov 2023 17:50:24 +0000
-Message-ID: <20231124171930.281665051@linuxfoundation.org>
+Message-ID: <20231124171936.058337327@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.331-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-4.14.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 4.14.331-rc1
-X-KernelTest-Deadline: 2023-11-26T17:19+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 4.14.331 release.
-There are 57 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Sun, 26 Nov 2023 17:19:17 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.331-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 4.14.331-rc1
-
-Eric Dumazet <edumazet@google.com>
-    net: sched: fix race condition in qdisc_graft()
-
-Dongli Zhang <dongli.zhang@oracle.com>
-    scsi: virtio_scsi: limit number of hw queues by nr_cpu_ids
-
-Kemeng Shi <shikemeng@huaweicloud.com>
-    ext4: remove gdb backup copy for meta bg in setup_new_flex_group_blocks
-
-Kemeng Shi <shikemeng@huaweicloud.com>
-    ext4: correct return value of ext4_convert_meta_bg
-
-Kemeng Shi <shikemeng@huaweicloud.com>
-    ext4: correct offset of gdb backup in non meta_bg group to update_backups
-
-Max Kellermann <max.kellermann@ionos.com>
-    ext4: apply umask if ACL support is disabled
-
-Vikash Garodia <quic_vgarodia@quicinc.com>
-    media: venus: hfi: fix the check to handle session buffer requirement
-
-Sean Young <sean@mess.org>
-    media: sharp: fix sharp encoding
-
-Heiner Kallweit <hkallweit1@gmail.com>
-    i2c: i801: fix potential race in i801_block_transaction_byte_by_byte
-
-Alexander Sverdlin <alexander.sverdlin@siemens.com>
-    net: dsa: lan9303: consequently nested-lock physical MDIO
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: info: Fix potential deadlock at disconnection
-
-Helge Deller <deller@gmx.de>
-    parisc/power: Fix power soft-off when running on qemu
-
-Helge Deller <deller@gmx.de>
-    parisc/pgtable: Do not drop upper 5 address bits of physical address
-
-Helge Deller <deller@gmx.de>
-    parisc: Prevent booting 64-bit kernels on PA1.x machines
-
-Heiko Carstens <hca@linux.ibm.com>
-    s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
-
-Heiko Carstens <hca@linux.ibm.com>
-    s390/cmma: fix initial kernel address space page table walk
-
-Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
-    mcb: fix error handling for different scenarios when parsing
-
-Zhihao Cheng <chengzhihao1@huawei.com>
-    jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
-
-Herve Codina <herve.codina@bootlin.com>
-    genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
-
-Rong Chen <rong.chen@amlogic.com>
-    mmc: meson-gx: Remove setting of CMD_CFG_ERROR
-
-Brian Geffon <bgeffon@google.com>
-    PM: hibernate: Clean up sync_read handling in snapshot_write_next()
-
-Brian Geffon <bgeffon@google.com>
-    PM: hibernate: Use __get_safe_page() rather than touching the list
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    mmc: vub300: fix an error code
-
-Helge Deller <deller@gmx.de>
-    parisc/power: Add power soft-off when running on qemu
-
-Lukas Wunner <lukas@wunner.de>
-    PCI/sysfs: Protect driver's D3cold preference from user space
-
-David Woodhouse <dwmw@amazon.co.uk>
-    hvc/xen: fix error path in xen_hvc_init() to always register frontend driver
-
-Paul Moore <paul@paul-moore.com>
-    audit: don't WARN_ON_ONCE(!current->mm) in audit_exe_compare()
-
-Paul Moore <paul@paul-moore.com>
-    audit: don't take task_lock() in audit_exe_compare() code path
-
-Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-    KVM: x86: Ignore MSR_AMD64_TW_CFG access
-
-Kees Cook <keescook@chromium.org>
-    randstruct: Fix gcc-plugin performance mode to stay in group
-
-Vikash Garodia <quic_vgarodia@quicinc.com>
-    media: venus: hfi: add checks to perform sanity on queue pointers
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    pwm: Fix double shift bug
-
-Bob Peterson <rpeterso@redhat.com>
-    gfs2: ignore negated quota changes
-
-Hans Verkuil <hverkuil-cisco@xs4all.nl>
-    media: vivid: avoid integer overflow
-
-Rajeshwar R Shinde <coolrrsh@gmail.com>
-    media: gspca: cpia1: shift-out-of-bounds in set_flicker
-
-Axel Lin <axel.lin@ingics.com>
-    i2c: sun6i-p2wi: Prevent potential division by zero
-
-Yi Yang <yiyang13@huawei.com>
-    tty: vcc: Add check for kstrdup() in vcc_probe()
-
-Wenchao Hao <haowenchao2@huawei.com>
-    scsi: libfc: Fix potential NULL pointer dereference in fc_lport_ptp_setup()
-
-Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-    atm: iphase: Do PCI error checks on own line
-
-Cezary Rojewski <cezary.rojewski@intel.com>
-    ALSA: hda: Fix possible null-ptr-deref when assigning a stream
-
-Manas Ghandat <ghandatmanas@gmail.com>
-    jfs: fix array-index-out-of-bounds in diAlloc
-
-Manas Ghandat <ghandatmanas@gmail.com>
-    jfs: fix array-index-out-of-bounds in dbFindLeaf
-
-Juntong Deng <juntong.deng@outlook.com>
-    fs/jfs: Add validity check for db_maxag and db_agpref
-
-Juntong Deng <juntong.deng@outlook.com>
-    fs/jfs: Add check for negative db_l2nbperpage
-
-Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-    RDMA/hfi1: Use FIELD_GET() to extract Link Width
-
-Lu Jialin <lujialin4@huawei.com>
-    crypto: pcrypt - Fix hungtask for PADATA_RESET
-
-zhujun2 <zhujun2@cmss.chinamobile.com>
-    selftests/efivarfs: create-read: fix a resource leak
-
-Mario Limonciello <mario.limonciello@amd.com>
-    drm/amd: Fix UBSAN array-index-out-of-bounds for Polaris and Tonga
-
-Mario Limonciello <mario.limonciello@amd.com>
-    drm/amd: Fix UBSAN array-index-out-of-bounds for SMU7
-
-Eric Dumazet <edumazet@google.com>
-    net: annotate data-races around sk->sk_dst_pending_confirm
-
-Dmitry Antipov <dmantipov@yandex.ru>
-    wifi: ath10k: fix clang-specific fortify warning
-
-Dmitry Antipov <dmantipov@yandex.ru>
-    wifi: ath9k: fix clang-specific fortify warnings
-
-Ping-Ke Shih <pkshih@realtek.com>
-    wifi: mac80211: don't return unset power in ieee80211_get_tx_power()
-
-Mike Rapoport (IBM) <rppt@kernel.org>
-    x86/mm: Drop the 4 MB restriction on minimal NUMA node memory size
-
-Ronald Wahl <ronald.wahl@raritan.com>
-    clocksource/drivers/timer-atmel-tcb: Fix initialization on SAM9 hardware
-
-Jacky Bai <ping.bai@nxp.com>
-    clocksource/drivers/timer-imx-gpt: Fix potential memory leak
-
-John Stultz <jstultz@google.com>
-    locking/ww_mutex/test: Fix potential workqueue corruption
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |  4 ++--
- arch/parisc/kernel/entry.S                         |  7 +++---
- arch/parisc/kernel/head.S                          |  5 ++---
- arch/s390/mm/page-states.c                         | 19 +++++++++++++---
- arch/x86/include/asm/msr-index.h                   |  1 +
- arch/x86/include/asm/numa.h                        |  7 ------
- arch/x86/kvm/x86.c                                 |  2 ++
- arch/x86/mm/numa.c                                 |  7 ------
- crypto/pcrypt.c                                    |  4 ++++
- drivers/atm/iphase.c                               | 20 +++++++++--------
- drivers/clocksource/tcb_clksrc.c                   |  1 +
- drivers/clocksource/timer-imx-gpt.c                | 18 +++++++++++-----
- drivers/gpu/drm/amd/include/pptable.h              |  4 ++--
- drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h | 16 +++++++-------
- drivers/i2c/busses/i2c-i801.c                      | 19 ++++++++--------
- drivers/i2c/busses/i2c-sun6i-p2wi.c                |  5 +++++
- drivers/infiniband/hw/hfi1/pcie.c                  |  9 ++------
- drivers/mcb/mcb-core.c                             |  1 +
- drivers/mcb/mcb-parse.c                            |  2 +-
- drivers/media/platform/qcom/venus/hfi_msgs.c       |  2 +-
- drivers/media/platform/qcom/venus/hfi_venus.c      | 10 +++++++++
- drivers/media/platform/vivid/vivid-rds-gen.c       |  2 +-
- drivers/media/rc/ir-sharp-decoder.c                |  8 ++++---
- drivers/media/usb/gspca/cpia1.c                    |  3 +++
- drivers/mmc/host/meson-gx-mmc.c                    |  1 -
- drivers/mmc/host/vub300.c                          |  1 +
- drivers/net/dsa/lan9303_mdio.c                     |  4 ++--
- drivers/net/wireless/ath/ath10k/debug.c            |  2 +-
- drivers/net/wireless/ath/ath9k/debug.c             |  2 +-
- drivers/net/wireless/ath/ath9k/htc_drv_debug.c     |  2 +-
- drivers/parisc/power.c                             | 16 +++++++++++++-
- drivers/pci/pci-acpi.c                             |  2 +-
- drivers/pci/pci-sysfs.c                            |  5 +----
- drivers/scsi/libfc/fc_lport.c                      |  6 ++++++
- drivers/scsi/virtio_scsi.c                         |  1 +
- drivers/tty/hvc/hvc_xen.c                          |  5 +++--
- drivers/tty/vcc.c                                  | 16 +++++++++++---
- fs/ext4/acl.h                                      |  5 +++++
- fs/ext4/resize.c                                   | 19 ++++++----------
- fs/gfs2/quota.c                                    | 11 ++++++++++
- fs/jbd2/recovery.c                                 |  8 +++++++
- fs/jfs/jfs_dmap.c                                  | 23 +++++++++++++++-----
- fs/jfs/jfs_imap.c                                  |  5 ++++-
- include/linux/pwm.h                                |  4 ++--
- include/net/sock.h                                 |  6 +++---
- kernel/audit_watch.c                               |  9 +++++++-
- kernel/irq/generic-chip.c                          | 25 ++++++++++++++++------
- kernel/locking/test-ww_mutex.c                     | 20 ++++++++++-------
- kernel/padata.c                                    |  2 +-
- kernel/power/snapshot.c                            | 16 ++++++--------
- net/core/sock.c                                    |  2 +-
- net/ipv4/tcp_output.c                              |  2 +-
- net/mac80211/cfg.c                                 |  4 ++++
- net/sched/sch_api.c                                |  5 +++--
- scripts/gcc-plugins/randomize_layout_plugin.c      | 11 +++++++---
- sound/core/info.c                                  | 21 +++++++++++-------
- sound/hda/hdac_stream.c                            |  6 ++++--
- tools/testing/selftests/efivarfs/create-read.c     |  2 ++
- 58 files changed, 290 insertions(+), 155 deletions(-)
+4.19-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Paul Moore <paul@paul-moore.com>
+
+commit 47846d51348dd62e5231a83be040981b17c955fa upstream.
+
+The get_task_exe_file() function locks the given task with task_lock()
+which when used inside audit_exe_compare() can cause deadlocks on
+systems that generate audit records when the task_lock() is held. We
+resolve this problem with two changes: ignoring those cases where the
+task being audited is not the current task, and changing our approach
+to obtaining the executable file struct to not require task_lock().
+
+With the intent of the audit exe filter being to filter on audit events
+generated by processes started by the specified executable, it makes
+sense that we would only want to use the exe filter on audit records
+associated with the currently executing process, e.g. @current.  If
+we are asked to filter records using a non-@current task_struct we can
+safely ignore the exe filter without negatively impacting the admin's
+expectations for the exe filter.
+
+Knowing that we only have to worry about filtering the currently
+executing task in audit_exe_compare() we can do away with the
+task_lock() and call get_mm_exe_file() with @current->mm directly.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 5efc244346f9 ("audit: fix exe_file access in audit_exe_compare")
+Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
+Reviewed-by: John Johansen <john.johanse@canonical.com>
+Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ kernel/audit_watch.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+--- a/kernel/audit_watch.c
++++ b/kernel/audit_watch.c
+@@ -557,11 +557,18 @@ int audit_exe_compare(struct task_struct
+ 	unsigned long ino;
+ 	dev_t dev;
+ 
+-	exe_file = get_task_exe_file(tsk);
++	/* only do exe filtering if we are recording @current events/records */
++	if (tsk != current)
++		return 0;
++
++	if (WARN_ON_ONCE(!current->mm))
++		return 0;
++	exe_file = get_mm_exe_file(current->mm);
+ 	if (!exe_file)
+ 		return 0;
+ 	ino = file_inode(exe_file)->i_ino;
+ 	dev = file_inode(exe_file)->i_sb->s_dev;
+ 	fput(exe_file);
++
+ 	return audit_mark_compare(mark, ino, dev);
+ }
 
 
 
