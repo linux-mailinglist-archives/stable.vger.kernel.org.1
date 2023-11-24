@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D23E7F7D43
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 142BB7F8133
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58B6328217D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 463991C2157A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB0C39FD9;
-	Fri, 24 Nov 2023 18:23:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3203418B;
+	Fri, 24 Nov 2023 18:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4pb4jZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNUVb8iB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA150381BF;
-	Fri, 24 Nov 2023 18:22:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6205FC433CA;
-	Fri, 24 Nov 2023 18:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4292228DBA;
+	Fri, 24 Nov 2023 18:56:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65837C433C8;
+	Fri, 24 Nov 2023 18:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850179;
-	bh=tczs+0aVJ4Xxew5NY1zAn9XxJvO8KTDSBNuImTGqwG4=;
+	s=korg; t=1700852187;
+	bh=J4AOv1Xk+Z0QWG4Vox8fa38dcECudEoSCzAGu8D5YhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4pb4jZyFFQeNMxSabOaLbV7uib/FgwRDyeZL+22JmE0EkuLM/IBzQHuYzn/SmF93
-	 /NpojSnPrILYUPJrEenIPsQaf9WNZrJ3oI36o3ywmHy4y0r7YWhMFHG8vcbQlWsdVr
-	 zuKLsfKMWOlNtLoh6/BpY76OIfxXCjm3mYoRQKj0=
+	b=XNUVb8iBumsZ9PNbs4tKAovykvBUzGJWFAx/X6S3sAuamYq026zUeHYTAvhB96MFU
+	 aDpSyUZAHSIZhmgmkr8WjpwJMMFlqsXhoYXryhGDTV6yEuKxYRwz1n04phr46J+Oxm
+	 T2OBupXXjqV2n5/c7l2ZolYQ3/VIr/pRa4pZYySQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Roesch <shr@devkernel.io>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Muchun Song <songmuchun@bytedance.com>,
 	David Hildenbrand <david@redhat.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Rik van Riel <riel@surriel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 476/530] mm: fix for negative counter: nr_file_hugepages
+Subject: [PATCH 6.1 255/372] mm/memory_hotplug: use pfn math in place of direct struct page manipulation
 Date: Fri, 24 Nov 2023 17:50:42 +0000
-Message-ID: <20231124172042.561139974@linuxfoundation.org>
+Message-ID: <20231124172019.015294353@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,77 +58,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Roesch <shr@devkernel.io>
+From: Zi Yan <ziy@nvidia.com>
 
-commit a48d5bdc877b85201e42cef9c2fdf5378164c23a upstream.
+commit 1640a0ef80f6d572725f5b0330038c18e98ea168 upstream.
 
-While qualifiying the 6.4 release, the following warning was detected in
-messages:
+When dealing with hugetlb pages, manipulating struct page pointers
+directly can get to wrong struct page, since struct page is not guaranteed
+to be contiguous on SPARSEMEM without VMEMMAP.  Use pfn calculation to
+handle it properly.
 
-vmstat_refresh: nr_file_hugepages -15664
+Without the fix, a wrong number of page might be skipped. Since skip cannot be
+negative, scan_movable_page() will end early and might miss a movable page with
+-ENOENT. This might fail offline_pages(). No bug is reported. The fix comes
+from code inspection.
 
-The warning is caused by the incorrect updating of the NR_FILE_THPS
-counter in the function split_huge_page_to_list.  The if case is checking
-for folio_test_swapbacked, but the else case is missing the check for
-folio_test_pmd_mappable.  The other functions that manipulate the counter
-like __filemap_add_folio and filemap_unaccount_folio have the
-corresponding check.
-
-I have a test case, which reproduces the problem. It can be found here:
-  https://github.com/sroeschus/testcase/blob/main/vmstat_refresh/madv.c
-
-The test case reproduces on an XFS filesystem. Running the same test
-case on a BTRFS filesystem does not reproduce the problem.
-
-AFAIK version 6.1 until 6.6 are affected by this problem.
-
-[akpm@linux-foundation.org: whitespace fix]
-[shr@devkernel.io: test for folio_test_pmd_mappable()]
-  Link: https://lkml.kernel.org/r/20231108171517.2436103-1-shr@devkernel.io
-Link: https://lkml.kernel.org/r/20231106181918.1091043-1-shr@devkernel.io
-Signed-off-by: Stefan Roesch <shr@devkernel.io>
-Co-debugged-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Cc: Rik van Riel <riel@surriel.com>
+Link: https://lkml.kernel.org/r/20230913201248.452081-4-zi.yan@sent.com
+Fixes: eeb0efd071d8 ("mm,memory_hotplug: fix scan_movable_pages() for gigantic hugepages")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ mm/memory_hotplug.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2737,13 +2737,15 @@ int split_huge_page_to_list(struct page
- 			int nr = folio_nr_pages(folio);
- 
- 			xas_split(&xas, folio, folio_order(folio));
--			if (folio_test_swapbacked(folio)) {
--				__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS,
--							-nr);
--			} else {
--				__lruvec_stat_mod_folio(folio, NR_FILE_THPS,
--							-nr);
--				filemap_nr_thps_dec(mapping);
-+			if (folio_test_pmd_mappable(folio)) {
-+				if (folio_test_swapbacked(folio)) {
-+					__lruvec_stat_mod_folio(folio,
-+							NR_SHMEM_THPS, -nr);
-+				} else {
-+					__lruvec_stat_mod_folio(folio,
-+							NR_FILE_THPS, -nr);
-+					filemap_nr_thps_dec(mapping);
-+				}
- 			}
- 		}
- 
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1611,7 +1611,7 @@ static int scan_movable_pages(unsigned l
+ 		 */
+ 		if (HPageMigratable(head))
+ 			goto found;
+-		skip = compound_nr(head) - (page - head);
++		skip = compound_nr(head) - (pfn - page_to_pfn(head));
+ 		pfn += skip - 1;
+ 	}
+ 	return -ENOENT;
 
 
 
