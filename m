@@ -1,119 +1,221 @@
-Return-Path: <stable+bounces-175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7297F746B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:57:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2573D7F7485
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D95281DCB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:57:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C8062812C3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D8D81EB3D;
-	Fri, 24 Nov 2023 12:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeCItlVA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8B428695;
+	Fri, 24 Nov 2023 13:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+X-Greylist: delayed 340 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 24 Nov 2023 05:05:08 PST
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E459110;
+	Fri, 24 Nov 2023 05:05:08 -0800 (PST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12891DA32
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:57:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458AFC433C8;
-	Fri, 24 Nov 2023 12:57:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700830659;
-	bh=nvTcxNd4Z0pxT5dnbXvQltqA3c9HQJAmRDht6plaVZY=;
-	h=Subject:To:Cc:From:Date:From;
-	b=IeCItlVAaagbHiy1KS4cjqJqz+bmBFm17qclP+dPPSporFYu5mN5hm7VMg2dYghh1
-	 5G5oAfejZHcPXALv54j1NBZESNwNbOooU1mQi7K2q24EhB2eASvasYEuZplYt5K7Pa
-	 3zK91MojGCieq3a5vDjiv8f5jCNWXQUe4+eBCidA=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-pci-gli: GL9755: Mask the replay timer timeout of" failed to apply to 6.1-stable tree
-To: victor.shih@genesyslogic.com.tw,adrian.hunter@intel.com,kai.heng.geng@canonical.com,ulf.hansson@linaro.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:57:36 +0000
-Message-ID: <2023112435-trusting-nutmeg-8ff0@gregkh>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 418D821DF5;
+	Fri, 24 Nov 2023 12:59:25 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 19D551340B;
+	Fri, 24 Nov 2023 12:59:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Mw6jBS2eYGVuKgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 24 Nov 2023 12:59:25 +0000
+Message-ID: <bfc4259e-c293-1e53-a787-4131e8bacc21@suse.cz>
+Date: Fri, 24 Nov 2023 13:59:24 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [REGRESSION] USB ports do not work after suspend/resume cycle
+ with v6.6.2
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Oleksandr Natalenko <oleksandr@natalenko.name>
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org, Mathias Nyman <mathias.nyman@intel.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Sasha Levin <sashal@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Thorsten Leemhuis <linux@leemhuis.info>, Petr Tesarik <petr@tesarici.cz>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Javier Martinez Canillas <javierm@redhat.com>, workflows@vger.kernel.org
+References: <5993222.lOV4Wx5bFT@natalenko.name>
+ <2023112421-brisket-starless-c20d@gregkh>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <2023112421-brisket-starless-c20d@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Bar: +++++++
+X-Spam-Score: 7.64
+X-Rspamd-Server: rspamd1
+X-Rspamd-Queue-Id: 418D821DF5
+Authentication-Results: smtp-out1.suse.de;
+	dkim=none;
+	dmarc=none;
+	spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither permitted nor denied by domain of vbabka@suse.cz) smtp.mailfrom=vbabka@suse.cz
+X-Spamd-Result: default: False [7.64 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 ARC_NA(0.00)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DMARC_NA(1.20)[suse.cz];
+	 R_SPF_SOFTFAIL(4.60)[~all];
+	 NEURAL_SPAM_SHORT(2.66)[0.886];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_SPAM_LONG(0.09)[0.027];
+	 RCPT_COUNT_TWELVE(0.00)[16];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[natalenko.name:url];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 R_DKIM_NA(2.20)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
 
++Cc workflows
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On 11/24/23 12:43, Greg Kroah-Hartman wrote:
+> On Thu, Nov 23, 2023 at 07:20:46PM +0100, Oleksandr Natalenko wrote:
+>> Hello.
+>> 
+>> Since v6.6.2 kernel release I'm experiencing a regression with regard
+>> to USB ports behaviour after a suspend/resume cycle.
+>> 
+>> If a USB port is empty before suspending, after resuming the machine
+>> the port doesn't work. After a device insertion there's no reaction in
+>> the kernel log whatsoever, although I do see that the device gets
+>> powered up physically. If the machine is suspended with a device
+>> inserted into the USB port, the port works fine after resume.
+>> 
+>> This is an AMD-based machine with hci version 0x110 reported. As per
+>> the changelog between v6.6.1 and v6.6.2, 603 commits were backported
+>> into v6.6.2, and one of the commits was as follows:
+>> 
+>> $ git log --oneline v6.6.1..v6.6.2 -- drivers/usb/host/xhci-pci.c 
+>> 14a51fa544225 xhci: Loosen RPM as default policy to cover for AMD xHC
+>> 1.1
+>> 
+>> It seems that this commit explicitly enables runtime PM specifically
+>> for my platform. As per dmesg:
+>> 
+>> v6.6.1: quirks 0x0000000000000410 v6.6.2: quirks 0x0000000200000410
+>> 
+>> Here, bit 33 gets set, which, as expected, corresponds to:
+>> 
+>> drivers/usb/host/xhci.h 1895:#define XHCI_DEFAULT_PM_RUNTIME_ALLOW
+>> BIT_ULL(33)
+>> 
+>> This commit is backported from the upstream commit 4baf12181509, which
+>> is one of 16 commits of the following series named "xhci features":
+>> 
+>> https://lore.kernel.org/all/20231019102924.2797346-1-mathias.nyman@linux.intel.com/
+>>
+>>  It appears that there was another commit in this series, also from
+>> Basavaraj (in Cc), a5d6264b638e, which was not picked for v6.6.2, but
+>> which stated the following:
+>> 
+>> Use the low-power states of the underlying platform to enable runtime
+>> PM. If the platform doesn't support runtime D3, then enabling default
+>> RPM will result in the controller malfunctioning, as in the case of
+>> hotplug devices not being detected because of a failed interrupt
+>> generation.
+>> 
+>> It felt like this was exactly my case. So, I've conducted two tests:
+>> 
+>> 1. Reverted 14a51fa544225 from v6.6.2. With this revert the USB ports
+>> started to work fine, just as they did in v6.6.1. 2. Left 14a51fa544225
+>> in place, but also applied upstream a5d6264b638e on top of v6.6.2. With
+>> this patch added the USB ports also work after a suspend/resume cycle.
+>> 
+>> This runtime PM enablement did also impact my AX200 Bluetooth device,
+>> resulting in long delays before headphones/speaker can connect, but
+>> I've solved this with btusb.enable_autosuspend=N. I think this has
+>> nothing to do with the original issue, and I'm OK with this workaround
+>> unless someone has got a different idea.
+>> 
+>> With that, please consider either reverting 14a51fa544225 from the
+>> stable kernel, or applying a5d6264b638e in addition to it. Given the
+>> mainline kernel has got both of them, I'm in favour of applying
+>> additional commit to the stable kernel.
+> 
+> I've applied this other commit as well to all of the affected branches, 
+> thanks for letting us know.
+> 
+>> I'm also Cc'ing all the people from our Mastodon discussion where I
+>> initially complained about the issue as well as about stable kernel
+>> branch stability:
+>> 
+>> https://activitypub.natalenko.name/@oleksandr/statuses/01HFRXBYWMXF9G4KYPE3XHH0S8
+>>
+>>  I'm not going to expand more on that in this email, especially given
+>> Greg indicated he read the conversation, but I'm open to continuing
+>> this discussion as I still think that current workflow brings visible
+>> issues to ordinary users, and hence some adjustments should be made.
+> 
+> What type of adjustments exactly?  Testing on wide ranges of systems is
+> pretty hard, and this patch explicitly was set to be backported when it
+> hit Linus's tree,
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Are you sure about that "explicitly was set to be backported" part?
+According to Documentation/process/stable-kernel-rules.rst:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 85dd3af64965c1c0eb7373b340a1b1f7773586b0
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112435-trusting-nutmeg-8ff0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> There are three options to submit a change to -stable trees:
+> 
+>  1. Add a 'stable tag' to the description of a patch you then submit for
+>     mainline inclusion.
+>  2. Ask the stable team to pick up a patch already mainlined.
+>  3. Submit a patch to the stable team that is equivalent to a change already
+>     mainlined.
 
-Possible dependencies:
+I don't see a stable tag in 4baf12181509 ("xhci: Loosen RPM as default
+policy to cover for AMD xHC 1.1"), was it option 2 or 3 then?
 
-85dd3af64965 ("mmc: sdhci-pci-gli: GL9755: Mask the replay timer timeout of AER")
-f3a5b56c1286 ("mmc: sdhci-pci-gli: Add Genesys Logic GL9767 support")
+Do you mean the Fixes: tag? the docs only say that can replace the "# 3.3.x"
+part to determine where backporting should stop, but is not itself an
+explicit marking for stable backport?
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 85dd3af64965c1c0eb7373b340a1b1f7773586b0 Mon Sep 17 00:00:00 2001
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
-Date: Tue, 7 Nov 2023 17:57:41 +0800
-Subject: [PATCH] mmc: sdhci-pci-gli: GL9755: Mask the replay timer timeout of
- AER
-
-Due to a flaw in the hardware design, the GL9755 replay timer frequently
-times out when ASPM is enabled. As a result, the warning messages will
-often appear in the system log when the system accesses the GL9755
-PCI config. Therefore, the replay timer timeout must be masked.
-
-Fixes: 36ed2fd32b2c ("mmc: sdhci-pci-gli: A workaround to allow GL9755 to enter ASPM L1.2")
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Kai-Heng Feng <kai.heng.geng@canonical.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231107095741.8832-3-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index d83261e857a5..044b4704d5bb 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -152,6 +152,9 @@
- #define PCI_GLI_9755_PM_CTRL     0xFC
- #define   PCI_GLI_9755_PM_STATE    GENMASK(1, 0)
- 
-+#define PCI_GLI_9755_CORRERR_MASK				0x214
-+#define   PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
-+
- #define SDHCI_GLI_9767_GM_BURST_SIZE			0x510
- #define   SDHCI_GLI_9767_GM_BURST_SIZE_AXI_ALWAYS_SET	  BIT(8)
- 
-@@ -770,6 +773,11 @@ static void gl9755_hw_setting(struct sdhci_pci_slot *slot)
- 	value &= ~PCI_GLI_9755_PM_STATE;
- 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
- 
-+	/* mask the replay timer timeout of AER */
-+	pci_read_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, &value);
-+	value |= PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
-+	pci_write_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, value);
-+
- 	gl9755_wt_off(pdev);
- }
- 
+> it just looks like someone forgot to mark the
+> follow-up patch that you found also to be properly backported.
+> 
+> We will always make mistakes, we are only human.  The best thing to do
+> is if we get notified quickly of issues, like you did here, and work to
+> resolve them, as we have done here.  So again, thanks for letting us
+> know about the problem, and be sure to let us know of any future issues
+> you might find as well.
+> 
+> Remember, hardware is messy, and the kernel's job is to fix hardware
+> issues and quirks in it.  Sometimes we get it wrong as we are trying to
+> fix up inconsistencies and they cause other problems, so in the end, we
+> can only grumble at the hardware companies for stuff like this, be
+> patient with those of us who have to deal with this mess :)
+> 
+> thanks,
+> 
+> greg k-h
 
 
