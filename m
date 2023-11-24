@@ -1,48 +1,56 @@
-Return-Path: <stable+bounces-1220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540FD7F7E94
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB617F8033
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9462B217CF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 155B2B21608
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF1E33CC2;
-	Fri, 24 Nov 2023 18:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D003738DD5;
+	Fri, 24 Nov 2023 18:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pwwb2Svd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPFUAg2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA5B53307D;
-	Fri, 24 Nov 2023 18:34:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38304C433C8;
-	Fri, 24 Nov 2023 18:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7777333CFD;
+	Fri, 24 Nov 2023 18:47:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1023C433C8;
+	Fri, 24 Nov 2023 18:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850857;
-	bh=i4uMYOuiiUGcE/Vf6ETu+ykLTBQ4xngxM/Uir3RF/y8=;
+	s=korg; t=1700851653;
+	bh=9Eur1v9Zeo/ycYYRJwAoCvrKqqnczaC69baPaW2eWyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pwwb2SvdxsEFygdzbhmM8G2lyauZkWy2VFCUbnkdcKO5xQx/kXZoFU93W6UK3BE9a
-	 r7SWgwNV8CJwkLQuJwdtDADJ48MbHHKZ80NnROP1ZFU3agQeXjmOWvSTXM0IwE2kx4
-	 ekbDZzN1Mal87tIo96k+iRqJsufYoVcMeFMoql4Y=
+	b=rPFUAg2XLzJOtIfenVPZsGJBrbMpHu/6rSpGUU9WcLi3JAgcCUda4uOvDxMQMw/pG
+	 zsYNtHEjpTER9/v1+N1o+ERK0u/G3hbG77xGBY6J3DHw+FQVO1FVm9LYjJFU0dKFp6
+	 puL5lgTt8HYbHlwktZJZg/TDUtUhHQmkSXGp5LtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Kuogee Hsieh <khsieh@codeaurora.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Rob Clark <robdclark@gmail.com>,
+	Sean Paul <sean@poorly.run>,
+	Stephen Boyd <swboyd@chromium.org>,
+	linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@intel.com>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 192/491] net: ethernet: cortina: Handle large frames
-Date: Fri, 24 Nov 2023 17:47:08 +0000
-Message-ID: <20231124172030.252744121@linuxfoundation.org>
+Subject: [PATCH 6.1 042/372] drm/msm/dp: skip validity check for DP CTS EDID checksum
+Date: Fri, 24 Nov 2023 17:47:09 +0000
+Message-ID: <20231124172011.887975634@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,113 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit d4d0c5b4d279bfe3585fbd806efefd3e51c82afa ]
+[ Upstream commit a251c9d8e30833b260101edb9383b176ee2b7cb1 ]
 
-The Gemini ethernet controller provides hardware checksumming
-for frames up to 1514 bytes including ethernet headers but not
-FCS.
+The DP CTS test for EDID last block checksum expects the checksum for
+the last block, invalid or not. Skip the validity check.
 
-If we start sending bigger frames (after first bumping up the MTU
-on both interfaces sending and receiving the frames), truncated
-packets start to appear on the target such as in this tcpdump
-resulting from ping -s 1474:
+For the most part (*), the EDIDs returned by drm_get_edid() will be
+valid anyway, and there's the CTS workaround to get the checksum for
+completely invalid EDIDs. See commit 7948fe12d47a ("drm/msm/dp: return
+correct edid checksum after corrupted edid checksum read").
 
-23:34:17.241983 14:d6:4d:a8:3c:4f (oui Unknown) > bc:ae:c5:6b:a8:3d (oui Unknown),
-ethertype IPv4 (0x0800), length 1514: truncated-ip - 2 bytes missing!
-(tos 0x0, ttl 64, id 32653, offset 0, flags [DF], proto ICMP (1), length 1502)
-OpenWrt.lan > Fecusia: ICMP echo request, id 1672, seq 50, length 1482
+This lets us remove one user of drm_edid_block_valid() with hopes the
+function can be removed altogether in the future.
 
-If we bypass the hardware checksumming and provide a software
-fallback, everything starts working fine up to the max TX MTU
-of 2047 bytes, for example ping -s2000 192.168.1.2:
+(*) drm_get_edid() ignores checksum errors on CTA extensions.
 
-00:44:29.587598 bc:ae:c5:6b:a8:3d (oui Unknown) > 14:d6:4d:a8:3c:4f (oui Unknown),
-ethertype IPv4 (0x0800), length 2042:
-(tos 0x0, ttl 64, id 51828, offset 0, flags [none], proto ICMP (1), length 2028)
-Fecusia > OpenWrt.lan: ICMP echo reply, id 1683, seq 4, length 2008
-
-The bit enabling to bypass hardware checksum (or any of the
-"TSS" bits) are undocumented in the hardware reference manual.
-The entire hardware checksum unit appears undocumented. The
-conclusion that we need to use the "bypass" bit was found by
-trial-and-error.
-
-Since no hardware checksum will happen, we slot in a software
-checksum fallback.
-
-Check for the condition where we need to compute checksum on the
-skb with either hardware or software using == CHECKSUM_PARTIAL instead
-of != CHECKSUM_NONE which is an incomplete check according to
-<linux/skbuff.h>.
-
-On the D-Link DIR-685 router this fixes a bug on the conduit
-interface to the RTL8366RB DSA switch: as the switch needs to add
-space for its tag it increases the MTU on the conduit interface
-to 1504 and that means that when the router sends packages
-of 1500 bytes these get an extra 4 bytes of DSA tag and the
-transfer fails because of the erroneous hardware checksumming,
-affecting such basic functionality as the LuCI web interface.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-2-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Kuogee Hsieh <khsieh@codeaurora.org>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Sean Paul <sean@poorly.run>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: freedreno@lists.freedesktop.org
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/555361/
+Link: https://lore.kernel.org/r/20230901142034.580802-1-jani.nikula@intel.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dp/dp_panel.c | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 9fe8d22a26719..a2d4ace01ed3c 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1145,6 +1145,7 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 	dma_addr_t mapping;
- 	unsigned short mtu;
- 	void *buffer;
-+	int ret;
+diff --git a/drivers/gpu/drm/msm/dp/dp_panel.c b/drivers/gpu/drm/msm/dp/dp_panel.c
+index 5149cebc93f61..d38086650fcf7 100644
+--- a/drivers/gpu/drm/msm/dp/dp_panel.c
++++ b/drivers/gpu/drm/msm/dp/dp_panel.c
+@@ -266,26 +266,9 @@ int dp_panel_get_modes(struct dp_panel *dp_panel,
  
- 	mtu  = ETH_HLEN;
- 	mtu += netdev->mtu;
-@@ -1159,9 +1160,30 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 		word3 |= mtu;
- 	}
+ static u8 dp_panel_get_edid_checksum(struct edid *edid)
+ {
+-	struct edid *last_block;
+-	u8 *raw_edid;
+-	bool is_edid_corrupt = false;
++	edid += edid->extensions;
  
--	if (skb->ip_summed != CHECKSUM_NONE) {
-+	if (skb->len >= ETH_FRAME_LEN) {
-+		/* Hardware offloaded checksumming isn't working on frames
-+		 * bigger than 1514 bytes. A hypothesis about this is that the
-+		 * checksum buffer is only 1518 bytes, so when the frames get
-+		 * bigger they get truncated, or the last few bytes get
-+		 * overwritten by the FCS.
-+		 *
-+		 * Just use software checksumming and bypass on bigger frames.
-+		 */
-+		if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+			ret = skb_checksum_help(skb);
-+			if (ret)
-+				return ret;
-+		}
-+		word1 |= TSS_BYPASS_BIT;
-+	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
- 		int tcp = 0;
+-	if (!edid) {
+-		DRM_ERROR("invalid edid input\n");
+-		return 0;
+-	}
+-
+-	raw_edid = (u8 *)edid;
+-	raw_edid += (edid->extensions * EDID_LENGTH);
+-	last_block = (struct edid *)raw_edid;
+-
+-	/* block type extension */
+-	drm_edid_block_valid(raw_edid, 1, false, &is_edid_corrupt);
+-	if (!is_edid_corrupt)
+-		return last_block->checksum;
+-
+-	DRM_ERROR("Invalid block, no checksum\n");
+-	return 0;
++	return edid->checksum;
+ }
  
-+		/* We do not switch off the checksumming on non TCP/UDP
-+		 * frames: as is shown from tests, the checksumming engine
-+		 * is smart enough to see that a frame is not actually TCP
-+		 * or UDP and then just pass it through without any changes
-+		 * to the frame.
-+		 */
- 		if (skb->protocol == htons(ETH_P_IP)) {
- 			word1 |= TSS_IP_CHKSUM_BIT;
- 			tcp = ip_hdr(skb)->protocol == IPPROTO_TCP;
+ void dp_panel_handle_sink_request(struct dp_panel *dp_panel)
 -- 
 2.42.0
 
