@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA827F7D0E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36457F7F2E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25CFAB215A5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57011B218C5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EAD3A8C3;
-	Fri, 24 Nov 2023 18:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED062D787;
+	Fri, 24 Nov 2023 18:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsIo0nDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCM7hUGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6718039FF7;
-	Fri, 24 Nov 2023 18:21:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CCAC433C7;
-	Fri, 24 Nov 2023 18:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599602FC21;
+	Fri, 24 Nov 2023 18:39:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BB4C433C8;
+	Fri, 24 Nov 2023 18:39:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850060;
-	bh=rEdCAAYCJu8lmhsElXJNnse3vl+RLyUUf6pmX6yvhuM=;
+	s=korg; t=1700851154;
+	bh=bmVD8kZ78jc3yCs8QyUpPRI7kdOSfsHNciC1eOQGs1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OsIo0nDf1ejDu0cLI2/zANHyVaZb3prdHM8tPCHHU8mxQvLXBapUg7s3eIynf5pXI
-	 EiCfxjguS34kE20kyHrMVL5ywCKFRGABeaUiZyKbGu56PiSCWH0aGtUjlEfvY6ueMt
-	 3EHUJuz9zKtZSMpCq+T8RgV724P6apqM3fVZd6jU=
+	b=RCM7hUGLvR7umJCwUrzCHbhHJ0W+1AuiONMoo7CtcoFMR7aREonc1m0++oxAe87MV
+	 TlS55nE+4DU7FdM1e2MJ1iwuW0BCIrW5cgA8W/efEBaOtf3mmbFuYh2ktaWgvgwhOZ
+	 I1A8o2awqB182nMpnzJwXE1VRqBmYO+lUCLoYME8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Muhammad Ahmed <ahmed.ahmed@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 405/530] drm/amd/display: enable dsc_clk even if dsc_pg disabled
+	Jamie Lentin <jm@lentin.co.uk>,
+	Martin Kepplinger <martink@posteo.de>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.5 335/491] hid: lenovo: Resend all settings on reset_resume for compact keyboards
 Date: Fri, 24 Nov 2023 17:49:31 +0000
-Message-ID: <20231124172040.384650141@linuxfoundation.org>
+Message-ID: <20231124172034.636716040@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,88 +53,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Ahmed <ahmed.ahmed@amd.com>
+From: Jamie Lentin <jm@lentin.co.uk>
 
-[ Upstream commit 40255df370e94d44f0f0a924400d68db0ee31bec ]
+commit 2f2bd7cbd1d1548137b351040dc4e037d18cdfdc upstream.
 
-[why]
-need to enable dsc_clk regardless dsc_pg
+The USB Compact Keyboard variant requires a reset_resume function to
+restore keyboard configuration after a suspend in some situations. Move
+configuration normally done on probe to lenovo_features_set_cptkbd(), then
+recycle this for use on reset_resume.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Muhammad Ahmed <ahmed.ahmed@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without, the keyboard and driver would end up in an inconsistent state,
+breaking middle-button scrolling amongst other problems, and twiddling
+sysfs values wouldn't help as the middle-button mode won't be set until
+the driver is reloaded.
+
+Tested on a USB and Bluetooth Thinkpad Compact Keyboard.
+
+CC: stable@vger.kernel.org
+Fixes: 94eefa271323 ("HID: lenovo: Use native middle-button mode for compact keyboards")
+Signed-off-by: Jamie Lentin <jm@lentin.co.uk>
+Signed-off-by: Martin Kepplinger <martink@posteo.de>
+Link: https://lore.kernel.org/r/20231002150914.22101-1-martink@posteo.de
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c           | 8 ++++----
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 3 +++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ drivers/hid/hid-lenovo.c |   50 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 34 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 38abbd0c9d997..186936ad283a5 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -1843,7 +1843,7 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
- 	if (dc->hwss.subvp_pipe_control_lock)
- 		dc->hwss.subvp_pipe_control_lock(dc, context, true, true, NULL, subvp_prev_use);
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -526,6 +526,19 @@ static void lenovo_features_set_cptkbd(s
+ 	int ret;
+ 	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
  
--	if (dc->debug.enable_double_buffered_dsc_pg_support)
-+	if (dc->hwss.update_dsc_pg)
- 		dc->hwss.update_dsc_pg(dc, context, false);
- 
- 	disable_dangling_plane(dc, context);
-@@ -1950,7 +1950,7 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
- 		dc->hwss.optimize_bandwidth(dc, context);
- 	}
- 
--	if (dc->debug.enable_double_buffered_dsc_pg_support)
-+	if (dc->hwss.update_dsc_pg)
- 		dc->hwss.update_dsc_pg(dc, context, true);
- 
- 	if (dc->ctx->dce_version >= DCE_VERSION_MAX)
-@@ -2197,7 +2197,7 @@ void dc_post_update_surfaces_to_stream(struct dc *dc)
- 
- 		dc->hwss.optimize_bandwidth(dc, context);
- 
--		if (dc->debug.enable_double_buffered_dsc_pg_support)
-+		if (dc->hwss.update_dsc_pg)
- 			dc->hwss.update_dsc_pg(dc, context, true);
- 	}
- 
-@@ -3533,7 +3533,7 @@ static void commit_planes_for_stream(struct dc *dc,
- 		if (get_seamless_boot_stream_count(context) == 0)
- 			dc->hwss.prepare_bandwidth(dc, context);
- 
--		if (dc->debug.enable_double_buffered_dsc_pg_support)
-+		if (dc->hwss.update_dsc_pg)
- 			dc->hwss.update_dsc_pg(dc, context, false);
- 
- 		context_clock_trace(dc, context);
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-index be59e1c02f8aa..c9140b50c3454 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-@@ -77,6 +77,9 @@ void dcn32_dsc_pg_control(
- 	if (hws->ctx->dc->debug.disable_dsc_power_gate)
- 		return;
- 
-+	if (!hws->ctx->dc->debug.enable_double_buffered_dsc_pg_support)
-+		return;
++	/*
++	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
++	 * regular keys
++	 */
++	ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
++	if (ret)
++		hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
 +
- 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
- 	if (org_ip_request_cntl == 0)
- 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
--- 
-2.42.0
-
++	/* Switch middle button to native mode */
++	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
++	if (ret)
++		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
++
+ 	ret = lenovo_send_cmd_cptkbd(hdev, 0x05, cptkbd_data->fn_lock);
+ 	if (ret)
+ 		hid_err(hdev, "Fn-lock setting failed: %d\n", ret);
+@@ -1148,22 +1161,6 @@ static int lenovo_probe_cptkbd(struct hi
+ 	}
+ 	hid_set_drvdata(hdev, cptkbd_data);
+ 
+-	/*
+-	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
+-	 * regular keys (Compact only)
+-	 */
+-	if (hdev->product == USB_DEVICE_ID_LENOVO_CUSBKBD ||
+-	    hdev->product == USB_DEVICE_ID_LENOVO_CBTKBD) {
+-		ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
+-		if (ret)
+-			hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
+-	}
+-
+-	/* Switch middle button to native mode */
+-	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
+-	if (ret)
+-		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
+-
+ 	/* Set keyboard settings to known state */
+ 	cptkbd_data->middlebutton_state = 0;
+ 	cptkbd_data->fn_lock = true;
+@@ -1286,6 +1283,24 @@ err:
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_PM
++static int lenovo_reset_resume(struct hid_device *hdev)
++{
++	switch (hdev->product) {
++	case USB_DEVICE_ID_LENOVO_CUSBKBD:
++	case USB_DEVICE_ID_LENOVO_TPIIUSBKBD:
++		if (hdev->type == HID_TYPE_USBMOUSE)
++			lenovo_features_set_cptkbd(hdev);
++
++		break;
++	default:
++		break;
++	}
++
++	return 0;
++}
++#endif
++
+ static void lenovo_remove_tpkbd(struct hid_device *hdev)
+ {
+ 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+@@ -1402,6 +1417,9 @@ static struct hid_driver lenovo_driver =
+ 	.raw_event = lenovo_raw_event,
+ 	.event = lenovo_event,
+ 	.report_fixup = lenovo_report_fixup,
++#ifdef CONFIG_PM
++	.reset_resume = lenovo_reset_resume,
++#endif
+ };
+ module_hid_driver(lenovo_driver);
+ 
 
 
 
