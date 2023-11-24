@@ -1,130 +1,142 @@
-Return-Path: <stable+bounces-1996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38ED7F824F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3C27F838A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84D46B23C5C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 681192885BA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8AC4364C1;
-	Fri, 24 Nov 2023 19:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB5AA364B7;
+	Fri, 24 Nov 2023 19:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JKKMe4bE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B99F35F04
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 19:06:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3589AC433CA;
-	Fri, 24 Nov 2023 19:06:30 +0000 (UTC)
-Date: Fri, 24 Nov 2023 20:06:27 +0100
-From: Helge Deller <deller@gmx.de>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Helge Deller <deller@gmx.de>, sam@gentoo.org, stable@vger.kernel.org,
-	torvalds@linux-foundation.org, Florent Revest <revest@chromium.org>,
-	Kees Cook <keescook@chromium.org>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: Re: FAILED: patch "[PATCH] prctl: Disable prctl(PR_SET_MDWE) on
- parisc" failed to apply to 6.5-stable tree
-Message-ID: <ZWD0MyYd2ev12SIl@p100>
-References: <2023112456-linked-nape-bf19@gregkh>
- <1aadb9ed-5118-4a6f-a273-495466f4737b@gmx.de>
- <2023112420-reward-relative-f84d@gregkh>
+Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF6C126BF
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:13:38 -0800 (PST)
+Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-3b8382b8f5aso1353671b6e.0
+        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:13:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700853218; x=1701458018; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a2IO8yizkwbvbCYaFuIwyJ6cSJQCDEdd8cDV+Lv5n8E=;
+        b=JKKMe4bE6W9BSAmHdyq/FTnUX7O06Xb2c9HvVg5moUF1ntnWvLQBHSKmDX6v2i3I1D
+         YH31clLVDtjEwXDolN2424hRocwHAZDE2/R9LrQf45bovMC5z9KhiC1H0ak8e9DMh+i+
+         6oiGJIvHRSjuf1VUDItsSE2qIZWeAOc24iYTM4qjNI1rPPgESaDha9km4pEKWYQ3mzOm
+         oyrbI04JsrMJLnckcgkqC/Vn6skCUU/pGF+hR+pMX/W7c3oYEcKjZ21BPitKzpPG0dJc
+         rT2IOz6QbzIrFbjDFZqoeHTb37s4sY6kYY2nWkqt3qM8k5b5ay+8XihCJexZQ+H5kZqC
+         519Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700853218; x=1701458018;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a2IO8yizkwbvbCYaFuIwyJ6cSJQCDEdd8cDV+Lv5n8E=;
+        b=pR6BpZ2B3yI4PFhpTVCW54lsKQs6isKg0w7HG2EzJEgIjLyByektHGp/mTo1TIvOh/
+         90hX1gQSXKad93Rfhu8DmDSVg4x+gveEWGuc+q35t/YGgN0g77ct5JkbymgSvQFB2fgC
+         ghMP6ESrvv5c66VH7tR9UkXreFfDdiTk8SnlISCsEBz28QMohiZZTwb4WaByrgUUbAlk
+         h9nFGD/mMgZka0DWa1anfdjRJehXTXCfcVmeyELIJHYihXx19Ee/b+ZBd8P1uvQweinO
+         wgLeUJ01jEhRyiOM4l7K1XXjpKNBqM7N4RgtVeT21kX2x6J9yVLSx3S+/eyAAKDIPUL/
+         t/bw==
+X-Gm-Message-State: AOJu0Yw+SNDL0kEigJWXzq0dcXtZLXHIUibzFMsxma+7hsN3IJmFHliG
+	fy2dCznUGHxMozNfouCBG9KKiPa0n8q9S85F9+ofnA==
+X-Google-Smtp-Source: AGHT+IH/0sXZh5zqfrmOwBVpS6YXkNjXU+rhXoICsM0imj/RkzJhHK8GyS3CVsMYOcx8rQNu/MGYPw==
+X-Received: by 2002:a05:6870:b10:b0:1ef:62fc:d51c with SMTP id lh16-20020a0568700b1000b001ef62fcd51cmr4609887oab.51.1700853218070;
+        Fri, 24 Nov 2023 11:13:38 -0800 (PST)
+Received: from [192.168.17.16] ([138.84.62.70])
+        by smtp.gmail.com with ESMTPSA id lc28-20020a056871419c00b001f9ef405fd7sm467750oab.24.2023.11.24.11.13.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Nov 2023 11:13:37 -0800 (PST)
+Message-ID: <d48b5514-759f-47a0-b024-494ce87ec60f@linaro.org>
+Date: Fri, 24 Nov 2023 13:13:33 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023112420-reward-relative-f84d@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4.19 00/97] 4.19.300-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org
+References: <20231124171934.122298957@linuxfoundation.org>
+Content-Language: en-US
+From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-* Greg KH <gregkh@linuxfoundation.org>:
-> On Fri, Nov 24, 2023 at 04:10:25PM +0100, Helge Deller wrote:
-> > On 11/24/23 12:35, gregkh@linuxfoundation.org wrote:
-> > > The patch below does not apply to the 6.5-stable tree.
-> > > If someone wants it applied there, or to any other stable or longterm
-> > > tree, then please email the backport, including the original git commit
-> > > id to <stable@vger.kernel.org>.
-> > > 
-> > > To reproduce the conflict and resubmit, you may use the following commands:
-> > > 
-> > > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-> > > git checkout FETCH_HEAD
-> > > git cherry-pick -x 793838138c157d4c49f4fb744b170747e3dabf58
-> > > # <resolve conflicts, build, test, etc.>
-> > > git commit -s
-> > > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112456-linked-nape-bf19@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
-> > > 
-> > > Possible dependencies:
-> > > 
-> > > 793838138c15 ("prctl: Disable prctl(PR_SET_MDWE) on parisc")
-> > > 24e41bf8a6b4 ("mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl")
-> > > 0da668333fb0 ("mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long")
-> > 
-> > Greg, I think the most clean solution is that you pull in this patch:
-> > 
-> > commit 24e41bf8a6b424c76c5902fb999e9eca61bdf83d
-> > Author: Florent Revest <revest@chromium.org>
-> > Date:   Mon Aug 28 17:08:57 2023 +0200
-> >     mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl
-> > 
-> > as well into 6.5-stable and 6.6-stable prior to applying my patch.
-> > 
-> > Florent, Kees and Catalin, do you see any issues if this patch
-> > ("mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl") is backported
-> > to 6.5 and 6.6 too?
-> > If yes, I'm happy to just send the trivial backport of my patch below...
+Hello!
+
+On 24/11/23 11:49 a. m., Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.300 release.
+> There are 97 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Given that we need an explicit ack for adding mm: patches to the stable
-> trees, I'll wait for that to happen here before adding it.
+> Responses should be made by Sun, 26 Nov 2023 17:19:17 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.300-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Sure!
+We see this failure on Arm32:
+-----8<-----
+   /builds/linux/drivers/tty/serial/meson_uart.c: In function 'meson_uart_probe':
+   /builds/linux/drivers/tty/serial/meson_uart.c:728:13: error: 'struct uart_port' has no member named 'has_sysrq'
+     728 |         port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+         |             ^~
+   make[4]: *** [/builds/linux/scripts/Makefile.build:303: drivers/tty/serial/meson_uart.o] Error 1
+----->8-----
 
-Just in case we get a NAK, below is the backported patch of 793838138c157d4c49f4fb744b170747e3dabf58
-which applies to 6.5-stable and 6.6-stable.
-Maybe you want to add it in the meantime?
+And this one on Arm64:
+-----8<-----
+   /builds/linux/kernel/profile.c: In function 'profile_dead_cpu':
+   /builds/linux/kernel/profile.c:346:27: warning: the comparison will always evaluate as 'true' for the address of 'prof_cpu_mask' will never be NULL [-Waddress]
+     346 |         if (prof_cpu_mask != NULL)
+         |                           ^~
+   /builds/linux/kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
+      49 | static cpumask_var_t prof_cpu_mask;
+         |                      ^~~~~~~~~~~~~
+   /builds/linux/kernel/profile.c: In function 'profile_online_cpu':
+   /builds/linux/kernel/profile.c:383:27: warning: the comparison will always evaluate as 'true' for the address of 'prof_cpu_mask' will never be NULL [-Waddress]
+     383 |         if (prof_cpu_mask != NULL)
+         |                           ^~
+   /builds/linux/kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
+      49 | static cpumask_var_t prof_cpu_mask;
+         |                      ^~~~~~~~~~~~~
+   /builds/linux/kernel/profile.c: In function 'profile_tick':
+   /builds/linux/kernel/profile.c:413:47: warning: the comparison will always evaluate as 'true' for the address of 'prof_cpu_mask' will never be NULL [-Waddress]
+     413 |         if (!user_mode(regs) && prof_cpu_mask != NULL &&
+         |                                               ^~
+   /builds/linux/kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
+      49 | static cpumask_var_t prof_cpu_mask;
+         |                      ^~~~~~~~~~~~~
+----->8-----
 
-Helge
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+Greetings!
 
-From: Helge Deller <deller@gmx.de>
-Date: Sat, 18 Nov 2023 19:33:35 +0100
-Subject: [PATCH] prctl: Disable prctl(PR_SET_MDWE) on parisc
+Daniel Díaz
+daniel.diaz@linaro.org
 
-systemd-254 tries to use prctl(PR_SET_MDWE) for it's MemoryDenyWriteExecute
-functionality, but fails on parisc which still needs executable stacks in
-certain combinations of gcc/glibc/kernel.
-
-Disable prctl(PR_SET_MDWE) by returning -EINVAL for now on parisc, until
-userspace has catched up.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Reported-by: Sam James <sam@gentoo.org>
-Closes: https://github.com/systemd/systemd/issues/29775
-Tested-by: Sam James <sam@gentoo.org>
-Link: https://lore.kernel.org/all/875y2jro9a.fsf@gentoo.org/
-Cc: <stable@vger.kernel.org> # v6.3+
-
-diff --git a/kernel/sys.c b/kernel/sys.c
-index 2410e3999ebe..2fa67cd61685 100644
---- a/kernel/sys.c
-+++ b/kernel/sys.c
-@@ -2377,6 +2377,10 @@ static inline int prctl_set_mdwe(unsigned long bits, unsigned long arg3,
- 	if (bits & ~(PR_MDWE_REFUSE_EXEC_GAIN))
- 		return -EINVAL;
- 
-+	/* PARISC cannot allow mdwe as it needs writable stacks */
-+	if (IS_ENABLED(CONFIG_PARISC))
-+		return -EINVAL;
-+
- 	if (bits & PR_MDWE_REFUSE_EXEC_GAIN)
- 		set_bit(MMF_HAS_MDWE, &current->mm->flags);
- 	else if (test_bit(MMF_HAS_MDWE, &current->mm->flags))
 
