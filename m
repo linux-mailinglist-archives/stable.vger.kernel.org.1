@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5564A7F7F9D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDEC7F7B21
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1069428251A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7FB01F20EF8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8B2364BA;
-	Fri, 24 Nov 2023 18:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363AE39FF7;
+	Fri, 24 Nov 2023 18:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbWAGleq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSszEdPP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDED22F1D;
-	Fri, 24 Nov 2023 18:43:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F30C433C8;
-	Fri, 24 Nov 2023 18:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F8839FE8;
+	Fri, 24 Nov 2023 18:02:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF3BC433C8;
+	Fri, 24 Nov 2023 18:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851381;
-	bh=op7eOy9NIw6+UK9ZRmr+0eceVRmxpib9Xo5M7Zq2vNg=;
+	s=korg; t=1700848925;
+	bh=4ek0P6ClWcE0ZllCjwC/LAe36g6JgCTeLFpNK9ktgtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SbWAGleqX9ObjYxTmQwQoqu3FnlxIVFbZPGe8iWV04EYsdsjjr/jT1YoXh62OwUlG
-	 jWgUrrIs6cJo8PPm/QFGSUMpYF38s7qImP9lPOq4WbLMgUlswxoEona+tAURjrfAzi
-	 eY9Lkj15T1Ez9vx4MjffSbC6NkDu0s0Z3l7D33Dk=
+	b=zSszEdPPBiEqaTNDeKOwR0uU9sAv23ylfHMlR6llIx1OXLgnos8BgXt2NlfXbbhaw
+	 9yT30H/7F4d+Rky8P266EJWBkTndc+FEfA0gHjAZaiR7CFVHR1LFR0+lf+uzS/Rhh4
+	 71mcGVCQ68Xu/ew7q7gaYLL7YOVW9VBPM4y5qyZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.5 425/491] media: venus: hfi: add checks to handle capabilities from firmware
+	Brian Geffon <bgeffon@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 4.14 37/57] PM: hibernate: Clean up sync_read handling in snapshot_write_next()
 Date: Fri, 24 Nov 2023 17:51:01 +0000
-Message-ID: <20231124172037.380318582@linuxfoundation.org>
+Message-ID: <20231124171931.675920357@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,74 +52,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Brian Geffon <bgeffon@google.com>
 
-commit 8d0b89398b7ebc52103e055bf36b60b045f5258f upstream.
+commit d08970df1980476f27936e24d452550f3e9e92e1 upstream.
 
-The hfi parser, parses the capabilities received from venus firmware and
-copies them to core capabilities. Consider below api, for example,
-fill_caps - In this api, caps in core structure gets updated with the
-number of capabilities received in firmware data payload. If the same api
-is called multiple times, there is a possibility of copying beyond the max
-allocated size in core caps.
-Similar possibilities in fill_raw_fmts and fill_profile_level functions.
+In snapshot_write_next(), sync_read is set and unset in three different
+spots unnecessiarly. As a result there is a subtle bug where the first
+page after the meta data has been loaded unconditionally sets sync_read
+to 0. If this first PFN was actually a highmem page, then the returned
+buffer will be the global "buffer," and the page needs to be loaded
+synchronously.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+That is, I'm not sure we can always assume the following to be safe:
+
+	handle->buffer = get_buffer(&orig_bm, &ca);
+	handle->sync_read = 0;
+
+Because get_buffer() can call get_highmem_page_buffer() which can
+return 'buffer'.
+
+The easiest way to address this is just set sync_read before
+snapshot_write_next() returns if handle->buffer == buffer.
+
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
+Cc: All applicable <stable@vger.kernel.org>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/power/snapshot.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -89,6 +89,9 @@ static void fill_profile_level(struct hf
- {
- 	const struct hfi_profile_level *pl = data;
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2592,8 +2592,6 @@ int snapshot_write_next(struct snapshot_
+ 	if (handle->cur > 1 && handle->cur > nr_meta_pages + nr_copy_pages)
+ 		return 0;
  
-+	if (cap->num_pl + num >= HFI_MAX_PROFILE_COUNT)
-+		return;
-+
- 	memcpy(&cap->pl[cap->num_pl], pl, num * sizeof(*pl));
- 	cap->num_pl += num;
+-	handle->sync_read = 1;
+-
+ 	if (!handle->cur) {
+ 		if (!buffer)
+ 			/* This makes the buffer be freed by swsusp_free() */
+@@ -2634,7 +2632,6 @@ int snapshot_write_next(struct snapshot_
+ 			memory_bm_position_reset(&orig_bm);
+ 			restore_pblist = NULL;
+ 			handle->buffer = get_buffer(&orig_bm, &ca);
+-			handle->sync_read = 0;
+ 			if (IS_ERR(handle->buffer))
+ 				return PTR_ERR(handle->buffer);
+ 		}
+@@ -2646,9 +2643,8 @@ int snapshot_write_next(struct snapshot_
+ 		handle->buffer = get_buffer(&orig_bm, &ca);
+ 		if (IS_ERR(handle->buffer))
+ 			return PTR_ERR(handle->buffer);
+-		if (handle->buffer != buffer)
+-			handle->sync_read = 0;
+ 	}
++	handle->sync_read = (handle->buffer == buffer);
+ 	handle->cur++;
+ 	return PAGE_SIZE;
  }
-@@ -114,6 +117,9 @@ fill_caps(struct hfi_plat_caps *cap, con
- {
- 	const struct hfi_capability *caps = data;
- 
-+	if (cap->num_caps + num >= MAX_CAP_ENTRIES)
-+		return;
-+
- 	memcpy(&cap->caps[cap->num_caps], caps, num * sizeof(*caps));
- 	cap->num_caps += num;
- }
-@@ -140,6 +146,9 @@ static void fill_raw_fmts(struct hfi_pla
- {
- 	const struct raw_formats *formats = fmts;
- 
-+	if (cap->num_fmts + num_fmts >= MAX_FMT_ENTRIES)
-+		return;
-+
- 	memcpy(&cap->fmts[cap->num_fmts], formats, num_fmts * sizeof(*formats));
- 	cap->num_fmts += num_fmts;
- }
-@@ -162,6 +171,9 @@ parse_raw_formats(struct venus_core *cor
- 		rawfmts[i].buftype = fmt->buffer_type;
- 		i++;
- 
-+		if (i >= MAX_FMT_ENTRIES)
-+			return;
-+
- 		if (pinfo->num_planes > MAX_PLANES)
- 			break;
- 
 
 
 
