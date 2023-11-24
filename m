@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA667F7DD1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23097F7BA7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D021B2106B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DD3F2820C7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C1C3A8DD;
-	Fri, 24 Nov 2023 18:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203FD39FF3;
+	Fri, 24 Nov 2023 18:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9TN8ci8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4Y+mlND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5353D33CFD;
-	Fri, 24 Nov 2023 18:27:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E9DC433C8;
-	Fri, 24 Nov 2023 18:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF1C39FC6;
+	Fri, 24 Nov 2023 18:07:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F17C433C7;
+	Fri, 24 Nov 2023 18:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850457;
-	bh=ZE7QTMpBQoJeG95OJ+siiGsh1jKZmIM2Eu5XJjyl74A=;
+	s=korg; t=1700849239;
+	bh=rMlPqBrvQHbqh58bnkGEpNdhU/ehTjGCl8aTtLTE3Qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9TN8ci8vYAc2RXF3vzwzKQ8xREKyeS5LhG2gMm2CtrqX+GzJQrNn0PUHJk/tzubQ
-	 A45Y4UynnE5eFPaVFb9ETKrMOSMBlb1k0W46E6GlTHj0sc+y4eHhkWiie7UUsvr93T
-	 07ZwJxS2WyW17AXb2xy0zyOgOZL0WuGBphbEXjfY=
+	b=X4Y+mlND1Kzka53RAhqtK7N2h9Vi5G+SDbmKsOseqGsh07XvqqB2IaBQ9y2Y0Sef5
+	 kFoHxYUsIS46dqp8ABodt5Rxqyh06HKg9a2NZ9wIqf+wiPeVMMwOZgLVUb36/D+Qhb
+	 agQpI64YbjgxgMy2uT/XGAUqD7Ux+mPerm7jeNHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 032/491] wifi: ath10k: Dont touch the CE interrupt registers after power up
+Subject: [PATCH 6.6 102/530] PCI: mvebu: Use FIELD_PREP() with Link Width
 Date: Fri, 24 Nov 2023 17:44:28 +0000
-Message-ID: <20231124172025.663830801@linuxfoundation.org>
+Message-ID: <20231124172031.223720609@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,126 +52,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 170c75d43a77dc937c58f07ecf847ba1b42ab74e ]
+[ Upstream commit 408599ec561ad5862cda4f107626009f6fa97a74 ]
 
-As talked about in commit d66d24ac300c ("ath10k: Keep track of which
-interrupts fired, don't poll them"), if we access the copy engine
-register at a bad time then ath10k can go boom. However, it's not
-necessarily easy to know when it's safe to access them.
+mvebu_pcie_setup_hw() setups the Maximum Link Width field in the Link
+Capabilities registers using an open-coded variant of FIELD_PREP() with
+a literal in shift. Improve readability by using
+FIELD_PREP(PCI_EXP_LNKCAP_MLW, ...).
 
-The ChromeOS test labs saw a crash that looked like this at
-shutdown/reboot time (on a chromeos-5.15 kernel, but likely the
-problem could also reproduce upstream):
-
-Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
-...
-CPU: 4 PID: 6168 Comm: reboot Not tainted 5.15.111-lockdep-19350-g1d624fe6758f #1 010b9b233ab055c27c6dc88efb0be2f4e9e86f51
-Hardware name: Google Kingoftown (DT)
-...
-pc : ath10k_snoc_read32+0x50/0x74 [ath10k_snoc]
-lr : ath10k_snoc_read32+0x24/0x74 [ath10k_snoc]
-...
-Call trace:
-ath10k_snoc_read32+0x50/0x74 [ath10k_snoc ...]
-ath10k_ce_disable_interrupt+0x190/0x65c [ath10k_core ...]
-ath10k_ce_disable_interrupts+0x8c/0x120 [ath10k_core ...]
-ath10k_snoc_hif_stop+0x78/0x660 [ath10k_snoc ...]
-ath10k_core_stop+0x13c/0x1ec [ath10k_core ...]
-ath10k_halt+0x398/0x5b0 [ath10k_core ...]
-ath10k_stop+0xfc/0x1a8 [ath10k_core ...]
-drv_stop+0x148/0x6b4 [mac80211 ...]
-ieee80211_stop_device+0x70/0x80 [mac80211 ...]
-ieee80211_do_stop+0x10d8/0x15b0 [mac80211 ...]
-ieee80211_stop+0x144/0x1a0 [mac80211 ...]
-__dev_close_many+0x1e8/0x2c0
-dev_close_many+0x198/0x33c
-dev_close+0x140/0x210
-cfg80211_shutdown_all_interfaces+0xc8/0x1e0 [cfg80211 ...]
-ieee80211_remove_interfaces+0x118/0x5c4 [mac80211 ...]
-ieee80211_unregister_hw+0x64/0x1f4 [mac80211 ...]
-ath10k_mac_unregister+0x4c/0xf0 [ath10k_core ...]
-ath10k_core_unregister+0x80/0xb0 [ath10k_core ...]
-ath10k_snoc_free_resources+0xb8/0x1ec [ath10k_snoc ...]
-ath10k_snoc_shutdown+0x98/0xd0 [ath10k_snoc ...]
-platform_shutdown+0x7c/0xa0
-device_shutdown+0x3e0/0x58c
-kernel_restart_prepare+0x68/0xa0
-kernel_restart+0x28/0x7c
-
-Though there's no known way to reproduce the problem, it makes sense
-that it would be the same issue where we're trying to access copy
-engine registers when it's not allowed.
-
-Let's fix this by changing how we "disable" the interrupts. Instead of
-tweaking the copy engine registers we'll just use disable_irq() and
-enable_irq(). Then we'll configure the interrupts once at power up
-time.
-
-Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid
+Link: https://lore.kernel.org/r/20230919125648.1920-6-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/pci/controller/pci-mvebu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 26214c00cd0d7..2c39bad7ebfb9 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -828,12 +828,20 @@ static void ath10k_snoc_hif_get_default_pipe(struct ath10k *ar,
+diff --git a/drivers/pci/controller/pci-mvebu.c b/drivers/pci/controller/pci-mvebu.c
+index 60810a1fbfb75..29fe09c99e7d9 100644
+--- a/drivers/pci/controller/pci-mvebu.c
++++ b/drivers/pci/controller/pci-mvebu.c
+@@ -264,7 +264,7 @@ static void mvebu_pcie_setup_hw(struct mvebu_pcie_port *port)
+ 	 */
+ 	lnkcap = mvebu_readl(port, PCIE_CAP_PCIEXP + PCI_EXP_LNKCAP);
+ 	lnkcap &= ~PCI_EXP_LNKCAP_MLW;
+-	lnkcap |= (port->is_x4 ? 4 : 1) << 4;
++	lnkcap |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, port->is_x4 ? 4 : 1);
+ 	mvebu_writel(port, lnkcap, PCIE_CAP_PCIEXP + PCI_EXP_LNKCAP);
  
- static inline void ath10k_snoc_irq_disable(struct ath10k *ar)
- {
--	ath10k_ce_disable_interrupts(ar);
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	int id;
-+
-+	for (id = 0; id < CE_COUNT_MAX; id++)
-+		disable_irq(ar_snoc->ce_irqs[id].irq_line);
- }
- 
- static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
- {
--	ath10k_ce_enable_interrupts(ar);
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
-+	int id;
-+
-+	for (id = 0; id < CE_COUNT_MAX; id++)
-+		enable_irq(ar_snoc->ce_irqs[id].irq_line);
- }
- 
- static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
-@@ -1090,6 +1098,8 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
- 		goto err_free_rri;
- 	}
- 
-+	ath10k_ce_enable_interrupts(ar);
-+
- 	return 0;
- 
- err_free_rri:
-@@ -1253,8 +1263,8 @@ static int ath10k_snoc_request_irq(struct ath10k *ar)
- 
- 	for (id = 0; id < CE_COUNT_MAX; id++) {
- 		ret = request_irq(ar_snoc->ce_irqs[id].irq_line,
--				  ath10k_snoc_per_engine_handler, 0,
--				  ce_name[id], ar);
-+				  ath10k_snoc_per_engine_handler,
-+				  IRQF_NO_AUTOEN, ce_name[id], ar);
- 		if (ret) {
- 			ath10k_err(ar,
- 				   "failed to register IRQ handler for CE %d: %d\n",
+ 	/* Disable Root Bridge I/O space, memory space and bus mastering. */
 -- 
 2.42.0
 
