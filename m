@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF2957F7E45
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2857F7C3E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CED21C2136C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03903281E79
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3E039FE7;
-	Fri, 24 Nov 2023 18:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE663A8C4;
+	Fri, 24 Nov 2023 18:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x18fIL7U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wl/xhtF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FF439FE1;
-	Fri, 24 Nov 2023 18:31:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2763C433C7;
-	Fri, 24 Nov 2023 18:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7EA39FFD;
+	Fri, 24 Nov 2023 18:13:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6ADC433C8;
+	Fri, 24 Nov 2023 18:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850689;
-	bh=05Aca14bT3VoAnGAANRxlEigQlGQ1YztFwnX0arp1qY=;
+	s=korg; t=1700849596;
+	bh=u4vNM7f0UECZUpHhH0QBbvqmXg3IKXK3cLHZgDK0tPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x18fIL7UoqLUhHA1Cyq59Y6xuhfG58npbrlc+5rbQObFAxzP3NMSuMrfTXeeblGQg
-	 kR/UahbW+jzC8zCBhc5EVaz7UhVK0/2j2m3xtGoKxt1tZpNexXAOHGvl1xxag7uyyO
-	 ltz8k8kaobMlnlJaoE74R0Vyrn1RV1/rzICCGU+I=
+	b=Wl/xhtF4dyszCazv1FTGYqO5S5pKb8nXqSoXJ09rtDb/q0n5glyhmrcrz9SSjWG+4
+	 kQcVdTc2w3Vkr5dYpn6xowFOBzdC3mZQlHfYS3WAkBhQaWZkjFAF8EpMvyGTHKWGkT
+	 dLVwvXqriGh4vxEISkMN/UOGWFBE0uyAiPEexEZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 150/491] mtd: rawnand: tegra: add missing check for platform_get_irq()
+Subject: [PATCH 6.6 220/530] net/mlx5e: Fix pedit endianness
 Date: Fri, 24 Nov 2023 17:46:26 +0000
-Message-ID: <20231124172028.989890711@linuxfoundation.org>
+Message-ID: <20231124172034.757652312@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +55,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit 0a1166c27d4e53186e6bf9147ea6db9cd1d65847 ]
+[ Upstream commit 0c101a23ca7eaf00eef1328eefb04b3a93401cc8 ]
 
-Add the missing check for platform_get_irq() and return error code
-if it fails.
+Referenced commit addressed endianness issue in mlx5 pedit implementation
+in ad hoc manner instead of systematically treating integer values
+according to their types which left pedit fields of sizes not equal to 4
+and where the bytes being modified are not least significant ones broken on
+big endian machines since wrong bits will be consumed during parsing which
+leads to following example error when applying pedit to source and
+destination MAC addresses:
 
-Fixes: d7d9f8ec77fe ("mtd: rawnand: add NVIDIA Tegra NAND Flash controller driver")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230821084046.217025-1-yiyang13@huawei.com
+[Wed Oct 18 12:52:42 2023] mlx5_core 0001:00:00.1 p1v3_r: attempt to offload an unsupported field (cmd 0)
+[Wed Oct 18 12:52:42 2023] mask: 00000000330c5b68: 00 00 00 00 ff ff 00 00 00 00 ff ff 00 00 00 00  ................
+[Wed Oct 18 12:52:42 2023] mask: 0000000017d22fd9: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+[Wed Oct 18 12:52:42 2023] mask: 000000008186d717: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+[Wed Oct 18 12:52:42 2023] mask: 0000000029eb6149: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+[Wed Oct 18 12:52:42 2023] mask: 000000007ed103e4: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+[Wed Oct 18 12:52:42 2023] mask: 00000000db8101a6: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+[Wed Oct 18 12:52:42 2023] mask: 00000000ec3c08a9: 00 00 00 00 00 00 00 00 00 00 00 00              ............
+
+Treat masks and values of pedit and filter match as network byte order,
+refactor pointers to them to void pointers instead of confusing u32
+pointers and only cast to pointer-to-integer when reading a value from
+them. Treat pedit mlx5_fields->field_mask as host byte order according to
+its type u32, change the constants in fields array accordingly.
+
+Fixes: 82198d8bcdef ("net/mlx5e: Fix endianness when calculating pedit mask first bit")
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-8-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/tegra_nand.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 60 ++++++++++---------
+ 1 file changed, 32 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/tegra_nand.c b/drivers/mtd/nand/raw/tegra_nand.c
-index eb0b9d16e8dae..a553e3ac8ff41 100644
---- a/drivers/mtd/nand/raw/tegra_nand.c
-+++ b/drivers/mtd/nand/raw/tegra_nand.c
-@@ -1197,6 +1197,10 @@ static int tegra_nand_probe(struct platform_device *pdev)
- 	init_completion(&ctrl->dma_complete);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index c8590483ddc64..b62fd37493410 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -3145,7 +3145,7 @@ static struct mlx5_fields fields[] = {
+ 	OFFLOAD(DIPV6_31_0,   32, U32_MAX, ip6.daddr.s6_addr32[3], 0,
+ 		dst_ipv4_dst_ipv6.ipv6_layout.ipv6[12]),
+ 	OFFLOAD(IPV6_HOPLIMIT, 8,  U8_MAX, ip6.hop_limit, 0, ttl_hoplimit),
+-	OFFLOAD(IP_DSCP, 16,  0xc00f, ip6, 0, ip_dscp),
++	OFFLOAD(IP_DSCP, 16,  0x0fc0, ip6, 0, ip_dscp),
  
- 	ctrl->irq = platform_get_irq(pdev, 0);
-+	if (ctrl->irq < 0) {
-+		err = ctrl->irq;
-+		goto err_put_pm;
+ 	OFFLOAD(TCP_SPORT, 16, U16_MAX, tcp.source,  0, tcp_sport),
+ 	OFFLOAD(TCP_DPORT, 16, U16_MAX, tcp.dest,    0, tcp_dport),
+@@ -3156,21 +3156,31 @@ static struct mlx5_fields fields[] = {
+ 	OFFLOAD(UDP_DPORT, 16, U16_MAX, udp.dest,   0, udp_dport),
+ };
+ 
+-static unsigned long mask_to_le(unsigned long mask, int size)
++static u32 mask_field_get(void *mask, struct mlx5_fields *f)
+ {
+-	__be32 mask_be32;
+-	__be16 mask_be16;
+-
+-	if (size == 32) {
+-		mask_be32 = (__force __be32)(mask);
+-		mask = (__force unsigned long)cpu_to_le32(be32_to_cpu(mask_be32));
+-	} else if (size == 16) {
+-		mask_be32 = (__force __be32)(mask);
+-		mask_be16 = *(__be16 *)&mask_be32;
+-		mask = (__force unsigned long)cpu_to_le16(be16_to_cpu(mask_be16));
++	switch (f->field_bsize) {
++	case 32:
++		return be32_to_cpu(*(__be32 *)mask) & f->field_mask;
++	case 16:
++		return be16_to_cpu(*(__be16 *)mask) & (u16)f->field_mask;
++	default:
++		return *(u8 *)mask & (u8)f->field_mask;
+ 	}
++}
+ 
+-	return mask;
++static void mask_field_clear(void *mask, struct mlx5_fields *f)
++{
++	switch (f->field_bsize) {
++	case 32:
++		*(__be32 *)mask &= ~cpu_to_be32(f->field_mask);
++		break;
++	case 16:
++		*(__be16 *)mask &= ~cpu_to_be16((u16)f->field_mask);
++		break;
++	default:
++		*(u8 *)mask &= ~(u8)f->field_mask;
++		break;
 +	}
- 	err = devm_request_irq(&pdev->dev, ctrl->irq, tegra_nand_irq, 0,
- 			       dev_name(&pdev->dev), ctrl);
- 	if (err) {
+ }
+ 
+ static int offload_pedit_fields(struct mlx5e_priv *priv,
+@@ -3182,11 +3192,12 @@ static int offload_pedit_fields(struct mlx5e_priv *priv,
+ 	struct pedit_headers *set_masks, *add_masks, *set_vals, *add_vals;
+ 	struct pedit_headers_action *hdrs = parse_attr->hdrs;
+ 	void *headers_c, *headers_v, *action, *vals_p;
+-	u32 *s_masks_p, *a_masks_p, s_mask, a_mask;
+ 	struct mlx5e_tc_mod_hdr_acts *mod_acts;
+-	unsigned long mask, field_mask;
++	void *s_masks_p, *a_masks_p;
+ 	int i, first, last, next_z;
+ 	struct mlx5_fields *f;
++	unsigned long mask;
++	u32 s_mask, a_mask;
+ 	u8 cmd;
+ 
+ 	mod_acts = &parse_attr->mod_hdr_acts;
+@@ -3202,15 +3213,11 @@ static int offload_pedit_fields(struct mlx5e_priv *priv,
+ 		bool skip;
+ 
+ 		f = &fields[i];
+-		/* avoid seeing bits set from previous iterations */
+-		s_mask = 0;
+-		a_mask = 0;
+-
+ 		s_masks_p = (void *)set_masks + f->offset;
+ 		a_masks_p = (void *)add_masks + f->offset;
+ 
+-		s_mask = *s_masks_p & f->field_mask;
+-		a_mask = *a_masks_p & f->field_mask;
++		s_mask = mask_field_get(s_masks_p, f);
++		a_mask = mask_field_get(a_masks_p, f);
+ 
+ 		if (!s_mask && !a_mask) /* nothing to offload here */
+ 			continue;
+@@ -3237,22 +3244,20 @@ static int offload_pedit_fields(struct mlx5e_priv *priv,
+ 					 match_mask, f->field_bsize))
+ 				skip = true;
+ 			/* clear to denote we consumed this field */
+-			*s_masks_p &= ~f->field_mask;
++			mask_field_clear(s_masks_p, f);
+ 		} else {
+ 			cmd  = MLX5_ACTION_TYPE_ADD;
+ 			mask = a_mask;
+ 			vals_p = (void *)add_vals + f->offset;
+ 			/* add 0 is no change */
+-			if ((*(u32 *)vals_p & f->field_mask) == 0)
++			if (!mask_field_get(vals_p, f))
+ 				skip = true;
+ 			/* clear to denote we consumed this field */
+-			*a_masks_p &= ~f->field_mask;
++			mask_field_clear(a_masks_p, f);
+ 		}
+ 		if (skip)
+ 			continue;
+ 
+-		mask = mask_to_le(mask, f->field_bsize);
+-
+ 		first = find_first_bit(&mask, f->field_bsize);
+ 		next_z = find_next_zero_bit(&mask, f->field_bsize, first);
+ 		last  = find_last_bit(&mask, f->field_bsize);
+@@ -3279,10 +3284,9 @@ static int offload_pedit_fields(struct mlx5e_priv *priv,
+ 		MLX5_SET(set_action_in, action, field, f->field);
+ 
+ 		if (cmd == MLX5_ACTION_TYPE_SET) {
++			unsigned long field_mask = f->field_mask;
+ 			int start;
+ 
+-			field_mask = mask_to_le(f->field_mask, f->field_bsize);
+-
+ 			/* if field is bit sized it can start not from first bit */
+ 			start = find_first_bit(&field_mask, f->field_bsize);
+ 
 -- 
 2.42.0
 
