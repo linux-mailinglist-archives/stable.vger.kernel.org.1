@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D5C7F7C42
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A516C7F7E66
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65EF41C21171
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D69121C21396
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3793A8C2;
-	Fri, 24 Nov 2023 18:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252F839FFF;
+	Fri, 24 Nov 2023 18:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECE87XIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lv5uITew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AFD381D5;
-	Fri, 24 Nov 2023 18:13:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE654C433C7;
-	Fri, 24 Nov 2023 18:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7942E621;
+	Fri, 24 Nov 2023 18:32:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4725C433C7;
+	Fri, 24 Nov 2023 18:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849606;
-	bh=XzvJ9tiJOw5s+3uhl37P4eUy9zUu+Y+77JeQU2NObtw=;
+	s=korg; t=1700850761;
+	bh=zZQGcCiwGrmHPQ7zEtJykBdsl9hdg3oozB8/TR5Hxkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ECE87XIU9dQTGsigZFdS++trgBn1CMsRVorn7ZJ8XcscRIwf1y+evTIQSQeGGeIBZ
-	 OrCHfVBFdZJREfbJ1Q+X/Tv0Q5ExgsVzqVyrb/gIJqddMTjEH97cAaZm3REJe3L6TW
-	 KX+iH5gZ2Eq2Se6JXvh3iU1vWGaIXWgffi5HekLM=
+	b=lv5uITewnYMIKWf6ToG9I8lhPRaEeN4kKGckuIu/k2J8MrwaugkKUpBVd16XUM8XQ
+	 maOW0Gz46Gp5/JpROd9BhjVkL1aNImvHBw42CNbNTASUp/X0D+ICRsWAydoZFpd+C/
+	 rW9OSXGvFLNb2aHvp544tw4ybMVBoc3JEIR8lDCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Can Guo <quic_cang@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 249/530] scsi: ufs: qcom: Update PHY settings only when scaling to higher gears
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 179/491] net: hns3: fix incorrect capability bit display for copper port
 Date: Fri, 24 Nov 2023 17:46:55 +0000
-Message-ID: <20231124172035.635304836@linuxfoundation.org>
+Message-ID: <20231124172029.855003714@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Jian Shen <shenjian15@huawei.com>
 
-commit fc88ca19ad0989dc0e4d4b126d5d0ba91f6cb616 upstream.
+[ Upstream commit 75b247b57d8b71bcb679e4cb37d0db104848806c ]
 
-The "hs_gear" variable is used to program the PHY settings (submode) during
-ufs_qcom_power_up_sequence(). Currently, it is being updated every time the
-agreed gear changes. Due to this, if the gear got downscaled before suspend
-(runtime/system), then while resuming, the PHY settings for the lower gear
-will be applied first and later when scaling to max gear with REINIT, the
-PHY settings for the max gear will be applied.
+Currently, the FEC capability bit is default set for device version V2.
+It's incorrect for the copper port. Eventhough it doesn't make the nic
+work abnormal, but the capability information display in debugfs may
+confuse user. So clear it when driver get the port type inforamtion.
 
-This adds a latency while resuming and also really not needed as the PHY
-gear settings are backwards compatible i.e., we can continue using the PHY
-settings for max gear with lower gear speed.
-
-So let's update the "hs_gear" variable _only_ when the agreed gear is
-greater than the current one. This guarantees that the PHY settings will be
-changed only during probe time and fatal error condition.
-
-Due to this, UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH can now be skipped
-when the PM operation is in progress.
-
-Cc: stable@vger.kernel.org
-Fixes: 96a7141da332 ("scsi: ufs: core: Add support for reinitializing the UFS device")
-Reported-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230908145329.154024-1-manivannan.sadhasivam@linaro.org
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Tested-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 433ccce83504 ("net: hns3: use FEC capability queried from firmware")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c   |    3 ++-
- drivers/ufs/host/ufs-qcom.c |    9 +++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8723,7 +8723,8 @@ static int ufshcd_probe_hba(struct ufs_h
- 	if (ret)
- 		goto out;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 71154c0976aff..dd2baa05adba0 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -11664,6 +11664,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
+ 		goto err_msi_irq_uninit;
  
--	if (hba->quirks & UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH) {
-+	if (!hba->pm_op_in_progress &&
-+	    (hba->quirks & UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH)) {
- 		/* Reset the device and controller before doing reinit */
- 		ufshcd_device_reset(hba);
- 		ufshcd_hba_stop(hba);
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -909,8 +909,13 @@ static int ufs_qcom_pwr_change_notify(st
- 			return ret;
- 		}
- 
--		/* Use the agreed gear */
--		host->hs_gear = dev_req_params->gear_tx;
-+		/*
-+		 * Update hs_gear only when the gears are scaled to a higher value. This is because,
-+		 * the PHY gear settings are backwards compatible and we only need to change the PHY
-+		 * settings while scaling to higher gears.
-+		 */
-+		if (dev_req_params->gear_tx > host->hs_gear)
-+			host->hs_gear = dev_req_params->gear_tx;
- 
- 		/* enable the device ref clock before changing to HS mode */
- 		if (!ufshcd_is_hs_mode(&hba->pwr_info) &&
+ 	if (hdev->hw.mac.media_type == HNAE3_MEDIA_TYPE_COPPER) {
++		clear_bit(HNAE3_DEV_SUPPORT_FEC_B, ae_dev->caps);
+ 		if (hnae3_dev_phy_imp_supported(hdev))
+ 			ret = hclge_update_tp_port_info(hdev);
+ 		else
+-- 
+2.42.0
+
 
 
 
