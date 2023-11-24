@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04487F7EFE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8D47F7CB0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A8852822E7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB5991F20F86
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F355D1A5A4;
-	Fri, 24 Nov 2023 18:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BC639FF7;
+	Fri, 24 Nov 2023 18:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLNZfB/7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/gK0s8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B749633CFD;
-	Fri, 24 Nov 2023 18:37:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447FCC433C8;
-	Fri, 24 Nov 2023 18:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12CB39FE1;
+	Fri, 24 Nov 2023 18:17:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F18C433C7;
+	Fri, 24 Nov 2023 18:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851063;
-	bh=R6MMomudBxtbcy8Xp5umPO53kODY80Vg8RSHOCqK8s0=;
+	s=korg; t=1700849848;
+	bh=ZKmzwz8+cSlHiycYLOnzNhqFuSXYNiTM1rTdKQvbo4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLNZfB/7uEchJbWVnhdHKYkKgmZedrxU7B4X1t3Nf+yHwYnbTfEi2aOkXdXvKXWtM
-	 b0+/asnBD/ZOqH2Db0uVYCdxPVRW/hy+T+EqzRiiuMZOFBpo9c9TwNgpRSiO2/6abG
-	 lrZ5dqu5dQP6BEiJGWPGQknIc6DZy05Lqpd5Tz/o=
+	b=W/gK0s8lr0Kv84s+qSZwjZvInn9rloaiGNTAUFaU+8Pm9HUkYIEunnWOxTCSI+GjF
+	 W7YOHtgdBwdUutnMWwwYdVR+DjW37mr9z8+5Fotttq7+7Im0XWnsofWbuYNF/C3vlf
+	 jH2MmmEU6ntn4SS0OUKD4lZNFsqOUYP8wqf/LV4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.5 274/491] wifi: ath11k: fix dfs radar event locking
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 344/530] arm64: dts: qcom: ipq6018: Fix tcsr_mutex register size
 Date: Fri, 24 Nov 2023 17:48:30 +0000
-Message-ID: <20231124172032.811726593@linuxfoundation.org>
+Message-ID: <20231124172038.499821994@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-commit 3b6c14833165f689cc5928574ebafe52bbce5f1e upstream.
+commit 72fc3d58b87b0d622039c6299b89024fbb7b420f upstream.
 
-The ath11k active pdevs are protected by RCU but the DFS radar event
-handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section.
+IPQ6018's TCSR Mutex HW lock register has 32 locks of size 4KB each.
+Total size of the TCSR Mutex registers is 128KB.
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
+Fix size of the tcsr_mutex hwlock register to 0x20000.
 
-Compile tested only.
+Changes in v2:
+ - Drop change to remove qcom,ipq6018-tcsr-mutex compatible string
+ - Added Fixes and stable tags
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019153115.26401-3-johan+linaro@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230905095535.1263113-2-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8337,6 +8337,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
- 		   ev->detector_id, ev->segment_id, ev->timestamp, ev->is_chirp,
- 		   ev->freq_offset, ev->sidx);
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -393,7 +393,7 @@
  
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
- 
- 	if (!ar) {
-@@ -8354,6 +8356,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
- 		ieee80211_radar_detected(ar->hw);
- 
- exit:
-+	rcu_read_unlock();
-+
- 	kfree(tb);
- }
+ 		tcsr_mutex: hwlock@1905000 {
+ 			compatible = "qcom,ipq6018-tcsr-mutex", "qcom,tcsr-mutex";
+-			reg = <0x0 0x01905000 0x0 0x1000>;
++			reg = <0x0 0x01905000 0x0 0x20000>;
+ 			#hwlock-cells = <1>;
+ 		};
  
 
 
