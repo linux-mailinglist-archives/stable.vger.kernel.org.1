@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-1973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10827F8236
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A896C7F840A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56AE128440F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 378641F21496
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A85364AE;
-	Fri, 24 Nov 2023 19:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98CC737170;
+	Fri, 24 Nov 2023 19:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqnlfWsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJHWj+Jb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B78733076;
-	Fri, 24 Nov 2023 19:05:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4023C433C7;
-	Fri, 24 Nov 2023 19:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5FB339BE;
+	Fri, 24 Nov 2023 19:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD209C433C8;
+	Fri, 24 Nov 2023 19:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852735;
-	bh=eOz/pFuE5JRrIZmkAub9MK97UrBSN/GARLOTQZtwsn0=;
+	s=korg; t=1700853808;
+	bh=I4ALMsBddhKhqLe7nkZyZASejqHPQyYWJunsIYZcsjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yqnlfWsiblkhJIUSQs9yQW4qlwDWiCQC2ItMwJZG+sRjOt5LfMOeEJWp+sdV1ku2l
-	 qYkNyTcQfiWHl8+7gwKWoHL9s3ArK4xHR0H4FNEwUzrvwuM4UZultJ1OuAAEvM+jmz
-	 w5Z0Y90ZQnm51OhazA+vwKxzmXXK7mtVhoeBmYcg=
+	b=CJHWj+Jb1Na4e7FafOy9VBn78TYSGR9HxPDZeHScnz4KAOLS6DzQOQVNQPBG5CSSo
+	 xLuzUlYD+MJAw5mwDXlmjFg85p+kk3g5KqTDh+uwBv8WD4sU2Fke5R7DGP/kd5CYaS
+	 IsjOiYqUzigmhOGeFSvvgXeWlQ1+UwgTYkDWXYqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>
-Subject: [PATCH 5.10 102/193] hvc/xen: fix console unplug
-Date: Fri, 24 Nov 2023 17:53:49 +0000
-Message-ID: <20231124171951.329889643@linuxfoundation.org>
+	ZhengHan Wang <wzhmmmmm@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 013/159] Bluetooth: Fix double free in hci_conn_cleanup
+Date: Fri, 24 Nov 2023 17:53:50 +0000
+Message-ID: <20231124171942.445357206@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,126 +53,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: ZhengHan Wang <wzhmmmmm@gmail.com>
 
-commit a30badfd7c13fc8763a9e10c5a12ba7f81515a55 upstream.
+[ Upstream commit a85fb91e3d728bdfc80833167e8162cce8bc7004 ]
 
-On unplug of a Xen console, xencons_disconnect_backend() unconditionally
-calls free_irq() via unbind_from_irqhandler(), causing a warning of
-freeing an already-free IRQ:
+syzbot reports a slab use-after-free in hci_conn_hash_flush [1].
+After releasing an object using hci_conn_del_sysfs in the
+hci_conn_cleanup function, releasing the same object again
+using the hci_dev_put and hci_conn_put functions causes a double free.
+Here's a simplified flow:
 
-(qemu) device_del con1
-[   32.050919] ------------[ cut here ]------------
-[   32.050942] Trying to free already-free IRQ 33
-[   32.050990] WARNING: CPU: 0 PID: 51 at kernel/irq/manage.c:1895 __free_irq+0x1d4/0x330
+hci_conn_del_sysfs:
+  hci_dev_put
+    put_device
+      kobject_put
+        kref_put
+          kobject_release
+            kobject_cleanup
+              kfree_const
+                kfree(name)
 
-It should be using evtchn_put() to tear down the event channel binding,
-and let the Linux IRQ side of it be handled by notifier_del_irq() through
-the HVC code.
+hci_dev_put:
+  ...
+    kfree(name)
 
-On which topic... xencons_disconnect_backend() should call hvc_remove()
-*first*, rather than tearing down the event channel and grant mapping
-while they are in use. And then the IRQ is guaranteed to be freed by
-the time it's torn down by evtchn_put().
+hci_conn_put:
+  put_device
+    ...
+      kfree(name)
 
-Since evtchn_put() also closes the actual event channel, avoid calling
-xenbus_free_evtchn() except in the failure path where the IRQ was not
-successfully set up.
+This patch drop the hci_dev_put and hci_conn_put function
+call in hci_conn_cleanup function, because the object is
+freed in hci_conn_del_sysfs function.
 
-However, calling hvc_remove() at the start of xencons_disconnect_backend()
-still isn't early enough. An unplug request is indicated by the backend
-setting its state to XenbusStateClosing, which triggers a notification
-to xencons_backend_changed(), which... does nothing except set its own
-frontend state directly to XenbusStateClosed without *actually* tearing
-down the HVC device or, you know, making sure it isn't actively in use.
+This patch also fixes the refcounting in hci_conn_add_sysfs() and
+hci_conn_del_sysfs() to take into account device_add() failures.
 
-So the backend sees the guest frontend set its state to XenbusStateClosed
-and stops servicing the interrupt... and the guest spins for ever in the
-domU_write_console() function waiting for the ring to drain.
+This fixes CVE-2023-28464.
 
-Fix that one by calling hvc_remove() from xencons_backend_changed() before
-signalling to the backend that it's OK to proceed with the removal.
+Link: https://syzkaller.appspot.com/bug?id=1bb51491ca5df96a5f724899d1dbb87afda61419 [1]
 
-Tested with 'dd if=/dev/zero of=/dev/hvc1' while telling Qemu to remove
-the console device.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020161529.355083-4-dwmw2@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: ZhengHan Wang <wzhmmmmm@gmail.com>
+Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_xen.c |   32 ++++++++++++++++++++++++--------
- 1 file changed, 24 insertions(+), 8 deletions(-)
+ net/bluetooth/hci_conn.c  |  6 ++----
+ net/bluetooth/hci_sysfs.c | 23 ++++++++++++-----------
+ 2 files changed, 14 insertions(+), 15 deletions(-)
 
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -363,18 +363,21 @@ void xen_console_resume(void)
- #ifdef CONFIG_HVC_XEN_FRONTEND
- static void xencons_disconnect_backend(struct xencons_info *info)
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index afdc0afa8ee7d..e129b7fb6540a 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -125,13 +125,11 @@ static void hci_conn_cleanup(struct hci_conn *conn)
+ 	if (hdev->notify)
+ 		hdev->notify(hdev, HCI_NOTIFY_CONN_DEL);
+ 
+-	hci_conn_del_sysfs(conn);
+-
+ 	debugfs_remove_recursive(conn->debugfs);
+ 
+-	hci_dev_put(hdev);
++	hci_conn_del_sysfs(conn);
+ 
+-	hci_conn_put(conn);
++	hci_dev_put(hdev);
+ }
+ 
+ static void le_scan_cleanup(struct work_struct *work)
+diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
+index ccd2c377bf83c..266112c960ee8 100644
+--- a/net/bluetooth/hci_sysfs.c
++++ b/net/bluetooth/hci_sysfs.c
+@@ -33,7 +33,7 @@ void hci_conn_init_sysfs(struct hci_conn *conn)
  {
--	if (info->irq > 0)
--		unbind_from_irqhandler(info->irq, NULL);
--	info->irq = 0;
-+	if (info->hvc != NULL)
-+		hvc_remove(info->hvc);
-+	info->hvc = NULL;
-+	if (info->irq > 0) {
-+		evtchn_put(info->evtchn);
-+		info->irq = 0;
-+		info->evtchn = 0;
-+	}
-+	/* evtchn_put() will also close it so this is only an error path */
- 	if (info->evtchn > 0)
- 		xenbus_free_evtchn(info->xbdev, info->evtchn);
- 	info->evtchn = 0;
- 	if (info->gntref > 0)
- 		gnttab_free_grant_references(info->gntref);
- 	info->gntref = 0;
--	if (info->hvc != NULL)
--		hvc_remove(info->hvc);
--	info->hvc = NULL;
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	BT_DBG("conn %p", conn);
++	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+ 	conn->dev.type = &bt_link;
+ 	conn->dev.class = bt_class;
+@@ -46,27 +46,30 @@ void hci_conn_add_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	BT_DBG("conn %p", conn);
++	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+ 	if (device_is_registered(&conn->dev))
+ 		return;
+ 
+ 	dev_set_name(&conn->dev, "%s:%d", hdev->name, conn->handle);
+ 
+-	if (device_add(&conn->dev) < 0) {
++	if (device_add(&conn->dev) < 0)
+ 		bt_dev_err(hdev, "failed to register connection device");
+-		return;
+-	}
+-
+-	hci_dev_hold(hdev);
  }
  
- static void xencons_free(struct xencons_info *info)
-@@ -538,10 +541,23 @@ static void xencons_backend_changed(stru
- 		if (dev->state == XenbusStateClosed)
- 			break;
- 		fallthrough;	/* Missed the backend's CLOSING state */
--	case XenbusStateClosing:
-+	case XenbusStateClosing: {
-+		struct xencons_info *info = dev_get_drvdata(&dev->dev);;
+ void hci_conn_del_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	if (!device_is_registered(&conn->dev))
++	bt_dev_dbg(hdev, "conn %p", conn);
 +
-+		/*
-+		 * Don't tear down the evtchn and grant ref before the other
-+		 * end has disconnected, but do stop userspace from trying
-+		 * to use the device before we allow the backend to close.
++	if (!device_is_registered(&conn->dev)) {
++		/* If device_add() has *not* succeeded, use *only* put_device()
++		 * to drop the reference count.
 +		 */
-+		if (info->hvc) {
-+			hvc_remove(info->hvc);
-+			info->hvc = NULL;
-+		}
-+
- 		xenbus_frontend_closed(dev);
- 		break;
- 	}
++		put_device(&conn->dev);
+ 		return;
 +	}
+ 
+ 	while (1) {
+ 		struct device *dev;
+@@ -78,9 +81,7 @@ void hci_conn_del_sysfs(struct hci_conn *conn)
+ 		put_device(dev);
+ 	}
+ 
+-	device_del(&conn->dev);
+-
+-	hci_dev_put(hdev);
++	device_unregister(&conn->dev);
  }
  
- static const struct xenbus_device_id xencons_ids[] = {
-@@ -600,7 +616,7 @@ static int __init xen_hvc_init(void)
- 		list_del(&info->list);
- 		spin_unlock_irqrestore(&xencons_lock, flags);
- 		if (info->irq)
--			unbind_from_irqhandler(info->irq, NULL);
-+			evtchn_put(info->evtchn);
- 		kfree(info);
- 		return r;
- 	}
+ static void bt_host_release(struct device *dev)
+-- 
+2.42.0
+
 
 
 
