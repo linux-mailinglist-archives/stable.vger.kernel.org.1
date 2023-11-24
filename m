@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-1861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79FD17F81B4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 328867F81E4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 332C3282E9E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3F7528372C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D8C364A5;
-	Fri, 24 Nov 2023 19:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69D4364A7;
+	Fri, 24 Nov 2023 19:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PM75eeKT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rq0quvz4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F18B2E84A;
-	Fri, 24 Nov 2023 19:00:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A4CC433C8;
-	Fri, 24 Nov 2023 19:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784B72E84A;
+	Fri, 24 Nov 2023 19:02:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C8CC433C7;
+	Fri, 24 Nov 2023 19:02:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852453;
-	bh=b8rdG9x94SNEPa86f2+Hv3RH9TA8OekFfglLyv+iTpg=;
+	s=korg; t=1700852541;
+	bh=nB3gl9aHx/zf2afKRVbzCeVfcZWuYKSrhqNusnBn7bM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PM75eeKTCKXEkZv73OtFv/lNdByJ6DL56TlvkUu3cqwU+UieyI7SFOki1iY0H0FMi
-	 62eaf4bjqONypLNQcVHax+byB/qtDhKO7s5W8ZeoglQGPH2VxqnUc4/sa3ItYRfXKK
-	 zzbZdzh7XglTP9MOshcXq+x+KBUM/Y0h/E/ErcE8=
+	b=rq0quvz4+CTlrpjmn0LegROyuN7TbJdSYM+ykcSr8w3OG/lO774aGdSQPp7VZIU/Z
+	 9nxVhq9htVArkslUGbMA1ON1x62yrkSIpvVmoUVRK/5mXChjUYbBxPQB8/jmlTRGHQ
+	 ZPWTSvJhkI6zSIbAoMYcZNNe2EhN82jZ2mw28u4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 363/372] drm/amdgpu: dont use ATRM for external devices
-Date: Fri, 24 Nov 2023 17:52:30 +0000
-Message-ID: <20231124172022.388053841@linuxfoundation.org>
+	Ondrej Jirman <megi@xff.cz>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Samuel Holland <samuel@sholland.org>,
+	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 024/193] drm/panel: st7703: Pick different reset sequence
+Date: Fri, 24 Nov 2023 17:52:31 +0000
+Message-ID: <20231124171948.155593378@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +53,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ondrej Jirman <megi@xff.cz>
 
-commit 432e664e7c98c243fab4c3c95bd463bea3aeed28 upstream.
+[ Upstream commit d12d635bb03c7cb4830acb641eb176ee9ff2aa89 ]
 
-The ATRM ACPI method is for fetching the dGPU vbios rom
-image on laptops and all-in-one systems.  It should not be
-used for external add in cards.  If the dGPU is thunderbolt
-connected, don't try ATRM.
+Switching to a different reset sequence, enabling IOVCC before enabling
+VCC.
 
-v2: pci_is_thunderbolt_attached only works for Intel.  Use
-    pdev->external_facing instead.
-v3: dev_is_removable() seems to be what we want
+There also needs to be a delay after enabling the supplies and before
+deasserting the reset. The datasheet specifies 1ms after the supplies
+reach the required voltage. Use 10-20ms to also give the power supplies
+some time to reach the required voltage, too.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes intermittent panel initialization failures and screen
+corruption during resume from sleep on panel xingbangda,xbd599 (e.g.
+used in PinePhone).
+
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+Reported-by: Samuel Holland <samuel@sholland.org>
+Reviewed-by: Guido Günther <agx@sigxcpu.org>
+Tested-by: Guido Günther <agx@sigxcpu.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230211171748.36692-2-frank@oltmanns.dev
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/panel/panel-sitronix-st7703.c | 25 ++++++++++---------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-@@ -29,6 +29,7 @@
- #include "amdgpu.h"
- #include "atom.h"
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7703.c b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+index c22e7c49e0778..67e1da0a7db53 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7703.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+@@ -428,29 +428,30 @@ static int st7703_prepare(struct drm_panel *panel)
+ 		return 0;
  
-+#include <linux/device.h>
- #include <linux/pci.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
-@@ -289,6 +290,10 @@ static bool amdgpu_atrm_get_bios(struct
- 	if (adev->flags & AMD_IS_APU)
- 		return false;
- 
-+	/* ATRM is for on-platform devices only */
-+	if (dev_is_removable(&adev->pdev->dev))
-+		return false;
+ 	dev_dbg(ctx->dev, "Resetting the panel\n");
+-	ret = regulator_enable(ctx->vcc);
++	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
 +
- 	while ((pdev = pci_get_class(PCI_CLASS_DISPLAY_VGA << 8, pdev)) != NULL) {
- 		dhandle = ACPI_HANDLE(&pdev->dev);
- 		if (!dhandle)
++	ret = regulator_enable(ctx->iovcc);
+ 	if (ret < 0) {
+-		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
++		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
+ 		return ret;
+ 	}
+-	ret = regulator_enable(ctx->iovcc);
++
++	ret = regulator_enable(ctx->vcc);
+ 	if (ret < 0) {
+-		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
+-		goto disable_vcc;
++		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
++		regulator_disable(ctx->iovcc);
++		return ret;
+ 	}
+ 
+-	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+-	usleep_range(20, 40);
++	/* Give power supplies time to stabilize before deasserting reset. */
++	usleep_range(10000, 20000);
++
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+-	msleep(20);
++	usleep_range(15000, 20000);
+ 
+ 	ctx->prepared = true;
+ 
+ 	return 0;
+-
+-disable_vcc:
+-	regulator_disable(ctx->vcc);
+-	return ret;
+ }
+ 
+ static int st7703_get_modes(struct drm_panel *panel,
+-- 
+2.42.0
+
 
 
 
