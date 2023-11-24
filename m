@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A647F8400
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA5A7F8235
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5342D1C26CD2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D28B1C22D53
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B4733E9;
-	Fri, 24 Nov 2023 19:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569EB2EAEA;
+	Fri, 24 Nov 2023 19:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wL4rOy4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PY0wWYCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF2F2E853;
-	Fri, 24 Nov 2023 19:23:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A75C433C8;
-	Fri, 24 Nov 2023 19:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E601033076;
+	Fri, 24 Nov 2023 19:05:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C51DC433C7;
+	Fri, 24 Nov 2023 19:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853783;
-	bh=mtRj2iEEJpaJULzjWyZiXGv8F2lCpIYhFnHzNvyRkus=;
+	s=korg; t=1700852732;
+	bh=rkCy/HxQ00lCHrV7yHp63aGBBVY/ylorPJVnyoJAGOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wL4rOy4e0ykfDbc/uABO2+ALuNp9E3LUOxNXWSuQlr7WJaxomVqJ6AV29VyQgwrER
-	 dt+FRIryVqRcPCMxMgy5BoiBs8HFvjQGudqLHXLJcWuHy83NpRCzTKqmI3dOfbk215
-	 1Q9HhHqllABYsqNRVwXnFFjNji8dMK5WCMlgjWXk=
+	b=PY0wWYCQDexuRpS5s/8aUnIH9UenehsN8n35Kz8wt69/hKubTvuOp4cNu9gpWqVG6
+	 BX0ALIRTsv7Ge1x3e5DacXKs2/kL5zVfan/JFGzxB9N2RrVdPAK7eL3ofqEQLie/rP
+	 a5HcRPxPI+GujY/o7ZayEnVOxaVuaASCtCTsPG6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 011/159] net: annotate data-races around sk->sk_dst_pending_confirm
+	jirislaby@kernel.org,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: [PATCH 5.10 101/193] tty/sysrq: replace smp_processor_id() with get_cpu()
 Date: Fri, 24 Nov 2023 17:53:48 +0000
-Message-ID: <20231124171942.372963620@linuxfoundation.org>
+Message-ID: <20231124171951.300019806@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,87 +52,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-[ Upstream commit eb44ad4e635132754bfbcb18103f1dcb7058aedd ]
+commit dd976a97d15b47656991e185a94ef42a0fa5cfd4 upstream.
 
-This field can be read or written without socket lock being held.
+The smp_processor_id() shouldn't be called from preemptible code.
+Instead use get_cpu() and put_cpu() which disables preemption in
+addition to getting the processor id. Enable preemption back after
+calling schedule_work() to make sure that the work gets scheduled on all
+cores other than the current core. We want to avoid a scenario where
+current core's stack trace is printed multiple times and one core's
+stack trace isn't printed because of scheduling of current task.
 
-Add annotations to avoid load-store tearing.
+This fixes the following bug:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  119.143590] sysrq: Show backtrace of all active CPUs
+[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
+[  119.144586] caller is debug_smp_processor_id+0x20/0x30
+[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
+[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
+[  119.145053] Call trace:
+[  119.145093]  dump_backtrace+0x0/0x1a0
+[  119.145122]  show_stack+0x18/0x70
+[  119.145141]  dump_stack+0xc4/0x11c
+[  119.145159]  check_preemption_disabled+0x100/0x110
+[  119.145175]  debug_smp_processor_id+0x20/0x30
+[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
+[  119.145211]  __handle_sysrq+0x8c/0x1a0
+[  119.145227]  write_sysrq_trigger+0x94/0x12c
+[  119.145247]  proc_reg_write+0xa8/0xe4
+[  119.145266]  vfs_write+0xec/0x280
+[  119.145282]  ksys_write+0x6c/0x100
+[  119.145298]  __arm64_sys_write+0x20/0x30
+[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
+[  119.145332]  do_el0_svc+0x24/0x8c
+[  119.145348]  el0_svc+0x10/0x20
+[  119.145364]  el0_sync_handler+0x134/0x140
+[  119.145381]  el0_sync+0x180/0x1c0
+
+Cc: jirislaby@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20231009162021.3607632-1-usama.anjum@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h    | 6 +++---
- net/core/sock.c       | 2 +-
- net/ipv4/tcp_output.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/tty/sysrq.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index b021c8912e2cf..5293f2b65fb55 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1941,7 +1941,7 @@ static inline void dst_negative_advice(struct sock *sk)
- 		if (ndst != dst) {
- 			rcu_assign_pointer(sk->sk_dst_cache, ndst);
- 			sk_tx_queue_clear(sk);
--			sk->sk_dst_pending_confirm = 0;
-+			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 		}
+--- a/drivers/tty/sysrq.c
++++ b/drivers/tty/sysrq.c
+@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(int
+ 		if (in_irq())
+ 			regs = get_irq_regs();
+ 
+-		pr_info("CPU%d:\n", smp_processor_id());
++		pr_info("CPU%d:\n", get_cpu());
+ 		if (regs)
+ 			show_regs(regs);
+ 		else
+ 			show_stack(NULL, NULL, KERN_INFO);
+ 
+ 		schedule_work(&sysrq_showallcpus);
++		put_cpu();
  	}
  }
-@@ -1952,7 +1952,7 @@ __sk_dst_set(struct sock *sk, struct dst_entry *dst)
- 	struct dst_entry *old_dst;
  
- 	sk_tx_queue_clear(sk);
--	sk->sk_dst_pending_confirm = 0;
-+	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 	old_dst = rcu_dereference_protected(sk->sk_dst_cache,
- 					    lockdep_sock_is_held(sk));
- 	rcu_assign_pointer(sk->sk_dst_cache, dst);
-@@ -1965,7 +1965,7 @@ sk_dst_set(struct sock *sk, struct dst_entry *dst)
- 	struct dst_entry *old_dst;
- 
- 	sk_tx_queue_clear(sk);
--	sk->sk_dst_pending_confirm = 0;
-+	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 	old_dst = xchg((__force struct dst_entry **)&sk->sk_dst_cache, dst);
- 	dst_release(old_dst);
- }
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 9979cd602dfac..2c3c5df139345 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -545,7 +545,7 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
- 
- 	if (dst && dst->obsolete && dst->ops->check(dst, cookie) == NULL) {
- 		sk_tx_queue_clear(sk);
--		sk->sk_dst_pending_confirm = 0;
-+		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
- 		dst_release(dst);
- 		return NULL;
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 0107436860171..1dce05bfa3005 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -1103,7 +1103,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 	skb_set_hash_from_sk(skb, sk);
- 	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
- 
--	skb_set_dst_pending_confirm(skb, sk->sk_dst_pending_confirm);
-+	skb_set_dst_pending_confirm(skb, READ_ONCE(sk->sk_dst_pending_confirm));
- 
- 	/* Build TCP header and checksum it. */
- 	th = (struct tcphdr *)skb->data;
--- 
-2.42.0
-
 
 
 
