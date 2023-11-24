@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-1437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4A07F7FA7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48B17F7B2A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9EF1C214E2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5CF31C2095B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BD22FC4E;
-	Fri, 24 Nov 2023 18:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B8B381D7;
+	Fri, 24 Nov 2023 18:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baRO7Re9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYTIRhnD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EF1364BA;
-	Fri, 24 Nov 2023 18:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F4CC433C8;
-	Fri, 24 Nov 2023 18:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D2939FE3;
+	Fri, 24 Nov 2023 18:02:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9E2C433C7;
+	Fri, 24 Nov 2023 18:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851396;
-	bh=66PgZqYwqgiF2o6zEYXOBPlG/3vnxfYBc6KlYiMBQq0=;
+	s=korg; t=1700848945;
+	bh=xqWu205QRi/S0g9IxfHMY89v9ayv4kP8Ra+w+sYz8ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=baRO7Re9Pt8EngNfNhdHzebQ+3oTYrl8vgtU8DNz+LUZDW61Ly0xqNhn75qo6cjL+
-	 /X/XgT3Lzj91vc6jzKHea2bmNb6zx9TA4rHF0lOYIoRlTCS0LsftUQ77h+tnjxXb1X
-	 v33TcV2+dM+XAH8dRJxEwph/3CphaZH5/3y7Q9fM=
+	b=UYTIRhnD20XXW8ZsCch+50mKtF9La9olgkH8RzWtw+W43XpcqenLvTUVgAC1rq90e
+	 rfm6qfQhqFUq0d/CFU1tD1F7YhQAeAs0kuZmfCRVv8icy6GT2TLIUo23r2Yr+7Slzx
+	 JXHfO62FoWvgSC7BVEgEDVJn/B8/igC51DjDxBNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahmoud Adam <mngyadam@amazon.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.5 431/491] nfsd: fix file memleak on client_opens_release
-Date: Fri, 24 Nov 2023 17:51:07 +0000
-Message-ID: <20231124172037.566619277@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 4.14 44/57] parisc: Prevent booting 64-bit kernels on PA1.x machines
+Date: Fri, 24 Nov 2023 17:51:08 +0000
+Message-ID: <20231124171931.943219792@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,39 +51,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahmoud Adam <mngyadam@amazon.com>
+From: Helge Deller <deller@gmx.de>
 
-commit bc1b5acb40201a0746d68a7d7cfc141899937f4f upstream.
+commit a406b8b424fa01f244c1aab02ba186258448c36b upstream.
 
-seq_release should be called to free the allocated seq_file
+Bail out early with error message when trying to boot a 64-bit kernel on
+32-bit machines. This fixes the previous commit to include the check for
+true 64-bit kernels as well.
 
-Cc: stable@vger.kernel.org # v5.3+
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Fixes: 78599c42ae3c ("nfsd4: add file to display list of client's opens")
-Reviewed-by: NeilBrown <neilb@suse.de>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 591d2108f3abc ("parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines")
+Cc:  <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/kernel/head.S |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -2785,7 +2785,7 @@ static int client_opens_release(struct i
+--- a/arch/parisc/kernel/head.S
++++ b/arch/parisc/kernel/head.S
+@@ -69,9 +69,8 @@ $bss_loop:
+ 	stw,ma          %arg2,4(%r1)
+ 	stw,ma          %arg3,4(%r1)
  
- 	/* XXX: alternatively, we could get/drop in seq start/stop */
- 	drop_client(clp);
--	return 0;
-+	return seq_release(inode, file);
- }
- 
- static const struct file_operations client_states_fops = {
+-#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
+-	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
+-	 * and halt kernel if we detect a PA1.x CPU. */
++#if defined(CONFIG_PA20)
++	/* check for 64-bit capable CPU as required by current kernel */
+ 	ldi		32,%r10
+ 	mtctl		%r10,%cr11
+ 	.level 2.0
 
 
 
