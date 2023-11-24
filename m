@@ -1,48 +1,52 @@
-Return-Path: <stable+bounces-1643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114897F80AD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D7B7F7CCB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4195B1C215C7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70FDC2820AC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7630333CC7;
-	Fri, 24 Nov 2023 18:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837213A8D0;
+	Fri, 24 Nov 2023 18:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlRTetWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFF0QLnP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25A8339BE;
-	Fri, 24 Nov 2023 18:51:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1C1C433C8;
-	Fri, 24 Nov 2023 18:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE6E39FF7;
+	Fri, 24 Nov 2023 18:18:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F2FC433C9;
+	Fri, 24 Nov 2023 18:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851913;
-	bh=A3Vz4NSS4VjmnxHwI1O0wxgNbo/9IriK2WPv8SotwZA=;
+	s=korg; t=1700849905;
+	bh=z+JBOQYqlrutSEEci0F7w74eMoVb8UN2mqJuykmIm5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlRTetWVB+veA7K0tzBELNaFVdrMZVMjOXyyjd9AQ+NHYAPnKALm1uPFt/D5RRQ1k
-	 G/X2a+3goDruOW8IAiceKBAR6UdM6y2SwUNVdZMQCnima5fhKaDsOn+r6SRVfho0NS
-	 jKR856oAZQm7ZTre0wM71iIpG/qvU+lEoBXTn8P4=
+	b=WFF0QLnPAtidjqbUcGvbl6d524vlAU+kxX0UJvzrPRsjpNgKwSpxnxmMVhloTgh5y
+	 KKCN6+2iPbf4ufSnDBQ7MwWuOz688ARMxt3kWQobj0+tzdU7hjSgHpH4MAZcG+sHBi
+	 BAcA2Xc04FeSKZfM+kis4gbbaZJMyUCBoE2pizZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	k2ci <kernel-bot@kylinos.cn>,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/372] netfilter: nf_conntrack_bridge: initialize err to 0
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 367/530] mips: use nth_page() in place of direct struct page manipulation
 Date: Fri, 24 Nov 2023 17:48:53 +0000
-Message-ID: <20231124172015.351104697@linuxfoundation.org>
+Message-ID: <20231124172039.178554120@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +58,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+From: Zi Yan <ziy@nvidia.com>
 
-[ Upstream commit a44af08e3d4d7566eeea98d7a29fe06e7b9de944 ]
+commit aa5fe31b6b59210cb4ea28a59e68781f48eeca74 upstream.
 
-K2CI reported a problem:
+__flush_dcache_pages() is called during hugetlb migration via
+migrate_pages() -> migrate_hugetlbs() -> unmap_and_move_huge_page() ->
+move_to_new_folio() -> flush_dcache_folio().  And with hugetlb and without
+sparsemem vmemmap, struct page is not guaranteed to be contiguous beyond a
+section.  Use nth_page() instead.
 
-	consume_skb(skb);
-	return err;
-[nf_br_ip_fragment() error]  uninitialized symbol 'err'.
+Without the fix, a wrong address might be used for data cache page flush.
+No bug is reported. The fix comes from code inspection.
 
-err is not initialized, because returning 0 is expected, initialize err
-to 0.
-
-Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
-Reported-by: k2ci <kernel-bot@kylinos.cn>
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230913201248.452081-6-zi.yan@sent.com
+Fixes: 15fa3e8e3269 ("mips: implement the new page table range API")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Muchun Song <songmuchun@bytedance.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/netfilter/nf_conntrack_bridge.c | 2 +-
+ arch/mips/mm/cache.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index 73242962be5d7..06d94b2c6b5de 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -37,7 +37,7 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 	ktime_t tstamp = skb->tstamp;
- 	struct ip_frag_state state;
- 	struct iphdr *iph;
--	int err;
-+	int err = 0;
- 
- 	/* for offloaded checksums cleanup checksum before fragmentation */
- 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--- 
-2.42.0
-
+--- a/arch/mips/mm/cache.c
++++ b/arch/mips/mm/cache.c
+@@ -117,7 +117,7 @@ void __flush_dcache_pages(struct page *p
+ 	 * get faulted into the tlb (and thus flushed) anyways.
+ 	 */
+ 	for (i = 0; i < nr; i++) {
+-		addr = (unsigned long)kmap_local_page(page + i);
++		addr = (unsigned long)kmap_local_page(nth_page(page, i));
+ 		flush_data_cache_page(addr);
+ 		kunmap_local((void *)addr);
+ 	}
 
 
 
