@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0B57F7C02
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90B8C7F7E03
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A60E51F20F83
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C052282275
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED94239FC6;
-	Fri, 24 Nov 2023 18:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FCC364C8;
+	Fri, 24 Nov 2023 18:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcEthtao"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnlkVS9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE3E3A8C2;
-	Fri, 24 Nov 2023 18:10:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA89C433C7;
-	Fri, 24 Nov 2023 18:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76557364A4;
+	Fri, 24 Nov 2023 18:29:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01723C433C7;
+	Fri, 24 Nov 2023 18:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849451;
-	bh=uT1LOeqCjcHhgoE2rwbY1eij3SBS4vjNHD9Ud5Jqz4s=;
+	s=korg; t=1700850547;
+	bh=G21ioJ3KxOUKWlyibpap79nLI1ij6STtT7uRhvZvkxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DcEthtaoJGM8t28WeitcgudYxMx4EC1gouZl0ZEOD7kvack4vVQwlNnj+Uq52AgDP
-	 hU4++wQb0pjkeMm38Jgg33q+fDjk2P/Pcz9EB1+PxvpFTiZEIXuAlNdorjJUh5DU6x
-	 xrcnVxVqQ9uhGpxlkLjq3tB//Haycox1fDqVa+/4=
+	b=wnlkVS9YYW5zf0NgcTdvrslxxAZrCUEJwNtjdIp6CskwPYGuE4EwxrAk6mdV9KNNv
+	 BThdrzqwrkFlkj/zMl+TWdiifGY/HYSEQjzC2u5E7/mexbG9fTJceDkUjf6KDuaUPJ
+	 q9XlNmYCiNnxwQkMCrUxV4XevZ57vNJmcq8DaXGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Rob Herring <robh@kernel.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/530] dt-bindings: serial: fix regex pattern for matching serial node children
-Date: Fri, 24 Nov 2023 17:45:28 +0000
-Message-ID: <20231124172033.013029944@linuxfoundation.org>
+Subject: [PATCH 6.5 093/491] ALSA: hda: Fix possible null-ptr-deref when assigning a stream
+Date: Fri, 24 Nov 2023 17:45:29 +0000
+Message-ID: <20231124172027.385493265@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 42851dfd4dbe38e34724a00063a9fad5cfc48dcd ]
+[ Upstream commit f93dc90c2e8ed664985e366aa6459ac83cdab236 ]
 
-The regular expression pattern for matching serial node children should
-accept only nodes starting and ending with the set of words: bluetooth,
-gnss, gps or mcu.  Add missing brackets to enforce such matching.
+While AudioDSP drivers assign streams exclusively of HOST or LINK type,
+nothing blocks a user to attempt to assign a COUPLED stream. As
+supplied substream instance may be a stub, what is the case when
+code-loading, such scenario ends with null-ptr-deref.
 
-Fixes: 0c559bc8abfb ("dt-bindings: serial: restrict possible child node names")
-Reported-by: Andreas Kemnade <andreas@kemnade.info>
-Closes: https://lore.kernel.org/all/20231004170021.36b32465@aktux/
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20231005093247.128166-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Link: https://lore.kernel.org/r/20231006102857.749143-2-cezary.rojewski@intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/serial.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/hda/hdac_stream.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/serial/serial.yaml b/Documentation/devicetree/bindings/serial/serial.yaml
-index ea277560a5966..5727bd549deca 100644
---- a/Documentation/devicetree/bindings/serial/serial.yaml
-+++ b/Documentation/devicetree/bindings/serial/serial.yaml
-@@ -96,7 +96,7 @@ then:
-     rts-gpios: false
+diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
+index 2633a4bb1d85d..214a0680524b0 100644
+--- a/sound/hda/hdac_stream.c
++++ b/sound/hda/hdac_stream.c
+@@ -354,8 +354,10 @@ struct hdac_stream *snd_hdac_stream_assign(struct hdac_bus *bus,
+ 	struct hdac_stream *res = NULL;
  
- patternProperties:
--  "^bluetooth|gnss|gps|mcu$":
-+  "^(bluetooth|gnss|gps|mcu)$":
-     if:
-       type: object
-     then:
+ 	/* make a non-zero unique key for the substream */
+-	int key = (substream->pcm->device << 16) | (substream->number << 2) |
+-		(substream->stream + 1);
++	int key = (substream->number << 2) | (substream->stream + 1);
++
++	if (substream->pcm)
++		key |= (substream->pcm->device << 16);
+ 
+ 	spin_lock_irq(&bus->reg_lock);
+ 	list_for_each_entry(azx_dev, &bus->stream_list, list) {
 -- 
 2.42.0
 
