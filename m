@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-1258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C71597F7EC6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315B67F807E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30435B214E7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614941C21560
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF9B2FC21;
-	Fri, 24 Nov 2023 18:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE1833CCA;
+	Fri, 24 Nov 2023 18:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lT4Ub5Xm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cyLbZVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108CA2FC4E;
-	Fri, 24 Nov 2023 18:35:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E6FC433C7;
-	Fri, 24 Nov 2023 18:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2643B28DBA;
+	Fri, 24 Nov 2023 18:50:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C71C433C8;
+	Fri, 24 Nov 2023 18:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850953;
-	bh=uzLdT24Y5Jvuso0PxaW2EvwBele96AzdyitfG6gHIIs=;
+	s=korg; t=1700851814;
+	bh=U1Ghz5Qu8ub4cquI0WcS5dEghjZWSt7XkacRLpLxE/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lT4Ub5Xmmj/huTcyBR8lXKJFqsdFs3xkZtliRfDWunULz8ftCqQ1FwbRYZd2nX3G9
-	 CuT9GkMc0mzV+iSGBJlCUVImiQCXzir9STmHvhgoS+EkPUd85nL1lo/T97ocec504I
-	 PqgiBMH2EdsaFIae4M7PI33P7IxTUVFdaltk5TAQ=
+	b=1cyLbZVh8PcUf4H1EdpXlY/EpqCGeSBDO1VIZ92eFJZcjC0makCActlZB/QwfgQLh
+	 FtRj5oLkCNWe0hqyPOrgdopBSPa/inVpGo5Rzs/RC4rJOW8tPvbMeLvXKBMkHu5sVd
+	 Tn/tXE939y93chJ3IWNlWLYq6UTT5XIW+Yrde5iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.5 255/491] hvc/xen: fix event channel handling for secondary consoles
-Date: Fri, 24 Nov 2023 17:48:11 +0000
-Message-ID: <20231124172032.233227352@linuxfoundation.org>
+	syzbot+59875ffef5cb9c9b29e9@syzkaller.appspotmail.com,
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/372] media: imon: fix access to invalid resource for the second interface
+Date: Fri, 24 Nov 2023 17:48:12 +0000
+Message-ID: <20231124172014.005263635@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +54,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit ef5dd8ec88ac11e8e353164407d55b73c988b369 upstream.
+[ Upstream commit a1766a4fd83befa0b34d932d532e7ebb7fab1fa7 ]
 
-The xencons_connect_backend() function allocates a local interdomain
-event channel with xenbus_alloc_evtchn(), then calls
-bind_interdomain_evtchn_to_irq_lateeoi() to bind to that port# on the
-*remote* domain.
+imon driver probes two USB interfaces, and at the probe of the second
+interface, the driver assumes blindly that the first interface got
+bound with the same imon driver.  It's usually true, but it's still
+possible that the first interface is bound with another driver via a
+malformed descriptor.  Then it may lead to a memory corruption, as
+spotted by syzkaller; imon driver accesses the data from drvdata as
+struct imon_context object although it's a completely different one
+that was assigned by another driver.
 
-That doesn't work very well:
+This patch adds a sanity check -- whether the first interface is
+really bound with the imon driver or not -- for avoiding the problem
+above at the probe time.
 
-(qemu) device_add xen-console,id=con1,chardev=pty0
-[   44.323872] xenconsole console-1: 2 xenbus_dev_probe on device/console/1
-[   44.323995] xenconsole: probe of console-1 failed with error -2
-
-Fix it to use bind_evtchn_to_irq_lateeoi(), which does the right thing
-by just binding that *local* event channel to an irq. The backend will
-do the interdomain binding.
-
-This didn't affect the primary console because the setup for that is
-special — the toolstack allocates the guest event channel and the guest
-discovers it with HVMOP_get_param.
-
-Fixes: fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020161529.355083-2-dwmw2@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+59875ffef5cb9c9b29e9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a838aa0603cc74d6@google.com/
+Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+Link: https://lore.kernel.org/r/20230922005152.163640-1-ricardo@marliere.net
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_xen.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/rc/imon.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -436,7 +436,7 @@ static int xencons_connect_backend(struc
- 	if (ret)
- 		return ret;
- 	info->evtchn = evtchn;
--	irq = bind_interdomain_evtchn_to_irq_lateeoi(dev, evtchn);
-+	irq = bind_evtchn_to_irq_lateeoi(evtchn);
- 	if (irq < 0)
- 		return irq;
- 	info->irq = irq;
+diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
+index 74546f7e34691..5719dda6e0f0e 100644
+--- a/drivers/media/rc/imon.c
++++ b/drivers/media/rc/imon.c
+@@ -2427,6 +2427,12 @@ static int imon_probe(struct usb_interface *interface,
+ 		goto fail;
+ 	}
+ 
++	if (first_if->dev.driver != interface->dev.driver) {
++		dev_err(&interface->dev, "inconsistent driver matching\n");
++		ret = -EINVAL;
++		goto fail;
++	}
++
+ 	if (ifnum == 0) {
+ 		ictx = imon_init_intf0(interface, id);
+ 		if (!ictx) {
+-- 
+2.42.0
+
 
 
 
