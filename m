@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EEAF7F7F19
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA557F80E9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801451C21443
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AA9C282632
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03092FC36;
-	Fri, 24 Nov 2023 18:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAFD3418B;
+	Fri, 24 Nov 2023 18:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OG0+b0DY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+6sOGDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7233833CFB;
-	Fri, 24 Nov 2023 18:38:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9530C433C7;
-	Fri, 24 Nov 2023 18:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF8C33CCA;
+	Fri, 24 Nov 2023 18:53:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C77C433C7;
+	Fri, 24 Nov 2023 18:53:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851118;
-	bh=w/f4zRt/JshF1vU8YbZc5JgXEObrUr6z3QdWnUyddSA=;
+	s=korg; t=1700852036;
+	bh=mL6lr1p22wELI0aGyxRipCUfuQz8yasVsobsDJgCWKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OG0+b0DYLkttIoaiGCjL7wdeGjdAkSyd18tSroU2/XdYkNaPok8LhHD5fifGzE3Y2
-	 Dco3RWMPolZBT9wPLTMQ6fqbKrpyXloaYVYenavSerFq3Dx1sS+lpR7GrC627ebsuy
-	 zE+KJKyCbOt2uskura1shEb20AeT8QhAtoeQ+tFY=
+	b=Z+6sOGDaG5j2AdYupAyyXwxKPGAeZ2IfzHWYefzgezJjzMt26KdDi897QEocrjCyy
+	 PwJRMycrIMEoYxSp6MXX9HQGD5H5YKYRatdO8zc3jtstvdMoAisZWAh3vAM5T3saXy
+	 1N9zm6j5fPX89Mo1NfF+ZcY4dX25HhypwHFKCfn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.5 320/491] arm64: dts: qcom: ipq9574: Fix hwlock index for SMEM
-Date: Fri, 24 Nov 2023 17:49:16 +0000
-Message-ID: <20231124172034.186385343@linuxfoundation.org>
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 170/372] scsi: megaraid_sas: Increase register read retry rount from 3 to 30 for selected registers
+Date: Fri, 24 Nov 2023 17:49:17 +0000
+Message-ID: <20231124172016.155941498@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-commit 5fe8508e2bc8eb4208b0434b6c1ca306c1519ade upstream.
+commit 8e3ed9e786511ad800c33605ed904b9de49323cf upstream.
 
-SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-in SMEM region shared by the Host and FW.
+In BMC environments with concurrent access to multiple registers, certain
+registers occasionally yield a value of 0 even after 3 retries due to
+hardware errata. As a fix, we have extended the retry count from 3 to 30.
 
-Fix the SMEM hwlock index to 3 for IPQ9574.
+The same errata applies to the mpt3sas driver, and a similar patch has
+been accepted. Please find more details in the mpt3sas patch reference
+link.
 
+Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
+Fixes: 272652fcbf1a ("scsi: megaraid_sas: add retry logic in megasas_readl")
 Cc: stable@vger.kernel.org
-Fixes: 46384ac7a618 ("arm64: dts: qcom: ipq9574: Add SMEM support")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230904172516.479866-5-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Link: https://lore.kernel.org/r/20231003110021.168862-2-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/ipq9574.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/megaraid/megaraid_sas_base.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-@@ -174,7 +174,7 @@
- 		smem@4aa00000 {
- 			compatible = "qcom,smem";
- 			reg = <0x0 0x4aa00000 0x0 0x100000>;
--			hwlocks = <&tcsr_mutex 0>;
-+			hwlocks = <&tcsr_mutex 3>;
- 			no-map;
- 		};
- 	};
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -263,13 +263,13 @@ u32 megasas_readl(struct megasas_instanc
+ 	 * Fusion registers could intermittently return all zeroes.
+ 	 * This behavior is transient in nature and subsequent reads will
+ 	 * return valid value. As a workaround in driver, retry readl for
+-	 * upto three times until a non-zero value is read.
++	 * up to thirty times until a non-zero value is read.
+ 	 */
+ 	if (instance->adapter_type == AERO_SERIES) {
+ 		do {
+ 			ret_val = readl(addr);
+ 			i++;
+-		} while (ret_val == 0 && i < 3);
++		} while (ret_val == 0 && i < 30);
+ 		return ret_val;
+ 	} else {
+ 		return readl(addr);
 
 
 
