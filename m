@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643B57F7329
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:56:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51757F732A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25898281C49
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:56:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7C231C20EC8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88F4A200BA;
-	Fri, 24 Nov 2023 11:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4051B200BF;
+	Fri, 24 Nov 2023 11:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYOhrnOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLTc0JFs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE9F1F95A
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE4FC433C7;
-	Fri, 24 Nov 2023 11:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15731EB50
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24728C433C9;
+	Fri, 24 Nov 2023 11:56:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700826989;
-	bh=ceKDzXvu5Qapj9WfYdKLgc4GSsTtD6AUWVoXSYSRZ1c=;
+	s=korg; t=1700826991;
+	bh=lfIGe/wU24nbTL0qXx4IWk6mxoy9bDUsFwE2zNSilVE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=GYOhrnOS+gANuRdrLX+fzK82iI3FdXXMezsKt7MKzN4sciAHu61MUVHfSZ5sX4PyF
-	 vobFiUg3pJz1fbsxk27yYYOyirkiBYaNoDZOKVwXk2VTKw8PH0DtHua6uuOP4SBWhh
-	 4OGZK6KoU3gxSvD+RwyzmxpqF08jutVbkz7FkgG4=
-Subject: FAILED: patch "[PATCH] cifs: account for primary channel in the interface list" failed to apply to 6.5-stable tree
+	b=ZLTc0JFsnN9Ijc06YyxnLa8cw4c89VVGdQj/m6cEE+uvBbPwWa6iKC7YnFZurE7Q3
+	 2UsIsRHpwG1jv/OyiOPnpYGKZ1WGBtU4zbCFuCQ3suJrnilP6mwlAv2wiswjhkb5Jc
+	 IDcmAGuaaYTBa5lmNgOt3QaMhe4w+4jIN5XCLvMA=
+Subject: FAILED: patch "[PATCH] cifs: account for primary channel in the interface list" failed to apply to 5.15-stable tree
 To: sprasad@microsoft.com,pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 11:56:22 +0000
-Message-ID: <2023112421-headwear-snowdrop-f60d@gregkh>
+Date: Fri, 24 Nov 2023 11:56:23 +0000
+Message-ID: <2023112423-cycle-sixtyfold-5fe5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x fa1d0508bdd4a68c5e40f85f635712af8c12f180
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112421-headwear-snowdrop-f60d@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112423-cycle-sixtyfold-5fe5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
 a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+05844bd661d9 ("cifs: print last update time for interface list")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
+f391d6ee002e ("cifs: Use after free in debug code")
+5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
+332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
 
 thanks,
 
