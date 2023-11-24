@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64FD47F7C20
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E807F7E23
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FA9D281E40
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6378B2113B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE47D39FE3;
-	Fri, 24 Nov 2023 18:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7DA23A8F5;
+	Fri, 24 Nov 2023 18:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHzwhuTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqEBVOix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 561AD381D7;
-	Fri, 24 Nov 2023 18:12:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C29BC433C7;
-	Fri, 24 Nov 2023 18:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CEB381D6;
+	Fri, 24 Nov 2023 18:30:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE18DC433C8;
+	Fri, 24 Nov 2023 18:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849523;
-	bh=m3CEQzDXTplOg4fhUZuw/e6WzN+4lVdRfwUrB0+GEzk=;
+	s=korg; t=1700850617;
+	bh=gBlCV57An5Wr6EyVOij/Hrq5tG3F4NqJyZV3qvcehEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vHzwhuTvqLNzoSIq31rbNC9ItU0/L1lCg5sE6tdC5UrknM33xjQ6MdTpy6m5N1KAq
-	 UJemiXL+5fJA9OvoJxv3225rH2U9V+UaUu4omsNJb+Ck6LglBiXtEq1AatgBcSiOsH
-	 IjM7p3VEnQqKxxJC7jpj8wVY0b2hZQb4oNljrdEo=
+	b=QqEBVOixSVN2MxFVW12HBDk5c0CVr92ZReGCgUCP2y9L418E4sglFMN/ZCdQaosgi
+	 z7CE+d4EzWyV48pQ23y6mQdOA8UsYE92AqIBKez43gFIj2GSUwzjCjtNVgBa0IjuAi
+	 zxxSU1qlSGkzeYK3cbkjhP0uV00BAzNA2b3iZuFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/530] net: hns3: fix out-of-bounds access may occur when coalesce info is read via debugfs
+Subject: [PATCH 6.5 121/491] f2fs: fix error path of __f2fs_build_free_nids
 Date: Fri, 24 Nov 2023 17:45:57 +0000
-Message-ID: <20231124172033.882565838@linuxfoundation.org>
+Message-ID: <20231124172028.160387374@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,50 +54,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 53aba458f23846112c0d44239580ff59bc5c36c3 ]
+[ Upstream commit a5e80e18f268ea7c7a36bc4159de0deb3b5a2171 ]
 
-The hns3 driver define an array of string to show the coalesce
-info, but if the kernel adds a new mode or a new state,
-out-of-bounds access may occur when coalesce info is read via
-debugfs, this patch fix the problem.
+If NAT is corrupted, let scan_nat_page() return EFSCORRUPTED, so that,
+caller can set SBI_NEED_FSCK flag into checkpoint for later repair by
+fsck.
 
-Fixes: c99fead7cb07 ("net: hns3: add debugfs support for interrupt coalesce")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Also, this patch introduces a new fscorrupted error flag, and in above
+scenario, it will persist the error flag into superblock synchronously
+to avoid it has no luck to trigger a checkpoint to record SBI_NEED_FSCK
+
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/f2fs/node.c          | 11 +++++++++--
+ include/linux/f2fs_fs.h |  1 +
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-index b8508533878be..4f385a18d288e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -500,11 +500,14 @@ static void hns3_get_coal_info(struct hns3_enet_tqp_vector *tqp_vector,
- 	}
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index ee2e1dd64f256..248764badcde8 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -2389,7 +2389,7 @@ static int scan_nat_page(struct f2fs_sb_info *sbi,
+ 		blk_addr = le32_to_cpu(nat_blk->entries[i].block_addr);
  
- 	sprintf(result[j++], "%d", i);
--	sprintf(result[j++], "%s", dim_state_str[dim->state]);
-+	sprintf(result[j++], "%s", dim->state < ARRAY_SIZE(dim_state_str) ?
-+		dim_state_str[dim->state] : "unknown");
- 	sprintf(result[j++], "%u", dim->profile_ix);
--	sprintf(result[j++], "%s", dim_cqe_mode_str[dim->mode]);
-+	sprintf(result[j++], "%s", dim->mode < ARRAY_SIZE(dim_cqe_mode_str) ?
-+		dim_cqe_mode_str[dim->mode] : "unknown");
- 	sprintf(result[j++], "%s",
--		dim_tune_stat_str[dim->tune_state]);
-+		dim->tune_state < ARRAY_SIZE(dim_tune_stat_str) ?
-+		dim_tune_stat_str[dim->tune_state] : "unknown");
- 	sprintf(result[j++], "%u", dim->steps_left);
- 	sprintf(result[j++], "%u", dim->steps_right);
- 	sprintf(result[j++], "%u", dim->tired);
+ 		if (blk_addr == NEW_ADDR)
+-			return -EINVAL;
++			return -EFSCORRUPTED;
+ 
+ 		if (blk_addr == NULL_ADDR) {
+ 			add_free_nid(sbi, start_nid, true, true);
+@@ -2504,7 +2504,14 @@ static int __f2fs_build_free_nids(struct f2fs_sb_info *sbi,
+ 
+ 			if (ret) {
+ 				f2fs_up_read(&nm_i->nat_tree_lock);
+-				f2fs_err(sbi, "NAT is corrupt, run fsck to fix it");
++
++				if (ret == -EFSCORRUPTED) {
++					f2fs_err(sbi, "NAT is corrupt, run fsck to fix it");
++					set_sbi_flag(sbi, SBI_NEED_FSCK);
++					f2fs_handle_error(sbi,
++						ERROR_INCONSISTENT_NAT);
++				}
++
+ 				return ret;
+ 			}
+ 		}
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index a82a4bb6ce68b..cf1adceb02697 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -104,6 +104,7 @@ enum f2fs_error {
+ 	ERROR_CORRUPTED_VERITY_XATTR,
+ 	ERROR_CORRUPTED_XATTR,
+ 	ERROR_INVALID_NODE_REFERENCE,
++	ERROR_INCONSISTENT_NAT,
+ 	ERROR_MAX,
+ };
+ 
 -- 
 2.42.0
 
