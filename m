@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4B917F7EB4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA55D7F8087
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F29628234D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93EEF28260A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5A433E9;
-	Fri, 24 Nov 2023 18:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339CC28E3A;
+	Fri, 24 Nov 2023 18:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="roFk4UA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydw0XVSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606142D787;
-	Fri, 24 Nov 2023 18:35:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E1FC433C7;
-	Fri, 24 Nov 2023 18:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56DE28DBB;
+	Fri, 24 Nov 2023 18:50:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773ADC433C7;
+	Fri, 24 Nov 2023 18:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850911;
-	bh=Rxh4wg1RqGcSwL3HZcbEWv7Q07YyaIACA/s5cBYbvUQ=;
+	s=korg; t=1700851828;
+	bh=/ZRF0bZtdxL9bNPKbESou55AUvj2hS8KDui1ACsT9p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=roFk4UA0Ed/I6N1Vc66WALN2SDvIno9KtNyMoBMPfS8HMSMxXeGGt0ftbTbR9a6Fr
-	 u+ujCSXDMVKihrgMHPcYXbnY7RkIktytppHDLdTY//8n+PXtZz/wak/z5tjSNagKDT
-	 3pfqMuxzwMbi32XcHjWFdMdauBdUy/0QFc2DLkgs=
+	b=ydw0XVSJHHEEoj/yhFpp6c/DCnEhXV+srcRR2N/rMB7FLei4xt2OQZJL03KbqMKDY
+	 uXxF90Rk1ZrIJOKRi9g2A/yNxut5BTMR7s/5WmW1wi/NOF+Jy79Qo70uWVM9CJU5rd
+	 HH9my1xBYsUEDXlMFGW3+L++vlAnu57YQySVGcac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 237/491] scsi: ufs: core: Fix racing issue between ufshcd_mcq_abort() and ISR
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 086/372] thunderbolt: Apply USB 3.x bandwidth quirk only in software connection manager
 Date: Fri, 24 Nov 2023 17:47:53 +0000
-Message-ID: <20231124172031.674775241@linuxfoundation.org>
+Message-ID: <20231124172013.400005066@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +52,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 27900d7119c464b43cd9eac69c85884d17bae240 upstream.
+[ Upstream commit 0c35ac18256942e66d8dab6ca049185812e60c69 ]
 
-If command timeout happens and cq complete IRQ is raised at the same time,
-ufshcd_mcq_abort clears lprb->cmd and a NULL pointer deref happens in the
-ISR. Error log:
+This is not needed when firmware connection manager is run so limit this
+to software connection manager.
 
-ufshcd_abort: Device abort task at tag 18
-Unable to handle kernel NULL pointer dereference at virtual address
-0000000000000108
-pc : [0xffffffe27ef867ac] scsi_dma_unmap+0xc/0x44
-lr : [0xffffffe27f1b898c] ufshcd_release_scsi_cmd+0x24/0x114
-
-Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20231106075117.8995-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c |    3 +++
+ drivers/thunderbolt/quirks.c | 3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -632,6 +632,7 @@ int ufshcd_mcq_abort(struct scsi_cmnd *c
- 	int tag = scsi_cmd_to_rq(cmd)->tag;
- 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
- 	struct ufs_hw_queue *hwq;
-+	unsigned long flags;
- 	int err = FAILED;
+diff --git a/drivers/thunderbolt/quirks.c b/drivers/thunderbolt/quirks.c
+index 8c2ee431fcde8..4ab3803e10c83 100644
+--- a/drivers/thunderbolt/quirks.c
++++ b/drivers/thunderbolt/quirks.c
+@@ -30,6 +30,9 @@ static void quirk_usb3_maximum_bandwidth(struct tb_switch *sw)
+ {
+ 	struct tb_port *port;
  
- 	if (!ufshcd_cmd_inflight(lrbp->cmd)) {
-@@ -672,8 +673,10 @@ int ufshcd_mcq_abort(struct scsi_cmnd *c
- 	}
- 
- 	err = SUCCESS;
-+	spin_lock_irqsave(&hwq->cq_lock, flags);
- 	if (ufshcd_cmd_inflight(lrbp->cmd))
- 		ufshcd_release_scsi_cmd(hba, lrbp);
-+	spin_unlock_irqrestore(&hwq->cq_lock, flags);
- 
- out:
- 	return err;
++	if (tb_switch_is_icm(sw))
++		return;
++
+ 	tb_switch_for_each_port(sw, port) {
+ 		if (!tb_port_is_usb3_down(port))
+ 			continue;
+-- 
+2.42.0
+
 
 
 
