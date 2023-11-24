@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFC67F8044
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E52D7F7C47
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8011E1C21521
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE538B20D13
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF04381D2;
-	Fri, 24 Nov 2023 18:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABAC3A8C3;
+	Fri, 24 Nov 2023 18:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzYBRdeJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azrxb9+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8084A2FC21;
-	Fri, 24 Nov 2023 18:48:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDF8C433C8;
-	Fri, 24 Nov 2023 18:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037F4381BF;
+	Fri, 24 Nov 2023 18:13:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82029C433C7;
+	Fri, 24 Nov 2023 18:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851690;
-	bh=HBSAFI9MbKsu9aQoNyxQ1c3rlOfrAeNA0aL/2C4wHwE=;
+	s=korg; t=1700849619;
+	bh=Jek40pTBAMXDrWY0eO6vtosNMYkBn/lOri9LZAR07kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hzYBRdeJBoUm0U1RJTRL/jNEnS5GmBgI6qdXLjSvHOAyXE6t7nDHEQ26vt6uuQh2w
-	 f0TEJPV6TDxhoqj7T53qjQUV14klpbiu6hyX4tvhwwbhKMnY8CDC8ObLWVOfEWrz7R
-	 8U3em27dcCi14tptnSQh/ZZfglVOjizElzv3ktaw=
+	b=azrxb9+2fzMPXeryAKwzZOInnKCCoWmPMUWQqaWTev6z+runQlQ/bZtgQCZ9UkJvq
+	 oya1P5Fw+/V4K7NSjYvH1Tmt9GzQHs6aqN+nsOWm0p9EPqIm/EuPFAmlJeQ1I9lELu
+	 lj8QGTvCUg3xuKjTOrk7qUhMHwxsbSXGO6YqGyiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"baozhu.liu" <lucas.liu@siengine.com>,
-	"menghui.huang" <menghui.huang@siengine.com>,
-	Liviu Dudau <liviu.dudau@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/372] drm/komeda: drop all currently held locks if deadlock happens
-Date: Fri, 24 Nov 2023 17:46:59 +0000
-Message-ID: <20231124172011.561393279@linuxfoundation.org>
+	Iain Lane <iain@orangesquash.org.uk>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.6 254/530] x86/PCI: Avoid PME from D3hot/D3cold for AMD Rembrandt and Phoenix USB4
+Date: Fri, 24 Nov 2023 17:47:00 +0000
+Message-ID: <20231124172035.788579836@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,189 +53,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: baozhu.liu <lucas.liu@siengine.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 19ecbe8325a2a7ffda5ff4790955b84eaccba49f ]
+commit 7d08f21f8c6307cb05cabb8d86e90ff6ccba57e9 upstream.
 
-If komeda_pipeline_unbound_components() returns -EDEADLK,
-it means that a deadlock happened in the locking context.
-Currently, komeda is not dealing with the deadlock properly,producing the
-following output when CONFIG_DEBUG_WW_MUTEX_SLOWPATH is enabled:
+Iain reports that USB devices can't be used to wake a Lenovo Z13 from
+suspend.  This occurs because on some AMD platforms, even though the Root
+Ports advertise PME_Support for D3hot and D3cold, wakeup events from
+devices on a USB4 controller don't result in wakeup interrupts from the
+Root Port when amd-pmc has put the platform in a hardware sleep state.
 
- ------------[ cut here ]------------
-[   26.103984] WARNING: CPU: 2 PID: 345 at drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c:1248
-	       komeda_release_unclaimed_resources+0x13c/0x170
-[   26.117453] Modules linked in:
-[   26.120511] CPU: 2 PID: 345 Comm: composer@2.1-se Kdump: loaded Tainted: G   W  5.10.110-SE-SDK1.8-dirty #16
-[   26.131374] Hardware name: Siengine Se1000 Evaluation board (DT)
-[   26.137379] pstate: 20400009 (nzCv daif +PAN -UAO -TCO BTYPE=--)
-[   26.143385] pc : komeda_release_unclaimed_resources+0x13c/0x170
-[   26.149301] lr : komeda_release_unclaimed_resources+0xbc/0x170
-[   26.155130] sp : ffff800017b8b8d0
-[   26.158442] pmr_save: 000000e0
-[   26.161493] x29: ffff800017b8b8d0 x28: ffff000cf2f96200
-[   26.166805] x27: ffff000c8f5a8800 x26: 0000000000000000
-[   26.172116] x25: 0000000000000038 x24: ffff8000116a0140
-[   26.177428] x23: 0000000000000038 x22: ffff000cf2f96200
-[   26.182739] x21: ffff000cfc300300 x20: ffff000c8ab77080
-[   26.188051] x19: 0000000000000003 x18: 0000000000000000
-[   26.193362] x17: 0000000000000000 x16: 0000000000000000
-[   26.198672] x15: b400e638f738ba38 x14: 0000000000000000
-[   26.203983] x13: 0000000106400a00 x12: 0000000000000000
-[   26.209294] x11: 0000000000000000 x10: 0000000000000000
-[   26.214604] x9 : ffff800012f80000 x8 : ffff000ca3308000
-[   26.219915] x7 : 0000000ff3000000 x6 : ffff80001084034c
-[   26.225226] x5 : ffff800017b8bc40 x4 : 000000000000000f
-[   26.230536] x3 : ffff000ca3308000 x2 : 0000000000000000
-[   26.235847] x1 : 0000000000000000 x0 : ffffffffffffffdd
-[   26.241158] Call trace:
-[   26.243604] komeda_release_unclaimed_resources+0x13c/0x170
-[   26.249175] komeda_crtc_atomic_check+0x68/0xf0
-[   26.253706] drm_atomic_helper_check_planes+0x138/0x1f4
-[   26.258929] komeda_kms_check+0x284/0x36c
-[   26.262939] drm_atomic_check_only+0x40c/0x714
-[   26.267381] drm_atomic_nonblocking_commit+0x1c/0x60
-[   26.272344] drm_mode_atomic_ioctl+0xa3c/0xb8c
-[   26.276787] drm_ioctl_kernel+0xc4/0x120
-[   26.280708] drm_ioctl+0x268/0x534
-[   26.284109] __arm64_sys_ioctl+0xa8/0xf0
-[   26.288030] el0_svc_common.constprop.0+0x80/0x240
-[   26.292817] do_el0_svc+0x24/0x90
-[   26.296132] el0_svc+0x20/0x30
-[   26.299185] el0_sync_handler+0xe8/0xf0
-[   26.303018] el0_sync+0x1a4/0x1c0
-[   26.306330] irq event stamp: 0
-[   26.309384] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-[   26.315650] hardirqs last disabled at (0): [<ffff800010056d34>] copy_process+0x5d0/0x183c
-[   26.323825] softirqs last  enabled at (0): [<ffff800010056d34>] copy_process+0x5d0/0x183c
-[   26.331997] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[   26.338261] ---[ end trace 20ae984fa860184a ]---
-[   26.343021] ------------[ cut here ]------------
-[   26.347646] WARNING: CPU: 3 PID: 345 at drivers/gpu/drm/drm_modeset_lock.c:228 drm_modeset_drop_locks+0x84/0x90
-[   26.357727] Modules linked in:
-[   26.360783] CPU: 3 PID: 345 Comm: composer@2.1-se Kdump: loaded Tainted: G   W  5.10.110-SE-SDK1.8-dirty #16
-[   26.371645] Hardware name: Siengine Se1000 Evaluation board (DT)
-[   26.377647] pstate: 20400009 (nzCv daif +PAN -UAO -TCO BTYPE=--)
-[   26.383649] pc : drm_modeset_drop_locks+0x84/0x90
-[   26.388351] lr : drm_mode_atomic_ioctl+0x860/0xb8c
-[   26.393137] sp : ffff800017b8bb10
-[   26.396447] pmr_save: 000000e0
-[   26.399497] x29: ffff800017b8bb10 x28: 0000000000000001
-[   26.404807] x27: 0000000000000038 x26: 0000000000000002
-[   26.410115] x25: ffff000cecbefa00 x24: ffff000cf2f96200
-[   26.415423] x23: 0000000000000001 x22: 0000000000000018
-[   26.420731] x21: 0000000000000001 x20: ffff800017b8bc10
-[   26.426039] x19: 0000000000000000 x18: 0000000000000000
-[   26.431347] x17: 0000000002e8bf2c x16: 0000000002e94c6b
-[   26.436655] x15: 0000000002ea48b9 x14: ffff8000121f0300
-[   26.441963] x13: 0000000002ee2ca8 x12: ffff80001129cae0
-[   26.447272] x11: ffff800012435000 x10: ffff000ed46b5e88
-[   26.452580] x9 : ffff000c9935e600 x8 : 0000000000000000
-[   26.457888] x7 : 000000008020001e x6 : 000000008020001f
-[   26.463196] x5 : ffff80001085fbe0 x4 : fffffe0033a59f20
-[   26.468504] x3 : 000000008020001e x2 : 0000000000000000
-[   26.473813] x1 : 0000000000000000 x0 : ffff000c8f596090
-[   26.479122] Call trace:
-[   26.481566] drm_modeset_drop_locks+0x84/0x90
-[   26.485918] drm_mode_atomic_ioctl+0x860/0xb8c
-[   26.490359] drm_ioctl_kernel+0xc4/0x120
-[   26.494278] drm_ioctl+0x268/0x534
-[   26.497677] __arm64_sys_ioctl+0xa8/0xf0
-[   26.501598] el0_svc_common.constprop.0+0x80/0x240
-[   26.506384] do_el0_svc+0x24/0x90
-[   26.509697] el0_svc+0x20/0x30
-[   26.512748] el0_sync_handler+0xe8/0xf0
-[   26.516580] el0_sync+0x1a4/0x1c0
-[   26.519891] irq event stamp: 0
-[   26.522943] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
-[   26.529207] hardirqs last disabled at (0): [<ffff800010056d34>] copy_process+0x5d0/0x183c
-[   26.537379] softirqs last  enabled at (0): [<ffff800010056d34>] copy_process+0x5d0/0x183c
-[   26.545550] softirqs last disabled at (0): [<0000000000000000>] 0x0
-[   26.551812] ---[ end trace 20ae984fa860184b ]---
+If amd-pmc will be involved in the suspend, remove D3hot and D3cold from
+the PME_Support mask of Root Ports above USB4 controllers so we avoid those
+states if we need wakeups.
 
-According to the call trace information,it can be located to be
-WARN_ON(IS_ERR(c_st)) in the komeda_pipeline_unbound_components function;
-Then follow the function.
-komeda_pipeline_unbound_components
--> komeda_component_get_state_and_set_user
-  -> komeda_pipeline_get_state_and_set_crtc
-    -> komeda_pipeline_get_state
-      ->drm_atomic_get_private_obj_state
-        -> drm_atomic_get_private_obj_state
-          -> drm_modeset_lock
+Restore D3 support at resume so that it can be used by runtime suspend.
 
-komeda_pipeline_unbound_components
--> komeda_component_get_state_and_set_user
-  -> komeda_component_get_state
-    -> drm_atomic_get_private_obj_state
-     -> drm_modeset_lock
+This affects both AMD Rembrandt and Phoenix SoCs.
 
-ret = drm_modeset_lock(&obj->lock, state->acquire_ctx); if (ret)
-	return ERR_PTR(ret);
-Here it return -EDEADLK.
+"pm_suspend_target_state == PM_SUSPEND_ON" means we're doing runtime
+suspend, and amd-pmc will not be involved.  In that case PMEs work as
+advertised in D3hot/D3cold, so we don't need to do anything.
 
-deal with the deadlock as suggested by [1], using the
-function drm_modeset_backoff().
-[1] https://docs.kernel.org/gpu/drm-kms.html?highlight=kms#kms-locking
+Note that amd-pmc is technically optional, and there's no need for this
+quirk if it's not present, but we assume it's always present because power
+consumption is so high without it.
 
-Therefore, handling this problem can be solved
-by adding return -EDEADLK back to the drm_modeset_backoff processing flow
-in the drm_mode_atomic_ioctl function.
-
-Signed-off-by: baozhu.liu <lucas.liu@siengine.com>
-Signed-off-by: menghui.huang <menghui.huang@siengine.com>
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230804013117.6870-1-menghui.huang@siengine.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Link: https://lore.kernel.org/r/20231004144959.158840-1-mario.limonciello@amd.com
+Reported-by: Iain Lane <iain@orangesquash.org.uk>
+Closes: https://forums.lenovo.com/t5/Ubuntu/Z13-can-t-resume-from-suspend-with-external-USB-keyboard/m-p/5217121
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+[bhelgaas: commit log, move to arch/x86/pci/fixup.c, add #includes]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/arm/display/komeda/komeda_pipeline_state.c   | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/pci/fixup.c |   59 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
 
-diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
-index 3276a3e82c628..916f2c36bf2f7 100644
---- a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
-@@ -1223,7 +1223,7 @@ int komeda_build_display_data_flow(struct komeda_crtc *kcrtc,
- 	return 0;
- }
+--- a/arch/x86/pci/fixup.c
++++ b/arch/x86/pci/fixup.c
+@@ -3,9 +3,11 @@
+  * Exceptions for specific devices. Usually work-arounds for fatal design flaws.
+  */
  
--static void
-+static int
- komeda_pipeline_unbound_components(struct komeda_pipeline *pipe,
- 				   struct komeda_pipeline_state *new)
- {
-@@ -1243,8 +1243,12 @@ komeda_pipeline_unbound_components(struct komeda_pipeline *pipe,
- 		c = komeda_pipeline_get_component(pipe, id);
- 		c_st = komeda_component_get_state_and_set_user(c,
- 				drm_st, NULL, new->crtc);
-+		if (PTR_ERR(c_st) == -EDEADLK)
-+			return -EDEADLK;
- 		WARN_ON(IS_ERR(c_st));
- 	}
++#include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <linux/dmi.h>
+ #include <linux/pci.h>
++#include <linux/suspend.h>
+ #include <linux/vgaarb.h>
+ #include <asm/amd_nb.h>
+ #include <asm/hpet.h>
+@@ -904,3 +906,60 @@ static void chromeos_fixup_apl_pci_l1ss_
+ }
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x5ad6, chromeos_save_apl_pci_l1ss_capability);
+ DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_INTEL, 0x5ad6, chromeos_fixup_apl_pci_l1ss_capability);
 +
-+	return 0;
- }
- 
- /* release unclaimed pipeline resource */
-@@ -1266,9 +1270,8 @@ int komeda_release_unclaimed_resources(struct komeda_pipeline *pipe,
- 	if (WARN_ON(IS_ERR_OR_NULL(st)))
- 		return -EINVAL;
- 
--	komeda_pipeline_unbound_components(pipe, st);
-+	return komeda_pipeline_unbound_components(pipe, st);
- 
--	return 0;
- }
- 
- /* Since standalone disabled components must be disabled separately and in the
--- 
-2.42.0
-
++#ifdef CONFIG_SUSPEND
++/*
++ * Root Ports on some AMD SoCs advertise PME_Support for D3hot and D3cold, but
++ * if the SoC is put into a hardware sleep state by the amd-pmc driver, the
++ * Root Ports don't generate wakeup interrupts for USB devices.
++ *
++ * When suspending, remove D3hot and D3cold from the PME_Support advertised
++ * by the Root Port so we don't use those states if we're expecting wakeup
++ * interrupts.  Restore the advertised PME_Support when resuming.
++ */
++static void amd_rp_pme_suspend(struct pci_dev *dev)
++{
++	struct pci_dev *rp;
++
++	/*
++	 * PM_SUSPEND_ON means we're doing runtime suspend, which means
++	 * amd-pmc will not be involved so PMEs during D3 work as advertised.
++	 *
++	 * The PMEs *do* work if amd-pmc doesn't put the SoC in the hardware
++	 * sleep state, but we assume amd-pmc is always present.
++	 */
++	if (pm_suspend_target_state == PM_SUSPEND_ON)
++		return;
++
++	rp = pcie_find_root_port(dev);
++	if (!rp->pm_cap)
++		return;
++
++	rp->pme_support &= ~((PCI_PM_CAP_PME_D3hot|PCI_PM_CAP_PME_D3cold) >>
++				    PCI_PM_CAP_PME_SHIFT);
++	dev_info_once(&rp->dev, "quirk: disabling D3cold for suspend\n");
++}
++
++static void amd_rp_pme_resume(struct pci_dev *dev)
++{
++	struct pci_dev *rp;
++	u16 pmc;
++
++	rp = pcie_find_root_port(dev);
++	if (!rp->pm_cap)
++		return;
++
++	pci_read_config_word(rp, rp->pm_cap + PCI_PM_PMC, &pmc);
++	rp->pme_support = FIELD_GET(PCI_PM_CAP_PME_MASK, pmc);
++}
++/* Rembrandt (yellow_carp) */
++DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162e, amd_rp_pme_suspend);
++DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162e, amd_rp_pme_resume);
++DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x162f, amd_rp_pme_suspend);
++DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x162f, amd_rp_pme_resume);
++/* Phoenix (pink_sardine) */
++DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_suspend);
++DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1668, amd_rp_pme_resume);
++DECLARE_PCI_FIXUP_SUSPEND(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_suspend);
++DECLARE_PCI_FIXUP_RESUME(PCI_VENDOR_ID_AMD, 0x1669, amd_rp_pme_resume);
++#endif /* CONFIG_SUSPEND */
 
 
 
