@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-1697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E4E7F80EF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BAD67F7D06
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27E4EB21AB8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CDBC1C209D2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C92A364A0;
-	Fri, 24 Nov 2023 18:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7E4364A4;
+	Fri, 24 Nov 2023 18:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQ50sC48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLL5Uxkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D5833CFD;
-	Fri, 24 Nov 2023 18:54:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97422C433CB;
-	Fri, 24 Nov 2023 18:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609A339FE8;
+	Fri, 24 Nov 2023 18:20:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD3AC433C8;
+	Fri, 24 Nov 2023 18:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852048;
-	bh=SWjKKwmIlcvxTuFoaI+usBvUOmjlc+vtggfKt67jWso=;
+	s=korg; t=1700850040;
+	bh=ggfHSYOSr/DL97wpwBvAPDaBbTrf9SJ5b9+WPM4oCBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eQ50sC48VGH0oFYF6KyqkoNQT447W/54/vWwENaSWSDfxh3o9qq3kGuamFdE3B+bR
-	 OJS2koVoQYLFtTdtwyJ5WmNwMf7gAknbuzMRtg/l+ayS45fQijDRtmU+YIoIynYy6+
-	 z/dV7CdtwhtokjaBThMf2eBaJXV1sgmDJOuMAnzc=
+	b=TLL5Uxkr882XNrzo+KvUbF9TL8W/i724wnjNPhk6gMT33lOMH/tW8gEgn3sepznNW
+	 93zW4l5l9acv7KVpwxSfdtzeGlJzAs7KygaP+22XqiwwTDUIUJ7/zmJDV35IodP6Mz
+	 M1jSEBW3JqhXcwtTaF2QBJXt7pCNb/u/Pwdjxo0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 200/372] genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 421/530] smb: client: fix use-after-free bug in cifs_debug_data_proc_show()
 Date: Fri, 24 Nov 2023 17:49:47 +0000
-Message-ID: <20231124172017.125767381@linuxfoundation.org>
+Message-ID: <20231124172040.883209415@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,87 +52,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 5e7afb2eb7b2a7c81e9f608cbdf74a07606fd1b5 upstream.
+commit d328c09ee9f15ee5a26431f5aad7c9239fa85e62 upstream.
 
-irq_remove_generic_chip() calculates the Linux interrupt number for removing the
-handler and interrupt chip based on gc::irq_base as a linear function of
-the bit positions of set bits in the @msk argument.
+Skip SMB sessions that are being teared down
+(e.g. @ses->ses_status == SES_EXITING) in cifs_debug_data_proc_show()
+to avoid use-after-free in @ses.
 
-When the generic chip is present in an irq domain, i.e. created with a call
-to irq_alloc_domain_generic_chips(), gc::irq_base contains not the base
-Linux interrupt number.  It contains the base hardware interrupt for this
-chip. It is set to 0 for the first chip in the domain, 0 + N for the next
-chip, where $N is the number of hardware interrupts per chip.
+This fixes the following GPF when reading from /proc/fs/cifs/DebugData
+while mounting and umounting
 
-That means the Linux interrupt number cannot be calculated based on
-gc::irq_base for irqdomain based chips without a domain map lookup, which
-is currently missing.
+  [ 816.251274] general protection fault, probably for non-canonical
+  address 0x6b6b6b6b6b6b6d81: 0000 [#1] PREEMPT SMP NOPTI
+  ...
+  [  816.260138] Call Trace:
+  [  816.260329]  <TASK>
+  [  816.260499]  ? die_addr+0x36/0x90
+  [  816.260762]  ? exc_general_protection+0x1b3/0x410
+  [  816.261126]  ? asm_exc_general_protection+0x26/0x30
+  [  816.261502]  ? cifs_debug_tcon+0xbd/0x240 [cifs]
+  [  816.261878]  ? cifs_debug_tcon+0xab/0x240 [cifs]
+  [  816.262249]  cifs_debug_data_proc_show+0x516/0xdb0 [cifs]
+  [  816.262689]  ? seq_read_iter+0x379/0x470
+  [  816.262995]  seq_read_iter+0x118/0x470
+  [  816.263291]  proc_reg_read_iter+0x53/0x90
+  [  816.263596]  ? srso_alias_return_thunk+0x5/0x7f
+  [  816.263945]  vfs_read+0x201/0x350
+  [  816.264211]  ksys_read+0x75/0x100
+  [  816.264472]  do_syscall_64+0x3f/0x90
+  [  816.264750]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+  [  816.265135] RIP: 0033:0x7fd5e669d381
 
-Rework the code to take the irqdomain case into account and calculate the
-Linux interrupt number by a irqdomain lookup of the domain specific
-hardware interrupt number.
-
-[ tglx: Massage changelog. Reshuffle the logic and add a proper comment. ]
-
-Fixes: cfefd21e693d ("genirq: Add chip suspend and resume callbacks")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231024150335.322282-1-herve.codina@bootlin.com
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/irq/generic-chip.c |   25 +++++++++++++++++++------
- 1 file changed, 19 insertions(+), 6 deletions(-)
+ fs/smb/client/cifs_debug.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/irq/generic-chip.c
-+++ b/kernel/irq/generic-chip.c
-@@ -544,21 +544,34 @@ EXPORT_SYMBOL_GPL(irq_setup_alt_chip);
- void irq_remove_generic_chip(struct irq_chip_generic *gc, u32 msk,
- 			     unsigned int clr, unsigned int set)
- {
--	unsigned int i = gc->irq_base;
-+	unsigned int i, virq;
- 
- 	raw_spin_lock(&gc_lock);
- 	list_del(&gc->list);
- 	raw_spin_unlock(&gc_lock);
- 
--	for (; msk; msk >>= 1, i++) {
-+	for (i = 0; msk; msk >>= 1, i++) {
- 		if (!(msk & 0x01))
- 			continue;
- 
-+		/*
-+		 * Interrupt domain based chips store the base hardware
-+		 * interrupt number in gc::irq_base. Otherwise gc::irq_base
-+		 * contains the base Linux interrupt number.
-+		 */
-+		if (gc->domain) {
-+			virq = irq_find_mapping(gc->domain, gc->irq_base + i);
-+			if (!virq)
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -452,6 +452,11 @@ skip_rdma:
+ 		seq_printf(m, "\n\n\tSessions: ");
+ 		i = 0;
+ 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
++			spin_lock(&ses->ses_lock);
++			if (ses->ses_status == SES_EXITING) {
++				spin_unlock(&ses->ses_lock);
 +				continue;
-+		} else {
-+			virq = gc->irq_base + i;
-+		}
-+
- 		/* Remove handler first. That will mask the irq line */
--		irq_set_handler(i, NULL);
--		irq_set_chip(i, &no_irq_chip);
--		irq_set_chip_data(i, NULL);
--		irq_modify_status(i, clr, set);
-+		irq_set_handler(virq, NULL);
-+		irq_set_chip(virq, &no_irq_chip);
-+		irq_set_chip_data(virq, NULL);
-+		irq_modify_status(virq, clr, set);
- 	}
- }
- EXPORT_SYMBOL_GPL(irq_remove_generic_chip);
++			}
+ 			i++;
+ 			if ((ses->serverDomain == NULL) ||
+ 				(ses->serverOS == NULL) ||
+@@ -472,6 +477,7 @@ skip_rdma:
+ 				ses->ses_count, ses->serverOS, ses->serverNOS,
+ 				ses->capabilities, ses->ses_status);
+ 			}
++			spin_unlock(&ses->ses_lock);
+ 
+ 			seq_printf(m, "\n\tSecurity type: %s ",
+ 				get_security_type_str(server->ops->select_sectype(server, ses->sectype)));
 
 
 
