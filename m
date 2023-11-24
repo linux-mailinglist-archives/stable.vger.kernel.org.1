@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADF17F8009
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FC97F81CF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5237B211C5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D3D1B22360
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA93D35F04;
-	Fri, 24 Nov 2023 18:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4A72EAEA;
+	Fri, 24 Nov 2023 19:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZExGop3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RuZ41aJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2287033CC7;
-	Fri, 24 Nov 2023 18:46:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C501C433C9;
-	Fri, 24 Nov 2023 18:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C4A28DBB;
+	Fri, 24 Nov 2023 19:01:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1CDC433C8;
+	Fri, 24 Nov 2023 19:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851565;
-	bh=qgTv+uHI/xQY7qmOWS5r/H0RbyxgxhUpPXqNUYzKMnk=;
+	s=korg; t=1700852501;
+	bh=egbzEpN+EOUlUoj5Yo152ihdpT1N0ateXdLxwDAqFAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZExGop3rEAHtfTwNfbvtYqGZ1crllYwaCFnO2D6VuQj6hZhuUyqI5GTSyOj+LLdj9
-	 G23uILFgEBsdSe8A9Gu7ePcE+8Rje2aGF7ZRlGOKrptdtTZRUsoI6+n7OnLxcDKQrf
-	 ZKkdGwf/1GEM5Sb/Hd36RRL0pp2/aiRe0GWdg7os=
+	b=0RuZ41aJApIqR3a0w2Iq4G+YslZFh9tKCdcROJzYE9UU92FSamTK5fm557b7xFgWH
+	 RBJF9g7rN99j/Of8RX7y1wajfNjP9bC+AzYghtvengbRds/P1GJuV8BXeSPSrIxenf
+	 VCXTnyS52pgngcxXFUkY3niuapZthFtITqsJCLfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Beau Belgrave <beaub@linux.microsoft.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.5 491/491] tracing: Have trace_event_file have ref counters
-Date: Fri, 24 Nov 2023 17:52:07 +0000
-Message-ID: <20231124172039.395042526@linuxfoundation.org>
+	John Stultz <jstultz@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 001/193] locking/ww_mutex/test: Fix potential workqueue corruption
+Date: Fri, 24 Nov 2023 17:52:08 +0000
+Message-ID: <20231124171947.183102133@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,257 +53,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: John Stultz <jstultz@google.com>
 
-commit bb32500fb9b78215e4ef6ee8b4345c5f5d7eafb4 upstream.
+[ Upstream commit bccdd808902f8c677317cec47c306e42b93b849e ]
 
-The following can crash the kernel:
+In some cases running with the test-ww_mutex code, I was seeing
+odd behavior where sometimes it seemed flush_workqueue was
+returning before all the work threads were finished.
 
- # cd /sys/kernel/tracing
- # echo 'p:sched schedule' > kprobe_events
- # exec 5>>events/kprobes/sched/enable
- # > kprobe_events
- # exec 5>&-
+Often this would cause strange crashes as the mutexes would be
+freed while they were being used.
 
-The above commands:
+Looking at the code, there is a lifetime problem as the
+controlling thread that spawns the work allocates the
+"struct stress" structures that are passed to the workqueue
+threads. Then when the workqueue threads are finished,
+they free the stress struct that was passed to them.
 
- 1. Change directory to the tracefs directory
- 2. Create a kprobe event (doesn't matter what one)
- 3. Open bash file descriptor 5 on the enable file of the kprobe event
- 4. Delete the kprobe event (removes the files too)
- 5. Close the bash file descriptor 5
+Unfortunately the workqueue work_struct node is in the stress
+struct. Which means the work_struct is freed before the work
+thread returns and while flush_workqueue is waiting.
 
-The above causes a crash!
+It seems like a better idea to have the controlling thread
+both allocate and free the stress structures, so that we can
+be sure we don't corrupt the workqueue by freeing the structure
+prematurely.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000028
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: 0000 [#1] PREEMPT SMP PTI
- CPU: 6 PID: 877 Comm: bash Not tainted 6.5.0-rc4-test-00008-g2c6b6b1029d4-dirty #186
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
- RIP: 0010:tracing_release_file_tr+0xc/0x50
+So this patch reworks the test to do so, and with this change
+I no longer see the early flush_workqueue returns.
 
-What happens here is that the kprobe event creates a trace_event_file
-"file" descriptor that represents the file in tracefs to the event. It
-maintains state of the event (is it enabled for the given instance?).
-Opening the "enable" file gets a reference to the event "file" descriptor
-via the open file descriptor. When the kprobe event is deleted, the file is
-also deleted from the tracefs system which also frees the event "file"
-descriptor.
-
-But as the tracefs file is still opened by user space, it will not be
-totally removed until the final dput() is called on it. But this is not
-true with the event "file" descriptor that is already freed. If the user
-does a write to or simply closes the file descriptor it will reference the
-event "file" descriptor that was just freed, causing a use-after-free bug.
-
-To solve this, add a ref count to the event "file" descriptor as well as a
-new flag called "FREED". The "file" will not be freed until the last
-reference is released. But the FREE flag will be set when the event is
-removed to prevent any more modifications to that event from happening,
-even if there's still a reference to the event "file" descriptor.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231031000031.1e705592@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20231031122453.7a48b923@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: f5ca233e2e66d ("tracing: Increase trace array ref count on enable and filter files")
-Reported-by: Beau Belgrave <beaub@linux.microsoft.com>
-Tested-by: Beau Belgrave <beaub@linux.microsoft.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Stultz <jstultz@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20230922043616.19282-3-jstultz@google.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h       |    4 +++
- kernel/trace/trace.c               |   15 ++++++++++++
- kernel/trace/trace.h               |    3 ++
- kernel/trace/trace_events.c        |   43 ++++++++++++++++++++++++-------------
- kernel/trace/trace_events_filter.c |    3 ++
- 5 files changed, 53 insertions(+), 15 deletions(-)
+ kernel/locking/test-ww_mutex.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -492,6 +492,7 @@ enum {
- 	EVENT_FILE_FL_TRIGGER_COND_BIT,
- 	EVENT_FILE_FL_PID_FILTER_BIT,
- 	EVENT_FILE_FL_WAS_ENABLED_BIT,
-+	EVENT_FILE_FL_FREED_BIT,
- };
+diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
+index 3e82f449b4ff7..da36997d8742c 100644
+--- a/kernel/locking/test-ww_mutex.c
++++ b/kernel/locking/test-ww_mutex.c
+@@ -426,7 +426,6 @@ static void stress_inorder_work(struct work_struct *work)
+ 	} while (!time_after(jiffies, stress->timeout));
  
- extern struct trace_event_file *trace_get_event_file(const char *instance,
-@@ -630,6 +631,7 @@ extern int __kprobe_event_add_fields(str
-  *  TRIGGER_COND  - When set, one or more triggers has an associated filter
-  *  PID_FILTER    - When set, the event is filtered based on pid
-  *  WAS_ENABLED   - Set when enabled to know to clear trace on module removal
-+ *  FREED         - File descriptor is freed, all fields should be considered invalid
-  */
- enum {
- 	EVENT_FILE_FL_ENABLED		= (1 << EVENT_FILE_FL_ENABLED_BIT),
-@@ -643,6 +645,7 @@ enum {
- 	EVENT_FILE_FL_TRIGGER_COND	= (1 << EVENT_FILE_FL_TRIGGER_COND_BIT),
- 	EVENT_FILE_FL_PID_FILTER	= (1 << EVENT_FILE_FL_PID_FILTER_BIT),
- 	EVENT_FILE_FL_WAS_ENABLED	= (1 << EVENT_FILE_FL_WAS_ENABLED_BIT),
-+	EVENT_FILE_FL_FREED		= (1 << EVENT_FILE_FL_FREED_BIT),
- };
- 
- struct trace_event_file {
-@@ -671,6 +674,7 @@ struct trace_event_file {
- 	 * caching and such. Which is mostly OK ;-)
- 	 */
- 	unsigned long		flags;
-+	atomic_t		ref;	/* ref count for opened files */
- 	atomic_t		sm_ref;	/* soft-mode reference counter */
- 	atomic_t		tm_ref;	/* trigger-mode reference counter */
- };
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5000,6 +5000,20 @@ int tracing_open_file_tr(struct inode *i
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&event_mutex);
-+
-+	/* Fail if the file is marked for removal */
-+	if (file->flags & EVENT_FILE_FL_FREED) {
-+		trace_array_put(file->tr);
-+		ret = -ENODEV;
-+	} else {
-+		event_file_get(file);
-+	}
-+
-+	mutex_unlock(&event_mutex);
-+	if (ret)
-+		return ret;
-+
- 	filp->private_data = inode->i_private;
- 
- 	return 0;
-@@ -5010,6 +5024,7 @@ int tracing_release_file_tr(struct inode
- 	struct trace_event_file *file = inode->i_private;
- 
- 	trace_array_put(file->tr);
-+	event_file_put(file);
- 
- 	return 0;
- }
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1656,6 +1656,9 @@ extern void event_trigger_unregister(str
- 				     char *glob,
- 				     struct event_trigger_data *trigger_data);
- 
-+extern void event_file_get(struct trace_event_file *file);
-+extern void event_file_put(struct trace_event_file *file);
-+
- /**
-  * struct event_trigger_ops - callbacks for trace event triggers
-  *
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -990,26 +990,38 @@ static void remove_subsystem(struct trac
- 	}
+ 	kfree(order);
+-	kfree(stress);
  }
  
--static void remove_event_file_dir(struct trace_event_file *file)
-+void event_file_get(struct trace_event_file *file)
+ struct reorder_lock {
+@@ -491,7 +490,6 @@ static void stress_reorder_work(struct work_struct *work)
+ 	list_for_each_entry_safe(ll, ln, &locks, link)
+ 		kfree(ll);
+ 	kfree(order);
+-	kfree(stress);
+ }
+ 
+ static void stress_one_work(struct work_struct *work)
+@@ -512,8 +510,6 @@ static void stress_one_work(struct work_struct *work)
+ 			break;
+ 		}
+ 	} while (!time_after(jiffies, stress->timeout));
+-
+-	kfree(stress);
+ }
+ 
+ #define STRESS_INORDER BIT(0)
+@@ -524,15 +520,24 @@ static void stress_one_work(struct work_struct *work)
+ static int stress(int nlocks, int nthreads, unsigned int flags)
  {
--	struct dentry *dir = file->dir;
--	struct dentry *child;
-+	atomic_inc(&file->ref);
-+}
+ 	struct ww_mutex *locks;
+-	int n;
++	struct stress *stress_array;
++	int n, count;
  
--	if (dir) {
--		spin_lock(&dir->d_lock);	/* probably unneeded */
--		list_for_each_entry(child, &dir->d_subdirs, d_child) {
--			if (d_really_is_positive(child))	/* probably unneeded */
--				d_inode(child)->i_private = NULL;
--		}
--		spin_unlock(&dir->d_lock);
-+void event_file_put(struct trace_event_file *file)
-+{
-+	if (WARN_ON_ONCE(!atomic_read(&file->ref))) {
-+		if (file->flags & EVENT_FILE_FL_FREED)
-+			kmem_cache_free(file_cachep, file);
-+		return;
+ 	locks = kmalloc_array(nlocks, sizeof(*locks), GFP_KERNEL);
+ 	if (!locks)
+ 		return -ENOMEM;
+ 
++	stress_array = kmalloc_array(nthreads, sizeof(*stress_array),
++				     GFP_KERNEL);
++	if (!stress_array) {
++		kfree(locks);
++		return -ENOMEM;
 +	}
- 
--		tracefs_remove(dir);
-+	if (atomic_dec_and_test(&file->ref)) {
-+		/* Count should only go to zero when it is freed */
-+		if (WARN_ON_ONCE(!(file->flags & EVENT_FILE_FL_FREED)))
-+			return;
-+		kmem_cache_free(file_cachep, file);
- 	}
-+}
 +
-+static void remove_event_file_dir(struct trace_event_file *file)
-+{
-+	struct dentry *dir = file->dir;
-+
-+	tracefs_remove(dir);
+ 	for (n = 0; n < nlocks; n++)
+ 		ww_mutex_init(&locks[n], &ww_class);
  
- 	list_del(&file->list);
- 	remove_subsystem(file->system);
- 	free_event_filter(file->filter);
--	kmem_cache_free(file_cachep, file);
-+	file->flags |= EVENT_FILE_FL_FREED;
-+	event_file_put(file);
- }
++	count = 0;
+ 	for (n = 0; nthreads; n++) {
+ 		struct stress *stress;
+ 		void (*fn)(struct work_struct *work);
+@@ -556,9 +561,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
+ 		if (!fn)
+ 			continue;
  
- /*
-@@ -1382,7 +1394,7 @@ event_enable_read(struct file *filp, cha
- 		flags = file->flags;
- 	mutex_unlock(&event_mutex);
+-		stress = kmalloc(sizeof(*stress), GFP_KERNEL);
+-		if (!stress)
+-			break;
++		stress = &stress_array[count++];
  
--	if (!file)
-+	if (!file || flags & EVENT_FILE_FL_FREED)
- 		return -ENODEV;
+ 		INIT_WORK(&stress->work, fn);
+ 		stress->locks = locks;
+@@ -573,6 +576,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
  
- 	if (flags & EVENT_FILE_FL_ENABLED &&
-@@ -1420,7 +1432,7 @@ event_enable_write(struct file *filp, co
- 		ret = -ENODEV;
- 		mutex_lock(&event_mutex);
- 		file = event_file_data(filp);
--		if (likely(file))
-+		if (likely(file && !(file->flags & EVENT_FILE_FL_FREED)))
- 			ret = ftrace_event_enable_disable(file, val);
- 		mutex_unlock(&event_mutex);
- 		break;
-@@ -1694,7 +1706,7 @@ event_filter_read(struct file *filp, cha
+ 	for (n = 0; n < nlocks; n++)
+ 		ww_mutex_destroy(&locks[n]);
++	kfree(stress_array);
+ 	kfree(locks);
  
- 	mutex_lock(&event_mutex);
- 	file = event_file_data(filp);
--	if (file)
-+	if (file && !(file->flags & EVENT_FILE_FL_FREED))
- 		print_event_filter(file, s);
- 	mutex_unlock(&event_mutex);
- 
-@@ -2810,6 +2822,7 @@ trace_create_new_event(struct trace_even
- 	atomic_set(&file->tm_ref, 0);
- 	INIT_LIST_HEAD(&file->triggers);
- 	list_add(&file->list, &tr->events);
-+	event_file_get(file);
- 
- 	return file;
- }
---- a/kernel/trace/trace_events_filter.c
-+++ b/kernel/trace/trace_events_filter.c
-@@ -2088,6 +2088,9 @@ int apply_event_filter(struct trace_even
- 	struct event_filter *filter = NULL;
- 	int err;
- 
-+	if (file->flags & EVENT_FILE_FL_FREED)
-+		return -ENODEV;
-+
- 	if (!strcmp(strstrip(filter_string), "0")) {
- 		filter_disable(file);
- 		filter = event_filter(file);
+ 	return 0;
+-- 
+2.42.0
+
 
 
 
