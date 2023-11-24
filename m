@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09D27F7D32
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E107F7D34
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89EA5282148
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B98E28210A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED82D364C8;
-	Fri, 24 Nov 2023 18:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13E03A8CA;
+	Fri, 24 Nov 2023 18:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1OsNQnh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJbIDc42"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B851381DE;
-	Fri, 24 Nov 2023 18:22:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A991AC433C9;
-	Fri, 24 Nov 2023 18:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9251F33CCA;
+	Fri, 24 Nov 2023 18:22:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CB7C433C9;
+	Fri, 24 Nov 2023 18:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850140;
-	bh=FC94BhG6fauXsAK2RAsf+R9swewSnNlFc0+Q09c5vmQ=;
+	s=korg; t=1700850142;
+	bh=ubOpd01rTh4YyHaWGsglmelOpN6CmUpe6MJuY7wYmME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1OsNQnhpXMoIJWwGA9tM4uilAcLGCuEHeIRq6koSRoJ9tcwx6YqXtDNTUiVKt6iE
-	 bufKCEWVXvWl1/6bMPg5SioFM05OfntX9WqB+rybuJzVJkd+2lojM/miIA7LENoN0t
-	 f2kRSz0WTfVhGqLdIvLpN8ySiumBbkWeG9nS4xC0=
+	b=BJbIDc42i08UE/2OgpvHyyxgLk4FLdD84wewJwxdu9ijpIDgeZC1mE60ZmsFJT/eA
+	 +hrzghd5NRMBGVYHuxQB4+OGpO/yu/SpLOmb6yRWleTjzSIWZaMViuGgV7ecxl0UnY
+	 mWCGceE0twr4itKfTk4x3tK8xajuVzeHdM43tsXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandradeep Dey <codesigning@chandradeepdey.com>,
+	Matus Malych <matus@malych.org>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 435/530] ALSA: hda/realtek - Enable internal speaker of ASUS K6500ZC
-Date: Fri, 24 Nov 2023 17:50:01 +0000
-Message-ID: <20231124172041.327481919@linuxfoundation.org>
+Subject: [PATCH 6.6 436/530] ALSA: hda/realtek: Enable Mute LED on HP 255 G10
+Date: Fri, 24 Nov 2023 17:50:02 +0000
+Message-ID: <20231124172041.360588372@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -56,16 +56,17 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chandradeep Dey <codesigning@chandradeepdey.com>
+From: Matus Malych <matus@malych.org>
 
-commit 713f040cd22285fcc506f40a0d259566e6758c3c upstream.
+commit b944aa9d86d5f782bfe5e51336434c960304839c upstream.
 
-Apply the already existing quirk chain ALC294_FIXUP_ASUS_SPK to enable
-the internal speaker of ASUS K6500ZC.
+HP 255 G10 has a mute LED that can be made to work using quirk
+ALC236_FIXUP_HP_MUTE_LED_COEFBIT2.
+Enable already existing quirk - at correct line to keep order
 
-Signed-off-by: Chandradeep Dey <codesigning@chandradeepdey.com>
+Signed-off-by: Matus Malych <matus@malych.org>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/NizcVHQ--3-9@chandradeepdey.com
+Link: https://lore.kernel.org/r/20231114133524.11340-1-matus@malych.org
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -74,14 +75,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -9821,6 +9821,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x10d0, "ASUS X540LA/X540LJ", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x10d3, "ASUS K6500ZC", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+@@ -9782,6 +9782,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b44, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
 
 
 
