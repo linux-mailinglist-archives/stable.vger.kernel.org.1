@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 767747F7BB1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 914487F7DA7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06CD2B2123C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C26211C20975
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D8C39FEA;
-	Fri, 24 Nov 2023 18:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFED39FE9;
+	Fri, 24 Nov 2023 18:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbXXXWXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnEI175c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE1E39FE1;
-	Fri, 24 Nov 2023 18:07:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67933C433C8;
-	Fri, 24 Nov 2023 18:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED9439FE3;
+	Fri, 24 Nov 2023 18:26:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB009C433C7;
+	Fri, 24 Nov 2023 18:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849261;
-	bh=OrKxm6WaWMay0DWsrPkhXIbCq6rKkoWNY3+xVLyWjdk=;
+	s=korg; t=1700850384;
+	bh=qjEugjxdST+Bc2IDZ3kSlcmNfMp4wRIFmfOVe4p5m1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbXXXWXSYwVKABEwlnKrpnwEvJju+AA4ZBbegsmDhjHUVdtIt95lGhmGJ+XcTOxq6
-	 4YozDeVCWPf+j41ChPiCFAmiIdXOADXt55RwkMSNc3EZuX9msvXRJZl4yxN3uZ+rWX
-	 IjzkU5SXK97p4mHOO3SY5heHkcNN0oRHUAVzDaPc=
+	b=qnEI175ctn8DcycHksh5zeMtAAo+H/XnTd5yIOJXiTGMHUtV26jgFgQASoKvB85QZ
+	 Xzz91+mAzkRWB81ODkrUZYZ+hz8aLNPA31dPDy0h/lkWRrxLwkjfIrg6c/7wNbotrc
+	 qgB0KuBBHyacQy2fFryD3PYD2pra/gwoXBJmI9QY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	Jingwen Chen <Jingwen.Chen2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Denis Arefev <arefev@swemel.ru>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	David Laight <David.Laight@aculab.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/530] drm/amd: check num of link levels when update pcie param
+Subject: [PATCH 6.5 007/491] srcu: Fix srcu_struct node grpmask overflow on 64-bit systems
 Date: Fri, 24 Nov 2023 17:44:03 +0000
-Message-ID: <20231124172030.418233932@linuxfoundation.org>
+Message-ID: <20231124172024.892564462@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,39 +57,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin.Cao <lincao12@amd.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit 406e8845356d18bdf3d3a23b347faf67706472ec ]
+[ Upstream commit d8d5b7bf6f2105883bbd91bbd4d5b67e4e3dff71 ]
 
-In SR-IOV environment, the value of pcie_table->num_of_link_levels will
-be 0, and num_of_levels - 1 will cause array index out of bounds
+The value of a bitwise expression 1 << (cpu - sdp->mynode->grplo)
+is subject to overflow due to a failure to cast operands to a larger
+data type before performing the bitwise operation.
 
-Signed-off-by: Lin.Cao <lincao12@amd.com>
-Acked-by: Jingwen Chen <Jingwen.Chen2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The maximum result of this subtraction is defined by the RCU_FANOUT_LEAF
+Kconfig option, which on 64-bit systems defaults to 16 (resulting in a
+maximum shift of 15), but which can be set up as high as 64 (resulting
+in a maximum shift of 63).  A value of 31 can result in sign extension,
+resulting in 0xffffffff80000000 instead of the desired 0x80000000.
+A value of 32 or greater triggers undefined behavior per the C standard.
+
+This bug has not been known to cause issues because almost all kernels
+take the default CONFIG_RCU_FANOUT_LEAF=16.  Furthermore, as long as a
+given compiler gives a deterministic non-zero result for 1<<N for N>=32,
+the code correctly invokes all SRCU callbacks, albeit wasting CPU time
+along the way.
+
+This commit therefore substitutes the correct 1UL for the buggy 1.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: David Laight <David.Laight@aculab.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/rcu/srcutree.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-index 4aeb84572e5b8..5355f621388bb 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -2430,6 +2430,9 @@ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
- 	uint32_t smu_pcie_arg;
- 	int ret, i;
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index c6481032d42be..7522517b63b6f 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -223,7 +223,7 @@ static bool init_srcu_struct_nodes(struct srcu_struct *ssp, gfp_t gfp_flags)
+ 				snp->grplo = cpu;
+ 			snp->grphi = cpu;
+ 		}
+-		sdp->grpmask = 1 << (cpu - sdp->mynode->grplo);
++		sdp->grpmask = 1UL << (cpu - sdp->mynode->grplo);
+ 	}
+ 	smp_store_release(&ssp->srcu_sup->srcu_size_state, SRCU_SIZE_WAIT_BARRIER);
+ 	return true;
+@@ -833,7 +833,7 @@ static void srcu_schedule_cbs_snp(struct srcu_struct *ssp, struct srcu_node *snp
+ 	int cpu;
  
-+	if (!num_of_levels)
-+		return 0;
-+
- 	if (!(smu->adev->pm.pp_feature & PP_PCIE_DPM_MASK)) {
- 		if (pcie_table->pcie_gen[num_of_levels - 1] < pcie_gen_cap)
- 			pcie_gen_cap = pcie_table->pcie_gen[num_of_levels - 1];
+ 	for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
+-		if (!(mask & (1 << (cpu - snp->grplo))))
++		if (!(mask & (1UL << (cpu - snp->grplo))))
+ 			continue;
+ 		srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
+ 	}
 -- 
 2.42.0
 
