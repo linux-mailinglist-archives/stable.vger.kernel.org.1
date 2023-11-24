@@ -1,43 +1,44 @@
-Return-Path: <stable+bounces-1280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62647F7EDF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2ACE7F7EC1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86361C213B5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48441C213D4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E7033CCA;
-	Fri, 24 Nov 2023 18:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38918381BF;
+	Fri, 24 Nov 2023 18:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4iVR13c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaL8vRr7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB64D2FC21;
-	Fri, 24 Nov 2023 18:36:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34AEC433C7;
-	Fri, 24 Nov 2023 18:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54C035F1A;
+	Fri, 24 Nov 2023 18:35:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB48C433C8;
+	Fri, 24 Nov 2023 18:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851006;
-	bh=b4z57Hf1bCbYDneOQ44oa9VHDmzxUp1U0QUGnU61yQk=;
+	s=korg; t=1700850945;
+	bh=DuBhBT92BxRQflAknpyf8OBA8Wp3yTqVlsvH/+1kDGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x4iVR13cKtxYSGOPq0kGEO0eVaKVLQn/hO1E5HirfDExWhngg46kzfQLIUg04XBvr
-	 pqLs3dfUQUny1VkLxhHZzqqjo6HjBJsn0KpDlsWSG4hgfeF6Nmn9AOy0iyvA3Sn+u/
-	 suisntBhXBSXnen4qC59qaZ+0tTDmzkiLxM/4s38=
+	b=eaL8vRr7L8J8zymH9AwGwzL2A3Zi/FBi4XPQz7W7YZ4Ym051+oClloXfxauKzeE7j
+	 SjgiXvxvMaw6/lRFhdKfuV3Os/MjVPIa+uuWuVvJ3iTsNKG2AwdeIFMU192A7iI7CM
+	 OY4KWRxdmHbF1KkkWUAj3XM1PAWiimyxbPBojNzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jirislaby@kernel.org,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>
-Subject: [PATCH 6.5 251/491] tty/sysrq: replace smp_processor_id() with get_cpu()
-Date: Fri, 24 Nov 2023 17:48:07 +0000
-Message-ID: <20231124172032.109894347@linuxfoundation.org>
+	Pavel Krasavin <pkrasavin@imaqliq.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Rokosov <ddrokosov@salutedevices.com>
+Subject: [PATCH 6.5 252/491] tty: serial: meson: fix hard LOCKUP on crtscts mode
+Date: Fri, 24 Nov 2023 17:48:08 +0000
+Message-ID: <20231124172032.142650220@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
 References: <20231124172024.664207345@linuxfoundation.org>
@@ -56,73 +57,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Pavel Krasavin <pkrasavin@imaqliq.com>
 
-commit dd976a97d15b47656991e185a94ef42a0fa5cfd4 upstream.
+commit 2a1d728f20edeee7f26dc307ed9df4e0d23947ab upstream.
 
-The smp_processor_id() shouldn't be called from preemptible code.
-Instead use get_cpu() and put_cpu() which disables preemption in
-addition to getting the processor id. Enable preemption back after
-calling schedule_work() to make sure that the work gets scheduled on all
-cores other than the current core. We want to avoid a scenario where
-current core's stack trace is printed multiple times and one core's
-stack trace isn't printed because of scheduling of current task.
+There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
 
-This fixes the following bug:
+# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
+[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
+[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
+[   95.906972] Task dump for CPU 3:
+[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
+[   95.920059] Call trace:
+[   95.922485]  __switch_to+0xe4/0x168
+[   95.925951]  0xffffff8003477508
+[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
+[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
 
-[  119.143590] sysrq: Show backtrace of all active CPUs
-[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
-[  119.144586] caller is debug_smp_processor_id+0x20/0x30
-[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
-[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
-[  119.145053] Call trace:
-[  119.145093]  dump_backtrace+0x0/0x1a0
-[  119.145122]  show_stack+0x18/0x70
-[  119.145141]  dump_stack+0xc4/0x11c
-[  119.145159]  check_preemption_disabled+0x100/0x110
-[  119.145175]  debug_smp_processor_id+0x20/0x30
-[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
-[  119.145211]  __handle_sysrq+0x8c/0x1a0
-[  119.145227]  write_sysrq_trigger+0x94/0x12c
-[  119.145247]  proc_reg_write+0xa8/0xe4
-[  119.145266]  vfs_write+0xec/0x280
-[  119.145282]  ksys_write+0x6c/0x100
-[  119.145298]  __arm64_sys_write+0x20/0x30
-[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
-[  119.145332]  do_el0_svc+0x24/0x8c
-[  119.145348]  el0_svc+0x10/0x20
-[  119.145364]  el0_sync_handler+0x134/0x140
-[  119.145381]  el0_sync+0x180/0x1c0
+Possible solution would be to not allow to setup crtscts on such port.
 
-Cc: jirislaby@kernel.org
+Tested on S905X3 based board.
+
+Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
 Cc: stable@vger.kernel.org
-Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20231009162021.3607632-1-usama.anjum@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/sysrq.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/meson_uart.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -263,13 +263,14 @@ static void sysrq_handle_showallcpus(int
- 		if (in_hardirq())
- 			regs = get_irq_regs();
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -379,10 +379,14 @@ static void meson_uart_set_termios(struc
+ 	else
+ 		val |= AML_UART_STOP_BIT_1SB;
  
--		pr_info("CPU%d:\n", smp_processor_id());
-+		pr_info("CPU%d:\n", get_cpu());
- 		if (regs)
- 			show_regs(regs);
- 		else
- 			show_stack(NULL, NULL, KERN_INFO);
+-	if (cflags & CRTSCTS)
+-		val &= ~AML_UART_TWO_WIRE_EN;
+-	else
++	if (cflags & CRTSCTS) {
++		if (port->flags & UPF_HARD_FLOW)
++			val &= ~AML_UART_TWO_WIRE_EN;
++		else
++			termios->c_cflag &= ~CRTSCTS;
++	} else {
+ 		val |= AML_UART_TWO_WIRE_EN;
++	}
  
- 		schedule_work(&sysrq_showallcpus);
-+		put_cpu();
- 	}
- }
+ 	writel(val, port->membase + AML_UART_CONTROL);
  
+@@ -697,6 +701,7 @@ static int meson_uart_probe(struct platf
+ 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
+ 	int ret = 0;
+ 	int irq;
++	bool has_rtscts;
+ 
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
+@@ -724,6 +729,7 @@ static int meson_uart_probe(struct platf
+ 		return irq;
+ 
+ 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
++	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
+ 
+ 	if (meson_ports[pdev->id]) {
+ 		dev_err(&pdev->dev, "port %d already allocated\n", pdev->id);
+@@ -743,6 +749,8 @@ static int meson_uart_probe(struct platf
+ 	port->mapsize = resource_size(res_mem);
+ 	port->irq = irq;
+ 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
++	if (has_rtscts)
++		port->flags |= UPF_HARD_FLOW;
+ 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+ 	port->dev = &pdev->dev;
+ 	port->line = pdev->id;
 
 
 
