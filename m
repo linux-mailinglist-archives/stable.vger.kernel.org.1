@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9547F7C4B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7D47F802B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8729E281F25
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 700CC1C21521
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D9139FDD;
-	Fri, 24 Nov 2023 18:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8F4364A7;
+	Fri, 24 Nov 2023 18:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEHI+NVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVwMIbmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D841A39FF8;
-	Fri, 24 Nov 2023 18:13:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642C4C433C8;
-	Fri, 24 Nov 2023 18:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F039634189;
+	Fri, 24 Nov 2023 18:47:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F79BC433C7;
+	Fri, 24 Nov 2023 18:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849629;
-	bh=F/V3FLbSZgtVfmaXtFEaf3aMol0iKJT8EyRA/J9M0zg=;
+	s=korg; t=1700851640;
+	bh=buoVcTkeaLewdOReYG/QsZm9tgPOzCN8rU3LeWSJNt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEHI+NVMFEbAijFltqArPXEEBKFGLoU4d9cnyum7hNeSsGYzUolDLuS9Jok09FJEe
-	 acQrhuQK70+JIvxXltNYYPIxO3Nc4W7SG0oPlnCOw9k4jUqI59PLac8nVHphFTc5Ph
-	 M6SHWPcay5UmjFZvm5NzTiZ5cvS157fm1Djhhmg0=
+	b=KVwMIbmYcVqsWkuqSXi2gG0DfhdrBtOAJyXdUL3WrcrdimsS8gXfWRpHdQJZkQAfB
+	 Y13cxZgvUaUFF6dNKQ6hJmwSV6fZUZkV/CO/Tx3Z3DP8R8a5CwQA/QaTmi4FFttL62
+	 NRtOPvDH1mxaAxZoFXl9wHyt7IVAQZQSfO48YIkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 258/530] KVM: x86: Ignore MSR_AMD64_TW_CFG access
+	David Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Zack Rusin <zackr@vmware.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 037/372] string.h: add array-wrappers for (v)memdup_user()
 Date: Fri, 24 Nov 2023 17:47:04 +0000
-Message-ID: <20231124172035.903485626@linuxfoundation.org>
+Message-ID: <20231124172011.724614187@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,83 +56,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+From: Philipp Stanner <pstanner@redhat.com>
 
-commit 2770d4722036d6bd24bcb78e9cd7f6e572077d03 upstream.
+[ Upstream commit 313ebe47d75558511aa1237b6e35c663b5c0ec6f ]
 
-Hyper-V enabled Windows Server 2022 KVM VM cannot be started on Zen1 Ryzen
-since it crashes at boot with SYSTEM_THREAD_EXCEPTION_NOT_HANDLED +
-STATUS_PRIVILEGED_INSTRUCTION (in other words, because of an unexpected #GP
-in the guest kernel).
+Currently, user array duplications are sometimes done without an
+overflow check. Sometimes the checks are done manually; sometimes the
+array size is calculated with array_size() and sometimes by calculating
+n * size directly in code.
 
-This is because Windows tries to set bit 8 in MSR_AMD64_TW_CFG and can't
-handle receiving a #GP when doing so.
+Introduce wrappers for arrays for memdup_user() and vmemdup_user() to
+provide a standardized and safe way for duplicating user arrays.
 
-Give this MSR the same treatment that commit 2e32b7190641
-("x86, kvm: Add MSR_AMD64_BU_CFG2 to the list of ignored MSRs") gave
-MSR_AMD64_BU_CFG2 under justification that this MSR is baremetal-relevant
-only.
-Although apparently it was then needed for Linux guests, not Windows as in
-this case.
+This is both for new code as well as replacing usage of (v)memdup_user()
+in existing code that uses, e.g., n * size to calculate array sizes.
 
-With this change, the aforementioned guest setup is able to finish booting
-successfully.
-
-This issue can be reproduced either on a Summit Ridge Ryzen (with
-just "-cpu host") or on a Naples EPYC (with "-cpu host,stepping=1" since
-EPYC is ordinarily stepping 2).
-
-Alternatively, userspace could solve the problem by using MSR filters, but
-forcing every userspace to define a filter isn't very friendly and doesn't
-add much, if any, value.  The only potential hiccup is if one of these
-"baremetal-only" MSRs ever requires actual emulation and/or has F/M/S
-specific behavior.  But if that happens, then KVM can still punt *that*
-handling to userspace since userspace MSR filters "win" over KVM's default
-handling.
-
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/1ce85d9c7c9e9632393816cf19c902e0a3f411f1.1697731406.git.maciej.szmigiero@oracle.com
-[sean: call out MSR filtering alternative]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: David Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-3-pstanner@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/msr-index.h |    1 +
- arch/x86/kvm/x86.c               |    2 ++
- 2 files changed, 3 insertions(+)
+ include/linux/string.h | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -553,6 +553,7 @@
- #define MSR_AMD64_CPUID_FN_1		0xc0011004
- #define MSR_AMD64_LS_CFG		0xc0011020
- #define MSR_AMD64_DC_CFG		0xc0011022
-+#define MSR_AMD64_TW_CFG		0xc0011023
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 26ab8928d8661..422606e98cc42 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -5,7 +5,9 @@
+ #include <linux/compiler.h>	/* for inline */
+ #include <linux/types.h>	/* for size_t */
+ #include <linux/stddef.h>	/* for NULL */
++#include <linux/err.h>		/* for ERR_PTR() */
+ #include <linux/errno.h>	/* for E2BIG */
++#include <linux/overflow.h>	/* for check_mul_overflow() */
+ #include <linux/stdarg.h>
+ #include <uapi/linux/string.h>
  
- #define MSR_AMD64_DE_CFG		0xc0011029
- #define MSR_AMD64_DE_CFG_LFENCE_SERIALIZE_BIT	 1
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3641,6 +3641,7 @@ int kvm_set_msr_common(struct kvm_vcpu *
- 	case MSR_AMD64_PATCH_LOADER:
- 	case MSR_AMD64_BU_CFG2:
- 	case MSR_AMD64_DC_CFG:
-+	case MSR_AMD64_TW_CFG:
- 	case MSR_F15H_EX_CFG:
- 		break;
+@@ -14,6 +16,44 @@ extern void *memdup_user(const void __user *, size_t);
+ extern void *vmemdup_user(const void __user *, size_t);
+ extern void *memdup_user_nul(const void __user *, size_t);
  
-@@ -4065,6 +4066,7 @@ int kvm_get_msr_common(struct kvm_vcpu *
- 	case MSR_AMD64_BU_CFG2:
- 	case MSR_IA32_PERF_CTL:
- 	case MSR_AMD64_DC_CFG:
-+	case MSR_AMD64_TW_CFG:
- 	case MSR_F15H_EX_CFG:
- 	/*
- 	 * Intel Sandy Bridge CPUs must support the RAPL (running average power
++/**
++ * memdup_array_user - duplicate array from user space
++ * @src: source address in user space
++ * @n: number of array members to copy
++ * @size: size of one array member
++ *
++ * Return: an ERR_PTR() on failure. Result is physically
++ * contiguous, to be freed by kfree().
++ */
++static inline void *memdup_array_user(const void __user *src, size_t n, size_t size)
++{
++	size_t nbytes;
++
++	if (check_mul_overflow(n, size, &nbytes))
++		return ERR_PTR(-EOVERFLOW);
++
++	return memdup_user(src, nbytes);
++}
++
++/**
++ * vmemdup_array_user - duplicate array from user space
++ * @src: source address in user space
++ * @n: number of array members to copy
++ * @size: size of one array member
++ *
++ * Return: an ERR_PTR() on failure. Result may be not
++ * physically contiguous. Use kvfree() to free.
++ */
++static inline void *vmemdup_array_user(const void __user *src, size_t n, size_t size)
++{
++	size_t nbytes;
++
++	if (check_mul_overflow(n, size, &nbytes))
++		return ERR_PTR(-EOVERFLOW);
++
++	return vmemdup_user(src, nbytes);
++}
++
+ /*
+  * Include machine specific inline routines
+  */
+-- 
+2.42.0
+
 
 
 
