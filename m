@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3567F8141
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F3D7F7AE6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63AF12824AE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C2FA2818F9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C7A3173F;
-	Fri, 24 Nov 2023 18:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D59E39FEF;
+	Fri, 24 Nov 2023 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="roxpnYbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVv4krt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E1A2EAEA;
-	Fri, 24 Nov 2023 18:56:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A2C1C433C8;
-	Fri, 24 Nov 2023 18:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF939FD7;
+	Fri, 24 Nov 2023 17:59:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE48C433C8;
+	Fri, 24 Nov 2023 17:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852219;
-	bh=mbJFG6+mI6MBFWHIvHA7AigSS0pAF+CSa1XSQkWuM90=;
+	s=korg; t=1700848788;
+	bh=E8aVgq1zeAhsnafPvtifcJbo/4Oo9DvhiM0jT+wqNuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=roxpnYbWhwqjh86r69fylQNValZUdPYEVl8Nsqaqwv4FrnNgZ6V4I8dDDdkgthK3I
-	 w6EljKAFwO1g3pbNPN2A0sa05YoD251kXwayxBuQeMXwLd5K6hcs2til8YVUNwSvDb
-	 9TY4PGYtTEm29xHhFm5jLkuiYmP/jHytYRgkvbx4=
+	b=BVv4krt5qByjEYMMtayfvrzHUhQkGixT8xv+ja21mU2KQ1Ttn0IpPLq6ZqnyosQSf
+	 vRUWjMJBcYoK4gzaCWWA7OfwBAuMGdc3Ybm0FzxPkSOJWqJNl8bKQk6jImVQbphbPH
+	 P91tfDQpjLCZW5em7oUJUR1qlP7ghWWXofyH9wGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 267/372] fs: add ctime accessors infrastructure
+	Pavel Krasavin <pkrasavin@imaqliq.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Rokosov <ddrokosov@salutedevices.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 81/97] tty: serial: meson: fix hard LOCKUP on crtscts mode
 Date: Fri, 24 Nov 2023 17:50:54 +0000
-Message-ID: <20231124172019.382008335@linuxfoundation.org>
+Message-ID: <20231124171937.203125282@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,113 +54,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Pavel Krasavin <pkrasavin@imaqliq.com>
 
-commit 9b6304c1d53745c300b86f202d0dcff395e2d2db upstream.
+[ Upstream commit 2a1d728f20edeee7f26dc307ed9df4e0d23947ab ]
 
-struct timespec64 has unused bits in the tv_nsec field that can be used
-for other purposes. In future patches, we're going to change how the
-inode->i_ctime is accessed in certain inodes in order to make use of
-them. In order to do that safely though, we'll need to eradicate raw
-accesses of the inode->i_ctime field from the kernel.
+There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
 
-Add new accessor functions for the ctime that we use to replace them.
+# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
+[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
+[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
+[   95.906972] Task dump for CPU 3:
+[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
+[   95.920059] Call trace:
+[   95.922485]  __switch_to+0xe4/0x168
+[   95.925951]  0xffffff8003477508
+[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
+[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Message-Id: <20230705185812.579118-2-jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Possible solution would be to not allow to setup crtscts on such port.
+
+Tested on S905X3 based board.
+
+Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
+
+v6: stable tag added
+v5: https://lore.kernel.org/lkml/OF43DA36FF.2BD3BB21-ON00258A47.005A8125-00258A47.005A9513@gdc.ru/
+added missed Reviewed-by tags, Fixes tag added according to Dmitry and Neil notes
+v4: https://lore.kernel.org/lkml/OF55521400.7512350F-ON00258A47.003F7254-00258A47.0040E15C@gdc.ru/
+More correct patch subject according to Jiri's note
+v3: https://lore.kernel.org/lkml/OF6CF5FFA0.CCFD0E8E-ON00258A46.00549EDF-00258A46.0054BB62@gdc.ru/
+"From:" line added to the mail
+v2: https://lore.kernel.org/lkml/OF950BEF72.7F425944-ON00258A46.00488A76-00258A46.00497D44@gdc.ru/
+braces for single statement removed according to Dmitry's note
+v1: https://lore.kernel.org/lkml/OF28B2B8C9.5BC0CD28-ON00258A46.0037688F-00258A46.0039155B@gdc.ru/
+Link: https://lore.kernel.org/r/OF66360032.51C36182-ON00258A48.003F656B-00258A48.0040092C@gdc.ru
+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/inode.c         |   16 ++++++++++++++++
- include/linux/fs.h |   45 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 60 insertions(+), 1 deletion(-)
+ drivers/tty/serial/meson_uart.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -2502,6 +2502,22 @@ struct timespec64 current_time(struct in
- EXPORT_SYMBOL(current_time);
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index a193cbc78ebc0..60c0a4079e093 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -367,10 +367,14 @@ static void meson_uart_set_termios(struct uart_port *port,
+ 	else
+ 		val |= AML_UART_STOP_BIT_1SB;
  
- /**
-+ * inode_set_ctime_current - set the ctime to current_time
-+ * @inode: inode
-+ *
-+ * Set the inode->i_ctime to the current value for the inode. Returns
-+ * the current value that was assigned to i_ctime.
-+ */
-+struct timespec64 inode_set_ctime_current(struct inode *inode)
-+{
-+	struct timespec64 now = current_time(inode);
-+
-+	inode_set_ctime(inode, now.tv_sec, now.tv_nsec);
-+	return now;
-+}
-+EXPORT_SYMBOL(inode_set_ctime_current);
-+
-+/**
-  * in_group_or_capable - check whether caller is CAP_FSETID privileged
-  * @mnt_userns: user namespace of the mount @inode was found from
-  * @inode:	inode to check
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1812,7 +1812,50 @@ static inline bool fsuidgid_has_mapping(
- 	       kgid_has_mapping(fs_userns, kgid);
- }
+-	if (cflags & CRTSCTS)
+-		val &= ~AML_UART_TWO_WIRE_EN;
+-	else
++	if (cflags & CRTSCTS) {
++		if (port->flags & UPF_HARD_FLOW)
++			val &= ~AML_UART_TWO_WIRE_EN;
++		else
++			termios->c_cflag &= ~CRTSCTS;
++	} else {
+ 		val |= AML_UART_TWO_WIRE_EN;
++	}
  
--extern struct timespec64 current_time(struct inode *inode);
-+struct timespec64 current_time(struct inode *inode);
-+struct timespec64 inode_set_ctime_current(struct inode *inode);
-+
-+/**
-+ * inode_get_ctime - fetch the current ctime from the inode
-+ * @inode: inode from which to fetch ctime
-+ *
-+ * Grab the current ctime from the inode and return it.
-+ */
-+static inline struct timespec64 inode_get_ctime(const struct inode *inode)
-+{
-+	return inode->i_ctime;
-+}
-+
-+/**
-+ * inode_set_ctime_to_ts - set the ctime in the inode
-+ * @inode: inode in which to set the ctime
-+ * @ts: value to set in the ctime field
-+ *
-+ * Set the ctime in @inode to @ts
-+ */
-+static inline struct timespec64 inode_set_ctime_to_ts(struct inode *inode,
-+						      struct timespec64 ts)
-+{
-+	inode->i_ctime = ts;
-+	return ts;
-+}
-+
-+/**
-+ * inode_set_ctime - set the ctime in the inode
-+ * @inode: inode in which to set the ctime
-+ * @sec: tv_sec value to set
-+ * @nsec: tv_nsec value to set
-+ *
-+ * Set the ctime in @inode to { @sec, @nsec }
-+ */
-+static inline struct timespec64 inode_set_ctime(struct inode *inode,
-+						time64_t sec, long nsec)
-+{
-+	struct timespec64 ts = { .tv_sec  = sec,
-+				 .tv_nsec = nsec };
-+
-+	return inode_set_ctime_to_ts(inode, ts);
-+}
+ 	writel(val, port->membase + AML_UART_CONTROL);
  
- /*
-  * Snapshotting support.
+@@ -666,6 +670,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
+ 	int ret = 0;
+ 	int irq;
++	bool has_rtscts;
+ 
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
+@@ -693,6 +698,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 		return irq;
+ 
+ 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
++	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
+ 
+ 	if (meson_ports[pdev->id]) {
+ 		dev_err(&pdev->dev, "port %d already allocated\n", pdev->id);
+@@ -717,6 +723,8 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	port->mapsize = resource_size(res_mem);
+ 	port->irq = irq;
+ 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
++	if (has_rtscts)
++		port->flags |= UPF_HARD_FLOW;
+ 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+ 	port->dev = &pdev->dev;
+ 	port->line = pdev->id;
+-- 
+2.42.0
+
 
 
 
