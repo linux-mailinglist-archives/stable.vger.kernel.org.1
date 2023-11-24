@@ -1,46 +1,56 @@
-Return-Path: <stable+bounces-1877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC487F81C7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2314C7F81DA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBD571C21FC9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3E492835A7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80FC8364A6;
-	Fri, 24 Nov 2023 19:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E5E364B7;
+	Fri, 24 Nov 2023 19:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="we5G0rAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCPa/jPD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58A71A5A4;
-	Fri, 24 Nov 2023 19:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A49CC433CA;
-	Fri, 24 Nov 2023 19:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC33C2E64F;
+	Fri, 24 Nov 2023 19:02:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1A8C433C8;
+	Fri, 24 Nov 2023 19:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852493;
-	bh=qlJ95LKJxLU51feko1kithl+O7xfS9XI/2NgSL11xwU=;
+	s=korg; t=1700852523;
+	bh=xSX0sPwff08dsrESNGOd4G9Ev6oqhwWl1ekYVtjbHmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=we5G0rAm7WKRNK3H4fvbF3elZtZbS7bwjaxmP6CrPdJskqgPWXXoNlXHnRXA7XYDO
-	 nqHirx2fJod1+lT5eRXUPWn2V8ZqYQvkHWguWRVvUOp5bZrkWopCY7K1raGmEoPC4v
-	 qgInTsjR6b1+SsGtT4eGgD3nKpNEoZTStwe6+IjI=
+	b=lCPa/jPDx0/OkrYj+B9UHUKANkd7aAnNvvDcbsknCpueOW2NtFOPGDJcnAeHQNuG6
+	 RoKjaM/2iVCjydo3pVnB2mDT7JUk+5kq3wqSA/ledoh4fNwz2M29VHtfI3NvphHbvk
+	 IXsQDXbixpHL2JOLzHcpTJhJKiBvHy2hMaHfQpqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.1 358/372] drm/i915: Bump GLK CDCLK frequency when driving multiple pipes
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Kuogee Hsieh <khsieh@codeaurora.org>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Rob Clark <robdclark@gmail.com>,
+	Sean Paul <sean@poorly.run>,
+	Stephen Boyd <swboyd@chromium.org>,
+	linux-arm-msm@vger.kernel.org,
+	freedreno@lists.freedesktop.org,
+	Jani Nikula <jani.nikula@intel.com>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 018/193] drm/msm/dp: skip validity check for DP CTS EDID checksum
 Date: Fri, 24 Nov 2023 17:52:25 +0000
-Message-ID: <20231124172022.242017182@linuxfoundation.org>
+Message-ID: <20231124171947.904413107@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,67 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 0cb89cd42fd22bbdec0b046c48f35775f5b88bdb upstream.
+[ Upstream commit a251c9d8e30833b260101edb9383b176ee2b7cb1 ]
 
-On GLK CDCLK frequency needs to be at least 2*96 MHz when accessing
-the audio hardware. Currently we bump the CDCLK frequency up
-temporarily (if not high enough already) whenever audio hardware
-is being accessed, and drop it back down afterwards.
+The DP CTS test for EDID last block checksum expects the checksum for
+the last block, invalid or not. Skip the validity check.
 
-With a single active pipe this works just fine as we can switch
-between all the valid CDCLK frequencies by changing the cd2x
-divider, which doesn't require a full modeset. However with
-multiple active pipes the cd2x divider trick no longer works,
-and thus we end up blinking all displays off and back on.
+For the most part (*), the EDIDs returned by drm_get_edid() will be
+valid anyway, and there's the CTS workaround to get the checksum for
+completely invalid EDIDs. See commit 7948fe12d47a ("drm/msm/dp: return
+correct edid checksum after corrupted edid checksum read").
 
-To avoid this let's just bump the CDCLK frequency to >=2*96MHz
-whenever multiple pipes are active. The downside is slightly
-higher power consumption, but that seems like an acceptable
-tradeoff. With a single active pipe we can stick to the current
-more optiomal (from power comsumption POV) behaviour.
+This lets us remove one user of drm_edid_block_valid() with hopes the
+function can be removed altogether in the future.
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9599
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231031160800.18371-1-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 451eaa1a614c911f5a51078dcb68022874e4cb12)
+(*) drm_get_edid() ignores checksum errors on CTA extensions.
+
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Kuogee Hsieh <khsieh@codeaurora.org>
+Cc: Marijn Suijten <marijn.suijten@somainline.org>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Sean Paul <sean@poorly.run>
+Cc: Stephen Boyd <swboyd@chromium.org>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: freedreno@lists.freedesktop.org
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/555361/
+Link: https://lore.kernel.org/r/20230901142034.580802-1-jani.nikula@intel.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_cdclk.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/msm/dp/dp_panel.c | 21 ++-------------------
+ 1 file changed, 2 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_cdclk.c
-+++ b/drivers/gpu/drm/i915/display/intel_cdclk.c
-@@ -2368,6 +2368,18 @@ static int intel_compute_min_cdclk(struc
- 	for_each_pipe(dev_priv, pipe)
- 		min_cdclk = max(cdclk_state->min_cdclk[pipe], min_cdclk);
+diff --git a/drivers/gpu/drm/msm/dp/dp_panel.c b/drivers/gpu/drm/msm/dp/dp_panel.c
+index 4e8a19114e87d..93a2ee0f772fc 100644
+--- a/drivers/gpu/drm/msm/dp/dp_panel.c
++++ b/drivers/gpu/drm/msm/dp/dp_panel.c
+@@ -264,26 +264,9 @@ int dp_panel_get_modes(struct dp_panel *dp_panel,
  
-+	/*
-+	 * Avoid glk_force_audio_cdclk() causing excessive screen
-+	 * blinking when multiple pipes are active by making sure
-+	 * CDCLK frequency is always high enough for audio. With a
-+	 * single active pipe we can always change CDCLK frequency
-+	 * by changing the cd2x divider (see glk_cdclk_table[]) and
-+	 * thus a full modeset won't be needed then.
-+	 */
-+	if (IS_GEMINILAKE(dev_priv) && cdclk_state->active_pipes &&
-+	    !is_power_of_2(cdclk_state->active_pipes))
-+		min_cdclk = max(2 * 96000, min_cdclk);
-+
- 	if (min_cdclk > dev_priv->display.cdclk.max_cdclk_freq) {
- 		drm_dbg_kms(&dev_priv->drm,
- 			    "required cdclk (%d kHz) exceeds max (%d kHz)\n",
+ static u8 dp_panel_get_edid_checksum(struct edid *edid)
+ {
+-	struct edid *last_block;
+-	u8 *raw_edid;
+-	bool is_edid_corrupt = false;
++	edid += edid->extensions;
+ 
+-	if (!edid) {
+-		DRM_ERROR("invalid edid input\n");
+-		return 0;
+-	}
+-
+-	raw_edid = (u8 *)edid;
+-	raw_edid += (edid->extensions * EDID_LENGTH);
+-	last_block = (struct edid *)raw_edid;
+-
+-	/* block type extension */
+-	drm_edid_block_valid(raw_edid, 1, false, &is_edid_corrupt);
+-	if (!is_edid_corrupt)
+-		return last_block->checksum;
+-
+-	DRM_ERROR("Invalid block, no checksum\n");
+-	return 0;
++	return edid->checksum;
+ }
+ 
+ void dp_panel_handle_sink_request(struct dp_panel *dp_panel)
+-- 
+2.42.0
+
 
 
 
