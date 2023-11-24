@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDD77F7DE1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 954CB7F7BCE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3982D282248
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D1A1C20FC5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF773A8D7;
-	Fri, 24 Nov 2023 18:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2370039FF8;
+	Fri, 24 Nov 2023 18:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPPOQr5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgQJBLco"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2AA381BF;
-	Fri, 24 Nov 2023 18:28:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B48DC433CB;
-	Fri, 24 Nov 2023 18:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39B739FC3;
+	Fri, 24 Nov 2023 18:08:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3378CC433C7;
+	Fri, 24 Nov 2023 18:08:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850495;
-	bh=V+9JxQSziGgR67NCSLzLj7Hy3OMlF33LfR8bYIAslC8=;
+	s=korg; t=1700849335;
+	bh=CUP/qR++aNO6TwbwWPw3Yi1R+Vqxr2hSFAEB4SbWhFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPPOQr5HjAgrrmcHuyReX0UWkNFgRyYN1IDiWyX/pcnko1kHYMVhJTVfZJWyGiAZr
-	 jGRlLdo8kGbuZV8yRhEdv3FeL+ohnZ6ffntwmEIqzqOeRYfMdPBK5LOfkhhVdT8B8E
-	 Pus9Ajo2om+LKLPkueVNgQBva2/szyHuWMdSKiCw=
+	b=RgQJBLco5L8kocCbK5XT73kFWMTwCmizDLCqp9MOonfmdXEQdjPSt+6Xb8W5F502w
+	 JHDe6tRaA9MNiKYIGBMC5GQ/7txlZL5q9UYw17KUesdQR1UZJuutjWsMkTah9FMmuU
+	 tNPOt/WzF6uO54i/WrTet8rsDfF+9dHlTZCjO4t4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 071/491] drm/amdkfd: Fix shift out-of-bounds issue
+Subject: [PATCH 6.6 141/530] media: ipu-bridge: increase sensor_name size
 Date: Fri, 24 Nov 2023 17:45:07 +0000
-Message-ID: <20231124172026.767961434@linuxfoundation.org>
+Message-ID: <20231124172032.377381387@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +53,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 282c1d793076c2edac6c3db51b7e8ed2b41d60a5 ]
+[ Upstream commit 83d0d4cc1423194b580356966107379490edd02e ]
 
-[  567.613292] shift exponent 255 is too large for 64-bit type 'long unsigned int'
-[  567.614498] CPU: 5 PID: 238 Comm: kworker/5:1 Tainted: G           OE      6.2.0-34-generic #34~22.04.1-Ubuntu
-[  567.614502] Hardware name: AMD Splinter/Splinter-RPL, BIOS WS43927N_871 09/25/2023
-[  567.614504] Workqueue: events send_exception_work_handler [amdgpu]
-[  567.614748] Call Trace:
-[  567.614750]  <TASK>
-[  567.614753]  dump_stack_lvl+0x48/0x70
-[  567.614761]  dump_stack+0x10/0x20
-[  567.614763]  __ubsan_handle_shift_out_of_bounds+0x156/0x310
-[  567.614769]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.614773]  ? update_sd_lb_stats.constprop.0+0xf2/0x3c0
-[  567.614780]  svm_range_split_by_granularity.cold+0x2b/0x34 [amdgpu]
-[  567.615047]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.615052]  svm_migrate_to_ram+0x185/0x4d0 [amdgpu]
-[  567.615286]  do_swap_page+0x7b6/0xa30
-[  567.615291]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.615294]  ? __free_pages+0x119/0x130
-[  567.615299]  handle_pte_fault+0x227/0x280
-[  567.615303]  __handle_mm_fault+0x3c0/0x720
-[  567.615311]  handle_mm_fault+0x119/0x330
-[  567.615314]  ? lock_mm_and_find_vma+0x44/0x250
-[  567.615318]  do_user_addr_fault+0x1a9/0x640
-[  567.615323]  exc_page_fault+0x81/0x1b0
-[  567.615328]  asm_exc_page_fault+0x27/0x30
-[  567.615332] RIP: 0010:__get_user_8+0x1c/0x30
+Fixes this compiler warning:
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Suggested-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+In file included from include/linux/property.h:14,
+                 from include/linux/acpi.h:16,
+                 from drivers/media/pci/intel/ipu-bridge.c:4:
+In function 'ipu_bridge_init_swnode_names',
+    inlined from 'ipu_bridge_create_connection_swnodes' at drivers/media/pci/intel/ipu-bridge.c:445:2,
+    inlined from 'ipu_bridge_connect_sensor' at drivers/media/pci/intel/ipu-bridge.c:656:3:
+include/linux/fwnode.h:81:49: warning: '%u' directive output may be truncated writing between 1 and 3 bytes into a region of size 2 [-Wformat-truncation=]
+   81 | #define SWNODE_GRAPH_PORT_NAME_FMT              "port@%u"
+      |                                                 ^~~~~~~~~
+drivers/media/pci/intel/ipu-bridge.c:384:18: note: in expansion of macro 'SWNODE_GRAPH_PORT_NAME_FMT'
+  384 |                  SWNODE_GRAPH_PORT_NAME_FMT, sensor->link);
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/fwnode.h: In function 'ipu_bridge_connect_sensor':
+include/linux/fwnode.h:81:55: note: format string is defined here
+   81 | #define SWNODE_GRAPH_PORT_NAME_FMT              "port@%u"
+      |                                                       ^~
+In function 'ipu_bridge_init_swnode_names',
+    inlined from 'ipu_bridge_create_connection_swnodes' at drivers/media/pci/intel/ipu-bridge.c:445:2,
+    inlined from 'ipu_bridge_connect_sensor' at drivers/media/pci/intel/ipu-bridge.c:656:3:
+include/linux/fwnode.h:81:49: note: directive argument in the range [0, 255]
+   81 | #define SWNODE_GRAPH_PORT_NAME_FMT              "port@%u"
+      |                                                 ^~~~~~~~~
+drivers/media/pci/intel/ipu-bridge.c:384:18: note: in expansion of macro 'SWNODE_GRAPH_PORT_NAME_FMT'
+  384 |                  SWNODE_GRAPH_PORT_NAME_FMT, sensor->link);
+      |                  ^~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/media/pci/intel/ipu-bridge.c:382:9: note: 'snprintf' output between 7 and 9 bytes into a destination of size 7
+  382 |         snprintf(sensor->node_names.remote_port,
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  383 |                  sizeof(sensor->node_names.remote_port),
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  384 |                  SWNODE_GRAPH_PORT_NAME_FMT, sensor->link);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 +-
+ include/media/ipu-bridge.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index e1d73a7223675..a5c394fcbb350 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -756,7 +756,7 @@ svm_range_apply_attrs(struct kfd_process *p, struct svm_range *prange,
- 			prange->flags &= ~attrs[i].value;
- 			break;
- 		case KFD_IOCTL_SVM_ATTR_GRANULARITY:
--			prange->granularity = attrs[i].value;
-+			prange->granularity = min_t(uint32_t, attrs[i].value, 0x3F);
- 			break;
- 		default:
- 			WARN_ONCE(1, "svm_range_check_attrs wasn't called?");
+diff --git a/include/media/ipu-bridge.h b/include/media/ipu-bridge.h
+index bdc654a455216..783bda6d5cc3f 100644
+--- a/include/media/ipu-bridge.h
++++ b/include/media/ipu-bridge.h
+@@ -108,7 +108,7 @@ struct ipu_node_names {
+ 	char ivsc_sensor_port[7];
+ 	char ivsc_ipu_port[7];
+ 	char endpoint[11];
+-	char remote_port[7];
++	char remote_port[9];
+ 	char vcm[16];
+ };
+ 
 -- 
 2.42.0
 
