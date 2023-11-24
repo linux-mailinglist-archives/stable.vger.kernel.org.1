@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC617F7DCA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6918A7F7BA4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DCEBB217D2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B5961C20FF2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE6A33A8C6;
-	Fri, 24 Nov 2023 18:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA8A39FED;
+	Fri, 24 Nov 2023 18:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWNqqntu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzDsltiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C52239FF7;
-	Fri, 24 Nov 2023 18:27:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08146C433C8;
-	Fri, 24 Nov 2023 18:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D36D31740;
+	Fri, 24 Nov 2023 18:07:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C812C433C8;
+	Fri, 24 Nov 2023 18:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850447;
-	bh=PLOBMRt1VW14nqVPWJBP97FKq5pRueAEsZI5PUndEnE=;
+	s=korg; t=1700849229;
+	bh=V2TTVk0YDIXgwf9RRkQcTliTjGHJlXxFB8Ra3/j7t0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWNqqntu5hauZ9xHx5nXABOS+FvLv4y5oLjh9LqweHOktwkG/RNcv21c1xhjQQq4r
-	 zg5TqWG/gZuanOm56MhXNfadQti/4ay92AT/ZZTltR0O0r/7T52RCdagoutnUMuHxr
-	 959pWJLnLvALMfNWYPZv+gk1iPAcs/uzxKOxwhOk=
+	b=vzDsltiYpyJuUYlMzEv2fizOH0kA+sUaqc7fH689i9Tv2dYIeUwXlICscMMZpSbyg
+	 LD3tJ2ZxEikwTdSjvJxKJjLtd1xjz2jE9Td2hTDv1mqWMC++8/uBGUA9BnU4dzJ6H/
+	 qiwJLwJqlU1sENAVRIIiJeUU5mYN1gNcyx8btb28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Rohloff <lundril@gmx.de>,
-	Felix Fietkau <nbd@nbd.name>,
+	Vincent Whitchurch <vincent.whitchurch@axis.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 028/491] wifi: mt76: mt7921e: Support MT7992 IP in Xiaomi Redmibook 15 Pro (2023)
+Subject: [PATCH 6.6 098/530] ARM: 9320/1: fix stack depot IRQ stack filter
 Date: Fri, 24 Nov 2023 17:44:24 +0000
-Message-ID: <20231124172025.545221679@linuxfoundation.org>
+Message-ID: <20231124172031.095596633@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,59 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ingo Rohloff <lundril@gmx.de>
+From: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-[ Upstream commit fce9c967820a72f600abbf061d7077861685a14d ]
+[ Upstream commit b0150014878c32197cfa66e3e2f79e57f66babc0 ]
 
-In the Xiaomi Redmibook 15 Pro (2023) laptop I have got, a wifi chip is
-used, which according to its PCI Vendor ID is from "ITTIM Technology".
+Place IRQ handlers such as gic_handle_irq() in the irqentry section even
+if FUNCTION_GRAPH_TRACER is not enabled.  Without this, the stack
+depot's filter_irq_stacks() does not correctly filter out IRQ stacks in
+those configurations, which hampers deduplication and eventually leads
+to "Stack depot reached limit capacity" splats with KASAN.
 
-This chip works flawlessly with the mt7921e module.  The driver doesn't
-bind to this PCI device, because the Vendor ID from "ITTIM Technology" is
-not recognized.
+A similar fix was done for arm64 in commit f6794950f0e5ba37e3bbed
+("arm64: set __exception_irq_entry with __irq_entry as a default").
 
-This patch adds the PCI Vendor ID from "ITTIM Technology" to the list of
-PCI Vendor IDs and lets the mt7921e driver bind to the mentioned wifi
-chip.
+Link: https://lore.kernel.org/r/20230803-arm-irqentry-v1-1-8aad8e260b1c@axis.com
 
-Signed-off-by: Ingo Rohloff <lundril@gmx.de>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/pci.c | 2 ++
- include/linux/pci_ids.h                         | 2 ++
- 2 files changed, 4 insertions(+)
+ arch/arm/include/asm/exception.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-index 95610a117d2f0..ed5a220763ce6 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/pci.c
-@@ -17,6 +17,8 @@ static const struct pci_device_id mt7921_pci_device_table[] = {
- 		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7922),
- 		.driver_data = (kernel_ulong_t)MT7922_FIRMWARE_WM },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_ITTIM, 0x7922),
-+		.driver_data = (kernel_ulong_t)MT7922_FIRMWARE_WM },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x0608),
- 		.driver_data = (kernel_ulong_t)MT7921_FIRMWARE_WM },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x0616),
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index 7702f078ef4ad..54bc1ca7b66fc 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -180,6 +180,8 @@
- #define PCI_DEVICE_ID_BERKOM_A4T		0xffa4
- #define PCI_DEVICE_ID_BERKOM_SCITEL_QUADRO	0xffa8
+diff --git a/arch/arm/include/asm/exception.h b/arch/arm/include/asm/exception.h
+index 58e039a851af0..3c82975d46db3 100644
+--- a/arch/arm/include/asm/exception.h
++++ b/arch/arm/include/asm/exception.h
+@@ -10,10 +10,6 @@
  
-+#define PCI_VENDOR_ID_ITTIM		0x0b48
-+
- #define PCI_VENDOR_ID_COMPAQ		0x0e11
- #define PCI_DEVICE_ID_COMPAQ_TOKENRING	0x0508
- #define PCI_DEVICE_ID_COMPAQ_TACHYON	0xa0fc
+ #include <linux/interrupt.h>
+ 
+-#ifdef CONFIG_FUNCTION_GRAPH_TRACER
+ #define __exception_irq_entry	__irq_entry
+-#else
+-#define __exception_irq_entry
+-#endif
+ 
+ #endif /* __ASM_ARM_EXCEPTION_H */
 -- 
 2.42.0
 
