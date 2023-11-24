@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473837F7DCB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735327F7BA5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78FE81C212DB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A51281C2100B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B303C3A8C9;
-	Fri, 24 Nov 2023 18:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD17F39FC6;
+	Fri, 24 Nov 2023 18:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TdfRTIS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZ5dkzeP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7165D381D6;
-	Fri, 24 Nov 2023 18:27:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2649C433C8;
-	Fri, 24 Nov 2023 18:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7BB39FE1;
+	Fri, 24 Nov 2023 18:07:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18915C433C8;
+	Fri, 24 Nov 2023 18:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850452;
-	bh=uXV2c4gFhtMK3sbMaRR+w4hfDgIUDcCrf+Jut/JbYSs=;
+	s=korg; t=1700849234;
+	bh=8GJ27+aFnWiltRaoUV4ZInpw8SZXhssuFdg5rMunFqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TdfRTISF7w95cgF1pGqItstVSV6Wii1UbUw3+ciU6L0C9qrXVCY/Ud9vYOGv2KEP
-	 HZUKTTese807Tt2GphwtGcLFR1VlKOBCYq4rwkbkiVOY+PijjKAxknocPQq94ErJiT
-	 UNrsWE8ev4tiFGT9QjrSYmoTJcDcA0+if3P4LyR8=
+	b=yZ5dkzePaXTC6RZ0Pfql6O50DFxOMPHr9B+r+zgSNZnW9CQ2q8DsMHBqajNvfuYSE
+	 VaH3wbB4+wC5VTbBh1Tb9PsJ4/KUA7ysNKDOKVG39VdWdqyxCJ1FWtI1fUGe+TjHXg
+	 5MO/nwcxksrbYDWY1gvkvOuOxUFblidsHcdsyVNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 030/491] net: annotate data-races around sk->sk_dst_pending_confirm
+Subject: [PATCH 6.6 100/530] gpiolib: of: Add quirk for mt2701-cs42448 ASoC sound
 Date: Fri, 24 Nov 2023 17:44:26 +0000
-Message-ID: <20231124172025.604341900@linuxfoundation.org>
+Message-ID: <20231124172031.157282069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,84 +55,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit eb44ad4e635132754bfbcb18103f1dcb7058aedd ]
+[ Upstream commit 9e189e80dcb68528dea9e061d9704993f98cb84f ]
 
-This field can be read or written without socket lock being held.
+These gpio names are due to old DT bindings not following the
+"-gpio"/"-gpios" conventions. Handle it using a quirk so the
+driver can just look up the GPIOs.
 
-Add annotations to avoid load-store tearing.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20231006-descriptors-asoc-mediatek-v1-1-07fe79f337f5@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h    | 6 +++---
- net/core/sock.c       | 2 +-
- net/ipv4/tcp_output.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpio/gpiolib-of.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index df19f99d26357..b9f0ef4bb527a 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2181,7 +2181,7 @@ static inline void __dst_negative_advice(struct sock *sk)
- 		if (ndst != dst) {
- 			rcu_assign_pointer(sk->sk_dst_cache, ndst);
- 			sk_tx_queue_clear(sk);
--			sk->sk_dst_pending_confirm = 0;
-+			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 		}
- 	}
- }
-@@ -2198,7 +2198,7 @@ __sk_dst_set(struct sock *sk, struct dst_entry *dst)
- 	struct dst_entry *old_dst;
- 
- 	sk_tx_queue_clear(sk);
--	sk->sk_dst_pending_confirm = 0;
-+	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 	old_dst = rcu_dereference_protected(sk->sk_dst_cache,
- 					    lockdep_sock_is_held(sk));
- 	rcu_assign_pointer(sk->sk_dst_cache, dst);
-@@ -2211,7 +2211,7 @@ sk_dst_set(struct sock *sk, struct dst_entry *dst)
- 	struct dst_entry *old_dst;
- 
- 	sk_tx_queue_clear(sk);
--	sk->sk_dst_pending_confirm = 0;
-+	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 	old_dst = xchg((__force struct dst_entry **)&sk->sk_dst_cache, dst);
- 	dst_release(old_dst);
- }
-diff --git a/net/core/sock.c b/net/core/sock.c
-index eef27812013a4..6df04c705200a 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -600,7 +600,7 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
- 	    INDIRECT_CALL_INET(dst->ops->check, ip6_dst_check, ipv4_dst_check,
- 			       dst, cookie) == NULL) {
- 		sk_tx_queue_clear(sk);
--		sk->sk_dst_pending_confirm = 0;
-+		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
- 		dst_release(dst);
- 		return NULL;
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index afa819eede6a3..c2403fea8ec9a 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -1316,7 +1316,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 	skb->destructor = skb_is_tcp_pure_ack(skb) ? __sock_wfree : tcp_wfree;
- 	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
- 
--	skb_set_dst_pending_confirm(skb, sk->sk_dst_pending_confirm);
-+	skb_set_dst_pending_confirm(skb, READ_ONCE(sk->sk_dst_pending_confirm));
- 
- 	/* Build TCP header and checksum it. */
- 	th = (struct tcphdr *)skb->data;
+diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
+index 531faabead0f4..d9525d95e818d 100644
+--- a/drivers/gpio/gpiolib-of.c
++++ b/drivers/gpio/gpiolib-of.c
+@@ -512,6 +512,10 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
+ #if IS_ENABLED(CONFIG_SND_SOC_CS42L56)
+ 		{ "reset",	"cirrus,gpio-nreset",	"cirrus,cs42l56" },
+ #endif
++#if IS_ENABLED(CONFIG_SND_SOC_MT2701_CS42448)
++		{ "i2s1-in-sel-gpio1",	NULL,	"mediatek,mt2701-cs42448-machine" },
++		{ "i2s1-in-sel-gpio2",	NULL,	"mediatek,mt2701-cs42448-machine" },
++#endif
+ #if IS_ENABLED(CONFIG_SND_SOC_TLV320AIC3X)
+ 		{ "reset",	"gpio-reset",	"ti,tlv320aic3x" },
+ 		{ "reset",	"gpio-reset",	"ti,tlv320aic33" },
 -- 
 2.42.0
 
