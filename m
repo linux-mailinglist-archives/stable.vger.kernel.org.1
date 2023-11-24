@@ -1,53 +1,48 @@
-Return-Path: <stable+bounces-1017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094CB7F7D95
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4E07F7BB0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B78F6281F6E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D61BB203D8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E8039FD9;
-	Fri, 24 Nov 2023 18:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B195639FED;
+	Fri, 24 Nov 2023 18:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKd649Az"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgnNVL97"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0326733CFD;
-	Fri, 24 Nov 2023 18:25:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29860C433C7;
-	Fri, 24 Nov 2023 18:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C3139FC6;
+	Fri, 24 Nov 2023 18:07:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5732C433C7;
+	Fri, 24 Nov 2023 18:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850351;
-	bh=MHs7UpRWgZud9teFvu90j6oYG22jiHXpccbiJE8H3rI=;
+	s=korg; t=1700849259;
+	bh=xfPWXGgWC6LeMAUH5afBrj+OTDXeY1LQu6IZChf2Mb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKd649AziJlEN4B5BZeocOn+yOKZ4wwfiPZ51HOkx9jkF2hoTptc1CzRjty1GyiXp
-	 YJHSbQBwCA3z8u0SNLDImUBv0Vv/vpga8F/k/M1gjzLH1Fx58DR35rJiDA7QkfjzAs
-	 EqKrNVldYNIT9EoryRYG9/rnoVC3QoHT8qLUD+ac=
+	b=pgnNVL97IELroSuPlYg6Usuutl+b4ZPllz42Aluw4P1rKAMeZ7pisy72DjNnfbvRM
+	 Mcz9NKMYv12q4AaoAkEMgzsDJ5N7OI/PKImQWINDoT9s4BM6kTkYrwcZiX8MWaWZYx
+	 Umz6cO7A2nuc8llzxQKkUdJeHg46yAXSiiVsnwUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Mario Casquero <mcasquer@redhat.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rik van Riel <riel@surriel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 015/491] x86/mm: Drop the 4 MB restriction on minimal NUMA node memory size
-Date: Fri, 24 Nov 2023 17:44:11 +0000
-Message-ID: <20231124172025.145795022@linuxfoundation.org>
+Subject: [PATCH 6.6 086/530] ASoC: cs35l56: Use PCI SSID as the firmware UID
+Date: Fri, 24 Nov 2023 17:44:12 +0000
+Message-ID: <20231124172030.699845115@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,114 +54,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (IBM) <rppt@kernel.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit a1e2b8b36820d8c91275f207e77e91645b7c6836 ]
+[ Upstream commit 1a1c3d794ef65ef2978c5e65e1aed3fe6f014e90 ]
 
-Qi Zheng reported crashes in a production environment and provided a
-simplified example as a reproducer:
+If the driver properties do not define a cirrus,firmware-uid try to get the
+PCI SSID as the UID.
 
- |  For example, if we use Qemu to start a two NUMA node kernel,
- |  one of the nodes has 2M memory (less than NODE_MIN_SIZE),
- |  and the other node has 2G, then we will encounter the
- |  following panic:
- |
- |    BUG: kernel NULL pointer dereference, address: 0000000000000000
- |    <...>
- |    RIP: 0010:_raw_spin_lock_irqsave+0x22/0x40
- |    <...>
- |    Call Trace:
- |      <TASK>
- |      deactivate_slab()
- |      bootstrap()
- |      kmem_cache_init()
- |      start_kernel()
- |      secondary_startup_64_no_verify()
+On PCI-based systems the PCI SSID is used to uniquely identify the specific
+sound hardware. This is the standard mechanism for x86 systems and is the
+way to get a unique system identifier for systems that use the CS35L56 on
+SoundWire.
 
-The crashes happen because of inconsistency between the nodemask that
-has nodes with less than 4MB as memoryless, and the actual memory fed
-into the core mm.
+For non-SoundWire systems there is no Windows equivalent of the ASoC driver
+in I2C/SPI mode. These would be:
 
-The commit:
+1. HDA systems, which are handled by the HDA subsystem.
+2. Linux-specific systems.
+3. Composite devices where the cs35l56 is not present in ACPI and is
+   configured using software nodes.
 
-  9391a3f9c7f1 ("[PATCH] x86_64: Clear more state when ignoring empty node in SRAT parsing")
+Case 2 can use the firmware-uid property, though the PCI SSID is supported
+as an alternative, as it is the standard PCI mechanism.
 
-... that introduced minimal size of a NUMA node does not explain why
-a node size cannot be less than 4MB and what boot failures this
-restriction might fix.
+Case 3 is a SoundWire system where some other codec is the SoundWire bridge
+device and CS35L56 is not listed in ACPI. As these are SoundWire systems
+they will normally use the PCI SSID.
 
-Fixes have been submitted to the core MM code to tighten up the
-memory topologies it accepts and to not crash on weird input:
-
-  mm: page_alloc: skip memoryless nodes entirely
-  mm: memory_hotplug: drop memoryless node from fallback lists
-
-Andrew has accepted them into the -mm tree, but there are no
-stable SHA1's yet.
-
-This patch drops the limitation for minimal node size on x86:
-
-  - which works around the crash without the fixes to the core MM.
-  - makes x86 topologies less weird,
-  - removes an arbitrary and undocumented limitation on NUMA topologies.
-
-[ mingo: Improved changelog clarity. ]
-
-Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Rik van Riel <riel@surriel.com>
-Link: https://lore.kernel.org/r/ZS+2qqjEO5/867br@gmail.com
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230912163207.3498161-5-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/numa.h | 7 -------
- arch/x86/mm/numa.c          | 7 -------
- 2 files changed, 14 deletions(-)
+ sound/soc/codecs/cs35l56.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
-index e3bae2b60a0db..ef2844d691735 100644
---- a/arch/x86/include/asm/numa.h
-+++ b/arch/x86/include/asm/numa.h
-@@ -12,13 +12,6 @@
+diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
+index f9059780b7a7b..32d4ab2cd6724 100644
+--- a/sound/soc/codecs/cs35l56.c
++++ b/sound/soc/codecs/cs35l56.c
+@@ -772,9 +772,20 @@ static int cs35l56_component_probe(struct snd_soc_component *component)
+ {
+ 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
+ 	struct dentry *debugfs_root = component->debugfs_root;
++	unsigned short vendor, device;
  
- #define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
+ 	BUILD_BUG_ON(ARRAY_SIZE(cs35l56_tx_input_texts) != ARRAY_SIZE(cs35l56_tx_input_values));
  
--/*
-- * Too small node sizes may confuse the VM badly. Usually they
-- * result from BIOS bugs. So dont recognize nodes as standalone
-- * NUMA entities that have less than this amount of RAM listed:
-- */
--#define NODE_MIN_SIZE (4*1024*1024)
--
- extern int numa_off;
- 
- /*
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index c01c5506fd4ae..aa39d678fe81d 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -602,13 +602,6 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
- 		if (start >= end)
- 			continue;
- 
--		/*
--		 * Don't confuse VM with a node that doesn't have the
--		 * minimum amount of memory:
--		 */
--		if (end && (end - start) < NODE_MIN_SIZE)
--			continue;
--
- 		alloc_node_data(nid);
- 	}
- 
++	if (!cs35l56->dsp.system_name &&
++	    (snd_soc_card_get_pci_ssid(component->card, &vendor, &device) == 0)) {
++		cs35l56->dsp.system_name = devm_kasprintf(cs35l56->base.dev,
++							  GFP_KERNEL,
++							  "%04x%04x",
++							  vendor, device);
++		if (!cs35l56->dsp.system_name)
++			return -ENOMEM;
++	}
++
+ 	if (!wait_for_completion_timeout(&cs35l56->init_completion,
+ 					 msecs_to_jiffies(5000))) {
+ 		dev_err(cs35l56->base.dev, "%s: init_completion timed out\n", __func__);
 -- 
 2.42.0
 
