@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-1324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7AE7F7F1A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 383A47F80E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1019EB21441
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3EEEB21A13
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2182EAEA;
-	Fri, 24 Nov 2023 18:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BAC35F1A;
+	Fri, 24 Nov 2023 18:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgOWGf5Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0JeRPE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97AE35F1D;
-	Fri, 24 Nov 2023 18:38:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72422C433C7;
-	Fri, 24 Nov 2023 18:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BEB2E858;
+	Fri, 24 Nov 2023 18:53:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5535AC433C7;
+	Fri, 24 Nov 2023 18:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851115;
-	bh=oMb0rjW53u67HuFyOAdjUgfQZMMBb5Qf9M3WUasPRLs=;
+	s=korg; t=1700852031;
+	bh=H1FTd/gRwHCW9e3qgJMMqO0mySrwCal1fw0xXTzVeTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgOWGf5ZqOvUtQtCWFVdMAANymoujv2tf5pm9+LCWT9aY6poCevF/qRhUxvM3/jqC
-	 bLwocH2CR0+8tHu2dpdLzgkqhKuZJCXvE+kYiFMoCyliH5oOTwOGsChMiQexvifcIp
-	 RC4cKkmGdTF3Ym73Zdjn9rfpU5QnDit1kPxq4zPk=
+	b=L0JeRPE9PVj0JEGBwdYKUz1K6o4GplIUaojh8ZRjwQJlh+an11WgZDm5ycA7zXD+D
+	 OQYBHJB5YM6Hopw6+l+4k3p5lnN9vpy0LjXenoqXWR7yK+yXOtRXMNVtehqW8LHoD5
+	 jBVTgTJDuxlUVzLoR94D+6Ayt0OC5OtT1ETXiZ+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.5 319/491] ACPI: FPDT: properly handle invalid FPDT subtables
+	Mohamed Mahmoud <mmahmoud@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Tao Lyu <tao.lyu@epfl.ch>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.1 168/372] bpf: Fix precision tracking for BPF_ALU | BPF_TO_BE | BPF_END
 Date: Fri, 24 Nov 2023 17:49:15 +0000
-Message-ID: <20231124172034.154037996@linuxfoundation.org>
+Message-ID: <20231124172016.092547222@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,173 +54,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-commit a83c68a3bf7c418c9a46693c63c638852b0c1f4e upstream.
+commit 291d044fd51f8484066300ee42afecf8c8db7b3a upstream.
 
-Buggy BIOSes may have invalid FPDT subtables, e.g. on my hardware:
+BPF_END and BPF_NEG has a different specification for the source bit in
+the opcode compared to other ALU/ALU64 instructions, and is either
+reserved or use to specify the byte swap endianness. In both cases the
+source bit does not encode source operand location, and src_reg is a
+reserved field.
 
-S3PT subtable:
+backtrack_insn() currently does not differentiate BPF_END and BPF_NEG
+from other ALU/ALU64 instructions, which leads to r0 being incorrectly
+marked as precise when processing BPF_ALU | BPF_TO_BE | BPF_END
+instructions. This commit teaches backtrack_insn() to correctly mark
+precision for such case.
 
-7F20FE30: 53 33 50 54 24 00 00 00-00 00 00 00 00 00 18 01  *S3PT$...........*
-7F20FE40: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *................*
-7F20FE50: 00 00 00 00
+While precise tracking of BPF_NEG and other BPF_END instructions are
+correct and does not need fixing, this commit opt to process all BPF_NEG
+and BPF_END instructions within the same if-clause to better align with
+current convention used in the verifier (e.g. check_alu_op).
 
-Here the first record has zero length.
-
-FBPT subtable:
-
-7F20FE50:             46 42 50 54-3C 00 00 00 46 42 50 54  *....FBPT<...FBPT*
-7F20FE60: 02 00 30 02 00 00 00 00-00 00 00 00 00 00 00 00  *..0.............*
-7F20FE70: 2A A6 BC 6E 0B 00 00 00-1A 44 41 70 0B 00 00 00  **..n.....DAp....*
-7F20FE80: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *................*
-
-And here FBPT table has FBPT signature repeated instead of the first
-record.
-
-Current code will be looping indefinitely due to zero length records, so
-break out of the loop if record length is zero.
-
-While we are here, add proper handling for fpdt_process_subtable()
-failures.
-
-Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT table")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-[ rjw: Comment edit, added empty code lines ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: b5dc0163d8fd ("bpf: precise scalar_value tracking")
+Cc: stable@vger.kernel.org
+Reported-by: Mohamed Mahmoud <mmahmoud@redhat.com>
+Closes: https://lore.kernel.org/r/87jzrrwptf.fsf@toke.dk
+Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Tested-by: Tao Lyu <tao.lyu@epfl.ch>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://lore.kernel.org/r/20231102053913.12004-2-shung-hsi.yu@suse.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_fpdt.c |   45 +++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 37 insertions(+), 8 deletions(-)
+ kernel/bpf/verifier.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/acpi/acpi_fpdt.c
-+++ b/drivers/acpi/acpi_fpdt.c
-@@ -194,12 +194,19 @@ static int fpdt_process_subtable(u64 add
- 		record_header = (void *)subtable_header + offset;
- 		offset += record_header->length;
- 
-+		if (!record_header->length) {
-+			pr_err(FW_BUG "Zero-length record found in FPTD.\n");
-+			result = -EINVAL;
-+			goto err;
-+		}
-+
- 		switch (record_header->type) {
- 		case RECORD_S3_RESUME:
- 			if (subtable_type != SUBTABLE_S3PT) {
- 				pr_err(FW_BUG "Invalid record %d for subtable %s\n",
- 				     record_header->type, signature);
--				return -EINVAL;
-+				result = -EINVAL;
-+				goto err;
- 			}
- 			if (record_resume) {
- 				pr_err("Duplicate resume performance record found.\n");
-@@ -208,7 +215,7 @@ static int fpdt_process_subtable(u64 add
- 			record_resume = (struct resume_performance_record *)record_header;
- 			result = sysfs_create_group(fpdt_kobj, &resume_attr_group);
- 			if (result)
--				return result;
-+				goto err;
- 			break;
- 		case RECORD_S3_SUSPEND:
- 			if (subtable_type != SUBTABLE_S3PT) {
-@@ -223,13 +230,14 @@ static int fpdt_process_subtable(u64 add
- 			record_suspend = (struct suspend_performance_record *)record_header;
- 			result = sysfs_create_group(fpdt_kobj, &suspend_attr_group);
- 			if (result)
--				return result;
-+				goto err;
- 			break;
- 		case RECORD_BOOT:
- 			if (subtable_type != SUBTABLE_FBPT) {
- 				pr_err(FW_BUG "Invalid %d for subtable %s\n",
- 				     record_header->type, signature);
--				return -EINVAL;
-+				result = -EINVAL;
-+				goto err;
- 			}
- 			if (record_boot) {
- 				pr_err("Duplicate boot performance record found.\n");
-@@ -238,7 +246,7 @@ static int fpdt_process_subtable(u64 add
- 			record_boot = (struct boot_performance_record *)record_header;
- 			result = sysfs_create_group(fpdt_kobj, &boot_attr_group);
- 			if (result)
--				return result;
-+				goto err;
- 			break;
- 
- 		default:
-@@ -247,6 +255,18 @@ static int fpdt_process_subtable(u64 add
- 		}
- 	}
- 	return 0;
-+
-+err:
-+	if (record_boot)
-+		sysfs_remove_group(fpdt_kobj, &boot_attr_group);
-+
-+	if (record_suspend)
-+		sysfs_remove_group(fpdt_kobj, &suspend_attr_group);
-+
-+	if (record_resume)
-+		sysfs_remove_group(fpdt_kobj, &resume_attr_group);
-+
-+	return result;
- }
- 
- static int __init acpi_init_fpdt(void)
-@@ -255,6 +275,7 @@ static int __init acpi_init_fpdt(void)
- 	struct acpi_table_header *header;
- 	struct fpdt_subtable_entry *subtable;
- 	u32 offset = sizeof(*header);
-+	int result;
- 
- 	status = acpi_get_table(ACPI_SIG_FPDT, 0, &header);
- 
-@@ -263,8 +284,8 @@ static int __init acpi_init_fpdt(void)
- 
- 	fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
- 	if (!fpdt_kobj) {
--		acpi_put_table(header);
--		return -ENOMEM;
-+		result = -ENOMEM;
-+		goto err_nomem;
- 	}
- 
- 	while (offset < header->length) {
-@@ -272,8 +293,10 @@ static int __init acpi_init_fpdt(void)
- 		switch (subtable->type) {
- 		case SUBTABLE_FBPT:
- 		case SUBTABLE_S3PT:
--			fpdt_process_subtable(subtable->address,
-+			result = fpdt_process_subtable(subtable->address,
- 					      subtable->type);
-+			if (result)
-+				goto err_subtable;
- 			break;
- 		default:
- 			/* Other types are reserved in ACPI 6.4 spec. */
-@@ -282,6 +305,12 @@ static int __init acpi_init_fpdt(void)
- 		offset += sizeof(*subtable);
- 	}
- 	return 0;
-+err_subtable:
-+	kobject_put(fpdt_kobj);
-+
-+err_nomem:
-+	acpi_put_table(header);
-+	return result;
- }
- 
- fs_initcall(acpi_init_fpdt);
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2596,7 +2596,12 @@ static int backtrack_insn(struct bpf_ver
+ 	if (class == BPF_ALU || class == BPF_ALU64) {
+ 		if (!(*reg_mask & dreg))
+ 			return 0;
+-		if (opcode == BPF_MOV) {
++		if (opcode == BPF_END || opcode == BPF_NEG) {
++			/* sreg is reserved and unused
++			 * dreg still need precision before this insn
++			 */
++			return 0;
++		} else if (opcode == BPF_MOV) {
+ 			if (BPF_SRC(insn->code) == BPF_X) {
+ 				/* dreg = sreg
+ 				 * dreg needs precision after this insn
 
 
 
