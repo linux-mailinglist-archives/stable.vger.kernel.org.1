@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DDE97F7408
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:43:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4087D7F7409
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25FCA1C20F7E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:43:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D59E8B21485
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611AB1CAAF;
-	Fri, 24 Nov 2023 12:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80BE1EB31;
+	Fri, 24 Nov 2023 12:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzsRciDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zunaMAOl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBDA1428F
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:43:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5BFC433C8;
-	Fri, 24 Nov 2023 12:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95E171A1
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D71C433C7;
+	Fri, 24 Nov 2023 12:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700829808;
-	bh=CC8mOmVL5jilZbzZvXGA+qVorTmu/G3nIVsSYvCuxco=;
+	s=korg; t=1700829811;
+	bh=onP45JVH3xU487M2WBS8j2LIyN0fcsgqSGUHyWQInms=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PzsRciDTLKRX9YQQGgW002J8Ft39dnYziwKuOKsQKSEtWTrPoeQ60OOYOzD76ZziZ
-	 NiJwl7RI+L64tsRJLD6Q2HgdmpqGFpWkE66I6u8JYepQdjCVWGx5Ctn6FN0H5I7w+6
-	 UYoRC6p7Qj69Lptd9F/ZsOhrzGVQUK0bV4zoMxeo=
-Subject: FAILED: patch "[PATCH] dm-delay: fix a race between delay_presuspend and delay_bio" failed to apply to 6.1-stable tree
+	b=zunaMAOljg8O/ed7ArtrOUvg7TDfCOHlVTg8ZFWpHu1GY4H80Lx5iZ5YGvHZ13xEH
+	 nPNfQ97N6r8D9+ulHRiYBuQP3rs4tSo10d6SP9qICB8SCspMPq+j2cIfWAi9GtH740
+	 l+sxOQiywpD/7gZQZcXzuETK3UZnI4mI83ISSgS0=
+Subject: FAILED: patch "[PATCH] dm-delay: fix a race between delay_presuspend and delay_bio" failed to apply to 5.15-stable tree
 To: mpatocka@redhat.com,snitzer@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:43:22 +0000
-Message-ID: <2023112422-motion-dicing-0a1f@gregkh>
+Date: Fri, 24 Nov 2023 12:43:23 +0000
+Message-ID: <2023112423-dimmed-bagful-50a9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6fc45b6ed921dc00dfb264dc08c7d67ee63d2656
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112422-motion-dicing-0a1f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112423-dimmed-bagful-50a9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 6fc45b6ed921 ("dm-delay: fix a race between delay_presuspend and delay_bio")
 70bbeb29fab0 ("dm delay: for short delays, use kthread instead of timers and wq")
+c357342186dc ("dm delay: use dm_submit_bio_remap")
 
 thanks,
 
