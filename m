@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-2002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC117F825A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908997F8428
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D21AEB23E0A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C213D1C2725D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E97364C8;
-	Fri, 24 Nov 2023 19:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8D9381A2;
+	Fri, 24 Nov 2023 19:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udV2Ey4U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwE6M5K3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2A733CFD;
-	Fri, 24 Nov 2023 19:06:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FF2C433C9;
-	Fri, 24 Nov 2023 19:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A50339BE;
+	Fri, 24 Nov 2023 19:24:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FE5C433C9;
+	Fri, 24 Nov 2023 19:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852804;
-	bh=6aXNy9YmIR4BC7zpVCIERVd7av6M8KkkkpLhtjXgqKg=;
+	s=korg; t=1700853872;
+	bh=T4KP2FqDJFju4xG9c+RUIMvYYmHL5NM4klNbAJgwegA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udV2Ey4Usv9ed3TPqB1YgHMiGEdJM0brT7WSFJfFvAqm2qoZF0hM7m+8fjGDQ38Fi
-	 MfP9HMRZf7Ska+l3fjrEXg8o43/IpstdPEL3ojyCTYN8yed4UOTHxWnNf42JrLGFSU
-	 a7VA4UPXe9NNlMsxYqKOMAGDoksOCAwNUrtJfmi8=
+	b=CwE6M5K3Nb7ICjXk5q6Bg6q+MO1Y9q19Kh6slAqezrvGoIUNwFpnecsGulr1kD7qv
+	 Dnpy42ZMi1OD0cy/OR2j7iczaxdgYetZmLEiBGCxIqS3MdUPl1NAf5Do1ueiJKlche
+	 7GJl48m3jKwUHqVvKdTUHjgM4JFPyuUI0rRyZsro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 130/193] quota: explicitly forbid quota files from being encrypted
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 040/159] kgdb: Flush console before entering kgdb on panic
 Date: Fri, 24 Nov 2023 17:54:17 +0000
-Message-ID: <20231124171952.429953489@linuxfoundation.org>
+Message-ID: <20231124171943.593667673@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,69 +53,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit d3cc1b0be258191d6360c82ea158c2972f8d3991 upstream.
+[ Upstream commit dd712d3d45807db9fcae28a522deee85c1f2fde6 ]
 
-Since commit d7e7b9af104c ("fscrypt: stop using keyrings subsystem for
-fscrypt_master_key"), xfstest generic/270 causes a WARNING when run on
-f2fs with test_dummy_encryption in the mount options:
+When entering kdb/kgdb on a kernel panic, it was be observed that the
+console isn't flushed before the `kdb` prompt came up. Specifically,
+when using the buddy lockup detector on arm64 and running:
+  echo HARDLOCKUP > /sys/kernel/debug/provoke-crash/DIRECT
 
-$ kvm-xfstests -c f2fs/encrypt generic/270
-[...]
-WARNING: CPU: 1 PID: 2453 at fs/crypto/keyring.c:240 fscrypt_destroy_keyring+0x1f5/0x260
+I could see:
+  [   26.161099] lkdtm: Performing direct entry HARDLOCKUP
+  [   32.499881] watchdog: Watchdog detected hard LOCKUP on cpu 6
+  [   32.552865] Sending NMI from CPU 5 to CPUs 6:
+  [   32.557359] NMI backtrace for cpu 6
+  ... [backtrace for cpu 6] ...
+  [   32.558353] NMI backtrace for cpu 5
+  ... [backtrace for cpu 5] ...
+  [   32.867471] Sending NMI from CPU 5 to CPUs 0-4,7:
+  [   32.872321] NMI backtrace forP cpuANC: Hard LOCKUP
 
-The cause of the WARNING is that not all encrypted inodes have been
-evicted before fscrypt_destroy_keyring() is called, which violates an
-assumption.  This happens because the test uses an external quota file,
-which gets automatically encrypted due to test_dummy_encryption.
+  Entering kdb (current=..., pid 0) on processor 5 due to Keyboard Entry
+  [5]kdb>
 
-Encryption of quota files has never really been supported.  On ext4,
-ext4_quota_read() does not decrypt the data, so encrypted quota files
-are always considered invalid on ext4.  On f2fs, f2fs_quota_read() uses
-the pagecache, so trying to use an encrypted quota file gets farther,
-resulting in the issue described above being possible.  But this was
-never intended to be possible, and there is no use case for it.
+As you can see, backtraces for the other CPUs start printing and get
+interleaved with the kdb PANIC print.
 
-Therefore, make the quota support layer explicitly reject using
-IS_ENCRYPTED inodes when quotaon is attempted.
+Let's replicate the commands to flush the console in the kdb panic
+entry point to avoid this.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230905003227.326998-1-ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20230822131945.1.I5b460ae8f954e4c4f628a373d6e74713c06dd26f@changeid
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ kernel/debug/debug_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -2398,6 +2398,20 @@ static int vfs_setup_quota_inode(struct
- 	if (sb_has_quota_loaded(sb, type))
- 		return -EBUSY;
+diff --git a/kernel/debug/debug_core.c b/kernel/debug/debug_core.c
+index f88611fadb195..1ab2e97034868 100644
+--- a/kernel/debug/debug_core.c
++++ b/kernel/debug/debug_core.c
+@@ -945,6 +945,9 @@ void kgdb_panic(const char *msg)
+ 	if (panic_timeout)
+ 		return;
  
-+	/*
-+	 * Quota files should never be encrypted.  They should be thought of as
-+	 * filesystem metadata, not user data.  New-style internal quota files
-+	 * cannot be encrypted by users anyway, but old-style external quota
-+	 * files could potentially be incorrectly created in an encrypted
-+	 * directory, hence this explicit check.  Some reasons why encrypted
-+	 * quota files don't work include: (1) some filesystems that support
-+	 * encryption don't handle it in their quota_read and quota_write, and
-+	 * (2) cleaning up encrypted quota files at unmount would need special
-+	 * consideration, as quota files are cleaned up later than user files.
-+	 */
-+	if (IS_ENCRYPTED(inode))
-+		return -EINVAL;
++	debug_locks_off();
++	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
 +
- 	dqopt->files[type] = igrab(inode);
- 	if (!dqopt->files[type])
- 		return -EIO;
+ 	if (dbg_kdb_mode)
+ 		kdb_printf("PANIC: %s\n", msg);
+ 
+-- 
+2.42.0
+
 
 
 
