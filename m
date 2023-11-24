@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-2420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C7DC7F8419
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631B07F8393
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1701828A4A6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE677B263AE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D27135F04;
-	Fri, 24 Nov 2023 19:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A4633CC2;
+	Fri, 24 Nov 2023 19:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryrsAv4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMzROVg3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A1D3307D;
-	Fri, 24 Nov 2023 19:23:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1826C433C7;
-	Fri, 24 Nov 2023 19:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F0235F1A;
+	Fri, 24 Nov 2023 19:18:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9A1C433CA;
+	Fri, 24 Nov 2023 19:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853838;
-	bh=eXjY279WWgAy1d22BgvbDT8XsMNmXiCsefhBgPua85M=;
+	s=korg; t=1700853530;
+	bh=DmgPRQ2NQp5p25fj11NPTV5R1eI6y6Mxg1zyCvYA8Oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryrsAv4F9FmMEtQRPs7ZVBa/6gNPA55KH74SlkOXIRO0iHEIL5YpyHRW+Tf+Cq30G
-	 1/hz/dES5Vh+HcIB5Vr/UcawHq6BtT7N8mAVCv4B4znuycNWOsK1XIHP2eqOpgh+Ik
-	 ajRP19TPbN3yIi6sdKLZEYfQY5dxe0HE/lzvk/Fg=
+	b=sMzROVg3wfdsmj9eqyFeFOr/vAtY8chJ1cdqTl9qhYpMJX2Ym3qTuZcnKGjaaGAK3
+	 QTAysvOnyhQN0ojuHeGwV6r7WpGYc2bHohXFukFyhe2qiL/2dDm0hvLk+ZfKz8nNAt
+	 mi+x359AW2bEf6bEFu6NaAyxt1qprqi99mbPi4i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 051/159] ppp: limit MRU to 64K
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.15 226/297] i3c: master: svc: fix race condition in ibi work thread
 Date: Fri, 24 Nov 2023 17:54:28 +0000
-Message-ID: <20231124171944.071381198@linuxfoundation.org>
+Message-ID: <20231124172008.102375092@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,81 +53,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit c0a2a1b0d631fc460d830f52d06211838874d655 ]
+commit 6bf3fc268183816856c96b8794cd66146bc27b35 upstream.
 
-ppp_sync_ioctl allows setting device MRU, but does not sanity check
-this input.
+The ibi work thread operates asynchronously with other transfers, such as
+svc_i3c_master_priv_xfers(). Introduce mutex protection to ensure the
+completion of the entire i3c/i2c transaction.
 
-Limit to a sane upper bound of 64KB.
-
-No implementation I could find generates larger than 64KB frames.
-RFC 2823 mentions an upper bound of PPP over SDL of 64KB based on the
-16-bit length field. Other protocols will be smaller, such as PPPoE
-(9KB jumbo frame) and PPPoA (18190 maximum CPCS-SDU size, RFC 2364).
-PPTP and L2TP encapsulate in IP.
-
-Syzbot managed to trigger alloc warning in __alloc_pages:
-
-	if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
-
-    WARNING: CPU: 1 PID: 37 at mm/page_alloc.c:4544 __alloc_pages+0x3ab/0x4a0 mm/page_alloc.c:4544
-
-    __alloc_skb+0x12b/0x330 net/core/skbuff.c:651
-    __netdev_alloc_skb+0x72/0x3f0 net/core/skbuff.c:715
-    netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
-    dev_alloc_skb include/linux/skbuff.h:3238 [inline]
-    ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
-    ppp_sync_receive+0xff/0x680 drivers/net/ppp/ppp_synctty.c:334
-    tty_ldisc_receive_buf+0x14c/0x180 drivers/tty/tty_buffer.c:390
-    tty_port_default_receive_buf+0x70/0xb0 drivers/tty/tty_port.c:37
-    receive_buf drivers/tty/tty_buffer.c:444 [inline]
-    flush_to_ldisc+0x261/0x780 drivers/tty/tty_buffer.c:494
-    process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
-
-With call
-
-    ioctl$PPPIOCSMRU1(r1, 0x40047452, &(0x7f0000000100)=0x5e6417a8)
-
-Similar code exists in other drivers that implement ppp_channel_ops
-ioctl PPPIOCSMRU. Those might also be in scope. Notably excluded from
-this are pppol2tp_ioctl and pppoe_ioctl.
-
-This code goes back to the start of git history.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231023161658.3890811-2-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ppp/ppp_synctty.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/i3c/master/svc-i3c-master.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index d5af6b06a66a4..55641e01192dd 100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -463,6 +463,10 @@ ppp_sync_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
- 	case PPPIOCSMRU:
- 		if (get_user(val, (int __user *) argp))
- 			break;
-+		if (val > U16_MAX) {
-+			err = -EINVAL;
-+			break;
-+		}
- 		if (val < PPP_MRU)
- 			val = PPP_MRU;
- 		ap->mru = val;
--- 
-2.42.0
-
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -165,6 +165,7 @@ struct svc_i3c_xfer {
+  * @ibi.slots: Available IBI slots
+  * @ibi.tbq_slot: To be queued IBI slot
+  * @ibi.lock: IBI lock
++ * @lock: Transfer lock, protect between IBI work thread and callbacks from master
+  */
+ struct svc_i3c_master {
+ 	struct i3c_master_controller base;
+@@ -192,6 +193,7 @@ struct svc_i3c_master {
+ 		/* Prevent races within IBI handlers */
+ 		spinlock_t lock;
+ 	} ibi;
++	struct mutex lock;
+ };
+ 
+ /**
+@@ -345,6 +347,7 @@ static void svc_i3c_master_ibi_work(stru
+ 	u32 status, val;
+ 	int ret;
+ 
++	mutex_lock(&master->lock);
+ 	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
+ 	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
+ 	       SVC_I3C_MCTRL_IBIRESP_AUTO,
+@@ -421,6 +424,7 @@ static void svc_i3c_master_ibi_work(stru
+ 
+ reenable_ibis:
+ 	svc_i3c_master_enable_interrupts(master, SVC_I3C_MINT_SLVSTART);
++	mutex_unlock(&master->lock);
+ }
+ 
+ static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
+@@ -1095,9 +1099,11 @@ static int svc_i3c_master_send_bdcast_cc
+ 	cmd->read_len = 0;
+ 	cmd->continued = false;
+ 
++	mutex_lock(&master->lock);
+ 	svc_i3c_master_enqueue_xfer(master, xfer);
+ 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
+ 		svc_i3c_master_dequeue_xfer(master, xfer);
++	mutex_unlock(&master->lock);
+ 
+ 	ret = xfer->ret;
+ 	kfree(buf);
+@@ -1141,9 +1147,11 @@ static int svc_i3c_master_send_direct_cc
+ 	cmd->read_len = read_len;
+ 	cmd->continued = false;
+ 
++	mutex_lock(&master->lock);
+ 	svc_i3c_master_enqueue_xfer(master, xfer);
+ 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
+ 		svc_i3c_master_dequeue_xfer(master, xfer);
++	mutex_unlock(&master->lock);
+ 
+ 	ret = xfer->ret;
+ 	svc_i3c_master_free_xfer(xfer);
+@@ -1197,9 +1205,11 @@ static int svc_i3c_master_priv_xfers(str
+ 		cmd->continued = (i + 1) < nxfers;
+ 	}
+ 
++	mutex_lock(&master->lock);
+ 	svc_i3c_master_enqueue_xfer(master, xfer);
+ 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
+ 		svc_i3c_master_dequeue_xfer(master, xfer);
++	mutex_unlock(&master->lock);
+ 
+ 	ret = xfer->ret;
+ 	svc_i3c_master_free_xfer(xfer);
+@@ -1235,9 +1245,11 @@ static int svc_i3c_master_i2c_xfers(stru
+ 		cmd->continued = (i + 1 < nxfers);
+ 	}
+ 
++	mutex_lock(&master->lock);
+ 	svc_i3c_master_enqueue_xfer(master, xfer);
+ 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
+ 		svc_i3c_master_dequeue_xfer(master, xfer);
++	mutex_unlock(&master->lock);
+ 
+ 	ret = xfer->ret;
+ 	svc_i3c_master_free_xfer(xfer);
+@@ -1407,6 +1419,8 @@ static int svc_i3c_master_probe(struct p
+ 
+ 	INIT_WORK(&master->hj_work, svc_i3c_master_hj_work);
+ 	INIT_WORK(&master->ibi_work, svc_i3c_master_ibi_work);
++	mutex_init(&master->lock);
++
+ 	ret = devm_request_irq(dev, master->irq, svc_i3c_master_irq_handler,
+ 			       IRQF_NO_SUSPEND, "svc-i3c-irq", master);
+ 	if (ret)
 
 
 
