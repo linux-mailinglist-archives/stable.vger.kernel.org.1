@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-2323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3937F83B0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1EC7F8437
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC2E01C240D0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67D421C25399
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326BB364B7;
-	Fri, 24 Nov 2023 19:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D87381D2;
+	Fri, 24 Nov 2023 19:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVU+QFYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tidZhIcy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E428C3418E;
-	Fri, 24 Nov 2023 19:20:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72125C433C7;
-	Fri, 24 Nov 2023 19:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C7D35F1A;
+	Fri, 24 Nov 2023 19:25:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B9EC433C7;
+	Fri, 24 Nov 2023 19:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853600;
-	bh=n24MGWvT0qBEWy+WWv8s0lrx5NdtaVKI7S4ekQsHlfc=;
+	s=korg; t=1700853910;
+	bh=rS7gJLjEns6FeNQvQ2HvMKXRszYXePu92PLL+Uc/0iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVU+QFYUkgXYsp6vfmyqyhXNnBzUq3/UhGsGM3fL6VNd6YEWlT94+03Jl6Nxppb5U
-	 6Fxm59q4gScLOUqbLnZKzrZ0kQCZtd7lk2GLyxAfDVhL7/3RzOpqzRlI+0atk4hBtc
-	 dw4RG3jHCyF9yWTwJ9Zwjt8n9bDM6SUeEbXN7FR4=
+	b=tidZhIcy0HyTwCkdjzsOStV3Ea29mc2vdzX60xf3h2n8ko4lOvFIe4GU5NPs6hHvw
+	 DeO4TJb+at1q1rO0TRJF7V5r5MWJtzIFrnF2SxQTOe9CyeRHPDL08YEMqgpUETK1tk
+	 8PC6RfQa/3U/JexDUli9GtgIfYbW/wuZk9+vRJFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.15 254/297] lsm: fix default return value for vm_enough_memory
-Date: Fri, 24 Nov 2023 17:54:56 +0000
-Message-ID: <20231124172009.054447359@linuxfoundation.org>
+	Herve Codina <herve.codina@bootlin.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.4 080/159] genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
+Date: Fri, 24 Nov 2023 17:54:57 +0000
+Message-ID: <20231124171945.263717280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,36 +52,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 866d648059d5faf53f1cd960b43fe8365ad93ea7 upstream.
+commit 5e7afb2eb7b2a7c81e9f608cbdf74a07606fd1b5 upstream.
 
-1 is the return value that implements a "no-op" hook, not 0.
+irq_remove_generic_chip() calculates the Linux interrupt number for removing the
+handler and interrupt chip based on gc::irq_base as a linear function of
+the bit positions of set bits in the @msk argument.
 
+When the generic chip is present in an irq domain, i.e. created with a call
+to irq_alloc_domain_generic_chips(), gc::irq_base contains not the base
+Linux interrupt number.  It contains the base hardware interrupt for this
+chip. It is set to 0 for the first chip in the domain, 0 + N for the next
+chip, where $N is the number of hardware interrupts per chip.
+
+That means the Linux interrupt number cannot be calculated based on
+gc::irq_base for irqdomain based chips without a domain map lookup, which
+is currently missing.
+
+Rework the code to take the irqdomain case into account and calculate the
+Linux interrupt number by a irqdomain lookup of the domain specific
+hardware interrupt number.
+
+[ tglx: Massage changelog. Reshuffle the logic and add a proper comment. ]
+
+Fixes: cfefd21e693d ("genirq: Add chip suspend and resume callbacks")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Fixes: 98e828a0650f ("security: Refactor declaration of LSM hooks")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Link: https://lore.kernel.org/r/20231024150335.322282-1-herve.codina@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/lsm_hook_defs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/irq/generic-chip.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -48,7 +48,7 @@ LSM_HOOK(int, 0, quota_on, struct dentry
- LSM_HOOK(int, 0, syslog, int type)
- LSM_HOOK(int, 0, settime, const struct timespec64 *ts,
- 	 const struct timezone *tz)
--LSM_HOOK(int, 0, vm_enough_memory, struct mm_struct *mm, long pages)
-+LSM_HOOK(int, 1, vm_enough_memory, struct mm_struct *mm, long pages)
- LSM_HOOK(int, 0, bprm_creds_for_exec, struct linux_binprm *bprm)
- LSM_HOOK(int, 0, bprm_creds_from_file, struct linux_binprm *bprm, struct file *file)
- LSM_HOOK(int, 0, bprm_check_security, struct linux_binprm *bprm)
+--- a/kernel/irq/generic-chip.c
++++ b/kernel/irq/generic-chip.c
+@@ -537,21 +537,34 @@ EXPORT_SYMBOL_GPL(irq_setup_alt_chip);
+ void irq_remove_generic_chip(struct irq_chip_generic *gc, u32 msk,
+ 			     unsigned int clr, unsigned int set)
+ {
+-	unsigned int i = gc->irq_base;
++	unsigned int i, virq;
+ 
+ 	raw_spin_lock(&gc_lock);
+ 	list_del(&gc->list);
+ 	raw_spin_unlock(&gc_lock);
+ 
+-	for (; msk; msk >>= 1, i++) {
++	for (i = 0; msk; msk >>= 1, i++) {
+ 		if (!(msk & 0x01))
+ 			continue;
+ 
++		/*
++		 * Interrupt domain based chips store the base hardware
++		 * interrupt number in gc::irq_base. Otherwise gc::irq_base
++		 * contains the base Linux interrupt number.
++		 */
++		if (gc->domain) {
++			virq = irq_find_mapping(gc->domain, gc->irq_base + i);
++			if (!virq)
++				continue;
++		} else {
++			virq = gc->irq_base + i;
++		}
++
+ 		/* Remove handler first. That will mask the irq line */
+-		irq_set_handler(i, NULL);
+-		irq_set_chip(i, &no_irq_chip);
+-		irq_set_chip_data(i, NULL);
+-		irq_modify_status(i, clr, set);
++		irq_set_handler(virq, NULL);
++		irq_set_chip(virq, &no_irq_chip);
++		irq_set_chip_data(virq, NULL);
++		irq_modify_status(virq, clr, set);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(irq_remove_generic_chip);
 
 
 
