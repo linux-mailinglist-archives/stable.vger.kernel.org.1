@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B70B7F7F45
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCC77F80D9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D05C1C2102E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD402814DB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7002A364CB;
-	Fri, 24 Nov 2023 18:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB5363A1;
+	Fri, 24 Nov 2023 18:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arJ/xjAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2+wXoqb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079ED2C85B;
-	Fri, 24 Nov 2023 18:40:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F591C433C8;
-	Fri, 24 Nov 2023 18:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D56633075;
+	Fri, 24 Nov 2023 18:53:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71B8C433C8;
+	Fri, 24 Nov 2023 18:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851204;
-	bh=prXatOzkIlmUici9V3Pq48SyPSLoXzyjaZXXtjH4FsQ=;
+	s=korg; t=1700851997;
+	bh=kbk7wqJAQmvSiz9uZdswUWLCCo1P+Ymova+8ECZ3O38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arJ/xjAfICEyEC1IFcEZapzPJXc7mQkI/TwBYWrI2pNUvcmTdk5N367tM49rXdKiu
-	 wL6vyCxswI10mNVU6sfJBteSQ6Ys7LCWKQkwPyTsQqleqYxJdVSzHQqvONWg9tmFLi
-	 0aswstI3xh0hfmFiv8BrXrFSG5V1xKS/N0ZpLcg0=
+	b=i2+wXoqbJazXFOOWf9KksDhmwCB9jBHPlosCT5Zjg2qW236RcS82M6Ks9VgcAmWWw
+	 3M6rb2vV0uE7RFB1iEw5XBW+horqSJUWw7cKGfmDFJVin7JA+dUnrjmrzaDWtjuOnm
+	 8M5JheOH4yVWI9BgETeGr6LZYHc/hOFaFQaEOgU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.5 330/491] ASoC: codecs: wsa883x: make use of new mute_unmute_on_trigger flag
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.1 179/372] proc: sysctl: prevent aliased sysctls from getting passed to init
 Date: Fri, 24 Nov 2023 17:49:26 +0000
-Message-ID: <20231124172034.482479313@linuxfoundation.org>
+Message-ID: <20231124172016.430526927@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,66 +52,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-commit 805ce81826c896dd3c351a32814b28557f9edf54 upstream.
+commit 8001f49394e353f035306a45bcf504f06fca6355 upstream.
 
-In the current setup the PA is left unmuted even when the
-Soundwire ports are not started streaming. This can lead to click
-and pop sounds during start.
-There is a same issue in the reverse order where in the PA is
-left unmute even after the data stream is stopped, the time
-between data stream stopping and port closing is long enough
-to accumulate DC on the line resulting in Click/Pop noise
-during end of stream.
+The code that checks for unknown boot options is unaware of the sysctl
+alias facility, which maps bootparams to sysctl values.  If a user sets
+an old value that has a valid alias, a message about an invalid
+parameter will be printed during boot, and the parameter will get passed
+to init.  Fix by checking for the existence of aliased parameters in the
+unknown boot parameter code.  If an alias exists, don't return an error
+or pass the value to init.
 
-making use of new mute_unmute_on_trigger flag is helping a
-lot with this Click/Pop issues reported on this Codec
-
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231027105747.32450-3-srinivas.kandagatla@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Cc: stable@vger.kernel.org
+Fixes: 0a477e1ae21b ("kernel/sysctl: support handling command line aliases")
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/wsa883x.c |    7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ fs/proc/proc_sysctl.c  |    7 +++++++
+ include/linux/sysctl.h |    6 ++++++
+ init/main.c            |    4 ++++
+ 3 files changed, 17 insertions(+)
 
---- a/sound/soc/codecs/wsa883x.c
-+++ b/sound/soc/codecs/wsa883x.c
-@@ -1203,9 +1203,6 @@ static int wsa883x_spkr_event(struct snd
- 			break;
- 		}
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1830,6 +1830,13 @@ static const char *sysctl_find_alias(cha
+ 	return NULL;
+ }
  
--		snd_soc_component_write_field(component, WSA883X_DRE_CTL_1,
--					      WSA883X_DRE_GAIN_EN_MASK,
--					      WSA883X_DRE_GAIN_FROM_CSR);
- 		if (wsa883x->port_enable[WSA883X_PORT_COMP])
- 			snd_soc_component_write_field(component, WSA883X_DRE_CTL_0,
- 						      WSA883X_DRE_OFFSET_MASK,
-@@ -1218,9 +1215,6 @@ static int wsa883x_spkr_event(struct snd
- 		snd_soc_component_write_field(component, WSA883X_PDM_WD_CTL,
- 					      WSA883X_PDM_EN_MASK,
- 					      WSA883X_PDM_ENABLE);
--		snd_soc_component_write_field(component, WSA883X_PA_FSM_CTL,
--					      WSA883X_GLOBAL_PA_EN_MASK,
--					      WSA883X_GLOBAL_PA_ENABLE);
++bool sysctl_is_alias(char *param)
++{
++	const char *alias = sysctl_find_alias(param);
++
++	return alias != NULL;
++}
++
+ /* Set sysctl value passed on kernel command line. */
+ static int process_sysctl_arg(char *param, char *val,
+ 			       const char *unused, void *arg)
+--- a/include/linux/sysctl.h
++++ b/include/linux/sysctl.h
+@@ -238,6 +238,7 @@ extern void __register_sysctl_init(const
+ extern struct ctl_table_header *register_sysctl_mount_point(const char *path);
  
- 		break;
- 	case SND_SOC_DAPM_PRE_PMD:
-@@ -1346,6 +1340,7 @@ static const struct snd_soc_dai_ops wsa8
- 	.hw_free = wsa883x_hw_free,
- 	.mute_stream = wsa883x_digital_mute,
- 	.set_stream = wsa883x_set_sdw_stream,
-+	.mute_unmute_on_trigger = true,
- };
+ void do_sysctl_args(void);
++bool sysctl_is_alias(char *param);
+ int do_proc_douintvec(struct ctl_table *table, int write,
+ 		      void *buffer, size_t *lenp, loff_t *ppos,
+ 		      int (*conv)(unsigned long *lvalp,
+@@ -301,6 +302,11 @@ static inline void setup_sysctl_set(stru
+ static inline void do_sysctl_args(void)
+ {
+ }
++
++static inline bool sysctl_is_alias(char *param)
++{
++	return false;
++}
+ #endif /* CONFIG_SYSCTL */
  
- static struct snd_soc_dai_driver wsa883x_dais[] = {
+ int sysctl_max_threads(struct ctl_table *table, int write, void *buffer,
+--- a/init/main.c
++++ b/init/main.c
+@@ -533,6 +533,10 @@ static int __init unknown_bootoption(cha
+ {
+ 	size_t len = strlen(param);
+ 
++	/* Handle params aliased to sysctls */
++	if (sysctl_is_alias(param))
++		return 0;
++
+ 	repair_env_string(param, val);
+ 
+ 	/* Handle obsolete-style parameters */
 
 
 
