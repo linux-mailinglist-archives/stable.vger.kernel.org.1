@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 963587F7E80
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A3527F7C76
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C60B41C213BD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53AF0281642
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BCE39FCC;
-	Fri, 24 Nov 2023 18:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D023A8C3;
+	Fri, 24 Nov 2023 18:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN3MQQ2I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdCsI4LA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8AA539FEE;
-	Fri, 24 Nov 2023 18:33:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8F9C433C8;
-	Fri, 24 Nov 2023 18:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC9339FE3;
+	Fri, 24 Nov 2023 18:15:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CEAC433C8;
+	Fri, 24 Nov 2023 18:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850815;
-	bh=mANm+bOBHCyfONuzeq8+PfjYNMWG9I6Opifo4/cFvYg=;
+	s=korg; t=1700849723;
+	bh=vj6JLZCsITKOYHYJkxGfLJGInLbkLOQvLlId/v8mEXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vN3MQQ2IOSCPuMKNNuUJ3hUicG3ExBtNHKZkkzMbooj2tE90QLxmvMjvC9+AujT0+
-	 gfOYx1J4wBJSnUS2ChvrJr/PFJ+UtoEcveMoDnQkhOJoVieO867ItwnzayqlY+/BXK
-	 l3O2Jm8Eunyk9YQxEbUn+ys6LKFeUsMJmOM4ngl4=
+	b=rdCsI4LAKzDgNTvSfsOFJcN1MO3aIAAno0VwWn+KZfU0MZ7vHg7KJM9M1/kG++xzr
+	 psJKBXcWGqlxjzjowKQkk++d/w9EWfsydGfs+U5FpHGrFnIvcZQ2TjVwDcKDlXws35
+	 4G9xcBw9vz47MafR5JvadbZUmJkd9NOntcUBt0iM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 200/491] pds_core: use correct index to mask irq
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 270/530] hvc/xen: fix error path in xen_hvc_init() to always register frontend driver
 Date: Fri, 24 Nov 2023 17:47:16 +0000
-Message-ID: <20231124172030.514889254@linuxfoundation.org>
+Message-ID: <20231124172036.259828536@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,74 +50,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 09d4c14c6c5e6e781a3879fed7f8e116a18b8c65 ]
+commit 2704c9a5593f4a47620c12dad78838ca62b52f48 upstream.
 
-Use the qcq's interrupt index, not the irq number, to mask
-the interrupt.  Since the irq number can be out of range from
-the number of possible interrupts, we can end up accessing
-and potentially scribbling on out-of-range and/or unmapped
-memory, making the kernel angry.
+The xen_hvc_init() function should always register the frontend driver,
+even when there's no primary console — as there may be secondary consoles.
+(Qemu can always add secondary consoles, but only the toolstack can add
+the primary because it's special.)
 
-    [ 3116.039364] BUG: unable to handle page fault for address: ffffbeea1c3edf84
-    [ 3116.047059] #PF: supervisor write access in kernel mode
-    [ 3116.052895] #PF: error_code(0x0002) - not-present page
-    [ 3116.058636] PGD 100000067 P4D 100000067 PUD 1001f2067 PMD 10f82e067 PTE 0
-    [ 3116.066221] Oops: 0002 [#1] SMP NOPTI
-    [ 3116.092948] RIP: 0010:iowrite32+0x9/0x76
-    [ 3116.190452] Call Trace:
-    [ 3116.193185]  <IRQ>
-    [ 3116.195430]  ? show_trace_log_lvl+0x1d6/0x2f9
-    [ 3116.200298]  ? show_trace_log_lvl+0x1d6/0x2f9
-    [ 3116.205166]  ? pdsc_adminq_isr+0x43/0x55 [pds_core]
-    [ 3116.210618]  ? __die_body.cold+0x8/0xa
-    [ 3116.214806]  ? page_fault_oops+0x16d/0x1ac
-    [ 3116.219382]  ? exc_page_fault+0xbe/0x13b
-    [ 3116.223764]  ? asm_exc_page_fault+0x22/0x27
-    [ 3116.228440]  ? iowrite32+0x9/0x76
-    [ 3116.232143]  pdsc_adminq_isr+0x43/0x55 [pds_core]
-    [ 3116.237627]  __handle_irq_event_percpu+0x3a/0x184
-    [ 3116.243088]  handle_irq_event+0x57/0xb0
-    [ 3116.247575]  handle_edge_irq+0x87/0x225
-    [ 3116.252062]  __common_interrupt+0x3e/0xbc
-    [ 3116.256740]  common_interrupt+0x7b/0x98
-    [ 3116.261216]  </IRQ>
-    [ 3116.263745]  <TASK>
-    [ 3116.266268]  asm_common_interrupt+0x22/0x27
-
-Reported-by: Joao Martins <joao.m.martins@oracle.com>
-Fixes: 01ba61b55b20 ("pds_core: Add adminq processing and commands")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20231113183257.71110-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231020161529.355083-3-dwmw2@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pds_core/adminq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/hvc/hvc_xen.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/adminq.c b/drivers/net/ethernet/amd/pds_core/adminq.c
-index 045fe133f6ee9..5beadabc21361 100644
---- a/drivers/net/ethernet/amd/pds_core/adminq.c
-+++ b/drivers/net/ethernet/amd/pds_core/adminq.c
-@@ -146,7 +146,7 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data)
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -604,7 +604,7 @@ static int __init xen_hvc_init(void)
+ 		ops = &dom0_hvc_ops;
+ 		r = xen_initial_domain_console_init();
+ 		if (r < 0)
+-			return r;
++			goto register_fe;
+ 		info = vtermno_to_xencons(HVC_COOKIE);
+ 	} else {
+ 		ops = &domU_hvc_ops;
+@@ -613,7 +613,7 @@ static int __init xen_hvc_init(void)
+ 		else
+ 			r = xen_pv_console_init();
+ 		if (r < 0)
+-			return r;
++			goto register_fe;
+ 
+ 		info = vtermno_to_xencons(HVC_COOKIE);
+ 		info->irq = bind_evtchn_to_irq_lateeoi(info->evtchn);
+@@ -638,6 +638,7 @@ static int __init xen_hvc_init(void)
  	}
  
- 	queue_work(pdsc->wq, &qcq->work);
--	pds_core_intr_mask(&pdsc->intr_ctrl[irq], PDS_CORE_INTR_MASK_CLEAR);
-+	pds_core_intr_mask(&pdsc->intr_ctrl[qcq->intx], PDS_CORE_INTR_MASK_CLEAR);
- 
- 	return IRQ_HANDLED;
- }
--- 
-2.42.0
-
+ 	r = 0;
++ register_fe:
+ #ifdef CONFIG_HVC_XEN_FRONTEND
+ 	r = xenbus_register_frontend(&xencons_driver);
+ #endif
 
 
 
