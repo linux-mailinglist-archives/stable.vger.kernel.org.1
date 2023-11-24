@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-1786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 377717F815A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87897F7D5B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690B01C2168E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01316B215C2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA3333CFD;
-	Fri, 24 Nov 2023 18:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3685F3A8C5;
+	Fri, 24 Nov 2023 18:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uKul6gg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmuV4UQK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAEB3173F;
-	Fri, 24 Nov 2023 18:57:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00B0C433C7;
-	Fri, 24 Nov 2023 18:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B117B39FFD;
+	Fri, 24 Nov 2023 18:23:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C259C433C8;
+	Fri, 24 Nov 2023 18:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852271;
-	bh=JxPxlqIc1AKCUGcszwUVHISmQ1KW3jNjO32z5dcwuBc=;
+	s=korg; t=1700850219;
+	bh=nkEVIRkug3plGpJSNJ5jb/8M6w0R6ZIekOvNtlOmuJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uKul6gg6PURrCC+K+qHCDGvVpJL29XenRPCXtbVglU7WrADKecj7mtLnSIvFTS1kO
-	 F2e1Un/qjJH82aV0UP1z87b/c9tS7C1hn5hlKPiyGIwH3hfqGRpIyjGK5KRWz9+tJ0
-	 JngS79sdVUnOEgAVtNTUhLJMfyRCxt2GCLdNzvD8=
+	b=XmuV4UQKp/88btAu2g1BrQ4ZX/tvMQknloQK33w0vUN1et/+ecnIwhwLkWCoc7qDq
+	 Uvta6DEm0UTN2WptvXOaFYUQAHmReAgjes/zECH5BHLrrlS+C6OMsabvvftP3P5rmQ
+	 aNUnLCJGCnh+qY5J+IvECalj2RHUZVTFcmtTwEN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 271/372] smb: client: fix use-after-free bug in cifs_debug_data_proc_show()
-Date: Fri, 24 Nov 2023 17:50:58 +0000
-Message-ID: <20231124172019.499084165@linuxfoundation.org>
+	Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 6.6 493/530] Revert "HID: logitech-dj: Add support for a new lightspeed receiver iteration"
+Date: Fri, 24 Nov 2023 17:50:59 +0000
+Message-ID: <20231124172043.140796747@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,72 +51,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Jiri Kosina <jkosina@suse.cz>
 
-commit d328c09ee9f15ee5a26431f5aad7c9239fa85e62 upstream.
+commit 5b4ffb176d7979ac66b349addf3f7de433335e00 upstream.
 
-Skip SMB sessions that are being teared down
-(e.g. @ses->ses_status == SES_EXITING) in cifs_debug_data_proc_show()
-to avoid use-after-free in @ses.
+This reverts commit 9d1bd9346241cd6963b58da7ffb7ed303285f684.
 
-This fixes the following GPF when reading from /proc/fs/cifs/DebugData
-while mounting and umounting
+Multiple people reported misbehaving devices and reverting this commit fixes
+the problem for them. As soon as the original commit author starts reacting
+again, we can try to figure out why he hasn't seen the issues (mismatching
+report descriptors?), but for the time being, fix for 6.7 by reverting.
 
-  [ 816.251274] general protection fault, probably for non-canonical
-  address 0x6b6b6b6b6b6b6d81: 0000 [#1] PREEMPT SMP NOPTI
-  ...
-  [  816.260138] Call Trace:
-  [  816.260329]  <TASK>
-  [  816.260499]  ? die_addr+0x36/0x90
-  [  816.260762]  ? exc_general_protection+0x1b3/0x410
-  [  816.261126]  ? asm_exc_general_protection+0x26/0x30
-  [  816.261502]  ? cifs_debug_tcon+0xbd/0x240 [cifs]
-  [  816.261878]  ? cifs_debug_tcon+0xab/0x240 [cifs]
-  [  816.262249]  cifs_debug_data_proc_show+0x516/0xdb0 [cifs]
-  [  816.262689]  ? seq_read_iter+0x379/0x470
-  [  816.262995]  seq_read_iter+0x118/0x470
-  [  816.263291]  proc_reg_read_iter+0x53/0x90
-  [  816.263596]  ? srso_alias_return_thunk+0x5/0x7f
-  [  816.263945]  vfs_read+0x201/0x350
-  [  816.264211]  ksys_read+0x75/0x100
-  [  816.264472]  do_syscall_64+0x3f/0x90
-  [  816.264750]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-  [  816.265135] RIP: 0033:0x7fd5e669d381
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218172
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218094
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/hid-ids.h         |    1 -
+ drivers/hid/hid-logitech-dj.c |   11 +++--------
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -380,6 +380,11 @@ skip_rdma:
- 		seq_printf(m, "\n\n\tSessions: ");
- 		i = 0;
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+			spin_lock(&ses->ses_lock);
-+			if (ses->ses_status == SES_EXITING) {
-+				spin_unlock(&ses->ses_lock);
-+				continue;
-+			}
- 			i++;
- 			if ((ses->serverDomain == NULL) ||
- 				(ses->serverOS == NULL) ||
-@@ -400,6 +405,7 @@ skip_rdma:
- 				ses->ses_count, ses->serverOS, ses->serverNOS,
- 				ses->capabilities, ses->ses_status);
- 			}
-+			spin_unlock(&ses->ses_lock);
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -869,7 +869,6 @@
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_2		0xc534
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
+-#define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_2	0xc547
+ #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
+ #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
+ #define USB_DEVICE_ID_SPACENAVIGATOR	0xc626
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -1695,12 +1695,11 @@ static int logi_dj_raw_event(struct hid_
+ 		}
+ 		/*
+ 		 * Mouse-only receivers send unnumbered mouse data. The 27 MHz
+-		 * receiver uses 6 byte packets, the nano receiver 8 bytes,
+-		 * the lightspeed receiver (Pro X Superlight) 13 bytes.
++		 * receiver uses 6 byte packets, the nano receiver 8 bytes.
+ 		 */
+ 		if (djrcv_dev->unnumbered_application == HID_GD_MOUSE &&
+-		    size <= 13){
+-			u8 mouse_report[14];
++		    size <= 8) {
++			u8 mouse_report[9];
  
- 			seq_printf(m, "\n\tSecurity type: %s ",
- 				get_security_type_str(server->ops->select_sectype(server, ses->sectype)));
+ 			/* Prepend report id */
+ 			mouse_report[0] = REPORT_TYPE_MOUSE;
+@@ -1984,10 +1983,6 @@ static const struct hid_device_id logi_d
+ 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH,
+ 		USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1),
+ 	 .driver_data = recvr_type_gaming_hidpp},
+-	{ /* Logitech lightspeed receiver (0xc547) */
+-	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH,
+-		USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_2),
+-	 .driver_data = recvr_type_gaming_hidpp},
+ 
+ 	{ /* Logitech 27 MHz HID++ 1.0 receiver (0xc513) */
+ 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, USB_DEVICE_ID_MX3000_RECEIVER),
 
 
 
