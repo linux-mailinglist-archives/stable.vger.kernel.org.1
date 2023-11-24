@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA1CF7F844A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5D67F83A8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27A181C27631
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A57CB26870
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E17F3306F;
-	Fri, 24 Nov 2023 19:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B40381CB;
+	Fri, 24 Nov 2023 19:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ez8Z/d9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ShURu14e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318663418E;
-	Fri, 24 Nov 2023 19:25:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0197C433C8;
-	Fri, 24 Nov 2023 19:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FD731748;
+	Fri, 24 Nov 2023 19:19:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08654C433C7;
+	Fri, 24 Nov 2023 19:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853953;
-	bh=PSoR8JJD/vNDstn31DkOS4m46PrecVULLQl5GaxhwkY=;
+	s=korg; t=1700853583;
+	bh=jXSWUmVnchVzdtimWpdVfNMPYa2R/ojl4nUznl0h97o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ez8Z/d9nq1yopUZPZqPq6W59jETbdfcg3zK+HbZ2q5SiNVoPPYfoxgWQCMXGAjIAo
-	 RZLpmhkPBx9m9cC+9lBXZzOPWygChqPqLDJg2JM0LRC4RFHGHPe0c3eS8EdIsFmisF
-	 VnF78eSbcrA51VzvrUDTiF7DZDh213lIVOcG4R10=
+	b=ShURu14efNkDgKmvLCHutVmiAQuDvrb+GiLlSGsNm4W2q9NcYQ/7uxpkNQsLPhtD+
+	 T37lwq4usLuAjDkH/7N/KnhGQ4zTDAF+PoJHOAgA1fwUcJMAWLrytqL37OORarJUK5
+	 W5hyDYkwYgGcNLOwE2A3d6KvVEqgPPAwnQDNlbiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.4 072/159] KVM: x86: hyper-v: Dont auto-enable stimer on write from user-space
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 5.15 247/297] ksmbd: fix slab out of bounds write in smb_inherit_dacl()
 Date: Fri, 24 Nov 2023 17:54:49 +0000
-Message-ID: <20231124171944.961957167@linuxfoundation.org>
+Message-ID: <20231124172008.838629931@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +54,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit d6800af51c76b6dae20e6023bbdc9b3da3ab5121 upstream.
+[ Upstream commit eebff19acaa35820cb09ce2ccb3d21bee2156ffb ]
 
-Don't apply the stimer's counter side effects when modifying its
-value from user-space, as this may trigger spurious interrupts.
+slab out-of-bounds write is caused by that offsets is bigger than pntsd
+allocation size. This patch add the check to validate 3 offsets using
+allocation size.
 
-For example:
- - The stimer is configured in auto-enable mode.
- - The stimer's count is set and the timer enabled.
- - The stimer expires, an interrupt is injected.
- - The VM is live migrated.
- - The stimer config and count are deserialized, auto-enable is ON, the
-   stimer is re-enabled.
- - The stimer expires right away, and injects an unwarranted interrupt.
-
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22271
 Cc: stable@vger.kernel.org
-Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20231017155101.40677-1-nsaenz@amazon.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/hyperv.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/ksmbd/smbacl.c | 29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -555,10 +555,12 @@ static int stimer_set_count(struct kvm_v
+diff --git a/fs/ksmbd/smbacl.c b/fs/ksmbd/smbacl.c
+index 3781bca2c8fc4..83f805248a814 100644
+--- a/fs/ksmbd/smbacl.c
++++ b/fs/ksmbd/smbacl.c
+@@ -1105,6 +1105,7 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 		struct smb_acl *pdacl;
+ 		struct smb_sid *powner_sid = NULL, *pgroup_sid = NULL;
+ 		int powner_sid_size = 0, pgroup_sid_size = 0, pntsd_size;
++		int pntsd_alloc_size;
  
- 	stimer_cleanup(stimer);
- 	stimer->count = count;
--	if (stimer->count == 0)
--		stimer->config.enable = 0;
--	else if (stimer->config.auto_enable)
--		stimer->config.enable = 1;
-+	if (!host) {
-+		if (stimer->count == 0)
-+			stimer->config.enable = 0;
-+		else if (stimer->config.auto_enable)
-+			stimer->config.enable = 1;
-+	}
+ 		if (parent_pntsd->osidoffset) {
+ 			powner_sid = (struct smb_sid *)((char *)parent_pntsd +
+@@ -1117,9 +1118,10 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 			pgroup_sid_size = 1 + 1 + 6 + (pgroup_sid->num_subauth * 4);
+ 		}
  
- 	if (stimer->config.enable)
- 		stimer_mark_pending(stimer, false);
+-		pntsd = kzalloc(sizeof(struct smb_ntsd) + powner_sid_size +
+-				pgroup_sid_size + sizeof(struct smb_acl) +
+-				nt_size, GFP_KERNEL);
++		pntsd_alloc_size = sizeof(struct smb_ntsd) + powner_sid_size +
++			pgroup_sid_size + sizeof(struct smb_acl) + nt_size;
++
++		pntsd = kzalloc(pntsd_alloc_size, GFP_KERNEL);
+ 		if (!pntsd) {
+ 			rc = -ENOMEM;
+ 			goto free_aces_base;
+@@ -1134,6 +1136,27 @@ int smb_inherit_dacl(struct ksmbd_conn *conn,
+ 		pntsd->gsidoffset = parent_pntsd->gsidoffset;
+ 		pntsd->dacloffset = parent_pntsd->dacloffset;
+ 
++		if ((u64)le32_to_cpu(pntsd->osidoffset) + powner_sid_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
++
++		if ((u64)le32_to_cpu(pntsd->gsidoffset) + pgroup_sid_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
++
++		if ((u64)le32_to_cpu(pntsd->dacloffset) + sizeof(struct smb_acl) + nt_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
++
+ 		if (pntsd->osidoffset) {
+ 			struct smb_sid *owner_sid = (struct smb_sid *)((char *)pntsd +
+ 					le32_to_cpu(pntsd->osidoffset));
+-- 
+2.42.0
+
 
 
 
