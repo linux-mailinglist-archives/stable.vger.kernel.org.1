@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6F17F7C0E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DA1B7F7E2E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38FA2281DAC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40294B20D5D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EFB3A8C5;
-	Fri, 24 Nov 2023 18:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0E13A8F8;
+	Fri, 24 Nov 2023 18:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHdifpCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTG9zCgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323BD39FF8;
-	Fri, 24 Nov 2023 18:11:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3427C433C8;
-	Fri, 24 Nov 2023 18:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE83E341AE;
+	Fri, 24 Nov 2023 18:30:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A67AC433C7;
+	Fri, 24 Nov 2023 18:30:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849479;
-	bh=QlBXBM1aye9cLlXQ9D/X/UGJtigVVNCfdoByxP612sY=;
+	s=korg; t=1700850639;
+	bh=HB+sPDMjbLZ+Wwr3QUsQxVmxwT2AfnB/NmG8mrjXaRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AHdifpCizyA6rrVRzNB0xGIKr/AcogjnGe+MGOdev2BHUvI6lDd45kumHsiadrtaD
-	 0KgR4tXQkYNAJlNTT6OhkIbXvkF/grVs0adt9qP2UFvcdXROSylggxqZ/az1TMBiz+
-	 icurgBct+GtL46AL8CUqJjHkV70nUXrpa5bisLk8=
+	b=XTG9zCgddj1uTGzFUNDnW/wFyRx1C+57a+xj41dKzKeCTa1dBtdWZqhMA+IlNNTK2
+	 bHbSt2sC0iY9ydcRtX5nZuiqG/Nk/NPIFKhcMikaMm5/CJV1MzOk0rfmyuAovkn/Yu
+	 uUf2DLwS0pz/3zqZuNOGFH8TIzuGJM7y69NW+oWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/530] xen/events: fix delayed eoi list handling
-Date: Fri, 24 Nov 2023 17:46:04 +0000
-Message-ID: <20231124172034.094042925@linuxfoundation.org>
+Subject: [PATCH 6.5 129/491] i2c: fix memleak in i2c_new_client_device()
+Date: Fri, 24 Nov 2023 17:46:05 +0000
+Message-ID: <20231124172028.376576517@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +54,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 47d970204054f859f35a2237baa75c2d84fcf436 ]
+[ Upstream commit 6af79f7fe748fe6a3c5c3a63d7f35981a82c2769 ]
 
-When delaying eoi handling of events, the related elements are queued
-into the percpu lateeoi list. In case the list isn't empty, the
-elements should be sorted by the time when eoi handling is to happen.
+Yang Yingliang reported a memleak:
+===
 
-Unfortunately a new element will never be queued at the start of the
-list, even if it has a handling time lower than all other list
-elements.
+I got memory leak as follows when doing fault injection test:
 
-Fix that by handling that case the same way as for an empty list.
+unreferenced object 0xffff888014aec078 (size 8):
+  comm "xrun", pid 356, jiffies 4294910619 (age 16.332s)
+  hex dump (first 8 bytes):
+    31 2d 30 30 31 63 00 00                          1-001c..
+  backtrace:
+    [<00000000eb56c0a9>] __kmalloc_track_caller+0x1a6/0x300
+    [<000000000b220ea3>] kvasprintf+0xad/0x140
+    [<00000000b83203e5>] kvasprintf_const+0x62/0x190
+    [<000000002a5eab37>] kobject_set_name_vargs+0x56/0x140
+    [<00000000300ac279>] dev_set_name+0xb0/0xe0
+    [<00000000b66ebd6f>] i2c_new_client_device+0x7e4/0x9a0
 
-Fixes: e99502f76271 ("xen/events: defer eoi in case of excessive number of events")
-Reported-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+If device_register() returns error in i2c_new_client_device(),
+the name allocated by i2c_dev_set_name() need be freed. As
+comment of device_register() says, it should use put_device()
+to give up the reference in the error path.
+
+===
+I think this solution is less intrusive and more robust than he
+originally proposed solutions, though.
+
+Reported-by: Yang Yingliang <yangyingliang@huawei.com>
+Closes: http://patchwork.ozlabs.org/project/linux-i2c/patch/20221124085448.3620240-1-yangyingliang@huawei.com/
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/i2c/i2c-core-base.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 2cf0c2b693861..c50419638ac0a 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -604,7 +604,9 @@ static void lateeoi_list_add(struct irq_info *info)
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 60746652fd525..7f30bcceebaed 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -931,8 +931,9 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
+ struct i2c_client *
+ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
+ {
+-	struct i2c_client	*client;
+-	int			status;
++	struct i2c_client *client;
++	bool need_put = false;
++	int status;
  
- 	spin_lock_irqsave(&eoi->eoi_list_lock, flags);
+ 	client = kzalloc(sizeof *client, GFP_KERNEL);
+ 	if (!client)
+@@ -970,7 +971,6 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 	client->dev.fwnode = info->fwnode;
  
--	if (list_empty(&eoi->eoi_list)) {
-+	elem = list_first_entry_or_null(&eoi->eoi_list, struct irq_info,
-+					eoi_list);
-+	if (!elem || info->eoi_time < elem->eoi_time) {
- 		list_add(&info->eoi_list, &eoi->eoi_list);
- 		mod_delayed_work_on(info->eoi_cpu, system_wq,
- 				    &eoi->delayed, delay);
+ 	device_enable_async_suspend(&client->dev);
+-	i2c_dev_set_name(adap, client, info);
+ 
+ 	if (info->swnode) {
+ 		status = device_add_software_node(&client->dev, info->swnode);
+@@ -982,6 +982,7 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 		}
+ 	}
+ 
++	i2c_dev_set_name(adap, client, info);
+ 	status = device_register(&client->dev);
+ 	if (status)
+ 		goto out_remove_swnode;
+@@ -993,6 +994,7 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 
+ out_remove_swnode:
+ 	device_remove_software_node(&client->dev);
++	need_put = true;
+ out_err_put_of_node:
+ 	of_node_put(info->of_node);
+ out_err:
+@@ -1000,7 +1002,10 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 		"Failed to register i2c client %s at 0x%02x (%d)\n",
+ 		client->name, client->addr, status);
+ out_err_silent:
+-	kfree(client);
++	if (need_put)
++		put_device(&client->dev);
++	else
++		kfree(client);
+ 	return ERR_PTR(status);
+ }
+ EXPORT_SYMBOL_GPL(i2c_new_client_device);
 -- 
 2.42.0
 
