@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-1815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43867F817D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22F2B7F7FFF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38269B21BD4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BEE91C214E8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880592E858;
-	Fri, 24 Nov 2023 18:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8F93418B;
+	Fri, 24 Nov 2023 18:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0W3i9os"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyXzEk/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4264A2FC4E;
-	Fri, 24 Nov 2023 18:59:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C322CC433C7;
-	Fri, 24 Nov 2023 18:58:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B60933CC7;
+	Fri, 24 Nov 2023 18:45:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA93C433C7;
+	Fri, 24 Nov 2023 18:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852340;
-	bh=FIQX1zuBoGumYgQx5pPK0zk5h/KnwrJJvJK3dFUBapg=;
+	s=korg; t=1700851551;
+	bh=joX28xGhRiaK4nhZheNgbrTew39SFsfLFYL5SMBsitc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H0W3i9os+PvR9AdBLaznU3HPLBXzRF/QrIbWIR6H2I+dAblehCKZQ+R+Nmm91OQ9A
-	 pwRmx9S7qsiCDsP8hZin6HkJWdgX35FSFo5NJIwuribEoiXRSYOnsr4gVge/AcJC2s
-	 H7QIz6RnU6SDweLKxGQD0mk+JMqFiF4PsmUJCQPs=
+	b=VyXzEk/UIpCQcak3PuU+996agp7KupGp0wINsdFA9Lej4yUn2pNFvylLF0gmFC0rs
+	 cjVepw5ozulAoKgzHpsT5zysAODauV3FOQyfkIKrKj8iscTRxdbB1H4QML7YOXnjWs
+	 RU4aa7p6/oehT8BG+5h7JNwB3hFIgrZEF3VrbpFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 316/372] f2fs: do not return EFSCORRUPTED, but try to run online repair
-Date: Fri, 24 Nov 2023 17:51:43 +0000
-Message-ID: <20231124172020.920764285@linuxfoundation.org>
+	stable@kernel.org,
+	syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com,
+	Brian Foster <bfoster@redhat.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.5 468/491] ext4: fix racy may inline data check in dio write
+Date: Fri, 24 Nov 2023 17:51:44 +0000
+Message-ID: <20231124172038.685896808@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,94 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Brian Foster <bfoster@redhat.com>
 
-commit 50a472bbc79ff9d5a88be8019a60e936cadf9f13 upstream.
+commit ce56d21355cd6f6937aca32f1f44ca749d1e4808 upstream.
 
-If we return the error, there's no way to recover the status as of now, since
-fsck does not fix the xattr boundary issue.
+syzbot reports that the following warning from ext4_iomap_begin()
+triggers as of the commit referenced below:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+        if (WARN_ON_ONCE(ext4_has_inline_data(inode)))
+                return -ERANGE;
+
+This occurs during a dio write, which is never expected to encounter
+an inode with inline data. To enforce this behavior,
+ext4_dio_write_iter() checks the current inline state of the inode
+and clears the MAY_INLINE_DATA state flag to either fall back to
+buffered writes, or enforce that any other writers in progress on
+the inode are not allowed to create inline data.
+
+The problem is that the check for existing inline data and the state
+flag can span a lock cycle. For example, if the ilock is originally
+locked shared and subsequently upgraded to exclusive, another writer
+may have reacquired the lock and created inline data before the dio
+write task acquires the lock and proceeds.
+
+The commit referenced below loosens the lock requirements to allow
+some forms of unaligned dio writes to occur under shared lock, but
+AFAICT the inline data check was technically already racy for any
+dio write that would have involved a lock cycle. Regardless, lift
+clearing of the state bit to the same lock critical section that
+checks for preexisting inline data on the inode to close the race.
+
+Cc: stable@kernel.org
+Reported-by: syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com
+Fixes: 310ee0902b8d ("ext4: allow concurrent unaligned dio overwrites")
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Link: https://lore.kernel.org/r/20231002185020.531537-1-bfoster@redhat.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/node.c  |    4 +++-
- fs/f2fs/xattr.c |   20 +++++++++++++-------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ fs/ext4/file.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -2738,7 +2738,9 @@ recover_xnid:
- 	f2fs_update_inode_page(inode);
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -537,18 +537,20 @@ static ssize_t ext4_dio_write_iter(struc
+ 		return ext4_buffered_write_iter(iocb, from);
+ 	}
  
- 	/* 3: update and set xattr node page dirty */
--	memcpy(F2FS_NODE(xpage), F2FS_NODE(page), VALID_XATTR_BLOCK_SIZE);
-+	if (page)
-+		memcpy(F2FS_NODE(xpage), F2FS_NODE(page),
-+				VALID_XATTR_BLOCK_SIZE);
++	/*
++	 * Prevent inline data from being created since we are going to allocate
++	 * blocks for DIO. We know the inode does not currently have inline data
++	 * because ext4_should_use_dio() checked for it, but we have to clear
++	 * the state flag before the write checks because a lock cycle could
++	 * introduce races with other writers.
++	 */
++	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
++
+ 	ret = ext4_dio_write_checks(iocb, from, &ilock_shared, &extend,
+ 				    &unwritten, &dio_flags);
+ 	if (ret <= 0)
+ 		return ret;
  
- 	set_page_dirty(xpage);
- 	f2fs_put_page(xpage, 1);
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -363,10 +363,10 @@ static int lookup_all_xattrs(struct inod
- 
- 	*xe = __find_xattr(cur_addr, last_txattr_addr, NULL, index, len, name);
- 	if (!*xe) {
--		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
-+		f2fs_err(F2FS_I_SB(inode), "lookup inode (%lu) has corrupted xattr",
- 								inode->i_ino);
- 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
--		err = -EFSCORRUPTED;
-+		err = -ENODATA;
- 		f2fs_handle_error(F2FS_I_SB(inode),
- 					ERROR_CORRUPTED_XATTR);
- 		goto out;
-@@ -583,13 +583,12 @@ ssize_t f2fs_listxattr(struct dentry *de
- 
- 		if ((void *)(entry) + sizeof(__u32) > last_base_addr ||
- 			(void *)XATTR_NEXT_ENTRY(entry) > last_base_addr) {
--			f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
-+			f2fs_err(F2FS_I_SB(inode), "list inode (%lu) has corrupted xattr",
- 						inode->i_ino);
- 			set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
--			error = -EFSCORRUPTED;
- 			f2fs_handle_error(F2FS_I_SB(inode),
- 						ERROR_CORRUPTED_XATTR);
--			goto cleanup;
-+			break;
- 		}
- 
- 		if (!handler || (handler->list && !handler->list(dentry)))
-@@ -650,7 +649,7 @@ static int __f2fs_setxattr(struct inode
- 
- 	if (size > MAX_VALUE_LEN(inode))
- 		return -E2BIG;
+-	/*
+-	 * Make sure inline data cannot be created anymore since we are going
+-	 * to allocate blocks for DIO. We know the inode does not have any
+-	 * inline data now because ext4_dio_supported() checked for that.
+-	 */
+-	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
 -
-+retry:
- 	error = read_all_xattrs(inode, ipage, &base_addr);
- 	if (error)
- 		return error;
-@@ -660,7 +659,14 @@ static int __f2fs_setxattr(struct inode
- 	/* find entry with wanted name. */
- 	here = __find_xattr(base_addr, last_base_addr, NULL, index, len, name);
- 	if (!here) {
--		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
-+		if (!F2FS_I(inode)->i_xattr_nid) {
-+			f2fs_notice(F2FS_I_SB(inode),
-+				"recover xattr in inode (%lu)", inode->i_ino);
-+			f2fs_recover_xattr_data(inode, NULL);
-+			kfree(base_addr);
-+			goto retry;
-+		}
-+		f2fs_err(F2FS_I_SB(inode), "set inode (%lu) has corrupted xattr",
- 								inode->i_ino);
- 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
- 		error = -EFSCORRUPTED;
+ 	offset = iocb->ki_pos;
+ 	count = ret;
+ 
 
 
 
