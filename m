@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-2269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B817F8377
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C067F8264
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 580B31F2103F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535FF285098
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF41364C4;
-	Fri, 24 Nov 2023 19:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4363364B7;
+	Fri, 24 Nov 2023 19:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4s7bp8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yKLpvA0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DC933CCA;
-	Fri, 24 Nov 2023 19:17:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6465C433C8;
-	Fri, 24 Nov 2023 19:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2A172FC21;
+	Fri, 24 Nov 2023 19:07:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF435C433C8;
+	Fri, 24 Nov 2023 19:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853471;
-	bh=Kpu4WbCfhAJOniBUmi0h1vdkdtRC+UYEawWONzM6U+s=;
+	s=korg; t=1700852832;
+	bh=jRmMAJ2TBT8vpz7m49iZCMQJjkPs8c+cd9R0hZBsCx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4s7bp8doQSvMTzSi9rd9znjlB4iru7k025p3ZEN8Z+V4nPsSZxYOXOhlV5xEPvhs
-	 uIZYhac/DhfEdvJ4dAk6LOOy/hZXIoNWuuv/4FiHlT/iP7mPnMl75fH5+H+XLp2n39
-	 lBMB0wQbb2vAMe65hs5EiD+vHSXo1Q3QP81VBUYs=
+	b=1yKLpvA0PwZoN9InahbJ/8ihgat7s1ociFJsgrNAJVJhnSOXh+ulVEc2L5zB59CeZ
+	 PA9tsb31PBsJVczY50Y+pi7AEz7RX7KYZjYTKW8TKIj5xKp86zrktCUX5i7D0Mr2Gg
+	 fEYP7+rupmzkJtyAMoaSbz7OJIMde8PyRlrBjWqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 5.15 201/297] wifi: ath11k: fix htt pktlog locking
+	Brian Geffon <bgeffon@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 116/193] PM: hibernate: Use __get_safe_page() rather than touching the list
 Date: Fri, 24 Nov 2023 17:54:03 +0000
-Message-ID: <20231124172007.241605744@linuxfoundation.org>
+Message-ID: <20231124171951.876337091@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,57 +52,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Brian Geffon <bgeffon@google.com>
 
-commit 3f77c7d605b29df277d77e9ee75d96e7ad145d2d upstream.
+commit f0c7183008b41e92fa676406d87f18773724b48b upstream.
 
-The ath11k active pdevs are protected by RCU but the htt pktlog handling
-code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section.
+We found at least one situation where the safe pages list was empty and
+get_buffer() would gladly try to use a NULL pointer.
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
-
-Compile tested only.
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019112521.2071-1-johan+linaro@kernel.org
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ kernel/power/snapshot.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1603,14 +1603,20 @@ static void ath11k_htt_pktlog(struct ath
- 	u8 pdev_id;
- 
- 	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
-+
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
- 	if (!ar) {
- 		ath11k_warn(ab, "invalid pdev id %d on htt pktlog\n", pdev_id);
--		return;
-+		goto out;
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2372,8 +2372,9 @@ static void *get_highmem_page_buffer(str
+ 		pbe->copy_page = tmp;
+ 	} else {
+ 		/* Copy of the page will be stored in normal memory */
+-		kaddr = safe_pages_list;
+-		safe_pages_list = safe_pages_list->next;
++		kaddr = __get_safe_page(ca->gfp_mask);
++		if (!kaddr)
++			return ERR_PTR(-ENOMEM);
+ 		pbe->copy_page = virt_to_page(kaddr);
  	}
- 
- 	trace_ath11k_htt_pktlog(ar, data->payload, hdr->size,
- 				ar->ab->pktlog_defs_checksum);
-+
-+out:
-+	rcu_read_unlock();
- }
- 
- static void ath11k_htt_backpressure_event_handler(struct ath11k_base *ab,
+ 	pbe->next = highmem_pblist;
+@@ -2553,8 +2554,9 @@ static void *get_buffer(struct memory_bi
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 	pbe->orig_address = page_address(page);
+-	pbe->address = safe_pages_list;
+-	safe_pages_list = safe_pages_list->next;
++	pbe->address = __get_safe_page(ca->gfp_mask);
++	if (!pbe->address)
++		return ERR_PTR(-ENOMEM);
+ 	pbe->next = restore_pblist;
+ 	restore_pblist = pbe;
+ 	return pbe->address;
 
 
 
