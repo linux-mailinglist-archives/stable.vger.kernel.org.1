@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EA287F7DE7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA967F7BD3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AA7A28227C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 557D81F20FA3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ED43A8C9;
-	Fri, 24 Nov 2023 18:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCC53A8D6;
+	Fri, 24 Nov 2023 18:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc2+abQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8ifv0pM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C36739FF7;
-	Fri, 24 Nov 2023 18:28:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AACC433C8;
-	Fri, 24 Nov 2023 18:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A947D39FED;
+	Fri, 24 Nov 2023 18:09:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34814C433C7;
+	Fri, 24 Nov 2023 18:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850500;
-	bh=yKMUFjaT4CjFVAMoyWGYr8c4RO7AtdZyieSJtzmyNLo=;
+	s=korg; t=1700849340;
+	bh=jUKcC5T/M0Sg8DWe/nNTi5kcwwRJwcviYmh+Qu2SgZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jc2+abQUcy5Am9C40nFn63H9CO59HdSzaiZMG2y0Ga189a4T3MixqQVPXrwkDRfz9
-	 wl+S54tLDgd3qN7KAnHmdWz3nvnlHgXtIBjmddUt36gjVgUZgfyRR+93syDZkNZmVz
-	 1RuJX1e0TzsXajdsPaKnsY0D7UUFn4155Hqi7Rjg=
+	b=d8ifv0pMKGeQGwQ2JbiOU6k73Fxxs6WGeT5b7sp0NUUzK+oo8GzfARYi/kcTFl/Ua
+	 h5VHe/nkO2EK4XoOvjCIM99NQcHEMHoDt5ceBYe9RFiUZWfwL5xE7ST0yMHYHFjj9k
+	 009ojIk434oOjVGPUpWUoopI6Rv8cAOjUEXBp4s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 073/491] drm/amd: Disable PP_PCIE_DPM_MASK when dynamic speed switching not supported
+Subject: [PATCH 6.6 143/530] gfs2: fix an oops in gfs2_permission
 Date: Fri, 24 Nov 2023 17:45:09 +0000
-Message-ID: <20231124172026.834797552@linuxfoundation.org>
+Message-ID: <20231124172032.435387649@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,81 +53,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit fbf1035b033a51eee48d5f42e781b02fff272ca0 ]
+[ Upstream commit 0abd1557e21c617bd13fc18f7725fc6363c05913 ]
 
-Rather than individual ASICs checking for the quirk, set the quirk at the
-driver level.
+In RCU mode, we might race with gfs2_evict_inode(), which zeroes
+->i_gl.  Freeing of the object it points to is RCU-delayed, so
+if we manage to fetch the pointer before it's been replaced with
+NULL, we are fine.  Check if we'd fetched NULL and treat that
+as "bail out and tell the caller to get out of RCU mode".
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c              | 2 ++
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c     | 4 +---
- drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c | 2 +-
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c          | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+ fs/gfs2/inode.c | 11 +++++++++--
+ fs/gfs2/super.c |  2 +-
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index ecc61a6d13e13..65779cbdbad13 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -2318,6 +2318,8 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
- 		adev->pm.pp_feature &= ~PP_GFXOFF_MASK;
- 	if (amdgpu_sriov_vf(adev) && adev->asic_type == CHIP_SIENNA_CICHLID)
- 		adev->pm.pp_feature &= ~PP_OVERDRIVE_MASK;
-+	if (!amdgpu_device_pcie_dynamic_switching_supported())
-+		adev->pm.pp_feature &= ~PP_PCIE_DPM_MASK;
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 0eac045079047..eb4bbe1728c06 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -1868,14 +1868,21 @@ int gfs2_permission(struct mnt_idmap *idmap, struct inode *inode,
+ {
+ 	struct gfs2_inode *ip;
+ 	struct gfs2_holder i_gh;
++	struct gfs2_glock *gl;
+ 	int error;
  
- 	total = true;
- 	for (i = 0; i < adev->num_ip_blocks; i++) {
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 1cb4022644977..a38888176805d 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -1823,9 +1823,7 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
- 
- 	data->mclk_dpm_key_disabled = hwmgr->feature_mask & PP_MCLK_DPM_MASK ? false : true;
- 	data->sclk_dpm_key_disabled = hwmgr->feature_mask & PP_SCLK_DPM_MASK ? false : true;
--	data->pcie_dpm_key_disabled =
--		!amdgpu_device_pcie_dynamic_switching_supported() ||
--		!(hwmgr->feature_mask & PP_PCIE_DPM_MASK);
-+	data->pcie_dpm_key_disabled = !(hwmgr->feature_mask & PP_PCIE_DPM_MASK);
- 	/* need to set voltage control types before EVV patching */
- 	data->voltage_control = SMU7_VOLTAGE_CONTROL_NONE;
- 	data->vddci_control = SMU7_VOLTAGE_CONTROL_NONE;
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-index 9a5f3d31e7780..94f22df5ac205 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-@@ -2107,7 +2107,7 @@ static int sienna_cichlid_update_pcie_parameters(struct smu_context *smu,
- 	min_lane_width = min_lane_width > max_lane_width ?
- 			 max_lane_width : min_lane_width;
- 
--	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
-+	if (!(smu->adev->pm.pp_feature & PP_PCIE_DPM_MASK)) {
- 		pcie_table->pcie_gen[0] = max_gen_speed;
- 		pcie_table->pcie_lane[0] = max_lane_width;
- 	} else {
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-index 4fa94f583b87c..223e890575a2b 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -2436,7 +2436,7 @@ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
- 	uint32_t smu_pcie_arg;
- 	int ret, i;
- 
--	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
-+	if (!(smu->adev->pm.pp_feature & PP_PCIE_DPM_MASK)) {
- 		if (pcie_table->pcie_gen[num_of_levels - 1] < pcie_gen_cap)
- 			pcie_gen_cap = pcie_table->pcie_gen[num_of_levels - 1];
+ 	gfs2_holder_mark_uninitialized(&i_gh);
+ 	ip = GFS2_I(inode);
+-	if (gfs2_glock_is_locked_by_me(ip->i_gl) == NULL) {
++	gl = rcu_dereference(ip->i_gl);
++	if (unlikely(!gl)) {
++		/* inode is getting torn down, must be RCU mode */
++		WARN_ON_ONCE(!(mask & MAY_NOT_BLOCK));
++		return -ECHILD;
++        }
++	if (gfs2_glock_is_locked_by_me(gl) == NULL) {
+ 		if (mask & MAY_NOT_BLOCK)
+ 			return -ECHILD;
+-		error = gfs2_glock_nq_init(ip->i_gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
++		error = gfs2_glock_nq_init(gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 02d93da21b2b0..0dd5641990b90 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1550,7 +1550,7 @@ static void gfs2_evict_inode(struct inode *inode)
+ 		wait_on_bit_io(&ip->i_flags, GIF_GLOP_PENDING, TASK_UNINTERRUPTIBLE);
+ 		gfs2_glock_add_to_lru(ip->i_gl);
+ 		gfs2_glock_put_eventually(ip->i_gl);
+-		ip->i_gl = NULL;
++		rcu_assign_pointer(ip->i_gl, NULL);
+ 	}
+ }
  
 -- 
 2.42.0
