@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B037F808B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8ED7F7CA5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C756C1C21550
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B02F1C20B2A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E3633CFD;
-	Fri, 24 Nov 2023 18:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEB339FF7;
+	Fri, 24 Nov 2023 18:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmqOuZ+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLBXdnFy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9812FC4E;
-	Fri, 24 Nov 2023 18:50:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A71DC433C8;
-	Fri, 24 Nov 2023 18:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FAD39FF3;
+	Fri, 24 Nov 2023 18:17:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E162BC433C8;
+	Fri, 24 Nov 2023 18:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851838;
-	bh=yQY8b56RRhSRM4FHOJMe++aH7HDtU8+ccp+xF1GOsdY=;
+	s=korg; t=1700849828;
+	bh=vLY4ck8bCOeFdCVX0QaNsXWUKv0in3K+chja6jz0bAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmqOuZ+jU5N5BATtKlbDEAw49GK+PTXHeDqoa8VBaDxZ6XRG1mDTlKr7rCM8WjVaw
-	 pugtawXAgZGazEX4+7BdinruUeI1z8SB0d3ZBZ057BQbuaBqugZIPs0O7aY5mztkm/
-	 JthZDnPnWyIkAA1Dtm8jFjSuthza/A6AeMIyFrHY=
+	b=dLBXdnFyovPoDS2Zp356geZ+sA7EsHSYi2prjh5LYKk4tiF2UEGZOZDh7XsN9VqW6
+	 gon3PHK4bk5JYRpuEfnFYQZkAbgbXB6UyQHOxPYYeVe/7dAYr7NVt56BwcOmcjvLHs
+	 XSM0q8iRc7XB2yflHVwitWwsRwSKsPLUALJuS9IM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/372] sched/core: Optimize in_task() and in_interrupt() a bit
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 337/530] btrfs: dont arbitrarily slow down delalloc if were committing
 Date: Fri, 24 Nov 2023 17:48:23 +0000
-Message-ID: <20231124172014.349706533@linuxfoundation.org>
+Message-ID: <20231124172038.286510847@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,105 +52,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 87c3a5893e865739ce78aa7192d36011022e0af7 ]
+commit 11aeb97b45ad2e0040cbb2a589bc403152526345 upstream.
 
-Except on x86, preempt_count is always accessed with READ_ONCE().
-Repeated invocations in macros like irq_count() produce repeated loads.
-These redundant instructions appear in various fast paths. In the one
-shown below, for example, irq_count() is evaluated during kernel entry
-if !tick_nohz_full_cpu(smp_processor_id()).
+We have a random schedule_timeout() if the current transaction is
+committing, which seems to be a holdover from the original delalloc
+reservation code.
 
-0001ed0a <irq_enter_rcu>:
-   1ed0a:       4e56 0000       linkw %fp,#0
-   1ed0e:       200f            movel %sp,%d0
-   1ed10:       0280 ffff e000  andil #-8192,%d0
-   1ed16:       2040            moveal %d0,%a0
-   1ed18:       2028 0008       movel %a0@(8),%d0
-   1ed1c:       0680 0001 0000  addil #65536,%d0
-   1ed22:       2140 0008       movel %d0,%a0@(8)
-   1ed26:       082a 0001 000f  btst #1,%a2@(15)
-   1ed2c:       670c            beqs 1ed3a <irq_enter_rcu+0x30>
-   1ed2e:       2028 0008       movel %a0@(8),%d0
-   1ed32:       2028 0008       movel %a0@(8),%d0
-   1ed36:       2028 0008       movel %a0@(8),%d0
-   1ed3a:       4e5e            unlk %fp
-   1ed3c:       4e75            rts
+Remove this, we have the proper flushing stuff, we shouldn't be hoping
+for random timing things to make everything work.  This just induces
+latency for no reason.
 
-This patch doesn't prevent the pointless btst and beqs instructions
-above, but it does eliminate 2 of the 3 pointless move instructions
-here and elsewhere.
-
-On x86, preempt_count is per-cpu data and the problem does not arise
-presumably because the compiler is free to optimize more effectively.
-
-This patch was tested on m68k and x86. I was expecting no changes
-to object code for x86 and mostly that's what I saw. However, there
-were a few places where code generation was perturbed for some reason.
-
-The performance issue addressed here is minor on uniprocessor m68k. I
-got a 0.01% improvement from this patch for a simple "find /sys -false"
-benchmark. For architectures and workloads susceptible to cache line bounce
-the improvement is expected to be larger. The only SMP architecture I have
-is x86, and as x86 unaffected I have not done any further measurements.
-
-Fixes: 15115830c887 ("preempt: Cleanup the macro maze a bit")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/0a403120a682a525e6db2d81d1a3ffcc137c3742.1694756831.git.fthain@linux-m68k.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/preempt.h | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ fs/btrfs/delalloc-space.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index 0df425bf9bd75..8cfcc5d454512 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -98,14 +98,21 @@ static __always_inline unsigned char interrupt_context_level(void)
- 	return level;
- }
+--- a/fs/btrfs/delalloc-space.c
++++ b/fs/btrfs/delalloc-space.c
+@@ -322,9 +322,6 @@ int btrfs_delalloc_reserve_metadata(stru
+ 	} else {
+ 		if (current->journal_info)
+ 			flush = BTRFS_RESERVE_FLUSH_LIMIT;
+-
+-		if (btrfs_transaction_in_commit(fs_info))
+-			schedule_timeout(1);
+ 	}
  
-+/*
-+ * These macro definitions avoid redundant invocations of preempt_count()
-+ * because such invocations would result in redundant loads given that
-+ * preempt_count() is commonly implemented with READ_ONCE().
-+ */
-+
- #define nmi_count()	(preempt_count() & NMI_MASK)
- #define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
- #ifdef CONFIG_PREEMPT_RT
- # define softirq_count()	(current->softirq_disable_cnt & SOFTIRQ_MASK)
-+# define irq_count()		((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | softirq_count())
- #else
- # define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
-+# define irq_count()		(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_MASK))
- #endif
--#define irq_count()	(nmi_count() | hardirq_count() | softirq_count())
- 
- /*
-  * Macros to retrieve the current execution context:
-@@ -118,7 +125,11 @@ static __always_inline unsigned char interrupt_context_level(void)
- #define in_nmi()		(nmi_count())
- #define in_hardirq()		(hardirq_count())
- #define in_serving_softirq()	(softirq_count() & SOFTIRQ_OFFSET)
--#define in_task()		(!(in_nmi() | in_hardirq() | in_serving_softirq()))
-+#ifdef CONFIG_PREEMPT_RT
-+# define in_task()		(!((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | in_serving_softirq()))
-+#else
-+# define in_task()		(!(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET)))
-+#endif
- 
- /*
-  * The following macros are deprecated and should not be used in new code:
--- 
-2.42.0
-
+ 	num_bytes = ALIGN(num_bytes, fs_info->sectorsize);
 
 
 
