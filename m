@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D627F7D6F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 510C47F7F94
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8B0F282200
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81B741C214A3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEE53A8D6;
-	Fri, 24 Nov 2023 18:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1E33306F;
+	Fri, 24 Nov 2023 18:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T02gKX1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDbLZOAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E33C381BF;
-	Fri, 24 Nov 2023 18:24:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0433C433C7;
-	Fri, 24 Nov 2023 18:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B95A2FC21;
+	Fri, 24 Nov 2023 18:42:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3DC6C433C8;
+	Fri, 24 Nov 2023 18:42:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850273;
-	bh=JQYihaSfpUzg7orPlW2bZOYJFdVAcu1T0CnCoJ90KL8=;
+	s=korg; t=1700851364;
+	bh=Ef8mRr4dJWUVOPjNbvQ5gHyTTSPJ8TvWSRyMOs+lWTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T02gKX1PeSfizGBGIPLv/rdjnnBfqUogwMKkrp4Vc0oCpfyrVNy6t/6KroWfF6kJs
-	 WVtjPqmxDNq9hT6rcmijmdYb4tBsxwS21dx0DWGQk24hGxp+cROLGJ+/My+1mOocAx
-	 Qe159bo3nGJa33L3qoxYDermKQJmoRAAN9ukZB+E=
+	b=gDbLZOArMUkb9rF4e38cpH67BK+GmBo9/Tjf/A/6V4k3NnDbxjg3jY8ArMM//nKPK
+	 x6OgKbH7YNPoPiz8aWo1L5NuXsJe6PyEilQmUYC3RJthG/07kFvzWytDeH3IiYrn+L
+	 TPpR8HCqgpz/TG5rw6sLQ3FgnNuhH0R+eTt2i/yQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 489/530] media: qcom: camss: Fix missing vfe_lite clocks check
+	Su Hui <suhui@nfschina.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.5 419/491] f2fs: avoid format-overflow warning
 Date: Fri, 24 Nov 2023 17:50:55 +0000
-Message-ID: <20231124172042.998342785@linuxfoundation.org>
+Message-ID: <20231124172037.195086779@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +51,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Su Hui <suhui@nfschina.com>
 
-commit b6e1bdca463a932c1ac02caa7d3e14bf39288e0c upstream.
+commit e0d4e8acb3789c5a8651061fbab62ca24a45c063 upstream.
 
-check_clock doesn't account for vfe_lite which means that vfe_lite will
-never get validated by this routine. Add the clock name to the expected set
-to remediate.
+With gcc and W=1 option, there's a warning like this:
 
-Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+fs/f2fs/compress.c: In function ‘f2fs_init_page_array_cache’:
+fs/f2fs/compress.c:1984:47: error: ‘%u’ directive writing between
+1 and 7 bytes into a region of size between 5 and 8
+[-Werror=format-overflow=]
+ 1984 |  sprintf(slab_name, "f2fs_page_array_entry-%u:%u", MAJOR(dev),
+		MINOR(dev));
+      |                                               ^~
+
+String "f2fs_page_array_entry-%u:%u" can up to 35. The first "%u" can up
+to 4 and the second "%u" can up to 7, so total size is "24 + 4 + 7 = 35".
+slab_name's size should be 35 rather than 32.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/compress.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/camss/camss-vfe.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe.c
-@@ -535,7 +535,8 @@ static int vfe_check_clock_rates(struct
- 		struct camss_clock *clock = &vfe->clock[i];
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1988,7 +1988,7 @@ void f2fs_destroy_compress_inode(struct
+ int f2fs_init_page_array_cache(struct f2fs_sb_info *sbi)
+ {
+ 	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
++	char slab_name[35];
  
- 		if (!strcmp(clock->name, "vfe0") ||
--		    !strcmp(clock->name, "vfe1")) {
-+		    !strcmp(clock->name, "vfe1") ||
-+		    !strcmp(clock->name, "vfe_lite")) {
- 			u64 min_rate = 0;
- 			unsigned long rate;
- 
+ 	if (!f2fs_sb_has_compression(sbi))
+ 		return 0;
 
 
 
