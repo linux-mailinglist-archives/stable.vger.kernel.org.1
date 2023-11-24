@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F017F7E4F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12157F8023
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2600D1C21335
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DE13282477
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D53A3A8C6;
-	Fri, 24 Nov 2023 18:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF365364A5;
+	Fri, 24 Nov 2023 18:47:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSnrR8Mn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNojXMno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB1139FF3;
-	Fri, 24 Nov 2023 18:31:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B290EC433C7;
-	Fri, 24 Nov 2023 18:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA761364AE;
+	Fri, 24 Nov 2023 18:47:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C62C433C7;
+	Fri, 24 Nov 2023 18:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850709;
-	bh=MqFJyPX7UWxwqDFeGifqHVO0CUHcrl1/KLJZIREhdn0=;
+	s=korg; t=1700851620;
+	bh=jREKcJJrFHp7PluBQhyhd2J/UmGjhHxRoTP3r3huE/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XSnrR8MntsPl2Qz8jFO1tEQVRP8Dp2YdR23VwR+Oo+P2nXafF4hZHmdLLyP98p45f
-	 krElVrCcXwnmcqmEUTm6OCnuJePVu405TLCk8ktHKJSsJe/YmRmbf38EuHgB/tW2CB
-	 J6Dw1AaRDA0Vnd6KK1M1t7BqMB9Q9amI2L9Vp0p8=
+	b=tNojXMnolvflxAyrSbBD9qfnQ4+Hhn0QBwk1vpCK56HdzALQnQFRKpY3G8KKKa7os
+	 VPE+91TsjSKqyAB9PAB9MJs12CUGHSmCE9Bk1JZY0va8VTA+FwmafhOO/U1yhFlrq2
+	 8YdVN+9XW4t/sQmmteZ7+efT1bYikpsmjd8IpphE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 157/491] mtd: rawnand: intel: check return value of devm_kasprintf()
-Date: Fri, 24 Nov 2023 17:46:33 +0000
-Message-ID: <20231124172029.192342431@linuxfoundation.org>
+Subject: [PATCH 6.1 007/372] clocksource/drivers/timer-imx-gpt: Fix potential memory leak
+Date: Fri, 24 Nov 2023 17:46:34 +0000
+Message-ID: <20231124172010.681777602@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +54,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-[ Upstream commit 74ac5b5e2375f1e8ef797ac7770887e9969f2516 ]
+[ Upstream commit 8051a993ce222a5158bccc6ac22ace9253dd71cb ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful by
-checking the pointer validity.
+Fix coverity Issue CID 250382:  Resource leak (RESOURCE_LEAK).
+Add kfree when error return.
 
-Fixes: 0b1039f016e8 ("mtd: rawnand: Add NAND controller support on Intel LGM SoC")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231019065537.318391-1-yiyang13@huawei.com
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231009083922.1942971-1-ping.bai@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/intel-nand-controller.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/clocksource/timer-imx-gpt.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/intel-nand-controller.c b/drivers/mtd/nand/raw/intel-nand-controller.c
-index a9909eb081244..8231e9828dce7 100644
---- a/drivers/mtd/nand/raw/intel-nand-controller.c
-+++ b/drivers/mtd/nand/raw/intel-nand-controller.c
-@@ -619,6 +619,11 @@ static int ebu_nand_probe(struct platform_device *pdev)
- 	ebu_host->cs_num = cs;
+diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
+index 7b2c70f2f353b..fabff69e52e58 100644
+--- a/drivers/clocksource/timer-imx-gpt.c
++++ b/drivers/clocksource/timer-imx-gpt.c
+@@ -454,12 +454,16 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
+ 		return -ENOMEM;
  
- 	resname = devm_kasprintf(dev, GFP_KERNEL, "nand_cs%d", cs);
-+	if (!resname) {
-+		ret = -ENOMEM;
-+		goto err_of_node_put;
+ 	imxtm->base = of_iomap(np, 0);
+-	if (!imxtm->base)
+-		return -ENXIO;
++	if (!imxtm->base) {
++		ret = -ENXIO;
++		goto err_kfree;
 +	}
-+
- 	ebu_host->cs[cs].chipaddr = devm_platform_ioremap_resource_byname(pdev,
- 									  resname);
- 	if (IS_ERR(ebu_host->cs[cs].chipaddr)) {
-@@ -655,6 +660,11 @@ static int ebu_nand_probe(struct platform_device *pdev)
- 	}
  
- 	resname = devm_kasprintf(dev, GFP_KERNEL, "addr_sel%d", cs);
-+	if (!resname) {
-+		ret = -ENOMEM;
-+		goto err_cleanup_dma;
+ 	imxtm->irq = irq_of_parse_and_map(np, 0);
+-	if (imxtm->irq <= 0)
+-		return -EINVAL;
++	if (imxtm->irq <= 0) {
++		ret = -EINVAL;
++		goto err_kfree;
 +	}
+ 
+ 	imxtm->clk_ipg = of_clk_get_by_name(np, "ipg");
+ 
+@@ -472,11 +476,15 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
+ 
+ 	ret = _mxc_timer_init(imxtm);
+ 	if (ret)
+-		return ret;
++		goto err_kfree;
+ 
+ 	initialized = 1;
+ 
+ 	return 0;
 +
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, resname);
- 	if (!res) {
- 		ret = -EINVAL;
++err_kfree:
++	kfree(imxtm);
++	return ret;
+ }
+ 
+ static int __init imx1_timer_init_dt(struct device_node *np)
 -- 
 2.42.0
 
