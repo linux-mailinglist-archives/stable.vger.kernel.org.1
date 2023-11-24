@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199F77F7EBC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C88A67F8056
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98182B21826
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BCF2B216E5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB8F635F1A;
-	Fri, 24 Nov 2023 18:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0B32FC21;
+	Fri, 24 Nov 2023 18:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUgnRQOW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhXzIAmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D0633CCA;
-	Fri, 24 Nov 2023 18:35:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B104C433C8;
-	Fri, 24 Nov 2023 18:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C786E2E858;
+	Fri, 24 Nov 2023 18:48:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF46C433C8;
+	Fri, 24 Nov 2023 18:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850933;
-	bh=XQdLZBOdOQvY6844hnrv3RQ2blebVsx95D+pyRoqnLQ=;
+	s=korg; t=1700851730;
+	bh=LtiejT2HJ9ZF4CWqnrhNaIeuobdPajhkuvWuh0srecU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUgnRQOWM2iwwiOBBAAeSWRwbkG5RQRTDl+jRYNxgqV4oG9WliVO62OpPkOVKN4yK
-	 XsBegUnPxa7+bC3ErnFxxxxnsa1+UBSQByFwpxQL6KBjQSDQmQnPPDi+fCypPMatvL
-	 wQFgCKNAmrTgz+4Bfa+2AheB3AvNmy/xPmsSg1jg=
+	b=LhXzIAmVtDn6Sf1SDy92L1vr6+p5sS4bGe2SW9KZlEDaCyAwq9urYVkLOP8Rd0kbY
+	 +qkMGv3DK1k8rtbjNZXu3AA9dePQ+XHJFWwNZXQEvCrf0Pvj8u1MR7F1AHPmv4205T
+	 DlZjpNovQreOXgUDjXOFjA2i8eOuLoIt3BTFB+LE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Ekaterina Esina <eesina@astralinux.ru>,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Steve French <stfrench@microsoft.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 222/491] cifs: fix check of rc in function generate_smb3signingkey
-Date: Fri, 24 Nov 2023 17:47:38 +0000
-Message-ID: <20231124172031.228395905@linuxfoundation.org>
+Subject: [PATCH 6.1 072/372] atm: iphase: Do PCI error checks on own line
+Date: Fri, 24 Nov 2023 17:47:39 +0000
+Message-ID: <20231124172012.900199869@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +51,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ekaterina Esina <eesina@astralinux.ru>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 181724fc72486dec2bec8803459be05b5162aaa8 ]
+[ Upstream commit c28742447ca9879b52fbaf022ad844f0ffcd749c ]
 
-Remove extra check after condition, add check after generating key
-for encryption. The check is needed to return non zero rc before
-rewriting it with generating key for decryption.
+In get_esi() PCI errors are checked inside line-split "if" conditions (in
+addition to the file not following the coding style). To make the code in
+get_esi() more readable, fix the coding style and use the usual error
+handling pattern with a separate variable.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+In addition, initialization of 'error' variable at declaration is not
+needed.
 
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Fixes: d70e9fa55884 ("cifs: try opening channels after mounting")
-Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>
-Co-developed-by: Anastasia Belova <abelova@astralinux.ru>
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+No functional changes intended.
+
+Link: https://lore.kernel.org/r/20230911125354.25501-4-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2transport.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/atm/iphase.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
-index 7676091b3e77a..21fc6d84e396d 100644
---- a/fs/smb/client/smb2transport.c
-+++ b/fs/smb/client/smb2transport.c
-@@ -452,6 +452,8 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 				  ptriplet->encryption.context,
- 				  ses->smb3encryptionkey,
- 				  SMB3_ENC_DEC_KEY_SIZE);
-+		if (rc)
-+			return rc;
- 		rc = generate_key(ses, ptriplet->decryption.label,
- 				  ptriplet->decryption.context,
- 				  ses->smb3decryptionkey,
-@@ -460,9 +462,6 @@ generate_smb3signingkey(struct cifs_ses *ses,
- 			return rc;
- 	}
- 
--	if (rc)
--		return rc;
--
- #ifdef CONFIG_CIFS_DEBUG_DUMP_KEYS
- 	cifs_dbg(VFS, "%s: dumping generated AES session keys\n", __func__);
- 	/*
+diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
+index 3241486869530..9bba8f280a4d4 100644
+--- a/drivers/atm/iphase.c
++++ b/drivers/atm/iphase.c
+@@ -2291,19 +2291,21 @@ static int get_esi(struct atm_dev *dev)
+ static int reset_sar(struct atm_dev *dev)  
+ {  
+ 	IADEV *iadev;  
+-	int i, error = 1;  
++	int i, error;
+ 	unsigned int pci[64];  
+ 	  
+ 	iadev = INPH_IA_DEV(dev);  
+-	for(i=0; i<64; i++)  
+-	  if ((error = pci_read_config_dword(iadev->pci,  
+-				i*4, &pci[i])) != PCIBIOS_SUCCESSFUL)  
+-  	      return error;  
++	for (i = 0; i < 64; i++) {
++		error = pci_read_config_dword(iadev->pci, i * 4, &pci[i]);
++		if (error != PCIBIOS_SUCCESSFUL)
++			return error;
++	}
+ 	writel(0, iadev->reg+IPHASE5575_EXT_RESET);  
+-	for(i=0; i<64; i++)  
+-	  if ((error = pci_write_config_dword(iadev->pci,  
+-					i*4, pci[i])) != PCIBIOS_SUCCESSFUL)  
+-	    return error;  
++	for (i = 0; i < 64; i++) {
++		error = pci_write_config_dword(iadev->pci, i * 4, pci[i]);
++		if (error != PCIBIOS_SUCCESSFUL)
++			return error;
++	}
+ 	udelay(5);  
+ 	return 0;  
+ }  
 -- 
 2.42.0
 
