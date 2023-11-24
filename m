@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-1218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38B537F7E91
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653CB7F7C68
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5DF02822DB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8560D1C21081
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FDF31759;
-	Fri, 24 Nov 2023 18:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA533A8C6;
+	Fri, 24 Nov 2023 18:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASGZCxA1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCwVnGOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F542E858;
-	Fri, 24 Nov 2023 18:34:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37257C433C8;
-	Fri, 24 Nov 2023 18:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBB339FC3;
+	Fri, 24 Nov 2023 18:14:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3CBC433C7;
+	Fri, 24 Nov 2023 18:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850852;
-	bh=43vR9cnHiLjjKb+bXXo7kl5gnUtFLHDPe/SAdI16qR0=;
+	s=korg; t=1700849696;
+	bh=ylzRVHGDCoH3+0vht5bjvfxp1i5C38PPhd+ZMwOapR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ASGZCxA1kZV8JxSlSWcoWW8p+GilaHkCqNu6l8hH3P2Y5ujp8sLJ7xJrUrGGA7fza
-	 9DvI2+omhlY7M6IRm5SXyF0gNCKHt3dWTf/8qg+GWrw2H/l841Wh/HFgOHrmEJsr0w
-	 76rKJbGXnkqXfhCr3aWYq/3OpI5ZbqLFOXeC02K8=
+	b=wCwVnGOqygwpAmrsSBtQgyAnXXkld35Dsq0kurKyyJeUnDmk1c8nCE02AidVbrU+L
+	 NEisvMDyvfRnvKCGVVrJ8BwixPMW5SOwkG/7uKSnQ6j2hD4EZHtf8TjhoI1ZVPaMzK
+	 F2SZd4iKrJLG9kbA9ItZbDuzcj4rXwNfoWEXTWcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 214/491] net/mlx5e: Check return value of snprintf writing to fw_version buffer
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 284/530] mm/damon/sysfs-schemes: handle tried regions sysfs directory allocation failure
 Date: Fri, 24 Nov 2023 17:47:30 +0000
-Message-ID: <20231124172030.964032335@linuxfoundation.org>
+Message-ID: <20231124172036.687043776@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,76 +52,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 41e63c2baa11dc2aa71df5dd27a5bd87d11b6bbb ]
+commit 84055688b6bc075c92a88e2d6c3ad26ab93919f9 upstream.
 
-Treat the operation as an error case when the return value is equivalent to
-the size of the name buffer. Failed to write null terminator to the name
-buffer, making the string malformed and should not be used. Provide a
-string with only the firmware version when forming the string with the
-board id fails.
+DAMOS tried regions sysfs directory allocation function
+(damon_sysfs_scheme_regions_alloc()) is not handling the memory allocation
+failure.  In the case, the code will dereference NULL pointer.  Handle the
+failure to avoid such invalid access.
 
-Without check, will trigger -Wformat-truncation with W=1.
-
-    drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c: In function 'mlx5e_ethtool_get_drvinfo':
-    drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c:49:31: warning: '%.16s' directive output may be truncated writing up to 16 bytes into a region of size between 13 and 22 [-Wformat-truncation=]
-      49 |                  "%d.%d.%04d (%.16s)",
-         |                               ^~~~~
-    drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c:48:9: note: 'snprintf' output between 12 and 37 bytes into a destination of size 32
-      48 |         snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      49 |                  "%d.%d.%04d (%.16s)",
-         |                  ~~~~~~~~~~~~~~~~~~~~~
-      50 |                  fw_rev_maj(mdev), fw_rev_min(mdev), fw_rev_sub(mdev),
-         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      51 |                  mdev->board_id);
-         |                  ~~~~~~~~~~~~~~~
-
-Fixes: 84e11edb71de ("net/mlx5e: Show board id in ethtool driver information")
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231106233408.51159-3-sj@kernel.org
+Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.2+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_ethtool.c    | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ mm/damon/sysfs-schemes.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 3d2d5d3b59f0b..bd3fabb007c94 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -43,12 +43,17 @@ void mlx5e_ethtool_get_drvinfo(struct mlx5e_priv *priv,
- 			       struct ethtool_drvinfo *drvinfo)
- {
- 	struct mlx5_core_dev *mdev = priv->mdev;
-+	int count;
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -126,6 +126,9 @@ damon_sysfs_scheme_regions_alloc(void)
+ 	struct damon_sysfs_scheme_regions *regions = kmalloc(sizeof(*regions),
+ 			GFP_KERNEL);
  
- 	strscpy(drvinfo->driver, KBUILD_MODNAME, sizeof(drvinfo->driver));
--	snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
--		 "%d.%d.%04d (%.16s)",
--		 fw_rev_maj(mdev), fw_rev_min(mdev), fw_rev_sub(mdev),
--		 mdev->board_id);
-+	count = snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-+			 "%d.%d.%04d (%.16s)", fw_rev_maj(mdev),
-+			 fw_rev_min(mdev), fw_rev_sub(mdev), mdev->board_id);
-+	if (count == sizeof(drvinfo->fw_version))
-+		snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-+			 "%d.%d.%04d", fw_rev_maj(mdev),
-+			 fw_rev_min(mdev), fw_rev_sub(mdev));
++	if (!regions)
++		return NULL;
 +
- 	strscpy(drvinfo->bus_info, dev_name(mdev->device),
- 		sizeof(drvinfo->bus_info));
- }
--- 
-2.42.0
-
+ 	regions->kobj = (struct kobject){};
+ 	INIT_LIST_HEAD(&regions->regions_list);
+ 	regions->nr_regions = 0;
 
 
 
