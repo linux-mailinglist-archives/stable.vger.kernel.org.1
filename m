@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7BB37F80D0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB4B7F7F4C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D893A1C215F7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A56AB21258
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5EB3418B;
-	Fri, 24 Nov 2023 18:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DAF34189;
+	Fri, 24 Nov 2023 18:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6bpJxpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXP2uvkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6390321AD;
-	Fri, 24 Nov 2023 18:52:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64437C433C8;
-	Fri, 24 Nov 2023 18:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292562FC4E;
+	Fri, 24 Nov 2023 18:40:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE58C433C8;
+	Fri, 24 Nov 2023 18:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851979;
-	bh=EDQ7paZ9i/Epi/M1VsyzsmWeGeb2VjCdpQEQwJjy4Bw=;
+	s=korg; t=1700851212;
+	bh=+aTtORkrvMcN0RfDdCrPViEDARMG7+fCmOKYWJqkFpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x6bpJxpCJcjduX6OTvprm7AONcUkCoU6rCvZnwDBbpSXi7mcVjFij0fp4wcg1O3gO
-	 oV+DC6wqowLHYtfCf3WMQ9EAYLi2h9okJ+NDtDrHpieITKhsF43xY5uzFkl0X9M6lo
-	 IvkhaVxYQzzRfAB1eFSdqELCucA1aJ6bmkS4TMRM=
+	b=mXP2uvkdnWYGOCBAFm8QspgcrgVn/eejUoV2Iqzo3Pl8aClftrYwEydLwNW5GPkcV
+	 zY2LMAuCDJSWinKv97f81bJZxTWkAPZ+a/XK76IztRvWUILpGrchmeWyiVbUxVsdID
+	 FY1+8Ci/84DPHLmqamecjv67/8Z8Di5quLi9xAI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
-	Julian Andres Klode <julian.klode@canonical.com>,
-	Roxana Nicolescu <roxana.nicolescu@canonical.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 172/372] crypto: x86/sha - load modules based on CPU features
+	Johan Hovold <johan+linaro@kernel.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.5 323/491] mfd: qcom-spmi-pmic: Fix reference leaks in revid helper
 Date: Fri, 24 Nov 2023 17:49:19 +0000
-Message-ID: <20231124172016.216174022@linuxfoundation.org>
+Message-ID: <20231124172034.270650217@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,107 +53,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roxana Nicolescu <roxana.nicolescu@canonical.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 1c43c0f1f84aa59dfc98ce66f0a67b2922aa7f9d upstream.
+commit a0fa44c261e448c531f9adb3a5189a3520f3e316 upstream.
 
-x86 optimized crypto modules are built as modules rather than build-in and
-they are not loaded when the crypto API is initialized, resulting in the
-generic builtin module (sha1-generic) being used instead.
+The Qualcomm SPMI PMIC revid implementation is broken in multiple ways.
 
-It was discovered when creating a sha1/sha256 checksum of a 2Gb file by
-using kcapi-tools because it would take significantly longer than creating
-a sha512 checksum of the same file. trace-cmd showed that for sha1/256 the
-generic module was used, whereas for sha512 the optimized module was used
-instead.
+First, it totally ignores struct device_node reference counting and
+leaks references to the parent bus node as well as each child it
+iterates over using an open-coded for_each_child_of_node().
 
-Add module aliases() for these x86 optimized crypto modules based on CPU
-feature bits so udev gets a chance to load them later in the boot
-process. This resulted in ~3x decrease in the real-time execution of
-kcapi-dsg.
+Second, it leaks references to each spmi device on the bus that it
+iterates over by failing to drop the reference taken by the
+spmi_device_from_of() helper.
 
-Fix is inspired from commit
-aa031b8f702e ("crypto: x86/sha512 - load based on CPU features")
-where a similar fix was done for sha512.
+Fix the struct device_node leaks by reimplementing the lookup using
+for_each_child_of_node() and adding the missing reference count
+decrements. Fix the sibling struct device leaks by dropping the
+unnecessary lookups of devices with the wrong USID.
 
-Cc: stable@vger.kernel.org # 5.15+
-Suggested-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-Suggested-by: Julian Andres Klode <julian.klode@canonical.com>
-Signed-off-by: Roxana Nicolescu <roxana.nicolescu@canonical.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Note that this still leaves one struct device reference leak in case a
+base device is found but it is not the parent of the device used for the
+lookup. This will be addressed in a follow-on patch.
+
+Fixes: e9c11c6e3a0e ("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
+Cc: stable@vger.kernel.org	# 6.0
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Caleb Connolly <caleb.connolly@linaro.org>
+Link: https://lore.kernel.org/r/20231003152927.15000-2-johan+linaro@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/crypto/sha1_ssse3_glue.c   |   12 ++++++++++++
- arch/x86/crypto/sha256_ssse3_glue.c |   12 ++++++++++++
- 2 files changed, 24 insertions(+)
+ drivers/mfd/qcom-spmi-pmic.c |   32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
---- a/arch/x86/crypto/sha1_ssse3_glue.c
-+++ b/arch/x86/crypto/sha1_ssse3_glue.c
-@@ -24,8 +24,17 @@
- #include <linux/types.h>
- #include <crypto/sha1.h>
- #include <crypto/sha1_base.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/simd.h>
+--- a/drivers/mfd/qcom-spmi-pmic.c
++++ b/drivers/mfd/qcom-spmi-pmic.c
+@@ -81,7 +81,7 @@ static struct spmi_device *qcom_pmic_get
+ 	struct spmi_device *sdev;
+ 	struct qcom_spmi_dev *ctx;
+ 	struct device_node *spmi_bus;
+-	struct device_node *other_usid = NULL;
++	struct device_node *child;
+ 	int function_parent_usid, ret;
+ 	u32 pmic_addr;
  
-+static const struct x86_cpu_id module_cpu_ids[] = {
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
-+	{}
-+};
-+MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
+@@ -105,28 +105,34 @@ static struct spmi_device *qcom_pmic_get
+ 	 * device for USID 2.
+ 	 */
+ 	spmi_bus = of_get_parent(sdev->dev.of_node);
+-	do {
+-		other_usid = of_get_next_child(spmi_bus, other_usid);
+-
+-		ret = of_property_read_u32_index(other_usid, "reg", 0, &pmic_addr);
+-		if (ret)
+-			return ERR_PTR(ret);
++	sdev = ERR_PTR(-ENODATA);
++	for_each_child_of_node(spmi_bus, child) {
++		ret = of_property_read_u32_index(child, "reg", 0, &pmic_addr);
++		if (ret) {
++			of_node_put(child);
++			sdev = ERR_PTR(ret);
++			break;
++		}
+ 
+-		sdev = spmi_device_from_of(other_usid);
+ 		if (pmic_addr == function_parent_usid - (ctx->num_usids - 1)) {
+-			if (!sdev)
++			sdev = spmi_device_from_of(child);
++			if (!sdev) {
+ 				/*
+ 				 * If the base USID for this PMIC hasn't probed yet
+ 				 * but the secondary USID has, then we need to defer
+ 				 * the function driver so that it will attempt to
+ 				 * probe again when the base USID is ready.
+ 				 */
+-				return ERR_PTR(-EPROBE_DEFER);
+-			return sdev;
++				sdev = ERR_PTR(-EPROBE_DEFER);
++			}
++			of_node_put(child);
++			break;
+ 		}
+-	} while (other_usid->sibling);
++	}
 +
- static int sha1_update(struct shash_desc *desc, const u8 *data,
- 			     unsigned int len, sha1_block_fn *sha1_xform)
- {
-@@ -301,6 +310,9 @@ static inline void unregister_sha1_ni(vo
++	of_node_put(spmi_bus);
  
- static int __init sha1_ssse3_mod_init(void)
- {
-+	if (!x86_match_cpu(module_cpu_ids))
-+		return -ENODEV;
-+
- 	if (register_sha1_ssse3())
- 		goto fail;
+-	return ERR_PTR(-ENODATA);
++	return sdev;
+ }
  
---- a/arch/x86/crypto/sha256_ssse3_glue.c
-+++ b/arch/x86/crypto/sha256_ssse3_glue.c
-@@ -38,11 +38,20 @@
- #include <crypto/sha2.h>
- #include <crypto/sha256_base.h>
- #include <linux/string.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/simd.h>
- 
- asmlinkage void sha256_transform_ssse3(struct sha256_state *state,
- 				       const u8 *data, int blocks);
- 
-+static const struct x86_cpu_id module_cpu_ids[] = {
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
-+	{}
-+};
-+MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
-+
- static int _sha256_update(struct shash_desc *desc, const u8 *data,
- 			  unsigned int len, sha256_block_fn *sha256_xform)
- {
-@@ -366,6 +375,9 @@ static inline void unregister_sha256_ni(
- 
- static int __init sha256_ssse3_mod_init(void)
- {
-+	if (!x86_match_cpu(module_cpu_ids))
-+		return -ENODEV;
-+
- 	if (register_sha256_ssse3())
- 		goto fail;
- 
+ static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
 
 
 
