@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572B87F7E30
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8519A7F7C12
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10359282139
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E8E8281E76
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7BF3A8E7;
-	Fri, 24 Nov 2023 18:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DF03A8C7;
+	Fri, 24 Nov 2023 18:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRugTYXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiv131EW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8EF3A8EC;
-	Fri, 24 Nov 2023 18:30:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3F1C433C7;
-	Fri, 24 Nov 2023 18:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B94339FE8;
+	Fri, 24 Nov 2023 18:11:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC445C433C8;
+	Fri, 24 Nov 2023 18:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850647;
-	bh=cHgQrZhlyCAPc0j6QcFtXQoTanBw1r9saJzk0MV1qxM=;
+	s=korg; t=1700849489;
+	bh=l8bWW1qRnfuu1S1w8u0PhHlvZ+NtpZaNHKuZJcb07lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QRugTYXr+TyveA5Bnl6NxMq5Gl41jUkoHZxaVVGmCDU10gWrzhH9SfpxEHRdTCXaX
-	 or6nZYv1cDvc1PwH/d5/jUcWaVFLQLjxCUlJo/zZQzY0u0L/16QnQnWHipfHXJrXt8
-	 M5VpaQO34jreoHyLoM/zxN1Mg5JqVje8yRqzMLDk=
+	b=yiv131EWuE6WKqT76+nxW2092XojcZhsqN+xTAKdmC0e7OE+GPGR82Gv62FwcXJWe
+	 6T7xQd3t/iTJf5Hx3Bm25nibIPwO3ev+iMhwKL3msELDmHSA0DzBBAivwVwR01DlGr
+	 1DbvMMgqbF/x3icr6OFAilQvBsb5UN47xP6bGAlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Billy Tsai <billy_tsai@aspeedtech.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 132/491] i3c: master: mipi-i3c-hci: Fix a kernel panic for accessing DAT_data.
+Subject: [PATCH 6.6 202/530] net: ethernet: cortina: Fix max RX frame define
 Date: Fri, 24 Nov 2023 17:46:08 +0000
-Message-ID: <20231124172028.466634240@linuxfoundation.org>
+Message-ID: <20231124172034.222462189@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,84 +55,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Billy Tsai <billy_tsai@aspeedtech.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit b53e9758a31c683fc8615df930262192ed5f034b ]
+[ Upstream commit 510e35fb931ffc3b100e5d5ae4595cd3beca9f1a ]
 
-The `i3c_master_bus_init` function may attach the I2C devices before the
-I3C bus initialization. In this flow, the DAT `alloc_entry`` will be used
-before the DAT `init`. Additionally, if the `i3c_master_bus_init` fails,
-the DAT `cleanup` will execute before the device is detached, which will
-execue DAT `free_entry` function. The above scenario can cause the driver
-to use DAT_data when it is NULL.
+Enumerator 3 is 1548 bytes according to the datasheet.
+Not 1542.
 
-Signed-off-by: Billy Tsai <billy_tsai@aspeedtech.com>
-Link: https://lore.kernel.org/r/20231023080237.560936-1-billy_tsai@aspeedtech.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-1-6e611528db08@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dat_v1.c | 29 ++++++++++++++++--------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 4 ++--
+ drivers/net/ethernet/cortina/gemini.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dat_v1.c b/drivers/i3c/master/mipi-i3c-hci/dat_v1.c
-index 97bb49ff5b53b..47b9b4d4ed3fc 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dat_v1.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dat_v1.c
-@@ -64,15 +64,17 @@ static int hci_dat_v1_init(struct i3c_hci *hci)
- 		return -EOPNOTSUPP;
- 	}
- 
--	/* use a bitmap for faster free slot search */
--	hci->DAT_data = bitmap_zalloc(hci->DAT_entries, GFP_KERNEL);
--	if (!hci->DAT_data)
--		return -ENOMEM;
--
--	/* clear them */
--	for (dat_idx = 0; dat_idx < hci->DAT_entries; dat_idx++) {
--		dat_w0_write(dat_idx, 0);
--		dat_w1_write(dat_idx, 0);
-+	if (!hci->DAT_data) {
-+		/* use a bitmap for faster free slot search */
-+		hci->DAT_data = bitmap_zalloc(hci->DAT_entries, GFP_KERNEL);
-+		if (!hci->DAT_data)
-+			return -ENOMEM;
-+
-+		/* clear them */
-+		for (dat_idx = 0; dat_idx < hci->DAT_entries; dat_idx++) {
-+			dat_w0_write(dat_idx, 0);
-+			dat_w1_write(dat_idx, 0);
-+		}
- 	}
- 
- 	return 0;
-@@ -87,7 +89,13 @@ static void hci_dat_v1_cleanup(struct i3c_hci *hci)
- static int hci_dat_v1_alloc_entry(struct i3c_hci *hci)
- {
- 	unsigned int dat_idx;
-+	int ret;
- 
-+	if (!hci->DAT_data) {
-+		ret = hci_dat_v1_init(hci);
-+		if (ret)
-+			return ret;
-+	}
- 	dat_idx = find_first_zero_bit(hci->DAT_data, hci->DAT_entries);
- 	if (dat_idx >= hci->DAT_entries)
- 		return -ENOENT;
-@@ -103,7 +111,8 @@ static void hci_dat_v1_free_entry(struct i3c_hci *hci, unsigned int dat_idx)
- {
- 	dat_w0_write(dat_idx, 0);
- 	dat_w1_write(dat_idx, 0);
--	__clear_bit(dat_idx, hci->DAT_data);
-+	if (hci->DAT_data)
-+		__clear_bit(dat_idx, hci->DAT_data);
- }
- 
- static void hci_dat_v1_set_dynamic_addr(struct i3c_hci *hci,
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index a8b9d1a3e4d57..5bdd1b2528409 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -432,8 +432,8 @@ static const struct gmac_max_framelen gmac_maxlens[] = {
+ 		.val = CONFIG0_MAXLEN_1536,
+ 	},
+ 	{
+-		.max_l3_len = 1542,
+-		.val = CONFIG0_MAXLEN_1542,
++		.max_l3_len = 1548,
++		.val = CONFIG0_MAXLEN_1548,
+ 	},
+ 	{
+ 		.max_l3_len = 9212,
+diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
+index 9fdf77d5eb374..99efb11557436 100644
+--- a/drivers/net/ethernet/cortina/gemini.h
++++ b/drivers/net/ethernet/cortina/gemini.h
+@@ -787,7 +787,7 @@ union gmac_config0 {
+ #define  CONFIG0_MAXLEN_1536	0
+ #define  CONFIG0_MAXLEN_1518	1
+ #define  CONFIG0_MAXLEN_1522	2
+-#define  CONFIG0_MAXLEN_1542	3
++#define  CONFIG0_MAXLEN_1548	3
+ #define  CONFIG0_MAXLEN_9k	4	/* 9212 */
+ #define  CONFIG0_MAXLEN_10k	5	/* 10236 */
+ #define  CONFIG0_MAXLEN_1518__6	6
 -- 
 2.42.0
 
