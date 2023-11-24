@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EFA7F8043
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741747F7C46
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 083991C2154E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EBE8281EC1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7FD364DE;
-	Fri, 24 Nov 2023 18:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F943A8C4;
+	Fri, 24 Nov 2023 18:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dO92kWeM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swhCN0Ue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096FC34189;
-	Fri, 24 Nov 2023 18:48:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD1AC433C8;
-	Fri, 24 Nov 2023 18:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B42381BF;
+	Fri, 24 Nov 2023 18:13:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01114C433C7;
+	Fri, 24 Nov 2023 18:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851687;
-	bh=4z5Gl2yMRRGymEz0WR6xhoGwHgbPrfvSuS7F5bDkd5o=;
+	s=korg; t=1700849617;
+	bh=fpE3RD+W38e9cBGvQy3aHfQqfp7UZxQvxLqJ7Koz5bU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dO92kWeMKHqe9/bs2uz8L4yxydDUV7CQbIcfm8Hl+1Am1QN8L5qP/kxUbT02lFhbC
-	 L9kbGmcXAcxEtpPGVeZwaNVJGCsVLaubG+jslgy+XCyApgwopv3X6lQ3lNt+wGNuEs
-	 EU84naD3vK5S4RH6SWwmU8TM8b2zx9UQa71Weg5E=
+	b=swhCN0UeW+Mmn3JihzVZsGHi1Ja5YDkExwm/QUGYdksxtOCnJjHPF2HFnL6J3hDh/
+	 3GwenLunycRz2ESxIdPJK/ebs436KVn47kiY+4qK6YCTYS9gtad0kI8M8M28Q9n05B
+	 jdBtFE3KNocaAo6jbBqbLSp0JMGbYDmTY4Xp+odY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <suijingfeng@loongson.cn>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/372] drm/gma500: Fix call trace when psb_gem_mm_init() fails
-Date: Fri, 24 Nov 2023 17:46:58 +0000
-Message-ID: <20231124172011.522641284@linuxfoundation.org>
+	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+	Julian Andres Klode <julian.klode@canonical.com>,
+	Roxana Nicolescu <roxana.nicolescu@canonical.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 253/530] crypto: x86/sha - load modules based on CPU features
+Date: Fri, 24 Nov 2023 17:46:59 +0000
+Message-ID: <20231124172035.759300757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,143 +54,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sui Jingfeng <suijingfeng@loongson.cn>
+From: Roxana Nicolescu <roxana.nicolescu@canonical.com>
 
-[ Upstream commit da596080b2b400c50fe9f8f237bcaf09fed06af8 ]
+commit 1c43c0f1f84aa59dfc98ce66f0a67b2922aa7f9d upstream.
 
-Because the gma_irq_install() is call after psb_gem_mm_init() function,
-when psb_gem_mm_init() fails, the interrupt line haven't been allocated.
-Yet the gma_irq_uninstall() is called in the psb_driver_unload() function
-without checking if checking the irq is registered or not.
+x86 optimized crypto modules are built as modules rather than build-in and
+they are not loaded when the crypto API is initialized, resulting in the
+generic builtin module (sha1-generic) being used instead.
 
-The calltrace is appended as following:
+It was discovered when creating a sha1/sha256 checksum of a 2Gb file by
+using kcapi-tools because it would take significantly longer than creating
+a sha512 checksum of the same file. trace-cmd showed that for sha1/256 the
+generic module was used, whereas for sha512 the optimized module was used
+instead.
 
-[   20.539253] ioremap memtype_reserve failed -16
-[   20.543895] gma500 0000:00:02.0: Failure to map stolen base.
-[   20.565049] ------------[ cut here ]------------
-[   20.565066] Trying to free already-free IRQ 16
-[   20.565087] WARNING: CPU: 1 PID: 381 at kernel/irq/manage.c:1893 free_irq+0x209/0x370
-[   20.565316] CPU: 1 PID: 381 Comm: systemd-udevd Tainted: G         C         6.5.0-rc1+ #368
-[   20.565329] Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./IMB-140D Plus, BIOS P1.10 11/18/2013
-[   20.565338] RIP: 0010:free_irq+0x209/0x370
-[   20.565357] Code: 41 5d 41 5e 41 5f 5d 31 d2 89 d1 89 d6 89 d7 41 89 d1 c3 cc cc cc cc 8b 75 d0 48 c7 c7 e0 77 12 9f 4c 89 4d c8 e8 57 fe f4 ff <0f> 0b 48 8b 75 c8 4c 89 f7 e8 29 f3 f1 00 49 8b 47 40 48 8b 40 78
-[   20.565369] RSP: 0018:ffffae3b40733808 EFLAGS: 00010046
-[   20.565382] RAX: 0000000000000000 RBX: ffff9f8082bfe000 RCX: 0000000000000000
-[   20.565390] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[   20.565397] RBP: ffffae3b40733840 R08: 0000000000000000 R09: 0000000000000000
-[   20.565405] R10: 0000000000000000 R11: 0000000000000000 R12: ffff9f80871c3100
-[   20.565413] R13: ffff9f80835d3360 R14: ffff9f80835d32a4 R15: ffff9f80835d3200
-[   20.565424] FS:  00007f13d36458c0(0000) GS:ffff9f8138880000(0000) knlGS:0000000000000000
-[   20.565434] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   20.565441] CR2: 00007f0d046f3f20 CR3: 0000000006c8c000 CR4: 00000000000006e0
-[   20.565450] Call Trace:
-[   20.565458]  <TASK>
-[   20.565470]  ? show_regs+0x72/0x90
-[   20.565488]  ? free_irq+0x209/0x370
-[   20.565504]  ? __warn+0x8d/0x160
-[   20.565520]  ? free_irq+0x209/0x370
-[   20.565536]  ? report_bug+0x1bb/0x1d0
-[   20.565555]  ? handle_bug+0x46/0x90
-[   20.565572]  ? exc_invalid_op+0x19/0x80
-[   20.565587]  ? asm_exc_invalid_op+0x1b/0x20
-[   20.565607]  ? free_irq+0x209/0x370
-[   20.565625]  ? free_irq+0x209/0x370
-[   20.565644]  gma_irq_uninstall+0x15b/0x1e0 [gma500_gfx]
-[   20.565728]  psb_driver_unload+0x27/0x190 [gma500_gfx]
-[   20.565800]  psb_pci_probe+0x5d2/0x790 [gma500_gfx]
-[   20.565873]  local_pci_probe+0x48/0xb0
-[   20.565892]  pci_device_probe+0xc8/0x280
-[   20.565912]  really_probe+0x1d2/0x440
-[   20.565929]  __driver_probe_device+0x8a/0x190
-[   20.565944]  driver_probe_device+0x23/0xd0
-[   20.565957]  __driver_attach+0x10f/0x220
-[   20.565971]  ? __pfx___driver_attach+0x10/0x10
-[   20.565984]  bus_for_each_dev+0x7a/0xe0
-[   20.566002]  driver_attach+0x1e/0x30
-[   20.566014]  bus_add_driver+0x127/0x240
-[   20.566029]  driver_register+0x64/0x140
-[   20.566043]  ? __pfx_psb_init+0x10/0x10 [gma500_gfx]
-[   20.566111]  __pci_register_driver+0x68/0x80
-[   20.566128]  psb_init+0x2c/0xff0 [gma500_gfx]
-[   20.566194]  do_one_initcall+0x46/0x330
-[   20.566214]  ? kmalloc_trace+0x2a/0xb0
-[   20.566233]  do_init_module+0x6a/0x270
-[   20.566250]  load_module+0x207f/0x23a0
-[   20.566278]  init_module_from_file+0x9c/0xf0
-[   20.566293]  ? init_module_from_file+0x9c/0xf0
-[   20.566315]  idempotent_init_module+0x184/0x240
-[   20.566335]  __x64_sys_finit_module+0x64/0xd0
-[   20.566352]  do_syscall_64+0x59/0x90
-[   20.566366]  ? ksys_mmap_pgoff+0x123/0x270
-[   20.566378]  ? __secure_computing+0x9b/0x110
-[   20.566392]  ? exit_to_user_mode_prepare+0x39/0x190
-[   20.566406]  ? syscall_exit_to_user_mode+0x2a/0x50
-[   20.566420]  ? do_syscall_64+0x69/0x90
-[   20.566433]  ? do_syscall_64+0x69/0x90
-[   20.566445]  ? do_syscall_64+0x69/0x90
-[   20.566458]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[   20.566472] RIP: 0033:0x7f13d351ea3d
-[   20.566485] Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d c3 a3 0f 00 f7 d8 64 89 01 48
-[   20.566496] RSP: 002b:00007ffe566c1fd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-[   20.566510] RAX: ffffffffffffffda RBX: 000055e66806eec0 RCX: 00007f13d351ea3d
-[   20.566519] RDX: 0000000000000000 RSI: 00007f13d36d9441 RDI: 0000000000000010
-[   20.566527] RBP: 0000000000020000 R08: 0000000000000000 R09: 0000000000000002
-[   20.566535] R10: 0000000000000010 R11: 0000000000000246 R12: 00007f13d36d9441
-[   20.566543] R13: 000055e6681108c0 R14: 000055e66805ba70 R15: 000055e66819a9c0
-[   20.566559]  </TASK>
-[   20.566566] ---[ end trace 0000000000000000 ]---
+Add module aliases() for these x86 optimized crypto modules based on CPU
+feature bits so udev gets a chance to load them later in the boot
+process. This resulted in ~3x decrease in the real-time execution of
+kcapi-dsg.
 
-Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230727185855.713318-1-suijingfeng@loongson.cn
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix is inspired from commit
+aa031b8f702e ("crypto: x86/sha512 - load based on CPU features")
+where a similar fix was done for sha512.
+
+Cc: stable@vger.kernel.org # 5.15+
+Suggested-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Suggested-by: Julian Andres Klode <julian.klode@canonical.com>
+Signed-off-by: Roxana Nicolescu <roxana.nicolescu@canonical.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/psb_drv.h | 1 +
- drivers/gpu/drm/gma500/psb_irq.c | 5 +++++
- 2 files changed, 6 insertions(+)
+ arch/x86/crypto/sha1_ssse3_glue.c   |   12 ++++++++++++
+ arch/x86/crypto/sha256_ssse3_glue.c |   12 ++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/gpu/drm/gma500/psb_drv.h b/drivers/gpu/drm/gma500/psb_drv.h
-index ae544b69fc475..52f9ed3c24b8e 100644
---- a/drivers/gpu/drm/gma500/psb_drv.h
-+++ b/drivers/gpu/drm/gma500/psb_drv.h
-@@ -426,6 +426,7 @@ struct drm_psb_private {
- 	uint32_t pipestat[PSB_NUM_PIPE];
+--- a/arch/x86/crypto/sha1_ssse3_glue.c
++++ b/arch/x86/crypto/sha1_ssse3_glue.c
+@@ -24,8 +24,17 @@
+ #include <linux/types.h>
+ #include <crypto/sha1.h>
+ #include <crypto/sha1_base.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/simd.h>
  
- 	spinlock_t irqmask_lock;
-+	bool irq_enabled;
- 
- 	/* Power */
- 	bool pm_initialized;
-diff --git a/drivers/gpu/drm/gma500/psb_irq.c b/drivers/gpu/drm/gma500/psb_irq.c
-index d421031462df6..ab2d49dab35a0 100644
---- a/drivers/gpu/drm/gma500/psb_irq.c
-+++ b/drivers/gpu/drm/gma500/psb_irq.c
-@@ -338,6 +338,8 @@ int gma_irq_install(struct drm_device *dev)
- 
- 	gma_irq_postinstall(dev);
- 
-+	dev_priv->irq_enabled = true;
++static const struct x86_cpu_id module_cpu_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
 +
- 	return 0;
- }
+ static int sha1_update(struct shash_desc *desc, const u8 *data,
+ 			     unsigned int len, sha1_block_fn *sha1_xform)
+ {
+@@ -301,6 +310,9 @@ static inline void unregister_sha1_ni(vo
  
-@@ -348,6 +350,9 @@ void gma_irq_uninstall(struct drm_device *dev)
- 	unsigned long irqflags;
- 	unsigned int i;
- 
-+	if (!dev_priv->irq_enabled)
-+		return;
+ static int __init sha1_ssse3_mod_init(void)
+ {
++	if (!x86_match_cpu(module_cpu_ids))
++		return -ENODEV;
 +
- 	spin_lock_irqsave(&dev_priv->irqmask_lock, irqflags);
+ 	if (register_sha1_ssse3())
+ 		goto fail;
  
- 	if (dev_priv->ops->hotplug_enable)
--- 
-2.42.0
-
+--- a/arch/x86/crypto/sha256_ssse3_glue.c
++++ b/arch/x86/crypto/sha256_ssse3_glue.c
+@@ -38,11 +38,20 @@
+ #include <crypto/sha2.h>
+ #include <crypto/sha256_base.h>
+ #include <linux/string.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/simd.h>
+ 
+ asmlinkage void sha256_transform_ssse3(struct sha256_state *state,
+ 				       const u8 *data, int blocks);
+ 
++static const struct x86_cpu_id module_cpu_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
++
+ static int _sha256_update(struct shash_desc *desc, const u8 *data,
+ 			  unsigned int len, sha256_block_fn *sha256_xform)
+ {
+@@ -366,6 +375,9 @@ static inline void unregister_sha256_ni(
+ 
+ static int __init sha256_ssse3_mod_init(void)
+ {
++	if (!x86_match_cpu(module_cpu_ids))
++		return -ENODEV;
++
+ 	if (register_sha256_ssse3())
+ 		goto fail;
+ 
 
 
 
