@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-2092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEA777F82BE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CD87F82B0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0731C23E56
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A27981C23D5D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520DB381A2;
-	Fri, 24 Nov 2023 19:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA95A35F1A;
+	Fri, 24 Nov 2023 19:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikI4jU0z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfHoH4/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A6028DBB;
-	Fri, 24 Nov 2023 19:10:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2EEC43397;
-	Fri, 24 Nov 2023 19:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6393033CFD;
+	Fri, 24 Nov 2023 19:09:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C73C433CC;
+	Fri, 24 Nov 2023 19:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853027;
-	bh=dS3XO2nMnwWLzT43p2miQZ7zHEo3UOA4dcFEovMgSzE=;
+	s=korg; t=1700852995;
+	bh=IIY6A+prp+WnXOsAqWQg9tQtHByTJhr7Q8v8w3uYDGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ikI4jU0zdPbA6vKACBWSZZHB6YdbelB+5bV2bD+z4xLTB/IUD+2ggHfXzeyBxzPeg
-	 xvojeS7k05ZjBvqO/a/cHCc9LoS63wm2TG3foJLsaMTVH1f0w6j8iD6NtcLsC2Z7rN
-	 nIonFB5s75sg9GB/ASSmRqE23X+3KtpioXh7Cdvk=
+	b=lfHoH4/YCW2okxBpR2kynB761YcKkgW1WRURHM7HIHBTniXOM7H8RQYPbwdrMhNSC
+	 M2nnBpq42EGeitraumxJQkBmY9XbMvTKJQ/QW2V2VPwKE+kiQMXrHFYXS7sK5LQKyh
+	 vsZWWvvTdf9U7jhGGjemtpcSr/32zPdv8CD7Gok0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 003/297] clocksource/drivers/timer-imx-gpt: Fix potential memory leak
-Date: Fri, 24 Nov 2023 17:50:45 +0000
-Message-ID: <20231124172000.204588268@linuxfoundation.org>
+Subject: [PATCH 5.15 004/297] clocksource/drivers/timer-atmel-tcb: Fix initialization on SAM9 hardware
+Date: Fri, 24 Nov 2023 17:50:46 +0000
+Message-ID: <20231124172000.244974062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
 References: <20231124172000.087816911@linuxfoundation.org>
@@ -58,64 +58,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-[ Upstream commit 8051a993ce222a5158bccc6ac22ace9253dd71cb ]
+[ Upstream commit 6d3bc4c02d59996d1d3180d8ed409a9d7d5900e0 ]
 
-Fix coverity Issue CID 250382:  Resource leak (RESOURCE_LEAK).
-Add kfree when error return.
+On SAM9 hardware two cascaded 16 bit timers are used to form a 32 bit
+high resolution timer that is used as scheduler clock when the kernel
+has been configured that way (CONFIG_ATMEL_CLOCKSOURCE_TCB).
 
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+The driver initially triggers a reset-to-zero of the two timers but this
+reset is only performed on the next rising clock. For the first timer
+this is ok - it will be in the next 60ns (16MHz clock). For the chained
+second timer this will only happen after the first timer overflows, i.e.
+after 2^16 clocks (~4ms with a 16MHz clock). So with other words the
+scheduler clock resets to 0 after the first 2^16 clock cycles.
+
+It looks like that the scheduler does not like this and behaves wrongly
+over its lifetime, e.g. some tasks are scheduled with a long delay. Why
+that is and if there are additional requirements for this behaviour has
+not been further analysed.
+
+There is a simple fix for resetting the second timer as well when the
+first timer is reset and this is to set the ATMEL_TC_ASWTRG_SET bit in
+the Channel Mode register (CMR) of the first timer. This will also rise
+the TIOA line (clock input of the second timer) when a software trigger
+respective SYNC is issued.
+
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20231009083922.1942971-1-ping.bai@nxp.com
+Link: https://lore.kernel.org/r/20231007161803.31342-1-rwahl@gmx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-imx-gpt.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/clocksource/timer-atmel-tcb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
-index 7b2c70f2f353b..fabff69e52e58 100644
---- a/drivers/clocksource/timer-imx-gpt.c
-+++ b/drivers/clocksource/timer-imx-gpt.c
-@@ -454,12 +454,16 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
- 		return -ENOMEM;
- 
- 	imxtm->base = of_iomap(np, 0);
--	if (!imxtm->base)
--		return -ENXIO;
-+	if (!imxtm->base) {
-+		ret = -ENXIO;
-+		goto err_kfree;
-+	}
- 
- 	imxtm->irq = irq_of_parse_and_map(np, 0);
--	if (imxtm->irq <= 0)
--		return -EINVAL;
-+	if (imxtm->irq <= 0) {
-+		ret = -EINVAL;
-+		goto err_kfree;
-+	}
- 
- 	imxtm->clk_ipg = of_clk_get_by_name(np, "ipg");
- 
-@@ -472,11 +476,15 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
- 
- 	ret = _mxc_timer_init(imxtm);
- 	if (ret)
--		return ret;
-+		goto err_kfree;
- 
- 	initialized = 1;
- 
- 	return 0;
-+
-+err_kfree:
-+	kfree(imxtm);
-+	return ret;
- }
- 
- static int __init imx1_timer_init_dt(struct device_node *np)
+diff --git a/drivers/clocksource/timer-atmel-tcb.c b/drivers/clocksource/timer-atmel-tcb.c
+index 27af17c995900..2a90c92a9182a 100644
+--- a/drivers/clocksource/timer-atmel-tcb.c
++++ b/drivers/clocksource/timer-atmel-tcb.c
+@@ -315,6 +315,7 @@ static void __init tcb_setup_dual_chan(struct atmel_tc *tc, int mck_divisor_idx)
+ 	writel(mck_divisor_idx			/* likely divide-by-8 */
+ 			| ATMEL_TC_WAVE
+ 			| ATMEL_TC_WAVESEL_UP		/* free-run */
++			| ATMEL_TC_ASWTRG_SET		/* TIOA0 rises at software trigger */
+ 			| ATMEL_TC_ACPA_SET		/* TIOA0 rises at 0 */
+ 			| ATMEL_TC_ACPC_CLEAR,		/* (duty cycle 50%) */
+ 			tcaddr + ATMEL_TC_REG(0, CMR));
 -- 
 2.42.0
 
