@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBEE47F804C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E06EB7F7C6D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FEF1B215DA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E5341C20FFC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401ED381D4;
-	Fri, 24 Nov 2023 18:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060823A8C9;
+	Fri, 24 Nov 2023 18:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdAF9kw0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2rRzsm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A336837170;
-	Fri, 24 Nov 2023 18:48:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D8CC433C7;
-	Fri, 24 Nov 2023 18:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26C739FF3;
+	Fri, 24 Nov 2023 18:15:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 439AFC433C7;
+	Fri, 24 Nov 2023 18:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851710;
-	bh=vGlKBfcgMn39McAa3YjKklQGnhyKvwAuEuABVpY/rFs=;
+	s=korg; t=1700849703;
+	bh=n5l5ugTpNVR91lW3E17o1cek0jgrgJeK343Hg81hmQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdAF9kw095j68Ye9FoMeXk0kAoqHFR03Vjkvccxa+i7tS7qhStTLpSsjtomBpeel/
-	 SqPmIlcTlNZSJH22QO7YnZigAJa5Aja09jf/rD2S1WpPcpFfCzwYfuRdYQe79brtk4
-	 LaSXO64Hh+giFo0nnVQJhWPOx9YElEHvRCOugwS4=
+	b=I2rRzsm4s1bAyTTCxGMss2K44ITba3TFEVisC61RysdwtGNqvprijs2dA3zvFOU4f
+	 05CiKe9DM3F6t+4IA7KyB6LUniHuQb9X6LzX8Ej1cHzE4lf7GTPj5SIyK8taMsXwc+
+	 irSq/1IyWloEfPzuYYtiKPcWOC176TLSye5OCXAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+aea1ad91e854d0a83e04@syzkaller.appspotmail.com,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/372] jfs: fix array-index-out-of-bounds in dbFindLeaf
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 286/530] mm/damon/sysfs: check error from damon_sysfs_update_target()
 Date: Fri, 24 Nov 2023 17:47:32 +0000
-Message-ID: <20231124172012.646109816@linuxfoundation.org>
+Message-ID: <20231124172036.744417006@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,92 +52,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manas Ghandat <ghandatmanas@gmail.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 22cad8bc1d36547cdae0eef316c47d917ce3147c ]
+commit b4936b544b08ed44949055b92bd25f77759ebafc upstream.
 
-Currently while searching for dmtree_t for sufficient free blocks there
-is an array out of bounds while getting element in tp->dm_stree. To add
-the required check for out of bound we first need to determine the type
-of dmtree. Thus added an extra parameter to dbFindLeaf so that the type
-of tree can be determined and the required check can be applied.
+Patch series "mm/damon/sysfs: fix unhandled return values".
 
-Reported-by: syzbot+aea1ad91e854d0a83e04@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=aea1ad91e854d0a83e04
-Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Some of DAMON sysfs interface code is not handling return values from some
+functions.  As a result, confusing user input handling or NULL-dereference
+is possible.  Check those properly.
+
+
+This patch (of 3):
+
+damon_sysfs_update_target() returns error code for failures, but its
+caller, damon_sysfs_set_targets() is ignoring that.  The update function
+seems making no critical change in case of such failures, but the behavior
+will look like DAMON sysfs is silently ignoring or only partially
+accepting the user input.  Fix it.
+
+Link: https://lkml.kernel.org/r/20231106233408.51159-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20231106233408.51159-2-sj@kernel.org
+Fixes: 19467a950b49 ("mm/damon/sysfs: remove requested targets when online-commit inputs")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ mm/damon/sysfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index e2927d1f3d1d3..4d56f6081a5d2 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -87,7 +87,7 @@ static int dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno,
- static int dbExtend(struct inode *ip, s64 blkno, s64 nblocks, s64 addnblocks);
- static int dbFindBits(u32 word, int l2nb);
- static int dbFindCtl(struct bmap * bmp, int l2nb, int level, s64 * blkno);
--static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx);
-+static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl);
- static int dbFreeBits(struct bmap * bmp, struct dmap * dp, s64 blkno,
- 		      int nblocks);
- static int dbFreeDmap(struct bmap * bmp, struct dmap * dp, s64 blkno,
-@@ -1717,7 +1717,7 @@ static int dbFindCtl(struct bmap * bmp, int l2nb, int level, s64 * blkno)
- 		 * dbFindLeaf() returns the index of the leaf at which
- 		 * free space was found.
- 		 */
--		rc = dbFindLeaf((dmtree_t *) dcp, l2nb, &leafidx);
-+		rc = dbFindLeaf((dmtree_t *) dcp, l2nb, &leafidx, true);
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1203,8 +1203,10 @@ static int damon_sysfs_set_targets(struc
  
- 		/* release the buffer.
- 		 */
-@@ -1964,7 +1964,7 @@ dbAllocDmapLev(struct bmap * bmp,
- 	 * free space.  if sufficient free space is found, dbFindLeaf()
- 	 * returns the index of the leaf at which free space was found.
- 	 */
--	if (dbFindLeaf((dmtree_t *) & dp->tree, l2nb, &leafidx))
-+	if (dbFindLeaf((dmtree_t *) &dp->tree, l2nb, &leafidx, false))
- 		return -ENOSPC;
- 
- 	if (leafidx < 0)
-@@ -2928,14 +2928,18 @@ static void dbAdjTree(dmtree_t * tp, int leafno, int newval)
-  *	leafidx	- return pointer to be set to the index of the leaf
-  *		  describing at least l2nb free blocks if sufficient
-  *		  free blocks are found.
-+ *	is_ctl	- determines if the tree is of type ctl
-  *
-  * RETURN VALUES:
-  *	0	- success
-  *	-ENOSPC	- insufficient free blocks.
-  */
--static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx)
-+static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
- {
- 	int ti, n = 0, k, x = 0;
-+	int max_size;
-+
-+	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
- 
- 	/* first check the root of the tree to see if there is
- 	 * sufficient free space.
-@@ -2956,6 +2960,8 @@ static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx)
- 			/* sufficient free space found.  move to the next
- 			 * level (or quit if this is the last level).
- 			 */
-+			if (x + n > max_size)
-+				return -ENOSPC;
- 			if (l2nb <= tp->dmt_stree[x + n])
- 				break;
- 		}
--- 
-2.42.0
-
+ 	damon_for_each_target_safe(t, next, ctx) {
+ 		if (i < sysfs_targets->nr) {
+-			damon_sysfs_update_target(t, ctx,
++			err = damon_sysfs_update_target(t, ctx,
+ 					sysfs_targets->targets_arr[i]);
++			if (err)
++				return err;
+ 		} else {
+ 			if (damon_target_has_pid(ctx))
+ 				put_pid(t->pid);
 
 
 
