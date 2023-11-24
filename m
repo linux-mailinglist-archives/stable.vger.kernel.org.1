@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B41A7F7647
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:22:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953157F7705
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:57:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BCB31C21199
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:22:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5CE1F20CD1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBA02D03C;
-	Fri, 24 Nov 2023 14:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A19E2C1B4;
+	Fri, 24 Nov 2023 14:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8LwQh8I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybIXJ8K+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC042D02F
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:22:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9346C4339A;
-	Fri, 24 Nov 2023 14:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829A6647
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:57:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2E7C433C7;
+	Fri, 24 Nov 2023 14:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700835773;
-	bh=pS4O6+adzkFf9ThOM1q5ayDg4kXd0Ks2XcQ03xCXhlY=;
+	s=korg; t=1700837831;
+	bh=mdgRQRxjH+EI0Q7sOrXH++et+aHmrr1X2xlTkBWXi9w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=R8LwQh8IezkaaQ7zsKyLvJoksKmTzVxM25Bb8C2rma/g1VHOTC+rUwF2POYjY0Kxp
-	 ws1gdYNSWlYVdgcuWHLb40ad7a7puP2ZLAorN3cAnpXhnjTNyiob66BKmW8SwIRWYE
-	 YMkMy1y6mgVhALRQYb7FGMYp5sYQebNb5fBCxPnw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Negate IPS allow and commit bits" failed to apply to 6.1-stable tree
-To: duncan.ma@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,charlene.liu@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
+	b=ybIXJ8K+LcmjyozcQAukjuy3sIHxNTzH3dnla43gryacl8YeLNnRD9E9RoNWFSkPe
+	 J04C3gMviWliKjQbwzI89VMJ40EQXM5YBICvIkwhZS6k6zvXPZ4gmu0g6AB4PHxkZ0
+	 SKhC0qBZGovwr7Co18e3mhj2Y5iZwXTDIUycNDkA=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: ungate power gating when system suspend" failed to apply to 6.6-stable tree
+To: perry.yuan@amd.com,alexander.deucher@amd.com,kenneth.feng@amd.com,kevinyang.wang@amd.com,kun.liu2@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 14:22:45 +0000
-Message-ID: <2023112445-mutilator-landed-4578@gregkh>
+Date: Fri, 24 Nov 2023 14:57:09 +0000
+Message-ID: <2023112409-fructose-spry-be2c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,42 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5e8a0d3598b47ee5a57708072bdef08816264538
+git cherry-pick -x 886b92f63573eab4ba30b06c4514b8f4af114e6a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112445-mutilator-landed-4578@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112409-fructose-spry-be2c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-5e8a0d3598b4 ("drm/amd/display: Negate IPS allow and commit bits")
-92e11f0159f6 ("drm/amd/display: Enable more IPS options")
-da2d16fcdda3 ("drm/amd/display: Fix IPS handshake for idle optimizations")
-d591284288c2 ("drm/amd/display: Add a check for idle power optimization")
-d5f9a92bd1e2 ("drm/amd/display: Revert "Improve x86 and dmub ips handshake"")
-bf7951561051 ("drm/amd/display: reprogram det size while seamless boot")
-d0a767f7b8e2 ("drm/amd/display: Revert "drm/amd/display: Add a check for idle power optimization"")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
-2358ecdabe37 ("drm/amd/display: 3.2.254")
+886b92f63573 ("drm/amdgpu: ungate power gating when system suspend")
 
 thanks,
 
@@ -88,123 +69,55 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5e8a0d3598b47ee5a57708072bdef08816264538 Mon Sep 17 00:00:00 2001
-From: Duncan Ma <duncan.ma@amd.com>
-Date: Wed, 25 Oct 2023 19:07:21 -0400
-Subject: [PATCH] drm/amd/display: Negate IPS allow and commit bits
+From 886b92f63573eab4ba30b06c4514b8f4af114e6a Mon Sep 17 00:00:00 2001
+From: Perry Yuan <perry.yuan@amd.com>
+Date: Thu, 27 Jul 2023 01:45:30 -0400
+Subject: [PATCH] drm/amdgpu: ungate power gating when system suspend
 
-[WHY]
-On s0i3, IPS mask isn't saved and restored.
-It is reset to zero on exit.
+[Why] During suspend, if GFX DPM is enabled and GFXOFF feature is
+enabled the system may get hung. So, it is suggested to disable
+GFXOFF feature during suspend and enable it after resume.
 
-If it is cleared unexpectedly, driver will
-proceed operations while DCN is in IPS2 and
-cause a hang.
+[How] Update the code to disable GFXOFF feature during suspend and enable
+it after resume.
 
-[HOW]
-Negate the bit logic. Default value of
-zero indicates it is still in IPS2. Driver
-must poll for the bit to assert.
+[  311.396526] amdgpu 0000:03:00.0: amdgpu: SMU: I'm not done with your previous command: SMN_C2PMSG_66:0x0000001E SMN_C2PMSG_82:0x00000000
+[  311.396530] amdgpu 0000:03:00.0: amdgpu: Fail to disable dpm features!
+[  311.396531] [drm:amdgpu_device_ip_suspend_phase2 [amdgpu]] *ERROR* suspend of IP block <smu> failed -62
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Duncan Ma <duncan.ma@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Acked-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+Signed-off-by: Kun Liu <kun.liu2@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 0fa4fcd00de2..507a7cf56711 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -820,22 +820,22 @@ static void dcn35_set_idle_state(struct clk_mgr *clk_mgr_base, bool allow_idle)
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index dafb8cc1c684..c8a3bf01743f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -3498,6 +3498,8 @@ static void gfx_v10_0_ring_invalidate_tlbs(struct amdgpu_ring *ring,
+ static void gfx_v10_0_update_spm_vmid_internal(struct amdgpu_device *adev,
+ 					       unsigned int vmid);
  
- 	if (dc->config.disable_ips == DMUB_IPS_ENABLE ||
- 		dc->config.disable_ips == DMUB_IPS_DISABLE_DYNAMIC) {
--		val |= DMUB_IPS1_ALLOW_MASK;
--		val |= DMUB_IPS2_ALLOW_MASK;
--	} else if (dc->config.disable_ips == DMUB_IPS_DISABLE_IPS1) {
- 		val = val & ~DMUB_IPS1_ALLOW_MASK;
- 		val = val & ~DMUB_IPS2_ALLOW_MASK;
--	} else if (dc->config.disable_ips == DMUB_IPS_DISABLE_IPS2) {
--		val |= DMUB_IPS1_ALLOW_MASK;
--		val = val & ~DMUB_IPS2_ALLOW_MASK;
--	} else if (dc->config.disable_ips == DMUB_IPS_DISABLE_IPS2_Z10) {
-+	} else if (dc->config.disable_ips == DMUB_IPS_DISABLE_IPS1) {
- 		val |= DMUB_IPS1_ALLOW_MASK;
- 		val |= DMUB_IPS2_ALLOW_MASK;
-+	} else if (dc->config.disable_ips == DMUB_IPS_DISABLE_IPS2) {
-+		val = val & ~DMUB_IPS1_ALLOW_MASK;
-+		val |= DMUB_IPS2_ALLOW_MASK;
-+	} else if (dc->config.disable_ips == DMUB_IPS_DISABLE_IPS2_Z10) {
-+		val = val & ~DMUB_IPS1_ALLOW_MASK;
-+		val = val & ~DMUB_IPS2_ALLOW_MASK;
- 	}
++static int gfx_v10_0_set_powergating_state(void *handle,
++					  enum amd_powergating_state state);
+ static void gfx10_kiq_set_resources(struct amdgpu_ring *kiq_ring, uint64_t queue_mask)
+ {
+ 	amdgpu_ring_write(kiq_ring, PACKET3(PACKET3_SET_RESOURCES, 6));
+@@ -7179,6 +7181,13 @@ static int gfx_v10_0_hw_fini(void *handle)
+ 	amdgpu_irq_put(adev, &adev->gfx.priv_reg_irq, 0);
+ 	amdgpu_irq_put(adev, &adev->gfx.priv_inst_irq, 0);
  
- 	if (!allow_idle) {
--		val = val & ~DMUB_IPS1_ALLOW_MASK;
--		val = val & ~DMUB_IPS2_ALLOW_MASK;
-+		val |= DMUB_IPS1_ALLOW_MASK;
-+		val |= DMUB_IPS2_ALLOW_MASK;
- 	}
- 
- 	dcn35_smu_write_ips_scratch(clk_mgr, val);
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index d8f434738212..76b47f178127 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -4934,8 +4934,8 @@ bool dc_dmub_is_ips_idle_state(struct dc *dc)
- 	if (dc->hwss.get_idle_state)
- 		idle_state = dc->hwss.get_idle_state(dc);
- 
--	if ((idle_state & DMUB_IPS1_ALLOW_MASK) ||
--		(idle_state & DMUB_IPS2_ALLOW_MASK))
-+	if (!(idle_state & DMUB_IPS1_ALLOW_MASK) ||
-+		!(idle_state & DMUB_IPS2_ALLOW_MASK))
- 		return true;
- 
- 	return false;
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-index e4c007203318..0e07699c1e83 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-@@ -1202,11 +1202,11 @@ void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
- 		allow_state = dc->hwss.get_idle_state(dc);
- 		dc->hwss.set_idle_state(dc, false);
- 
--		if (allow_state & DMUB_IPS2_ALLOW_MASK) {
-+		if (!(allow_state & DMUB_IPS2_ALLOW_MASK)) {
- 			// Wait for evaluation time
- 			udelay(dc->debug.ips2_eval_delay_us);
- 			commit_state = dc->hwss.get_idle_state(dc);
--			if (commit_state & DMUB_IPS2_COMMIT_MASK) {
-+			if (!(commit_state & DMUB_IPS2_COMMIT_MASK)) {
- 				// Tell PMFW to exit low power state
- 				dc->clk_mgr->funcs->exit_low_power_state(dc->clk_mgr);
- 
-@@ -1216,7 +1216,7 @@ void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
- 
- 				for (i = 0; i < max_num_polls; ++i) {
- 					commit_state = dc->hwss.get_idle_state(dc);
--					if (!(commit_state & DMUB_IPS2_COMMIT_MASK))
-+					if (commit_state & DMUB_IPS2_COMMIT_MASK)
- 						break;
- 
- 					udelay(1);
-@@ -1235,10 +1235,10 @@ void dc_dmub_srv_exit_low_power_state(const struct dc *dc)
- 		}
- 
- 		dc_dmub_srv_notify_idle(dc, false);
--		if (allow_state & DMUB_IPS1_ALLOW_MASK) {
-+		if (!(allow_state & DMUB_IPS1_ALLOW_MASK)) {
- 			for (i = 0; i < max_num_polls; ++i) {
- 				commit_state = dc->hwss.get_idle_state(dc);
--				if (!(commit_state & DMUB_IPS1_COMMIT_MASK))
-+				if (commit_state & DMUB_IPS1_COMMIT_MASK)
- 					break;
- 
- 				udelay(1);
++	/* WA added for Vangogh asic fixing the SMU suspend failure
++	 * It needs to set power gating again during gfxoff control
++	 * otherwise the gfxoff disallowing will be failed to set.
++	 */
++	if (amdgpu_ip_version(adev, GC_HWIP, 0) == IP_VERSION(10, 3, 1))
++		gfx_v10_0_set_powergating_state(handle, AMD_PG_STATE_UNGATE);
++
+ 	if (!adev->no_hw_access) {
+ 		if (amdgpu_async_gfx_ring) {
+ 			if (amdgpu_gfx_disable_kgq(adev, 0))
 
 
