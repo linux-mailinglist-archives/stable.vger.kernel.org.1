@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-2147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC15D7F82F9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:12:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686B27F8305
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDF8D1C2477A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21C57286C9B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B73637170;
-	Fri, 24 Nov 2023 19:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9473A364AE;
+	Fri, 24 Nov 2023 19:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfBW3qTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGjkyq8Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F4A35EE6;
-	Fri, 24 Nov 2023 19:12:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669A9C433C7;
-	Fri, 24 Nov 2023 19:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5081B2511F;
+	Fri, 24 Nov 2023 19:13:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45CBC433C7;
+	Fri, 24 Nov 2023 19:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853164;
-	bh=GVYbVBeW7d/tuuXGfye7P2JV+0g+qF0ASr5Pan2IJa0=;
+	s=korg; t=1700853192;
+	bh=OFptcExAvzeMLQVVST4yszNq7CSQ2HvoeyAgga9f7O8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VfBW3qTrAQ2yxSsK64t3KoCMn+9X4YvaIs6+joiOJPqUOE5Kmu4OhGS8lI8f/JZTb
-	 MUQACJVRlWrDkNO8jGiTKTVUzYsti+CEC+9l3fLsF/ffLRetFUA3Ywc9f5RPcw5cdt
-	 mU4z5HskjOmbZEamRkPCBqKao3lus7HamtxKp0+c=
+	b=LGjkyq8YCQfeDeILF3NUr8vE5cJnUzPJ034W1jd39OKh7uMIgWYxWLvEnV8eZCuZr
+	 TXkH+yzXnYUEFY+9hFVX9jmQl0L+0P5F2UXYsu6A+Oemcj07hjtpZDu2L+3WXMMdc1
+	 NZVmro9ztxgUSppk69Y9d46F8RTz88wysg/OZP2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 072/297] media: cobalt: Use FIELD_GET() to extract Link Width
-Date: Fri, 24 Nov 2023 17:51:54 +0000
-Message-ID: <20231124172002.768172168@linuxfoundation.org>
+Subject: [PATCH 5.15 073/297] media: ccs: Fix driver quirk struct documentation
+Date: Fri, 24 Nov 2023 17:51:55 +0000
+Message-ID: <20231124172002.804632969@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
 References: <20231124172000.087816911@linuxfoundation.org>
@@ -52,79 +52,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit f301fedbeecfdce91cb898d6fa5e62f269801fee ]
+[ Upstream commit 441b5c63d71ec9ec5453328f7e83384ecc1dddd9 ]
 
-Use FIELD_GET() to extract PCIe Negotiated and Maximum Link Width fields
-instead of custom masking and shifting.
+Fix documentation for struct ccs_quirk, a device specific struct for
+managing deviations from the standard. The flags field was drifted away
+from where it should have been.
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cobalt/cobalt-driver.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/media/i2c/ccs/ccs-quirk.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/media/pci/cobalt/cobalt-driver.c b/drivers/media/pci/cobalt/cobalt-driver.c
-index 16af58f2f93cc..f9cee061517bd 100644
---- a/drivers/media/pci/cobalt/cobalt-driver.c
-+++ b/drivers/media/pci/cobalt/cobalt-driver.c
-@@ -8,6 +8,7 @@
-  *  All rights reserved.
+diff --git a/drivers/media/i2c/ccs/ccs-quirk.h b/drivers/media/i2c/ccs/ccs-quirk.h
+index 5838fcda92fd4..0b1a64958d714 100644
+--- a/drivers/media/i2c/ccs/ccs-quirk.h
++++ b/drivers/media/i2c/ccs/ccs-quirk.h
+@@ -32,12 +32,10 @@ struct ccs_sensor;
+  *		@reg: Pointer to the register to access
+  *		@value: Register value, set by the caller on write, or
+  *			by the quirk on read
+- *
+- * @flags: Quirk flags
+- *
+  *		@return: 0 on success, -ENOIOCTLCMD if no register
+  *			 access may be done by the caller (default read
+  *			 value is zero), else negative error code on error
++ * @flags: Quirk flags
   */
- 
-+#include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <media/i2c/adv7604.h>
- #include <media/i2c/adv7842.h>
-@@ -210,17 +211,17 @@ void cobalt_pcie_status_show(struct cobalt *cobalt)
- 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &stat);
- 	cobalt_info("PCIe link capability 0x%08x: %s per lane and %u lanes\n",
- 			capa, get_link_speed(capa),
--			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
-+			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
- 	cobalt_info("PCIe link control 0x%04x\n", ctrl);
- 	cobalt_info("PCIe link status 0x%04x: %s per lane and %u lanes\n",
- 		    stat, get_link_speed(stat),
--		    (stat & PCI_EXP_LNKSTA_NLW) >> 4);
-+		    FIELD_GET(PCI_EXP_LNKSTA_NLW, stat));
- 
- 	/* Bus */
- 	pcie_capability_read_dword(pci_bus_dev, PCI_EXP_LNKCAP, &capa);
- 	cobalt_info("PCIe bus link capability 0x%08x: %s per lane and %u lanes\n",
- 			capa, get_link_speed(capa),
--			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
-+			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
- 
- 	/* Slot */
- 	pcie_capability_read_dword(pci_dev, PCI_EXP_SLTCAP, &capa);
-@@ -239,7 +240,7 @@ static unsigned pcie_link_get_lanes(struct cobalt *cobalt)
- 	if (!pci_is_pcie(pci_dev))
- 		return 0;
- 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &link);
--	return (link & PCI_EXP_LNKSTA_NLW) >> 4;
-+	return FIELD_GET(PCI_EXP_LNKSTA_NLW, link);
- }
- 
- static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
-@@ -250,7 +251,7 @@ static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
- 	if (!pci_is_pcie(pci_dev))
- 		return 0;
- 	pcie_capability_read_dword(pci_dev, PCI_EXP_LNKCAP, &link);
--	return (link & PCI_EXP_LNKCAP_MLW) >> 4;
-+	return FIELD_GET(PCI_EXP_LNKCAP_MLW, link);
- }
- 
- static void msi_config_show(struct cobalt *cobalt, struct pci_dev *pci_dev)
+ struct ccs_quirk {
+ 	int (*limits)(struct ccs_sensor *sensor);
 -- 
 2.42.0
 
