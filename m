@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-2431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675A67F8425
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78307F826F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98B391C27225
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 821B428529E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB3133CCA;
-	Fri, 24 Nov 2023 19:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D3C31748;
+	Fri, 24 Nov 2023 19:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FITAG+CD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/Oo1bMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3B035EE6;
-	Fri, 24 Nov 2023 19:24:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151E4C433C8;
-	Fri, 24 Nov 2023 19:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D88A734189;
+	Fri, 24 Nov 2023 19:07:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A9FC433C8;
+	Fri, 24 Nov 2023 19:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853865;
-	bh=6VyjAvMSwVW3S4yIvqtl9bPIeyhZQtxvEO5ZpH3LJEc=;
+	s=korg; t=1700852857;
+	bh=1d6QdJ+vDCucEaFcVoVsruNVUOt9PppVQRgQ0KaAlZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FITAG+CDcKNsX1PuBKyi+9+4xtqFvQEyDi5BxS23PfG1tzQLZZ3Wa0DRYvbBBCPnB
-	 qLZ8lhN+TVvx2mrtrucTPbkH+AAUSF07tLpL9KIPI2RC8Q7F9yJfL2AkzQBETf1ZTN
-	 8XH4nmihV2dVlJgVrvQF/Gc3Nm6OUqm3MipvTNT0=
+	b=x/Oo1bMQ9LOcIGwYAhZTFSuBTDpKt6c5pJsnT4RHTSB1qFQ6jp3+zKZ12pxpOVJ0B
+	 r89nkqtyI1tff138N0T9DMNISh2pTt/QRI9Z1oEZhrz8LL6V1TlTFczXjl5Y8V1axk
+	 tUSyJFgSpIl/5ShkWyCzjMPF+mABJ+yb0eE7NfNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cruz Zhao <cruzzhao@linux.alibaba.com>,
-	Tianchen Ding <dtcccc@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pavel Krasavin <pkrasavin@imaqliq.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Rokosov <ddrokosov@salutedevices.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/159] net/mlx5e: fix double free of encap_header
+Subject: [PATCH 5.10 151/193] tty: serial: meson: fix hard LOCKUP on crtscts mode
 Date: Fri, 24 Nov 2023 17:54:38 +0000
-Message-ID: <20231124171944.475042073@linuxfoundation.org>
+Message-ID: <20231124171953.238567829@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,84 +54,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dust Li <dust.li@linux.alibaba.com>
+From: Pavel Krasavin <pkrasavin@imaqliq.com>
 
-[ Upstream commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1 ]
+[ Upstream commit 2a1d728f20edeee7f26dc307ed9df4e0d23947ab ]
 
-When mlx5_packet_reformat_alloc() fails, the encap_header allocated in
-mlx5e_tc_tun_create_header_ipv4{6} will be released within it. However,
-e->encap_header is already set to the previously freed encap_header
-before mlx5_packet_reformat_alloc(). As a result, the later
-mlx5e_encap_put() will free e->encap_header again, causing a double free
-issue.
+There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
 
-mlx5e_encap_put()
-    --> mlx5e_encap_dealloc()
-        --> kfree(e->encap_header)
+# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
+[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
+[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
+[   95.906972] Task dump for CPU 3:
+[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
+[   95.920059] Call trace:
+[   95.922485]  __switch_to+0xe4/0x168
+[   95.925951]  0xffffff8003477508
+[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
+[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
 
-This happens when cmd: MLX5_CMD_OP_ALLOC_PACKET_REFORMAT_CONTEXT fail.
+Possible solution would be to not allow to setup crtscts on such port.
 
-This patch fix it by not setting e->encap_header until
-mlx5_packet_reformat_alloc() success.
+Tested on S905X3 based board.
 
-Fixes: d589e785baf5e ("net/mlx5e: Allow concurrent creation of encap entries")
-Reported-by: Cruz Zhao <cruzzhao@linux.alibaba.com>
-Reported-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
+
+v6: stable tag added
+v5: https://lore.kernel.org/lkml/OF43DA36FF.2BD3BB21-ON00258A47.005A8125-00258A47.005A9513@gdc.ru/
+added missed Reviewed-by tags, Fixes tag added according to Dmitry and Neil notes
+v4: https://lore.kernel.org/lkml/OF55521400.7512350F-ON00258A47.003F7254-00258A47.0040E15C@gdc.ru/
+More correct patch subject according to Jiri's note
+v3: https://lore.kernel.org/lkml/OF6CF5FFA0.CCFD0E8E-ON00258A46.00549EDF-00258A46.0054BB62@gdc.ru/
+"From:" line added to the mail
+v2: https://lore.kernel.org/lkml/OF950BEF72.7F425944-ON00258A46.00488A76-00258A46.00497D44@gdc.ru/
+braces for single statement removed according to Dmitry's note
+v1: https://lore.kernel.org/lkml/OF28B2B8C9.5BC0CD28-ON00258A46.0037688F-00258A46.0039155B@gdc.ru/
+Link: https://lore.kernel.org/r/OF66360032.51C36182-ON00258A48.003F656B-00258A48.0040092C@gdc.ru
+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/tty/serial/meson_uart.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-index 362f01bc8372e..5a4bee5253ec1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-@@ -290,9 +290,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index bdc394afec5be..bb66a3f06626c 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -370,10 +370,14 @@ static void meson_uart_set_termios(struct uart_port *port,
+ 	else
+ 		val |= AML_UART_STOP_BIT_1SB;
  
--	e->encap_size = ipv4_encap_size;
--	e->encap_header = encap_header;
--
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -309,6 +306,8 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
+-	if (cflags & CRTSCTS)
+-		val &= ~AML_UART_TWO_WIRE_EN;
+-	else
++	if (cflags & CRTSCTS) {
++		if (port->flags & UPF_HARD_FLOW)
++			val &= ~AML_UART_TWO_WIRE_EN;
++		else
++			termios->c_cflag &= ~CRTSCTS;
++	} else {
+ 		val |= AML_UART_TWO_WIRE_EN;
++	}
  
-+	e->encap_size = ipv4_encap_size;
-+	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
- 	neigh_release(n);
-@@ -408,9 +407,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+ 	writel(val, port->membase + AML_UART_CONTROL);
  
--	e->encap_size = ipv6_encap_size;
--	e->encap_header = encap_header;
--
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -428,6 +424,8 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
+@@ -731,6 +735,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
+ 	int ret = 0;
+ 	int irq;
++	bool has_rtscts;
  
-+	e->encap_size = ipv6_encap_size;
-+	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
- 	neigh_release(n);
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
+@@ -758,6 +763,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 		return irq;
+ 
+ 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
++	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
+ 
+ 	if (meson_ports[pdev->id]) {
+ 		dev_err(&pdev->dev, "port %d already allocated\n", pdev->id);
+@@ -782,6 +788,8 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	port->mapsize = resource_size(res_mem);
+ 	port->irq = irq;
+ 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
++	if (has_rtscts)
++		port->flags |= UPF_HARD_FLOW;
+ 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+ 	port->dev = &pdev->dev;
+ 	port->line = pdev->id;
 -- 
 2.42.0
 
