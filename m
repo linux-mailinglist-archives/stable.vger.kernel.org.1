@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-1444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75227F7FB1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A21D7F7B31
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49EA0B21A6B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6CA1B20FC4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12C92EAEA;
-	Fri, 24 Nov 2023 18:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444CF39FEE;
+	Fri, 24 Nov 2023 18:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moLxajZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAFd6Ude"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA7C35F04;
-	Fri, 24 Nov 2023 18:43:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD86FC433C7;
-	Fri, 24 Nov 2023 18:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1A039FD7;
+	Fri, 24 Nov 2023 18:02:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C19C433C8;
+	Fri, 24 Nov 2023 18:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851414;
-	bh=JpkfhW5hwbD/ZFuFo5muuxhZpgRvYGbupQfsIwjiEls=;
+	s=korg; t=1700848960;
+	bh=nAI5d3O94KTYQ8c8zKUMWgIh+WEw4UbA1XR6pxSZ6Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moLxajZFECx3robLl3KqNOPl7yIv5v2EDPH4VdVY6GbQ5l8vAdJ1moK4z5kVnHsMD
-	 OaHXJjjSiWKzJKMfo11mgJkxeCuhr2zhCdZpY0sUnJVKA8Nh1v6UL0bSbgeNm3/xjz
-	 KSdHu4chrD+tXeu4gu2aitgBQqpnJEYIoC2J6pYE=
+	b=GAFd6Ude/gDzJ0nkLw7sqmeSCXMtI8Oeqiia0lS3iyExuJ6xTMA00TlYGmyEWHseM
+	 Yt1EcM9Cqdq2esyKFNc6eKNghf+3U8VCAm04h03f43WS99MhByE3QG5SPAjFPpXZG8
+	 stFK4SDaA4sRkLdVhATz6/z0mi0oxjUxQ/Lcsvn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 414/491] net: phylink: initialize carrier state at creation
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 26/57] pwm: Fix double shift bug
 Date: Fri, 24 Nov 2023 17:50:50 +0000
-Message-ID: <20231124172037.043877323@linuxfoundation.org>
+Message-ID: <20231124171931.239997561@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +53,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Klaus Kudielka <klaus.kudielka@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 02d5fdbf4f2b8c406f7a4c98fa52aa181a11d733 upstream.
+[ Upstream commit d27abbfd4888d79dd24baf50e774631046ac4732 ]
 
-Background: Turris Omnia (Armada 385); eth2 (mvneta) connected to SFP bus;
-SFP module is present, but no fiber connected, so definitely no carrier.
+These enums are passed to set/test_bit().  The set/test_bit() functions
+take a bit number instead of a shifted value.  Passing a shifted value
+is a double shift bug like doing BIT(BIT(1)).  The double shift bug
+doesn't cause a problem here because we are only checking 0 and 1 but
+if the value was 5 or above then it can lead to a buffer overflow.
 
-After booting, eth2 is down, but netdev LED trigger surprisingly reports
-link active. Then, after "ip link set eth2 up", the link indicator goes
-away - as I would have expected it from the beginning.
-
-It turns out, that the default carrier state after netdev creation is
-"carrier ok". Some ethernet drivers explicitly call netif_carrier_off
-during probing, others (like mvneta) don't - which explains the current
-behaviour: only when the device is brought up, phylink_start calls
-netif_carrier_off.
-
-Fix this for all drivers using phylink, by calling netif_carrier_off in
-phylink_create.
-
-Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
-Cc: stable@vger.kernel.org
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/phylink.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/pwm.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -1568,6 +1568,7 @@ struct phylink *phylink_create(struct ph
- 	pl->config = config;
- 	if (config->type == PHYLINK_NETDEV) {
- 		pl->netdev = to_net_dev(config->dev);
-+		netif_carrier_off(pl->netdev);
- 	} else if (config->type == PHYLINK_DEV) {
- 		pl->dev = config->dev;
- 	} else {
+diff --git a/include/linux/pwm.h b/include/linux/pwm.h
+index bd7d611d63e91..c6e981035c3fd 100644
+--- a/include/linux/pwm.h
++++ b/include/linux/pwm.h
+@@ -44,8 +44,8 @@ struct pwm_args {
+ };
+ 
+ enum {
+-	PWMF_REQUESTED = 1 << 0,
+-	PWMF_EXPORTED = 1 << 1,
++	PWMF_REQUESTED = 0,
++	PWMF_EXPORTED = 1,
+ };
+ 
+ /*
+-- 
+2.42.0
+
 
 
 
