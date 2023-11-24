@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-2003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5AF7F8259
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154487F83A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86642284D59
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46FC01C26089
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D716D1A5A4;
-	Fri, 24 Nov 2023 19:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818E0381CB;
+	Fri, 24 Nov 2023 19:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngiA2Po+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ttDEDKNU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DFA3173F;
-	Fri, 24 Nov 2023 19:06:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F19C3C433C8;
-	Fri, 24 Nov 2023 19:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F52035F04;
+	Fri, 24 Nov 2023 19:19:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF413C433C8;
+	Fri, 24 Nov 2023 19:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852807;
-	bh=GZKSospVtWg9DCPf+uouDdlOkSbNgR0b4yeWDCz+bsQ=;
+	s=korg; t=1700853568;
+	bh=slzv0T/Fv9DBIgxmVxj7ksXivPEm5rS2j5IZXoSPP7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngiA2Po+Rg0HxQz6fLgD5VqfAx0AYMg5SAYo1FNpFu8jsfmX0S5CZTrqzJSVEIful
-	 TAs7MyCthVCQ/D6AUNRir2Vvv6nUoj9vemZnSgBH9Q75Ow3NdEm+qjm5KM9Nz/XQos
-	 QaxGW2CXGdiR6if+gMgfj/tqjFWBkGvieK2Qcook=
+	b=ttDEDKNUFxOXdLYTrTYTsbz88UyHwNtMtuTC8FAuJoynrXUeXPOPlqZfS5+lzyrb0
+	 djonEVhZWYAHvY2S2iohEgn88UERfTMFKyS9PDfDly5dospcaN4nWuuA+9OzG7Mhoj
+	 bylio2FntVKbmpbFuwMWZXejfa9XG9DIU8uIwCf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Nishanth Menon <nm@ti.com>,
-	Benjamin Bara <benjamin.bara@skidata.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.10 131/193] kernel/reboot: emergency_restart: Set correct system_state
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	kernel test robot <lkp@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 216/297] tracing: Have the user copy of synthetic event address use correct context
 Date: Fri, 24 Nov 2023 17:54:18 +0000
-Message-ID: <20231124171952.465989071@linuxfoundation.org>
+Message-ID: <20231124172007.781881237@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Bara <benjamin.bara@skidata.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 60466c067927abbcaff299845abd4b7069963139 upstream.
+commit 4f7969bcd6d33042d62e249b41b5578161e4c868 upstream.
 
-As the emergency restart does not call kernel_restart_prepare(), the
-system_state stays in SYSTEM_RUNNING.
+A synthetic event is created by the synthetic event interface that can
+read both user or kernel address memory. In reality, it reads any
+arbitrary memory location from within the kernel. If the address space is
+in USER (where CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE is set) then
+it uses strncpy_from_user_nofault() to copy strings otherwise it uses
+strncpy_from_kernel_nofault().
 
-Since bae1d3a05a8b, this hinders i2c_in_atomic_xfer_mode() from becoming
-active, and therefore might lead to avoidable warnings in the restart
-handlers, e.g.:
+But since both functions use the same variable there's no annotation to
+what that variable is (ie. __user). This makes sparse complain.
 
-[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-[   12.676926] Voluntary context switch within RCU read-side critical section!
-...
-[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-...
-[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-[   13.001050]  machine_restart from panic+0x2a8/0x32c
+Quiet sparse by typecasting the strncpy_from_user_nofault() variable to
+a __user pointer.
 
-Avoid these by setting the correct system_state.
+Link: https://lore.kernel.org/linux-trace-kernel/20231031151033.73c42e23@gandalf.local.home
 
-Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-Cc: stable@vger.kernel.org # v5.2+
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-1-18699d5dcd76@skidata.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Fixes: 0934ae9977c2 ("tracing: Fix reading strings from synthetic events");
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311010013.fm8WTxa5-lkp@intel.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/reboot.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/trace/trace_events_synth.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -64,6 +64,7 @@ EXPORT_SYMBOL_GPL(pm_power_off_prepare);
- void emergency_restart(void)
- {
- 	kmsg_dump(KMSG_DUMP_EMERG);
-+	system_state = SYSTEM_RESTART;
- 	machine_emergency_restart();
- }
- EXPORT_SYMBOL_GPL(emergency_restart);
+--- a/kernel/trace/trace_events_synth.c
++++ b/kernel/trace/trace_events_synth.c
+@@ -454,7 +454,7 @@ static unsigned int trace_string(struct
+ 
+ #ifdef CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ 		if ((unsigned long)str_val < TASK_SIZE)
+-			ret = strncpy_from_user_nofault(str_field, str_val, STR_VAR_LEN_MAX);
++			ret = strncpy_from_user_nofault(str_field, (const void __user *)str_val, STR_VAR_LEN_MAX);
+ 		else
+ #endif
+ 			ret = strncpy_from_kernel_nofault(str_field, str_val, STR_VAR_LEN_MAX);
 
 
 
