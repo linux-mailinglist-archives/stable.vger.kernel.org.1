@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600EE7F7F28
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B077F80BB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B216282483
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFBA11F20FC1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3703307D;
-	Fri, 24 Nov 2023 18:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9559733E9;
+	Fri, 24 Nov 2023 18:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/oUbX0X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqbCYVQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A6E2E84A;
-	Fri, 24 Nov 2023 18:39:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80C04C433C7;
-	Fri, 24 Nov 2023 18:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FDC14F7B;
+	Fri, 24 Nov 2023 18:52:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A201BC433C7;
+	Fri, 24 Nov 2023 18:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851141;
-	bh=FYoB+/3w+ShqWk1PNT7/2Qd17Jel6bWU85Jkf7yn5Ek=;
+	s=korg; t=1700851939;
+	bh=ZccyRZyJqgjXQYXK54by4NACiSBbnimXEQDQpgTnHlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R/oUbX0XcNXobKXMCCI+WeEEilTCeoVLH4Ijl6/9gb9QJY+6T8ly7X5dg1TzgrqL3
-	 FBEQ4SGkYLVhjkn6Guo5lvh1OiVzmo7sltPzfjSsBmiIAudebSKERSNhBqgctA0OWT
-	 +7w3UeGW3DE4EShIMxZ6zcYCQ+NPlDLIwIXOP7B8=
+	b=KqbCYVQ1MdZmjcVNDUsY39UYUamyhZBIRhDS7Gwp8iv0uZpQp6QzZBwyCh7laN7j5
+	 Y1t2o5XlvDHNchcFVj1DmK+wDc5ebJWQncsVKQiU83Ac52OH5ccOm39VFjxoDCZwkM
+	 KZ1tzUYr4ZcQc82EeeywrVXryW7+d2Lp6/pP6JwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>
-Subject: [PATCH 6.5 305/491] PCI: exynos: Dont discard .remove() callback
-Date: Fri, 24 Nov 2023 17:49:01 +0000
-Message-ID: <20231124172033.743337684@linuxfoundation.org>
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 155/372] net/mlx5e: Check return value of snprintf writing to fw_version buffer for representors
+Date: Fri, 24 Nov 2023 17:49:02 +0000
+Message-ID: <20231124172015.649546197@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,60 +53,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit 83a939f0fdc208ff3639dd3d42ac9b3c35607fd2 upstream.
+[ Upstream commit 1b2bd0c0264febcd8d47209079a6671c38e6558b ]
 
-With CONFIG_PCI_EXYNOS=y and exynos_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
+Treat the operation as an error case when the return value is equivalent to
+the size of the name buffer. Failed to write null terminator to the name
+buffer, making the string malformed and should not be used. Provide a
+string with only the firmware version when forming the string with the
+board id fails. This logic for representors is identical to normal flow
+with ethtool.
 
-The right thing to do is do always have the remove callback available.
-This fixes the following warning by modpost:
+Without check, will trigger -Wformat-truncation with W=1.
 
-  WARNING: modpost: drivers/pci/controller/dwc/pci-exynos: section mismatch in reference: exynos_pcie_driver+0x8 (section: .data) -> exynos_pcie_remove (section: .exit.text)
+    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c: In function 'mlx5e_rep_get_drvinfo':
+    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c:78:31: warning: '%.16s' directive output may be truncated writing up to 16 bytes into a region of size between 13 and 22 [-Wformat-truncation=]
+      78 |                  "%d.%d.%04d (%.16s)",
+         |                               ^~~~~
+    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c:77:9: note: 'snprintf' output between 12 and 37 bytes into a destination of size 32
+      77 |         snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      78 |                  "%d.%d.%04d (%.16s)",
+         |                  ~~~~~~~~~~~~~~~~~~~~~
+      79 |                  fw_rev_maj(mdev), fw_rev_min(mdev),
+         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      80 |                  fw_rev_sub(mdev), mdev->board_id);
+         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-(with ARCH=x86_64 W=1 allmodconfig).
-
-Fixes: 340cba6092c2 ("pci: Add PCIe driver for Samsung Exynos")
-Link: https://lore.kernel.org/r/20231001170254.2506508-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cf83c8fdcd47 ("net/mlx5e: Add missing ethtool driver info for representors")
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-16-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-exynos.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-exynos.c
-+++ b/drivers/pci/controller/dwc/pci-exynos.c
-@@ -375,7 +375,7 @@ fail_probe:
- 	return ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index bd895ef341a0b..2653cb96c3105 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -69,13 +69,17 @@ static void mlx5e_rep_get_drvinfo(struct net_device *dev,
+ {
+ 	struct mlx5e_priv *priv = netdev_priv(dev);
+ 	struct mlx5_core_dev *mdev = priv->mdev;
++	int count;
+ 
+ 	strscpy(drvinfo->driver, mlx5e_rep_driver_name,
+ 		sizeof(drvinfo->driver));
+-	snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
+-		 "%d.%d.%04d (%.16s)",
+-		 fw_rev_maj(mdev), fw_rev_min(mdev),
+-		 fw_rev_sub(mdev), mdev->board_id);
++	count = snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
++			 "%d.%d.%04d (%.16s)", fw_rev_maj(mdev),
++			 fw_rev_min(mdev), fw_rev_sub(mdev), mdev->board_id);
++	if (count == sizeof(drvinfo->fw_version))
++		snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
++			 "%d.%d.%04d", fw_rev_maj(mdev),
++			 fw_rev_min(mdev), fw_rev_sub(mdev));
  }
  
--static int __exit exynos_pcie_remove(struct platform_device *pdev)
-+static int exynos_pcie_remove(struct platform_device *pdev)
- {
- 	struct exynos_pcie *ep = platform_get_drvdata(pdev);
- 
-@@ -431,7 +431,7 @@ static const struct of_device_id exynos_
- 
- static struct platform_driver exynos_pcie_driver = {
- 	.probe		= exynos_pcie_probe,
--	.remove		= __exit_p(exynos_pcie_remove),
-+	.remove		= exynos_pcie_remove,
- 	.driver = {
- 		.name	= "exynos-pcie",
- 		.of_match_table = exynos_pcie_of_match,
+ static const struct counter_desc sw_rep_stats_desc[] = {
+-- 
+2.42.0
+
 
 
 
