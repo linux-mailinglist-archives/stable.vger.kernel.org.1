@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2937F73FA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A82EF7F73FB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:42:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0E1DB21445
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:41:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38DAFB2145C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:42:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE557F0;
-	Fri, 24 Nov 2023 12:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F901642B;
+	Fri, 24 Nov 2023 12:41:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYtajnZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NF198zcD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E517C1642B
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E050C433CB;
-	Fri, 24 Nov 2023 12:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4857A1D690
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:41:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BFBC433C9;
+	Fri, 24 Nov 2023 12:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700829716;
-	bh=T6PiCMtT1mCKAMtxZZ0xiF2/7IRPgCMSBlhCAL96PJU=;
+	s=korg; t=1700829718;
+	bh=pT7qCV+LLSYNP5ZM0Jv/5543SpZKsrd64egPCJSpgGo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hYtajnZHlu5xj5dDdJvnheQX94bSeOETVsfQrZTnvLqVKDvePFUHeI30zkkrrgQbn
-	 OToyNo4CE8c6POpL843+W2eO7AxbdeFbypEpf5LH0nE7S7jJiC41YdoJJTPXqZN/B/
-	 kiK64WEGCIT2KOBVzp2V2Xij8CzxrvRFdUSasRoU=
-Subject: FAILED: patch "[PATCH] MIPS: KVM: Fix a build warning about variable set but not" failed to apply to 5.15-stable tree
+	b=NF198zcDSM2N4r6bICLq5uLDsnzxAjFuKFBIVSdVF2A0LnJCUj1D90cilk10Hq5hM
+	 xxdGb9c9BJs5wrneERxE4OYDfNh7vHFeOT4zG4DrfRk0At/Zp+qQUCZsdx7mL6pMHg
+	 O6cz5Errtp/BrffSb57jl2J3bGipuKNEyXCMQKmY=
+Subject: FAILED: patch "[PATCH] MIPS: KVM: Fix a build warning about variable set but not" failed to apply to 5.10-stable tree
 To: chenhuacai@kernel.org,chenhuacai@loongson.cn,lkp@intel.com,philmd@linaro.org,tsbogend@alpha.franken.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:41:31 +0000
-Message-ID: <2023112431-slapping-pureblood-ab79@gregkh>
+Date: Fri, 24 Nov 2023 12:41:32 +0000
+Message-ID: <2023112432-referable-sizing-393d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 83767a67e7b6a0291cde5681ec7e3708f3f8f877
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112431-slapping-pureblood-ab79@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112432-referable-sizing-393d@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
