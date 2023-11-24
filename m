@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-1803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 344677F816F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 039AA7F7FCB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2C11282670
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2094282558
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B46933076;
-	Fri, 24 Nov 2023 18:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B68381D4;
+	Fri, 24 Nov 2023 18:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04enMFZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gK2tmVaE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5C42E84A;
-	Fri, 24 Nov 2023 18:58:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA813C433C7;
-	Fri, 24 Nov 2023 18:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7868364B7;
+	Fri, 24 Nov 2023 18:44:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590C5C433C7;
+	Fri, 24 Nov 2023 18:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852313;
-	bh=UmqNPrBdR/EtfLuuplvTzSmMLjAqCIe/uZeFasN+c8E=;
+	s=korg; t=1700851461;
+	bh=4Y+NDxKCDlfr7IDPAEhRI89O8E+Usa8Ax7AeXKcqEBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04enMFZcNP21ScU3k+03KhvEZ6RJAnZMxxUGBsBV9jjfbFBF5eg5dVHNROtzGE70Z
-	 vm3HMmoZwZlM9ILhvUGvwZeAFBW8LTDusbhWrh0rr3kkakEiODpznmwbej5OdOFFvt
-	 tRr7uwenUDhtTKlyKqcprNWVemoYgWbIDZY3g0IA=
+	b=gK2tmVaE7WH6INu/8FGZfrzqyGcAKDAvnSQsnhmzZukCbAtIs8dUz/fyf/Fs0fEn2
+	 qcLmI979Z2WRxi7eE+4QOGONLUSbYv1sv05mjJloggb94XLhDJU/xUPZgXcQUzT8A4
+	 JF40D7BG2fLsheuc+ZwW5myHTkF87T4aVCvlPGmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Marko <robert.marko@sartura.hr>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.1 306/372] Revert "i2c: pxa: move to generic GPIO recovery"
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 457/491] Revert "net: r8169: Disable multicast filter for RTL8168H and RTL8107E"
 Date: Fri, 24 Nov 2023 17:51:33 +0000
-Message-ID: <20231124172020.614111007@linuxfoundation.org>
+Message-ID: <20231124172038.346700395@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,153 +52,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 7b211c7671212cad0b83603c674838c7e824d845 upstream.
+commit 6a26310273c323380da21eb23fcfd50e31140913 upstream.
 
-This reverts commit 0b01392c18b9993a584f36ace1d61118772ad0ca.
+This reverts commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df.
 
-Conversion of PXA to generic I2C recovery, makes the I2C bus completely
-lock up if recovery pinctrl is present in the DT and I2C recovery is
-enabled.
+I couldn't reproduce the reported issue. What I did, based on a pcap
+packet log provided by the reporter:
+- Used same chip version (RTL8168h)
+- Set MAC address to the one used on the reporters system
+- Replayed the EAPOL unicast packet that, according to the reporter,
+  was filtered out by the mc filter.
+The packet was properly received.
 
-So, until the generic I2C recovery can also work with PXA lets revert
-to have working I2C and I2C recovery again.
+Therefore the root cause of the reported issue seems to be somewhere
+else. Disabling mc filtering completely for the most common chip
+version is a quite big hammer. Therefore revert the change and wait
+for further analysis results from the reporter.
 
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Cc: stable@vger.kernel.org # 5.11+
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
-Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-pxa.c |   76 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 68 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -264,6 +264,9 @@ struct pxa_i2c {
- 	u32			hs_mask;
- 
- 	struct i2c_bus_recovery_info recovery;
-+	struct pinctrl		*pinctrl;
-+	struct pinctrl_state	*pinctrl_default;
-+	struct pinctrl_state	*pinctrl_recovery;
- };
- 
- #define _IBMR(i2c)	((i2c)->reg_ibmr)
-@@ -1302,12 +1305,13 @@ static void i2c_pxa_prepare_recovery(str
- 	 */
- 	gpiod_set_value(i2c->recovery.scl_gpiod, ibmr & IBMR_SCLS);
- 	gpiod_set_value(i2c->recovery.sda_gpiod, ibmr & IBMR_SDAS);
-+
-+	WARN_ON(pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_recovery));
- }
- 
- static void i2c_pxa_unprepare_recovery(struct i2c_adapter *adap)
- {
- 	struct pxa_i2c *i2c = adap->algo_data;
--	struct i2c_bus_recovery_info *bri = adap->bus_recovery_info;
- 	u32 isr;
- 
- 	/*
-@@ -1321,7 +1325,7 @@ static void i2c_pxa_unprepare_recovery(s
- 		i2c_pxa_do_reset(i2c);
- 	}
- 
--	WARN_ON(pinctrl_select_state(bri->pinctrl, bri->pins_default));
-+	WARN_ON(pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_default));
- 
- 	dev_dbg(&i2c->adap.dev, "recovery: IBMR 0x%08x ISR 0x%08x\n",
- 	        readl(_IBMR(i2c)), readl(_ISR(i2c)));
-@@ -1343,20 +1347,76 @@ static int i2c_pxa_init_recovery(struct
- 	if (IS_ENABLED(CONFIG_I2C_PXA_SLAVE))
- 		return 0;
- 
--	bri->pinctrl = devm_pinctrl_get(dev);
--	if (PTR_ERR(bri->pinctrl) == -ENODEV) {
--		bri->pinctrl = NULL;
-+	i2c->pinctrl = devm_pinctrl_get(dev);
-+	if (PTR_ERR(i2c->pinctrl) == -ENODEV)
-+		i2c->pinctrl = NULL;
-+	if (IS_ERR(i2c->pinctrl))
-+		return PTR_ERR(i2c->pinctrl);
-+
-+	if (!i2c->pinctrl)
-+		return 0;
-+
-+	i2c->pinctrl_default = pinctrl_lookup_state(i2c->pinctrl,
-+						    PINCTRL_STATE_DEFAULT);
-+	i2c->pinctrl_recovery = pinctrl_lookup_state(i2c->pinctrl, "recovery");
-+
-+	if (IS_ERR(i2c->pinctrl_default) || IS_ERR(i2c->pinctrl_recovery)) {
-+		dev_info(dev, "missing pinmux recovery information: %ld %ld\n",
-+			 PTR_ERR(i2c->pinctrl_default),
-+			 PTR_ERR(i2c->pinctrl_recovery));
-+		return 0;
-+	}
-+
-+	/*
-+	 * Claiming GPIOs can influence the pinmux state, and may glitch the
-+	 * I2C bus. Do this carefully.
-+	 */
-+	bri->scl_gpiod = devm_gpiod_get(dev, "scl", GPIOD_OUT_HIGH_OPEN_DRAIN);
-+	if (bri->scl_gpiod == ERR_PTR(-EPROBE_DEFER))
-+		return -EPROBE_DEFER;
-+	if (IS_ERR(bri->scl_gpiod)) {
-+		dev_info(dev, "missing scl gpio recovery information: %pe\n",
-+			 bri->scl_gpiod);
-+		return 0;
-+	}
-+
-+	/*
-+	 * We have SCL. Pull SCL low and wait a bit so that SDA glitches
-+	 * have no effect.
-+	 */
-+	gpiod_direction_output(bri->scl_gpiod, 0);
-+	udelay(10);
-+	bri->sda_gpiod = devm_gpiod_get(dev, "sda", GPIOD_OUT_HIGH_OPEN_DRAIN);
-+
-+	/* Wait a bit in case of a SDA glitch, and then release SCL. */
-+	udelay(10);
-+	gpiod_direction_output(bri->scl_gpiod, 1);
-+
-+	if (bri->sda_gpiod == ERR_PTR(-EPROBE_DEFER))
-+		return -EPROBE_DEFER;
-+
-+	if (IS_ERR(bri->sda_gpiod)) {
-+		dev_info(dev, "missing sda gpio recovery information: %pe\n",
-+			 bri->sda_gpiod);
- 		return 0;
- 	}
--	if (IS_ERR(bri->pinctrl))
--		return PTR_ERR(bri->pinctrl);
- 
- 	bri->prepare_recovery = i2c_pxa_prepare_recovery;
- 	bri->unprepare_recovery = i2c_pxa_unprepare_recovery;
-+	bri->recover_bus = i2c_generic_scl_recovery;
- 
- 	i2c->adap.bus_recovery_info = bri;
- 
--	return 0;
-+	/*
-+	 * Claiming GPIOs can change the pinmux state, which confuses the
-+	 * pinctrl since pinctrl's idea of the current setting is unaffected
-+	 * by the pinmux change caused by claiming the GPIO. Work around that
-+	 * by switching pinctrl to the GPIO state here. We do it this way to
-+	 * avoid glitching the I2C bus.
-+	 */
-+	pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_recovery);
-+
-+	return pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_default);
- }
- 
- static int i2c_pxa_probe(struct platform_device *dev)
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2599,9 +2599,7 @@ static void rtl_set_rx_mode(struct net_d
+ 		rx_mode &= ~AcceptMulticast;
+ 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
+ 		   dev->flags & IFF_ALLMULTI ||
+-		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
+-		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
+-		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
++		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
+ 		/* accept all multicasts */
+ 	} else if (netdev_mc_empty(dev)) {
+ 		rx_mode &= ~AcceptMulticast;
 
 
 
