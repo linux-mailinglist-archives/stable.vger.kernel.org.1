@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-1975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F38E37F8238
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 440367F8385
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5ED62B237B1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F338C2884B9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C9A1A5A4;
-	Fri, 24 Nov 2023 19:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53FE93418E;
+	Fri, 24 Nov 2023 19:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOvIoRFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrLtJcIq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A9C2E64F;
-	Fri, 24 Nov 2023 19:05:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE11C433C7;
-	Fri, 24 Nov 2023 19:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11572339BE;
+	Fri, 24 Nov 2023 19:18:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FC7C4339A;
+	Fri, 24 Nov 2023 19:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852740;
-	bh=WoyiGyZrze/ll57fEhMYecyNNjqp8DkMpkOIT9a8gQ4=;
+	s=korg; t=1700853503;
+	bh=kFX5eUrai9HZczYfr7VvXf4CpVaejRm4aKbMGUhvC8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOvIoRFBnN6m+0koYvmu+tPEiGFexS7zSNXNszw/mI4sen3S2NZvA2sdUrfq1ezK1
-	 NASvFgVbX99gMQ4DIt2NoQLeMs0vkKBdX9XhTaPLBBflkfufY3fVUwJNSSQo9hgq6p
-	 wNENwSspLfQrlKnqGoBuOzzkQm+YwJs0RvWF0stw=
+	b=zrLtJcIqC4p/cBB90NIQTzFB+D8SxpYiX2fDOW0izco25nPuMDIjtBlsWYiHWERMz
+	 YtNwMs1Qv6okVMqEOlIjirREr2LA6T66/+/23tnUyGa1m1VxPYORDpTiQHdt2ol0ZV
+	 pREVv7rwAROvqQsXpCLS5IiAYkMkcrz+9nndCke8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 5.10 104/193] PCI/sysfs: Protect drivers D3cold preference from user space
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Binbin Zhou <zhoubinbin@loongson.cn>,
+	Paul McKenney <paulmck@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	Frederic Weisbecker <frederic@kernel.org>
+Subject: [PATCH 5.15 189/297] rcu/tree: Defer setting of jiffies during stall reset
 Date: Fri, 24 Nov 2023 17:53:51 +0000
-Message-ID: <20231124171951.402336472@linuxfoundation.org>
+Message-ID: <20231124172006.836303123@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +57,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Joel Fernandes (Google) <joel@joelfernandes.org>
 
-commit 70b70a4307cccebe91388337b1c85735ce4de6ff upstream.
+commit b96e7a5fa0ba9cda32888e04f8f4bac42d49a7f8 upstream.
 
-struct pci_dev contains two flags which govern whether the device may
-suspend to D3cold:
+There are instances where rcu_cpu_stall_reset() is called when jiffies
+did not get a chance to update for a long time. Before jiffies is
+updated, the CPU stall detector can go off triggering false-positives
+where a just-started grace period appears to be ages old. In the past,
+we disabled stall detection in rcu_cpu_stall_reset() however this got
+changed [1]. This is resulting in false-positives in KGDB usecase [2].
 
-* no_d3cold provides an opt-out for drivers (e.g. if a device is known
-  to not wake from D3cold)
+Fix this by deferring the update of jiffies to the third run of the FQS
+loop. This is more robust, as, even if rcu_cpu_stall_reset() is called
+just before jiffies is read, we would end up pushing out the jiffies
+read by 3 more FQS loops. Meanwhile the CPU stall detection will be
+delayed and we will not get any false positives.
 
-* d3cold_allowed provides an opt-out for user space (default is true,
-  user space may set to false)
+[1] https://lore.kernel.org/all/20210521155624.174524-2-senozhatsky@chromium.org/
+[2] https://lore.kernel.org/all/20230814020045.51950-2-chenhuacai@loongson.cn/
 
-Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend"),
-the user space setting overwrites the driver setting.  Essentially user
-space is trusted to know better than the driver whether D3cold is
-working.
+Tested with rcutorture.cpu_stall option as well to verify stall behavior
+with/without patch.
 
-That feels unsafe and wrong.  Assume that the change was introduced
-inadvertently and do not overwrite no_d3cold when d3cold_allowed is
-modified.  Instead, consider d3cold_allowed in addition to no_d3cold
-when choosing a suspend state for the device.
-
-That way, user space may opt out of D3cold if the driver hasn't, but it
-may no longer force an opt in if the driver has opted out.
-
-Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-Link: https://lore.kernel.org/r/b8a7f4af2b73f6b506ad8ddee59d747cbf834606.1695025365.git.lukas@wunner.de
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Cc: stable@vger.kernel.org	# v4.8+
+Tested-by: Huacai Chen <chenhuacai@loongson.cn>
+Reported-by: Binbin Zhou <zhoubinbin@loongson.cn>
+Closes: https://lore.kernel.org/all/20230814020045.51950-2-chenhuacai@loongson.cn/
+Suggested-by: Paul  McKenney <paulmck@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Fixes: a80be428fbc1 ("rcu: Do not disable GP stall detection in rcu_cpu_stall_reset()")
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-acpi.c  |    2 +-
- drivers/pci/pci-sysfs.c |    5 +----
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ kernel/rcu/tree.c       |   12 ++++++++++++
+ kernel/rcu/tree.h       |    4 ++++
+ kernel/rcu/tree_stall.h |   20 ++++++++++++++++++--
+ 3 files changed, 34 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -909,7 +909,7 @@ static pci_power_t acpi_pci_choose_state
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -1906,10 +1906,22 @@ static bool rcu_gp_fqs_check_wake(int *g
+  */
+ static void rcu_gp_fqs(bool first_time)
  {
- 	int acpi_state, d_max;
++	int nr_fqs = READ_ONCE(rcu_state.nr_fqs_jiffies_stall);
+ 	struct rcu_node *rnp = rcu_get_root();
  
--	if (pdev->no_d3cold)
-+	if (pdev->no_d3cold || !pdev->d3cold_allowed)
- 		d_max = ACPI_STATE_D3_HOT;
- 	else
- 		d_max = ACPI_STATE_D3_COLD;
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -500,10 +500,7 @@ static ssize_t d3cold_allowed_store(stru
- 		return -EINVAL;
+ 	WRITE_ONCE(rcu_state.gp_activity, jiffies);
+ 	WRITE_ONCE(rcu_state.n_force_qs, rcu_state.n_force_qs + 1);
++
++	WARN_ON_ONCE(nr_fqs > 3);
++	/* Only countdown nr_fqs for stall purposes if jiffies moves. */
++	if (nr_fqs) {
++		if (nr_fqs == 1) {
++			WRITE_ONCE(rcu_state.jiffies_stall,
++				   jiffies + rcu_jiffies_till_stall_check());
++		}
++		WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, --nr_fqs);
++	}
++
+ 	if (first_time) {
+ 		/* Collect dyntick-idle snapshots. */
+ 		force_qs_rnp(dyntick_save_progress_counter);
+--- a/kernel/rcu/tree.h
++++ b/kernel/rcu/tree.h
+@@ -351,6 +351,10 @@ struct rcu_state {
+ 						/*  in jiffies. */
+ 	unsigned long jiffies_stall;		/* Time at which to check */
+ 						/*  for CPU stalls. */
++	int nr_fqs_jiffies_stall;		/* Number of fqs loops after
++						 * which read jiffies and set
++						 * jiffies_stall. Stall
++						 * warnings disabled if !0. */
+ 	unsigned long jiffies_resched;		/* Time at which to resched */
+ 						/*  a reluctant CPU. */
+ 	unsigned long n_force_qs_gpstart;	/* Snapshot of n_force_qs at */
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -121,12 +121,17 @@ static void panic_on_rcu_stall(void)
+ /**
+  * rcu_cpu_stall_reset - restart stall-warning timeout for current grace period
+  *
++ * To perform the reset request from the caller, disable stall detection until
++ * 3 fqs loops have passed. This is required to ensure a fresh jiffies is
++ * loaded.  It should be safe to do from the fqs loop as enough timer
++ * interrupts and context switches should have passed.
++ *
+  * The caller must disable hard irqs.
+  */
+ void rcu_cpu_stall_reset(void)
+ {
+-	WRITE_ONCE(rcu_state.jiffies_stall,
+-		   jiffies + rcu_jiffies_till_stall_check());
++	WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, 3);
++	WRITE_ONCE(rcu_state.jiffies_stall, ULONG_MAX);
+ }
  
- 	pdev->d3cold_allowed = !!val;
--	if (pdev->d3cold_allowed)
--		pci_d3cold_enable(pdev);
--	else
--		pci_d3cold_disable(pdev);
-+	pci_bridge_d3_update(pdev);
+ //////////////////////////////////////////////////////////////////////////////
+@@ -142,6 +147,7 @@ static void record_gp_stall_check_time(v
+ 	WRITE_ONCE(rcu_state.gp_start, j);
+ 	j1 = rcu_jiffies_till_stall_check();
+ 	smp_mb(); // ->gp_start before ->jiffies_stall and caller's ->gp_seq.
++	WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, 0);
+ 	WRITE_ONCE(rcu_state.jiffies_stall, j + j1);
+ 	rcu_state.jiffies_resched = j + j1 / 2;
+ 	rcu_state.n_force_qs_gpstart = READ_ONCE(rcu_state.n_force_qs);
+@@ -662,6 +668,16 @@ static void check_cpu_stall(struct rcu_d
+ 	    !rcu_gp_in_progress())
+ 		return;
+ 	rcu_stall_kick_kthreads();
++
++	/*
++	 * Check if it was requested (via rcu_cpu_stall_reset()) that the FQS
++	 * loop has to set jiffies to ensure a non-stale jiffies value. This
++	 * is required to have good jiffies value after coming out of long
++	 * breaks of jiffies updates. Not doing so can cause false positives.
++	 */
++	if (READ_ONCE(rcu_state.nr_fqs_jiffies_stall) > 0)
++		return;
++
+ 	j = jiffies;
  
- 	pm_runtime_resume(dev);
- 
+ 	/*
 
 
 
