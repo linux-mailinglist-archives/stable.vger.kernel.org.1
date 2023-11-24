@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-1020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2367F7D99
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A477F7B99
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 039C3B216C0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C27AF1C20FC2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513FE39FF8;
-	Fri, 24 Nov 2023 18:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0622239FFD;
+	Fri, 24 Nov 2023 18:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WOEPyRWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNjC0P9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6B4381D6;
-	Fri, 24 Nov 2023 18:25:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C371C433C7;
-	Fri, 24 Nov 2023 18:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD19239FE1;
+	Fri, 24 Nov 2023 18:06:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE33C433C8;
+	Fri, 24 Nov 2023 18:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850358;
-	bh=PVoL7DyynSsswuvmYayYsdH6e04KkJZeBEyqAF3HzHU=;
+	s=korg; t=1700849203;
+	bh=e/SLnwcC+6UauxWdzgGDwzU/HughROqvhhVEAJqUiF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOEPyRWcCe9RRAximKa2iDLvUvLmAUYmN1wvD3OxOk53NThy187qg1DsPXzohqmkE
-	 LPdkQLbqgTb3ejaJZSbawww86GObHq4QYWFo/um1dVZc0Wi4MSNN9QvOMG4Dd8n2Z6
-	 6s7ZC6BeZASkLefwvAfRKgtsSVETfc1iyS2GL2kk=
+	b=CNjC0P9q2fgUwAXB7ZWTrxe7nhQSETtKDsVCBCetYodxg/iZoQpBfXif/tpjz3uAD
+	 vuNduEAqUjvX5DZRgz6I5QMf4NuHfMvnZFpR+jy5DenkDv7yNo/sTqlh+EDGAmtyZW
+	 R+gobbDU6dwG54Ftk/I3MtEBHxDXH4aV2F1ixtAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 018/491] wifi: mac80211_hwsim: fix clang-specific fortify warning
-Date: Fri, 24 Nov 2023 17:44:14 +0000
-Message-ID: <20231124172025.235461868@linuxfoundation.org>
+Subject: [PATCH 6.6 089/530] ASoC: SOF: ipc4: handle EXCEPTION_CAUGHT notification from firmware
+Date: Fri, 24 Nov 2023 17:44:15 +0000
+Message-ID: <20231124172030.794731229@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,68 +55,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Rander Wang <rander.wang@intel.com>
 
-[ Upstream commit cbaccdc42483c65016f1bae89128c08dc17cfb2a ]
+[ Upstream commit c1c48fd6bbe788458e3685fea74bdb3cb148ff93 ]
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+Driver will receive exception IPC message and process it by
+snd_sof_dsp_panic.
 
-In file included from drivers/net/wireless/virtual/mac80211_hwsim.c:18:
-In file included from ./include/linux/slab.h:16:
-In file included from ./include/linux/gfp.h:7:
-In file included from ./include/linux/mmzone.h:8:
-In file included from ./include/linux/spinlock.h:56:
-In file included from ./include/linux/preempt.h:79:
-In file included from ./arch/x86/include/asm/preempt.h:9:
-In file included from ./include/linux/thread_info.h:60:
-In file included from ./arch/x86/include/asm/thread_info.h:53:
-In file included from ./arch/x86/include/asm/cpufeature.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
-
-The compiler actually complains on 'mac80211_hwsim_get_et_strings()' where
-fortification logic inteprets call to 'memcpy()' as an attempt to copy the
-whole 'mac80211_hwsim_gstrings_stats' array from its first member and so
-issues an overread warning. This warning may be silenced by passing
-an address of the whole array and not the first member to 'memcpy()'.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://lore.kernel.org/r/20230829094140.234636-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Rander Wang <rander.wang@intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20230919092416.4137-10-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/ipc4.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 23307c8baea21..6dc153a267872 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -3170,7 +3170,7 @@ static void mac80211_hwsim_get_et_strings(struct ieee80211_hw *hw,
- 					  u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *mac80211_hwsim_gstrings_stats,
-+		memcpy(data, mac80211_hwsim_gstrings_stats,
- 		       sizeof(mac80211_hwsim_gstrings_stats));
- }
- 
+diff --git a/sound/soc/sof/ipc4.c b/sound/soc/sof/ipc4.c
+index ab6eddd91bb77..1b09496733fb8 100644
+--- a/sound/soc/sof/ipc4.c
++++ b/sound/soc/sof/ipc4.c
+@@ -614,6 +614,9 @@ static void sof_ipc4_rx_msg(struct snd_sof_dev *sdev)
+ 	case SOF_IPC4_NOTIFY_LOG_BUFFER_STATUS:
+ 		sof_ipc4_mtrace_update_pos(sdev, SOF_IPC4_LOG_CORE_GET(ipc4_msg->primary));
+ 		break;
++	case SOF_IPC4_NOTIFY_EXCEPTION_CAUGHT:
++		snd_sof_dsp_panic(sdev, 0, true);
++		break;
+ 	default:
+ 		dev_dbg(sdev->dev, "Unhandled DSP message: %#x|%#x\n",
+ 			ipc4_msg->primary, ipc4_msg->extension);
 -- 
 2.42.0
 
