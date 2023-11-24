@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8887F7AE7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E48B7F7B1A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45642B20FE5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEE58B20EB8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4AD39FF7;
-	Fri, 24 Nov 2023 17:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F75739FF4;
+	Fri, 24 Nov 2023 18:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdjCbPxy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZM9cvGFl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F70D39FD9;
-	Fri, 24 Nov 2023 17:59:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28878C433C8;
-	Fri, 24 Nov 2023 17:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C140B39FF2;
+	Fri, 24 Nov 2023 18:01:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E032C433C8;
+	Fri, 24 Nov 2023 18:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848790;
-	bh=h/KP59Vkx7H1tuwHWLVHtyI80VLGXLOcPAHxiflpMOA=;
+	s=korg; t=1700848910;
+	bh=zMZTUR/p3N7jpTHq5QNF/T9BXt75C9FTNLl9abVix9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdjCbPxyJ62END0aLmIE/LsLpYx6ZfzbCLqoN7laFRoRc+E4FqbTFpMvrK88elJKn
-	 ppILlIi6rGfoonE1VyaWDe/KWi5FUBG2t7UM+zy8EQbQUD05/BZ2zW+OTdFLhhhkSf
-	 sswSlqTkx3DD3JxbIiT2SiZYD64J1kGerx1wDbys=
+	b=ZM9cvGFlOiOVgqX0jZxoYuE21WmALb+zq1IRxd1yI3SNasXXWkF4rrFMIUMOHMlpC
+	 SGCR8QcbAUgJca3wk5G178lOrOwcZ2fvi60onB5wOH2ayt+0UCJetPi/anQwWoh1CK
+	 3p1wbozK7ZOMtzsJGyxSkdCtKUJfabWoLkuz/yzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 4.19 82/97] net: dsa: lan9303: consequently nested-lock physical MDIO
+	Artem Savkov <asavkov@redhat.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 4.14 31/57] audit: dont WARN_ON_ONCE(!current->mm) in audit_exe_compare()
 Date: Fri, 24 Nov 2023 17:50:55 +0000
-Message-ID: <20231124171937.239501559@linuxfoundation.org>
+Message-ID: <20231124171931.429080603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,176 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Paul Moore <paul@paul-moore.com>
 
-commit 5a22fbcc10f3f7d94c5d88afbbffa240a3677057 upstream.
+commit 969d90ec212bae4b45bf9d21d7daa30aa6cf055e upstream.
 
-When LAN9303 is MDIO-connected two callchains exist into
-mdio->bus->write():
+eBPF can end up calling into the audit code from some odd places, and
+some of these places don't have @current set properly so we end up
+tripping the `WARN_ON_ONCE(!current->mm)` near the top of
+`audit_exe_compare()`.  While the basic `!current->mm` check is good,
+the `WARN_ON_ONCE()` results in some scary console messages so let's
+drop that and just do the regular `!current->mm` check to avoid
+problems.
 
-1. switch ports 1&2 ("physical" PHYs):
-
-virtual (switch-internal) MDIO bus (lan9303_switch_ops->phy_{read|write})->
-  lan9303_mdio_phy_{read|write} -> mdiobus_{read|write}_nested
-
-2. LAN9303 virtual PHY:
-
-virtual MDIO bus (lan9303_phy_{read|write}) ->
-  lan9303_virt_phy_reg_{read|write} -> regmap -> lan9303_mdio_{read|write}
-
-If the latter functions just take
-mutex_lock(&sw_dev->device->bus->mdio_lock) it triggers a LOCKDEP
-false-positive splat. It's false-positive because the first
-mdio_lock in the second callchain above belongs to virtual MDIO bus, the
-second mdio_lock belongs to physical MDIO bus.
-
-Consequent annotation in lan9303_mdio_{read|write} as nested lock
-(similar to lan9303_mdio_phy_{read|write}, it's the same physical MDIO bus)
-prevents the following splat:
-
-WARNING: possible circular locking dependency detected
-5.15.71 #1 Not tainted
-------------------------------------------------------
-kworker/u4:3/609 is trying to acquire lock:
-ffff000011531c68 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}, at: regmap_lock_mutex
-but task is already holding lock:
-ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
-which lock already depends on the new lock.
-the existing dependency chain (in reverse order) is:
--> #1 (&bus->mdio_lock){+.+.}-{3:3}:
-       lock_acquire
-       __mutex_lock
-       mutex_lock_nested
-       lan9303_mdio_read
-       _regmap_read
-       regmap_read
-       lan9303_probe
-       lan9303_mdio_probe
-       mdio_probe
-       really_probe
-       __driver_probe_device
-       driver_probe_device
-       __device_attach_driver
-       bus_for_each_drv
-       __device_attach
-       device_initial_probe
-       bus_probe_device
-       deferred_probe_work_func
-       process_one_work
-       worker_thread
-       kthread
-       ret_from_fork
--> #0 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}:
-       __lock_acquire
-       lock_acquire.part.0
-       lock_acquire
-       __mutex_lock
-       mutex_lock_nested
-       regmap_lock_mutex
-       regmap_read
-       lan9303_phy_read
-       dsa_slave_phy_read
-       __mdiobus_read
-       mdiobus_read
-       get_phy_device
-       mdiobus_scan
-       __mdiobus_register
-       dsa_register_switch
-       lan9303_probe
-       lan9303_mdio_probe
-       mdio_probe
-       really_probe
-       __driver_probe_device
-       driver_probe_device
-       __device_attach_driver
-       bus_for_each_drv
-       __device_attach
-       device_initial_probe
-       bus_probe_device
-       deferred_probe_work_func
-       process_one_work
-       worker_thread
-       kthread
-       ret_from_fork
-other info that might help us debug this:
- Possible unsafe locking scenario:
-       CPU0                    CPU1
-       ----                    ----
-  lock(&bus->mdio_lock);
-                               lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
-                               lock(&bus->mdio_lock);
-  lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
-*** DEADLOCK ***
-5 locks held by kworker/u4:3/609:
- #0: ffff000002842938 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work
- #1: ffff80000bacbd60 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work
- #2: ffff000007645178 (&dev->mutex){....}-{3:3}, at: __device_attach
- #3: ffff8000096e6e78 (dsa2_mutex){+.+.}-{3:3}, at: dsa_register_switch
- #4: ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
-stack backtrace:
-CPU: 1 PID: 609 Comm: kworker/u4:3 Not tainted 5.15.71 #1
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
- dump_backtrace
- show_stack
- dump_stack_lvl
- dump_stack
- print_circular_bug
- check_noncircular
- __lock_acquire
- lock_acquire.part.0
- lock_acquire
- __mutex_lock
- mutex_lock_nested
- regmap_lock_mutex
- regmap_read
- lan9303_phy_read
- dsa_slave_phy_read
- __mdiobus_read
- mdiobus_read
- get_phy_device
- mdiobus_scan
- __mdiobus_register
- dsa_register_switch
- lan9303_probe
- lan9303_mdio_probe
-...
-
-Cc: stable@vger.kernel.org
-Fixes: dc7005831523 ("net: dsa: LAN9303: add MDIO managed mode support")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20231027065741.534971-1-alexander.sverdlin@siemens.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 47846d51348d ("audit: don't take task_lock() in audit_exe_compare() code path")
+Reported-by: Artem Savkov <asavkov@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/lan9303_mdio.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/audit_watch.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/dsa/lan9303_mdio.c
-+++ b/drivers/net/dsa/lan9303_mdio.c
-@@ -41,7 +41,7 @@ static int lan9303_mdio_write(void *ctx,
- 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
+--- a/kernel/audit_watch.c
++++ b/kernel/audit_watch.c
+@@ -561,7 +561,7 @@ int audit_exe_compare(struct task_struct
+ 	if (tsk != current)
+ 		return 0;
  
- 	reg <<= 2; /* reg num to offset */
--	mutex_lock(&sw_dev->device->bus->mdio_lock);
-+	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
- 	lan9303_mdio_real_write(sw_dev->device, reg, val & 0xffff);
- 	lan9303_mdio_real_write(sw_dev->device, reg + 2, (val >> 16) & 0xffff);
- 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
-@@ -59,7 +59,7 @@ static int lan9303_mdio_read(void *ctx,
- 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
- 
- 	reg <<= 2; /* reg num to offset */
--	mutex_lock(&sw_dev->device->bus->mdio_lock);
-+	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
- 	*val = lan9303_mdio_real_read(sw_dev->device, reg);
- 	*val |= (lan9303_mdio_real_read(sw_dev->device, reg + 2) << 16);
- 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
+-	if (WARN_ON_ONCE(!current->mm))
++	if (!current->mm)
+ 		return 0;
+ 	exe_file = get_mm_exe_file(current->mm);
+ 	if (!exe_file)
 
 
 
