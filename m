@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-2379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C28477F83ED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B887F8248
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1332899BF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76BD71C22FDE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1287B364B7;
-	Fri, 24 Nov 2023 19:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89ED02C87B;
+	Fri, 24 Nov 2023 19:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OMGTRkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8bM5igs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB7F339BE;
-	Fri, 24 Nov 2023 19:22:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE4CC433C8;
-	Fri, 24 Nov 2023 19:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA3F3173F;
+	Fri, 24 Nov 2023 19:06:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF06C433C9;
+	Fri, 24 Nov 2023 19:06:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853738;
-	bh=T2b8LTwZW121ynB+3EyZbvd/8mX8XtIgyycZl0SM24g=;
+	s=korg; t=1700852775;
+	bh=1+X03Ih9jMo3Ty1oVPk+bLU2VKcBRbQh99bf/mFYbr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0OMGTRkd9lLXg0fTBm2vmVfjFDlAXO5UqmET7IQfFpdSGi8B46lHR7aPMX7I3+0m/
-	 2/I45E3yLki17cJF4kPoF8RT8aBeRKppNSL/Sb7ZJRo8qcp+16gt3Vir9motuK8szG
-	 03HhXDedk9rjCraK6egL/W8iTo3wrsK7plCCSxAM=
+	b=q8bM5igsVBExhkrAfCUWwPk2dDCTD3Fm9mUg8yMkvZmiIQaQuhypjQnVhglibecoM
+	 AtYfFacPkpK0HqzCk1X/UT8CU7w9HkRXaYe1ELMgctAxkAXraFwC53zU9YUlbbMSsX
+	 f+hNRnYzqb+/fjTMwHjeOwxoH2tYjRSy4boOY3AM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 003/159] clocksource/drivers/timer-imx-gpt: Fix potential memory leak
+	Mohamed Mahmoud <mmahmoud@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Tao Lyu <tao.lyu@epfl.ch>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 5.10 093/193] bpf: Fix precision tracking for BPF_ALU | BPF_TO_BE | BPF_END
 Date: Fri, 24 Nov 2023 17:53:40 +0000
-Message-ID: <20231124171942.053982202@linuxfoundation.org>
+Message-ID: <20231124171950.974623888@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,73 +54,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-[ Upstream commit 8051a993ce222a5158bccc6ac22ace9253dd71cb ]
+commit 291d044fd51f8484066300ee42afecf8c8db7b3a upstream.
 
-Fix coverity Issue CID 250382:  Resource leak (RESOURCE_LEAK).
-Add kfree when error return.
+BPF_END and BPF_NEG has a different specification for the source bit in
+the opcode compared to other ALU/ALU64 instructions, and is either
+reserved or use to specify the byte swap endianness. In both cases the
+source bit does not encode source operand location, and src_reg is a
+reserved field.
 
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20231009083922.1942971-1-ping.bai@nxp.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+backtrack_insn() currently does not differentiate BPF_END and BPF_NEG
+from other ALU/ALU64 instructions, which leads to r0 being incorrectly
+marked as precise when processing BPF_ALU | BPF_TO_BE | BPF_END
+instructions. This commit teaches backtrack_insn() to correctly mark
+precision for such case.
+
+While precise tracking of BPF_NEG and other BPF_END instructions are
+correct and does not need fixing, this commit opt to process all BPF_NEG
+and BPF_END instructions within the same if-clause to better align with
+current convention used in the verifier (e.g. check_alu_op).
+
+Fixes: b5dc0163d8fd ("bpf: precise scalar_value tracking")
+Cc: stable@vger.kernel.org
+Reported-by: Mohamed Mahmoud <mmahmoud@redhat.com>
+Closes: https://lore.kernel.org/r/87jzrrwptf.fsf@toke.dk
+Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Tested-by: Tao Lyu <tao.lyu@epfl.ch>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://lore.kernel.org/r/20231102053913.12004-2-shung-hsi.yu@suse.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/timer-imx-gpt.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ kernel/bpf/verifier.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
-index 706c0d0ff56cc..268c09417fa21 100644
---- a/drivers/clocksource/timer-imx-gpt.c
-+++ b/drivers/clocksource/timer-imx-gpt.c
-@@ -460,12 +460,16 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
- 		return -ENOMEM;
- 
- 	imxtm->base = of_iomap(np, 0);
--	if (!imxtm->base)
--		return -ENXIO;
-+	if (!imxtm->base) {
-+		ret = -ENXIO;
-+		goto err_kfree;
-+	}
- 
- 	imxtm->irq = irq_of_parse_and_map(np, 0);
--	if (imxtm->irq <= 0)
--		return -EINVAL;
-+	if (imxtm->irq <= 0) {
-+		ret = -EINVAL;
-+		goto err_kfree;
-+	}
- 
- 	imxtm->clk_ipg = of_clk_get_by_name(np, "ipg");
- 
-@@ -478,11 +482,15 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
- 
- 	ret = _mxc_timer_init(imxtm);
- 	if (ret)
--		return ret;
-+		goto err_kfree;
- 
- 	initialized = 1;
- 
- 	return 0;
-+
-+err_kfree:
-+	kfree(imxtm);
-+	return ret;
- }
- 
- static int __init imx1_timer_init_dt(struct device_node *np)
--- 
-2.42.0
-
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1841,7 +1841,12 @@ static int backtrack_insn(struct bpf_ver
+ 	if (class == BPF_ALU || class == BPF_ALU64) {
+ 		if (!(*reg_mask & dreg))
+ 			return 0;
+-		if (opcode == BPF_MOV) {
++		if (opcode == BPF_END || opcode == BPF_NEG) {
++			/* sreg is reserved and unused
++			 * dreg still need precision before this insn
++			 */
++			return 0;
++		} else if (opcode == BPF_MOV) {
+ 			if (BPF_SRC(insn->code) == BPF_X) {
+ 				/* dreg = sreg
+ 				 * dreg needs precision after this insn
 
 
 
