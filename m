@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0597F8242
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF9C7F835B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E93D8284A79
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D0351C255DB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781B235F04;
-	Fri, 24 Nov 2023 19:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E383B381CB;
+	Fri, 24 Nov 2023 19:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJ6qSpUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCHX/FXJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391FD2EAEA;
-	Fri, 24 Nov 2023 19:06:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B743CC433C7;
-	Fri, 24 Nov 2023 19:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB813173F;
+	Fri, 24 Nov 2023 19:16:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B90C433C8;
+	Fri, 24 Nov 2023 19:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852765;
-	bh=BSwnJVClrQqr0hbrgfHoQJTMlZjmEYWPeyDVMn9SxFo=;
+	s=korg; t=1700853404;
+	bh=NcFqDPo/ApuM8+8kYu5M6a9zcgfGuIg1cMhNlzt7SoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJ6qSpUfW1/lN2zWyQsspbIsB4GHa4KXWJ7Oc9eV9XjsAILpqPxIRe5D/iQCQ/kvI
-	 N+CeGbYbXic1UhEldMaUt2qGGs3Km2+M9J3YecBlh+rLRND/Tc6Cfo+H/ccy8gL7Y/
-	 kavHPEbcv9HDKEOIUeKAM1Axy8+f4yTb0VH31uuM=
+	b=TCHX/FXJW4U9+tDOSR82enkkE9nXFEPGGjIB1j8yFQ+EH0QLuBd83OBWREacCUjyv
+	 d8xQHPeDIqk7YuaxS1EWpypEdMfqBilG9PNORNCNopceJEt7y8JmZiKIHWv7AmBB3k
+	 hNCw5dRqyTsAR8vn8q4VZoyyvfoxqBAmlwhu+5zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.10 089/193] media: venus: hfi: add checks to perform sanity on queue pointers
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 5.15 174/297] PCI/sysfs: Protect drivers D3cold preference from user space
 Date: Fri, 24 Nov 2023 17:53:36 +0000
-Message-ID: <20231124171950.809652122@linuxfoundation.org>
+Message-ID: <20231124172006.343898217@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 5e538fce33589da6d7cb2de1445b84d3a8a692f7 upstream.
+commit 70b70a4307cccebe91388337b1c85735ce4de6ff upstream.
 
-Read and write pointers are used to track the packet index in the memory
-shared between video driver and firmware. There is a possibility of OOB
-access if the read or write pointer goes beyond the queue memory size.
-Add checks for the read and write pointer to avoid OOB access.
+struct pci_dev contains two flags which govern whether the device may
+suspend to D3cold:
 
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+* no_d3cold provides an opt-out for drivers (e.g. if a device is known
+  to not wake from D3cold)
+
+* d3cold_allowed provides an opt-out for user space (default is true,
+  user space may set to false)
+
+Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend"),
+the user space setting overwrites the driver setting.  Essentially user
+space is trusted to know better than the driver whether D3cold is
+working.
+
+That feels unsafe and wrong.  Assume that the change was introduced
+inadvertently and do not overwrite no_d3cold when d3cold_allowed is
+modified.  Instead, consider d3cold_allowed in addition to no_d3cold
+when choosing a suspend state for the device.
+
+That way, user space may opt out of D3cold if the driver hasn't, but it
+may no longer force an opt in if the driver has opted out.
+
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Link: https://lore.kernel.org/r/b8a7f4af2b73f6b506ad8ddee59d747cbf834606.1695025365.git.lukas@wunner.de
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org	# v4.8+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/pci/pci-acpi.c  |    2 +-
+ drivers/pci/pci-sysfs.c |    5 +----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -206,6 +206,11 @@ static int venus_write_queue(struct venu
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -910,7 +910,7 @@ static pci_power_t acpi_pci_choose_state
+ {
+ 	int acpi_state, d_max;
  
- 	new_wr_idx = wr_idx + dwords;
- 	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
-+
-+	if (wr_ptr < (u32 *)queue->qmem.kva ||
-+	    wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*wr_ptr)))
-+		return -EINVAL;
-+
- 	if (new_wr_idx < qsize) {
- 		memcpy(wr_ptr, packet, dwords << 2);
- 	} else {
-@@ -273,6 +278,11 @@ static int venus_read_queue(struct venus
- 	}
- 
- 	rd_ptr = (u32 *)(queue->qmem.kva + (rd_idx << 2));
-+
-+	if (rd_ptr < (u32 *)queue->qmem.kva ||
-+	    rd_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*rd_ptr)))
-+		return -EINVAL;
-+
- 	dwords = *rd_ptr >> 2;
- 	if (!dwords)
+-	if (pdev->no_d3cold)
++	if (pdev->no_d3cold || !pdev->d3cold_allowed)
+ 		d_max = ACPI_STATE_D3_HOT;
+ 	else
+ 		d_max = ACPI_STATE_D3_COLD;
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -508,10 +508,7 @@ static ssize_t d3cold_allowed_store(stru
  		return -EINVAL;
+ 
+ 	pdev->d3cold_allowed = !!val;
+-	if (pdev->d3cold_allowed)
+-		pci_d3cold_enable(pdev);
+-	else
+-		pci_d3cold_disable(pdev);
++	pci_bridge_d3_update(pdev);
+ 
+ 	pm_runtime_resume(dev);
+ 
 
 
 
