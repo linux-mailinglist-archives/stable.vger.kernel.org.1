@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AB437F7B0D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4638C7F7D44
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B66F51C20A6E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 778051C212A6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE13381D7;
-	Fri, 24 Nov 2023 18:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24243A8C9;
+	Fri, 24 Nov 2023 18:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ma1erRqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvtdnTo3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C481339FD9;
-	Fri, 24 Nov 2023 18:01:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50806C433C7;
-	Fri, 24 Nov 2023 18:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A3A381D4;
+	Fri, 24 Nov 2023 18:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9E6C433C8;
+	Fri, 24 Nov 2023 18:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848880;
-	bh=TTtko+hKYN6muG41+R4Giph0qXb+FOYOhN/TMR2WfVQ=;
+	s=korg; t=1700850182;
+	bh=Of6wbpHlNePnjOT68DtM/I24ykPFBCiguFkR8bYn1dQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ma1erRqpw7/Arv/w3MdDxt/bR8tkVTIbignrAeq5meWQPfdf74/tZ0kW4ddqQPf5F
-	 qBtp7BItmZoT9UkpCH35MF3WPcT6CnhsY8WiVu3Jsq3LsM6oCNZUnM+sDAtg2Zt0YO
-	 X6LsNwD4LOSbTgY1M2oPQrTpb6tvvi0dOLOeQLG4=
+	b=AvtdnTo3TGds3UbGWSDdekbMozano7EoWM9QMgJNFADFKH2pTOKQQFrLUVOAN0pAF
+	 3DNtN8Rb9pYfEqgu2NJosy5wECfmEd36yB22TpaIq67rQ5mRWH2tOGychXr9tIf3BY
+	 hpIWvyt0AVaJWaBp4zpIV1sEq+vUIrh2VBeMPwTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 19/57] atm: iphase: Do PCI error checks on own line
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Christoph Lameter <cl@linux.com>,
+	Shakeel Butt <shakeelb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 477/530] mm: kmem: drop __GFP_NOFAIL when allocating objcg vectors
 Date: Fri, 24 Nov 2023 17:50:43 +0000
-Message-ID: <20231124171930.976543095@linuxfoundation.org>
+Message-ID: <20231124172042.594224001@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,73 +53,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-[ Upstream commit c28742447ca9879b52fbaf022ad844f0ffcd749c ]
+commit 24948e3b7b12e0031a6edb4f49bbb9fb2ad1e4e9 upstream.
 
-In get_esi() PCI errors are checked inside line-split "if" conditions (in
-addition to the file not following the coding style). To make the code in
-get_esi() more readable, fix the coding style and use the usual error
-handling pattern with a separate variable.
+Objcg vectors attached to slab pages to store slab object ownership
+information are allocated using gfp flags for the original slab
+allocation.  Depending on slab page order and the size of slab objects,
+objcg vector can take several pages.
 
-In addition, initialization of 'error' variable at declaration is not
-needed.
+If the original allocation was done with the __GFP_NOFAIL flag, it
+triggered a warning in the page allocation code.  Indeed, order > 1 pages
+should not been allocated with the __GFP_NOFAIL flag.
 
-No functional changes intended.
+Fix this by simply dropping the __GFP_NOFAIL flag when allocating the
+objcg vector.  It effectively allows to skip the accounting of a single
+slab object under a heavy memory pressure.
 
-Link: https://lore.kernel.org/r/20230911125354.25501-4-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+An alternative would be to implement the mechanism to fallback to order-0
+allocations for accounting metadata, which is also not perfect because it
+will increase performance penalty and memory footprint of the kernel
+memory accounting under memory pressure.
+
+Link: https://lkml.kernel.org/r/ZUp8ZFGxwmCx4ZFr@P9FQF9L96D.corp.robot.car
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reported-by: Christoph Lameter <cl@linux.com>
+Closes: https://lkml.kernel.org/r/6b42243e-f197-600a-5d22-56bd728a5ad8@gentwo.org
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/iphase.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ mm/memcontrol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
-index 16eb0266a59ab..7ab8fa3478484 100644
---- a/drivers/atm/iphase.c
-+++ b/drivers/atm/iphase.c
-@@ -2290,19 +2290,21 @@ static int get_esi(struct atm_dev *dev)
- static int reset_sar(struct atm_dev *dev)  
- {  
- 	IADEV *iadev;  
--	int i, error = 1;  
-+	int i, error;
- 	unsigned int pci[64];  
- 	  
- 	iadev = INPH_IA_DEV(dev);  
--	for(i=0; i<64; i++)  
--	  if ((error = pci_read_config_dword(iadev->pci,  
--				i*4, &pci[i])) != PCIBIOS_SUCCESSFUL)  
--  	      return error;  
-+	for (i = 0; i < 64; i++) {
-+		error = pci_read_config_dword(iadev->pci, i * 4, &pci[i]);
-+		if (error != PCIBIOS_SUCCESSFUL)
-+			return error;
-+	}
- 	writel(0, iadev->reg+IPHASE5575_EXT_RESET);  
--	for(i=0; i<64; i++)  
--	  if ((error = pci_write_config_dword(iadev->pci,  
--					i*4, pci[i])) != PCIBIOS_SUCCESSFUL)  
--	    return error;  
-+	for (i = 0; i < 64; i++) {
-+		error = pci_write_config_dword(iadev->pci, i * 4, pci[i]);
-+		if (error != PCIBIOS_SUCCESSFUL)
-+			return error;
-+	}
- 	udelay(5);  
- 	return 0;  
- }  
--- 
-2.42.0
-
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2864,7 +2864,8 @@ static void commit_charge(struct folio *
+  * Moreover, it should not come from DMA buffer and is not readily
+  * reclaimable. So those GFP bits should be masked off.
+  */
+-#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | __GFP_ACCOUNT)
++#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | \
++				 __GFP_ACCOUNT | __GFP_NOFAIL)
+ 
+ /*
+  * mod_objcg_mlstate() may be called with irq enabled, so
 
 
 
