@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94FFA7F8382
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A647F8400
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C63931C25C27
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5342D1C26CD2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02D22EB15;
-	Fri, 24 Nov 2023 19:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B4733E9;
+	Fri, 24 Nov 2023 19:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NQhkOywp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wL4rOy4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B053431748;
-	Fri, 24 Nov 2023 19:18:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C215AC433CC;
-	Fri, 24 Nov 2023 19:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF2F2E853;
+	Fri, 24 Nov 2023 19:23:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A75C433C8;
+	Fri, 24 Nov 2023 19:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853496;
-	bh=wmz59l3nKlwGq3kspWLuvwmeHrlQyuye9q9JpuOue8o=;
+	s=korg; t=1700853783;
+	bh=mtRj2iEEJpaJULzjWyZiXGv8F2lCpIYhFnHzNvyRkus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NQhkOywpkuzL6Bq8FRVkd2rM+E151FK7lfcSgnc0oiaWLD63SyV+e1jItkz94+r1m
-	 DiXkSFsyTSPCHSz7iw7JwsSTkl2wqDG4ocUJDcEogh9vytAtHrmFH3n3Cx63rxurmn
-	 SrzKZ1iDhfjNnpx5u06bLqhZ5D79DILf9NapDQt0=
+	b=wL4rOy4e0ykfDbc/uABO2+ALuNp9E3LUOxNXWSuQlr7WJaxomVqJ6AV29VyQgwrER
+	 dt+FRIryVqRcPCMxMgy5BoiBs8HFvjQGudqLHXLJcWuHy83NpRCzTKqmI3dOfbk215
+	 1Q9HhHqllABYsqNRVwXnFFjNji8dMK5WCMlgjWXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alim Akhtar <alim.akhtar@samsung.com>
-Subject: [PATCH 5.15 186/297] PCI: exynos: Dont discard .remove() callback
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 011/159] net: annotate data-races around sk->sk_dst_pending_confirm
 Date: Fri, 24 Nov 2023 17:53:48 +0000
-Message-ID: <20231124172006.745436137@linuxfoundation.org>
+Message-ID: <20231124171942.372963620@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,60 +51,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 83a939f0fdc208ff3639dd3d42ac9b3c35607fd2 upstream.
+[ Upstream commit eb44ad4e635132754bfbcb18103f1dcb7058aedd ]
 
-With CONFIG_PCI_EXYNOS=y and exynos_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
+This field can be read or written without socket lock being held.
 
-The right thing to do is do always have the remove callback available.
-This fixes the following warning by modpost:
+Add annotations to avoid load-store tearing.
 
-  WARNING: modpost: drivers/pci/controller/dwc/pci-exynos: section mismatch in reference: exynos_pcie_driver+0x8 (section: .data) -> exynos_pcie_remove (section: .exit.text)
-
-(with ARCH=x86_64 W=1 allmodconfig).
-
-Fixes: 340cba6092c2 ("pci: Add PCIe driver for Samsung Exynos")
-Link: https://lore.kernel.org/r/20231001170254.2506508-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-exynos.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/sock.h    | 6 +++---
+ net/core/sock.c       | 2 +-
+ net/ipv4/tcp_output.c | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-exynos.c
-+++ b/drivers/pci/controller/dwc/pci-exynos.c
-@@ -377,7 +377,7 @@ fail_probe:
- 	return ret;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index b021c8912e2cf..5293f2b65fb55 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1941,7 +1941,7 @@ static inline void dst_negative_advice(struct sock *sk)
+ 		if (ndst != dst) {
+ 			rcu_assign_pointer(sk->sk_dst_cache, ndst);
+ 			sk_tx_queue_clear(sk);
+-			sk->sk_dst_pending_confirm = 0;
++			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		}
+ 	}
  }
+@@ -1952,7 +1952,7 @@ __sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ 	struct dst_entry *old_dst;
  
--static int __exit exynos_pcie_remove(struct platform_device *pdev)
-+static int exynos_pcie_remove(struct platform_device *pdev)
- {
- 	struct exynos_pcie *ep = platform_get_drvdata(pdev);
+ 	sk_tx_queue_clear(sk);
+-	sk->sk_dst_pending_confirm = 0;
++	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = rcu_dereference_protected(sk->sk_dst_cache,
+ 					    lockdep_sock_is_held(sk));
+ 	rcu_assign_pointer(sk->sk_dst_cache, dst);
+@@ -1965,7 +1965,7 @@ sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ 	struct dst_entry *old_dst;
  
-@@ -433,7 +433,7 @@ static const struct of_device_id exynos_
+ 	sk_tx_queue_clear(sk);
+-	sk->sk_dst_pending_confirm = 0;
++	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = xchg((__force struct dst_entry **)&sk->sk_dst_cache, dst);
+ 	dst_release(old_dst);
+ }
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 9979cd602dfac..2c3c5df139345 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -545,7 +545,7 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
  
- static struct platform_driver exynos_pcie_driver = {
- 	.probe		= exynos_pcie_probe,
--	.remove		= __exit_p(exynos_pcie_remove),
-+	.remove		= exynos_pcie_remove,
- 	.driver = {
- 		.name	= "exynos-pcie",
- 		.of_match_table = exynos_pcie_of_match,
+ 	if (dst && dst->obsolete && dst->ops->check(dst, cookie) == NULL) {
+ 		sk_tx_queue_clear(sk);
+-		sk->sk_dst_pending_confirm = 0;
++		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
+ 		dst_release(dst);
+ 		return NULL;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 0107436860171..1dce05bfa3005 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1103,7 +1103,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 	skb_set_hash_from_sk(skb, sk);
+ 	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
+ 
+-	skb_set_dst_pending_confirm(skb, sk->sk_dst_pending_confirm);
++	skb_set_dst_pending_confirm(skb, READ_ONCE(sk->sk_dst_pending_confirm));
+ 
+ 	/* Build TCP header and checksum it. */
+ 	th = (struct tcphdr *)skb->data;
+-- 
+2.42.0
+
 
 
 
