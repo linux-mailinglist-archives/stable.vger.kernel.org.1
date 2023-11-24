@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-2447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8EB67F8436
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DE57F828D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8380D28ABCE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82A35B2482B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5B9364C4;
-	Fri, 24 Nov 2023 19:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1C5381D4;
+	Fri, 24 Nov 2023 19:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WBsJQXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BF/DqqYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAFF321AD;
-	Fri, 24 Nov 2023 19:25:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70F2C433C8;
-	Fri, 24 Nov 2023 19:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45EE381A2;
+	Fri, 24 Nov 2023 19:08:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C176C433C7;
+	Fri, 24 Nov 2023 19:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853905;
-	bh=pOo5jZyc1DBbILoyI79uQ8wpaj0gi5BCAg5tWY0D8q0=;
+	s=korg; t=1700852920;
+	bh=zBgBkQLvhEfjdvJHT8/cZrqSb4OO74DytVmXHcqyZYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WBsJQXVDkBwJdCFQmd0ZSz9Q45WXLu/FkugMeWASDGBHyYlfRhSxxbscaMiWT1id
-	 p6aZqQODQi6h9heym8YqYbvdmw6YQIWk7KKZCVRTqoBRTHvfEbpHpFRmlalAKorJus
-	 Tfpw7Ge4HUirEOzxGBTKXDwYYdLwr5z2Hx+hMJt8=
+	b=BF/DqqYaD8sAX/97uYYpNLxpTmaLZsRU7Rhb0dQa3hz0a/UrVPjVuvb2z5FL9CEVg
+	 ekAZXBJOQBK3s4khib31qPMElx7UXQVwDgfp+x8ltUphHo1ddN3a7/uCCzjxpmpEGe
+	 eTL4IeVBSRLeBSD0cBSOc7XqZwTBotNmop5w6IKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 078/159] ACPI: resource: Do IRQ override on TongFang GMxXGxx
+	Jean Delvare <jdelvare@suse.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.10 168/193] i2c: i801: fix potential race in i801_block_transaction_byte_by_byte
 Date: Fri, 24 Nov 2023 17:54:55 +0000
-Message-ID: <20231124171945.188225044@linuxfoundation.org>
+Message-ID: <20231124171953.899085393@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +55,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 0da9eccde3270b832c059ad618bf66e510c75d33 upstream.
+commit f78ca48a8ba9cdec96e8839351e49eec3233b177 upstream.
 
-The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overriding
-for the keyboard to work.
+Currently we set SMBHSTCNT_LAST_BYTE only after the host has started
+receiving the last byte. If we get e.g. preempted before setting
+SMBHSTCNT_LAST_BYTE, the host may be finished with receiving the byte
+before SMBHSTCNT_LAST_BYTE is set.
+Therefore change the code to set SMBHSTCNT_LAST_BYTE before writing
+SMBHSTSTS_BYTE_DONE for the byte before the last byte. Now the code
+is also consistent with what we do in i801_isr_byte_done().
 
-Adding an entry for this laptop to the override_table makes the internal
-keyboard functional.
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Jean Delvare <jdelvare@suse.com>
+Closes: https://lore.kernel.org/linux-i2c/20230828152747.09444625@endymion.delvare/
+Cc: stable@vger.kernel.org
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/i2c/busses/i2c-i801.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -443,6 +443,18 @@ static const struct dmi_system_id asus_l
- 		},
- 	},
- 	{
-+		/* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
-+		},
-+	},
-+	{
-+		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
-+		},
-+	},
-+	{
- 		.ident = "Asus ExpertBook B2502",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -735,15 +735,11 @@ static int i801_block_transaction_byte_b
+ 		return i801_check_post(priv, status);
+ 	}
+ 
+-	for (i = 1; i <= len; i++) {
+-		if (i == len && read_write == I2C_SMBUS_READ)
+-			smbcmd |= SMBHSTCNT_LAST_BYTE;
+-		outb_p(smbcmd, SMBHSTCNT(priv));
+-
+-		if (i == 1)
+-			outb_p(inb(SMBHSTCNT(priv)) | SMBHSTCNT_START,
+-			       SMBHSTCNT(priv));
++	if (len == 1 && read_write == I2C_SMBUS_READ)
++		smbcmd |= SMBHSTCNT_LAST_BYTE;
++	outb_p(smbcmd | SMBHSTCNT_START, SMBHSTCNT(priv));
+ 
++	for (i = 1; i <= len; i++) {
+ 		status = i801_wait_byte_done(priv);
+ 		if (status)
+ 			goto exit;
+@@ -766,9 +762,12 @@ static int i801_block_transaction_byte_b
+ 			data->block[0] = len;
+ 		}
+ 
+-		/* Retrieve/store value in SMBBLKDAT */
+-		if (read_write == I2C_SMBUS_READ)
++		if (read_write == I2C_SMBUS_READ) {
+ 			data->block[i] = inb_p(SMBBLKDAT(priv));
++			if (i == len - 1)
++				outb_p(smbcmd | SMBHSTCNT_LAST_BYTE, SMBHSTCNT(priv));
++		}
++
+ 		if (read_write == I2C_SMBUS_WRITE && i+1 <= len)
+ 			outb_p(data->block[i+1], SMBBLKDAT(priv));
+ 
 
 
 
