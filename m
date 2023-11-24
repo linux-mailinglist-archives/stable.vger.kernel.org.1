@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-1295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472097F7EF6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1177F7CC1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0154A282411
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6BF5282074
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0718935F1D;
-	Fri, 24 Nov 2023 18:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F943A8C4;
+	Fri, 24 Nov 2023 18:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G04If0FK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bkdu70Ee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B768533E9;
-	Fri, 24 Nov 2023 18:37:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459DCC433C7;
-	Fri, 24 Nov 2023 18:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BA539FFD;
+	Fri, 24 Nov 2023 18:18:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2BCC433C7;
+	Fri, 24 Nov 2023 18:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851043;
-	bh=zcIjo4JaFDU15t/b40/7JdhSYan27xY9sjNnpE97g0M=;
+	s=korg; t=1700849885;
+	bh=J1xCqVdKSDLYHYOKwG/+D1OG9hsrHtRNeArEPYfLpnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G04If0FKvg4115mzbHWtsUvG++b2vwmDzfa6KsYOVs/i2/5OUc5HUYq/9f94fn+Ub
-	 zbR4JdbkC92AcYlbrnLjCK0HmfqKOKbU+4fCxtflFQDbIeTKHRCJxNU+g1vcAzOQj5
-	 y9bYeKp7Fk8c6N36Ev0nI9Ec2UpyiOyi51+jF95s=
+	b=Bkdu70EemCzHmQxLvoGalkLpFIZNAgQ6oecS2y9paFP82Xsg4rFmKrxsDQaT94dTI
+	 xKVRlcESbso1u9ikcMQxHGtKQVJG30MjCO7kNspBn+RPIjzH378AuLhYs/4kI7YUv+
+	 Eni+aY9ANKmkRizpryXKWQULIPdAAiKT9x6/0fsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.5 290/491] parisc/power: Add power soft-off when running on qemu
+	Jamie Lentin <jm@lentin.co.uk>,
+	Martin Kepplinger <martink@posteo.de>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.6 360/530] hid: lenovo: Resend all settings on reset_resume for compact keyboards
 Date: Fri, 24 Nov 2023 17:48:46 +0000
-Message-ID: <20231124172033.280674188@linuxfoundation.org>
+Message-ID: <20231124172038.968614549@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +53,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Jamie Lentin <jm@lentin.co.uk>
 
-commit d0c219472980d15f5cbc5c8aec736848bda3f235 upstream.
+commit 2f2bd7cbd1d1548137b351040dc4e037d18cdfdc upstream.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+The USB Compact Keyboard variant requires a reset_resume function to
+restore keyboard configuration after a suspend in some situations. Move
+configuration normally done on probe to lenovo_features_set_cptkbd(), then
+recycle this for use on reset_resume.
+
+Without, the keyboard and driver would end up in an inconsistent state,
+breaking middle-button scrolling amongst other problems, and twiddling
+sysfs values wouldn't help as the middle-button mode won't be set until
+the driver is reloaded.
+
+Tested on a USB and Bluetooth Thinkpad Compact Keyboard.
+
+CC: stable@vger.kernel.org
+Fixes: 94eefa271323 ("HID: lenovo: Use native middle-button mode for compact keyboards")
+Signed-off-by: Jamie Lentin <jm@lentin.co.uk>
+Signed-off-by: Martin Kepplinger <martink@posteo.de>
+Link: https://lore.kernel.org/r/20231002150914.22101-1-martink@posteo.de
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/power.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/hid/hid-lenovo.c |   50 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 34 insertions(+), 16 deletions(-)
 
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -197,6 +197,14 @@ static struct notifier_block parisc_pani
- 	.priority	= INT_MAX,
- };
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -526,6 +526,19 @@ static void lenovo_features_set_cptkbd(s
+ 	int ret;
+ 	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
  
-+/* qemu soft power-off function */
-+static int qemu_power_off(struct sys_off_data *data)
-+{
-+	/* this turns the system off via SeaBIOS */
-+	*(int *)data->cb_data = 0;
-+	pdc_soft_power_button(1);
-+	return NOTIFY_DONE;
-+}
- 
- static int __init power_init(void)
- {
-@@ -226,7 +234,13 @@ static int __init power_init(void)
- 				soft_power_reg);
++	/*
++	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
++	 * regular keys
++	 */
++	ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
++	if (ret)
++		hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
++
++	/* Switch middle button to native mode */
++	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
++	if (ret)
++		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
++
+ 	ret = lenovo_send_cmd_cptkbd(hdev, 0x05, cptkbd_data->fn_lock);
+ 	if (ret)
+ 		hid_err(hdev, "Fn-lock setting failed: %d\n", ret);
+@@ -1148,22 +1161,6 @@ static int lenovo_probe_cptkbd(struct hi
  	}
+ 	hid_set_drvdata(hdev, cptkbd_data);
  
--	power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
-+	power_task = NULL;
-+	if (running_on_qemu && soft_power_reg)
-+		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
-+					qemu_power_off, (void *)soft_power_reg);
-+	else
-+		power_task = kthread_run(kpowerswd, (void*)soft_power_reg,
-+					KTHREAD_NAME);
- 	if (IS_ERR(power_task)) {
- 		printk(KERN_ERR DRIVER_NAME ": thread creation failed.  Driver not loaded.\n");
- 		pdc_soft_power_button(0);
+-	/*
+-	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
+-	 * regular keys (Compact only)
+-	 */
+-	if (hdev->product == USB_DEVICE_ID_LENOVO_CUSBKBD ||
+-	    hdev->product == USB_DEVICE_ID_LENOVO_CBTKBD) {
+-		ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
+-		if (ret)
+-			hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
+-	}
+-
+-	/* Switch middle button to native mode */
+-	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
+-	if (ret)
+-		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
+-
+ 	/* Set keyboard settings to known state */
+ 	cptkbd_data->middlebutton_state = 0;
+ 	cptkbd_data->fn_lock = true;
+@@ -1286,6 +1283,24 @@ err:
+ 	return ret;
+ }
+ 
++#ifdef CONFIG_PM
++static int lenovo_reset_resume(struct hid_device *hdev)
++{
++	switch (hdev->product) {
++	case USB_DEVICE_ID_LENOVO_CUSBKBD:
++	case USB_DEVICE_ID_LENOVO_TPIIUSBKBD:
++		if (hdev->type == HID_TYPE_USBMOUSE)
++			lenovo_features_set_cptkbd(hdev);
++
++		break;
++	default:
++		break;
++	}
++
++	return 0;
++}
++#endif
++
+ static void lenovo_remove_tpkbd(struct hid_device *hdev)
+ {
+ 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
+@@ -1402,6 +1417,9 @@ static struct hid_driver lenovo_driver =
+ 	.raw_event = lenovo_raw_event,
+ 	.event = lenovo_event,
+ 	.report_fixup = lenovo_report_fixup,
++#ifdef CONFIG_PM
++	.reset_resume = lenovo_reset_resume,
++#endif
+ };
+ module_hid_driver(lenovo_driver);
+ 
 
 
 
