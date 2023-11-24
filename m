@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-1134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D977F7E2F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 330C77F7C11
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB5AB1C212D9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53FA91C209DF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F543A8C3;
-	Fri, 24 Nov 2023 18:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C925381D7;
+	Fri, 24 Nov 2023 18:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwSrbuYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAuQLYUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26CE381BF;
-	Fri, 24 Nov 2023 18:30:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FAA4C433C8;
-	Fri, 24 Nov 2023 18:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA2B339FD9;
+	Fri, 24 Nov 2023 18:11:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F82C433C8;
+	Fri, 24 Nov 2023 18:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850644;
-	bh=mC3f4xIjbGw4nVPZlBwkFBTkDl3Ei1CAjJ0FMAtBmbk=;
+	s=korg; t=1700849486;
+	bh=V3pwtV5Pa6G2JJjdDH/Fn0npo3w+KKsr+MXmrDAHhAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwSrbuYQtLvJZvn8sLe5gwEbr4fyWIxaMcQLz0+Bqks5Nwlf0tBB3Qy+gESlcLHvC
-	 4rB0lsh16cQOkiEr5tTliS+nO05bCPspQEi+UErj5/0yryt6vsQyTS0Hurw6k8bFYc
-	 4CgkdI58QfDRKnik5l69FDQ58PX3nJBUP7dmEpRo=
+	b=WAuQLYUE1qZuE3OZZ6oxd5LDrF78VrAOzLWWRzgQvDDV2qs88c6NhLEaREVvBs4Nl
+	 JLt+EqOOPb3nBDJnLNbPWxCA1w2bar+nOTNixIk3Rd/kjTudR/vtevF72kAyUZ3ALA
+	 OLMTkayn6LC3xvCUHzJEPFJ7y4/4f4ZO6S7d1T70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhenwei pi <pizhenwei@bytedance.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jay Vosburgh <jay.vosburgh@canonical.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 131/491] virtio-blk: fix implicit overflow on virtio_max_dma_size
+Subject: [PATCH 6.6 201/530] bonding: stop the device in bond_setup_by_slave()
 Date: Fri, 24 Nov 2023 17:46:07 +0000
-Message-ID: <20231124172028.438247072@linuxfoundation.org>
+Message-ID: <20231124172034.186939233@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +56,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fafb51a67fb883eb2dde352539df939a251851be ]
+[ Upstream commit 3cffa2ddc4d3fcf70cde361236f5a614f81a09b2 ]
 
-The following codes have an implicit conversion from size_t to u32:
-(u32)max_size = (size_t)virtio_max_dma_size(vdev);
+Commit 9eed321cde22 ("net: lapbether: only support ethernet devices")
+has been able to keep syzbot away from net/lapb, until today.
 
-This may lead overflow, Ex (size_t)4G -> (u32)0. Once
-virtio_max_dma_size() has a larger size than U32_MAX, use U32_MAX
-instead.
+In the following splat [1], the issue is that a lapbether device has
+been created on a bonding device without members. Then adding a non
+ARPHRD_ETHER member forced the bonding master to change its type.
 
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Message-Id: <20230904061045.510460-1-pizhenwei@bytedance.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+The fix is to make sure we call dev_close() in bond_setup_by_slave()
+so that the potential linked lapbether devices (or any other devices
+having assumptions on the physical device) are removed.
+
+A similar bug has been addressed in commit 40baec225765
+("bonding: fix panic on non-ARPHRD_ETHER enslave failure")
+
+[1]
+skbuff: skb_under_panic: text:ffff800089508810 len:44 put:40 head:ffff0000c78e7c00 data:ffff0000c78e7bea tail:0x16 end:0x140 dev:bond0
+kernel BUG at net/core/skbuff.c:192 !
+Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 6007 Comm: syz-executor383 Not tainted 6.6.0-rc3-syzkaller-gbf6547d8715b #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : skb_panic net/core/skbuff.c:188 [inline]
+pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
+lr : skb_panic net/core/skbuff.c:188 [inline]
+lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
+sp : ffff800096a06aa0
+x29: ffff800096a06ab0 x28: ffff800096a06ba0 x27: dfff800000000000
+x26: ffff0000ce9b9b50 x25: 0000000000000016 x24: ffff0000c78e7bea
+x23: ffff0000c78e7c00 x22: 000000000000002c x21: 0000000000000140
+x20: 0000000000000028 x19: ffff800089508810 x18: ffff800096a06100
+x17: 0000000000000000 x16: ffff80008a629a3c x15: 0000000000000001
+x14: 1fffe00036837a32 x13: 0000000000000000 x12: 0000000000000000
+x11: 0000000000000201 x10: 0000000000000000 x9 : cb50b496c519aa00
+x8 : cb50b496c519aa00 x7 : 0000000000000001 x6 : 0000000000000001
+x5 : ffff800096a063b8 x4 : ffff80008e280f80 x3 : ffff8000805ad11c
+x2 : 0000000000000001 x1 : 0000000100000201 x0 : 0000000000000086
+Call trace:
+skb_panic net/core/skbuff.c:188 [inline]
+skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
+skb_push+0xf0/0x108 net/core/skbuff.c:2446
+ip6gre_header+0xbc/0x738 net/ipv6/ip6_gre.c:1384
+dev_hard_header include/linux/netdevice.h:3136 [inline]
+lapbeth_data_transmit+0x1c4/0x298 drivers/net/wan/lapbether.c:257
+lapb_data_transmit+0x8c/0xb0 net/lapb/lapb_iface.c:447
+lapb_transmit_buffer+0x178/0x204 net/lapb/lapb_out.c:149
+lapb_send_control+0x220/0x320 net/lapb/lapb_subr.c:251
+__lapb_disconnect_request+0x9c/0x17c net/lapb/lapb_iface.c:326
+lapb_device_event+0x288/0x4e0 net/lapb/lapb_iface.c:492
+notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
+raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
+call_netdevice_notifiers_info net/core/dev.c:1970 [inline]
+call_netdevice_notifiers_extack net/core/dev.c:2008 [inline]
+call_netdevice_notifiers net/core/dev.c:2022 [inline]
+__dev_close_many+0x1b8/0x3c4 net/core/dev.c:1508
+dev_close_many+0x1e0/0x470 net/core/dev.c:1559
+dev_close+0x174/0x250 net/core/dev.c:1585
+lapbeth_device_event+0x2e4/0x958 drivers/net/wan/lapbether.c:466
+notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
+raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
+call_netdevice_notifiers_info net/core/dev.c:1970 [inline]
+call_netdevice_notifiers_extack net/core/dev.c:2008 [inline]
+call_netdevice_notifiers net/core/dev.c:2022 [inline]
+__dev_close_many+0x1b8/0x3c4 net/core/dev.c:1508
+dev_close_many+0x1e0/0x470 net/core/dev.c:1559
+dev_close+0x174/0x250 net/core/dev.c:1585
+bond_enslave+0x2298/0x30cc drivers/net/bonding/bond_main.c:2332
+bond_do_ioctl+0x268/0xc64 drivers/net/bonding/bond_main.c:4539
+dev_ifsioc+0x754/0x9ac
+dev_ioctl+0x4d8/0xd34 net/core/dev_ioctl.c:786
+sock_do_ioctl+0x1d4/0x2d0 net/socket.c:1217
+sock_ioctl+0x4e8/0x834 net/socket.c:1322
+vfs_ioctl fs/ioctl.c:51 [inline]
+__do_sys_ioctl fs/ioctl.c:871 [inline]
+__se_sys_ioctl fs/ioctl.c:857 [inline]
+__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:857
+__invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
+invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
+el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
+do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
+el0_svc+0x58/0x16c arch/arm64/kernel/entry-common.c:678
+el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:696
+el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
+Code: aa1803e6 aa1903e7 a90023f5 94785b8b (d4210000)
+
+Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231109180102.4085183-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 1fe011676d070..4a4b9bad551e8 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -1313,6 +1313,7 @@ static int virtblk_probe(struct virtio_device *vdev)
- 	u16 min_io_size;
- 	u8 physical_block_exp, alignment_offset;
- 	unsigned int queue_depth;
-+	size_t max_dma_size;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 51d47eda1c873..8e6cc0e133b7f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1500,6 +1500,10 @@ static void bond_compute_features(struct bonding *bond)
+ static void bond_setup_by_slave(struct net_device *bond_dev,
+ 				struct net_device *slave_dev)
+ {
++	bool was_up = !!(bond_dev->flags & IFF_UP);
++
++	dev_close(bond_dev);
++
+ 	bond_dev->header_ops	    = slave_dev->header_ops;
  
- 	if (!vdev->config->get) {
- 		dev_err(&vdev->dev, "%s failure: config access disabled\n",
-@@ -1411,7 +1412,8 @@ static int virtblk_probe(struct virtio_device *vdev)
- 	/* No real sector limit. */
- 	blk_queue_max_hw_sectors(q, UINT_MAX);
+ 	bond_dev->type		    = slave_dev->type;
+@@ -1514,6 +1518,8 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
+ 		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
+ 		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
+ 	}
++	if (was_up)
++		dev_open(bond_dev, NULL);
+ }
  
--	max_size = virtio_max_dma_size(vdev);
-+	max_dma_size = virtio_max_dma_size(vdev);
-+	max_size = max_dma_size > U32_MAX ? U32_MAX : max_dma_size;
- 
- 	/* Host can optionally specify maximum segment size and number of
- 	 * segments. */
+ /* On bonding slaves other than the currently active slave, suppress
 -- 
 2.42.0
 
