@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372E37F7D37
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5578B7F80F7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91312B21255
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 869B11C21674
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC95C3A8C5;
-	Fri, 24 Nov 2023 18:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC491364A0;
+	Fri, 24 Nov 2023 18:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k97vKQeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7T/Pueg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794FD364A4;
-	Fri, 24 Nov 2023 18:22:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BD7C433C8;
-	Fri, 24 Nov 2023 18:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846B033CFD;
+	Fri, 24 Nov 2023 18:54:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100B3C433C8;
+	Fri, 24 Nov 2023 18:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850147;
-	bh=GjEmLTpQjn2vhJdMZD4h221O8o96vR5coAjZB9xxe7M=;
+	s=korg; t=1700852067;
+	bh=XMyofrKp2IppO5b0faSf+iuxe3RMcP6CxRlzLTNwPt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k97vKQebPRSiFMwTlTf2lOr6fhVxBLKpyADptAsSBkJEyf6FnRPRSrwhAi6jxO2J+
-	 CcAjzYCiVzJ48qyFytLpfdZuzqeVS//k4OLfq0ISZC4iOzEKjzErGA0oVqSceWbXs3
-	 oOCeMaCFR7dfCupNmCi7u5z07ZbCKPX09ocKIFJE=
+	b=K7T/PuegpX/WbxQwr5HJLi0vZOOat6OtfTTXt4d10SFp919E+dt6EDto7L5fAVeAw
+	 anNmhEUQe5535Pa/qpORlzghXneHIfx6RHIw0Du1SsumK21mkeImGOvHH+8o5fEEg8
+	 uo6m76ngKjGbvMrPk1YSsWqrU+k0bfm4dQSXQ+9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 428/530] cifs: do not pass cifs_sb when trying to add channels
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 207/372] parisc/power: Add power soft-off when running on qemu
 Date: Fri, 24 Nov 2023 17:49:54 +0000
-Message-ID: <20231124172041.106485916@linuxfoundation.org>
+Message-ID: <20231124172017.365827055@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +51,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 9599d59eb8fc0c0fd9480c4f22901533d08965ee upstream.
+commit d0c219472980d15f5cbc5c8aec736848bda3f235 upstream.
 
-The only reason why cifs_sb gets passed today to cifs_try_adding_channels
-is to pass the local_nls field for the new channels and binding session.
-However, the ses struct already has local_nls field that is setup during
-the first cifs_setup_session. So there is no need to pass cifs_sb.
-
-This change removes cifs_sb from the arg list for this and the functions
-that it calls and uses ses->local_nls instead.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsproto.h |    2 +-
- fs/smb/client/connect.c   |    2 +-
- fs/smb/client/sess.c      |   12 ++++++------
- 3 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/parisc/power.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -610,7 +610,7 @@ void cifs_free_hash(struct shash_desc **
+--- a/drivers/parisc/power.c
++++ b/drivers/parisc/power.c
+@@ -197,6 +197,14 @@ static struct notifier_block parisc_pani
+ 	.priority	= INT_MAX,
+ };
  
- struct cifs_chan *
- cifs_ses_find_chan(struct cifs_ses *ses, struct TCP_Server_Info *server);
--int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses);
-+int cifs_try_adding_channels(struct cifs_ses *ses);
- bool is_server_using_iface(struct TCP_Server_Info *server,
- 			   struct cifs_server_iface *iface);
- bool is_ses_using_iface(struct cifs_ses *ses, struct cifs_server_iface *iface);
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3561,7 +3561,7 @@ int cifs_mount(struct cifs_sb_info *cifs
- 	ctx->prepath = NULL;
++/* qemu soft power-off function */
++static int qemu_power_off(struct sys_off_data *data)
++{
++	/* this turns the system off via SeaBIOS */
++	*(int *)data->cb_data = 0;
++	pdc_soft_power_button(1);
++	return NOTIFY_DONE;
++}
  
- out:
--	cifs_try_adding_channels(cifs_sb, mnt_ctx.ses);
-+	cifs_try_adding_channels(mnt_ctx.ses);
- 	rc = mount_setup_tlink(cifs_sb, mnt_ctx.ses, mnt_ctx.tcon);
- 	if (rc)
- 		goto error;
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -24,7 +24,7 @@
- #include "fs_context.h"
- 
- static int
--cifs_ses_add_channel(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses,
-+cifs_ses_add_channel(struct cifs_ses *ses,
- 		     struct cifs_server_iface *iface);
- 
- bool
-@@ -157,7 +157,7 @@ cifs_chan_is_iface_active(struct cifs_se
- }
- 
- /* returns number of channels added */
--int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
-+int cifs_try_adding_channels(struct cifs_ses *ses)
+ static int __init power_init(void)
  {
- 	struct TCP_Server_Info *server = ses->server;
- 	int old_chan_count, new_chan_count;
-@@ -230,7 +230,7 @@ int cifs_try_adding_channels(struct cifs
- 			kref_get(&iface->refcount);
+@@ -226,7 +234,13 @@ static int __init power_init(void)
+ 				soft_power_reg);
+ 	}
  
- 			spin_unlock(&ses->iface_lock);
--			rc = cifs_ses_add_channel(cifs_sb, ses, iface);
-+			rc = cifs_ses_add_channel(ses, iface);
- 			spin_lock(&ses->iface_lock);
- 
- 			if (rc) {
-@@ -354,7 +354,7 @@ cifs_ses_find_chan(struct cifs_ses *ses,
- }
- 
- static int
--cifs_ses_add_channel(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses,
-+cifs_ses_add_channel(struct cifs_ses *ses,
- 		     struct cifs_server_iface *iface)
- {
- 	struct TCP_Server_Info *chan_server;
-@@ -433,7 +433,7 @@ cifs_ses_add_channel(struct cifs_sb_info
- 	 * This will be used for encoding/decoding user/domain/pw
- 	 * during sess setup auth.
- 	 */
--	ctx->local_nls = cifs_sb->local_nls;
-+	ctx->local_nls = ses->local_nls;
- 
- 	/* Use RDMA if possible */
- 	ctx->rdma = iface->rdma_capable;
-@@ -479,7 +479,7 @@ cifs_ses_add_channel(struct cifs_sb_info
- 
- 	rc = cifs_negotiate_protocol(xid, ses, chan->server);
- 	if (!rc)
--		rc = cifs_setup_session(xid, ses, chan->server, cifs_sb->local_nls);
-+		rc = cifs_setup_session(xid, ses, chan->server, ses->local_nls);
- 
- 	mutex_unlock(&ses->session_mutex);
- 
+-	power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
++	power_task = NULL;
++	if (running_on_qemu && soft_power_reg)
++		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
++					qemu_power_off, (void *)soft_power_reg);
++	else
++		power_task = kthread_run(kpowerswd, (void*)soft_power_reg,
++					KTHREAD_NAME);
+ 	if (IS_ERR(power_task)) {
+ 		printk(KERN_ERR DRIVER_NAME ": thread creation failed.  Driver not loaded.\n");
+ 		pdc_soft_power_button(0);
 
 
 
