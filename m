@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1177F7CC1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A381E7F80C8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6BF5282074
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A83028259D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F943A8C4;
-	Fri, 24 Nov 2023 18:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2873418B;
+	Fri, 24 Nov 2023 18:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bkdu70Ee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5JHuY4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BA539FFD;
-	Fri, 24 Nov 2023 18:18:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2BCC433C7;
-	Fri, 24 Nov 2023 18:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4904222F1D;
+	Fri, 24 Nov 2023 18:52:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E39C433C8;
+	Fri, 24 Nov 2023 18:52:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849885;
-	bh=J1xCqVdKSDLYHYOKwG/+D1OG9hsrHtRNeArEPYfLpnw=;
+	s=korg; t=1700851961;
+	bh=tneHs2QH22Kug9dvVIa/Og3hovJDE63x+jBLHXrHRyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bkdu70EemCzHmQxLvoGalkLpFIZNAgQ6oecS2y9paFP82Xsg4rFmKrxsDQaT94dTI
-	 xKVRlcESbso1u9ikcMQxHGtKQVJG30MjCO7kNspBn+RPIjzH378AuLhYs/4kI7YUv+
-	 Eni+aY9ANKmkRizpryXKWQULIPdAAiKT9x6/0fsg=
+	b=l5JHuY4eqJdbb58Dao1ezkQfsno3DMCKmPUrqSGuMSZIliw0VKu0bqdNY6N7T6KYY
+	 43eP3rKiqlE2nR1hCl6PnooZH+pjymgqqCGswL7eWqgKEJokJGbPIDP0fV7qar5Mhy
+	 CC06upXx48cy3jseQsJhLxTD1TcwVJbMQpKL2GyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Lentin <jm@lentin.co.uk>,
-	Martin Kepplinger <martink@posteo.de>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.6 360/530] hid: lenovo: Resend all settings on reset_resume for compact keyboards
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/372] xen/events: fix delayed eoi list handling
 Date: Fri, 24 Nov 2023 17:48:46 +0000
-Message-ID: <20231124172038.968614549@linuxfoundation.org>
+Message-ID: <20231124172015.119694501@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,117 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Lentin <jm@lentin.co.uk>
+From: Juergen Gross <jgross@suse.com>
 
-commit 2f2bd7cbd1d1548137b351040dc4e037d18cdfdc upstream.
+[ Upstream commit 47d970204054f859f35a2237baa75c2d84fcf436 ]
 
-The USB Compact Keyboard variant requires a reset_resume function to
-restore keyboard configuration after a suspend in some situations. Move
-configuration normally done on probe to lenovo_features_set_cptkbd(), then
-recycle this for use on reset_resume.
+When delaying eoi handling of events, the related elements are queued
+into the percpu lateeoi list. In case the list isn't empty, the
+elements should be sorted by the time when eoi handling is to happen.
 
-Without, the keyboard and driver would end up in an inconsistent state,
-breaking middle-button scrolling amongst other problems, and twiddling
-sysfs values wouldn't help as the middle-button mode won't be set until
-the driver is reloaded.
+Unfortunately a new element will never be queued at the start of the
+list, even if it has a handling time lower than all other list
+elements.
 
-Tested on a USB and Bluetooth Thinkpad Compact Keyboard.
+Fix that by handling that case the same way as for an empty list.
 
-CC: stable@vger.kernel.org
-Fixes: 94eefa271323 ("HID: lenovo: Use native middle-button mode for compact keyboards")
-Signed-off-by: Jamie Lentin <jm@lentin.co.uk>
-Signed-off-by: Martin Kepplinger <martink@posteo.de>
-Link: https://lore.kernel.org/r/20231002150914.22101-1-martink@posteo.de
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e99502f76271 ("xen/events: defer eoi in case of excessive number of events")
+Reported-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-lenovo.c |   50 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 16 deletions(-)
+ drivers/xen/events/events_base.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -526,6 +526,19 @@ static void lenovo_features_set_cptkbd(s
- 	int ret;
- 	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index 80b46de14f413..af9115d648092 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -600,7 +600,9 @@ static void lateeoi_list_add(struct irq_info *info)
  
-+	/*
-+	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
-+	 * regular keys
-+	 */
-+	ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
-+	if (ret)
-+		hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
-+
-+	/* Switch middle button to native mode */
-+	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
-+	if (ret)
-+		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
-+
- 	ret = lenovo_send_cmd_cptkbd(hdev, 0x05, cptkbd_data->fn_lock);
- 	if (ret)
- 		hid_err(hdev, "Fn-lock setting failed: %d\n", ret);
-@@ -1148,22 +1161,6 @@ static int lenovo_probe_cptkbd(struct hi
- 	}
- 	hid_set_drvdata(hdev, cptkbd_data);
+ 	spin_lock_irqsave(&eoi->eoi_list_lock, flags);
  
--	/*
--	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
--	 * regular keys (Compact only)
--	 */
--	if (hdev->product == USB_DEVICE_ID_LENOVO_CUSBKBD ||
--	    hdev->product == USB_DEVICE_ID_LENOVO_CBTKBD) {
--		ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
--		if (ret)
--			hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
--	}
--
--	/* Switch middle button to native mode */
--	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
--	if (ret)
--		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
--
- 	/* Set keyboard settings to known state */
- 	cptkbd_data->middlebutton_state = 0;
- 	cptkbd_data->fn_lock = true;
-@@ -1286,6 +1283,24 @@ err:
- 	return ret;
- }
- 
-+#ifdef CONFIG_PM
-+static int lenovo_reset_resume(struct hid_device *hdev)
-+{
-+	switch (hdev->product) {
-+	case USB_DEVICE_ID_LENOVO_CUSBKBD:
-+	case USB_DEVICE_ID_LENOVO_TPIIUSBKBD:
-+		if (hdev->type == HID_TYPE_USBMOUSE)
-+			lenovo_features_set_cptkbd(hdev);
-+
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+#endif
-+
- static void lenovo_remove_tpkbd(struct hid_device *hdev)
- {
- 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
-@@ -1402,6 +1417,9 @@ static struct hid_driver lenovo_driver =
- 	.raw_event = lenovo_raw_event,
- 	.event = lenovo_event,
- 	.report_fixup = lenovo_report_fixup,
-+#ifdef CONFIG_PM
-+	.reset_resume = lenovo_reset_resume,
-+#endif
- };
- module_hid_driver(lenovo_driver);
- 
+-	if (list_empty(&eoi->eoi_list)) {
++	elem = list_first_entry_or_null(&eoi->eoi_list, struct irq_info,
++					eoi_list);
++	if (!elem || info->eoi_time < elem->eoi_time) {
+ 		list_add(&info->eoi_list, &eoi->eoi_list);
+ 		mod_delayed_work_on(info->eoi_cpu, system_wq,
+ 				    &eoi->delayed, delay);
+-- 
+2.42.0
+
 
 
 
