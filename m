@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C709F7F809A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BD27F7CD6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8146328123B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 331861C21181
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F96933CD1;
-	Fri, 24 Nov 2023 18:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C673A8C3;
+	Fri, 24 Nov 2023 18:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maokTFqb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szcHTGIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5902FC21;
-	Fri, 24 Nov 2023 18:51:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B09C433C7;
-	Fri, 24 Nov 2023 18:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B5F39FD9;
+	Fri, 24 Nov 2023 18:18:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DECC433C8;
+	Fri, 24 Nov 2023 18:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851870;
-	bh=4sQw8B2CGPhEiRCqP4eTUU3bGmYSNXlwJcVodC/xo1s=;
+	s=korg; t=1700849923;
+	bh=GvINmigrB4KdSmqrSpalSgPlDgf07sIRafkJdKs0OhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=maokTFqbJ9iKnREmoURG/GrKRm9A6f0SJ3WvXUZdW5DldMTyXe8eJqYtWaUF1+0Oz
-	 JH4oWDDyEdLitzB+R9A/dyDCdi0lPUZxHsbI4QOd3UidbOZdYav7tmdpI1fHF6g/mp
-	 v7YDusXgTcAAPPYbBClwz/IVVrnUo2mTzKT35BEA=
+	b=szcHTGIELkhioDOEjR4K10GMmLDtbFCQIuKuaRp1Yap/V+495lKlcaazIiZb6SA+m
+	 ZQWrTkTigl/9FZSfaKGhYudQ/vkXXBc3ePkXhul5ols1AM6eSpquNBCC+IdGbihd2Z
+	 nOmkENjzQ9re0fIZukPDHTTl7xhVrqiYJQa61cOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	lonial con <kongln9170@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/372] tty: Fix uninit-value access in ppp_sync_receive()
-Date: Fri, 24 Nov 2023 17:48:35 +0000
-Message-ID: <20231124172014.752632697@linuxfoundation.org>
+Subject: [PATCH 6.6 350/530] netfilter: nf_tables: remove catchall element in GC sync path
+Date: Fri, 24 Nov 2023 17:48:36 +0000
+Message-ID: <20231124172038.666984153@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,84 +54,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 719639853d88071dfdfd8d9971eca9c283ff314c ]
+[ Upstream commit 93995bf4af2c5a99e2a87f0cd5ce547d31eb7630 ]
 
-KMSAN reported the following uninit-value access issue:
+The expired catchall element is not deactivated and removed from GC sync
+path. This path holds mutex so just call nft_setelem_data_deactivate()
+and nft_setelem_catchall_remove() before queueing the GC work.
 
-=====================================================
-BUG: KMSAN: uninit-value in ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
-BUG: KMSAN: uninit-value in ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
- ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
- ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
- tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
- tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:871 [inline]
- __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
- __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was created at:
- __alloc_pages+0x75d/0xe80 mm/page_alloc.c:4591
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- __page_frag_cache_refill+0x9a/0x2c0 mm/page_alloc.c:4691
- page_frag_alloc_align+0x91/0x5d0 mm/page_alloc.c:4722
- page_frag_alloc include/linux/gfp.h:322 [inline]
- __netdev_alloc_skb+0x215/0x6d0 net/core/skbuff.c:728
- netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
- dev_alloc_skb include/linux/skbuff.h:3238 [inline]
- ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
- ppp_sync_receive+0x237/0xe70 drivers/net/ppp/ppp_synctty.c:334
- tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
- tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:871 [inline]
- __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
- __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-CPU: 0 PID: 12950 Comm: syz-executor.1 Not tainted 6.6.0-14500-g1c41041124bd #10
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
-=====================================================
-
-ppp_sync_input() checks the first 2 bytes of the data are PPP_ALLSTATIONS
-and PPP_UI. However, if the data length is 1 and the first byte is
-PPP_ALLSTATIONS, an access to an uninitialized value occurs when checking
-PPP_UI. This patch resolves this issue by checking the data length.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 4a9e12ea7e70 ("netfilter: nft_set_pipapo: call nft_trans_gc_queue_sync() in catchall GC")
+Reported-by: lonial con <kongln9170@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_synctty.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index 18283b7b94bcd..1ac231408398a 100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -697,7 +697,7 @@ ppp_sync_input(struct syncppp *ap, const unsigned char *buf,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3807c6c1181fd..e6c52d417b6d0 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6464,6 +6464,12 @@ static int nft_setelem_deactivate(const struct net *net,
+ 	return ret;
+ }
  
- 	/* strip address/control field if present */
- 	p = skb->data;
--	if (p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
-+	if (skb->len >= 2 && p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
- 		/* chop off address/control */
- 		if (skb->len < 3)
- 			goto err;
++static void nft_setelem_catchall_destroy(struct nft_set_elem_catchall *catchall)
++{
++	list_del_rcu(&catchall->list);
++	kfree_rcu(catchall, rcu);
++}
++
+ static void nft_setelem_catchall_remove(const struct net *net,
+ 					const struct nft_set *set,
+ 					const struct nft_set_elem *elem)
+@@ -6472,8 +6478,7 @@ static void nft_setelem_catchall_remove(const struct net *net,
+ 
+ 	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
+ 		if (catchall->elem == elem->priv) {
+-			list_del_rcu(&catchall->list);
+-			kfree_rcu(catchall, rcu);
++			nft_setelem_catchall_destroy(catchall);
+ 			break;
+ 		}
+ 	}
+@@ -9639,11 +9644,12 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
+ 						  unsigned int gc_seq,
+ 						  bool sync)
+ {
+-	struct nft_set_elem_catchall *catchall;
++	struct nft_set_elem_catchall *catchall, *next;
+ 	const struct nft_set *set = gc->set;
++	struct nft_elem_priv *elem_priv;
+ 	struct nft_set_ext *ext;
+ 
+-	list_for_each_entry_rcu(catchall, &set->catchall_list, list) {
++	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+ 
+ 		if (!nft_set_elem_expired(ext))
+@@ -9661,7 +9667,17 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
+ 		if (!gc)
+ 			return NULL;
+ 
+-		nft_trans_gc_elem_add(gc, catchall->elem);
++		elem_priv = catchall->elem;
++		if (sync) {
++			struct nft_set_elem elem = {
++				.priv = elem_priv,
++			};
++
++			nft_setelem_data_deactivate(gc->net, gc->set, &elem);
++			nft_setelem_catchall_destroy(catchall);
++		}
++
++		nft_trans_gc_elem_add(gc, elem_priv);
+ 	}
+ 
+ 	return gc;
 -- 
 2.42.0
 
