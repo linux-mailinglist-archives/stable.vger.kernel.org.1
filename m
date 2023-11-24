@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-2376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC497F83EA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9E97F83E2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC1C81C269B4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E8F3B2709C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D33D381A2;
-	Fri, 24 Nov 2023 19:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F164A364C4;
+	Fri, 24 Nov 2023 19:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZMy9Tz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrgEsKaf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E346033CCA;
-	Fri, 24 Nov 2023 19:22:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71706C433C8;
-	Fri, 24 Nov 2023 19:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B390935EE6;
+	Fri, 24 Nov 2023 19:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E3FC433C8;
+	Fri, 24 Nov 2023 19:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853730;
-	bh=V3Z6FD9/rTvBtK47Z3bpq4e5ruJ+BNbMjZoK5lZyacA=;
+	s=korg; t=1700853713;
+	bh=BSuZpnWrMHtLO053IOkHUxQsZ10DniIVUIjOQs88NBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZMy9Tz1cFjE7zucoc0aWmOED8ifwtfZ2yv7z+2fx0ckJ5reltyJpXv7PX207u8jJ
-	 9SYDrph2Ek8pY6NIhh4jWf7ANhSSb25DhHTx/KF6tU1KyH2fyHl7K29ucp++UCvwc9
-	 LBcslpjDCrpdnJ1bUGrmWey07sbGjSQkJB6s6pkM=
+	b=qrgEsKafSnuo2rFQ3W0ZGKGEnEImyh4sZUiiHcx9dCsyy5YTPid90NEU2Lp0CxYxe
+	 Utv25Yrzj9qXJke3WklA6C1Mr8BstO71jGoj2DVQCUNoBo7Kxnzmbwyt26DTK/oA/t
+	 Wp9DqEo7GgfNgw6nIXg4m6xYdIF0QHvcQAYBdH3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 290/297] drm/amdgpu: dont use ATRM for external devices
-Date: Fri, 24 Nov 2023 17:55:32 +0000
-Message-ID: <20231124172010.262664906@linuxfoundation.org>
+Subject: [PATCH 5.15 291/297] drm/amdgpu: fix error handling in amdgpu_bo_list_get()
+Date: Fri, 24 Nov 2023 17:55:33 +0000
+Message-ID: <20231124172010.295938777@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
 References: <20231124172000.087816911@linuxfoundation.org>
@@ -50,55 +50,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Christian König <christian.koenig@amd.com>
 
-commit 432e664e7c98c243fab4c3c95bd463bea3aeed28 upstream.
+commit 12f76050d8d4d10dab96333656b821bd4620d103 upstream.
 
-The ATRM ACPI method is for fetching the dGPU vbios rom
-image on laptops and all-in-one systems.  It should not be
-used for external add in cards.  If the dGPU is thunderbolt
-connected, don't try ATRM.
+We should not leak the pointer where we couldn't grab the reference
+on to the caller because it can be that the error handling still
+tries to put the reference then.
 
-v2: pci_is_thunderbolt_attached only works for Intel.  Use
-    pdev->external_facing instead.
-v3: dev_is_removable() seems to be what we want
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-@@ -29,6 +29,7 @@
- #include "amdgpu.h"
- #include "atom.h"
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
+@@ -178,6 +178,7 @@ int amdgpu_bo_list_get(struct amdgpu_fpr
+ 	}
  
-+#include <linux/device.h>
- #include <linux/pci.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
-@@ -289,6 +290,10 @@ static bool amdgpu_atrm_get_bios(struct
- 	if (adev->flags & AMD_IS_APU)
- 		return false;
+ 	rcu_read_unlock();
++	*result = NULL;
+ 	return -ENOENT;
+ }
  
-+	/* ATRM is for on-platform devices only */
-+	if (dev_is_removable(&adev->pdev->dev))
-+		return false;
-+
- 	while ((pdev = pci_get_class(PCI_CLASS_DISPLAY_VGA << 8, pdev)) != NULL) {
- 		dhandle = ACPI_HANDLE(&pdev->dev);
- 		if (!dhandle)
 
 
 
