@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD03E7F7C1A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A262E7F7E57
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A3AA1C2106A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D5F22821A5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5117A3A8C5;
-	Fri, 24 Nov 2023 18:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDAA3A8C6;
+	Fri, 24 Nov 2023 18:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhfJrAKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8L3EFQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0920E39FF3;
-	Fri, 24 Nov 2023 18:11:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A285C433C7;
-	Fri, 24 Nov 2023 18:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCEA39FEE;
+	Fri, 24 Nov 2023 18:32:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2F9C433C7;
+	Fri, 24 Nov 2023 18:32:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849508;
-	bh=illLDD02cuYXzmgaevRBuBVvRF9Kf3lhFVrQuyqZChA=;
+	s=korg; t=1700850723;
+	bh=34C7BiVKxofB9y1xmD8PA+uhhshZQaVp5NCA+nCo95U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhfJrAKRONdeI2mryTrgxzLlwmALxst1bSQ4VfuejZ0OnM+y4nGzbajrb3SBK00eb
-	 kUxqmC+QETbAa1h+zmnFROjDcVPqguL4tyEjTi4WJljCjU3bBKeISrjeDSiI7MwWAo
-	 NAfTZ/fAxJs4J1eCOAfw2f5voMHIBcti8q5lMJdI=
+	b=O8L3EFQM3n2Jxz1B/XSODxknsgcKPeBhBUm2LyywWq75aOIwpojuU9uOtzVz3FNn4
+	 o49R47fIIkCUesbkq0D5wKL7ylRrDNHwLbiN8EInnRZVPIBLCbNlgA/XvjSEI0BidG
+	 l35BDqgIzHHNtG7QH5zxYOeCl9Fvo/okBr6JU1kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baruch Siach <baruch@tkos.co.il>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/530] net: stmmac: fix rx budget limit check
+Subject: [PATCH 6.5 139/491] media: ccs: Fix driver quirk struct documentation
 Date: Fri, 24 Nov 2023 17:46:15 +0000
-Message-ID: <20231124172034.425917767@linuxfoundation.org>
+Message-ID: <20231124172028.669565074@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +54,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baruch Siach <baruch@tkos.co.il>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit fa02de9e75889915b554eda1964a631fd019973b ]
+[ Upstream commit 441b5c63d71ec9ec5453328f7e83384ecc1dddd9 ]
 
-The while loop condition verifies 'count < limit'. Neither value change
-before the 'count >= limit' check. As is this check is dead code. But
-code inspection reveals a code path that modifies 'count' and then goto
-'drain_data' and back to 'read_again'. So there is a need to verify
-count value sanity after 'read_again'.
+Fix documentation for struct ccs_quirk, a device specific struct for
+managing deviations from the standard. The flags field was drifted away
+from where it should have been.
 
-Move 'read_again' up to fix the count limit check.
-
-Fixes: ec222003bd94 ("net: stmmac: Prepare to add Split Header support")
-Signed-off-by: Baruch Siach <baruch@tkos.co.il>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/d9486296c3b6b12ab3a0515fcd47d56447a07bfc.1699897370.git.baruch@tkos.co.il
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ccs/ccs-quirk.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 5801f4d50f951..53358015fbe5c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5302,10 +5302,10 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 			len = 0;
- 		}
- 
-+read_again:
- 		if (count >= limit)
- 			break;
- 
--read_again:
- 		buf1_len = 0;
- 		buf2_len = 0;
- 		entry = next_entry;
+diff --git a/drivers/media/i2c/ccs/ccs-quirk.h b/drivers/media/i2c/ccs/ccs-quirk.h
+index 5838fcda92fd4..0b1a64958d714 100644
+--- a/drivers/media/i2c/ccs/ccs-quirk.h
++++ b/drivers/media/i2c/ccs/ccs-quirk.h
+@@ -32,12 +32,10 @@ struct ccs_sensor;
+  *		@reg: Pointer to the register to access
+  *		@value: Register value, set by the caller on write, or
+  *			by the quirk on read
+- *
+- * @flags: Quirk flags
+- *
+  *		@return: 0 on success, -ENOIOCTLCMD if no register
+  *			 access may be done by the caller (default read
+  *			 value is zero), else negative error code on error
++ * @flags: Quirk flags
+  */
+ struct ccs_quirk {
+ 	int (*limits)(struct ccs_sensor *sensor);
 -- 
 2.42.0
 
