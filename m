@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A427F7FFA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4BE7F817A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9304B21441
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFA4BB21B2B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B04364C1;
-	Fri, 24 Nov 2023 18:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1097135F1A;
+	Fri, 24 Nov 2023 18:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5u2Sj4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GH/bX+y7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DEC2EAEA;
-	Fri, 24 Nov 2023 18:45:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CE6C433C8;
-	Fri, 24 Nov 2023 18:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87502E84A;
+	Fri, 24 Nov 2023 18:58:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5832AC433C8;
+	Fri, 24 Nov 2023 18:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851541;
-	bh=L5uWjfumcrquwQi56EVASmleKDbGF2qx7wndCyn6yRg=;
+	s=korg; t=1700852332;
+	bh=ej3dpNEkAgs8hwHNzoelikn9ASslGVnidrocCCa0jWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c5u2Sj4VYyz1+MuTrdTmQoopJruHZoXWrgV3LSeuXdNPOvsqiQXXJqNIQVZT9QZid
-	 RqVxDodyL+gNSo2KYV0DjOJiCtR4theZaUXG5prFwHWb9Y/8ek5wAamsPiEZxYQu3l
-	 NUhcTZPridl4NaO4jkfdXdh+eHqDjxLsPWhtBO2o=
+	b=GH/bX+y7J232qTs06qTved2u8fFLOfyxly3wfP7WbxOruVi++926N0emZb5wIiQ9C
+	 kQMwr6EcGF4s5nUJFaMvanMthU97a/7dvqmg0bov0mrnaRo8i6Py3ITsOSW/91LQ6d
+	 e1O5uJga9fdS4AlrgPsGCvirrqXKdvpxjF3AiXH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.5 464/491] ext4: correct the start block of counting reserved clusters
-Date: Fri, 24 Nov 2023 17:51:40 +0000
-Message-ID: <20231124172038.567253426@linuxfoundation.org>
+	Andrew Lunn <andrew@lunn.ch>,
+	Klaus Kudielka <klaus.kudielka@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 314/372] net: phylink: initialize carrier state at creation
+Date: Fri, 24 Nov 2023 17:51:41 +0000
+Message-ID: <20231124172020.856951234@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,56 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Klaus Kudielka <klaus.kudielka@gmail.com>
 
-commit 40ea98396a3659062267d1fe5f99af4f7e4f05e3 upstream.
+commit 02d5fdbf4f2b8c406f7a4c98fa52aa181a11d733 upstream.
 
-When big allocate feature is enabled, we need to count and update
-reserved clusters before removing a delayed only extent_status entry.
-{init|count|get}_rsvd() have already done this, but the start block
-number of this counting isn't correct in the following case.
+Background: Turris Omnia (Armada 385); eth2 (mvneta) connected to SFP bus;
+SFP module is present, but no fiber connected, so definitely no carrier.
 
-  lblk            end
-   |               |
-   v               v
-          -------------------------
-          |                       | orig_es
-          -------------------------
-                   ^              ^
-      len1 is 0    |     len2     |
+After booting, eth2 is down, but netdev LED trigger surprisingly reports
+link active. Then, after "ip link set eth2 up", the link indicator goes
+away - as I would have expected it from the beginning.
 
-If the start block of the orig_es entry founded is bigger than lblk, we
-passed lblk as start block to count_rsvd(), but the length is correct,
-finally, the range to be counted is offset. This patch fix this by
-passing the start blocks to 'orig_es->lblk + len1'.
+It turns out, that the default carrier state after netdev creation is
+"carrier ok". Some ethernet drivers explicitly call netif_carrier_off
+during probing, others (like mvneta) don't - which explains the current
+behaviour: only when the device is brought up, phylink_start calls
+netif_carrier_off.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230824092619.1327976-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Reviewed-by: Jan Kara <jack@suse.cz>
+Fix this for all drivers using phylink, by calling netif_carrier_off in
+phylink_create.
+
+Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
+Cc: stable@vger.kernel.org
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents_status.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/phylink.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -1431,8 +1431,8 @@ static int __es_remove_extent(struct ino
- 			}
- 		}
- 		if (count_reserved)
--			count_rsvd(inode, lblk, orig_es.es_len - len1 - len2,
--				   &orig_es, &rc);
-+			count_rsvd(inode, orig_es.es_lblk + len1,
-+				   orig_es.es_len - len1 - len2, &orig_es, &rc);
- 		goto out_get_reserved;
- 	}
- 
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1479,6 +1479,7 @@ struct phylink *phylink_create(struct ph
+ 	pl->config = config;
+ 	if (config->type == PHYLINK_NETDEV) {
+ 		pl->netdev = to_net_dev(config->dev);
++		netif_carrier_off(pl->netdev);
+ 	} else if (config->type == PHYLINK_DEV) {
+ 		pl->dev = config->dev;
+ 	} else {
 
 
 
