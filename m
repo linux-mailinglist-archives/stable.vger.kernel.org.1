@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-1785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66807F8159
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BBA7F7FD5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 027941C21611
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1019B1C2151F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1673418B;
-	Fri, 24 Nov 2023 18:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334E939FC2;
+	Fri, 24 Nov 2023 18:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahqJFGGy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tabg6/IH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7B833076;
-	Fri, 24 Nov 2023 18:57:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842B8C433C7;
-	Fri, 24 Nov 2023 18:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7180381A2;
+	Fri, 24 Nov 2023 18:44:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 760E9C433C7;
+	Fri, 24 Nov 2023 18:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852268;
-	bh=99mSMSS0PfU3GMJi3wt58Y2hr70E+suqIFz+htuGel4=;
+	s=korg; t=1700851476;
+	bh=na/ovnYjpo7dLGhavaHWxbo86Is6MsP/ed0yHvmrKDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahqJFGGyTkQj13pwIRrH+FaBRv4pQ2kWOo4adUQE3HasnCLG1vDk4pmA+3mtCcgGd
-	 1D+YdnXYOMiD+C+934f4TwnwR1CNTY+Qgh/JEdx14Cac8A0fYgz0rztjTi05b4y9Ld
-	 8NaBQEhHGkKynVp6/ziNt/gtSqY9WDifkXrEaD7s=
+	b=tabg6/IHNvqxFxTtiNnpYSqnLUhmKkzrQBUNGh0aWeerrAM/W8N1RVNEKb24YE79l
+	 J5gPtuwwVhUtfkCJGMAJJ2UhyRrRURYCatGm/hKt4jPtQARg0Oc1XlpJ4SPzrTOb8Y
+	 tj1jGl5RV+TYBLWXeNMSt7xFNlY3UTtwL82j36KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 288/372] clk: visconti: Fix undefined behavior bug in struct visconti_pll_provider
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.5 439/491] mmc: sdhci-pci-gli: A workaround to allow GL9750 to enter ASPM L1.2
 Date: Fri, 24 Nov 2023 17:51:15 +0000
-Message-ID: <20231124172020.016335641@linuxfoundation.org>
+Message-ID: <20231124172037.800210909@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,119 +52,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit 5ad1e217a2b23aa046b241183bd9452d259d70d0 ]
+commit d7133797e9e1b72fd89237f68cb36d745599ed86 upstream.
 
-`struct clk_hw_onecell_data` is a flexible structure, which means that
-it contains flexible-array member at the bottom, in this case array
-`hws`:
+When GL9750 enters ASPM L1 sub-states, it will stay at L1.1 and will not
+enter L1.2. The workaround is to toggle PM state to allow GL9750 to enter
+ASPM L1.2.
 
-include/linux/clk-provider.h:
-1380 struct clk_hw_onecell_data {
-1381         unsigned int num;
-1382         struct clk_hw *hws[] __counted_by(num);
-1383 };
-
-This could potentially lead to an overwrite of the objects following
-`clk_data` in `struct visconti_pll_provider`, in this case
-`struct device_node *node;`, at run-time:
-
-drivers/clk/visconti/pll.h:
- 16 struct visconti_pll_provider {
- 17         void __iomem *reg_base;
- 18         struct clk_hw_onecell_data clk_data;
- 19         struct device_node *node;
- 20 };
-
-Notice that a total of 56 bytes are allocated for flexible-array `hws`
-at line 328. See below:
-
-include/dt-bindings/clock/toshiba,tmpv770x.h:
- 14 #define TMPV770X_NR_PLL		7
-
-drivers/clk/visconti/pll-tmpv770x.c:
- 69 ctx = visconti_init_pll(np, reg_base, TMPV770X_NR_PLL);
-
-drivers/clk/visconti/pll.c:
-321 struct visconti_pll_provider * __init visconti_init_pll(struct device_node *np,
-322                                                         void __iomem *base,
-323                                                         unsigned long nr_plls)
-324 {
-325         struct visconti_pll_provider *ctx;
-...
-328         ctx = kzalloc(struct_size(ctx, clk_data.hws, nr_plls), GFP_KERNEL);
-
-`struct_size(ctx, clk_data.hws, nr_plls)` above translates to
-sizeof(struct visconti_pll_provider) + sizeof(struct clk_hw *) * 7 ==
-24 + 8 * 7 == 24 + 56
-		  ^^^^
-		   |
-	allocated bytes for flex array `hws`
-
-$ pahole -C visconti_pll_provider drivers/clk/visconti/pll.o
-struct visconti_pll_provider {
-	void *                     reg_base;             /*     0     8 */
-	struct clk_hw_onecell_data clk_data;             /*     8     8 */
-	struct device_node *       node;                 /*    16     8 */
-
-	/* size: 24, cachelines: 1, members: 3 */
-	/* last cacheline: 24 bytes */
-};
-
-And then, after the allocation, some data is written into all members
-of `struct visconti_pll_provider`:
-
-332         for (i = 0; i < nr_plls; ++i)
-333                 ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
-334
-335         ctx->node = np;
-336         ctx->reg_base = base;
-337         ctx->clk_data.num = nr_plls;
-
-Fix all these by placing the declaration of object `clk_data` at the
-end of `struct visconti_pll_provider`. Also, add a comment to make it
-clear that this object must always be last in the structure, and
-prevent this bug from being introduced again in the future.
-
--Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
-ready to enable it globally.
-
-Fixes: b4cbe606dc36 ("clk: visconti: Add support common clock driver and reset driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/57a831d94ee2b3889b11525d4ad500356f89576f.1697492890.git.gustavoars@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Link: https://lore.kernel.org/r/20230912091710.7797-1-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/visconti/pll.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-gli.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/clk/visconti/pll.h b/drivers/clk/visconti/pll.h
-index 01d07f1bf01b1..c4bd40676da4b 100644
---- a/drivers/clk/visconti/pll.h
-+++ b/drivers/clk/visconti/pll.h
-@@ -15,8 +15,10 @@
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -25,6 +25,9 @@
+ #define   GLI_9750_WT_EN_ON	    0x1
+ #define   GLI_9750_WT_EN_OFF	    0x0
  
- struct visconti_pll_provider {
- 	void __iomem *reg_base;
--	struct clk_hw_onecell_data clk_data;
- 	struct device_node *node;
++#define PCI_GLI_9750_PM_CTRL	0xFC
++#define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
 +
-+	/* Must be last */
-+	struct clk_hw_onecell_data clk_data;
- };
+ #define SDHCI_GLI_9750_CFG2          0x848
+ #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
+ #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
+@@ -539,8 +542,12 @@ static void sdhci_gl9750_set_clock(struc
  
- #define VISCONTI_PLL_RATE(_rate, _dacen, _dsmen, \
--- 
-2.42.0
-
+ static void gl9750_hw_setting(struct sdhci_host *host)
+ {
++	struct sdhci_pci_slot *slot = sdhci_priv(host);
++	struct pci_dev *pdev;
+ 	u32 value;
+ 
++	pdev = slot->chip->pdev;
++
+ 	gl9750_wt_on(host);
+ 
+ 	value = sdhci_readl(host, SDHCI_GLI_9750_CFG2);
+@@ -550,6 +557,13 @@ static void gl9750_hw_setting(struct sdh
+ 			    GLI_9750_CFG2_L1DLY_VALUE);
+ 	sdhci_writel(host, value, SDHCI_GLI_9750_CFG2);
+ 
++	/* toggle PM state to allow GL9750 to enter ASPM L1.2 */
++	pci_read_config_dword(pdev, PCI_GLI_9750_PM_CTRL, &value);
++	value |= PCI_GLI_9750_PM_STATE;
++	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
++	value &= ~PCI_GLI_9750_PM_STATE;
++	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
++
+ 	gl9750_wt_off(host);
+ }
+ 
 
 
 
