@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F04B37F7E74
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886E27F8011
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EE60B217DE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4265D282477
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EA92E621;
-	Fri, 24 Nov 2023 18:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2572364A5;
+	Fri, 24 Nov 2023 18:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmSosg4E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dlw/Hu1U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E625339FDD;
-	Fri, 24 Nov 2023 18:33:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B1CC433C7;
-	Fri, 24 Nov 2023 18:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE4C3307D;
+	Fri, 24 Nov 2023 18:46:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E26C433C8;
+	Fri, 24 Nov 2023 18:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850789;
-	bh=+3FYMxv6Ygctl/GxjzFXxZQxWrVF4iMvOQu03IP/Rrs=;
+	s=korg; t=1700851583;
+	bh=BLyTGX73UAoCNUv6I1pjOlcXMa+72FbFVv84BWFLYDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmSosg4E30dXUBgbDU9RQeH0L+hNCqSI4G7BUHptV5sJ8Kd3+ZCM1rkFW/FQkVbsB
-	 29PvgmUazbeXiMCJHyY2680y4TYPfHEoY7VFOLCeWQ9v/lfhQLSA95XTWMIj4c/UIg
-	 G/POlp94PWzdAe5AatLjHMzulkJbW8QeB15cXaLw=
+	b=Dlw/Hu1Uo5uyWf3gPS9uMeB/bSzoERuAoCbBlp7u8UPq9j1gN3NIwcQKyg+oiTjIb
+	 BJX7kPT9F9NWh40y/ibjvezsLoIjzKJ+69P9G1FlCWI8WLbrOO8NusaQJNNMK8v+fX
+	 cG28gWHDrBB1wYY42I+rBwfP7if/6sect0gyF13Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcaov@gmail.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 165/491] riscv: provide riscv-specific is_trap_insn()
+Subject: [PATCH 6.1 014/372] wifi: mac80211_hwsim: fix clang-specific fortify warning
 Date: Fri, 24 Nov 2023 17:46:41 +0000
-Message-ID: <20231124172029.429389439@linuxfoundation.org>
+Message-ID: <20231124172010.938168703@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,64 +51,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcaov@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit b701f9e726f0a30a94ea6af596b74c1f07b95b6b ]
+[ Upstream commit cbaccdc42483c65016f1bae89128c08dc17cfb2a ]
 
-uprobes expects is_trap_insn() to return true for any trap instructions,
-not just the one used for installing uprobe. The current default
-implementation only returns true for 16-bit c.ebreak if C extension is
-enabled. This can confuse uprobes if a 32-bit ebreak generates a trap
-exception from userspace: uprobes asks is_trap_insn() who says there is no
-trap, so uprobes assume a probe was there before but has been removed, and
-return to the trap instruction. This causes an infinite loop of entering
-and exiting trap handler.
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-Instead of using the default implementation, implement this function
-speficially for riscv with checks for both ebreak and c.ebreak.
+In file included from drivers/net/wireless/virtual/mac80211_hwsim.c:18:
+In file included from ./include/linux/slab.h:16:
+In file included from ./include/linux/gfp.h:7:
+In file included from ./include/linux/mmzone.h:8:
+In file included from ./include/linux/spinlock.h:56:
+In file included from ./include/linux/preempt.h:79:
+In file included from ./arch/x86/include/asm/preempt.h:9:
+In file included from ./include/linux/thread_info.h:60:
+In file included from ./arch/x86/include/asm/thread_info.h:53:
+In file included from ./arch/x86/include/asm/cpufeature.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
 
-Fixes: 74784081aac8 ("riscv: Add uprobes supported")
-Signed-off-by: Nam Cao <namcaov@gmail.com>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20230829083614.117748-1-namcaov@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+The compiler actually complains on 'mac80211_hwsim_get_et_strings()' where
+fortification logic inteprets call to 'memcpy()' as an attempt to copy the
+whole 'mac80211_hwsim_gstrings_stats' array from its first member and so
+issues an overread warning. This warning may be silenced by passing
+an address of the whole array and not the first member to 'memcpy()'.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://lore.kernel.org/r/20230829094140.234636-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/probes/uprobes.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/mac80211_hwsim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
-index 194f166b2cc40..4b3dc8beaf77d 100644
---- a/arch/riscv/kernel/probes/uprobes.c
-+++ b/arch/riscv/kernel/probes/uprobes.c
-@@ -3,6 +3,7 @@
- #include <linux/highmem.h>
- #include <linux/ptrace.h>
- #include <linux/uprobes.h>
-+#include <asm/insn.h>
- 
- #include "decode-insn.h"
- 
-@@ -17,6 +18,11 @@ bool is_swbp_insn(uprobe_opcode_t *insn)
- #endif
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index db70cef854bc4..abcd165a62cfe 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -3021,7 +3021,7 @@ static void mac80211_hwsim_get_et_strings(struct ieee80211_hw *hw,
+ 					  u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *mac80211_hwsim_gstrings_stats,
++		memcpy(data, mac80211_hwsim_gstrings_stats,
+ 		       sizeof(mac80211_hwsim_gstrings_stats));
  }
  
-+bool is_trap_insn(uprobe_opcode_t *insn)
-+{
-+	return riscv_insn_is_ebreak(*insn) || riscv_insn_is_c_ebreak(*insn);
-+}
-+
- unsigned long uprobe_get_swbp_addr(struct pt_regs *regs)
- {
- 	return instruction_pointer(regs);
 -- 
 2.42.0
 
