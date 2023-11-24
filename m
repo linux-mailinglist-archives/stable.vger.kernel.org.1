@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-1977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572A97F8239
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F54D7F836C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 117C2284842
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDEFD287FB4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CD1339BE;
-	Fri, 24 Nov 2023 19:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7872F37170;
+	Fri, 24 Nov 2023 19:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXzkb91h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8oYLM7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2212C1A2;
-	Fri, 24 Nov 2023 19:05:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0CEC433C8;
-	Fri, 24 Nov 2023 19:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3947C3173F;
+	Fri, 24 Nov 2023 19:17:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC88FC433C7;
+	Fri, 24 Nov 2023 19:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852745;
-	bh=s37iXUcM/2RXLZSxuTPAUAGDSSh5Ylb+2BZqUpmip/w=;
+	s=korg; t=1700853444;
+	bh=EHteK8+VnefaDALai5XMHjcMQfAwpNuP0r1+INxT6Ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jXzkb91hkfRW2Rcxt9Rc4I/mn8PEwWom3UoHfJkMOevI4Sp5Dvjs2yy7OE1W9a/i/
-	 LVQV0+ORTLiy5oxksVvDK5Ndiqo2bN8D+oF9prezY4HcBMcyvxdGYCjn5zSVmPWjXa
-	 IvJriFwpWVMr2an5cG9sdahfi+C/ChJFQx9rEKEs=
+	b=D8oYLM7XSNTU8jyFzdmVo6eer3w/8Rqi8NON7y16kkJpDC3zUbH1FgwfoEzeHUWwo
+	 rrsgsueAM52DRCkzts+05puUNpVcTYsW38Cl8whOLtNi3LWGbqbUq9w27eLUC7R8Tm
+	 zC7QY6twvfBbqP2LsIDXn9CpmvHYX5QVEj4hLYmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 5.10 105/193] watchdog: move softlockup_panic back to early_param
-Date: Fri, 24 Nov 2023 17:53:52 +0000
-Message-ID: <20231124171951.444128737@linuxfoundation.org>
+	Brian Geffon <bgeffon@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 191/297] PM: hibernate: Use __get_safe_page() rather than touching the list
+Date: Fri, 24 Nov 2023 17:53:53 +0000
+Message-ID: <20231124172006.904437651@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,60 +52,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Brian Geffon <bgeffon@google.com>
 
-commit 8b793bcda61f6c3ed4f5b2ded7530ef6749580cb upstream.
+commit f0c7183008b41e92fa676406d87f18773724b48b upstream.
 
-Setting softlockup_panic from do_sysctl_args() causes it to take effect
-later in boot.  The lockup detector is enabled before SMP is brought
-online, but do_sysctl_args runs afterwards.  If a user wants to set
-softlockup_panic on boot and have it trigger should a softlockup occur
-during onlining of the non-boot processors, they could do this prior to
-commit f117955a2255 ("kernel/watchdog.c: convert {soft/hard}lockup boot
-parameters to sysctl aliases").  However, after this commit the value
-of softlockup_panic is set too late to be of help for this type of
-problem.  Restore the prior behavior.
+We found at least one situation where the safe pages list was empty and
+get_buffer() would gladly try to use a NULL pointer.
 
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Cc: stable@vger.kernel.org
-Fixes: f117955a2255 ("kernel/watchdog.c: convert {soft/hard}lockup boot parameters to sysctl aliases")
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/proc_sysctl.c |    1 -
- kernel/watchdog.c     |    7 +++++++
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ kernel/power/snapshot.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1767,7 +1767,6 @@ static const struct sysctl_alias sysctl_
- 	{"hung_task_panic",			"kernel.hung_task_panic" },
- 	{"numa_zonelist_order",			"vm.numa_zonelist_order" },
- 	{"softlockup_all_cpu_backtrace",	"kernel.softlockup_all_cpu_backtrace" },
--	{"softlockup_panic",			"kernel.softlockup_panic" },
- 	{ }
- };
- 
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -176,6 +176,13 @@ static DEFINE_PER_CPU(unsigned long, hrt
- static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts_saved);
- static unsigned long soft_lockup_nmi_warn;
- 
-+static int __init softlockup_panic_setup(char *str)
-+{
-+	softlockup_panic = simple_strtoul(str, NULL, 0);
-+	return 1;
-+}
-+__setup("softlockup_panic=", softlockup_panic_setup);
-+
- static int __init nowatchdog_setup(char *str)
- {
- 	watchdog_user_enabled = 0;
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2414,8 +2414,9 @@ static void *get_highmem_page_buffer(str
+ 		pbe->copy_page = tmp;
+ 	} else {
+ 		/* Copy of the page will be stored in normal memory */
+-		kaddr = safe_pages_list;
+-		safe_pages_list = safe_pages_list->next;
++		kaddr = __get_safe_page(ca->gfp_mask);
++		if (!kaddr)
++			return ERR_PTR(-ENOMEM);
+ 		pbe->copy_page = virt_to_page(kaddr);
+ 	}
+ 	pbe->next = highmem_pblist;
+@@ -2595,8 +2596,9 @@ static void *get_buffer(struct memory_bi
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 	pbe->orig_address = page_address(page);
+-	pbe->address = safe_pages_list;
+-	safe_pages_list = safe_pages_list->next;
++	pbe->address = __get_safe_page(ca->gfp_mask);
++	if (!pbe->address)
++		return ERR_PTR(-ENOMEM);
+ 	pbe->next = restore_pblist;
+ 	restore_pblist = pbe;
+ 	return pbe->address;
 
 
 
