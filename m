@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-1294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F87E7F7EF4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE777F7CC0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F9971C21452
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E9051C211C0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F5637170;
-	Fri, 24 Nov 2023 18:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB4139FC3;
+	Fri, 24 Nov 2023 18:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdI3cUWv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJJ1mkum"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4827731759;
-	Fri, 24 Nov 2023 18:37:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D1EC433C8;
-	Fri, 24 Nov 2023 18:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A5F39FDD;
+	Fri, 24 Nov 2023 18:18:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0619EC433C7;
+	Fri, 24 Nov 2023 18:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851041;
-	bh=Ws5HN4k1mtBQN1aieAf1r7EDwhz1W75NOSfOVyoiPf0=;
+	s=korg; t=1700849883;
+	bh=K5PARVt487qiLVJUQReoKQjZXVEeNVNzQht4xxeEkJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cdI3cUWvinQgpfd9hdx882ZXNC0QE8/FfdUeC4okAzBrFDqiSoX62HT6LlaRGFjV8
-	 0VjvD13UGcd46HATMbnNYUYkJXcDGLAnVEin9+grcI8cp/2mmf3EPPIzMdqHb8Oahd
-	 Ij/KWna+qud6D8yBz0B6YG6WhSnSEErOzEd9Re/Y=
+	b=GJJ1mkumgilplKtPG5jpqpMRBsd8GaodeUuVmAjX860vnUG4o04Gl0XMFk5D+R7m6
+	 00mRHtR7QTxlyAx62Vx7mrMNBWtlygA6hSGUeH214RNlRemqoj/KdqLBl2u+7H7lq1
+	 6cR55lzMpXd0QcfmM3J4D2UarMOxPRQKwUep6uzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.5 289/491] parisc/pdc: Add width field to struct pdc_model
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.6 359/530] selftests/resctrl: Reduce failures due to outliers in MBA/MBM tests
 Date: Fri, 24 Nov 2023 17:48:45 +0000
-Message-ID: <20231124172033.254800134@linuxfoundation.org>
+Message-ID: <20231124172038.933646168@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,35 +52,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 6240553b52c475d9fc9674de0521b77e692f3764 upstream.
+commit ef43c30858754d99373a63dff33280a9969b49bc upstream.
 
-PDC2.0 specifies the additional PSW-bit field.
+The initial value of 5% chosen for the maximum allowed percentage
+difference between resctrl mbm value and IMC mbm value in
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
+commit 06bd03a57f8c ("selftests/resctrl: Fix MBA/MBM results reporting
+       format") was "randomly chosen value" (as admitted by the changelog).
+
+When running tests in our lab across a large number platforms, 5%
+difference upper bound for success seems a bit on the low side for the
+MBA and MBM tests. Some platforms produce outliers that are slightly
+above that, typically 6-7%, which leads MBA/MBM test frequently
+failing.
+
+Replace the "randomly chosen value" with a success bound that is based
+on those measurements across large number of platforms by relaxing the
+MBA/MBM success bound to 8%. The relaxed bound removes the failures due
+the frequent outliers.
+
+Fixed commit description style error during merge:
+Shuah Khan <skhan@linuxfoundation.org>
+
+Fixes: 06bd03a57f8c ("selftests/resctrl: Fix MBA/MBM results reporting format")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/include/uapi/asm/pdc.h |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/resctrl/mba_test.c |    2 +-
+ tools/testing/selftests/resctrl/mbm_test.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/parisc/include/uapi/asm/pdc.h
-+++ b/arch/parisc/include/uapi/asm/pdc.h
-@@ -472,6 +472,7 @@ struct pdc_model {		/* for PDC_MODEL */
- 	unsigned long arch_rev;
- 	unsigned long pot_key;
- 	unsigned long curr_key;
-+	unsigned long width;	/* default of PSW_W bit (1=enabled) */
- };
+--- a/tools/testing/selftests/resctrl/mba_test.c
++++ b/tools/testing/selftests/resctrl/mba_test.c
+@@ -12,7 +12,7 @@
  
- struct pdc_cache_cf {		/* for PDC_CACHE  (I/D-caches) */
+ #define RESULT_FILE_NAME	"result_mba"
+ #define NUM_OF_RUNS		5
+-#define MAX_DIFF_PERCENT	5
++#define MAX_DIFF_PERCENT	8
+ #define ALLOCATION_MAX		100
+ #define ALLOCATION_MIN		10
+ #define ALLOCATION_STEP		10
+--- a/tools/testing/selftests/resctrl/mbm_test.c
++++ b/tools/testing/selftests/resctrl/mbm_test.c
+@@ -11,7 +11,7 @@
+ #include "resctrl.h"
+ 
+ #define RESULT_FILE_NAME	"result_mbm"
+-#define MAX_DIFF_PERCENT	5
++#define MAX_DIFF_PERCENT	8
+ #define NUM_OF_RUNS		5
+ 
+ static int
 
 
 
