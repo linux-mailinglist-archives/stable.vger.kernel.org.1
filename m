@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65747F80C9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 560C47F7CC2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BE2328256E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 873651C21172
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E1433CD1;
-	Fri, 24 Nov 2023 18:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D2E3A8C2;
+	Fri, 24 Nov 2023 18:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0gtcew6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+VxKodd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B879233075;
-	Fri, 24 Nov 2023 18:52:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B3FC433C7;
-	Fri, 24 Nov 2023 18:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA8D39FF7;
+	Fri, 24 Nov 2023 18:18:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E3B3C433C8;
+	Fri, 24 Nov 2023 18:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851963;
-	bh=ZJMQUSgSZ2x10qp2PB3PAJjkbD6GKpRHNeUJPMYHGdc=;
+	s=korg; t=1700849888;
+	bh=RfNarmQxiOrfE32V5NX82CbIGIkswYO0PL0Kedx/r+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0gtcew6/32s4z6Xx+xwXbfcEUr3++V6OkF/Z2v6xUkhsp9IQZxhddUDhMRJtlQhp
-	 KPwiHNs/D+dlw8vBiyazIlQyRS5mOFMkFfp999fPk3PxchvQtyHfnwnO3hLwbrx7bF
-	 3TFGtcVXFxBc9L4n99dcwbpqV0VBKFwkav7/jiqU=
+	b=0+VxKoddHC/5in9CnfwDWFqfq9/vQfT/YRHtSBMhDflz5rf4XpQ0PofSVJPcBvuO7
+	 B1ca1STyLiDjgF8lG3NybonD0lUNlZellTlYWrCvagn17pJ/Rm6LGXGQJjOGsq8hBE
+	 TFzouNEld/2AdCDa3Uz4K5ZwEVuyzXxFmyy2zYkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/372] ptp: annotate data-race around q->head and q->tail
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 361/530] ASoC: codecs: wsa-macro: fix uninitialized stack variables with name prefix
 Date: Fri, 24 Nov 2023 17:48:47 +0000
-Message-ID: <20231124172015.152930987@linuxfoundation.org>
+Message-ID: <20231124172038.997745541@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,103 +52,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 73bde5a3294853947252cd9092a3517c7cb0cd2d ]
+commit 72151ad0cba8a07df90130ff62c979520d71f23b upstream.
 
-As I was working on a syzbot report, I found that KCSAN would
-probably complain that reading q->head or q->tail without
-barriers could lead to invalid results.
+Driver compares widget name in wsa_macro_spk_boost_event() widget event
+callback, however it does not handle component's name prefix.  This
+leads to using uninitialized stack variables as registers and register
+values.  Handle gracefully such case.
 
-Add corresponding READ_ONCE() and WRITE_ONCE() to avoid
-load-store tearing.
-
-Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20231109174859.3995880-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231003155422.801160-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_chardev.c | 3 ++-
- drivers/ptp/ptp_clock.c   | 5 +++--
- drivers/ptp/ptp_private.h | 8 ++++++--
- drivers/ptp/ptp_sysfs.c   | 3 ++-
- 4 files changed, 13 insertions(+), 6 deletions(-)
+ sound/soc/codecs/lpass-wsa-macro.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index af3bc65c4595d..9311f3d09c8fc 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -487,7 +487,8 @@ ssize_t ptp_read(struct posix_clock *pc,
- 
- 	for (i = 0; i < cnt; i++) {
- 		event[i] = queue->buf[queue->head];
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		/* Paired with READ_ONCE() in queue_cnt() */
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -1685,6 +1685,9 @@ static int wsa_macro_spk_boost_event(str
+ 		boost_path_cfg1 = CDC_WSA_RX1_RX_PATH_CFG1;
+ 		reg = CDC_WSA_RX1_RX_PATH_CTL;
+ 		reg_mix = CDC_WSA_RX1_RX_PATH_MIX_CTL;
++	} else {
++		dev_warn(component->dev, "Incorrect widget name in the driver\n");
++		return -EINVAL;
  	}
  
- 	spin_unlock_irqrestore(&queue->lock, flags);
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index 51cae72bb6db2..3c3e4fbefebaf 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -56,10 +56,11 @@ static void enqueue_external_timestamp(struct timestamp_event_queue *queue,
- 	dst->t.sec = seconds;
- 	dst->t.nsec = remainder;
- 
-+	/* Both WRITE_ONCE() are paired with READ_ONCE() in queue_cnt() */
- 	if (!queue_free(queue))
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 
--	queue->tail = (queue->tail + 1) % PTP_MAX_TIMESTAMPS;
-+	WRITE_ONCE(queue->tail, (queue->tail + 1) % PTP_MAX_TIMESTAMPS);
- 
- 	spin_unlock_irqrestore(&queue->lock, flags);
- }
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index 75f58fc468a71..b8d4f61f14be4 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -76,9 +76,13 @@ struct ptp_vclock {
-  * that a writer might concurrently increment the tail does not
-  * matter, since the queue remains nonempty nonetheless.
-  */
--static inline int queue_cnt(struct timestamp_event_queue *q)
-+static inline int queue_cnt(const struct timestamp_event_queue *q)
- {
--	int cnt = q->tail - q->head;
-+	/*
-+	 * Paired with WRITE_ONCE() in enqueue_external_timestamp(),
-+	 * ptp_read(), extts_fifo_show().
-+	 */
-+	int cnt = READ_ONCE(q->tail) - READ_ONCE(q->head);
- 	return cnt < 0 ? PTP_MAX_TIMESTAMPS + cnt : cnt;
- }
- 
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index f30b0a4394705..74b9c794d6363 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -79,7 +79,8 @@ static ssize_t extts_fifo_show(struct device *dev,
- 	qcnt = queue_cnt(queue);
- 	if (qcnt) {
- 		event = queue->buf[queue->head];
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		/* Paired with READ_ONCE() in queue_cnt() */
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 	}
- 	spin_unlock_irqrestore(&queue->lock, flags);
- 
--- 
-2.42.0
-
+ 	switch (event) {
 
 
 
