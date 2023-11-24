@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4087D7F7409
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:43:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59ADD7F740A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D59E8B21485
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:43:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B0651C20F87
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80BE1EB31;
-	Fri, 24 Nov 2023 12:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8E418B0B;
+	Fri, 24 Nov 2023 12:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zunaMAOl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="clXnuNfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D95E171A1
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:43:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D71C433C7;
-	Fri, 24 Nov 2023 12:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8707D15AC5
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15184C433C8;
+	Fri, 24 Nov 2023 12:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700829811;
-	bh=onP45JVH3xU487M2WBS8j2LIyN0fcsgqSGUHyWQInms=;
+	s=korg; t=1700829815;
+	bh=n5MZq7FWvoxKrX1JsX+xIy1c0b70t11slCX5QA5u8I8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zunaMAOljg8O/ed7ArtrOUvg7TDfCOHlVTg8ZFWpHu1GY4H80Lx5iZ5YGvHZ13xEH
-	 nPNfQ97N6r8D9+ulHRiYBuQP3rs4tSo10d6SP9qICB8SCspMPq+j2cIfWAi9GtH740
-	 l+sxOQiywpD/7gZQZcXzuETK3UZnI4mI83ISSgS0=
-Subject: FAILED: patch "[PATCH] dm-delay: fix a race between delay_presuspend and delay_bio" failed to apply to 5.15-stable tree
+	b=clXnuNfUX60BfWqgAGaOtaw0sO3ZXut1IlUJCwBV7W8zbbakRy1G30lxPMGgIDwZJ
+	 5xTroqHOm2H+omwL89ZTMKaIRccGCGBWeQVrC94/uTbv1MKUtvX8ePSfHA/+zcsEel
+	 Nsld+3ABLlus/LFmlh5wxCynVoFom8VUl1VSt1Bc=
+Subject: FAILED: patch "[PATCH] dm-delay: fix a race between delay_presuspend and delay_bio" failed to apply to 5.10-stable tree
 To: mpatocka@redhat.com,snitzer@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:43:23 +0000
-Message-ID: <2023112423-dimmed-bagful-50a9@gregkh>
+Date: Fri, 24 Nov 2023 12:43:24 +0000
+Message-ID: <2023112424-roundworm-barge-cb4e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6fc45b6ed921dc00dfb264dc08c7d67ee63d2656
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112423-dimmed-bagful-50a9@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112424-roundworm-barge-cb4e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
