@@ -1,54 +1,46 @@
-Return-Path: <stable+bounces-1348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66F7E7F7F37
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE2E7F8103
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 972331C213E4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 507A01C2166E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CD0381C9;
-	Fri, 24 Nov 2023 18:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7273E364A6;
+	Fri, 24 Nov 2023 18:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G20r2zKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6f2pHJA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00274321AD;
-	Fri, 24 Nov 2023 18:39:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E81C433C7;
-	Fri, 24 Nov 2023 18:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D3C33075;
+	Fri, 24 Nov 2023 18:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7ACEC433C7;
+	Fri, 24 Nov 2023 18:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851176;
-	bh=Hy3tHC0Nvr5aVQK8633DSbBm1DsTlCcsq5OOmXeb1N0=;
+	s=korg; t=1700852092;
+	bh=joA3BcLP0Q/WpIZt2rqFrPS2qwfFs6y9MQVTaWUvelo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G20r2zKY0eh6S9+zzoUIc4h2LZrfKxf66ASCWI8/N/WPG//nWfwM0FFYgAPE3L61Q
-	 VbbjzsuPCPmIG6gsiqyfXPFoxfWS48mxMy5GD/1R0sgrFixjJD0dx8+oKtNE7PYQDe
-	 q95VrGFfP6yFX2QEMdmCa7TIMVQLAvNyTQbYaogg=
+	b=k6f2pHJAKCZxPQbN1vkhUGAm0fUnw44KBnqs1tEdaUxxz/uLVu2Y3i2wva8puM2/o
+	 BS+AnqGqecsIbmZBarIRk0pg4ffAwCmplilRZVxswiCLWAE+c1AUAo8zMxoSVDEI6B
+	 YOuHtiQDuoXQAr6+bsypfeHyIz98bg1u8ynTmMko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Saravana Kannan <saravanak@google.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	James Clark <james.clark@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH 6.5 343/491] driver core: Release all resources during unbind before updating device links
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 192/372] mm/damon/sysfs: check error from damon_sysfs_update_target()
 Date: Fri, 24 Nov 2023 17:49:39 +0000
-Message-ID: <20231124172034.881941012@linuxfoundation.org>
+Message-ID: <20231124172016.860895634@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,54 +50,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 2e84dc37920012b458e9458b19fc4ed33f81bc74 upstream.
+commit b4936b544b08ed44949055b92bd25f77759ebafc upstream.
 
-This commit fixes a bug in commit 9ed9895370ae ("driver core: Functional
-dependencies tracking support") where the device link status was
-incorrectly updated in the driver unbind path before all the device's
-resources were released.
+Patch series "mm/damon/sysfs: fix unhandled return values".
 
-Fixes: 9ed9895370ae ("driver core: Functional dependencies tracking support")
-Cc: stable <stable@kernel.org>
-Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Closes: https://lore.kernel.org/all/20231014161721.f4iqyroddkcyoefo@pengutronix.de/
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Yang Yingliang <yangyingliang@huawei.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: James Clark <james.clark@arm.com>
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
-Tested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231018013851.3303928-1-saravanak@google.com
+Some of DAMON sysfs interface code is not handling return values from some
+functions.  As a result, confusing user input handling or NULL-dereference
+is possible.  Check those properly.
+
+
+This patch (of 3):
+
+damon_sysfs_update_target() returns error code for failures, but its
+caller, damon_sysfs_set_targets() is ignoring that.  The update function
+seems making no critical change in case of such failures, but the behavior
+will look like DAMON sysfs is silently ignoring or only partially
+accepting the user input.  Fix it.
+
+Link: https://lkml.kernel.org/r/20231106233408.51159-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20231106233408.51159-2-sj@kernel.org
+Fixes: 19467a950b49 ("mm/damon/sysfs: remove requested targets when online-commit inputs")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/dd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/sysfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -1274,8 +1274,8 @@ static void __device_release_driver(stru
- 		if (dev->bus && dev->bus->dma_cleanup)
- 			dev->bus->dma_cleanup(dev);
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -2241,8 +2241,10 @@ static int damon_sysfs_set_targets(struc
  
--		device_links_driver_cleanup(dev);
- 		device_unbind_cleanup(dev);
-+		device_links_driver_cleanup(dev);
- 
- 		klist_remove(&dev->p->knode_driver);
- 		device_pm_check_callbacks(dev);
+ 	damon_for_each_target_safe(t, next, ctx) {
+ 		if (i < sysfs_targets->nr) {
+-			damon_sysfs_update_target(t, ctx,
++			err = damon_sysfs_update_target(t, ctx,
+ 					sysfs_targets->targets_arr[i]);
++			if (err)
++				return err;
+ 		} else {
+ 			if (damon_target_has_pid(ctx))
+ 				put_pid(t->pid);
 
 
 
