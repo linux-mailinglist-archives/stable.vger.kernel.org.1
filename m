@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E77B7F821B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396FA7F834E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11A59B23291
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D062878B0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FA03418B;
-	Fri, 24 Nov 2023 19:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79977364B7;
+	Fri, 24 Nov 2023 19:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfyU++Tp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s631fIvj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A55F2EAEA;
-	Fri, 24 Nov 2023 19:04:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D6EC433C8;
-	Fri, 24 Nov 2023 19:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1B9339BE;
+	Fri, 24 Nov 2023 19:16:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DE9C433C8;
+	Fri, 24 Nov 2023 19:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852671;
-	bh=532PADS6SRyGoyjXw/jeolOJrQe0mkZZcn/2YEqFyVc=;
+	s=korg; t=1700853372;
+	bh=4HB39gRIpDdXjTDnvKbfmRMc4Yv3TaQ+h6QvsxnqXgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfyU++TpxNfgmdS47fAqOFNZC5N+CQGlRTDvFfn3P5r6hBL7hgFxXFMwGCveUwJyG
-	 Ou//rK0K3V4XG0nwLzk3g9/pEm90qinxtBJsUaE0HGs9Iur/D4fykVD+mwupxsLW1S
-	 KsCXpfcCQKgKRVE4D4/IxwRdvDn14YkPLFOfvUz0=
+	b=s631fIvjVGkOD/DNxlOtYE1JFaj0kTWhzalCDQN7gI3QghMH0RFSdfpkx7MCir4E7
+	 gZYJ6wf4aW8B6R9yzYag6pE77EuoqZPRDt48Ryi01tG3efM6cIFdsFjCTzBEkDMbbO
+	 bv9QEVNjQguOYjNGv+IQDyh8hLuXaXj/XdqLI2MQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/193] net: ethernet: cortina: Fix max RX frame define
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 162/297] scsi: megaraid_sas: Increase register read retry rount from 3 to 30 for selected registers
 Date: Fri, 24 Nov 2023 17:53:24 +0000
-Message-ID: <20231124171950.312293476@linuxfoundation.org>
+Message-ID: <20231124172005.920374416@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,60 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit 510e35fb931ffc3b100e5d5ae4595cd3beca9f1a ]
+commit 8e3ed9e786511ad800c33605ed904b9de49323cf upstream.
 
-Enumerator 3 is 1548 bytes according to the datasheet.
-Not 1542.
+In BMC environments with concurrent access to multiple registers, certain
+registers occasionally yield a value of 0 even after 3 retries due to
+hardware errata. As a fix, we have extended the retry count from 3 to 30.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-1-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The same errata applies to the mpt3sas driver, and a similar patch has
+been accepted. Please find more details in the mpt3sas patch reference
+link.
+
+Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
+Fixes: 272652fcbf1a ("scsi: megaraid_sas: add retry logic in megasas_readl")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Link: https://lore.kernel.org/r/20231003110021.168862-2-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 4 ++--
- drivers/net/ethernet/cortina/gemini.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/megaraid/megaraid_sas_base.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 85ea073b742fb..6c735e0d1950f 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -433,8 +433,8 @@ static const struct gmac_max_framelen gmac_maxlens[] = {
- 		.val = CONFIG0_MAXLEN_1536,
- 	},
- 	{
--		.max_l3_len = 1542,
--		.val = CONFIG0_MAXLEN_1542,
-+		.max_l3_len = 1548,
-+		.val = CONFIG0_MAXLEN_1548,
- 	},
- 	{
- 		.max_l3_len = 9212,
-diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
-index 9fdf77d5eb374..99efb11557436 100644
---- a/drivers/net/ethernet/cortina/gemini.h
-+++ b/drivers/net/ethernet/cortina/gemini.h
-@@ -787,7 +787,7 @@ union gmac_config0 {
- #define  CONFIG0_MAXLEN_1536	0
- #define  CONFIG0_MAXLEN_1518	1
- #define  CONFIG0_MAXLEN_1522	2
--#define  CONFIG0_MAXLEN_1542	3
-+#define  CONFIG0_MAXLEN_1548	3
- #define  CONFIG0_MAXLEN_9k	4	/* 9212 */
- #define  CONFIG0_MAXLEN_10k	5	/* 10236 */
- #define  CONFIG0_MAXLEN_1518__6	6
--- 
-2.42.0
-
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -263,13 +263,13 @@ u32 megasas_readl(struct megasas_instanc
+ 	 * Fusion registers could intermittently return all zeroes.
+ 	 * This behavior is transient in nature and subsequent reads will
+ 	 * return valid value. As a workaround in driver, retry readl for
+-	 * upto three times until a non-zero value is read.
++	 * up to thirty times until a non-zero value is read.
+ 	 */
+ 	if (instance->adapter_type == AERO_SERIES) {
+ 		do {
+ 			ret_val = readl(addr);
+ 			i++;
+-		} while (ret_val == 0 && i < 3);
++		} while (ret_val == 0 && i < 30);
+ 		return ret_val;
+ 	} else {
+ 		return readl(addr);
 
 
 
