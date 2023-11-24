@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 440957F7C6E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 818627F7EB1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECA982821DE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9BF9B217F8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8996F3A8C2;
-	Fri, 24 Nov 2023 18:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F0933CDB;
+	Fri, 24 Nov 2023 18:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDIGVZD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/wsA0cM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E4F39FF3;
-	Fri, 24 Nov 2023 18:15:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27F3C433C8;
-	Fri, 24 Nov 2023 18:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9B32E655;
+	Fri, 24 Nov 2023 18:35:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C4DC433C7;
+	Fri, 24 Nov 2023 18:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849706;
-	bh=IhEsyxzx9eLPGpAgrN2QYIpYvOCqsf1miENE9n/fXfk=;
+	s=korg; t=1700850903;
+	bh=8tiTggMb3brTZ1Y1TV+P9Rboi1yQHGKUzxyRyqO046M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDIGVZD4LDtMYmUJtrdZTFJa9+5hv8C4Y2o20r1WPkEtLmpvyUuW9qRXC0DtTRnJs
-	 DzFB57VNdR1TEY0IV0JNPn3wg18v5UvHVtqy7v/ZbXY9K3pZ6SV3aJISSwJF6+pN4g
-	 UnAixVFdHXv6UFnneib8PluV3UKlAP2V9M8mQPP0=
+	b=T/wsA0cM6UNiAev4Ge8XE1L73GPygYBQHtcLmNmrdY7yGa7+37O4nai5ldFiDhR0d
+	 eCK1+SQCHHeyykQYc53OLnxv+DefJdJAOPZFFYlqWcgmm//AgQdEWnhXuZUI4bAFML
+	 +ctzC7+M+xShH2dZDk1yFdqqjLWmyNy9IPN1/q28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John David Anglin <dave.anglin@bell.net>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 287/530] parisc: Add nop instructions after TLB inserts
+	Gal Pressman <gal@nvidia.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 217/491] macvlan: Dont propagate promisc change to lower dev in passthru
 Date: Fri, 24 Nov 2023 17:47:33 +0000
-Message-ID: <20231124172036.774302160@linuxfoundation.org>
+Message-ID: <20231124172031.062217664@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,309 +55,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John David Anglin <dave@parisc-linux.org>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-commit ad4aa06e1d92b06ed56c7240252927bd60632efe upstream.
+[ Upstream commit 7e1caeace0418381f36b3aa8403dfd82fc57fc53 ]
 
-An excerpt from the PA8800 ERS states:
+Macvlan device in passthru mode sets its lower device promiscuous mode
+according to its MACVLAN_FLAG_NOPROMISC flag instead of synchronizing it to
+its own promiscuity setting. However, macvlan_change_rx_flags() function
+doesn't check the mode before propagating such changes to the lower device
+which can cause net_device->promiscuity counter overflow as illustrated by
+reproduction example [0] and resulting dmesg log [1]. Fix the issue by
+first verifying the mode in macvlan_change_rx_flags() function before
+propagating promiscuous mode change to the lower device.
 
-* The PA8800 violates the seven instruction pipeline rule when performing
-  TLB inserts or PxTLBE instructions with the PSW C bit on. The instruction
-  will take effect by the 12th instruction after the insert or purge.
+[0]:
+ip link add macvlan1 link enp8s0f0 type macvlan mode passthru
+ip link set macvlan1 promisc on
+ip l set dev macvlan1 up
+ip link set macvlan1 promisc off
+ip l set dev macvlan1 down
+ip l set dev macvlan1 up
 
-I believe we have a problem with handling TLB misses. We don't fill
-the pipeline following TLB inserts. As a result, we likely fault again
-after returning from the interruption.
+[1]:
+[ 5156.281724] macvlan1: entered promiscuous mode
+[ 5156.285467] mlx5_core 0000:08:00.0 enp8s0f0: entered promiscuous mode
+[ 5156.287639] macvlan1: left promiscuous mode
+[ 5156.288339] mlx5_core 0000:08:00.0 enp8s0f0: left promiscuous mode
+[ 5156.290907] mlx5_core 0000:08:00.0 enp8s0f0: entered promiscuous mode
+[ 5156.317197] mlx5_core 0000:08:00.0 enp8s0f0: promiscuity touches roof, set promiscuity failed. promiscuity feature of device might be broken.
 
-The above statement indicates that we need at least seven instructions
-after the insert on pre PA8800 processors and we need 12 instructions
-on PA8800/PA8900 processors.
-
-Here we add macros and code to provide the required number instructions
-after a TLB insert.
-
-Signed-off-by: John David Anglin <dave.anglin@bell.net>
-Suggested-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: efdbd2b30caa ("macvlan: Propagate promiscuity setting to lower devices.")
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231114175915.1649154-1-vladbu@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S |   81 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 52 insertions(+), 29 deletions(-)
+ drivers/net/macvlan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -36,6 +36,24 @@
- 	.level 2.0
- #endif
- 
-+/*
-+ * We need seven instructions after a TLB insert for it to take effect.
-+ * The PA8800/PA8900 processors are an exception and need 12 instructions.
-+ * The RFI changes both IAOQ_Back and IAOQ_Front, so it counts as one.
-+ */
-+#ifdef CONFIG_64BIT
-+#define NUM_PIPELINE_INSNS    12
-+#else
-+#define NUM_PIPELINE_INSNS    7
-+#endif
-+
-+	/* Insert num nops */
-+	.macro	insert_nops num
-+	.rept \num
-+	nop
-+	.endr
-+	.endm
-+
- 	/* Get aligned page_table_lock address for this mm from cr28/tr4 */
- 	.macro  get_ptl reg
- 	mfctl	%cr28,\reg
-@@ -415,24 +433,20 @@
- 3:
- 	.endm
- 
--	/* Release page_table_lock without reloading lock address.
--	   We use an ordered store to ensure all prior accesses are
--	   performed prior to releasing the lock. */
--	.macro		ptl_unlock0	spc,tmp,tmp2
-+	/* Release page_table_lock if for user space. We use an ordered
-+	   store to ensure all prior accesses are performed prior to
-+	   releasing the lock. Note stw may not be executed, so we
-+	   provide one extra nop when CONFIG_TLB_PTLOCK is defined. */
-+	.macro		ptl_unlock	spc,tmp,tmp2
- #ifdef CONFIG_TLB_PTLOCK
--98:	ldi		__ARCH_SPIN_LOCK_UNLOCKED_VAL, \tmp2
-+98:	get_ptl		\tmp
-+	ldi		__ARCH_SPIN_LOCK_UNLOCKED_VAL, \tmp2
- 	or,COND(=)	%r0,\spc,%r0
- 	stw,ma		\tmp2,0(\tmp)
- 99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
--#endif
--	.endm
--
--	/* Release page_table_lock. */
--	.macro		ptl_unlock1	spc,tmp,tmp2
--#ifdef CONFIG_TLB_PTLOCK
--98:	get_ptl		\tmp
--	ptl_unlock0	\spc,\tmp,\tmp2
--99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
-+	insert_nops	NUM_PIPELINE_INSNS - 4
-+#else
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- #endif
- 	.endm
- 
-@@ -1124,7 +1138,7 @@ dtlb_miss_20w:
- 	
- 	idtlbt          pte,prot
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1133,6 +1147,7 @@ dtlb_check_alias_20w:
- 
- 	idtlbt          pte,prot
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1150,7 +1165,7 @@ nadtlb_miss_20w:
- 
- 	idtlbt          pte,prot
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1159,6 +1174,7 @@ nadtlb_check_alias_20w:
- 
- 	idtlbt          pte,prot
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1184,7 +1200,7 @@ dtlb_miss_11:
- 
- 	mtsp		t1, %sr1	/* Restore sr1 */
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1194,6 +1210,7 @@ dtlb_check_alias_11:
- 	idtlba          pte,(va)
- 	idtlbp          prot,(va)
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1217,7 +1234,7 @@ nadtlb_miss_11:
- 
- 	mtsp		t1, %sr1	/* Restore sr1 */
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1227,6 +1244,7 @@ nadtlb_check_alias_11:
- 	idtlba          pte,(va)
- 	idtlbp          prot,(va)
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1246,7 +1264,7 @@ dtlb_miss_20:
- 
- 	idtlbt          pte,prot
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1255,6 +1273,7 @@ dtlb_check_alias_20:
- 	
- 	idtlbt          pte,prot
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1274,7 +1293,7 @@ nadtlb_miss_20:
- 	
- 	idtlbt		pte,prot
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1283,6 +1302,7 @@ nadtlb_check_alias_20:
- 
- 	idtlbt          pte,prot
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1319,7 +1339,7 @@ itlb_miss_20w:
- 	
- 	iitlbt          pte,prot
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1343,7 +1363,7 @@ naitlb_miss_20w:
- 
- 	iitlbt          pte,prot
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1352,6 +1372,7 @@ naitlb_check_alias_20w:
- 
- 	iitlbt		pte,prot
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1377,7 +1398,7 @@ itlb_miss_11:
- 
- 	mtsp		t1, %sr1	/* Restore sr1 */
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1401,7 +1422,7 @@ naitlb_miss_11:
- 
- 	mtsp		t1, %sr1	/* Restore sr1 */
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1411,6 +1432,7 @@ naitlb_check_alias_11:
- 	iitlba          pte,(%sr0, va)
- 	iitlbp          prot,(%sr0, va)
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1431,7 +1453,7 @@ itlb_miss_20:
- 
- 	iitlbt          pte,prot
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1451,7 +1473,7 @@ naitlb_miss_20:
- 
- 	iitlbt          pte,prot
- 
--	ptl_unlock1	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1460,6 +1482,7 @@ naitlb_check_alias_20:
- 
- 	iitlbt          pte,prot
- 
-+	insert_nops	NUM_PIPELINE_INSNS - 1
- 	rfir
- 	nop
- 
-@@ -1481,7 +1504,7 @@ dbit_trap_20w:
- 		
- 	idtlbt          pte,prot
- 
--	ptl_unlock0	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- #else
-@@ -1507,7 +1530,7 @@ dbit_trap_11:
- 
- 	mtsp            t1, %sr1     /* Restore sr1 */
- 
--	ptl_unlock0	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- 
-@@ -1527,7 +1550,7 @@ dbit_trap_20:
- 	
- 	idtlbt		pte,prot
- 
--	ptl_unlock0	spc,t0,t1
-+	ptl_unlock	spc,t0,t1
- 	rfir
- 	nop
- #endif
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index ed908165a8b4e..347f288350619 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -780,7 +780,7 @@ static void macvlan_change_rx_flags(struct net_device *dev, int change)
+ 	if (dev->flags & IFF_UP) {
+ 		if (change & IFF_ALLMULTI)
+ 			dev_set_allmulti(lowerdev, dev->flags & IFF_ALLMULTI ? 1 : -1);
+-		if (change & IFF_PROMISC)
++		if (!macvlan_passthru(vlan->port) && change & IFF_PROMISC)
+ 			dev_set_promiscuity(lowerdev,
+ 					    dev->flags & IFF_PROMISC ? 1 : -1);
+ 
+-- 
+2.42.0
+
 
 
 
