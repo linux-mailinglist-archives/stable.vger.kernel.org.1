@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CD87F7BF5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 838407F7E12
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0E471F20F9E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23AA2B216C3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE5F39FDD;
-	Fri, 24 Nov 2023 18:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529763A8C9;
+	Fri, 24 Nov 2023 18:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1HtBBBa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtdtzmvX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D3B381D4;
-	Fri, 24 Nov 2023 18:10:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AC0C433C8;
-	Fri, 24 Nov 2023 18:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF19381BF;
+	Fri, 24 Nov 2023 18:29:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D022C433C8;
+	Fri, 24 Nov 2023 18:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849419;
-	bh=2GWgreo128ZMDvAQqoyEh+pCcNBh/yjPyHADNw8dtgo=;
+	s=korg; t=1700850576;
+	bh=CXFkYMiO7CeCV7eqLA9ZCTV6vd3HZDjaDL31Eem5QOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1HtBBBaMGkuh9kaw1OT0dd7GOji8DOHyt8o8v8p741vd7NSw6GYgFEuSov8rqlKZ
-	 1SQAiYQXLHq0/4xMWvcZrIS12Q2vDh0RhxlkBQpdPCFvIvfqz6e+fGUVqHyaKSyLGX
-	 QJsvHFeX2UXF5aw7kEBpFvrrPu/veRQRPz5+MFQM=
+	b=HtdtzmvX//kdlNEnMjYVEaiI76je00aQ8DpJ7mPOMP/Ae0TOOzbwUUn2Ysld4pK+S
+	 RTv+9sXjUj5MIlHGxKQNS9GtOBCYtlTXQjFfmMuKLxsMZdVuyeTNqY/6tiNCovqD/B
+	 +dXkyC1kA6/mWp9jitFjJvIQDJVZrCGQrl/sEWgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Kahola <mika.kahola@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/530] drm/i915/tc: Fix -Wformat-truncation in intel_tc_port_init
+Subject: [PATCH 6.5 104/491] PCI: dwc: Add missing PCI_EXP_LNKCAP_MLW handling
 Date: Fri, 24 Nov 2023 17:45:40 +0000
-Message-ID: <20231124172033.371602125@linuxfoundation.org>
+Message-ID: <20231124172027.685833248@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,84 +56,74 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit 9506fba463fcbdf8c8b7af3ec9ee34360df843fe ]
+[ Upstream commit 89db0793c9f2da265ecb6c1681f899d9af157f37 ]
 
-Fix below compiler warning:
+Update dw_pcie_link_set_max_link_width() to set PCI_EXP_LNKCAP_MLW.
 
-intel_tc.c:1879:11: error: ‘%d’ directive output may be truncated
-writing between 1 and 11 bytes into a region of size 3
-[-Werror=format-truncation=]
-"%c/TC#%d", port_name(port), tc_port + 1);
-           ^~
-intel_tc.c:1878:2: note: ‘snprintf’ output between 7 and 17 bytes
-into a destination of size 8
-  snprintf(tc->port_name, sizeof(tc->port_name),
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    "%c/TC#%d", port_name(port), tc_port + 1);
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In accordance with the DW PCIe RC/EP HW manuals [1,2,3,...] aside with
+the PORT_LINK_CTRL_OFF.LINK_CAPABLE and GEN2_CTRL_OFF.NUM_OF_LANES[8:0]
+field there is another one which needs to be updated.
 
-v2: use kasprintf(Imre)
-v3: use const for port_name, and fix tc mem leak(Imre)
+It's LINK_CAPABILITIES_REG.PCIE_CAP_MAX_LINK_WIDTH. If it isn't done at
+the very least the maximum link-width capability CSR won't expose the
+actual maximum capability.
 
-Fixes: 3eafcddf766b ("drm/i915/tc: Move TC port fields to a new intel_tc_port struct")
-Cc: Mika Kahola <mika.kahola@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231026125636.5080-1-nirmoy.das@intel.com
-(cherry picked from commit 70a3cbbe620ee66afb0c066624196077767e61b2)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+[1] DesignWare Cores PCI Express Controller Databook - DWC PCIe Root Port,
+    Version 4.60a, March 2015, p.1032
+[2] DesignWare Cores PCI Express Controller Databook - DWC PCIe Root Port,
+    Version 4.70a, March 2016, p.1065
+[3] DesignWare Cores PCI Express Controller Databook - DWC PCIe Root Port,
+    Version 4.90a, March 2016, p.1057
+...
+[X] DesignWare Cores PCI Express Controller Databook - DWC PCIe Endpoint,
+      Version 5.40a, March 2019, p.1396
+[X+1] DesignWare Cores PCI Express Controller Databook - DWC PCIe Root Port,
+      Version 5.40a, March 2019, p.1266
+
+Suggested-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-4-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_tc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
-index 3ebf41859043e..cdf2455440bea 100644
---- a/drivers/gpu/drm/i915/display/intel_tc.c
-+++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -58,7 +58,7 @@ struct intel_tc_port {
- 	struct delayed_work link_reset_work;
- 	int link_refcount;
- 	bool legacy_port:1;
--	char port_name[8];
-+	const char *port_name;
- 	enum tc_port_mode mode;
- 	enum tc_port_mode init_mode;
- 	enum phy_fia phy_fia;
-@@ -1841,8 +1841,12 @@ int intel_tc_port_init(struct intel_digital_port *dig_port, bool is_legacy)
- 	else
- 		tc->phy_ops = &icl_tc_phy_ops;
+diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
+index d14b4da700eaf..8e6f6ac42dc96 100644
+--- a/drivers/pci/controller/dwc/pcie-designware.c
++++ b/drivers/pci/controller/dwc/pcie-designware.c
+@@ -734,7 +734,8 @@ static void dw_pcie_link_set_max_speed(struct dw_pcie *pci, u32 link_gen)
  
--	snprintf(tc->port_name, sizeof(tc->port_name),
--		 "%c/TC#%d", port_name(port), tc_port + 1);
-+	tc->port_name = kasprintf(GFP_KERNEL, "%c/TC#%d", port_name(port),
-+				  tc_port + 1);
-+	if (!tc->port_name) {
-+		kfree(tc);
-+		return -ENOMEM;
-+	}
- 
- 	mutex_init(&tc->lock);
- 	/* TODO: Combine the two works */
-@@ -1863,6 +1867,7 @@ void intel_tc_port_cleanup(struct intel_digital_port *dig_port)
+ static void dw_pcie_link_set_max_link_width(struct dw_pcie *pci, u32 num_lanes)
  {
- 	intel_tc_port_suspend(dig_port);
+-	u32 lwsc, plc;
++	u32 lnkcap, lwsc, plc;
++	u8 cap;
  
-+	kfree(dig_port->tc->port_name);
- 	kfree(dig_port->tc);
- 	dig_port->tc = NULL;
+ 	if (!num_lanes)
+ 		return;
+@@ -770,6 +771,12 @@ static void dw_pcie_link_set_max_link_width(struct dw_pcie *pci, u32 num_lanes)
+ 	}
+ 	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, plc);
+ 	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, lwsc);
++
++	cap = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++	lnkcap = dw_pcie_readl_dbi(pci, cap + PCI_EXP_LNKCAP);
++	lnkcap &= ~PCI_EXP_LNKCAP_MLW;
++	lnkcap |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, num_lanes);
++	dw_pcie_writel_dbi(pci, cap + PCI_EXP_LNKCAP, lnkcap);
  }
+ 
+ void dw_pcie_iatu_detect(struct dw_pcie *pci)
 -- 
 2.42.0
 
