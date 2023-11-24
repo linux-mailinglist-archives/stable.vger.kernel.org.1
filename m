@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E8C7F7D5D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C7137F7F9E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3871C211FB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E7E81C214CB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D263339FE7;
-	Fri, 24 Nov 2023 18:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A9B1D685;
+	Fri, 24 Nov 2023 18:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hr/XHtRO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qM0HsDcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813D839FF7;
-	Fri, 24 Nov 2023 18:23:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80161C433C7;
-	Fri, 24 Nov 2023 18:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4332F364C1;
+	Fri, 24 Nov 2023 18:43:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA88C433C7;
+	Fri, 24 Nov 2023 18:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850226;
-	bh=3FkTIAmOKq8frBfgah70vEyLSVAb2EbMj+sWF4mqMGE=;
+	s=korg; t=1700851384;
+	bh=/CASP2R8gYmFzkM0ZqXpYOAAY6gDtIIcM91IBTOG87k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hr/XHtROKbUQCxIAKxx/8o/9VRzwvgjoQcRPjDVKEMHl0U9GAgxsuT6XxCHhA/wt7
-	 cBadPIEDOOl6t2fEWENJWT81pjPnLaMHWsI7rXHSGqtmaQyNl4jhXEX5EbGacle3Ti
-	 y+xHbOkbzdwIAhNAFWE/qjqhCjrqix+kzzndFCqc=
+	b=qM0HsDcsyT47dTLFCHhV0M2IWKDIt/NBYPjl3q9Y9zhhwb1ZgWN23JY8wJXmS6PXE
+	 FfbafT/GS7USRObrxWUkJohyBGn+AbLFwnlAMNTL43rp7cKUxAMIy9ye3FhH9R1Uio
+	 JRmMZktGA56kSNASSzTdPXIzkdt8irp5ZOc7PrPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Jianjian <wangjianjian0@foxmail.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 496/530] ext4: no need to generate from free list in mballoc
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.5 426/491] media: ccs: Correctly initialise try compose rectangle
 Date: Fri, 24 Nov 2023 17:51:02 +0000
-Message-ID: <20231124172043.251194049@linuxfoundation.org>
+Message-ID: <20231124172037.411559825@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,107 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Jianjian <wangjianjian0@foxmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit ebf6cb7c6e1241984f75f29f1bdbfa2fe7168f88 upstream.
+commit 724ff68e968b19d786870d333f9952bdd6b119cb upstream.
 
-Commit 7a2fcbf7f85 ("ext4: don't use blocks freed but not yet committed in
-buddy cache init") added a code to mark as used blocks in the list of not yet
-committed freed blocks during initialization of a buddy page. However
-ext4_mb_free_metadata() makes sure buddy page is already loaded and takes a
-reference to it so it cannot happen that ext4_mb_init_cache() is called
-when efd list is non-empty. Just remove the
-ext4_mb_generate_from_freelist() call.
+Initialise the try sink compose rectangle size to the sink compose
+rectangle for binner and scaler sub-devices. This was missed due to the
+faulty condition that lead to the compose rectangles to be initialised for
+the pixel array sub-device where it is not relevant.
 
-Fixes: 7a2fcbf7f85('ext4: don't use blocks freed but not yet committed in buddy cache init')
-Signed-off-by: Wang Jianjian <wangjianjian0@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_53CBCB1668358AE862684E453DF37B722008@qq.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |   39 ++++++---------------------------------
- 1 file changed, 6 insertions(+), 33 deletions(-)
+ drivers/media/i2c/ccs/ccs-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -417,8 +417,6 @@ static const char * const ext4_groupinfo
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3097,7 +3097,7 @@ static int ccs_open(struct v4l2_subdev *
+ 		try_fmt->code = sensor->internal_csi_format->code;
+ 		try_fmt->field = V4L2_FIELD_NONE;
  
- static void ext4_mb_generate_from_pa(struct super_block *sb, void *bitmap,
- 					ext4_group_t group);
--static void ext4_mb_generate_from_freelist(struct super_block *sb, void *bitmap,
--						ext4_group_t group);
- static void ext4_mb_new_preallocation(struct ext4_allocation_context *ac);
+-		if (ssd != sensor->pixel_array)
++		if (ssd == sensor->pixel_array)
+ 			continue;
  
- static bool ext4_mb_good_group(struct ext4_allocation_context *ac,
-@@ -1361,17 +1359,17 @@ static int ext4_mb_init_cache(struct pag
- 		 * We place the buddy block and bitmap block
- 		 * close together
- 		 */
-+		grinfo = ext4_get_group_info(sb, group);
-+		if (!grinfo) {
-+			err = -EFSCORRUPTED;
-+		        goto out;
-+		}
- 		if ((first_block + i) & 1) {
- 			/* this is block of buddy */
- 			BUG_ON(incore == NULL);
- 			mb_debug(sb, "put buddy for group %u in page %lu/%x\n",
- 				group, page->index, i * blocksize);
- 			trace_ext4_mb_buddy_bitmap_load(sb, group);
--			grinfo = ext4_get_group_info(sb, group);
--			if (!grinfo) {
--				err = -EFSCORRUPTED;
--				goto out;
--			}
- 			grinfo->bb_fragments = 0;
- 			memset(grinfo->bb_counters, 0,
- 			       sizeof(*grinfo->bb_counters) *
-@@ -1398,7 +1396,7 @@ static int ext4_mb_init_cache(struct pag
- 
- 			/* mark all preallocated blks used in in-core bitmap */
- 			ext4_mb_generate_from_pa(sb, data, group);
--			ext4_mb_generate_from_freelist(sb, data, group);
-+			WARN_ON_ONCE(!RB_EMPTY_ROOT(&grinfo->bb_free_root));
- 			ext4_unlock_group(sb, group);
- 
- 			/* set incore so that the buddy information can be
-@@ -4959,31 +4957,6 @@ try_group_pa:
- }
- 
- /*
-- * the function goes through all block freed in the group
-- * but not yet committed and marks them used in in-core bitmap.
-- * buddy must be generated from this bitmap
-- * Need to be called with the ext4 group lock held
-- */
--static void ext4_mb_generate_from_freelist(struct super_block *sb, void *bitmap,
--						ext4_group_t group)
--{
--	struct rb_node *n;
--	struct ext4_group_info *grp;
--	struct ext4_free_data *entry;
--
--	grp = ext4_get_group_info(sb, group);
--	if (!grp)
--		return;
--	n = rb_first(&(grp->bb_free_root));
--
--	while (n) {
--		entry = rb_entry(n, struct ext4_free_data, efd_node);
--		mb_set_bits(bitmap, entry->efd_start_cluster, entry->efd_count);
--		n = rb_next(n);
--	}
--}
--
--/*
-  * the function goes through all preallocation in this group and marks them
-  * used in in-core bitmap. buddy must be generated from this bitmap
-  * Need to be called with ext4 group lock held
+ 		try_comp = v4l2_subdev_get_try_compose(sd, fh->state, i);
 
 
 
