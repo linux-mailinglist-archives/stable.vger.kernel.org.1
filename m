@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2C17F7C44
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8377F7E68
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A1B01C2113B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E15B61C21389
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B723A8C5;
-	Fri, 24 Nov 2023 18:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275F13A8E4;
+	Fri, 24 Nov 2023 18:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRqjKqXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTy5DhyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6038739FDD;
-	Fri, 24 Nov 2023 18:13:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3D7C433C8;
-	Fri, 24 Nov 2023 18:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D292FC4E;
+	Fri, 24 Nov 2023 18:32:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC09C433C7;
+	Fri, 24 Nov 2023 18:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849612;
-	bh=aq488A2fSnHTRicZsnRlnvA+3JlX1fYXZIkubSaVg+M=;
+	s=korg; t=1700850768;
+	bh=QgP5+tLrOczJdto5+CIodlHsUrZVaiXfpAGLxYfdZKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRqjKqXB5dBGryQjRjIATnFHxL2ut03U+Ysk8z+XEmGV4KUpLBRbU2QfxyDpVVeXo
-	 inWaj49kgKTSaGa9A5oP9pILP8Dp9dMwaAqwTVIVV0f+pDrb0gDwJoXRC6gKPk9Sj0
-	 2mYBFeqkOoqBhg6SSyzVf/kpAIPjn9dMjBZMVQnk=
+	b=nTy5DhyOO7MWRMAqnNQgZi/OBsBDzt3NAwiX401irD0SVsxBmV5NUhmGHZGTl9eDe
+	 i9Yq0DY6ZhQ0c8l4r/dOwFYnFEiIMCa2Nk24RJ4V53yRIU4eSzCTZkr8EWnqnkyvzu
+	 nHew9SR7hwjDjQ4FCwC4PEwl74gHxcVL0LGdJpuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 251/530] scsi: ufs: core: Fix racing issue between ufshcd_mcq_abort() and ISR
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 181/491] net: hns3: fix variable may not initialized problem in hns3_init_mac_addr()
 Date: Fri, 24 Nov 2023 17:46:57 +0000
-Message-ID: <20231124172035.701304779@linuxfoundation.org>
+Message-ID: <20231124172029.915844634@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-commit 27900d7119c464b43cd9eac69c85884d17bae240 upstream.
+[ Upstream commit dbd2f3b20c6ae425665b6975d766e3653d453e73 ]
 
-If command timeout happens and cq complete IRQ is raised at the same time,
-ufshcd_mcq_abort clears lprb->cmd and a NULL pointer deref happens in the
-ISR. Error log:
+When a VF is calling hns3_init_mac_addr(), get_mac_addr() may
+return fail, then the value of mac_addr_temp is not initialized.
 
-ufshcd_abort: Device abort task at tag 18
-Unable to handle kernel NULL pointer dereference at virtual address
-0000000000000108
-pc : [0xffffffe27ef867ac] scsi_dma_unmap+0xc/0x44
-lr : [0xffffffe27f1b898c] ufshcd_release_scsi_cmd+0x24/0x114
-
-Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20231106075117.8995-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -630,6 +630,7 @@ int ufshcd_mcq_abort(struct scsi_cmnd *c
- 	int tag = scsi_cmd_to_rq(cmd)->tag;
- 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
- 	struct ufs_hw_queue *hwq;
-+	unsigned long flags;
- 	int err = FAILED;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 71a2ec03f2b38..f644210afb70a 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -5139,7 +5139,7 @@ static int hns3_init_mac_addr(struct net_device *netdev)
+ 	struct hns3_nic_priv *priv = netdev_priv(netdev);
+ 	char format_mac_addr[HNAE3_FORMAT_MAC_ADDR_LEN];
+ 	struct hnae3_handle *h = priv->ae_handle;
+-	u8 mac_addr_temp[ETH_ALEN];
++	u8 mac_addr_temp[ETH_ALEN] = {0};
+ 	int ret = 0;
  
- 	if (!ufshcd_cmd_inflight(lrbp->cmd)) {
-@@ -670,8 +671,10 @@ int ufshcd_mcq_abort(struct scsi_cmnd *c
- 	}
- 
- 	err = SUCCESS;
-+	spin_lock_irqsave(&hwq->cq_lock, flags);
- 	if (ufshcd_cmd_inflight(lrbp->cmd))
- 		ufshcd_release_scsi_cmd(hba, lrbp);
-+	spin_unlock_irqrestore(&hwq->cq_lock, flags);
- 
- out:
- 	return err;
+ 	if (h->ae_algo->ops->get_mac_addr)
+-- 
+2.42.0
+
 
 
 
