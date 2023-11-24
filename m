@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-1878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C297F81CD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC117F81B1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77DE5B223D7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4959B282DE7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41033364DE;
-	Fri, 24 Nov 2023 19:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE52364AE;
+	Fri, 24 Nov 2023 19:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlvHnVf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uf+Blj63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B4733076;
-	Fri, 24 Nov 2023 19:01:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D706AC433C9;
-	Fri, 24 Nov 2023 19:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE0D2E84A;
+	Fri, 24 Nov 2023 19:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C52CC433CA;
+	Fri, 24 Nov 2023 19:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852496;
-	bh=cTih9LWrI02GqQDG+Rhh/2IRiCCajdv+yjWJpnxXvxo=;
+	s=korg; t=1700852446;
+	bh=ZTxfEQ9/gWYJgZH6FuxYCyOAMVRdWwz2C6PeT0TUCGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlvHnVf4sllUdHk1G7x/q4uFXBYA+js+dv+kUBT2dox5ik2NAgm77ufy9qAXw1VwE
-	 pvIp1yLqbQcLd2uK0p4wT7nwovhGXFopTht+IhXZYPAJjYps0ajClyWoS4svNl6mg9
-	 nEH/mkJB4aeqyU5vJUqM8gCcKPtdcarMLkapH5vs=
+	b=uf+Blj635F3r1NAyRfRWSbpInkemiNl5k72MQGwNS4uVxrXlqYAyZ9jVfabcq+IAW
+	 nXPI+t4c54e0n311pYT2tOmpyKgVlUPK/+XI/OqjHcUcmstLEgycf7KndHmFtRi/Tj
+	 pnPVyUV9s222D8vzTWeVW81bN3ML9l5EG81nWKIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.1 359/372] drm/i915: Fix potential spectre vulnerability
-Date: Fri, 24 Nov 2023 17:52:26 +0000
-Message-ID: <20231124172022.266971141@linuxfoundation.org>
+	Ma Jun <Jun.Ma2@amd.com>,
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 360/372] drm/amd/pm: Fix error of MACO flag setting code
+Date: Fri, 24 Nov 2023 17:52:27 +0000
+Message-ID: <20231124172022.297692392@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
 References: <20231124172010.413667921@linuxfoundation.org>
@@ -58,37 +57,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit 1a8e9bad6ef563c28ab0f8619628d5511be55431 upstream.
+commit 7f3e6b840fa8b0889d776639310a5dc672c1e9e1 upstream.
 
-Fix smatch warning:
-drivers/gpu/drm/i915/gem/i915_gem_context.c:847 set_proto_ctx_sseu()
-warn: potential spectre issue 'pc->user_engines' [r] (local cap)
+MACO only works if BACO is supported
 
-Fixes: d4433c7600f7 ("drm/i915/gem: Use the proto-context to handle create parameters (v5)")
-Cc: <stable@vger.kernel.org> # v5.15+
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103110922.430122-1-tvrtko.ursulin@linux.intel.com
-(cherry picked from commit 27b086382c22efb7e0a16442f7bdc2e120108ef3)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_context.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |    8 ++++----
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |    9 +++++----
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-@@ -844,6 +844,7 @@ static int set_proto_ctx_sseu(struct drm
- 		if (idx >= pc->num_user_engines)
- 			return -EINVAL;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -324,12 +324,12 @@ static int smu_v13_0_0_check_powerplay_t
+ 	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_HARDWAREDC)
+ 		smu->dc_controlled_by_gpio = true;
  
-+		idx = array_index_nospec(idx, pc->num_user_engines);
- 		pe = &pc->user_engines[idx];
+-	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_BACO ||
+-	    powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
++	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_BACO) {
+ 		smu_baco->platform_support = true;
  
- 		/* Only render engine supports RPCS configuration. */
+-	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
+-		smu_baco->maco_support = true;
++		if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
++			smu_baco->maco_support = true;
++	}
+ 
+ 	table_context->thermal_controller_type =
+ 		powerplay_table->thermal_controller_type;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -326,12 +326,13 @@ static int smu_v13_0_7_check_powerplay_t
+ 	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_HARDWAREDC)
+ 		smu->dc_controlled_by_gpio = true;
+ 
+-	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_BACO ||
+-	    powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_MACO)
++	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_BACO) {
+ 		smu_baco->platform_support = true;
+ 
+-	if (smu_baco->platform_support && (BoardTable->HsrEnabled || BoardTable->VddqOffEnabled))
+-		smu_baco->maco_support = true;
++		if ((powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_MACO)
++					&& (BoardTable->HsrEnabled || BoardTable->VddqOffEnabled))
++			smu_baco->maco_support = true;
++	}
+ 
+ 	table_context->thermal_controller_type =
+ 		powerplay_table->thermal_controller_type;
 
 
 
