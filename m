@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EBF7F8220
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC86E7F8351
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C41BD284390
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F62AB2432D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115EA33CFD;
-	Fri, 24 Nov 2023 19:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830EB381CC;
+	Fri, 24 Nov 2023 19:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dwv4qP6T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Alp7vonR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B153307D;
-	Fri, 24 Nov 2023 19:04:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34BAC433C7;
-	Fri, 24 Nov 2023 19:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B523418E;
+	Fri, 24 Nov 2023 19:16:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C477BC433C8;
+	Fri, 24 Nov 2023 19:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852681;
-	bh=nnNZL/hKZkE7vjaEMJvGtuRUHjXRjNLp5amxj+lW94s=;
+	s=korg; t=1700853380;
+	bh=A11jbJUhiDNNYfVISM2USy7ugCBkE6v21oQRhfXDKvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dwv4qP6TxWOsbH4Z9Dl7X83u4lbv7eQybBRUEnRXiqNq4wDh8wdi7xfVyKtpiO0TR
-	 tmZCOar4WVhA0N7zwWbNARnpdG/V7b0pJv+UC5l6656rz/F+l4FXmxoDFipcqMUfw2
-	 GmFXr5rfp/fJVahrxGmkiIBn41FVQ0+IeKAtALcA=
+	b=Alp7vonRCeRPtVkX2VYbRZzHYPAcuO7Nwx0OXEwYW3mPnKbsMUc8w5zfLYhJ/Z2//
+	 1arEQvii18VfCVQx9FWl1n/xsW4FfdKfpNEYn2We7s6RQeHdL6QCFLihRM8Lnf1iE+
+	 z2FkBUwgICaaWgksCcbIytWiWilZ90pxYl3G0mv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	k2ci <kernel-bot@kylinos.cn>,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/193] netfilter: nf_conntrack_bridge: initialize err to 0
+	Pu Wen <puwen@hygon.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 165/297] x86/cpu/hygon: Fix the CPU topology evaluation for real
 Date: Fri, 24 Nov 2023 17:53:27 +0000
-Message-ID: <20231124171950.429337309@linuxfoundation.org>
+Message-ID: <20231124172006.020054269@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+From: Pu Wen <puwen@hygon.cn>
 
-[ Upstream commit a44af08e3d4d7566eeea98d7a29fe06e7b9de944 ]
+commit ee545b94d39a00c93dc98b1dbcbcf731d2eadeb4 upstream.
 
-K2CI reported a problem:
+Hygon processors with a model ID > 3 have CPUID leaf 0xB correctly
+populated and don't need the fixed package ID shift workaround. The fixup
+is also incorrect when running in a guest.
 
-	consume_skb(skb);
-	return err;
-[nf_br_ip_fragment() error]  uninitialized symbol 'err'.
-
-err is not initialized, because returning 0 is expected, initialize err
-to 0.
-
-Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
-Reported-by: k2ci <kernel-bot@kylinos.cn>
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e0ceeae708ce ("x86/CPU/hygon: Fix phys_proc_id calculation logic for multi-die processors")
+Signed-off-by: Pu Wen <puwen@hygon.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/tencent_594804A808BD93A4EBF50A994F228E3A7F07@qq.com
+Link: https://lore.kernel.org/r/20230814085112.089607918@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/netfilter/nf_conntrack_bridge.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/hygon.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index fdbed31585553..d14b2dbbd1dfb 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -36,7 +36,7 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 	ktime_t tstamp = skb->tstamp;
- 	struct ip_frag_state state;
- 	struct iphdr *iph;
--	int err;
-+	int err = 0;
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -86,8 +86,12 @@ static void hygon_get_topology(struct cp
+ 		if (!err)
+ 			c->x86_coreid_bits = get_count_order(c->x86_max_cores);
  
- 	/* for offloaded checksums cleanup checksum before fragmentation */
- 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
--- 
-2.42.0
-
+-		/* Socket ID is ApicId[6] for these processors. */
+-		c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
++		/*
++		 * Socket ID is ApicId[6] for the processors with model <= 0x3
++		 * when running on host.
++		 */
++		if (!boot_cpu_has(X86_FEATURE_HYPERVISOR) && c->x86_model <= 0x3)
++			c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
+ 
+ 		cacheinfo_hygon_init_llc_id(c, cpu);
+ 	} else if (cpu_has(c, X86_FEATURE_NODEID_MSR)) {
 
 
 
