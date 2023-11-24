@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C697F7C01
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C437F7E01
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AD63B2102B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86166B2141A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA53839FD4;
-	Fri, 24 Nov 2023 18:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCC13A8E4;
+	Fri, 24 Nov 2023 18:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00Tqnk01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0d9V2N7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C40A381D6;
-	Fri, 24 Nov 2023 18:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36F0C433C7;
-	Fri, 24 Nov 2023 18:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E21839FF3;
+	Fri, 24 Nov 2023 18:29:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A30FC433C8;
+	Fri, 24 Nov 2023 18:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849449;
-	bh=fg7TPX6hECAfYtRJsgQU8/2C1+sXU5c/CKNfci6Xoe8=;
+	s=korg; t=1700850542;
+	bh=IcvLvRwrx1hk95DYxUbTXUX7cc0iTq0Wyf2fcJLWKSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00Tqnk01uhG8NeYt2GO4d4UMLKYmhQklFrAR5nGenNdyWvVTiyP8nLo1z3VWYRx05
-	 jcVYbL8fb1RiiTQBDmJCQiv8/6ZNizQP+R0Eazt6+HtWk3+hNrcxvGHORYC5kjrPaf
-	 D6vifQ1NRlGmmgEIh2UVfiCTKCrVq4XHaO9thfio=
+	b=0d9V2N7KDMvgJO+uEm8XTcJueNN45dwFlA12Rw4kAjXBZ8/EeqRlGs7Pmry1+iIjM
+	 0CLLUrX1+MRf/uEg8WpCq0KNw2GQqDKROU5m8eDgMid+N0vlvuuL4pw6oxGt4Gly+A
+	 tA0YVSZzzvSdoPV/7d8g6VaLd+jANhH6csLTIXPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinghao Jia <jinghao@linux.ibm.com>,
-	Ruowen Qin <ruowenq2@illinois.edu>,
-	Jinghao Jia <jinghao7@illinois.edu>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Mikhail Khvainitski <me@khvoinitsky.org>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/530] samples/bpf: syscall_tp_user: Fix array out-of-bound access
+Subject: [PATCH 6.5 091/491] HID: lenovo: Detect quirk-free fw on cptkbd and stop applying workaround
 Date: Fri, 24 Nov 2023 17:45:27 +0000
-Message-ID: <20231124172032.986872869@linuxfoundation.org>
+Message-ID: <20231124172027.330664475@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,89 +53,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinghao Jia <jinghao@linux.ibm.com>
+From: Mikhail Khvainitski <me@khvoinitsky.org>
 
-[ Upstream commit 9220c3ef6fefbf18f24aeedb1142a642b3de0596 ]
+[ Upstream commit 46a0a2c96f0f47628190f122c2e3d879e590bcbe ]
 
-Commit 06744f24696e ("samples/bpf: Add openat2() enter/exit tracepoint
-to syscall_tp sample") added two more eBPF programs to support the
-openat2() syscall. However, it did not increase the size of the array
-that holds the corresponding bpf_links. This leads to an out-of-bound
-access on that array in the bpf_object__for_each_program loop and could
-corrupt other variables on the stack. On our testing QEMU, it corrupts
-the map1_fds array and causes the sample to fail:
+Built-in firmware of cptkbd handles scrolling by itself (when middle
+button is pressed) but with issues: it does not support horizontal and
+hi-res scrolling and upon middle button release it sends middle button
+click even if there was a scrolling event. Commit 3cb5ff0220e3 ("HID:
+lenovo: Hide middle-button press until release") workarounds last
+issue but it's impossible to workaround scrolling-related issues
+without firmware modification.
 
-  # ./syscall_tp
-  prog #0: map ids 4 5
-  verify map:4 val: 5
-  map_lookup failed: Bad file descriptor
+Likely, Dennis Schneider has reverse engineered the firmware and
+provided an instruction on how to patch it [1]. However,
+aforementioned workaround prevents userspace (libinput) from knowing
+exact moment when middle button has been pressed down and performing
+"On-Button scrolling". This commit detects correctly-behaving patched
+firmware if cursor movement events has been received during middle
+button being pressed and stops applying workaround for this device.
 
-Dynamically allocate the array based on the number of programs reported
-by libbpf to prevent similar inconsistencies in the future
+Link: https://hohlerde.org/rauch/en/elektronik/projekte/tpkbd-fix/ [1]
 
-Fixes: 06744f24696e ("samples/bpf: Add openat2() enter/exit tracepoint to syscall_tp sample")
-Signed-off-by: Jinghao Jia <jinghao@linux.ibm.com>
-Signed-off-by: Ruowen Qin <ruowenq2@illinois.edu>
-Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
-Link: https://lore.kernel.org/r/20230917214220.637721-4-jinghao7@illinois.edu
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Mikhail Khvainitski <me@khvoinitsky.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/syscall_tp_user.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/hid/hid-lenovo.c | 68 ++++++++++++++++++++++++++--------------
+ 1 file changed, 45 insertions(+), 23 deletions(-)
 
-diff --git a/samples/bpf/syscall_tp_user.c b/samples/bpf/syscall_tp_user.c
-index 18c94c7e8a40e..7a09ac74fac07 100644
---- a/samples/bpf/syscall_tp_user.c
-+++ b/samples/bpf/syscall_tp_user.c
-@@ -48,7 +48,7 @@ static void verify_map(int map_id)
- static int test(char *filename, int nr_tests)
+diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
+index 44763c0da4441..9c1181313e44d 100644
+--- a/drivers/hid/hid-lenovo.c
++++ b/drivers/hid/hid-lenovo.c
+@@ -51,7 +51,12 @@ struct lenovo_drvdata {
+ 	int select_right;
+ 	int sensitivity;
+ 	int press_speed;
+-	u8 middlebutton_state; /* 0:Up, 1:Down (undecided), 2:Scrolling */
++	/* 0: Up
++	 * 1: Down (undecided)
++	 * 2: Scrolling
++	 * 3: Patched firmware, disable workaround
++	 */
++	u8 middlebutton_state;
+ 	bool fn_lock;
+ };
+ 
+@@ -668,31 +673,48 @@ static int lenovo_event_cptkbd(struct hid_device *hdev,
  {
- 	int map0_fds[nr_tests], map1_fds[nr_tests], fd, i, j = 0;
--	struct bpf_link *links[nr_tests * 4];
-+	struct bpf_link **links = NULL;
- 	struct bpf_object *objs[nr_tests];
- 	struct bpf_program *prog;
+ 	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
  
-@@ -60,6 +60,19 @@ static int test(char *filename, int nr_tests)
- 			goto cleanup;
- 		}
+-	/* "wheel" scroll events */
+-	if (usage->type == EV_REL && (usage->code == REL_WHEEL ||
+-			usage->code == REL_HWHEEL)) {
+-		/* Scroll events disable middle-click event */
+-		cptkbd_data->middlebutton_state = 2;
+-		return 0;
+-	}
++	if (cptkbd_data->middlebutton_state != 3) {
++		/* REL_X and REL_Y events during middle button pressed
++		 * are only possible on patched, bug-free firmware
++		 * so set middlebutton_state to 3
++		 * to never apply workaround anymore
++		 */
++		if (cptkbd_data->middlebutton_state == 1 &&
++				usage->type == EV_REL &&
++				(usage->code == REL_X || usage->code == REL_Y)) {
++			cptkbd_data->middlebutton_state = 3;
++			/* send middle button press which was hold before */
++			input_event(field->hidinput->input,
++				EV_KEY, BTN_MIDDLE, 1);
++			input_sync(field->hidinput->input);
++		}
  
-+		/* One-time initialization */
-+		if (!links) {
-+			int nr_progs = 0;
-+
-+			bpf_object__for_each_program(prog, objs[i])
-+				nr_progs += 1;
-+
-+			links = calloc(nr_progs * nr_tests, sizeof(struct bpf_link *));
-+
-+			if (!links)
-+				goto cleanup;
+-	/* Middle click events */
+-	if (usage->type == EV_KEY && usage->code == BTN_MIDDLE) {
+-		if (value == 1) {
+-			cptkbd_data->middlebutton_state = 1;
+-		} else if (value == 0) {
+-			if (cptkbd_data->middlebutton_state == 1) {
+-				/* No scrolling inbetween, send middle-click */
+-				input_event(field->hidinput->input,
+-					EV_KEY, BTN_MIDDLE, 1);
+-				input_sync(field->hidinput->input);
+-				input_event(field->hidinput->input,
+-					EV_KEY, BTN_MIDDLE, 0);
+-				input_sync(field->hidinput->input);
++		/* "wheel" scroll events */
++		if (usage->type == EV_REL && (usage->code == REL_WHEEL ||
++				usage->code == REL_HWHEEL)) {
++			/* Scroll events disable middle-click event */
++			cptkbd_data->middlebutton_state = 2;
++			return 0;
 +		}
 +
- 		/* load BPF program */
- 		if (bpf_object__load(objs[i])) {
- 			fprintf(stderr, "loading BPF object file failed\n");
-@@ -107,8 +120,12 @@ static int test(char *filename, int nr_tests)
++		/* Middle click events */
++		if (usage->type == EV_KEY && usage->code == BTN_MIDDLE) {
++			if (value == 1) {
++				cptkbd_data->middlebutton_state = 1;
++			} else if (value == 0) {
++				if (cptkbd_data->middlebutton_state == 1) {
++					/* No scrolling inbetween, send middle-click */
++					input_event(field->hidinput->input,
++						EV_KEY, BTN_MIDDLE, 1);
++					input_sync(field->hidinput->input);
++					input_event(field->hidinput->input,
++						EV_KEY, BTN_MIDDLE, 0);
++					input_sync(field->hidinput->input);
++				}
++				cptkbd_data->middlebutton_state = 0;
+ 			}
+-			cptkbd_data->middlebutton_state = 0;
++			return 1;
+ 		}
+-		return 1;
  	}
  
- cleanup:
--	for (j--; j >= 0; j--)
--		bpf_link__destroy(links[j]);
-+	if (links) {
-+		for (j--; j >= 0; j--)
-+			bpf_link__destroy(links[j]);
-+
-+		free(links);
-+	}
- 
- 	for (i--; i >= 0; i--)
- 		bpf_object__close(objs[i]);
+ 	if (usage->type == EV_KEY && usage->code == KEY_FN_ESC && value == 1) {
 -- 
 2.42.0
 
