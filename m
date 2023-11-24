@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-1533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DC87F802A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB9547F7C4B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 174F31C214E3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8729E281F25
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205B3364BA;
-	Fri, 24 Nov 2023 18:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D9139FDD;
+	Fri, 24 Nov 2023 18:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXn93bo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEHI+NVM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16F42E858;
-	Fri, 24 Nov 2023 18:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1467DC433C8;
-	Fri, 24 Nov 2023 18:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D841A39FF8;
+	Fri, 24 Nov 2023 18:13:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642C4C433C8;
+	Fri, 24 Nov 2023 18:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851638;
-	bh=TQNpBSAJKwW52FqL5fdNzoIcbyaZLtl5bEOMXAnI6G0=;
+	s=korg; t=1700849629;
+	bh=F/V3FLbSZgtVfmaXtFEaf3aMol0iKJT8EyRA/J9M0zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXn93bo0mn+3Y6QKaq6vJfsOxpxrNIAlp1qmjFhHOOCCDBZnRJ6v9FLgJo1Nkuf3N
-	 Nv4cWnmD9oZppTtc4q+yuvNKby13Oe3qOk/eY3EQAZIt4Ag3YaAZX3jStuygdbiRBd
-	 RZ7Y5OXX4fAZRQn0ITouNrD1Cum0f7X1sZ5fbPGI=
+	b=aEHI+NVMFEbAijFltqArPXEEBKFGLoU4d9cnyum7hNeSsGYzUolDLuS9Jok09FJEe
+	 acQrhuQK70+JIvxXltNYYPIxO3Nc4W7SG0oPlnCOw9k4jUqI59PLac8nVHphFTc5Ph
+	 M6SHWPcay5UmjFZvm5NzTiZ5cvS157fm1Djhhmg0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Lei <jun.lei@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/372] drm/amd/display: use full update for clip size increase of large plane source
-Date: Fri, 24 Nov 2023 17:47:03 +0000
-Message-ID: <20231124172011.696957511@linuxfoundation.org>
+	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 258/530] KVM: x86: Ignore MSR_AMD64_TW_CFG access
+Date: Fri, 24 Nov 2023 17:47:04 +0000
+Message-ID: <20231124172035.903485626@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,97 +52,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjing Liu <wenjing.liu@amd.com>
+From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-[ Upstream commit 05b78277ef0efc1deebc8a22384fffec29a3676e ]
+commit 2770d4722036d6bd24bcb78e9cd7f6e572077d03 upstream.
 
-[why]
-Clip size increase will increase viewport, which could cause us to
-switch  to MPC combine.
-If we skip full update, we are not able to change to MPC combine in
-fast update. This will cause corruption showing on the video plane.
+Hyper-V enabled Windows Server 2022 KVM VM cannot be started on Zen1 Ryzen
+since it crashes at boot with SYSTEM_THREAD_EXCEPTION_NOT_HANDLED +
+STATUS_PRIVILEGED_INSTRUCTION (in other words, because of an unexpected #GP
+in the guest kernel).
 
-[how]
-treat clip size increase of a surface larger than 5k as a full update.
+This is because Windows tries to set bit 8 in MSR_AMD64_TW_CFG and can't
+handle receiving a #GP when doing so.
 
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Give this MSR the same treatment that commit 2e32b7190641
+("x86, kvm: Add MSR_AMD64_BU_CFG2 to the list of ignored MSRs") gave
+MSR_AMD64_BU_CFG2 under justification that this MSR is baremetal-relevant
+only.
+Although apparently it was then needed for Linux guests, not Windows as in
+this case.
+
+With this change, the aforementioned guest setup is able to finish booting
+successfully.
+
+This issue can be reproduced either on a Summit Ridge Ryzen (with
+just "-cpu host") or on a Naples EPYC (with "-cpu host,stepping=1" since
+EPYC is ordinarily stepping 2).
+
+Alternatively, userspace could solve the problem by using MSR filters, but
+forcing every userspace to define a filter isn't very friendly and doesn't
+add much, if any, value.  The only potential hiccup is if one of these
+"baremetal-only" MSRs ever requires actual emulation and/or has F/M/S
+specific behavior.  But if that happens, then KVM can still punt *that*
+handling to userspace since userspace MSR filters "win" over KVM's default
+handling.
+
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/1ce85d9c7c9e9632393816cf19c902e0a3f411f1.1697731406.git.maciej.szmigiero@oracle.com
+[sean: call out MSR filtering alternative]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 12 ++++++++++--
- drivers/gpu/drm/amd/display/dc/dc.h      |  5 +++++
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/msr-index.h |    1 +
+ arch/x86/kvm/x86.c               |    2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 15d3caf3d6d72..9d321f4f486e2 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -996,7 +996,8 @@ static bool dc_construct(struct dc *dc,
- 	/* set i2c speed if not done by the respective dcnxxx__resource.c */
- 	if (dc->caps.i2c_speed_in_khz_hdcp == 0)
- 		dc->caps.i2c_speed_in_khz_hdcp = dc->caps.i2c_speed_in_khz;
--
-+	if (dc->caps.max_optimizable_video_width == 0)
-+		dc->caps.max_optimizable_video_width = 5120;
- 	dc->clk_mgr = dc_clk_mgr_create(dc->ctx, dc->res_pool->pp_smu, dc->res_pool->dccg);
- 	if (!dc->clk_mgr)
- 		goto fail;
-@@ -2438,6 +2439,7 @@ static enum surface_update_type get_plane_info_update_type(const struct dc_surfa
- }
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -553,6 +553,7 @@
+ #define MSR_AMD64_CPUID_FN_1		0xc0011004
+ #define MSR_AMD64_LS_CFG		0xc0011020
+ #define MSR_AMD64_DC_CFG		0xc0011022
++#define MSR_AMD64_TW_CFG		0xc0011023
  
- static enum surface_update_type get_scaling_info_update_type(
-+		const struct dc *dc,
- 		const struct dc_surface_update *u)
- {
- 	union surface_update_flags *update_flags = &u->surface->update_flags;
-@@ -2472,6 +2474,12 @@ static enum surface_update_type get_scaling_info_update_type(
- 			update_flags->bits.clock_change = 1;
- 	}
+ #define MSR_AMD64_DE_CFG		0xc0011029
+ #define MSR_AMD64_DE_CFG_LFENCE_SERIALIZE_BIT	 1
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3641,6 +3641,7 @@ int kvm_set_msr_common(struct kvm_vcpu *
+ 	case MSR_AMD64_PATCH_LOADER:
+ 	case MSR_AMD64_BU_CFG2:
+ 	case MSR_AMD64_DC_CFG:
++	case MSR_AMD64_TW_CFG:
+ 	case MSR_F15H_EX_CFG:
+ 		break;
  
-+	if (u->scaling_info->src_rect.width > dc->caps.max_optimizable_video_width &&
-+		(u->scaling_info->clip_rect.width > u->surface->clip_rect.width ||
-+		 u->scaling_info->clip_rect.height > u->surface->clip_rect.height))
-+		 /* Changing clip size of a large surface may result in MPC slice count change */
-+		update_flags->bits.bandwidth_change = 1;
-+
- 	if (u->scaling_info->src_rect.x != u->surface->src_rect.x
- 			|| u->scaling_info->src_rect.y != u->surface->src_rect.y
- 			|| u->scaling_info->clip_rect.x != u->surface->clip_rect.x
-@@ -2509,7 +2517,7 @@ static enum surface_update_type det_surface_update(const struct dc *dc,
- 	type = get_plane_info_update_type(u);
- 	elevate_update_type(&overall_type, type);
- 
--	type = get_scaling_info_update_type(u);
-+	type = get_scaling_info_update_type(dc, u);
- 	elevate_update_type(&overall_type, type);
- 
- 	if (u->flip_addr) {
-diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
-index a4540f83aae59..f773a467fef54 100644
---- a/drivers/gpu/drm/amd/display/dc/dc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc.h
-@@ -230,6 +230,11 @@ struct dc_caps {
- 	uint32_t dmdata_alloc_size;
- 	unsigned int max_cursor_size;
- 	unsigned int max_video_width;
-+	/*
-+	 * max video plane width that can be safely assumed to be always
-+	 * supported by single DPP pipe.
-+	 */
-+	unsigned int max_optimizable_video_width;
- 	unsigned int min_horizontal_blanking_period;
- 	int linear_pitch_alignment;
- 	bool dcc_const_color;
--- 
-2.42.0
-
+@@ -4065,6 +4066,7 @@ int kvm_get_msr_common(struct kvm_vcpu *
+ 	case MSR_AMD64_BU_CFG2:
+ 	case MSR_IA32_PERF_CTL:
+ 	case MSR_AMD64_DC_CFG:
++	case MSR_AMD64_TW_CFG:
+ 	case MSR_F15H_EX_CFG:
+ 	/*
+ 	 * Intel Sandy Bridge CPUs must support the RAPL (running average power
 
 
 
