@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA4067F7B12
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DCB47F812D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 354C0B20EEC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F9701C21629
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8604539FF7;
-	Fri, 24 Nov 2023 18:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB733418B;
+	Fri, 24 Nov 2023 18:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwQh5CCE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSEgmg9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4563239FEF;
-	Fri, 24 Nov 2023 18:01:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52E8C433C8;
-	Fri, 24 Nov 2023 18:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB702C87B;
+	Fri, 24 Nov 2023 18:56:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B01DC433C7;
+	Fri, 24 Nov 2023 18:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848893;
-	bh=P4dRRyTqYne8s9sK5PgsNJqsELm9o2/pk/+0ZEStZRM=;
+	s=korg; t=1700852177;
+	bh=rNJb0k340OSF9naCl9Yw3ycWQnWJBhJjQYg/SGw7Ewk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwQh5CCEp3kda//WoH/xLanafAzZzb9X8QNs3kSvlD04W5MSx1yBKwcCnriW9g+v3
-	 DubNfvbCjXXIYy+COrer4DJv1zUTc7NGr5xU3F+iWusa/vvAUfjCOE+AdzGNkzbRUR
-	 DgHUgVxJR95UV8D5aIb24kBxoGVeJGZnHOLnQ+UA=
+	b=FSEgmg9hnpSDPQVkzAvMykIB3cjvusbYb+aaO8wOVfu5cEqMHisbgF0N9x23Cgesi
+	 hLcSTSufHU5SBdA0pcuAi9nm6Kcgqs6N5wdqvD6mipr5zBNuR9ch2bnsKYgxc7YN5k
+	 v2DnLVOR/HWNowVrXxk6i38TeUKMCijI4irkzWrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 06/57] wifi: ath9k: fix clang-specific fortify warnings
+	Eric Biggers <ebiggers@google.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.1 243/372] quota: explicitly forbid quota files from being encrypted
 Date: Fri, 24 Nov 2023 17:50:30 +0000
-Message-ID: <20231124171930.506643844@linuxfoundation.org>
+Message-ID: <20231124172018.637094113@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,107 +50,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 95f97fe0ac974467ab4da215985a32b2fdf48af0 ]
+commit d3cc1b0be258191d6360c82ea158c2972f8d3991 upstream.
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+Since commit d7e7b9af104c ("fscrypt: stop using keyrings subsystem for
+fscrypt_master_key"), xfstest generic/270 causes a WARNING when run on
+f2fs with test_dummy_encryption in the mount options:
 
-In file included from drivers/net/wireless/ath/ath9k/debug.c:17:
-In file included from ./include/linux/slab.h:16:
-In file included from ./include/linux/gfp.h:7:
-In file included from ./include/linux/mmzone.h:8:
-In file included from ./include/linux/spinlock.h:56:
-In file included from ./include/linux/preempt.h:79:
-In file included from ./arch/x86/include/asm/preempt.h:9:
-In file included from ./include/linux/thread_info.h:60:
-In file included from ./arch/x86/include/asm/thread_info.h:53:
-In file included from ./arch/x86/include/asm/cpufeature.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+$ kvm-xfstests -c f2fs/encrypt generic/270
+[...]
+WARNING: CPU: 1 PID: 2453 at fs/crypto/keyring.c:240 fscrypt_destroy_keyring+0x1f5/0x260
 
-In file included from drivers/net/wireless/ath/ath9k/htc_drv_debug.c:17:
-In file included from drivers/net/wireless/ath/ath9k/htc.h:20:
-In file included from ./include/linux/module.h:13:
-In file included from ./include/linux/stat.h:19:
-In file included from ./include/linux/time.h:60:
-In file included from ./include/linux/time32.h:13:
-In file included from ./include/linux/timex.h:67:
-In file included from ./arch/x86/include/asm/timex.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+The cause of the WARNING is that not all encrypted inodes have been
+evicted before fscrypt_destroy_keyring() is called, which violates an
+assumption.  This happens because the test uses an external quota file,
+which gets automatically encrypted due to test_dummy_encryption.
 
-The compiler actually complains on 'ath9k_get_et_strings()' and
-'ath9k_htc_get_et_strings()' due to the same reason: fortification logic
-inteprets call to 'memcpy()' as an attempt to copy the whole array from
-it's first member and so issues an overread warning. These warnings may
-be silenced by passing an address of the whole array and not the first
-member to 'memcpy()'.
+Encryption of quota files has never really been supported.  On ext4,
+ext4_quota_read() does not decrypt the data, so encrypted quota files
+are always considered invalid on ext4.  On f2fs, f2fs_quota_read() uses
+the pagecache, so trying to use an encrypted quota file gets farther,
+resulting in the issue described above being possible.  But this was
+never intended to be possible, and there is no use case for it.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230829093856.234584-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore, make the quota support layer explicitly reject using
+IS_ENCRYPTED inodes when quotaon is attempted.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230905003227.326998-1-ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/debug.c         | 2 +-
- drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/quota/dquot.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index e05be0eb3f349..efaac08cd0caa 100644
---- a/drivers/net/wireless/ath/ath9k/debug.c
-+++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -1297,7 +1297,7 @@ void ath9k_get_et_strings(struct ieee80211_hw *hw,
- 			  u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath9k_gstrings_stats,
-+		memcpy(data, ath9k_gstrings_stats,
- 		       sizeof(ath9k_gstrings_stats));
- }
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -2403,6 +2403,20 @@ static int vfs_setup_quota_inode(struct
+ 	if (sb_has_quota_loaded(sb, type))
+ 		return -EBUSY;
  
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-index b711b2e1ce93e..957d818b16cfc 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-@@ -428,7 +428,7 @@ void ath9k_htc_get_et_strings(struct ieee80211_hw *hw,
- 			      u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath9k_htc_gstrings_stats,
-+		memcpy(data, ath9k_htc_gstrings_stats,
- 		       sizeof(ath9k_htc_gstrings_stats));
- }
- 
--- 
-2.42.0
-
++	/*
++	 * Quota files should never be encrypted.  They should be thought of as
++	 * filesystem metadata, not user data.  New-style internal quota files
++	 * cannot be encrypted by users anyway, but old-style external quota
++	 * files could potentially be incorrectly created in an encrypted
++	 * directory, hence this explicit check.  Some reasons why encrypted
++	 * quota files don't work include: (1) some filesystems that support
++	 * encryption don't handle it in their quota_read and quota_write, and
++	 * (2) cleaning up encrypted quota files at unmount would need special
++	 * consideration, as quota files are cleaned up later than user files.
++	 */
++	if (IS_ENCRYPTED(inode))
++		return -EINVAL;
++
+ 	dqopt->files[type] = igrab(inode);
+ 	if (!dqopt->files[type])
+ 		return -EIO;
 
 
 
