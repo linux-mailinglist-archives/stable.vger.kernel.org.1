@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930967F7C85
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0805E7F806A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C48321C210C0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0F792825BB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A2839FC3;
-	Fri, 24 Nov 2023 18:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4FF33CCA;
+	Fri, 24 Nov 2023 18:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWdgCHGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nocgPQAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C264139FF7;
-	Fri, 24 Nov 2023 18:15:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC3FC433C8;
-	Fri, 24 Nov 2023 18:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F04B2FC4E;
+	Fri, 24 Nov 2023 18:49:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E43C0C433CA;
+	Fri, 24 Nov 2023 18:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849755;
-	bh=VVLfcdWMTMbzbKRCDB7RVXpXdTD+KcRxJbG/tHPoxGU=;
+	s=korg; t=1700851768;
+	bh=Aq0L2lLEsJie6uIoJcS5keD35UCzyyrL8Ook5V77gFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WWdgCHGsY9/rAxcp2aN/0S3iWIZLU/F6mq+KX25PSeYLfOWPESmou/INb7mPAC+qZ
-	 lydT9a5iq2z+IKabFVW7KWm96Adh4ogkO1BfeUZkLAesnfayJwA3RTQwfcq0m6eQpj
-	 7kwUx962PepYsNhwBwVQcfcFe+N7h0feTNVO7NMg=
+	b=nocgPQAfG5J4D485Mj/1BVjtnD1BhpE/YGWeQSQ5jrprTM1muov93l5cvFpFA2vQL
+	 /oeiYiIlyUJi3uZKliv6pQsxMHwhGzpJPbzU51OnCXI672gX7IcgooyOsq759cuVzh
+	 1joP7HrDUjGhNq7AuLhRdYY98qFcggBSPpS+VkYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 308/530] parisc/agp: Use 64-bit LE values in SBA IOMMU PDIR table
-Date: Fri, 24 Nov 2023 17:47:54 +0000
-Message-ID: <20231124172037.408233054@linuxfoundation.org>
+	Stanley Chang <stanley_chang@realtek.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 088/372] usb: dwc3: core: configure TX/RX threshold for DWC3_IP
+Date: Fri, 24 Nov 2023 17:47:55 +0000
+Message-ID: <20231124172013.465692752@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,85 +53,273 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Stanley Chang <stanley_chang@realtek.com>
 
-commit 86bb854d134f4429feb35d2e05f55c6e036770d2 upstream.
+[ Upstream commit e72fc8d6a12af7ae8dd1b52cf68ed68569d29f80 ]
 
-The PDIR table of the System Bus Adapter (SBA) I/O MMU uses 64-bit
-little-endian pointers.
+In Synopsys's dwc3 data book:
+To avoid underrun and overrun during the burst, in a high-latency bus
+system (like USB), threshold and burst size control is provided through
+GTXTHRCFG and GRXTHRCFG registers.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.4+
+In Realtek DHC SoC, DWC3 USB 3.0 uses AHB system bus. When dwc3 is
+connected with USB 2.5G Ethernet, there will be overrun problem.
+Therefore, setting TX/RX thresholds can avoid this issue.
+
+Signed-off-by: Stanley Chang <stanley_chang@realtek.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20230912041904.30721-1-stanley_chang@realtek.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/agp/parisc-agp.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/usb/dwc3/core.c | 160 +++++++++++++++++++++++++++++++---------
+ drivers/usb/dwc3/core.h |  13 ++++
+ 2 files changed, 137 insertions(+), 36 deletions(-)
 
---- a/drivers/char/agp/parisc-agp.c
-+++ b/drivers/char/agp/parisc-agp.c
-@@ -38,7 +38,7 @@ static struct _parisc_agp_info {
- 
- 	int lba_cap_offset;
- 
--	u64 *gatt;
-+	__le64 *gatt;
- 	u64 gatt_entries;
- 
- 	u64 gart_base;
-@@ -104,7 +104,7 @@ parisc_agp_create_gatt_table(struct agp_
- 	int i;
- 
- 	for (i = 0; i < info->gatt_entries; i++) {
--		info->gatt[i] = (unsigned long)agp_bridge->scratch_page;
-+		info->gatt[i] = cpu_to_le64(agp_bridge->scratch_page);
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 57e2f4cc744f7..a811db88eedae 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1111,6 +1111,111 @@ static void dwc3_set_power_down_clk_scale(struct dwc3 *dwc)
  	}
- 
- 	return 0;
-@@ -158,9 +158,9 @@ parisc_agp_insert_memory(struct agp_memo
- 		for (k = 0;
- 		     k < info->io_pages_per_kpage;
- 		     k++, j++, paddr += info->io_page_size) {
--			info->gatt[j] =
-+			info->gatt[j] = cpu_to_le64(
- 				parisc_agp_mask_memory(agp_bridge,
--					paddr, type);
-+					paddr, type));
- 			asm_io_fdc(&info->gatt[j]);
- 		}
- 	}
-@@ -184,7 +184,7 @@ parisc_agp_remove_memory(struct agp_memo
- 	io_pg_start = info->io_pages_per_kpage * pg_start;
- 	io_pg_count = info->io_pages_per_kpage * mem->page_count;
- 	for (i = io_pg_start; i < io_pg_count + io_pg_start; i++) {
--		info->gatt[i] = agp_bridge->scratch_page;
-+		info->gatt[i] = cpu_to_le64(agp_bridge->scratch_page);
- 	}
- 
- 	agp_bridge->driver->tlb_flush(mem);
-@@ -204,7 +204,8 @@ parisc_agp_mask_memory(struct agp_bridge
- 	pa |= (ci >> PAGE_SHIFT) & 0xff;/* move CI (8 bits) into lowest byte */
- 	pa |= SBA_PDIR_VALID_BIT;	/* set "valid" bit */
- 
--	return cpu_to_le64(pa);
-+	/* return native (big-endian) PDIR entry */
-+	return pa;
  }
  
- static void
-@@ -251,7 +252,8 @@ static int __init
- agp_ioc_init(void __iomem *ioc_regs)
- {
- 	struct _parisc_agp_info *info = &parisc_agp_info;
--        u64 iova_base, *io_pdir, io_tlb_ps;
-+        u64 iova_base, io_tlb_ps;
-+	__le64 *io_pdir;
-         int io_tlb_shift;
++static void dwc3_config_threshold(struct dwc3 *dwc)
++{
++	u32 reg;
++	u8 rx_thr_num;
++	u8 rx_maxburst;
++	u8 tx_thr_num;
++	u8 tx_maxburst;
++
++	/*
++	 * Must config both number of packets and max burst settings to enable
++	 * RX and/or TX threshold.
++	 */
++	if (!DWC3_IP_IS(DWC3) && dwc->dr_mode == USB_DR_MODE_HOST) {
++		rx_thr_num = dwc->rx_thr_num_pkt_prd;
++		rx_maxburst = dwc->rx_max_burst_prd;
++		tx_thr_num = dwc->tx_thr_num_pkt_prd;
++		tx_maxburst = dwc->tx_max_burst_prd;
++
++		if (rx_thr_num && rx_maxburst) {
++			reg = dwc3_readl(dwc->regs, DWC3_GRXTHRCFG);
++			reg |= DWC31_RXTHRNUMPKTSEL_PRD;
++
++			reg &= ~DWC31_RXTHRNUMPKT_PRD(~0);
++			reg |= DWC31_RXTHRNUMPKT_PRD(rx_thr_num);
++
++			reg &= ~DWC31_MAXRXBURSTSIZE_PRD(~0);
++			reg |= DWC31_MAXRXBURSTSIZE_PRD(rx_maxburst);
++
++			dwc3_writel(dwc->regs, DWC3_GRXTHRCFG, reg);
++		}
++
++		if (tx_thr_num && tx_maxburst) {
++			reg = dwc3_readl(dwc->regs, DWC3_GTXTHRCFG);
++			reg |= DWC31_TXTHRNUMPKTSEL_PRD;
++
++			reg &= ~DWC31_TXTHRNUMPKT_PRD(~0);
++			reg |= DWC31_TXTHRNUMPKT_PRD(tx_thr_num);
++
++			reg &= ~DWC31_MAXTXBURSTSIZE_PRD(~0);
++			reg |= DWC31_MAXTXBURSTSIZE_PRD(tx_maxburst);
++
++			dwc3_writel(dwc->regs, DWC3_GTXTHRCFG, reg);
++		}
++	}
++
++	rx_thr_num = dwc->rx_thr_num_pkt;
++	rx_maxburst = dwc->rx_max_burst;
++	tx_thr_num = dwc->tx_thr_num_pkt;
++	tx_maxburst = dwc->tx_max_burst;
++
++	if (DWC3_IP_IS(DWC3)) {
++		if (rx_thr_num && rx_maxburst) {
++			reg = dwc3_readl(dwc->regs, DWC3_GRXTHRCFG);
++			reg |= DWC3_GRXTHRCFG_PKTCNTSEL;
++
++			reg &= ~DWC3_GRXTHRCFG_RXPKTCNT(~0);
++			reg |= DWC3_GRXTHRCFG_RXPKTCNT(rx_thr_num);
++
++			reg &= ~DWC3_GRXTHRCFG_MAXRXBURSTSIZE(~0);
++			reg |= DWC3_GRXTHRCFG_MAXRXBURSTSIZE(rx_maxburst);
++
++			dwc3_writel(dwc->regs, DWC3_GRXTHRCFG, reg);
++		}
++
++		if (tx_thr_num && tx_maxburst) {
++			reg = dwc3_readl(dwc->regs, DWC3_GTXTHRCFG);
++			reg |= DWC3_GTXTHRCFG_PKTCNTSEL;
++
++			reg &= ~DWC3_GTXTHRCFG_TXPKTCNT(~0);
++			reg |= DWC3_GTXTHRCFG_TXPKTCNT(tx_thr_num);
++
++			reg &= ~DWC3_GTXTHRCFG_MAXTXBURSTSIZE(~0);
++			reg |= DWC3_GTXTHRCFG_MAXTXBURSTSIZE(tx_maxburst);
++
++			dwc3_writel(dwc->regs, DWC3_GTXTHRCFG, reg);
++		}
++	} else {
++		if (rx_thr_num && rx_maxburst) {
++			reg = dwc3_readl(dwc->regs, DWC3_GRXTHRCFG);
++			reg |= DWC31_GRXTHRCFG_PKTCNTSEL;
++
++			reg &= ~DWC31_GRXTHRCFG_RXPKTCNT(~0);
++			reg |= DWC31_GRXTHRCFG_RXPKTCNT(rx_thr_num);
++
++			reg &= ~DWC31_GRXTHRCFG_MAXRXBURSTSIZE(~0);
++			reg |= DWC31_GRXTHRCFG_MAXRXBURSTSIZE(rx_maxburst);
++
++			dwc3_writel(dwc->regs, DWC3_GRXTHRCFG, reg);
++		}
++
++		if (tx_thr_num && tx_maxburst) {
++			reg = dwc3_readl(dwc->regs, DWC3_GTXTHRCFG);
++			reg |= DWC31_GTXTHRCFG_PKTCNTSEL;
++
++			reg &= ~DWC31_GTXTHRCFG_TXPKTCNT(~0);
++			reg |= DWC31_GTXTHRCFG_TXPKTCNT(tx_thr_num);
++
++			reg &= ~DWC31_GTXTHRCFG_MAXTXBURSTSIZE(~0);
++			reg |= DWC31_GTXTHRCFG_MAXTXBURSTSIZE(tx_maxburst);
++
++			dwc3_writel(dwc->regs, DWC3_GTXTHRCFG, reg);
++		}
++	}
++}
++
+ /**
+  * dwc3_core_init - Low-level initialization of DWC3 Core
+  * @dwc: Pointer to our controller context structure
+@@ -1278,42 +1383,7 @@ static int dwc3_core_init(struct dwc3 *dwc)
+ 		dwc3_writel(dwc->regs, DWC3_GUCTL1, reg);
+ 	}
  
-         printk(KERN_INFO DRVPFX "IO PDIR shared with sba_iommu\n");
+-	/*
+-	 * Must config both number of packets and max burst settings to enable
+-	 * RX and/or TX threshold.
+-	 */
+-	if (!DWC3_IP_IS(DWC3) && dwc->dr_mode == USB_DR_MODE_HOST) {
+-		u8 rx_thr_num = dwc->rx_thr_num_pkt_prd;
+-		u8 rx_maxburst = dwc->rx_max_burst_prd;
+-		u8 tx_thr_num = dwc->tx_thr_num_pkt_prd;
+-		u8 tx_maxburst = dwc->tx_max_burst_prd;
+-
+-		if (rx_thr_num && rx_maxburst) {
+-			reg = dwc3_readl(dwc->regs, DWC3_GRXTHRCFG);
+-			reg |= DWC31_RXTHRNUMPKTSEL_PRD;
+-
+-			reg &= ~DWC31_RXTHRNUMPKT_PRD(~0);
+-			reg |= DWC31_RXTHRNUMPKT_PRD(rx_thr_num);
+-
+-			reg &= ~DWC31_MAXRXBURSTSIZE_PRD(~0);
+-			reg |= DWC31_MAXRXBURSTSIZE_PRD(rx_maxburst);
+-
+-			dwc3_writel(dwc->regs, DWC3_GRXTHRCFG, reg);
+-		}
+-
+-		if (tx_thr_num && tx_maxburst) {
+-			reg = dwc3_readl(dwc->regs, DWC3_GTXTHRCFG);
+-			reg |= DWC31_TXTHRNUMPKTSEL_PRD;
+-
+-			reg &= ~DWC31_TXTHRNUMPKT_PRD(~0);
+-			reg |= DWC31_TXTHRNUMPKT_PRD(tx_thr_num);
+-
+-			reg &= ~DWC31_MAXTXBURSTSIZE_PRD(~0);
+-			reg |= DWC31_MAXTXBURSTSIZE_PRD(tx_maxburst);
+-
+-			dwc3_writel(dwc->regs, DWC3_GTXTHRCFG, reg);
+-		}
+-	}
++	dwc3_config_threshold(dwc);
+ 
+ 	return 0;
+ 
+@@ -1462,6 +1532,10 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 	u8			lpm_nyet_threshold;
+ 	u8			tx_de_emphasis;
+ 	u8			hird_threshold;
++	u8			rx_thr_num_pkt = 0;
++	u8			rx_max_burst = 0;
++	u8			tx_thr_num_pkt = 0;
++	u8			tx_max_burst = 0;
+ 	u8			rx_thr_num_pkt_prd = 0;
+ 	u8			rx_max_burst_prd = 0;
+ 	u8			tx_thr_num_pkt_prd = 0;
+@@ -1524,6 +1598,14 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 				"snps,usb2-lpm-disable");
+ 	dwc->usb2_gadget_lpm_disable = device_property_read_bool(dev,
+ 				"snps,usb2-gadget-lpm-disable");
++	device_property_read_u8(dev, "snps,rx-thr-num-pkt",
++				&rx_thr_num_pkt);
++	device_property_read_u8(dev, "snps,rx-max-burst",
++				&rx_max_burst);
++	device_property_read_u8(dev, "snps,tx-thr-num-pkt",
++				&tx_thr_num_pkt);
++	device_property_read_u8(dev, "snps,tx-max-burst",
++				&tx_max_burst);
+ 	device_property_read_u8(dev, "snps,rx-thr-num-pkt-prd",
+ 				&rx_thr_num_pkt_prd);
+ 	device_property_read_u8(dev, "snps,rx-max-burst-prd",
+@@ -1601,6 +1683,12 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 
+ 	dwc->hird_threshold = hird_threshold;
+ 
++	dwc->rx_thr_num_pkt = rx_thr_num_pkt;
++	dwc->rx_max_burst = rx_max_burst;
++
++	dwc->tx_thr_num_pkt = tx_thr_num_pkt;
++	dwc->tx_max_burst = tx_max_burst;
++
+ 	dwc->rx_thr_num_pkt_prd = rx_thr_num_pkt_prd;
+ 	dwc->rx_max_burst_prd = rx_max_burst_prd;
+ 
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 80cc532ba9d55..889c122dad457 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -209,6 +209,11 @@
+ #define DWC3_GRXTHRCFG_RXPKTCNT(n) (((n) & 0xf) << 24)
+ #define DWC3_GRXTHRCFG_PKTCNTSEL BIT(29)
+ 
++/* Global TX Threshold Configuration Register */
++#define DWC3_GTXTHRCFG_MAXTXBURSTSIZE(n) (((n) & 0xff) << 16)
++#define DWC3_GTXTHRCFG_TXPKTCNT(n) (((n) & 0xf) << 24)
++#define DWC3_GTXTHRCFG_PKTCNTSEL BIT(29)
++
+ /* Global RX Threshold Configuration Register for DWC_usb31 only */
+ #define DWC31_GRXTHRCFG_MAXRXBURSTSIZE(n)	(((n) & 0x1f) << 16)
+ #define DWC31_GRXTHRCFG_RXPKTCNT(n)		(((n) & 0x1f) << 21)
+@@ -1041,6 +1046,10 @@ struct dwc3_scratchpad_array {
+  * @test_mode_nr: test feature selector
+  * @lpm_nyet_threshold: LPM NYET response threshold
+  * @hird_threshold: HIRD threshold
++ * @rx_thr_num_pkt: USB receive packet count
++ * @rx_max_burst: max USB receive burst size
++ * @tx_thr_num_pkt: USB transmit packet count
++ * @tx_max_burst: max USB transmit burst size
+  * @rx_thr_num_pkt_prd: periodic ESS receive packet count
+  * @rx_max_burst_prd: max periodic ESS receive burst size
+  * @tx_thr_num_pkt_prd: periodic ESS transmit packet count
+@@ -1268,6 +1277,10 @@ struct dwc3 {
+ 	u8			test_mode_nr;
+ 	u8			lpm_nyet_threshold;
+ 	u8			hird_threshold;
++	u8			rx_thr_num_pkt;
++	u8			rx_max_burst;
++	u8			tx_thr_num_pkt;
++	u8			tx_max_burst;
+ 	u8			rx_thr_num_pkt_prd;
+ 	u8			rx_max_burst_prd;
+ 	u8			tx_thr_num_pkt_prd;
+-- 
+2.42.0
+
 
 
 
