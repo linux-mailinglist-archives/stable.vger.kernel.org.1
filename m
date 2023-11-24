@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C348C7F801E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64C557F7C27
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FBCB2824C7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92FFF1C21103
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E4E381D4;
-	Fri, 24 Nov 2023 18:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AC239FC2;
+	Fri, 24 Nov 2023 18:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPeD48dU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+QfAga0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE24933CC7;
-	Fri, 24 Nov 2023 18:46:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3F7C433C7;
-	Fri, 24 Nov 2023 18:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012DE39FE3;
+	Fri, 24 Nov 2023 18:12:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D22FC433C7;
+	Fri, 24 Nov 2023 18:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851610;
-	bh=A99W1N+nyDsWe5JPHDjXOYMbo8Fv2WzUgHcs9TAAs+4=;
+	s=korg; t=1700849543;
+	bh=X4edO5yN8qG4H5HdgUa5NIxWvgRJYPR+wafJqqj6mZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPeD48dUxgHs9b4cN4PL4ctK7L9OTLE2yUTsT9JSMJdzz5cQm5i/mXF2ZaCx1zxSp
-	 AesFo9WB43QwFzlyBgbNwHWUMU2m5300MKoo4SxVV4Sl5fAWFE20fUAUaDNRM9yprs
-	 36z0bm9tao4jexz9sy6qfkByIlAP9lhg9QokOOOE=
+	b=n+QfAga0FUNxGmmo9KWex7rxJbxyu3ru8j90058IcMfyIZ/9jLcYuLYGNau91B8Gi
+	 swnztQIx2qBld23Kdc72rBUfDNsT7ylFRYvRNTvT0Cr1TLs4yn7zUaq4SV2Pi7OnHL
+	 0AaAth0NvqTkdOsAhJnzIATNhUVy5RnnbnflQcDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/372] perf/core: Bail out early if the request AUX area is out of bound
+Subject: [PATCH 6.6 224/530] net/mlx5e: Update doorbell for port timestamping CQ before the software counter
 Date: Fri, 24 Nov 2023 17:46:30 +0000
-Message-ID: <20231124172010.546160199@linuxfoundation.org>
+Message-ID: <20231124172034.876754116@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,78 +54,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
+[ Upstream commit 92214be5979c0961a471b7eaaaeacab41bdf456c ]
 
-When perf-record with a large AUX area, e.g 4GB, it fails with:
+Previously, mlx5e_ptp_poll_ts_cq would update the device doorbell with the
+incremented consumer index after the relevant software counters in the
+kernel were updated. In the mlx5e_sq_xmit_wqe context, this would lead to
+either overrunning the device CQ or exceeding the expected software buffer
+size in the device CQ if the device CQ size was greater than the software
+buffer size. Update the relevant software counter only after updating the
+device CQ consumer index in the port timestamping napi_poll context.
 
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate memory)
+Log:
+    mlx5_core 0000:08:00.0: cq_err_event_notifier:517:(pid 0): CQ error on CQN 0x487, syndrome 0x1
+    mlx5_core 0000:08:00.0 eth2: mlx5e_cq_error_event: cqn=0x000487 event=0x04
 
-and it reveals a WARNING with __alloc_pages():
-
-	------------[ cut here ]------------
-	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
-	Call trace:
-	 __alloc_pages+0x1ec/0x248
-	 __kmalloc_large_node+0xc0/0x1f8
-	 __kmalloc_node+0x134/0x1e8
-	 rb_alloc_aux+0xe0/0x298
-	 perf_mmap+0x440/0x660
-	 mmap_region+0x308/0x8a8
-	 do_mmap+0x3c0/0x528
-	 vm_mmap_pgoff+0xf4/0x1b8
-	 ksys_mmap_pgoff+0x18c/0x218
-	 __arm64_sys_mmap+0x38/0x58
-	 invoke_syscall+0x50/0x128
-	 el0_svc_common.constprop.0+0x58/0x188
-	 do_el0_svc+0x34/0x50
-	 el0_svc+0x34/0x108
-	 el0t_64_sync_handler+0xb8/0xc0
-	 el0t_64_sync+0x1a4/0x1a8
-
-'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
-maintains AUX trace pages. The allocated page for this array is physically
-contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
-size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
-WARNING.
-
-So bail out early with -ENOMEM if the request AUX area is out of bound,
-e.g.:
-
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate memory)
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Fixes: 1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-12-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/ring_buffer.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en/ptp.c  | 20 +++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 273a0fe7910a5..45965f13757e4 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -699,6 +699,12 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
- 		watermark = 0;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+index bb11e644d24f7..af3928eddafd1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+@@ -177,6 +177,8 @@ static void mlx5e_ptpsq_mark_ts_cqes_undelivered(struct mlx5e_ptpsq *ptpsq,
  
-+	/*
-+	 * kcalloc_node() is unable to allocate buffer if the size is larger
-+	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
-+	 */
-+	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
-+		return -ENOMEM;
- 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
- 				     node);
- 	if (!rb->aux_pages)
+ static void mlx5e_ptp_handle_ts_cqe(struct mlx5e_ptpsq *ptpsq,
+ 				    struct mlx5_cqe64 *cqe,
++				    u8 *md_buff,
++				    u8 *md_buff_sz,
+ 				    int budget)
+ {
+ 	struct mlx5e_ptp_port_ts_cqe_list *pending_cqe_list = ptpsq->ts_cqe_pending_list;
+@@ -211,19 +213,24 @@ static void mlx5e_ptp_handle_ts_cqe(struct mlx5e_ptpsq *ptpsq,
+ 	mlx5e_ptpsq_mark_ts_cqes_undelivered(ptpsq, hwtstamp);
+ out:
+ 	napi_consume_skb(skb, budget);
+-	mlx5e_ptp_metadata_fifo_push(&ptpsq->metadata_freelist, metadata_id);
++	md_buff[*md_buff_sz++] = metadata_id;
+ 	if (unlikely(mlx5e_ptp_metadata_map_unhealthy(&ptpsq->metadata_map)) &&
+ 	    !test_and_set_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state))
+ 		queue_work(ptpsq->txqsq.priv->wq, &ptpsq->report_unhealthy_work);
+ }
+ 
+-static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
++static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int napi_budget)
+ {
+ 	struct mlx5e_ptpsq *ptpsq = container_of(cq, struct mlx5e_ptpsq, ts_cq);
+-	struct mlx5_cqwq *cqwq = &cq->wq;
++	int budget = min(napi_budget, MLX5E_TX_CQ_POLL_BUDGET);
++	u8 metadata_buff[MLX5E_TX_CQ_POLL_BUDGET];
++	u8 metadata_buff_sz = 0;
++	struct mlx5_cqwq *cqwq;
+ 	struct mlx5_cqe64 *cqe;
+ 	int work_done = 0;
+ 
++	cqwq = &cq->wq;
++
+ 	if (unlikely(!test_bit(MLX5E_SQ_STATE_ENABLED, &ptpsq->txqsq.state)))
+ 		return false;
+ 
+@@ -234,7 +241,8 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
+ 	do {
+ 		mlx5_cqwq_pop(cqwq);
+ 
+-		mlx5e_ptp_handle_ts_cqe(ptpsq, cqe, budget);
++		mlx5e_ptp_handle_ts_cqe(ptpsq, cqe,
++					metadata_buff, &metadata_buff_sz, napi_budget);
+ 	} while ((++work_done < budget) && (cqe = mlx5_cqwq_get_cqe(cqwq)));
+ 
+ 	mlx5_cqwq_update_db_record(cqwq);
+@@ -242,6 +250,10 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
+ 	/* ensure cq space is freed before enabling more cqes */
+ 	wmb();
+ 
++	while (metadata_buff_sz > 0)
++		mlx5e_ptp_metadata_fifo_push(&ptpsq->metadata_freelist,
++					     metadata_buff[--metadata_buff_sz]);
++
+ 	mlx5e_txqsq_wake(&ptpsq->txqsq);
+ 
+ 	return work_done == budget;
 -- 
 2.42.0
 
