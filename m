@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6086C7F7EBD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E48A7F7C81
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91E0D1C213C0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15B80B2156E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07AF22F1D;
-	Fri, 24 Nov 2023 18:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BF839FEA;
+	Fri, 24 Nov 2023 18:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tru57CUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KaUaD9i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA932FC36;
-	Fri, 24 Nov 2023 18:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087E3C433C7;
-	Fri, 24 Nov 2023 18:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB4439FD9;
+	Fri, 24 Nov 2023 18:15:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EEFC433C8;
+	Fri, 24 Nov 2023 18:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850938;
-	bh=/ZhBrqptgEDY9djZdZVh36WcpKeNJIJahzIGu5fE7+E=;
+	s=korg; t=1700849740;
+	bh=czAu3I/GMmX+iAEf+pUbq0HRubM0vLrKG7m4cXsmogQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tru57CUiU8v8VBQhoThoA0sTRNfFEzPVwW5+4nYz30JQ788/z/dVTT6jMmaUYZxwZ
-	 DDDKNyeLTewA2Wx8hJmLHObf83xSoxb2zJXRCrNBoZtCkI4IDzPw3lt4kOYGgN6lV4
-	 J1iFcrUKsoTpU71Y47/cA6xH6QY3RO2glSYrAAZ4=
+	b=1KaUaD9iYd8OzjjhjShE5y2RzojGhrhnXq6k7wgymLSfcumBymyxZnAAmo+ySa+fa
+	 +Mf4saoRH/XTD2blyPrJqbHvHwPCe2w4ILDnYYI5W4DVOGHw8bnSrYsMuoa46jkf3W
+	 TOFlmpjvgx6qjOwYPF2u7D7boRrtadi7VT2m33Ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.5 224/491] i915/perf: Fix NULL deref bugs with drm_dbg() calls
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.6 294/530] wifi: ath12k: fix htt mlo-offset event locking
 Date: Fri, 24 Nov 2023 17:47:40 +0000
-Message-ID: <20231124172031.284993665@linuxfoundation.org>
+Message-ID: <20231124172036.982296511@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 471aa951bf1206d3c10d0daa67005b8e4db4ff83 upstream.
+commit 6afc57ea315e0f660b1f870a681737bb7b71faef upstream.
 
-When i915 perf interface is not available dereferencing it will lead to
-NULL dereferences.
+The ath12k active pdevs are protected by RCU but the htt mlo-offset
+event handling code calling ath12k_mac_get_ar_by_pdev_id() was not
+marked as a read-side critical section.
 
-As returning -ENOTSUPP is pretty clear return when perf interface is not
-available.
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-Fixes: 2fec539112e8 ("i915/perf: Replace DRM_DEBUG with driver specific drm_dbg call")
-Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Cc: <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231027172822.2753059-1-harshit.m.mogalapalli@oracle.com
-[tursulin: added stable tag]
-(cherry picked from commit 36f27350ff745bd228ab04d7845dfbffc177a889)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Compile tested only.
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org      # v6.2
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019113650.9060-3-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_perf.c |   15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/i915_perf.c
-+++ b/drivers/gpu/drm/i915/i915_perf.c
-@@ -4286,11 +4286,8 @@ int i915_perf_open_ioctl(struct drm_devi
- 	u32 known_open_flags;
- 	int ret;
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1658,11 +1658,12 @@ static void ath12k_htt_mlo_offset_event_
+ 	msg = (struct ath12k_htt_mlo_offset_msg *)skb->data;
+ 	pdev_id = u32_get_bits(__le32_to_cpu(msg->info),
+ 			       HTT_T2H_MLO_OFFSET_INFO_PDEV_ID);
+-	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
  
--	if (!perf->i915) {
--		drm_dbg(&perf->i915->drm,
--			"i915 perf interface not available for this system\n");
-+	if (!perf->i915)
- 		return -ENOTSUPP;
--	}
++	rcu_read_lock();
++	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
+ 	if (!ar) {
+ 		ath12k_warn(ab, "invalid pdev id %d on htt mlo offset\n", pdev_id);
+-		return;
++		goto exit;
+ 	}
  
- 	known_open_flags = I915_PERF_FLAG_FD_CLOEXEC |
- 			   I915_PERF_FLAG_FD_NONBLOCK |
-@@ -4666,11 +4663,8 @@ int i915_perf_add_config_ioctl(struct dr
- 	struct i915_oa_reg *regs;
- 	int err, id;
+ 	spin_lock_bh(&ar->data_lock);
+@@ -1678,6 +1679,8 @@ static void ath12k_htt_mlo_offset_event_
+ 	pdev->timestamp.mlo_comp_timer = __le32_to_cpu(msg->mlo_comp_timer);
  
--	if (!perf->i915) {
--		drm_dbg(&perf->i915->drm,
--			"i915 perf interface not available for this system\n");
-+	if (!perf->i915)
- 		return -ENOTSUPP;
--	}
+ 	spin_unlock_bh(&ar->data_lock);
++exit:
++	rcu_read_unlock();
+ }
  
- 	if (!perf->metrics_kobj) {
- 		drm_dbg(&perf->i915->drm,
-@@ -4832,11 +4826,8 @@ int i915_perf_remove_config_ioctl(struct
- 	struct i915_oa_config *oa_config;
- 	int ret;
- 
--	if (!perf->i915) {
--		drm_dbg(&perf->i915->drm,
--			"i915 perf interface not available for this system\n");
-+	if (!perf->i915)
- 		return -ENOTSUPP;
--	}
- 
- 	if (i915_perf_stream_paranoid && !perfmon_capable()) {
- 		drm_dbg(&perf->i915->drm,
+ void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
 
 
 
