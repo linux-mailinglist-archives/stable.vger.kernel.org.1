@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB9037F7B96
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C28C7F7DAA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3667DB21376
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:06:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ADD7B2178C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ACA139FEF;
-	Fri, 24 Nov 2023 18:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3D939FF7;
+	Fri, 24 Nov 2023 18:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rvv9zuG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="faZzly5G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4881239FDD;
-	Fri, 24 Nov 2023 18:06:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1AFC433C8;
-	Fri, 24 Nov 2023 18:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE22C33CFD;
+	Fri, 24 Nov 2023 18:26:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAC8C433C9;
+	Fri, 24 Nov 2023 18:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849196;
-	bh=iD/JX1NPGRMhPUsfZBJbvQK4r+3vqlet2wvWOiMnSK4=;
+	s=korg; t=1700850386;
+	bh=KO9VmKGpgWUo8OoolKNkIayRw54i0mOAStWbsLn1yZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2rvv9zuGWhedO8VIWeOjnDiis9Ph3RvZ3YVG+0kfWj+sqDSx/Ew1hE6zesfHo2c3/
-	 mQGKoeWD4ByoIvd8eSv+VM7+VXV64A0mGPZT04912mGZfPbCKMTVtacllo23Fhv3iX
-	 gjHTvLh/RfL21+JPg6EvMFGxiAoFheLn2q/dR0ss=
+	b=faZzly5GMKT9DNcjepNBc/yEhEkdU8QNkTQ6kC3+OadWwSRLEKM4Y0+YfGiwWPjuX
+	 jZfiug1Wk1R7EOLJE0JPj557utiPEd/5PEkTIp5JF3VMiup6TEmbjZwHk/06jiUo+E
+	 cSUrtdG/YxWM/DnM6XwBprsiHmnxbivxHlKMFC7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Hongfei <luhongfei@vivo.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/530] soc: qcom: pmic: Fix resource leaks in a device_for_each_child_node() loop
+Subject: [PATCH 6.5 008/491] selftests/lkdtm: Disable CONFIG_UBSAN_TRAP in test config
 Date: Fri, 24 Nov 2023 17:44:04 +0000
-Message-ID: <20231124172030.450953673@linuxfoundation.org>
+Message-ID: <20231124172024.926578507@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,117 +51,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Hongfei <luhongfei@vivo.com>
+From: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
 
-[ Upstream commit 5692aeea5bcb9331e956628c3bc8fc9afcc9765d ]
+[ Upstream commit cf77bf698887c3b9ebed76dea492b07a3c2c7632 ]
 
-The device_for_each_child_node loop should call fwnode_handle_put()
-before return in the error cases, to avoid resource leaks.
+The lkdtm selftest config fragment enables CONFIG_UBSAN_TRAP to make the
+ARRAY_BOUNDS test kill the calling process when an out-of-bound access
+is detected by UBSAN. However, after this [1] commit, UBSAN is triggered
+under many new scenarios that weren't detected before, such as in struct
+definitions with fixed-size trailing arrays used as flexible arrays. As
+a result, CONFIG_UBSAN_TRAP=y has become a very aggressive option to
+enable except for specific situations.
 
-Let's fix this bug in pmic_glink_altmode_probe().
+`make kselftest-merge` applies CONFIG_UBSAN_TRAP=y to the kernel config
+for all selftests, which makes many of them fail because of system hangs
+during boot.
 
-Signed-off-by: Lu Hongfei <luhongfei@vivo.com>
-Link: https://lore.kernel.org/r/20230612133452.47315-1-luhongfei@vivo.com
-[bjorn: Rebased patch, moved fw_handle_put() from jump target into the loop]
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This change removes the config option from the lkdtm kselftest and
+configures the ARRAY_BOUNDS test to look for UBSAN reports rather than
+relying on the calling process being killed.
+
+[1] commit 2d47c6956ab3 ("ubsan: Tighten UBSAN_BOUNDS on GCC")'
+
+Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20230802063252.1917997-1-ricardo.canuelo@collabora.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pmic_glink_altmode.c | 30 ++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ tools/testing/selftests/lkdtm/config    | 1 -
+ tools/testing/selftests/lkdtm/tests.txt | 2 +-
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
-index 974c14d1e0bfc..6f8b2f7ae3cc1 100644
---- a/drivers/soc/qcom/pmic_glink_altmode.c
-+++ b/drivers/soc/qcom/pmic_glink_altmode.c
-@@ -444,6 +444,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
- 		ret = fwnode_property_read_u32(fwnode, "reg", &port);
- 		if (ret < 0) {
- 			dev_err(dev, "missing reg property of %pOFn\n", fwnode);
-+			fwnode_handle_put(fwnode);
- 			return ret;
- 		}
- 
-@@ -454,6 +455,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
- 
- 		if (altmode->ports[port].altmode) {
- 			dev_err(dev, "multiple connector definition for port %u\n", port);
-+			fwnode_handle_put(fwnode);
- 			return -EINVAL;
- 		}
- 
-@@ -468,45 +470,59 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
- 		alt_port->bridge.type = DRM_MODE_CONNECTOR_DisplayPort;
- 
- 		ret = devm_drm_bridge_add(dev, &alt_port->bridge);
--		if (ret)
-+		if (ret) {
-+			fwnode_handle_put(fwnode);
- 			return ret;
-+		}
- 
- 		alt_port->dp_alt.svid = USB_TYPEC_DP_SID;
- 		alt_port->dp_alt.mode = USB_TYPEC_DP_MODE;
- 		alt_port->dp_alt.active = 1;
- 
- 		alt_port->typec_mux = fwnode_typec_mux_get(fwnode);
--		if (IS_ERR(alt_port->typec_mux))
-+		if (IS_ERR(alt_port->typec_mux)) {
-+			fwnode_handle_put(fwnode);
- 			return dev_err_probe(dev, PTR_ERR(alt_port->typec_mux),
- 					     "failed to acquire mode-switch for port: %d\n",
- 					     port);
-+		}
- 
- 		ret = devm_add_action_or_reset(dev, pmic_glink_altmode_put_mux,
- 					       alt_port->typec_mux);
--		if (ret)
-+		if (ret) {
-+			fwnode_handle_put(fwnode);
- 			return ret;
-+		}
- 
- 		alt_port->typec_retimer = fwnode_typec_retimer_get(fwnode);
--		if (IS_ERR(alt_port->typec_retimer))
-+		if (IS_ERR(alt_port->typec_retimer)) {
-+			fwnode_handle_put(fwnode);
- 			return dev_err_probe(dev, PTR_ERR(alt_port->typec_retimer),
- 					     "failed to acquire retimer-switch for port: %d\n",
- 					     port);
-+		}
- 
- 		ret = devm_add_action_or_reset(dev, pmic_glink_altmode_put_retimer,
- 					       alt_port->typec_retimer);
--		if (ret)
-+		if (ret) {
-+			fwnode_handle_put(fwnode);
- 			return ret;
-+		}
- 
- 		alt_port->typec_switch = fwnode_typec_switch_get(fwnode);
--		if (IS_ERR(alt_port->typec_switch))
-+		if (IS_ERR(alt_port->typec_switch)) {
-+			fwnode_handle_put(fwnode);
- 			return dev_err_probe(dev, PTR_ERR(alt_port->typec_switch),
- 					     "failed to acquire orientation-switch for port: %d\n",
- 					     port);
-+		}
- 
- 		ret = devm_add_action_or_reset(dev, pmic_glink_altmode_put_switch,
- 					       alt_port->typec_switch);
--		if (ret)
-+		if (ret) {
-+			fwnode_handle_put(fwnode);
- 			return ret;
-+		}
- 	}
- 
- 	altmode->client = devm_pmic_glink_register_client(dev,
+diff --git a/tools/testing/selftests/lkdtm/config b/tools/testing/selftests/lkdtm/config
+index 5d52f64dfb430..7afe05e8c4d79 100644
+--- a/tools/testing/selftests/lkdtm/config
++++ b/tools/testing/selftests/lkdtm/config
+@@ -9,7 +9,6 @@ CONFIG_INIT_ON_FREE_DEFAULT_ON=y
+ CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y
+ CONFIG_UBSAN=y
+ CONFIG_UBSAN_BOUNDS=y
+-CONFIG_UBSAN_TRAP=y
+ CONFIG_STACKPROTECTOR_STRONG=y
+ CONFIG_SLUB_DEBUG=y
+ CONFIG_SLUB_DEBUG_ON=y
+diff --git a/tools/testing/selftests/lkdtm/tests.txt b/tools/testing/selftests/lkdtm/tests.txt
+index 607b8d7e3ea34..2f3a1b96da6e3 100644
+--- a/tools/testing/selftests/lkdtm/tests.txt
++++ b/tools/testing/selftests/lkdtm/tests.txt
+@@ -7,7 +7,7 @@ EXCEPTION
+ #EXHAUST_STACK Corrupts memory on failure
+ #CORRUPT_STACK Crashes entire system on success
+ #CORRUPT_STACK_STRONG Crashes entire system on success
+-ARRAY_BOUNDS
++ARRAY_BOUNDS call trace:|UBSAN: array-index-out-of-bounds
+ CORRUPT_LIST_ADD list_add corruption
+ CORRUPT_LIST_DEL list_del corruption
+ STACK_GUARD_PAGE_LEADING
 -- 
 2.42.0
 
