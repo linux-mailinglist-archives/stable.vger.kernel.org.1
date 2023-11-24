@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E49F7F7E1F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CCAE7F7C1E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1D4B1C2087B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C6E8281E3E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9773A8E4;
-	Fri, 24 Nov 2023 18:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B676139FFD;
+	Fri, 24 Nov 2023 18:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nwc9WRXT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjVTJk5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DBB733CFD;
-	Fri, 24 Nov 2023 18:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA334C433C7;
-	Fri, 24 Nov 2023 18:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754E539FF3;
+	Fri, 24 Nov 2023 18:11:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDBDC433C7;
+	Fri, 24 Nov 2023 18:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850612;
-	bh=gcLO6kXTd/2dNS6/sqj6gszQoXAjS96qD1UrOVEMbtA=;
+	s=korg; t=1700849519;
+	bh=Cc8JCaLVUS/07bzbZCWZXs+m2cuKuiRQ0f+W+juHMdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nwc9WRXTnYqZRf6QUlVPO4xHc1NeaSCnyX41jViVWz4fEEuiCZ6dT3YAoA4EwZkbz
-	 BP9i56RPqloeJCeS2jii4bNDtKOdFMcsKJJQ2th32jW0vvU/lC+wLLyt9uMFFxwzuG
-	 SSzen+xbXyIh/AjUA2RO5oq+B1rMGl0pDO6smQIo=
+	b=pjVTJk5qHi5zpeJ/V/GhuCp78KYShHaMqakvyJSo7PqJ5mPB4DsD3LInLJl4qonzn
+	 Qpuc4tM4/r+Fn0oWIM6prCmq84UXWuA4DhnuEylQM+43lc0J7v6ma6xo1R5k5VGU2J
+	 ly4bSdHh1lJvM007xtU4kZTyOqa+1pkcr2IxIB9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 119/491] usb: ucsi: glink: use the connector orientation GPIO to provide switch events
+Subject: [PATCH 6.6 189/530] net: hns3: add barrier in vf mailbox reply process
 Date: Fri, 24 Nov 2023 17:45:55 +0000
-Message-ID: <20231124172028.102589415@linuxfoundation.org>
+Message-ID: <20231124172033.818027372@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,131 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-[ Upstream commit c6165ed2f425c273244191930a47c8be23bc51bd ]
+[ Upstream commit ac92c0a9a0603fb448e60f38e63302e4eebb8035 ]
 
-On SM8550, the non-altmode orientation is not given anymore within
-altmode events, even with USB SVIDs events.
+In hclgevf_mbx_handler() and hclgevf_get_mbx_resp() functions,
+there is a typical store-store and load-load scenario between
+received_resp and additional_info. This patch adds barrier
+to fix the problem.
 
-On the other side, the Type-C connector orientation is correctly
-reported by a signal from the PMIC.
-
-Take this gpio signal when we detect some Type-C port activity
-to notify any Type-C switches tied to the Type-C port connectors.
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231002-topic-sm8550-upstream-type-c-orientation-v2-2-125410d3ff95@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4671042f1ef0 ("net: hns3: add match_id to check mailbox response from PF to VF")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_glink.c | 54 ++++++++++++++++++++++++++++-
- 1 file changed, 53 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
-index 1fe9cb5b6bd96..a2d862eebcecb 100644
---- a/drivers/usb/typec/ucsi/ucsi_glink.c
-+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-@@ -9,9 +9,13 @@
- #include <linux/mutex.h>
- #include <linux/property.h>
- #include <linux/soc/qcom/pdr.h>
-+#include <linux/usb/typec_mux.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/soc/qcom/pmic_glink.h>
- #include "ucsi.h"
- 
-+#define PMIC_GLINK_MAX_PORTS	2
-+
- #define UCSI_BUF_SIZE                   48
- 
- #define MSG_TYPE_REQ_RESP               1
-@@ -53,6 +57,9 @@ struct ucsi_notify_ind_msg {
- struct pmic_glink_ucsi {
- 	struct device *dev;
- 
-+	struct gpio_desc *port_orientation[PMIC_GLINK_MAX_PORTS];
-+	struct typec_switch *port_switch[PMIC_GLINK_MAX_PORTS];
-+
- 	struct pmic_glink_client *client;
- 
- 	struct ucsi *ucsi;
-@@ -221,8 +228,20 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
+index bbf7b14079de3..85c2a634c8f96 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
+@@ -63,6 +63,9 @@ static int hclgevf_get_mbx_resp(struct hclgevf_dev *hdev, u16 code0, u16 code1,
+ 		i++;
  	}
  
- 	con_num = UCSI_CCI_CONNECTOR(cci);
--	if (con_num)
-+	if (con_num) {
-+		if (con_num < PMIC_GLINK_MAX_PORTS &&
-+		    ucsi->port_orientation[con_num - 1]) {
-+			int orientation = gpiod_get_value(ucsi->port_orientation[con_num - 1]);
++	/* ensure additional_info will be seen after received_resp */
++	smp_rmb();
 +
-+			if (orientation >= 0) {
-+				typec_switch_set(ucsi->port_switch[con_num - 1],
-+						 orientation ? TYPEC_ORIENTATION_REVERSE
-+							     : TYPEC_ORIENTATION_NORMAL);
-+			}
-+		}
+ 	if (i >= HCLGEVF_MAX_TRY_TIMES) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"VF could not get mbx(%u,%u) resp(=%d) from PF in %d tries\n",
+@@ -178,6 +181,10 @@ static void hclgevf_handle_mbx_response(struct hclgevf_dev *hdev,
+ 	resp->resp_status = hclgevf_resp_to_errno(resp_status);
+ 	memcpy(resp->additional_info, req->msg.resp_data,
+ 	       HCLGE_MBX_MAX_RESP_DATA_SIZE * sizeof(u8));
 +
- 		ucsi_connector_change(ucsi->ucsi, con_num);
-+	}
- 
- 	if (ucsi->sync_pending && cci & UCSI_CCI_BUSY) {
- 		ucsi->sync_val = -EBUSY;
-@@ -283,6 +302,7 @@ static int pmic_glink_ucsi_probe(struct auxiliary_device *adev,
- {
- 	struct pmic_glink_ucsi *ucsi;
- 	struct device *dev = &adev->dev;
-+	struct fwnode_handle *fwnode;
- 	int ret;
- 
- 	ucsi = devm_kzalloc(dev, sizeof(*ucsi), GFP_KERNEL);
-@@ -310,6 +330,38 @@ static int pmic_glink_ucsi_probe(struct auxiliary_device *adev,
- 
- 	ucsi_set_drvdata(ucsi->ucsi, ucsi);
- 
-+	device_for_each_child_node(dev, fwnode) {
-+		struct gpio_desc *desc;
-+		u32 port;
++	/* ensure additional_info will be seen before setting received_resp */
++	smp_wmb();
 +
-+		ret = fwnode_property_read_u32(fwnode, "reg", &port);
-+		if (ret < 0) {
-+			dev_err(dev, "missing reg property of %pOFn\n", fwnode);
-+			return ret;
-+		}
-+
-+		if (port >= PMIC_GLINK_MAX_PORTS) {
-+			dev_warn(dev, "invalid connector number, ignoring\n");
-+			continue;
-+		}
-+
-+		desc = devm_gpiod_get_index_optional(&adev->dev, "orientation", port, GPIOD_IN);
-+
-+		/* If GPIO isn't found, continue */
-+		if (!desc)
-+			continue;
-+
-+		if (IS_ERR(desc))
-+			return dev_err_probe(dev, PTR_ERR(desc),
-+					     "unable to acquire orientation gpio\n");
-+		ucsi->port_orientation[port] = desc;
-+
-+		ucsi->port_switch[port] = fwnode_typec_switch_get(fwnode);
-+		if (IS_ERR(ucsi->port_switch[port]))
-+			return dev_err_probe(dev, PTR_ERR(ucsi->port_switch[port]),
-+					"failed to acquire orientation-switch\n");
-+	}
-+
- 	ucsi->client = devm_pmic_glink_register_client(dev,
- 						       PMIC_GLINK_OWNER_USBC,
- 						       pmic_glink_ucsi_callback,
+ 	if (match_id) {
+ 		/* If match_id is not zero, it means PF support match_id.
+ 		 * if the match_id is right, VF get the right response, or
 -- 
 2.42.0
 
