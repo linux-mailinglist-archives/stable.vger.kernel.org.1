@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1127F7C5E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 573C17F7E87
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A19F7B20E58
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 884D61C213B1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176A83A8C6;
-	Fri, 24 Nov 2023 18:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E3739FF7;
+	Fri, 24 Nov 2023 18:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZccXdnTG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDG5LigT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0E739FD9;
-	Fri, 24 Nov 2023 18:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555BFC433C8;
-	Fri, 24 Nov 2023 18:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BB7381C9;
+	Fri, 24 Nov 2023 18:33:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4F3C433C7;
+	Fri, 24 Nov 2023 18:33:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849674;
-	bh=97xw6AOSTMw0Rsmce7DfeEUR6h1T7HVS5pLdrMWXWAk=;
+	s=korg; t=1700850830;
+	bh=O4GGtUIY2kkpUxImmj1tQ++0lLmmcZTIHcvYYRqvWiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZccXdnTGDhXFuuZX2jv4mBamPBBofh4SelRnjj0Pc6MPINXhLrNsRgOIfjJmFSNqB
-	 427ciJnfZPumt7fRw5s5PhbVeFsrPsxMpWdVIWVA0I0GFpJWAPbdpQKyLObH7wco27
-	 pDu/OcoxXuNPG463ojPWrBHyB/1QlEulpaBKJo7s=
+	b=uDG5LigT/F3ttqpPhtNrZV8Ur4TvsNjHG/mqXisj4pI3THylK30oE+r4KOFXR8uvl
+	 5qq050xNUMI/o2ikRBouJAojaJkCNLsBYgeW/kJjzWjSe+0SOqmXcmejPxlOV32BI3
+	 WaX43Ie6SJNY4HVh9VmHjIBmCdIsp4gq38iiItqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.6 276/530] iommufd: Fix missing update of domains_itree after splitting iopt_area
+	Gavin Li <gavinl@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 206/491] net/mlx5e: fix double free of encap_header in update funcs
 Date: Fri, 24 Nov 2023 17:47:22 +0000
-Message-ID: <20231124172036.442468376@linuxfoundation.org>
+Message-ID: <20231124172030.696246904@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,47 +54,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Gavin Li <gavinl@nvidia.com>
 
-commit e7250ab7ca4998fe026f2149805b03e09dc32498 upstream.
+[ Upstream commit 3a4aa3cb83563df942be49d145ee3b7ddf17d6bb ]
 
-In iopt_area_split(), if the original iopt_area has filled a domain and is
-linked to domains_itree, pages_nodes have to be properly
-reinserted. Otherwise the domains_itree becomes corrupted and we will UAF.
+Follow up to the previous patch to fix the same issue for
+mlx5e_tc_tun_update_header_ipv4{6} when mlx5_packet_reformat_alloc()
+fails.
 
-Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
-Link: https://lore.kernel.org/r/20231027162941.2864615-2-den@valinux.co.jp
-Cc: stable@vger.kernel.org
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When mlx5_packet_reformat_alloc() fails, the encap_header allocated in
+mlx5e_tc_tun_update_header_ipv4{6} will be released within it. However,
+e->encap_header is already set to the previously freed encap_header
+before mlx5_packet_reformat_alloc(). As a result, the later
+mlx5e_encap_put() will free e->encap_header again, causing a double free
+issue.
+
+mlx5e_encap_put()
+     --> mlx5e_encap_dealloc()
+         --> kfree(e->encap_header)
+
+This patch fix it by not setting e->encap_header until
+mlx5_packet_reformat_alloc() success.
+
+Fixes: a54e20b4fcae ("net/mlx5e: Add basic TC tunnel set action for SRIOV offloads")
+Signed-off-by: Gavin Li <gavinl@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-7-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../ethernet/mellanox/mlx5/core/en/tc_tun.c   | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -1060,6 +1060,16 @@ static int iopt_area_split(struct iopt_a
- 	if (WARN_ON(rc))
- 		goto err_remove_lhs;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+index 8bca696b6658c..668da5c70e63d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+@@ -403,16 +403,12 @@ int mlx5e_tc_tun_update_header_ipv4(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto free_encap;
  
-+	/*
-+	 * If the original area has filled a domain, domains_itree has to be
-+	 * updated.
-+	 */
-+	if (area->storage_domain) {
-+		interval_tree_remove(&area->pages_node, &pages->domains_itree);
-+		interval_tree_insert(&lhs->pages_node, &pages->domains_itree);
-+		interval_tree_insert(&rhs->pages_node, &pages->domains_itree);
-+	}
+-	e->encap_size = ipv4_encap_size;
+-	kfree(e->encap_header);
+-	e->encap_header = encap_header;
+-
+ 	if (!(nud_state & NUD_VALID)) {
+ 		neigh_event_send(attr.n, NULL);
+ 		/* the encap entry will be made valid on neigh update event
+ 		 * and not used before that.
+ 		 */
+-		goto release_neigh;
++		goto free_encap;
+ 	}
+ 
+ 	memset(&reformat_params, 0, sizeof(reformat_params));
+@@ -426,6 +422,10 @@ int mlx5e_tc_tun_update_header_ipv4(struct mlx5e_priv *priv,
+ 		goto free_encap;
+ 	}
+ 
++	e->encap_size = ipv4_encap_size;
++	kfree(e->encap_header);
++	e->encap_header = encap_header;
 +
- 	lhs->storage_domain = area->storage_domain;
- 	lhs->pages = area->pages;
- 	rhs->storage_domain = area->storage_domain;
+ 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
+ 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(attr.out_dev));
+ 	mlx5e_route_lookup_ipv4_put(&attr);
+@@ -669,16 +669,12 @@ int mlx5e_tc_tun_update_header_ipv6(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto free_encap;
+ 
+-	e->encap_size = ipv6_encap_size;
+-	kfree(e->encap_header);
+-	e->encap_header = encap_header;
+-
+ 	if (!(nud_state & NUD_VALID)) {
+ 		neigh_event_send(attr.n, NULL);
+ 		/* the encap entry will be made valid on neigh update event
+ 		 * and not used before that.
+ 		 */
+-		goto release_neigh;
++		goto free_encap;
+ 	}
+ 
+ 	memset(&reformat_params, 0, sizeof(reformat_params));
+@@ -692,6 +688,10 @@ int mlx5e_tc_tun_update_header_ipv6(struct mlx5e_priv *priv,
+ 		goto free_encap;
+ 	}
+ 
++	e->encap_size = ipv6_encap_size;
++	kfree(e->encap_header);
++	e->encap_header = encap_header;
++
+ 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
+ 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(attr.out_dev));
+ 	mlx5e_route_lookup_ipv6_put(&attr);
+-- 
+2.42.0
+
 
 
 
