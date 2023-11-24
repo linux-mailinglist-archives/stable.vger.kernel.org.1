@@ -1,46 +1,44 @@
-Return-Path: <stable+bounces-2239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F697F8358
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130527F8363
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F19F1287C27
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1737A1C256FD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B32F381A2;
-	Fri, 24 Nov 2023 19:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414FB35EE6;
+	Fri, 24 Nov 2023 19:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpMOwo8r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZrxtXnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496D833CCA;
-	Fri, 24 Nov 2023 19:16:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6A9C433C7;
-	Fri, 24 Nov 2023 19:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F352233CF2;
+	Fri, 24 Nov 2023 19:17:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACB9C433C8;
+	Fri, 24 Nov 2023 19:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853397;
-	bh=WRafsSZRAO20hCbzR/dY5tiBIfw3FmMRYKLblL/xdsA=;
+	s=korg; t=1700853421;
+	bh=4asxgE+vleOEvkKmvtx01IEZSCzC0hzKarsug29TiAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpMOwo8rXBnLYidF7jQ17xxgColjiaaQ/WLNR3ipIzgCFpkOR4AcWbrzlZQB/ORE/
-	 ODHjYUBAjwSDaTyZpQ5ca9I6bf8FDEql7jFC4eDTLWLmVUHGyNvNeT6j2PUpl7ivbe
-	 VgJQmXT45W8gZWC+wrg7fx40kwb0HTCst3aq/SpI=
+	b=YZrxtXnqw5nQ8kO/qjkNIj9h8BbuP9msHnYpIctvMXlM3SUdhkd1i1+xpQ7IyfONs
+	 MIMM3rHmux8Wy41yrSdj7Bq3Yl7W9GTuF6CkR3AcALcu53c35HK3GEWHFzlA4E7GVO
+	 DRwTckc556IqOK++malzocOWld49VoSDC3WQr0vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zetao <lizetao1@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 154/297] xfs: Fix unreferenced object reported by kmemleak in xfs_sysfs_init()
-Date: Fri, 24 Nov 2023 17:53:16 +0000
-Message-ID: <20231124172005.653909720@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 5.15 155/297] i915/perf: Fix NULL deref bugs with drm_dbg() calls
+Date: Fri, 24 Nov 2023 17:53:17 +0000
+Message-ID: <20231124172005.685972763@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
 References: <20231124172000.087816911@linuxfoundation.org>
@@ -59,71 +57,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Zetao <lizetao1@huawei.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit d08af40340cad0e025d643c3982781a8f99d5032 ]
+commit 471aa951bf1206d3c10d0daa67005b8e4db4ff83 upstream.
 
-kmemleak reported a sequence of memory leaks, and one of them indicated we
-failed to free a pointer:
-  comm "mount", pid 19610, jiffies 4297086464 (age 60.635s)
-    hex dump (first 8 bytes):
-      73 64 61 00 81 88 ff ff                          sda.....
-    backtrace:
-      [<00000000d77f3e04>] kstrdup_const+0x46/0x70
-      [<00000000e51fa804>] kobject_set_name_vargs+0x2f/0xb0
-      [<00000000247cd595>] kobject_init_and_add+0xb0/0x120
-      [<00000000f9139aaf>] xfs_mountfs+0x367/0xfc0
-      [<00000000250d3caf>] xfs_fs_fill_super+0xa16/0xdc0
-      [<000000008d873d38>] get_tree_bdev+0x256/0x390
-      [<000000004881f3fa>] vfs_get_tree+0x41/0xf0
-      [<000000008291ab52>] path_mount+0x9b3/0xdd0
-      [<0000000022ba8f2d>] __x64_sys_mount+0x190/0x1d0
+When i915 perf interface is not available dereferencing it will lead to
+NULL dereferences.
 
-As mentioned in kobject_init_and_add() comment, if this function
-returns an error, kobject_put() must be called to properly clean up
-the memory associated with the object. Apparently, xfs_sysfs_init()
-does not follow such a requirement. When kobject_init_and_add()
-returns an error, the space of kobj->kobject.name alloced by
-kstrdup_const() is unfree, which will cause the above stack.
+As returning -ENOTSUPP is pretty clear return when perf interface is not
+available.
 
-Fix it by adding kobject_put() when kobject_init_and_add returns an
-error.
-
-Fixes: a31b1d3d89e4 ("xfs: add xfs_mount sysfs kobject")
-Signed-off-by: Li Zetao <lizetao1@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2fec539112e8 ("i915/perf: Replace DRM_DEBUG with driver specific drm_dbg call")
+Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231027172822.2753059-1-harshit.m.mogalapalli@oracle.com
+[tursulin: added stable tag]
+(cherry picked from commit 36f27350ff745bd228ab04d7845dfbffc177a889)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_sysfs.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_perf.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/fs/xfs/xfs_sysfs.h b/fs/xfs/xfs_sysfs.h
-index 43585850f1546..513095e353a5b 100644
---- a/fs/xfs/xfs_sysfs.h
-+++ b/fs/xfs/xfs_sysfs.h
-@@ -33,10 +33,15 @@ xfs_sysfs_init(
- 	const char		*name)
- {
- 	struct kobject		*parent;
-+	int err;
+--- a/drivers/gpu/drm/i915/i915_perf.c
++++ b/drivers/gpu/drm/i915/i915_perf.c
+@@ -3795,11 +3795,8 @@ int i915_perf_open_ioctl(struct drm_devi
+ 	u32 known_open_flags;
+ 	int ret;
  
- 	parent = parent_kobj ? &parent_kobj->kobject : NULL;
- 	init_completion(&kobj->complete);
--	return kobject_init_and_add(&kobj->kobject, ktype, parent, "%s", name);
-+	err = kobject_init_and_add(&kobj->kobject, ktype, parent, "%s", name);
-+	if (err)
-+		kobject_put(&kobj->kobject);
-+
-+	return err;
- }
+-	if (!perf->i915) {
+-		drm_dbg(&perf->i915->drm,
+-			"i915 perf interface not available for this system\n");
++	if (!perf->i915)
+ 		return -ENOTSUPP;
+-	}
  
- static inline void
--- 
-2.42.0
-
+ 	known_open_flags = I915_PERF_FLAG_FD_CLOEXEC |
+ 			   I915_PERF_FLAG_FD_NONBLOCK |
+@@ -4090,11 +4087,8 @@ int i915_perf_add_config_ioctl(struct dr
+ 	struct i915_oa_reg *regs;
+ 	int err, id;
+ 
+-	if (!perf->i915) {
+-		drm_dbg(&perf->i915->drm,
+-			"i915 perf interface not available for this system\n");
++	if (!perf->i915)
+ 		return -ENOTSUPP;
+-	}
+ 
+ 	if (!perf->metrics_kobj) {
+ 		drm_dbg(&perf->i915->drm,
+@@ -4256,11 +4250,8 @@ int i915_perf_remove_config_ioctl(struct
+ 	struct i915_oa_config *oa_config;
+ 	int ret;
+ 
+-	if (!perf->i915) {
+-		drm_dbg(&perf->i915->drm,
+-			"i915 perf interface not available for this system\n");
++	if (!perf->i915)
+ 		return -ENOTSUPP;
+-	}
+ 
+ 	if (i915_perf_stream_paranoid && !perfmon_capable()) {
+ 		drm_dbg(&perf->i915->drm,
 
 
 
