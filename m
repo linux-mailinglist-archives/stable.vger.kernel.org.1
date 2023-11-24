@@ -1,46 +1,52 @@
-Return-Path: <stable+bounces-893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAD67F7D06
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74837F7F4B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CDBC1C209D2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6250A2824F1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7E4364A4;
-	Fri, 24 Nov 2023 18:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4C62E853;
+	Fri, 24 Nov 2023 18:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLL5Uxkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5zPIg7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609A339FE8;
-	Fri, 24 Nov 2023 18:20:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD3AC433C8;
-	Fri, 24 Nov 2023 18:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA2E2FC21;
+	Fri, 24 Nov 2023 18:40:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371D6C433C8;
+	Fri, 24 Nov 2023 18:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850040;
-	bh=ggfHSYOSr/DL97wpwBvAPDaBbTrf9SJ5b9+WPM4oCBQ=;
+	s=korg; t=1700851214;
+	bh=xpn6JxZvWbAj9wNQS0WCywa2IiqWDfjgEgBzUeysFPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLL5Uxkr882XNrzo+KvUbF9TL8W/i724wnjNPhk6gMT33lOMH/tW8gEgn3sepznNW
-	 93zW4l5l9acv7KVpwxSfdtzeGlJzAs7KygaP+22XqiwwTDUIUJ7/zmJDV35IodP6Mz
-	 M1jSEBW3JqhXcwtTaF2QBJXt7pCNb/u/Pwdjxo0U=
+	b=q5zPIg7xf22WchuGB92cpEiqQYP5IsTnL0gho4ZSrlqbNdUaYenOnzAC/SlyE63Lv
+	 QEN5JQ+9q/891XXqhSoZXtSH3ffr+Z7UbNbi2wU3sCKhZQ7iyrQa1A9C2zvg7+TdiX
+	 5CMVrp925L2LzFQNiddGZjLh9FEi0Dqkfz7hOQ/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 421/530] smb: client: fix use-after-free bug in cifs_debug_data_proc_show()
+	Zi Yan <ziy@nvidia.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 351/491] mm/cma: use nth_page() in place of direct struct page manipulation
 Date: Fri, 24 Nov 2023 17:49:47 +0000
-Message-ID: <20231124172040.883209415@linuxfoundation.org>
+Message-ID: <20231124172035.106708987@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,72 +58,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Zi Yan <ziy@nvidia.com>
 
-commit d328c09ee9f15ee5a26431f5aad7c9239fa85e62 upstream.
+commit 2e7cfe5cd5b6b0b98abf57a3074885979e187c1c upstream.
 
-Skip SMB sessions that are being teared down
-(e.g. @ses->ses_status == SES_EXITING) in cifs_debug_data_proc_show()
-to avoid use-after-free in @ses.
+Patch series "Use nth_page() in place of direct struct page manipulation",
+v3.
 
-This fixes the following GPF when reading from /proc/fs/cifs/DebugData
-while mounting and umounting
+On SPARSEMEM without VMEMMAP, struct page is not guaranteed to be
+contiguous, since each memory section's memmap might be allocated
+independently.  hugetlb pages can go beyond a memory section size, thus
+direct struct page manipulation on hugetlb pages/subpages might give wrong
+struct page.  Kernel provides nth_page() to do the manipulation properly.
+Use that whenever code can see hugetlb pages.
 
-  [ 816.251274] general protection fault, probably for non-canonical
-  address 0x6b6b6b6b6b6b6d81: 0000 [#1] PREEMPT SMP NOPTI
-  ...
-  [  816.260138] Call Trace:
-  [  816.260329]  <TASK>
-  [  816.260499]  ? die_addr+0x36/0x90
-  [  816.260762]  ? exc_general_protection+0x1b3/0x410
-  [  816.261126]  ? asm_exc_general_protection+0x26/0x30
-  [  816.261502]  ? cifs_debug_tcon+0xbd/0x240 [cifs]
-  [  816.261878]  ? cifs_debug_tcon+0xab/0x240 [cifs]
-  [  816.262249]  cifs_debug_data_proc_show+0x516/0xdb0 [cifs]
-  [  816.262689]  ? seq_read_iter+0x379/0x470
-  [  816.262995]  seq_read_iter+0x118/0x470
-  [  816.263291]  proc_reg_read_iter+0x53/0x90
-  [  816.263596]  ? srso_alias_return_thunk+0x5/0x7f
-  [  816.263945]  vfs_read+0x201/0x350
-  [  816.264211]  ksys_read+0x75/0x100
-  [  816.264472]  do_syscall_64+0x3f/0x90
-  [  816.264750]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-  [  816.265135] RIP: 0033:0x7fd5e669d381
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This patch (of 5):
+
+When dealing with hugetlb pages, manipulating struct page pointers
+directly can get to wrong struct page, since struct page is not guaranteed
+to be contiguous on SPARSEMEM without VMEMMAP.  Use nth_page() to handle
+it properly.
+
+Without the fix, page_kasan_tag_reset() could reset wrong page tags,
+causing a wrong kasan result.  No related bug is reported.  The fix
+comes from code inspection.
+
+Link: https://lkml.kernel.org/r/20230913201248.452081-1-zi.yan@sent.com
+Link: https://lkml.kernel.org/r/20230913201248.452081-2-zi.yan@sent.com
+Fixes: 2813b9c02962 ("kasan, mm, arm64: tag non slab memory allocated via pagealloc")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ mm/cma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -452,6 +452,11 @@ skip_rdma:
- 		seq_printf(m, "\n\n\tSessions: ");
- 		i = 0;
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+			spin_lock(&ses->ses_lock);
-+			if (ses->ses_status == SES_EXITING) {
-+				spin_unlock(&ses->ses_lock);
-+				continue;
-+			}
- 			i++;
- 			if ((ses->serverDomain == NULL) ||
- 				(ses->serverOS == NULL) ||
-@@ -472,6 +477,7 @@ skip_rdma:
- 				ses->ses_count, ses->serverOS, ses->serverNOS,
- 				ses->capabilities, ses->ses_status);
- 			}
-+			spin_unlock(&ses->ses_lock);
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -501,7 +501,7 @@ struct page *cma_alloc(struct cma *cma,
+ 	 */
+ 	if (page) {
+ 		for (i = 0; i < count; i++)
+-			page_kasan_tag_reset(page + i);
++			page_kasan_tag_reset(nth_page(page, i));
+ 	}
  
- 			seq_printf(m, "\n\tSecurity type: %s ",
- 				get_security_type_str(server->ops->select_sectype(server, ses->sectype)));
+ 	if (ret && !no_warn) {
 
 
 
