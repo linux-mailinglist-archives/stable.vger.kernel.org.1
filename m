@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA83C7F7C15
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 888047F7E1E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E01FB20AA4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B92861C212CE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C590839FFD;
-	Fri, 24 Nov 2023 18:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0172B39FF3;
+	Fri, 24 Nov 2023 18:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Anf7VhTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oemPyYje"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7793539FDD;
-	Fri, 24 Nov 2023 18:11:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08487C433C7;
-	Fri, 24 Nov 2023 18:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CE8381DE;
+	Fri, 24 Nov 2023 18:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9722C433C7;
+	Fri, 24 Nov 2023 18:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849496;
-	bh=mWoDm+ymf7VhHM+400ZEP7kKfp+4gQxIXjQqTXeFCsE=;
+	s=korg; t=1700850607;
+	bh=dc13T/J5tZc+pl4YeWtjDiQBg+DJ3lknrGkICgQHcdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Anf7VhTn19EovtspDuUA4fXxD8NQcTlisH8HX3Lk2lULdFBVxdmeObittko7jaDyc
-	 P/WYjJfNYJkrz/AetKNnTA02KvMi/pTec3KPiXPSGJTfAKTH70koGwMePGhE0A5y00
-	 M1ybHdNueiZp/AB7dc7IUkiu7KNFGvtmgfTPy39U=
+	b=oemPyYjer+iEiUbxNofplMCQMaxGk5kKwnlwjQXMalgbekXKa8SZGyCIBAA+A1aWy
+	 re5yOmcAVPvzSQXzuqWb0+I551C4ikoWEt2u9Z4zhs9WZwPSJAS2AMjezwOHqbL4mh
+	 wRHXLnv1mo4G2hqUqL5D7xucxBVaDjsaank+Ct/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/530] xen/events: avoid using info_for_irq() in xen_send_IPI_one()
+Subject: [PATCH 6.5 117/491] phy: qualcomm: phy-qcom-eusb2-repeater: Zero out untouched tuning regs
 Date: Fri, 24 Nov 2023 17:45:53 +0000
-Message-ID: <20231124172033.763609383@linuxfoundation.org>
+Message-ID: <20231124172028.045247956@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,89 +53,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit e64e7c74b99ec9e439abca75f522f4b98f220bd1 ]
+[ Upstream commit 99a517a582fc1272d1d3cf3b9e671a14d7db77b8 ]
 
-xen_send_IPI_one() is being used by cpuhp_report_idle_dead() after
-it calls rcu_report_dead(), meaning that any RCU usage by
-xen_send_IPI_one() is a bad idea.
+The vendor kernel zeroes out all tuning data outside the init sequence
+as part of initialization. Follow suit to avoid UB.
 
-Unfortunately xen_send_IPI_one() is using notify_remote_via_irq()
-today, which is using irq_get_chip_data() via info_for_irq(). And
-irq_get_chip_data() in turn is using a maple-tree lookup requiring
-RCU.
-
-Avoid this problem by caching the ipi event channels in another
-percpu variable, allowing the use notify_remote_via_evtchn() in
-xen_send_IPI_one().
-
-Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
-Reported-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Tested-by: David Woodhouse <dwmw@amazon.co.uk>
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230830-topic-eusb2_override-v2-3-7d8c893d93f6@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ .../phy/qualcomm/phy-qcom-eusb2-repeater.c    | 58 ++++++++++++++-----
+ 1 file changed, 44 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 1b2136fe0fa51..2cf0c2b693861 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -164,6 +164,8 @@ static DEFINE_PER_CPU(int [NR_VIRQS], virq_to_irq) = {[0 ... NR_VIRQS-1] = -1};
+diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+index b20b805414a2a..6777532dd4dc9 100644
+--- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
++++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+@@ -25,9 +25,18 @@
+ #define EUSB2_FORCE_VAL_5		0xeD
+ #define V_CLK_19P2M_EN			BIT(6)
  
- /* IRQ <-> IPI mapping */
- static DEFINE_PER_CPU(int [XEN_NR_IPIS], ipi_to_irq) = {[0 ... XEN_NR_IPIS-1] = -1};
-+/* Cache for IPI event channels - needed for hot cpu unplug (avoid RCU usage). */
-+static DEFINE_PER_CPU(evtchn_port_t [XEN_NR_IPIS], ipi_to_evtchn) = {[0 ... XEN_NR_IPIS-1] = 0};
++#define EUSB2_TUNE_USB2_CROSSOVER	0x50
+ #define EUSB2_TUNE_IUSB2		0x51
++#define EUSB2_TUNE_RES_FSDIF		0x52
++#define EUSB2_TUNE_HSDISC		0x53
+ #define EUSB2_TUNE_SQUELCH_U		0x54
++#define EUSB2_TUNE_USB2_SLEW		0x55
++#define EUSB2_TUNE_USB2_EQU		0x56
+ #define EUSB2_TUNE_USB2_PREEM		0x57
++#define EUSB2_TUNE_USB2_HS_COMP_CUR	0x58
++#define EUSB2_TUNE_EUSB_SLEW		0x59
++#define EUSB2_TUNE_EUSB_EQU		0x5A
++#define EUSB2_TUNE_EUSB_HS_COMP_CUR	0x5B
  
- /* Event channel distribution data */
- static atomic_t channels_on_cpu[NR_CPUS];
-@@ -366,6 +368,7 @@ static int xen_irq_info_ipi_setup(unsigned cpu,
- 	info->u.ipi = ipi;
- 
- 	per_cpu(ipi_to_irq, cpu)[ipi] = irq;
-+	per_cpu(ipi_to_evtchn, cpu)[ipi] = evtchn;
- 
- 	return xen_irq_info_common_setup(info, irq, IRQT_IPI, evtchn, 0);
- }
-@@ -981,6 +984,7 @@ static void __unbind_from_irq(unsigned int irq)
- 			break;
- 		case IRQT_IPI:
- 			per_cpu(ipi_to_irq, cpu)[ipi_from_irq(irq)] = -1;
-+			per_cpu(ipi_to_evtchn, cpu)[ipi_from_irq(irq)] = 0;
- 			break;
- 		case IRQT_EVTCHN:
- 			dev = info->u.interdomain;
-@@ -1631,7 +1635,7 @@ EXPORT_SYMBOL_GPL(evtchn_put);
- 
- void xen_send_IPI_one(unsigned int cpu, enum ipi_vector vector)
- {
--	int irq;
-+	evtchn_port_t evtchn;
- 
- #ifdef CONFIG_X86
- 	if (unlikely(vector == XEN_NMI_VECTOR)) {
-@@ -1642,9 +1646,9 @@ void xen_send_IPI_one(unsigned int cpu, enum ipi_vector vector)
- 		return;
+ #define QCOM_EUSB2_REPEATER_INIT_CFG(r, v)	\
+ 	{					\
+@@ -36,9 +45,18 @@
  	}
- #endif
--	irq = per_cpu(ipi_to_irq, cpu)[vector];
--	BUG_ON(irq < 0);
--	notify_remote_via_irq(irq);
-+	evtchn = per_cpu(ipi_to_evtchn, cpu)[vector];
-+	BUG_ON(evtchn == 0);
-+	notify_remote_via_evtchn(evtchn);
- }
  
- struct evtchn_loop_ctrl {
+ enum reg_fields {
++	F_TUNE_EUSB_HS_COMP_CUR,
++	F_TUNE_EUSB_EQU,
++	F_TUNE_EUSB_SLEW,
++	F_TUNE_USB2_HS_COMP_CUR,
+ 	F_TUNE_USB2_PREEM,
++	F_TUNE_USB2_EQU,
++	F_TUNE_USB2_SLEW,
+ 	F_TUNE_SQUELCH_U,
++	F_TUNE_HSDISC,
++	F_TUNE_RES_FSDIF,
+ 	F_TUNE_IUSB2,
++	F_TUNE_USB2_CROSSOVER,
+ 	F_NUM_TUNE_FIELDS,
+ 
+ 	F_FORCE_VAL_5 = F_NUM_TUNE_FIELDS,
+@@ -51,9 +69,18 @@ enum reg_fields {
+ };
+ 
+ static struct reg_field eusb2_repeater_tune_reg_fields[F_NUM_FIELDS] = {
++	[F_TUNE_EUSB_HS_COMP_CUR] = REG_FIELD(EUSB2_TUNE_EUSB_HS_COMP_CUR, 0, 1),
++	[F_TUNE_EUSB_EQU] = REG_FIELD(EUSB2_TUNE_EUSB_EQU, 0, 1),
++	[F_TUNE_EUSB_SLEW] = REG_FIELD(EUSB2_TUNE_EUSB_SLEW, 0, 1),
++	[F_TUNE_USB2_HS_COMP_CUR] = REG_FIELD(EUSB2_TUNE_USB2_HS_COMP_CUR, 0, 1),
+ 	[F_TUNE_USB2_PREEM] = REG_FIELD(EUSB2_TUNE_USB2_PREEM, 0, 2),
++	[F_TUNE_USB2_EQU] = REG_FIELD(EUSB2_TUNE_USB2_EQU, 0, 1),
++	[F_TUNE_USB2_SLEW] = REG_FIELD(EUSB2_TUNE_USB2_SLEW, 0, 1),
+ 	[F_TUNE_SQUELCH_U] = REG_FIELD(EUSB2_TUNE_SQUELCH_U, 0, 2),
++	[F_TUNE_HSDISC] = REG_FIELD(EUSB2_TUNE_HSDISC, 0, 2),
++	[F_TUNE_RES_FSDIF] = REG_FIELD(EUSB2_TUNE_RES_FSDIF, 0, 2),
+ 	[F_TUNE_IUSB2] = REG_FIELD(EUSB2_TUNE_IUSB2, 0, 3),
++	[F_TUNE_USB2_CROSSOVER] = REG_FIELD(EUSB2_TUNE_USB2_CROSSOVER, 0, 2),
+ 
+ 	[F_FORCE_VAL_5] = REG_FIELD(EUSB2_FORCE_VAL_5, 0, 7),
+ 	[F_FORCE_EN_5] = REG_FIELD(EUSB2_FORCE_EN_5, 0, 7),
+@@ -63,13 +90,8 @@ static struct reg_field eusb2_repeater_tune_reg_fields[F_NUM_FIELDS] = {
+ 	[F_RPTR_STATUS] = REG_FIELD(EUSB2_RPTR_STATUS, 0, 7),
+ };
+ 
+-struct eusb2_repeater_init_tbl {
+-	unsigned int reg;
+-	unsigned int val;
+-};
+-
+ struct eusb2_repeater_cfg {
+-	const struct eusb2_repeater_init_tbl *init_tbl;
++	const u32 *init_tbl;
+ 	int init_tbl_num;
+ 	const char * const *vreg_list;
+ 	int num_vregs;
+@@ -88,10 +110,10 @@ static const char * const pm8550b_vreg_l[] = {
+ 	"vdd18", "vdd3",
+ };
+ 
+-static const struct eusb2_repeater_init_tbl pm8550b_init_tbl[] = {
+-	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_IUSB2, 0x8),
+-	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_SQUELCH_U, 0x3),
+-	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_USB2_PREEM, 0x5),
++static const u32 pm8550b_init_tbl[F_NUM_TUNE_FIELDS] = {
++	[F_TUNE_IUSB2] = 0x8,
++	[F_TUNE_SQUELCH_U] = 0x3,
++	[F_TUNE_USB2_PREEM] = 0x5,
+ };
+ 
+ static const struct eusb2_repeater_cfg pm8550b_eusb2_cfg = {
+@@ -119,8 +141,9 @@ static int eusb2_repeater_init_vregs(struct eusb2_repeater *rptr)
+ 
+ static int eusb2_repeater_init(struct phy *phy)
+ {
++	struct reg_field *regfields = eusb2_repeater_tune_reg_fields;
+ 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
+-	const struct eusb2_repeater_init_tbl *init_tbl = rptr->cfg->init_tbl;
++	const u32 *init_tbl = rptr->cfg->init_tbl;
+ 	u32 val;
+ 	int ret;
+ 	int i;
+@@ -131,9 +154,16 @@ static int eusb2_repeater_init(struct phy *phy)
+ 
+ 	regmap_field_update_bits(rptr->regs[F_EN_CTL1], EUSB2_RPTR_EN, EUSB2_RPTR_EN);
+ 
+-	for (i = 0; i < rptr->cfg->init_tbl_num; i++)
+-		regmap_field_update_bits(rptr->regs[init_tbl[i].reg],
+-					 init_tbl[i].val, init_tbl[i].val);
++	for (i = 0; i < F_NUM_TUNE_FIELDS; i++) {
++		if (init_tbl[i]) {
++			regmap_field_update_bits(rptr->regs[i], init_tbl[i], init_tbl[i]);
++		} else {
++			/* Write 0 if there's no value set */
++			u32 mask = GENMASK(regfields[i].msb, regfields[i].lsb);
++
++			regmap_field_update_bits(rptr->regs[i], mask, 0);
++		}
++	}
+ 
+ 	ret = regmap_field_read_poll_timeout(rptr->regs[F_RPTR_STATUS],
+ 					     val, val & RPTR_OK, 10, 5);
 -- 
 2.42.0
 
