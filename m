@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AB27F7A99
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864907F80E2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DA401C208EE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42129282610
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5475B381DF;
-	Fri, 24 Nov 2023 17:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D674B35F04;
+	Fri, 24 Nov 2023 18:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dI1fw1Vf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pybRJV4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AA4381D8;
-	Fri, 24 Nov 2023 17:56:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106ECC433C8;
-	Fri, 24 Nov 2023 17:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959322FC4E;
+	Fri, 24 Nov 2023 18:53:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2650AC433C7;
+	Fri, 24 Nov 2023 18:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848603;
-	bh=P9QZ0czAWm1rMThpDTx6viWAFFG31kWm30oxAcZ1sW4=;
+	s=korg; t=1700852019;
+	bh=NjOd1AEvJaexb9ShzvYckZYvJ2stydhb8UFzDXb4NNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dI1fw1VfNXV57aiPrlfDfYUfRcmSujcR8fw2wgZesqc3zAKYAWiY0QLMMiXxMgCRo
-	 VHX3onOhV01T9zIri4S+QrzhdHjKDrTwayOcQs3UY39YA8aAKgcXYYDS4jrz22J4AO
-	 0c5eEfnYV1JxNfS8FpcV/yvI3qEuuyDWftadcqhc=
+	b=pybRJV4dB52QoxUookkDgC4O+cuQ/lRsSgS3d0II4JfPo1EelklZqZqZI+dSl2JTJ
+	 Mr0i+whmlTfrplltTsgqVzQrOkjeR84bts9o1p7p61RZ+GRtK2619dsie6EE9Ntpuw
+	 CnV+4PkRA1gZvbozewFzFYQdE9+nhGsoswvR6FOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Stultz <jstultz@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 01/97] locking/ww_mutex/test: Fix potential workqueue corruption
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 187/372] mm/damon/sysfs: update monitoring target regions for online input commit
 Date: Fri, 24 Nov 2023 17:49:34 +0000
-Message-ID: <20231124171934.176364122@linuxfoundation.org>
+Message-ID: <20231124172016.697270416@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,124 +52,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit bccdd808902f8c677317cec47c306e42b93b849e ]
+commit 9732336006764e2ee61225387e3c70eae9139035 upstream.
 
-In some cases running with the test-ww_mutex code, I was seeing
-odd behavior where sometimes it seemed flush_workqueue was
-returning before all the work threads were finished.
+When user input is committed online, DAMON sysfs interface is ignoring the
+user input for the monitoring target regions.  Such request is valid and
+useful for fixed monitoring target regions-based monitoring ops like
+'paddr' or 'fvaddr'.
 
-Often this would cause strange crashes as the mutexes would be
-freed while they were being used.
+Update the region boundaries as user specified, too.  Note that the
+monitoring results of the regions that overlap between the latest
+monitoring target regions and the new target regions are preserved.
 
-Looking at the code, there is a lifetime problem as the
-controlling thread that spawns the work allocates the
-"struct stress" structures that are passed to the workqueue
-threads. Then when the workqueue threads are finished,
-they free the stress struct that was passed to them.
+Treat empty monitoring target regions user request as a request to just
+make no change to the monitoring target regions.  Otherwise, users should
+set the monitoring target regions same to current one for every online
+input commit, and it could be challenging for dynamic monitoring target
+regions update DAMON ops like 'vaddr'.  If the user really need to remove
+all monitoring target regions, they can simply remove the target and then
+create the target again with empty target regions.
 
-Unfortunately the workqueue work_struct node is in the stress
-struct. Which means the work_struct is freed before the work
-thread returns and while flush_workqueue is waiting.
-
-It seems like a better idea to have the controlling thread
-both allocate and free the stress structures, so that we can
-be sure we don't corrupt the workqueue by freeing the structure
-prematurely.
-
-So this patch reworks the test to do so, and with this change
-I no longer see the early flush_workqueue returns.
-
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230922043616.19282-3-jstultz@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231031170131.46972-1-sj@kernel.org
+Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/test-ww_mutex.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ mm/damon/sysfs.c |   47 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 65a3b7e55b9fc..4fd05d9d5d6d1 100644
---- a/kernel/locking/test-ww_mutex.c
-+++ b/kernel/locking/test-ww_mutex.c
-@@ -439,7 +439,6 @@ static void stress_inorder_work(struct work_struct *work)
- 	} while (!time_after(jiffies, stress->timeout));
- 
- 	kfree(order);
--	kfree(stress);
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -2188,34 +2188,47 @@ destroy_targets_out:
+ 	return err;
  }
  
- struct reorder_lock {
-@@ -504,7 +503,6 @@ static void stress_reorder_work(struct work_struct *work)
- 	list_for_each_entry_safe(ll, ln, &locks, link)
- 		kfree(ll);
- 	kfree(order);
--	kfree(stress);
- }
- 
- static void stress_one_work(struct work_struct *work)
-@@ -525,8 +523,6 @@ static void stress_one_work(struct work_struct *work)
- 			break;
- 		}
- 	} while (!time_after(jiffies, stress->timeout));
--
--	kfree(stress);
- }
- 
- #define STRESS_INORDER BIT(0)
-@@ -537,15 +533,24 @@ static void stress_one_work(struct work_struct *work)
- static int stress(int nlocks, int nthreads, unsigned int flags)
+-static int damon_sysfs_update_target(struct damon_target *target,
+-		struct damon_ctx *ctx,
+-		struct damon_sysfs_target *sys_target)
++static int damon_sysfs_update_target_pid(struct damon_target *target, int pid)
  {
- 	struct ww_mutex *locks;
--	int n;
-+	struct stress *stress_array;
-+	int n, count;
+-	struct pid *pid;
+-	struct damon_region *r, *next;
+-
+-	if (!damon_target_has_pid(ctx))
+-		return 0;
++	struct pid *pid_new;
  
- 	locks = kmalloc_array(nlocks, sizeof(*locks), GFP_KERNEL);
- 	if (!locks)
- 		return -ENOMEM;
+-	pid = find_get_pid(sys_target->pid);
+-	if (!pid)
++	pid_new = find_get_pid(pid);
++	if (!pid_new)
+ 		return -EINVAL;
  
-+	stress_array = kmalloc_array(nthreads, sizeof(*stress_array),
-+				     GFP_KERNEL);
-+	if (!stress_array) {
-+		kfree(locks);
-+		return -ENOMEM;
+-	/* no change to the target */
+-	if (pid == target->pid) {
+-		put_pid(pid);
++	if (pid_new == target->pid) {
++		put_pid(pid_new);
+ 		return 0;
+ 	}
+ 
+-	/* remove old monitoring results and update the target's pid */
+-	damon_for_each_region_safe(r, next, target)
+-		damon_destroy_region(r, target);
+ 	put_pid(target->pid);
+-	target->pid = pid;
++	target->pid = pid_new;
+ 	return 0;
+ }
+ 
++static int damon_sysfs_update_target(struct damon_target *target,
++		struct damon_ctx *ctx,
++		struct damon_sysfs_target *sys_target)
++{
++	int err;
++
++	if (damon_target_has_pid(ctx)) {
++		err = damon_sysfs_update_target_pid(target, sys_target->pid);
++		if (err)
++			return err;
 +	}
 +
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_init(&locks[n], &ww_class);
- 
-+	count = 0;
- 	for (n = 0; nthreads; n++) {
- 		struct stress *stress;
- 		void (*fn)(struct work_struct *work);
-@@ -569,9 +574,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 		if (!fn)
- 			continue;
- 
--		stress = kmalloc(sizeof(*stress), GFP_KERNEL);
--		if (!stress)
--			break;
-+		stress = &stress_array[count++];
- 
- 		INIT_WORK(&stress->work, fn);
- 		stress->locks = locks;
-@@ -586,6 +589,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_destroy(&locks[n]);
-+	kfree(stress_array);
- 	kfree(locks);
- 
- 	return 0;
--- 
-2.42.0
-
++	/*
++	 * Do monitoring target region boundary update only if one or more
++	 * regions are set by the user.  This is for keeping current monitoring
++	 * target results and range easier, especially for dynamic monitoring
++	 * target regions update ops like 'vaddr'.
++	 */
++	if (sys_target->regions->nr)
++		err = damon_sysfs_set_regions(target, sys_target->regions);
++	return err;
++}
++
+ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
+ 		struct damon_sysfs_targets *sysfs_targets)
+ {
 
 
 
