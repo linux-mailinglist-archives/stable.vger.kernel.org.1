@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797FE7F821E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE237F834F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 324F328423F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47DCA287959
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9570E364A5;
-	Fri, 24 Nov 2023 19:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969DA381CB;
+	Fri, 24 Nov 2023 19:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sakiYjFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daQkJTbj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD1131759;
-	Fri, 24 Nov 2023 19:04:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB35CC433C7;
-	Fri, 24 Nov 2023 19:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5209B364C4;
+	Fri, 24 Nov 2023 19:16:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50A6C433C8;
+	Fri, 24 Nov 2023 19:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852676;
-	bh=OwTYbyiTLBOGyiC6b/1XxSoxbE9MLACL3mVJQHoi5Yk=;
+	s=korg; t=1700853375;
+	bh=1t3puGuJZuHrPmsboHVJi8g6E4YrAT6Yj2S7EvRWXMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sakiYjFb1vZcjWZTwiqJnhf/OSa4KDuRXQxO9hzM7L5eJck5lI1sNk2XSImokH4dR
-	 CPyzYkZWGUpcd/1otf039F/BceTjYUR/S6QusU9YvwjK4vQuj+WFsTAqa119ELE819
-	 XfegTSOoRdy2+iDBh2wWVXbvwIpUyUgSjT1scZUQ=
+	b=daQkJTbjl5Hxyf75c7In4nl2I8hFGIFlITafOkqcVLxPxX6qrsHe2Q1WmAHYiazXw
+	 dxtSHABsQXVpMuCCi1WcpqdRNZM2yh76jRLATHfG38Gm4n8fzWqCaDlhaQO2V+fk08
+	 /PHtQu3srTnqsqvjmQ14xRAOBZJvBk+nm4WdyWtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/193] net: ethernet: cortina: Handle large frames
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 163/297] scsi: qla2xxx: Fix system crash due to bad pointer access
 Date: Fri, 24 Nov 2023 17:53:25 +0000
-Message-ID: <20231124171950.346471382@linuxfoundation.org>
+Message-ID: <20231124172005.956338795@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,116 +53,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit d4d0c5b4d279bfe3585fbd806efefd3e51c82afa ]
+commit 19597cad64d608aa8ac2f8aef50a50187a565223 upstream.
 
-The Gemini ethernet controller provides hardware checksumming
-for frames up to 1514 bytes including ethernet headers but not
-FCS.
+User experiences system crash when running AER error injection.  The
+perturbation causes the abort-all-I/O path to trigger. The driver assumes
+all I/O on this path is FCP only. If there is both NVMe & FCP traffic, a
+system crash happens. Add additional check to see if I/O is FCP or not
+before access.
 
-If we start sending bigger frames (after first bumping up the MTU
-on both interfaces sending and receiving the frames), truncated
-packets start to appear on the target such as in this tcpdump
-resulting from ping -s 1474:
+PID: 999019  TASK: ff35d769f24722c0  CPU: 53  COMMAND: "kworker/53:1"
+ 0 [ff3f78b964847b58] machine_kexec at ffffffffae86973d
+ 1 [ff3f78b964847ba8] __crash_kexec at ffffffffae9be29d
+ 2 [ff3f78b964847c70] crash_kexec at ffffffffae9bf528
+ 3 [ff3f78b964847c78] oops_end at ffffffffae8282ab
+ 4 [ff3f78b964847c98] exc_page_fault at ffffffffaf2da502
+ 5 [ff3f78b964847cc0] asm_exc_page_fault at ffffffffaf400b62
+   [exception RIP: qla2x00_abort_srb+444]
+   RIP: ffffffffc07b5f8c  RSP: ff3f78b964847d78  RFLAGS: 00010046
+   RAX: 0000000000000282  RBX: ff35d74a0195a200  RCX: ff35d76886fd03a0
+   RDX: 0000000000000001  RSI: ffffffffc07c5ec8  RDI: ff35d74a0195a200
+   RBP: ff35d76913d22080   R8: ff35d7694d103200   R9: ff35d7694d103200
+   R10: 0000000100000000  R11: ffffffffb05d6630  R12: 0000000000010000
+   R13: ff3f78b964847df8  R14: ff35d768d8754000  R15: ff35d768877248e0
+   ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ 6 [ff3f78b964847d70] qla2x00_abort_srb at ffffffffc07b5f84 [qla2xxx]
+ 7 [ff3f78b964847de0] __qla2x00_abort_all_cmds at ffffffffc07b6238 [qla2xxx]
+ 8 [ff3f78b964847e38] qla2x00_abort_all_cmds at ffffffffc07ba635 [qla2xxx]
+ 9 [ff3f78b964847e58] qla2x00_terminate_rport_io at ffffffffc08145eb [qla2xxx]
+10 [ff3f78b964847e70] fc_terminate_rport_io at ffffffffc045987e [scsi_transport_fc]
+11 [ff3f78b964847e88] process_one_work at ffffffffae914f15
+12 [ff3f78b964847ed0] worker_thread at ffffffffae9154c0
+13 [ff3f78b964847f10] kthread at ffffffffae91c456
+14 [ff3f78b964847f50] ret_from_fork at ffffffffae8036ef
 
-23:34:17.241983 14:d6:4d:a8:3c:4f (oui Unknown) > bc:ae:c5:6b:a8:3d (oui Unknown),
-ethertype IPv4 (0x0800), length 1514: truncated-ip - 2 bytes missing!
-(tos 0x0, ttl 64, id 32653, offset 0, flags [DF], proto ICMP (1), length 1502)
-OpenWrt.lan > Fecusia: ICMP echo request, id 1672, seq 50, length 1482
-
-If we bypass the hardware checksumming and provide a software
-fallback, everything starts working fine up to the max TX MTU
-of 2047 bytes, for example ping -s2000 192.168.1.2:
-
-00:44:29.587598 bc:ae:c5:6b:a8:3d (oui Unknown) > 14:d6:4d:a8:3c:4f (oui Unknown),
-ethertype IPv4 (0x0800), length 2042:
-(tos 0x0, ttl 64, id 51828, offset 0, flags [none], proto ICMP (1), length 2028)
-Fecusia > OpenWrt.lan: ICMP echo reply, id 1683, seq 4, length 2008
-
-The bit enabling to bypass hardware checksum (or any of the
-"TSS" bits) are undocumented in the hardware reference manual.
-The entire hardware checksum unit appears undocumented. The
-conclusion that we need to use the "bypass" bit was found by
-trial-and-error.
-
-Since no hardware checksum will happen, we slot in a software
-checksum fallback.
-
-Check for the condition where we need to compute checksum on the
-skb with either hardware or software using == CHECKSUM_PARTIAL instead
-of != CHECKSUM_NONE which is an incomplete check according to
-<linux/skbuff.h>.
-
-On the D-Link DIR-685 router this fixes a bug on the conduit
-interface to the RTL8366RB DSA switch: as the switch needs to add
-space for its tag it increases the MTU on the conduit interface
-to 1504 and that means that when the router sends packages
-of 1500 bytes these get an extra 4 bytes of DSA tag and the
-transfer fails because of the erroneous hardware checksumming,
-affecting such basic functionality as the LuCI web interface.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-2-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f45bca8c5052 ("scsi: qla2xxx: Fix double scsi_done for abort path")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20231030064912.37912-1-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_os.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 6c735e0d1950f..9ed883e8155ec 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -1146,6 +1146,7 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 	dma_addr_t mapping;
- 	unsigned short mtu;
- 	void *buffer;
-+	int ret;
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1823,8 +1823,16 @@ static void qla2x00_abort_srb(struct qla
+ 		}
  
- 	mtu  = ETH_HLEN;
- 	mtu += netdev->mtu;
-@@ -1160,9 +1161,30 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
- 		word3 |= mtu;
- 	}
- 
--	if (skb->ip_summed != CHECKSUM_NONE) {
-+	if (skb->len >= ETH_FRAME_LEN) {
-+		/* Hardware offloaded checksumming isn't working on frames
-+		 * bigger than 1514 bytes. A hypothesis about this is that the
-+		 * checksum buffer is only 1518 bytes, so when the frames get
-+		 * bigger they get truncated, or the last few bytes get
-+		 * overwritten by the FCS.
-+		 *
-+		 * Just use software checksumming and bypass on bigger frames.
-+		 */
-+		if (skb->ip_summed == CHECKSUM_PARTIAL) {
-+			ret = skb_checksum_help(skb);
-+			if (ret)
-+				return ret;
+ 		spin_lock_irqsave(qp->qp_lock_ptr, *flags);
+-		if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
+-			sp->done(sp, res);
++		switch (sp->type) {
++		case SRB_SCSI_CMD:
++			if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
++				sp->done(sp, res);
++			break;
++		default:
++			if (ret_cmd)
++				sp->done(sp, res);
++			break;
 +		}
-+		word1 |= TSS_BYPASS_BIT;
-+	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
- 		int tcp = 0;
- 
-+		/* We do not switch off the checksumming on non TCP/UDP
-+		 * frames: as is shown from tests, the checksumming engine
-+		 * is smart enough to see that a frame is not actually TCP
-+		 * or UDP and then just pass it through without any changes
-+		 * to the frame.
-+		 */
- 		if (skb->protocol == htons(ETH_P_IP)) {
- 			word1 |= TSS_IP_CHKSUM_BIT;
- 			tcp = ip_hdr(skb)->protocol == IPPROTO_TCP;
--- 
-2.42.0
-
+ 	} else {
+ 		sp->done(sp, res);
+ 	}
 
 
 
