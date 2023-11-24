@@ -1,54 +1,48 @@
-Return-Path: <stable+bounces-980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC57F7F7D6A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE7CC7F7B39
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BBC0B2137B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ACCB281624
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C355364A4;
-	Fri, 24 Nov 2023 18:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A58F39FFD;
+	Fri, 24 Nov 2023 18:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUEdDrK6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEZTi7cO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5DF33CFD;
-	Fri, 24 Nov 2023 18:24:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C40C433C7;
-	Fri, 24 Nov 2023 18:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBDF639FF8;
+	Fri, 24 Nov 2023 18:03:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41096C433C8;
+	Fri, 24 Nov 2023 18:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850259;
-	bh=tKOaPoFx1QYGsEc9WMl7x/+rjg24Njf5o8lpUUIdu9I=;
+	s=korg; t=1700848981;
+	bh=T5Q/jlpX1Owje5686S0zUEKZxuPy/hON17LaFWfNBl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUEdDrK6rfTYuLV+hQc7hB66uJY/eJlWJn6y28H4FudhXTtbXgIb7bQtRCBYSCWgj
-	 brwgipN3a+fyq+cWm0NRTOi5+n+rVda4yG7tfL8XSe00H5NtpMJHWYQyYPjlfywTr3
-	 ANH6+Y8lqW41ka+Y5apmq7ZqtYuDHz6IEkXKjUB8=
+	b=IEZTi7cOgcDPb9d8s0ZBfMCFYamy8/GbgMNFIp3Enq5MgVYPfAi12uHtVggBJyPue
+	 WJIZKg8rDSZIKnCke+c1UTIVJHQzGhX2h8mSrnCWdjFrbPdd49mmkFuNjNUvIzY0tr
+	 b7Kfj640WS+kXkNfAYONlGJz1NiTg6rz5OaU7vag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	Robert Foss <robert.foss@linaro.org>,
-	Phong LE <ple@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.6 508/530] drm: bridge: it66121: ->get_edid callback must not return err pointers
-Date: Fri, 24 Nov 2023 17:51:14 +0000
-Message-ID: <20231124172043.623574167@linuxfoundation.org>
+	Nathan Hebert <nhebert@chromium.org>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 4.14 51/57] media: venus: hfi: fix the check to handle session buffer requirement
+Date: Fri, 24 Nov 2023 17:51:15 +0000
+Message-ID: <20231124171932.202420820@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 81995ee1620318b4c7bbeb02bcc372da2c078c76 upstream.
+commit b18e36dfd6c935da60a971310374f3dfec3c82e1 upstream.
 
-The drm stack does not expect error valued pointers for EDID anywhere.
+Buffer requirement, for different buffer type, comes from video firmware.
+While copying these requirements, there is an OOB possibility when the
+payload from firmware is more than expected size. Fix the check to avoid
+the OOB possibility.
 
-Fixes: e66856508746 ("drm: bridge: it66121: Set DDC preamble only once before reading EDID")
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: Robert Foss <robert.foss@linaro.org>
-Cc: Phong LE <ple@baylibre.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Robert Foss <rfoss@kernel.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Jonas Karlman <jonas@kwiboo.se>
-Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-Cc: <stable@vger.kernel.org> # v6.3+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230914131159.2472513-1-jani.nikula@intel.com
+Cc: stable@vger.kernel.org
+Fixes: 09c2845e8fe4 ("[media] media: venus: hfi: add Host Firmware Interface (HFI)")
+Reviewed-by: Nathan Hebert <nhebert@chromium.org>
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it66121.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_msgs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/ite-it66121.c
-+++ b/drivers/gpu/drm/bridge/ite-it66121.c
-@@ -884,14 +884,14 @@ static struct edid *it66121_bridge_get_e
- 	mutex_lock(&ctx->lock);
- 	ret = it66121_preamble_ddc(ctx);
- 	if (ret) {
--		edid = ERR_PTR(ret);
-+		edid = NULL;
- 		goto out_unlock;
- 	}
+--- a/drivers/media/platform/qcom/venus/hfi_msgs.c
++++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
+@@ -412,7 +412,7 @@ session_get_prop_buf_req(struct hfi_msg_
+ 		memcpy(&bufreq[idx], buf_req, sizeof(*bufreq));
+ 		idx++;
  
- 	ret = regmap_write(ctx->regmap, IT66121_DDC_HEADER_REG,
- 			   IT66121_DDC_HEADER_EDID);
- 	if (ret) {
--		edid = ERR_PTR(ret);
-+		edid = NULL;
- 		goto out_unlock;
- 	}
+-		if (idx > HFI_BUFFER_TYPE_MAX)
++		if (idx >= HFI_BUFFER_TYPE_MAX)
+ 			return HFI_ERR_SESSION_INVALID_PARAMETER;
  
+ 		req_bytes -= sizeof(struct hfi_buffer_requirements);
 
 
 
