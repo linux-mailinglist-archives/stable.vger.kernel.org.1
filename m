@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-1634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279277F80A4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CFD7F7CA3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59A491C215DD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72F9BB20CF9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BC363A1;
-	Fri, 24 Nov 2023 18:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD4E3A8C5;
+	Fri, 24 Nov 2023 18:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whFhTk2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cN0n5aR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51BD931748;
-	Fri, 24 Nov 2023 18:51:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01E2C433C7;
-	Fri, 24 Nov 2023 18:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5698D39FE3;
+	Fri, 24 Nov 2023 18:16:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7217C433CA;
+	Fri, 24 Nov 2023 18:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851891;
-	bh=RbsrhYovjsS3j+XeF0zhQCEv2Zf7gd1zrUuy2cqVmi8=;
+	s=korg; t=1700849818;
+	bh=eAd2e5KlbfdhePHqMsonoLrlGIRor92nU127YQY3cyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=whFhTk2ryXdxk2XoB94h1tx/FP7O4uh+EAQKR000C+AGirF1kplwNNNViUCS6NhT3
-	 ZVu5HW7qrbjLrHTn1a//7fSK9/dty0/2rnzBGjJNS2qVxVfS2IUAtgf6VjitvcYD0M
-	 lAR4p1dd9gYpei2/8D3Sg6g5jUBpHSOztTHT6lLU=
+	b=0cN0n5aRDCjapm1ctNO3B6Tg+bU3qr78mJWTFbpSoDdyn6huoMcJ3F+riSd8IjvNt
+	 Ieq4bVHzlDU0uPkEMtzXhI0lb1rrat2sytVpS/oEME9za7pxPOr4Dr7sXFu4YhpCPp
+	 D4yXvOGpke85UH4lYUJ19p9n4MTA3MZVQfGgRP7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <hawking.zhang@amd.com>,
-	Luben Tuikov <luben.tuikov@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/372] drm/amdgpu: fix software pci_unplug on some chips
+	stable@kernel.org,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.6 333/530] dt-bindings: timer: renesas,rz-mtu3: Fix overflow/underflow interrupt names
 Date: Fri, 24 Nov 2023 17:48:19 +0000
-Message-ID: <20231124172014.221993543@linuxfoundation.org>
+Message-ID: <20231124172038.159390326@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,108 +55,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 4638e0c29a3f2294d5de0d052a4b8c9f33ccb957 ]
+commit b7a8f1f7a8a25e09aaefebb6251a77f44cda638b upstream.
 
-When software 'pci unplug' using IGT is executed we got a sysfs directory
-entry is NULL for differant ras blocks like hdp, umc, etc.
-Before call 'sysfs_remove_file_from_group' and 'sysfs_remove_group'
-check that 'sd' is  not NULL.
+As per R01UH0914EJ0130 Rev.1.30 HW manual the MTU3 overflow/underflow
+interrupt names starts with 'tci' instead of 'tgi'.
 
-[  +0.000001] RIP: 0010:sysfs_remove_group+0x83/0x90
-[  +0.000002] Code: 31 c0 31 d2 31 f6 31 ff e9 9a a8 b4 00 4c 89 e7 e8 f2 a2 ff ff eb c2 49 8b 55 00 48 8b 33 48 c7 c7 80 65 94 82 e8 cd 82 bb ff <0f> 0b eb cc 66 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90
-[  +0.000001] RSP: 0018:ffffc90002067c90 EFLAGS: 00010246
-[  +0.000002] RAX: 0000000000000000 RBX: ffffffff824ea180 RCX: 0000000000000000
-[  +0.000001] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[  +0.000001] RBP: ffffc90002067ca8 R08: 0000000000000000 R09: 0000000000000000
-[  +0.000001] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-[  +0.000001] R13: ffff88810a395f48 R14: ffff888101aab0d0 R15: 0000000000000000
-[  +0.000001] FS:  00007f5ddaa43a00(0000) GS:ffff88841e800000(0000) knlGS:0000000000000000
-[  +0.000002] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  +0.000001] CR2: 00007f8ffa61ba50 CR3: 0000000106432000 CR4: 0000000000350ef0
-[  +0.000001] Call Trace:
-[  +0.000001]  <TASK>
-[  +0.000001]  ? show_regs+0x72/0x90
-[  +0.000002]  ? sysfs_remove_group+0x83/0x90
-[  +0.000002]  ? __warn+0x8d/0x160
-[  +0.000001]  ? sysfs_remove_group+0x83/0x90
-[  +0.000001]  ? report_bug+0x1bb/0x1d0
-[  +0.000003]  ? handle_bug+0x46/0x90
-[  +0.000001]  ? exc_invalid_op+0x19/0x80
-[  +0.000002]  ? asm_exc_invalid_op+0x1b/0x20
-[  +0.000003]  ? sysfs_remove_group+0x83/0x90
-[  +0.000001]  dpm_sysfs_remove+0x61/0x70
-[  +0.000002]  device_del+0xa3/0x3d0
-[  +0.000002]  ? ktime_get_mono_fast_ns+0x46/0xb0
-[  +0.000002]  device_unregister+0x18/0x70
-[  +0.000001]  i2c_del_adapter+0x26d/0x330
-[  +0.000002]  arcturus_i2c_control_fini+0x25/0x50 [amdgpu]
-[  +0.000236]  smu_sw_fini+0x38/0x260 [amdgpu]
-[  +0.000241]  amdgpu_device_fini_sw+0x116/0x670 [amdgpu]
-[  +0.000186]  ? mutex_lock+0x13/0x50
-[  +0.000003]  amdgpu_driver_release_kms+0x16/0x40 [amdgpu]
-[  +0.000192]  drm_minor_release+0x4f/0x80 [drm]
-[  +0.000025]  drm_release+0xfe/0x150 [drm]
-[  +0.000027]  __fput+0x9f/0x290
-[  +0.000002]  ____fput+0xe/0x20
-[  +0.000002]  task_work_run+0x61/0xa0
-[  +0.000002]  exit_to_user_mode_prepare+0x150/0x170
-[  +0.000002]  syscall_exit_to_user_mode+0x2a/0x50
+Fix this documentation issue by replacing below overflow/underflow
+interrupt names:
+ - tgiv0->tciv0
+ - tgiv1->tciv1
+ - tgiu1->tciu1
+ - tgiv2->tciv2
+ - tgiu2->tciu2
+ - tgiv3->tciv3
+ - tgiv4->tciv4
+ - tgiv6->tciv6
+ - tgiv7->tciv7
+ - tgiv8->tciv8
+ - tgiu8->tciu8
 
-Cc: Hawking Zhang <hawking.zhang@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0a9d6b54297e ("dt-bindings: timer: Document RZ/G2L MTU3a bindings")
+Cc: stable@kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230727081848.100834-2-biju.das.jz@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml |   38 +++++------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index 09fc464f5f128..9fe2eae88ec17 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -1273,7 +1273,8 @@ static void amdgpu_ras_sysfs_remove_bad_page_node(struct amdgpu_device *adev)
- {
- 	struct amdgpu_ras *con = amdgpu_ras_get_context(adev);
+--- a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
++++ b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
+@@ -169,27 +169,27 @@ properties:
+       - const: tgib0
+       - const: tgic0
+       - const: tgid0
+-      - const: tgiv0
++      - const: tciv0
+       - const: tgie0
+       - const: tgif0
+       - const: tgia1
+       - const: tgib1
+-      - const: tgiv1
+-      - const: tgiu1
++      - const: tciv1
++      - const: tciu1
+       - const: tgia2
+       - const: tgib2
+-      - const: tgiv2
+-      - const: tgiu2
++      - const: tciv2
++      - const: tciu2
+       - const: tgia3
+       - const: tgib3
+       - const: tgic3
+       - const: tgid3
+-      - const: tgiv3
++      - const: tciv3
+       - const: tgia4
+       - const: tgib4
+       - const: tgic4
+       - const: tgid4
+-      - const: tgiv4
++      - const: tciv4
+       - const: tgiu5
+       - const: tgiv5
+       - const: tgiw5
+@@ -197,18 +197,18 @@ properties:
+       - const: tgib6
+       - const: tgic6
+       - const: tgid6
+-      - const: tgiv6
++      - const: tciv6
+       - const: tgia7
+       - const: tgib7
+       - const: tgic7
+       - const: tgid7
+-      - const: tgiv7
++      - const: tciv7
+       - const: tgia8
+       - const: tgib8
+       - const: tgic8
+       - const: tgid8
+-      - const: tgiv8
+-      - const: tgiu8
++      - const: tciv8
++      - const: tciu8
  
--	sysfs_remove_file_from_group(&adev->dev->kobj,
-+	if (adev->dev->kobj.sd)
-+		sysfs_remove_file_from_group(&adev->dev->kobj,
- 				&con->badpages_attr.attr,
- 				RAS_FS_NAME);
- }
-@@ -1290,7 +1291,8 @@ static int amdgpu_ras_sysfs_remove_feature_node(struct amdgpu_device *adev)
- 		.attrs = attrs,
- 	};
- 
--	sysfs_remove_group(&adev->dev->kobj, &group);
-+	if (adev->dev->kobj.sd)
-+		sysfs_remove_group(&adev->dev->kobj, &group);
- 
- 	return 0;
- }
-@@ -1337,7 +1339,8 @@ int amdgpu_ras_sysfs_remove(struct amdgpu_device *adev,
- 	if (!obj || !obj->attr_inuse)
- 		return -EINVAL;
- 
--	sysfs_remove_file_from_group(&adev->dev->kobj,
-+	if (adev->dev->kobj.sd)
-+		sysfs_remove_file_from_group(&adev->dev->kobj,
- 				&obj->sysfs_attr.attr,
- 				RAS_FS_NAME);
- 	obj->attr_inuse = 0;
--- 
-2.42.0
-
+   clocks:
+     maxItems: 1
+@@ -285,16 +285,16 @@ examples:
+                    <GIC_SPI 211 IRQ_TYPE_EDGE_RISING>,
+                    <GIC_SPI 212 IRQ_TYPE_EDGE_RISING>,
+                    <GIC_SPI 213 IRQ_TYPE_EDGE_RISING>;
+-      interrupt-names = "tgia0", "tgib0", "tgic0", "tgid0", "tgiv0", "tgie0",
++      interrupt-names = "tgia0", "tgib0", "tgic0", "tgid0", "tciv0", "tgie0",
+                         "tgif0",
+-                        "tgia1", "tgib1", "tgiv1", "tgiu1",
+-                        "tgia2", "tgib2", "tgiv2", "tgiu2",
+-                        "tgia3", "tgib3", "tgic3", "tgid3", "tgiv3",
+-                        "tgia4", "tgib4", "tgic4", "tgid4", "tgiv4",
++                        "tgia1", "tgib1", "tciv1", "tciu1",
++                        "tgia2", "tgib2", "tciv2", "tciu2",
++                        "tgia3", "tgib3", "tgic3", "tgid3", "tciv3",
++                        "tgia4", "tgib4", "tgic4", "tgid4", "tciv4",
+                         "tgiu5", "tgiv5", "tgiw5",
+-                        "tgia6", "tgib6", "tgic6", "tgid6", "tgiv6",
+-                        "tgia7", "tgib7", "tgic7", "tgid7", "tgiv7",
+-                        "tgia8", "tgib8", "tgic8", "tgid8", "tgiv8", "tgiu8";
++                        "tgia6", "tgib6", "tgic6", "tgid6", "tciv6",
++                        "tgia7", "tgib7", "tgic7", "tgid7", "tciv7",
++                        "tgia8", "tgib8", "tgic8", "tgid8", "tciv8", "tciu8";
+       clocks = <&cpg CPG_MOD R9A07G044_MTU_X_MCK_MTU3>;
+       power-domains = <&cpg>;
+       resets = <&cpg R9A07G044_MTU_X_PRESET_MTU3>;
 
 
 
