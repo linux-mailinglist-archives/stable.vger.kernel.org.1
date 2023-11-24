@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EABA7F7BA0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAF87F7DBB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B02FD1C20FB6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F067B1C211FB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E911239FED;
-	Fri, 24 Nov 2023 18:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C8139FE1;
+	Fri, 24 Nov 2023 18:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRNUlBrY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJGd3ot8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A56DE39FD4;
-	Fri, 24 Nov 2023 18:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFCCC433C8;
-	Fri, 24 Nov 2023 18:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831F939FDD;
+	Fri, 24 Nov 2023 18:27:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EF7C433CA;
+	Fri, 24 Nov 2023 18:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849219;
-	bh=M2iPonoEJgtO4qfNGJu36dWN/Ou8JqT+Q8k/1QpoqaU=;
+	s=korg; t=1700850422;
+	bh=ls03DfXnozRpWI0VMU26s5oh9cPOL+q41IMZhvV1wWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRNUlBrYK3pvMud2SH+DqY1QbguuUP7U3fXMwgHUhHs622f72Bo30tHZ2fpMzPb2n
-	 Vto4X8NgU4vxqG1Ai53tFRZiUT9XE4DkVAhRTEd1HnjJpoJowzL+gKHSQEsLtEyEum
-	 FrLVPU+zunARx/nXpV7zl6wG/ecaIIy1i8ko1vaQ=
+	b=iJGd3ot8+fOwWv/O9+2QF6ok1hL+OiNhTbPeeDHiJN8KoBflxh3nkuz8By8rF8DTr
+	 LtQWCJ4bn6HsfZncq/hJshNFyx2FpWnBh7I2QdYUx4qopb/X0XPxQbzxXgMGhkHaf+
+	 AY1cL8J3foW0t9FW7wBnzeCSnpOEgz4ljJdc4EGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+aea1ad91e854d0a83e04@syzkaller.appspotmail.com,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/530] jfs: fix array-index-out-of-bounds in dbFindLeaf
+Subject: [PATCH 6.5 025/491] wifi: ath12k: fix possible out-of-bound write in ath12k_wmi_ext_hal_reg_caps()
 Date: Fri, 24 Nov 2023 17:44:21 +0000
-Message-ID: <20231124172030.999030083@linuxfoundation.org>
+Message-ID: <20231124172025.447006046@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,89 +54,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manas Ghandat <ghandatmanas@gmail.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 22cad8bc1d36547cdae0eef316c47d917ce3147c ]
+[ Upstream commit b302dce3d9edea5b93d1902a541684a967f3c63c ]
 
-Currently while searching for dmtree_t for sufficient free blocks there
-is an array out of bounds while getting element in tp->dm_stree. To add
-the required check for out of bound we first need to determine the type
-of dmtree. Thus added an extra parameter to dbFindLeaf so that the type
-of tree can be determined and the required check can be applied.
+reg_cap.phy_id is extracted from WMI event and could be an unexpected value
+in case some errors happen. As a result out-of-bound write may occur to
+soc->hal_reg_cap. Fix it by validating reg_cap.phy_id before using it.
 
-Reported-by: syzbot+aea1ad91e854d0a83e04@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=aea1ad91e854d0a83e04
-Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+This is found during code review.
+
+Compile tested only.
+
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230830020716.5420-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 4d59373f9e6c9..11c77757ead9e 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -87,7 +87,7 @@ static int dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno,
- static int dbExtend(struct inode *ip, s64 blkno, s64 nblocks, s64 addnblocks);
- static int dbFindBits(u32 word, int l2nb);
- static int dbFindCtl(struct bmap * bmp, int l2nb, int level, s64 * blkno);
--static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx);
-+static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl);
- static int dbFreeBits(struct bmap * bmp, struct dmap * dp, s64 blkno,
- 		      int nblocks);
- static int dbFreeDmap(struct bmap * bmp, struct dmap * dp, s64 blkno,
-@@ -1717,7 +1717,7 @@ static int dbFindCtl(struct bmap * bmp, int l2nb, int level, s64 * blkno)
- 		 * dbFindLeaf() returns the index of the leaf at which
- 		 * free space was found.
- 		 */
--		rc = dbFindLeaf((dmtree_t *) dcp, l2nb, &leafidx);
-+		rc = dbFindLeaf((dmtree_t *) dcp, l2nb, &leafidx, true);
- 
- 		/* release the buffer.
- 		 */
-@@ -1964,7 +1964,7 @@ dbAllocDmapLev(struct bmap * bmp,
- 	 * free space.  if sufficient free space is found, dbFindLeaf()
- 	 * returns the index of the leaf at which free space was found.
- 	 */
--	if (dbFindLeaf((dmtree_t *) & dp->tree, l2nb, &leafidx))
-+	if (dbFindLeaf((dmtree_t *) &dp->tree, l2nb, &leafidx, false))
- 		return -ENOSPC;
- 
- 	if (leafidx < 0)
-@@ -2928,14 +2928,18 @@ static void dbAdjTree(dmtree_t * tp, int leafno, int newval)
-  *	leafidx	- return pointer to be set to the index of the leaf
-  *		  describing at least l2nb free blocks if sufficient
-  *		  free blocks are found.
-+ *	is_ctl	- determines if the tree is of type ctl
-  *
-  * RETURN VALUES:
-  *	0	- success
-  *	-ENOSPC	- insufficient free blocks.
-  */
--static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx)
-+static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
- {
- 	int ti, n = 0, k, x = 0;
-+	int max_size;
-+
-+	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
- 
- 	/* first check the root of the tree to see if there is
- 	 * sufficient free space.
-@@ -2956,6 +2960,8 @@ static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx)
- 			/* sufficient free space found.  move to the next
- 			 * level (or quit if this is the last level).
- 			 */
-+			if (x + n > max_size)
-+				return -ENOSPC;
- 			if (l2nb <= tp->dmt_stree[x + n])
- 				break;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index eebc5a65ce3b4..416b22fa53ebf 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -3799,6 +3799,12 @@ static int ath12k_wmi_ext_hal_reg_caps(struct ath12k_base *soc,
+ 			ath12k_warn(soc, "failed to extract reg cap %d\n", i);
+ 			return ret;
  		}
++
++		if (reg_cap.phy_id >= MAX_RADIOS) {
++			ath12k_warn(soc, "unexpected phy id %u\n", reg_cap.phy_id);
++			return -EINVAL;
++		}
++
+ 		soc->hal_reg_cap[reg_cap.phy_id] = reg_cap;
+ 	}
+ 	return 0;
 -- 
 2.42.0
 
