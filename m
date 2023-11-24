@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-1555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D017F8045
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544427F8029
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76AD31C21565
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85A9A1C21503
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1CE364DE;
-	Fri, 24 Nov 2023 18:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C391534189;
+	Fri, 24 Nov 2023 18:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JX50fikM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11PSTZPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62584286B5;
-	Fri, 24 Nov 2023 18:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB5DC433C8;
-	Fri, 24 Nov 2023 18:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9C364AE;
+	Fri, 24 Nov 2023 18:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09914C433C7;
+	Fri, 24 Nov 2023 18:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851692;
-	bh=rb0ckjQWcANtmAMEqK/kIbODOfruhs6DbYZZ0lxsBxc=;
+	s=korg; t=1700851633;
+	bh=JzeJowYvSd3teqjbkXNVOzdi8In3KPqJzFpgTL06xVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JX50fikMqD0P4CVIzkuzWLdkFUWmy5ACN01p1fpj5UUMWse0Q4tUFKqDYaxgWU9b8
-	 hZkL3H2c6j4utYT2l+HWLIgsUnXn9vAql+XyPHYW+2KWFTH3TvDYj3rWua5Z5mmxD9
-	 G3yBKHOmiiwf+EdrsTd4oKMRf2R+yVkVqE10Skkw=
+	b=11PSTZPLXIBz147yblLMsYWPI7c02K3cosgTORQ0Dpn651NYUt6J0+5ZXP+HE2H28
+	 M6KWMxgu7zhpJCjst+dr9WL6xJjD35le1q0GiEZiFNyuVefV2kHJA1WxILN7ZcLgM6
+	 uIKkdN0nQ/d19ZczFQyq0+bbI3kPHkCP8nSkhu2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Liu <leo.liu@amd.com>,
-	"David (Ming Qiang) Wu" <David.Wu3@amd.com>,
+	Xiaogang Chen <xiaogang.chen@amd.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/372] drm/amdgpu: not to save bo in the case of RAS err_event_athub
-Date: Fri, 24 Nov 2023 17:47:00 +0000
-Message-ID: <20231124172011.591509316@linuxfoundation.org>
+Subject: [PATCH 6.1 034/372] drm/amdkfd: Fix a race condition of vram buffer unref in svm code
+Date: Fri, 24 Nov 2023 17:47:01 +0000
+Message-ID: <20231124172011.624193859@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
 References: <20231124172010.413667921@linuxfoundation.org>
@@ -58,43 +59,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David (Ming Qiang) Wu <David.Wu3@amd.com>
+From: Xiaogang Chen <xiaogang.chen@amd.com>
 
-[ Upstream commit fa1f1cc09d588a90c8ce3f507c47df257461d148 ]
+[ Upstream commit 709c348261618da7ed89d6c303e2ceb9e453ba74 ]
 
-err_event_athub will corrupt VCPU buffer and not good to
-be restored in amdgpu_vcn_resume() and in this case
-the VCPU buffer needs to be cleared for VCN firmware to
-work properly.
+prange->svm_bo unref can happen in both mmu callback and a callback after
+migrate to system ram. Both are async call in different tasks. Sync svm_bo
+unref operation to avoid random "use-after-free".
 
-Acked-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Xiaogang Chen <xiaogang.chen@amd.com>
+Reviewed-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Tested-by: Jesse Zhang <Jesse.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-index 5c1193dd7d88c..48e612023d0c7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-@@ -391,8 +391,15 @@ int amdgpu_vcn_suspend(struct amdgpu_device *adev)
- 	void *ptr;
- 	int i, idx;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index d7e758c86a0b8..6281d370bb448 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -612,8 +612,15 @@ svm_range_vram_node_new(struct amdgpu_device *adev, struct svm_range *prange,
  
-+	bool in_ras_intr = amdgpu_ras_intr_triggered();
-+
- 	cancel_delayed_work_sync(&adev->vcn.idle_work);
+ void svm_range_vram_node_free(struct svm_range *prange)
+ {
+-	svm_range_bo_unref(prange->svm_bo);
+-	prange->ttm_res = NULL;
++	/* serialize prange->svm_bo unref */
++	mutex_lock(&prange->lock);
++	/* prange->svm_bo has not been unref */
++	if (prange->ttm_res) {
++		prange->ttm_res = NULL;
++		mutex_unlock(&prange->lock);
++		svm_range_bo_unref(prange->svm_bo);
++	} else
++		mutex_unlock(&prange->lock);
+ }
  
-+	/* err_event_athub will corrupt VCPU buffer, so we need to
-+	 * restore fw data and clear buffer in amdgpu_vcn_resume() */
-+	if (in_ras_intr)
-+		return 0;
-+
- 	for (i = 0; i < adev->vcn.num_vcn_inst; ++i) {
- 		if (adev->vcn.harvest_config & (1 << i))
- 			continue;
+ struct amdgpu_device *
 -- 
 2.42.0
 
