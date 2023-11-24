@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3517F7E0A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D19B7F7BEE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80D821C203A9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EFC11C21040
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7453A8DD;
-	Fri, 24 Nov 2023 18:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2C339FD4;
+	Fri, 24 Nov 2023 18:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sp9+nWIA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALPbmpka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DF4381D6;
-	Fri, 24 Nov 2023 18:29:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7CAC433C8;
-	Fri, 24 Nov 2023 18:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5C5381D7;
+	Fri, 24 Nov 2023 18:10:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753C6C433C8;
+	Fri, 24 Nov 2023 18:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850562;
-	bh=hDVyNcNmt26P0xLYxA89abAbt0RRmS0v9wdCm4vt5sc=;
+	s=korg; t=1700849403;
+	bh=ee0T5pvOjn0TGm7JIaXUGLWQlsu+BKRNzwabdmOZdN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sp9+nWIACnCRvVHRaU7n/1wDWoez/K4KdHdQN5T0ao1r6vp834Jz5JSXwzh8ryzgl
-	 1QMaD8IhmfZdtPyf7qphsG4CIH+dXIbHCHi+MmI/ljvozO3s9ZeMYjgYRfWsMs4M5H
-	 X4ywNoimptnblrCU7MDZcKpcCM0AeR9Oft/+JquQ=
+	b=ALPbmpkabHkMToUYAZrc53fMBCphqiN21mEkVtO3A21FQg/qp2n6n6f8/sl4T9vwC
+	 b+TPgDko3hPG2SNOmYRpZgYyVJyUV8mIyjybLc4AcjC0VG5AcM7Epv9XW2A9mDj5fx
+	 KZK44wiluc5kCHiuIKHLZXlQhUQxiCl10A6Ix/Vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 098/491] PCI: Do error check on own line to split long "if" conditions
+Subject: [PATCH 6.6 168/530] SUNRPC: Add an IS_ERR() check back to where it was
 Date: Fri, 24 Nov 2023 17:45:34 +0000
-Message-ID: <20231124172027.520057850@linuxfoundation.org>
+Message-ID: <20231124172033.193632310@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,111 +51,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d15f18053e5cc5576af9e7eef0b2a91169b6326d ]
+[ Upstream commit 4f3ed837186fc0d2722ba8d2457a594322e9c2ef ]
 
-Placing PCI error code check inside "if" condition usually results in need
-to split lines. Combined with additional conditions the "if" condition
-becomes messy.
+This IS_ERR() check was deleted during in a cleanup because, at the time,
+the rpcb_call_async() function could not return an error pointer.  That
+changed in commit 25cf32ad5dba ("SUNRPC: Handle allocation failure in
+rpc_new_task()") and now it can return an error pointer.  Put the check
+back.
 
-Convert to the usual error handling pattern with an additional variable to
-improve code readability. In addition, reverse the logic in
-pci_find_vsec_capability() to get rid of &&.
+A related revert was done in commit 13bd90141804 ("Revert "SUNRPC:
+Remove unreachable error condition"").
 
-No functional changes intended.
-
-Link: https://lore.kernel.org/r/20230911125354.25501-5-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[bhelgaas: PCI_POSSIBLE_ERROR()]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 037e910b52b0 ("SUNRPC: Remove unreachable error condition in rpcb_getport_async()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c    | 9 ++++++---
- drivers/pci/probe.c  | 6 +++---
- drivers/pci/quirks.c | 6 +++---
- 3 files changed, 12 insertions(+), 9 deletions(-)
+ net/sunrpc/rpcb_clnt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 702fe577089b4..3cd907eb67b74 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -732,15 +732,18 @@ u16 pci_find_vsec_capability(struct pci_dev *dev, u16 vendor, int cap)
- {
- 	u16 vsec = 0;
- 	u32 header;
-+	int ret;
+diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
+index 5988a5c5ff3f0..102c3818bc54d 100644
+--- a/net/sunrpc/rpcb_clnt.c
++++ b/net/sunrpc/rpcb_clnt.c
+@@ -769,6 +769,10 @@ void rpcb_getport_async(struct rpc_task *task)
  
- 	if (vendor != dev->vendor)
- 		return 0;
+ 	child = rpcb_call_async(rpcb_clnt, map, proc);
+ 	rpc_release_client(rpcb_clnt);
++	if (IS_ERR(child)) {
++		/* rpcb_map_release() has freed the arguments */
++		return;
++	}
  
- 	while ((vsec = pci_find_next_ext_capability(dev, vsec,
- 						     PCI_EXT_CAP_ID_VNDR))) {
--		if (pci_read_config_dword(dev, vsec + PCI_VNDR_HEADER,
--					  &header) == PCIBIOS_SUCCESSFUL &&
--		    PCI_VNDR_HEADER_ID(header) == cap)
-+		ret = pci_read_config_dword(dev, vsec + PCI_VNDR_HEADER, &header);
-+		if (ret != PCIBIOS_SUCCESSFUL)
-+			continue;
-+
-+		if (PCI_VNDR_HEADER_ID(header) == cap)
- 			return vsec;
- 	}
- 
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 24a83cf5ace8c..cd08d39fdb1ff 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -1653,15 +1653,15 @@ static void pci_set_removable(struct pci_dev *dev)
- static bool pci_ext_cfg_is_aliased(struct pci_dev *dev)
- {
- #ifdef CONFIG_PCI_QUIRKS
--	int pos;
-+	int pos, ret;
- 	u32 header, tmp;
- 
- 	pci_read_config_dword(dev, PCI_VENDOR_ID, &header);
- 
- 	for (pos = PCI_CFG_SPACE_SIZE;
- 	     pos < PCI_CFG_SPACE_EXP_SIZE; pos += PCI_CFG_SPACE_SIZE) {
--		if (pci_read_config_dword(dev, pos, &tmp) != PCIBIOS_SUCCESSFUL
--		    || header != tmp)
-+		ret = pci_read_config_dword(dev, pos, &tmp);
-+		if ((ret != PCIBIOS_SUCCESSFUL) || (header != tmp))
- 			return false;
- 	}
- 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index eb65170b97ff0..e8a051e2d8140 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5383,7 +5383,7 @@ int pci_dev_specific_disable_acs_redir(struct pci_dev *dev)
-  */
- static void quirk_intel_qat_vf_cap(struct pci_dev *pdev)
- {
--	int pos, i = 0;
-+	int pos, i = 0, ret;
- 	u8 next_cap;
- 	u16 reg16, *cap;
- 	struct pci_cap_saved_state *state;
-@@ -5429,8 +5429,8 @@ static void quirk_intel_qat_vf_cap(struct pci_dev *pdev)
- 		pdev->pcie_mpss = reg16 & PCI_EXP_DEVCAP_PAYLOAD;
- 
- 		pdev->cfg_size = PCI_CFG_SPACE_EXP_SIZE;
--		if (pci_read_config_dword(pdev, PCI_CFG_SPACE_SIZE, &status) !=
--		    PCIBIOS_SUCCESSFUL || (status == 0xffffffff))
-+		ret = pci_read_config_dword(pdev, PCI_CFG_SPACE_SIZE, &status);
-+		if ((ret != PCIBIOS_SUCCESSFUL) || (PCI_POSSIBLE_ERROR(status)))
- 			pdev->cfg_size = PCI_CFG_SPACE_SIZE;
- 
- 		if (pci_find_saved_cap(pdev, PCI_CAP_ID_EXP))
+ 	xprt->stat.bind_count++;
+ 	rpc_put_task(child);
 -- 
 2.42.0
 
