@@ -1,45 +1,49 @@
-Return-Path: <stable+bounces-1412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B107F7F84
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C35827F7ADA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14CB91C2147E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 624ABB21002
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF17128DA1;
-	Fri, 24 Nov 2023 18:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1E639FEE;
+	Fri, 24 Nov 2023 17:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b53gh6ZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGGhsYHl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE722EAEA;
-	Fri, 24 Nov 2023 18:42:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6101C433C7;
-	Fri, 24 Nov 2023 18:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650F339FD9;
+	Fri, 24 Nov 2023 17:59:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BCAC433C7;
+	Fri, 24 Nov 2023 17:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851334;
-	bh=jYXh5HtXtJ9pZvIUaM14O+O7LCz8NgH9cu6h79NZ7Gc=;
+	s=korg; t=1700848758;
+	bh=zjqNUfARuzrmw2TQYsQgFNDc6A5ANMm7ViRjJvN1hp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b53gh6ZY5nSwkMNCsLMrzxwWjyRd9bbPTrM3EYj9FxFf0WA5HcVKM99prtAw2OVDR
-	 TUg/Vk4e23QEeOqOtLSMrv2w6196krSqtZbYC44QicDtJGz6B2nW+Gk4LCBNTzjYbi
-	 34kTFYA+imsSwq7CcqWLASRaFwsrSJq/c3UgcgVI=
+	b=SGGhsYHlqry+Azu+SkqehEByXBCak87HPWj1smlzG5oH+ATUnNt10xi5z53f8+8Cb
+	 1rRSd1j09c1QuqW21GbsmMVSY0T/K1Yylv5nPDzYjUHmS0TV4Jy0+wcU9Se7XI3QhY
+	 X4RZMKNEOWqU4RFvTCcTS7xfHmLdMr1DKw0Vlnjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.5 382/491] parisc/pgtable: Do not drop upper 5 address bits of physical address
+	Andrew Lunn <andrew@lunn.ch>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 45/97] net: ethernet: cortina: Fix MTU max setting
 Date: Fri, 24 Nov 2023 17:50:18 +0000
-Message-ID: <20231124172036.075011060@linuxfoundation.org>
+Message-ID: <20231124171935.837595537@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +55,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 166b0110d1ee53290bd11618df6e3991c117495a upstream.
+[ Upstream commit dc6c0bfbaa947dd7976e30e8c29b10c868b6fa42 ]
 
-When calculating the pfn for the iitlbt/idtlbt instruction, do not
-drop the upper 5 address bits. This doesn't seem to have an effect
-on physical hardware which uses less physical address bits, but in
-qemu the missing bits are visible.
+The RX max frame size is over 10000 for the Gemini ethernet,
+but the TX max frame size is actually just 2047 (0x7ff after
+checking the datasheet). Reflect this in what we offer to Linux,
+cap the MTU at the TX max frame minus ethernet headers.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We delete the code disabling the hardware checksum for large
+MTUs as netdev->mtu can no longer be larger than
+netdev->max_mtu meaning the if()-clause in gmac_fix_features()
+is never true.
+
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-3-6e611528db08@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 17 ++++-------------
+ drivers/net/ethernet/cortina/gemini.h |  2 +-
+ 2 files changed, 5 insertions(+), 14 deletions(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -475,13 +475,13 @@
- 	 * to a CPU TLB 4k PFN (4k => 12 bits to shift) */
- 	#define PAGE_ADD_SHIFT		(PAGE_SHIFT-12)
- 	#define PAGE_ADD_HUGE_SHIFT	(REAL_HPAGE_SHIFT-12)
-+	#define PFN_START_BIT	(63-ASM_PFN_PTE_SHIFT+(63-58)-PAGE_ADD_SHIFT)
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index 3e38c0309bc8e..b7ebe5eb46f5a 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -2019,15 +2019,6 @@ static int gmac_change_mtu(struct net_device *netdev, int new_mtu)
+ 	return 0;
+ }
  
- 	/* Drop prot bits and convert to page addr for iitlbt and idtlbt */
- 	.macro		convert_for_tlb_insert20 pte,tmp
- #ifdef CONFIG_HUGETLB_PAGE
- 	copy		\pte,\tmp
--	extrd,u		\tmp,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\tmp,PFN_START_BIT,PFN_START_BIT+1,\pte
+-static netdev_features_t gmac_fix_features(struct net_device *netdev,
+-					   netdev_features_t features)
+-{
+-	if (netdev->mtu + ETH_HLEN + VLAN_HLEN > MTU_SIZE_BIT_MASK)
+-		features &= ~GMAC_OFFLOAD_FEATURES;
+-
+-	return features;
+-}
+-
+ static int gmac_set_features(struct net_device *netdev,
+ 			     netdev_features_t features)
+ {
+@@ -2248,7 +2239,6 @@ static const struct net_device_ops gmac_351x_ops = {
+ 	.ndo_set_mac_address	= gmac_set_mac_address,
+ 	.ndo_get_stats64	= gmac_get_stats64,
+ 	.ndo_change_mtu		= gmac_change_mtu,
+-	.ndo_fix_features	= gmac_fix_features,
+ 	.ndo_set_features	= gmac_set_features,
+ };
  
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
-@@ -489,8 +489,7 @@
- 	depdi		_HUGE_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_HUGE_SHIFT,\pte
- #else /* Huge pages disabled */
--	extrd,u		\pte,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\pte,PFN_START_BIT,PFN_START_BIT+1,\pte
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
- #endif
+@@ -2504,11 +2494,12 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
+ 
+ 	netdev->hw_features = GMAC_OFFLOAD_FEATURES;
+ 	netdev->features |= GMAC_OFFLOAD_FEATURES | NETIF_F_GRO;
+-	/* We can handle jumbo frames up to 10236 bytes so, let's accept
+-	 * payloads of 10236 bytes minus VLAN and ethernet header
++	/* We can receive jumbo frames up to 10236 bytes but only
++	 * transmit 2047 bytes so, let's accept payloads of 2047
++	 * bytes minus VLAN and ethernet header
+ 	 */
+ 	netdev->min_mtu = ETH_MIN_MTU;
+-	netdev->max_mtu = 10236 - VLAN_ETH_HLEN;
++	netdev->max_mtu = MTU_SIZE_BIT_MASK - VLAN_ETH_HLEN;
+ 
+ 	port->freeq_refill = 0;
+ 	netif_napi_add(netdev, &port->napi, gmac_napi_poll,
+diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
+index 321427aaff4cc..ad913f15e89ba 100644
+--- a/drivers/net/ethernet/cortina/gemini.h
++++ b/drivers/net/ethernet/cortina/gemini.h
+@@ -502,7 +502,7 @@ union gmac_txdesc_3 {
+ #define SOF_BIT			0x80000000
+ #define EOF_BIT			0x40000000
+ #define EOFIE_BIT		BIT(29)
+-#define MTU_SIZE_BIT_MASK	0x1fff
++#define MTU_SIZE_BIT_MASK	0x7ff /* Max MTU 2047 bytes */
+ 
+ /* GMAC Tx Descriptor */
+ struct gmac_txdesc {
+-- 
+2.42.0
+
 
 
 
