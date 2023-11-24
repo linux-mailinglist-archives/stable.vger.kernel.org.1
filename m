@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E339B7F7CE6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7A77F7F1D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E12E28209D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 275BC1C21447
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7C43A8CA;
-	Fri, 24 Nov 2023 18:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623D6364BE;
+	Fri, 24 Nov 2023 18:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohC9wOEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S93WlOxb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E319F39FE9;
-	Fri, 24 Nov 2023 18:19:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7136AC433C8;
-	Fri, 24 Nov 2023 18:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E202B33CCA;
+	Fri, 24 Nov 2023 18:38:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D078C433C7;
+	Fri, 24 Nov 2023 18:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849962;
-	bh=A5HpG8Zsyy06/6utYaPjLDZp6LUDvubV1AtTckT08XY=;
+	s=korg; t=1700851120;
+	bh=3qrbOVgKTKcHQWcSiMWPg9rDKvq9+t77WKEKCOIFYFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohC9wOEkrYHG7FrJ42EXf2AsTE+X814Kl13yrF9UE/TWhsP2z7K9FFJBJFPoKAYyj
-	 t3+V2/rSAuEV7m05aKYiWeZK9G9Tb5fy2BzgPiF5Qotbbrahh3JBSmxcvRDEAkXblJ
-	 PLkgRQ8E6SHAcEO/FebjXAPZnz7Z/XP9DD6+gGxg=
+	b=S93WlOxbdCCenn5+yfu0U4fr8q9p1MFLoyRJQB8NoOLQ0ulBJLM0AtjVBK43OBLI9
+	 DnprOHBUs+bgn/AE7uyWVm+VfwHl4X4jY8kBWzIYPDBcSW5qcLUwFHurg0eh9+K1NU
+	 HjTElAUxuGBdq69wxErvKckNiPviueoLoN5pMyz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 391/530] i3c: master: svc: fix SDA keep low when polling IBIWON timeout happen
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 321/491] arm64: dts: qcom: ipq6018: Fix tcsr_mutex register size
 Date: Fri, 24 Nov 2023 17:49:17 +0000
-Message-ID: <20231124172039.924431599@linuxfoundation.org>
+Message-ID: <20231124172034.212350239@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-commit dfd7cd6aafdb1f5ba93828e97e56b38304b23a05 upstream.
+commit 72fc3d58b87b0d622039c6299b89024fbb7b420f upstream.
 
-Upon IBIWON timeout, the SDA line will always be kept low if we don't emit
-a stop. Calling svc_i3c_master_emit_stop() there will let the bus return to
-idle state.
+IPQ6018's TCSR Mutex HW lock register has 32 locks of size 4KB each.
+Total size of the TCSR Mutex registers is 128KB.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-6-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fix size of the tcsr_mutex hwlock register to 0x20000.
+
+Changes in v2:
+ - Drop change to remove qcom,ipq6018-tcsr-mutex compatible string
+ - Added Fixes and stable tags
+
+Cc: stable@vger.kernel.org
+Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230905095535.1263113-2-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -405,6 +405,7 @@ static void svc_i3c_master_ibi_work(stru
- 					 SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
- 	if (ret) {
- 		dev_err(master->dev, "Timeout when polling for IBIWON\n");
-+		svc_i3c_master_emit_stop(master);
- 		goto reenable_ibis;
- 	}
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -389,7 +389,7 @@
+ 
+ 		tcsr_mutex: hwlock@1905000 {
+ 			compatible = "qcom,ipq6018-tcsr-mutex", "qcom,tcsr-mutex";
+-			reg = <0x0 0x01905000 0x0 0x1000>;
++			reg = <0x0 0x01905000 0x0 0x20000>;
+ 			#hwlock-cells = <1>;
+ 		};
  
 
 
