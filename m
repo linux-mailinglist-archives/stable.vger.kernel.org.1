@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72A07F7D21
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96FE7F7AB8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F1D1C211FB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 544C8B2100F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BE7381BF;
-	Fri, 24 Nov 2023 18:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9798E39FD0;
+	Fri, 24 Nov 2023 17:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xi9dJpgC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NuWO+vcq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8F334197;
-	Fri, 24 Nov 2023 18:21:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E62C433C8;
-	Fri, 24 Nov 2023 18:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C4C381DE;
+	Fri, 24 Nov 2023 17:57:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AE0C433C7;
+	Fri, 24 Nov 2023 17:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850098;
-	bh=EYemo1967CvXyOimJHVxmbKSzILRGfhFFrPekg4y6uU=;
+	s=korg; t=1700848679;
+	bh=nl1VLFQPWZ6Q4lnjDFGft/1nvM/C0UYnfVJVijLeJfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xi9dJpgCVaod3anZRGo3uuswr5vfK3Bco2P5iKKxpNK4AzZD1xek45GqDUMnyHLjI
-	 hAaE/fjyfHpGOQOAWjFyhxp0ei+santdkgPDwPVD+MStHIXSvbXIBBvrlEyKXB6GTu
-	 odhgExn/2OrHRmfBm7ahc7BDupxkV9yMAvZJFtPY=
+	b=NuWO+vcq6iU8kIIR//aQDa/rYf/tvcB8h7UkLzeLGYcTAMxm5ydzXvdvudHqzW/W2
+	 kuYXd8KLy6dY4UAvBTn9/rq+1Zbl3WZMVFOOGDu5b+LHa9mIuIyKjdKYx4Hiug+bQM
+	 fHxpExidpccUfLmtF1G0FhfYJG6k3rOEFv39gAK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.6 444/530] s390/ap: fix AP bus crash on early config change callback invocation
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Mahesh Bandewar <maheshb@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 37/97] ipvlan: add ipvlan_route_v6_outbound() helper
 Date: Fri, 24 Nov 2023 17:50:10 +0000
-Message-ID: <20231124172041.614804891@linuxfoundation.org>
+Message-ID: <20231124171935.546628289@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,93 +56,277 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit e14aec23025eeb1f2159ba34dbc1458467c4c347 upstream.
+[ Upstream commit 18f039428c7df183b09c69ebf10ffd4e521035d2 ]
 
-Fix kernel crash in AP bus code caused by very early invocation of the
-config change callback function via SCLP.
+Inspired by syzbot reports using a stack of multiple ipvlan devices.
 
-After a fresh IML of the machine the crypto cards are still offline and
-will get switched online only with activation of any LPAR which has the
-card in it's configuration. A crypto card coming online is reported
-to the LPAR via SCLP and the AP bus offers a callback function to get
-this kind of information. However, it may happen that the callback is
-invoked before the AP bus init function is complete. As the callback
-triggers a synchronous AP bus scan, the scan may already run but some
-internal states are not initialized by the AP bus init function resulting
-in a crash like this:
+Reduce stack size needed in ipvlan_process_v6_outbound() by moving
+the flowi6 struct used for the route lookup in an non inlined
+helper. ipvlan_route_v6_outbound() needs 120 bytes on the stack,
+immediately reclaimed.
 
-  [   11.635859] Unable to handle kernel pointer dereference in virtual kernel address space
-  [   11.635861] Failing address: 0000000000000000 TEID: 0000000000000887
-  [   11.635862] Fault in home space mode while using kernel ASCE.
-  [   11.635864] AS:00000000894c4007 R3:00000001fece8007 S:00000001fece7800 P:000000000000013d
-  [   11.635879] Oops: 0004 ilc:1 [#1] SMP
-  [   11.635882] Modules linked in:
-  [   11.635884] CPU: 5 PID: 42 Comm: kworker/5:0 Not tainted 6.6.0-rc3-00003-g4dbf7cdc6b42 #12
-  [   11.635886] Hardware name: IBM 3931 A01 751 (LPAR)
-  [   11.635887] Workqueue: events_long ap_scan_bus
-  [   11.635891] Krnl PSW : 0704c00180000000 0000000000000000 (0x0)
-  [   11.635895]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-  [   11.635897] Krnl GPRS: 0000000001000a00 0000000000000000 0000000000000006 0000000089591940
-  [   11.635899]            0000000080000000 0000000000000a00 0000000000000000 0000000000000000
-  [   11.635901]            0000000081870c00 0000000089591000 000000008834e4e2 0000000002625a00
-  [   11.635903]            0000000081734200 0000038000913c18 000000008834c6d6 0000038000913ac8
-  [   11.635906] Krnl Code:>0000000000000000: 0000                illegal
-  [   11.635906]            0000000000000002: 0000                illegal
-  [   11.635906]            0000000000000004: 0000                illegal
-  [   11.635906]            0000000000000006: 0000                illegal
-  [   11.635906]            0000000000000008: 0000                illegal
-  [   11.635906]            000000000000000a: 0000                illegal
-  [   11.635906]            000000000000000c: 0000                illegal
-  [   11.635906]            000000000000000e: 0000                illegal
-  [   11.635915] Call Trace:
-  [   11.635916]  [<0000000000000000>] 0x0
-  [   11.635918]  [<000000008834e4e2>] ap_queue_init_state+0x82/0xb8
-  [   11.635921]  [<000000008834ba1c>] ap_scan_domains+0x6fc/0x740
-  [   11.635923]  [<000000008834c092>] ap_scan_adapter+0x632/0x8b0
-  [   11.635925]  [<000000008834c3e4>] ap_scan_bus+0xd4/0x288
-  [   11.635927]  [<00000000879a33ba>] process_one_work+0x19a/0x410
-  [   11.635930] Discipline DIAG cannot be used without z/VM
-  [   11.635930]  [<00000000879a3a2c>] worker_thread+0x3fc/0x560
-  [   11.635933]  [<00000000879aea60>] kthread+0x120/0x128
-  [   11.635936]  [<000000008792afa4>] __ret_from_fork+0x3c/0x58
-  [   11.635938]  [<00000000885ebe62>] ret_from_fork+0xa/0x30
-  [   11.635942] Last Breaking-Event-Address:
-  [   11.635942]  [<000000008834c6d4>] ap_wait+0xcc/0x148
+Also make sure ipvlan_process_v4_outbound() is not inlined.
 
-This patch improves the ap_bus_force_rescan() function which is
-invoked by the config change callback by checking if a first
-initial AP bus scan has been done. If not, the force rescan request
-is simple ignored. Anyhow it does not make sense to trigger AP bus
-re-scans even before the very first bus scan is complete.
+We might also have to lower MAX_NEST_DEV, because only syzbot uses
+setups with more than four stacked devices.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: TASK stack guard page was hit at ffffc9000e803ff8 (stack is ffffc9000e804000..ffffc9000e808000)
+stack guard page: 0000 [#1] SMP KASAN
+CPU: 0 PID: 13442 Comm: syz-executor.4 Not tainted 6.1.52-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
+RIP: 0010:kasan_check_range+0x4/0x2a0 mm/kasan/generic.c:188
+Code: 48 01 c6 48 89 c7 e8 db 4e c1 03 31 c0 5d c3 cc 0f 0b eb 02 0f 0b b8 ea ff ff ff 5d c3 cc 00 00 cc cc 00 00 cc cc 55 48 89 e5 <41> 57 41 56 41 55 41 54 53 b0 01 48 85 f6 0f 84 a4 01 00 00 48 89
+RSP: 0018:ffffc9000e804000 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff817e5bf2
+RDX: 0000000000000000 RSI: 0000000000000008 RDI: ffffffff887c6568
+RBP: ffffc9000e804000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: dffffc0000000001 R12: 1ffff92001d0080c
+R13: dffffc0000000000 R14: ffffffff87e6b100 R15: 0000000000000000
+FS: 00007fd0c55826c0(0000) GS:ffff8881f6800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffc9000e803ff8 CR3: 0000000170ef7000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<#DF>
+</#DF>
+<TASK>
+[<ffffffff81f281d1>] __kasan_check_read+0x11/0x20 mm/kasan/shadow.c:31
+[<ffffffff817e5bf2>] instrument_atomic_read include/linux/instrumented.h:72 [inline]
+[<ffffffff817e5bf2>] _test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+[<ffffffff817e5bf2>] cpumask_test_cpu include/linux/cpumask.h:506 [inline]
+[<ffffffff817e5bf2>] cpu_online include/linux/cpumask.h:1092 [inline]
+[<ffffffff817e5bf2>] trace_lock_acquire include/trace/events/lock.h:24 [inline]
+[<ffffffff817e5bf2>] lock_acquire+0xe2/0x590 kernel/locking/lockdep.c:5632
+[<ffffffff8563221e>] rcu_lock_acquire+0x2e/0x40 include/linux/rcupdate.h:306
+[<ffffffff8561464d>] rcu_read_lock include/linux/rcupdate.h:747 [inline]
+[<ffffffff8561464d>] ip6_pol_route+0x15d/0x1440 net/ipv6/route.c:2221
+[<ffffffff85618120>] ip6_pol_route_output+0x50/0x80 net/ipv6/route.c:2606
+[<ffffffff856f65b5>] pol_lookup_func include/net/ip6_fib.h:584 [inline]
+[<ffffffff856f65b5>] fib6_rule_lookup+0x265/0x620 net/ipv6/fib6_rules.c:116
+[<ffffffff85618009>] ip6_route_output_flags_noref+0x2d9/0x3a0 net/ipv6/route.c:2638
+[<ffffffff8561821a>] ip6_route_output_flags+0xca/0x340 net/ipv6/route.c:2651
+[<ffffffff838bd5a3>] ip6_route_output include/net/ip6_route.h:100 [inline]
+[<ffffffff838bd5a3>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:473 [inline]
+[<ffffffff838bd5a3>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
+[<ffffffff838bd5a3>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
+[<ffffffff838bd5a3>] ipvlan_queue_xmit+0xc33/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
+[<ffffffff838c2909>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
+[<ffffffff84d03900>] netdev_start_xmit include/linux/netdevice.h:4966 [inline]
+[<ffffffff84d03900>] xmit_one net/core/dev.c:3644 [inline]
+[<ffffffff84d03900>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
+[<ffffffff84d080e2>] __dev_queue_xmit+0x16b2/0x3370 net/core/dev.c:4324
+[<ffffffff855ce4cd>] dev_queue_xmit include/linux/netdevice.h:3067 [inline]
+[<ffffffff855ce4cd>] neigh_hh_output include/net/neighbour.h:529 [inline]
+[<ffffffff855ce4cd>] neigh_output include/net/neighbour.h:543 [inline]
+[<ffffffff855ce4cd>] ip6_finish_output2+0x160d/0x1ae0 net/ipv6/ip6_output.c:139
+[<ffffffff855b8616>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
+[<ffffffff855b8616>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
+[<ffffffff855b7e3c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff855b7e3c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
+[<ffffffff8575d27f>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff8575d27f>] ip6_local_out+0x10f/0x140 net/ipv6/output_core.c:161
+[<ffffffff838bdae4>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:483 [inline]
+[<ffffffff838bdae4>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
+[<ffffffff838bdae4>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
+[<ffffffff838bdae4>] ipvlan_queue_xmit+0x1174/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
+[<ffffffff838c2909>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
+[<ffffffff84d03900>] netdev_start_xmit include/linux/netdevice.h:4966 [inline]
+[<ffffffff84d03900>] xmit_one net/core/dev.c:3644 [inline]
+[<ffffffff84d03900>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
+[<ffffffff84d080e2>] __dev_queue_xmit+0x16b2/0x3370 net/core/dev.c:4324
+[<ffffffff855ce4cd>] dev_queue_xmit include/linux/netdevice.h:3067 [inline]
+[<ffffffff855ce4cd>] neigh_hh_output include/net/neighbour.h:529 [inline]
+[<ffffffff855ce4cd>] neigh_output include/net/neighbour.h:543 [inline]
+[<ffffffff855ce4cd>] ip6_finish_output2+0x160d/0x1ae0 net/ipv6/ip6_output.c:139
+[<ffffffff855b8616>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
+[<ffffffff855b8616>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
+[<ffffffff855b7e3c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff855b7e3c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
+[<ffffffff8575d27f>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff8575d27f>] ip6_local_out+0x10f/0x140 net/ipv6/output_core.c:161
+[<ffffffff838bdae4>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:483 [inline]
+[<ffffffff838bdae4>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
+[<ffffffff838bdae4>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
+[<ffffffff838bdae4>] ipvlan_queue_xmit+0x1174/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
+[<ffffffff838c2909>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
+[<ffffffff84d03900>] netdev_start_xmit include/linux/netdevice.h:4966 [inline]
+[<ffffffff84d03900>] xmit_one net/core/dev.c:3644 [inline]
+[<ffffffff84d03900>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
+[<ffffffff84d080e2>] __dev_queue_xmit+0x16b2/0x3370 net/core/dev.c:4324
+[<ffffffff855ce4cd>] dev_queue_xmit include/linux/netdevice.h:3067 [inline]
+[<ffffffff855ce4cd>] neigh_hh_output include/net/neighbour.h:529 [inline]
+[<ffffffff855ce4cd>] neigh_output include/net/neighbour.h:543 [inline]
+[<ffffffff855ce4cd>] ip6_finish_output2+0x160d/0x1ae0 net/ipv6/ip6_output.c:139
+[<ffffffff855b8616>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
+[<ffffffff855b8616>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
+[<ffffffff855b7e3c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff855b7e3c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
+[<ffffffff8575d27f>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff8575d27f>] ip6_local_out+0x10f/0x140 net/ipv6/output_core.c:161
+[<ffffffff838bdae4>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:483 [inline]
+[<ffffffff838bdae4>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
+[<ffffffff838bdae4>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
+[<ffffffff838bdae4>] ipvlan_queue_xmit+0x1174/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
+[<ffffffff838c2909>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
+[<ffffffff84d03900>] netdev_start_xmit include/linux/netdevice.h:4966 [inline]
+[<ffffffff84d03900>] xmit_one net/core/dev.c:3644 [inline]
+[<ffffffff84d03900>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
+[<ffffffff84d080e2>] __dev_queue_xmit+0x16b2/0x3370 net/core/dev.c:4324
+[<ffffffff855ce4cd>] dev_queue_xmit include/linux/netdevice.h:3067 [inline]
+[<ffffffff855ce4cd>] neigh_hh_output include/net/neighbour.h:529 [inline]
+[<ffffffff855ce4cd>] neigh_output include/net/neighbour.h:543 [inline]
+[<ffffffff855ce4cd>] ip6_finish_output2+0x160d/0x1ae0 net/ipv6/ip6_output.c:139
+[<ffffffff855b8616>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
+[<ffffffff855b8616>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
+[<ffffffff855b7e3c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff855b7e3c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
+[<ffffffff8575d27f>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff8575d27f>] ip6_local_out+0x10f/0x140 net/ipv6/output_core.c:161
+[<ffffffff838bdae4>] ipvlan_process_v6_outbound drivers/net/ipvlan/ipvlan_core.c:483 [inline]
+[<ffffffff838bdae4>] ipvlan_process_outbound drivers/net/ipvlan/ipvlan_core.c:529 [inline]
+[<ffffffff838bdae4>] ipvlan_xmit_mode_l3 drivers/net/ipvlan/ipvlan_core.c:602 [inline]
+[<ffffffff838bdae4>] ipvlan_queue_xmit+0x1174/0x1be0 drivers/net/ipvlan/ipvlan_core.c:677
+[<ffffffff838c2909>] ipvlan_start_xmit+0x49/0x100 drivers/net/ipvlan/ipvlan_main.c:229
+[<ffffffff84d03900>] netdev_start_xmit include/linux/netdevice.h:4966 [inline]
+[<ffffffff84d03900>] xmit_one net/core/dev.c:3644 [inline]
+[<ffffffff84d03900>] dev_hard_start_xmit+0x320/0x980 net/core/dev.c:3660
+[<ffffffff84d080e2>] __dev_queue_xmit+0x16b2/0x3370 net/core/dev.c:4324
+[<ffffffff84d4a65e>] dev_queue_xmit include/linux/netdevice.h:3067 [inline]
+[<ffffffff84d4a65e>] neigh_resolve_output+0x64e/0x750 net/core/neighbour.c:1560
+[<ffffffff855ce503>] neigh_output include/net/neighbour.h:545 [inline]
+[<ffffffff855ce503>] ip6_finish_output2+0x1643/0x1ae0 net/ipv6/ip6_output.c:139
+[<ffffffff855b8616>] __ip6_finish_output net/ipv6/ip6_output.c:200 [inline]
+[<ffffffff855b8616>] ip6_finish_output+0x6c6/0xb10 net/ipv6/ip6_output.c:211
+[<ffffffff855b7e3c>] NF_HOOK_COND include/linux/netfilter.h:298 [inline]
+[<ffffffff855b7e3c>] ip6_output+0x2bc/0x3d0 net/ipv6/ip6_output.c:232
+[<ffffffff855b9ce4>] dst_output include/net/dst.h:444 [inline]
+[<ffffffff855b9ce4>] NF_HOOK include/linux/netfilter.h:309 [inline]
+[<ffffffff855b9ce4>] ip6_xmit+0x11a4/0x1b20 net/ipv6/ip6_output.c:352
+[<ffffffff8597984e>] sctp_v6_xmit+0x9ae/0x1230 net/sctp/ipv6.c:250
+[<ffffffff8594623e>] sctp_packet_transmit+0x25de/0x2bc0 net/sctp/output.c:653
+[<ffffffff858f5142>] sctp_packet_singleton+0x202/0x310 net/sctp/outqueue.c:783
+[<ffffffff858ea411>] sctp_outq_flush_ctrl net/sctp/outqueue.c:914 [inline]
+[<ffffffff858ea411>] sctp_outq_flush+0x661/0x3d40 net/sctp/outqueue.c:1212
+[<ffffffff858f02f9>] sctp_outq_uncork+0x79/0xb0 net/sctp/outqueue.c:764
+[<ffffffff8589f060>] sctp_side_effects net/sctp/sm_sideeffect.c:1199 [inline]
+[<ffffffff8589f060>] sctp_do_sm+0x55c0/0x5c30 net/sctp/sm_sideeffect.c:1170
+[<ffffffff85941567>] sctp_primitive_ASSOCIATE+0x97/0xc0 net/sctp/primitive.c:73
+[<ffffffff859408b2>] sctp_sendmsg_to_asoc+0xf62/0x17b0 net/sctp/socket.c:1839
+[<ffffffff85910b5e>] sctp_sendmsg+0x212e/0x33b0 net/sctp/socket.c:2029
+[<ffffffff8544d559>] inet_sendmsg+0x149/0x310 net/ipv4/af_inet.c:849
+[<ffffffff84c6c4d2>] sock_sendmsg_nosec net/socket.c:716 [inline]
+[<ffffffff84c6c4d2>] sock_sendmsg net/socket.c:736 [inline]
+[<ffffffff84c6c4d2>] ____sys_sendmsg+0x572/0x8c0 net/socket.c:2504
+[<ffffffff84c6ca91>] ___sys_sendmsg net/socket.c:2558 [inline]
+[<ffffffff84c6ca91>] __sys_sendmsg+0x271/0x360 net/socket.c:2587
+[<ffffffff84c6cbff>] __do_sys_sendmsg net/socket.c:2596 [inline]
+[<ffffffff84c6cbff>] __se_sys_sendmsg net/socket.c:2594 [inline]
+[<ffffffff84c6cbff>] __x64_sys_sendmsg+0x7f/0x90 net/socket.c:2594
+[<ffffffff85b32553>] do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+[<ffffffff85b32553>] do_syscall_64+0x53/0x80 arch/x86/entry/common.c:84
+[<ffffffff85c00087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Mahesh Bandewar <maheshb@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/ap_bus.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ipvlan/ipvlan_core.c | 41 +++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 16 deletions(-)
 
---- a/drivers/s390/crypto/ap_bus.c
-+++ b/drivers/s390/crypto/ap_bus.c
-@@ -1022,6 +1022,10 @@ EXPORT_SYMBOL(ap_driver_unregister);
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index ecb10fb249af4..34126abb28d8d 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -418,7 +418,7 @@ static struct ipvl_addr *ipvlan_addr_lookup(struct ipvl_port *port,
+ 	return addr;
+ }
  
- void ap_bus_force_rescan(void)
+-static int ipvlan_process_v4_outbound(struct sk_buff *skb)
++static noinline_for_stack int ipvlan_process_v4_outbound(struct sk_buff *skb)
  {
-+	/* Only trigger AP bus scans after the initial scan is done */
-+	if (atomic64_read(&ap_scan_bus_count) <= 0)
-+		return;
+ 	const struct iphdr *ip4h = ip_hdr(skb);
+ 	struct net_device *dev = skb->dev;
+@@ -460,13 +460,11 @@ static int ipvlan_process_v4_outbound(struct sk_buff *skb)
+ }
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+-static int ipvlan_process_v6_outbound(struct sk_buff *skb)
 +
- 	/* processing a asynchronous bus rescan */
- 	del_timer(&ap_config_timer);
- 	queue_work(system_long_wq, &ap_scan_work);
++static noinline_for_stack int
++ipvlan_route_v6_outbound(struct net_device *dev, struct sk_buff *skb)
+ {
+ 	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
+-	struct net_device *dev = skb->dev;
+-	struct net *net = dev_net(dev);
+-	struct dst_entry *dst;
+-	int err, ret = NET_XMIT_DROP;
+ 	struct flowi6 fl6 = {
+ 		.flowi6_oif = dev->ifindex,
+ 		.daddr = ip6h->daddr,
+@@ -476,27 +474,38 @@ static int ipvlan_process_v6_outbound(struct sk_buff *skb)
+ 		.flowi6_mark = skb->mark,
+ 		.flowi6_proto = ip6h->nexthdr,
+ 	};
++	struct dst_entry *dst;
++	int err;
+ 
+-	dst = ip6_route_output(net, NULL, &fl6);
+-	if (dst->error) {
+-		ret = dst->error;
++	dst = ip6_route_output(dev_net(dev), NULL, &fl6);
++	err = dst->error;
++	if (err) {
+ 		dst_release(dst);
+-		goto err;
++		return err;
+ 	}
+ 	skb_dst_set(skb, dst);
++	return 0;
++}
++
++static int ipvlan_process_v6_outbound(struct sk_buff *skb)
++{
++	struct net_device *dev = skb->dev;
++	int err, ret = NET_XMIT_DROP;
++
++	err = ipvlan_route_v6_outbound(dev, skb);
++	if (unlikely(err)) {
++		DEV_STATS_INC(dev, tx_errors);
++		kfree_skb(skb);
++		return err;
++	}
+ 
+ 	memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
+ 
+-	err = ip6_local_out(net, skb->sk, skb);
++	err = ip6_local_out(dev_net(dev), skb->sk, skb);
+ 	if (unlikely(net_xmit_eval(err)))
+ 		DEV_STATS_INC(dev, tx_errors);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+-	goto out;
+-err:
+-	DEV_STATS_INC(dev, tx_errors);
+-	kfree_skb(skb);
+-out:
+ 	return ret;
+ }
+ #else
+-- 
+2.42.0
+
 
 
 
