@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7526F7F8233
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B61787F837F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A61871C22CAB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 456A5B25F8C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEE62E84A;
-	Fri, 24 Nov 2023 19:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805ED381CC;
+	Fri, 24 Nov 2023 19:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVs3qzOd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouJY3SNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7934833076;
-	Fri, 24 Nov 2023 19:05:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E2EC433C8;
-	Fri, 24 Nov 2023 19:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4122F35F1A;
+	Fri, 24 Nov 2023 19:18:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2923C433CB;
+	Fri, 24 Nov 2023 19:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852726;
-	bh=ciC4K/LLwsR3CBtFhUWhlzvQJNt1+5Zzmo1/xY//FhA=;
+	s=korg; t=1700853491;
+	bh=Tl5i//zi64sbROncZYffy9DTa2QtHMZ1WaDzsTqQDcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVs3qzOdDqcARzx+dDDa0b0Z0w5clfTVUxIsggaVP4tafx0GgVrWwNPDugmyvPZy1
-	 +sjSuwofGnaXAPNuqKvRxA+SWN29ekNsE8C577Bua6KEgjp63pyxLU+4KxAjxMYy2y
-	 33kkzmR45AsokaaLxDG/YrRNV9zZ5L8keTGziCLQ=
+	b=ouJY3SNPfSeM28faxwN84dwqicf34qJ1T2BVXyBhyL2oCXsc33cg5zFf6Sc6JJJ38
+	 e7DF9LbxGoP8BxQzemc/VpsOkgLjuVDyOyLoXkQCRrejnFoxv4fT3XBRHfDgy/MkV+
+	 wAPXt4OyIi7A9XH8QDqpbQ+qtUrdVMeg8SRscphE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Steinmetz <anstein99@googlemail.com>,
-	John Johansen <john.johanse@canonical.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.10 099/193] audit: dont take task_lock() in audit_exe_compare() code path
+	Nitin Yadav <n-yadav@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 184/297] mmc: sdhci_am654: fix start loop index for TAP value parsing
 Date: Fri, 24 Nov 2023 17:53:46 +0000
-Message-ID: <20231124171951.216377652@linuxfoundation.org>
+Message-ID: <20231124172006.670936604@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: Nitin Yadav <n-yadav@ti.com>
 
-commit 47846d51348dd62e5231a83be040981b17c955fa upstream.
+commit 71956d0cb56c1e5f9feeb4819db87a076418e930 upstream.
 
-The get_task_exe_file() function locks the given task with task_lock()
-which when used inside audit_exe_compare() can cause deadlocks on
-systems that generate audit records when the task_lock() is held. We
-resolve this problem with two changes: ignoring those cases where the
-task being audited is not the current task, and changing our approach
-to obtaining the executable file struct to not require task_lock().
+ti,otap-del-sel-legacy/ti,itap-del-sel-legacy passed from DT
+are currently ignored for all SD/MMC and eMMC modes. Fix this
+by making start loop index to MMC_TIMING_LEGACY.
 
-With the intent of the audit exe filter being to filter on audit events
-generated by processes started by the specified executable, it makes
-sense that we would only want to use the exe filter on audit records
-associated with the currently executing process, e.g. @current.  If
-we are asked to filter records using a non-@current task_struct we can
-safely ignore the exe filter without negatively impacting the admin's
-expectations for the exe filter.
-
-Knowing that we only have to worry about filtering the currently
-executing task in audit_exe_compare() we can do away with the
-task_lock() and call get_mm_exe_file() with @current->mm directly.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 5efc244346f9 ("audit: fix exe_file access in audit_exe_compare")
-Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
-Reviewed-by: John Johansen <john.johanse@canonical.com>
-Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 8ee5fc0e0b3b ("mmc: sdhci_am654: Update OTAPDLY writes")
+Signed-off-by: Nitin Yadav <n-yadav@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231026061458.1116276-1-n-yadav@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/audit_watch.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci_am654.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/audit_watch.c
-+++ b/kernel/audit_watch.c
-@@ -527,11 +527,18 @@ int audit_exe_compare(struct task_struct
- 	unsigned long ino;
- 	dev_t dev;
- 
--	exe_file = get_task_exe_file(tsk);
-+	/* only do exe filtering if we are recording @current events/records */
-+	if (tsk != current)
-+		return 0;
-+
-+	if (WARN_ON_ONCE(!current->mm))
-+		return 0;
-+	exe_file = get_mm_exe_file(current->mm);
- 	if (!exe_file)
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -600,7 +600,7 @@ static int sdhci_am654_get_otap_delay(st
  		return 0;
- 	ino = file_inode(exe_file)->i_ino;
- 	dev = file_inode(exe_file)->i_sb->s_dev;
- 	fput(exe_file);
-+
- 	return audit_mark_compare(mark, ino, dev);
- }
+ 	}
+ 
+-	for (i = MMC_TIMING_MMC_HS; i <= MMC_TIMING_MMC_HS400; i++) {
++	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
+ 
+ 		ret = device_property_read_u32(dev, td[i].otap_binding,
+ 					       &sdhci_am654->otap_del_sel[i]);
 
 
 
