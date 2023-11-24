@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-1195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE20B7F7E78
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D65EF7F7C37
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5041AB21267
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13A0E1C21123
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423092EAFB;
-	Fri, 24 Nov 2023 18:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522433A8C6;
+	Fri, 24 Nov 2023 18:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiwNe9hp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ogjUYH1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C4F2D62A;
-	Fri, 24 Nov 2023 18:33:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F67DC433C8;
-	Fri, 24 Nov 2023 18:33:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C5039FD9;
+	Fri, 24 Nov 2023 18:12:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DFAC433C7;
+	Fri, 24 Nov 2023 18:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850794;
-	bh=tTrVNjNdGdmn65eymDfxA67WaZVa5Zk4dxzs/MKFQd0=;
+	s=korg; t=1700849578;
+	bh=PPxmiGde53q7KpD3JjjHbta8U+5CjOQ68eYervnT4Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iiwNe9hp2aLgLS2N5BEfAsdxp/xxM/69qsUtYIt64LJ8xnaymdV6CeP2zBTXItwVx
-	 OfXaGvRct2yls0VKapciAiO+0w6i6yfbCFJHpNiJV4MVinrKBqDFP9Pj+i3G3OT/Xb
-	 yfZAZwYcOu6ifDCtaJiyhaPJb50swXNGnv1/4MAw=
+	b=0ogjUYH1iTteHKtHueXwDP78R7bgVqyC2mMqP5pkzv3tBSYuDfh5ePnd669MY5LCA
+	 Y3oLlxHfFRCzYG0W8zyBH1M6YgrkuvOt0UyapwiI9YIL753BRvjm1rlRf/kOJDMt9z
+	 Ys7c2EXDgR+fvbj2wezmvsRZ6XsGKXAXyXtoPzfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Kahola <mika.kahola@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 167/491] drm/i915/tc: Fix -Wformat-truncation in intel_tc_port_init
+	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 237/530] i915/perf: Fix NULL deref bugs with drm_dbg() calls
 Date: Fri, 24 Nov 2023 17:46:43 +0000
-Message-ID: <20231124172029.492030326@linuxfoundation.org>
+Message-ID: <20231124172035.266264998@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,90 +51,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nirmoy Das <nirmoy.das@intel.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit 9506fba463fcbdf8c8b7af3ec9ee34360df843fe ]
+commit 471aa951bf1206d3c10d0daa67005b8e4db4ff83 upstream.
 
-Fix below compiler warning:
+When i915 perf interface is not available dereferencing it will lead to
+NULL dereferences.
 
-intel_tc.c:1879:11: error: ‘%d’ directive output may be truncated
-writing between 1 and 11 bytes into a region of size 3
-[-Werror=format-truncation=]
-"%c/TC#%d", port_name(port), tc_port + 1);
-           ^~
-intel_tc.c:1878:2: note: ‘snprintf’ output between 7 and 17 bytes
-into a destination of size 8
-  snprintf(tc->port_name, sizeof(tc->port_name),
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    "%c/TC#%d", port_name(port), tc_port + 1);
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+As returning -ENOTSUPP is pretty clear return when perf interface is not
+available.
 
-v2: use kasprintf(Imre)
-v3: use const for port_name, and fix tc mem leak(Imre)
-
-Fixes: 3eafcddf766b ("drm/i915/tc: Move TC port fields to a new intel_tc_port struct")
-Cc: Mika Kahola <mika.kahola@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Imre Deak <imre.deak@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Fixes: 2fec539112e8 ("i915/perf: Replace DRM_DEBUG with driver specific drm_dbg call")
+Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231027172822.2753059-1-harshit.m.mogalapalli@oracle.com
+[tursulin: added stable tag]
+(cherry picked from commit 36f27350ff745bd228ab04d7845dfbffc177a889)
 Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231026125636.5080-1-nirmoy.das@intel.com
-(cherry picked from commit 70a3cbbe620ee66afb0c066624196077767e61b2)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_tc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/i915_perf.c |   15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
-index 3ebf41859043e..cdf2455440bea 100644
---- a/drivers/gpu/drm/i915/display/intel_tc.c
-+++ b/drivers/gpu/drm/i915/display/intel_tc.c
-@@ -58,7 +58,7 @@ struct intel_tc_port {
- 	struct delayed_work link_reset_work;
- 	int link_refcount;
- 	bool legacy_port:1;
--	char port_name[8];
-+	const char *port_name;
- 	enum tc_port_mode mode;
- 	enum tc_port_mode init_mode;
- 	enum phy_fia phy_fia;
-@@ -1841,8 +1841,12 @@ int intel_tc_port_init(struct intel_digital_port *dig_port, bool is_legacy)
- 	else
- 		tc->phy_ops = &icl_tc_phy_ops;
+--- a/drivers/gpu/drm/i915/i915_perf.c
++++ b/drivers/gpu/drm/i915/i915_perf.c
+@@ -4286,11 +4286,8 @@ int i915_perf_open_ioctl(struct drm_devi
+ 	u32 known_open_flags;
+ 	int ret;
  
--	snprintf(tc->port_name, sizeof(tc->port_name),
--		 "%c/TC#%d", port_name(port), tc_port + 1);
-+	tc->port_name = kasprintf(GFP_KERNEL, "%c/TC#%d", port_name(port),
-+				  tc_port + 1);
-+	if (!tc->port_name) {
-+		kfree(tc);
-+		return -ENOMEM;
-+	}
+-	if (!perf->i915) {
+-		drm_dbg(&perf->i915->drm,
+-			"i915 perf interface not available for this system\n");
++	if (!perf->i915)
+ 		return -ENOTSUPP;
+-	}
  
- 	mutex_init(&tc->lock);
- 	/* TODO: Combine the two works */
-@@ -1863,6 +1867,7 @@ void intel_tc_port_cleanup(struct intel_digital_port *dig_port)
- {
- 	intel_tc_port_suspend(dig_port);
+ 	known_open_flags = I915_PERF_FLAG_FD_CLOEXEC |
+ 			   I915_PERF_FLAG_FD_NONBLOCK |
+@@ -4666,11 +4663,8 @@ int i915_perf_add_config_ioctl(struct dr
+ 	struct i915_oa_reg *regs;
+ 	int err, id;
  
-+	kfree(dig_port->tc->port_name);
- 	kfree(dig_port->tc);
- 	dig_port->tc = NULL;
- }
--- 
-2.42.0
-
+-	if (!perf->i915) {
+-		drm_dbg(&perf->i915->drm,
+-			"i915 perf interface not available for this system\n");
++	if (!perf->i915)
+ 		return -ENOTSUPP;
+-	}
+ 
+ 	if (!perf->metrics_kobj) {
+ 		drm_dbg(&perf->i915->drm,
+@@ -4832,11 +4826,8 @@ int i915_perf_remove_config_ioctl(struct
+ 	struct i915_oa_config *oa_config;
+ 	int ret;
+ 
+-	if (!perf->i915) {
+-		drm_dbg(&perf->i915->drm,
+-			"i915 perf interface not available for this system\n");
++	if (!perf->i915)
+ 		return -ENOTSUPP;
+-	}
+ 
+ 	if (i915_perf_stream_paranoid && !perfmon_capable()) {
+ 		drm_dbg(&perf->i915->drm,
 
 
 
