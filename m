@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-1958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173687F8227
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491B57F833F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:15:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C45252844ED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CAD51C25194
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567F13173F;
-	Fri, 24 Nov 2023 19:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A1A381D2;
+	Fri, 24 Nov 2023 19:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdnuJQKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVLTGD8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1133B22F1D;
-	Fri, 24 Nov 2023 19:04:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93253C433C7;
-	Fri, 24 Nov 2023 19:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D7A2C87B;
+	Fri, 24 Nov 2023 19:15:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E23C433C8;
+	Fri, 24 Nov 2023 19:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852695;
-	bh=LbScnf3U9SiXroI2ii7VVnuTU0VFUVgd9MsD8PAIkio=;
+	s=korg; t=1700853335;
+	bh=P7hLQjhYFJEYvVjmI7+k+19L+coAfQmtQFOiTbo98y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdnuJQKDNZ/SxSEvwO3jghrTRv5Jmx4TMPO0wDUM43WhWapGyKady0UmxasB4eJhq
-	 Lx3zX969XRT9a8iD2zJVkUIOVDyg814VuF9IyrbUiMQgqyFm0ivjyS3RzJLAElbejO
-	 XCvHMV/gtM4bxhXUfh/r8RWsx9dFbfSGsP2Mb+5Y=
+	b=UVLTGD8DLArhvRrbbHgZ97q6jI8UEiIfQ8/ACC1rvwPpmH2rX2+JxGWJaVZVLUhTv
+	 o8AEJ4jy6uU6VAkIwoGjb6grNEkYCKC5+D+5iNhEJqfzT+yhzYtRXgls1LagYujtVW
+	 z3Oi/Bg6v3EYyN9z0qditpvdMck1SPii2pFytxNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Marc Zyngier <maz@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/193] gpio: Expose the gpiochip_irq_re[ql]res helpers
+Subject: [PATCH 5.15 147/297] xfs: fix intermittent hang during quotacheck
 Date: Fri, 24 Nov 2023 17:53:09 +0000
-Message-ID: <20231124171949.729417818@linuxfoundation.org>
+Message-ID: <20231124172005.405616055@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,72 +55,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 704f08753b6dcd0e08c1953af0b2c7f3fac87111 ]
+[ Upstream commit f0c2d7d2abca24d19831c99edea458704fac8087 ]
 
-The GPIO subsystem has a couple of internal helpers to manage
-resources on behalf of the irqchip. Expose them so that GPIO
-drivers can use them directly.
+Every now and then, I see the following hang during mount time
+quotacheck when running fstests.  Turning on KASAN seems to make it
+happen somewhat more frequently.  I've edited the backtrace for brevity.
 
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Bartosz Golaszewski <brgl@bgdev.pl>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20220419141846.598305-3-maz@kernel.org
-Stable-dep-of: dc3115e6c5d9 ("hid: cp2112: Fix IRQ shutdown stopping polling for all IRQs on chip")
+XFS (sdd): Quotacheck needed: Please wait.
+XFS: Assertion failed: bp->b_flags & _XBF_DELWRI_Q, file: fs/xfs/xfs_buf.c, line: 2411
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1831409 at fs/xfs/xfs_message.c:104 assfail+0x46/0x4a [xfs]
+CPU: 0 PID: 1831409 Comm: mount Tainted: G        W         5.19.0-rc6-xfsx #rc6 09911566947b9f737b036b4af85e399e4b9aef64
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:assfail+0x46/0x4a [xfs]
+Code: a0 8f 41 a0 e8 45 fe ff ff 8a 1d 2c 36 10 00 80 fb 01 76 0f 0f b6 f3 48 c7 c7 c0 f0 4f a0 e8 10 f0 02 e1 80 e3 01 74 02 0f 0b <0f> 0b 5b c3 48 8d 45 10 48 89 e2 4c 89 e6 48 89 1c 24 48 89 44 24
+RSP: 0018:ffffc900078c7b30 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffff8880099ac000 RCX: 000000007fffffff
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffffa0418fa0
+RBP: ffff8880197bc1c0 R08: 0000000000000000 R09: 000000000000000a
+R10: 000000000000000a R11: f000000000000000 R12: ffffc900078c7d20
+R13: 00000000fffffff5 R14: ffffc900078c7d20 R15: 0000000000000000
+FS:  00007f0449903800(0000) GS:ffff88803ec00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005610ada631f0 CR3: 0000000014dd8002 CR4: 00000000001706f0
+Call Trace:
+ <TASK>
+ xfs_buf_delwri_pushbuf+0x150/0x160 [xfs 4561f5b32c9bfb874ec98d58d0719464e1f87368]
+ xfs_qm_flush_one+0xd6/0x130 [xfs 4561f5b32c9bfb874ec98d58d0719464e1f87368]
+ xfs_qm_dquot_walk.isra.0+0x109/0x1e0 [xfs 4561f5b32c9bfb874ec98d58d0719464e1f87368]
+ xfs_qm_quotacheck+0x319/0x490 [xfs 4561f5b32c9bfb874ec98d58d0719464e1f87368]
+ xfs_qm_mount_quotas+0x65/0x2c0 [xfs 4561f5b32c9bfb874ec98d58d0719464e1f87368]
+ xfs_mountfs+0x6b5/0xab0 [xfs 4561f5b32c9bfb874ec98d58d0719464e1f87368]
+ xfs_fs_fill_super+0x781/0x990 [xfs 4561f5b32c9bfb874ec98d58d0719464e1f87368]
+ get_tree_bdev+0x175/0x280
+ vfs_get_tree+0x1a/0x80
+ path_mount+0x6f5/0xaa0
+ __x64_sys_mount+0x103/0x140
+ do_syscall_64+0x2b/0x80
+ entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+I /think/ this can happen if xfs_qm_flush_one is racing with
+xfs_qm_dquot_isolate (i.e. dquot reclaim) when the second function has
+taken the dquot flush lock but xfs_qm_dqflush hasn't yet locked the
+dquot buffer, let alone queued it to the delwri list.  In this case,
+flush_one will fail to get the dquot flush lock, but it can lock the
+incore buffer, but xfs_buf_delwri_pushbuf will then trip over this
+ASSERT, which checks that the buffer isn't on a delwri list.  The hang
+results because the _delwri_submit_buffers ignores non DELWRI_Q buffers,
+which means that xfs_buf_iowait waits forever for an IO that has not yet
+been scheduled.
+
+AFAICT, a reasonable solution here is to detect a dquot buffer that is
+not on a DELWRI list, drop it, and return -EAGAIN to try the flush
+again.  It's not /that/ big of a deal if quotacheck writes the dquot
+buffer repeatedly before we even set QUOTA_CHKD.
+
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c      | 6 ++++--
- include/linux/gpio/driver.h | 4 ++++
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_qm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 8a6510d0fe5fc..69ef51a05709a 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -1439,19 +1439,21 @@ static int gpiochip_to_irq(struct gpio_chip *gc, unsigned offset)
- 	return irq_create_mapping(domain, offset);
- }
- 
--static int gpiochip_irq_reqres(struct irq_data *d)
-+int gpiochip_irq_reqres(struct irq_data *d)
- {
- 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
- 
- 	return gpiochip_reqres_irq(gc, d->hwirq);
- }
-+EXPORT_SYMBOL(gpiochip_irq_reqres);
- 
--static void gpiochip_irq_relres(struct irq_data *d)
-+void gpiochip_irq_relres(struct irq_data *d)
- {
- 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
- 
- 	gpiochip_relres_irq(gc, d->hwirq);
- }
-+EXPORT_SYMBOL(gpiochip_irq_relres);
- 
- static void gpiochip_irq_mask(struct irq_data *d)
- {
-diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index 64c93a36a3a92..38df53b541d53 100644
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -591,6 +591,10 @@ void gpiochip_relres_irq(struct gpio_chip *gc, unsigned int offset);
- void gpiochip_disable_irq(struct gpio_chip *gc, unsigned int offset);
- void gpiochip_enable_irq(struct gpio_chip *gc, unsigned int offset);
- 
-+/* irq_data versions of the above */
-+int gpiochip_irq_reqres(struct irq_data *data);
-+void gpiochip_irq_relres(struct irq_data *data);
+diff --git a/fs/xfs/xfs_qm.c b/fs/xfs/xfs_qm.c
+index 623244650a2f0..792736e29a37a 100644
+--- a/fs/xfs/xfs_qm.c
++++ b/fs/xfs/xfs_qm.c
+@@ -1244,6 +1244,13 @@ xfs_qm_flush_one(
+ 			error = -EINVAL;
+ 			goto out_unlock;
+ 		}
 +
- /* Line status inquiry for drivers */
- bool gpiochip_line_is_open_drain(struct gpio_chip *gc, unsigned int offset);
- bool gpiochip_line_is_open_source(struct gpio_chip *gc, unsigned int offset);
++		if (!(bp->b_flags & _XBF_DELWRI_Q)) {
++			error = -EAGAIN;
++			xfs_buf_relse(bp);
++			goto out_unlock;
++		}
++
+ 		xfs_buf_unlock(bp);
+ 
+ 		xfs_buf_delwri_pushbuf(bp, buffer_list);
 -- 
 2.42.0
 
