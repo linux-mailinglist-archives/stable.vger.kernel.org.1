@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3C07F7BBF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 135507F7DF1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D1AAB20D95
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA78BB2133C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBF639FF3;
-	Fri, 24 Nov 2023 18:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FF1939FE9;
+	Fri, 24 Nov 2023 18:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvWaWotH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REGqsprK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B172511F;
-	Fri, 24 Nov 2023 18:08:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA541C433C7;
-	Fri, 24 Nov 2023 18:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F1339FF3;
+	Fri, 24 Nov 2023 18:28:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BABC433C7;
+	Fri, 24 Nov 2023 18:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849297;
-	bh=pn2J+oB4J5M+3gqQDk9LnnqC3V0s8/KN9O89r8oljRU=;
+	s=korg; t=1700850515;
+	bh=yE5B8yCvIt1XI1w2XWgeF6pZC27zI3dnO10NDFLaFOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvWaWotHa+iDtkGXkl/e+bFxBggCQ4QcTV33x+/mcAKmblPuMii6Y6Pt4YTQnRt1k
-	 rrv2P4oDDHvGIzDZO9Y6OFseclM348/cJt3cX43x44wCLcZ89/zqbTVCcts9sjG6rC
-	 QJOjiZ/L9A12kw7TZy2NJK4z8evrTCNRPSbii8oM=
+	b=REGqsprKEKfaC1rqQfN4brZyvuZvbSG5QRjE7t+TiGLtpo+HZT7p62deZVOEMqOAr
+	 mNAGYhdZpoPF0CMBPEDPGc2oJSG0dm4PVTeIlq2bmkS1TDcZ1oTFoVfogjxnlghho6
+	 /awk/GKeZh4e9djDLdbr6CM/ggV9mlMocxqwFvJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/530] usb: ucsi: glink: use the connector orientation GPIO to provide switch events
+Subject: [PATCH 6.5 055/491] drm/amd: Update `update_pcie_parameters` functions to use uint8_t arguments
 Date: Fri, 24 Nov 2023 17:44:51 +0000
-Message-ID: <20231124172031.914148904@linuxfoundation.org>
+Message-ID: <20231124172026.333353104@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,133 +52,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit c6165ed2f425c273244191930a47c8be23bc51bd ]
+[ Upstream commit 7752ccf85b929a22e658ec145283e8f31232f4bb ]
 
-On SM8550, the non-altmode orientation is not given anymore within
-altmode events, even with USB SVIDs events.
+The matching values for `pcie_gen_cap` and `pcie_width_cap` when
+fetched from powerplay tables are 1 byte, so narrow the arguments
+to match to ensure min() and max() comparisons without casts.
 
-On the other side, the Type-C connector orientation is correctly
-reported by a signal from the PMIC.
-
-Take this gpio signal when we detect some Type-C port activity
-to notify any Type-C switches tied to the Type-C port connectors.
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231002-topic-sm8550-upstream-type-c-orientation-v2-2-125410d3ff95@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_glink.c | 54 ++++++++++++++++++++++++++++-
- 1 file changed, 53 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c               | 2 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h           | 2 +-
+ drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h            | 4 ++--
+ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c         | 4 ++--
+ drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c | 8 ++++----
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c          | 4 ++--
+ 6 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
-index bb1854b3311dc..db6e248f82083 100644
---- a/drivers/usb/typec/ucsi/ucsi_glink.c
-+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-@@ -8,9 +8,13 @@
- #include <linux/mutex.h>
- #include <linux/property.h>
- #include <linux/soc/qcom/pdr.h>
-+#include <linux/usb/typec_mux.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/soc/qcom/pmic_glink.h>
- #include "ucsi.h"
- 
-+#define PMIC_GLINK_MAX_PORTS	2
-+
- #define UCSI_BUF_SIZE                   48
- 
- #define MSG_TYPE_REQ_RESP               1
-@@ -52,6 +56,9 @@ struct ucsi_notify_ind_msg {
- struct pmic_glink_ucsi {
- 	struct device *dev;
- 
-+	struct gpio_desc *port_orientation[PMIC_GLINK_MAX_PORTS];
-+	struct typec_switch *port_switch[PMIC_GLINK_MAX_PORTS];
-+
- 	struct pmic_glink_client *client;
- 
- 	struct ucsi *ucsi;
-@@ -220,8 +227,20 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
- 	}
- 
- 	con_num = UCSI_CCI_CONNECTOR(cci);
--	if (con_num)
-+	if (con_num) {
-+		if (con_num < PMIC_GLINK_MAX_PORTS &&
-+		    ucsi->port_orientation[con_num - 1]) {
-+			int orientation = gpiod_get_value(ucsi->port_orientation[con_num - 1]);
-+
-+			if (orientation >= 0) {
-+				typec_switch_set(ucsi->port_switch[con_num - 1],
-+						 orientation ? TYPEC_ORIENTATION_REVERSE
-+							     : TYPEC_ORIENTATION_NORMAL);
-+			}
-+		}
-+
- 		ucsi_connector_change(ucsi->ucsi, con_num);
-+	}
- 
- 	if (ucsi->sync_pending && cci & UCSI_CCI_BUSY) {
- 		ucsi->sync_val = -EBUSY;
-@@ -282,6 +301,7 @@ static int pmic_glink_ucsi_probe(struct auxiliary_device *adev,
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index 222af2fae7458..16c03771c1239 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1232,7 +1232,7 @@ static int smu_smc_hw_setup(struct smu_context *smu)
  {
- 	struct pmic_glink_ucsi *ucsi;
- 	struct device *dev = &adev->dev;
-+	struct fwnode_handle *fwnode;
- 	int ret;
+ 	struct smu_feature *feature = &smu->smu_feature;
+ 	struct amdgpu_device *adev = smu->adev;
+-	uint32_t pcie_gen = 0, pcie_width = 0;
++	uint8_t pcie_gen = 0, pcie_width = 0;
+ 	uint64_t features_supported;
+ 	int ret = 0;
  
- 	ucsi = devm_kzalloc(dev, sizeof(*ucsi), GFP_KERNEL);
-@@ -309,6 +329,38 @@ static int pmic_glink_ucsi_probe(struct auxiliary_device *adev,
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+index 6e2069dcb6b9d..d1d7713b97794 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+@@ -856,7 +856,7 @@ struct pptable_funcs {
+ 	 * &pcie_gen_cap: Maximum allowed PCIe generation.
+ 	 * &pcie_width_cap: Maximum allowed PCIe width.
+ 	 */
+-	int (*update_pcie_parameters)(struct smu_context *smu, uint32_t pcie_gen_cap, uint32_t pcie_width_cap);
++	int (*update_pcie_parameters)(struct smu_context *smu, uint8_t pcie_gen_cap, uint8_t pcie_width_cap);
  
- 	ucsi_set_drvdata(ucsi->ucsi, ucsi);
+ 	/**
+ 	 * @i2c_init: Initialize i2c.
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
+index 355c156d871af..cc02f979e9e98 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/smu_v13_0.h
+@@ -296,8 +296,8 @@ int smu_v13_0_get_pptable_from_firmware(struct smu_context *smu,
+ 					uint32_t pptable_id);
  
-+	device_for_each_child_node(dev, fwnode) {
-+		struct gpio_desc *desc;
-+		u32 port;
-+
-+		ret = fwnode_property_read_u32(fwnode, "reg", &port);
-+		if (ret < 0) {
-+			dev_err(dev, "missing reg property of %pOFn\n", fwnode);
-+			return ret;
-+		}
-+
-+		if (port >= PMIC_GLINK_MAX_PORTS) {
-+			dev_warn(dev, "invalid connector number, ignoring\n");
-+			continue;
-+		}
-+
-+		desc = devm_gpiod_get_index_optional(&adev->dev, "orientation", port, GPIOD_IN);
-+
-+		/* If GPIO isn't found, continue */
-+		if (!desc)
-+			continue;
-+
-+		if (IS_ERR(desc))
-+			return dev_err_probe(dev, PTR_ERR(desc),
-+					     "unable to acquire orientation gpio\n");
-+		ucsi->port_orientation[port] = desc;
-+
-+		ucsi->port_switch[port] = fwnode_typec_switch_get(fwnode);
-+		if (IS_ERR(ucsi->port_switch[port]))
-+			return dev_err_probe(dev, PTR_ERR(ucsi->port_switch[port]),
-+					"failed to acquire orientation-switch\n");
-+	}
-+
- 	ucsi->client = devm_pmic_glink_register_client(dev,
- 						       PMIC_GLINK_OWNER_USBC,
- 						       pmic_glink_ucsi_callback,
+ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
+-				     uint32_t pcie_gen_cap,
+-				     uint32_t pcie_width_cap);
++				     uint8_t pcie_gen_cap,
++				     uint8_t pcie_width_cap);
+ 
+ #endif
+ #endif
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+index 95f6d821bacbc..addaa69119b8e 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+@@ -2375,8 +2375,8 @@ static int navi10_get_power_limit(struct smu_context *smu,
+ }
+ 
+ static int navi10_update_pcie_parameters(struct smu_context *smu,
+-				     uint32_t pcie_gen_cap,
+-				     uint32_t pcie_width_cap)
++					 uint8_t pcie_gen_cap,
++					 uint8_t pcie_width_cap)
+ {
+ 	struct smu_11_0_dpm_context *dpm_context = smu->smu_dpm.dpm_context;
+ 	PPTable_t *pptable = smu->smu_table.driver_pptable;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 9119b0df2419f..9a5f3d31e7780 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -2084,14 +2084,14 @@ static int sienna_cichlid_display_disable_memory_clock_switch(struct smu_context
+ #define MAX(a, b)	((a) > (b) ? (a) : (b))
+ 
+ static int sienna_cichlid_update_pcie_parameters(struct smu_context *smu,
+-					 uint32_t pcie_gen_cap,
+-					 uint32_t pcie_width_cap)
++						 uint8_t pcie_gen_cap,
++						 uint8_t pcie_width_cap)
+ {
+ 	struct smu_11_0_dpm_context *dpm_context = smu->smu_dpm.dpm_context;
+ 	struct smu_11_0_pcie_table *pcie_table = &dpm_context->dpm_tables.pcie_table;
+ 	uint8_t *table_member1, *table_member2;
+-	uint32_t min_gen_speed, max_gen_speed;
+-	uint32_t min_lane_width, max_lane_width;
++	uint8_t min_gen_speed, max_gen_speed;
++	uint8_t min_lane_width, max_lane_width;
+ 	uint32_t smu_pcie_arg;
+ 	int ret, i;
+ 
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index 9b62b45ebb7f0..4fa94f583b87c 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -2426,8 +2426,8 @@ int smu_v13_0_mode1_reset(struct smu_context *smu)
+ }
+ 
+ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
+-				     uint32_t pcie_gen_cap,
+-				     uint32_t pcie_width_cap)
++				     uint8_t pcie_gen_cap,
++				     uint8_t pcie_width_cap)
+ {
+ 	struct smu_13_0_dpm_context *dpm_context = smu->smu_dpm.dpm_context;
+ 	struct smu_13_0_pcie_table *pcie_table =
 -- 
 2.42.0
 
