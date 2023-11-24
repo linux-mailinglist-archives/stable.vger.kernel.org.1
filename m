@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CE777F7CC0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 472097F7EF6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E9051C211C0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0154A282411
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB4139FC3;
-	Fri, 24 Nov 2023 18:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0718935F1D;
+	Fri, 24 Nov 2023 18:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJJ1mkum"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G04If0FK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A5F39FDD;
-	Fri, 24 Nov 2023 18:18:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0619EC433C7;
-	Fri, 24 Nov 2023 18:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B768533E9;
+	Fri, 24 Nov 2023 18:37:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459DCC433C7;
+	Fri, 24 Nov 2023 18:37:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849883;
-	bh=K5PARVt487qiLVJUQReoKQjZXVEeNVNzQht4xxeEkJc=;
+	s=korg; t=1700851043;
+	bh=zcIjo4JaFDU15t/b40/7JdhSYan27xY9sjNnpE97g0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJJ1mkumgilplKtPG5jpqpMRBsd8GaodeUuVmAjX860vnUG4o04Gl0XMFk5D+R7m6
-	 00mRHtR7QTxlyAx62Vx7mrMNBWtlygA6hSGUeH214RNlRemqoj/KdqLBl2u+7H7lq1
-	 6cR55lzMpXd0QcfmM3J4D2UarMOxPRQKwUep6uzc=
+	b=G04If0FKvg4115mzbHWtsUvG++b2vwmDzfa6KsYOVs/i2/5OUc5HUYq/9f94fn+Ub
+	 zbR4JdbkC92AcYlbrnLjCK0HmfqKOKbU+4fCxtflFQDbIeTKHRCJxNU+g1vcAzOQj5
+	 y9bYeKp7Fk8c6N36Ev0nI9Ec2UpyiOyi51+jF95s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.6 359/530] selftests/resctrl: Reduce failures due to outliers in MBA/MBM tests
-Date: Fri, 24 Nov 2023 17:48:45 +0000
-Message-ID: <20231124172038.933646168@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.5 290/491] parisc/power: Add power soft-off when running on qemu
+Date: Fri, 24 Nov 2023 17:48:46 +0000
+Message-ID: <20231124172033.280674188@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,72 +49,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Helge Deller <deller@gmx.de>
 
-commit ef43c30858754d99373a63dff33280a9969b49bc upstream.
+commit d0c219472980d15f5cbc5c8aec736848bda3f235 upstream.
 
-The initial value of 5% chosen for the maximum allowed percentage
-difference between resctrl mbm value and IMC mbm value in
-
-commit 06bd03a57f8c ("selftests/resctrl: Fix MBA/MBM results reporting
-       format") was "randomly chosen value" (as admitted by the changelog).
-
-When running tests in our lab across a large number platforms, 5%
-difference upper bound for success seems a bit on the low side for the
-MBA and MBM tests. Some platforms produce outliers that are slightly
-above that, typically 6-7%, which leads MBA/MBM test frequently
-failing.
-
-Replace the "randomly chosen value" with a success bound that is based
-on those measurements across large number of platforms by relaxing the
-MBA/MBM success bound to 8%. The relaxed bound removes the failures due
-the frequent outliers.
-
-Fixed commit description style error during merge:
-Shuah Khan <skhan@linuxfoundation.org>
-
-Fixes: 06bd03a57f8c ("selftests/resctrl: Fix MBA/MBM results reporting format")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/resctrl/mba_test.c |    2 +-
- tools/testing/selftests/resctrl/mbm_test.c |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/parisc/power.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/resctrl/mba_test.c
-+++ b/tools/testing/selftests/resctrl/mba_test.c
-@@ -12,7 +12,7 @@
+--- a/drivers/parisc/power.c
++++ b/drivers/parisc/power.c
+@@ -197,6 +197,14 @@ static struct notifier_block parisc_pani
+ 	.priority	= INT_MAX,
+ };
  
- #define RESULT_FILE_NAME	"result_mba"
- #define NUM_OF_RUNS		5
--#define MAX_DIFF_PERCENT	5
-+#define MAX_DIFF_PERCENT	8
- #define ALLOCATION_MAX		100
- #define ALLOCATION_MIN		10
- #define ALLOCATION_STEP		10
---- a/tools/testing/selftests/resctrl/mbm_test.c
-+++ b/tools/testing/selftests/resctrl/mbm_test.c
-@@ -11,7 +11,7 @@
- #include "resctrl.h"
++/* qemu soft power-off function */
++static int qemu_power_off(struct sys_off_data *data)
++{
++	/* this turns the system off via SeaBIOS */
++	*(int *)data->cb_data = 0;
++	pdc_soft_power_button(1);
++	return NOTIFY_DONE;
++}
  
- #define RESULT_FILE_NAME	"result_mbm"
--#define MAX_DIFF_PERCENT	5
-+#define MAX_DIFF_PERCENT	8
- #define NUM_OF_RUNS		5
+ static int __init power_init(void)
+ {
+@@ -226,7 +234,13 @@ static int __init power_init(void)
+ 				soft_power_reg);
+ 	}
  
- static int
+-	power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
++	power_task = NULL;
++	if (running_on_qemu && soft_power_reg)
++		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
++					qemu_power_off, (void *)soft_power_reg);
++	else
++		power_task = kthread_run(kpowerswd, (void*)soft_power_reg,
++					KTHREAD_NAME);
+ 	if (IS_ERR(power_task)) {
+ 		printk(KERN_ERR DRIVER_NAME ": thread creation failed.  Driver not loaded.\n");
+ 		pdc_soft_power_button(0);
 
 
 
