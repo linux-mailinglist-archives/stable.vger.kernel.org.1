@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2C07F7E35
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6397F7BFE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19E1BB215B7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF3E8281AEF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E8933CFD;
-	Fri, 24 Nov 2023 18:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0102C39FF3;
+	Fri, 24 Nov 2023 18:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQXR4rXr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeMatoI6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145F4381D6;
-	Fri, 24 Nov 2023 18:30:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E12C433C7;
-	Fri, 24 Nov 2023 18:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B12381DF;
+	Fri, 24 Nov 2023 18:10:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BDC6C433C8;
+	Fri, 24 Nov 2023 18:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850656;
-	bh=9KBOqSwgQPUI1lupnfSYE7wwD0lxYuPni761ja5z4gM=;
+	s=korg; t=1700849441;
+	bh=VGBUDVQlK5qpvb2XKUGewIFDHItCrAO2H9P4yne/m6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQXR4rXrLsS3bu6REjuSK0SyTo+HsrkcvXt4LCFKgz6XPZXjn4Ze5Z+ISAwrub5+J
-	 L2LuXvAO8fNRPpfD9nzzG+5iiWCI5q2Cj4zR4UcdetoqZ/vL7Pf1oU/91TeN1Avx2j
-	 nvNyYfw2eFKtj5dEz90Qt6Fp6NvuTweVKV00Yics=
+	b=UeMatoI6QStf05sClzs+08WaEPd6my+vexVaJWWeaVM75at+A9ijWrSW/s0WpP1dO
+	 bxTSt2lK5EPw8BADdzjiMzejkbp5GJdtwzN/EHr5RwIBQRlUdfw9CDmcm8zeri9UHq
+	 cKxjLmeLR97CPk27fcPQYJKGk1H1q22yflpMVa+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Shurong <zhang_shurong@foxmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Stanislav Fomichev <sdf@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 112/491] iio: adc: stm32-adc: harden against NULL pointer deref in stm32_adc_probe()
+Subject: [PATCH 6.6 182/530] net: set SOCK_RCU_FREE before inserting socket into hashtable
 Date: Fri, 24 Nov 2023 17:45:48 +0000
-Message-ID: <20231124172027.913878002@linuxfoundation.org>
+Message-ID: <20231124172033.614319865@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +55,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-[ Upstream commit 3a23b384e7e3d64d5587ad10729a34d4f761517e ]
+[ Upstream commit 871019b22d1bcc9fab2d1feba1b9a564acbb6e99 ]
 
-of_match_device() may fail and returns a NULL pointer.
+We've started to see the following kernel traces:
 
-In practice there is no known reasonable way to trigger this, but
-in case one is added in future, harden the code by adding the check
+ WARNING: CPU: 83 PID: 0 at net/core/filter.c:6641 sk_lookup+0x1bd/0x1d0
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_994DA85912C937E3B5405BA960B31ED90A08@qq.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+ Call Trace:
+  <IRQ>
+  __bpf_skc_lookup+0x10d/0x120
+  bpf_sk_lookup+0x48/0xd0
+  bpf_sk_lookup_tcp+0x19/0x20
+  bpf_prog_<redacted>+0x37c/0x16a3
+  cls_bpf_classify+0x205/0x2e0
+  tcf_classify+0x92/0x160
+  __netif_receive_skb_core+0xe52/0xf10
+  __netif_receive_skb_list_core+0x96/0x2b0
+  napi_complete_done+0x7b5/0xb70
+  <redacted>_poll+0x94/0xb0
+  net_rx_action+0x163/0x1d70
+  __do_softirq+0xdc/0x32e
+  asm_call_irq_on_stack+0x12/0x20
+  </IRQ>
+  do_softirq_own_stack+0x36/0x50
+  do_softirq+0x44/0x70
+
+__inet_hash can race with lockless (rcu) readers on the other cpus:
+
+  __inet_hash
+    __sk_nulls_add_node_rcu
+    <- (bpf triggers here)
+    sock_set_flag(SOCK_RCU_FREE)
+
+Let's move the SOCK_RCU_FREE part up a bit, before we are inserting
+the socket into hashtables. Note, that the race is really harmless;
+the bpf callers are handling this situation (where listener socket
+doesn't have SOCK_RCU_FREE set) correctly, so the only
+annoyance is a WARN_ONCE.
+
+More details from Eric regarding SOCK_RCU_FREE timeline:
+
+Commit 3b24d854cb35 ("tcp/dccp: do not touch listener sk_refcnt under
+synflood") added SOCK_RCU_FREE. At that time, the precise location of
+sock_set_flag(sk, SOCK_RCU_FREE) did not matter, because the thread calling
+__inet_hash() owns a reference on sk. SOCK_RCU_FREE was only tested
+at dismantle time.
+
+Commit 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+started checking SOCK_RCU_FREE _after_ the lookup to infer whether
+the refcount has been taken care of.
+
+Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stm32-adc-core.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/ipv4/inet_hashtables.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 48f02dcc81c1b..70011fdbf5f63 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -706,6 +706,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 	struct stm32_adc_priv *priv;
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = pdev->dev.of_node;
-+	const struct of_device_id *of_id;
-+
- 	struct resource *res;
- 	u32 max_rate;
- 	int ret;
-@@ -718,8 +720,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	platform_set_drvdata(pdev, &priv->common);
- 
--	priv->cfg = (const struct stm32_adc_priv_cfg *)
--		of_match_device(dev->driver->of_match_table, dev)->data;
-+	of_id = of_match_device(dev->driver->of_match_table, dev);
-+	if (!of_id)
-+		return -ENODEV;
-+
-+	priv->cfg = (const struct stm32_adc_priv_cfg *)of_id->data;
- 	priv->nb_adc_max = priv->cfg->num_adcs;
- 	spin_lock_init(&priv->common.lock);
- 
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index 598c1b114d2c2..a532f749e4778 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -751,12 +751,12 @@ int __inet_hash(struct sock *sk, struct sock *osk)
+ 		if (err)
+ 			goto unlock;
+ 	}
++	sock_set_flag(sk, SOCK_RCU_FREE);
+ 	if (IS_ENABLED(CONFIG_IPV6) && sk->sk_reuseport &&
+ 		sk->sk_family == AF_INET6)
+ 		__sk_nulls_add_node_tail_rcu(sk, &ilb2->nulls_head);
+ 	else
+ 		__sk_nulls_add_node_rcu(sk, &ilb2->nulls_head);
+-	sock_set_flag(sk, SOCK_RCU_FREE);
+ 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
+ unlock:
+ 	spin_unlock(&ilb2->lock);
 -- 
 2.42.0
 
