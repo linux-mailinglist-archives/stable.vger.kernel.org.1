@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-1665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1AB17F80CD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9B07F7CC4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EF90B2193A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6534BB2137B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCD71A5A4;
-	Fri, 24 Nov 2023 18:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0DB93A8C2;
+	Fri, 24 Nov 2023 18:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOjEbuZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9kHeDCu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6EB2EAEA;
-	Fri, 24 Nov 2023 18:52:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEF5C433C8;
-	Fri, 24 Nov 2023 18:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796F631740;
+	Fri, 24 Nov 2023 18:18:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06693C433C9;
+	Fri, 24 Nov 2023 18:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851969;
-	bh=IIaPBeo0L/u1tbHxkRyMS5ljH8fXM9LoAnVlbLtwJiw=;
+	s=korg; t=1700849893;
+	bh=K8LJTdGaJ6M+zxxoFR6CmwVS9FEd5YdlOCre2hz5CZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tOjEbuZnYBhSgLtbfEE7pJxIqSarYMAIFxuIjGojFt3HgK1ZmYzxJdPJfz6qxR0ts
-	 xE5Sk0IhZRe7+NDA74AT47zt0TQudIvsbRdAhfeGe6Z6V9+su9TmRJk3nsYMYUX2wM
-	 ocatK6ijyNoLjXT+v1qYcIO5oXu+SsC3L6KxhgOA=
+	b=O9kHeDCuHOTO8YLIB7BvAyso7Sib2V8bg+ooXQesNtuK/G8GsZ99x8wprZRa5jTdU
+	 wh3/eSBZ2Ev1c/NcbK2uTzJ3SzAWkCm+vK5N64KOWXIpT7ZvcBkBy4wzMUw+46fPSV
+	 X/EpQORMogixgNMy6PipAujjxWgZJhxTLJk2SpVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/372] net: ethernet: cortina: Fix max RX frame define
+	Eric Biggers <ebiggers@google.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.6 363/530] quota: explicitly forbid quota files from being encrypted
 Date: Fri, 24 Nov 2023 17:48:49 +0000
-Message-ID: <20231124172015.215026541@linuxfoundation.org>
+Message-ID: <20231124172039.064848716@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,60 +52,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 510e35fb931ffc3b100e5d5ae4595cd3beca9f1a ]
+commit d3cc1b0be258191d6360c82ea158c2972f8d3991 upstream.
 
-Enumerator 3 is 1548 bytes according to the datasheet.
-Not 1542.
+Since commit d7e7b9af104c ("fscrypt: stop using keyrings subsystem for
+fscrypt_master_key"), xfstest generic/270 causes a WARNING when run on
+f2fs with test_dummy_encryption in the mount options:
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-1-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+$ kvm-xfstests -c f2fs/encrypt generic/270
+[...]
+WARNING: CPU: 1 PID: 2453 at fs/crypto/keyring.c:240 fscrypt_destroy_keyring+0x1f5/0x260
+
+The cause of the WARNING is that not all encrypted inodes have been
+evicted before fscrypt_destroy_keyring() is called, which violates an
+assumption.  This happens because the test uses an external quota file,
+which gets automatically encrypted due to test_dummy_encryption.
+
+Encryption of quota files has never really been supported.  On ext4,
+ext4_quota_read() does not decrypt the data, so encrypted quota files
+are always considered invalid on ext4.  On f2fs, f2fs_quota_read() uses
+the pagecache, so trying to use an encrypted quota file gets farther,
+resulting in the issue described above being possible.  But this was
+never intended to be possible, and there is no use case for it.
+
+Therefore, make the quota support layer explicitly reject using
+IS_ENCRYPTED inodes when quotaon is attempted.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230905003227.326998-1-ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 4 ++--
- drivers/net/ethernet/cortina/gemini.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ fs/quota/dquot.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index fdf10318758b4..15a0a39cc33c1 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -432,8 +432,8 @@ static const struct gmac_max_framelen gmac_maxlens[] = {
- 		.val = CONFIG0_MAXLEN_1536,
- 	},
- 	{
--		.max_l3_len = 1542,
--		.val = CONFIG0_MAXLEN_1542,
-+		.max_l3_len = 1548,
-+		.val = CONFIG0_MAXLEN_1548,
- 	},
- 	{
- 		.max_l3_len = 9212,
-diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
-index 9fdf77d5eb374..99efb11557436 100644
---- a/drivers/net/ethernet/cortina/gemini.h
-+++ b/drivers/net/ethernet/cortina/gemini.h
-@@ -787,7 +787,7 @@ union gmac_config0 {
- #define  CONFIG0_MAXLEN_1536	0
- #define  CONFIG0_MAXLEN_1518	1
- #define  CONFIG0_MAXLEN_1522	2
--#define  CONFIG0_MAXLEN_1542	3
-+#define  CONFIG0_MAXLEN_1548	3
- #define  CONFIG0_MAXLEN_9k	4	/* 9212 */
- #define  CONFIG0_MAXLEN_10k	5	/* 10236 */
- #define  CONFIG0_MAXLEN_1518__6	6
--- 
-2.42.0
-
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -2351,6 +2351,20 @@ static int vfs_setup_quota_inode(struct
+ 	if (sb_has_quota_loaded(sb, type))
+ 		return -EBUSY;
+ 
++	/*
++	 * Quota files should never be encrypted.  They should be thought of as
++	 * filesystem metadata, not user data.  New-style internal quota files
++	 * cannot be encrypted by users anyway, but old-style external quota
++	 * files could potentially be incorrectly created in an encrypted
++	 * directory, hence this explicit check.  Some reasons why encrypted
++	 * quota files don't work include: (1) some filesystems that support
++	 * encryption don't handle it in their quota_read and quota_write, and
++	 * (2) cleaning up encrypted quota files at unmount would need special
++	 * consideration, as quota files are cleaned up later than user files.
++	 */
++	if (IS_ENCRYPTED(inode))
++		return -EINVAL;
++
+ 	dqopt->files[type] = igrab(inode);
+ 	if (!dqopt->files[type])
+ 		return -EIO;
 
 
 
