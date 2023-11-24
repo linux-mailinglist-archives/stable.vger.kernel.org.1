@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298737F7F26
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF5D7F80B8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B0901C2141F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F993B21916
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969592E40E;
-	Fri, 24 Nov 2023 18:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7159D33CCA;
+	Fri, 24 Nov 2023 18:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHcLdIlg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR8TvLoh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2F32C85B;
-	Fri, 24 Nov 2023 18:38:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D7DC433C8;
-	Fri, 24 Nov 2023 18:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293EA2E858;
+	Fri, 24 Nov 2023 18:52:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6410C433C8;
+	Fri, 24 Nov 2023 18:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851139;
-	bh=BX6PhGidEPDLGM7TQzlocuEHcCxmugcJeSeQRRLJkeU=;
+	s=korg; t=1700851934;
+	bh=K2iQpWPpxYhqCCpLB1INqDYhCSV2w2vyb5gpWRssjQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHcLdIlgZsozD+6Stb7JnCMS2XjfwE3wNJlc+z8NQkbpoNTXrcxo9r/hvdFtjIdu5
-	 IIEO4xfyat0wwdhkon0C3Wzgt96QNrhJhsz5MhTYKIKfkLaxnZuPAVB0X/uCE9gAlj
-	 I0H+fy3STEnkSwxw4yoSTzxE9NiffAzK9mDA9TF8=
+	b=fR8TvLohWtt87akpMYLjk7B+e1miQxqTvPBX8V2OXUTISW8mRJgkp7T1qkOlz77cO
+	 HqJ5KIsdfwxmZDdCxHkGc+vIk4jyVCHLdqW3dud3oF8+gNIrfJWOpMeweGyXS9J7AR
+	 KovMRgRyej23mFkgX2lgZpn6Zc9lWASjO5vMgKMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.5 304/491] PCI: kirin: Dont discard .remove() callback
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 153/372] net/mlx5e: Reduce the size of icosq_str
 Date: Fri, 24 Nov 2023 17:49:00 +0000
-Message-ID: <20231124172033.710292147@linuxfoundation.org>
+Message-ID: <20231124172015.589402172@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +51,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-commit 3064ef2e88c1629c1e67a77d7bc20020b35846f2 upstream.
+[ Upstream commit dce94142842e119b982c27c1b62bd20890c7fd21 ]
 
-With CONFIG_PCIE_KIRIN=y and kirin_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
+icosq_str size is unnecessarily too long, and it causes a build warning
+-Wformat-truncation with W=1. Looking closely, It doesn't need to be 255B,
+hence this patch reduces the size to 32B which should be more than enough
+to host the string: "ICOSQ: 0x%x, ".
 
-The right thing to do is do always have the remove callback available.
-This fixes the following warning by modpost:
+While here, add a missing space in the formatted string.
 
-  drivers/pci/controller/dwc/pcie-kirin: section mismatch in reference: kirin_pcie_driver+0x8 (section: .data) -> kirin_pcie_remove (section: .exit.text)
+This fixes the following build warning:
 
-(with ARCH=x86_64 W=1 allmodconfig).
+$ KCFLAGS='-Wall -Werror'
+$ make O=/tmp/kbuild/linux W=1 -s -j12 drivers/net/ethernet/mellanox/mlx5/core/
 
-Fixes: 000f60db784b ("PCI: kirin: Add support for a PHY layer")
-Link: https://lore.kernel.org/r/20231001170254.2506508-3-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c: In function 'mlx5e_reporter_rx_timeout':
+drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c:718:56:
+error: ', CQ: 0x' directive output may be truncated writing 8 bytes into a region of size between 0 and 255 [-Werror=format-truncation=]
+  718 |                  "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
+      |                                                        ^~~~~~~~
+drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c:717:9: note: 'snprintf' output between 43 and 322 bytes into a destination of size 288
+  717 |         snprintf(err_str, sizeof(err_str),
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  718 |                  "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  719 |                  rq->ix, icosq_str, rq->rqn, rq->cq.mcq.cqn);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: 521f31af004a ("net/mlx5e: Allow RQ outside of channel context")
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-14-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-kirin.c |    4 ++--
+ drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-kirin.c
-+++ b/drivers/pci/controller/dwc/pcie-kirin.c
-@@ -742,7 +742,7 @@ err:
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
+index 1ae15b8536a85..9b1f1369ac4d8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
+@@ -668,11 +668,11 @@ static int mlx5e_rx_reporter_dump(struct devlink_health_reporter *reporter,
  
--static int __exit kirin_pcie_remove(struct platform_device *pdev)
-+static int kirin_pcie_remove(struct platform_device *pdev)
+ void mlx5e_reporter_rx_timeout(struct mlx5e_rq *rq)
  {
- 	struct kirin_pcie *kirin_pcie = platform_get_drvdata(pdev);
+-	char icosq_str[MLX5E_REPORTER_PER_Q_MAX_LEN] = {};
+ 	char err_str[MLX5E_REPORTER_PER_Q_MAX_LEN];
+ 	struct mlx5e_icosq *icosq = rq->icosq;
+ 	struct mlx5e_priv *priv = rq->priv;
+ 	struct mlx5e_err_ctx err_ctx = {};
++	char icosq_str[32] = {};
  
-@@ -819,7 +819,7 @@ static int kirin_pcie_probe(struct platf
+ 	err_ctx.ctx = rq;
+ 	err_ctx.recover = mlx5e_rx_reporter_timeout_recover;
+@@ -681,7 +681,7 @@ void mlx5e_reporter_rx_timeout(struct mlx5e_rq *rq)
+ 	if (icosq)
+ 		snprintf(icosq_str, sizeof(icosq_str), "ICOSQ: 0x%x, ", icosq->sqn);
+ 	snprintf(err_str, sizeof(err_str),
+-		 "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
++		 "RX timeout on channel: %d, %s RQ: 0x%x, CQ: 0x%x",
+ 		 rq->ix, icosq_str, rq->rqn, rq->cq.mcq.cqn);
  
- static struct platform_driver kirin_pcie_driver = {
- 	.probe			= kirin_pcie_probe,
--	.remove	        	= __exit_p(kirin_pcie_remove),
-+	.remove	        	= kirin_pcie_remove,
- 	.driver			= {
- 		.name			= "kirin-pcie",
- 		.of_match_table		= kirin_pcie_match,
+ 	mlx5e_health_report(priv, priv->rx_reporter, err_str, &err_ctx);
+-- 
+2.42.0
+
 
 
 
