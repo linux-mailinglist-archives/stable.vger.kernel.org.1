@@ -1,47 +1,69 @@
-Return-Path: <stable+bounces-2007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB84D7F825F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D32507F842D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FEC5B23F2F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F6FE1C2732D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9F1364BA;
-	Fri, 24 Nov 2023 19:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37204381CC;
+	Fri, 24 Nov 2023 19:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlThs8BN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcMpm9rh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BD5364AE;
-	Fri, 24 Nov 2023 19:06:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBBCC433C7;
-	Fri, 24 Nov 2023 19:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C017B3306F;
+	Fri, 24 Nov 2023 19:24:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA8DC433C7;
+	Fri, 24 Nov 2023 19:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852817;
-	bh=pdnZ5/9jst/5ulFoJek5INPoJf3NlOZgoConIzuagYM=;
+	s=korg; t=1700853885;
+	bh=J0qzmFd38Ruxa7GssFmsxsAN7qJtaMxQZYesYyULdmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlThs8BNIDngBep+iZ74oW/4kLAhftO+bmyPtP1P7eeBeeAGLdrnysy0S9AnhjBwI
-	 uKk323eY+SQja3U/6vgJvhifQgUyj+ishowlPJ3Hw4s675XOksHbKHwCv2mmfY/D/I
-	 1Z2EemHLPlXy2ThXLUGslu8l0E4IKkpjX/kENl2A=
+	b=dcMpm9rhiiziAacNCEZHeP259ndiPfjRrtn/D6qBOOHes2bBtKz+EZtVFiwmNTr7Q
+	 XwETLHIDj/ipsrVzxqXmiCfa6OaxqckAFvps1WCjHkbpeL75jmUMQg95eUq5uZbMCr
+	 YW7U5DDhXMShnO5PoPk5s1+C8LqSfUyMLCeAyD5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 134/193] dmaengine: stm32-mdma: correct desc prep when channel running
-Date: Fri, 24 Nov 2023 17:54:21 +0000
-Message-ID: <20231124171952.589304931@linuxfoundation.org>
+	Ian Rogers <irogers@google.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	German Gomez <german.gomez@arm.com>,
+	James Clark <james.clark@arm.com>,
+	Nick Terrell <terrelln@fb.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Changbin Du <changbin.du@huawei.com>,
+	liuwenyu <liuwenyu7@huawei.com>,
+	Yang Jihong <yangjihong1@huawei.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Kajol Jain <kjain@linux.ibm.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+	Yanteng Si <siyanteng@loongson.cn>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 045/159] perf hist: Add missing puts to hist__account_cycles
+Date: Fri, 24 Nov 2023 17:54:22 +0000
+Message-ID: <20231124171943.822904741@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +75,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Ian Rogers <irogers@google.com>
 
-commit 03f25d53b145bc2f7ccc82fc04e4482ed734f524 upstream.
+[ Upstream commit c1149037f65bcf0334886180ebe3d5efcf214912 ]
 
-In case of the prep descriptor while the channel is already running, the
-CCR register value stored into the channel could already have its EN bit
-set.  This would lead to a bad transfer since, at start transfer time,
-enabling the channel while other registers aren't yet properly set.
-To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
-into the mdma channel structure.
+Caught using reference count checking on perf top with
+"--call-graph=lbr". After this no memory leaks were detected.
 
-Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Tested-by: Alain Volmat <alain.volmat@foss.st.com>
-Link: https://lore.kernel.org/r/20231009082450.452877-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 57849998e2cd ("perf report: Add processing for cycle histograms")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Cc: Sandipan Das <sandipan.das@amd.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Nick Terrell <terrelln@fb.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Changbin Du <changbin.du@huawei.com>
+Cc: liuwenyu <liuwenyu7@huawei.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Kajol Jain <kjain@linux.ibm.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: Yanteng Si <siyanteng@loongson.cn>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Link: https://lore.kernel.org/r/20231024222353.3024098-6-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/stm32-mdma.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/hist.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/dma/stm32-mdma.c
-+++ b/drivers/dma/stm32-mdma.c
-@@ -509,7 +509,7 @@ static int stm32_mdma_set_xfer_param(str
- 	src_maxburst = chan->dma_config.src_maxburst;
- 	dst_maxburst = chan->dma_config.dst_maxburst;
+diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
+index 151b9e43c88f9..9a02c1fd83493 100644
+--- a/tools/perf/util/hist.c
++++ b/tools/perf/util/hist.c
+@@ -2576,8 +2576,6 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
  
--	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
-+	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
- 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
- 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
- 
-@@ -937,7 +937,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_ch
- 	if (!desc)
- 		return NULL;
- 
--	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
-+	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
- 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
- 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
- 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
+ 	/* If we have branch cycles always annotate them. */
+ 	if (bs && bs->nr && entries[0].flags.cycles) {
+-		int i;
+-
+ 		bi = sample__resolve_bstack(sample, al);
+ 		if (bi) {
+ 			struct addr_map_symbol *prev = NULL;
+@@ -2592,12 +2590,18 @@ void hist__account_cycles(struct branch_stack *bs, struct addr_location *al,
+ 			 * Note that perf stores branches reversed from
+ 			 * program order!
+ 			 */
+-			for (i = bs->nr - 1; i >= 0; i--) {
++			for (int i = bs->nr - 1; i >= 0; i--) {
+ 				addr_map_symbol__account_cycles(&bi[i].from,
+ 					nonany_branch_mode ? NULL : prev,
+ 					bi[i].flags.cycles);
+ 				prev = &bi[i].to;
+ 			}
++			for (unsigned int i = 0; i < bs->nr; i++) {
++				map__put(bi[i].to.ms.map);
++				maps__put(bi[i].to.ms.maps);
++				map__put(bi[i].from.ms.map);
++				maps__put(bi[i].from.ms.maps);
++			}
+ 			free(bi);
+ 		}
+ 	}
+-- 
+2.42.0
+
 
 
 
