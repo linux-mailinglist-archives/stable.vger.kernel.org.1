@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81F257F81EA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552317F81A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DB82283886
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 103EB282998
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2102339BE;
-	Fri, 24 Nov 2023 19:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608F028DBB;
+	Fri, 24 Nov 2023 19:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YshiWcUT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSXbk1sB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA9D3173F;
-	Fri, 24 Nov 2023 19:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEEAC433C7;
-	Fri, 24 Nov 2023 19:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F42233CFD;
+	Fri, 24 Nov 2023 19:00:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB6AC433C7;
+	Fri, 24 Nov 2023 19:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852556;
-	bh=X/MkwNGXXmfB/DBCL6fDJQGrARxHC9xnru/WS4Es1yI=;
+	s=korg; t=1700852414;
+	bh=v4XJyoRYKLCSu+nkUMVv/ItbxHHX5605/e006/f9SQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YshiWcUTjBS7H9uMyuunSq0pwawKilM0GHfw9O/RcYLQhwD+IQVMPxkMm7vRwzgzU
-	 VEhsWma/ZNSztzxjGGEH6s2Kd8LX/tI0zFR2NJUmiHcIU3TKufOUCSn0Yhq7ih5XhE
-	 KybWBWa8kJKmefgQGYcQNLpco/gdRzCy3yp764wU=
+	b=TSXbk1sB+aZxsZo5JTXgU+wH/B8CkrzrBqBVw5HtfNbiDfAhAx5gsfrO8QK96ymqn
+	 lad3XVf+GqsNy0fjHP9aCaQbZp8lZ8vi6FSDqmik4Xa0VtwhxGP3YK5I+j7S/av65E
+	 twZAv7r55EhnZjU4yicXjpObyl5UTlEC83FluwcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 006/193] wifi: mac80211_hwsim: fix clang-specific fortify warning
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 346/372] media: qcom: camss: Fix invalid clock enable bit disjunction
 Date: Fri, 24 Nov 2023 17:52:13 +0000
-Message-ID: <20231124171947.402657133@linuxfoundation.org>
+Message-ID: <20231124172021.891326202@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit cbaccdc42483c65016f1bae89128c08dc17cfb2a ]
+commit d8f7e1a60d01739a1d78db2b08603089c6cf7c8e upstream.
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+define CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE BIT(7)
 
-In file included from drivers/net/wireless/virtual/mac80211_hwsim.c:18:
-In file included from ./include/linux/slab.h:16:
-In file included from ./include/linux/gfp.h:7:
-In file included from ./include/linux/mmzone.h:8:
-In file included from ./include/linux/spinlock.h:56:
-In file included from ./include/linux/preempt.h:79:
-In file included from ./arch/x86/include/asm/preempt.h:9:
-In file included from ./include/linux/thread_info.h:60:
-In file included from ./arch/x86/include/asm/thread_info.h:53:
-In file included from ./arch/x86/include/asm/cpufeature.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+disjunction for gen2 ? BIT(7) : is a nop we are setting the same bit
+either way.
 
-The compiler actually complains on 'mac80211_hwsim_get_et_strings()' where
-fortification logic inteprets call to 'memcpy()' as an attempt to copy the
-whole 'mac80211_hwsim_gstrings_stats' array from its first member and so
-issues an overread warning. This warning may be silenced by passing
-an address of the whole array and not the first member to 'memcpy()'.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://lore.kernel.org/r/20230829094140.234636-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4abb21309fda ("media: camss: csiphy: Move to hardcode CSI Clock Lane number")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 2 +-
+ drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index 0d41f172a1dc2..037358606a51a 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2543,7 +2543,7 @@ static void mac80211_hwsim_get_et_strings(struct ieee80211_hw *hw,
- 					  u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *mac80211_hwsim_gstrings_stats,
-+		memcpy(data, mac80211_hwsim_gstrings_stats,
- 		       sizeof(mac80211_hwsim_gstrings_stats));
- }
+--- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+@@ -476,7 +476,7 @@ static void csiphy_lanes_enable(struct c
  
--- 
-2.42.0
-
+ 	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
+ 
+-	val = is_gen2 ? BIT(7) : CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
++	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+ 	for (i = 0; i < c->num_data; i++)
+ 		val |= BIT(c->data[i].pos * 2);
+ 
 
 
 
