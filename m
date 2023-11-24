@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBE57F7D30
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DEA7F7F52
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21561C211FC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA0C2820DA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F963A8D6;
-	Fri, 24 Nov 2023 18:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82EA28DC3;
+	Fri, 24 Nov 2023 18:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqixylSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7rnMbwP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9824639FE8;
-	Fri, 24 Nov 2023 18:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245C6C433C8;
-	Fri, 24 Nov 2023 18:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B05435F1A;
+	Fri, 24 Nov 2023 18:40:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BB7C433C7;
+	Fri, 24 Nov 2023 18:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850132;
-	bh=ekQV2aQ+4YMt+lDIBftUkghxjczFjqNHEQv5e+mdqL4=;
+	s=korg; t=1700851224;
+	bh=bB0FAE2kq1GcTtkKozMfHbm+IINuKsDh5t4b7FeB3Wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqixylSyXpThaTO3VhV07gq1PyGXwvjpYkOQeau8HTFYRwOwrEflmxeJl8cFYGE2x
-	 tMDb5T+QrgNfTvtdDgOvBTb2tt/YnXy/wLNDQm8NRN0q5R6Crcbr1AiSqJLTQG/SJV
-	 CEGxVDZzeP8BBt8x8OSiOLrrFTT2uM9/ViYHqPBI=
+	b=j7rnMbwPHFWvh/Kl9NEdrJnlZZzW7zJQO/9gahENOXwoXxbD9dZforB2eNGqWfLs8
+	 TdP5O8Ckiqoade4vc89gbWmJVX+/ECS3Cly0TVG7CxTxLosgUBxlZgurVZHR7X+HS4
+	 Dmd1IPeXbQmN0T87+qCYO1AFitmx5YEtVVbGfYSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinhyung Kang <s47.kang@samsung.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 432/530] ALSA: info: Fix potential deadlock at disconnection
-Date: Fri, 24 Nov 2023 17:49:58 +0000
-Message-ID: <20231124172041.227167492@linuxfoundation.org>
+	Jim Harris <jim.harris@samsung.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.5 363/491] cxl/region: Fix x1 root-decoder granularity calculations
+Date: Fri, 24 Nov 2023 17:49:59 +0000
+Message-ID: <20231124172035.485102348@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,126 +52,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jim Harris <jim.harris@samsung.com>
 
-commit c7a60651953359f98dbf24b43e1bf561e1573ed4 upstream.
+commit 98a04c7aced2b43b3ac4befe216c4eecc7257d4b upstream.
 
-As reported recently, ALSA core info helper may cause a deadlock at
-the forced device disconnection during the procfs operation.
+Root decoder granularity must match value from CFWMS, which may not
+be the region's granularity for non-interleaved root decoders.
 
-The proc_remove() (that is called from the snd_card_disconnect()
-helper) has a synchronization of the pending procfs accesses via
-wait_for_completion().  Meanwhile, ALSA procfs helper takes the global
-mutex_lock(&info_mutex) at both the proc_open callback and
-snd_card_info_disconnect() helper.  Since the proc_open can't finish
-due to the mutex lock, wait_for_completion() never returns, either,
-hence it deadlocks.
+So when calculating granularities for host bridge decoders, use the
+region's granularity instead of the root decoder's granularity to ensure
+the correct granularities are set for the host bridge decoders and any
+downstream switch decoders.
 
-	TASK#1				TASK#2
-	proc_reg_open()
-	  takes use_pde()
-	snd_info_text_entry_open()
-					snd_card_disconnect()
-					snd_info_card_disconnect()
-					  takes mutex_lock(&info_mutex)
-					proc_remove()
-					wait_for_completion(unused_pde)
-					  ... waiting task#1 closes
-	mutex_lock(&info_mutex)
-		=> DEADLOCK
+Test configuration is 1 host bridge * 2 switches * 2 endpoints per switch.
 
-This patch is a workaround for avoiding the deadlock scenario above.
+Region created with 2048 granularity using following command line:
 
-The basic strategy is to move proc_remove() call outside the mutex
-lock.  proc_remove() can work gracefully without extra locking, and it
-can delete the tree recursively alone.  So, we call proc_remove() at
-snd_info_card_disconnection() at first, then delete the rest resources
-recursively within the info_mutex lock.
+cxl create-region -m -d decoder0.0 -w 4 mem0 mem2 mem1 mem3 \
+		  -g 2048 -s 2048M
 
-After the change, the function snd_info_disconnect() doesn't do
-disconnection by itself any longer, but it merely clears the procfs
-pointer.  So rename the function to snd_info_clear_entries() for
-avoiding confusion.
+Use "cxl list -PDE | grep granularity" to get a view of the granularity
+set at each level of the topology.
 
-The similar change is applied to snd_info_free_entry(), too.  Since
-the proc_remove() is called only conditionally with the non-NULL
-entry->p, it's skipped after the snd_info_clear_entries() call.
+Before this patch:
+        "interleave_granularity":2048,
+        "interleave_granularity":2048,
+    "interleave_granularity":512,
+        "interleave_granularity":2048,
+        "interleave_granularity":2048,
+    "interleave_granularity":512,
+"interleave_granularity":256,
 
-Reported-by: Shinhyung Kang <s47.kang@samsung.com>
-Closes: https://lore.kernel.org/r/664457955.21699345385931.JavaMail.epsvc@epcpadp4
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+After:
+        "interleave_granularity":2048,
+        "interleave_granularity":2048,
+    "interleave_granularity":4096,
+        "interleave_granularity":2048,
+        "interleave_granularity":2048,
+    "interleave_granularity":4096,
+"interleave_granularity":2048,
+
+Fixes: 27b3f8d13830 ("cxl/region: Program target lists")
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231109141954.4283-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Jim Harris <jim.harris@samsung.com>
+Link: https://lore.kernel.org/r/169824893473.1403938.16110924262989774582.stgit@bgt-140510-bm03.eng.stellus.in
+[djbw: fixup the prebuilt cxl_test region]
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/info.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/cxl/core/region.c    |    9 ++++++++-
+ tools/testing/cxl/test/cxl.c |    2 +-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/sound/core/info.c
-+++ b/sound/core/info.c
-@@ -56,7 +56,7 @@ struct snd_info_private_data {
- };
- 
- static int snd_info_version_init(void);
--static void snd_info_disconnect(struct snd_info_entry *entry);
-+static void snd_info_clear_entries(struct snd_info_entry *entry);
- 
- /*
- 
-@@ -569,11 +569,16 @@ void snd_info_card_disconnect(struct snd
- {
- 	if (!card)
- 		return;
--	mutex_lock(&info_mutex);
-+
- 	proc_remove(card->proc_root_link);
--	card->proc_root_link = NULL;
- 	if (card->proc_root)
--		snd_info_disconnect(card->proc_root);
-+		proc_remove(card->proc_root->p);
-+
-+	mutex_lock(&info_mutex);
-+	if (card->proc_root)
-+		snd_info_clear_entries(card->proc_root);
-+	card->proc_root_link = NULL;
-+	card->proc_root = NULL;
- 	mutex_unlock(&info_mutex);
- }
- 
-@@ -745,15 +750,14 @@ struct snd_info_entry *snd_info_create_c
- }
- EXPORT_SYMBOL(snd_info_create_card_entry);
- 
--static void snd_info_disconnect(struct snd_info_entry *entry)
-+static void snd_info_clear_entries(struct snd_info_entry *entry)
- {
- 	struct snd_info_entry *p;
- 
- 	if (!entry->p)
- 		return;
- 	list_for_each_entry(p, &entry->children, list)
--		snd_info_disconnect(p);
--	proc_remove(entry->p);
-+		snd_info_clear_entries(p);
- 	entry->p = NULL;
- }
- 
-@@ -770,8 +774,9 @@ void snd_info_free_entry(struct snd_info
- 	if (!entry)
- 		return;
- 	if (entry->p) {
-+		proc_remove(entry->p);
- 		mutex_lock(&info_mutex);
--		snd_info_disconnect(entry);
-+		snd_info_clear_entries(entry);
- 		mutex_unlock(&info_mutex);
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1127,7 +1127,14 @@ static int cxl_port_setup_targets(struct
  	}
  
+ 	if (is_cxl_root(parent_port)) {
+-		parent_ig = cxlrd->cxlsd.cxld.interleave_granularity;
++		/*
++		 * Root decoder IG is always set to value in CFMWS which
++		 * may be different than this region's IG.  We can use the
++		 * region's IG here since interleave_granularity_store()
++		 * does not allow interleaved host-bridges with
++		 * root IG != region IG.
++		 */
++		parent_ig = p->interleave_granularity;
+ 		parent_iw = cxlrd->cxlsd.cxld.interleave_ways;
+ 		/*
+ 		 * For purposes of address bit routing, use power-of-2 math for
+--- a/tools/testing/cxl/test/cxl.c
++++ b/tools/testing/cxl/test/cxl.c
+@@ -831,7 +831,7 @@ static void mock_init_hdm_decoder(struct
+ 			cxld->interleave_ways = 2;
+ 		else
+ 			cxld->interleave_ways = 1;
+-		cxld->interleave_granularity = 256;
++		cxld->interleave_granularity = 4096;
+ 		cxld->hpa_range = (struct range) {
+ 			.start = base,
+ 			.end = base + size - 1,
 
 
 
