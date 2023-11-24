@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946FC7F8076
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 998D97F7EA9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5B9E1C21590
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C71A81C213C5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0800233CC2;
-	Fri, 24 Nov 2023 18:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8042EAEA;
+	Fri, 24 Nov 2023 18:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AL+fNGlE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLVhnHhf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EA62FC4E;
-	Fri, 24 Nov 2023 18:49:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296ECC433C8;
-	Fri, 24 Nov 2023 18:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F0321AD;
+	Fri, 24 Nov 2023 18:34:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E22C433C7;
+	Fri, 24 Nov 2023 18:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851793;
-	bh=a1XVaQwH3lRfu2hjtTj+piRq0+KS0DYrHM2Eqicc02w=;
+	s=korg; t=1700850892;
+	bh=DBdSeweK/FQwsQgXgH0K8GwZvexHGb5CyTVsBYGPcxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AL+fNGlEmo69ZONjRNwxRewE9kdgOmAWn4OrmLoDZ4EgVETV3pIRZVfPEHCWj7C/C
-	 TNSI2zVXpDVPNj6Wotp9mBjTSQGiTinmT8+5J4sP8sCURYniF/CDi11t8pya+SB02V
-	 3NTU8xypkUbrmCarsp3TgbZkJc3tlFyVcuts0aqQ=
+	b=cLVhnHhfFGY4x0kKhlzpMq3NjO5ZlhIrpxmn2lG3Zd/q8s6dZ0ytfdmw5CyD+0nPY
+	 tyi7v1M4+iB21FQr7ILfnUL8L8OIP4opA5mf3rxKaAkctHg+8g6HFaxELlPW5kRETk
+	 kgO6ukWXrmXUxCXS4JaAGq9P61J+JMKFmSqzNjCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/372] ASoC: Intel: soc-acpi-cht: Add Lenovo Yoga Tab 3 Pro YT3-X90 quirk
+	Hao Sun <sunhao.th@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.5 231/491] bpf: Fix check_stack_write_fixed_off() to correctly spill imm
 Date: Fri, 24 Nov 2023 17:47:47 +0000
-Message-ID: <20231124172013.184337918@linuxfoundation.org>
+Message-ID: <20231124172031.497225055@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,95 +54,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Hao Sun <sunhao.th@gmail.com>
 
-[ Upstream commit 2cb54788393134d8174ee594002baae3ce52c61e ]
+commit 811c363645b33e6e22658634329e95f383dfc705 upstream.
 
-The Lenovo Yoga Tab 3 Pro YT3-X90 x86 tablet, which ships with Android with
-a custom kernel as factory OS, does not list the used WM5102 codec inside
-its DSDT.
+In check_stack_write_fixed_off(), imm value is cast to u32 before being
+spilled to the stack. Therefore, the sign information is lost, and the
+range information is incorrect when load from the stack again.
 
-Workaround this with a new snd_soc_acpi_intel_baytrail_machines[] entry
-which matches on the SST id instead of the codec id like nocodec does,
-combined with using a machine_quirk callback which returns NULL on
-other machines to skip the new entry on other machines.
+For the following prog:
+0: r2 = r10
+1: *(u64*)(r2 -40) = -44
+2: r0 = *(u64*)(r2 - 40)
+3: if r0 s<= 0xa goto +2
+4: r0 = 1
+5: exit
+6: r0  = 0
+7: exit
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231021211534.114991-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The verifier gives:
+func#0 @0
+0: R1=ctx(off=0,imm=0) R10=fp0
+0: (bf) r2 = r10                      ; R2_w=fp0 R10=fp0
+1: (7a) *(u64 *)(r2 -40) = -44        ; R2_w=fp0 fp-40_w=4294967252
+2: (79) r0 = *(u64 *)(r2 -40)         ; R0_w=4294967252 R2_w=fp0
+fp-40_w=4294967252
+3: (c5) if r0 s< 0xa goto pc+2
+mark_precise: frame0: last_idx 3 first_idx 0 subseq_idx -1
+mark_precise: frame0: regs=r0 stack= before 2: (79) r0 = *(u64 *)(r2 -40)
+3: R0_w=4294967252
+4: (b7) r0 = 1                        ; R0_w=1
+5: (95) exit
+verification time 7971 usec
+stack depth 40
+processed 6 insns (limit 1000000) max_states_per_insn 0 total_states 0
+peak_states 0 mark_read 0
+
+So remove the incorrect cast, since imm field is declared as s32, and
+__mark_reg_known() takes u64, so imm would be correctly sign extended
+by compiler.
+
+Fixes: ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hao Sun <sunhao.th@gmail.com>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231101-fix-check-stack-write-v3-1-f05c2b1473d5@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../intel/common/soc-acpi-intel-cht-match.c   | 43 +++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ kernel/bpf/verifier.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-index cdcbf04b8832f..5e2ec60e2954b 100644
---- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-@@ -75,6 +75,39 @@ static struct snd_soc_acpi_mach *cht_ess8316_quirk(void *arg)
- 	return arg;
- }
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -4368,7 +4368,7 @@ static int check_stack_write_fixed_off(s
+ 		   insn->imm != 0 && env->bpf_capable) {
+ 		struct bpf_reg_state fake_reg = {};
  
-+/*
-+ * The Lenovo Yoga Tab 3 Pro YT3-X90, with Android factory OS has a buggy DSDT
-+ * with the coded not being listed at all.
-+ */
-+static const struct dmi_system_id lenovo_yoga_tab3_x90[] = {
-+	{
-+		/* Lenovo Yoga Tab 3 Pro YT3-X90, codec missing from DSDT */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static struct snd_soc_acpi_mach cht_lenovo_yoga_tab3_x90_mach = {
-+	.id = "10WM5102",
-+	.drv_name = "bytcr_wm5102",
-+	.fw_filename = "intel/fw_sst_22a8.bin",
-+	.board = "bytcr_wm5102",
-+	.sof_tplg_filename = "sof-cht-wm5102.tplg",
-+};
-+
-+static struct snd_soc_acpi_mach *lenovo_yt3_x90_quirk(void *arg)
-+{
-+	if (dmi_check_system(lenovo_yoga_tab3_x90))
-+		return &cht_lenovo_yoga_tab3_x90_mach;
-+
-+	/* Skip wildcard match snd_soc_acpi_intel_cherrytrail_machines[] entry */
-+	return NULL;
-+}
-+
- static const struct snd_soc_acpi_codecs rt5640_comp_ids = {
- 	.num_codecs = 2,
- 	.codecs = { "10EC5640", "10EC3276" },
-@@ -175,6 +208,16 @@ struct snd_soc_acpi_mach  snd_soc_acpi_intel_cherrytrail_machines[] = {
- 		.drv_name = "sof_pcm512x",
- 		.sof_tplg_filename = "sof-cht-src-50khz-pcm512x.tplg",
- 	},
-+	/*
-+	 * Special case for the Lenovo Yoga Tab 3 Pro YT3-X90 where the DSDT
-+	 * misses the codec. Match on the SST id instead, lenovo_yt3_x90_quirk()
-+	 * will return a YT3 specific mach or NULL when called on other hw,
-+	 * skipping this entry.
-+	 */
-+	{
-+		.id = "808622A8",
-+		.machine_quirk = lenovo_yt3_x90_quirk,
-+	},
- 
- #if IS_ENABLED(CONFIG_SND_SOC_INTEL_BYT_CHT_NOCODEC_MACH)
- 	/*
--- 
-2.42.0
-
+-		__mark_reg_known(&fake_reg, (u32)insn->imm);
++		__mark_reg_known(&fake_reg, insn->imm);
+ 		fake_reg.type = SCALAR_VALUE;
+ 		save_register_state(state, spi, &fake_reg, size);
+ 	} else if (reg && is_spillable_regtype(reg->type)) {
 
 
 
