@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C547F7D7D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1B87F7FC9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C91F01C21270
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28309282552
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136683A8D6;
-	Fri, 24 Nov 2023 18:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96B8A34189;
+	Fri, 24 Nov 2023 18:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsOXIvPr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfq3cwXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C386339FE9;
-	Fri, 24 Nov 2023 18:25:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F52BC433C8;
-	Fri, 24 Nov 2023 18:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9BB364A5;
+	Fri, 24 Nov 2023 18:44:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0A6C433C7;
+	Fri, 24 Nov 2023 18:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850301;
-	bh=DyuKkqsqfZmiMeRYdnI+BT6CqDKwos40hAWT3TyI0/A=;
+	s=korg; t=1700851459;
+	bh=HNXFvD9AOI0Sz+IKRGasHrl3DFC0SRhy2GbuZfo7dO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tsOXIvPrFdCxl+Rf6yuiGIpGjGJZMXLytrOC4gRZsgwk2poFVtRlXb26/56JIHWxL
-	 5ZryKo4IFjs6qI+7oSj8OCaeQHZdiAtgaNYExSyMb+WjHEH6bu6FgdgyXyZWcT2zCH
-	 eEg7RkOqmB0ekR5wd7+dSWEW4o3Cj8FVqXj02yKQ=
+	b=bfq3cwXo8D1s5aGr1aJi2W0RUzMc3Qk1RVzCDy3C8KQwuUgIZj9CJLK2mfc29vHMb
+	 9TVnTf3SWgeShFMew/srSnIj5Zy+zW3uJZHo1Pnnh3c6mAASKW19tJohc6edJFsco2
+	 4VXGGoCts+jZ7Lm7XEbtglE7gN6S+TYUxfMec2PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 526/530] drm/amd/display: Fix DSC not Enabled on Direct MST Sink
+	Andrey Konovalov <andrey.konovalov@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.5 456/491] media: qcom: camss: Fix csid-gen2 for test pattern generator
 Date: Fri, 24 Nov 2023 17:51:32 +0000
-Message-ID: <20231124172044.202888987@linuxfoundation.org>
+Message-ID: <20231124172038.316050056@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,88 +54,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fangzhi Zuo <jerry.zuo@amd.com>
+From: Andrey Konovalov <andrey.konovalov@linaro.org>
 
-commit a58555359a9f870543aaddef277c3396159895ce upstream.
+commit 87889f1b7ea40d2544b49c62092e6ef2792dced7 upstream.
 
-[WHY & HOW]
-For the scenario when a dsc capable MST sink device is directly
-connected, it needs to use max dsc compression as the link bw constraint.
+In the current driver csid Test Pattern Generator (TPG) doesn't work.
+This change:
+- fixes writing frame width and height values into CSID_TPG_DT_n_CFG_0
+- fixes the shift by one between test_pattern control value and the
+  actual pattern.
+- drops fixed VC of 0x0a which testing showed prohibited some test
+  patterns in the CSID to produce output.
+So that TPG starts working, but with the below limitations:
+- only test_pattern=9 works as it should
+- test_pattern=8 and test_pattern=7 produce black frame (all zeroes)
+- the rest of test_pattern's don't work (yavta doesn't get the data)
+- regardless of the CFA pattern set by 'media-ctl -V' the actual pixel
+  order is always the same (RGGB for any RAW8 or RAW10P format in
+  4608x2592 resolution).
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Tested with:
+
+RAW10P format, VC0:
+ media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4608x2592 field:none]'
+ media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4608x2592 field:none]'
+ media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+ v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
+ yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video0
+
+RAW10P format, VC1:
+ media-ctl -V '"msm_csid0":2[fmt:SRGGB10/4608x2592 field:none]'
+ media-ctl -V '"msm_vfe0_rdi1":0[fmt:SRGGB10/4608x2592 field:none]'
+ media-ctl -l '"msm_csid0":2->"msm_vfe0_rdi1":0[1]'
+ v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
+ yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video1
+
+RAW8 format, VC0:
+ media-ctl --reset
+ media-ctl -V '"msm_csid0":0[fmt:SRGGB8/4608x2592 field:none]'
+ media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB8/4608x2592 field:none]'
+ media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+ yavta -B capture-mplane --capture=3 -n 3 -f SRGGB8 -s 4608x2592 /dev/video0
+
+Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
 Cc: stable@vger.kernel.org
-Reviewed-by: Roman Li <roman.li@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Andrey Konovalov <andrey.konovalov@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   29 +++++-------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ drivers/media/platform/qcom/camss/camss-csid-gen2.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1598,31 +1598,31 @@ enum dc_status dm_dp_mst_is_port_support
- 	unsigned int upper_link_bw_in_kbps = 0, down_link_bw_in_kbps = 0;
- 	unsigned int max_compressed_bw_in_kbps = 0;
- 	struct dc_dsc_bw_range bw_range = {0};
--	struct drm_dp_mst_topology_mgr *mst_mgr;
-+	uint16_t full_pbn = aconnector->mst_output_port->full_pbn;
+--- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
++++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+@@ -355,9 +355,6 @@ static void __csid_configure_stream(stru
+ 		u8 dt_id = vc;
  
- 	/*
--	 * check if the mode could be supported if DSC pass-through is supported
--	 * AND check if there enough bandwidth available to support the mode
--	 * with DSC enabled.
-+	 * Consider the case with the depth of the mst topology tree is equal or less than 2
-+	 * A. When dsc bitstream can be transmitted along the entire path
-+	 *    1. dsc is possible between source and branch/leaf device (common dsc params is possible), AND
-+	 *    2. dsc passthrough supported at MST branch, or
-+	 *    3. dsc decoding supported at leaf MST device
-+	 *    Use maximum dsc compression as bw constraint
-+	 * B. When dsc bitstream cannot be transmitted along the entire path
-+	 *    Use native bw as bw constraint
- 	 */
- 	if (is_dsc_common_config_possible(stream, &bw_range) &&
--	    aconnector->mst_output_port->passthrough_aux) {
--		mst_mgr = aconnector->mst_output_port->mgr;
--		mutex_lock(&mst_mgr->lock);
+ 		if (tg->enabled) {
+-			/* Config Test Generator */
+-			vc = 0xa;
 -
-+	   (aconnector->mst_output_port->passthrough_aux ||
-+	    aconnector->dsc_aux == &aconnector->mst_output_port->aux)) {
- 		cur_link_settings = stream->link->verified_link_cap;
+ 			/* configure one DT, infinite frames */
+ 			val = vc << TPG_VC_CFG0_VC_NUM;
+ 			val |= INTELEAVING_MODE_ONE_SHOT << TPG_VC_CFG0_LINE_INTERLEAVING_MODE;
+@@ -370,14 +367,14 @@ static void __csid_configure_stream(stru
  
- 		upper_link_bw_in_kbps = dc_link_bandwidth_kbps(aconnector->dc_link,
--							       &cur_link_settings
--							       );
--		down_link_bw_in_kbps = kbps_from_pbn(aconnector->mst_output_port->full_pbn);
-+							       &cur_link_settings);
-+		down_link_bw_in_kbps = kbps_from_pbn(full_pbn);
+ 			writel_relaxed(0x12345678, csid->base + CSID_TPG_LFSR_SEED);
  
- 		/* pick the bottleneck */
- 		end_to_end_bw_in_kbps = min(upper_link_bw_in_kbps,
- 					    down_link_bw_in_kbps);
+-			val = input_format->height & 0x1fff << TPG_DT_n_CFG_0_FRAME_HEIGHT;
+-			val |= input_format->width & 0x1fff << TPG_DT_n_CFG_0_FRAME_WIDTH;
++			val = (input_format->height & 0x1fff) << TPG_DT_n_CFG_0_FRAME_HEIGHT;
++			val |= (input_format->width & 0x1fff) << TPG_DT_n_CFG_0_FRAME_WIDTH;
+ 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_0(0));
  
--		mutex_unlock(&mst_mgr->lock);
--
- 		/*
- 		 * use the maximum dsc compression bandwidth as the required
- 		 * bandwidth for the mode
-@@ -1637,8 +1637,7 @@ enum dc_status dm_dp_mst_is_port_support
- 		/* check if mode could be supported within full_pbn */
- 		bpp = convert_dc_color_depth_into_bpc(stream->timing.display_color_depth) * 3;
- 		pbn = drm_dp_calc_pbn_mode(stream->timing.pix_clk_100hz / 10, bpp, false);
--
--		if (pbn > aconnector->mst_output_port->full_pbn)
-+		if (pbn > full_pbn)
- 			return DC_FAIL_BANDWIDTH_VALIDATE;
- 	}
+ 			val = format->data_type << TPG_DT_n_CFG_1_DATA_TYPE;
+ 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_1(0));
  
+-			val = tg->mode << TPG_DT_n_CFG_2_PAYLOAD_MODE;
++			val = (tg->mode - 1) << TPG_DT_n_CFG_2_PAYLOAD_MODE;
+ 			val |= 0xBE << TPG_DT_n_CFG_2_USER_SPECIFIED_PAYLOAD;
+ 			val |= format->decode_format << TPG_DT_n_CFG_2_ENCODE_FORMAT;
+ 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_2(0));
 
 
 
