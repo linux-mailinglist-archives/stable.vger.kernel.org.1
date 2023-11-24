@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD457F762B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:18:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15457F762F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EA9A1C20E71
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:18:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53375B213B6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71012C842;
-	Fri, 24 Nov 2023 14:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E952C87B;
+	Fri, 24 Nov 2023 14:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS4beowp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZuquo5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B99928E25
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:18:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DD8C43391;
-	Fri, 24 Nov 2023 14:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFAF18041
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:18:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562B8C433C8;
+	Fri, 24 Nov 2023 14:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700835484;
-	bh=P7ah2SEcB69VqvAbg6J5YuwoPvjVwWhstmcu+bnSQSw=;
+	s=korg; t=1700835488;
+	bh=W38YgJR8drFE6YQTjBIXlMb7IdqhzGthPgJ4j7Df848=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hS4beowpWbPSUrUC2K52QsYwyRgrEIwQFAGy7ACiTFyRnEPVJaVDq4Ev4Ajeytaw+
-	 Fj1aotJGXjBtJvM7K2anXCEw/fH6lQhJqqoVZOav4uI/hcx4MRQRPdyCAlUHMYOQC2
-	 KUbubW1bQWbuY5rpy+hGSLwQPDn2RdMIPXVitf8s=
-Subject: FAILED: patch "[PATCH] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy" failed to apply to 5.15-stable tree
+	b=aZuquo5DRFr4zeHWH5VSo4k0J4401ev+pX7rKfwIKtrX6Bz5UP0DrGvMBA9ZfWSgV
+	 RD73XuyBAoRZCSz3iYqZsRUdXeTKHQ8WJiS/O2xMsltjzj+00MfqM4yiPG5glqofXY
+	 Z96lk6bZjY/ya6RAfKvMB6UA64J4hO7W0hQWy+fg=
+Subject: FAILED: patch "[PATCH] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy" failed to apply to 5.10-stable tree
 To: mwen@igalia.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 14:17:57 +0000
-Message-ID: <2023112457-suspend-washday-4688@gregkh>
+Date: Fri, 24 Nov 2023 14:17:58 +0000
+Message-ID: <2023112458-overheat-flagstone-c571@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x fabd2165d11649ecca5012d786a62ac149e9d83f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112457-suspend-washday-4688@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112458-overheat-flagstone-c571@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
