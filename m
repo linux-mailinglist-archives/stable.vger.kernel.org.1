@@ -1,330 +1,375 @@
-Return-Path: <stable+bounces-208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653B57F757F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:47:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8981A7F7586
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:47:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87CC31C21026
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:47:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA96A1C20F59
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88DD28E36;
-	Fri, 24 Nov 2023 13:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CF12C1BF;
+	Fri, 24 Nov 2023 13:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="WBoLFKmw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNsqCcxf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B7EAA1
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 05:47:24 -0800 (PST)
-Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5bdfbd69bd5so2186776a12.1
-        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 05:47:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700833643; x=1701438443; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=9t9bzwXwuxPIfOoRRcTM3xziAjLHReDjBrli7zY7S14=;
-        b=WBoLFKmwUA+Zhcq2+YYZXimHwGmZBHNfwpkzvv43Vgz+0E8SG1P9qB2G7pyL+EKaXf
-         xdxZSzAGZRtZ8zRERJmpxqPQpzSBXTl35k9ZiOhmk0osFz5XtXasi+8QamFfBRMS2OLM
-         au6HSI+Ai1LdGH5FSYeLQHzSakg2eA0XhX34NsbYukjgoKlPsaDhN4yzvRNKn12zHMJt
-         Rs/jhM8TVY1cGBIeb3kq+XzI3fiO5FGZJ6XJ6SXj7qqPSAAUEy/saRZlxGoiDPHspWeW
-         i0oLdJCwEr6kWz/LDtYOAJowo7ar8zmd2q5y4xxmhCiF4zDw5gCclvdmGoq0CqFTSRMF
-         ZICA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700833643; x=1701438443;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9t9bzwXwuxPIfOoRRcTM3xziAjLHReDjBrli7zY7S14=;
-        b=o4w71XtuDiE5kwnsLfOQqkZIR3aeo3g0Ja8+jX1jCnYT6O3aVRM7vPUeBW5vZo0ZDb
-         R82Pf0JQZfb9dygutoncOuhct9DWG2usd3C1G83d9LFQe1rHQ4YVaerP0LBuo/t6ZtBG
-         MweS35V7TFsiAOBYIkvnSaNsAIGzlpjQhuaN+It8PpXL4MQ0Xmo0zlvd8Sd+TiSFgJhZ
-         TAKKJ0WXM/TrRv5x4BcNhqXejCA3Bf1ILgMDqtrcPziL2U9FnNis8yueTBV0Va83xQse
-         MrxUWm85oXlK/+0COdvfHm6lPDTiL9WZBAMjwNIBuLPUfuZVckK+iHr9Qw+5zWy69vlK
-         XnXQ==
-X-Gm-Message-State: AOJu0YwdbM/Q9/c5Djt2gnMCXl413P/GY4/4Ucxx/lrU1kHpx3M9NMGW
-	KMP2PQOeBgaD7d9FBAKiwX1+WXiQwMVc+lFWfoc=
-X-Google-Smtp-Source: AGHT+IFEwdXHzPbiqJ7k5KGxjQ3XAjZ8SMTt3FdVIeBRMaBM1GFRbXXoiyIZagUF0UQY9cwggqErzw==
-X-Received: by 2002:a17:90b:1a89:b0:285:93ef:115d with SMTP id ng9-20020a17090b1a8900b0028593ef115dmr1813674pjb.4.1700833642886;
-        Fri, 24 Nov 2023 05:47:22 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id b7-20020a17090ae38700b00282eb74ec9esm2960385pjz.51.2023.11.24.05.47.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Nov 2023 05:47:22 -0800 (PST)
-Message-ID: <6560a96a.170a0220.1a8b2.6dcb@mx.google.com>
-Date: Fri, 24 Nov 2023 05:47:22 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A0C28E32
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:47:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3FEDC433CA;
+	Fri, 24 Nov 2023 13:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700833659;
+	bh=bpAoA1WJ9dzWf1lxEmkjj51I0T9w5z2wYHOi/7KnDAQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=mNsqCcxfMm6mzbF7Ek1lmI1xZw4iVjBE2oSvvJcT/IiaZ17MM75L5wZ3KIRHN0j63
+	 zt1x4axyUXQMv3XRvdQiQdiWKw3A0XzVhLHou2ZjKGf3EIMTsbfRP182BgoBVhH64D
+	 QRvBuwMXNVwHy8hY7AQuvHJCwv06OrzptOzWVjGs=
+Subject: FAILED: patch "[PATCH] ext4: make sure allocate pending entry not fail" failed to apply to 6.1-stable tree
+To: yi.zhang@huawei.com,jack@suse.cz,tytso@mit.edu
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Nov 2023 13:47:31 +0000
+Message-ID: <2023112431-sniff-afford-8ceb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: queue/5.4
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.4.261-116-gbbfb442f2143a
-Subject: stable-rc/queue/5.4 build: 17 builds: 3 failed, 14 passed, 3 errors,
- 26 warnings (v5.4.261-116-gbbfb442f2143a)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-stable-rc/queue/5.4 build: 17 builds: 3 failed, 14 passed, 3 errors, 26 war=
-nings (v5.4.261-116-gbbfb442f2143a)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
-/kernel/v5.4.261-116-gbbfb442f2143a/
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Tree: stable-rc
-Branch: queue/5.4
-Git Describe: v5.4.261-116-gbbfb442f2143a
-Git Commit: bbfb442f2143a0edd68b70b13c1dfbc041893a14
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Build Failures Detected:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 8e387c89e96b9543a339f84043cf9df15fed2632
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112431-sniff-afford-8ceb@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-arm64:
-    defconfig: (gcc-10) FAIL
-    defconfig+arm64-chromebook: (gcc-10) FAIL
+Possible dependencies:
 
-arm:
-    multi_v7_defconfig: (gcc-10) FAIL
+8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+768d612f7982 ("ext4: fix slab-use-after-free in ext4_es_insert_extent()")
+2a69c450083d ("ext4: using nofail preallocation in ext4_es_insert_extent()")
+4a2d98447b37 ("ext4: using nofail preallocation in ext4_es_insert_delayed_block()")
+e9fe2b882bd5 ("ext4: using nofail preallocation in ext4_es_remove_extent()")
+bda3efaf774f ("ext4: use pre-allocated es in __es_remove_extent()")
+95f0b320339a ("ext4: use pre-allocated es in __es_insert_extent()")
+73a2f033656b ("ext4: factor out __es_alloc_extent() and __es_free_extent()")
+9649eb18c628 ("ext4: add a new helper to check if es must be kept")
 
-Errors and Warnings Detected:
+thanks,
 
-arc:
+greg k-h
 
-arm64:
-    defconfig (gcc-10): 1 error, 2 warnings
-    defconfig+arm64-chromebook (gcc-10): 1 error, 2 warnings
+------------------ original commit in Linus's tree ------------------
 
-arm:
-    multi_v7_defconfig (gcc-10): 1 error
+From 8e387c89e96b9543a339f84043cf9df15fed2632 Mon Sep 17 00:00:00 2001
+From: Zhang Yi <yi.zhang@huawei.com>
+Date: Thu, 24 Aug 2023 17:26:05 +0800
+Subject: [PATCH] ext4: make sure allocate pending entry not fail
 
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
+__insert_pending() allocate memory in atomic context, so the allocation
+could fail, but we are not handling that failure now. It could lead
+ext4_es_remove_extent() to get wrong reserved clusters, and the global
+data blocks reservation count will be incorrect. The same to
+extents_status entry preallocation, preallocate pending entry out of the
+i_es_lock with __GFP_NOFAIL, make sure __insert_pending() and
+__revise_pending() always succeeds.
 
-mips:
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230824092619.1327976-3-yi.zhang@huaweicloud.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 
-riscv:
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 5e625ea4545d..f4b50652f0cc 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -152,8 +152,9 @@ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ static int es_reclaim_extents(struct ext4_inode_info *ei, int *nr_to_scan);
+ static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
+ 		       struct ext4_inode_info *locked_ei);
+-static void __revise_pending(struct inode *inode, ext4_lblk_t lblk,
+-			     ext4_lblk_t len);
++static int __revise_pending(struct inode *inode, ext4_lblk_t lblk,
++			    ext4_lblk_t len,
++			    struct pending_reservation **prealloc);
+ 
+ int __init ext4_init_es(void)
+ {
+@@ -448,6 +449,19 @@ static void ext4_es_list_del(struct inode *inode)
+ 	spin_unlock(&sbi->s_es_lock);
+ }
+ 
++static inline struct pending_reservation *__alloc_pending(bool nofail)
++{
++	if (!nofail)
++		return kmem_cache_alloc(ext4_pending_cachep, GFP_ATOMIC);
++
++	return kmem_cache_zalloc(ext4_pending_cachep, GFP_KERNEL | __GFP_NOFAIL);
++}
++
++static inline void __free_pending(struct pending_reservation *pr)
++{
++	kmem_cache_free(ext4_pending_cachep, pr);
++}
++
+ /*
+  * Returns true if we cannot fail to allocate memory for this extent_status
+  * entry and cannot reclaim it until its status changes.
+@@ -836,11 +850,12 @@ void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ {
+ 	struct extent_status newes;
+ 	ext4_lblk_t end = lblk + len - 1;
+-	int err1 = 0;
+-	int err2 = 0;
++	int err1 = 0, err2 = 0, err3 = 0;
+ 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
+ 	struct extent_status *es1 = NULL;
+ 	struct extent_status *es2 = NULL;
++	struct pending_reservation *pr = NULL;
++	bool revise_pending = false;
+ 
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+ 		return;
+@@ -868,11 +883,17 @@ void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 
+ 	ext4_es_insert_extent_check(inode, &newes);
+ 
++	revise_pending = sbi->s_cluster_ratio > 1 &&
++			 test_opt(inode->i_sb, DELALLOC) &&
++			 (status & (EXTENT_STATUS_WRITTEN |
++				    EXTENT_STATUS_UNWRITTEN));
+ retry:
+ 	if (err1 && !es1)
+ 		es1 = __es_alloc_extent(true);
+ 	if ((err1 || err2) && !es2)
+ 		es2 = __es_alloc_extent(true);
++	if ((err1 || err2 || err3) && revise_pending && !pr)
++		pr = __alloc_pending(true);
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+ 
+ 	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
+@@ -897,13 +918,18 @@ void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 		es2 = NULL;
+ 	}
+ 
+-	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
+-	    (status & EXTENT_STATUS_WRITTEN ||
+-	     status & EXTENT_STATUS_UNWRITTEN))
+-		__revise_pending(inode, lblk, len);
++	if (revise_pending) {
++		err3 = __revise_pending(inode, lblk, len, &pr);
++		if (err3 != 0)
++			goto error;
++		if (pr) {
++			__free_pending(pr);
++			pr = NULL;
++		}
++	}
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+-	if (err1 || err2)
++	if (err1 || err2 || err3)
+ 		goto retry;
+ 
+ 	ext4_es_print_tree(inode);
+@@ -1311,7 +1337,7 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
+ 				rc->ndelonly--;
+ 				node = rb_next(&pr->rb_node);
+ 				rb_erase(&pr->rb_node, &tree->root);
+-				kmem_cache_free(ext4_pending_cachep, pr);
++				__free_pending(pr);
+ 				if (!node)
+ 					break;
+ 				pr = rb_entry(node, struct pending_reservation,
+@@ -1907,11 +1933,13 @@ static struct pending_reservation *__get_pending(struct inode *inode,
+  *
+  * @inode - file containing the cluster
+  * @lblk - logical block in the cluster to be added
++ * @prealloc - preallocated pending entry
+  *
+  * Returns 0 on successful insertion and -ENOMEM on failure.  If the
+  * pending reservation is already in the set, returns successfully.
+  */
+-static int __insert_pending(struct inode *inode, ext4_lblk_t lblk)
++static int __insert_pending(struct inode *inode, ext4_lblk_t lblk,
++			    struct pending_reservation **prealloc)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
+ 	struct ext4_pending_tree *tree = &EXT4_I(inode)->i_pending_tree;
+@@ -1937,10 +1965,15 @@ static int __insert_pending(struct inode *inode, ext4_lblk_t lblk)
+ 		}
+ 	}
+ 
+-	pr = kmem_cache_alloc(ext4_pending_cachep, GFP_ATOMIC);
+-	if (pr == NULL) {
+-		ret = -ENOMEM;
+-		goto out;
++	if (likely(*prealloc == NULL)) {
++		pr = __alloc_pending(false);
++		if (!pr) {
++			ret = -ENOMEM;
++			goto out;
++		}
++	} else {
++		pr = *prealloc;
++		*prealloc = NULL;
+ 	}
+ 	pr->lclu = lclu;
+ 
+@@ -1970,7 +2003,7 @@ static void __remove_pending(struct inode *inode, ext4_lblk_t lblk)
+ 	if (pr != NULL) {
+ 		tree = &EXT4_I(inode)->i_pending_tree;
+ 		rb_erase(&pr->rb_node, &tree->root);
+-		kmem_cache_free(ext4_pending_cachep, pr);
++		__free_pending(pr);
+ 	}
+ }
+ 
+@@ -2029,10 +2062,10 @@ void ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 				  bool allocated)
+ {
+ 	struct extent_status newes;
+-	int err1 = 0;
+-	int err2 = 0;
++	int err1 = 0, err2 = 0, err3 = 0;
+ 	struct extent_status *es1 = NULL;
+ 	struct extent_status *es2 = NULL;
++	struct pending_reservation *pr = NULL;
+ 
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+ 		return;
+@@ -2052,6 +2085,8 @@ void ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 		es1 = __es_alloc_extent(true);
+ 	if ((err1 || err2) && !es2)
+ 		es2 = __es_alloc_extent(true);
++	if ((err1 || err2 || err3) && allocated && !pr)
++		pr = __alloc_pending(true);
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+ 
+ 	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
+@@ -2074,11 +2109,18 @@ void ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 		es2 = NULL;
+ 	}
+ 
+-	if (allocated)
+-		__insert_pending(inode, lblk);
++	if (allocated) {
++		err3 = __insert_pending(inode, lblk, &pr);
++		if (err3 != 0)
++			goto error;
++		if (pr) {
++			__free_pending(pr);
++			pr = NULL;
++		}
++	}
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+-	if (err1 || err2)
++	if (err1 || err2 || err3)
+ 		goto retry;
+ 
+ 	ext4_es_print_tree(inode);
+@@ -2184,21 +2226,24 @@ unsigned int ext4_es_delayed_clu(struct inode *inode, ext4_lblk_t lblk,
+  * @inode - file containing the range
+  * @lblk - logical block defining the start of range
+  * @len  - length of range in blocks
++ * @prealloc - preallocated pending entry
+  *
+  * Used after a newly allocated extent is added to the extents status tree.
+  * Requires that the extents in the range have either written or unwritten
+  * status.  Must be called while holding i_es_lock.
+  */
+-static void __revise_pending(struct inode *inode, ext4_lblk_t lblk,
+-			     ext4_lblk_t len)
++static int __revise_pending(struct inode *inode, ext4_lblk_t lblk,
++			    ext4_lblk_t len,
++			    struct pending_reservation **prealloc)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
+ 	ext4_lblk_t end = lblk + len - 1;
+ 	ext4_lblk_t first, last;
+ 	bool f_del = false, l_del = false;
++	int ret = 0;
+ 
+ 	if (len == 0)
+-		return;
++		return 0;
+ 
+ 	/*
+ 	 * Two cases - block range within single cluster and block range
+@@ -2219,7 +2264,9 @@ static void __revise_pending(struct inode *inode, ext4_lblk_t lblk,
+ 			f_del = __es_scan_range(inode, &ext4_es_is_delonly,
+ 						first, lblk - 1);
+ 		if (f_del) {
+-			__insert_pending(inode, first);
++			ret = __insert_pending(inode, first, prealloc);
++			if (ret < 0)
++				goto out;
+ 		} else {
+ 			last = EXT4_LBLK_CMASK(sbi, end) +
+ 			       sbi->s_cluster_ratio - 1;
+@@ -2227,9 +2274,11 @@ static void __revise_pending(struct inode *inode, ext4_lblk_t lblk,
+ 				l_del = __es_scan_range(inode,
+ 							&ext4_es_is_delonly,
+ 							end + 1, last);
+-			if (l_del)
+-				__insert_pending(inode, last);
+-			else
++			if (l_del) {
++				ret = __insert_pending(inode, last, prealloc);
++				if (ret < 0)
++					goto out;
++			} else
+ 				__remove_pending(inode, last);
+ 		}
+ 	} else {
+@@ -2237,18 +2286,24 @@ static void __revise_pending(struct inode *inode, ext4_lblk_t lblk,
+ 		if (first != lblk)
+ 			f_del = __es_scan_range(inode, &ext4_es_is_delonly,
+ 						first, lblk - 1);
+-		if (f_del)
+-			__insert_pending(inode, first);
+-		else
++		if (f_del) {
++			ret = __insert_pending(inode, first, prealloc);
++			if (ret < 0)
++				goto out;
++		} else
+ 			__remove_pending(inode, first);
+ 
+ 		last = EXT4_LBLK_CMASK(sbi, end) + sbi->s_cluster_ratio - 1;
+ 		if (last != end)
+ 			l_del = __es_scan_range(inode, &ext4_es_is_delonly,
+ 						end + 1, last);
+-		if (l_del)
+-			__insert_pending(inode, last);
+-		else
++		if (l_del) {
++			ret = __insert_pending(inode, last, prealloc);
++			if (ret < 0)
++				goto out;
++		} else
+ 			__remove_pending(inode, last);
+ 	}
++out:
++	return ret;
+ }
 
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 4 warnings
-    x86_64_defconfig+x86-board (gcc-10): 4 warnings
-
-Errors summary:
-
-    3    drivers/tty/serial/meson_uart.c:728:6: error: =E2=80=98struct uart=
-_port=E2=80=99 has no member named =E2=80=98has_sysrq=E2=80=99
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
-
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warnings, 0 section mi=
-smatches
-
-Errors:
-    drivers/tty/serial/meson_uart.c:728:6: error: =E2=80=98struct uart_port=
-=E2=80=99 has no member named =E2=80=98has_sysrq=E2=80=99
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warni=
-ngs, 0 section mismatches
-
-Errors:
-    drivers/tty/serial/meson_uart.c:728:6: error: =E2=80=98struct uart_port=
-=E2=80=99 has no member named =E2=80=98has_sysrq=E2=80=99
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 0 warnings, 0 sec=
-tion mismatches
-
-Errors:
-    drivers/tty/serial/meson_uart.c:728:6: error: =E2=80=98struct uart_port=
-=E2=80=99 has no member named =E2=80=98has_sysrq=E2=80=99
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
-nings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
 
