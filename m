@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A21D7F7B31
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C207F7D62
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6CA1B20FC4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C6CA28217D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444CF39FEE;
-	Fri, 24 Nov 2023 18:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06D363A8C9;
+	Fri, 24 Nov 2023 18:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAFd6Ude"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGF1q+z6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1A039FD7;
-	Fri, 24 Nov 2023 18:02:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C19C433C8;
-	Fri, 24 Nov 2023 18:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF00639FE8;
+	Fri, 24 Nov 2023 18:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A5CC433C8;
+	Fri, 24 Nov 2023 18:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848960;
-	bh=nAI5d3O94KTYQ8c8zKUMWgIh+WEw4UbA1XR6pxSZ6Io=;
+	s=korg; t=1700850241;
+	bh=40IH3/1VpBYL3DfqR0SWUNquOdLPVH47hTPxj1X3NzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAFd6Ude/gDzJ0nkLw7sqmeSCXMtI8Oeqiia0lS3iyExuJ6xTMA00TlYGmyEWHseM
-	 Yt1EcM9Cqdq2esyKFNc6eKNghf+3U8VCAm04h03f43WS99MhByE3QG5SPAjFPpXZG8
-	 stFK4SDaA4sRkLdVhATz6/z0mi0oxjUxQ/Lcsvn8=
+	b=hGF1q+z6QZbDrLABMbV3RGmvpLnAE1XG94MPBQqpBJ+HSzsUM9E1ER0dYyQT0CHAc
+	 VVsNSbpfaukw/BF5gUWNuWW55CzroyRbt186B08B2K5CMfFb54HVj+MqMeizJZj3ck
+	 NZn59PEwEjk/JvqYYlv8dtx6tMJ3JrXHlrBzPDiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Sam Protsenko <semen.protsenko@linaro.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 26/57] pwm: Fix double shift bug
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kai-Heng Feng <kai.heng.geng@canonical.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 484/530] mmc: sdhci-pci-gli: GL9750: Mask the replay timer timeout of AER
 Date: Fri, 24 Nov 2023 17:50:50 +0000
-Message-ID: <20231124171931.239997561@linuxfoundation.org>
+Message-ID: <20231124172042.823683386@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +52,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-[ Upstream commit d27abbfd4888d79dd24baf50e774631046ac4732 ]
+commit 015c9cbcf0ad709079117d27c2094a46e0eadcdb upstream.
 
-These enums are passed to set/test_bit().  The set/test_bit() functions
-take a bit number instead of a shifted value.  Passing a shifted value
-is a double shift bug like doing BIT(BIT(1)).  The double shift bug
-doesn't cause a problem here because we are only checking 0 and 1 but
-if the value was 5 or above then it can lead to a buffer overflow.
+Due to a flaw in the hardware design, the GL9750 replay timer frequently
+times out when ASPM is enabled. As a result, the warning messages will
+often appear in the system log when the system accesses the GL9750
+PCI config. Therefore, the replay timer timeout must be masked.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d7133797e9e1 ("mmc: sdhci-pci-gli: A workaround to allow GL9750 to enter ASPM L1.2")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Kai-Heng Feng <kai.heng.geng@canonical.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231107095741.8832-2-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pwm.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/linux/pwm.h b/include/linux/pwm.h
-index bd7d611d63e91..c6e981035c3fd 100644
---- a/include/linux/pwm.h
-+++ b/include/linux/pwm.h
-@@ -44,8 +44,8 @@ struct pwm_args {
- };
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -28,6 +28,9 @@
+ #define PCI_GLI_9750_PM_CTRL	0xFC
+ #define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
  
- enum {
--	PWMF_REQUESTED = 1 << 0,
--	PWMF_EXPORTED = 1 << 1,
-+	PWMF_REQUESTED = 0,
-+	PWMF_EXPORTED = 1,
- };
++#define PCI_GLI_9750_CORRERR_MASK				0x214
++#define   PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
++
+ #define SDHCI_GLI_9750_CFG2          0x848
+ #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
+ #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
+@@ -564,6 +567,11 @@ static void gl9750_hw_setting(struct sdh
+ 	value &= ~PCI_GLI_9750_PM_STATE;
+ 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
  
- /*
--- 
-2.42.0
-
++	/* mask the replay timer timeout of AER */
++	pci_read_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, &value);
++	value |= PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
++	pci_write_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, value);
++
+ 	gl9750_wt_off(host);
+ }
+ 
 
 
 
