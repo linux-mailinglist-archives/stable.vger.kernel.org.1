@@ -1,84 +1,67 @@
-Return-Path: <stable+bounces-152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A01A7F73F5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:41:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA557F73F6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:41:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64B83B21494
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:40:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 864C2281DDB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5951642B;
-	Fri, 24 Nov 2023 12:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BC215AC5;
+	Fri, 24 Nov 2023 12:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Imwi+TA7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1yyAvPz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A07A200A6
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:40:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836F8C433C7;
-	Fri, 24 Nov 2023 12:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73FB2869B
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:41:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBE9C433C8;
+	Fri, 24 Nov 2023 12:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700829655;
-	bh=LEXaIbNh/YAoxrZO1Z8WJmaw6rNaTKczbVryoxDpr/w=;
+	s=korg; t=1700829700;
+	bh=gVnYa8KQevpEhNDfi098Mt2epJn8Uss5XMmXaJcBa/w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Imwi+TA7gBdJpwyo5tTtAFblN1bPU2Io/qsC3ktQAzY+WFeUPyU94n2vn4g7Gvvb/
-	 7onGuUwT1qbNB5kXm0XVGNi7w7AZMo3NPSWizAYg+yKus/Pvhfg3CSxRuNrnIdde+C
-	 NvJK2dih4AKgg0xHG/wQWrDTtO7UqLTVytu8T/O4=
-Subject: FAILED: patch "[PATCH] media: ccs: Correctly initialise try compose rectangle" failed to apply to 4.14-stable tree
-To: sakari.ailus@linux.intel.com,hverkuil-cisco@xs4all.nl,laurent.pinchart@ideasonboard.com
+	b=W1yyAvPzpJ22B10ZyHOeJra1kFs1EtfuWJfDb9yWGn7odUi9DPEwsn2i3wg+j6w2n
+	 upQOw+/4l9liG43QvIG8Wy0UiSWiQbNfvGHvTnDCkoRjHGaouxz2ZQmfNr9UP4Rpu7
+	 W8sRkGNoUrmFfUB8s6XsCqt7L/latm5cnSEfqrx8=
+Subject: FAILED: patch "[PATCH] MIPS: KVM: Fix a build warning about variable set but not" failed to apply to 6.6-stable tree
+To: chenhuacai@kernel.org,chenhuacai@loongson.cn,lkp@intel.com,philmd@linaro.org,tsbogend@alpha.franken.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:40:34 +0000
-Message-ID: <2023112434-await-simple-b4f3@gregkh>
+Date: Fri, 24 Nov 2023 12:41:28 +0000
+Message-ID: <2023112428-drew-diagram-d710@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 724ff68e968b19d786870d333f9952bdd6b119cb
+git cherry-pick -x 83767a67e7b6a0291cde5681ec7e3708f3f8f877
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112434-await-simple-b4f3@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112428-drew-diagram-d710@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-724ff68e968b ("media: ccs: Correctly initialise try compose rectangle")
-b24cc2a18c50 ("media: smiapp: Rename as "ccs"")
-161cc847370a ("media: smiapp: Internal rename to CCS")
-47ff2ff267ee ("media: smiapp: Rename register access functions")
-235ac9a4b36c ("media: smiapp: Remove quirk function for writing a single 8-bit register")
-42aab58f456a ("media: smiapp: Use CCS registers")
-3e158e1f1ec2 ("media: smiapp: Switch to CCS limits")
-ca296a11156a ("media: smiapp: Read CCS limit values")
-503a88422fb0 ("media: smiapp: Use MIPI CCS version and manufacturer ID information")
-e66a7c849086 ("media: smiapp: Add macros for accessing CCS registers")
-cb50351be662 ("media: smiapp: Remove macros for defining registers, merge definitions")
-ab47d5cd8253 ("media: smiapp: Calculate CCS limit offsets and limit buffer size")
-82731a194fc1 ("media: smiapp: Use CCS register flags")
-6493c4b777c2 ("media: smiapp: Import CCS definitions")
-1ec0b899c2b7 ("media: ccs: Add the generator for CCS register definitions and limits")
-b5783c4d1fbe ("media: i2c: smiapp: simplify getting state container")
-1771e9fb67e2 ("media: Use fallthrough pseudo-keyword")
-a98f670e41a9 ("Merge tag 'media/v5.8-1' of git://git.kernel.org/pub/scm/linux/kernel/git/mchehab/linux-media")
+83767a67e7b6 ("MIPS: KVM: Fix a build warning about variable set but not used")
 
 thanks,
 
@@ -86,34 +69,52 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 724ff68e968b19d786870d333f9952bdd6b119cb Mon Sep 17 00:00:00 2001
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
-Date: Mon, 4 Sep 2023 15:57:37 +0300
-Subject: [PATCH] media: ccs: Correctly initialise try compose rectangle
+From 83767a67e7b6a0291cde5681ec7e3708f3f8f877 Mon Sep 17 00:00:00 2001
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Tue, 10 Oct 2023 16:54:34 +0800
+Subject: [PATCH] MIPS: KVM: Fix a build warning about variable set but not
+ used
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Initialise the try sink compose rectangle size to the sink compose
-rectangle for binner and scaler sub-devices. This was missed due to the
-faulty condition that lead to the compose rectangles to be initialised for
-the pixel array sub-device where it is not relevant.
+After commit 411740f5422a ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
+old_pte is no longer used in kvm_mips_map_page(). So remove it to fix a
+build warning about variable set but not used:
 
-Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
+   arch/mips/kvm/mmu.c: In function 'kvm_mips_map_page':
+>> arch/mips/kvm/mmu.c:701:29: warning: variable 'old_pte' set but not used [-Wunused-but-set-variable]
+     701 |         pte_t *ptep, entry, old_pte;
+         |                             ^~~~~~~
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 411740f5422a960 ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310070530.aARZCSfh-lkp@intel.com/
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-diff --git a/drivers/media/i2c/ccs/ccs-core.c b/drivers/media/i2c/ccs/ccs-core.c
-index 6a8116454f87..022e8712d48e 100644
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3097,7 +3097,7 @@ static int ccs_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
- 		try_fmt->code = sensor->internal_csi_format->code;
- 		try_fmt->field = V4L2_FIELD_NONE;
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index 7b2ac1319d70..467ee6b95ae1 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -592,7 +592,7 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
+ 	gfn_t gfn = gpa >> PAGE_SHIFT;
+ 	int srcu_idx, err;
+ 	kvm_pfn_t pfn;
+-	pte_t *ptep, entry, old_pte;
++	pte_t *ptep, entry;
+ 	bool writeable;
+ 	unsigned long prot_bits;
+ 	unsigned long mmu_seq;
+@@ -664,7 +664,6 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
+ 	entry = pfn_pte(pfn, __pgprot(prot_bits));
  
--		if (ssd != sensor->pixel_array)
-+		if (ssd == sensor->pixel_array)
- 			continue;
+ 	/* Write the PTE */
+-	old_pte = *ptep;
+ 	set_pte(ptep, entry);
  
- 		try_comp = v4l2_subdev_get_try_compose(sd, fh->state, i);
+ 	err = 0;
 
 
