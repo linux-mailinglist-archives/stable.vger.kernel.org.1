@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-2284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 358167F8387
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A63197F83F0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E16A31F21129
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6203D289895
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D624D35F04;
-	Fri, 24 Nov 2023 19:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D863B35F1A;
+	Fri, 24 Nov 2023 19:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj691PwG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY5yXAel"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B6E33CC2;
-	Fri, 24 Nov 2023 19:18:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CA8C4339A;
-	Fri, 24 Nov 2023 19:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B22963A1;
+	Fri, 24 Nov 2023 19:22:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1425EC433C8;
+	Fri, 24 Nov 2023 19:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853508;
-	bh=yQbJV8cH24TksCOSByq35jDrf24DjQX3tiUR6Zp4lHI=;
+	s=korg; t=1700853748;
+	bh=KOS0HRn6LtqoAmn9ZArT3zuRlwp2rx+b2kRpCfikRzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lj691PwGohLE4iXoCYPsdx6LI9zQfzFRh2Bdhjwe8sbS5unIdaFlmLXG8VQqk3j+i
-	 oqUZ9cMKYFsnw9nFkLEVpfa94miIsKe1Kf5XioMJLANWP3J6gDVRLrFHehfYvr9/og
-	 DpNChVFaWIiZSZGd9S7r/6MAAPiqjiBGYwT0/8oE=
+	b=ZY5yXAelkQeHJ8+G37vIbQWQeUBj1GN8d9J17O3LFbCpTD+g2t2qKVpfOfXmJWHVT
+	 Dg0eGAaKbTl6lXEsp0lCrQtUG1A3c3nvGRuVNYOgdpEccZ9WFNSnvyTOSsQuPaT4nh
+	 lO9RqaB5mloMpPjgnRoga2joXnW5TFeWncf5dcrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 181/297] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
-Date: Fri, 24 Nov 2023 17:53:43 +0000
-Message-ID: <20231124172006.572270360@linuxfoundation.org>
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 007/159] wifi: mac80211: dont return unset power in ieee80211_get_tx_power()
+Date: Fri, 24 Nov 2023 17:53:44 +0000
+Message-ID: <20231124171942.214292051@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +52,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit e641a070137dd959932c7c222e000d9d941167a2 upstream.
+[ Upstream commit e160ab85166e77347d0cbe5149045cb25e83937f ]
 
-GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
-on the request from dependent clocks. Doing so will result in the
-unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
-clocks.
+We can get a UBSAN warning if ieee80211_get_tx_power() returns the
+INT_MIN value mac80211 internally uses for "unset power level".
 
-Cc: stable@vger.kernel.org
-Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL’s")
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ UBSAN: signed-integer-overflow in net/wireless/nl80211.c:3816:5
+ -2147483648 * 100 cannot be represented in type 'int'
+ CPU: 0 PID: 20433 Comm: insmod Tainted: G        WC OE
+ Call Trace:
+  dump_stack+0x74/0x92
+  ubsan_epilogue+0x9/0x50
+  handle_overflow+0x8d/0xd0
+  __ubsan_handle_mul_overflow+0xe/0x10
+  nl80211_send_iface+0x688/0x6b0 [cfg80211]
+  [...]
+  cfg80211_register_wdev+0x78/0xb0 [cfg80211]
+  cfg80211_netdev_notifier_call+0x200/0x620 [cfg80211]
+  [...]
+  ieee80211_if_add+0x60e/0x8f0 [mac80211]
+  ieee80211_register_hw+0xda5/0x1170 [mac80211]
+
+In this case, simply return an error instead, to indicate
+that no data is available.
+
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://lore.kernel.org/r/20230203023636.4418-1-pkshih@realtek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-ipq8074.c |    6 ------
- 1 file changed, 6 deletions(-)
+ net/mac80211/cfg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/clk/qcom/gcc-ipq8074.c
-+++ b/drivers/clk/qcom/gcc-ipq8074.c
-@@ -418,7 +418,6 @@ static struct clk_fixed_factor gpll0_out
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 9e3bff5aaf8b8..6428c0d371458 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2581,6 +2581,10 @@ static int ieee80211_get_tx_power(struct wiphy *wiphy,
+ 	else
+ 		*dbm = sdata->vif.bss_conf.txpower;
  
-@@ -465,7 +464,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
++	/* INT_MIN indicates no power level was set yet */
++	if (*dbm == INT_MIN)
++		return -EINVAL;
++
+ 	return 0;
+ }
  
-@@ -498,7 +496,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -532,7 +529,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -546,7 +542,6 @@ static struct clk_fixed_factor gpll6_out
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -611,7 +606,6 @@ static struct clk_alpha_pll_postdiv nss_
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
+-- 
+2.42.0
+
 
 
 
