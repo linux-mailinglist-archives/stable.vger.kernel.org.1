@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-2384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D47717F83F2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5239B7F8232
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11E451C26AF3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C395282817
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42528381CC;
-	Fri, 24 Nov 2023 19:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF6D35F04;
+	Fri, 24 Nov 2023 19:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvSwdKof"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BdxjaA1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F342FC36;
-	Fri, 24 Nov 2023 19:22:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840D5C433C7;
-	Fri, 24 Nov 2023 19:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5782837E;
+	Fri, 24 Nov 2023 19:05:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACC2C433C8;
+	Fri, 24 Nov 2023 19:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853750;
-	bh=1KVt0vNuwMfZrUM+1OCqeyvZXD6rMwbojlvdeHDh/Bk=;
+	s=korg; t=1700852723;
+	bh=rmjqPyIEK8Kf5xZG4hHHr7dCaJVPGZfhsGNKGNgn3Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvSwdKofhseWZVaZFdrq+R0N0zawGBx2DQmpnPRfqC0Z3UJMbtWXflWy4dSlQqwG+
-	 93zEsFF/+Qvcxmr61Ph3wF/fXYQftgnOeuP9milOAwp1d5MixpYJMjd2AiT8I8P6mN
-	 8IytVDwRF5+BUT/+MpeF2y8gc1DwWtpErp8wj4/A=
+	b=BdxjaA1YljpfeAk8moms9vG0zgVEWJMUBYu4nBrx0nTs6s30BrARotcwQi9TytQUl
+	 lMULxWH2rvJ61EJriDn8fcWlWuw4upuDT3iOSl75DX/5fG+JJ3s55Long+eNn53n1g
+	 oKWXe9nfblaBfFa3PzYpVTX5MOys9qh2VFqU4z2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 008/159] wifi: ath9k: fix clang-specific fortify warnings
+	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10 098/193] KVM: x86: Ignore MSR_AMD64_TW_CFG access
 Date: Fri, 24 Nov 2023 17:53:45 +0000
-Message-ID: <20231124171942.253071232@linuxfoundation.org>
+Message-ID: <20231124171951.181341414@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,107 +50,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-[ Upstream commit 95f97fe0ac974467ab4da215985a32b2fdf48af0 ]
+commit 2770d4722036d6bd24bcb78e9cd7f6e572077d03 upstream.
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+Hyper-V enabled Windows Server 2022 KVM VM cannot be started on Zen1 Ryzen
+since it crashes at boot with SYSTEM_THREAD_EXCEPTION_NOT_HANDLED +
+STATUS_PRIVILEGED_INSTRUCTION (in other words, because of an unexpected #GP
+in the guest kernel).
 
-In file included from drivers/net/wireless/ath/ath9k/debug.c:17:
-In file included from ./include/linux/slab.h:16:
-In file included from ./include/linux/gfp.h:7:
-In file included from ./include/linux/mmzone.h:8:
-In file included from ./include/linux/spinlock.h:56:
-In file included from ./include/linux/preempt.h:79:
-In file included from ./arch/x86/include/asm/preempt.h:9:
-In file included from ./include/linux/thread_info.h:60:
-In file included from ./arch/x86/include/asm/thread_info.h:53:
-In file included from ./arch/x86/include/asm/cpufeature.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+This is because Windows tries to set bit 8 in MSR_AMD64_TW_CFG and can't
+handle receiving a #GP when doing so.
 
-In file included from drivers/net/wireless/ath/ath9k/htc_drv_debug.c:17:
-In file included from drivers/net/wireless/ath/ath9k/htc.h:20:
-In file included from ./include/linux/module.h:13:
-In file included from ./include/linux/stat.h:19:
-In file included from ./include/linux/time.h:60:
-In file included from ./include/linux/time32.h:13:
-In file included from ./include/linux/timex.h:67:
-In file included from ./arch/x86/include/asm/timex.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+Give this MSR the same treatment that commit 2e32b7190641
+("x86, kvm: Add MSR_AMD64_BU_CFG2 to the list of ignored MSRs") gave
+MSR_AMD64_BU_CFG2 under justification that this MSR is baremetal-relevant
+only.
+Although apparently it was then needed for Linux guests, not Windows as in
+this case.
 
-The compiler actually complains on 'ath9k_get_et_strings()' and
-'ath9k_htc_get_et_strings()' due to the same reason: fortification logic
-inteprets call to 'memcpy()' as an attempt to copy the whole array from
-it's first member and so issues an overread warning. These warnings may
-be silenced by passing an address of the whole array and not the first
-member to 'memcpy()'.
+With this change, the aforementioned guest setup is able to finish booting
+successfully.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230829093856.234584-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue can be reproduced either on a Summit Ridge Ryzen (with
+just "-cpu host") or on a Naples EPYC (with "-cpu host,stepping=1" since
+EPYC is ordinarily stepping 2).
+
+Alternatively, userspace could solve the problem by using MSR filters, but
+forcing every userspace to define a filter isn't very friendly and doesn't
+add much, if any, value.  The only potential hiccup is if one of these
+"baremetal-only" MSRs ever requires actual emulation and/or has F/M/S
+specific behavior.  But if that happens, then KVM can still punt *that*
+handling to userspace since userspace MSR filters "win" over KVM's default
+handling.
+
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/1ce85d9c7c9e9632393816cf19c902e0a3f411f1.1697731406.git.maciej.szmigiero@oracle.com
+[sean: call out MSR filtering alternative]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/debug.c         | 2 +-
- drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/msr-index.h |    1 +
+ arch/x86/kvm/x86.c               |    2 ++
+ 2 files changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index 859a865c59950..8d98347e0ddff 100644
---- a/drivers/net/wireless/ath/ath9k/debug.c
-+++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -1284,7 +1284,7 @@ void ath9k_get_et_strings(struct ieee80211_hw *hw,
- 			  u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath9k_gstrings_stats,
-+		memcpy(data, ath9k_gstrings_stats,
- 		       sizeof(ath9k_gstrings_stats));
- }
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -505,6 +505,7 @@
+ #define MSR_AMD64_CPUID_FN_1		0xc0011004
+ #define MSR_AMD64_LS_CFG		0xc0011020
+ #define MSR_AMD64_DC_CFG		0xc0011022
++#define MSR_AMD64_TW_CFG		0xc0011023
  
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-index c55aab01fff5d..e79bbcd3279af 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-@@ -428,7 +428,7 @@ void ath9k_htc_get_et_strings(struct ieee80211_hw *hw,
- 			      u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath9k_htc_gstrings_stats,
-+		memcpy(data, ath9k_htc_gstrings_stats,
- 		       sizeof(ath9k_htc_gstrings_stats));
- }
+ #define MSR_AMD64_DE_CFG		0xc0011029
+ #define MSR_AMD64_DE_CFG_LFENCE_SERIALIZE_BIT	 1
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3132,6 +3132,7 @@ int kvm_set_msr_common(struct kvm_vcpu *
+ 	case MSR_AMD64_PATCH_LOADER:
+ 	case MSR_AMD64_BU_CFG2:
+ 	case MSR_AMD64_DC_CFG:
++	case MSR_AMD64_TW_CFG:
+ 	case MSR_F15H_EX_CFG:
+ 		break;
  
--- 
-2.42.0
-
+@@ -3485,6 +3486,7 @@ int kvm_get_msr_common(struct kvm_vcpu *
+ 	case MSR_AMD64_BU_CFG2:
+ 	case MSR_IA32_PERF_CTL:
+ 	case MSR_AMD64_DC_CFG:
++	case MSR_AMD64_TW_CFG:
+ 	case MSR_F15H_EX_CFG:
+ 	/*
+ 	 * Intel Sandy Bridge CPUs must support the RAPL (running average power
 
 
 
