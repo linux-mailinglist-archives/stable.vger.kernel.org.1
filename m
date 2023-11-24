@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE487F81DB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C297F81CD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD31F1C221AA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77DE5B223D7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC7973418B;
-	Fri, 24 Nov 2023 19:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41033364DE;
+	Fri, 24 Nov 2023 19:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofIymy5c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlvHnVf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DAC22C1A2;
-	Fri, 24 Nov 2023 19:02:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1526C433C8;
-	Fri, 24 Nov 2023 19:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B4733076;
+	Fri, 24 Nov 2023 19:01:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D706AC433C9;
+	Fri, 24 Nov 2023 19:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852526;
-	bh=4xMwiDbethWDAJa7XirDU+Hnos0idBQF3WTL1SFbpLk=;
+	s=korg; t=1700852496;
+	bh=cTih9LWrI02GqQDG+Rhh/2IRiCCajdv+yjWJpnxXvxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofIymy5caspe+YOt3vneE12vyG/D8ywvlTHnJRDxziRBVZkmPX3LOA1C83XfFQ7yn
-	 59wM1e986F4+B6U+6alehrciL9VwIbvfUrEIJmnkt9Hc6LxHuSAZ10GZFnYPwlEsAR
-	 Y99X11PXUVMXIuFEMw49XBrIstTUAs2oJyIzK88s=
+	b=MlvHnVf4sllUdHk1G7x/q4uFXBYA+js+dv+kUBT2dox5ik2NAgm77ufy9qAXw1VwE
+	 pvIp1yLqbQcLd2uK0p4wT7nwovhGXFopTht+IhXZYPAJjYps0ajClyWoS4svNl6mg9
+	 nEH/mkJB4aeqyU5vJUqM8gCcKPtdcarMLkapH5vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Held <felix.held@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/193] drm/amd: Fix UBSAN array-index-out-of-bounds for SMU7
+	Kunwu Chan <chentao@kylinos.cn>,
+	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.1 359/372] drm/i915: Fix potential spectre vulnerability
 Date: Fri, 24 Nov 2023 17:52:26 +0000
-Message-ID: <20231124171947.947004728@linuxfoundation.org>
+Message-ID: <20231124172022.266971141@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 760efbca74a405dc439a013a5efaa9fadc95a8c3 ]
+commit 1a8e9bad6ef563c28ab0f8619628d5511be55431 upstream.
 
-For pptable structs that use flexible array sizes, use flexible arrays.
+Fix smatch warning:
+drivers/gpu/drm/i915/gem/i915_gem_context.c:847 set_proto_ctx_sseu()
+warn: potential spectre issue 'pc->user_engines' [r] (local cap)
 
-Suggested-by: Felix Held <felix.held@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2874
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d4433c7600f7 ("drm/i915/gem: Use the proto-context to handle create parameters (v5)")
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103110922.430122-1-tvrtko.ursulin@linux.intel.com
+(cherry picked from commit 27b086382c22efb7e0a16442f7bdc2e120108ef3)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/include/pptable.h                 | 4 ++--
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_context.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/include/pptable.h b/drivers/gpu/drm/amd/include/pptable.h
-index 0b6a057e0a4c4..5aac8d545bdc6 100644
---- a/drivers/gpu/drm/amd/include/pptable.h
-+++ b/drivers/gpu/drm/amd/include/pptable.h
-@@ -78,7 +78,7 @@ typedef struct _ATOM_PPLIB_THERMALCONTROLLER
- typedef struct _ATOM_PPLIB_STATE
- {
-     UCHAR ucNonClockStateIndex;
--    UCHAR ucClockStateIndices[1]; // variable-sized
-+    UCHAR ucClockStateIndices[]; // variable-sized
- } ATOM_PPLIB_STATE;
+--- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
+@@ -844,6 +844,7 @@ static int set_proto_ctx_sseu(struct drm
+ 		if (idx >= pc->num_user_engines)
+ 			return -EINVAL;
  
++		idx = array_index_nospec(idx, pc->num_user_engines);
+ 		pe = &pc->user_engines[idx];
  
-@@ -473,7 +473,7 @@ typedef struct _ATOM_PPLIB_STATE_V2
-       /**
-       * Driver will read the first ucNumDPMLevels in this array
-       */
--      UCHAR clockInfoIndex[1];
-+      UCHAR clockInfoIndex[];
- } ATOM_PPLIB_STATE_V2;
- 
- typedef struct _StateArray{
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-index 1e870f58dd12a..d5a4a08c6d392 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-@@ -179,7 +179,7 @@ typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
- typedef struct _ATOM_Tonga_MCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_MCLK_Dependency_Record entries[1];				/* Dynamically allocate entries. */
-+	ATOM_Tonga_MCLK_Dependency_Record entries[];				/* Dynamically allocate entries. */
- } ATOM_Tonga_MCLK_Dependency_Table;
- 
- typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
-@@ -194,7 +194,7 @@ typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
- typedef struct _ATOM_Tonga_SCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
-+	ATOM_Tonga_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
- } ATOM_Tonga_SCLK_Dependency_Table;
- 
- typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
--- 
-2.42.0
-
+ 		/* Only render engine supports RPCS configuration. */
 
 
 
