@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-2275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C767F837D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC3C97F824D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35448B25FCA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AB44B23B4E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745813307D;
-	Fri, 24 Nov 2023 19:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6402E364A7;
+	Fri, 24 Nov 2023 19:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/p7AQlo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqZSTamz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338F035F1A;
-	Fri, 24 Nov 2023 19:18:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D81C433C8;
-	Fri, 24 Nov 2023 19:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C48931759;
+	Fri, 24 Nov 2023 19:06:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0D5C433C8;
+	Fri, 24 Nov 2023 19:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853486;
-	bh=kMCAlslUiGd1Hsu9YHXrniNrqdsWLcyEz+7rzJejAaw=;
+	s=korg; t=1700852784;
+	bh=oqk/hRW3s/j9iEPeNyfqrGsJjjv1zsyeKzTqxWXhda0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/p7AQlommIl9Eg9TwibC+guLX6ETbZnGoSylAqZ6m29stT8O6IYH8V3l8NNA8mbY
-	 toTiuXSbOBeGp5xOBcuiWKbASa4WhdzmYBZlrGdmd5R+siLkAT3IPsK/yTCw4nmhc+
-	 +cXhFMRaNwaIU2NBMPtHMMIvO2EgQqUrHgiSxxqc=
+	b=oqZSTamzACU8CTxjMmqrs8vPI5CbiRr88BOq/MmLR61DWOR8pFoJkMWzyrps86hJD
+	 Hm26NxwVwYKVDwdugfe7uzAcHQywlVorUSxCTn/iBBofq/1Fa2djmGXLEYoWcfkhvW
+	 P+2uDA2FmwuxlMwDXJVvp5BsDDYQ/JGOdumr3DmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 207/297] netfilter: nf_tables: remove catchall element in GC sync path
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 5.10 122/193] wifi: ath11k: fix temperature event locking
 Date: Fri, 24 Nov 2023 17:54:09 +0000
-Message-ID: <20231124172007.462387455@linuxfoundation.org>
+Message-ID: <20231124171952.110570831@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,91 +53,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 93995bf4af2c5a99e2a87f0cd5ce547d31eb7630 ]
+commit 1a5352a81b4720ba43d9c899974e3bddf7ce0ce8 upstream.
 
-The expired catchall element is not deactivated and removed from GC sync
-path. This path holds mutex so just call nft_setelem_data_deactivate()
-and nft_setelem_catchall_remove() before queueing the GC work.
+The ath11k active pdevs are protected by RCU but the temperature event
+handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section as reported by RCU lockdep:
 
-Fixes: 4a9e12ea7e70 ("netfilter: nft_set_pipapo: call nft_trans_gc_queue_sync() in catchall GC")
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	=============================
+	WARNING: suspicious RCU usage
+	6.6.0-rc6 #7 Not tainted
+	-----------------------------
+	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
+
+	other info that might help us debug this:
+
+	rcu_scheduler_active = 2, debug_locks = 1
+	no locks held by swapper/0/0.
+	...
+	Call trace:
+	...
+	 lockdep_rcu_suspicious+0x16c/0x22c
+	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
+	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
+	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
+
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+
+Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
+Cc: stable@vger.kernel.org      # 5.7
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019153115.26401-2-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 8f12e83280cbd..e9d0c6c8e0b12 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6049,6 +6049,12 @@ static int nft_setelem_deactivate(const struct net *net,
- 	return ret;
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -6401,15 +6401,19 @@ ath11k_wmi_pdev_temperature_event(struct
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI,
+ 		   "pdev temperature ev temp %d pdev_id %d\n", ev->temp, ev->pdev_id);
+ 
++	rcu_read_lock();
++
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+ 	if (!ar) {
+ 		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
+-		kfree(tb);
+-		return;
++		goto exit;
+ 	}
+ 
+ 	ath11k_thermal_event_temperature(ar, ev->temp);
+ 
++exit:
++	rcu_read_unlock();
++
+ 	kfree(tb);
  }
  
-+static void nft_setelem_catchall_destroy(struct nft_set_elem_catchall *catchall)
-+{
-+	list_del_rcu(&catchall->list);
-+	kfree_rcu(catchall, rcu);
-+}
-+
- static void nft_setelem_catchall_remove(const struct net *net,
- 					const struct nft_set *set,
- 					const struct nft_set_elem *elem)
-@@ -6057,8 +6063,7 @@ static void nft_setelem_catchall_remove(const struct net *net,
- 
- 	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
- 		if (catchall->elem == elem->priv) {
--			list_del_rcu(&catchall->list);
--			kfree_rcu(catchall, rcu);
-+			nft_setelem_catchall_destroy(catchall);
- 			break;
- 		}
- 	}
-@@ -9046,11 +9051,12 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
- 						  unsigned int gc_seq,
- 						  bool sync)
- {
--	struct nft_set_elem_catchall *catchall;
-+	struct nft_set_elem_catchall *catchall, *next;
- 	const struct nft_set *set = gc->set;
-+	struct nft_elem_priv *elem_priv;
- 	struct nft_set_ext *ext;
- 
--	list_for_each_entry_rcu(catchall, &set->catchall_list, list) {
-+	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
- 
- 		if (!nft_set_elem_expired(ext))
-@@ -9068,7 +9074,17 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
- 		if (!gc)
- 			return NULL;
- 
--		nft_trans_gc_elem_add(gc, catchall->elem);
-+		elem_priv = catchall->elem;
-+		if (sync) {
-+			struct nft_set_elem elem = {
-+				.priv = elem_priv,
-+			};
-+
-+			nft_setelem_data_deactivate(gc->net, gc->set, &elem);
-+			nft_setelem_catchall_destroy(catchall);
-+		}
-+
-+		nft_trans_gc_elem_add(gc, elem_priv);
- 	}
- 
- 	return gc;
--- 
-2.42.0
-
 
 
 
