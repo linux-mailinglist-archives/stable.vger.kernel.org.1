@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3042A7F7F81
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F8B7F814A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A6FB21B04
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9BF3282543
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F82C33CCC;
-	Fri, 24 Nov 2023 18:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B09A28DBB;
+	Fri, 24 Nov 2023 18:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ej6RkYE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgqgfaBs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD34C381C9;
-	Fri, 24 Nov 2023 18:42:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C48C433C7;
-	Fri, 24 Nov 2023 18:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5A833CC2;
+	Fri, 24 Nov 2023 18:57:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F354C433C8;
+	Fri, 24 Nov 2023 18:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851321;
-	bh=bZB8pI+jz1AI3PmBqxMjmSn7sVrowAYxKnfny7rGdBo=;
+	s=korg; t=1700852236;
+	bh=ZVYkXEN+I7U42BYSdp6Kqv9fk43iAFaCGZ0sLNMh7kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ej6RkYE9ZM/RYSs9yIcCylLO66x4aLqGRtP5MQAht6k9p+m4e3NQYBnjSUlsyquvt
-	 4DFyRE3ZRr6cSv12nPH/AZMqdIgYcS0JYIXqDFUwgBuFyeGGUlb1dvPSyvMoCTYGfW
-	 8uCMjyetHICVXMaY1FX//KXmF1AtBKr3iYF8r7Yo=
+	b=lgqgfaBsUZwRYaht3fS8UK8gaBa1GPc189afD5/A2pT1Z5xaAng2W/kXRNou6+uqo
+	 iRSB/2hWkfd2dYEKrKvF1gfiKBUvDsSMNqfh0Ue2j4YhUdwL31aSvke6o8PWUpm3Sw
+	 54+a2NRqv9njXfjbAyHcb45DOaGhMN3SpDVvWdkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.5 401/491] ALSA: hda/realtek - Add Dell ALC295 to pin fall back table
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 250/372] dmaengine: stm32-mdma: correct desc prep when channel running
 Date: Fri, 24 Nov 2023 17:50:37 +0000
-Message-ID: <20231124172036.655262992@linuxfoundation.org>
+Message-ID: <20231124172018.866436953@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,66 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-commit 4b21a669ca21ed8f24ef4530b2918be5730114de upstream.
+commit 03f25d53b145bc2f7ccc82fc04e4482ed734f524 upstream.
 
-Add ALC295 to pin fall back table.
-Remove 5 pin quirks for Dell ALC295.
-ALC295 was only support MIC2 for external MIC function.
-ALC295 assigned model "ALC269_FIXUP_DELL1_MIC_NO_PRESENCE" for pin
-fall back table.
-It was assigned wrong model. So, let's remove it.
+In case of the prep descriptor while the channel is already running, the
+CCR register value stored into the channel could already have its EN bit
+set.  This would lead to a bad transfer since, at start transfer time,
+enabling the channel while other registers aren't yet properly set.
+To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
+into the mdma channel structure.
 
-Fixes: fbc571290d9f ("ALSA: hda/realtek - Fixed Headphone Mic can't record on Dell platform")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/7c1998e873834df98d59bd7e0d08c72e@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+Tested-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://lore.kernel.org/r/20231009082450.452877-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |   19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ drivers/dma/stm32-mdma.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10641,22 +10641,6 @@ static const struct snd_hda_pin_quirk al
- 		{0x12, 0x90a60130},
- 		{0x17, 0x90170110},
- 		{0x21, 0x03211020}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
--		{0x14, 0x90170110},
--		{0x21, 0x04211020}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
--		{0x14, 0x90170110},
--		{0x21, 0x04211030}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
--		ALC295_STANDARD_PINS,
--		{0x17, 0x21014020},
--		{0x18, 0x21a19030}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
--		ALC295_STANDARD_PINS,
--		{0x17, 0x21014040},
--		{0x18, 0x21a19050}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
--		ALC295_STANDARD_PINS),
- 	SND_HDA_PIN_QUIRK(0x10ec0298, 0x1028, "Dell", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE,
- 		ALC298_STANDARD_PINS,
- 		{0x17, 0x90170110}),
-@@ -10700,6 +10684,9 @@ static const struct snd_hda_pin_quirk al
- 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1b, 0x40000000}),
-+	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
-+		{0x19, 0x40000000},
-+		{0x1b, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -490,7 +490,7 @@ static int stm32_mdma_set_xfer_param(str
+ 	src_maxburst = chan->dma_config.src_maxburst;
+ 	dst_maxburst = chan->dma_config.dst_maxburst;
+ 
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 
+@@ -966,7 +966,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_ch
+ 	if (!desc)
+ 		return NULL;
+ 
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
 
 
 
