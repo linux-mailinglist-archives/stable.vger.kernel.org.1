@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49BB77F7B7A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A322C7F7B7B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1033B21424
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:05:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34872B2144C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4835139FFD;
-	Fri, 24 Nov 2023 18:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FEC39FE3;
+	Fri, 24 Nov 2023 18:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3knKpqU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLEurF84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B107381D6;
-	Fri, 24 Nov 2023 18:05:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E83EC433C7;
-	Fri, 24 Nov 2023 18:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56BC3381D7;
+	Fri, 24 Nov 2023 18:05:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B866C433C7;
+	Fri, 24 Nov 2023 18:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849130;
-	bh=JpX57ZJyskPqoipRBcCeIPC/nk+Uv/egKHvirD6I1fQ=;
+	s=korg; t=1700849133;
+	bh=ci7v+1gHafMuZfFEdYV3OzaqAFlE9P3PXVhfBiabpMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3knKpqUecCa1UxJALjhERIsyGEDKAXAhGMtUz80h/IR1t9ybCG5dFzt9uvSNw+lO
-	 cMGOfu9RDjsrw2/YXFxHL3HkZCTxPPgsiqbnSghngV/qPrOcfeueVWu7STXFTnzpa4
-	 wAmLD0YcZErd6XcXxwWyiCBA1KCJQSPqhOlMRgtc=
+	b=aLEurF846ShKnp+/OJ8y9aRv5VF5AJLwO5TE1HB3bYFR+gJr4TKa5UOWAaHPPsrBq
+	 F6Mwfeo/PMzQuekm62D5gwJy5xg7R7knMGWsbftc/MGe5puSU+CvO1DjL5N71oGPD5
+	 kxOg/24vrw1XEepoozbzadYJIcI3/cURFTIUKen0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Airlie <airlied@redhat.com>,
 	Philipp Stanner <pstanner@redhat.com>,
-	Baoquan He <bhe@redhat.com>,
 	Kees Cook <keescook@chromium.org>,
 	Zack Rusin <zackr@vmware.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/530] kernel: kexec: copy user-array safely
-Date: Fri, 24 Nov 2023 17:43:46 +0000
-Message-ID: <20231124172029.886369270@linuxfoundation.org>
+Subject: [PATCH 6.6 061/530] kernel: watch_queue: copy user-array safely
+Date: Fri, 24 Nov 2023 17:43:47 +0000
+Message-ID: <20231124172029.915989822@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -62,7 +61,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Philipp Stanner <pstanner@redhat.com>
 
-[ Upstream commit 569c8d82f95eb5993c84fb61a649a9c4ddd208b3 ]
+[ Upstream commit ca0776571d3163bd03b3e8c9e3da936abfaecbf6 ]
 
 Currently, there is no overflow-check with memdup_user().
 
@@ -71,28 +70,27 @@ duplicating the user-space array safely.
 
 Suggested-by: David Airlie <airlied@redhat.com>
 Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Acked-by: Baoquan He <bhe@redhat.com>
 Reviewed-by: Kees Cook <keescook@chromium.org>
 Reviewed-by: Zack Rusin <zackr@vmware.com>
 Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-4-pstanner@redhat.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-5-pstanner@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kexec.c | 2 +-
+ kernel/watch_queue.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/kexec.c b/kernel/kexec.c
-index 107f355eac101..8f35a5a42af85 100644
---- a/kernel/kexec.c
-+++ b/kernel/kexec.c
-@@ -247,7 +247,7 @@ SYSCALL_DEFINE4(kexec_load, unsigned long, entry, unsigned long, nr_segments,
- 		((flags & KEXEC_ARCH_MASK) != KEXEC_ARCH_DEFAULT))
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index d0b6b390ee423..778b4056700ff 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -331,7 +331,7 @@ long watch_queue_set_filter(struct pipe_inode_info *pipe,
+ 	    filter.__reserved != 0)
  		return -EINVAL;
  
--	ksegments = memdup_user(segments, nr_segments * sizeof(ksegments[0]));
-+	ksegments = memdup_array_user(segments, nr_segments, sizeof(ksegments[0]));
- 	if (IS_ERR(ksegments))
- 		return PTR_ERR(ksegments);
+-	tf = memdup_user(_filter->filters, filter.nr_filters * sizeof(*tf));
++	tf = memdup_array_user(_filter->filters, filter.nr_filters, sizeof(*tf));
+ 	if (IS_ERR(tf))
+ 		return PTR_ERR(tf);
  
 -- 
 2.42.0
