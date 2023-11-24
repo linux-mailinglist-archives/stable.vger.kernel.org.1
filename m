@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-1118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE61C7F7E1D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDB907F7BFA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF6A2822F2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 780FA281A2E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F333A8ED;
-	Fri, 24 Nov 2023 18:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A4E3A8C4;
+	Fri, 24 Nov 2023 18:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ex+F0jVh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgOJ5fBg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23723A8F6;
-	Fri, 24 Nov 2023 18:30:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7E3C433C8;
-	Fri, 24 Nov 2023 18:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCF939FEF;
+	Fri, 24 Nov 2023 18:10:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B125C433C8;
+	Fri, 24 Nov 2023 18:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850604;
-	bh=OSfG7nzydJBeAIWBjmX6V/H/7yad3o98iJaOQxrJuBo=;
+	s=korg; t=1700849431;
+	bh=3QyKFxPq7HDq8fBI5XNhZhbQUYwPLUznJhLDsLnkhyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ex+F0jVh3x+gbGR6tRoZ6vBcO4RNY0mwgb5WhR+Lx/r2bWrVM9pHKW0pyOHNK7tne
-	 MbQDfANzu8wLe+lxU2dScxDX2Ku47OeUtBEo+8W/gC8yU63b1mTBPjIApNxZxr7uC7
-	 HVRM1W67YsdmAB6Cue/mgKqK6bSGNPp2RE9DOFUg=
+	b=qgOJ5fBgCMjS08hVLuXR8T8DnlSjpm5gEVS6wyzcHFXEk4b4kThyCoDuTUuxqwidy
+	 AyQZwEV8hjnb2ugwk9tEsZadbetwyUBOWIEC+8OisHRf+xklFyR3S+bNeRH0wN45u/
+	 BkZ+8MLab/+ZY6ZYpJwGsbuABK1lj7OQBTkvIoXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Longfang Liu <liulongfang@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	KP Singh <kpsingh@kernel.org>,
+	linux-hardening@vger.kernel.org,
+	kernel test robot <lkp@intel.com>,
+	Bill Wendling <morbo@google.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 108/491] crypto: hisilicon/qm - prevent soft lockup in receive loop
+Subject: [PATCH 6.6 178/530] gcc-plugins: randstruct: Only warn about true flexible arrays
 Date: Fri, 24 Nov 2023 17:45:44 +0000
-Message-ID: <20231124172027.799799793@linuxfoundation.org>
+Message-ID: <20231124172033.496162774@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +57,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longfang Liu <liulongfang@huawei.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 33fc506d2ac514be1072499a263c3bff8c7c95a0 ]
+[ Upstream commit 1ee60356c2dca938362528404af95b8ef3e49b6a ]
 
-In the scenario where the accelerator business is fully loaded.
-When the workqueue receiving messages and performing callback
-processing, there are a large number of messages that need to be
-received, and there are continuously messages that have been
-processed and need to be received.
-This will cause the receive loop here to be locked for a long time.
-This scenario will cause watchdog timeout problems on OS with kernel
-preemption turned off.
+The randstruct GCC plugin tried to discover "fake" flexible arrays
+to issue warnings about them in randomized structs. In the future
+LSM overhead reduction series, it would be legal to have a randomized
+struct with a 1-element array, and this should _not_ be treated as a
+flexible array, especially since commit df8fc4e934c1 ("kbuild: Enable
+-fstrict-flex-arrays=3"). Disable the 0-sized and 1-element array
+discovery logic in the plugin, but keep the "true" flexible array check.
 
-The error logs:
-watchdog: BUG: soft lockup - CPU#23 stuck for 23s! [kworker/u262:1:1407]
-[ 1461.978428][   C23] Call trace:
-[ 1461.981890][   C23]  complete+0x8c/0xf0
-[ 1461.986031][   C23]  kcryptd_async_done+0x154/0x1f4 [dm_crypt]
-[ 1461.992154][   C23]  sec_skcipher_callback+0x7c/0xf4 [hisi_sec2]
-[ 1461.998446][   C23]  sec_req_cb+0x104/0x1f4 [hisi_sec2]
-[ 1462.003950][   C23]  qm_poll_req_cb+0xcc/0x150 [hisi_qm]
-[ 1462.009531][   C23]  qm_work_process+0x60/0xc0 [hisi_qm]
-[ 1462.015101][   C23]  process_one_work+0x1c4/0x470
-[ 1462.020052][   C23]  worker_thread+0x150/0x3c4
-[ 1462.024735][   C23]  kthread+0x108/0x13c
-[ 1462.028889][   C23]  ret_from_fork+0x10/0x18
-
-Therefore, it is necessary to add an actively scheduled operation in the
-while loop to prevent this problem.
-After adding it, no matter whether the OS turns on or off the kernel
-preemption function. Neither will cause watchdog timeout issues.
-
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: linux-hardening@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311021532.iBwuZUZ0-lkp@intel.com/
+Fixes: df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3")
+Reviewed-by: Bill Wendling <morbo@google.com>
+Acked-by: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20231104204334.work.160-kees@kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ scripts/gcc-plugins/randomize_layout_plugin.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index ba4852744c052..2aec118ba6775 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -845,6 +845,8 @@ static void qm_poll_req_cb(struct hisi_qp *qp)
- 		qm_db(qm, qp->qp_id, QM_DOORBELL_CMD_CQ,
- 		      qp->qp_status.cq_head, 0);
- 		atomic_dec(&qp->qp_status.used);
-+
-+		cond_resched();
- 	}
+diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
+index 951b74ba1b242..5e5744b65f8a9 100644
+--- a/scripts/gcc-plugins/randomize_layout_plugin.c
++++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+@@ -273,8 +273,6 @@ static bool is_flexible_array(const_tree field)
+ {
+ 	const_tree fieldtype;
+ 	const_tree typesize;
+-	const_tree elemtype;
+-	const_tree elemsize;
  
- 	/* set c_flag */
+ 	fieldtype = TREE_TYPE(field);
+ 	typesize = TYPE_SIZE(fieldtype);
+@@ -282,20 +280,12 @@ static bool is_flexible_array(const_tree field)
+ 	if (TREE_CODE(fieldtype) != ARRAY_TYPE)
+ 		return false;
+ 
+-	elemtype = TREE_TYPE(fieldtype);
+-	elemsize = TYPE_SIZE(elemtype);
+-
+ 	/* size of type is represented in bits */
+ 
+ 	if (typesize == NULL_TREE && TYPE_DOMAIN(fieldtype) != NULL_TREE &&
+ 	    TYPE_MAX_VALUE(TYPE_DOMAIN(fieldtype)) == NULL_TREE)
+ 		return true;
+ 
+-	if (typesize != NULL_TREE &&
+-	    (TREE_CONSTANT(typesize) && (!tree_to_uhwi(typesize) ||
+-	     tree_to_uhwi(typesize) == tree_to_uhwi(elemsize))))
+-		return true;
+-
+ 	return false;
+ }
+ 
 -- 
 2.42.0
 
