@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7525B7F7AFB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FCCD7F7B2E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 321742813E2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D04DB1C20BEA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C517539FF4;
-	Fri, 24 Nov 2023 18:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE8539FFC;
+	Fri, 24 Nov 2023 18:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6OTq2GR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f70hEfdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD2E39FED;
-	Fri, 24 Nov 2023 18:00:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D78CC433C7;
-	Fri, 24 Nov 2023 18:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CFF39FE3;
+	Fri, 24 Nov 2023 18:02:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C86C433C7;
+	Fri, 24 Nov 2023 18:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848840;
-	bh=TJRvlmpa1kr/jrb31hIiRkxJbsm3Fa9UE2ag+tAFQ+Q=;
+	s=korg; t=1700848955;
+	bh=Gl/wVKn6jMigxL7WVZXwBIgysZHmfg2eQbcKeKYYLXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6OTq2GRz41yqsAc2uTT1bLItJJl0ClfVHPmQM2nRfV+8glpziK7EdL/y/QMnHldP
-	 XlONXkh4ZqK0VTENyUZegRO0IzRtnZRBB8C1nP9pk9mpSBy61wpDqykOewe0+IhhMy
-	 P4USRJliVVNr9q0Ty+Dw+WkQFor8Q1RvNyqjXW/Y=
+	b=f70hEfdFFW4347N2uVQrVegv5Fs5t/O/ama5hjXwjq71RpwcS19i3SrLjrjXnoZQl
+	 oPTTAC3lc62trcaP5DfODhf0smuV1Pq4sctbeI3wV9VNp6zL+Zrz5CDhX8GxdgrWAR
+	 YclldoYFDauIrzI6yOqUTzFsb23/Qoyhf+eP83yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandradeep Dey <codesigning@chandradeepdey.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 75/97] ALSA: hda/realtek - Enable internal speaker of ASUS K6500ZC
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 24/57] media: vivid: avoid integer overflow
 Date: Fri, 24 Nov 2023 17:50:48 +0000
-Message-ID: <20231124171936.960268391@linuxfoundation.org>
+Message-ID: <20231124171931.162090183@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,36 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandradeep Dey <codesigning@chandradeepdey.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 713f040cd22285fcc506f40a0d259566e6758c3c upstream.
+[ Upstream commit 4567ebf8e8f9546b373e78e3b7d584cc30b62028 ]
 
-Apply the already existing quirk chain ALC294_FIXUP_ASUS_SPK to enable
-the internal speaker of ASUS K6500ZC.
+Fixes these compiler warnings:
 
-Signed-off-by: Chandradeep Dey <codesigning@chandradeepdey.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/NizcVHQ--3-9@chandradeepdey.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/media/test-drivers/vivid/vivid-rds-gen.c: In function 'vivid_rds_gen_fill':
+drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:56: warning: '.' directive output may be truncated writing 1 byte into a region of size between 0 and 3 [-Wformat-truncation=]
+  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
+      |                                                        ^
+drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:52: note: directive argument in the range [0, 9]
+  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
+      |                                                    ^~~~~~~~~
+drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:9: note: 'snprintf' output between 9 and 12 bytes into a destination of size 9
+  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  148 |                  freq / 16, ((freq & 0xf) * 10) / 16);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/vivid/vivid-rds-gen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7168,6 +7168,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x10d0, "ASUS X540LA/X540LJ", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x10d3, "ASUS K6500ZC", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1271, "ASUS X430UN", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+diff --git a/drivers/media/platform/vivid/vivid-rds-gen.c b/drivers/media/platform/vivid/vivid-rds-gen.c
+index 53c7777dc0019..d2b014336f9c4 100644
+--- a/drivers/media/platform/vivid/vivid-rds-gen.c
++++ b/drivers/media/platform/vivid/vivid-rds-gen.c
+@@ -157,7 +157,7 @@ void vivid_rds_gen_fill(struct vivid_rds_gen *rds, unsigned freq,
+ 	rds->ta = alt;
+ 	rds->ms = true;
+ 	snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
+-		 freq / 16, ((freq & 0xf) * 10) / 16);
++		 (freq / 16) % 1000000, (((freq & 0xf) * 10) / 16) % 10);
+ 	if (alt)
+ 		strlcpy(rds->radiotext,
+ 			" The Radio Data System can switch between different Radio Texts ",
+-- 
+2.42.0
+
 
 
 
