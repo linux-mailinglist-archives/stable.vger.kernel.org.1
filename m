@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E48717F7E24
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68ED97F7C22
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8775AB21720
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2385D281E3E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CDB39FF7;
-	Fri, 24 Nov 2023 18:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE42A3A8C3;
+	Fri, 24 Nov 2023 18:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh4O97wt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJ/Ex0mn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FB93A8C3;
-	Fri, 24 Nov 2023 18:30:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A5BC433C7;
-	Fri, 24 Nov 2023 18:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 036BD39FDD;
+	Fri, 24 Nov 2023 18:12:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751F7C433C7;
+	Fri, 24 Nov 2023 18:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850622;
-	bh=V86Mz79jzXKpNUHj1yeyYxQzdtaHnIXJZ2w5VGA3EaU=;
+	s=korg; t=1700849528;
+	bh=kBqogKaZRzTwZvSGsNmaUSoLpWrh7PsNc/yVte67cLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fh4O97wt/O02WYcjYKjF5EK6n1QCLavuD31HvD5SGepgmSyWukALh1F3wTj2yenbP
-	 bC5QmL2qWq4cPAuuPiM+XlfRdbHcN/Kx1m9+hdQ8646Wyjw7EEmXsipd6fX60vf4Gf
-	 rxKCLI2dMjUXwvxuoZPtD/l5Kjl9ZoGuRwgtBcys=
+	b=CJ/Ex0mnP1JiiHnJT6d/4SVRO96SK8Rla/neUIOneiQY2X3a47nSm7ljeZi8NqS9c
+	 p0EqD/5feA3obOxbUo8QwOeol/nJBiYRXlWcYdfpLh/9YN8yWi/z3SmTYX+9oJ1Rrf
+	 sDcSAc4fsm03dWWXL2Egi2LxZWtddtdqSLpR277M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 123/491] usb: host: xhci: Avoid XHCI resume delay if SSUSB device is not present
+Subject: [PATCH 6.6 193/530] net: hns3: fix VF reset fail issue
 Date: Fri, 24 Nov 2023 17:45:59 +0000
-Message-ID: <20231124172028.209889549@linuxfoundation.org>
+Message-ID: <20231124172033.941929292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +53,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-[ Upstream commit 6add6dd345cb754ce18ff992c7264cabf31e59f6 ]
+[ Upstream commit 65e98bb56fa3ce2edb400930c05238c9b380500e ]
 
-There is a 120ms delay implemented for allowing the XHCI host controller to
-detect a U3 wakeup pulse.  The intention is to wait for the device to retry
-the wakeup event if the USB3 PORTSC doesn't reflect the RESUME link status
-by the time it is checked.  As per the USB3 specification:
+Currently the reset process in hns3 and firmware watchdog init process is
+asynchronous. We think firmware watchdog initialization is completed
+before VF clear the interrupt source. However, firmware initialization
+may not complete early. So VF will receive multiple reset interrupts
+and fail to reset.
 
-  tU3WakeupRetryDelay ("Table 7-12. LTSSM State Transition Timeouts")
+So we add delay before VF interrupt source and 5 ms delay
+is enough to avoid second reset interrupt.
 
-This would allow the XHCI resume sequence to determine if the root hub
-needs to be also resumed.  However, in case there is no device connected,
-or if there is only a HSUSB device connected, this delay would still affect
-the overall resume timing.
-
-Since this delay is solely for detecting U3 wake events (USB3 specific)
-then ignore this delay for the disconnected case and the HSUSB connected
-only case.
-
-[skip helper function, rename usb3_connected variable -Mathias ]
-
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20231019102924.2797346-20-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 427900d27d86 ("net: hns3: fix the timing issue of VF clearing interrupt sources")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ .../ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c  | 14 +++++++++++++-
+ .../ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h  |  1 +
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index fae994f679d45..82aab2f9adbb8 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -968,6 +968,7 @@ int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
- 	int			retval = 0;
- 	bool			comp_timer_running = false;
- 	bool			pending_portevent = false;
-+	bool			suspended_usb3_devs = false;
- 	bool			reinit_xhc = false;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 1c62e58ff6d89..0aa9beefd1c7e 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -1981,8 +1981,18 @@ static enum hclgevf_evt_cause hclgevf_check_evt_cause(struct hclgevf_dev *hdev,
+ 	return HCLGEVF_VECTOR0_EVENT_OTHER;
+ }
  
- 	if (!hcd->state)
-@@ -1115,10 +1116,17 @@ int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
- 		/*
- 		 * Resume roothubs only if there are pending events.
- 		 * USB 3 devices resend U3 LFPS wake after a 100ms delay if
--		 * the first wake signalling failed, give it that chance.
-+		 * the first wake signalling failed, give it that chance if
-+		 * there are suspended USB 3 devices.
- 		 */
-+		if (xhci->usb3_rhub.bus_state.suspended_ports ||
-+		    xhci->usb3_rhub.bus_state.bus_suspended)
-+			suspended_usb3_devs = true;
++static void hclgevf_reset_timer(struct timer_list *t)
++{
++	struct hclgevf_dev *hdev = from_timer(hdev, t, reset_timer);
 +
- 		pending_portevent = xhci_pending_portevent(xhci);
--		if (!pending_portevent && msg.event == PM_EVENT_AUTO_RESUME) {
++	hclgevf_clear_event_cause(hdev, HCLGEVF_VECTOR0_EVENT_RST);
++	hclgevf_reset_task_schedule(hdev);
++}
 +
-+		if (suspended_usb3_devs && !pending_portevent &&
-+		    msg.event == PM_EVENT_AUTO_RESUME) {
- 			msleep(120);
- 			pending_portevent = xhci_pending_portevent(xhci);
- 		}
+ static irqreturn_t hclgevf_misc_irq_handle(int irq, void *data)
+ {
++#define HCLGEVF_RESET_DELAY	5
++
+ 	enum hclgevf_evt_cause event_cause;
+ 	struct hclgevf_dev *hdev = data;
+ 	u32 clearval;
+@@ -1994,7 +2004,8 @@ static irqreturn_t hclgevf_misc_irq_handle(int irq, void *data)
+ 
+ 	switch (event_cause) {
+ 	case HCLGEVF_VECTOR0_EVENT_RST:
+-		hclgevf_reset_task_schedule(hdev);
++		mod_timer(&hdev->reset_timer,
++			  jiffies + msecs_to_jiffies(HCLGEVF_RESET_DELAY));
+ 		break;
+ 	case HCLGEVF_VECTOR0_EVENT_MBX:
+ 		hclgevf_mbx_handler(hdev);
+@@ -2937,6 +2948,7 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
+ 		 HCLGEVF_DRIVER_NAME);
+ 
+ 	hclgevf_task_schedule(hdev, round_jiffies_relative(HZ));
++	timer_setup(&hdev->reset_timer, hclgevf_reset_timer, 0);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
+index 81c16b8c8da29..a73f2bf3a56a6 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
+@@ -219,6 +219,7 @@ struct hclgevf_dev {
+ 	enum hnae3_reset_type reset_level;
+ 	unsigned long reset_pending;
+ 	enum hnae3_reset_type reset_type;
++	struct timer_list reset_timer;
+ 
+ #define HCLGEVF_RESET_REQUESTED		0
+ #define HCLGEVF_RESET_PENDING		1
 -- 
 2.42.0
 
