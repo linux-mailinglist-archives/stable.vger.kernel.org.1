@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-2016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170237F8268
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4351E7F8402
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 489C61C233C2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7448F1C26D37
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C2233CFD;
-	Fri, 24 Nov 2023 19:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B882D381CC;
+	Fri, 24 Nov 2023 19:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkoanasS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOXAdbRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA14E2C87B;
-	Fri, 24 Nov 2023 19:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74203C433C7;
-	Fri, 24 Nov 2023 19:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4EB364B7;
+	Fri, 24 Nov 2023 19:23:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFC9C433C7;
+	Fri, 24 Nov 2023 19:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852839;
-	bh=tpRtB8VnbUob+oqr5nigCfuf6dQ9GM+tL9fP5xtcJ5o=;
+	s=korg; t=1700853788;
+	bh=uzqUTsY7McTCSOkh6sx+ayswi8nBAjXQI5YHc8Eo30g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkoanasSV/NTLuORRU9uwjx7lsGcS1F31f6bHw3W0Ea49NBcM2PaqmvUfgFyJ6Kv5
-	 za2fDvzEL/gZQV5zdmgpYBrwGN/dRb0moWYsTiyVr+yAZN27QK3hYV4OXCHnvoFlb7
-	 /EhzWKZVVTAjsln63TsodSOz5PE47MwUQgW2XQCU=
+	b=GOXAdbRavi7v7gc7t7HXwPsvvc/OdZW5MhaxBZvzzS+A5oUhyJM34dn9gDpKeLMlE
+	 ip+OIFs+Yz1tGR/2+FzOXRG3pw54S6RRHzwq0IzF1U8VXp41zsujixNk9ebo8Jgt1Y
+	 bMB/tjlN0j7nZTBROo0mHmqtxKR1iROkP2Kb1zK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 119/193] btrfs: dont arbitrarily slow down delalloc if were committing
-Date: Fri, 24 Nov 2023 17:54:06 +0000
-Message-ID: <20231124171952.001940658@linuxfoundation.org>
+	Wenchao Hao <haowenchao2@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 030/159] scsi: libfc: Fix potential NULL pointer dereference in fc_lport_ptp_setup()
+Date: Fri, 24 Nov 2023 17:54:07 +0000
+Message-ID: <20231124171943.143072488@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +54,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Wenchao Hao <haowenchao2@huawei.com>
 
-commit 11aeb97b45ad2e0040cbb2a589bc403152526345 upstream.
+[ Upstream commit 4df105f0ce9f6f30cda4e99f577150d23f0c9c5f ]
 
-We have a random schedule_timeout() if the current transaction is
-committing, which seems to be a holdover from the original delalloc
-reservation code.
+fc_lport_ptp_setup() did not check the return value of fc_rport_create()
+which can return NULL and would cause a NULL pointer dereference. Address
+this issue by checking return value of fc_rport_create() and log error
+message on fc_rport_create() failed.
 
-Remove this, we have the proper flushing stuff, we shouldn't be hoping
-for random timing things to make everything work.  This just induces
-latency for no reason.
-
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
+Link: https://lore.kernel.org/r/20231011130350.819571-1-haowenchao2@huawei.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delalloc-space.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/scsi/libfc/fc_lport.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/btrfs/delalloc-space.c
-+++ b/fs/btrfs/delalloc-space.c
-@@ -307,9 +307,6 @@ int btrfs_delalloc_reserve_metadata(stru
- 	} else {
- 		if (current->journal_info)
- 			flush = BTRFS_RESERVE_FLUSH_LIMIT;
--
--		if (btrfs_transaction_in_commit(fs_info))
--			schedule_timeout(1);
+diff --git a/drivers/scsi/libfc/fc_lport.c b/drivers/scsi/libfc/fc_lport.c
+index 9399e1455d597..97087eef05dbc 100644
+--- a/drivers/scsi/libfc/fc_lport.c
++++ b/drivers/scsi/libfc/fc_lport.c
+@@ -238,6 +238,12 @@ static void fc_lport_ptp_setup(struct fc_lport *lport,
  	}
- 
- 	num_bytes = ALIGN(num_bytes, fs_info->sectorsize);
+ 	mutex_lock(&lport->disc.disc_mutex);
+ 	lport->ptp_rdata = fc_rport_create(lport, remote_fid);
++	if (!lport->ptp_rdata) {
++		printk(KERN_WARNING "libfc: Failed to setup lport 0x%x\n",
++			lport->port_id);
++		mutex_unlock(&lport->disc.disc_mutex);
++		return;
++	}
+ 	kref_get(&lport->ptp_rdata->kref);
+ 	lport->ptp_rdata->ids.port_name = remote_wwpn;
+ 	lport->ptp_rdata->ids.node_name = remote_wwnn;
+-- 
+2.42.0
+
 
 
 
