@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5F37F7CAB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 354C37F8090
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46677282045
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E507A28104E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE02839FF7;
-	Fri, 24 Nov 2023 18:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C35028DBB;
+	Fri, 24 Nov 2023 18:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YaanWFE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3A6v4Wh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DCA12511F;
-	Fri, 24 Nov 2023 18:17:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20DBC433CC;
-	Fri, 24 Nov 2023 18:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5BD22F1D;
+	Fri, 24 Nov 2023 18:50:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90EF8C433C8;
+	Fri, 24 Nov 2023 18:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849843;
-	bh=B1d6BT5X4tGTlE9Bawo1gSmbilEjYHf64TkUFBdUTHo=;
+	s=korg; t=1700851850;
+	bh=Qn8UPmX6RoqPcIH71tzNBz8Ucu4X91ZU08vtZ3F8m0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YaanWFEfdwR5q/BCcCA1yIoHk7joFRzCctZcrYMDrdYAnlu0l4RR1SijxWGgrgST
-	 Pj6cW2jln0Yxs2XN5gTRp/Cf9lfDi9CADOBC1Bb1pNR0W7qHBtaeVNIuqVuKFw9z3B
-	 KuzJ/tqRFUDq/0OTMR4o1noVCGf3N7u/18NZ0Ne4=
+	b=G3A6v4WhBNrRvbIJnq1bd4rklgKgVZzj85QvojXXGYbpmHo0gnNG8PL/1LOk5+74A
+	 YW1UCuSJu3QvDL2TkKhMN9oNwsG+8W5ac5VvdvZf5OD6Gz9zz+iyYUCwuafgd4aky0
+	 pAUUeWKSIPGegWKlpMPcryrTC+3dZwWb9qXHY/7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasily Khoruzhick <anarsoul@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 342/530] ACPI: FPDT: properly handle invalid FPDT subtables
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 121/372] SUNRPC: Add an IS_ERR() check back to where it was
 Date: Fri, 24 Nov 2023 17:48:28 +0000
-Message-ID: <20231124172038.445761333@linuxfoundation.org>
+Message-ID: <20231124172014.511200242@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,171 +53,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasily Khoruzhick <anarsoul@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit a83c68a3bf7c418c9a46693c63c638852b0c1f4e upstream.
+[ Upstream commit 4f3ed837186fc0d2722ba8d2457a594322e9c2ef ]
 
-Buggy BIOSes may have invalid FPDT subtables, e.g. on my hardware:
+This IS_ERR() check was deleted during in a cleanup because, at the time,
+the rpcb_call_async() function could not return an error pointer.  That
+changed in commit 25cf32ad5dba ("SUNRPC: Handle allocation failure in
+rpc_new_task()") and now it can return an error pointer.  Put the check
+back.
 
-S3PT subtable:
+A related revert was done in commit 13bd90141804 ("Revert "SUNRPC:
+Remove unreachable error condition"").
 
-7F20FE30: 53 33 50 54 24 00 00 00-00 00 00 00 00 00 18 01  *S3PT$...........*
-7F20FE40: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *................*
-7F20FE50: 00 00 00 00
-
-Here the first record has zero length.
-
-FBPT subtable:
-
-7F20FE50:             46 42 50 54-3C 00 00 00 46 42 50 54  *....FBPT<...FBPT*
-7F20FE60: 02 00 30 02 00 00 00 00-00 00 00 00 00 00 00 00  *..0.............*
-7F20FE70: 2A A6 BC 6E 0B 00 00 00-1A 44 41 70 0B 00 00 00  **..n.....DAp....*
-7F20FE80: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *................*
-
-And here FBPT table has FBPT signature repeated instead of the first
-record.
-
-Current code will be looping indefinitely due to zero length records, so
-break out of the loop if record length is zero.
-
-While we are here, add proper handling for fpdt_process_subtable()
-failures.
-
-Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT table")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
-[ rjw: Comment edit, added empty code lines ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 037e910b52b0 ("SUNRPC: Remove unreachable error condition in rpcb_getport_async()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_fpdt.c |   45 +++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 37 insertions(+), 8 deletions(-)
+ net/sunrpc/rpcb_clnt.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/acpi/acpi_fpdt.c
-+++ b/drivers/acpi/acpi_fpdt.c
-@@ -194,12 +194,19 @@ static int fpdt_process_subtable(u64 add
- 		record_header = (void *)subtable_header + offset;
- 		offset += record_header->length;
+diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
+index 5a8e6d46809ae..82afb56695f8d 100644
+--- a/net/sunrpc/rpcb_clnt.c
++++ b/net/sunrpc/rpcb_clnt.c
+@@ -746,6 +746,10 @@ void rpcb_getport_async(struct rpc_task *task)
  
-+		if (!record_header->length) {
-+			pr_err(FW_BUG "Zero-length record found in FPTD.\n");
-+			result = -EINVAL;
-+			goto err;
-+		}
-+
- 		switch (record_header->type) {
- 		case RECORD_S3_RESUME:
- 			if (subtable_type != SUBTABLE_S3PT) {
- 				pr_err(FW_BUG "Invalid record %d for subtable %s\n",
- 				     record_header->type, signature);
--				return -EINVAL;
-+				result = -EINVAL;
-+				goto err;
- 			}
- 			if (record_resume) {
- 				pr_err("Duplicate resume performance record found.\n");
-@@ -208,7 +215,7 @@ static int fpdt_process_subtable(u64 add
- 			record_resume = (struct resume_performance_record *)record_header;
- 			result = sysfs_create_group(fpdt_kobj, &resume_attr_group);
- 			if (result)
--				return result;
-+				goto err;
- 			break;
- 		case RECORD_S3_SUSPEND:
- 			if (subtable_type != SUBTABLE_S3PT) {
-@@ -223,13 +230,14 @@ static int fpdt_process_subtable(u64 add
- 			record_suspend = (struct suspend_performance_record *)record_header;
- 			result = sysfs_create_group(fpdt_kobj, &suspend_attr_group);
- 			if (result)
--				return result;
-+				goto err;
- 			break;
- 		case RECORD_BOOT:
- 			if (subtable_type != SUBTABLE_FBPT) {
- 				pr_err(FW_BUG "Invalid %d for subtable %s\n",
- 				     record_header->type, signature);
--				return -EINVAL;
-+				result = -EINVAL;
-+				goto err;
- 			}
- 			if (record_boot) {
- 				pr_err("Duplicate boot performance record found.\n");
-@@ -238,7 +246,7 @@ static int fpdt_process_subtable(u64 add
- 			record_boot = (struct boot_performance_record *)record_header;
- 			result = sysfs_create_group(fpdt_kobj, &boot_attr_group);
- 			if (result)
--				return result;
-+				goto err;
- 			break;
+ 	child = rpcb_call_async(rpcb_clnt, map, proc);
+ 	rpc_release_client(rpcb_clnt);
++	if (IS_ERR(child)) {
++		/* rpcb_map_release() has freed the arguments */
++		return;
++	}
  
- 		default:
-@@ -247,6 +255,18 @@ static int fpdt_process_subtable(u64 add
- 		}
- 	}
- 	return 0;
-+
-+err:
-+	if (record_boot)
-+		sysfs_remove_group(fpdt_kobj, &boot_attr_group);
-+
-+	if (record_suspend)
-+		sysfs_remove_group(fpdt_kobj, &suspend_attr_group);
-+
-+	if (record_resume)
-+		sysfs_remove_group(fpdt_kobj, &resume_attr_group);
-+
-+	return result;
- }
- 
- static int __init acpi_init_fpdt(void)
-@@ -255,6 +275,7 @@ static int __init acpi_init_fpdt(void)
- 	struct acpi_table_header *header;
- 	struct fpdt_subtable_entry *subtable;
- 	u32 offset = sizeof(*header);
-+	int result;
- 
- 	status = acpi_get_table(ACPI_SIG_FPDT, 0, &header);
- 
-@@ -263,8 +284,8 @@ static int __init acpi_init_fpdt(void)
- 
- 	fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
- 	if (!fpdt_kobj) {
--		acpi_put_table(header);
--		return -ENOMEM;
-+		result = -ENOMEM;
-+		goto err_nomem;
- 	}
- 
- 	while (offset < header->length) {
-@@ -272,8 +293,10 @@ static int __init acpi_init_fpdt(void)
- 		switch (subtable->type) {
- 		case SUBTABLE_FBPT:
- 		case SUBTABLE_S3PT:
--			fpdt_process_subtable(subtable->address,
-+			result = fpdt_process_subtable(subtable->address,
- 					      subtable->type);
-+			if (result)
-+				goto err_subtable;
- 			break;
- 		default:
- 			/* Other types are reserved in ACPI 6.4 spec. */
-@@ -282,6 +305,12 @@ static int __init acpi_init_fpdt(void)
- 		offset += sizeof(*subtable);
- 	}
- 	return 0;
-+err_subtable:
-+	kobject_put(fpdt_kobj);
-+
-+err_nomem:
-+	acpi_put_table(header);
-+	return result;
- }
- 
- fs_initcall(acpi_init_fpdt);
+ 	xprt->stat.bind_count++;
+ 	rpc_put_task(child);
+-- 
+2.42.0
+
 
 
 
