@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E07C27F7D6E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87747F7F92
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AE132821C5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84124282520
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0851339FF3;
-	Fri, 24 Nov 2023 18:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4CD33090;
+	Fri, 24 Nov 2023 18:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFX+BiSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WebwGu9i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE77A39FD9;
-	Fri, 24 Nov 2023 18:24:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B5DC433C8;
-	Fri, 24 Nov 2023 18:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BB033CC2;
+	Fri, 24 Nov 2023 18:42:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB8BC433C7;
+	Fri, 24 Nov 2023 18:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850271;
-	bh=mGfl4Q5Zu5wYw/Vj0HcbvKMRVeaOBlWTFgSANnvO19Y=;
+	s=korg; t=1700851361;
+	bh=BS+08XHBEddB4/hxG1qZ0sn1zFzjPtumJyu3vIfyDsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFX+BiSgPAbpHmXnLK7Sj8ew6mbr2M9GBu/1SKsh5pG6/NPiTD7FkjWZDbCGdO6na
-	 ysPT+s8ADT2JWw4WZbIpQhjUWXDjketiwWhvjGq4OzZ/yKa6Qv3w1+XtRYSkarJRL5
-	 ywHRgIcgweg+HPVxaXx2FexcQmc8G0IOSEJnvM30=
+	b=WebwGu9imjlAxjDaIaLRRjiC259qdI9Mf0jTPf0R/BY0gc3Skr9Iu8q7pFUOZvmEM
+	 9a3t3LOeBP8ZrTLzG9G+25OV0Mp48HAVrUJA5fWsAuyA4oIndbohoOv2QNoewT9N7B
+	 ZSJI1TaPqj6DQBJX+jpJ2wDWeB0ravs2daOE1C38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 488/530] media: qcom: camss: Fix VFE-480 vfe_disable_output()
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.5 418/491] f2fs: set the default compress_level on ioctl
 Date: Fri, 24 Nov 2023 17:50:54 +0000
-Message-ID: <20231124172042.964934082@linuxfoundation.org>
+Message-ID: <20231124172037.164404042@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,78 +51,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-commit 7f24d291350426d40b36dfbe6b3090617cdfd37a upstream.
+commit f5f3bd903a5d3e3b2ba89f11e0e29db25e60c048 upstream.
 
-vfe-480 is copied from vfe-17x and has the same racy idle timeout bug as in
-17x.
+Otherwise, we'll get a broken inode.
 
-Fix the vfe_disable_output() logic to no longer be racy and to conform
-to the 17x way of quiescing and then resetting the VFE.
+ # touch $FILE
+ # f2fs_io setflags compression $FILE
+ # f2fs_io set_coption 2 8 $FILE
 
-Fixes: 4edc8eae715c ("media: camss: Add initial support for VFE hardware version Titan 480")
+[  112.227612] F2FS-fs (dm-51): sanity_check_compress_inode: inode (ino=8d3fe) has unsupported compress level: 0, run fsck to fix
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe-480.c |   22 +++-------------------
- 1 file changed, 3 insertions(+), 19 deletions(-)
+ fs/f2fs/file.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/media/platform/qcom/camss/camss-vfe-480.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe-480.c
-@@ -8,7 +8,6 @@
-  * Copyright (C) 2021 Jonathan Marek
-  */
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4006,6 +4006,15 @@ static int f2fs_ioc_set_compress_option(
+ 	F2FS_I(inode)->i_compress_algorithm = option.algorithm;
+ 	F2FS_I(inode)->i_log_cluster_size = option.log_cluster_size;
+ 	F2FS_I(inode)->i_cluster_size = BIT(option.log_cluster_size);
++	/* Set default level */
++	if (F2FS_I(inode)->i_compress_algorithm == COMPRESS_ZSTD)
++		F2FS_I(inode)->i_compress_level = F2FS_ZSTD_DEFAULT_CLEVEL;
++	else
++		F2FS_I(inode)->i_compress_level = 0;
++	/* Adjust mount option level */
++	if (option.algorithm == F2FS_OPTION(sbi).compress_algorithm &&
++	    F2FS_OPTION(sbi).compress_level)
++		F2FS_I(inode)->i_compress_level = F2FS_OPTION(sbi).compress_level;
+ 	f2fs_mark_inode_dirty_sync(inode, true);
  
--#include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-@@ -328,35 +327,20 @@ static int vfe_enable_output(struct vfe_
- 	return 0;
- }
- 
--static int vfe_disable_output(struct vfe_line *line)
-+static void vfe_disable_output(struct vfe_line *line)
- {
- 	struct vfe_device *vfe = to_vfe(line);
- 	struct vfe_output *output = &line->output;
- 	unsigned long flags;
- 	unsigned int i;
--	bool done;
--	int timeout = 0;
--
--	do {
--		spin_lock_irqsave(&vfe->output_lock, flags);
--		done = !output->gen2.active_num;
--		spin_unlock_irqrestore(&vfe->output_lock, flags);
--		usleep_range(10000, 20000);
--
--		if (timeout++ == 100) {
--			dev_err(vfe->camss->dev, "VFE idle timeout - resetting\n");
--			vfe_reset(vfe);
--			output->gen2.active_num = 0;
--			return 0;
--		}
--	} while (!done);
- 
- 	spin_lock_irqsave(&vfe->output_lock, flags);
- 	for (i = 0; i < output->wm_num; i++)
- 		vfe_wm_stop(vfe, output->wm_idx[i]);
-+	output->gen2.active_num = 0;
- 	spin_unlock_irqrestore(&vfe->output_lock, flags);
- 
--	return 0;
-+	vfe_reset(vfe);
- }
- 
- /*
+ 	if (!f2fs_is_compress_backend_ready(inode))
 
 
 
