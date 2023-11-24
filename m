@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F089D7F7D18
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564E37F811B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB9C3282130
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBA33B21B3E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D063A8E7;
-	Fri, 24 Nov 2023 18:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217A93418B;
+	Fri, 24 Nov 2023 18:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QVWNESVE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElS+ts0v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 443B039FFD;
-	Fri, 24 Nov 2023 18:21:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A201AC433C7;
-	Fri, 24 Nov 2023 18:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3660321AD;
+	Fri, 24 Nov 2023 18:55:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16755C433C8;
+	Fri, 24 Nov 2023 18:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850081;
-	bh=INJM1HZT+3ZQFa+pUPxnneVqmbi0KRHg9WB0IOzZCOQ=;
+	s=korg; t=1700852137;
+	bh=nNm40wXuZGih/nr+rH2Bii3KcRqkF1kRk1fSAmRJjv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QVWNESVEywQe949+IBPDwTUoCPQ7//H8xTV7/t/KFg7A/IhMZCYGNxSbePhTtalxz
-	 8IdXddW9C4h/lrmHvFwB3lmmX3YnmoxCsJOblbqzeDU5SfDFupcTUhllLE1Qve8HR9
-	 mKvf/U5x2p0odw0HuwUnFhRlGyMCl+hjVwr+v34w=
+	b=ElS+ts0v70FebVeTCDn3HAEA3RWvqdjyn7mV95m8iyOjR2x9iWXHlBgNyIA9hd1Dp
+	 WUaFtIsoCWTtajizb82TSxSL/dYEOtXTS+BeD/ECukYvk60yeo6rtQ5W3FdCFGyBhT
+	 W4QCqeqtmwdbxuio57PDwogUoEdhiJC3/qnGG2i0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johnathan Mantey <johnathanx.mantey@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 438/530] Revert ncsi: Propagate carrier gain/loss events to the NCSI controller
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.1 217/372] PCI: kirin: Dont discard .remove() callback
 Date: Fri, 24 Nov 2023 17:50:04 +0000
-Message-ID: <20231124172041.417520178@linuxfoundation.org>
+Message-ID: <20231124172017.710115484@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +50,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johnathan Mantey <johnathanx.mantey@intel.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 9e2e7efbbbff69d8340abb56d375dd79d1f5770f upstream.
+commit 3064ef2e88c1629c1e67a77d7bc20020b35846f2 upstream.
 
-This reverts commit 3780bb29311eccb7a1c9641032a112eed237f7e3.
+With CONFIG_PCIE_KIRIN=y and kirin_pcie_remove() marked with __exit, the
+function is discarded from the driver. In this case a bound device can
+still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
+resource leaks or worse.
 
-The cited commit introduced unwanted behavior.
+The right thing to do is do always have the remove callback available.
+This fixes the following warning by modpost:
 
-The intent for the commit was to be able to detect carrier loss/gain
-for just the NIC connected to the BMC. The unwanted effect is a
-carrier loss for auxiliary paths also causes the BMC to lose
-carrier. The BMC never regains carrier despite the secondary NIC
-regaining a link.
+  drivers/pci/controller/dwc/pcie-kirin: section mismatch in reference: kirin_pcie_driver+0x8 (section: .data) -> kirin_pcie_remove (section: .exit.text)
 
-This change, when merged, needs to be backported to stable kernels.
-5.4-stable, 5.10-stable, 5.15-stable, 6.1-stable, 6.5-stable
+(with ARCH=x86_64 W=1 allmodconfig).
 
-Fixes: 3780bb29311e ("ncsi: Propagate carrier gain/loss events to the NCSI controller")
-CC: stable@vger.kernel.org
-Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 000f60db784b ("PCI: kirin: Add support for a PHY layer")
+Link: https://lore.kernel.org/r/20231001170254.2506508-3-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-aen.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/pci/controller/dwc/pcie-kirin.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -89,11 +89,6 @@ static int ncsi_aen_handler_lsc(struct n
- 	if ((had_link == has_link) || chained)
- 		return 0;
+--- a/drivers/pci/controller/dwc/pcie-kirin.c
++++ b/drivers/pci/controller/dwc/pcie-kirin.c
+@@ -742,7 +742,7 @@ err:
+ 	return ret;
+ }
  
--	if (had_link)
--		netif_carrier_off(ndp->ndev.dev);
--	else
--		netif_carrier_on(ndp->ndev.dev);
--
- 	if (!ndp->multi_package && !nc->package->multi_channel) {
- 		if (had_link) {
- 			ndp->flags |= NCSI_DEV_RESHUFFLE;
+-static int __exit kirin_pcie_remove(struct platform_device *pdev)
++static int kirin_pcie_remove(struct platform_device *pdev)
+ {
+ 	struct kirin_pcie *kirin_pcie = platform_get_drvdata(pdev);
+ 
+@@ -819,7 +819,7 @@ static int kirin_pcie_probe(struct platf
+ 
+ static struct platform_driver kirin_pcie_driver = {
+ 	.probe			= kirin_pcie_probe,
+-	.remove	        	= __exit_p(kirin_pcie_remove),
++	.remove	        	= kirin_pcie_remove,
+ 	.driver			= {
+ 		.name			= "kirin-pcie",
+ 		.of_match_table		= kirin_pcie_match,
 
 
 
