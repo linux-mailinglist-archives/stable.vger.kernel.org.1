@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-1647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D60B7F80B2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A22417F7CD3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47BDD1C21596
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DBFD2820D9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538D233CC2;
-	Fri, 24 Nov 2023 18:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 945F739FE9;
+	Fri, 24 Nov 2023 18:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aT31Vdkx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5b7qrhU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EC12D787;
-	Fri, 24 Nov 2023 18:52:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84289C433C7;
-	Fri, 24 Nov 2023 18:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E34A39FC3;
+	Fri, 24 Nov 2023 18:18:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC677C433C7;
+	Fri, 24 Nov 2023 18:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851923;
-	bh=gA3dzZ6cy18/SX3eATsy6gLwpf1fBbPkqRvHFsVnE40=;
+	s=korg; t=1700849918;
+	bh=5gj6qjSrXd6hLwv/Q2F6QzQ2nbx5dg1W0saAY0uTgLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aT31Vdkx2tV35Q9ANrLhrkcywgE0ZsEfBl5Z2ngps979sBn/d70E5CDKA99GjtmPu
-	 AIwHuBZSAL0Hj3MydBn98olzsIjpKRHKx480wpZ80uViVVW/nXpI9azwpJ1EN4YhKt
-	 /ff4X4ImVIn8jIrYmYDAyicqcSDRwkYUh3dwgx04=
+	b=A5b7qrhUAs6G1TuOtVPM9EvC0G6nQOqP1W7u4w7akZQfmPOTL52FIhFjSAMovWXW6
+	 W+LdI/DnUhJRgsuhUZGoi7RjtCsT0py5X8EP7ocV+GcutrIrC101+wAgj50tHMA1Hp
+	 MjaFah1YZqZY3dZSFmUGydPqC46tzUtGlCZkHdHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cruz Zhao <cruzzhao@linux.alibaba.com>,
-	Tianchen Ding <dtcccc@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/372] net/mlx5e: fix double free of encap_header
-Date: Fri, 24 Nov 2023 17:48:57 +0000
-Message-ID: <20231124172015.483538005@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>,
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Subject: [PATCH 6.6 372/530] mcb: fix error handling for different scenarios when parsing
+Date: Fri, 24 Nov 2023 17:48:58 +0000
+Message-ID: <20231124172039.339011770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,88 +51,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dust Li <dust.li@linux.alibaba.com>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-[ Upstream commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1 ]
+commit 63ba2d07b4be72b94216d20561f43e1150b25d98 upstream.
 
-When mlx5_packet_reformat_alloc() fails, the encap_header allocated in
-mlx5e_tc_tun_create_header_ipv4{6} will be released within it. However,
-e->encap_header is already set to the previously freed encap_header
-before mlx5_packet_reformat_alloc(). As a result, the later
-mlx5e_encap_put() will free e->encap_header again, causing a double free
-issue.
+chameleon_parse_gdd() may fail for different reasons and end up
+in the err tag. Make sure we at least always free the mcb_device
+allocated with mcb_alloc_dev().
 
-mlx5e_encap_put()
-    --> mlx5e_encap_dealloc()
-        --> kfree(e->encap_header)
+If mcb_device_register() fails, make sure to give up the reference
+in the same place the device was added.
 
-This happens when cmd: MLX5_CMD_OP_ALLOC_PACKET_REFORMAT_CONTEXT fail.
-
-This patch fix it by not setting e->encap_header until
-mlx5_packet_reformat_alloc() success.
-
-Fixes: d589e785baf5e ("net/mlx5e: Allow concurrent creation of encap entries")
-Reported-by: Cruz Zhao <cruzzhao@linux.alibaba.com>
-Reported-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 728ac3389296 ("mcb: mcb-parse: fix error handing in chameleon_parse_gdd()")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Link: https://lore.kernel.org/r/20231019141434.57971-2-jorge.sanjuangarcia@duagon.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/mcb/mcb-core.c  | 1 +
+ drivers/mcb/mcb-parse.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-index 83bb0811e7741..ccfc626c37d48 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-@@ -300,9 +300,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+diff --git a/drivers/mcb/mcb-core.c b/drivers/mcb/mcb-core.c
+index 2a4a5e71ad4e..ba4530459de8 100644
+--- a/drivers/mcb/mcb-core.c
++++ b/drivers/mcb/mcb-core.c
+@@ -246,6 +246,7 @@ int mcb_device_register(struct mcb_bus *bus, struct mcb_device *dev)
+ 	return 0;
  
--	e->encap_size = ipv4_encap_size;
--	e->encap_header = encap_header;
--
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(attr.n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -322,6 +319,8 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
+ out:
++	put_device(&dev->dev);
  
-+	e->encap_size = ipv4_encap_size;
-+	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(attr.out_dev));
- 	mlx5e_route_lookup_ipv4_put(&attr);
-@@ -568,9 +567,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+ 	return ret;
+ }
+diff --git a/drivers/mcb/mcb-parse.c b/drivers/mcb/mcb-parse.c
+index 656b6b71c768..1ae37e693de0 100644
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -106,7 +106,7 @@ static int chameleon_parse_gdd(struct mcb_bus *bus,
+ 	return 0;
  
--	e->encap_size = ipv6_encap_size;
--	e->encap_header = encap_header;
--
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(attr.n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -590,6 +586,8 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
+ err:
+-	put_device(&mdev->dev);
++	mcb_free_dev(mdev);
  
-+	e->encap_size = ipv6_encap_size;
-+	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(attr.out_dev));
- 	mlx5e_route_lookup_ipv6_put(&attr);
+ 	return ret;
+ }
 -- 
-2.42.0
+2.43.0
 
 
 
