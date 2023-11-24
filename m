@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C557F7C27
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CEF7F8020
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92FFF1C21103
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 258C9B214CA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AC239FC2;
-	Fri, 24 Nov 2023 18:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFC8381D2;
+	Fri, 24 Nov 2023 18:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+QfAga0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12zpXFP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012DE39FE3;
-	Fri, 24 Nov 2023 18:12:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D22FC433C7;
-	Fri, 24 Nov 2023 18:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C4A33CC7;
+	Fri, 24 Nov 2023 18:46:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA9B0C433C8;
+	Fri, 24 Nov 2023 18:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849543;
-	bh=X4edO5yN8qG4H5HdgUa5NIxWvgRJYPR+wafJqqj6mZ4=;
+	s=korg; t=1700851613;
+	bh=z+S87+S9KEYimb/pJsP/5E4efSkErZZRbF8O/xmts6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+QfAga0FUNxGmmo9KWex7rxJbxyu3ru8j90058IcMfyIZ/9jLcYuLYGNau91B8Gi
-	 swnztQIx2qBld23Kdc72rBUfDNsT7ylFRYvRNTvT0Cr1TLs4yn7zUaq4SV2Pi7OnHL
-	 0AaAth0NvqTkdOsAhJnzIATNhUVy5RnnbnflQcDk=
+	b=12zpXFP2gnXO7sAkwVDCIAZL6FTUNi8p+DdpT0u+GGSqxPFheFdBXp0ABk93dd+mc
+	 vGSLBVoKMGsGIXGBYKB10giLjoOEAGE1536YDS8JkYr/b9vCto6SI0RzVx+MEct3mD
+	 lSzKxYGfQZVtNrYj9kDD5BulQx9BkUdMCJ8cojAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/530] net/mlx5e: Update doorbell for port timestamping CQ before the software counter
-Date: Fri, 24 Nov 2023 17:46:30 +0000
-Message-ID: <20231124172034.876754116@linuxfoundation.org>
+Subject: [PATCH 6.1 004/372] rcu: Dump memory object info if callback function is invalid
+Date: Fri, 24 Nov 2023 17:46:31 +0000
+Message-ID: <20231124172010.576696396@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,98 +54,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit 92214be5979c0961a471b7eaaaeacab41bdf456c ]
+[ Upstream commit 2cbc482d325ee58001472c4359b311958c4efdd1 ]
 
-Previously, mlx5e_ptp_poll_ts_cq would update the device doorbell with the
-incremented consumer index after the relevant software counters in the
-kernel were updated. In the mlx5e_sq_xmit_wqe context, this would lead to
-either overrunning the device CQ or exceeding the expected software buffer
-size in the device CQ if the device CQ size was greater than the software
-buffer size. Update the relevant software counter only after updating the
-device CQ consumer index in the port timestamping napi_poll context.
+When a structure containing an RCU callback rhp is (incorrectly) freed
+and reallocated after rhp is passed to call_rcu(), it is not unusual for
+rhp->func to be set to NULL. This defeats the debugging prints used by
+__call_rcu_common() in kernels built with CONFIG_DEBUG_OBJECTS_RCU_HEAD=y,
+which expect to identify the offending code using the identity of this
+function.
 
-Log:
-    mlx5_core 0000:08:00.0: cq_err_event_notifier:517:(pid 0): CQ error on CQN 0x487, syndrome 0x1
-    mlx5_core 0000:08:00.0 eth2: mlx5e_cq_error_event: cqn=0x000487 event=0x04
+And in kernels build without CONFIG_DEBUG_OBJECTS_RCU_HEAD=y, things
+are even worse, as can be seen from this splat:
 
-Fixes: 1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-12-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Unable to handle kernel NULL pointer dereference at virtual address 0
+... ...
+PC is at 0x0
+LR is at rcu_do_batch+0x1c0/0x3b8
+... ...
+ (rcu_do_batch) from (rcu_core+0x1d4/0x284)
+ (rcu_core) from (__do_softirq+0x24c/0x344)
+ (__do_softirq) from (__irq_exit_rcu+0x64/0x108)
+ (__irq_exit_rcu) from (irq_exit+0x8/0x10)
+ (irq_exit) from (__handle_domain_irq+0x74/0x9c)
+ (__handle_domain_irq) from (gic_handle_irq+0x8c/0x98)
+ (gic_handle_irq) from (__irq_svc+0x5c/0x94)
+ (__irq_svc) from (arch_cpu_idle+0x20/0x3c)
+ (arch_cpu_idle) from (default_idle_call+0x4c/0x78)
+ (default_idle_call) from (do_idle+0xf8/0x150)
+ (do_idle) from (cpu_startup_entry+0x18/0x20)
+ (cpu_startup_entry) from (0xc01530)
+
+This commit therefore adds calls to mem_dump_obj(rhp) to output some
+information, for example:
+
+  slab kmalloc-256 start ffff410c45019900 pointer offset 0 size 256
+
+This provides the rough size of the memory block and the offset of the
+rcu_head structure, which as least provides at least a few clues to help
+locate the problem. If the problem is reproducible, additional slab
+debugging can be enabled, for example, CONFIG_DEBUG_SLAB=y, which can
+provide significantly more information.
+
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en/ptp.c  | 20 +++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ kernel/rcu/rcu.h      | 7 +++++++
+ kernel/rcu/srcutiny.c | 1 +
+ kernel/rcu/srcutree.c | 1 +
+ kernel/rcu/tasks.h    | 1 +
+ kernel/rcu/tiny.c     | 1 +
+ kernel/rcu/tree.c     | 1 +
+ 6 files changed, 12 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-index bb11e644d24f7..af3928eddafd1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-@@ -177,6 +177,8 @@ static void mlx5e_ptpsq_mark_ts_cqes_undelivered(struct mlx5e_ptpsq *ptpsq,
+diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
+index 48d8f754b730e..49ff955ed2034 100644
+--- a/kernel/rcu/rcu.h
++++ b/kernel/rcu/rcu.h
+@@ -10,6 +10,7 @@
+ #ifndef __LINUX_RCU_H
+ #define __LINUX_RCU_H
  
- static void mlx5e_ptp_handle_ts_cqe(struct mlx5e_ptpsq *ptpsq,
- 				    struct mlx5_cqe64 *cqe,
-+				    u8 *md_buff,
-+				    u8 *md_buff_sz,
- 				    int budget)
- {
- 	struct mlx5e_ptp_port_ts_cqe_list *pending_cqe_list = ptpsq->ts_cqe_pending_list;
-@@ -211,19 +213,24 @@ static void mlx5e_ptp_handle_ts_cqe(struct mlx5e_ptpsq *ptpsq,
- 	mlx5e_ptpsq_mark_ts_cqes_undelivered(ptpsq, hwtstamp);
- out:
- 	napi_consume_skb(skb, budget);
--	mlx5e_ptp_metadata_fifo_push(&ptpsq->metadata_freelist, metadata_id);
-+	md_buff[*md_buff_sz++] = metadata_id;
- 	if (unlikely(mlx5e_ptp_metadata_map_unhealthy(&ptpsq->metadata_map)) &&
- 	    !test_and_set_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state))
- 		queue_work(ptpsq->txqsq.priv->wq, &ptpsq->report_unhealthy_work);
++#include <linux/slab.h>
+ #include <trace/events/rcu.h>
+ 
+ /*
+@@ -211,6 +212,12 @@ static inline void debug_rcu_head_unqueue(struct rcu_head *head)
  }
+ #endif	/* #else !CONFIG_DEBUG_OBJECTS_RCU_HEAD */
  
--static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
-+static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int napi_budget)
- {
- 	struct mlx5e_ptpsq *ptpsq = container_of(cq, struct mlx5e_ptpsq, ts_cq);
--	struct mlx5_cqwq *cqwq = &cq->wq;
-+	int budget = min(napi_budget, MLX5E_TX_CQ_POLL_BUDGET);
-+	u8 metadata_buff[MLX5E_TX_CQ_POLL_BUDGET];
-+	u8 metadata_buff_sz = 0;
-+	struct mlx5_cqwq *cqwq;
- 	struct mlx5_cqe64 *cqe;
- 	int work_done = 0;
- 
-+	cqwq = &cq->wq;
++static inline void debug_rcu_head_callback(struct rcu_head *rhp)
++{
++	if (unlikely(!rhp->func))
++		kmem_dump_obj(rhp);
++}
 +
- 	if (unlikely(!test_bit(MLX5E_SQ_STATE_ENABLED, &ptpsq->txqsq.state)))
- 		return false;
+ extern int rcu_cpu_stall_suppress_at_boot;
  
-@@ -234,7 +241,8 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
- 	do {
- 		mlx5_cqwq_pop(cqwq);
+ static inline bool rcu_stall_is_suppressed_at_boot(void)
+diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
+index 33adafdad2613..5e7f336baa06a 100644
+--- a/kernel/rcu/srcutiny.c
++++ b/kernel/rcu/srcutiny.c
+@@ -138,6 +138,7 @@ void srcu_drive_gp(struct work_struct *wp)
+ 	while (lh) {
+ 		rhp = lh;
+ 		lh = lh->next;
++		debug_rcu_head_callback(rhp);
+ 		local_bh_disable();
+ 		rhp->func(rhp);
+ 		local_bh_enable();
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index 4db36d543be37..ce60cdf069e3a 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -1564,6 +1564,7 @@ static void srcu_invoke_callbacks(struct work_struct *work)
+ 	rhp = rcu_cblist_dequeue(&ready_cbs);
+ 	for (; rhp != NULL; rhp = rcu_cblist_dequeue(&ready_cbs)) {
+ 		debug_rcu_head_unqueue(rhp);
++		debug_rcu_head_callback(rhp);
+ 		local_bh_disable();
+ 		rhp->func(rhp);
+ 		local_bh_enable();
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index c1f18c63b9b14..98370f6c225dc 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -487,6 +487,7 @@ static void rcu_tasks_invoke_cbs(struct rcu_tasks *rtp, struct rcu_tasks_percpu
+ 	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
+ 	len = rcl.len;
+ 	for (rhp = rcu_cblist_dequeue(&rcl); rhp; rhp = rcu_cblist_dequeue(&rcl)) {
++		debug_rcu_head_callback(rhp);
+ 		local_bh_disable();
+ 		rhp->func(rhp);
+ 		local_bh_enable();
+diff --git a/kernel/rcu/tiny.c b/kernel/rcu/tiny.c
+index a33a8d4942c37..21c040cba4bd0 100644
+--- a/kernel/rcu/tiny.c
++++ b/kernel/rcu/tiny.c
+@@ -97,6 +97,7 @@ static inline bool rcu_reclaim_tiny(struct rcu_head *head)
  
--		mlx5e_ptp_handle_ts_cqe(ptpsq, cqe, budget);
-+		mlx5e_ptp_handle_ts_cqe(ptpsq, cqe,
-+					metadata_buff, &metadata_buff_sz, napi_budget);
- 	} while ((++work_done < budget) && (cqe = mlx5_cqwq_get_cqe(cqwq)));
+ 	trace_rcu_invoke_callback("", head);
+ 	f = head->func;
++	debug_rcu_head_callback(head);
+ 	WRITE_ONCE(head->func, (rcu_callback_t)0L);
+ 	f(head);
+ 	rcu_lock_release(&rcu_callback_map);
+diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
+index 917a1e43f7839..50726adb4e0b5 100644
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -2247,6 +2247,7 @@ static void rcu_do_batch(struct rcu_data *rdp)
+ 		trace_rcu_invoke_callback(rcu_state.name, rhp);
  
- 	mlx5_cqwq_update_db_record(cqwq);
-@@ -242,6 +250,10 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
- 	/* ensure cq space is freed before enabling more cqes */
- 	wmb();
+ 		f = rhp->func;
++		debug_rcu_head_callback(rhp);
+ 		WRITE_ONCE(rhp->func, (rcu_callback_t)0L);
+ 		f(rhp);
  
-+	while (metadata_buff_sz > 0)
-+		mlx5e_ptp_metadata_fifo_push(&ptpsq->metadata_freelist,
-+					     metadata_buff[--metadata_buff_sz]);
-+
- 	mlx5e_txqsq_wake(&ptpsq->txqsq);
- 
- 	return work_done == budget;
 -- 
 2.42.0
 
