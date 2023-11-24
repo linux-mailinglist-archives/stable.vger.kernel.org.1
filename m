@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F207F8326
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:14:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB597F820E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8704B25A5B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00AC1B22F6A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EF8381CB;
-	Fri, 24 Nov 2023 19:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130A8364A7;
+	Fri, 24 Nov 2023 19:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS65YbQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xGpMf+KP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66453418E;
-	Fri, 24 Nov 2023 19:14:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F00CC433C7;
-	Fri, 24 Nov 2023 19:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A386A63A1;
+	Fri, 24 Nov 2023 19:03:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2B5C433C8;
+	Fri, 24 Nov 2023 19:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853271;
-	bh=AFXyNFWjTpy3ismWgGxlm9WXhV720KKUp178GlqEeGE=;
+	s=korg; t=1700852638;
+	bh=RryTJJIiqd7d2hsjiEbVCby3dG5RpV3xlesvdmy7hSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hS65YbQ6iNoxDLUA+wLqDfh/55SLys3icJJe+iKCH6sghOxPvQjJ5y+yyTPDlhnOP
-	 zbwt7xX4C3XHQkCWiTVXWH4yGgQLuPPKWFkT5zfZ2NIhekTXzJpTES0enGsykAvCW4
-	 cW5Na7XSL5RplrDd9/+yd2N4qWRvQkMysqeuqnj4=
+	b=xGpMf+KPXlWp7CFBLqbhVnuJLm033f85vFjQWeMwHtpvN1R+kr6Hrts96wa3b02bp
+	 e0u5grTgudNoNzR+e+pBsRlkmsZdb2/JVKDDbIHSs2STE2neru5gcs4E7cCGTn9v7k
+	 rPdtfQWyfYNYagNzV4UymucjqADTTbjLR5398HBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 122/297] netfilter: nf_tables: use the correct get/put helpers
-Date: Fri, 24 Nov 2023 17:52:44 +0000
-Message-ID: <20231124172004.565898785@linuxfoundation.org>
+Subject: [PATCH 5.10 038/193] atm: iphase: Do PCI error checks on own line
+Date: Fri, 24 Nov 2023 17:52:45 +0000
+Message-ID: <20231124171948.748795687@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,134 +51,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit d86473bf2ff39c05d4a6701c8aec66a16af0d410 ]
+[ Upstream commit c28742447ca9879b52fbaf022ad844f0ffcd749c ]
 
-Switch to be16/32 and u16/32 respectively.  No code changes here,
-the functions do the same thing, this is just for sparse checkers' sake.
+In get_esi() PCI errors are checked inside line-split "if" conditions (in
+addition to the file not following the coding style). To make the code in
+get_esi() more readable, fix the coding style and use the usual error
+handling pattern with a separate variable.
 
-objdiff shows no changes.
+In addition, initialization of 'error' variable at declaration is not
+needed.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: c301f0981fdd ("netfilter: nf_tables: fix pointer math issue in nft_byteorder_eval()")
+No functional changes intended.
+
+Link: https://lore.kernel.org/r/20230911125354.25501-4-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_byteorder.c | 3 ++-
- net/netfilter/nft_osf.c       | 2 +-
- net/netfilter/nft_socket.c    | 8 ++++----
- net/netfilter/nft_xfrm.c      | 8 ++++----
- 4 files changed, 11 insertions(+), 10 deletions(-)
+ drivers/atm/iphase.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
-index 7b0b8fecb2205..d3e1467e576fb 100644
---- a/net/netfilter/nft_byteorder.c
-+++ b/net/netfilter/nft_byteorder.c
-@@ -44,7 +44,8 @@ void nft_byteorder_eval(const struct nft_expr *expr,
- 		case NFT_BYTEORDER_NTOH:
- 			for (i = 0; i < priv->len / 8; i++) {
- 				src64 = nft_reg_load64(&src[i]);
--				nft_reg_store64(&dst[i], be64_to_cpu(src64));
-+				nft_reg_store64(&dst[i],
-+						be64_to_cpu((__force __be64)src64));
- 			}
- 			break;
- 		case NFT_BYTEORDER_HTON:
-diff --git a/net/netfilter/nft_osf.c b/net/netfilter/nft_osf.c
-index 720dc9fba6d4f..c9c124200a4db 100644
---- a/net/netfilter/nft_osf.c
-+++ b/net/netfilter/nft_osf.c
-@@ -99,7 +99,7 @@ static int nft_osf_dump(struct sk_buff *skb, const struct nft_expr *expr)
- 	if (nla_put_u8(skb, NFTA_OSF_TTL, priv->ttl))
- 		goto nla_put_failure;
- 
--	if (nla_put_be32(skb, NFTA_OSF_FLAGS, ntohl(priv->flags)))
-+	if (nla_put_u32(skb, NFTA_OSF_FLAGS, ntohl((__force __be32)priv->flags)))
- 		goto nla_put_failure;
- 
- 	if (nft_dump_register(skb, NFTA_OSF_DREG, priv->dreg))
-diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
-index 9ad9cc0d1d27c..1725e7349f3d9 100644
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -162,7 +162,7 @@ static int nft_socket_init(const struct nft_ctx *ctx,
- 		return -EOPNOTSUPP;
- 	}
- 
--	priv->key = ntohl(nla_get_u32(tb[NFTA_SOCKET_KEY]));
-+	priv->key = ntohl(nla_get_be32(tb[NFTA_SOCKET_KEY]));
- 	switch(priv->key) {
- 	case NFT_SOCKET_TRANSPARENT:
- 	case NFT_SOCKET_WILDCARD:
-@@ -178,7 +178,7 @@ static int nft_socket_init(const struct nft_ctx *ctx,
- 		if (!tb[NFTA_SOCKET_LEVEL])
- 			return -EINVAL;
- 
--		level = ntohl(nla_get_u32(tb[NFTA_SOCKET_LEVEL]));
-+		level = ntohl(nla_get_be32(tb[NFTA_SOCKET_LEVEL]));
- 		if (level > 255)
- 			return -EOPNOTSUPP;
- 
-@@ -200,12 +200,12 @@ static int nft_socket_dump(struct sk_buff *skb,
- {
- 	const struct nft_socket *priv = nft_expr_priv(expr);
- 
--	if (nla_put_u32(skb, NFTA_SOCKET_KEY, htonl(priv->key)))
-+	if (nla_put_be32(skb, NFTA_SOCKET_KEY, htonl(priv->key)))
- 		return -1;
- 	if (nft_dump_register(skb, NFTA_SOCKET_DREG, priv->dreg))
- 		return -1;
- 	if (priv->key == NFT_SOCKET_CGROUPV2 &&
--	    nla_put_u32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level)))
-+	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level)))
- 		return -1;
- 	return 0;
- }
-diff --git a/net/netfilter/nft_xfrm.c b/net/netfilter/nft_xfrm.c
-index cbbbc4ecad3ae..3553f89fd057f 100644
---- a/net/netfilter/nft_xfrm.c
-+++ b/net/netfilter/nft_xfrm.c
-@@ -50,7 +50,7 @@ static int nft_xfrm_get_init(const struct nft_ctx *ctx,
- 		return -EOPNOTSUPP;
- 	}
- 
--	priv->key = ntohl(nla_get_u32(tb[NFTA_XFRM_KEY]));
-+	priv->key = ntohl(nla_get_be32(tb[NFTA_XFRM_KEY]));
- 	switch (priv->key) {
- 	case NFT_XFRM_KEY_REQID:
- 	case NFT_XFRM_KEY_SPI:
-@@ -132,13 +132,13 @@ static void nft_xfrm_state_get_key(const struct nft_xfrm *priv,
- 		WARN_ON_ONCE(1);
- 		break;
- 	case NFT_XFRM_KEY_DADDR_IP4:
--		*dest = state->id.daddr.a4;
-+		*dest = (__force __u32)state->id.daddr.a4;
- 		return;
- 	case NFT_XFRM_KEY_DADDR_IP6:
- 		memcpy(dest, &state->id.daddr.in6, sizeof(struct in6_addr));
- 		return;
- 	case NFT_XFRM_KEY_SADDR_IP4:
--		*dest = state->props.saddr.a4;
-+		*dest = (__force __u32)state->props.saddr.a4;
- 		return;
- 	case NFT_XFRM_KEY_SADDR_IP6:
- 		memcpy(dest, &state->props.saddr.in6, sizeof(struct in6_addr));
-@@ -147,7 +147,7 @@ static void nft_xfrm_state_get_key(const struct nft_xfrm *priv,
- 		*dest = state->props.reqid;
- 		return;
- 	case NFT_XFRM_KEY_SPI:
--		*dest = state->id.spi;
-+		*dest = (__force __u32)state->id.spi;
- 		return;
- 	}
- 
+diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
+index a59554e5b8b0f..cc90f550ab75a 100644
+--- a/drivers/atm/iphase.c
++++ b/drivers/atm/iphase.c
+@@ -2290,19 +2290,21 @@ static int get_esi(struct atm_dev *dev)
+ static int reset_sar(struct atm_dev *dev)  
+ {  
+ 	IADEV *iadev;  
+-	int i, error = 1;  
++	int i, error;
+ 	unsigned int pci[64];  
+ 	  
+ 	iadev = INPH_IA_DEV(dev);  
+-	for(i=0; i<64; i++)  
+-	  if ((error = pci_read_config_dword(iadev->pci,  
+-				i*4, &pci[i])) != PCIBIOS_SUCCESSFUL)  
+-  	      return error;  
++	for (i = 0; i < 64; i++) {
++		error = pci_read_config_dword(iadev->pci, i * 4, &pci[i]);
++		if (error != PCIBIOS_SUCCESSFUL)
++			return error;
++	}
+ 	writel(0, iadev->reg+IPHASE5575_EXT_RESET);  
+-	for(i=0; i<64; i++)  
+-	  if ((error = pci_write_config_dword(iadev->pci,  
+-					i*4, pci[i])) != PCIBIOS_SUCCESSFUL)  
+-	    return error;  
++	for (i = 0; i < 64; i++) {
++		error = pci_write_config_dword(iadev->pci, i * 4, pci[i]);
++		if (error != PCIBIOS_SUCCESSFUL)
++			return error;
++	}
+ 	udelay(5);  
+ 	return 0;  
+ }  
 -- 
 2.42.0
 
