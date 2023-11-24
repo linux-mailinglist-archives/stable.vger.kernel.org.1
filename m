@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41517F820C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:03:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B96617F8323
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FDECB22F0F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E522B2599C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A5B364A5;
-	Fri, 24 Nov 2023 19:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D97835EE6;
+	Fri, 24 Nov 2023 19:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LB9f5Fkt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKNpx80z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D963306F;
-	Fri, 24 Nov 2023 19:03:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9ADC433C7;
-	Fri, 24 Nov 2023 19:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4AA2E858;
+	Fri, 24 Nov 2023 19:14:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE033C433C8;
+	Fri, 24 Nov 2023 19:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852628;
-	bh=s4HhNNjqTTpaqIPONR0M56MSP0v+DjKxC3CFrk6QWrg=;
+	s=korg; t=1700853264;
+	bh=eMmg9oIrFR5bdMJFI3O6M7PLEL3ODXWL6XByUJ1zpvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LB9f5FktwIbjnzQjd71maIJ8b2mT8s968bq2qGkwCZKxbSlmYBqXYUxhkkWWXQlzr
-	 gY6A0UB4wYZgYp3KBCtEw3zzKIgJfi0A1PhXAWGM/EisoEj9DNAChWdX+4J6tZa/TV
-	 viGHUsRNnqPRJt5XWb9T8ZJOGWToWXlWhfs4z310=
+	b=mKNpx80zAVH2bWzDEj3tKthh3+MwgD0OJM12ZXrcDVdnp65og9ei7+xiKWs7sT51Q
+	 bU8hRKsCl27cHeqpdIA8fVHKEIKO2Cd5to0uPn9q4bevmOM6DE8XcZxl0TWbCmz4+X
+	 qIjLDT1Kc73fsgERZCJtvAGMKcuopKtnR+QTygMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Khvainitski <me@khvoinitsky.org>,
-	Jiri Kosina <jkosina@suse.cz>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/193] HID: lenovo: Detect quirk-free fw on cptkbd and stop applying workaround
+Subject: [PATCH 5.15 119/297] net: ethernet: cortina: Fix MTU max setting
 Date: Fri, 24 Nov 2023 17:52:41 +0000
-Message-ID: <20231124171948.579996702@linuxfoundation.org>
+Message-ID: <20231124172004.452375496@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,128 +55,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Khvainitski <me@khvoinitsky.org>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 46a0a2c96f0f47628190f122c2e3d879e590bcbe ]
+[ Upstream commit dc6c0bfbaa947dd7976e30e8c29b10c868b6fa42 ]
 
-Built-in firmware of cptkbd handles scrolling by itself (when middle
-button is pressed) but with issues: it does not support horizontal and
-hi-res scrolling and upon middle button release it sends middle button
-click even if there was a scrolling event. Commit 3cb5ff0220e3 ("HID:
-lenovo: Hide middle-button press until release") workarounds last
-issue but it's impossible to workaround scrolling-related issues
-without firmware modification.
+The RX max frame size is over 10000 for the Gemini ethernet,
+but the TX max frame size is actually just 2047 (0x7ff after
+checking the datasheet). Reflect this in what we offer to Linux,
+cap the MTU at the TX max frame minus ethernet headers.
 
-Likely, Dennis Schneider has reverse engineered the firmware and
-provided an instruction on how to patch it [1]. However,
-aforementioned workaround prevents userspace (libinput) from knowing
-exact moment when middle button has been pressed down and performing
-"On-Button scrolling". This commit detects correctly-behaving patched
-firmware if cursor movement events has been received during middle
-button being pressed and stops applying workaround for this device.
+We delete the code disabling the hardware checksum for large
+MTUs as netdev->mtu can no longer be larger than
+netdev->max_mtu meaning the if()-clause in gmac_fix_features()
+is never true.
 
-Link: https://hohlerde.org/rauch/en/elektronik/projekte/tpkbd-fix/ [1]
-
-Signed-off-by: Mikhail Khvainitski <me@khvoinitsky.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-3-6e611528db08@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-lenovo.c | 68 ++++++++++++++++++++++++++--------------
- 1 file changed, 45 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 17 ++++-------------
+ drivers/net/ethernet/cortina/gemini.h |  2 +-
+ 2 files changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/hid/hid-lenovo.c b/drivers/hid/hid-lenovo.c
-index 0ff03fed97709..71f7b0d539df5 100644
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -50,7 +50,12 @@ struct lenovo_drvdata {
- 	int select_right;
- 	int sensitivity;
- 	int press_speed;
--	u8 middlebutton_state; /* 0:Up, 1:Down (undecided), 2:Scrolling */
-+	/* 0: Up
-+	 * 1: Down (undecided)
-+	 * 2: Scrolling
-+	 * 3: Patched firmware, disable workaround
-+	 */
-+	u8 middlebutton_state;
- 	bool fn_lock;
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index fbd83330ca787..675c6dda45e24 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -2000,15 +2000,6 @@ static int gmac_change_mtu(struct net_device *netdev, int new_mtu)
+ 	return 0;
+ }
+ 
+-static netdev_features_t gmac_fix_features(struct net_device *netdev,
+-					   netdev_features_t features)
+-{
+-	if (netdev->mtu + ETH_HLEN + VLAN_HLEN > MTU_SIZE_BIT_MASK)
+-		features &= ~GMAC_OFFLOAD_FEATURES;
+-
+-	return features;
+-}
+-
+ static int gmac_set_features(struct net_device *netdev,
+ 			     netdev_features_t features)
+ {
+@@ -2230,7 +2221,6 @@ static const struct net_device_ops gmac_351x_ops = {
+ 	.ndo_set_mac_address	= gmac_set_mac_address,
+ 	.ndo_get_stats64	= gmac_get_stats64,
+ 	.ndo_change_mtu		= gmac_change_mtu,
+-	.ndo_fix_features	= gmac_fix_features,
+ 	.ndo_set_features	= gmac_set_features,
  };
  
-@@ -478,31 +483,48 @@ static int lenovo_event_cptkbd(struct hid_device *hdev,
- {
- 	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
+@@ -2480,11 +2470,12 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
  
--	/* "wheel" scroll events */
--	if (usage->type == EV_REL && (usage->code == REL_WHEEL ||
--			usage->code == REL_HWHEEL)) {
--		/* Scroll events disable middle-click event */
--		cptkbd_data->middlebutton_state = 2;
--		return 0;
--	}
-+	if (cptkbd_data->middlebutton_state != 3) {
-+		/* REL_X and REL_Y events during middle button pressed
-+		 * are only possible on patched, bug-free firmware
-+		 * so set middlebutton_state to 3
-+		 * to never apply workaround anymore
-+		 */
-+		if (cptkbd_data->middlebutton_state == 1 &&
-+				usage->type == EV_REL &&
-+				(usage->code == REL_X || usage->code == REL_Y)) {
-+			cptkbd_data->middlebutton_state = 3;
-+			/* send middle button press which was hold before */
-+			input_event(field->hidinput->input,
-+				EV_KEY, BTN_MIDDLE, 1);
-+			input_sync(field->hidinput->input);
-+		}
+ 	netdev->hw_features = GMAC_OFFLOAD_FEATURES;
+ 	netdev->features |= GMAC_OFFLOAD_FEATURES | NETIF_F_GRO;
+-	/* We can handle jumbo frames up to 10236 bytes so, let's accept
+-	 * payloads of 10236 bytes minus VLAN and ethernet header
++	/* We can receive jumbo frames up to 10236 bytes but only
++	 * transmit 2047 bytes so, let's accept payloads of 2047
++	 * bytes minus VLAN and ethernet header
+ 	 */
+ 	netdev->min_mtu = ETH_MIN_MTU;
+-	netdev->max_mtu = 10236 - VLAN_ETH_HLEN;
++	netdev->max_mtu = MTU_SIZE_BIT_MASK - VLAN_ETH_HLEN;
  
--	/* Middle click events */
--	if (usage->type == EV_KEY && usage->code == BTN_MIDDLE) {
--		if (value == 1) {
--			cptkbd_data->middlebutton_state = 1;
--		} else if (value == 0) {
--			if (cptkbd_data->middlebutton_state == 1) {
--				/* No scrolling inbetween, send middle-click */
--				input_event(field->hidinput->input,
--					EV_KEY, BTN_MIDDLE, 1);
--				input_sync(field->hidinput->input);
--				input_event(field->hidinput->input,
--					EV_KEY, BTN_MIDDLE, 0);
--				input_sync(field->hidinput->input);
-+		/* "wheel" scroll events */
-+		if (usage->type == EV_REL && (usage->code == REL_WHEEL ||
-+				usage->code == REL_HWHEEL)) {
-+			/* Scroll events disable middle-click event */
-+			cptkbd_data->middlebutton_state = 2;
-+			return 0;
-+		}
-+
-+		/* Middle click events */
-+		if (usage->type == EV_KEY && usage->code == BTN_MIDDLE) {
-+			if (value == 1) {
-+				cptkbd_data->middlebutton_state = 1;
-+			} else if (value == 0) {
-+				if (cptkbd_data->middlebutton_state == 1) {
-+					/* No scrolling inbetween, send middle-click */
-+					input_event(field->hidinput->input,
-+						EV_KEY, BTN_MIDDLE, 1);
-+					input_sync(field->hidinput->input);
-+					input_event(field->hidinput->input,
-+						EV_KEY, BTN_MIDDLE, 0);
-+					input_sync(field->hidinput->input);
-+				}
-+				cptkbd_data->middlebutton_state = 0;
- 			}
--			cptkbd_data->middlebutton_state = 0;
-+			return 1;
- 		}
--		return 1;
- 	}
+ 	port->freeq_refill = 0;
+ 	netif_napi_add(netdev, &port->napi, gmac_napi_poll, NAPI_POLL_WEIGHT);
+diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
+index 99efb11557436..24bb989981f23 100644
+--- a/drivers/net/ethernet/cortina/gemini.h
++++ b/drivers/net/ethernet/cortina/gemini.h
+@@ -502,7 +502,7 @@ union gmac_txdesc_3 {
+ #define SOF_BIT			0x80000000
+ #define EOF_BIT			0x40000000
+ #define EOFIE_BIT		BIT(29)
+-#define MTU_SIZE_BIT_MASK	0x1fff
++#define MTU_SIZE_BIT_MASK	0x7ff /* Max MTU 2047 bytes */
  
- 	return 0;
+ /* GMAC Tx Descriptor */
+ struct gmac_txdesc {
 -- 
 2.42.0
 
