@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-1043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F877F7DBA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0761B7F7BCA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A36E41C20951
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B71BD28218E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEF739FF8;
-	Fri, 24 Nov 2023 18:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA3B39FFD;
+	Fri, 24 Nov 2023 18:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E506tNI3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDXOCWtC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6206039FD9;
-	Fri, 24 Nov 2023 18:26:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AB1C433C8;
-	Fri, 24 Nov 2023 18:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2F7381D8;
+	Fri, 24 Nov 2023 18:08:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C1EC433C8;
+	Fri, 24 Nov 2023 18:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850417;
-	bh=MbtdrZomPyBlWz/YaQwE7DWbfzS+qnQv1SjVDqLfneM=;
+	s=korg; t=1700849324;
+	bh=I5ADFXzvpWWWxgLGzfH/YOQMXmHnIDrBFns0Gv2FZ10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E506tNI3inFV/RXGzRSOiEofPcXFxKw7/yo7xcErCRBfzfAcSOc7EJdmXV7IMAho+
-	 hc2ovmt4MI8qemqZ565AZ+byzvm7s5jxExZMISNefYAZox8XSwHNqAVXJDl6QZxCmA
-	 H7bUqJY51+NNrIFitZdof4GtFPOIWlPyBISjg9CI=
+	b=kDXOCWtCCr8NQvkg66lP2WP5Bpe0zK087iKdahlH1AIrFdxVP9EaXPNvDINP4sm6f
+	 PLBD5zl7SMsIIcONbI+/6LaIvv/AyvI1V7MsrbEBcQp0birOVUq8M7ZBoDccxDwvYd
+	 gr5QF4Hd29tfQc8+I8WTdD8BbAs6gcQNyAds8MO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Nirmoy Das <nirmoy.das@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 041/491] gpiolib: acpi: Add a ignore interrupt quirk for Peaq C1010
-Date: Fri, 24 Nov 2023 17:44:37 +0000
-Message-ID: <20231124172025.920528624@linuxfoundation.org>
+Subject: [PATCH 6.6 112/530] PCI: Use FIELD_GET() in Sapphire RX 5600 XT Pulse quirk
+Date: Fri, 24 Nov 2023 17:44:38 +0000
+Message-ID: <20231124172031.526940402@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,75 +54,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 6cc64f6173751d212c9833bde39e856b4f585a3e ]
+[ Upstream commit 04e82fa5951ca66495d7b05665eff673aa3852b4 ]
 
-On the Peaq C1010 2-in-1 INT33FC:00 pin 3 is connected to
-a "dolby" button. At the ACPI level an _AEI event-handler
-is connected which sets an ACPI variable to 1 on both
-edges. This variable can be polled + cleared to 0 using WMI.
+Use FIELD_GET() to remove dependences on the field position, i.e., the
+shift value.  No functional change intended.
 
-Since the variable is set on both edges the WMI interface is pretty
-useless even when polling. So instead of writing a custom WMI
-driver for this the x86-android-tablets code instantiates
-a gpio-keys platform device for the "dolby" button.
+Separate because this isn't as trivial as the other FIELD_GET() changes.
 
-Add an ignore_interrupt quirk for INT33FC:00 pin 3 on the Peaq C1010,
-so that it is not seen as busy when the gpio-keys driver requests it.
+See 907830b0fc9e ("PCI: Add a REBAR size quirk for Sapphire RX 5600 XT
+Pulse")
 
-Note this replaces a hack in x86-android-tablets where it would
-call acpi_gpiochip_free_interrupts() on the INT33FC:00 GPIO
-controller. acpi_gpiochip_free_interrupts() is considered private
-(internal) gpiolib API so x86-android-tablets should stop using it.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20230909141816.58358-3-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20231010204436.1000644-3-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: Nirmoy Das <nirmoy.das@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/pci/pci.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index a775d2bdac94f..980ec04892173 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1655,6 +1655,26 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_wake = "SYNA1202:00@16",
- 		},
- 	},
-+	{
-+		/*
-+		 * On the Peaq C1010 2-in-1 INT33FC:00 pin 3 is connected to
-+		 * a "dolby" button. At the ACPI level an _AEI event-handler
-+		 * is connected which sets an ACPI variable to 1 on both
-+		 * edges. This variable can be polled + cleared to 0 using
-+		 * WMI. But since the variable is set on both edges the WMI
-+		 * interface is pretty useless even when polling.
-+		 * So instead the x86-android-tablets code instantiates
-+		 * a gpio-keys platform device for it.
-+		 * Ignore the _AEI handler for the pin, so that it is not busy.
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "PEAQ"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "PEAQ PMM C1010 MD99187"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_interrupt = "INT33FC:00@3",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index ec43ebfc24a5d..a607f277ccf10 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -3755,14 +3755,14 @@ u32 pci_rebar_get_possible_sizes(struct pci_dev *pdev, int bar)
+ 		return 0;
+ 
+ 	pci_read_config_dword(pdev, pos + PCI_REBAR_CAP, &cap);
+-	cap &= PCI_REBAR_CAP_SIZES;
++	cap = FIELD_GET(PCI_REBAR_CAP_SIZES, cap);
+ 
+ 	/* Sapphire RX 5600 XT Pulse has an invalid cap dword for BAR 0 */
+ 	if (pdev->vendor == PCI_VENDOR_ID_ATI && pdev->device == 0x731f &&
+-	    bar == 0 && cap == 0x7000)
+-		cap = 0x3f000;
++	    bar == 0 && cap == 0x700)
++		return 0x3f00;
+ 
+-	return cap >> 4;
++	return cap;
+ }
+ EXPORT_SYMBOL(pci_rebar_get_possible_sizes);
  
 -- 
 2.42.0
