@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65A87F7E2B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6F17F7C0E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 032591C21311
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38FA2281DAC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C2F28E32;
-	Fri, 24 Nov 2023 18:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EFB3A8C5;
+	Fri, 24 Nov 2023 18:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TLWlPCA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHdifpCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425D03A8C6;
-	Fri, 24 Nov 2023 18:30:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52B0C433C7;
-	Fri, 24 Nov 2023 18:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323BD39FF8;
+	Fri, 24 Nov 2023 18:11:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3427C433C8;
+	Fri, 24 Nov 2023 18:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850637;
-	bh=nib254+C11q9Il5mQTw75zrgeDN3dLfVu5mqkfwPHUo=;
+	s=korg; t=1700849479;
+	bh=QlBXBM1aye9cLlXQ9D/X/UGJtigVVNCfdoByxP612sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TLWlPCALp+lpV7VXbWTNPsdLNzMH7IIUbzjeLyJjeVYunRLfv3zW2HAfGNXIetpt
-	 rhXMYFrkDYIcAxOpCHjcWGQyj52JIwB5LA8J++1mq15Hz9pMWRjsXzubHwoUo/pZQk
-	 eh6K4HD342mL0kTRAYLSMduBphlKwIk2Wda7ETFE=
+	b=AHdifpCizyA6rrVRzNB0xGIKr/AcogjnGe+MGOdev2BHUvI6lDd45kumHsiadrtaD
+	 0KgR4tXQkYNAJlNTT6OhkIbXvkF/grVs0adt9qP2UFvcdXROSylggxqZ/az1TMBiz+
+	 icurgBct+GtL46AL8CUqJjHkV70nUXrpa5bisLk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jean Delvare <jdelvare@suse.de>,
-	Wolfram Sang <wsa@kernel.org>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 128/491] i2c: i801: Add support for Intel Birch Stream SoC
+Subject: [PATCH 6.6 198/530] xen/events: fix delayed eoi list handling
 Date: Fri, 24 Nov 2023 17:46:04 +0000
-Message-ID: <20231124172028.351620820@linuxfoundation.org>
+Message-ID: <20231124172034.094042925@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,79 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 8c56f9ef25a33e51f09a448d25cf863b61c9658d ]
+[ Upstream commit 47d970204054f859f35a2237baa75c2d84fcf436 ]
 
-Add SMBus PCI ID on Intel Birch Stream SoC.
+When delaying eoi handling of events, the related elements are queued
+into the percpu lateeoi list. In case the list isn't empty, the
+elements should be sorted by the time when eoi handling is to happen.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Reviewed-by: Jean Delvare <jdelvare@suse.de>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Unfortunately a new element will never be queued at the start of the
+list, even if it has a handling time lower than all other list
+elements.
+
+Fix that by handling that case the same way as for an empty list.
+
+Fixes: e99502f76271 ("xen/events: defer eoi in case of excessive number of events")
+Reported-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/i2c/busses/i2c-i801.rst | 1 +
- drivers/i2c/busses/Kconfig            | 1 +
- drivers/i2c/busses/i2c-i801.c         | 3 +++
- 3 files changed, 5 insertions(+)
+ drivers/xen/events/events_base.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/i2c/busses/i2c-i801.rst b/Documentation/i2c/busses/i2c-i801.rst
-index e76e68ccf7182..10eced6c2e462 100644
---- a/Documentation/i2c/busses/i2c-i801.rst
-+++ b/Documentation/i2c/busses/i2c-i801.rst
-@@ -47,6 +47,7 @@ Supported adapters:
-   * Intel Alder Lake (PCH)
-   * Intel Raptor Lake (PCH)
-   * Intel Meteor Lake (SOC and PCH)
-+  * Intel Birch Stream (SOC)
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index 2cf0c2b693861..c50419638ac0a 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -604,7 +604,9 @@ static void lateeoi_list_add(struct irq_info *info)
  
-    Datasheets: Publicly available at the Intel website
+ 	spin_lock_irqsave(&eoi->eoi_list_lock, flags);
  
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 9cfe8fc509d7d..c91d4ea35c9b8 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -158,6 +158,7 @@ config I2C_I801
- 	    Alder Lake (PCH)
- 	    Raptor Lake (PCH)
- 	    Meteor Lake (SOC and PCH)
-+	    Birch Stream (SOC)
- 
- 	  This driver can also be built as a module.  If so, the module
- 	  will be called i2c-i801.
-diff --git a/drivers/i2c/busses/i2c-i801.c b/drivers/i2c/busses/i2c-i801.c
-index 2a3215ac01b3a..db4d73456f255 100644
---- a/drivers/i2c/busses/i2c-i801.c
-+++ b/drivers/i2c/busses/i2c-i801.c
-@@ -79,6 +79,7 @@
-  * Meteor Lake-P (SOC)		0x7e22	32	hard	yes	yes	yes
-  * Meteor Lake SoC-S (SOC)	0xae22	32	hard	yes	yes	yes
-  * Meteor Lake PCH-S (PCH)	0x7f23	32	hard	yes	yes	yes
-+ * Birch Stream (SOC)		0x5796	32	hard	yes	yes	yes
-  *
-  * Features supported by this driver:
-  * Software PEC				no
-@@ -231,6 +232,7 @@
- #define PCI_DEVICE_ID_INTEL_JASPER_LAKE_SMBUS		0x4da3
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_P_SMBUS		0x51a3
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_M_SMBUS		0x54a3
-+#define PCI_DEVICE_ID_INTEL_BIRCH_STREAM_SMBUS		0x5796
- #define PCI_DEVICE_ID_INTEL_BROXTON_SMBUS		0x5ad4
- #define PCI_DEVICE_ID_INTEL_RAPTOR_LAKE_S_SMBUS		0x7a23
- #define PCI_DEVICE_ID_INTEL_ALDER_LAKE_S_SMBUS		0x7aa3
-@@ -1044,6 +1046,7 @@ static const struct pci_device_id i801_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_P_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_SOC_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ PCI_DEVICE_DATA(INTEL, METEOR_LAKE_PCH_S_SMBUS,	FEATURES_ICH5 | FEATURE_TCO_CNL) },
-+	{ PCI_DEVICE_DATA(INTEL, BIRCH_STREAM_SMBUS,		FEATURES_ICH5 | FEATURE_TCO_CNL) },
- 	{ 0, }
- };
- 
+-	if (list_empty(&eoi->eoi_list)) {
++	elem = list_first_entry_or_null(&eoi->eoi_list, struct irq_info,
++					eoi_list);
++	if (!elem || info->eoi_time < elem->eoi_time) {
+ 		list_add(&info->eoi_list, &eoi->eoi_list);
+ 		mod_delayed_work_on(info->eoi_cpu, system_wq,
+ 				    &eoi->delayed, delay);
 -- 
 2.42.0
 
