@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 557877F8113
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784E37F7D2B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C561C214F4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33A7E2820C6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AFA35F1A;
-	Fri, 24 Nov 2023 18:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B6839FE1;
+	Fri, 24 Nov 2023 18:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szj/gJUL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7Q0HM2J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED1233CC2;
-	Fri, 24 Nov 2023 18:55:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D46C433C8;
-	Fri, 24 Nov 2023 18:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079DB33063;
+	Fri, 24 Nov 2023 18:22:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02EB3C433C8;
+	Fri, 24 Nov 2023 18:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852127;
-	bh=7rQN0SNEvhkMmyVDfz+fNi8rHkNWNCJUtBJ89QGUpeU=;
+	s=korg; t=1700850120;
+	bh=Woo09A/CHfNyNWr9+HolwGQxeRO6SjVJDmx/gxie4ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szj/gJULexnNOHY7dGxxBja+F0Ydro5c8QGgOwxLB9AULE6tXdz/aA9v//a5tBx6Y
-	 YbT093VYzzInkaWbesdCKMcCXdSC5fH3a4421OyyQeCbMEdKa1xjiw7X9i8LzJtx5c
-	 o3hQQ4HHAR5vyQ9lNAHlsXmJt0DLh1o4/2vArMkc=
+	b=F7Q0HM2J8Ohz2mAwzri6PSYRP4cgoW3oMLjGjiDaHUdRg9tieCHazxQvj0kfJyxHs
+	 hHlos0scnFNrhPADmpBzswWJKHmCyukkq2PZh+Gwprbl4wQVRYRSOy6mdalezQ4zSc
+	 +3x7XMqo4IivZIYB9wsXqtav14G4/qhELW6yIQiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 231/372] mfd: qcom-spmi-pmic: Fix reference leaks in revid helper
+	Su Hui <suhui@nfschina.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 452/530] f2fs: avoid format-overflow warning
 Date: Fri, 24 Nov 2023 17:50:18 +0000
-Message-ID: <20231124172018.205526713@linuxfoundation.org>
+Message-ID: <20231124172041.846115700@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,109 +51,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Su Hui <suhui@nfschina.com>
 
-commit a0fa44c261e448c531f9adb3a5189a3520f3e316 upstream.
+commit e0d4e8acb3789c5a8651061fbab62ca24a45c063 upstream.
 
-The Qualcomm SPMI PMIC revid implementation is broken in multiple ways.
+With gcc and W=1 option, there's a warning like this:
 
-First, it totally ignores struct device_node reference counting and
-leaks references to the parent bus node as well as each child it
-iterates over using an open-coded for_each_child_of_node().
+fs/f2fs/compress.c: In function ‘f2fs_init_page_array_cache’:
+fs/f2fs/compress.c:1984:47: error: ‘%u’ directive writing between
+1 and 7 bytes into a region of size between 5 and 8
+[-Werror=format-overflow=]
+ 1984 |  sprintf(slab_name, "f2fs_page_array_entry-%u:%u", MAJOR(dev),
+		MINOR(dev));
+      |                                               ^~
 
-Second, it leaks references to each spmi device on the bus that it
-iterates over by failing to drop the reference taken by the
-spmi_device_from_of() helper.
+String "f2fs_page_array_entry-%u:%u" can up to 35. The first "%u" can up
+to 4 and the second "%u" can up to 7, so total size is "24 + 4 + 7 = 35".
+slab_name's size should be 35 rather than 32.
 
-Fix the struct device_node leaks by reimplementing the lookup using
-for_each_child_of_node() and adding the missing reference count
-decrements. Fix the sibling struct device leaks by dropping the
-unnecessary lookups of devices with the wrong USID.
-
-Note that this still leaves one struct device reference leak in case a
-base device is found but it is not the parent of the device used for the
-lookup. This will be addressed in a follow-on patch.
-
-Fixes: e9c11c6e3a0e ("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
-Cc: stable@vger.kernel.org	# 6.0
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Caleb Connolly <caleb.connolly@linaro.org>
-Link: https://lore.kernel.org/r/20231003152927.15000-2-johan+linaro@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/qcom-spmi-pmic.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ fs/f2fs/compress.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/qcom-spmi-pmic.c b/drivers/mfd/qcom-spmi-pmic.c
-index 7e2cd79d17eb..47738f7e492c 100644
---- a/drivers/mfd/qcom-spmi-pmic.c
-+++ b/drivers/mfd/qcom-spmi-pmic.c
-@@ -81,7 +81,7 @@ static struct spmi_device *qcom_pmic_get_base_usid(struct device *dev)
- 	struct spmi_device *sdev;
- 	struct qcom_spmi_dev *ctx;
- 	struct device_node *spmi_bus;
--	struct device_node *other_usid = NULL;
-+	struct device_node *child;
- 	int function_parent_usid, ret;
- 	u32 pmic_addr;
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1976,7 +1976,7 @@ void f2fs_destroy_compress_inode(struct
+ int f2fs_init_page_array_cache(struct f2fs_sb_info *sbi)
+ {
+ 	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
++	char slab_name[35];
  
-@@ -105,28 +105,34 @@ static struct spmi_device *qcom_pmic_get_base_usid(struct device *dev)
- 	 * device for USID 2.
- 	 */
- 	spmi_bus = of_get_parent(sdev->dev.of_node);
--	do {
--		other_usid = of_get_next_child(spmi_bus, other_usid);
--
--		ret = of_property_read_u32_index(other_usid, "reg", 0, &pmic_addr);
--		if (ret)
--			return ERR_PTR(ret);
-+	sdev = ERR_PTR(-ENODATA);
-+	for_each_child_of_node(spmi_bus, child) {
-+		ret = of_property_read_u32_index(child, "reg", 0, &pmic_addr);
-+		if (ret) {
-+			of_node_put(child);
-+			sdev = ERR_PTR(ret);
-+			break;
-+		}
- 
--		sdev = spmi_device_from_of(other_usid);
- 		if (pmic_addr == function_parent_usid - (ctx->num_usids - 1)) {
--			if (!sdev)
-+			sdev = spmi_device_from_of(child);
-+			if (!sdev) {
- 				/*
- 				 * If the base USID for this PMIC hasn't probed yet
- 				 * but the secondary USID has, then we need to defer
- 				 * the function driver so that it will attempt to
- 				 * probe again when the base USID is ready.
- 				 */
--				return ERR_PTR(-EPROBE_DEFER);
--			return sdev;
-+				sdev = ERR_PTR(-EPROBE_DEFER);
-+			}
-+			of_node_put(child);
-+			break;
- 		}
--	} while (other_usid->sibling);
-+	}
-+
-+	of_node_put(spmi_bus);
- 
--	return ERR_PTR(-ENODATA);
-+	return sdev;
- }
- 
- static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
--- 
-2.43.0
-
+ 	if (!f2fs_sb_has_compression(sbi))
+ 		return 0;
 
 
 
