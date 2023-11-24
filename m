@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F5E77F7D08
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88AF87F7AB3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9F95B20AA1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C5512814F6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E973A8CA;
-	Fri, 24 Nov 2023 18:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A9939FDB;
+	Fri, 24 Nov 2023 17:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9Mno/QG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAQpiI+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7224F381D6;
-	Fri, 24 Nov 2023 18:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25D3C433C8;
-	Fri, 24 Nov 2023 18:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BF239FD1;
+	Fri, 24 Nov 2023 17:57:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B27AC433C8;
+	Fri, 24 Nov 2023 17:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850043;
-	bh=wPPcd8H8PcFxAabzvwSFysCMkFn9nu7rMtuQEOVXvrg=;
+	s=korg; t=1700848666;
+	bh=otOc06sVDdjMTQJ54syhL00dtOmk4iBsGRHgMeumYtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x9Mno/QGuo3rZXcuroZL1bXwV4SIHbxcWEC5H5VVMNIpl7CiIxURqECDZJRBGXlRZ
-	 bWXw2atHcHBj0qzcjT2O90et1YoqNuiI6wpgxdZMubjkdOfMaZVc0cafGHR7/Hguo7
-	 xu8rqbcNOQOPTf0lCKImANF8RarVfoEMbl2+gGF4=
+	b=xAQpiI+XM/dSOZgJmIvia3M00guCkLY2nnmEqqtrjeqzhFIAJbNT7/iu7ZIH2HKX5
+	 VedIUG7MpimJIN0PlkNjZelp14hujtnyIiVqQVT/u5gfRkMq0gaRB0jnSlaSaaj1Q7
+	 ZUQmzjXFUO+/ODTIv9fZ86T0mhN+Fs+P9hvhrFt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 422/530] smb: client: fix use-after-free in smb2_query_info_compound()
+	Qu Huang <qu.huang@linux.dev>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 15/97] drm/amdgpu: Fix a null pointer access when the smc_rreg pointer is NULL
 Date: Fri, 24 Nov 2023 17:49:48 +0000
-Message-ID: <20231124172040.910570953@linuxfoundation.org>
+Message-ID: <20231124171934.704099820@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,287 +53,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Qu Huang <qu.huang@linux.dev>
 
-commit 5c86919455c1edec99ebd3338ad213b59271a71b upstream.
+[ Upstream commit 5104fdf50d326db2c1a994f8b35dcd46e63ae4ad ]
 
-The following UAF was triggered when running fstests generic/072 with
-KASAN enabled against Windows Server 2022 and mount options
-'multichannel,max_channels=2,vers=3.1.1,mfsymlinks,noperm'
+In certain types of chips, such as VEGA20, reading the amdgpu_regs_smc file could result in an abnormal null pointer access when the smc_rreg pointer is NULL. Below are the steps to reproduce this issue and the corresponding exception log:
 
-  BUG: KASAN: slab-use-after-free in smb2_query_info_compound+0x423/0x6d0 [cifs]
-  Read of size 8 at addr ffff888014941048 by task xfs_io/27534
+1. Navigate to the directory: /sys/kernel/debug/dri/0
+2. Execute command: cat amdgpu_regs_smc
+3. Exception Log::
+[4005007.702554] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[4005007.702562] #PF: supervisor instruction fetch in kernel mode
+[4005007.702567] #PF: error_code(0x0010) - not-present page
+[4005007.702570] PGD 0 P4D 0
+[4005007.702576] Oops: 0010 [#1] SMP NOPTI
+[4005007.702581] CPU: 4 PID: 62563 Comm: cat Tainted: G           OE     5.15.0-43-generic #46-Ubunt       u
+[4005007.702590] RIP: 0010:0x0
+[4005007.702598] Code: Unable to access opcode bytes at RIP 0xffffffffffffffd6.
+[4005007.702600] RSP: 0018:ffffa82b46d27da0 EFLAGS: 00010206
+[4005007.702605] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffa82b46d27e68
+[4005007.702609] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff9940656e0000
+[4005007.702612] RBP: ffffa82b46d27dd8 R08: 0000000000000000 R09: ffff994060c07980
+[4005007.702615] R10: 0000000000020000 R11: 0000000000000000 R12: 00007f5e06753000
+[4005007.702618] R13: ffff9940656e0000 R14: ffffa82b46d27e68 R15: 00007f5e06753000
+[4005007.702622] FS:  00007f5e0755b740(0000) GS:ffff99479d300000(0000) knlGS:0000000000000000
+[4005007.702626] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[4005007.702629] CR2: ffffffffffffffd6 CR3: 00000003253fc000 CR4: 00000000003506e0
+[4005007.702633] Call Trace:
+[4005007.702636]  <TASK>
+[4005007.702640]  amdgpu_debugfs_regs_smc_read+0xb0/0x120 [amdgpu]
+[4005007.703002]  full_proxy_read+0x5c/0x80
+[4005007.703011]  vfs_read+0x9f/0x1a0
+[4005007.703019]  ksys_read+0x67/0xe0
+[4005007.703023]  __x64_sys_read+0x19/0x20
+[4005007.703028]  do_syscall_64+0x5c/0xc0
+[4005007.703034]  ? do_user_addr_fault+0x1e3/0x670
+[4005007.703040]  ? exit_to_user_mode_prepare+0x37/0xb0
+[4005007.703047]  ? irqentry_exit_to_user_mode+0x9/0x20
+[4005007.703052]  ? irqentry_exit+0x19/0x30
+[4005007.703057]  ? exc_page_fault+0x89/0x160
+[4005007.703062]  ? asm_exc_page_fault+0x8/0x30
+[4005007.703068]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[4005007.703075] RIP: 0033:0x7f5e07672992
+[4005007.703079] Code: c0 e9 b2 fe ff ff 50 48 8d 3d fa b2 0c 00 e8 c5 1d 02 00 0f 1f 44 00 00 f3 0f        1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 0f 05 <48> 3d 00 f0 ff ff 77 56 c3 0f 1f 44 00 00 48 83 e       c 28 48 89 54 24
+[4005007.703083] RSP: 002b:00007ffe03097898 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+[4005007.703088] RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007f5e07672992
+[4005007.703091] RDX: 0000000000020000 RSI: 00007f5e06753000 RDI: 0000000000000003
+[4005007.703094] RBP: 00007f5e06753000 R08: 00007f5e06752010 R09: 00007f5e06752010
+[4005007.703096] R10: 0000000000000022 R11: 0000000000000246 R12: 0000000000022000
+[4005007.703099] R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+[4005007.703105]  </TASK>
+[4005007.703107] Modules linked in: nf_tables libcrc32c nfnetlink algif_hash af_alg binfmt_misc nls_       iso8859_1 ipmi_ssif ast intel_rapl_msr intel_rapl_common drm_vram_helper drm_ttm_helper amd64_edac t       tm edac_mce_amd kvm_amd ccp mac_hid k10temp kvm acpi_ipmi ipmi_si rapl sch_fq_codel ipmi_devintf ipm       i_msghandler msr parport_pc ppdev lp parport mtd pstore_blk efi_pstore ramoops pstore_zone reed_solo       mon ip_tables x_tables autofs4 ib_uverbs ib_core amdgpu(OE) amddrm_ttm_helper(OE) amdttm(OE) iommu_v       2 amd_sched(OE) amdkcl(OE) drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops cec rc_core        drm igb ahci xhci_pci libahci i2c_piix4 i2c_algo_bit xhci_pci_renesas dca
+[4005007.703184] CR2: 0000000000000000
+[4005007.703188] ---[ end trace ac65a538d240da39 ]---
+[4005007.800865] RIP: 0010:0x0
+[4005007.800871] Code: Unable to access opcode bytes at RIP 0xffffffffffffffd6.
+[4005007.800874] RSP: 0018:ffffa82b46d27da0 EFLAGS: 00010206
+[4005007.800878] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffa82b46d27e68
+[4005007.800881] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff9940656e0000
+[4005007.800883] RBP: ffffa82b46d27dd8 R08: 0000000000000000 R09: ffff994060c07980
+[4005007.800886] R10: 0000000000020000 R11: 0000000000000000 R12: 00007f5e06753000
+[4005007.800888] R13: ffff9940656e0000 R14: ffffa82b46d27e68 R15: 00007f5e06753000
+[4005007.800891] FS:  00007f5e0755b740(0000) GS:ffff99479d300000(0000) knlGS:0000000000000000
+[4005007.800895] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[4005007.800898] CR2: ffffffffffffffd6 CR3: 00000003253fc000 CR4: 00000000003506e0
 
-  CPU: 0 PID: 27534 Comm: xfs_io Not tainted 6.6.0-rc7 #1
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  Call Trace:
-   dump_stack_lvl+0x4a/0x80
-   print_report+0xcf/0x650
-   ? srso_alias_return_thunk+0x5/0x7f
-   ? srso_alias_return_thunk+0x5/0x7f
-   ? __phys_addr+0x46/0x90
-   kasan_report+0xda/0x110
-   ? smb2_query_info_compound+0x423/0x6d0 [cifs]
-   ? smb2_query_info_compound+0x423/0x6d0 [cifs]
-   smb2_query_info_compound+0x423/0x6d0 [cifs]
-   ? __pfx_smb2_query_info_compound+0x10/0x10 [cifs]
-   ? srso_alias_return_thunk+0x5/0x7f
-   ? __stack_depot_save+0x39/0x480
-   ? kasan_save_stack+0x33/0x60
-   ? kasan_set_track+0x25/0x30
-   ? ____kasan_slab_free+0x126/0x170
-   smb2_queryfs+0xc2/0x2c0 [cifs]
-   ? __pfx_smb2_queryfs+0x10/0x10 [cifs]
-   ? __pfx___lock_acquire+0x10/0x10
-   smb311_queryfs+0x210/0x220 [cifs]
-   ? __pfx_smb311_queryfs+0x10/0x10 [cifs]
-   ? srso_alias_return_thunk+0x5/0x7f
-   ? __lock_acquire+0x480/0x26c0
-   ? lock_release+0x1ed/0x640
-   ? srso_alias_return_thunk+0x5/0x7f
-   ? do_raw_spin_unlock+0x9b/0x100
-   cifs_statfs+0x18c/0x4b0 [cifs]
-   statfs_by_dentry+0x9b/0xf0
-   fd_statfs+0x4e/0xb0
-   __do_sys_fstatfs+0x7f/0xe0
-   ? __pfx___do_sys_fstatfs+0x10/0x10
-   ? srso_alias_return_thunk+0x5/0x7f
-   ? lockdep_hardirqs_on_prepare+0x136/0x200
-   ? srso_alias_return_thunk+0x5/0x7f
-   do_syscall_64+0x3f/0x90
-   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-  Allocated by task 27534:
-   kasan_save_stack+0x33/0x60
-   kasan_set_track+0x25/0x30
-   __kasan_kmalloc+0x8f/0xa0
-   open_cached_dir+0x71b/0x1240 [cifs]
-   smb2_query_info_compound+0x5c3/0x6d0 [cifs]
-   smb2_queryfs+0xc2/0x2c0 [cifs]
-   smb311_queryfs+0x210/0x220 [cifs]
-   cifs_statfs+0x18c/0x4b0 [cifs]
-   statfs_by_dentry+0x9b/0xf0
-   fd_statfs+0x4e/0xb0
-   __do_sys_fstatfs+0x7f/0xe0
-   do_syscall_64+0x3f/0x90
-   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-  Freed by task 27534:
-   kasan_save_stack+0x33/0x60
-   kasan_set_track+0x25/0x30
-   kasan_save_free_info+0x2b/0x50
-   ____kasan_slab_free+0x126/0x170
-   slab_free_freelist_hook+0xd0/0x1e0
-   __kmem_cache_free+0x9d/0x1b0
-   open_cached_dir+0xff5/0x1240 [cifs]
-   smb2_query_info_compound+0x5c3/0x6d0 [cifs]
-   smb2_queryfs+0xc2/0x2c0 [cifs]
-
-This is a race between open_cached_dir() and cached_dir_lease_break()
-where the cache entry for the open directory handle receives a lease
-break while creating it.  And before returning from open_cached_dir(),
-we put the last reference of the new @cfid because of
-!@cfid->has_lease.
-
-Besides the UAF, while running xfstests a lot of missed lease breaks
-have been noticed in tests that run several concurrent statfs(2) calls
-on those cached fids
-
-  CIFS: VFS: \\w22-root1.gandalf.test No task to wake, unknown frame...
-  CIFS: VFS: \\w22-root1.gandalf.test Cmd: 18 Err: 0x0 Flags: 0x1...
-  CIFS: VFS: \\w22-root1.gandalf.test smb buf 00000000715bfe83 len 108
-  CIFS: VFS: Dump pending requests:
-  CIFS: VFS: \\w22-root1.gandalf.test No task to wake, unknown frame...
-  CIFS: VFS: \\w22-root1.gandalf.test Cmd: 18 Err: 0x0 Flags: 0x1...
-  CIFS: VFS: \\w22-root1.gandalf.test smb buf 000000005aa7316e len 108
-  ...
-
-To fix both, in open_cached_dir() ensure that @cfid->has_lease is set
-right before sending out compounded request so that any potential
-lease break will be get processed by demultiplex thread while we're
-still caching @cfid.  And, if open failed for some reason, re-check
-@cfid->has_lease to decide whether or not put lease reference.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Qu Huang <qu.huang@linux.dev>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cached_dir.c |   84 ++++++++++++++++++++++++++-------------------
- 1 file changed, 49 insertions(+), 35 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -32,7 +32,7 @@ static struct cached_fid *find_or_create
- 			 * fully cached or it may be in the process of
- 			 * being deleted due to a lease break.
- 			 */
--			if (!cfid->has_lease) {
-+			if (!cfid->time || !cfid->has_lease) {
- 				spin_unlock(&cfids->cfid_list_lock);
- 				return NULL;
- 			}
-@@ -193,10 +193,20 @@ int open_cached_dir(unsigned int xid, st
- 	npath = path_no_prefix(cifs_sb, path);
- 	if (IS_ERR(npath)) {
- 		rc = PTR_ERR(npath);
--		kfree(utf16_path);
--		return rc;
-+		goto out;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index ee4a0b7cb452f..41a9cc9e0f9db 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -391,6 +391,9 @@ static ssize_t amdgpu_debugfs_regs_smc_read(struct file *f, char __user *buf,
+ 	ssize_t result = 0;
+ 	int r;
  
-+	if (!npath[0]) {
-+		dentry = dget(cifs_sb->root);
-+	} else {
-+		dentry = path_to_dentry(cifs_sb, npath);
-+		if (IS_ERR(dentry)) {
-+			rc = -ENOENT;
-+			goto out;
-+		}
-+	}
-+	cfid->dentry = dentry;
++	if (!adev->smc_rreg)
++		return -EPERM;
 +
- 	/*
- 	 * We do not hold the lock for the open because in case
- 	 * SMB2_open needs to reconnect.
-@@ -249,6 +259,15 @@ int open_cached_dir(unsigned int xid, st
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
- 	smb2_set_related(&rqst[1]);
+@@ -430,6 +433,9 @@ static ssize_t amdgpu_debugfs_regs_smc_write(struct file *f, const char __user *
+ 	ssize_t result = 0;
+ 	int r;
  
-+	/*
-+	 * Set @cfid->has_lease to true before sending out compounded request so
-+	 * its lease reference can be put in cached_dir_lease_break() due to a
-+	 * potential lease break right after the request is sent or while @cfid
-+	 * is still being cached.  Concurrent processes won't be to use it yet
-+	 * due to @cfid->time being zero.
-+	 */
-+	cfid->has_lease = true;
++	if (!adev->smc_wreg)
++		return -EPERM;
 +
- 	rc = compound_send_recv(xid, ses, server,
- 				flags, 2, rqst,
- 				resp_buftype, rsp_iov);
-@@ -263,6 +282,8 @@ int open_cached_dir(unsigned int xid, st
- 	cfid->tcon = tcon;
- 	cfid->is_open = true;
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
-+	spin_lock(&cfids->cfid_list_lock);
-+
- 	o_rsp = (struct smb2_create_rsp *)rsp_iov[0].iov_base;
- 	oparms.fid->persistent_fid = o_rsp->PersistentFileId;
- 	oparms.fid->volatile_fid = o_rsp->VolatileFileId;
-@@ -270,18 +291,25 @@ int open_cached_dir(unsigned int xid, st
- 	oparms.fid->mid = le64_to_cpu(o_rsp->hdr.MessageId);
- #endif /* CIFS_DEBUG2 */
- 
--	if (o_rsp->OplockLevel != SMB2_OPLOCK_LEVEL_LEASE)
-+	rc = -EINVAL;
-+	if (o_rsp->OplockLevel != SMB2_OPLOCK_LEVEL_LEASE) {
-+		spin_unlock(&cfids->cfid_list_lock);
- 		goto oshr_free;
-+	}
- 
- 	smb2_parse_contexts(server, o_rsp,
- 			    &oparms.fid->epoch,
- 			    oparms.fid->lease_key, &oplock,
- 			    NULL, NULL);
--	if (!(oplock & SMB2_LEASE_READ_CACHING_HE))
-+	if (!(oplock & SMB2_LEASE_READ_CACHING_HE)) {
-+		spin_unlock(&cfids->cfid_list_lock);
- 		goto oshr_free;
-+	}
- 	qi_rsp = (struct smb2_query_info_rsp *)rsp_iov[1].iov_base;
--	if (le32_to_cpu(qi_rsp->OutputBufferLength) < sizeof(struct smb2_file_all_info))
-+	if (le32_to_cpu(qi_rsp->OutputBufferLength) < sizeof(struct smb2_file_all_info)) {
-+		spin_unlock(&cfids->cfid_list_lock);
- 		goto oshr_free;
-+	}
- 	if (!smb2_validate_and_copy_iov(
- 				le16_to_cpu(qi_rsp->OutputBufferOffset),
- 				sizeof(struct smb2_file_all_info),
-@@ -289,37 +317,24 @@ int open_cached_dir(unsigned int xid, st
- 				(char *)&cfid->file_all_info))
- 		cfid->file_all_info_is_valid = true;
- 
--	if (!npath[0])
--		dentry = dget(cifs_sb->root);
--	else {
--		dentry = path_to_dentry(cifs_sb, npath);
--		if (IS_ERR(dentry)) {
--			rc = -ENOENT;
--			goto oshr_free;
--		}
--	}
--	spin_lock(&cfids->cfid_list_lock);
--	cfid->dentry = dentry;
- 	cfid->time = jiffies;
--	cfid->has_lease = true;
- 	spin_unlock(&cfids->cfid_list_lock);
-+	/* At this point the directory handle is fully cached */
-+	rc = 0;
- 
- oshr_free:
--	kfree(utf16_path);
- 	SMB2_open_free(&rqst[0]);
- 	SMB2_query_info_free(&rqst[1]);
- 	free_rsp_buf(resp_buftype[0], rsp_iov[0].iov_base);
- 	free_rsp_buf(resp_buftype[1], rsp_iov[1].iov_base);
--	spin_lock(&cfids->cfid_list_lock);
--	if (!cfid->has_lease) {
--		if (rc) {
--			if (cfid->on_list) {
--				list_del(&cfid->entry);
--				cfid->on_list = false;
--				cfids->num_entries--;
--			}
--			rc = -ENOENT;
--		} else {
-+	if (rc) {
-+		spin_lock(&cfids->cfid_list_lock);
-+		if (cfid->on_list) {
-+			list_del(&cfid->entry);
-+			cfid->on_list = false;
-+			cfids->num_entries--;
-+		}
-+		if (cfid->has_lease) {
- 			/*
- 			 * We are guaranteed to have two references at this
- 			 * point. One for the caller and one for a potential
-@@ -327,25 +342,24 @@ oshr_free:
- 			 * will be closed when the caller closes the cached
- 			 * handle.
- 			 */
-+			cfid->has_lease = false;
- 			spin_unlock(&cfids->cfid_list_lock);
- 			kref_put(&cfid->refcount, smb2_close_cached_fid);
- 			goto out;
- 		}
-+		spin_unlock(&cfids->cfid_list_lock);
- 	}
--	spin_unlock(&cfids->cfid_list_lock);
-+out:
- 	if (rc) {
- 		if (cfid->is_open)
- 			SMB2_close(0, cfid->tcon, cfid->fid.persistent_fid,
- 				   cfid->fid.volatile_fid);
- 		free_cached_dir(cfid);
--		cfid = NULL;
--	}
--out:
--	if (rc == 0) {
-+	} else {
- 		*ret_cfid = cfid;
- 		atomic_inc(&tcon->num_remote_opens);
- 	}
--
-+	kfree(utf16_path);
- 	return rc;
- }
- 
+-- 
+2.42.0
+
 
 
 
