@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9D07F7502
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:28:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC857F7503
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AAE8281A03
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:28:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE66C1C20F51
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF8128DD3;
-	Fri, 24 Nov 2023 13:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06C4A28DC1;
+	Fri, 24 Nov 2023 13:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUo3CSYS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwJr/K3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538A228DC9
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:28:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E579C433C7;
-	Fri, 24 Nov 2023 13:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13CD18041
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:28:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F11C43391;
+	Fri, 24 Nov 2023 13:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700832512;
-	bh=9RHRTwTNMIiBNbH9IlPiPb3T3pThOPjfUNFaU8tMF14=;
+	s=korg; t=1700832515;
+	bh=Q2SVMrrIzwNi7vLtHCGX33SBjjt69y7E/H+FA03PPhc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VUo3CSYSawb/XBVdRifl/hN2XQApzo28oB3pgT+r9I9o/Q9ce6WJObISc2GPcpFQs
-	 SIffkY9xNbUe8h3HdaS06W/O3z+f+ZLS1noQPgsbUWxZ1GFJy1gOrwdF1HE6WiuNgV
-	 g5ZU/U8Esu290A813GKVn0JT/Do5qwc4H+nhDQdQ=
-Subject: FAILED: patch "[PATCH] r8169: fix network lost after resume on DASH systems" failed to apply to 5.4-stable tree
+	b=YwJr/K3BSOgBpaW8g7tpxMF7Sc7aXXw8ZDaAFV8QvmYAgoJTpUYRboNiTcdEIOQ28
+	 YD+Bs/SLxzAr6b9qbR0N2uI+B/eR1MTgGmSzJwKqgx1LyDwyCHdgx1jrLPc4UJWkXb
+	 bpVy9lJ5B0eUL2+HuTEtArnmWB/qjjnWeKV6SIKI=
+Subject: FAILED: patch "[PATCH] r8169: fix network lost after resume on DASH systems" failed to apply to 4.19-stable tree
 To: hau@realtek.com,hkallweit1@gmail.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:28:28 +0000
-Message-ID: <2023112428-seclusion-running-5a62@gregkh>
+Date: Fri, 24 Nov 2023 13:28:29 +0000
+Message-ID: <2023112429-echo-designer-9fef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 868c3b95afef4883bfb66c9397482da6840b5baf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112428-seclusion-running-5a62@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112429-echo-designer-9fef@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
