@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A477F7B99
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220E67F7D9A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C27AF1C20FC2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:06:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D14F7281F3E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0622239FFD;
-	Fri, 24 Nov 2023 18:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA37C39FE8;
+	Fri, 24 Nov 2023 18:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNjC0P9q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QZLIwC9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD19239FE1;
-	Fri, 24 Nov 2023 18:06:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE33C433C8;
-	Fri, 24 Nov 2023 18:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFC539FE3;
+	Fri, 24 Nov 2023 18:26:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC6FC433C8;
+	Fri, 24 Nov 2023 18:26:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849203;
-	bh=e/SLnwcC+6UauxWdzgGDwzU/HughROqvhhVEAJqUiF8=;
+	s=korg; t=1700850361;
+	bh=+Seo1Js187BOmrKtIWHf/THbLt0OA++sEHVF75xxqLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNjC0P9q2fgUwAXB7ZWTrxe7nhQSETtKDsVCBCetYodxg/iZoQpBfXif/tpjz3uAD
-	 vuNduEAqUjvX5DZRgz6I5QMf4NuHfMvnZFpR+jy5DenkDv7yNo/sTqlh+EDGAmtyZW
-	 R+gobbDU6dwG54Ftk/I3MtEBHxDXH4aV2F1ixtAs=
+	b=1QZLIwC9QsZNrrNx/ML5sbn2Xz+JKJjN0V6Kz84b2bqpB4XNiNKo1riQ22db5cDtw
+	 lu7w2DscKZMCAvhQsXQN7EoPMgFUVYaFaV+RF7FJJe37uUpubwRbB35KpR/HWyv+J5
+	 yfodMJc/5pUaiwIKqaRM9+HdoZLybyUGTRd18vLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rander Wang <rander.wang@intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/530] ASoC: SOF: ipc4: handle EXCEPTION_CAUGHT notification from firmware
+Subject: [PATCH 6.5 019/491] wifi: mac80211: dont return unset power in ieee80211_get_tx_power()
 Date: Fri, 24 Nov 2023 17:44:15 +0000
-Message-ID: <20231124172030.794731229@linuxfoundation.org>
+Message-ID: <20231124172025.269321932@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,47 +52,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rander Wang <rander.wang@intel.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit c1c48fd6bbe788458e3685fea74bdb3cb148ff93 ]
+[ Upstream commit e160ab85166e77347d0cbe5149045cb25e83937f ]
 
-Driver will receive exception IPC message and process it by
-snd_sof_dsp_panic.
+We can get a UBSAN warning if ieee80211_get_tx_power() returns the
+INT_MIN value mac80211 internally uses for "unset power level".
 
-Signed-off-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20230919092416.4137-10-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+ UBSAN: signed-integer-overflow in net/wireless/nl80211.c:3816:5
+ -2147483648 * 100 cannot be represented in type 'int'
+ CPU: 0 PID: 20433 Comm: insmod Tainted: G        WC OE
+ Call Trace:
+  dump_stack+0x74/0x92
+  ubsan_epilogue+0x9/0x50
+  handle_overflow+0x8d/0xd0
+  __ubsan_handle_mul_overflow+0xe/0x10
+  nl80211_send_iface+0x688/0x6b0 [cfg80211]
+  [...]
+  cfg80211_register_wdev+0x78/0xb0 [cfg80211]
+  cfg80211_netdev_notifier_call+0x200/0x620 [cfg80211]
+  [...]
+  ieee80211_if_add+0x60e/0x8f0 [mac80211]
+  ieee80211_register_hw+0xda5/0x1170 [mac80211]
+
+In this case, simply return an error instead, to indicate
+that no data is available.
+
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://lore.kernel.org/r/20230203023636.4418-1-pkshih@realtek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/cfg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/sof/ipc4.c b/sound/soc/sof/ipc4.c
-index ab6eddd91bb77..1b09496733fb8 100644
---- a/sound/soc/sof/ipc4.c
-+++ b/sound/soc/sof/ipc4.c
-@@ -614,6 +614,9 @@ static void sof_ipc4_rx_msg(struct snd_sof_dev *sdev)
- 	case SOF_IPC4_NOTIFY_LOG_BUFFER_STATUS:
- 		sof_ipc4_mtrace_update_pos(sdev, SOF_IPC4_LOG_CORE_GET(ipc4_msg->primary));
- 		break;
-+	case SOF_IPC4_NOTIFY_EXCEPTION_CAUGHT:
-+		snd_sof_dsp_panic(sdev, 0, true);
-+		break;
- 	default:
- 		dev_dbg(sdev->dev, "Unhandled DSP message: %#x|%#x\n",
- 			ipc4_msg->primary, ipc4_msg->extension);
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 0e3a1753a51c6..715da615f0359 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -3121,6 +3121,10 @@ static int ieee80211_get_tx_power(struct wiphy *wiphy,
+ 	else
+ 		*dbm = sdata->vif.bss_conf.txpower;
+ 
++	/* INT_MIN indicates no power level was set yet */
++	if (*dbm == INT_MIN)
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
 -- 
 2.42.0
 
