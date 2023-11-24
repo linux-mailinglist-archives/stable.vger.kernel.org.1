@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA1A7F7A9C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A85B47F7F3C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79031281441
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:56:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62E552824F3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD0D39FD4;
-	Fri, 24 Nov 2023 17:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A62B8364DE;
+	Fri, 24 Nov 2023 18:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZmZwQU99"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJAmfsJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C50631740;
-	Fri, 24 Nov 2023 17:56:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBC4C433C8;
-	Fri, 24 Nov 2023 17:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D8C364C1;
+	Fri, 24 Nov 2023 18:39:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65E9C433C7;
+	Fri, 24 Nov 2023 18:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848608;
-	bh=763IktGWmzyYvFvAkdhC2yd5s9cGHTE8/an0oag8liI=;
+	s=korg; t=1700851189;
+	bh=+O+NJSUEQSlxYA+8kuw1bHI4aXVB5iMajWKCOtl+6C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZmZwQU99f9AURXuJU0KFdFEgXmIBAtqh6RNexJA9uU644oiadtUDL3B6X1SC0ONK6
-	 8t8WpncwSzT8Vv45Tsy++dmJVcDg18BIauFRBo+Kb8VKeJY5tRx5QQlzBXh2x7bOZu
-	 6H1FnixX7e6XS1Q2xuKmnUxHOKQgm/4iqdAjHIM8=
+	b=lJAmfsJxQzbuRNYMJvMCi7m2U3kFVCz5Ocjzzq3AyeuwA/WMzomnHRX3gUb1Ge/ZW
+	 +AgnWaDv0SJbumMZllYM6OAdTA8Y1XYpqib1IxcqNfNehaPCB6Q4ZbrTm1d0L7/0NQ
+	 Th0zdMtVqvZdJVQvSJqr66X8QDzBHWfKBNvbuwDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhengHan Wang <wzhmmmmm@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 11/97] Bluetooth: Fix double free in hci_conn_cleanup
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.5 348/491] s390/cmma: fix initial kernel address space page table walk
 Date: Fri, 24 Nov 2023 17:49:44 +0000
-Message-ID: <20231124171934.566368336@linuxfoundation.org>
+Message-ID: <20231124172035.019033637@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,144 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengHan Wang <wzhmmmmm@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit a85fb91e3d728bdfc80833167e8162cce8bc7004 ]
+commit 16ba44826a04834d3eeeda4b731c2ea3481062b7 upstream.
 
-syzbot reports a slab use-after-free in hci_conn_hash_flush [1].
-After releasing an object using hci_conn_del_sysfs in the
-hci_conn_cleanup function, releasing the same object again
-using the hci_dev_put and hci_conn_put functions causes a double free.
-Here's a simplified flow:
+If the cmma no-dat feature is available the kernel page tables are walked
+to identify and mark all pages which are used for address translation (all
+region, segment, and page tables). In a subsequent loop all other pages are
+marked as "no-dat" pages with the ESSA instruction.
 
-hci_conn_del_sysfs:
-  hci_dev_put
-    put_device
-      kobject_put
-        kref_put
-          kobject_release
-            kobject_cleanup
-              kfree_const
-                kfree(name)
+This information is visible to the hypervisor, so that the hypervisor can
+optimize purging of guest TLB entries. The initial loop however does not
+cover the complete kernel address space. This can result in pages being
+marked as not being used for dynamic address translation, even though they
+are. In turn guest TLB entries incorrectly may not be purged.
 
-hci_dev_put:
-  ...
-    kfree(name)
+Fix this by adjusting the end address of the kernel address range being
+walked.
 
-hci_conn_put:
-  put_device
-    ...
-      kfree(name)
-
-This patch drop the hci_dev_put and hci_conn_put function
-call in hci_conn_cleanup function, because the object is
-freed in hci_conn_del_sysfs function.
-
-This patch also fixes the refcounting in hci_conn_add_sysfs() and
-hci_conn_del_sysfs() to take into account device_add() failures.
-
-This fixes CVE-2023-28464.
-
-Link: https://syzkaller.appspot.com/bug?id=1bb51491ca5df96a5f724899d1dbb87afda61419 [1]
-
-Signed-off-by: ZhengHan Wang <wzhmmmmm@gmail.com>
-Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c  |  6 ++----
- net/bluetooth/hci_sysfs.c | 23 ++++++++++++-----------
- 2 files changed, 14 insertions(+), 15 deletions(-)
+ arch/s390/mm/page-states.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index b876e97b61c92..0e837feaa527e 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -125,13 +125,11 @@ static void hci_conn_cleanup(struct hci_conn *conn)
- 	if (hdev->notify)
- 		hdev->notify(hdev, HCI_NOTIFY_CONN_DEL);
+--- a/arch/s390/mm/page-states.c
++++ b/arch/s390/mm/page-states.c
+@@ -151,15 +151,22 @@ static void mark_kernel_p4d(pgd_t *pgd,
  
--	hci_conn_del_sysfs(conn);
--
- 	debugfs_remove_recursive(conn->debugfs);
+ static void mark_kernel_pgd(void)
+ {
+-	unsigned long addr, next;
++	unsigned long addr, next, max_addr;
+ 	struct page *page;
+ 	pgd_t *pgd;
+ 	int i;
  
--	hci_dev_put(hdev);
-+	hci_conn_del_sysfs(conn);
- 
--	hci_conn_put(conn);
-+	hci_dev_put(hdev);
+ 	addr = 0;
++	/*
++	 * Figure out maximum virtual address accessible with the
++	 * kernel ASCE. This is required to keep the page table walker
++	 * from accessing non-existent entries.
++	 */
++	max_addr = (S390_lowcore.kernel_asce.val & _ASCE_TYPE_MASK) >> 2;
++	max_addr = 1UL << (max_addr * 11 + 31);
+ 	pgd = pgd_offset_k(addr);
+ 	do {
+-		next = pgd_addr_end(addr, MODULES_END);
++		next = pgd_addr_end(addr, max_addr);
+ 		if (pgd_none(*pgd))
+ 			continue;
+ 		if (!pgd_folded(*pgd)) {
+@@ -168,7 +175,7 @@ static void mark_kernel_pgd(void)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+ 		mark_kernel_p4d(pgd, addr, next);
+-	} while (pgd++, addr = next, addr != MODULES_END);
++	} while (pgd++, addr = next, addr != max_addr);
  }
  
- static void le_scan_cleanup(struct work_struct *work)
-diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
-index ccd2c377bf83c..266112c960ee8 100644
---- a/net/bluetooth/hci_sysfs.c
-+++ b/net/bluetooth/hci_sysfs.c
-@@ -33,7 +33,7 @@ void hci_conn_init_sysfs(struct hci_conn *conn)
- {
- 	struct hci_dev *hdev = conn->hdev;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hdev, "conn %p", conn);
- 
- 	conn->dev.type = &bt_link;
- 	conn->dev.class = bt_class;
-@@ -46,27 +46,30 @@ void hci_conn_add_sysfs(struct hci_conn *conn)
- {
- 	struct hci_dev *hdev = conn->hdev;
- 
--	BT_DBG("conn %p", conn);
-+	bt_dev_dbg(hdev, "conn %p", conn);
- 
- 	if (device_is_registered(&conn->dev))
- 		return;
- 
- 	dev_set_name(&conn->dev, "%s:%d", hdev->name, conn->handle);
- 
--	if (device_add(&conn->dev) < 0) {
-+	if (device_add(&conn->dev) < 0)
- 		bt_dev_err(hdev, "failed to register connection device");
--		return;
--	}
--
--	hci_dev_hold(hdev);
- }
- 
- void hci_conn_del_sysfs(struct hci_conn *conn)
- {
- 	struct hci_dev *hdev = conn->hdev;
- 
--	if (!device_is_registered(&conn->dev))
-+	bt_dev_dbg(hdev, "conn %p", conn);
-+
-+	if (!device_is_registered(&conn->dev)) {
-+		/* If device_add() has *not* succeeded, use *only* put_device()
-+		 * to drop the reference count.
-+		 */
-+		put_device(&conn->dev);
- 		return;
-+	}
- 
- 	while (1) {
- 		struct device *dev;
-@@ -78,9 +81,7 @@ void hci_conn_del_sysfs(struct hci_conn *conn)
- 		put_device(dev);
- 	}
- 
--	device_del(&conn->dev);
--
--	hci_dev_put(hdev);
-+	device_unregister(&conn->dev);
- }
- 
- static void bt_host_release(struct device *dev)
--- 
-2.42.0
-
+ void __init cmma_init_nodat(void)
 
 
 
