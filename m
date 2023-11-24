@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554A27F7C64
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AE0B7F7E8E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B91D7B2112C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1FD1C21364
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2283A3A8C5;
-	Fri, 24 Nov 2023 18:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 763E422F1D;
+	Fri, 24 Nov 2023 18:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asOypGvn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/JyI4e0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D173B39FDD;
-	Fri, 24 Nov 2023 18:14:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF07C433C7;
-	Fri, 24 Nov 2023 18:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3771033CDB;
+	Fri, 24 Nov 2023 18:34:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BF1C433C7;
+	Fri, 24 Nov 2023 18:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849688;
-	bh=yF5Pz9DL2mkEj+jnIpDc9XvGQCUGeiN8rRsMkc7Dk9g=;
+	s=korg; t=1700850845;
+	bh=SEU4uk1uw8M8hC0tYhAt5qrql/i4o2+JHop+o8QAArI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asOypGvnFceeOLy0jJBWXzLhiHp/UyVW3gd3UJxLzxvY72WvTa+8nE4JX46Mf8Q28
-	 /XVJU7sndlF4qmGtTMkNpJ1FGoBflm3B3HxoVGrOXra457hkx9FTTkiVP2vxqexxFN
-	 wxjoUQregn66if4qCPMzY71V/5fqYMX3FmnwyGQE=
+	b=r/JyI4e0+2i/RDRBORqYqLC1tOOhZU+3ZZoz2ahixqkKDOhJDfESyhj1KP/WgYG+G
+	 DCdJUko7apAoQezrcFmsV1lYJAOpXJShp1Zkdu4PjIysOfP8oGVIknKTpA8aorcBZo
+	 2xEcNuyxwQngGXR8nYb8JQ2LOklXURk4xvr86z8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Jakub Acs <acsjakub@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 281/530] mm/damon: implement a function for max nr_accesses safe calculation
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 211/491] net/mlx5e: Update doorbell for port timestamping CQ before the software counter
 Date: Fri, 24 Nov 2023 17:47:27 +0000
-Message-ID: <20231124172036.597105934@linuxfoundation.org>
+Message-ID: <20231124172030.865692678@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,77 +54,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit 35f5d94187a6a3a8df2cba54beccca1c2379edb8 upstream.
+[ Upstream commit 92214be5979c0961a471b7eaaaeacab41bdf456c ]
 
-Patch series "avoid divide-by-zero due to max_nr_accesses overflow".
+Previously, mlx5e_ptp_poll_ts_cq would update the device doorbell with the
+incremented consumer index after the relevant software counters in the
+kernel were updated. In the mlx5e_sq_xmit_wqe context, this would lead to
+either overrunning the device CQ or exceeding the expected software buffer
+size in the device CQ if the device CQ size was greater than the software
+buffer size. Update the relevant software counter only after updating the
+device CQ consumer index in the port timestamping napi_poll context.
 
-The maximum nr_accesses of given DAMON context can be calculated by
-dividing the aggregation interval by the sampling interval.  Some logics
-in DAMON uses the maximum nr_accesses as a divisor.  Hence, the value
-shouldn't be zero.  Such case is avoided since DAMON avoids setting the
-agregation interval as samller than the sampling interval.  However, since
-nr_accesses is unsigned int while the intervals are unsigned long, the
-maximum nr_accesses could be zero while casting.
+Log:
+    mlx5_core 0000:08:00.0: cq_err_event_notifier:517:(pid 0): CQ error on CQN 0x487, syndrome 0x1
+    mlx5_core 0000:08:00.0 eth2: mlx5e_cq_error_event: cqn=0x000487 event=0x04
 
-Avoid the divide-by-zero by implementing a function that handles the
-corner case (first patch), and replaces the vulnerable direct max
-nr_accesses calculations (remaining patches).
-
-Note that the patches for the replacements are divided for broken commits,
-to make backporting on required tres easier.  Especially, the last patch
-is for a patch that not yet merged into the mainline but in mm tree.
-
-
-This patch (of 4):
-
-The maximum nr_accesses of given DAMON context can be calculated by
-dividing the aggregation interval by the sampling interval.  Some logics
-in DAMON uses the maximum nr_accesses as a divisor.  Hence, the value
-shouldn't be zero.  Such case is avoided since DAMON avoids setting the
-agregation interval as samller than the sampling interval.  However, since
-nr_accesses is unsigned int while the intervals are unsigned long, the
-maximum nr_accesses could be zero while casting.  Implement a function
-that handles the corner case.
-
-Note that this commit is not fixing the real issue since this is only
-introducing the safe function that will replaces the problematic
-divisions.  The replacements will be made by followup commits, to make
-backporting on stable series easier.
-
-Link: https://lkml.kernel.org/r/20231019194924.100347-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20231019194924.100347-2-sj@kernel.org
-Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reported-by: Jakub Acs <acsjakub@amazon.de>
-Cc: <stable@vger.kernel.org>	[5.16+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1880bc4e4a96 ("net/mlx5e: Add TX port timestamp support")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-12-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/damon.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en/ptp.c  | 20 +++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -642,6 +642,13 @@ static inline bool damon_target_has_pid(
- 	return ctx->ops.id == DAMON_OPS_VADDR || ctx->ops.id == DAMON_OPS_FVADDR;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+index bb11e644d24f7..af3928eddafd1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+@@ -177,6 +177,8 @@ static void mlx5e_ptpsq_mark_ts_cqes_undelivered(struct mlx5e_ptpsq *ptpsq,
+ 
+ static void mlx5e_ptp_handle_ts_cqe(struct mlx5e_ptpsq *ptpsq,
+ 				    struct mlx5_cqe64 *cqe,
++				    u8 *md_buff,
++				    u8 *md_buff_sz,
+ 				    int budget)
+ {
+ 	struct mlx5e_ptp_port_ts_cqe_list *pending_cqe_list = ptpsq->ts_cqe_pending_list;
+@@ -211,19 +213,24 @@ static void mlx5e_ptp_handle_ts_cqe(struct mlx5e_ptpsq *ptpsq,
+ 	mlx5e_ptpsq_mark_ts_cqes_undelivered(ptpsq, hwtstamp);
+ out:
+ 	napi_consume_skb(skb, budget);
+-	mlx5e_ptp_metadata_fifo_push(&ptpsq->metadata_freelist, metadata_id);
++	md_buff[*md_buff_sz++] = metadata_id;
+ 	if (unlikely(mlx5e_ptp_metadata_map_unhealthy(&ptpsq->metadata_map)) &&
+ 	    !test_and_set_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state))
+ 		queue_work(ptpsq->txqsq.priv->wq, &ptpsq->report_unhealthy_work);
  }
  
-+static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
-+{
-+	/* {aggr,sample}_interval are unsigned long, hence could overflow */
-+	return min(attrs->aggr_interval / attrs->sample_interval,
-+			(unsigned long)UINT_MAX);
-+}
-+
+-static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
++static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int napi_budget)
+ {
+ 	struct mlx5e_ptpsq *ptpsq = container_of(cq, struct mlx5e_ptpsq, ts_cq);
+-	struct mlx5_cqwq *cqwq = &cq->wq;
++	int budget = min(napi_budget, MLX5E_TX_CQ_POLL_BUDGET);
++	u8 metadata_buff[MLX5E_TX_CQ_POLL_BUDGET];
++	u8 metadata_buff_sz = 0;
++	struct mlx5_cqwq *cqwq;
+ 	struct mlx5_cqe64 *cqe;
+ 	int work_done = 0;
  
- int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
- int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
++	cqwq = &cq->wq;
++
+ 	if (unlikely(!test_bit(MLX5E_SQ_STATE_ENABLED, &ptpsq->txqsq.state)))
+ 		return false;
+ 
+@@ -234,7 +241,8 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
+ 	do {
+ 		mlx5_cqwq_pop(cqwq);
+ 
+-		mlx5e_ptp_handle_ts_cqe(ptpsq, cqe, budget);
++		mlx5e_ptp_handle_ts_cqe(ptpsq, cqe,
++					metadata_buff, &metadata_buff_sz, napi_budget);
+ 	} while ((++work_done < budget) && (cqe = mlx5_cqwq_get_cqe(cqwq)));
+ 
+ 	mlx5_cqwq_update_db_record(cqwq);
+@@ -242,6 +250,10 @@ static bool mlx5e_ptp_poll_ts_cq(struct mlx5e_cq *cq, int budget)
+ 	/* ensure cq space is freed before enabling more cqes */
+ 	wmb();
+ 
++	while (metadata_buff_sz > 0)
++		mlx5e_ptp_metadata_fifo_push(&ptpsq->metadata_freelist,
++					     metadata_buff[--metadata_buff_sz]);
++
+ 	mlx5e_txqsq_wake(&ptpsq->txqsq);
+ 
+ 	return work_done == budget;
+-- 
+2.42.0
+
 
 
 
