@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4437F7F1E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6E47F7CE7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7F57B21857
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CC6A1C2119B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCBF2E858;
-	Fri, 24 Nov 2023 18:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE723A8C6;
+	Fri, 24 Nov 2023 18:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fnL0PGJD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4dZ0WO6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA743306F;
-	Fri, 24 Nov 2023 18:38:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DC4C433C8;
-	Fri, 24 Nov 2023 18:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE0939FE9;
+	Fri, 24 Nov 2023 18:19:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB8F4C433C8;
+	Fri, 24 Nov 2023 18:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851123;
-	bh=XPC56owJdnUFFaxk0EgqWF19/Tv09JkzLKwL2nZTtjw=;
+	s=korg; t=1700849965;
+	bh=QBvHkdQ2Li6B6xhFnZOssKRL5XQbMQHTa3ysTDrYc0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fnL0PGJD9MLwIhfo6M7ZRNIQzbaFyRLm8QPpApDS1uO9VevGOMVHQ24eEgNdri01y
-	 QewOfYkZXZoGYvC1E6Do74/k30AA60ztMnnzj4IRmJXE++IvLceUfRuOZ5yxUs3O0c
-	 2GuTNfwefNPBy8vZmx+IGu1Py4j5TBZrGPkO1dA0=
+	b=F4dZ0WO6r1x4pcDCVnStfAVig8bqKLdWMJdqo2HqHO01Ad0z+inZrSII2Uh9eJ22G
+	 wbD+LZJReWC5AZ+4LLrSpjA2DYR+fuRnVONR2IojZ/Xc/oXRwJ1FNi1Q+qLTyMm/ZA
+	 C2nQ+rFQHWQrgeNIwI189vAxNbY76hx5HqSuuVbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.5 322/491] leds: trigger: netdev: Move size check in set_device_name
+	Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.6 392/530] i3c: master: svc: fix random hot join failure since timeout error
 Date: Fri, 24 Nov 2023 17:49:18 +0000
-Message-ID: <20231124172034.241183981@linuxfoundation.org>
+Message-ID: <20231124172039.955064919@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +51,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 259e33cbb1712a7dd844fc9757661cc47cb0e39b upstream.
+commit 9aaeef113c55248ecf3ab941c2e4460aaa8b8b9a upstream.
 
-GCC 13.2 complains about array subscript 17 is above array bounds of
-'char[16]' with IFNAMSIZ set to 16.
+master side report:
+  silvaco-i3c-master 44330000.i3c-master: Error condition: MSTATUS 0x020090c7, MERRWARN 0x00100000
 
-The warning is correct but this scenario is impossible.
-set_device_name is called by device_name_store (store sysfs entry) and
-netdev_trig_activate.
+BIT 20: TIMEOUT error
+  The module has stalled too long in a frame. This happens when:
+  - The TX FIFO or RX FIFO is not handled and the bus is stuck in the
+middle of a message,
+  - No STOP was issued and between messages,
+  - IBI manual is used and no decision was made.
+  The maximum stall period is 100 μs.
 
-device_name_store already check if size is >= of IFNAMSIZ and return
--EINVAL. (making the warning scenario impossible)
+This can be considered as being just a warning as the system IRQ latency
+can easily be greater than 100us.
 
-netdev_trig_activate works on already defined interface, where the name
-has already been checked and should already follow the condition of
-strlen() < IFNAMSIZ.
-
-Aside from the scenario being impossible, set_device_name can be
-improved to both mute the warning and make the function safer.
-To make it safer, move size check from device_name_store directly to
-set_device_name and prevent any out of bounds scenario.
-
-Cc: stable@vger.kernel.org
-Fixes: 28a6a2ef18ad ("leds: trigger: netdev: refactor code setting device name")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309192035.GTJEEbem-lkp@intel.com/
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Link: https://lore.kernel.org/r/20231007131042.15032-1-ansuelsmth@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20231023161658.3890811-7-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/trigger/ledtrig-netdev.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
-index 58f3352539e8..e358e77e4b38 100644
---- a/drivers/leds/trigger/ledtrig-netdev.c
-+++ b/drivers/leds/trigger/ledtrig-netdev.c
-@@ -221,6 +221,9 @@ static ssize_t device_name_show(struct device *dev,
- static int set_device_name(struct led_netdev_data *trigger_data,
- 			   const char *name, size_t size)
- {
-+	if (size >= IFNAMSIZ)
-+		return -EINVAL;
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -93,6 +93,7 @@
+ #define SVC_I3C_MINTMASKED   0x098
+ #define SVC_I3C_MERRWARN     0x09C
+ #define   SVC_I3C_MERRWARN_NACK BIT(2)
++#define   SVC_I3C_MERRWARN_TIMEOUT BIT(20)
+ #define SVC_I3C_MDMACTRL     0x0A0
+ #define SVC_I3C_MDATACTRL    0x0AC
+ #define   SVC_I3C_MDATACTRL_FLUSHTB BIT(0)
+@@ -227,6 +228,14 @@ static bool svc_i3c_master_error(struct
+ 	if (SVC_I3C_MSTATUS_ERRWARN(mstatus)) {
+ 		merrwarn = readl(master->regs + SVC_I3C_MERRWARN);
+ 		writel(merrwarn, master->regs + SVC_I3C_MERRWARN);
 +
- 	cancel_delayed_work_sync(&trigger_data->work);
- 
- 	mutex_lock(&trigger_data->lock);
-@@ -263,9 +266,6 @@ static ssize_t device_name_store(struct device *dev,
- 	struct led_netdev_data *trigger_data = led_trigger_get_drvdata(dev);
- 	int ret;
- 
--	if (size >= IFNAMSIZ)
--		return -EINVAL;
--
- 	ret = set_device_name(trigger_data, buf, size);
- 
- 	if (ret < 0)
--- 
-2.43.0
-
++		/* Ignore timeout error */
++		if (merrwarn & SVC_I3C_MERRWARN_TIMEOUT) {
++			dev_dbg(master->dev, "Warning condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
++				mstatus, merrwarn);
++			return false;
++		}
++
+ 		dev_err(master->dev,
+ 			"Error condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
+ 			mstatus, merrwarn);
 
 
 
