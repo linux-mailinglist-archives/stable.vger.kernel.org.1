@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1413C7F7BB5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DA1E7F7DC1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4325E1C21006
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B50151F20FA2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDEA39FED;
-	Fri, 24 Nov 2023 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4D939FF3;
+	Fri, 24 Nov 2023 18:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fj/Z4KtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgWp0Z0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0369031740;
-	Fri, 24 Nov 2023 18:07:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F254C433C7;
-	Fri, 24 Nov 2023 18:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7816B3A8C6;
+	Fri, 24 Nov 2023 18:27:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18D9C433C8;
+	Fri, 24 Nov 2023 18:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849271;
-	bh=3EM9jCme6VSUvIGOs0zzth3PqqEu+JH16zMBLva9DU0=;
+	s=korg; t=1700850432;
+	bh=riwoy8qtAKC+6eJExORspbQolLoqv+mq9DU8To3FYJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fj/Z4KtHHcZ1zES+JcT9YbMxC9tYFZlKkc7bFJdeCoeDRLV9yMtJRoRJy97gHx3O6
-	 LbjMofdxG/gtgoeccirbiIr+FDJqT3k/xekvOGgIKT0xkDVlmkehHX3f/PqXExPq5j
-	 UsKuCi8/9Sn8i9ffkj9IqwdcunAoJ5+40f8j40aQ=
+	b=CgWp0Z0dfjNFBmu/pqupoh3XmdRDiLHuGWiXLtriD34gxr0AhjPJHCPWnPGmniKCK
+	 K/MRj7pJqH2+U3YVXzI4O1KpdpX1TnJ6/NQnEbgpfy2JRyqunc5+6NnTBWml1pLsDK
+	 5M20g7p0EJ0RbXCK1C8SJ/2YpORrcU1EIbtoKSCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Andy Wu <Andy.Wu@sony.com>,
-	Aoyama Wataru <wataru.aoyama@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Philip Yang <philip.yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/530] exfat: support handle zero-size directory
+Subject: [PATCH 6.5 046/491] drm/amdkfd: ratelimited SQ interrupt messages
 Date: Fri, 24 Nov 2023 17:44:42 +0000
-Message-ID: <20231124172031.645580131@linuxfoundation.org>
+Message-ID: <20231124172026.076105989@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,105 +54,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
 
-[ Upstream commit dab48b8f2fe7264d51ec9eed0adea0fe3c78830a ]
+[ Upstream commit 37fb87910724f21a1f27a75743d4f9accdee77fb ]
 
-After repairing a corrupted file system with exfatprogs' fsck.exfat,
-zero-size directories may result. It is also possible to create
-zero-size directories in other exFAT implementation, such as Paragon
-ufsd dirver.
+No functional change. Use ratelimited version of pr_ to avoid
+overflowing of dmesg buffer
 
-As described in the specification, the lower directory size limits
-is 0 bytes.
-
-Without this commit, sub-directories and files cannot be created
-under a zero-size directory, and it cannot be removed.
-
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Andy Wu <Andy.Wu@sony.com>
-Reviewed-by: Aoyama Wataru <wataru.aoyama@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Reviewed-by: Philip Yang <philip.yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/namei.c | 29 ++++++++++++++++++++++-------
- 1 file changed, 22 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c | 6 +++---
+ drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c | 6 +++---
+ drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c  | 6 +++---
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
-index 1b9f587f6cca5..95c51b025b917 100644
---- a/fs/exfat/namei.c
-+++ b/fs/exfat/namei.c
-@@ -351,14 +351,20 @@ static int exfat_find_empty_entry(struct inode *inode,
- 		if (exfat_check_max_dentries(inode))
- 			return -ENOSPC;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c
+index c7991e07b6be5..a7697ec8188e0 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v10.c
+@@ -268,7 +268,7 @@ static void event_interrupt_wq_v10(struct kfd_node *dev,
+ 						SQ_INTERRUPT_WORD_WAVE_CTXID1, ENCODING);
+ 			switch (encoding) {
+ 			case SQ_INTERRUPT_WORD_ENCODING_AUTO:
+-				pr_debug(
++				pr_debug_ratelimited(
+ 					"sq_intr: auto, se %d, ttrace %d, wlt %d, ttrac_buf0_full %d, ttrac_buf1_full %d, ttrace_utc_err %d\n",
+ 					REG_GET_FIELD(context_id1, SQ_INTERRUPT_WORD_AUTO_CTXID1,
+ 							SE_ID),
+@@ -284,7 +284,7 @@ static void event_interrupt_wq_v10(struct kfd_node *dev,
+ 							THREAD_TRACE_UTC_ERROR));
+ 				break;
+ 			case SQ_INTERRUPT_WORD_ENCODING_INST:
+-				pr_debug("sq_intr: inst, se %d, data 0x%x, sa %d, priv %d, wave_id %d, simd_id %d, wgp_id %d\n",
++				pr_debug_ratelimited("sq_intr: inst, se %d, data 0x%x, sa %d, priv %d, wave_id %d, simd_id %d, wgp_id %d\n",
+ 					REG_GET_FIELD(context_id1, SQ_INTERRUPT_WORD_WAVE_CTXID1,
+ 							SE_ID),
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID0,
+@@ -310,7 +310,7 @@ static void event_interrupt_wq_v10(struct kfd_node *dev,
+ 			case SQ_INTERRUPT_WORD_ENCODING_ERROR:
+ 				sq_intr_err_type = REG_GET_FIELD(context_id0, KFD_CTXID0,
+ 								ERR_TYPE);
+-				pr_warn("sq_intr: error, se %d, data 0x%x, sa %d, priv %d, wave_id %d, simd_id %d, wgp_id %d, err_type %d\n",
++				pr_warn_ratelimited("sq_intr: error, se %d, data 0x%x, sa %d, priv %d, wave_id %d, simd_id %d, wgp_id %d, err_type %d\n",
+ 					REG_GET_FIELD(context_id1, SQ_INTERRUPT_WORD_WAVE_CTXID1,
+ 							SE_ID),
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID0,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c
+index f933bd231fb9c..2a65792fd1162 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v11.c
+@@ -150,7 +150,7 @@ enum SQ_INTERRUPT_ERROR_TYPE {
  
--		/* we trust p_dir->size regardless of FAT type */
--		if (exfat_find_last_cluster(sb, p_dir, &last_clu))
--			return -EIO;
--
- 		/*
- 		 * Allocate new cluster to this directory
- 		 */
--		exfat_chain_set(&clu, last_clu + 1, 0, p_dir->flags);
-+		if (ei->start_clu != EXFAT_EOF_CLUSTER) {
-+			/* we trust p_dir->size regardless of FAT type */
-+			if (exfat_find_last_cluster(sb, p_dir, &last_clu))
-+				return -EIO;
-+
-+			exfat_chain_set(&clu, last_clu + 1, 0, p_dir->flags);
-+		} else {
-+			/* This directory is empty */
-+			exfat_chain_set(&clu, EXFAT_EOF_CLUSTER, 0,
-+					ALLOC_NO_FAT_CHAIN);
-+		}
+ static void print_sq_intr_info_auto(uint32_t context_id0, uint32_t context_id1)
+ {
+-	pr_debug(
++	pr_debug_ratelimited(
+ 		"sq_intr: auto, ttrace %d, wlt %d, ttrace_buf_full %d, reg_tms %d, cmd_tms %d, host_cmd_ovf %d, host_reg_ovf %d, immed_ovf %d, ttrace_utc_err %d\n",
+ 		REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_AUTO_CTXID0, THREAD_TRACE),
+ 		REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_AUTO_CTXID0, WLT),
+@@ -165,7 +165,7 @@ static void print_sq_intr_info_auto(uint32_t context_id0, uint32_t context_id1)
  
- 		/* allocate a cluster */
- 		ret = exfat_alloc_cluster(inode, 1, &clu, IS_DIRSYNC(inode));
-@@ -368,6 +374,11 @@ static int exfat_find_empty_entry(struct inode *inode,
- 		if (exfat_zeroed_cluster(inode, clu.dir))
- 			return -EIO;
+ static void print_sq_intr_info_inst(uint32_t context_id0, uint32_t context_id1)
+ {
+-	pr_debug(
++	pr_debug_ratelimited(
+ 		"sq_intr: inst, data 0x%08x, sh %d, priv %d, wave_id %d, simd_id %d, wgp_id %d\n",
+ 		REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID0, DATA),
+ 		REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID0, SH_ID),
+@@ -177,7 +177,7 @@ static void print_sq_intr_info_inst(uint32_t context_id0, uint32_t context_id1)
  
-+		if (ei->start_clu == EXFAT_EOF_CLUSTER) {
-+			ei->start_clu = clu.dir;
-+			p_dir->dir = clu.dir;
-+		}
-+
- 		/* append to the FAT chain */
- 		if (clu.flags != p_dir->flags) {
- 			/* no-fat-chain bit is disabled,
-@@ -645,7 +656,7 @@ static int exfat_find(struct inode *dir, struct qstr *qname,
- 	info->type = exfat_get_entry_type(ep);
- 	info->attr = le16_to_cpu(ep->dentry.file.attr);
- 	info->size = le64_to_cpu(ep2->dentry.stream.valid_size);
--	if ((info->type == TYPE_FILE) && (info->size == 0)) {
-+	if (info->size == 0) {
- 		info->flags = ALLOC_NO_FAT_CHAIN;
- 		info->start_clu = EXFAT_EOF_CLUSTER;
- 	} else {
-@@ -888,6 +899,9 @@ static int exfat_check_dir_empty(struct super_block *sb,
- 
- 	dentries_per_clu = sbi->dentries_per_clu;
- 
-+	if (p_dir->dir == EXFAT_EOF_CLUSTER)
-+		return 0;
-+
- 	exfat_chain_dup(&clu, p_dir);
- 
- 	while (clu.dir != EXFAT_EOF_CLUSTER) {
-@@ -1255,7 +1269,8 @@ static int __exfat_rename(struct inode *old_parent_inode,
- 		}
- 
- 		/* Free the clusters if new_inode is a dir(as if exfat_rmdir) */
--		if (new_entry_type == TYPE_DIR) {
-+		if (new_entry_type == TYPE_DIR &&
-+		    new_ei->start_clu != EXFAT_EOF_CLUSTER) {
- 			/* new_ei, new_clu_to_free */
- 			struct exfat_chain new_clu_to_free;
- 
+ static void print_sq_intr_info_error(uint32_t context_id0, uint32_t context_id1)
+ {
+-	pr_warn(
++	pr_warn_ratelimited(
+ 		"sq_intr: error, detail 0x%08x, type %d, sh %d, priv %d, wave_id %d, simd_id %d, wgp_id %d\n",
+ 		REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_ERROR_CTXID0, DETAIL),
+ 		REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_ERROR_CTXID0, TYPE),
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
+index f0731a6a5306c..02695ccd22d6e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
+@@ -333,7 +333,7 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
+ 			encoding = REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID, ENCODING);
+ 			switch (encoding) {
+ 			case SQ_INTERRUPT_WORD_ENCODING_AUTO:
+-				pr_debug(
++				pr_debug_ratelimited(
+ 					"sq_intr: auto, se %d, ttrace %d, wlt %d, ttrac_buf_full %d, reg_tms %d, cmd_tms %d, host_cmd_ovf %d, host_reg_ovf %d, immed_ovf %d, ttrace_utc_err %d\n",
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_AUTO_CTXID, SE_ID),
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_AUTO_CTXID, THREAD_TRACE),
+@@ -347,7 +347,7 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_AUTO_CTXID, THREAD_TRACE_UTC_ERROR));
+ 				break;
+ 			case SQ_INTERRUPT_WORD_ENCODING_INST:
+-				pr_debug("sq_intr: inst, se %d, data 0x%x, sh %d, priv %d, wave_id %d, simd_id %d, cu_id %d, intr_data 0x%x\n",
++				pr_debug_ratelimited("sq_intr: inst, se %d, data 0x%x, sh %d, priv %d, wave_id %d, simd_id %d, cu_id %d, intr_data 0x%x\n",
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID, SE_ID),
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID, DATA),
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID, SH_ID),
+@@ -366,7 +366,7 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
+ 				break;
+ 			case SQ_INTERRUPT_WORD_ENCODING_ERROR:
+ 				sq_intr_err = REG_GET_FIELD(sq_int_data, KFD_SQ_INT_DATA, ERR_TYPE);
+-				pr_warn("sq_intr: error, se %d, data 0x%x, sh %d, priv %d, wave_id %d, simd_id %d, cu_id %d, err_type %d\n",
++				pr_warn_ratelimited("sq_intr: error, se %d, data 0x%x, sh %d, priv %d, wave_id %d, simd_id %d, cu_id %d, err_type %d\n",
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID, SE_ID),
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID, DATA),
+ 					REG_GET_FIELD(context_id0, SQ_INTERRUPT_WORD_WAVE_CTXID, SH_ID),
 -- 
 2.42.0
 
