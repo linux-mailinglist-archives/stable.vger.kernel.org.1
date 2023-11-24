@@ -1,47 +1,52 @@
-Return-Path: <stable+bounces-1335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72BCC7F7F29
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A8D7F7CC7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DC37282483
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76D201F20CD1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D882F86B;
-	Fri, 24 Nov 2023 18:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3903A8CA;
+	Fri, 24 Nov 2023 18:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXvSp3a+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf/mf7XD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D26533CCA;
-	Fri, 24 Nov 2023 18:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088D8C433C7;
-	Fri, 24 Nov 2023 18:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E753539FE1;
+	Fri, 24 Nov 2023 18:18:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72026C433C8;
+	Fri, 24 Nov 2023 18:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851144;
-	bh=Q3Qt202i+eJYDcoLBrP2RdytBdFxVZUfGu48wWuES4Y=;
+	s=korg; t=1700849900;
+	bh=wUrtZtg3O0+NC4ZT1TVhGZv6NUD3UfKTJH1N54GKmmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXvSp3a+T4mWe7475lp8wn3OueWRPKpXkM2m6w+dxJMKDYD3g7me5C04S91iOYPg/
-	 SLOOqOof37iDzVaQdheBXuAoHRhLlMmOxIXzuAqnrYEurkLmMoOKbSbUgsFmD+i0cD
-	 7l7y35LgjpgNLR8VCdbDZqEZQNDeJTm1Ow/Dc95I=
+	b=Lf/mf7XD3K7yp48eYUTNEO81hCwEq201vGu5OFFOVoi4HJ6KhLSdfFno1N3dh3v3z
+	 Q6y3bkgIHRHo9LVSdB+3PW3juQctCZVx4UvjdAc9D++FwdYNcEmB08Zmx0Udkg4K+f
+	 PcRTbhnVSdoMJkzMnO5+dkQ3Dxz7WdMQX+IBc8EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.5 296/491] clk: qcom: ipq6018: drop the CLK_SET_RATE_PARENT flag from PLL clocks
+	Zi Yan <ziy@nvidia.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 366/530] fs: use nth_page() in place of direct struct page manipulation
 Date: Fri, 24 Nov 2023 17:48:52 +0000
-Message-ID: <20231124172033.465002275@linuxfoundation.org>
+Message-ID: <20231124172039.152629381@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,80 +58,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+From: Zi Yan <ziy@nvidia.com>
 
-commit 99cd4935cb972d0aafb16838bb2aeadbcaf196ce upstream.
+commit 8db0ec791f7788cd21e7f91ee5ff42c1c458d0e7 upstream.
 
-GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
-on the request from dependent clocks. Doing so will result in the
-unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
-clocks.
+When dealing with hugetlb pages, struct page is not guaranteed to be
+contiguous on SPARSEMEM without VMEMMAP.  Use nth_page() to handle it
+properly.
 
-Cc: stable@vger.kernel.org
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-2-c8ceb1a37680@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Without the fix, a wrong subpage might be checked for HWPoison, causing wrong
+number of bytes of a page copied to user space. No bug is reported. The fix
+comes from code inspection.
+
+Link: https://lkml.kernel.org/r/20230913201248.452081-5-zi.yan@sent.com
+Fixes: 38c1ddbde6c6 ("hugetlbfs: improve read HWPOISON hugepage")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c |    6 ------
- 1 file changed, 6 deletions(-)
+ fs/hugetlbfs/inode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -73,7 +73,6 @@ static struct clk_fixed_factor gpll0_out
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 316c4cebd3f3..60fce26ff937 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -295,7 +295,7 @@ static size_t adjust_range_hwpoison(struct page *page, size_t offset, size_t byt
+ 	size_t res = 0;
  
-@@ -87,7 +86,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -162,7 +160,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll6_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -193,7 +190,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll4_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -244,7 +240,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll2_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -275,7 +270,6 @@ static struct clk_alpha_pll_postdiv nss_
- 				&nss_crypto_pll_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
+ 	/* First subpage to start the loop. */
+-	page += offset / PAGE_SIZE;
++	page = nth_page(page, offset / PAGE_SIZE);
+ 	offset %= PAGE_SIZE;
+ 	while (1) {
+ 		if (is_raw_hwpoison_page_in_hugepage(page))
+@@ -309,7 +309,7 @@ static size_t adjust_range_hwpoison(struct page *page, size_t offset, size_t byt
+ 			break;
+ 		offset += n;
+ 		if (offset == PAGE_SIZE) {
+-			page++;
++			page = nth_page(page, 1);
+ 			offset = 0;
+ 		}
+ 	}
+-- 
+2.43.0
+
 
 
 
