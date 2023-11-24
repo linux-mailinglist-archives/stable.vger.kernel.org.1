@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E532E7F7C67
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2134D7F7E90
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 521D2B2126A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D147428235A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB3D39FEA;
-	Fri, 24 Nov 2023 18:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683FA3306F;
+	Fri, 24 Nov 2023 18:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2NWME2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzP/NCmA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CA839FD9;
-	Fri, 24 Nov 2023 18:14:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC2FC433C9;
-	Fri, 24 Nov 2023 18:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C7633CC2;
+	Fri, 24 Nov 2023 18:34:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C41C433C7;
+	Fri, 24 Nov 2023 18:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849691;
-	bh=58UqEq8+jzkUpj8Q8bS7jYuqzuGNmkG56d7unxTn+yg=;
+	s=korg; t=1700850850;
+	bh=4/HhHhYbn2G/fESUU462i/3VPHTQghn0dKPVDipkQho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2NWME2YhUuBl0EhdDM1nrl0+6spv4nANuk5BdwS/+mdM0o5uLZji9agu4i0TN3p3
-	 Ivfu0B1njKWMbhfUgMcqffkkg7q4hfvMvunGxWSC3fvDDga73eqNmCs6ik1SaF+i/K
-	 odsmzMot17TBeyWOEIw+oiGKevHk0yUAzJsJfsCU=
+	b=mzP/NCmAv3jCGpmyJNkZ+x+261wFmDlOs8SBtV3wfrtK4fKxrtmm4PAhyA5FNjg6r
+	 FDU7Q9+D89PD/x9G7F/ZkBCfBcRHF997fi1m7j8+MgJH1xWJ1GbiHlN4yhUB8oEZql
+	 tHFM6dIM5baIYAFk9e2MUgaGRoO211gds8Cj74EY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Jakub Acs <acsjakub@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 282/530] mm/damon/core: avoid divide-by-zero during monitoring results update
-Date: Fri, 24 Nov 2023 17:47:28 +0000
-Message-ID: <20231124172036.624850463@linuxfoundation.org>
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 213/491] net/mlx5e: Reduce the size of icosq_str
+Date: Fri, 24 Nov 2023 17:47:29 +0000
+Message-ID: <20231124172030.927294411@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +53,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Saeed Mahameed <saeedm@nvidia.com>
 
-commit d35963bfb05877455228ecec6b194f624489f96a upstream.
+[ Upstream commit dce94142842e119b982c27c1b62bd20890c7fd21 ]
 
-When monitoring attributes are changed, DAMON updates access rate of the
-monitoring results accordingly.  For that, it divides some values by the
-maximum nr_accesses.  However, due to the type of the related variables,
-simple division-based calculation of the divisor can return zero.  As a
-result, divide-by-zero is possible.  Fix it by using
-damon_max_nr_accesses(), which handles the case.
+icosq_str size is unnecessarily too long, and it causes a build warning
+-Wformat-truncation with W=1. Looking closely, It doesn't need to be 255B,
+hence this patch reduces the size to 32B which should be more than enough
+to host the string: "ICOSQ: 0x%x, ".
 
-Link: https://lkml.kernel.org/r/20231019194924.100347-3-sj@kernel.org
-Fixes: 2f5bef5a590b ("mm/damon/core: update monitoring results for new monitoring attributes")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reported-by: Jakub Acs <acsjakub@amazon.de>
-Cc: <stable@vger.kernel.org>	[6.3+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While here, add a missing space in the formatted string.
+
+This fixes the following build warning:
+
+$ KCFLAGS='-Wall -Werror'
+$ make O=/tmp/kbuild/linux W=1 -s -j12 drivers/net/ethernet/mellanox/mlx5/core/
+
+drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c: In function 'mlx5e_reporter_rx_timeout':
+drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c:718:56:
+error: ', CQ: 0x' directive output may be truncated writing 8 bytes into a region of size between 0 and 255 [-Werror=format-truncation=]
+  718 |                  "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
+      |                                                        ^~~~~~~~
+drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c:717:9: note: 'snprintf' output between 43 and 322 bytes into a destination of size 288
+  717 |         snprintf(err_str, sizeof(err_str),
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  718 |                  "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  719 |                  rq->ix, icosq_str, rq->rqn, rq->cq.mcq.cqn);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: 521f31af004a ("net/mlx5e: Allow RQ outside of channel context")
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-14-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core.c |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -476,20 +476,14 @@ static unsigned int damon_age_for_new_at
- static unsigned int damon_accesses_bp_to_nr_accesses(
- 		unsigned int accesses_bp, struct damon_attrs *attrs)
- {
--	unsigned int max_nr_accesses =
--		attrs->aggr_interval / attrs->sample_interval;
--
--	return accesses_bp * max_nr_accesses / 10000;
-+	return accesses_bp * damon_max_nr_accesses(attrs) / 10000;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
+index e8eea9ffd5eb6..03b119a434bc9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
+@@ -702,11 +702,11 @@ static int mlx5e_rx_reporter_dump(struct devlink_health_reporter *reporter,
  
- /* convert nr_accesses to access ratio in bp (per 10,000) */
- static unsigned int damon_nr_accesses_to_accesses_bp(
- 		unsigned int nr_accesses, struct damon_attrs *attrs)
+ void mlx5e_reporter_rx_timeout(struct mlx5e_rq *rq)
  {
--	unsigned int max_nr_accesses =
--		attrs->aggr_interval / attrs->sample_interval;
--
--	return nr_accesses * 10000 / max_nr_accesses;
-+	return nr_accesses * 10000 / damon_max_nr_accesses(attrs);
- }
+-	char icosq_str[MLX5E_REPORTER_PER_Q_MAX_LEN] = {};
+ 	char err_str[MLX5E_REPORTER_PER_Q_MAX_LEN];
+ 	struct mlx5e_icosq *icosq = rq->icosq;
+ 	struct mlx5e_priv *priv = rq->priv;
+ 	struct mlx5e_err_ctx err_ctx = {};
++	char icosq_str[32] = {};
  
- static unsigned int damon_nr_accesses_for_new_attrs(unsigned int nr_accesses,
+ 	err_ctx.ctx = rq;
+ 	err_ctx.recover = mlx5e_rx_reporter_timeout_recover;
+@@ -715,7 +715,7 @@ void mlx5e_reporter_rx_timeout(struct mlx5e_rq *rq)
+ 	if (icosq)
+ 		snprintf(icosq_str, sizeof(icosq_str), "ICOSQ: 0x%x, ", icosq->sqn);
+ 	snprintf(err_str, sizeof(err_str),
+-		 "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
++		 "RX timeout on channel: %d, %s RQ: 0x%x, CQ: 0x%x",
+ 		 rq->ix, icosq_str, rq->rqn, rq->cq.mcq.cqn);
+ 
+ 	mlx5e_health_report(priv, priv->rx_reporter, err_str, &err_ctx);
+-- 
+2.42.0
+
 
 
 
