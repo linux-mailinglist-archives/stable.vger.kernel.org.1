@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D5237F848D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:28:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 209F57F83E8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB2E828BBBD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A75C4B2722B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1281E39FE7;
-	Fri, 24 Nov 2023 19:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B2437170;
+	Fri, 24 Nov 2023 19:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WEywkQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GOudPdwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9729239FD6;
-	Fri, 24 Nov 2023 19:27:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C46C433C8;
-	Fri, 24 Nov 2023 19:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C3333E9;
+	Fri, 24 Nov 2023 19:22:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930CDC433C7;
+	Fri, 24 Nov 2023 19:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700854074;
-	bh=5zwjE03Rve8E26LNBz/OkzIu+Bd7hFsrfNPSzA3/b3c=;
+	s=korg; t=1700853725;
+	bh=ECG3q+Gh/h1kOBOVC1enkbOpzFS4t9pvUVrQeMn3b7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WEywkQ2vVashT+lE2teWDwZn240rg4z/GcVOX+zCm5nPKEb8qGx4d4NZZyw/bfoy
-	 bXVnHj3IPhypN5eg6swvAn+uiZbr256l3k6xKozkj2N0/nJMaiEmaqWC22Hbs/B1Mf
-	 Utbihp8ZvlcIQwpOg4xejokLR+9IjTTPMSA4/GGI=
+	b=GOudPdwH6H9bVEuELstl5AEOxpQLL3e5fhwUmm29bqcIaEb7h/UVeY98NjYcTdJus
+	 4qYAn17HBS6WCDGJCNr1KUhT3NF11bMcSpo1r7Xb3J3AYMNf6oMusUY1zQZy9vDdsa
+	 nheDGQqObnJkaOOQqDPedR3XDDRpX/OndhQUbBf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Ferner <joe.m.ferner@gmail.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.4 121/159] media: sharp: fix sharp encoding
+	Vicki Pfau <vi@endrift.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 296/297] Input: xpad - add VID for Turtle Beach controllers
 Date: Fri, 24 Nov 2023 17:55:38 +0000
-Message-ID: <20231124171946.874838141@linuxfoundation.org>
+Message-ID: <20231124172010.457254912@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +52,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Vicki Pfau <vi@endrift.com>
 
-commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
+commit 1999a6b12a3b5c8953fc9ec74863ebc75a1b851d upstream.
 
-The Sharp protocol[1] encoding has incorrect timings for bit space.
+This adds support for the Turtle Beach REACT-R and Recon Xbox controllers
 
-[1] https://www.sbprojects.net/knowledge/ir/sharp.php
-
-Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
-Cc: stable@vger.kernel.org
-Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
-Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Link: https://lore.kernel.org/r/20230225012147.276489-4-vi@endrift.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/rc/ir-sharp-decoder.c
-+++ b/drivers/media/rc/ir-sharp-decoder.c
-@@ -15,7 +15,9 @@
- #define SHARP_UNIT		40000  /* ns */
- #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
- #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
--#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
-+#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
-+#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
-+#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
- #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
- #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
- 
-@@ -168,8 +170,8 @@ static const struct ir_raw_timings_pd ir
- 	.header_pulse  = 0,
- 	.header_space  = 0,
- 	.bit_pulse     = SHARP_BIT_PULSE,
--	.bit_space[0]  = SHARP_BIT_0_PERIOD,
--	.bit_space[1]  = SHARP_BIT_1_PERIOD,
-+	.bit_space[0]  = SHARP_BIT_0_SPACE,
-+	.bit_space[1]  = SHARP_BIT_1_SPACE,
- 	.trailer_pulse = SHARP_BIT_PULSE,
- 	.trailer_space = SHARP_ECHO_SPACE,
- 	.msb_first     = 1,
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -449,6 +449,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x0f0d),		/* Hori Controllers */
+ 	XPAD_XBOXONE_VENDOR(0x0f0d),		/* Hori Controllers */
+ 	XPAD_XBOX360_VENDOR(0x1038),		/* SteelSeries Controllers */
++	XPAD_XBOXONE_VENDOR(0x10f5),		/* Turtle Beach Controllers */
+ 	XPAD_XBOX360_VENDOR(0x11c9),		/* Nacon GC100XF */
+ 	XPAD_XBOX360_VENDOR(0x11ff),		/* PXN V900 */
+ 	XPAD_XBOX360_VENDOR(0x1209),		/* Ardwiino Controllers */
 
 
 
