@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167FF7F8057
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A007F7EA0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4133282584
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CEE328239B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5035037170;
-	Fri, 24 Nov 2023 18:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8778F28DA1;
+	Fri, 24 Nov 2023 18:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmaJ5hx3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDTEwuot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF7B2FC21;
-	Fri, 24 Nov 2023 18:48:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF44C433C7;
-	Fri, 24 Nov 2023 18:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD1E28387;
+	Fri, 24 Nov 2023 18:34:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFF4C433C7;
+	Fri, 24 Nov 2023 18:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851735;
-	bh=Ltoi0wEhz11OQCx3KN+CEEaLEcgAN3hQpOUVsovV/ho=;
+	s=korg; t=1700850880;
+	bh=iNEpDT5mAOuixS0MP2jRQqUUv1ILjM/q+B4OD3xVQls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OmaJ5hx35zDotyqvkrEY7wEDtqEJiWL84ARk/0bl/7n+ZyhLGTKoQ+9GXhgPT8jid
-	 NaaWQ/+NY/SY/k8c/dt/uBQ0Mrx/6nRSgsGEggG+HDFhI1MEcBgqSK0tHmO+MLGjcV
-	 OJikytoTbqo+DKEC+f2F0A+i7tQFh5WXQZi3nHMA=
+	b=hDTEwuotm7mlyLyoMFmI2JYJAfxtuNWIoOJ3nTmI15ATx/WMEdT+JcHRlUTf/1hO9
+	 Lskh60KFLL/qHjsceRrRizZ8YuPA5t/o2H2+RfyNLHTiZD8KQa4ZVDRvlFjZbq7rs0
+	 Q4l0gqJB9+qUap4GUkFiV+8CsGxsDowGRnOKJKQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenchao Hao <haowenchao2@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/372] scsi: libfc: Fix potential NULL pointer dereference in fc_lport_ptp_setup()
-Date: Fri, 24 Nov 2023 17:47:41 +0000
-Message-ID: <20231124172012.976425115@linuxfoundation.org>
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.5 226/491] drivers: perf: Check find_first_bit() return value
+Date: Fri, 24 Nov 2023 17:47:42 +0000
+Message-ID: <20231124172031.348496611@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +52,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenchao Hao <haowenchao2@huawei.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 4df105f0ce9f6f30cda4e99f577150d23f0c9c5f ]
+commit c6e316ac05532febb0c966fa9b55f5258ed037be upstream.
 
-fc_lport_ptp_setup() did not check the return value of fc_rport_create()
-which can return NULL and would cause a NULL pointer dereference. Address
-this issue by checking return value of fc_rport_create() and log error
-message on fc_rport_create() failed.
+We must check the return value of find_first_bit() before using the
+return value as an index array since it happens to overflow the array
+and then panic:
 
-Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
-Link: https://lore.kernel.org/r/20231011130350.819571-1-haowenchao2@huawei.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  107.318430] Kernel BUG [#1]
+[  107.319434] CPU: 3 PID: 1238 Comm: kill Tainted: G            E      6.6.0-rc6ubuntu-defconfig #2
+[  107.319465] Hardware name: riscv-virtio,qemu (DT)
+[  107.319551] epc : pmu_sbi_ovf_handler+0x3a4/0x3ae
+[  107.319840]  ra : pmu_sbi_ovf_handler+0x52/0x3ae
+[  107.319868] epc : ffffffff80a0a77c ra : ffffffff80a0a42a sp : ffffaf83fecda350
+[  107.319884]  gp : ffffffff823961a8 tp : ffffaf8083db1dc0 t0 : ffffaf83fecda480
+[  107.319899]  t1 : ffffffff80cafe62 t2 : 000000000000ff00 s0 : ffffaf83fecda520
+[  107.319921]  s1 : ffffaf83fecda380 a0 : 00000018fca29df0 a1 : ffffffffffffffff
+[  107.319936]  a2 : 0000000001073734 a3 : 0000000000000004 a4 : 0000000000000000
+[  107.319951]  a5 : 0000000000000040 a6 : 000000001d1c8774 a7 : 0000000000504d55
+[  107.319965]  s2 : ffffffff82451f10 s3 : ffffffff82724e70 s4 : 000000000000003f
+[  107.319980]  s5 : 0000000000000011 s6 : ffffaf8083db27c0 s7 : 0000000000000000
+[  107.319995]  s8 : 0000000000000001 s9 : 00007fffb45d6558 s10: 00007fffb45d81a0
+[  107.320009]  s11: ffffaf7ffff60000 t3 : 0000000000000004 t4 : 0000000000000000
+[  107.320023]  t5 : ffffaf7f80000000 t6 : ffffaf8000000000
+[  107.320037] status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
+[  107.320081] [<ffffffff80a0a77c>] pmu_sbi_ovf_handler+0x3a4/0x3ae
+[  107.320112] [<ffffffff800b42d0>] handle_percpu_devid_irq+0x9e/0x1a0
+[  107.320131] [<ffffffff800ad92c>] generic_handle_domain_irq+0x28/0x36
+[  107.320148] [<ffffffff8065f9f8>] riscv_intc_irq+0x36/0x4e
+[  107.320166] [<ffffffff80caf4a0>] handle_riscv_irq+0x54/0x86
+[  107.320189] [<ffffffff80cb0036>] do_irq+0x64/0x96
+[  107.320271] Code: 85a6 855e b097 ff7f 80e7 9220 b709 9002 4501 bbd9 (9002) 6097
+[  107.320585] ---[ end trace 0000000000000000 ]---
+[  107.320704] Kernel panic - not syncing: Fatal exception in interrupt
+[  107.320775] SMP: stopping secondary CPUs
+[  107.321219] Kernel Offset: 0x0 from 0xffffffff80000000
+[  107.333051] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+
+Fixes: 4905ec2fb7e6 ("RISC-V: Add sscofpmf extension support")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231109082128.40777-1-alexghiti@rivosinc.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libfc/fc_lport.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/perf/riscv_pmu_sbi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/scsi/libfc/fc_lport.c b/drivers/scsi/libfc/fc_lport.c
-index 9c02c9523c4d4..ab06e9aeb613e 100644
---- a/drivers/scsi/libfc/fc_lport.c
-+++ b/drivers/scsi/libfc/fc_lport.c
-@@ -241,6 +241,12 @@ static void fc_lport_ptp_setup(struct fc_lport *lport,
- 	}
- 	mutex_lock(&lport->disc.disc_mutex);
- 	lport->ptp_rdata = fc_rport_create(lport, remote_fid);
-+	if (!lport->ptp_rdata) {
-+		printk(KERN_WARNING "libfc: Failed to setup lport 0x%x\n",
-+			lport->port_id);
-+		mutex_unlock(&lport->disc.disc_mutex);
-+		return;
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -629,6 +629,11 @@ static irqreturn_t pmu_sbi_ovf_handler(i
+ 
+ 	/* Firmware counter don't support overflow yet */
+ 	fidx = find_first_bit(cpu_hw_evt->used_hw_ctrs, RISCV_MAX_COUNTERS);
++	if (fidx == RISCV_MAX_COUNTERS) {
++		csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
++		return IRQ_NONE;
 +	}
- 	kref_get(&lport->ptp_rdata->kref);
- 	lport->ptp_rdata->ids.port_name = remote_wwpn;
- 	lport->ptp_rdata->ids.node_name = remote_wwnn;
--- 
-2.42.0
-
++
+ 	event = cpu_hw_evt->events[fidx];
+ 	if (!event) {
+ 		csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
 
 
 
