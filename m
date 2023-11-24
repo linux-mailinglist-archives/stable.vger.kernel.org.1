@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A4957F81A8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 249347F7FEE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8A01C21BE5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3EC928222C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D59A33076;
-	Fri, 24 Nov 2023 19:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6029F381A2;
+	Fri, 24 Nov 2023 18:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6MAt6//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXLd+Q5k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDC92EAEA;
-	Fri, 24 Nov 2023 19:00:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAE5C433C8;
-	Fri, 24 Nov 2023 19:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA55364A0;
+	Fri, 24 Nov 2023 18:45:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0C1C433C8;
+	Fri, 24 Nov 2023 18:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852431;
-	bh=l8QiR5CSVVUAI+STAIy9mYEEMk4QNaDuA62cQ48COQE=;
+	s=korg; t=1700851523;
+	bh=5o458WdnwgpMytmLDXVQWSiiY+lLhw3H/y3c/rxAjds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6MAt6//VPZqA3uvUFvzXBqRpsK7GN3mYyLrkfZLEv8jHPZYPi33OoVgvg2sGpyj2
-	 ctes3E73xk245dynXCOMJ2LaNj/chK1d1lc1aVEPCT1z1odKesrO6WXR8U2aVftFqp
-	 XlCmKTCKT9rXrAjdWhFx/TpJHOZqpRp/bFLQ5J54=
+	b=gXLd+Q5kygOxNRbRoqzNDuW7U6tVhUQ6pEj87+usd+dVzXym7hydv/1Ja/ue8cmtL
+	 CYGk2rhO05I+LcBVA8Ll/SMq7zepzZ+vyhAJUHr03IKqHitjSi4zqF69JUHP8BDd9e
+	 ypzt0oBXKX/pBBv3fgDvYgJ1tMLLfUqPAUSSEkBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Song Shuai <suagrfillet@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 330/372] riscv: correct pt_level name via pgtable_l5/4_enabled
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 481/491] drm/amdgpu: fix error handling in amdgpu_vm_init
 Date: Fri, 24 Nov 2023 17:51:57 +0000
-Message-ID: <20231124172021.385520892@linuxfoundation.org>
+Message-ID: <20231124172039.087165100@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,56 +50,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Shuai <suagrfillet@gmail.com>
+From: Christian König <christian.koenig@amd.com>
 
-commit e59e5e2754bf983fc58ad18f99b5eec01f1a0745 upstream.
+commit 8473bfdcb5b1a32fd05629c4535ccacd73bc5567 upstream.
 
-The pt_level uses CONFIG_PGTABLE_LEVELS to display page table names.
-But if page mode is downgraded from kernel cmdline or restricted by
-the hardware in 64BIT, it will give a wrong name.
+When clearing the root PD fails we need to properly release it again.
 
-Like, using no4lvl for sv39, ptdump named the 1G-mapping as "PUD"
-that should be "PGD":
-
-0xffffffd840000000-0xffffffd900000000    0x00000000c0000000         3G PUD     D A G . . W R V
-
-So select "P4D/PUD" or "PGD" via pgtable_l5/4_enabled to correct it.
-
-Fixes: e8a62cc26ddf ("riscv: Implement sv48 support")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Song Shuai <suagrfillet@gmail.com>
-Link: https://lore.kernel.org/r/20230712115740.943324-1-suagrfillet@gmail.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230830044129.11481-3-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/ptdump.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |   31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
-index 20a9f991a6d7..e9090b38f811 100644
---- a/arch/riscv/mm/ptdump.c
-+++ b/arch/riscv/mm/ptdump.c
-@@ -384,6 +384,9 @@ static int __init ptdump_init(void)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2129,7 +2129,8 @@ long amdgpu_vm_wait_idle(struct amdgpu_v
+  * Returns:
+  * 0 for success, error for failure.
+  */
+-int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm, int32_t xcp_id)
++int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm,
++		   int32_t xcp_id)
+ {
+ 	struct amdgpu_bo *root_bo;
+ 	struct amdgpu_bo_vm *root;
+@@ -2148,6 +2149,7 @@ int amdgpu_vm_init(struct amdgpu_device
+ 	INIT_LIST_HEAD(&vm->done);
+ 	INIT_LIST_HEAD(&vm->pt_freed);
+ 	INIT_WORK(&vm->pt_free_work, amdgpu_vm_pt_free_work);
++	INIT_KFIFO(vm->faults);
  
- 	kernel_ptd_info.base_addr = KERN_VIRT_START;
- 
-+	pg_level[1].name = pgtable_l5_enabled ? "P4D" : "PGD";
-+	pg_level[2].name = pgtable_l4_enabled ? "PUD" : "PGD";
+ 	r = amdgpu_vm_init_entities(adev, vm);
+ 	if (r)
+@@ -2182,34 +2184,33 @@ int amdgpu_vm_init(struct amdgpu_device
+ 				false, &root, xcp_id);
+ 	if (r)
+ 		goto error_free_delayed;
+-	root_bo = &root->bo;
 +
- 	for (i = 0; i < ARRAY_SIZE(pg_level); i++)
- 		for (j = 0; j < ARRAY_SIZE(pte_bits); j++)
- 			pg_level[i].mask |= pte_bits[j].mask;
--- 
-2.43.0
-
++	root_bo = amdgpu_bo_ref(&root->bo);
+ 	r = amdgpu_bo_reserve(root_bo, true);
+-	if (r)
+-		goto error_free_root;
++	if (r) {
++		amdgpu_bo_unref(&root->shadow);
++		amdgpu_bo_unref(&root_bo);
++		goto error_free_delayed;
++	}
+ 
++	amdgpu_vm_bo_base_init(&vm->root, vm, root_bo);
+ 	r = dma_resv_reserve_fences(root_bo->tbo.base.resv, 1);
+ 	if (r)
+-		goto error_unreserve;
+-
+-	amdgpu_vm_bo_base_init(&vm->root, vm, root_bo);
++		goto error_free_root;
+ 
+ 	r = amdgpu_vm_pt_clear(adev, vm, root, false);
+ 	if (r)
+-		goto error_unreserve;
++		goto error_free_root;
+ 
+ 	amdgpu_bo_unreserve(vm->root.bo);
+-
+-	INIT_KFIFO(vm->faults);
++	amdgpu_bo_unref(&root_bo);
+ 
+ 	return 0;
+ 
+-error_unreserve:
+-	amdgpu_bo_unreserve(vm->root.bo);
+-
+ error_free_root:
+-	amdgpu_bo_unref(&root->shadow);
++	amdgpu_vm_pt_free_root(adev, vm);
++	amdgpu_bo_unreserve(vm->root.bo);
+ 	amdgpu_bo_unref(&root_bo);
+-	vm->root.bo = NULL;
+ 
+ error_free_delayed:
+ 	dma_fence_put(vm->last_tlb_flush);
 
 
 
