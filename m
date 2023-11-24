@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-1052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8187F7DC6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F085E7F7BB9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09B83282242
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 802DBB21033
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D6453A8E0;
-	Fri, 24 Nov 2023 18:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCCE39FED;
+	Fri, 24 Nov 2023 18:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGFOiIQ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HsGnSN1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0625E39FE9;
-	Fri, 24 Nov 2023 18:27:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 846A9C433C7;
-	Fri, 24 Nov 2023 18:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D77939FD7;
+	Fri, 24 Nov 2023 18:07:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B33C433C8;
+	Fri, 24 Nov 2023 18:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850439;
-	bh=URmzW0qkVOxes00LcoDV60Cnt2lKV8cIOxWzSTPnx2Y=;
+	s=korg; t=1700849279;
+	bh=QFoD8webE3Rj3bqcVvz1Rti/RI3nMtPfl/eJwFzS5Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGFOiIQ6hppJnvWr/OS7gPE3u/4m/qWcTeaiPlBi96NX0H3T7MfRUPtgJYv7y1ktI
-	 hnYWI6Ua1CELd8K9Wl24I40EuZcRdhEIY7NgWA8wFq8TRpgUWzaszEiJ8j3Q0A3U2Z
-	 0kOWZmFAQl0VBZ2oroEG6gaZhScZGXRUyYcCGdTc=
+	b=HsGnSN1EpMoS2/gMnfKN2xdV64wy7PKdPaNKDVflnKqOgJEcbGBXaljBlhgS595e/
+	 YKaIfEEbNcFm3dwP8/p9FI2IO7+4u6TsmlV9x5AsLHv4B4y/LdWbUDoI7i9aR+A98H
+	 WPL12e9hZzJRfM7G6evoflU+1qDYrw/ESJF5fHLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samson Tam <samson.tam@amd.com>,
-	Stylon Wang <stylon.wang@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 049/491] drm/amd/display: Dont lock phantom pipe on disabling
+Subject: [PATCH 6.6 119/530] thunderbolt: Apply USB 3.x bandwidth quirk only in software connection manager
 Date: Fri, 24 Nov 2023 17:44:45 +0000
-Message-ID: <20231124172026.165634375@linuxfoundation.org>
+Message-ID: <20231124172031.737031072@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,45 +52,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit cbb4c9bc55427774ca4d819933e1b5fa38a6fb44 ]
+[ Upstream commit 0c35ac18256942e66d8dab6ca049185812e60c69 ]
 
-[Description]
-- When disabling a phantom pipe, we first enable the phantom
-  OTG so the double buffer update can successfully take place
-- However, want to avoid locking the phantom otherwise setting
-  DPG_EN=1 for the phantom pipe is blocked (without this we could
-  hit underflow due to phantom HUBP being blanked by default)
+This is not needed when firmware connection manager is run so limit this
+to software connection manager.
 
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/quirks.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-index 9834b75f1837b..79befa17bb037 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-@@ -111,7 +111,8 @@ void dcn10_lock_all_pipes(struct dc *dc,
- 		if (pipe_ctx->top_pipe ||
- 		    !pipe_ctx->stream ||
- 		    (!pipe_ctx->plane_state && !old_pipe_ctx->plane_state) ||
--		    !tg->funcs->is_tg_enabled(tg))
-+		    !tg->funcs->is_tg_enabled(tg) ||
-+			pipe_ctx->stream->mall_stream_config.type == SUBVP_PHANTOM)
- 			continue;
+diff --git a/drivers/thunderbolt/quirks.c b/drivers/thunderbolt/quirks.c
+index 488138a28ae13..e6bfa63b40aee 100644
+--- a/drivers/thunderbolt/quirks.c
++++ b/drivers/thunderbolt/quirks.c
+@@ -31,6 +31,9 @@ static void quirk_usb3_maximum_bandwidth(struct tb_switch *sw)
+ {
+ 	struct tb_port *port;
  
- 		if (lock)
++	if (tb_switch_is_icm(sw))
++		return;
++
+ 	tb_switch_for_each_port(sw, port) {
+ 		if (!tb_port_is_usb3_down(port))
+ 			continue;
 -- 
 2.42.0
 
