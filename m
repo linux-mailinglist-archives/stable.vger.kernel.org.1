@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448FB7F80FD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1947F7AAB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8EDFB21B4D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB8302815F2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDD833CFD;
-	Fri, 24 Nov 2023 18:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6840139FDA;
+	Fri, 24 Nov 2023 17:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekvbZoI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sy26cte7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1842E64F;
-	Fri, 24 Nov 2023 18:54:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3848AC433C8;
-	Fri, 24 Nov 2023 18:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7B239FC3;
+	Fri, 24 Nov 2023 17:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAACC433C7;
+	Fri, 24 Nov 2023 17:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852079;
-	bh=HFdyrGPNcHm2VzTXAXUg7Q//XSuu0zlK+9M5zfxd2as=;
+	s=korg; t=1700848645;
+	bh=7C/E2GxXa5Vs08gbmO7OCloQGERTLcjc21avoVjYCp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekvbZoI5uzPyhXv47HTUvng2PU1wOuWczWBkAEGnmLsqGroD8/k8PCFVIaJ75OLur
-	 ZEMQNaxpyu/Qadh11gPxbeLEzX/8SyNkYsAIVP90cf+2FEtbx2ZwTeQpE6xJtJJKov
-	 nnomnQ9ktBmdcam+yZPsi0dIf2PzlyGJ55ZS7K/U=
+	b=Sy26cte7/cBJ99uaOO6NxyCTM1yB0sWd/YMUfQyE8iHIHs7v4QBXs7Hi0XWoW7aml
+	 /HVR8NF0hIwAnrZStqDP3qZmpJLffgooQjgW09l47K9KiCkEWHd3YmW6MlrsC1lsBM
+	 +QSbbRk4yR8RY93aE6YEI7l9j3+7jUQr6KCXjERY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 211/372] ksmbd: handle malformed smb1 message
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 25/97] atm: iphase: Do PCI error checks on own line
 Date: Fri, 24 Nov 2023 17:49:58 +0000
-Message-ID: <20231124172017.504196679@linuxfoundation.org>
+Message-ID: <20231124171935.073803329@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +51,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 5a5409d90bd05f87fe5623a749ccfbf3f7c7d400 upstream.
+[ Upstream commit c28742447ca9879b52fbaf022ad844f0ffcd749c ]
 
-If set_smb1_rsp_status() is not implemented, It will cause NULL pointer
-dereferece error when client send malformed smb1 message.
-This patch add set_smb1_rsp_status() to ignore malformed smb1 message.
+In get_esi() PCI errors are checked inside line-split "if" conditions (in
+addition to the file not following the coding style). To make the code in
+get_esi() more readable, fix the coding style and use the usual error
+handling pattern with a separate variable.
 
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In addition, initialization of 'error' variable at declaration is not
+needed.
+
+No functional changes intended.
+
+Link: https://lore.kernel.org/r/20230911125354.25501-4-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb_common.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/atm/iphase.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -372,11 +372,22 @@ static int smb1_allocate_rsp_buf(struct
- 	return 0;
- }
- 
-+/**
-+ * set_smb1_rsp_status() - set error type in smb response header
-+ * @work:	smb work containing smb response header
-+ * @err:	error code to set in response
-+ */
-+static void set_smb1_rsp_status(struct ksmbd_work *work, __le32 err)
-+{
-+	work->send_no_response = 1;
-+}
-+
- static struct smb_version_ops smb1_server_ops = {
- 	.get_cmd_val = get_smb1_cmd_val,
- 	.init_rsp_hdr = init_smb1_rsp_hdr,
- 	.allocate_rsp_buf = smb1_allocate_rsp_buf,
- 	.check_user_session = smb1_check_user_session,
-+	.set_rsp_status = set_smb1_rsp_status,
- };
- 
- static int smb1_negotiate(struct ksmbd_work *work)
+diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
+index 827c6d5e61774..b6d8c2660e4a0 100644
+--- a/drivers/atm/iphase.c
++++ b/drivers/atm/iphase.c
+@@ -2290,19 +2290,21 @@ static int get_esi(struct atm_dev *dev)
+ static int reset_sar(struct atm_dev *dev)  
+ {  
+ 	IADEV *iadev;  
+-	int i, error = 1;  
++	int i, error;
+ 	unsigned int pci[64];  
+ 	  
+ 	iadev = INPH_IA_DEV(dev);  
+-	for(i=0; i<64; i++)  
+-	  if ((error = pci_read_config_dword(iadev->pci,  
+-				i*4, &pci[i])) != PCIBIOS_SUCCESSFUL)  
+-  	      return error;  
++	for (i = 0; i < 64; i++) {
++		error = pci_read_config_dword(iadev->pci, i * 4, &pci[i]);
++		if (error != PCIBIOS_SUCCESSFUL)
++			return error;
++	}
+ 	writel(0, iadev->reg+IPHASE5575_EXT_RESET);  
+-	for(i=0; i<64; i++)  
+-	  if ((error = pci_write_config_dword(iadev->pci,  
+-					i*4, pci[i])) != PCIBIOS_SUCCESSFUL)  
+-	    return error;  
++	for (i = 0; i < 64; i++) {
++		error = pci_write_config_dword(iadev->pci, i * 4, pci[i]);
++		if (error != PCIBIOS_SUCCESSFUL)
++			return error;
++	}
+ 	udelay(5);  
+ 	return 0;  
+ }  
+-- 
+2.42.0
+
 
 
 
