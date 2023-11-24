@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5857F7F4D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFD167F7D26
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E462428121D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DBD21C211B3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B70B34189;
-	Fri, 24 Nov 2023 18:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5858839FF7;
+	Fri, 24 Nov 2023 18:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYy7sEga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5bAMKsu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F962E858;
-	Fri, 24 Nov 2023 18:40:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F44CC433C8;
-	Fri, 24 Nov 2023 18:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E2E381D6;
+	Fri, 24 Nov 2023 18:21:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DD9C433C9;
+	Fri, 24 Nov 2023 18:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851216;
-	bh=vgE3FpcxN8aYnzV39Q+TqsKGx9rdb9I0gskj5m5Lf3Y=;
+	s=korg; t=1700850107;
+	bh=KuBSiNbIox6jFS1QfiWuGjs5JXTS2x1rMZCoDAVrHBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vYy7sEga9zLnitm2YLTIAgtDrYR77cJN9OJ6yMQobQTyykZKfN5xL21XazwM629+U
-	 k989mMsnJrFrR2Jp7lxydRSJp84wwBRGW7cunpeBfcfxM1aeU50YIe9jq57gA18L3T
-	 KLFwJWD8J1mbETrSNlHgYcWnm44GjUY4W3dx6EPM=
+	b=h5bAMKsuy7n1Cl+oaBkqmtf+L27F03hkjct354H8LKOZuXLDRms9j1PBoiqLZWNDy
+	 YVVY0j1xYwgFb7x+ce7Hj+RscWPts8uov8I6yuaOEHEQYuryWUNBu4DTUSVxZ4dtG4
+	 xmKCBDmBUCqT3MZF/lQVGM9A+OoO0gj2MWHXms2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.5 360/491] i3c: master: svc: fix check wrong status register in irq handler
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 430/530] xfs: recovery should not clear di_flushiter unconditionally
 Date: Fri, 24 Nov 2023 17:49:56 +0000
-Message-ID: <20231124172035.392747823@linuxfoundation.org>
+Message-ID: <20231124172041.168091053@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,39 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-commit 225d5ef048c4ed01a475c95d94833bd7dd61072d upstream.
+commit 7930d9e103700cde15833638855b750715c12091 upstream.
 
-svc_i3c_master_irq_handler() wrongly checks register SVC_I3C_MINTMASKED. It
-should be SVC_I3C_MSTATUS.
+Because on v3 inodes, di_flushiter doesn't exist. It overlaps with
+zero padding in the inode, except when NREXT64=1 configurations are
+in use and the zero padding is no longer padding but holds the 64
+bit extent counter.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-5-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This manifests obviously on big endian platforms (e.g. s390) because
+the log dinode is in host order and the overlap is the LSBs of the
+extent count field. It is not noticed on little endian machines
+because the overlap is at the MSB end of the extent count field and
+we need to get more than 2^^48 extents in the inode before it
+manifests. i.e. the heat death of the universe will occur before we
+see the problem in little endian machines.
+
+This is a zero-day issue for NREXT64=1 configuraitons on big endian
+machines. Fix it by only clearing di_flushiter on v2 inodes during
+recovery.
+
+Fixes: 9b7d16e34bbe ("xfs: Introduce XFS_DIFLAG2_NREXT64 and associated helpers")
+cc: stable@kernel.org # 5.19+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_inode_item_recover.c |   32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -477,7 +477,7 @@ reenable_ibis:
- static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
- {
- 	struct svc_i3c_master *master = (struct svc_i3c_master *)dev_id;
--	u32 active = readl(master->regs + SVC_I3C_MINTMASKED);
-+	u32 active = readl(master->regs + SVC_I3C_MSTATUS);
+--- a/fs/xfs/xfs_inode_item_recover.c
++++ b/fs/xfs/xfs_inode_item_recover.c
+@@ -369,24 +369,26 @@ xlog_recover_inode_commit_pass2(
+ 	 * superblock flag to determine whether we need to look at di_flushiter
+ 	 * to skip replay when the on disk inode is newer than the log one
+ 	 */
+-	if (!xfs_has_v3inodes(mp) &&
+-	    ldip->di_flushiter < be16_to_cpu(dip->di_flushiter)) {
+-		/*
+-		 * Deal with the wrap case, DI_MAX_FLUSH is less
+-		 * than smaller numbers
+-		 */
+-		if (be16_to_cpu(dip->di_flushiter) == DI_MAX_FLUSH &&
+-		    ldip->di_flushiter < (DI_MAX_FLUSH >> 1)) {
+-			/* do nothing */
+-		} else {
+-			trace_xfs_log_recover_inode_skip(log, in_f);
+-			error = 0;
+-			goto out_release;
++	if (!xfs_has_v3inodes(mp)) {
++		if (ldip->di_flushiter < be16_to_cpu(dip->di_flushiter)) {
++			/*
++			 * Deal with the wrap case, DI_MAX_FLUSH is less
++			 * than smaller numbers
++			 */
++			if (be16_to_cpu(dip->di_flushiter) == DI_MAX_FLUSH &&
++			    ldip->di_flushiter < (DI_MAX_FLUSH >> 1)) {
++				/* do nothing */
++			} else {
++				trace_xfs_log_recover_inode_skip(log, in_f);
++				error = 0;
++				goto out_release;
++			}
+ 		}
++
++		/* Take the opportunity to reset the flush iteration count */
++		ldip->di_flushiter = 0;
+ 	}
  
- 	if (!SVC_I3C_MSTATUS_SLVSTART(active))
- 		return IRQ_NONE;
+-	/* Take the opportunity to reset the flush iteration count */
+-	ldip->di_flushiter = 0;
+ 
+ 	if (unlikely(S_ISREG(ldip->di_mode))) {
+ 		if ((ldip->di_format != XFS_DINODE_FMT_EXTENTS) &&
 
 
 
