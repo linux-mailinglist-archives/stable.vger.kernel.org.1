@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031A47F7C07
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53EAD7F7E07
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0683281D4E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8D6EB20AE6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F753A8C3;
-	Fri, 24 Nov 2023 18:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054F939FE3;
+	Fri, 24 Nov 2023 18:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ED8huTWx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/SYkQw/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D243A8C2;
-	Fri, 24 Nov 2023 18:11:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFA4C433C7;
-	Fri, 24 Nov 2023 18:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56E433063;
+	Fri, 24 Nov 2023 18:29:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407E7C433C8;
+	Fri, 24 Nov 2023 18:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849461;
-	bh=ynJO5bnLuwS4t8X6H2+zBtPns0TX91E1UWe35fuDYdU=;
+	s=korg; t=1700850554;
+	bh=TWkAEsTHiW+29oS7/szXFONRSISLCzixIYWwXgc6uu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ED8huTWxF4c116BV54G4bqt4HGkH4G966axRYgV0/yptRTNxOkhVZH1W5Mbj16JI6
-	 92in2RHMJG4RBKxBCvpPBqVPJWYxEFgPgCrzUua5bYZHPXSdhpvvVgxTaulZFPEXpx
-	 HlyIHjuYf0RThg4TTq7Wbxl7QAdBn6o8TEcaot+c=
+	b=b/SYkQw/a4LmLjkcAiCGY4DZqG3KXimuwK7DQ9vqVDZ+lAIpK4m+Z/6T2HeaCcNaB
+	 tqUEL1VZHmrwVyM/zcmR6ZZiN9BQdHni2j1gowCiA51BOMdeZDtqzkkXpPsjbC00F9
+	 358IKlQojUNb2sr+4qujz/5B7eFPeH8AKvMkdB2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/530] drm/i915/mtl: avoid stringop-overflow warning
+Subject: [PATCH 6.5 096/491] PCI: mvebu: Use FIELD_PREP() with Link Width
 Date: Fri, 24 Nov 2023 17:45:32 +0000
-Message-ID: <20231124172033.130625897@linuxfoundation.org>
+Message-ID: <20231124172027.463003678@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,80 +52,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 390001d648ffa027b750b7dceb5d43f4c1d1a39e ]
+[ Upstream commit 408599ec561ad5862cda4f107626009f6fa97a74 ]
 
-The newly added memset() causes a warning for some reason I could not
-figure out:
+mvebu_pcie_setup_hw() setups the Maximum Link Width field in the Link
+Capabilities registers using an open-coded variant of FIELD_PREP() with
+a literal in shift. Improve readability by using
+FIELD_PREP(PCI_EXP_LNKCAP_MLW, ...).
 
-In file included from arch/x86/include/asm/string.h:3,
-                 from drivers/gpu/drm/i915/gt/intel_rc6.c:6:
-In function 'rc6_res_reg_init',
-    inlined from 'intel_rc6_init' at drivers/gpu/drm/i915/gt/intel_rc6.c:610:2:
-arch/x86/include/asm/string_32.h:195:29: error: '__builtin_memset' writing 16 bytes into a region of size 0 overflows the destination [-Werror=stringop-overflow=]
-  195 | #define memset(s, c, count) __builtin_memset(s, c, count)
-      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/gpu/drm/i915/gt/intel_rc6.c:584:9: note: in expansion of macro 'memset'
-  584 |         memset(rc6->res_reg, INVALID_MMIO_REG.reg, sizeof(rc6->res_reg));
-      |         ^~~~~~
-In function 'intel_rc6_init':
-
-Change it to an normal initializer and an added memcpy() that does not have
-this problem.
-
-Fixes: 4bb9ca7ee074 ("drm/i915/mtl: C6 residency and C state type for MTL SAMedia")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231016201012.1022812-1-arnd@kernel.org
-(cherry picked from commit 0520b30b219053cd789909bca45b3c486ef3ee09)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20230919125648.1920-6-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_rc6.c | 16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/pci/controller/pci-mvebu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_rc6.c b/drivers/gpu/drm/i915/gt/intel_rc6.c
-index 58bb1c55294c9..ccdc1afbf11b5 100644
---- a/drivers/gpu/drm/i915/gt/intel_rc6.c
-+++ b/drivers/gpu/drm/i915/gt/intel_rc6.c
-@@ -584,19 +584,23 @@ static void __intel_rc6_disable(struct intel_rc6 *rc6)
+diff --git a/drivers/pci/controller/pci-mvebu.c b/drivers/pci/controller/pci-mvebu.c
+index c931b1b07b1d8..0cacd58f6c05e 100644
+--- a/drivers/pci/controller/pci-mvebu.c
++++ b/drivers/pci/controller/pci-mvebu.c
+@@ -265,7 +265,7 @@ static void mvebu_pcie_setup_hw(struct mvebu_pcie_port *port)
+ 	 */
+ 	lnkcap = mvebu_readl(port, PCIE_CAP_PCIEXP + PCI_EXP_LNKCAP);
+ 	lnkcap &= ~PCI_EXP_LNKCAP_MLW;
+-	lnkcap |= (port->is_x4 ? 4 : 1) << 4;
++	lnkcap |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, port->is_x4 ? 4 : 1);
+ 	mvebu_writel(port, lnkcap, PCIE_CAP_PCIEXP + PCI_EXP_LNKCAP);
  
- static void rc6_res_reg_init(struct intel_rc6 *rc6)
- {
--	memset(rc6->res_reg, INVALID_MMIO_REG.reg, sizeof(rc6->res_reg));
-+	i915_reg_t res_reg[INTEL_RC6_RES_MAX] = {
-+		[0 ... INTEL_RC6_RES_MAX - 1] = INVALID_MMIO_REG,
-+	};
- 
- 	switch (rc6_to_gt(rc6)->type) {
- 	case GT_MEDIA:
--		rc6->res_reg[INTEL_RC6_RES_RC6] = MTL_MEDIA_MC6;
-+		res_reg[INTEL_RC6_RES_RC6] = MTL_MEDIA_MC6;
- 		break;
- 	default:
--		rc6->res_reg[INTEL_RC6_RES_RC6_LOCKED] = GEN6_GT_GFX_RC6_LOCKED;
--		rc6->res_reg[INTEL_RC6_RES_RC6] = GEN6_GT_GFX_RC6;
--		rc6->res_reg[INTEL_RC6_RES_RC6p] = GEN6_GT_GFX_RC6p;
--		rc6->res_reg[INTEL_RC6_RES_RC6pp] = GEN6_GT_GFX_RC6pp;
-+		res_reg[INTEL_RC6_RES_RC6_LOCKED] = GEN6_GT_GFX_RC6_LOCKED;
-+		res_reg[INTEL_RC6_RES_RC6] = GEN6_GT_GFX_RC6;
-+		res_reg[INTEL_RC6_RES_RC6p] = GEN6_GT_GFX_RC6p;
-+		res_reg[INTEL_RC6_RES_RC6pp] = GEN6_GT_GFX_RC6pp;
- 		break;
- 	}
-+
-+	memcpy(rc6->res_reg, res_reg, sizeof(res_reg));
- }
- 
- void intel_rc6_init(struct intel_rc6 *rc6)
+ 	/* Disable Root Bridge I/O space, memory space and bus mastering. */
 -- 
 2.42.0
 
