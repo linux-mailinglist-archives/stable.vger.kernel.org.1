@@ -1,191 +1,101 @@
-Return-Path: <stable+bounces-194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62B67F7527
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:31:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC46F7F7531
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:32:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35063B210F6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1985A1C20AC0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:32:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A22228DCC;
-	Fri, 24 Nov 2023 13:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4FA28DD4;
+	Fri, 24 Nov 2023 13:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcijxXsX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YiA2pP3B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50172286B0
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:31:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 639BFC433CD;
-	Fri, 24 Nov 2023 13:31:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700832714;
-	bh=FW6D1yNpWqPEh03+r96AM7AXfO9H5IumWNwqYsXpghc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=hcijxXsXh0AAGT1o5xrpCcl/ODUrWjAUrDkMWOWaEEQ0M51xmcK3DBV8MLre4OQO0
-	 knAmUIK73NSP/nwSVub78o+Rg2aP1IkPfmIjOg4fsot6UtMI3/ukAiDZ1eYm280NeR
-	 VaA/WMtQZg3NO5MwzstJNJKkVhD3O4FxP/UYNSyk=
-Subject: FAILED: patch "[PATCH] media: qcom: camss: Fix genpd cleanup" failed to apply to 5.15-stable tree
-To: bryan.odonoghue@linaro.org,hverkuil-cisco@xs4all.nl
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:31:41 +0000
-Message-ID: <2023112440-vanquish-unusual-1564@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05EAB16432;
+	Fri, 24 Nov 2023 13:32:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41961C433CB;
+	Fri, 24 Nov 2023 13:32:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1700832772;
+	bh=fhbMJZ27leVTHlU/rvmhc8ewmJZU6ueXtCcpXIxIDJY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=YiA2pP3B5rujWI+yGBH96W8o/HpPx5+0teQ+jH6BZaYT7MtEqCfQfVV7HiZ2xdhC+
+	 ZksjogMFANkMhvmdDIxzRicACG85HmNqUSAgoINfB36f6ePjldvS3N/LDJR+cT48xQ
+	 LekK6XF1APfKrbLEaJBCNgeQgBXKcYDgk4Zl+TXUNUzqD0hgbEejXH3PW/LSGfDYij
+	 we+rpSkzSiNoU3wnl9alGNJHz1wsL2L7U3LeLCnf9LtH4orQjGTZdXWa0r3z9gRpPI
+	 tpV1UwU9vWW9shfpkPFKYbEyeaqEYYJvv9hecXh++3rU/OmFcJbgFtqS1ezGgMpB/P
+	 aez8elYq9JxiQ==
+From: Vinod Koul <vkoul@kernel.org>
+To: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Pierre Yves MORDRET <pierre-yves.mordret@st.com>, 
+ M'boumba Cedric Madianga <cedric.madianga@gmail.com>, 
+ Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org, 
+ kernel test robot <lkp@intel.com>, dmaengine@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20231106134832.1470305-1-amelie.delaunay@foss.st.com>
+References: <20231106134832.1470305-1-amelie.delaunay@foss.st.com>
+Subject: Re: [PATCH v2] dmaengine: stm32-dma: avoid bitfield overflow
+ assertion
+Message-Id: <170083276888.771401.2511759200122212610.b4-ty@kernel.org>
+Date: Fri, 24 Nov 2023 19:02:48 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+On Mon, 06 Nov 2023 14:48:32 +0100, Amelie Delaunay wrote:
+> stm32_dma_get_burst() returns a negative error for invalid input, which
+> gets turned into a large u32 value in stm32_dma_prep_dma_memcpy() that
+> in turn triggers an assertion because it does not fit into a two-bit field:
+> drivers/dma/stm32-dma.c: In function 'stm32_dma_prep_dma_memcpy':
+> include/linux/compiler_types.h:354:38: error: call to '__compiletime_assert_282' declared with attribute error: FIELD_PREP: value too large for the field
+>      _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>                                          ^
+>    include/linux/compiler_types.h:335:4: note: in definition of macro '__compiletime_assert'
+>        prefix ## suffix();    \
+>        ^~~~~~
+>    include/linux/compiler_types.h:354:2: note: in expansion of macro '_compiletime_assert'
+>      _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+>      ^~~~~~~~~~~~~~~~~~~
+>    include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+>     #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+>                                         ^~~~~~~~~~~~~~~~~~
+>    include/linux/bitfield.h:68:3: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+>       BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?  \
+>       ^~~~~~~~~~~~~~~~
+>    include/linux/bitfield.h:114:3: note: in expansion of macro '__BF_FIELD_CHECK'
+>       __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: "); \
+>       ^~~~~~~~~~~~~~~~
+>    drivers/dma/stm32-dma.c:1237:4: note: in expansion of macro 'FIELD_PREP'
+>        FIELD_PREP(STM32_DMA_SCR_PBURST_MASK, dma_burst) |
+>        ^~~~~~~~~~
+> 
+> [...]
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Applied, thanks!
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x f69791c39745e64621216fe8919cb73c0065002b
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112440-vanquish-unusual-1564@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+[1/1] dmaengine: stm32-dma: avoid bitfield overflow assertion
+      commit: 54bed6bafa0f38daf9697af50e3aff5ff1354fe1
 
-Possible dependencies:
+Best regards,
+-- 
+~Vinod
 
-f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
-b278080a89f4 ("media: qcom: camss: Fix V4L2 async notifier error path")
-7405116519ad ("media: qcom: camss: Fix pm_domain_on sequence in probe")
-5651bab6890a ("media: qcom: Initialise V4L2 async notifier later")
-428bbf4be401 ("media: camss: Convert to platform remove callback returning void")
-46cc03175498 ("media: camss: Split power domain management")
-3d658980e6da ("media: camss: Do not attach an already attached power domain on MSM8916 platform")
-cf295629e3d6 ("media: camss: Allocate camss struct as a managed device resource")
-6b1814e26989 ("media: camss: Allocate power domain resources dynamically")
-5ba38efb2622 ("media: camss: Add SM8250 bandwdith configuration support")
-b4436a18eedb ("media: camss: add support for SM8250 camss")
-4edc8eae715c ("media: camss: Add initial support for VFE hardware version Titan 480")
-3c8c15391481 ("media: v4l: async: Rename async nf functions, clean up long lines")
-2070893aed11 ("media: rcar-vin: Move group async notifier")
-161b56a82dba ("media: rcar-vin: Rename array storing subdevice information")
-6df305779291 ("media: rcar-vin: Improve async notifier cleanup paths")
-b2dc5680aeb4 ("media: rcar-vin: Refactor controls creation for video device")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From f69791c39745e64621216fe8919cb73c0065002b Mon Sep 17 00:00:00 2001
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Wed, 30 Aug 2023 16:16:08 +0100
-Subject: [PATCH] media: qcom: camss: Fix genpd cleanup
-
-Right now we never release the power-domains properly on the error path.
-Add a routine to be reused for this purpose and appropriate jumps in
-probe() to run that routine where necessary.
-
-Fixes: 2f6f8af67203 ("media: camss: Refactor VFE power domain toggling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index a925b2bfd898..c6df862c79e3 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1538,6 +1538,20 @@ static int camss_icc_get(struct camss *camss)
- 	return 0;
- }
- 
-+static void camss_genpd_cleanup(struct camss *camss)
-+{
-+	int i;
-+
-+	if (camss->genpd_num == 1)
-+		return;
-+
-+	if (camss->genpd_num > camss->vfe_num)
-+		device_link_del(camss->genpd_link[camss->genpd_num - 1]);
-+
-+	for (i = 0; i < camss->genpd_num; i++)
-+		dev_pm_domain_detach(camss->genpd[i], true);
-+}
-+
- /*
-  * camss_probe - Probe CAMSS platform device
-  * @pdev: Pointer to CAMSS platform device
-@@ -1627,11 +1641,11 @@ static int camss_probe(struct platform_device *pdev)
- 
- 	ret = camss_init_subdevices(camss);
- 	if (ret < 0)
--		return ret;
-+		goto err_genpd_cleanup;
- 
- 	ret = dma_set_mask_and_coherent(dev, 0xffffffff);
- 	if (ret)
--		return ret;
-+		goto err_genpd_cleanup;
- 
- 	camss->media_dev.dev = camss->dev;
- 	strscpy(camss->media_dev.model, "Qualcomm Camera Subsystem",
-@@ -1643,7 +1657,7 @@ static int camss_probe(struct platform_device *pdev)
- 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
--		return ret;
-+		goto err_genpd_cleanup;
- 	}
- 
- 	v4l2_async_nf_init(&camss->notifier, &camss->v4l2_dev);
-@@ -1693,28 +1707,19 @@ static int camss_probe(struct platform_device *pdev)
- err_v4l2_device_unregister:
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
-+err_genpd_cleanup:
-+	camss_genpd_cleanup(camss);
- 
- 	return ret;
- }
- 
- void camss_delete(struct camss *camss)
- {
--	int i;
--
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	media_device_unregister(&camss->media_dev);
- 	media_device_cleanup(&camss->media_dev);
- 
- 	pm_runtime_disable(camss->dev);
--
--	if (camss->genpd_num == 1)
--		return;
--
--	if (camss->genpd_num > camss->vfe_num)
--		device_link_del(camss->genpd_link[camss->genpd_num - 1]);
--
--	for (i = 0; i < camss->genpd_num; i++)
--		dev_pm_domain_detach(camss->genpd[i], true);
- }
- 
- /*
-@@ -1733,6 +1738,8 @@ static void camss_remove(struct platform_device *pdev)
- 
- 	if (atomic_read(&camss->ref_count) == 0)
- 		camss_delete(camss);
-+
-+	camss_genpd_cleanup(camss);
- }
- 
- static const struct of_device_id camss_dt_match[] = {
 
 
