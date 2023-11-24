@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B297F7AC2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E4E7F80EF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF1FE281874
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27E4EB21AB8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6E831740;
-	Fri, 24 Nov 2023 17:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C92A364A0;
+	Fri, 24 Nov 2023 18:54:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5ByPLtD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQ50sC48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0262D381D6;
-	Fri, 24 Nov 2023 17:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83924C433C7;
-	Fri, 24 Nov 2023 17:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D5833CFD;
+	Fri, 24 Nov 2023 18:54:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97422C433CB;
+	Fri, 24 Nov 2023 18:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848703;
-	bh=IIyLfpBsPuAoxRiZ/WdPYbcd1p3Ji+XJEwIYq/rFqAY=;
+	s=korg; t=1700852048;
+	bh=SWjKKwmIlcvxTuFoaI+usBvUOmjlc+vtggfKt67jWso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5ByPLtD7UDaC5OhBBxiUBDprjz9FsevC6+k4kBEyXCPVsQO+aIV54g/16MvormIi
-	 EZq7i4ZOy1DhVi6AgO/+RQiifz+LY4FFUocXqLkiOifMlU9y8xr9/OXAxJUZBT/TmK
-	 c+w0ouuF9Y3IplX8LEgiJFCyaKWKbOnKo15QRJHc=
+	b=eQ50sC48VGH0oFYF6KyqkoNQT447W/54/vWwENaSWSDfxh3o9qq3kGuamFdE3B+bR
+	 OJS2koVoQYLFtTdtwyJ5WmNwMf7gAknbuzMRtg/l+ayS45fQijDRtmU+YIoIynYy6+
+	 z/dV7CdtwhtokjaBThMf2eBaJXV1sgmDJOuMAnzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Held <felix.held@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 13/97] drm/amd: Fix UBSAN array-index-out-of-bounds for SMU7
-Date: Fri, 24 Nov 2023 17:49:46 +0000
-Message-ID: <20231124171934.627467816@linuxfoundation.org>
+	Herve Codina <herve.codina@bootlin.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 200/372] genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
+Date: Fri, 24 Nov 2023 17:49:47 +0000
+Message-ID: <20231124172017.125767381@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +52,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 760efbca74a405dc439a013a5efaa9fadc95a8c3 ]
+commit 5e7afb2eb7b2a7c81e9f608cbdf74a07606fd1b5 upstream.
 
-For pptable structs that use flexible array sizes, use flexible arrays.
+irq_remove_generic_chip() calculates the Linux interrupt number for removing the
+handler and interrupt chip based on gc::irq_base as a linear function of
+the bit positions of set bits in the @msk argument.
 
-Suggested-by: Felix Held <felix.held@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2874
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When the generic chip is present in an irq domain, i.e. created with a call
+to irq_alloc_domain_generic_chips(), gc::irq_base contains not the base
+Linux interrupt number.  It contains the base hardware interrupt for this
+chip. It is set to 0 for the first chip in the domain, 0 + N for the next
+chip, where $N is the number of hardware interrupts per chip.
+
+That means the Linux interrupt number cannot be calculated based on
+gc::irq_base for irqdomain based chips without a domain map lookup, which
+is currently missing.
+
+Rework the code to take the irqdomain case into account and calculate the
+Linux interrupt number by a irqdomain lookup of the domain specific
+hardware interrupt number.
+
+[ tglx: Massage changelog. Reshuffle the logic and add a proper comment. ]
+
+Fixes: cfefd21e693d ("genirq: Add chip suspend and resume callbacks")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231024150335.322282-1-herve.codina@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/include/pptable.h              | 4 ++--
- drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ kernel/irq/generic-chip.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/include/pptable.h b/drivers/gpu/drm/amd/include/pptable.h
-index 0b6a057e0a4c4..5aac8d545bdc6 100644
---- a/drivers/gpu/drm/amd/include/pptable.h
-+++ b/drivers/gpu/drm/amd/include/pptable.h
-@@ -78,7 +78,7 @@ typedef struct _ATOM_PPLIB_THERMALCONTROLLER
- typedef struct _ATOM_PPLIB_STATE
+--- a/kernel/irq/generic-chip.c
++++ b/kernel/irq/generic-chip.c
+@@ -544,21 +544,34 @@ EXPORT_SYMBOL_GPL(irq_setup_alt_chip);
+ void irq_remove_generic_chip(struct irq_chip_generic *gc, u32 msk,
+ 			     unsigned int clr, unsigned int set)
  {
-     UCHAR ucNonClockStateIndex;
--    UCHAR ucClockStateIndices[1]; // variable-sized
-+    UCHAR ucClockStateIndices[]; // variable-sized
- } ATOM_PPLIB_STATE;
+-	unsigned int i = gc->irq_base;
++	unsigned int i, virq;
  
+ 	raw_spin_lock(&gc_lock);
+ 	list_del(&gc->list);
+ 	raw_spin_unlock(&gc_lock);
  
-@@ -473,7 +473,7 @@ typedef struct _ATOM_PPLIB_STATE_V2
-       /**
-       * Driver will read the first ucNumDPMLevels in this array
-       */
--      UCHAR clockInfoIndex[1];
-+      UCHAR clockInfoIndex[];
- } ATOM_PPLIB_STATE_V2;
+-	for (; msk; msk >>= 1, i++) {
++	for (i = 0; msk; msk >>= 1, i++) {
+ 		if (!(msk & 0x01))
+ 			continue;
  
- typedef struct _StateArray{
-diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
-index 1e870f58dd12a..d5a4a08c6d392 100644
---- a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
-+++ b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
-@@ -179,7 +179,7 @@ typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
- typedef struct _ATOM_Tonga_MCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_MCLK_Dependency_Record entries[1];				/* Dynamically allocate entries. */
-+	ATOM_Tonga_MCLK_Dependency_Record entries[];				/* Dynamically allocate entries. */
- } ATOM_Tonga_MCLK_Dependency_Table;
- 
- typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
-@@ -194,7 +194,7 @@ typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
- typedef struct _ATOM_Tonga_SCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
-+	ATOM_Tonga_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
- } ATOM_Tonga_SCLK_Dependency_Table;
- 
- typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
--- 
-2.42.0
-
++		/*
++		 * Interrupt domain based chips store the base hardware
++		 * interrupt number in gc::irq_base. Otherwise gc::irq_base
++		 * contains the base Linux interrupt number.
++		 */
++		if (gc->domain) {
++			virq = irq_find_mapping(gc->domain, gc->irq_base + i);
++			if (!virq)
++				continue;
++		} else {
++			virq = gc->irq_base + i;
++		}
++
+ 		/* Remove handler first. That will mask the irq line */
+-		irq_set_handler(i, NULL);
+-		irq_set_chip(i, &no_irq_chip);
+-		irq_set_chip_data(i, NULL);
+-		irq_modify_status(i, clr, set);
++		irq_set_handler(virq, NULL);
++		irq_set_chip(virq, &no_irq_chip);
++		irq_set_chip_data(virq, NULL);
++		irq_modify_status(virq, clr, set);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(irq_remove_generic_chip);
 
 
 
