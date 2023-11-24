@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EC97F7CAA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D857F7EE1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D56F51C20D26
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 771652823F2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1DD3A8CF;
-	Fri, 24 Nov 2023 18:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10D133CC7;
+	Fri, 24 Nov 2023 18:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgBCtzSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsvefLYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFEE3A8C2;
-	Fri, 24 Nov 2023 18:17:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A15C433C8;
-	Fri, 24 Nov 2023 18:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C3E33CFB;
+	Fri, 24 Nov 2023 18:36:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CF3C433C8;
+	Fri, 24 Nov 2023 18:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849838;
-	bh=H+QzWPsBvo2aqikzUn66dAbayTQ5z5il0ZFJXUDdLyk=;
+	s=korg; t=1700851011;
+	bh=U6DttP2PYlsSeVkJV65PJFQAQsR13l1L2OQmv9lBLjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgBCtzSo9BvGRBDN59Kn6fkMVdnAjlP7YsTqCzJzvmLHtN1BlVnholiM+gYy8QQGa
-	 TOkjWQQCFfYYm9UIioyxD+7n3wonfmjYbfkuDPF9wtweNsiuzpm31fdFg8dxPxpgt9
-	 pLryMPRteoP9lZIeLfhtZ/IEVKApNlmDvWoOIcRw=
+	b=RsvefLYkHr7lLxVI99Q0WbeDmeAYxMfmcKwiBhURNSk3v4ZUv3D4C4sW42J+KtZLU
+	 UVhs4UYTrBy3EhUqSduOqMioNtYseTX03X998jn+lX8lifVj5XTZc0XsnjqEvPBXD+
+	 iQ2Mz6pD+mGl5gZplGC3GooCt1i2ukydrdfz+SPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 340/530] arm64: dts: qcom: ipq8074: Fix hwlock index for SMEM
+	John David Anglin <dave.anglin@bell.net>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.5 270/491] parisc: Add nop instructions after TLB inserts
 Date: Fri, 24 Nov 2023 17:48:26 +0000
-Message-ID: <20231124172038.383190572@linuxfoundation.org>
+Message-ID: <20231124172032.689984301@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +52,309 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: John David Anglin <dave@parisc-linux.org>
 
-commit 8a781d04e580705d36f7db07f5c80e748100b69d upstream.
+commit ad4aa06e1d92b06ed56c7240252927bd60632efe upstream.
 
-SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-in SMEM region shared by the Host and FW.
+An excerpt from the PA8800 ERS states:
 
-Fix the SMEM hwlock index to 3 for IPQ8074.
+* The PA8800 violates the seven instruction pipeline rule when performing
+  TLB inserts or PxTLBE instructions with the PSW C bit on. The instruction
+  will take effect by the 12th instruction after the insert or purge.
 
+I believe we have a problem with handling TLB misses. We don't fill
+the pipeline following TLB inserts. As a result, we likely fault again
+after returning from the interruption.
+
+The above statement indicates that we need at least seven instructions
+after the insert on pre PA8800 processors and we need 12 instructions
+on PA8800/PA8900 processors.
+
+Here we add macros and code to provide the required number instructions
+after a TLB insert.
+
+Signed-off-by: John David Anglin <dave.anglin@bell.net>
+Suggested-by: Helge Deller <deller@gmx.de>
 Cc: stable@vger.kernel.org
-Fixes: 42124b947e8e ("arm64: dts: qcom: ipq8074: add SMEM support")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230904172516.479866-4-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/ipq8074.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/kernel/entry.S |   81 ++++++++++++++++++++++++++++-----------------
+ 1 file changed, 52 insertions(+), 29 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
-@@ -101,7 +101,7 @@
- 			reg = <0x0 0x4ab00000 0x0 0x100000>;
- 			no-map;
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -36,6 +36,24 @@
+ 	.level 2.0
+ #endif
  
--			hwlocks = <&tcsr_mutex 0>;
-+			hwlocks = <&tcsr_mutex 3>;
- 		};
++/*
++ * We need seven instructions after a TLB insert for it to take effect.
++ * The PA8800/PA8900 processors are an exception and need 12 instructions.
++ * The RFI changes both IAOQ_Back and IAOQ_Front, so it counts as one.
++ */
++#ifdef CONFIG_64BIT
++#define NUM_PIPELINE_INSNS    12
++#else
++#define NUM_PIPELINE_INSNS    7
++#endif
++
++	/* Insert num nops */
++	.macro	insert_nops num
++	.rept \num
++	nop
++	.endr
++	.endm
++
+ 	/* Get aligned page_table_lock address for this mm from cr28/tr4 */
+ 	.macro  get_ptl reg
+ 	mfctl	%cr28,\reg
+@@ -415,24 +433,20 @@
+ 3:
+ 	.endm
  
- 		memory@4ac00000 {
+-	/* Release page_table_lock without reloading lock address.
+-	   We use an ordered store to ensure all prior accesses are
+-	   performed prior to releasing the lock. */
+-	.macro		ptl_unlock0	spc,tmp,tmp2
++	/* Release page_table_lock if for user space. We use an ordered
++	   store to ensure all prior accesses are performed prior to
++	   releasing the lock. Note stw may not be executed, so we
++	   provide one extra nop when CONFIG_TLB_PTLOCK is defined. */
++	.macro		ptl_unlock	spc,tmp,tmp2
+ #ifdef CONFIG_TLB_PTLOCK
+-98:	ldi		__ARCH_SPIN_LOCK_UNLOCKED_VAL, \tmp2
++98:	get_ptl		\tmp
++	ldi		__ARCH_SPIN_LOCK_UNLOCKED_VAL, \tmp2
+ 	or,COND(=)	%r0,\spc,%r0
+ 	stw,ma		\tmp2,0(\tmp)
+ 99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
+-#endif
+-	.endm
+-
+-	/* Release page_table_lock. */
+-	.macro		ptl_unlock1	spc,tmp,tmp2
+-#ifdef CONFIG_TLB_PTLOCK
+-98:	get_ptl		\tmp
+-	ptl_unlock0	\spc,\tmp,\tmp2
+-99:	ALTERNATIVE(98b, 99b, ALT_COND_NO_SMP, INSN_NOP)
++	insert_nops	NUM_PIPELINE_INSNS - 4
++#else
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ #endif
+ 	.endm
+ 
+@@ -1124,7 +1138,7 @@ dtlb_miss_20w:
+ 	
+ 	idtlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1133,6 +1147,7 @@ dtlb_check_alias_20w:
+ 
+ 	idtlbt          pte,prot
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1150,7 +1165,7 @@ nadtlb_miss_20w:
+ 
+ 	idtlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1159,6 +1174,7 @@ nadtlb_check_alias_20w:
+ 
+ 	idtlbt          pte,prot
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1184,7 +1200,7 @@ dtlb_miss_11:
+ 
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1194,6 +1210,7 @@ dtlb_check_alias_11:
+ 	idtlba          pte,(va)
+ 	idtlbp          prot,(va)
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1217,7 +1234,7 @@ nadtlb_miss_11:
+ 
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1227,6 +1244,7 @@ nadtlb_check_alias_11:
+ 	idtlba          pte,(va)
+ 	idtlbp          prot,(va)
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1246,7 +1264,7 @@ dtlb_miss_20:
+ 
+ 	idtlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1255,6 +1273,7 @@ dtlb_check_alias_20:
+ 	
+ 	idtlbt          pte,prot
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1274,7 +1293,7 @@ nadtlb_miss_20:
+ 	
+ 	idtlbt		pte,prot
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1283,6 +1302,7 @@ nadtlb_check_alias_20:
+ 
+ 	idtlbt          pte,prot
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1319,7 +1339,7 @@ itlb_miss_20w:
+ 	
+ 	iitlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1343,7 +1363,7 @@ naitlb_miss_20w:
+ 
+ 	iitlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1352,6 +1372,7 @@ naitlb_check_alias_20w:
+ 
+ 	iitlbt		pte,prot
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1377,7 +1398,7 @@ itlb_miss_11:
+ 
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1401,7 +1422,7 @@ naitlb_miss_11:
+ 
+ 	mtsp		t1, %sr1	/* Restore sr1 */
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1411,6 +1432,7 @@ naitlb_check_alias_11:
+ 	iitlba          pte,(%sr0, va)
+ 	iitlbp          prot,(%sr0, va)
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1431,7 +1453,7 @@ itlb_miss_20:
+ 
+ 	iitlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1451,7 +1473,7 @@ naitlb_miss_20:
+ 
+ 	iitlbt          pte,prot
+ 
+-	ptl_unlock1	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1460,6 +1482,7 @@ naitlb_check_alias_20:
+ 
+ 	iitlbt          pte,prot
+ 
++	insert_nops	NUM_PIPELINE_INSNS - 1
+ 	rfir
+ 	nop
+ 
+@@ -1481,7 +1504,7 @@ dbit_trap_20w:
+ 		
+ 	idtlbt          pte,prot
+ 
+-	ptl_unlock0	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ #else
+@@ -1507,7 +1530,7 @@ dbit_trap_11:
+ 
+ 	mtsp            t1, %sr1     /* Restore sr1 */
+ 
+-	ptl_unlock0	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ 
+@@ -1527,7 +1550,7 @@ dbit_trap_20:
+ 	
+ 	idtlbt		pte,prot
+ 
+-	ptl_unlock0	spc,t0,t1
++	ptl_unlock	spc,t0,t1
+ 	rfir
+ 	nop
+ #endif
 
 
 
