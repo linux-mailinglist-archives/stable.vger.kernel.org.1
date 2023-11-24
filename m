@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-2350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A967F83CD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A267F8455
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594E01C265C8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67F45B24C16
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 834CE364B7;
-	Fri, 24 Nov 2023 19:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A291835F04;
+	Fri, 24 Nov 2023 19:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRa1KBcE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kN2JkUhD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FE32511F;
-	Fri, 24 Nov 2023 19:21:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A61C433C7;
-	Fri, 24 Nov 2023 19:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5BF2EAEA;
+	Fri, 24 Nov 2023 19:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D621EC433C7;
+	Fri, 24 Nov 2023 19:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853666;
-	bh=CAnuQxQ+34Dpp1LTI7yJNO3yyf40rg+QkBKF73meeSs=;
+	s=korg; t=1700853975;
+	bh=Xg+hViAO3Wui1+d8YoTHmEvdoRy2Sw1i7KuLl9netL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRa1KBcENbpalkzXcvY91Mn5+65jfo0N65Qk9W3igWUctHQxQWhLJabdcs2KZ0HOj
-	 Pt3iVI240ctk+dirqWJDx6Gtog4nrhwTzcAV5V/U3l8ETMkHhJJvhGpgZkY8TBWU6v
-	 Mh5jgtzU5gXztKpmYYFBM83lki/1AGVGHwAD7tdA=
+	b=kN2JkUhDDO3itkjT5Y8gV0BrsGB9F7qXnFvRh2mtdvq+ulpDO9FvWC+TfF7e+c4GQ
+	 9Wb/v/AWbowFbAeiSFxaPYcoM9ine0M0Uj2jqoBxJrZDdnPjTjawygKkcv57bB/kTP
+	 hglTbC0xbF5lM3q0WfYsaA1wH5kLbEt/qccrsCIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 280/297] Revert "net: r8169: Disable multicast filter for RTL8168H and RTL8107E"
-Date: Fri, 24 Nov 2023 17:55:22 +0000
-Message-ID: <20231124172009.930192116@linuxfoundation.org>
+	Kevin Hilman <khilman@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Colin Ian King <colin.king@canonical.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 106/159] serial: meson: remove redundant initialization of variable id
+Date: Fri, 24 Nov 2023 17:55:23 +0000
+Message-ID: <20231124171946.296190575@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-commit 6a26310273c323380da21eb23fcfd50e31140913 upstream.
+[ Upstream commit 021212f5335229ed12e3d31f9b7d30bd3bb66f7d ]
 
-This reverts commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df.
+The variable id being initialized with a value that is never read
+and it is being updated later with a new value. The initialization is
+redundant and can be removed. Since id is just being used in a for-loop
+inside a local scope, move the declaration of id to that scope.
 
-I couldn't reproduce the reported issue. What I did, based on a pcap
-packet log provided by the reporter:
-- Used same chip version (RTL8168h)
-- Set MAC address to the one used on the reporters system
-- Replayed the EAPOL unicast packet that, according to the reporter,
-  was filtered out by the mc filter.
-The packet was properly received.
-
-Therefore the root cause of the reported issue seems to be somewhere
-else. Disabling mc filtering completely for the most common chip
-version is a quite big hammer. Therefore revert the change and wait
-for further analysis results from the reporter.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Addresses-Coverity: ("Unused value")
+Link: https://lore.kernel.org/r/20210426101106.9122-1-colin.king@canonical.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/tty/serial/meson_uart.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2553,9 +2553,7 @@ static void rtl_set_rx_mode(struct net_d
- 		rx_mode &= ~AcceptMulticast;
- 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
- 		   dev->flags & IFF_ALLMULTI ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
-+		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
- 		/* accept all multicasts */
- 	} else if (netdev_mc_empty(dev)) {
- 		rx_mode &= ~AcceptMulticast;
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index 4c3616cc00833..6a74a31231ebf 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -664,12 +664,13 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	struct resource *res_mem, *res_irq;
+ 	struct uart_port *port;
+ 	int ret = 0;
+-	int id = -1;
+ 
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
+ 
+ 	if (pdev->id < 0) {
++		int id;
++
+ 		for (id = AML_UART_PORT_OFFSET; id < AML_UART_PORT_NUM; id++) {
+ 			if (!meson_ports[id]) {
+ 				pdev->id = id;
+-- 
+2.42.0
+
 
 
 
