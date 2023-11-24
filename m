@@ -1,150 +1,123 @@
-Return-Path: <stable+bounces-273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3219F7F761B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:15:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E74B57F7659
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 890B5B21417
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:15:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA991C21041
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30512C871;
-	Fri, 24 Nov 2023 14:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD042D632;
+	Fri, 24 Nov 2023 14:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXEukl+2"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mEvmPHPx";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lBOeo5PN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50E9B19A1;
+	Fri, 24 Nov 2023 06:30:08 -0800 (PST)
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6E82C864
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:15:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC4FC433CD;
-	Fri, 24 Nov 2023 14:15:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700835323;
-	bh=kmtwnCgJSL6D6qMfkKLAw7NIOnD9LrQ0p05yQiwtxAc=;
-	h=Subject:To:Cc:From:Date:From;
-	b=YXEukl+2DyLMEfCkMquO6oDz3ARuBHLxIWJMikPuQbEDMG38SdhlcWyUkZF7Uwm4B
-	 i9iIidsKG/1GkrLs8ihaI6OIE7BkC8tZyzhsS70KBZqBaA8abJoIajWS0YhfG7gm/9
-	 MFzz/sHFvsIYwdf4X5AXBzIAe/RrS1YTDZAc94z8=
-Subject: FAILED: patch "[PATCH] drm/amd/display: update blank state on ODM changes" failed to apply to 6.5-stable tree
-To: wenjing.liu@amd.com,alexander.deucher@amd.com,dillon.varone@amd.com,hamza.mahfooz@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 14:15:13 +0000
-Message-ID: <2023112412-lagoon-yonder-7f24@gregkh>
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 22A9E21DBE;
+	Fri, 24 Nov 2023 14:24:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1700835840;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Dbxwk/y2VtCgNbHXNguUY9mwi4qlNBLd4z/wJfJpewQ=;
+	b=mEvmPHPx6O44285u0z8s07WLRfmvtQsXh93GzJv4I+Do7bc3RnOrlRpNdxiZgzN+KNF0ne
+	bWusNp/1gtlZ++KHD6Rh5DL55/Y7tHAMguP0HiQblCBaJH2cfZRBFPZffhTmrOxkrK9KLt
+	bFu7EpvaIDQp3QUBKNlep406R0HQ2HQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1700835840;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Dbxwk/y2VtCgNbHXNguUY9mwi4qlNBLd4z/wJfJpewQ=;
+	b=lBOeo5PN6a6CgiaqNeliUMglZIE5qyaSTAlA4InsztM09l/hf9+B9oxiy9VsBereUAQ2IC
+	mQho/MwbgxdGCJAQ==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id F1885139E8;
+	Fri, 24 Nov 2023 14:23:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id lNfoOf+xYGV5IgAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Fri, 24 Nov 2023 14:23:59 +0000
+Date: Fri, 24 Nov 2023 15:16:49 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Filipe Manana <fdmanana@kernel.org>
+Cc: David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: fix 64bit compat send ioctl arguments not
+ initializing version member
+Message-ID: <20231124141648.GA18929@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20231124000034.27522-1-dsterba@suse.com>
+ <CAL3q7H6C=FJL9cX2-uVo1AhnNAmMOGfFMkTEzHekL5OeW0OAXQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL3q7H6C=FJL9cX2-uVo1AhnNAmMOGfFMkTEzHekL5OeW0OAXQ@mail.gmail.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: -1.70
+X-Spam-Level: 
+X-Spamd-Result: default: False [-1.70 / 50.00];
+	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 REPLYTO_ADDR_EQ_FROM(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-0.70)[83.38%];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[4];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_TLS_ALL(0.00)[]
 
+On Fri, Nov 24, 2023 at 12:16:55AM +0000, Filipe Manana wrote:
+> On Fri, Nov 24, 2023 at 12:08 AM David Sterba <dsterba@suse.com> wrote:
+> >
+> > When the send protocol versioning was added in 5.16 e77fbf990316
+> > ("btrfs: send: prepare for v2 protocol"), the 32/64bit compat code was
+> > not updated (added by 2351f431f727 ("btrfs: fix send ioctl on 32bit with
+> > 64bit kernel")), missing the version struct member. The compat code is
+> > probably rarely used, nobody reported any bugs.
+> >
+> > Found by tool https://github.com/jirislaby/clang-struct .
+> >
+> > Fixes: 2351f431f727 ("btrfs: fix send ioctl on 32bit with 64bit kernel")
+> 
+> So this is not the correct commit, you copy-pasted the wrong one from
+> the change log above, it should be:
+> 
+> e77fbf990316 ("btrfs: send: prepare for v2 protocol")
 
-The patch below does not apply to the 6.5-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-git checkout FETCH_HEAD
-git cherry-pick -x 15e6b396f5ac259126f2447fcd2279ed5d3dd14f
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112412-lagoon-yonder-7f24@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
-
-Possible dependencies:
-
-15e6b396f5ac ("drm/amd/display: update blank state on ODM changes")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 15e6b396f5ac259126f2447fcd2279ed5d3dd14f Mon Sep 17 00:00:00 2001
-From: Wenjing Liu <wenjing.liu@amd.com>
-Date: Mon, 14 Aug 2023 17:11:16 -0400
-Subject: [PATCH] drm/amd/display: update blank state on ODM changes
-
-When we are dynamically adding new ODM slices, we didn't update
-blank state, if the pipe used by new ODM slice is previously blanked,
-we will continue outputting blank pixel data on that slice causing
-right half of the screen showing blank image.
-
-The previous fix was a temporary hack to directly update current state
-when committing new state. This could potentially cause hw and sw
-state synchronization issues and it is not permitted by dc commit
-design.
-
-Cc: stable@vger.kernel.org
-Fixes: 7fbf451e7639 ("drm/amd/display: Reinit DPG when exiting dynamic ODM")
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-index d3caba52d2fc..f3db16cd10db 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_hwseq.c
-@@ -1106,29 +1106,6 @@ void dcn20_blank_pixel_data(
- 			v_active,
- 			offset);
- 
--	if (!blank && dc->debug.enable_single_display_2to1_odm_policy) {
--		/* when exiting dynamic ODM need to reinit DPG state for unused pipes */
--		struct pipe_ctx *old_odm_pipe = dc->current_state->res_ctx.pipe_ctx[pipe_ctx->pipe_idx].next_odm_pipe;
--
--		odm_pipe = pipe_ctx->next_odm_pipe;
--
--		while (old_odm_pipe) {
--			if (!odm_pipe || old_odm_pipe->pipe_idx != odm_pipe->pipe_idx)
--				dc->hwss.set_disp_pattern_generator(dc,
--						old_odm_pipe,
--						CONTROLLER_DP_TEST_PATTERN_VIDEOMODE,
--						CONTROLLER_DP_COLOR_SPACE_UDEFINED,
--						COLOR_DEPTH_888,
--						NULL,
--						0,
--						0,
--						0);
--			old_odm_pipe = old_odm_pipe->next_odm_pipe;
--			if (odm_pipe)
--				odm_pipe = odm_pipe->next_odm_pipe;
--		}
--	}
--
- 	if (!blank)
- 		if (stream_res->abm) {
- 			dc->hwss.set_pipe(pipe_ctx);
-@@ -1732,11 +1709,16 @@ static void dcn20_program_pipe(
- 		struct dc_state *context)
- {
- 	struct dce_hwseq *hws = dc->hwseq;
--	/* Only need to unblank on top pipe */
- 
--	if ((pipe_ctx->update_flags.bits.enable || pipe_ctx->stream->update_flags.bits.abm_level)
--			&& !pipe_ctx->top_pipe && !pipe_ctx->prev_odm_pipe)
--		hws->funcs.blank_pixel_data(dc, pipe_ctx, !pipe_ctx->plane_state->visible);
-+	/* Only need to unblank on top pipe */
-+	if (resource_is_pipe_type(pipe_ctx, OTG_MASTER)) {
-+		if (pipe_ctx->update_flags.bits.enable ||
-+				pipe_ctx->update_flags.bits.odm ||
-+				pipe_ctx->stream->update_flags.bits.abm_level)
-+			hws->funcs.blank_pixel_data(dc, pipe_ctx,
-+					!pipe_ctx->plane_state ||
-+					!pipe_ctx->plane_state->visible);
-+	}
- 
- 	/* Only update TG on top pipe */
- 	if (pipe_ctx->update_flags.bits.global_sync && !pipe_ctx->top_pipe
-
+Of course, fixed, thanks.
 
