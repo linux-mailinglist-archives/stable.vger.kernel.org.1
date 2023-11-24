@@ -1,52 +1,49 @@
-Return-Path: <stable+bounces-876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD567F7CF4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C42A7F7F0E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B312B21558
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB6BD282437
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201F63A8D0;
-	Fri, 24 Nov 2023 18:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D7D28DC3;
+	Fri, 24 Nov 2023 18:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9L9JMXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSd2Nrx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D143139FD9;
-	Fri, 24 Nov 2023 18:19:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06621C433C8;
-	Fri, 24 Nov 2023 18:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152B6364CB;
+	Fri, 24 Nov 2023 18:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A09C433C7;
+	Fri, 24 Nov 2023 18:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849998;
-	bh=cfFH1nHG9eDS0KNsIifoYid6W1bBAfmFzz3y6jjE+hQ=;
+	s=korg; t=1700851090;
+	bh=+9G5QHUXFBI/jhwJNEbY9uIjYAw+JnSro+YQ1BAw+mE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9L9JMXmmmIsrIw7R6urSTh4yOgevY4JZJC98wYvylwEh04z8KSBjNBxa+VnJSQ4Y
-	 yIBmYVNwXqETmP/8qXmGumhwkXLgeuUXQJv7npbR22d5hpKydstmJ8dcJ1/dvDTra2
-	 snznb8DmVFbGeUtLeIcJZS2F6tEmjjjeC2bDzqFU=
+	b=bSd2Nrx+8YRow0FSXu0opnccBiEKenh5AZ91zTWCh2QtF/KeY6YeGfpJrJzyT/Cck
+	 g6bo59wa9qCp2YM+Q+M8urJ+4gmGrW0FGjJCddmLrx5GAAk+RxVdFE1Cyeml2kcrGU
+	 s/kRxT53zPOQNhSmfWs9fYHxDo2OYx+KgpOL3Eug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 380/530] mm/cma: use nth_page() in place of direct struct page manipulation
+	stable@kernel.org,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.5 310/491] dt-bindings: timer: renesas,rz-mtu3: Fix overflow/underflow interrupt names
 Date: Fri, 24 Nov 2023 17:49:06 +0000
-Message-ID: <20231124172039.581976419@linuxfoundation.org>
+Message-ID: <20231124172033.876913082@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,64 +55,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 2e7cfe5cd5b6b0b98abf57a3074885979e187c1c upstream.
+commit b7a8f1f7a8a25e09aaefebb6251a77f44cda638b upstream.
 
-Patch series "Use nth_page() in place of direct struct page manipulation",
-v3.
+As per R01UH0914EJ0130 Rev.1.30 HW manual the MTU3 overflow/underflow
+interrupt names starts with 'tci' instead of 'tgi'.
 
-On SPARSEMEM without VMEMMAP, struct page is not guaranteed to be
-contiguous, since each memory section's memmap might be allocated
-independently.  hugetlb pages can go beyond a memory section size, thus
-direct struct page manipulation on hugetlb pages/subpages might give wrong
-struct page.  Kernel provides nth_page() to do the manipulation properly.
-Use that whenever code can see hugetlb pages.
+Fix this documentation issue by replacing below overflow/underflow
+interrupt names:
+ - tgiv0->tciv0
+ - tgiv1->tciv1
+ - tgiu1->tciu1
+ - tgiv2->tciv2
+ - tgiu2->tciu2
+ - tgiv3->tciv3
+ - tgiv4->tciv4
+ - tgiv6->tciv6
+ - tgiv7->tciv7
+ - tgiv8->tciv8
+ - tgiu8->tciu8
 
-
-This patch (of 5):
-
-When dealing with hugetlb pages, manipulating struct page pointers
-directly can get to wrong struct page, since struct page is not guaranteed
-to be contiguous on SPARSEMEM without VMEMMAP.  Use nth_page() to handle
-it properly.
-
-Without the fix, page_kasan_tag_reset() could reset wrong page tags,
-causing a wrong kasan result.  No related bug is reported.  The fix
-comes from code inspection.
-
-Link: https://lkml.kernel.org/r/20230913201248.452081-1-zi.yan@sent.com
-Link: https://lkml.kernel.org/r/20230913201248.452081-2-zi.yan@sent.com
-Fixes: 2813b9c02962 ("kasan, mm, arm64: tag non slab memory allocated via pagealloc")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 0a9d6b54297e ("dt-bindings: timer: Document RZ/G2L MTU3a bindings")
+Cc: stable@kernel.org
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230727081848.100834-2-biju.das.jz@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/cma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bindings/timer/renesas,rz-mtu3.yaml       | 38 +++++++++----------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -505,7 +505,7 @@ struct page *cma_alloc(struct cma *cma,
- 	 */
- 	if (page) {
- 		for (i = 0; i < count; i++)
--			page_kasan_tag_reset(page + i);
-+			page_kasan_tag_reset(nth_page(page, i));
- 	}
+diff --git a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
+index bffdab0b0185..fbac40b958dd 100644
+--- a/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
++++ b/Documentation/devicetree/bindings/timer/renesas,rz-mtu3.yaml
+@@ -169,27 +169,27 @@ properties:
+       - const: tgib0
+       - const: tgic0
+       - const: tgid0
+-      - const: tgiv0
++      - const: tciv0
+       - const: tgie0
+       - const: tgif0
+       - const: tgia1
+       - const: tgib1
+-      - const: tgiv1
+-      - const: tgiu1
++      - const: tciv1
++      - const: tciu1
+       - const: tgia2
+       - const: tgib2
+-      - const: tgiv2
+-      - const: tgiu2
++      - const: tciv2
++      - const: tciu2
+       - const: tgia3
+       - const: tgib3
+       - const: tgic3
+       - const: tgid3
+-      - const: tgiv3
++      - const: tciv3
+       - const: tgia4
+       - const: tgib4
+       - const: tgic4
+       - const: tgid4
+-      - const: tgiv4
++      - const: tciv4
+       - const: tgiu5
+       - const: tgiv5
+       - const: tgiw5
+@@ -197,18 +197,18 @@ properties:
+       - const: tgib6
+       - const: tgic6
+       - const: tgid6
+-      - const: tgiv6
++      - const: tciv6
+       - const: tgia7
+       - const: tgib7
+       - const: tgic7
+       - const: tgid7
+-      - const: tgiv7
++      - const: tciv7
+       - const: tgia8
+       - const: tgib8
+       - const: tgic8
+       - const: tgid8
+-      - const: tgiv8
+-      - const: tgiu8
++      - const: tciv8
++      - const: tciu8
  
- 	if (ret && !no_warn) {
+   clocks:
+     maxItems: 1
+@@ -285,16 +285,16 @@ examples:
+                    <GIC_SPI 211 IRQ_TYPE_EDGE_RISING>,
+                    <GIC_SPI 212 IRQ_TYPE_EDGE_RISING>,
+                    <GIC_SPI 213 IRQ_TYPE_EDGE_RISING>;
+-      interrupt-names = "tgia0", "tgib0", "tgic0", "tgid0", "tgiv0", "tgie0",
++      interrupt-names = "tgia0", "tgib0", "tgic0", "tgid0", "tciv0", "tgie0",
+                         "tgif0",
+-                        "tgia1", "tgib1", "tgiv1", "tgiu1",
+-                        "tgia2", "tgib2", "tgiv2", "tgiu2",
+-                        "tgia3", "tgib3", "tgic3", "tgid3", "tgiv3",
+-                        "tgia4", "tgib4", "tgic4", "tgid4", "tgiv4",
++                        "tgia1", "tgib1", "tciv1", "tciu1",
++                        "tgia2", "tgib2", "tciv2", "tciu2",
++                        "tgia3", "tgib3", "tgic3", "tgid3", "tciv3",
++                        "tgia4", "tgib4", "tgic4", "tgid4", "tciv4",
+                         "tgiu5", "tgiv5", "tgiw5",
+-                        "tgia6", "tgib6", "tgic6", "tgid6", "tgiv6",
+-                        "tgia7", "tgib7", "tgic7", "tgid7", "tgiv7",
+-                        "tgia8", "tgib8", "tgic8", "tgid8", "tgiv8", "tgiu8";
++                        "tgia6", "tgib6", "tgic6", "tgid6", "tciv6",
++                        "tgia7", "tgib7", "tgic7", "tgid7", "tciv7",
++                        "tgia8", "tgib8", "tgic8", "tgid8", "tciv8", "tciu8";
+       clocks = <&cpg CPG_MOD R9A07G044_MTU_X_MCK_MTU3>;
+       power-domains = <&cpg>;
+       resets = <&cpg R9A07G044_MTU_X_PRESET_MTU3>;
+-- 
+2.43.0
+
 
 
 
