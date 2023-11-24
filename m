@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-1221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AAA7F7E95
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D82E77F7C52
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4348EB217A1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 468D6B20FDF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6199633CCC;
-	Fri, 24 Nov 2023 18:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976233A8C6;
+	Fri, 24 Nov 2023 18:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7W4un4Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZERGSYRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185113306F;
-	Fri, 24 Nov 2023 18:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98644C433C8;
-	Fri, 24 Nov 2023 18:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567EE39FF3;
+	Fri, 24 Nov 2023 18:14:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5384C433C7;
+	Fri, 24 Nov 2023 18:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850859;
-	bh=HjlaMCqWVvER5oleR+l6UTBSkfKZbWNgnGlHhQ3a/2E=;
+	s=korg; t=1700849647;
+	bh=QUl4LDCz9UF2GvZIZWwcGW/vKs0TPeOLaa3bIYJBt4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7W4un4ZNui93hvbV0Opaf7SfvAy9834BI8gCgejBVUFc4NJvqHJffy8lWnCHY7hp
-	 p7CntiAcO4ESp8aWMiKk1ti8OxFYyvCM/X+JebwLHD57eBQ6+UwSySnt3/Eo52F9us
-	 QbB9GfqnaCAfLb94NcmtJAU21JtSGY+u4woCyhf8=
+	b=ZERGSYRX5cGZunijnDx3fvYMRMP5RHddypvJObKKL78llLRn4p0cpV2DE+t/dObr/
+	 K7d2AkxsfQ/muOHz894Q82r7DNsr98MzlBdRnZ88PoKCceVFa4XczGp5gXCH0fkvpq
+	 hmvF4th+pUWSZv2TQW85GQRXxsSAPjRXPEbCHHEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 193/491] net: ethernet: cortina: Fix MTU max setting
-Date: Fri, 24 Nov 2023 17:47:09 +0000
-Message-ID: <20231124172030.285861093@linuxfoundation.org>
+	Artem Savkov <asavkov@redhat.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.6 264/530] audit: dont WARN_ON_ONCE(!current->mm) in audit_exe_compare()
+Date: Fri, 24 Nov 2023 17:47:10 +0000
+Message-ID: <20231124172036.072152965@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,96 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Paul Moore <paul@paul-moore.com>
 
-[ Upstream commit dc6c0bfbaa947dd7976e30e8c29b10c868b6fa42 ]
+commit 969d90ec212bae4b45bf9d21d7daa30aa6cf055e upstream.
 
-The RX max frame size is over 10000 for the Gemini ethernet,
-but the TX max frame size is actually just 2047 (0x7ff after
-checking the datasheet). Reflect this in what we offer to Linux,
-cap the MTU at the TX max frame minus ethernet headers.
+eBPF can end up calling into the audit code from some odd places, and
+some of these places don't have @current set properly so we end up
+tripping the `WARN_ON_ONCE(!current->mm)` near the top of
+`audit_exe_compare()`.  While the basic `!current->mm` check is good,
+the `WARN_ON_ONCE()` results in some scary console messages so let's
+drop that and just do the regular `!current->mm` check to avoid
+problems.
 
-We delete the code disabling the hardware checksum for large
-MTUs as netdev->mtu can no longer be larger than
-netdev->max_mtu meaning the if()-clause in gmac_fix_features()
-is never true.
-
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-3-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 47846d51348d ("audit: don't take task_lock() in audit_exe_compare() code path")
+Reported-by: Artem Savkov <asavkov@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 17 ++++-------------
- drivers/net/ethernet/cortina/gemini.h |  2 +-
- 2 files changed, 5 insertions(+), 14 deletions(-)
+ kernel/audit_watch.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index a2d4ace01ed3c..e7137b468f5bc 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -2000,15 +2000,6 @@ static int gmac_change_mtu(struct net_device *netdev, int new_mtu)
- 	return 0;
- }
+--- a/kernel/audit_watch.c
++++ b/kernel/audit_watch.c
+@@ -531,7 +531,7 @@ int audit_exe_compare(struct task_struct
+ 	if (tsk != current)
+ 		return 0;
  
--static netdev_features_t gmac_fix_features(struct net_device *netdev,
--					   netdev_features_t features)
--{
--	if (netdev->mtu + ETH_HLEN + VLAN_HLEN > MTU_SIZE_BIT_MASK)
--		features &= ~GMAC_OFFLOAD_FEATURES;
--
--	return features;
--}
--
- static int gmac_set_features(struct net_device *netdev,
- 			     netdev_features_t features)
- {
-@@ -2234,7 +2225,6 @@ static const struct net_device_ops gmac_351x_ops = {
- 	.ndo_set_mac_address	= gmac_set_mac_address,
- 	.ndo_get_stats64	= gmac_get_stats64,
- 	.ndo_change_mtu		= gmac_change_mtu,
--	.ndo_fix_features	= gmac_fix_features,
- 	.ndo_set_features	= gmac_set_features,
- };
- 
-@@ -2486,11 +2476,12 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
- 
- 	netdev->hw_features = GMAC_OFFLOAD_FEATURES;
- 	netdev->features |= GMAC_OFFLOAD_FEATURES | NETIF_F_GRO;
--	/* We can handle jumbo frames up to 10236 bytes so, let's accept
--	 * payloads of 10236 bytes minus VLAN and ethernet header
-+	/* We can receive jumbo frames up to 10236 bytes but only
-+	 * transmit 2047 bytes so, let's accept payloads of 2047
-+	 * bytes minus VLAN and ethernet header
- 	 */
- 	netdev->min_mtu = ETH_MIN_MTU;
--	netdev->max_mtu = 10236 - VLAN_ETH_HLEN;
-+	netdev->max_mtu = MTU_SIZE_BIT_MASK - VLAN_ETH_HLEN;
- 
- 	port->freeq_refill = 0;
- 	netif_napi_add(netdev, &port->napi, gmac_napi_poll);
-diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
-index 99efb11557436..24bb989981f23 100644
---- a/drivers/net/ethernet/cortina/gemini.h
-+++ b/drivers/net/ethernet/cortina/gemini.h
-@@ -502,7 +502,7 @@ union gmac_txdesc_3 {
- #define SOF_BIT			0x80000000
- #define EOF_BIT			0x40000000
- #define EOFIE_BIT		BIT(29)
--#define MTU_SIZE_BIT_MASK	0x1fff
-+#define MTU_SIZE_BIT_MASK	0x7ff /* Max MTU 2047 bytes */
- 
- /* GMAC Tx Descriptor */
- struct gmac_txdesc {
--- 
-2.42.0
-
+-	if (WARN_ON_ONCE(!current->mm))
++	if (!current->mm)
+ 		return 0;
+ 	exe_file = get_mm_exe_file(current->mm);
+ 	if (!exe_file)
 
 
 
