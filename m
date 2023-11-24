@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7257F7D82
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E43B7F815E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74DE82821E8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1C9DB21B1E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6F33A8D0;
-	Fri, 24 Nov 2023 18:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A75B33CFD;
+	Fri, 24 Nov 2023 18:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8hJht1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s35+cCi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76FA39FE8;
-	Fri, 24 Nov 2023 18:25:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFD7C433C9;
-	Fri, 24 Nov 2023 18:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C674E2FC4E;
+	Fri, 24 Nov 2023 18:57:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538BDC433C8;
+	Fri, 24 Nov 2023 18:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850311;
-	bh=I9KQOrqbMHtvI0q9XLtJi+k06K16zzKo+ME1O7rMai0=;
+	s=korg; t=1700852278;
+	bh=jB5bpKdluTW2+vAkrhISKdSFal5A8CSLSG6v2GJQntU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K8hJht1vC0e50/ScPbfnFiPRGNpbaqUFHT2KgyXFOuid37Di/BvsRaoJbsmlPhbrI
-	 wT9KxzoOtZ0SZrGz9Rrt5AdHopFuqRpJTDMIlcg92TbptPb9ZEniFjck4dq6HwelaB
-	 EzGEB3BgQsJ3iJ1OHLYWclu68tyqTiJ4d+9rFMnw=
+	b=s35+cCi+wheBkOrcg4GizArx1+I0k0xOqq6GwpwVuDuYKhqmIaUKvpUfLiCbyk2mD
+	 lhqxb0Eu5whsYGDS5U0Tnh3SW8TfhhZDVLd1PDsofQQD6VaWIFLJ3RjNPObBNaSXnU
+	 zTv8qc3EQ+upuxDwoICd9FGBqsdIe+CdHsJmtUFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.6 512/530] drm/i915: Bump GLK CDCLK frequency when driving multiple pipes
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 291/372] bluetooth: Add device 13d3:3571 to device tables
 Date: Fri, 24 Nov 2023 17:51:18 +0000
-Message-ID: <20231124172043.751113913@linuxfoundation.org>
+Message-ID: <20231124172020.119419404@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,67 +51,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Larry Finger <Larry.Finger@lwfinger.net>
 
-commit 0cb89cd42fd22bbdec0b046c48f35775f5b88bdb upstream.
+[ Upstream commit 069f534247bb6db4f8c2c2ea8e9155abf495c37e ]
 
-On GLK CDCLK frequency needs to be at least 2*96 MHz when accessing
-the audio hardware. Currently we bump the CDCLK frequency up
-temporarily (if not high enough already) whenever audio hardware
-is being accessed, and drop it back down afterwards.
+This device is part of a Realtek RTW8852BE chip. The device table is as follows:
 
-With a single active pipe this works just fine as we can switch
-between all the valid CDCLK frequencies by changing the cd2x
-divider, which doesn't require a full modeset. However with
-multiple active pipes the cd2x divider trick no longer works,
-and thus we end up blinking all displays off and back on.
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=13d3 ProdID=3571 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
-To avoid this let's just bump the CDCLK frequency to >=2*96MHz
-whenever multiple pipes are active. The downside is slightly
-higher power consumption, but that seems like an acceptable
-tradeoff. With a single active pipe we can stick to the current
-more optiomal (from power comsumption POV) behaviour.
-
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9599
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231031160800.18371-1-ville.syrjala@linux.intel.com
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 451eaa1a614c911f5a51078dcb68022874e4cb12)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: da06ff1f585e ("Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_cdclk.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_cdclk.c
-+++ b/drivers/gpu/drm/i915/display/intel_cdclk.c
-@@ -2688,6 +2688,18 @@ static int intel_compute_min_cdclk(struc
- 	for_each_pipe(dev_priv, pipe)
- 		min_cdclk = max(cdclk_state->min_cdclk[pipe], min_cdclk);
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 60a7e4ad2566b..697a55e3b65eb 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -537,6 +537,8 @@ static const struct usb_device_id blacklist_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
-+	/*
-+	 * Avoid glk_force_audio_cdclk() causing excessive screen
-+	 * blinking when multiple pipes are active by making sure
-+	 * CDCLK frequency is always high enough for audio. With a
-+	 * single active pipe we can always change CDCLK frequency
-+	 * by changing the cd2x divider (see glk_cdclk_table[]) and
-+	 * thus a full modeset won't be needed then.
-+	 */
-+	if (IS_GEMINILAKE(dev_priv) && cdclk_state->active_pipes &&
-+	    !is_power_of_2(cdclk_state->active_pipes))
-+		min_cdclk = max(2 * 96000, min_cdclk);
-+
- 	if (min_cdclk > dev_priv->display.cdclk.max_cdclk_freq) {
- 		drm_dbg_kms(&dev_priv->drm,
- 			    "required cdclk (%d kHz) exceeds max (%d kHz)\n",
+ 	/* Realtek Bluetooth devices */
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x0bda, 0xe0, 0x01, 0x01),
+-- 
+2.42.0
+
 
 
 
