@@ -1,48 +1,57 @@
-Return-Path: <stable+bounces-1736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C75C7F811E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6507A7F7D4A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBAFE28108B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3ED28215A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D6435F04;
-	Fri, 24 Nov 2023 18:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B324B364C8;
+	Fri, 24 Nov 2023 18:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EL9yWhqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTBIhCbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9499228DBA;
-	Fri, 24 Nov 2023 18:55:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6EAC433C7;
-	Fri, 24 Nov 2023 18:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAF2381D6;
+	Fri, 24 Nov 2023 18:23:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E07C433C8;
+	Fri, 24 Nov 2023 18:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852147;
-	bh=Sy6eQ96qvx9Z4XPMDUB+NvUokJzynF0xT3pimHnPHAg=;
+	s=korg; t=1700850197;
+	bh=K4JhJN6LNeMUdrkBh6f5NskHpSSmKibSaOBUvOmqrek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EL9yWhqpQs7XGFjUpXmmqsjO+L0TgLHSUD93iizUZF954lYgSa+HFM1G5O3DRMIYB
-	 uqDuQIfDXwqM3Q+wQuSe9gIpWV7tlJcw5Z0khLXFFx55VsevYUq8tlUNK05ZDAO0pG
-	 8ijmKLiXI6uPkFmxj3pn9ajOGHnt4c6K4aMQzkXI=
+	b=RTBIhCbQ9byI8qFM59bU4bPcmjj4liriCnbATnLnGyM/kI43i6fAqHmPtJFl8saA/
+	 wbaSodFnBCRO4s58INY+aJyrcNRic3p+iYAB7sUMkQPTlAiYHwpOShTu1GN2HAp+xP
+	 uE/bKdPZ4uSkxrGYjO9zC3XubkEdxtvlJCXJ73Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.1 238/372] selftests/resctrl: Move _GNU_SOURCE define into Makefile
-Date: Fri, 24 Nov 2023 17:50:25 +0000
-Message-ID: <20231124172018.459313668@linuxfoundation.org>
+	Guillaume Ranquet <granquet@baylibre.com>,
+	Bo-Chen Chen <rex-bc.chen@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Jani Nikula <jani.nikula@intel.com>,
+	Chen-Yu Tsai <wenst@chromium.org>
+Subject: [PATCH 6.6 460/530] drm/mediatek/dp: fix memory leak on ->get_edid callback audio detection
+Date: Fri, 24 Nov 2023 17:50:26 +0000
+Message-ID: <20231124172042.082336579@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,55 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 3a1e4a91aa454a1c589a9824d54179fdbfccde45 upstream.
+commit dab12fa8d2bd3868cf2de485ed15a3feef28a13d upstream.
 
-_GNU_SOURCE is defined in resctrl.h. Defining _GNU_SOURCE has a large
-impact on what gets defined when including headers either before or
-after it. This can result in compile failures if .c file decides to
-include a standard header file before resctrl.h.
+The sads returned by drm_edid_to_sad() needs to be freed.
 
-It is safer to define _GNU_SOURCE in Makefile so it is always defined
-regardless of in which order includes are done.
-
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
+Cc: Guillaume Ranquet <granquet@baylibre.com>
+Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-mediatek@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: <stable@vger.kernel.org> # v6.1+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230914155317.2511876-1-jani.nikula@intel.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/resctrl/Makefile  |    2 +-
- tools/testing/selftests/resctrl/resctrl.h |    1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/resctrl/Makefile
-+++ b/tools/testing/selftests/resctrl/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -2034,7 +2034,6 @@ static struct edid *mtk_dp_get_edid(stru
+ 	bool enabled = mtk_dp->enabled;
+ 	struct edid *new_edid = NULL;
+ 	struct mtk_dp_audio_cfg *audio_caps = &mtk_dp->info.audio_cur_cfg;
+-	struct cea_sad *sads;
  
--CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
-+CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE
- CFLAGS += $(KHDR_INCLUDES)
+ 	if (!enabled) {
+ 		drm_atomic_bridge_chain_pre_enable(bridge, connector->state->state);
+@@ -2053,7 +2052,11 @@ static struct edid *mtk_dp_get_edid(stru
+ 	}
  
- TEST_GEN_PROGS := resctrl_tests
---- a/tools/testing/selftests/resctrl/resctrl.h
-+++ b/tools/testing/selftests/resctrl/resctrl.h
-@@ -1,5 +1,4 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--#define _GNU_SOURCE
- #ifndef RESCTRL_H
- #define RESCTRL_H
- #include <stdio.h>
+ 	if (new_edid) {
++		struct cea_sad *sads;
++
+ 		audio_caps->sad_count = drm_edid_to_sad(new_edid, &sads);
++		kfree(sads);
++
+ 		audio_caps->detect_monitor = drm_detect_monitor_audio(new_edid);
+ 	}
+ 
 
 
 
