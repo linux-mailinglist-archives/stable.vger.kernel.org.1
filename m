@@ -1,44 +1,41 @@
-Return-Path: <stable+bounces-301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9307F786D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:00:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E707F7873
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:01:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA3C1C20A7D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 16:00:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56209B20B84
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 16:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074B433098;
-	Fri, 24 Nov 2023 16:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8A43308A;
+	Fri, 24 Nov 2023 16:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHBEux1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnWMZ1E4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B483733082;
-	Fri, 24 Nov 2023 16:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC6B7C433CA;
-	Fri, 24 Nov 2023 16:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D849E286B9
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 16:01:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD4FC433C7;
+	Fri, 24 Nov 2023 16:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700841615;
-	bh=x4/TLLmjsrOuHHCNtA+3OOqTerComhNMyZEiZV7mtis=;
+	s=korg; t=1700841702;
+	bh=vI/MyF6lOQjfT/bfivwL2lJH/Lh6KFcqez9eGWP16pU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OHBEux1o1xTQtDic6Xsepye/fbD416/qXbpaILLpW4ggSsLinGpmMEL+9bkik3GiB
-	 shSD9tC1YA/2mQ8O3Edw2yROM7xRv+/X0T/9o9PS76jrvIHskGqEUP6N2e0Ik1WKVr
-	 3mIwQzmHbJwraA/7gFQJYsrdlXasqv9eRPOYLXJ4=
-Date: Fri, 24 Nov 2023 16:00:12 +0000
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kunkun Jiang <jiangkunkun@huawei.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Dongli Zhang <dongli.zhang@oracle.com>, kvmarm@lists.linux.dev,
-	wanghaibin.wang@huawei.com, yuzenghui@huawei.com
-Subject: Re: [stable-4.19 PATCH] scsi: virtio_scsi: limit number of hw queues
- by nr_cpu_ids
-Message-ID: <2023112405-factual-uncut-ba77@gregkh>
-References: <20231109142328.1460-1-jiangkunkun@huawei.com>
+	b=OnWMZ1E4031Qvpw1gOGteXuPjLdBQy80HReBT5b8RAJBY8dfU4idUPlWcqjqh/n8y
+	 PM/nPMU+Jqs5zhLP9Tzlz3NOEXFRSxbdjxYIm1JPvw/jFLT7cF6He/f8ukrDVrVcFP
+	 Qd7HYcih7TBUbTZwXvwyLjKSbQhkpn383OC7JyZI=
+Date: Fri, 24 Nov 2023 16:01:40 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: He Gao <hegao@google.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 5.15] Backport the fix for CVE-2023-25012 to kernel v5.15
+Message-ID: <2023112429-huskiness-prone-4e26@gregkh>
+References: <20231113193227.154296-1-hegao@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,35 +44,16 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231109142328.1460-1-jiangkunkun@huawei.com>
+In-Reply-To: <20231113193227.154296-1-hegao@google.com>
 
-On Thu, Nov 09, 2023 at 10:23:28PM +0800, Kunkun Jiang wrote:
-> From: Dongli Zhang <dongli.zhang@oracle.com>
+On Mon, Nov 13, 2023 at 07:32:26PM +0000, He Gao wrote:
+> This is the fix of CVE-2023-25012 for kernel v5.15.
 > 
-> [ Upstream commit 1978f30a87732d4d9072a20abeded9fe17884f1b ]
+> Upstream commit:  https://github.com/torvalds/linux/commit/7644b1a1c9a7ae8ab99175989bfc8676055edb46
 > 
-> When tag_set->nr_maps is 1, the block layer limits the number of hw queues
-> by nr_cpu_ids. No matter how many hw queues are used by virtio-scsi, as it
-> has (tag_set->nr_maps == 1), it can use at most nr_cpu_ids hw queues.
-> 
-> In addition, specifically for pci scenario, when the 'num_queues' specified
-> by qemu is more than maxcpus, virtio-scsi would not be able to allocate
-> more than maxcpus vectors in order to have a vector for each queue. As a
-> result, it falls back into MSI-X with one vector for config and one shared
-> for queues.
-> 
-> Considering above reasons, this patch limits the number of hw queues used
-> by virtio-scsi by nr_cpu_ids.
-> 
-> Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-> Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
-> ---
->  drivers/scsi/virtio_scsi.c | 1 +
->  1 file changed, 1 insertion(+)
+> The affected code is in io_uring/io_uring.c instead of io_uring/fdinfo.c for v5.15. So the patch applies the same change to io_uring/io_uring.c.
 
-Both now queued up, thanks.
+Both backports now queued up, thanks.
 
 greg k-h
 
