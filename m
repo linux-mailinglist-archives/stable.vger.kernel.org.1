@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-2252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8977F8367
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9E17F8217
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAF9EB24AF8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB7D51C2296F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD91381D4;
-	Fri, 24 Nov 2023 19:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4A133CFD;
+	Fri, 24 Nov 2023 19:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvgoEujh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skOx6ui+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858DC3418E;
-	Fri, 24 Nov 2023 19:17:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15555C433C8;
-	Fri, 24 Nov 2023 19:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627532E84A;
+	Fri, 24 Nov 2023 19:04:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE6FAC433C7;
+	Fri, 24 Nov 2023 19:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853429;
-	bh=ppSUsD17P+ezGAHpr4RY2el5QlCf2Dno/kfGqdPzKtk=;
+	s=korg; t=1700852661;
+	bh=lrMSlORTlDlDG3b2k4KsSWVjQ0PdiV2s4b9kf/0VClI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvgoEujhNgcsnDjsUqHl5ymBxzZ9QmNAVfyGhzX3aqlHIHPxL8qHErBbUK2bQQXNy
-	 BWNXKtGmV1pukqaB+URJkq0L30cxDTQSe8U6vZ6RFfZ0KpAU8vD/zUAkLZwsA3RmRn
-	 doDkur0ZDXff9FkCrq3bWtSfKoLswZSxavJG2Pb0=
+	b=skOx6ui+/YP9jdMsoPaqhxMpeVZ4JfkS++i2wb3HeUi0nXBchGbJrXX6QEktHPSpV
+	 U0TrHbpkwmJZBbZLAwaELFglEMXvu1kKVhvjH8X5uZgcA+GcV9tFZSO6vKDU8m+ctL
+	 tsydKH7B0dLkG9lO8nQZdM9451TqaM7nF+gWGnuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-hardening@vger.kernel.org,
-	Lukas Loidolt <e1634039@student.tuwien.ac.at>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.15 158/297] randstruct: Fix gcc-plugin performance mode to stay in group
+	syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 073/193] ppp: limit MRU to 64K
 Date: Fri, 24 Nov 2023 17:53:20 +0000
-Message-ID: <20231124172005.782899542@linuxfoundation.org>
+Message-ID: <20231124171950.157227461@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,64 +55,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 381fdb73d1e2a48244de7260550e453d1003bb8e upstream.
+[ Upstream commit c0a2a1b0d631fc460d830f52d06211838874d655 ]
 
-The performance mode of the gcc-plugin randstruct was shuffling struct
-members outside of the cache-line groups. Limit the range to the
-specified group indexes.
+ppp_sync_ioctl allows setting device MRU, but does not sanity check
+this input.
 
-Cc: linux-hardening@vger.kernel.org
-Cc: stable@vger.kernel.org
-Reported-by: Lukas Loidolt <e1634039@student.tuwien.ac.at>
-Closes: https://lore.kernel.org/all/f3ca77f0-e414-4065-83a5-ae4c4d25545d@student.tuwien.ac.at
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Limit to a sane upper bound of 64KB.
+
+No implementation I could find generates larger than 64KB frames.
+RFC 2823 mentions an upper bound of PPP over SDL of 64KB based on the
+16-bit length field. Other protocols will be smaller, such as PPPoE
+(9KB jumbo frame) and PPPoA (18190 maximum CPCS-SDU size, RFC 2364).
+PPTP and L2TP encapsulate in IP.
+
+Syzbot managed to trigger alloc warning in __alloc_pages:
+
+	if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
+
+    WARNING: CPU: 1 PID: 37 at mm/page_alloc.c:4544 __alloc_pages+0x3ab/0x4a0 mm/page_alloc.c:4544
+
+    __alloc_skb+0x12b/0x330 net/core/skbuff.c:651
+    __netdev_alloc_skb+0x72/0x3f0 net/core/skbuff.c:715
+    netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
+    dev_alloc_skb include/linux/skbuff.h:3238 [inline]
+    ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
+    ppp_sync_receive+0xff/0x680 drivers/net/ppp/ppp_synctty.c:334
+    tty_ldisc_receive_buf+0x14c/0x180 drivers/tty/tty_buffer.c:390
+    tty_port_default_receive_buf+0x70/0xb0 drivers/tty/tty_port.c:37
+    receive_buf drivers/tty/tty_buffer.c:444 [inline]
+    flush_to_ldisc+0x261/0x780 drivers/tty/tty_buffer.c:494
+    process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+
+With call
+
+    ioctl$PPPIOCSMRU1(r1, 0x40047452, &(0x7f0000000100)=0x5e6417a8)
+
+Similar code exists in other drivers that implement ppp_channel_ops
+ioctl PPPIOCSMRU. Those might also be in scope. Notably excluded from
+this are pppol2tp_ioctl and pppoe_ioctl.
+
+This code goes back to the start of git history.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/randomize_layout_plugin.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/net/ppp/ppp_synctty.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -209,12 +209,14 @@ static void partition_struct(tree *field
- 
- static void performance_shuffle(tree *newtree, unsigned long length, ranctx *prng_state)
- {
--	unsigned long i, x;
-+	unsigned long i, x, index;
- 	struct partition_group size_group[length];
- 	unsigned long num_groups = 0;
- 	unsigned long randnum;
- 
- 	partition_struct(newtree, length, (struct partition_group *)&size_group, &num_groups);
-+
-+	/* FIXME: this group shuffle is currently a no-op. */
- 	for (i = num_groups - 1; i > 0; i--) {
- 		struct partition_group tmp;
- 		randnum = ranval(prng_state) % (i + 1);
-@@ -224,11 +226,14 @@ static void performance_shuffle(tree *ne
- 	}
- 
- 	for (x = 0; x < num_groups; x++) {
--		for (i = size_group[x].start + size_group[x].length - 1; i > size_group[x].start; i--) {
-+		for (index = size_group[x].length - 1; index > 0; index--) {
- 			tree tmp;
-+
-+			i = size_group[x].start + index;
- 			if (DECL_BIT_FIELD_TYPE(newtree[i]))
- 				continue;
--			randnum = ranval(prng_state) % (i + 1);
-+			randnum = ranval(prng_state) % (index + 1);
-+			randnum += size_group[x].start;
- 			// we could handle this case differently if desired
- 			if (DECL_BIT_FIELD_TYPE(newtree[randnum]))
- 				continue;
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index e37d9a05f3077..7174316362758 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -464,6 +464,10 @@ ppp_sync_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
+ 	case PPPIOCSMRU:
+ 		if (get_user(val, (int __user *) argp))
+ 			break;
++		if (val > U16_MAX) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (val < PPP_MRU)
+ 			val = PPP_MRU;
+ 		ap->mru = val;
+-- 
+2.42.0
+
 
 
 
