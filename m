@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F5BE7F7C92
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7467B7F7EDE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A377281FD0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A42221C21378
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6773D3A8C6;
-	Fri, 24 Nov 2023 18:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C1E33CC2;
+	Fri, 24 Nov 2023 18:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZ5LDdui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddbPtzsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BAC39FF3;
-	Fri, 24 Nov 2023 18:16:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E642C433C8;
-	Fri, 24 Nov 2023 18:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647112F86B;
+	Fri, 24 Nov 2023 18:36:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15ECC433C8;
+	Fri, 24 Nov 2023 18:36:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849785;
-	bh=UmQ3mUOKZAViuyYWh4G89dIH94Hi/dkO0TC0Q1RPVns=;
+	s=korg; t=1700851000;
+	bh=kh+hRw1qy9+0/82/ACTEkuEnPVl6zH3jSxK8bd+QBa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZ5LDduitr5wmbIMTfY/d4WslYF59D0tiafnT/I3m7uJmPxsiZEqWgk8d0W0Bm86d
-	 d4CtB+hrQVYKKxNCybYn7WYR3ps2vMSt84OIjHBYdhdHRlTG165YAxCZJEQrRgHf8C
-	 QOyo2tgsqNH0NDzEpXbZqA0ybTX9I9sck6JbKQvk=
+	b=ddbPtzsl3HGlrA9rqoliEExVkZ9w2Tu13r4TIdxWuND1uTL03hcyC4SR8S5CF0DhY
+	 TfFphU33oyNVT9DM+gPAG9vKqHMdNKn/S7reyhK1TG1IfBzeHjp3GloCXooj5ZKDVU
+	 NI6hK7kWW0nTrkrVjaYA0Lkt7SkaCJ248fQU1oE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 319/530] ksmbd: handle malformed smb1 message
+	Artem Savkov <asavkov@redhat.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.5 249/491] audit: dont WARN_ON_ONCE(!current->mm) in audit_exe_compare()
 Date: Fri, 24 Nov 2023 17:48:05 +0000
-Message-ID: <20231124172037.751775275@linuxfoundation.org>
+Message-ID: <20231124172032.046074538@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Paul Moore <paul@paul-moore.com>
 
-commit 5a5409d90bd05f87fe5623a749ccfbf3f7c7d400 upstream.
+commit 969d90ec212bae4b45bf9d21d7daa30aa6cf055e upstream.
 
-If set_smb1_rsp_status() is not implemented, It will cause NULL pointer
-dereferece error when client send malformed smb1 message.
-This patch add set_smb1_rsp_status() to ignore malformed smb1 message.
+eBPF can end up calling into the audit code from some odd places, and
+some of these places don't have @current set properly so we end up
+tripping the `WARN_ON_ONCE(!current->mm)` near the top of
+`audit_exe_compare()`.  While the basic `!current->mm` check is good,
+the `WARN_ON_ONCE()` results in some scary console messages so let's
+drop that and just do the regular `!current->mm` check to avoid
+problems.
 
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: <stable@vger.kernel.org>
+Fixes: 47846d51348d ("audit: don't take task_lock() in audit_exe_compare() code path")
+Reported-by: Artem Savkov <asavkov@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb_common.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ kernel/audit_watch.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -366,11 +366,22 @@ static int smb1_allocate_rsp_buf(struct
- 	return 0;
- }
+--- a/kernel/audit_watch.c
++++ b/kernel/audit_watch.c
+@@ -531,7 +531,7 @@ int audit_exe_compare(struct task_struct
+ 	if (tsk != current)
+ 		return 0;
  
-+/**
-+ * set_smb1_rsp_status() - set error type in smb response header
-+ * @work:	smb work containing smb response header
-+ * @err:	error code to set in response
-+ */
-+static void set_smb1_rsp_status(struct ksmbd_work *work, __le32 err)
-+{
-+	work->send_no_response = 1;
-+}
-+
- static struct smb_version_ops smb1_server_ops = {
- 	.get_cmd_val = get_smb1_cmd_val,
- 	.init_rsp_hdr = init_smb1_rsp_hdr,
- 	.allocate_rsp_buf = smb1_allocate_rsp_buf,
- 	.check_user_session = smb1_check_user_session,
-+	.set_rsp_status = set_smb1_rsp_status,
- };
- 
- static int smb1_negotiate(struct ksmbd_work *work)
+-	if (WARN_ON_ONCE(!current->mm))
++	if (!current->mm)
+ 		return 0;
+ 	exe_file = get_mm_exe_file(current->mm);
+ 	if (!exe_file)
 
 
 
