@@ -1,274 +1,104 @@
-Return-Path: <stable+bounces-169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CABF7F742B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:47:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 018BF7F745E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21956281203
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:47:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B01351F20F64
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D56B11733;
-	Fri, 24 Nov 2023 12:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB34C241FF;
+	Fri, 24 Nov 2023 12:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Q3AnmyTV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pc8assk1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9642BC
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 04:47:31 -0800 (PST)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1cfa36bfe0cso4252565ad.1
-        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 04:47:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700830051; x=1701434851; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=+qhBI0orIysdcBvnsdb12nHZxBH7KHQ4x4C4Xy8SGjE=;
-        b=Q3AnmyTVN2DQl/+TUj8g9ky9/GLqrFYK8Zff+6JAhYNlHCKuNte8prGufwtCeXLZDy
-         wgL/BxiuNGx5f1TsdtD3biOm1ZM53+EFEfgHihfQZH3Cwx7s5mSwm4nwvJuLoj/RCTxJ
-         yF1RYRrljLyBT6IXWVzydwTMkq2j94j9BnSqa+49bsyUSzopmbFOjlljHgncC62LoZLB
-         yKZ7z8fweRT0GV0jhnGG/RQWgjXYOMqEDXUQ99seVJ23tjSm7x+JOOMoMTvfZcHUvj63
-         YAbQQpkW3IyJc1nME6lmRPU1buf0lCeBHLyicOHst1PNs1TRj9eDTZqHX2HCcR0448mo
-         kY0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700830051; x=1701434851;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+qhBI0orIysdcBvnsdb12nHZxBH7KHQ4x4C4Xy8SGjE=;
-        b=D1z3+poUbQQC9ZVtyXcGWZuQnAOlg4EpZ+YnFcRYt4RzDTh3MY/IUaMxm4Ecvcilia
-         QOOjwhwhw0mbMz4k4tBYIekCdCMO1mK3j0Sdd1aVxPqEo6inlYYn4zLMb5pi3zxyRsX4
-         K0wvsA8c3LyIFe6RGuLvei4gDH9znHGi/AmxqHNZFHaOjn/KTGeSP/1Kur5HpmwKNpHk
-         N+Dj3eOaEHJkmesJ9SgdThSExxAJwWYh02Ahvci/iAscBAxDSKkWKQhtC9hkuvjhOwtG
-         HWJAh/zTHOFRSgu6b/neFHX/STlCx5GSQGe7tK9OdRcPbNEn7IwlYPf2G/p3rmHTlwhw
-         KZHA==
-X-Gm-Message-State: AOJu0YzZm+JzNSprXMFMQt3Xs0aqH8N4U/OYuBIAM2G5RZN1+6pmVp6b
-	DfqsWkbjRpsNhRTV9allu4saXJQ/GXXrROoTUB8=
-X-Google-Smtp-Source: AGHT+IFxl1F4kb9dkB1aIBlbQvXOar4TBFLUCTy0002LmphIk4BbRaPAIUZhah1DEjKYmqFF4+ccxg==
-X-Received: by 2002:a17:902:d384:b0:1cf:932e:8691 with SMTP id e4-20020a170902d38400b001cf932e8691mr5194824pld.28.1700830050742;
-        Fri, 24 Nov 2023 04:47:30 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id j6-20020a17090276c600b001c9b384731esm3087217plt.270.2023.11.24.04.47.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Nov 2023 04:47:30 -0800 (PST)
-Message-ID: <65609b62.170a0220.1b733.71cd@mx.google.com>
-Date: Fri, 24 Nov 2023 04:47:30 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FB27F0
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:55:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84478C433C7;
+	Fri, 24 Nov 2023 12:55:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700830551;
+	bh=4o45C0gnSo4nfU4geciUSQ9OpgL2q2j2nH+OoOEe/1g=;
+	h=Subject:To:Cc:From:Date:From;
+	b=pc8assk1Qn1IdtoRmnQ1l3ekDDW+JgYBzk8F0y+GOwPpIdDOXD50K0mH/+U3kdEKP
+	 buGHhXpri+oZWtShvYx1SypyhbUfVZn8mym7XJXDdJ2YC3EUzjpwp25YcBYyPTiy1N
+	 IxOL0hEl5XudOLPKnp//OFImG++8Bxnc5UqlmEEA=
+Subject: FAILED: patch "[PATCH] riscv: put interrupt entries into .irqentry.text" failed to apply to 6.1-stable tree
+To: namcaov@gmail.com,palmer@rivosinc.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Nov 2023 12:55:49 +0000
+Message-ID: <2023112447-easel-wrecking-ee6b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: queue/4.14
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.14.330-46-gf3d4b2ebd4eb3
-Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.330-46-gf3d4b2ebd4eb3)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
-.14.330-46-gf3d4b2ebd4eb3)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-4/kernel/v4.14.330-46-gf3d4b2ebd4eb3/
-
-Tree: stable-rc
-Branch: queue/4.14
-Git Describe: v4.14.330-46-gf3d4b2ebd4eb3
-Git Commit: f3d4b2ebd4eb3a793a1db9b1e64f9b1990220160
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-Warnings summary:
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Section mismatches summary:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 87615e95f6f9ccd36d4a3905a2d87f91967ea9d2
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112447-easel-wrecking-ee6b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-    3    WARNING: modpost: Found 1 section mismatch(es).
+Possible dependencies:
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+87615e95f6f9 ("riscv: put interrupt entries into .irqentry.text")
+f0bddf50586d ("riscv: entry: Convert to generic entry")
+c3ec1e8964fb ("Merge patch series "RISC-V: Align the shadow stack"")
 
-Detailed per-defconfig build reports:
+thanks,
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
+greg k-h
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
+------------------ original commit in Linus's tree ------------------
 
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+From 87615e95f6f9ccd36d4a3905a2d87f91967ea9d2 Mon Sep 17 00:00:00 2001
+From: Nam Cao <namcaov@gmail.com>
+Date: Mon, 21 Aug 2023 16:57:09 +0200
+Subject: [PATCH] riscv: put interrupt entries into .irqentry.text
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
+The interrupt entries are expected to be in the .irqentry.text section.
+For example, for kprobes to work properly, exception code cannot be
+probed; this is ensured by blacklisting addresses in the .irqentry.text
+section.
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+Fixes: 7db91e57a0ac ("RISC-V: Task implementation")
+Signed-off-by: Nam Cao <namcaov@gmail.com>
+Link: https://lore.kernel.org/r/20230821145708.21270-1-namcaov@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+index 143a2bb3e697..d7dd9030df3f 100644
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -14,6 +14,8 @@
+ #include <asm/asm-offsets.h>
+ #include <asm/errata_list.h>
+ 
++	.section .irqentry.text, "ax"
++
+ SYM_CODE_START(handle_exception)
+ 	/*
+ 	 * If coming from userspace, preserve the user thread pointer and load
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
 
