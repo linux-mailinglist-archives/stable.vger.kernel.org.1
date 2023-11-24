@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43FC7F7D48
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6027F8138
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3E761C21298
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D11C1C2163E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE8D39FF8;
-	Fri, 24 Nov 2023 18:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7451133CD1;
+	Fri, 24 Nov 2023 18:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DaU1gYZt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rg2SArnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0E539FE1;
-	Fri, 24 Nov 2023 18:23:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0307CC433C7;
-	Fri, 24 Nov 2023 18:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344F2321AD;
+	Fri, 24 Nov 2023 18:56:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ACFC433C8;
+	Fri, 24 Nov 2023 18:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850192;
-	bh=grPaHxSaUxwHsmGS3VEj4KAVPYlGq2ClA00OBl1nBNk=;
+	s=korg; t=1700852200;
+	bh=8OqGQl9eTafoqRnhkitWuLzcHomRgwkFOPTHa/Vemvg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DaU1gYZtSRy7GrYml7JeKY2OeQizumEWj7EAqP1EUUU6a467+KfpxVP8p7dHMpf9l
-	 f72AWwNBG9RLq5SbNRqXHkqPYz9JsUSFh5v8ln+UcprR4HDdZse1z79QNxuBhVQ15z
-	 USA4qG8ty4JhCkryjLVicBw4sDCox+0SivFBRgOQ=
+	b=Rg2SArnlaX+I6rFh+7YmmjOFDrMvA4S+agzWDqm+X3Mi2FACw7Rl11/AXBC4MrsZW
+	 ZRhoCNzOBbw3LNGHQ7Cl54CdY1ULe6joQll5C8CqdMt6VcfCnM91ZiwF7Zo9NmUOam
+	 y+cjaHEmC3+NNaNgF/FWsy/+AKqMU+J0Su8m3K3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 481/530] selftests: mptcp: fix fastclose with csum failure
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 260/372] i3c: master: svc: fix ibi may not return mandatory data byte
 Date: Fri, 24 Nov 2023 17:50:47 +0000
-Message-ID: <20231124172042.725255071@linuxfoundation.org>
+Message-ID: <20231124172019.155198570@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,58 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 7cefbe5e1dacc7236caa77e9d072423f21422fe2 upstream.
+commit c85e209b799f12d18a90ae6353b997b1bb1274a5 upstream.
 
-Running the mp_join selftest manually with the following command line:
+MSTATUS[RXPEND] is only updated after the data transfer cycle started. This
+creates an issue when the I3C clock is slow, and the CPU is running fast
+enough that MSTATUS[RXPEND] may not be updated when the code reaches
+checking point. As a result, mandatory data can be missed.
 
-  ./mptcp_join.sh -z -C
+Add a wait for MSTATUS[COMPLETE] to ensure that all mandatory data is
+already in FIFO. It also works without mandatory data.
 
-leads to some failures:
-
-  002 fastclose server test
-  # ...
-  rtx                                 [fail] got 1 MP_RST[s] TX expected 0
-  # ...
-  rstrx                               [fail] got 1 MP_RST[s] RX expected 0
-
-The problem is really in the wrong expectations for the RST checks
-implied by the csum validation. Note that the same check is repeated
-explicitly in the same test-case, with the correct expectation and
-pass successfully.
-
-Address the issue explicitly setting the correct expectation for
-the failing checks.
-
-Reported-by: Xiumei Mu <xmu@redhat.com>
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-5-7b9cd6a7b7f4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231023161658.3890811-4-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/svc-i3c-master.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3237,7 +3237,7 @@ fastclose_tests()
- 	if reset_check_counter "fastclose server test" "MPTcpExtMPFastcloseRx"; then
- 		test_linkfail=1024 fastclose=server \
- 			run_tests $ns1 $ns2 10.0.1.1
--		chk_join_nr 0 0 0
-+		chk_join_nr 0 0 0 0 0 0 1
- 		chk_fclose_nr 1 1 invert
- 		chk_rst_nr 1 1
- 	fi
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -325,6 +325,7 @@ static int svc_i3c_master_handle_ibi(str
+ 	struct i3c_ibi_slot *slot;
+ 	unsigned int count;
+ 	u32 mdatactrl;
++	int ret, val;
+ 	u8 *buf;
+ 
+ 	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
+@@ -334,6 +335,13 @@ static int svc_i3c_master_handle_ibi(str
+ 	slot->len = 0;
+ 	buf = slot->data;
+ 
++	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
++						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
++	if (ret) {
++		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
++		return ret;
++	}
++
+ 	while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS))  &&
+ 	       slot->len < SVC_I3C_FIFO_SIZE) {
+ 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
 
 
 
