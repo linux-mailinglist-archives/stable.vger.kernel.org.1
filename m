@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DEA7F7F52
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD207F80FE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA0C2820DA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 428FFB21A5F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82EA28DC3;
-	Fri, 24 Nov 2023 18:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0A333CCA;
+	Fri, 24 Nov 2023 18:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7rnMbwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Id6V6miW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B05435F1A;
-	Fri, 24 Nov 2023 18:40:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23BB7C433C7;
-	Fri, 24 Nov 2023 18:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2052E64F;
+	Fri, 24 Nov 2023 18:54:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9EB4C433C8;
+	Fri, 24 Nov 2023 18:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851224;
-	bh=bB0FAE2kq1GcTtkKozMfHbm+IINuKsDh5t4b7FeB3Wk=;
+	s=korg; t=1700852082;
+	bh=DYwbUEofHXymB6UqTpGigZnHPuhrwt9tEnOL+mSQ7mA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7rnMbwPHFWvh/Kl9NEdrJnlZZzW7zJQO/9gahENOXwoXxbD9dZforB2eNGqWfLs8
-	 TdP5O8Ckiqoade4vc89gbWmJVX+/ECS3Cly0TVG7CxTxLosgUBxlZgurVZHR7X+HS4
-	 Dmd1IPeXbQmN0T87+qCYO1AFitmx5YEtVVbGfYSM=
+	b=Id6V6miWjmL98/6XYLD2zP0AtH4xbMAHnNkRewYzc9YqyzSjROIEWXyC0GpPu99ym
+	 BgOjIqB/tj9Wagr4Y3HT5gHp65jVNy9dqbF3ZvYW5ByHQGecm7FuCqL6S8OIqqKIHa
+	 elKCafVGX7gI7pfPsz+BQFapu+RLJwlhYjAmgcNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Harris <jim.harris@samsung.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.5 363/491] cxl/region: Fix x1 root-decoder granularity calculations
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.1 212/372] ksmbd: fix slab out of bounds write in smb_inherit_dacl()
 Date: Fri, 24 Nov 2023 17:49:59 +0000
-Message-ID: <20231124172035.485102348@linuxfoundation.org>
+Message-ID: <20231124172017.537018394@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,91 +53,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Harris <jim.harris@samsung.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 98a04c7aced2b43b3ac4befe216c4eecc7257d4b upstream.
+commit eebff19acaa35820cb09ce2ccb3d21bee2156ffb upstream.
 
-Root decoder granularity must match value from CFWMS, which may not
-be the region's granularity for non-interleaved root decoders.
+slab out-of-bounds write is caused by that offsets is bigger than pntsd
+allocation size. This patch add the check to validate 3 offsets using
+allocation size.
 
-So when calculating granularities for host bridge decoders, use the
-region's granularity instead of the root decoder's granularity to ensure
-the correct granularities are set for the host bridge decoders and any
-downstream switch decoders.
-
-Test configuration is 1 host bridge * 2 switches * 2 endpoints per switch.
-
-Region created with 2048 granularity using following command line:
-
-cxl create-region -m -d decoder0.0 -w 4 mem0 mem2 mem1 mem3 \
-		  -g 2048 -s 2048M
-
-Use "cxl list -PDE | grep granularity" to get a view of the granularity
-set at each level of the topology.
-
-Before this patch:
-        "interleave_granularity":2048,
-        "interleave_granularity":2048,
-    "interleave_granularity":512,
-        "interleave_granularity":2048,
-        "interleave_granularity":2048,
-    "interleave_granularity":512,
-"interleave_granularity":256,
-
-After:
-        "interleave_granularity":2048,
-        "interleave_granularity":2048,
-    "interleave_granularity":4096,
-        "interleave_granularity":2048,
-        "interleave_granularity":2048,
-    "interleave_granularity":4096,
-"interleave_granularity":2048,
-
-Fixes: 27b3f8d13830 ("cxl/region: Program target lists")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jim Harris <jim.harris@samsung.com>
-Link: https://lore.kernel.org/r/169824893473.1403938.16110924262989774582.stgit@bgt-140510-bm03.eng.stellus.in
-[djbw: fixup the prebuilt cxl_test region]
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22271
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/region.c    |    9 ++++++++-
- tools/testing/cxl/test/cxl.c |    2 +-
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ fs/smb/server/smbacl.c |   29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1127,7 +1127,14 @@ static int cxl_port_setup_targets(struct
- 	}
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1107,6 +1107,7 @@ pass:
+ 		struct smb_acl *pdacl;
+ 		struct smb_sid *powner_sid = NULL, *pgroup_sid = NULL;
+ 		int powner_sid_size = 0, pgroup_sid_size = 0, pntsd_size;
++		int pntsd_alloc_size;
  
- 	if (is_cxl_root(parent_port)) {
--		parent_ig = cxlrd->cxlsd.cxld.interleave_granularity;
-+		/*
-+		 * Root decoder IG is always set to value in CFMWS which
-+		 * may be different than this region's IG.  We can use the
-+		 * region's IG here since interleave_granularity_store()
-+		 * does not allow interleaved host-bridges with
-+		 * root IG != region IG.
-+		 */
-+		parent_ig = p->interleave_granularity;
- 		parent_iw = cxlrd->cxlsd.cxld.interleave_ways;
- 		/*
- 		 * For purposes of address bit routing, use power-of-2 math for
---- a/tools/testing/cxl/test/cxl.c
-+++ b/tools/testing/cxl/test/cxl.c
-@@ -831,7 +831,7 @@ static void mock_init_hdm_decoder(struct
- 			cxld->interleave_ways = 2;
- 		else
- 			cxld->interleave_ways = 1;
--		cxld->interleave_granularity = 256;
-+		cxld->interleave_granularity = 4096;
- 		cxld->hpa_range = (struct range) {
- 			.start = base,
- 			.end = base + size - 1,
+ 		if (parent_pntsd->osidoffset) {
+ 			powner_sid = (struct smb_sid *)((char *)parent_pntsd +
+@@ -1119,9 +1120,10 @@ pass:
+ 			pgroup_sid_size = 1 + 1 + 6 + (pgroup_sid->num_subauth * 4);
+ 		}
+ 
+-		pntsd = kzalloc(sizeof(struct smb_ntsd) + powner_sid_size +
+-				pgroup_sid_size + sizeof(struct smb_acl) +
+-				nt_size, GFP_KERNEL);
++		pntsd_alloc_size = sizeof(struct smb_ntsd) + powner_sid_size +
++			pgroup_sid_size + sizeof(struct smb_acl) + nt_size;
++
++		pntsd = kzalloc(pntsd_alloc_size, GFP_KERNEL);
+ 		if (!pntsd) {
+ 			rc = -ENOMEM;
+ 			goto free_aces_base;
+@@ -1136,6 +1138,27 @@ pass:
+ 		pntsd->gsidoffset = parent_pntsd->gsidoffset;
+ 		pntsd->dacloffset = parent_pntsd->dacloffset;
+ 
++		if ((u64)le32_to_cpu(pntsd->osidoffset) + powner_sid_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
++
++		if ((u64)le32_to_cpu(pntsd->gsidoffset) + pgroup_sid_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
++
++		if ((u64)le32_to_cpu(pntsd->dacloffset) + sizeof(struct smb_acl) + nt_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
++
+ 		if (pntsd->osidoffset) {
+ 			struct smb_sid *owner_sid = (struct smb_sid *)((char *)pntsd +
+ 					le32_to_cpu(pntsd->osidoffset));
 
 
 
