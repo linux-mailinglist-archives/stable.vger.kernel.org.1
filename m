@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-2470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31C757F844F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 124707F829F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 639C21C2767A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0DA5285B0C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830A3381CC;
-	Fri, 24 Nov 2023 19:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60B73173F;
+	Fri, 24 Nov 2023 19:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOjhDldM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8I8DQDL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD48364C4;
-	Fri, 24 Nov 2023 19:26:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C088C433C7;
-	Fri, 24 Nov 2023 19:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FB233E9;
+	Fri, 24 Nov 2023 19:09:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A34C433C7;
+	Fri, 24 Nov 2023 19:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853962;
-	bh=fQlRO3mArWXwInlikiKgSjsKGyT9/CNC3EJlhT/wPQQ=;
+	s=korg; t=1700852960;
+	bh=tqyYb2uwXIq7K+3GccnY/cBYWAaM+yPikDAaelfESyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOjhDldM5lIhTK23DbNKZVM+hqQSkthMabjri+foNd+MG9rXzIYn17BHwWkZ1KXmd
-	 tqfszC5Mx+geqcrKDeN6ae4V132xcdFPUqN6FD/XdMOseDgKYR0WprttQTs3Aj1VXy
-	 hC84LCTixgh8YTUSNbjgDJGM2QUwmTh/mFAtbe7k=
+	b=V8I8DQDLGgP7JPWLefyhWuxdwp39+wdz/LqNmKFoOItifHpZY9j5MQjJqjMx0F2b8
+	 JBIshRGddqaRjeK0q4Z63b/JtU0KzooGv8bl2xrtxk2DqxlzO8pHO7MuwNoyt1qo57
+	 BvK9fH87GmPi17fXLiVcwwsOZgWZAs44+IZCUWOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.4 101/159] parisc/pgtable: Do not drop upper 5 address bits of physical address
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 191/193] netfilter: nftables: update table flags from the commit phase
 Date: Fri, 24 Nov 2023 17:55:18 +0000
-Message-ID: <20231124171946.095435376@linuxfoundation.org>
+Message-ID: <20231124171954.832942175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +52,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 166b0110d1ee53290bd11618df6e3991c117495a upstream.
+commit 0ce7cf4127f14078ca598ba9700d813178a59409 upstream.
 
-When calculating the pfn for the iitlbt/idtlbt instruction, do not
-drop the upper 5 address bits. This doesn't seem to have an effect
-on physical hardware which uses less physical address bits, but in
-qemu the missing bits are visible.
+Do not update table flags from the preparation phase. Store the flags
+update into the transaction, then update the flags from the commit
+phase.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc:  <stable@vger.kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/entry.S |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ include/net/netfilter/nf_tables.h |    9 ++++++---
+ net/netfilter/nf_tables_api.c     |   31 ++++++++++++++++---------------
+ 2 files changed, 22 insertions(+), 18 deletions(-)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -511,13 +511,13 @@
- 	 * to a CPU TLB 4k PFN (4k => 12 bits to shift) */
- 	#define PAGE_ADD_SHIFT		(PAGE_SHIFT-12)
- 	#define PAGE_ADD_HUGE_SHIFT	(REAL_HPAGE_SHIFT-12)
-+	#define PFN_START_BIT	(63-ASM_PFN_PTE_SHIFT+(63-58)-PAGE_ADD_SHIFT)
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1479,13 +1479,16 @@ struct nft_trans_chain {
  
- 	/* Drop prot bits and convert to page addr for iitlbt and idtlbt */
- 	.macro		convert_for_tlb_insert20 pte,tmp
- #ifdef CONFIG_HUGETLB_PAGE
- 	copy		\pte,\tmp
--	extrd,u		\tmp,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\tmp,PFN_START_BIT,PFN_START_BIT+1,\pte
+ struct nft_trans_table {
+ 	bool				update;
+-	bool				enable;
++	u8				state;
++	u32				flags;
+ };
  
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
-@@ -525,8 +525,7 @@
- 	depdi		_HUGE_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_HUGE_SHIFT,\pte
- #else /* Huge pages disabled */
--	extrd,u		\pte,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\pte,PFN_START_BIT,PFN_START_BIT+1,\pte
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
- #endif
+ #define nft_trans_table_update(trans)	\
+ 	(((struct nft_trans_table *)trans->data)->update)
+-#define nft_trans_table_enable(trans)	\
+-	(((struct nft_trans_table *)trans->data)->enable)
++#define nft_trans_table_state(trans)	\
++	(((struct nft_trans_table *)trans->data)->state)
++#define nft_trans_table_flags(trans)	\
++	(((struct nft_trans_table *)trans->data)->flags)
+ 
+ struct nft_trans_elem {
+ 	struct nft_set			*set;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1074,6 +1074,12 @@ static void nf_tables_table_disable(stru
+ 	nft_table_disable(net, table, 0);
+ }
+ 
++enum {
++	NFT_TABLE_STATE_UNCHANGED	= 0,
++	NFT_TABLE_STATE_DORMANT,
++	NFT_TABLE_STATE_WAKEUP
++};
++
+ static int nf_tables_updtable(struct nft_ctx *ctx)
+ {
+ 	struct nft_trans *trans;
+@@ -1097,19 +1103,17 @@ static int nf_tables_updtable(struct nft
+ 
+ 	if ((flags & NFT_TABLE_F_DORMANT) &&
+ 	    !(ctx->table->flags & NFT_TABLE_F_DORMANT)) {
+-		nft_trans_table_enable(trans) = false;
++		nft_trans_table_state(trans) = NFT_TABLE_STATE_DORMANT;
+ 	} else if (!(flags & NFT_TABLE_F_DORMANT) &&
+ 		   ctx->table->flags & NFT_TABLE_F_DORMANT) {
+-		ctx->table->flags &= ~NFT_TABLE_F_DORMANT;
+ 		ret = nf_tables_table_enable(ctx->net, ctx->table);
+ 		if (ret >= 0)
+-			nft_trans_table_enable(trans) = true;
+-		else
+-			ctx->table->flags |= NFT_TABLE_F_DORMANT;
++			nft_trans_table_state(trans) = NFT_TABLE_STATE_WAKEUP;
+ 	}
+ 	if (ret < 0)
+ 		goto err;
+ 
++	nft_trans_table_flags(trans) = flags;
+ 	nft_trans_table_update(trans) = true;
+ 	nft_trans_commit_list_add_tail(ctx->net, trans);
+ 	return 0;
+@@ -8475,11 +8479,10 @@ static int nf_tables_commit(struct net *
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWTABLE:
+ 			if (nft_trans_table_update(trans)) {
+-				if (!nft_trans_table_enable(trans)) {
+-					nf_tables_table_disable(net,
+-								trans->ctx.table);
+-					trans->ctx.table->flags |= NFT_TABLE_F_DORMANT;
+-				}
++				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_DORMANT)
++					nf_tables_table_disable(net, trans->ctx.table);
++
++				trans->ctx.table->flags = nft_trans_table_flags(trans);
+ 			} else {
+ 				nft_clear(net, trans->ctx.table);
+ 			}
+@@ -8728,11 +8731,9 @@ static int __nf_tables_abort(struct net
+ 		switch (trans->msg_type) {
+ 		case NFT_MSG_NEWTABLE:
+ 			if (nft_trans_table_update(trans)) {
+-				if (nft_trans_table_enable(trans)) {
+-					nf_tables_table_disable(net,
+-								trans->ctx.table);
+-					trans->ctx.table->flags |= NFT_TABLE_F_DORMANT;
+-				}
++				if (nft_trans_table_state(trans) == NFT_TABLE_STATE_WAKEUP)
++					nf_tables_table_disable(net, trans->ctx.table);
++
+ 				nft_trans_destroy(trans);
+ 			} else {
+ 				list_del_rcu(&trans->ctx.table->list);
 
 
 
