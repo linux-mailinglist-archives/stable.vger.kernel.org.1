@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-1242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0B17F7EB3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930967F7C85
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28B171C213E2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C48321C210C0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC4B35F1A;
-	Fri, 24 Nov 2023 18:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A2839FC3;
+	Fri, 24 Nov 2023 18:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xG7Zut30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WWdgCHGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4862E853;
-	Fri, 24 Nov 2023 18:35:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD88C433C7;
-	Fri, 24 Nov 2023 18:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C264139FF7;
+	Fri, 24 Nov 2023 18:15:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BC3FC433C8;
+	Fri, 24 Nov 2023 18:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850913;
-	bh=85svPIgeVSkbFJjTp1ddFPmtGjiwFgkyRSW+r9jXKI4=;
+	s=korg; t=1700849755;
+	bh=VVLfcdWMTMbzbKRCDB7RVXpXdTD+KcRxJbG/tHPoxGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xG7Zut30F9toJRD8aK7k4kxuSWf6c0geN98+8Zw1KvuzvJSb/T2KXoBDl8RkEHbFy
-	 NQ/TJOFfoLhlJZLpjuO+pHi/EUFUemlsSPGrmdxKsKQLmArLVt9aenpmEDOoNFSouL
-	 74NDGAKXgMJQDNNP9p/2NSxLW4QxO8HlFmLTE4zM=
+	b=WWdgCHGsY9/rAxcp2aN/0S3iWIZLU/F6mq+KX25PSeYLfOWPESmou/INb7mPAC+qZ
+	 lydT9a5iq2z+IKabFVW7KWm96Adh4ogkO1BfeUZkLAesnfayJwA3RTQwfcq0m6eQpj
+	 7kwUx962PepYsNhwBwVQcfcFe+N7h0feTNVO7NMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
-	Julian Andres Klode <julian.klode@canonical.com>,
-	Roxana Nicolescu <roxana.nicolescu@canonical.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.5 238/491] crypto: x86/sha - load modules based on CPU features
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 308/530] parisc/agp: Use 64-bit LE values in SBA IOMMU PDIR table
 Date: Fri, 24 Nov 2023 17:47:54 +0000
-Message-ID: <20231124172031.706749761@linuxfoundation.org>
+Message-ID: <20231124172037.408233054@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,107 +51,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roxana Nicolescu <roxana.nicolescu@canonical.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 1c43c0f1f84aa59dfc98ce66f0a67b2922aa7f9d upstream.
+commit 86bb854d134f4429feb35d2e05f55c6e036770d2 upstream.
 
-x86 optimized crypto modules are built as modules rather than build-in and
-they are not loaded when the crypto API is initialized, resulting in the
-generic builtin module (sha1-generic) being used instead.
+The PDIR table of the System Bus Adapter (SBA) I/O MMU uses 64-bit
+little-endian pointers.
 
-It was discovered when creating a sha1/sha256 checksum of a 2Gb file by
-using kcapi-tools because it would take significantly longer than creating
-a sha512 checksum of the same file. trace-cmd showed that for sha1/256 the
-generic module was used, whereas for sha512 the optimized module was used
-instead.
-
-Add module aliases() for these x86 optimized crypto modules based on CPU
-feature bits so udev gets a chance to load them later in the boot
-process. This resulted in ~3x decrease in the real-time execution of
-kcapi-dsg.
-
-Fix is inspired from commit
-aa031b8f702e ("crypto: x86/sha512 - load based on CPU features")
-where a similar fix was done for sha512.
-
-Cc: stable@vger.kernel.org # 5.15+
-Suggested-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-Suggested-by: Julian Andres Klode <julian.klode@canonical.com>
-Signed-off-by: Roxana Nicolescu <roxana.nicolescu@canonical.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v6.4+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/crypto/sha1_ssse3_glue.c   |   12 ++++++++++++
- arch/x86/crypto/sha256_ssse3_glue.c |   12 ++++++++++++
- 2 files changed, 24 insertions(+)
+ drivers/char/agp/parisc-agp.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/arch/x86/crypto/sha1_ssse3_glue.c
-+++ b/arch/x86/crypto/sha1_ssse3_glue.c
-@@ -24,8 +24,17 @@
- #include <linux/types.h>
- #include <crypto/sha1.h>
- #include <crypto/sha1_base.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/simd.h>
+--- a/drivers/char/agp/parisc-agp.c
++++ b/drivers/char/agp/parisc-agp.c
+@@ -38,7 +38,7 @@ static struct _parisc_agp_info {
  
-+static const struct x86_cpu_id module_cpu_ids[] = {
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
-+	{}
-+};
-+MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
-+
- static int sha1_update(struct shash_desc *desc, const u8 *data,
- 			     unsigned int len, sha1_block_fn *sha1_xform)
+ 	int lba_cap_offset;
+ 
+-	u64 *gatt;
++	__le64 *gatt;
+ 	u64 gatt_entries;
+ 
+ 	u64 gart_base;
+@@ -104,7 +104,7 @@ parisc_agp_create_gatt_table(struct agp_
+ 	int i;
+ 
+ 	for (i = 0; i < info->gatt_entries; i++) {
+-		info->gatt[i] = (unsigned long)agp_bridge->scratch_page;
++		info->gatt[i] = cpu_to_le64(agp_bridge->scratch_page);
+ 	}
+ 
+ 	return 0;
+@@ -158,9 +158,9 @@ parisc_agp_insert_memory(struct agp_memo
+ 		for (k = 0;
+ 		     k < info->io_pages_per_kpage;
+ 		     k++, j++, paddr += info->io_page_size) {
+-			info->gatt[j] =
++			info->gatt[j] = cpu_to_le64(
+ 				parisc_agp_mask_memory(agp_bridge,
+-					paddr, type);
++					paddr, type));
+ 			asm_io_fdc(&info->gatt[j]);
+ 		}
+ 	}
+@@ -184,7 +184,7 @@ parisc_agp_remove_memory(struct agp_memo
+ 	io_pg_start = info->io_pages_per_kpage * pg_start;
+ 	io_pg_count = info->io_pages_per_kpage * mem->page_count;
+ 	for (i = io_pg_start; i < io_pg_count + io_pg_start; i++) {
+-		info->gatt[i] = agp_bridge->scratch_page;
++		info->gatt[i] = cpu_to_le64(agp_bridge->scratch_page);
+ 	}
+ 
+ 	agp_bridge->driver->tlb_flush(mem);
+@@ -204,7 +204,8 @@ parisc_agp_mask_memory(struct agp_bridge
+ 	pa |= (ci >> PAGE_SHIFT) & 0xff;/* move CI (8 bits) into lowest byte */
+ 	pa |= SBA_PDIR_VALID_BIT;	/* set "valid" bit */
+ 
+-	return cpu_to_le64(pa);
++	/* return native (big-endian) PDIR entry */
++	return pa;
+ }
+ 
+ static void
+@@ -251,7 +252,8 @@ static int __init
+ agp_ioc_init(void __iomem *ioc_regs)
  {
-@@ -301,6 +310,9 @@ static inline void unregister_sha1_ni(vo
+ 	struct _parisc_agp_info *info = &parisc_agp_info;
+-        u64 iova_base, *io_pdir, io_tlb_ps;
++        u64 iova_base, io_tlb_ps;
++	__le64 *io_pdir;
+         int io_tlb_shift;
  
- static int __init sha1_ssse3_mod_init(void)
- {
-+	if (!x86_match_cpu(module_cpu_ids))
-+		return -ENODEV;
-+
- 	if (register_sha1_ssse3())
- 		goto fail;
- 
---- a/arch/x86/crypto/sha256_ssse3_glue.c
-+++ b/arch/x86/crypto/sha256_ssse3_glue.c
-@@ -38,11 +38,20 @@
- #include <crypto/sha2.h>
- #include <crypto/sha256_base.h>
- #include <linux/string.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/simd.h>
- 
- asmlinkage void sha256_transform_ssse3(struct sha256_state *state,
- 				       const u8 *data, int blocks);
- 
-+static const struct x86_cpu_id module_cpu_ids[] = {
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
-+	{}
-+};
-+MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
-+
- static int _sha256_update(struct shash_desc *desc, const u8 *data,
- 			  unsigned int len, sha256_block_fn *sha256_xform)
- {
-@@ -366,6 +375,9 @@ static inline void unregister_sha256_ni(
- 
- static int __init sha256_ssse3_mod_init(void)
- {
-+	if (!x86_match_cpu(module_cpu_ids))
-+		return -ENODEV;
-+
- 	if (register_sha256_ssse3())
- 		goto fail;
- 
+         printk(KERN_INFO DRVPFX "IO PDIR shared with sba_iommu\n");
 
 
 
