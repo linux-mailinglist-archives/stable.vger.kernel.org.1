@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E812B7F75B0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:54:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 268A17F75B2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:54:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79888B21402
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:54:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAAD8B214C0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135862C1BC;
-	Fri, 24 Nov 2023 13:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA962C846;
+	Fri, 24 Nov 2023 13:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZje9tPU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lcp6UPCk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CA228E2C
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:54:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9F8C433C8;
-	Fri, 24 Nov 2023 13:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10822C842
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:54:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117D6C433C8;
+	Fri, 24 Nov 2023 13:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700834046;
-	bh=+7sFMKu5IyDXTZPX9i3lKIwaeaeUQ4yeAdz/Y6tk+mA=;
+	s=korg; t=1700834049;
+	bh=YWfr+rnTx31pP0e0CWZfurb4pOr82y+/RFEWn+VpIns=;
 	h=Subject:To:Cc:From:Date:From;
-	b=cZje9tPUjDpdV8Rs9R5tdRNYTIXvp1NUyJy6IbT2vq4RPMH3UeaTClwsIpfjLGkLy
-	 WRNdMUr0cQVSlS0fAvN8lEyJKQ3L/u3YqUjCntD01RCJ1xpBryEkBRZ6rG/b5UGYzC
-	 oUd5qkSs/wzaMcshULH5KbQocWU/5LV4etBJpZKA=
-Subject: FAILED: patch "[PATCH] drm/amd: Fix detection of _PR3 on the PCIe root port" failed to apply to 6.6-stable tree
+	b=Lcp6UPCkiALwBcmj+Am6fteBxutfmj/GwFE7Geeo3xew6OWLHibjHGTSknHpzxHgg
+	 VM1qCki3tqG6+HCmY4Hrf1/reF2PlnYKLP4Rj1qmAvjfZHFGbvFEYQcN3Ly7izqRC2
+	 pr1has0sqWkR78CGBQYnk5sgoEDXbVIniOwn8gxQ=
+Subject: FAILED: patch "[PATCH] drm/amd: Fix detection of _PR3 on the PCIe root port" failed to apply to 6.5-stable tree
 To: mario.limonciello@amd.com,David.Perry@amd.com,Jun.Ma2@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:54:03 +0000
-Message-ID: <2023112403-cursive-oxygen-f3a1@gregkh>
+Date: Fri, 24 Nov 2023 13:54:04 +0000
+Message-ID: <2023112404-trouble-crabbing-8ecb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
 git cherry-pick -x c4c8955b8acb4d88d2ca02a7dc6010e5f0c5288d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112403-cursive-oxygen-f3a1@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112404-trouble-crabbing-8ecb@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
