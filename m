@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7E07F8151
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3AD37F7FB3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEE2B1C21554
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70AF5282549
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEFD28DBA;
-	Fri, 24 Nov 2023 18:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEBFF2D787;
+	Fri, 24 Nov 2023 18:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LubIEKHf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMr5TGbM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB2C2C85B;
-	Fri, 24 Nov 2023 18:57:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CC7C433C9;
-	Fri, 24 Nov 2023 18:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4BB3307D;
+	Fri, 24 Nov 2023 18:43:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0E3C433C7;
+	Fri, 24 Nov 2023 18:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852254;
-	bh=0/SfRBaEhPCcVPuvLrzn2XOGA3TrXG/nR9FGypmxwVs=;
+	s=korg; t=1700851419;
+	bh=85zDsVzlZ5k/v9IA6864WHBQYhjnZXO5hq5dEPO9zws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LubIEKHfzyhd3rNx3QsPxJIntcAU7gOVAfD7naXOOXC/RtyvThf/m47uA1maTCoKJ
-	 keWkPdvpKXqTYYfxteOM/pCOOrkscirIp16qidNgSBpDtdeWkDrlTdMr58FMSNP5Do
-	 7HqJ1v7waQyGMJMmPhl1UEAXQZx3XTcJHoUdGxOY=
+	b=qMr5TGbMlGVy7V2fruIjWkNxrZbNdZ2xGSjPhWSXsh5b908gOzJBsQjtb33jvp/Er
+	 WV2nHBW8AX0kJekh1bMi2kRw9JyEFdEl3nzise3YjdVua5T66MoBZejUD9AAIyJIG9
+	 Rw73mfKz+GOYhE4oFUBTPTWRVnG/7tuyaUBtkWaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matus Malych <matus@malych.org>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 282/372] ALSA: hda/realtek: Enable Mute LED on HP 255 G10
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.5 433/491] LoongArch: Mark __percpu functions as always inline
 Date: Fri, 24 Nov 2023 17:51:09 +0000
-Message-ID: <20231124172019.844596001@linuxfoundation.org>
+Message-ID: <20231124172037.625281162@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,37 +53,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matus Malych <matus@malych.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit b944aa9d86d5f782bfe5e51336434c960304839c upstream.
+commit 71945968d8b128c955204baa33ec03bdd91bdc26 upstream.
 
-HP 255 G10 has a mute LED that can be made to work using quirk
-ALC236_FIXUP_HP_MUTE_LED_COEFBIT2.
-Enable already existing quirk - at correct line to keep order
+A recent change to the optimization pipeline in LLVM reveals some
+fragility around the inlining of LoongArch's __percpu functions, which
+manifests as a BUILD_BUG() failure:
 
-Signed-off-by: Matus Malych <matus@malych.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231114133524.11340-1-matus@malych.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+  In file included from kernel/sched/build_policy.c:17:
+  In file included from include/linux/sched/cputime.h:5:
+  In file included from include/linux/sched/signal.h:5:
+  In file included from include/linux/rculist.h:11:
+  In file included from include/linux/rcupdate.h:26:
+  In file included from include/linux/irqflags.h:18:
+  arch/loongarch/include/asm/percpu.h:97:3: error: call to '__compiletime_assert_51' declared with 'error' attribute: BUILD_BUG failed
+     97 |                 BUILD_BUG();
+        |                 ^
+  include/linux/build_bug.h:59:21: note: expanded from macro 'BUILD_BUG'
+     59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+        |                     ^
+  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+        |                                     ^
+  include/linux/compiler_types.h:425:2: note: expanded from macro 'compiletime_assert'
+    425 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+        |         ^
+  include/linux/compiler_types.h:413:2: note: expanded from macro '_compiletime_assert'
+    413 |         __compiletime_assert(condition, msg, prefix, suffix)
+        |         ^
+  include/linux/compiler_types.h:406:4: note: expanded from macro '__compiletime_assert'
+    406 |                         prefix ## suffix();                             \
+        |                         ^
+  <scratch space>:86:1: note: expanded from here
+     86 | __compiletime_assert_51
+        | ^
+  1 error generated.
+
+If these functions are not inlined (which the compiler is free to do
+even with functions marked with the standard 'inline' keyword), the
+BUILD_BUG() in the default case cannot be eliminated since the compiler
+cannot prove it is never used, resulting in a build failure due to the
+error attribute.
+
+Mark these functions as __always_inline to guarantee inlining so that
+the BUILD_BUG() only triggers when the default case genuinely cannot be
+eliminated due to an unexpected size.
+
+Cc:  <stable@vger.kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1955
+Fixes: 46859ac8af52 ("LoongArch: Add multi-processor (SMP) support")
+Link: https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/include/asm/percpu.h |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9660,6 +9660,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b44, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+--- a/arch/loongarch/include/asm/percpu.h
++++ b/arch/loongarch/include/asm/percpu.h
+@@ -32,7 +32,7 @@ static inline void set_my_cpu_offset(uns
+ #define __my_cpu_offset __my_cpu_offset
+ 
+ #define PERCPU_OP(op, asm_op, c_op)					\
+-static inline unsigned long __percpu_##op(void *ptr,			\
++static __always_inline unsigned long __percpu_##op(void *ptr,		\
+ 			unsigned long val, int size)			\
+ {									\
+ 	unsigned long ret;						\
+@@ -63,7 +63,7 @@ PERCPU_OP(and, and, &)
+ PERCPU_OP(or, or, |)
+ #undef PERCPU_OP
+ 
+-static inline unsigned long __percpu_read(void *ptr, int size)
++static __always_inline unsigned long __percpu_read(void *ptr, int size)
+ {
+ 	unsigned long ret;
+ 
+@@ -100,7 +100,7 @@ static inline unsigned long __percpu_rea
+ 	return ret;
+ }
+ 
+-static inline void __percpu_write(void *ptr, unsigned long val, int size)
++static __always_inline void __percpu_write(void *ptr, unsigned long val, int size)
+ {
+ 	switch (size) {
+ 	case 1:
+@@ -132,8 +132,8 @@ static inline void __percpu_write(void *
+ 	}
+ }
+ 
+-static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
+-						int size)
++static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
++						   int size)
+ {
+ 	switch (size) {
+ 	case 1:
 
 
 
