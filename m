@@ -1,53 +1,47 @@
-Return-Path: <stable+bounces-1379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A46C7F7F5D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1015A7F7AB6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C879F28216E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 426071C20A6D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523D9381C9;
-	Fri, 24 Nov 2023 18:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8429E39FDE;
+	Fri, 24 Nov 2023 17:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaJRF5RQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4C7J02E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026D22FC4E;
-	Fri, 24 Nov 2023 18:40:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85476C433C8;
-	Fri, 24 Nov 2023 18:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3622839FC6;
+	Fri, 24 Nov 2023 17:57:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504FDC433C8;
+	Fri, 24 Nov 2023 17:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851251;
-	bh=gBSRHvzzNXDxt/WLVhQSxGZzuOMinhYdHjaktU0LC1w=;
+	s=korg; t=1700848676;
+	bh=QAuWEI3ISTTvmzxDQotNPAd7uJb71cAqo1NEjZFcJQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KaJRF5RQxeYoBFQ2N5zXjLL+jHOw6adk4rB0H2PfKCehZJqS6tU1BjkvFYIFCqnyQ
-	 SGEHDKR56da8gIf4n5mrDTDaQ7fYVEywfnK0lS6FDQQEOWHHWQDgdtt9MqUoZXyNjv
-	 aFNfQGozdrg6mGVlkcWNOEf9GY7NofBBKbSsVe3A=
+	b=F4C7J02Ekkdmhnb4L5LUJoYEBWha1N1cedu2PXYkee697ok1o7N8VI5nMKqUqwBPI
+	 fnWOBZ+IkVNrUepHEh7bL6dBydZoVeR164dGse2wWt/NbjjMnwBIFLtlj8ssucJGLW
+	 Pbbecb31iCVgvLv5gYwjELRVQX2O/nh80p9FvMDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Valentin Schneider <vschneid@redhat.com>,
-	kernel-team@android.com,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	John Stultz <jstultz@google.com>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 373/491] torture: Add a kthread-creation callback to _torture_create_kthread()
+Subject: [PATCH 4.19 36/97] NFSv4.1: fix SP4_MACH_CRED protection for pnfs IO
 Date: Fri, 24 Nov 2023 17:50:09 +0000
-Message-ID: <20231124172035.787391972@linuxfoundation.org>
+Message-ID: <20231124171935.507323041@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,81 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit 67d5404d274376890d6d095a10e6565854918f8e ]
+[ Upstream commit 5cc7688bae7f0757c39c1d3dfdd827b724061067 ]
 
-This commit adds a kthread-creation callback to the
-_torture_create_kthread() function, which allows callers of a new
-torture_create_kthread_cb() macro to specify a function to be invoked
-after the kthread is created but before it is awakened for the first time.
+If the client is doing pnfs IO and Kerberos is configured and EXCHANGEID
+successfully negotiated SP4_MACH_CRED and WRITE/COMMIT are on the
+list of state protected operations, then we need to make sure to
+choose the DS's rpc_client structure instead of the MDS's one.
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Josh Triplett <josh@joshtriplett.org>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: kernel-team@android.com
-Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Acked-by: John Stultz <jstultz@google.com>
-Stable-dep-of: cca42bd8eb1b ("rcutorture: Fix stuttering races and other issues")
+Fixes: fb91fb0ee7b2 ("NFS: Move call to nfs4_state_protect_write() to nfs4_write_setup()")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/torture.h | 7 +++++--
- kernel/torture.c        | 6 +++++-
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ fs/nfs/nfs4proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/torture.h b/include/linux/torture.h
-index 7038104463e48..bb466eec01e42 100644
---- a/include/linux/torture.h
-+++ b/include/linux/torture.h
-@@ -108,12 +108,15 @@ bool torture_must_stop(void);
- bool torture_must_stop_irq(void);
- void torture_kthread_stopping(char *title);
- int _torture_create_kthread(int (*fn)(void *arg), void *arg, char *s, char *m,
--			     char *f, struct task_struct **tp);
-+			     char *f, struct task_struct **tp, void (*cbf)(struct task_struct *tp));
- void _torture_stop_kthread(char *m, struct task_struct **tp);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 3651619468d74..c44efead1a329 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5143,7 +5143,7 @@ static void nfs4_proc_write_setup(struct nfs_pgio_header *hdr,
  
- #define torture_create_kthread(n, arg, tp) \
- 	_torture_create_kthread(n, (arg), #n, "Creating " #n " task", \
--				"Failed to create " #n, &(tp))
-+				"Failed to create " #n, &(tp), NULL)
-+#define torture_create_kthread_cb(n, arg, tp, cbf) \
-+	_torture_create_kthread(n, (arg), #n, "Creating " #n " task", \
-+				"Failed to create " #n, &(tp), cbf)
- #define torture_stop_kthread(n, tp) \
- 	_torture_stop_kthread("Stopping " #n " task", &(tp))
+ 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_WRITE];
+ 	nfs4_init_sequence(&hdr->args.seq_args, &hdr->res.seq_res, 0, 0);
+-	nfs4_state_protect_write(server->nfs_client, clnt, msg, hdr);
++	nfs4_state_protect_write(hdr->ds_clp ? hdr->ds_clp : server->nfs_client, clnt, msg, hdr);
+ }
  
-diff --git a/kernel/torture.c b/kernel/torture.c
-index 1a0519b836ac9..1da48f3816f61 100644
---- a/kernel/torture.c
-+++ b/kernel/torture.c
-@@ -926,7 +926,7 @@ EXPORT_SYMBOL_GPL(torture_kthread_stopping);
-  * it starts, you will need to open-code your own.
-  */
- int _torture_create_kthread(int (*fn)(void *arg), void *arg, char *s, char *m,
--			    char *f, struct task_struct **tp)
-+			    char *f, struct task_struct **tp, void (*cbf)(struct task_struct *tp))
- {
- 	int ret = 0;
+ static void nfs4_proc_commit_rpc_prepare(struct rpc_task *task, struct nfs_commit_data *data)
+@@ -5184,7 +5184,8 @@ static void nfs4_proc_commit_setup(struct nfs_commit_data *data, struct rpc_mess
+ 	data->res.server = server;
+ 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_COMMIT];
+ 	nfs4_init_sequence(&data->args.seq_args, &data->res.seq_res, 1, 0);
+-	nfs4_state_protect(server->nfs_client, NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
++	nfs4_state_protect(data->ds_clp ? data->ds_clp : server->nfs_client,
++			NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
+ }
  
-@@ -938,6 +938,10 @@ int _torture_create_kthread(int (*fn)(void *arg), void *arg, char *s, char *m,
- 		*tp = NULL;
- 		return ret;
- 	}
-+
-+	if (cbf)
-+		cbf(*tp);
-+
- 	wake_up_process(*tp);  // Process is sleeping, so ordering provided.
- 	torture_shuffle_task_register(*tp);
- 	return ret;
+ static int _nfs4_proc_commit(struct file *dst, struct nfs_commitargs *args,
 -- 
 2.42.0
 
