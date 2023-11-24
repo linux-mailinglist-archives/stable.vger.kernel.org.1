@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EDAB7F80D5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8347E7F7F44
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD97B282584
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B58C61C210C3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7946B33CCA;
-	Fri, 24 Nov 2023 18:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BB035F1A;
+	Fri, 24 Nov 2023 18:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SP4433jZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NercE6lz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB0F2FC21;
-	Fri, 24 Nov 2023 18:53:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96C9C433C8;
-	Fri, 24 Nov 2023 18:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB5528DC3;
+	Fri, 24 Nov 2023 18:39:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9C4C433C8;
+	Fri, 24 Nov 2023 18:39:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851992;
-	bh=CLfO12vd1sOrBJS81CIxE34F4kxP88ZXNxxS2N7UWpI=;
+	s=korg; t=1700851199;
+	bh=cgpUnK0YiXHSQjH5ef/8O1seSLlW+65tJzhboh1VLNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SP4433jZB/NbV3bkNa4/Bj+1c5O8CUGDG+JxFQCV+nlETUYSIdDIMOFAT/NeddyaH
-	 1U5kkDAePy7fUu6rU3Y0L6whYr5gxVWXIN78tl6MwakPTi+NPSnWm0xUGX7nfWa5jx
-	 OekWhWflWyGbWUxZJK8QjN6Te52TenXhE3YV+mzI=
+	b=NercE6lz31tX8J8GMlVw615xBzZQun9STtwuRzNxXpVFO/GJq/jOYElinLjGCmsHY
+	 ZdnuCRoR8MOSQPtSKMoWTMHpFV8R5EGRSuaoQ/UEbQEwoMsSHY1728Xxtz1lie8aE6
+	 m46EHxP7HqA62UbhwjzXcJhV3wRedva0pKX30NCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Steinmetz <anstein99@googlemail.com>,
-	John Johansen <john.johanse@canonical.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.1 177/372] audit: dont take task_lock() in audit_exe_compare() code path
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 328/491] netfilter: nf_tables: split async and sync catchall in two functions
 Date: Fri, 24 Nov 2023 17:49:24 +0000
-Message-ID: <20231124172016.362620806@linuxfoundation.org>
+Message-ID: <20231124172034.420457748@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +53,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 47846d51348dd62e5231a83be040981b17c955fa upstream.
+[ Upstream commit 8837ba3e58ea1e3d09ae36db80b1e80853aada95 ]
 
-The get_task_exe_file() function locks the given task with task_lock()
-which when used inside audit_exe_compare() can cause deadlocks on
-systems that generate audit records when the task_lock() is held. We
-resolve this problem with two changes: ignoring those cases where the
-task being audited is not the current task, and changing our approach
-to obtaining the executable file struct to not require task_lock().
+list_for_each_entry_safe() does not work for the async case which runs
+under RCU, therefore, split GC logic for catchall in two functions
+instead, one for each of the sync and async GC variants.
 
-With the intent of the audit exe filter being to filter on audit events
-generated by processes started by the specified executable, it makes
-sense that we would only want to use the exe filter on audit records
-associated with the currently executing process, e.g. @current.  If
-we are asked to filter records using a non-@current task_struct we can
-safely ignore the exe filter without negatively impacting the admin's
-expectations for the exe filter.
+The catchall sync GC variant never sees a _DEAD bit set on ever, thus,
+this handling is removed in such case, moreover, allocate GC sync batch
+via GFP_KERNEL.
 
-Knowing that we only have to worry about filtering the currently
-executing task in audit_exe_compare() we can do away with the
-task_lock() and call get_mm_exe_file() with @current->mm directly.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 5efc244346f9 ("audit: fix exe_file access in audit_exe_compare")
-Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
-Reviewed-by: John Johansen <john.johanse@canonical.com>
-Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 93995bf4af2c ("netfilter: nf_tables: remove catchall element in GC sync path")
+Reported-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/audit_watch.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 61 ++++++++++++++++++-----------------
+ 1 file changed, 32 insertions(+), 29 deletions(-)
 
---- a/kernel/audit_watch.c
-+++ b/kernel/audit_watch.c
-@@ -527,11 +527,18 @@ int audit_exe_compare(struct task_struct
- 	unsigned long ino;
- 	dev_t dev;
- 
--	exe_file = get_task_exe_file(tsk);
-+	/* only do exe filtering if we are recording @current events/records */
-+	if (tsk != current)
-+		return 0;
-+
-+	if (WARN_ON_ONCE(!current->mm))
-+		return 0;
-+	exe_file = get_mm_exe_file(current->mm);
- 	if (!exe_file)
- 		return 0;
- 	ino = file_inode(exe_file)->i_ino;
- 	dev = file_inode(exe_file)->i_sb->s_dev;
- 	fput(exe_file);
-+
- 	return audit_mark_compare(mark, ino, dev);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index d676c87411dc1..db582c8d25f00 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9637,16 +9637,14 @@ void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
+ 	call_rcu(&trans->rcu, nft_trans_gc_trans_free);
  }
+ 
+-static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
+-						  unsigned int gc_seq,
+-						  bool sync)
++struct nft_trans_gc *nft_trans_gc_catchall_async(struct nft_trans_gc *gc,
++						 unsigned int gc_seq)
+ {
+-	struct nft_set_elem_catchall *catchall, *next;
++	struct nft_set_elem_catchall *catchall;
+ 	const struct nft_set *set = gc->set;
+-	struct nft_elem_priv *elem_priv;
+ 	struct nft_set_ext *ext;
+ 
+-	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
++	list_for_each_entry_rcu(catchall, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+ 
+ 		if (!nft_set_elem_expired(ext))
+@@ -9656,39 +9654,44 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
+ 
+ 		nft_set_elem_dead(ext);
+ dead_elem:
+-		if (sync)
+-			gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
+-		else
+-			gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
+-
++		gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
+ 		if (!gc)
+ 			return NULL;
+ 
+-		elem_priv = catchall->elem;
+-		if (sync) {
+-			struct nft_set_elem elem = {
+-				.priv = elem_priv,
+-			};
+-
+-			nft_setelem_data_deactivate(gc->net, gc->set, &elem);
+-			nft_setelem_catchall_destroy(catchall);
+-		}
+-
+-		nft_trans_gc_elem_add(gc, elem_priv);
++		nft_trans_gc_elem_add(gc, catchall->elem);
+ 	}
+ 
+ 	return gc;
+ }
+ 
+-struct nft_trans_gc *nft_trans_gc_catchall_async(struct nft_trans_gc *gc,
+-						 unsigned int gc_seq)
+-{
+-	return nft_trans_gc_catchall(gc, gc_seq, false);
+-}
+-
+ struct nft_trans_gc *nft_trans_gc_catchall_sync(struct nft_trans_gc *gc)
+ {
+-	return nft_trans_gc_catchall(gc, 0, true);
++	struct nft_set_elem_catchall *catchall, *next;
++	const struct nft_set *set = gc->set;
++	struct nft_set_elem elem;
++	struct nft_set_ext *ext;
++
++	WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net));
++
++	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
++		ext = nft_set_elem_ext(set, catchall->elem);
++
++		if (!nft_set_elem_expired(ext))
++			continue;
++
++		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
++		if (!gc)
++			return NULL;
++
++		memset(&elem, 0, sizeof(elem));
++		elem.priv = catchall->elem;
++
++		nft_setelem_data_deactivate(gc->net, gc->set, &elem);
++		nft_setelem_catchall_destroy(catchall);
++		nft_trans_gc_elem_add(gc, elem.priv);
++	}
++
++	return gc;
+ }
+ 
+ static void nf_tables_module_autoload_cleanup(struct net *net)
+-- 
+2.42.0
+
 
 
 
