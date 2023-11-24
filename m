@@ -1,46 +1,61 @@
-Return-Path: <stable+bounces-1667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34F67F80CE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84CD7F7CF8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20AEA1C21615
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FA51C20FAB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689BF1A5A4;
-	Fri, 24 Nov 2023 18:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBB03A8CA;
+	Fri, 24 Nov 2023 18:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="io2tJ2nv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRWLhOTZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27308339BE;
-	Fri, 24 Nov 2023 18:52:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EADBC433C8;
-	Fri, 24 Nov 2023 18:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B67439FFD;
+	Fri, 24 Nov 2023 18:20:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F24C433C7;
+	Fri, 24 Nov 2023 18:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851974;
-	bh=G099dHh1SHjM2CE0M0PPjujOmDX7la0ngG7khHwQnCY=;
+	s=korg; t=1700850006;
+	bh=aHV+YrJdwSH1EYzXLBdKE4Es5r1ujPcAU1tQIEixOak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=io2tJ2nvQcLTNggGgv17JWic4ryirVDAo0cmtY9f8drxj/RVSfnx8jVWZTiMmed4X
-	 cj+hf+ETa+R4CP4qrQMNiy2rcLaib7HZaFHpu2K4M4YiQuNlK2rAFTncN4+Lo779eK
-	 JwUXiv0dT1siRSEbUyGEvqOdJdXWCZ7Sgga4NI5o=
+	b=IRWLhOTZgHZzRXrlNLuOKtbtfuJ0yydGPGmpaoUia3aiKU8XzgW3cbsSn0MIZUKEp
+	 AXdjs8LYd1csPDuNSPUw0c7d+i2toEqSKz7oB4qKWGY9yWitWm21LfbUy5hJ1upGJG
+	 nTqhPRCPCwQBDoRsdu9/fSO4up2ZGXA1bcdkAsrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 162/372] drivers: perf: Check find_first_bit() return value
+	Florent Revest <revest@chromium.org>,
+	Alexey Izbyshev <izbyshev@ispras.ru>,
+	David Hildenbrand <david@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ayush Jain <ayush.jain3@amd.com>,
+	Greg Thelen <gthelen@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Szabolcs Nagy <Szabolcs.Nagy@arm.com>,
+	Topi Miettinen <toiwoton@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 383/530] mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long
 Date: Fri, 24 Nov 2023 17:49:09 +0000
-Message-ID: <20231124172015.883008311@linuxfoundation.org>
+Message-ID: <20231124172039.673803399@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,72 +67,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Florent Revest <revest@chromium.org>
 
-commit c6e316ac05532febb0c966fa9b55f5258ed037be upstream.
+commit 0da668333fb07805c2836d5d50e26eda915b24a1 upstream.
 
-We must check the return value of find_first_bit() before using the
-return value as an index array since it happens to overflow the array
-and then panic:
+Defining a prctl flag as an int is a footgun because on a 64 bit machine
+and with a variadic implementation of prctl (like in musl and glibc), when
+used directly as a prctl argument, it can get casted to long with garbage
+upper bits which would result in unexpected behaviors.
 
-[  107.318430] Kernel BUG [#1]
-[  107.319434] CPU: 3 PID: 1238 Comm: kill Tainted: G            E      6.6.0-rc6ubuntu-defconfig #2
-[  107.319465] Hardware name: riscv-virtio,qemu (DT)
-[  107.319551] epc : pmu_sbi_ovf_handler+0x3a4/0x3ae
-[  107.319840]  ra : pmu_sbi_ovf_handler+0x52/0x3ae
-[  107.319868] epc : ffffffff80a0a77c ra : ffffffff80a0a42a sp : ffffaf83fecda350
-[  107.319884]  gp : ffffffff823961a8 tp : ffffaf8083db1dc0 t0 : ffffaf83fecda480
-[  107.319899]  t1 : ffffffff80cafe62 t2 : 000000000000ff00 s0 : ffffaf83fecda520
-[  107.319921]  s1 : ffffaf83fecda380 a0 : 00000018fca29df0 a1 : ffffffffffffffff
-[  107.319936]  a2 : 0000000001073734 a3 : 0000000000000004 a4 : 0000000000000000
-[  107.319951]  a5 : 0000000000000040 a6 : 000000001d1c8774 a7 : 0000000000504d55
-[  107.319965]  s2 : ffffffff82451f10 s3 : ffffffff82724e70 s4 : 000000000000003f
-[  107.319980]  s5 : 0000000000000011 s6 : ffffaf8083db27c0 s7 : 0000000000000000
-[  107.319995]  s8 : 0000000000000001 s9 : 00007fffb45d6558 s10: 00007fffb45d81a0
-[  107.320009]  s11: ffffaf7ffff60000 t3 : 0000000000000004 t4 : 0000000000000000
-[  107.320023]  t5 : ffffaf7f80000000 t6 : ffffaf8000000000
-[  107.320037] status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
-[  107.320081] [<ffffffff80a0a77c>] pmu_sbi_ovf_handler+0x3a4/0x3ae
-[  107.320112] [<ffffffff800b42d0>] handle_percpu_devid_irq+0x9e/0x1a0
-[  107.320131] [<ffffffff800ad92c>] generic_handle_domain_irq+0x28/0x36
-[  107.320148] [<ffffffff8065f9f8>] riscv_intc_irq+0x36/0x4e
-[  107.320166] [<ffffffff80caf4a0>] handle_riscv_irq+0x54/0x86
-[  107.320189] [<ffffffff80cb0036>] do_irq+0x64/0x96
-[  107.320271] Code: 85a6 855e b097 ff7f 80e7 9220 b709 9002 4501 bbd9 (9002) 6097
-[  107.320585] ---[ end trace 0000000000000000 ]---
-[  107.320704] Kernel panic - not syncing: Fatal exception in interrupt
-[  107.320775] SMP: stopping secondary CPUs
-[  107.321219] Kernel Offset: 0x0 from 0xffffffff80000000
-[  107.333051] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+This patch changes the constant to an unsigned long to eliminate that
+possibilities.  This does not break UAPI.
 
-Fixes: 4905ec2fb7e6 ("RISC-V: Add sscofpmf extension support")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231109082128.40777-1-alexghiti@rivosinc.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+I think that a stable backport would be "nice to have": to reduce the
+chances that users build binaries that could end up with garbage bits in
+their MDWE prctl arguments.  We are not aware of anyone having yet
+encountered this corner case with MDWE prctls but a backport would reduce
+the likelihood it happens, since this sort of issues has happened with
+other prctls.  But If this is perceived as a backporting burden, I suppose
+we could also live without a stable backport.
+
+Link: https://lkml.kernel.org/r/20230828150858.393570-5-revest@chromium.org
+Fixes: b507808ebce2 ("mm: implement memory-deny-write-execute as a prctl")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Suggested-by: Alexey Izbyshev <izbyshev@ispras.ru>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ayush Jain <ayush.jain3@amd.com>
+Cc: Greg Thelen <gthelen@google.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Szabolcs Nagy <Szabolcs.Nagy@arm.com>
+Cc: Topi Miettinen <toiwoton@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/perf/riscv_pmu_sbi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/uapi/linux/prctl.h       |    2 +-
+ tools/include/uapi/linux/prctl.h |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -578,6 +578,11 @@ static irqreturn_t pmu_sbi_ovf_handler(i
+--- a/include/uapi/linux/prctl.h
++++ b/include/uapi/linux/prctl.h
+@@ -283,7 +283,7 @@ struct prctl_mm_map {
  
- 	/* Firmware counter don't support overflow yet */
- 	fidx = find_first_bit(cpu_hw_evt->used_hw_ctrs, RISCV_MAX_COUNTERS);
-+	if (fidx == RISCV_MAX_COUNTERS) {
-+		csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
-+		return IRQ_NONE;
-+	}
-+
- 	event = cpu_hw_evt->events[fidx];
- 	if (!event) {
- 		csr_clear(CSR_SIP, SIP_LCOFIP);
+ /* Memory deny write / execute */
+ #define PR_SET_MDWE			65
+-# define PR_MDWE_REFUSE_EXEC_GAIN	1
++# define PR_MDWE_REFUSE_EXEC_GAIN	(1UL << 0)
+ 
+ #define PR_GET_MDWE			66
+ 
+--- a/tools/include/uapi/linux/prctl.h
++++ b/tools/include/uapi/linux/prctl.h
+@@ -283,7 +283,7 @@ struct prctl_mm_map {
+ 
+ /* Memory deny write / execute */
+ #define PR_SET_MDWE			65
+-# define PR_MDWE_REFUSE_EXEC_GAIN	1
++# define PR_MDWE_REFUSE_EXEC_GAIN	(1UL << 0)
+ 
+ #define PR_GET_MDWE			66
+ 
 
 
 
