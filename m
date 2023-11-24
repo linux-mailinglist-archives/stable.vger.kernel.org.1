@@ -1,46 +1,53 @@
-Return-Path: <stable+bounces-1397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BBE77F7F72
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 585337F7B10
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061C0282505
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12A9E281559
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4234D2E858;
-	Fri, 24 Nov 2023 18:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C9C39FF3;
+	Fri, 24 Nov 2023 18:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlsEVCbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8TPjHGL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE5333CCC;
-	Fri, 24 Nov 2023 18:41:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004F0C433C7;
-	Fri, 24 Nov 2023 18:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55C2639FE3;
+	Fri, 24 Nov 2023 18:01:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67A1C433C7;
+	Fri, 24 Nov 2023 18:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851296;
-	bh=Xg/nkI0OKJq0yKiqFDOam+y5ASnR0uF3P6cGhWnbURw=;
+	s=korg; t=1700848888;
+	bh=YaC8dOoiiYN+AYfsoMs3p/UUY9HDeMe+FNZUyIgXNJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlsEVCbx2BdihGR0EXSL8YxBc64fDx+aTZTkDuvp2+ycfskhlUWz8cvFs0Oc/kp7e
-	 uquaLbDB8HkEMSSyylqglRgoAdwTp/F8+BEsSEi2Z3CkUz4ALWszzwC+b+YI1MqM1B
-	 ItzRj+Hw3y1bD1qvzcaQv6zcM6YGVk3/Dw6+vik4=
+	b=Z8TPjHGL/1dH29H74vamZpR8sM/Jv3/kYYpeCAsm+7R76LSsso94QUza+Hvb0HKdL
+	 Yb92JMejmVqY/fCqmXl1441OO1PLXSzbGRrJ6ZUrfriqW2GpsIaHfbXnWE2+ZuWJJ6
+	 nMHb/MGq2KVgT5j46YUDT98U8taaUmupfD40MANQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 392/491] smb: client: fix potential deadlock when releasing mids
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Mario Casquero <mcasquer@redhat.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 04/57] x86/mm: Drop the 4 MB restriction on minimal NUMA node memory size
 Date: Fri, 24 Nov 2023 17:50:28 +0000
-Message-ID: <20231124172036.383250410@linuxfoundation.org>
+Message-ID: <20231124171930.438849039@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,102 +59,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Mike Rapoport (IBM) <rppt@kernel.org>
 
-commit e6322fd177c6885a21dd4609dc5e5c973d1a2eb7 upstream.
+[ Upstream commit a1e2b8b36820d8c91275f207e77e91645b7c6836 ]
 
-All release_mid() callers seem to hold a reference of @mid so there is
-no need to call kref_put(&mid->refcount, __release_mid) under
-@server->mid_lock spinlock.  If they don't, then an use-after-free bug
-would have occurred anyways.
+Qi Zheng reported crashes in a production environment and provided a
+simplified example as a reproducer:
 
-By getting rid of such spinlock also fixes a potential deadlock as
-shown below
+ |  For example, if we use Qemu to start a two NUMA node kernel,
+ |  one of the nodes has 2M memory (less than NODE_MIN_SIZE),
+ |  and the other node has 2G, then we will encounter the
+ |  following panic:
+ |
+ |    BUG: kernel NULL pointer dereference, address: 0000000000000000
+ |    <...>
+ |    RIP: 0010:_raw_spin_lock_irqsave+0x22/0x40
+ |    <...>
+ |    Call Trace:
+ |      <TASK>
+ |      deactivate_slab()
+ |      bootstrap()
+ |      kmem_cache_init()
+ |      start_kernel()
+ |      secondary_startup_64_no_verify()
 
-CPU 0                                CPU 1
-------------------------------------------------------------------
-cifs_demultiplex_thread()            cifs_debug_data_proc_show()
- release_mid()
-  spin_lock(&server->mid_lock);
-                                     spin_lock(&cifs_tcp_ses_lock)
-				      spin_lock(&server->mid_lock)
-  __release_mid()
-   smb2_find_smb_tcon()
-    spin_lock(&cifs_tcp_ses_lock) *deadlock*
+The crashes happen because of inconsistency between the nodemask that
+has nodes with less than 4MB as memoryless, and the actual memory fed
+into the core mm.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The commit:
+
+  9391a3f9c7f1 ("[PATCH] x86_64: Clear more state when ignoring empty node in SRAT parsing")
+
+... that introduced minimal size of a NUMA node does not explain why
+a node size cannot be less than 4MB and what boot failures this
+restriction might fix.
+
+Fixes have been submitted to the core MM code to tighten up the
+memory topologies it accepts and to not crash on weird input:
+
+  mm: page_alloc: skip memoryless nodes entirely
+  mm: memory_hotplug: drop memoryless node from fallback lists
+
+Andrew has accepted them into the -mm tree, but there are no
+stable SHA1's yet.
+
+This patch drops the limitation for minimal node size on x86:
+
+  - which works around the crash without the fixes to the core MM.
+  - makes x86 topologies less weird,
+  - removes an arbitrary and undocumented limitation on NUMA topologies.
+
+[ mingo: Improved changelog clarity. ]
+
+Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Rik van Riel <riel@surriel.com>
+Link: https://lore.kernel.org/r/ZS+2qqjEO5/867br@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsproto.h |    7 ++++++-
- fs/smb/client/smb2misc.c  |    2 +-
- fs/smb/client/transport.c |   11 +----------
- 3 files changed, 8 insertions(+), 12 deletions(-)
+ arch/x86/include/asm/numa.h | 7 -------
+ arch/x86/mm/numa.c          | 7 -------
+ 2 files changed, 14 deletions(-)
 
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -81,7 +81,7 @@ extern char *cifs_build_path_to_root(str
- extern char *build_wildcard_path_from_dentry(struct dentry *direntry);
- char *cifs_build_devname(char *nodename, const char *prepath);
- extern void delete_mid(struct mid_q_entry *mid);
--extern void release_mid(struct mid_q_entry *mid);
-+void __release_mid(struct kref *refcount);
- extern void cifs_wake_up_task(struct mid_q_entry *mid);
- extern int cifs_handle_standard(struct TCP_Server_Info *server,
- 				struct mid_q_entry *mid);
-@@ -741,4 +741,9 @@ static inline bool dfs_src_pathname_equa
- 	return true;
- }
+diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+index bbfde3d2662f4..4bcd9d0c7bee7 100644
+--- a/arch/x86/include/asm/numa.h
++++ b/arch/x86/include/asm/numa.h
+@@ -11,13 +11,6 @@
  
-+static inline void release_mid(struct mid_q_entry *mid)
-+{
-+	kref_put(&mid->refcount, __release_mid);
-+}
-+
- #endif			/* _CIFSPROTO_H */
---- a/fs/smb/client/smb2misc.c
-+++ b/fs/smb/client/smb2misc.c
-@@ -787,7 +787,7 @@ __smb2_handle_cancelled_cmd(struct cifs_
- {
- 	struct close_cancelled_open *cancelled;
+ #define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
  
--	cancelled = kzalloc(sizeof(*cancelled), GFP_ATOMIC);
-+	cancelled = kzalloc(sizeof(*cancelled), GFP_KERNEL);
- 	if (!cancelled)
- 		return -ENOMEM;
- 
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -76,7 +76,7 @@ alloc_mid(const struct smb_hdr *smb_buff
- 	return temp;
- }
- 
--static void __release_mid(struct kref *refcount)
-+void __release_mid(struct kref *refcount)
- {
- 	struct mid_q_entry *midEntry =
- 			container_of(refcount, struct mid_q_entry, refcount);
-@@ -156,15 +156,6 @@ static void __release_mid(struct kref *r
- 	mempool_free(midEntry, cifs_mid_poolp);
- }
- 
--void release_mid(struct mid_q_entry *mid)
--{
--	struct TCP_Server_Info *server = mid->server;
+-/*
+- * Too small node sizes may confuse the VM badly. Usually they
+- * result from BIOS bugs. So dont recognize nodes as standalone
+- * NUMA entities that have less than this amount of RAM listed:
+- */
+-#define NODE_MIN_SIZE (4*1024*1024)
 -
--	spin_lock(&server->mid_lock);
--	kref_put(&mid->refcount, __release_mid);
--	spin_unlock(&server->mid_lock);
--}
+ extern int numa_off;
+ 
+ /*
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 15661129794c0..53b733b2fba10 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -585,13 +585,6 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
+ 		if (start >= end)
+ 			continue;
+ 
+-		/*
+-		 * Don't confuse VM with a node that doesn't have the
+-		 * minimum amount of memory:
+-		 */
+-		if (end && (end - start) < NODE_MIN_SIZE)
+-			continue;
 -
- void
- delete_mid(struct mid_q_entry *mid)
- {
+ 		alloc_node_data(nid);
+ 	}
+ 
+-- 
+2.42.0
+
 
 
 
