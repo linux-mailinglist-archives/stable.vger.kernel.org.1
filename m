@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9D37F823D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ED6A7F840E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1D0EB237E8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F4A81C26EFC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4F163A1;
-	Fri, 24 Nov 2023 19:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93850364C4;
+	Fri, 24 Nov 2023 19:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIoJU9j2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzt5gX5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCA92E84A;
-	Fri, 24 Nov 2023 19:05:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A31AC433C7;
-	Fri, 24 Nov 2023 19:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428BC31748;
+	Fri, 24 Nov 2023 19:23:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C519AC433C8;
+	Fri, 24 Nov 2023 19:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852747;
-	bh=pyql9RvRpjKLP2bl11wc352upFzG7JxGOXWzxjzRbn8=;
+	s=korg; t=1700853818;
+	bh=E5uuhWJW1Tq5u0RAk+3CybY73J4MaLx1MT3li/1FCJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIoJU9j2kDqmUYeDyMVvD8slLXz8vpDoh6ybC/vuXwOZOdSqptQBwMcWtXsKsX7Ve
-	 uapp7qrvAkOg+zp0/c5XEua/YJAx380BTokkhdABaRZ2wBZ8eM3Nc7b+twmn2LfEGX
-	 BXlNZ7QsbN2aDjfUmr6bj+p+IUne8E64VlK2qmmo=
+	b=qzt5gX5iyMPmuJC5GCjkNKFEC/jhJFHLb5sKj9gc+3ITwc/N7Io3+5uw/7RYlcZ9z
+	 enIYAVx9D/hcJrNBph88o3rAjDldBjV9AH+lltz/owbedItxwa2yL1/rn0zafvyMF0
+	 i1cpetvfmcZJ6mTL6RAG34mIq1lWmrweJu0UrMRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 106/193] ACPI: resource: Do IRQ override on TongFang GMxXGxx
-Date: Fri, 24 Nov 2023 17:53:53 +0000
-Message-ID: <20231124171951.482659474@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 017/159] drm/amd: Fix UBSAN array-index-out-of-bounds for Polaris and Tonga
+Date: Fri, 24 Nov 2023 17:53:54 +0000
+Message-ID: <20231124171942.589881942@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +53,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 0da9eccde3270b832c059ad618bf66e510c75d33 upstream.
+[ Upstream commit 0f0e59075b5c22f1e871fbd508d6e4f495048356 ]
 
-The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overriding
-for the keyboard to work.
+For pptable structs that use flexible array sizes, use flexible arrays.
 
-Adding an entry for this laptop to the override_table makes the internal
-keyboard functional.
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2036742
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -443,6 +443,18 @@ static const struct dmi_system_id asus_l
- 		},
- 	},
- 	{
-+		/* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
-+		},
-+	},
-+	{
-+		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
-+		},
-+	},
-+	{
- 		.ident = "Asus ExpertBook B2502",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
+index d5a4a08c6d392..0c61e2bc14cde 100644
+--- a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
++++ b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
+@@ -164,7 +164,7 @@ typedef struct _ATOM_Tonga_State {
+ typedef struct _ATOM_Tonga_State_Array {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries;		/* Number of entries. */
+-	ATOM_Tonga_State entries[1];	/* Dynamically allocate entries. */
++	ATOM_Tonga_State entries[];	/* Dynamically allocate entries. */
+ } ATOM_Tonga_State_Array;
+ 
+ typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
+@@ -210,7 +210,7 @@ typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
+ typedef struct _ATOM_Polaris_SCLK_Dependency_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries;							/* Number of entries. */
+-	ATOM_Polaris_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
++	ATOM_Polaris_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
+ } ATOM_Polaris_SCLK_Dependency_Table;
+ 
+ typedef struct _ATOM_Tonga_PCIE_Record {
+@@ -222,7 +222,7 @@ typedef struct _ATOM_Tonga_PCIE_Record {
+ typedef struct _ATOM_Tonga_PCIE_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_PCIE_Record entries[1];							/* Dynamically allocate entries. */
++	ATOM_Tonga_PCIE_Record entries[];							/* Dynamically allocate entries. */
+ } ATOM_Tonga_PCIE_Table;
+ 
+ typedef struct _ATOM_Polaris10_PCIE_Record {
+@@ -235,7 +235,7 @@ typedef struct _ATOM_Polaris10_PCIE_Record {
+ typedef struct _ATOM_Polaris10_PCIE_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries;                                         /* Number of entries. */
+-	ATOM_Polaris10_PCIE_Record entries[1];                      /* Dynamically allocate entries. */
++	ATOM_Polaris10_PCIE_Record entries[];                      /* Dynamically allocate entries. */
+ } ATOM_Polaris10_PCIE_Table;
+ 
+ 
+@@ -252,7 +252,7 @@ typedef struct _ATOM_Tonga_MM_Dependency_Record {
+ typedef struct _ATOM_Tonga_MM_Dependency_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_MM_Dependency_Record entries[1]; 			   /* Dynamically allocate entries. */
++	ATOM_Tonga_MM_Dependency_Record entries[]; 			   /* Dynamically allocate entries. */
+ } ATOM_Tonga_MM_Dependency_Table;
+ 
+ typedef struct _ATOM_Tonga_Voltage_Lookup_Record {
+@@ -265,7 +265,7 @@ typedef struct _ATOM_Tonga_Voltage_Lookup_Record {
+ typedef struct _ATOM_Tonga_Voltage_Lookup_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_Voltage_Lookup_Record entries[1];				/* Dynamically allocate entries. */
++	ATOM_Tonga_Voltage_Lookup_Record entries[];				/* Dynamically allocate entries. */
+ } ATOM_Tonga_Voltage_Lookup_Table;
+ 
+ typedef struct _ATOM_Tonga_Fan_Table {
+-- 
+2.42.0
+
 
 
 
