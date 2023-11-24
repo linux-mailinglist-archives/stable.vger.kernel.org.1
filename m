@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-2473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BD77F8452
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4774D7F83CE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 556F71C276FE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD831B26C94
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5E42C1A2;
-	Fri, 24 Nov 2023 19:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4E8381A2;
+	Fri, 24 Nov 2023 19:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNXODQLl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VePXtDy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED922FC36;
-	Fri, 24 Nov 2023 19:26:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E37C433C8;
-	Fri, 24 Nov 2023 19:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFDC35EE6;
+	Fri, 24 Nov 2023 19:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489D3C433C7;
+	Fri, 24 Nov 2023 19:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853970;
-	bh=AEv2+OhxPhic6TLQGpMjb70tdjBlnFJqEC+gOWJj2kc=;
+	s=korg; t=1700853663;
+	bh=bj2+br+FE/EBAoC+FuFKZgcLyWR4K3uC+geZbwoF3II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNXODQLlnswrgXiUMDnaWvBlTBLtTYDRSThoikKxk4y465Hl2EJn31jGOeXtiUoUm
-	 CZIhYQV+TyonQpFYfU1QuKRhMJG7s5Cyhc5MA/4DRSepgZYjWsFIsQPMt/7HtTweuh
-	 /Z3nUdyN7P1kQNA+HjVYbbtzD6hJT1dY8Erq8NSc=
+	b=VePXtDy1N/P8n23IUiVRmdFb+v4i/TBoo4P2JeDOd/6DPd2ugjgf7fn6uU62lLX9p
+	 d+5Bpg1VX7PZsUxMQAOswwplRwiCWYM6YJhskW545yl5fr75M0xZB8qRzPzFfGEdqS
+	 0uzLMocZJfeL9IKx60NK8/HxbzpTYNaVKnbD79Y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandradeep Dey <codesigning@chandradeepdey.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 104/159] ALSA: hda/realtek - Enable internal speaker of ASUS K6500ZC
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.15 279/297] media: qcom: camss: Fix missing vfe_lite clocks check
 Date: Fri, 24 Nov 2023 17:55:21 +0000
-Message-ID: <20231124171946.216132839@linuxfoundation.org>
+Message-ID: <20231124172009.891477521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,36 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandradeep Dey <codesigning@chandradeepdey.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 713f040cd22285fcc506f40a0d259566e6758c3c upstream.
+commit b6e1bdca463a932c1ac02caa7d3e14bf39288e0c upstream.
 
-Apply the already existing quirk chain ALC294_FIXUP_ASUS_SPK to enable
-the internal speaker of ASUS K6500ZC.
+check_clock doesn't account for vfe_lite which means that vfe_lite will
+never get validated by this routine. Add the clock name to the expected set
+to remediate.
 
-Signed-off-by: Chandradeep Dey <codesigning@chandradeepdey.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/NizcVHQ--3-9@chandradeepdey.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/qcom/camss/camss-vfe.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8242,6 +8242,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x10d0, "ASUS X540LA/X540LJ", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x10d3, "ASUS K6500ZC", ALC294_FIXUP_ASUS_SPK),
- 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -533,7 +533,8 @@ static int vfe_check_clock_rates(struct
+ 		struct camss_clock *clock = &vfe->clock[i];
+ 
+ 		if (!strcmp(clock->name, "vfe0") ||
+-		    !strcmp(clock->name, "vfe1")) {
++		    !strcmp(clock->name, "vfe1") ||
++		    !strcmp(clock->name, "vfe_lite")) {
+ 			u64 min_rate = 0;
+ 			unsigned long rate;
+ 
 
 
 
