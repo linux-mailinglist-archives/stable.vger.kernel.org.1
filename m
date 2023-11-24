@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02CA67F7DDC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A4D7F7BE8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34F661C20B1B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C778B21218
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C01D3A8C3;
-	Fri, 24 Nov 2023 18:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F5839FF8;
+	Fri, 24 Nov 2023 18:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLR4jqMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eanGLc/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2030739FE1;
-	Fri, 24 Nov 2023 18:28:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E445C433C7;
-	Fri, 24 Nov 2023 18:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EF3381D5;
+	Fri, 24 Nov 2023 18:09:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFFBC433C7;
+	Fri, 24 Nov 2023 18:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850481;
-	bh=ZHL/jv1mEFasTZquOW5jYs3BmQwi5Oy4MRV518ypCHY=;
+	s=korg; t=1700849389;
+	bh=qE+hBTiLPzKI73MGkulH5Q6d8KRZHfcuDtCFKmJbrjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WLR4jqMvSdhvV8HqmWDgfkeGGlBC1HIE0c6WiuNBJcKrBdN+mPNE1KUu+6aq+Dd7i
-	 ywkRGIAp7sB9yapvMmdRaqm2imbmuaesSCobcEvtlBn0lVZnDFv0JAlFP/SXbt0l8W
-	 sIy8Kddvfy4DNF6r3DtquERq3TSkQR52cSAcsHKM=
+	b=eanGLc/rOszAvLSFw090XX5MOO2v9imWucQ+ttC3HM+TVlEmw5tEwozXWpOR1ceRp
+	 BYBO68BJFbX4CgHgNXdhRAFE3kNzeMgV1l7g3AQ34U0ZnjElVoQomxd96ixGfLhEEq
+	 W3M9lRdWMqPJiLE29R6nPcUAzIzL7xw0odcsVPAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make_ruc2021@163.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	zhenwei pi <pizhenwei@bytedance.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 067/491] drm/panel/panel-tpo-tpg110: fix a possible null pointer dereference
+Subject: [PATCH 6.6 137/530] virtio-blk: fix implicit overflow on virtio_max_dma_size
 Date: Fri, 24 Nov 2023 17:45:03 +0000
-Message-ID: <20231124172026.659820297@linuxfoundation.org>
+Message-ID: <20231124172032.262579752@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
 
-[ Upstream commit f22def5970c423ea7f87d5247bd0ef91416b0658 ]
+[ Upstream commit fafb51a67fb883eb2dde352539df939a251851be ]
 
-In tpg110_get_modes(), the return value of drm_mode_duplicate() is
-assigned to mode, which will lead to a NULL pointer dereference on
-failure of drm_mode_duplicate(). Add a check to avoid npd.
+The following codes have an implicit conversion from size_t to u32:
+(u32)max_size = (size_t)virtio_max_dma_size(vdev);
 
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231009090446.4043798-1-make_ruc2021@163.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231009090446.4043798-1-make_ruc2021@163.com
+This may lead overflow, Ex (size_t)4G -> (u32)0. Once
+virtio_max_dma_size() has a larger size than U32_MAX, use U32_MAX
+instead.
+
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Message-Id: <20230904061045.510460-1-pizhenwei@bytedance.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-tpo-tpg110.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/virtio_blk.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-tpo-tpg110.c b/drivers/gpu/drm/panel/panel-tpo-tpg110.c
-index 845304435e235..f6a212e542cb9 100644
---- a/drivers/gpu/drm/panel/panel-tpo-tpg110.c
-+++ b/drivers/gpu/drm/panel/panel-tpo-tpg110.c
-@@ -379,6 +379,8 @@ static int tpg110_get_modes(struct drm_panel *panel,
- 	connector->display_info.bus_flags = tpg->panel_mode->bus_flags;
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 1fe011676d070..4a4b9bad551e8 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -1313,6 +1313,7 @@ static int virtblk_probe(struct virtio_device *vdev)
+ 	u16 min_io_size;
+ 	u8 physical_block_exp, alignment_offset;
+ 	unsigned int queue_depth;
++	size_t max_dma_size;
  
- 	mode = drm_mode_duplicate(connector->dev, &tpg->panel_mode->mode);
-+	if (!mode)
-+		return -ENOMEM;
- 	drm_mode_set_name(mode);
- 	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+ 	if (!vdev->config->get) {
+ 		dev_err(&vdev->dev, "%s failure: config access disabled\n",
+@@ -1411,7 +1412,8 @@ static int virtblk_probe(struct virtio_device *vdev)
+ 	/* No real sector limit. */
+ 	blk_queue_max_hw_sectors(q, UINT_MAX);
  
+-	max_size = virtio_max_dma_size(vdev);
++	max_dma_size = virtio_max_dma_size(vdev);
++	max_size = max_dma_size > U32_MAX ? U32_MAX : max_dma_size;
+ 
+ 	/* Host can optionally specify maximum segment size and number of
+ 	 * segments. */
 -- 
 2.42.0
 
