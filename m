@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD8C7F7580
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:47:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 341017F7581
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE2FD1C2103F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:47:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3D23281FC2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA42228E3D;
-	Fri, 24 Nov 2023 13:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1766128E3B;
+	Fri, 24 Nov 2023 13:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djQh+J5H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GG9qQamI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA51C286BF
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:47:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60ACC433CB;
-	Fri, 24 Nov 2023 13:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB76B28E2C
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:47:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBF7C433C8;
+	Fri, 24 Nov 2023 13:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700833650;
-	bh=w/gZ2gBDXlzkyTjzzPr3X8j5f+3tlL37Zj1H5HtXJZE=;
+	s=korg; t=1700833652;
+	bh=PyQm3dpRZrS9LmP8241Jju/TY+coFV3xCNO7OM91zI8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=djQh+J5H7/LJ98JhkdG5neH+0506PalWeMJwG29jWZecl/fnhH/UlK3LB9ypdqrBt
-	 ZME69MpeLEEZ8zlCnA/6Ig95i2SZC8RWYEtgbZenQ5Yoaq47XHEHA+IJrDtGLKxZ/O
-	 uEiAXm19sP5D2coyWO6MEtQjlZMuOgeXNMQTYcXw=
-Subject: FAILED: patch "[PATCH] ext4: no need to generate from free list in mballoc" failed to apply to 5.4-stable tree
+	b=GG9qQamIsq4qbzR+gBBHFNqyawyjCS3skjLeNe8X/7ifZGYfEDUrVuqi0LM1oxS7N
+	 crVxKL2yVcNzgPHFn3QX349vNdnAtJc9yW14fstfpn5o9o0M1dyc7Tlf1gCCd1CP6O
+	 HajJYN3eoUwFomnkuf7zpBWXcQV9CkQOXbWXHpn4=
+Subject: FAILED: patch "[PATCH] ext4: no need to generate from free list in mballoc" failed to apply to 4.19-stable tree
 To: wangjianjian0@foxmail.com,tytso@mit.edu
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:47:19 +0000
-Message-ID: <2023112419-retrieval-wrongness-5ee3@gregkh>
+Date: Fri, 24 Nov 2023 13:47:20 +0000
+Message-ID: <2023112420-mumbling-backlog-4117@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x ebf6cb7c6e1241984f75f29f1bdbfa2fe7168f88
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112419-retrieval-wrongness-5ee3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112420-mumbling-backlog-4117@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
