@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-2305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FCA7F839C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC367F8256
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D2E28890D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05C71C231D0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F62511F;
-	Fri, 24 Nov 2023 19:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE5B239FCD;
+	Fri, 24 Nov 2023 19:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNtqOFZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHh2v2gb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356F635F1A;
-	Fri, 24 Nov 2023 19:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E09C433C7;
-	Fri, 24 Nov 2023 19:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC0539FC2;
+	Fri, 24 Nov 2023 19:06:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D4FC433C7;
+	Fri, 24 Nov 2023 19:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853558;
-	bh=B5dTbsoDpH/LMl0fsMx37bdOkS6BZi9yo0cSfInNpdM=;
+	s=korg; t=1700852797;
+	bh=4qjl5OJCq6LonzQJwJk61WVrAy+BCCTmo08zLiKyeQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNtqOFZOeLs8w0651htBLTn+cBVi0H952gODwi/iKE7gRBkUXfHrT1teIgOGhKumd
-	 Tl106kkaGa4WbVraZ9WckQXpZH6vvfpvPRAQiRhRlbvhr7SMB0RsVjgHoshBmodd+j
-	 DB4GlpJpbWuONFsf3lo12pedrcxLJ5tx18t/8mLk=
+	b=DHh2v2gbmwxvu6Sr1ztjvWBQ1c4AXuoVT+pmZkF/PgSpwN8QdgSnzk59y15w3i+Jv
+	 wbiZlhirse9hE2OTqs8t9a8n4AE4sxn6CKceitLDxwwOBmLpNiVnFxvDxlLnosALnd
+	 ri+WFae+tqZASdD4nwScnINhERPSrC4FKr6ePYmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 212/297] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.10 127/193] PCI: keystone: Dont discard .remove() callback
 Date: Fri, 24 Nov 2023 17:54:14 +0000
-Message-ID: <20231124172007.648318896@linuxfoundation.org>
+Message-ID: <20231124171952.305225806@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +50,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
+commit 200bddbb3f5202bbce96444fdc416305de14f547 upstream.
 
-JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
-however, other process could intercept the EIO information from bdev's
-mapping, which leads journal recovering successful even EIO occurs during
-data written back to fs device.
+With CONFIG_PCIE_KEYSTONE=y and ks_pcie_remove() marked with __exit, the
+function is discarded from the driver. In this case a bound device can
+still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
+resource leaks or worse.
 
-We found this problem in our product, iscsi + multipath is chosen for block
-device of ext4. Unstable network may trigger kpartx to rescan partitions in
-device mapper layer. Detailed process is shown as following:
+The right thing to do is do always have the remove callback available.
+Note that this driver cannot be compiled as a module, so ks_pcie_remove()
+was always discarded before this change and modpost couldn't warn about
+this issue. Furthermore the __ref annotation also prevents a warning.
 
-  mount          kpartx          irq
-jbd2_journal_recover
- do_one_pass
-  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
-  mark_buffer_dirty // mark bh dirty
-         vfs_read
-	  generic_file_read_iter // dio
-	   filemap_write_and_wait_range
-	    __filemap_fdatawrite_range
-	     do_writepages
-	      block_write_full_folio
-	       submit_bh_wbc
-	            >>  EIO occurs in disk  <<
-	                     end_buffer_async_write
-			      mark_buffer_write_io_error
-			       mapping_set_error
-			        set_bit(AS_EIO, &mapping->flags) // set!
-	    filemap_check_errors
-	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
- err2 = sync_blockdev
-  filemap_write_and_wait
-   filemap_check_errors
-    test_and_clear_bit(AS_EIO, &mapping->flags) // false
- err2 = 0
-
-Filesystem is mounted successfully even data from journal is failed written
-into disk, and ext4/ocfs2 could become corrupted.
-
-Fix it by comparing the wb_err state in fs block device before recovering
-and after recovering.
-
-A reproducer can be found in the kernel bugzilla referenced below.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
+Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
+Link: https://lore.kernel.org/r/20231001170254.2506508-4-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/recovery.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -283,6 +283,8 @@ int jbd2_journal_recover(journal_t *jour
- 	journal_superblock_t *	sb;
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -1338,7 +1338,7 @@ err_link:
+ 	return ret;
+ }
  
- 	struct recovery_info	info;
-+	errseq_t		wb_err;
-+	struct address_space	*mapping;
+-static int __exit ks_pcie_remove(struct platform_device *pdev)
++static int ks_pcie_remove(struct platform_device *pdev)
+ {
+ 	struct keystone_pcie *ks_pcie = platform_get_drvdata(pdev);
+ 	struct device_link **link = ks_pcie->link;
+@@ -1356,7 +1356,7 @@ static int __exit ks_pcie_remove(struct
  
- 	memset(&info, 0, sizeof(info));
- 	sb = journal->j_superblock;
-@@ -300,6 +302,9 @@ int jbd2_journal_recover(journal_t *jour
- 		return 0;
- 	}
- 
-+	wb_err = 0;
-+	mapping = journal->j_fs_dev->bd_inode->i_mapping;
-+	errseq_check_and_advance(&mapping->wb_err, &wb_err);
- 	err = do_one_pass(journal, &info, PASS_SCAN);
- 	if (!err)
- 		err = do_one_pass(journal, &info, PASS_REVOKE);
-@@ -320,6 +325,9 @@ int jbd2_journal_recover(journal_t *jour
- 	err2 = sync_blockdev(journal->j_fs_dev);
- 	if (!err)
- 		err = err2;
-+	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
-+	if (!err)
-+		err = err2;
- 	/* Make sure all replayed data is on permanent storage */
- 	if (journal->j_flags & JBD2_BARRIER) {
- 		err2 = blkdev_issue_flush(journal->j_fs_dev);
+ static struct platform_driver ks_pcie_driver __refdata = {
+ 	.probe  = ks_pcie_probe,
+-	.remove = __exit_p(ks_pcie_remove),
++	.remove = ks_pcie_remove,
+ 	.driver = {
+ 		.name	= "keystone-pcie",
+ 		.of_match_table = of_match_ptr(ks_pcie_of_match),
 
 
 
