@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44E77F7E65
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6E97F7C5B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2FA2822ED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F77228219C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C02233E9;
-	Fri, 24 Nov 2023 18:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8CB3A8C5;
+	Fri, 24 Nov 2023 18:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bw3WN0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YExYU8Tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36FB3A8C9;
-	Fri, 24 Nov 2023 18:32:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CC6C433C8;
-	Fri, 24 Nov 2023 18:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B0531740;
+	Fri, 24 Nov 2023 18:14:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE451C433C8;
+	Fri, 24 Nov 2023 18:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850758;
-	bh=KP4xoatBTnwng/yMClsIKTw/+W4BFMvO8feksjzQWWY=;
+	s=korg; t=1700849667;
+	bh=8I0qXYDScVL3OjnAjnJVFb/oxGEhMQSn5glUTcwIvaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2bw3WN0AtqwnUaBAlnaA9O+QS/pE93xWqpvrHQNWcQKImaqVnr7UjFDAq/75Qmtxu
-	 Aw1njIxZrTzOyr1K9OA8sxEzH6QbdhFaR4KVb20X+IpeIOTm217O5Ez4NLLLG2Tckc
-	 kcpEjCcL9gmruaXVf01VgtOfREqwFgHmskCP3zV4=
+	b=YExYU8TkYSneQxVy4XXLe/GvLV8YABApvQWKnsD8Vg13+kUgNv67aIdnNNyO1SD2Q
+	 EpZg6wCoZ51QLVnm9W2xvNTjfzMdN8iKNC01a6njncBp3IqEEFcbcrtL15TdJGHyBz
+	 MiNw0yZHiyn49R1/henkUjYHaxt6mxHEuhS0vin0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 178/491] net: hns3: add barrier in vf mailbox reply process
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 248/530] scsi: megaraid_sas: Increase register read retry rount from 3 to 30 for selected registers
 Date: Fri, 24 Nov 2023 17:46:54 +0000
-Message-ID: <20231124172029.826450817@linuxfoundation.org>
+Message-ID: <20231124172035.602594318@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,56 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit ac92c0a9a0603fb448e60f38e63302e4eebb8035 ]
+commit 8e3ed9e786511ad800c33605ed904b9de49323cf upstream.
 
-In hclgevf_mbx_handler() and hclgevf_get_mbx_resp() functions,
-there is a typical store-store and load-load scenario between
-received_resp and additional_info. This patch adds barrier
-to fix the problem.
+In BMC environments with concurrent access to multiple registers, certain
+registers occasionally yield a value of 0 even after 3 retries due to
+hardware errata. As a fix, we have extended the retry count from 3 to 30.
 
-Fixes: 4671042f1ef0 ("net: hns3: add match_id to check mailbox response from PF to VF")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The same errata applies to the mpt3sas driver, and a similar patch has
+been accepted. Please find more details in the mpt3sas patch reference
+link.
+
+Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
+Fixes: 272652fcbf1a ("scsi: megaraid_sas: add retry logic in megasas_readl")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Link: https://lore.kernel.org/r/20231003110021.168862-2-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/megaraid/megaraid_sas_base.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
-index bbf7b14079de3..85c2a634c8f96 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
-@@ -63,6 +63,9 @@ static int hclgevf_get_mbx_resp(struct hclgevf_dev *hdev, u16 code0, u16 code1,
- 		i++;
- 	}
- 
-+	/* ensure additional_info will be seen after received_resp */
-+	smp_rmb();
-+
- 	if (i >= HCLGEVF_MAX_TRY_TIMES) {
- 		dev_err(&hdev->pdev->dev,
- 			"VF could not get mbx(%u,%u) resp(=%d) from PF in %d tries\n",
-@@ -178,6 +181,10 @@ static void hclgevf_handle_mbx_response(struct hclgevf_dev *hdev,
- 	resp->resp_status = hclgevf_resp_to_errno(resp_status);
- 	memcpy(resp->additional_info, req->msg.resp_data,
- 	       HCLGE_MBX_MAX_RESP_DATA_SIZE * sizeof(u8));
-+
-+	/* ensure additional_info will be seen before setting received_resp */
-+	smp_wmb();
-+
- 	if (match_id) {
- 		/* If match_id is not zero, it means PF support match_id.
- 		 * if the match_id is right, VF get the right response, or
--- 
-2.42.0
-
+--- a/drivers/scsi/megaraid/megaraid_sas_base.c
++++ b/drivers/scsi/megaraid/megaraid_sas_base.c
+@@ -263,13 +263,13 @@ u32 megasas_readl(struct megasas_instanc
+ 	 * Fusion registers could intermittently return all zeroes.
+ 	 * This behavior is transient in nature and subsequent reads will
+ 	 * return valid value. As a workaround in driver, retry readl for
+-	 * upto three times until a non-zero value is read.
++	 * up to thirty times until a non-zero value is read.
+ 	 */
+ 	if (instance->adapter_type == AERO_SERIES) {
+ 		do {
+ 			ret_val = readl(addr);
+ 			i++;
+-		} while (ret_val == 0 && i < 3);
++		} while (ret_val == 0 && i < 30);
+ 		return ret_val;
+ 	} else {
+ 		return readl(addr);
 
 
 
