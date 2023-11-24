@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1577F81CE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B87FB7F819D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C69283369
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C792B21BA0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17036364A6;
-	Fri, 24 Nov 2023 19:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B801B35F1A;
+	Fri, 24 Nov 2023 19:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAisfift"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwDE1oUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC990339BE;
-	Fri, 24 Nov 2023 19:01:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A49C433C8;
-	Fri, 24 Nov 2023 19:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F33B3173F;
+	Fri, 24 Nov 2023 19:00:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE9DC433C7;
+	Fri, 24 Nov 2023 19:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852503;
-	bh=5CBIdEdPZmODBF2WZzX8AH1b1MDY3I590m2rRWjSWkk=;
+	s=korg; t=1700852404;
+	bh=Iu87LDloXmwFNhB/AHL1WwmkJ5grUVoEsa5uXHK9WJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAisfift0WX8y6YUA2VgRPeRnEhgOmdOQdWYEfaJMCNnAaQJZ0s4SoSUkmzWAGoq9
-	 Ak9BLYhUacacjz/carGHZQCFo1Tv3iIpl7pFyQCQJLWi5rOTM76PFaD7E0r7WCAsRy
-	 MEKZVWF4vv2DNPHgwYpTeG+Y65zWeLkyU0QV4y/E=
+	b=jwDE1oUBSrgy4Og0s5EtJrLTZOPUCYplZ8ctCbY46eKUe8PCebJiCtjr8OZ7Jj/yu
+	 XDm8MHfKgeicN4PPQulTfEq66wOOjxMfhvMDgKsF05siMIx3VGpRWCV1gV/4nbvpUG
+	 TJ8UV+jMJ9tJKPkLAExJXP3oWQdwktix6wyn6+/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/193] perf/core: Bail out early if the request AUX area is out of bound
-Date: Fri, 24 Nov 2023 17:52:09 +0000
-Message-ID: <20231124171947.225398449@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 343/372] media: qcom: camss: Fix VFE-17x vfe_disable_output()
+Date: Fri, 24 Nov 2023 17:52:10 +0000
+Message-ID: <20231124172021.802460254@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +52,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
+commit 3143ad282fc08bf995ee73e32a9e40c527bf265d upstream.
 
-When perf-record with a large AUX area, e.g 4GB, it fails with:
+There are two problems with the current vfe_disable_output() routine.
 
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate memory)
+Firstly we rightly use a spinlock to protect output->gen2.active_num
+everywhere except for in the IDLE timeout path of vfe_disable_output().
+Even if that is not racy "in practice" somehow it is by happenstance not
+by design.
 
-and it reveals a WARNING with __alloc_pages():
+Secondly we do not get consistent behaviour from this routine. On
+sc8280xp 50% of the time I get "VFE idle timeout - resetting". In this
+case the subsequent capture will succeed. The other 50% of the time, we
+don't hit the idle timeout, never do the VFE reset and subsequent
+captures stall indefinitely.
 
-	------------[ cut here ]------------
-	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
-	Call trace:
-	 __alloc_pages+0x1ec/0x248
-	 __kmalloc_large_node+0xc0/0x1f8
-	 __kmalloc_node+0x134/0x1e8
-	 rb_alloc_aux+0xe0/0x298
-	 perf_mmap+0x440/0x660
-	 mmap_region+0x308/0x8a8
-	 do_mmap+0x3c0/0x528
-	 vm_mmap_pgoff+0xf4/0x1b8
-	 ksys_mmap_pgoff+0x18c/0x218
-	 __arm64_sys_mmap+0x38/0x58
-	 invoke_syscall+0x50/0x128
-	 el0_svc_common.constprop.0+0x58/0x188
-	 do_el0_svc+0x34/0x50
-	 el0_svc+0x34/0x108
-	 el0t_64_sync_handler+0xb8/0xc0
-	 el0t_64_sync+0x1a4/0x1a8
+Rewrite the vfe_disable_output() routine to
 
-'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
-maintains AUX trace pages. The allocated page for this array is physically
-contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
-size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
-WARNING.
+- Quiesce write masters with vfe_wm_stop()
+- Set active_num = 0
 
-So bail out early with -ENOMEM if the request AUX area is out of bound,
-e.g.:
+remembering to hold the spinlock when we do so followed by
 
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate memory)
+- Reset the VFE
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Testing on sc8280xp and sdm845 shows this to be a valid fix.
+
+Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/ring_buffer.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/platform/qcom/camss/camss-vfe-170.c |   22 +++-------------------
+ 1 file changed, 3 insertions(+), 19 deletions(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 4032cd4750001..01351e7e25435 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -691,6 +691,12 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
- 		max_order--;
- 	}
+--- a/drivers/media/platform/qcom/camss/camss-vfe-170.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe-170.c
+@@ -7,7 +7,6 @@
+  * Copyright (C) 2020-2021 Linaro Ltd.
+  */
  
-+	/*
-+	 * kcalloc_node() is unable to allocate buffer if the size is larger
-+	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
-+	 */
-+	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
-+		return -ENOMEM;
- 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
- 				     node);
- 	if (!rb->aux_pages)
--- 
-2.42.0
-
+-#include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+@@ -494,35 +493,20 @@ static int vfe_enable_output(struct vfe_
+ 	return 0;
+ }
+ 
+-static int vfe_disable_output(struct vfe_line *line)
++static void vfe_disable_output(struct vfe_line *line)
+ {
+ 	struct vfe_device *vfe = to_vfe(line);
+ 	struct vfe_output *output = &line->output;
+ 	unsigned long flags;
+ 	unsigned int i;
+-	bool done;
+-	int timeout = 0;
+-
+-	do {
+-		spin_lock_irqsave(&vfe->output_lock, flags);
+-		done = !output->gen2.active_num;
+-		spin_unlock_irqrestore(&vfe->output_lock, flags);
+-		usleep_range(10000, 20000);
+-
+-		if (timeout++ == 100) {
+-			dev_err(vfe->camss->dev, "VFE idle timeout - resetting\n");
+-			vfe_reset(vfe);
+-			output->gen2.active_num = 0;
+-			return 0;
+-		}
+-	} while (!done);
+ 
+ 	spin_lock_irqsave(&vfe->output_lock, flags);
+ 	for (i = 0; i < output->wm_num; i++)
+ 		vfe_wm_stop(vfe, output->wm_idx[i]);
++	output->gen2.active_num = 0;
+ 	spin_unlock_irqrestore(&vfe->output_lock, flags);
+ 
+-	return 0;
++	vfe_reset(vfe);
+ }
+ 
+ /*
 
 
 
