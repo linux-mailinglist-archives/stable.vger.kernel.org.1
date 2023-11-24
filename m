@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A007F7EA0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0819A7F8059
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CEE328239B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83867B216DD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8778F28DA1;
-	Fri, 24 Nov 2023 18:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97BA34189;
+	Fri, 24 Nov 2023 18:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDTEwuot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiT4fmjP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD1E28387;
-	Fri, 24 Nov 2023 18:34:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFF4C433C7;
-	Fri, 24 Nov 2023 18:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C5328DBA;
+	Fri, 24 Nov 2023 18:48:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16549C433C7;
+	Fri, 24 Nov 2023 18:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850880;
-	bh=iNEpDT5mAOuixS0MP2jRQqUUv1ILjM/q+B4OD3xVQls=;
+	s=korg; t=1700851738;
+	bh=AdXYaTb4Dmvjpy7Pww2o1JLNlM9DZcblr3wFF4pIgNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDTEwuotm7mlyLyoMFmI2JYJAfxtuNWIoOJ3nTmI15ATx/WMEdT+JcHRlUTf/1hO9
-	 Lskh60KFLL/qHjsceRrRizZ8YuPA5t/o2H2+RfyNLHTiZD8KQa4ZVDRvlFjZbq7rs0
-	 Q4l0gqJB9+qUap4GUkFiV+8CsGxsDowGRnOKJKQE=
+	b=fiT4fmjPNMxw0i+I5/JF74cXp7oJio5HCJRCFA0yxfwIUywnRPKTdMziW1FNpQobj
+	 xoz0ZTFWYlEedUizL1EAVV1J5SHK+XsSlO3VSqNLV4cD373Hhglna7en+jaTcdpBBs
+	 1UJWr6CGSpf8X97n2syjBAdxw0aEA0vVN3noSJXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.5 226/491] drivers: perf: Check find_first_bit() return value
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 075/372] PCI: Use FIELD_GET() to extract Link Width
 Date: Fri, 24 Nov 2023 17:47:42 +0000
-Message-ID: <20231124172031.348496611@linuxfoundation.org>
+Message-ID: <20231124172013.007413441@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,74 +52,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit c6e316ac05532febb0c966fa9b55f5258ed037be upstream.
+[ Upstream commit d1f9b39da4a5347150246871325190018cda8cb3 ]
 
-We must check the return value of find_first_bit() before using the
-return value as an index array since it happens to overflow the array
-and then panic:
+Use FIELD_GET() to extract PCIe Negotiated and Maximum Link Width fields
+instead of custom masking and shifting.
 
-[  107.318430] Kernel BUG [#1]
-[  107.319434] CPU: 3 PID: 1238 Comm: kill Tainted: G            E      6.6.0-rc6ubuntu-defconfig #2
-[  107.319465] Hardware name: riscv-virtio,qemu (DT)
-[  107.319551] epc : pmu_sbi_ovf_handler+0x3a4/0x3ae
-[  107.319840]  ra : pmu_sbi_ovf_handler+0x52/0x3ae
-[  107.319868] epc : ffffffff80a0a77c ra : ffffffff80a0a42a sp : ffffaf83fecda350
-[  107.319884]  gp : ffffffff823961a8 tp : ffffaf8083db1dc0 t0 : ffffaf83fecda480
-[  107.319899]  t1 : ffffffff80cafe62 t2 : 000000000000ff00 s0 : ffffaf83fecda520
-[  107.319921]  s1 : ffffaf83fecda380 a0 : 00000018fca29df0 a1 : ffffffffffffffff
-[  107.319936]  a2 : 0000000001073734 a3 : 0000000000000004 a4 : 0000000000000000
-[  107.319951]  a5 : 0000000000000040 a6 : 000000001d1c8774 a7 : 0000000000504d55
-[  107.319965]  s2 : ffffffff82451f10 s3 : ffffffff82724e70 s4 : 000000000000003f
-[  107.319980]  s5 : 0000000000000011 s6 : ffffaf8083db27c0 s7 : 0000000000000000
-[  107.319995]  s8 : 0000000000000001 s9 : 00007fffb45d6558 s10: 00007fffb45d81a0
-[  107.320009]  s11: ffffaf7ffff60000 t3 : 0000000000000004 t4 : 0000000000000000
-[  107.320023]  t5 : ffffaf7f80000000 t6 : ffffaf8000000000
-[  107.320037] status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
-[  107.320081] [<ffffffff80a0a77c>] pmu_sbi_ovf_handler+0x3a4/0x3ae
-[  107.320112] [<ffffffff800b42d0>] handle_percpu_devid_irq+0x9e/0x1a0
-[  107.320131] [<ffffffff800ad92c>] generic_handle_domain_irq+0x28/0x36
-[  107.320148] [<ffffffff8065f9f8>] riscv_intc_irq+0x36/0x4e
-[  107.320166] [<ffffffff80caf4a0>] handle_riscv_irq+0x54/0x86
-[  107.320189] [<ffffffff80cb0036>] do_irq+0x64/0x96
-[  107.320271] Code: 85a6 855e b097 ff7f 80e7 9220 b709 9002 4501 bbd9 (9002) 6097
-[  107.320585] ---[ end trace 0000000000000000 ]---
-[  107.320704] Kernel panic - not syncing: Fatal exception in interrupt
-[  107.320775] SMP: stopping secondary CPUs
-[  107.321219] Kernel Offset: 0x0 from 0xffffffff80000000
-[  107.333051] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
-
-Fixes: 4905ec2fb7e6 ("RISC-V: Add sscofpmf extension support")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231109082128.40777-1-alexghiti@rivosinc.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230919125648.1920-7-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+[bhelgaas: drop duplicate include of <linux/bitfield.h>]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu_sbi.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pci/pci-sysfs.c | 5 ++---
+ drivers/pci/pci.c       | 5 ++---
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -629,6 +629,11 @@ static irqreturn_t pmu_sbi_ovf_handler(i
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index dd0d9d9bc5097..6ccd88d1bfa0f 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -12,7 +12,7 @@
+  * Modeled after usb's driverfs.c
+  */
  
- 	/* Firmware counter don't support overflow yet */
- 	fidx = find_first_bit(cpu_hw_evt->used_hw_ctrs, RISCV_MAX_COUNTERS);
-+	if (fidx == RISCV_MAX_COUNTERS) {
-+		csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
-+		return IRQ_NONE;
-+	}
-+
- 	event = cpu_hw_evt->events[fidx];
- 	if (!event) {
- 		csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
+-
++#include <linux/bitfield.h>
+ #include <linux/kernel.h>
+ #include <linux/sched.h>
+ #include <linux/pci.h>
+@@ -230,8 +230,7 @@ static ssize_t current_link_width_show(struct device *dev,
+ 	if (err)
+ 		return -EINVAL;
+ 
+-	return sysfs_emit(buf, "%u\n",
+-		(linkstat & PCI_EXP_LNKSTA_NLW) >> PCI_EXP_LNKSTA_NLW_SHIFT);
++	return sysfs_emit(buf, "%u\n", FIELD_GET(PCI_EXP_LNKSTA_NLW, linkstat));
+ }
+ static DEVICE_ATTR_RO(current_link_width);
+ 
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 59b5c017d6c38..4f37885017200 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -6138,8 +6138,7 @@ u32 pcie_bandwidth_available(struct pci_dev *dev, struct pci_dev **limiting_dev,
+ 		pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
+ 
+ 		next_speed = pcie_link_speed[lnksta & PCI_EXP_LNKSTA_CLS];
+-		next_width = (lnksta & PCI_EXP_LNKSTA_NLW) >>
+-			PCI_EXP_LNKSTA_NLW_SHIFT;
++		next_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, lnksta);
+ 
+ 		next_bw = next_width * PCIE_SPEED2MBS_ENC(next_speed);
+ 
+@@ -6211,7 +6210,7 @@ enum pcie_link_width pcie_get_width_cap(struct pci_dev *dev)
+ 
+ 	pcie_capability_read_dword(dev, PCI_EXP_LNKCAP, &lnkcap);
+ 	if (lnkcap)
+-		return (lnkcap & PCI_EXP_LNKCAP_MLW) >> 4;
++		return FIELD_GET(PCI_EXP_LNKCAP_MLW, lnkcap);
+ 
+ 	return PCIE_LNK_WIDTH_UNKNOWN;
+ }
+-- 
+2.42.0
+
 
 
 
