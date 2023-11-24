@@ -1,47 +1,60 @@
-Return-Path: <stable+bounces-1725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974AB7F8112
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C41417F7F6D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26799B21B55
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 017901C2136F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564263418B;
-	Fri, 24 Nov 2023 18:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6E41A5A4;
+	Fri, 24 Nov 2023 18:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIV/0m2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYsQk/sE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6312FC4E;
-	Fri, 24 Nov 2023 18:55:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD0FC433C8;
-	Fri, 24 Nov 2023 18:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511B82E40E;
+	Fri, 24 Nov 2023 18:41:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BD39C433C8;
+	Fri, 24 Nov 2023 18:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852119;
-	bh=Kc9OIOS7twNLT64VQWkeia5vrgEoN3SaDncmpcogwg0=;
+	s=korg; t=1700851284;
+	bh=ikGz/aeY+IRGmZzQwcd/7R0nyIhcfQcYObb61L42OEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIV/0m2ytNn97imTNPqe0oHZ7uIknZ/dG8vUW4NTp/xzQZU3/yhK+ioz3MpzuzCFV
-	 be7kGA70XNF0wmlfBo6EzwWjl3ovihfJauQr2qwwJJvxQAz5MHEKNyHtm4tqNT+Cq5
-	 5B0JH87/XxoAA/S3ljv9L8zToZTNzSXT3glLbbj4=
+	b=RYsQk/sEJ3NVTjtvhuqZyGEIGysrmEjk486aAreMP7ptygqRgsfX0qvkgayLLHj13
+	 yiWOl2hCwuOFjqGX9Gi9xKxJyDOhqv2Gs4Tc6yFgdZqruBENqlnwPcRU5Yv0wuDZIU
+	 jXnx7G89xEJ/jq//ZSf1aiusnR1qKVwc7qYIcke4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 228/372] firmware: qcom_scm: use 64-bit calling convention only when client is 64-bit
+	Peter Xu <peterx@redhat.com>,
+	Mike Kravetz <mike.kravetz@oracle.com>,
+	David Hildenbrand <david@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	"Kirill A . Shutemov" <kirill@shutemov.name>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Yang Shi <shy828301@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 379/491] mm/hugetlb: prepare hugetlb_follow_page_mask() for FOLL_PIN
 Date: Fri, 24 Nov 2023 17:50:15 +0000
-Message-ID: <20231124172018.098159055@linuxfoundation.org>
+Message-ID: <20231124172035.979372545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +66,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+From: Peter Xu <peterx@redhat.com>
 
-commit 3337a6fea25370d3d244ec6bb38c71ee86fcf837 upstream.
+[ Upstream commit 458568c92953dee3716234711f1a2830a35261f3 ]
 
-Per the "SMC calling convention specification", the 64-bit calling
-convention can only be used when the client is 64-bit. Whereas the
-32-bit calling convention can be used by either a 32-bit or a 64-bit
-client.
+follow_page() doesn't use FOLL_PIN, meanwhile hugetlb seems to not be the
+target of FOLL_WRITE either.  However add the checks.
 
-Currently during SCM probe, irrespective of the client, 64-bit calling
-convention is made, which is incorrect and may lead to the undefined
-behaviour when the client is 32-bit. Let's fix it.
+Namely, either the need to CoW due to missing write bit, or proper
+unsharing on !AnonExclusive pages over R/O pins to reject the follow page.
+That brings this function closer to follow_hugetlb_page().
 
-Cc: stable@vger.kernel.org
-Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
-Reviewed-By: Elliot Berman <quic_eberman@quicinc.com>
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Link: https://lore.kernel.org/r/20230925-scm-v3-1-8790dff6a749@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So we don't care before, and also for now.  But we'll care if we switch
+over slow-gup to use hugetlb_follow_page_mask().  We'll also care when to
+return -EMLINK properly, as that's the gup internal api to mean "we should
+unshare".  Not really needed for follow page path, though.
+
+When at it, switching the try_grab_page() to use WARN_ON_ONCE(), to be
+clear that it just should never fail.  When error happens, instead of
+setting page==NULL, capture the errno instead.
+
+Link: https://lkml.kernel.org/r/20230628215310.73782-3-peterx@redhat.com
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Kirill A . Shutemov <kirill@shutemov.name>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yang Shi <shy828301@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 426056efe835 ("mm/hugetlb: use nth_page() in place of direct struct page manipulation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom_scm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/hugetlb.c | 33 ++++++++++++++++++++++-----------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
---- a/drivers/firmware/qcom_scm.c
-+++ b/drivers/firmware/qcom_scm.c
-@@ -165,6 +165,12 @@ static enum qcom_scm_convention __get_co
- 		return qcom_scm_convention;
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 097b81c37597e..d231f23088a77 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6521,13 +6521,7 @@ struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
+ 	struct page *page = NULL;
+ 	spinlock_t *ptl;
+ 	pte_t *pte, entry;
+-
+-	/*
+-	 * FOLL_PIN is not supported for follow_page(). Ordinary GUP goes via
+-	 * follow_hugetlb_page().
+-	 */
+-	if (WARN_ON_ONCE(flags & FOLL_PIN))
+-		return NULL;
++	int ret;
  
- 	/*
-+	 * Per the "SMC calling convention specification", the 64-bit calling
-+	 * convention can only be used when the client is 64-bit, otherwise
-+	 * system will encounter the undefined behaviour.
-+	 */
-+#if IS_ENABLED(CONFIG_ARM64)
-+	/*
- 	 * Device isn't required as there is only one argument - no device
- 	 * needed to dma_map_single to secure world
- 	 */
-@@ -184,6 +190,7 @@ static enum qcom_scm_convention __get_co
- 		forced = true;
- 		goto found;
+ 	hugetlb_vma_lock_read(vma);
+ 	pte = hugetlb_walk(vma, haddr, huge_page_size(h));
+@@ -6537,8 +6531,23 @@ struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
+ 	ptl = huge_pte_lock(h, mm, pte);
+ 	entry = huge_ptep_get(pte);
+ 	if (pte_present(entry)) {
+-		page = pte_page(entry) +
+-				((address & ~huge_page_mask(h)) >> PAGE_SHIFT);
++		page = pte_page(entry);
++
++		if (!huge_pte_write(entry)) {
++			if (flags & FOLL_WRITE) {
++				page = NULL;
++				goto out;
++			}
++
++			if (gup_must_unshare(vma, flags, page)) {
++				/* Tell the caller to do unsharing */
++				page = ERR_PTR(-EMLINK);
++				goto out;
++			}
++		}
++
++		page += ((address & ~huge_page_mask(h)) >> PAGE_SHIFT);
++
+ 		/*
+ 		 * Note that page may be a sub-page, and with vmemmap
+ 		 * optimizations the page struct may be read only.
+@@ -6548,8 +6557,10 @@ struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
+ 		 * try_grab_page() should always be able to get the page here,
+ 		 * because we hold the ptl lock and have verified pte_present().
+ 		 */
+-		if (try_grab_page(page, flags)) {
+-			page = NULL;
++		ret = try_grab_page(page, flags);
++
++		if (WARN_ON_ONCE(ret)) {
++			page = ERR_PTR(ret);
+ 			goto out;
+ 		}
  	}
-+#endif
- 
- 	probed_convention = SMC_CONVENTION_ARM_32;
- 	ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
+-- 
+2.42.0
+
 
 
 
