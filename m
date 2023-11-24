@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC0B7F7B13
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 692307F7F77
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D9BF1C2040E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF94DB21A61
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1682A39FFA;
-	Fri, 24 Nov 2023 18:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347D8364C1;
+	Fri, 24 Nov 2023 18:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jF+cbzwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LomJCZGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67A139FEF;
-	Fri, 24 Nov 2023 18:01:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F82C433C7;
-	Fri, 24 Nov 2023 18:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE5F2F86B;
+	Fri, 24 Nov 2023 18:41:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8B6C433C8;
+	Fri, 24 Nov 2023 18:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848895;
-	bh=QevucKTsajlNcgpvvNVsT/h5dileO6PDLiR7lUs0M1Q=;
+	s=korg; t=1700851303;
+	bh=PlwiX7GhT9g0GtVD/W+Qa1HAiW9YCB52pPVmdgU13jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jF+cbzwYBw3jMLnmP3co/OQkN54xww/YffMc/br+UTN419Vaq2JFE6vqo1JlFtLO9
-	 oCZmi3f9C4/3+ewzfB2WNU/BDd/XA3nMOey3s2PscsoTInbBeB+lToLWAOpwy6kU0l
-	 erOGGALgWjr0D6HlRSanAprkoFbXdXBqaqXF4I98=
+	b=LomJCZGUt8wsRzw/uEAgNLxHVW4/NTB5trxEOEWnmr0jMRgndYfsddtcbRYL6nnwZ
+	 d5sCwkPnMC2EhFkE/Fr/wxuB+gDUCS2xFG1h/WQgDqSzj8ThD8i8eCxH+d3nbnL2JB
+	 CwmQijHIEEuiVBMoDALx9H/slAp71nLale2XlluM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 07/57] wifi: ath10k: fix clang-specific fortify warning
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.5 395/491] cifs: do not reset chan_max if multichannel is not supported at mount
 Date: Fri, 24 Nov 2023 17:50:31 +0000
-Message-ID: <20231124171930.551362110@linuxfoundation.org>
+Message-ID: <20231124172036.475604529@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +52,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit cb4c132ebfeac5962f7258ffc831caa0c4dada1a ]
+commit 6e5e64c9477d58e73cb1a0e83eacad1f8df247cf upstream.
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+If the mount command has specified multichannel as a mount option,
+but multichannel is found to be unsupported by the server at the time
+of mount, we set chan_max to 1. Which means that the user needs to
+remount the share if the server starts supporting multichannel.
 
-In file included from drivers/net/wireless/ath/ath10k/debug.c:8:
-In file included from ./include/linux/module.h:13:
-In file included from ./include/linux/stat.h:19:
-In file included from ./include/linux/time.h:60:
-In file included from ./include/linux/time32.h:13:
-In file included from ./include/linux/timex.h:67:
-In file included from ./arch/x86/include/asm/timex.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+This change removes this reset. What it means is that if the user
+specified multichannel or max_channels during mount, and at this
+time, multichannel is not supported, but the server starts supporting
+it at a later point, the client will be capable of scaling out the
+number of channels.
 
-The compiler actually complains on 'ath10k_debug_get_et_strings()' where
-fortification logic inteprets call to 'memcpy()' as an attempt to copy
-the whole 'ath10k_gstrings_stats' array from it's first member and so
-issues an overread warning. This warning may be silenced by passing
-an address of the whole array and not the first member to 'memcpy()'.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230829093652.234537-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/sess.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index 22003895f8548..591d0b9c0be3c 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -1411,7 +1411,7 @@ void ath10k_debug_get_et_strings(struct ieee80211_hw *hw,
- 				 u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath10k_gstrings_stats,
-+		memcpy(data, ath10k_gstrings_stats,
- 		       sizeof(ath10k_gstrings_stats));
- }
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -186,7 +186,6 @@ int cifs_try_adding_channels(struct cifs
+ 	}
  
--- 
-2.42.0
-
+ 	if (!(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
+-		ses->chan_max = 1;
+ 		spin_unlock(&ses->chan_lock);
+ 		cifs_server_dbg(VFS, "no multichannel support\n");
+ 		return 0;
 
 
 
