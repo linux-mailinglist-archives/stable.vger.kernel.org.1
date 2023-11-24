@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6247F7EB7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B297F806C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 400A9B217D1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B850B217A7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EDD28DC3;
-	Fri, 24 Nov 2023 18:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1A233CC7;
+	Fri, 24 Nov 2023 18:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDEcnT8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSf6DRLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC06321AD;
-	Fri, 24 Nov 2023 18:35:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A3DC433C7;
-	Fri, 24 Nov 2023 18:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768612C87B;
+	Fri, 24 Nov 2023 18:49:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA48C433C8;
+	Fri, 24 Nov 2023 18:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850921;
-	bh=OWNNPsI3j9xXi6YBaCD5nAp/E953/AjJo00TMqjHxmg=;
+	s=korg; t=1700851773;
+	bh=st4QvdiDEJ2u4L8Pc8S6x0JKS8QP2/xcxUlm6V2vqCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDEcnT8YkCW/snA7I77amFz0tZVWes+7uBPUBlCTgiPpKTQ4o65WrWSYbI/CkL4MN
-	 02RuWfzD1VOGCJYdzdqHMZRKnE3hN+LUkT6zlhdaRvIrMcshterQtu+Q4OstDkQldM
-	 j1jECo56+Qp/P8SjFrnQbLDWd1P3FTr8AQsrpOBk=
+	b=JSf6DRLE0er7ObuaUweSKuYksCE9U0MI4V8nNvaBksCnzW84EOJg/y7G3DEuV1dGC
+	 NihA3ctEzSkYEV4PBG/WmmrCmay+J//25oR27VezZ4GWry/iY+0New2GNHpQFCAZSe
+	 4hjy6+My0cOaXn7kvAFAkdvmu+rL589sBH8NfF1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Wen <puwen@hygon.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.5 241/491] x86/cpu/hygon: Fix the CPU topology evaluation for real
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/372] f2fs: fix error handling of __get_node_page
 Date: Fri, 24 Nov 2023 17:47:57 +0000
-Message-ID: <20231124172031.801067101@linuxfoundation.org>
+Message-ID: <20231124172013.536353329@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Wen <puwen@hygon.cn>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-commit ee545b94d39a00c93dc98b1dbcbcf731d2eadeb4 upstream.
+[ Upstream commit 9b4c8dd99fe48721410741651d426015e03a4b7a ]
 
-Hygon processors with a model ID > 3 have CPUID leaf 0xB correctly
-populated and don't need the fixed package ID shift workaround. The fixup
-is also incorrect when running in a guest.
+Use f2fs_handle_error to record inconsistent node block error
+and return -EFSCORRUPTED instead of -EINVAL.
 
-Fixes: e0ceeae708ce ("x86/CPU/hygon: Fix phys_proc_id calculation logic for multi-die processors")
-Signed-off-by: Pu Wen <puwen@hygon.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/tencent_594804A808BD93A4EBF50A994F228E3A7F07@qq.com
-Link: https://lore.kernel.org/r/20230814085112.089607918@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/hygon.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/f2fs/node.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -86,8 +86,12 @@ static void hygon_get_topology(struct cp
- 		if (!err)
- 			c->x86_coreid_bits = get_count_order(c->x86_max_cores);
- 
--		/* Socket ID is ApicId[6] for these processors. */
--		c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
-+		/*
-+		 * Socket ID is ApicId[6] for the processors with model <= 0x3
-+		 * when running on host.
-+		 */
-+		if (!boot_cpu_has(X86_FEATURE_HYPERVISOR) && c->x86_model <= 0x3)
-+			c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
- 
- 		cacheinfo_hygon_init_llc_id(c, cpu);
- 	} else if (cpu_has(c, X86_FEATURE_NODEID_MSR)) {
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index a010b4bc36d2c..b73d44df9423b 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -1455,7 +1455,8 @@ static struct page *__get_node_page(struct f2fs_sb_info *sbi, pgoff_t nid,
+ 			  ofs_of_node(page), cpver_of_node(page),
+ 			  next_blkaddr_of_node(page));
+ 	set_sbi_flag(sbi, SBI_NEED_FSCK);
+-	err = -EINVAL;
++	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
++	err = -EFSCORRUPTED;
+ out_err:
+ 	ClearPageUptodate(page);
+ out_put_err:
+-- 
+2.42.0
+
 
 
 
