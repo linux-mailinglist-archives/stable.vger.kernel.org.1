@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB387F731D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:54:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E4D7F731F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:55:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50DC81C20DAB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:54:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9677B212B7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3CC1F95A;
-	Fri, 24 Nov 2023 11:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABD9200BA;
+	Fri, 24 Nov 2023 11:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByfpT0S1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onWq/W2q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD021200B2
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:54:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30530C433C8;
-	Fri, 24 Nov 2023 11:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C23B1F944
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B49C433C7;
+	Fri, 24 Nov 2023 11:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700826856;
-	bh=kx4pxmZsxHYNqtqbGs0PQut87dvVMnrvg94gv7nOXP0=;
+	s=korg; t=1700826892;
+	bh=6I+MMtnRgddNkvtHDoV7wjpiMVNnlsMFw8MWAn17OTY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ByfpT0S15D+5GEIZ0zfEIKLfJlDYNXE9qd9awCL/3YihgJzZXyo2ykH3pK45qjKpW
-	 lfoobtlrJogweyk5eC2dAnnyp7iuqhwzsIWPTYZjk3bjiI8ggunuQcKzIhkysFBSPl
-	 mUGGKzabeX20kWCKLCKl3s9eIyu4HtFMfSKqUdus=
-Subject: FAILED: patch "[PATCH] smb3: allow dumping session and tcon id to improve stats" failed to apply to 6.1-stable tree
-To: stfrench@microsoft.com,sprasad@microsoft.com
+	b=onWq/W2q1cxJGJzPenoEukBQfc4t/BjW8dX5zE+7MwfADMCYBNwJNI9PGjt/vdhZl
+	 2OPbrp3vQv5UFj9ImVZI9x6/RI7yUDzyOt3AVtqQu7qZNmzNfmbVuIE4ZQ0OhDf97O
+	 hXHnPoJ6HXBAuJQm2xe6LiEYYky31DCVeoSN7tyY=
+Subject: FAILED: patch "[PATCH] smb: client: fix use-after-free in smb2_query_info_compound()" failed to apply to 6.1-stable tree
+To: pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 11:54:15 +0000
-Message-ID: <2023112415-attribute-dreamt-dc04@gregkh>
+Date: Fri, 24 Nov 2023 11:54:51 +0000
+Message-ID: <2023112451-helpless-variable-cfb0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,18 +54,26 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x de4eceab578ead12a71e5b5588a57e142bbe8ceb
+git cherry-pick -x 5c86919455c1edec99ebd3338ad213b59271a71b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112415-attribute-dreamt-dc04@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112451-helpless-variable-cfb0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-de4eceab578e ("smb3: allow dumping session and tcon id to improve stats analysis and debugging")
+5c86919455c1 ("smb: client: fix use-after-free in smb2_query_info_compound()")
+81ba10959970 ("smb: client: prevent new fids from being removed by laundromat")
+e95f3f744650 ("smb: client: make laundromat a delayed worker")
+2da338ff752a ("smb3: do not start laundromat thread when dir leases  disabled")
+238b351d0935 ("smb3: allow controlling length of time directory entries are cached with dir leases")
+d14de8067e3f ("cifs: Add a laundromat thread for cached directories")
 38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+be4fde79812f ("cifs: fix dentry lookups in directory handle cache")
+df57109bd50b ("cifs: use tcon allocation functions even for dummy tcon")
+8e843bf38f7b ("cifs: return a single-use cfid if we did not get a lease")
+66d45ca1350a ("cifs: Check the lease context if we actually got a lease")
 abdb1742a312 ("cifs: get rid of mount options string parsing")
 9fd29a5bae6e ("cifs: use fs_context for automounts")
-c19204cbd65c ("cifs: minor cleanup of some headers")
 
 thanks,
 
@@ -73,96 +81,281 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From de4eceab578ead12a71e5b5588a57e142bbe8ceb Mon Sep 17 00:00:00 2001
-From: Steve French <stfrench@microsoft.com>
-Date: Thu, 9 Nov 2023 15:28:12 -0600
-Subject: [PATCH] smb3: allow dumping session and tcon id to improve stats
- analysis and debugging
+From 5c86919455c1edec99ebd3338ad213b59271a71b Mon Sep 17 00:00:00 2001
+From: Paulo Alcantara <pc@manguebit.com>
+Date: Mon, 30 Oct 2023 17:19:56 -0300
+Subject: [PATCH] smb: client: fix use-after-free in smb2_query_info_compound()
 
-When multiple mounts are to the same share from the same client it was not
-possible to determine which section of /proc/fs/cifs/Stats (and DebugData)
-correspond to that mount.  In some recent examples this turned out to  be
-a significant problem when trying to analyze performance data - since
-there are many cases where unless we know the tree id and session id we
-can't figure out which stats (e.g. number of SMB3.1.1 requests by type,
-the total time they take, which is slowest, how many fail etc.) apply to
-which mount. The only existing loosely related ioctl CIFS_IOC_GET_MNT_INFO
-does not return the information needed to uniquely identify which tcon
-is which mount although it does return various flags and device info.
+The following UAF was triggered when running fstests generic/072 with
+KASAN enabled against Windows Server 2022 and mount options
+'multichannel,max_channels=2,vers=3.1.1,mfsymlinks,noperm'
 
-Add a cifs.ko ioctl CIFS_IOC_GET_TCON_INFO (0x800ccf0c) to return tid,
-session id, tree connect count.
+  BUG: KASAN: slab-use-after-free in smb2_query_info_compound+0x423/0x6d0 [cifs]
+  Read of size 8 at addr ffff888014941048 by task xfs_io/27534
+
+  CPU: 0 PID: 27534 Comm: xfs_io Not tainted 6.6.0-rc7 #1
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+  Call Trace:
+   dump_stack_lvl+0x4a/0x80
+   print_report+0xcf/0x650
+   ? srso_alias_return_thunk+0x5/0x7f
+   ? srso_alias_return_thunk+0x5/0x7f
+   ? __phys_addr+0x46/0x90
+   kasan_report+0xda/0x110
+   ? smb2_query_info_compound+0x423/0x6d0 [cifs]
+   ? smb2_query_info_compound+0x423/0x6d0 [cifs]
+   smb2_query_info_compound+0x423/0x6d0 [cifs]
+   ? __pfx_smb2_query_info_compound+0x10/0x10 [cifs]
+   ? srso_alias_return_thunk+0x5/0x7f
+   ? __stack_depot_save+0x39/0x480
+   ? kasan_save_stack+0x33/0x60
+   ? kasan_set_track+0x25/0x30
+   ? ____kasan_slab_free+0x126/0x170
+   smb2_queryfs+0xc2/0x2c0 [cifs]
+   ? __pfx_smb2_queryfs+0x10/0x10 [cifs]
+   ? __pfx___lock_acquire+0x10/0x10
+   smb311_queryfs+0x210/0x220 [cifs]
+   ? __pfx_smb311_queryfs+0x10/0x10 [cifs]
+   ? srso_alias_return_thunk+0x5/0x7f
+   ? __lock_acquire+0x480/0x26c0
+   ? lock_release+0x1ed/0x640
+   ? srso_alias_return_thunk+0x5/0x7f
+   ? do_raw_spin_unlock+0x9b/0x100
+   cifs_statfs+0x18c/0x4b0 [cifs]
+   statfs_by_dentry+0x9b/0xf0
+   fd_statfs+0x4e/0xb0
+   __do_sys_fstatfs+0x7f/0xe0
+   ? __pfx___do_sys_fstatfs+0x10/0x10
+   ? srso_alias_return_thunk+0x5/0x7f
+   ? lockdep_hardirqs_on_prepare+0x136/0x200
+   ? srso_alias_return_thunk+0x5/0x7f
+   do_syscall_64+0x3f/0x90
+   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+  Allocated by task 27534:
+   kasan_save_stack+0x33/0x60
+   kasan_set_track+0x25/0x30
+   __kasan_kmalloc+0x8f/0xa0
+   open_cached_dir+0x71b/0x1240 [cifs]
+   smb2_query_info_compound+0x5c3/0x6d0 [cifs]
+   smb2_queryfs+0xc2/0x2c0 [cifs]
+   smb311_queryfs+0x210/0x220 [cifs]
+   cifs_statfs+0x18c/0x4b0 [cifs]
+   statfs_by_dentry+0x9b/0xf0
+   fd_statfs+0x4e/0xb0
+   __do_sys_fstatfs+0x7f/0xe0
+   do_syscall_64+0x3f/0x90
+   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+  Freed by task 27534:
+   kasan_save_stack+0x33/0x60
+   kasan_set_track+0x25/0x30
+   kasan_save_free_info+0x2b/0x50
+   ____kasan_slab_free+0x126/0x170
+   slab_free_freelist_hook+0xd0/0x1e0
+   __kmem_cache_free+0x9d/0x1b0
+   open_cached_dir+0xff5/0x1240 [cifs]
+   smb2_query_info_compound+0x5c3/0x6d0 [cifs]
+   smb2_queryfs+0xc2/0x2c0 [cifs]
+
+This is a race between open_cached_dir() and cached_dir_lease_break()
+where the cache entry for the open directory handle receives a lease
+break while creating it.  And before returning from open_cached_dir(),
+we put the last reference of the new @cfid because of
+!@cfid->has_lease.
+
+Besides the UAF, while running xfstests a lot of missed lease breaks
+have been noticed in tests that run several concurrent statfs(2) calls
+on those cached fids
+
+  CIFS: VFS: \\w22-root1.gandalf.test No task to wake, unknown frame...
+  CIFS: VFS: \\w22-root1.gandalf.test Cmd: 18 Err: 0x0 Flags: 0x1...
+  CIFS: VFS: \\w22-root1.gandalf.test smb buf 00000000715bfe83 len 108
+  CIFS: VFS: Dump pending requests:
+  CIFS: VFS: \\w22-root1.gandalf.test No task to wake, unknown frame...
+  CIFS: VFS: \\w22-root1.gandalf.test Cmd: 18 Err: 0x0 Flags: 0x1...
+  CIFS: VFS: \\w22-root1.gandalf.test smb buf 000000005aa7316e len 108
+  ...
+
+To fix both, in open_cached_dir() ensure that @cfid->has_lease is set
+right before sending out compounded request so that any potential
+lease break will be get processed by demultiplex thread while we're
+still caching @cfid.  And, if open failed for some reason, re-check
+@cfid->has_lease to decide whether or not put lease reference.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
-diff --git a/fs/smb/client/cifs_ioctl.h b/fs/smb/client/cifs_ioctl.h
-index 332588e77c31..26327442e383 100644
---- a/fs/smb/client/cifs_ioctl.h
-+++ b/fs/smb/client/cifs_ioctl.h
-@@ -26,6 +26,11 @@ struct smb_mnt_fs_info {
- 	__u64   cifs_posix_caps;
- } __packed;
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index fe1bf5b6e0cb..59f6b8e32cc9 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -32,7 +32,7 @@ static struct cached_fid *find_or_create_cached_dir(struct cached_fids *cfids,
+ 			 * fully cached or it may be in the process of
+ 			 * being deleted due to a lease break.
+ 			 */
+-			if (!cfid->has_lease) {
++			if (!cfid->time || !cfid->has_lease) {
+ 				spin_unlock(&cfids->cfid_list_lock);
+ 				return NULL;
+ 			}
+@@ -193,10 +193,20 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 	npath = path_no_prefix(cifs_sb, path);
+ 	if (IS_ERR(npath)) {
+ 		rc = PTR_ERR(npath);
+-		kfree(utf16_path);
+-		return rc;
++		goto out;
+ 	}
  
-+struct smb_mnt_tcon_info {
-+	__u32	tid;
-+	__u64	session_id;
-+} __packed;
++	if (!npath[0]) {
++		dentry = dget(cifs_sb->root);
++	} else {
++		dentry = path_to_dentry(cifs_sb, npath);
++		if (IS_ERR(dentry)) {
++			rc = -ENOENT;
++			goto out;
++		}
++	}
++	cfid->dentry = dentry;
 +
- struct smb_snapshot_array {
- 	__u32	number_of_snapshots;
- 	__u32	number_of_snapshots_returned;
-@@ -108,6 +113,7 @@ struct smb3_notify_info {
- #define CIFS_IOC_NOTIFY _IOW(CIFS_IOCTL_MAGIC, 9, struct smb3_notify)
- #define CIFS_DUMP_FULL_KEY _IOWR(CIFS_IOCTL_MAGIC, 10, struct smb3_full_key_debug_info)
- #define CIFS_IOC_NOTIFY_INFO _IOWR(CIFS_IOCTL_MAGIC, 11, struct smb3_notify_info)
-+#define CIFS_IOC_GET_TCON_INFO _IOR(CIFS_IOCTL_MAGIC, 12, struct smb_mnt_tcon_info)
- #define CIFS_IOC_SHUTDOWN _IOR('X', 125, __u32)
+ 	/*
+ 	 * We do not hold the lock for the open because in case
+ 	 * SMB2_open needs to reconnect.
+@@ -249,6 +259,15 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
  
- /*
-diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
-index f7160003e0ed..73ededa8eba5 100644
---- a/fs/smb/client/ioctl.c
-+++ b/fs/smb/client/ioctl.c
-@@ -117,6 +117,20 @@ static long cifs_ioctl_copychunk(unsigned int xid, struct file *dst_file,
+ 	smb2_set_related(&rqst[1]);
+ 
++	/*
++	 * Set @cfid->has_lease to true before sending out compounded request so
++	 * its lease reference can be put in cached_dir_lease_break() due to a
++	 * potential lease break right after the request is sent or while @cfid
++	 * is still being cached.  Concurrent processes won't be to use it yet
++	 * due to @cfid->time being zero.
++	 */
++	cfid->has_lease = true;
++
+ 	rc = compound_send_recv(xid, ses, server,
+ 				flags, 2, rqst,
+ 				resp_buftype, rsp_iov);
+@@ -263,6 +282,8 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 	cfid->tcon = tcon;
+ 	cfid->is_open = true;
+ 
++	spin_lock(&cfids->cfid_list_lock);
++
+ 	o_rsp = (struct smb2_create_rsp *)rsp_iov[0].iov_base;
+ 	oparms.fid->persistent_fid = o_rsp->PersistentFileId;
+ 	oparms.fid->volatile_fid = o_rsp->VolatileFileId;
+@@ -270,18 +291,25 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 	oparms.fid->mid = le64_to_cpu(o_rsp->hdr.MessageId);
+ #endif /* CIFS_DEBUG2 */
+ 
+-	if (o_rsp->OplockLevel != SMB2_OPLOCK_LEVEL_LEASE)
++	rc = -EINVAL;
++	if (o_rsp->OplockLevel != SMB2_OPLOCK_LEVEL_LEASE) {
++		spin_unlock(&cfids->cfid_list_lock);
+ 		goto oshr_free;
++	}
+ 
+ 	smb2_parse_contexts(server, o_rsp,
+ 			    &oparms.fid->epoch,
+ 			    oparms.fid->lease_key, &oplock,
+ 			    NULL, NULL);
+-	if (!(oplock & SMB2_LEASE_READ_CACHING_HE))
++	if (!(oplock & SMB2_LEASE_READ_CACHING_HE)) {
++		spin_unlock(&cfids->cfid_list_lock);
+ 		goto oshr_free;
++	}
+ 	qi_rsp = (struct smb2_query_info_rsp *)rsp_iov[1].iov_base;
+-	if (le32_to_cpu(qi_rsp->OutputBufferLength) < sizeof(struct smb2_file_all_info))
++	if (le32_to_cpu(qi_rsp->OutputBufferLength) < sizeof(struct smb2_file_all_info)) {
++		spin_unlock(&cfids->cfid_list_lock);
+ 		goto oshr_free;
++	}
+ 	if (!smb2_validate_and_copy_iov(
+ 				le16_to_cpu(qi_rsp->OutputBufferOffset),
+ 				sizeof(struct smb2_file_all_info),
+@@ -289,37 +317,24 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 				(char *)&cfid->file_all_info))
+ 		cfid->file_all_info_is_valid = true;
+ 
+-	if (!npath[0])
+-		dentry = dget(cifs_sb->root);
+-	else {
+-		dentry = path_to_dentry(cifs_sb, npath);
+-		if (IS_ERR(dentry)) {
+-			rc = -ENOENT;
+-			goto oshr_free;
+-		}
+-	}
+-	spin_lock(&cfids->cfid_list_lock);
+-	cfid->dentry = dentry;
+ 	cfid->time = jiffies;
+-	cfid->has_lease = true;
+ 	spin_unlock(&cfids->cfid_list_lock);
++	/* At this point the directory handle is fully cached */
++	rc = 0;
+ 
+ oshr_free:
+-	kfree(utf16_path);
+ 	SMB2_open_free(&rqst[0]);
+ 	SMB2_query_info_free(&rqst[1]);
+ 	free_rsp_buf(resp_buftype[0], rsp_iov[0].iov_base);
+ 	free_rsp_buf(resp_buftype[1], rsp_iov[1].iov_base);
+-	spin_lock(&cfids->cfid_list_lock);
+-	if (!cfid->has_lease) {
+-		if (rc) {
+-			if (cfid->on_list) {
+-				list_del(&cfid->entry);
+-				cfid->on_list = false;
+-				cfids->num_entries--;
+-			}
+-			rc = -ENOENT;
+-		} else {
++	if (rc) {
++		spin_lock(&cfids->cfid_list_lock);
++		if (cfid->on_list) {
++			list_del(&cfid->entry);
++			cfid->on_list = false;
++			cfids->num_entries--;
++		}
++		if (cfid->has_lease) {
+ 			/*
+ 			 * We are guaranteed to have two references at this
+ 			 * point. One for the caller and one for a potential
+@@ -327,25 +342,24 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 			 * will be closed when the caller closes the cached
+ 			 * handle.
+ 			 */
++			cfid->has_lease = false;
+ 			spin_unlock(&cfids->cfid_list_lock);
+ 			kref_put(&cfid->refcount, smb2_close_cached_fid);
+ 			goto out;
+ 		}
++		spin_unlock(&cfids->cfid_list_lock);
+ 	}
+-	spin_unlock(&cfids->cfid_list_lock);
++out:
+ 	if (rc) {
+ 		if (cfid->is_open)
+ 			SMB2_close(0, cfid->tcon, cfid->fid.persistent_fid,
+ 				   cfid->fid.volatile_fid);
+ 		free_cached_dir(cfid);
+-		cfid = NULL;
+-	}
+-out:
+-	if (rc == 0) {
++	} else {
+ 		*ret_cfid = cfid;
+ 		atomic_inc(&tcon->num_remote_opens);
+ 	}
+-
++	kfree(utf16_path);
  	return rc;
  }
  
-+static long smb_mnt_get_tcon_info(struct cifs_tcon *tcon, void __user *arg)
-+{
-+	int rc = 0;
-+	struct smb_mnt_tcon_info tcon_inf;
-+
-+	tcon_inf.tid = tcon->tid;
-+	tcon_inf.session_id = tcon->ses->Suid;
-+
-+	if (copy_to_user(arg, &tcon_inf, sizeof(struct smb_mnt_tcon_info)))
-+		rc = -EFAULT;
-+
-+	return rc;
-+}
-+
- static long smb_mnt_get_fsinfo(unsigned int xid, struct cifs_tcon *tcon,
- 				void __user *arg)
- {
-@@ -414,6 +428,17 @@ long cifs_ioctl(struct file *filep, unsigned int command, unsigned long arg)
- 			tcon = tlink_tcon(pSMBFile->tlink);
- 			rc = smb_mnt_get_fsinfo(xid, tcon, (void __user *)arg);
- 			break;
-+		case CIFS_IOC_GET_TCON_INFO:
-+			cifs_sb = CIFS_SB(inode->i_sb);
-+			tlink = cifs_sb_tlink(cifs_sb);
-+			if (IS_ERR(tlink)) {
-+				rc = PTR_ERR(tlink);
-+				break;
-+			}
-+			tcon = tlink_tcon(tlink);
-+			rc = smb_mnt_get_tcon_info(tcon, (void __user *)arg);
-+			cifs_put_tlink(tlink);
-+			break;
- 		case CIFS_ENUMERATE_SNAPSHOTS:
- 			if (pSMBFile == NULL)
- 				break;
 
 
