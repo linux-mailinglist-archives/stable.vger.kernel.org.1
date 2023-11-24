@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A03377F80DF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D91767F7D0F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1CC31C2163C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64941B2168A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A800364A5;
-	Fri, 24 Nov 2023 18:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB69C3A8D6;
+	Fri, 24 Nov 2023 18:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7Pd4rfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2pN8NrB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5E22EAEA;
-	Fri, 24 Nov 2023 18:53:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F991C433C8;
-	Fri, 24 Nov 2023 18:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CAE39FF7;
+	Fri, 24 Nov 2023 18:21:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071E0C433C8;
+	Fri, 24 Nov 2023 18:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852014;
-	bh=YQrlm5clDbJNVh5jP6x04Yz8Y7SVM2HNh9Y9OBhkQrw=;
+	s=korg; t=1700850063;
+	bh=IKe/G64n//hUczacjlBuOYU6biHHV2mU6+dXu4AufOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7Pd4rfeQpUaWTrmiTKvj+NVlp8Bt3+KO22DpaiflWmgCMb6/v7KxC520xzRZFdA9
-	 rn2/CX+oZSOWZMX6kgAzBNxLym8XDbtIrGHB3YLwiyAGeALQW7hXQdko7Cz2AMq4fy
-	 Yl2dfxsN9rTeWuF/KYEhZDfsAT/I3/ljvVFfJJdA=
+	b=i2pN8NrBZsPJlvwrNJBglC/p+kGI7ZSMPalhXu3Flb3ACR1tRPjLGQxL+Vqyf1ETo
+	 vM0cOFHjJc0QasTUibogoHGqPCrDaVx2UJIT9gQxHsgjsaGAT0SZq8+l5mrlM6QXIy
+	 sowXeHyfQ2m/xVjyAAOg6UUBoTd9Px2owHaLvyiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.1 185/372] PCI/sysfs: Protect drivers D3cold preference from user space
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 406/530] torture: Make torture_hrtimeout_ns() take an hrtimer mode parameter
 Date: Fri, 24 Nov 2023 17:49:32 +0000
-Message-ID: <20231124172016.632070917@linuxfoundation.org>
+Message-ID: <20231124172040.417688694@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +53,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-commit 70b70a4307cccebe91388337b1c85735ce4de6ff upstream.
+[ Upstream commit a741deac787f0d2d7068638c067db20af9e63752 ]
 
-struct pci_dev contains two flags which govern whether the device may
-suspend to D3cold:
+The current torture-test sleeps are waiting for a duration, but there
+are situations where it is better to wait for an absolute time, for
+example, when ending a stutter interval.  This commit therefore adds
+an hrtimer mode parameter to torture_hrtimeout_ns().  Why not also the
+other torture_hrtimeout_*() functions?  The theory is that most absolute
+times will be in nanoseconds, especially not (say) jiffies.
 
-* no_d3cold provides an opt-out for drivers (e.g. if a device is known
-  to not wake from D3cold)
-
-* d3cold_allowed provides an opt-out for user space (default is true,
-  user space may set to false)
-
-Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend"),
-the user space setting overwrites the driver setting.  Essentially user
-space is trusted to know better than the driver whether D3cold is
-working.
-
-That feels unsafe and wrong.  Assume that the change was introduced
-inadvertently and do not overwrite no_d3cold when d3cold_allowed is
-modified.  Instead, consider d3cold_allowed in addition to no_d3cold
-when choosing a suspend state for the device.
-
-That way, user space may opt out of D3cold if the driver hasn't, but it
-may no longer force an opt in if the driver has opted out.
-
-Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-Link: https://lore.kernel.org/r/b8a7f4af2b73f6b506ad8ddee59d747cbf834606.1695025365.git.lukas@wunner.de
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Cc: stable@vger.kernel.org	# v4.8+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Stable-dep-of: cca42bd8eb1b ("rcutorture: Fix stuttering races and other issues")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-acpi.c  |    2 +-
- drivers/pci/pci-sysfs.c |    5 +----
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ include/linux/torture.h |  3 ++-
+ kernel/torture.c        | 13 +++++++------
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -911,7 +911,7 @@ pci_power_t acpi_pci_choose_state(struct
+diff --git a/include/linux/torture.h b/include/linux/torture.h
+index bb466eec01e42..017f0f710815a 100644
+--- a/include/linux/torture.h
++++ b/include/linux/torture.h
+@@ -81,7 +81,8 @@ static inline void torture_random_init(struct torture_random_state *trsp)
+ }
+ 
+ /* Definitions for high-resolution-timer sleeps. */
+-int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, struct torture_random_state *trsp);
++int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, const enum hrtimer_mode mode,
++			 struct torture_random_state *trsp);
+ int torture_hrtimeout_us(u32 baset_us, u32 fuzzt_ns, struct torture_random_state *trsp);
+ int torture_hrtimeout_ms(u32 baset_ms, u32 fuzzt_us, struct torture_random_state *trsp);
+ int torture_hrtimeout_jiffies(u32 baset_j, struct torture_random_state *trsp);
+diff --git a/kernel/torture.c b/kernel/torture.c
+index b28b05bbef027..e851b8e9390b3 100644
+--- a/kernel/torture.c
++++ b/kernel/torture.c
+@@ -87,14 +87,15 @@ EXPORT_SYMBOL_GPL(verbose_torout_sleep);
+  * nanosecond random fuzz.  This function and its friends desynchronize
+  * testing from the timer wheel.
+  */
+-int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, struct torture_random_state *trsp)
++int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, const enum hrtimer_mode mode,
++			 struct torture_random_state *trsp)
  {
- 	int acpi_state, d_max;
+ 	ktime_t hto = baset_ns;
  
--	if (pdev->no_d3cold)
-+	if (pdev->no_d3cold || !pdev->d3cold_allowed)
- 		d_max = ACPI_STATE_D3_HOT;
+ 	if (trsp)
+ 		hto += torture_random(trsp) % fuzzt_ns;
+ 	set_current_state(TASK_IDLE);
+-	return schedule_hrtimeout(&hto, HRTIMER_MODE_REL);
++	return schedule_hrtimeout(&hto, mode);
+ }
+ EXPORT_SYMBOL_GPL(torture_hrtimeout_ns);
+ 
+@@ -106,7 +107,7 @@ int torture_hrtimeout_us(u32 baset_us, u32 fuzzt_ns, struct torture_random_state
+ {
+ 	ktime_t baset_ns = baset_us * NSEC_PER_USEC;
+ 
+-	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
++	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, HRTIMER_MODE_REL, trsp);
+ }
+ EXPORT_SYMBOL_GPL(torture_hrtimeout_us);
+ 
+@@ -123,7 +124,7 @@ int torture_hrtimeout_ms(u32 baset_ms, u32 fuzzt_us, struct torture_random_state
+ 		fuzzt_ns = (u32)~0U;
  	else
- 		d_max = ACPI_STATE_D3_COLD;
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -529,10 +529,7 @@ static ssize_t d3cold_allowed_store(stru
- 		return -EINVAL;
+ 		fuzzt_ns = fuzzt_us * NSEC_PER_USEC;
+-	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
++	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, HRTIMER_MODE_REL, trsp);
+ }
+ EXPORT_SYMBOL_GPL(torture_hrtimeout_ms);
  
- 	pdev->d3cold_allowed = !!val;
--	if (pdev->d3cold_allowed)
--		pci_d3cold_enable(pdev);
--	else
--		pci_d3cold_disable(pdev);
-+	pci_bridge_d3_update(pdev);
+@@ -136,7 +137,7 @@ int torture_hrtimeout_jiffies(u32 baset_j, struct torture_random_state *trsp)
+ {
+ 	ktime_t baset_ns = jiffies_to_nsecs(baset_j);
  
- 	pm_runtime_resume(dev);
+-	return torture_hrtimeout_ns(baset_ns, jiffies_to_nsecs(1), trsp);
++	return torture_hrtimeout_ns(baset_ns, jiffies_to_nsecs(1), HRTIMER_MODE_REL, trsp);
+ }
+ EXPORT_SYMBOL_GPL(torture_hrtimeout_jiffies);
  
+@@ -153,7 +154,7 @@ int torture_hrtimeout_s(u32 baset_s, u32 fuzzt_ms, struct torture_random_state *
+ 		fuzzt_ns = (u32)~0U;
+ 	else
+ 		fuzzt_ns = fuzzt_ms * NSEC_PER_MSEC;
+-	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
++	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, HRTIMER_MODE_REL, trsp);
+ }
+ EXPORT_SYMBOL_GPL(torture_hrtimeout_s);
+ 
+-- 
+2.42.0
+
 
 
 
