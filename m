@@ -1,52 +1,46 @@
-Return-Path: <stable+bounces-1793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77E97F8160
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 206C27F7D87
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 931DF28265F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399D51C21124
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7114364A5;
-	Fri, 24 Nov 2023 18:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D0E39FE8;
+	Fri, 24 Nov 2023 18:25:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ktYn7yqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IR4Mm1iN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9415A33076;
-	Fri, 24 Nov 2023 18:58:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22646C433C8;
-	Fri, 24 Nov 2023 18:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32EE339FF3;
+	Fri, 24 Nov 2023 18:25:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F07C433C8;
+	Fri, 24 Nov 2023 18:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852288;
-	bh=IYpiaQ38uRI+fjyTaaQXahJx9wGPb9grW1I13Qq9ubY=;
+	s=korg; t=1700850324;
+	bh=7/vj06eLL1kuiUMmqOCGGhPgT8fTj022D/941adxfqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ktYn7yqmiPv3GlB+/HpwJ4hAqSASONLsc+WL3PFENqaUMNIUfYhLbqLPOi9J2M9Zf
-	 Ldd4kTWiobHsng5CqxYWRyl3GIb8YQ8WBGbKtRAoZj+RRnqyeB1WNa365ZCHHYqA2R
-	 VTTxuCqy0Y8uhwC9/Lh/BYWNJ0SMT+am2DyBLsQQ=
+	b=IR4Mm1iN968mChN/ynvsQpX9Gg9JmSdt91jb2mMnNBF8zCE8Zrub9Y3OtJnCGiEW6
+	 qRurYDrXG0HbaNRjh4KUabMhkpGPBGCHqLONJhMnMMeRqI9sqs96RA/8PveWnmmTOV
+	 IvFBIecM3Ea1/pEVz/3q3Jwc0gyA+ivYDHYTtp2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Gregory Price <gregory.price@memverge.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Fan Ni <fan.ni@samsung.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 295/372] cxl/region: Validate region mode vs decoder mode
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 516/530] drm/amdgpu/smu13: drop compute workload workaround
 Date: Fri, 24 Nov 2023 17:51:22 +0000
-Message-ID: <20231124172020.264449593@linuxfoundation.org>
+Message-ID: <20231124172043.889676545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,51 +52,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 1b9b7a6fd618239db47a83da39dff9e725a5865a ]
+commit 23170863ea0a0965d224342c0eb2ad8303b1f267 upstream.
 
-In preparation for a new region mode, do not, for example, allow
-'ram' decoders to be assigned to 'pmem' regions and vice versa.
+This was fixed in PMFW before launch and is no longer
+required.
 
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Reviewed-by: Gregory Price <gregory.price@memverge.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Tested-by: Fan Ni <fan.ni@samsung.com>
-Link: https://lore.kernel.org/r/167601995111.1924368.7459128614177994602.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 0718588c7aaa ("cxl/region: Do not try to cleanup after cxl_region_setup_targets() fails")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/region.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   32 +------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 9709bbf773b72..99b0501066e57 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1191,6 +1191,12 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 	struct cxl_dport *dport;
- 	int i, rc = -ENXIO;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2163,38 +2163,10 @@ static int smu_v13_0_0_set_power_profile
+ 		}
+ 	}
  
-+	if (cxled->mode != cxlr->mode) {
-+		dev_dbg(&cxlr->dev, "%s region mode: %d mismatch: %d\n",
-+			dev_name(&cxled->cxld.dev), cxlr->mode, cxled->mode);
-+		return -EINVAL;
-+	}
-+
- 	if (cxled->mode == CXL_DECODER_DEAD) {
- 		dev_dbg(&cxlr->dev, "%s dead\n", dev_name(&cxled->cxld.dev));
- 		return -ENODEV;
--- 
-2.42.0
-
+-	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_COMPUTE &&
+-		(((smu->adev->pdev->device == 0x744C) && (smu->adev->pdev->revision == 0xC8)) ||
+-		((smu->adev->pdev->device == 0x744C) && (smu->adev->pdev->revision == 0xCC)))) {
+-		ret = smu_cmn_update_table(smu,
+-					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
+-					   WORKLOAD_PPLIB_COMPUTE_BIT,
+-					   (void *)(&activity_monitor_external),
+-					   false);
+-		if (ret) {
+-			dev_err(smu->adev->dev, "[%s] Failed to get activity monitor!", __func__);
+-			return ret;
+-		}
+-
+-		ret = smu_cmn_update_table(smu,
+-					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
+-					   WORKLOAD_PPLIB_CUSTOM_BIT,
+-					   (void *)(&activity_monitor_external),
+-					   true);
+-		if (ret) {
+-			dev_err(smu->adev->dev, "[%s] Failed to set activity monitor!", __func__);
+-			return ret;
+-		}
+-
+-		workload_type = smu_cmn_to_asic_specific_index(smu,
+-						       CMN2ASIC_MAPPING_WORKLOAD,
+-						       PP_SMC_POWER_PROFILE_CUSTOM);
+-	} else {
+-		/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
+-		workload_type = smu_cmn_to_asic_specific_index(smu,
++	/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
++	workload_type = smu_cmn_to_asic_specific_index(smu,
+ 						       CMN2ASIC_MAPPING_WORKLOAD,
+ 						       smu->power_profile_mode);
+-	}
+ 
+ 	if (workload_type < 0)
+ 		return -EINVAL;
 
 
 
