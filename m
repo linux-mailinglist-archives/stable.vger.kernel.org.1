@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-1976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0317F823A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DB637F8243
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4E27B237E7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD6E9B23990
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102643307D;
-	Fri, 24 Nov 2023 19:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB8F364B7;
+	Fri, 24 Nov 2023 19:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQWDDYns"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZsEEFyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EE631748;
-	Fri, 24 Nov 2023 19:05:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E238C433C7;
-	Fri, 24 Nov 2023 19:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B255B2EAEA;
+	Fri, 24 Nov 2023 19:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403AAC433C8;
+	Fri, 24 Nov 2023 19:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852742;
-	bh=UlFlNGFg1iRF5ZhlN2ND7cpwCP1rDMraUJn9hZLo92w=;
+	s=korg; t=1700852762;
+	bh=OVQEoAIJQycYElSErNkZgbcP4XaumHdY6p1FzJCMvD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQWDDYnsc0d2oK4f5v3g66/83LmpYyfcCLtoTMSKkCz882pUPzpsY3Wc5FCaIeKXj
-	 e3es/1DmV9GfcPBmMc0Pd0rRnjT725JgYZh57oAe80FxkR7n5lgfNDVH6H6hmp2yXa
-	 0cXPSZlYXJegj+BYls0UnIThPBz8uS5eo9iCKjvU=
+	b=hZsEEFyyDLtRo2vyhnsbAp6ct0a+mMsbyheekPzM3KsRZUu2HD/TIHv7OpHAmtQdb
+	 lmaM5BInM7iPB7FyahR6gCdlFTMPy/Ajj1t1yfxF6ntyZy50G1kSJ1thbwtUqNjOX7
+	 fLMGjpl3l2r1j7fUuThxNcKIoVdJ3MHRXEhAU5Uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Anastasia Belova <abelova@astralinux.ru>,
 	Ekaterina Esina <eesina@astralinux.ru>,
+	Anastasia Belova <abelova@astralinux.ru>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/193] cifs: spnego: add ; in HOST_KEY_LEN
-Date: Fri, 24 Nov 2023 17:53:34 +0000
-Message-ID: <20231124171950.722845214@linuxfoundation.org>
+Subject: [PATCH 5.10 088/193] cifs: fix check of rc in function generate_smb3signingkey
+Date: Fri, 24 Nov 2023 17:53:35 +0000
+Message-ID: <20231124171950.762053829@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
 References: <20231124171947.127438872@linuxfoundation.org>
@@ -59,41 +59,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anastasia Belova <abelova@astralinux.ru>
+From: Ekaterina Esina <eesina@astralinux.ru>
 
-[ Upstream commit ff31ba19d732efb9aca3633935d71085e68d5076 ]
+[ Upstream commit 181724fc72486dec2bec8803459be05b5162aaa8 ]
 
-"host=" should start with ';' (as in cifs_get_spnego_key)
-So its length should be 6.
+Remove extra check after condition, add check after generating key
+for encryption. The check is needed to return non zero rc before
+rewriting it with generating key for decryption.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
 Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Fixes: 7c9c3760b3a5 ("[CIFS] add constants for string lengths of keynames in SPNEGO upcall string")
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Co-developed-by: Ekaterina Esina <eesina@astralinux.ru>
+Fixes: d70e9fa55884 ("cifs: try opening channels after mounting")
 Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>
+Co-developed-by: Anastasia Belova <abelova@astralinux.ru>
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/cifs_spnego.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/cifs/smb2transport.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/cifs/cifs_spnego.c b/fs/cifs/cifs_spnego.c
-index 7b9b876b513bd..4f9d08ac9dde5 100644
---- a/fs/cifs/cifs_spnego.c
-+++ b/fs/cifs/cifs_spnego.c
-@@ -76,8 +76,8 @@ struct key_type cifs_spnego_key_type = {
-  * strlen(";sec=ntlmsspi") */
- #define MAX_MECH_STR_LEN	13
+diff --git a/fs/cifs/smb2transport.c b/fs/cifs/smb2transport.c
+index e6fa76ab70be7..d659eb70df76d 100644
+--- a/fs/cifs/smb2transport.c
++++ b/fs/cifs/smb2transport.c
+@@ -433,6 +433,8 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 				  ptriplet->encryption.context,
+ 				  ses->smb3encryptionkey,
+ 				  SMB3_ENC_DEC_KEY_SIZE);
++		if (rc)
++			return rc;
+ 		rc = generate_key(ses, ptriplet->decryption.label,
+ 				  ptriplet->decryption.context,
+ 				  ses->smb3decryptionkey,
+@@ -441,9 +443,6 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 			return rc;
+ 	}
  
--/* strlen of "host=" */
--#define HOST_KEY_LEN		5
-+/* strlen of ";host=" */
-+#define HOST_KEY_LEN		6
- 
- /* strlen of ";ip4=" or ";ip6=" */
- #define IP_KEY_LEN		5
+-	if (rc)
+-		return rc;
+-
+ #ifdef CONFIG_CIFS_DEBUG_DUMP_KEYS
+ 	cifs_dbg(VFS, "%s: dumping generated AES session keys\n", __func__);
+ 	/*
 -- 
 2.42.0
 
