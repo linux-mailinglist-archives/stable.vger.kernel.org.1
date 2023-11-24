@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B017F83D2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41E0D7F8456
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80968B26E1D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7474D1C277DE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6682EB15;
-	Fri, 24 Nov 2023 19:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A99935F04;
+	Fri, 24 Nov 2023 19:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKR7Uysy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uV8P5Ex0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF82339BE;
-	Fri, 24 Nov 2023 19:21:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B69C433C7;
-	Fri, 24 Nov 2023 19:21:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A23728DBB;
+	Fri, 24 Nov 2023 19:26:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEB7C433C7;
+	Fri, 24 Nov 2023 19:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853676;
-	bh=YlR2IbalPyhAGp5XYfxj5IDVIaiwbB0XUYbgxY8Vc2Q=;
+	s=korg; t=1700853980;
+	bh=vGbgLlXZ8grAWPfXlQUDCA9bTH3S+wEUFK3Gxsc3oOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKR7Uysyp/XxFjxiRrj+LIsCXEKtVcAgLfqOLsIHyPFmn599eOtLL0+TxclU8WeBc
-	 w9LQfglf0e2AmAukAC9UELv27ARKGZJ/+PChAwUZQ67HU8raxdJKClyPDZ6UlgMfdk
-	 Fd0upeHMuAghaVuymRMY0DOb0rvHToMFejXcJ3pw=
+	b=uV8P5Ex02idDiCEvv/315lHW1BkGqg+A/DFQ/F2ck2cIObCeMLz40svdwDjjNoQEg
+	 E4SCdIUgsBpjZxVMJWwCsYO8CxLnUcaYZRxs8vqa/jRgJRUrTQRXaFjbyFSIG7FOUL
+	 b/GkAiquVrjdI4ZbHsYH2GTPxpiXxZMzRxVxHsOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 283/297] ext4: correct return value of ext4_convert_meta_bg
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 108/159] serial: meson: Use platform_get_irq() to get the interrupt
 Date: Fri, 24 Nov 2023 17:55:25 +0000
-Message-ID: <20231124172010.023908269@linuxfoundation.org>
+Message-ID: <20231124171946.383488094@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +52,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-commit 48f1551592c54f7d8e2befc72a99ff4e47f7dca0 upstream.
+[ Upstream commit 5b68061983471470d4109bac776145245f06bc09 ]
 
-Avoid to ignore error in "err".
+platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
+allocation of IRQ resources in DT core code, this causes an issue
+when using hierarchical interrupt domains using "interrupts" property
+in the node as this bypasses the hierarchical setup and messes up the
+irq chaining.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://lore.kernel.org/r/20230826174712.4059355-4-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+In preparation for removal of static setup of IRQ resource from DT core
+code use platform_get_irq().
+
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20211224142917.6966-5-prabhakar.mahadev-lad.rj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/tty/serial/meson_uart.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -1938,9 +1938,7 @@ static int ext4_convert_meta_bg(struct s
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index 7563fd215d816..a193cbc78ebc0 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -661,10 +661,11 @@ static int meson_uart_probe_clocks(struct platform_device *pdev,
  
- errout:
- 	ret = ext4_journal_stop(handle);
--	if (!err)
--		err = ret;
--	return ret;
-+	return err ? err : ret;
+ static int meson_uart_probe(struct platform_device *pdev)
+ {
+-	struct resource *res_mem, *res_irq;
++	struct resource *res_mem;
+ 	struct uart_port *port;
+ 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
+ 	int ret = 0;
++	int irq;
  
- invalid_resize_inode:
- 	ext4_error(sb, "corrupted/inconsistent resize inode");
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
+@@ -687,9 +688,9 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	if (!res_mem)
+ 		return -ENODEV;
+ 
+-	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+-	if (!res_irq)
+-		return -ENODEV;
++	irq = platform_get_irq(pdev, 0);
++	if (irq < 0)
++		return irq;
+ 
+ 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
+ 
+@@ -714,7 +715,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	port->iotype = UPIO_MEM;
+ 	port->mapbase = res_mem->start;
+ 	port->mapsize = resource_size(res_mem);
+-	port->irq = res_irq->start;
++	port->irq = irq;
+ 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
+ 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+ 	port->dev = &pdev->dev;
+-- 
+2.42.0
+
 
 
 
