@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-2458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8797F8442
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C204C7F83E1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CB1B1C25AD1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61DC8B2710E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A000428DBB;
-	Fri, 24 Nov 2023 19:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F400381CC;
+	Fri, 24 Nov 2023 19:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwOWICea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVqHZVRp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C37C3306F;
-	Fri, 24 Nov 2023 19:25:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3FBC433C8;
-	Fri, 24 Nov 2023 19:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488612EAEA;
+	Fri, 24 Nov 2023 19:21:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95DAC433C8;
+	Fri, 24 Nov 2023 19:21:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853933;
-	bh=aKMXMf9GsIKtlEmj5UyoQeAwfIu3+pvzEbfL4uZTNp0=;
+	s=korg; t=1700853711;
+	bh=hBT4e+KJf3xo1D6TfPTlhgMHnRMPggVbJdoj82hiU5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HwOWICeaUTteu6+v4D6H4xdxj6bLV2SDFlYlK7q6mha3f7xbCX6ng5MMDdHrDdCQM
-	 dJrdic+BeKrCidUZ066OPWvQS73pNTyf9LKLCo3Wi8zg47WwhhRpfqlbsqvwcTrGXK
-	 ZtI4Hl2BsunA7ewigkB3JsIvpC6gN1FUCRu9Oxms=
+	b=IVqHZVRpzrjKPY2eG+eGiKK+Pr49KeHM/Jv9BhmLCJtprPM27+GeFTAL+soIptnNO
+	 INIgGVfyxjiF53SO4MddszoPDCuUpzYNCnikq67RXSkUaXNyQi8FF39suVHr6eIuB4
+	 ElKwKPIjyq+lzbioiHbICAzGYi2QZkTbtmZtjFmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Geffon <bgeffon@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 088/159] PM: hibernate: Clean up sync_read handling in snapshot_write_next()
+	Su Hui <suhui@nfschina.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 5.15 263/297] f2fs: avoid format-overflow warning
 Date: Fri, 24 Nov 2023 17:55:05 +0000
-Message-ID: <20231124171945.575533321@linuxfoundation.org>
+Message-ID: <20231124172009.355800008@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,74 +51,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Geffon <bgeffon@google.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit d08970df1980476f27936e24d452550f3e9e92e1 upstream.
+commit e0d4e8acb3789c5a8651061fbab62ca24a45c063 upstream.
 
-In snapshot_write_next(), sync_read is set and unset in three different
-spots unnecessiarly. As a result there is a subtle bug where the first
-page after the meta data has been loaded unconditionally sets sync_read
-to 0. If this first PFN was actually a highmem page, then the returned
-buffer will be the global "buffer," and the page needs to be loaded
-synchronously.
+With gcc and W=1 option, there's a warning like this:
 
-That is, I'm not sure we can always assume the following to be safe:
+fs/f2fs/compress.c: In function ‘f2fs_init_page_array_cache’:
+fs/f2fs/compress.c:1984:47: error: ‘%u’ directive writing between
+1 and 7 bytes into a region of size between 5 and 8
+[-Werror=format-overflow=]
+ 1984 |  sprintf(slab_name, "f2fs_page_array_entry-%u:%u", MAJOR(dev),
+		MINOR(dev));
+      |                                               ^~
 
-	handle->buffer = get_buffer(&orig_bm, &ca);
-	handle->sync_read = 0;
+String "f2fs_page_array_entry-%u:%u" can up to 35. The first "%u" can up
+to 4 and the second "%u" can up to 7, so total size is "24 + 4 + 7 = 35".
+slab_name's size should be 35 rather than 32.
 
-Because get_buffer() can call get_highmem_page_buffer() which can
-return 'buffer'.
-
-The easiest way to address this is just set sync_read before
-snapshot_write_next() returns if handle->buffer == buffer.
-
-Signed-off-by: Brian Geffon <bgeffon@google.com>
-Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
-Cc: All applicable <stable@vger.kernel.org>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/snapshot.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/f2fs/compress.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -2592,8 +2592,6 @@ int snapshot_write_next(struct snapshot_
- 	if (handle->cur > 1 && handle->cur > nr_meta_pages + nr_copy_pages)
- 		return 0;
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1906,7 +1906,7 @@ void f2fs_destroy_compress_inode(struct
+ int f2fs_init_page_array_cache(struct f2fs_sb_info *sbi)
+ {
+ 	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
++	char slab_name[35];
  
--	handle->sync_read = 1;
--
- 	if (!handle->cur) {
- 		if (!buffer)
- 			/* This makes the buffer be freed by swsusp_free() */
-@@ -2634,7 +2632,6 @@ int snapshot_write_next(struct snapshot_
- 			memory_bm_position_reset(&orig_bm);
- 			restore_pblist = NULL;
- 			handle->buffer = get_buffer(&orig_bm, &ca);
--			handle->sync_read = 0;
- 			if (IS_ERR(handle->buffer))
- 				return PTR_ERR(handle->buffer);
- 		}
-@@ -2646,9 +2643,8 @@ int snapshot_write_next(struct snapshot_
- 		handle->buffer = get_buffer(&orig_bm, &ca);
- 		if (IS_ERR(handle->buffer))
- 			return PTR_ERR(handle->buffer);
--		if (handle->buffer != buffer)
--			handle->sync_read = 0;
- 	}
-+	handle->sync_read = (handle->buffer == buffer);
- 	handle->cur++;
- 	return PAGE_SIZE;
- }
+ 	sprintf(slab_name, "f2fs_page_array_entry-%u:%u", MAJOR(dev), MINOR(dev));
+ 
 
 
 
