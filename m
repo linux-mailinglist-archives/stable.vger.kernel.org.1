@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-1167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB647F7E56
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E4D7F7C1B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FEFE1C21398
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02F1F1C2111D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D9A33E9;
-	Fri, 24 Nov 2023 18:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4160D39FFC;
+	Fri, 24 Nov 2023 18:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="194hIJOR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTit2Ai0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B943A8C3;
-	Fri, 24 Nov 2023 18:32:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0891C433C8;
-	Fri, 24 Nov 2023 18:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0516381D6;
+	Fri, 24 Nov 2023 18:11:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E47C433C7;
+	Fri, 24 Nov 2023 18:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850726;
-	bh=CnsWSn4D1oop//yLTJsCperWSh58zmJKq8QeWA3Ec+k=;
+	s=korg; t=1700849511;
+	bh=kMdDDEBtQ3HFud6uWUAchIUhpBasU470zzrlB/6WrkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=194hIJORLwEL+tALvp0hIC8JNfltxk27jUv4ox7rLXZ0b69KU9jbfOaa+7bAVD4Bt
-	 6tNW86syvxzIAHpVZwSm5o4yeWf+D42RZNyL/k34aLyHYHpqht0TuY9TrunpQnP7Jl
-	 3bAATDJphik3tJg8s9cdzWEc4KmtufMC6apa3xF8=
+	b=rTit2Ai0cbuyONMGMMaGQ0g15mxa0buWFtTGYrWTHUBvPxxkPwOBJY9kG05rdsIbz
+	 SLqd4U9Z29mPm1c0gR5tk8yYhIWLNwLKWlyNfOd2qFcM3A7vmxTP3YXRwp06UKmRfH
+	 VamOogXYvlYpDK9qM2+w+oqvk5K8atgcPTPP1wJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+59875ffef5cb9c9b29e9@syzkaller.appspotmail.com,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 140/491] media: imon: fix access to invalid resource for the second interface
+Subject: [PATCH 6.6 210/530] net: stmmac: avoid rx queue overrun
 Date: Fri, 24 Nov 2023 17:46:16 +0000
-Message-ID: <20231124172028.698154419@linuxfoundation.org>
+Message-ID: <20231124172034.454653794@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,56 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Baruch Siach <baruch@tkos.co.il>
 
-[ Upstream commit a1766a4fd83befa0b34d932d532e7ebb7fab1fa7 ]
+[ Upstream commit b6cb4541853c7ee512111b0e7ddf3cb66c99c137 ]
 
-imon driver probes two USB interfaces, and at the probe of the second
-interface, the driver assumes blindly that the first interface got
-bound with the same imon driver.  It's usually true, but it's still
-possible that the first interface is bound with another driver via a
-malformed descriptor.  Then it may lead to a memory corruption, as
-spotted by syzkaller; imon driver accesses the data from drvdata as
-struct imon_context object although it's a completely different one
-that was assigned by another driver.
+dma_rx_size can be set as low as 64. Rx budget might be higher than
+that. Make sure to not overrun allocated rx buffers when budget is
+larger.
 
-This patch adds a sanity check -- whether the first interface is
-really bound with the imon driver or not -- for avoiding the problem
-above at the probe time.
+Leave one descriptor unused to avoid wrap around of 'dirty_rx' vs
+'cur_rx'.
 
-Reported-by: syzbot+59875ffef5cb9c9b29e9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a838aa0603cc74d6@google.com/
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
-Link: https://lore.kernel.org/r/20230922005152.163640-1-ricardo@marliere.net
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers.")
+Link: https://lore.kernel.org/r/d95413e44c97d4692e72cec13a75f894abeb6998.1699897370.git.baruch@tkos.co.il
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/rc/imon.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/rc/imon.c b/drivers/media/rc/imon.c
-index 74546f7e34691..5719dda6e0f0e 100644
---- a/drivers/media/rc/imon.c
-+++ b/drivers/media/rc/imon.c
-@@ -2427,6 +2427,12 @@ static int imon_probe(struct usb_interface *interface,
- 		goto fail;
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 53358015fbe5c..1fa4da96c8f50 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5267,6 +5267,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
  
-+	if (first_if->dev.driver != interface->dev.driver) {
-+		dev_err(&interface->dev, "inconsistent driver matching\n");
-+		ret = -EINVAL;
-+		goto fail;
-+	}
-+
- 	if (ifnum == 0) {
- 		ictx = imon_init_intf0(interface, id);
- 		if (!ictx) {
+ 	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
+ 	buf_sz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
++	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
+ 
+ 	if (netif_msg_rx_status(priv)) {
+ 		void *rx_head;
 -- 
 2.42.0
 
