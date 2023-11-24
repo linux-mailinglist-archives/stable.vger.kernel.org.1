@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-2548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 405C57F8567
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 22:17:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D276A7F856D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 22:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB87528A7DB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 21:17:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E13961C22A97
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 21:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802513A8FF;
-	Fri, 24 Nov 2023 21:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31513A8CF;
+	Fri, 24 Nov 2023 21:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="bb+1Grjp"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="yzgPhlcs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2017119A4
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:17:08 -0800 (PST)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1cf6a67e290so17962515ad.1
-        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:17:08 -0800 (PST)
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C607619AB
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:23:05 -0800 (PST)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6cbe716b511so1579158b3a.3
+        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:23:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700860627; x=1701465427; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700860985; x=1701465785; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=AkT87mY6YEo0L+BkZcGfHM6trfZlwJMNFukGCCYTubQ=;
-        b=bb+1Grjpl+9PQByzuyR+XVUANc9FWHQBCpo7RJPHknDO5YTgGBuxQYCe7xhnkxcmpd
-         RO7I8C8rUAUuFHFnrGBAi4CRN7WdZMG914bW7x/VFIe1Gz0Da781XCeMCYwccXXDHSSG
-         RCPomSXwdgTJ29nbXquCe+yL//XGJ+L8ckRreLjVzmmc4wI83WmXUYosgbHk0JSE6q0s
-         7jAxr67Uv3MmrB+Ji5Fo7wYQip+bmSxSPRpCiZbY7d0vID8iH8jKm6Zn9l6yCdAvVZs0
-         6ep+WlKXo0JEpQX9TSwdOn+bLQmRBWUMsoG3okEqqFlJeNFFfCELbBpvZNFyLiUOaorT
-         PHDg==
+        bh=S/WnbKypBdZuePXMlUkuJESEe5Ggsrt4ChJHhIiKYo4=;
+        b=yzgPhlcsJij3BvTIIWgRRdrqWeN91LfbYYOoKkYv2+IPJcBLdpaHYwQwNGHxgiSdPF
+         Y3cLbYW5BY3u58TyH6bd6rW3ufoysHlFeNyH4TdTJMr7cGn7KYL4FM1EqS1gXJaBIfBx
+         YQPTWsZb7Nva/FUdEXSxDAXXBYsX6MZw46WhoJ2e/uCezSNUsjdsMKpCUIa1IRCyMJYj
+         UswA8SYV/rSF3g8x7R0KdpYt5LVJXIefjr187zZDIxkM1VCx/kpqgRYkAvXjkNbdk+QK
+         f8DktEC/hKMN6cCtfExULc26GPqBReJnw4WLRSuqzSeLVktl2O8qnmsb0mTtS94me3ie
+         1BXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700860627; x=1701465427;
+        d=1e100.net; s=20230601; t=1700860985; x=1701465785;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=AkT87mY6YEo0L+BkZcGfHM6trfZlwJMNFukGCCYTubQ=;
-        b=BoWLsF/JdkwBULi8kDhP2FQl9ENbVVWnTycZpoSupF/ftuGF5IrKLRsl+PfXty0wIb
-         GVMa2c1iaubywLBRwkSmXkGJ/WIkFVY9JvpsKDYbj8v9nN1yvJGsECThR1jAjmzZpfr5
-         Y08Aw408hKnkHWwJPpxgf9XpNwUlQfRpd2cyPSVLTjgaPwz9V/9OcaC3I+o2j4/JNae1
-         dQ3zSSvz39ivDcaRR2WtzQC6OQwJkDWUuDLP/MZQe89wS5u2QV08cuqjrO5mJXs9lzfQ
-         JjRsth46ESbqR3pDcg/EOGbZE/XE+33muasT2WkirdHhPPgXnbEJhisVmzRqs+6eh+cm
-         52Hw==
-X-Gm-Message-State: AOJu0Ywk7NN/t24m+Ns0ZJIr2EGst+7uwRk/vVe1I9JHWt3Sm0nzLUfz
-	k25qCQ+bMHOPsyCbXr5OfilAnS3hL34ShExUCd4=
-X-Google-Smtp-Source: AGHT+IHN4OZHldOGT43aIADxJRxPsR6yhwG6iC/UBcoDURs60OnB8H2qepmMIBz0URrPD1bMZ+X58Q==
-X-Received: by 2002:a17:903:2312:b0:1cc:b460:e6cc with SMTP id d18-20020a170903231200b001ccb460e6ccmr5286655plh.12.1700860627029;
-        Fri, 24 Nov 2023 13:17:07 -0800 (PST)
+        bh=S/WnbKypBdZuePXMlUkuJESEe5Ggsrt4ChJHhIiKYo4=;
+        b=RR0GdgWMSWamLvF/Rsn37DpJyJbfIqg0aQ1+uG+BEmzDldr7zYsQMtX/z87afDFsO1
+         3ihkUt924q2Pmp5U+oPHkLKAGQ19lFSfdObYCPSIMy0r/BiunOGyq/H7cuPO+9s0tF1C
+         HSYGXS2C/VAKrcs7YANYkvDeoQuDj/yVNm5YB+lLAWs8TQeiXDpVBwspjhKvuJipo8ww
+         /XY9jdhEX8Z4mM2liIA5S9ficLtSMdafG/uz71xWICwaNleF+RZvIyHlDHHz2KolmX1G
+         jgTntsdavE7S99FRW8hWK1CY0FXR2oPYnlgKTpzvzKsqGoFQi1QZkdhZstMs2MC7qvF4
+         Lgeg==
+X-Gm-Message-State: AOJu0Yw/Q6/O3abwZJY5IuQ05Wip10v3cF9vgA6BpgRgAsZIaL6z9/oc
+	WIsatCG3BP0uCbiaUUngsvLIGROU0ZJz//JRGlE=
+X-Google-Smtp-Source: AGHT+IH1rY5SALkkD1PmaVc6Wx9W7m2yg63b0cuLqdGblpRjNfC+4Zd2hRsjY3JI4BufD0sceAqQig==
+X-Received: by 2002:a05:6a20:7351:b0:18b:69a8:fab5 with SMTP id v17-20020a056a20735100b0018b69a8fab5mr4889723pzc.15.1700860984821;
+        Fri, 24 Nov 2023 13:23:04 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id m7-20020a1709026bc700b001c9bfd20d0csm3581133plt.124.2023.11.24.13.17.06
+        by smtp.gmail.com with ESMTPSA id gm3-20020a17090b100300b0026f39c90111sm3376106pjb.20.2023.11.24.13.23.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Nov 2023 13:17:06 -0800 (PST)
-Message-ID: <656112d2.170a0220.4030c.902e@mx.google.com>
-Date: Fri, 24 Nov 2023 13:17:06 -0800 (PST)
+        Fri, 24 Nov 2023 13:23:04 -0800 (PST)
+Message-ID: <65611438.170a0220.41c51.86d9@mx.google.com>
+Date: Fri, 24 Nov 2023 13:23:04 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,152 +62,186 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: queue/4.19
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/5.10
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.19.299-97-g7841746109202
-Subject: stable-rc/queue/4.19 baseline: 55 runs,
- 2 regressions (v4.19.299-97-g7841746109202)
+X-Kernelci-Kernel: v5.10.201-193-ge62bfc5f33f27
+Subject: stable-rc/queue/5.10 build: 19 builds: 1 failed, 18 passed, 1 error,
+ 5 warnings (v5.10.201-193-ge62bfc5f33f27)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/4.19 baseline: 55 runs, 2 regressions (v4.19.299-97-g784174=
-6109202)
+stable-rc/queue/5.10 build: 19 builds: 1 failed, 18 passed, 1 error, 5 warn=
+ings (v5.10.201-193-ge62bfc5f33f27)
 
-Regressions Summary
--------------------
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+0/kernel/v5.10.201-193-ge62bfc5f33f27/
 
-platform         | arch | lab         | compiler | defconfig           | re=
-gressions
------------------+------+-------------+----------+---------------------+---=
----------
-at91sam9g20ek    | arm  | lab-broonie | gcc-10   | multi_v5_defconfig  | 1 =
-         =
+Tree: stable-rc
+Branch: queue/5.10
+Git Describe: v5.10.201-193-ge62bfc5f33f27
+Git Commit: e62bfc5f33f27d28a42a549b9999c8ebe5d52db6
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-beaglebone-black | arm  | lab-broonie | gcc-10   | omap2plus_defconfig | 1 =
-         =
+Build Failure Detected:
 
+arm64:
+    defconfig+arm64-chromebook: (gcc-10) FAIL
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F4.19/ker=
-nel/v4.19.299-97-g7841746109202/plan/baseline/
+Errors and Warnings Detected:
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/4.19
-  Describe: v4.19.299-97-g7841746109202
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      7841746109202b3ce2043656626af75730a07859 =
+arc:
 
+arm64:
+    defconfig+arm64-chromebook (gcc-10): 1 error
 
+arm:
 
-Test Regressions
----------------- =
+i386:
 
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
 
-platform         | arch | lab         | compiler | defconfig           | re=
-gressions
------------------+------+-------------+----------+---------------------+---=
----------
-at91sam9g20ek    | arm  | lab-broonie | gcc-10   | multi_v5_defconfig  | 1 =
-         =
+x86_64:
 
+Errors summary:
 
-  Details:     https://kernelci.org/test/plan/id/6560e0fdb05d6727217e4a6d
+    1    drivers/interconnect/qcom/sc7180.c:158:3: error: =E2=80=98struct q=
+com_icc_bcm=E2=80=99 has no member named =E2=80=98enable_mask=E2=80=99
 
-  Results:     42 PASS, 9 FAIL, 1 SKIP
-  Full config: multi_v5_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-4.19/v4.19.299=
--97-g7841746109202/arm/multi_v5_defconfig/gcc-10/lab-broonie/baseline-at91s=
-am9g20ek.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-4.19/v4.19.299=
--97-g7841746109202/arm/multi_v5_defconfig/gcc-10/lab-broonie/baseline-at91s=
-am9g20ek.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
+Warnings summary:
 
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
 
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6560e0feb05d6727217e4a98
-        failing since 2 days (last pass: v4.19.284-5-gd33af5806015, first f=
-ail: v4.19.299-50-gaa3fbf0e1c59)
+Detailed per-defconfig build reports:
 
-    2023-11-24T17:43:51.482203  + set +x
-    2023-11-24T17:43:51.482660  <8><LAVA_SIGNAL_ENDRUN 0_dmesg 270271_1.5.2=
-.4.1>
-    2023-11-24T17:43:51.596179  / # #
-    2023-11-24T17:43:51.699219  export SHELL=3D/bin/sh
-    2023-11-24T17:43:51.699987  #
-    2023-11-24T17:43:51.801914  / # export SHELL=3D/bin/sh. /lava-270271/en=
-vironment
-    2023-11-24T17:43:51.802732  =
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
 
-    2023-11-24T17:43:51.904699  / # . /lava-270271/environment/lava-270271/=
-bin/lava-test-runner /lava-270271/1
-    2023-11-24T17:43:51.906033  =
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
 
-    2023-11-24T17:43:51.909589  / # /lava-270271/bin/lava-test-runner /lava=
--270271/1 =
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
 
-    ... (12 line(s) more)  =
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
- =
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 0 warni=
+ngs, 0 section mismatches
 
-platform         | arch | lab         | compiler | defconfig           | re=
-gressions
------------------+------+-------------+----------+---------------------+---=
----------
-beaglebone-black | arm  | lab-broonie | gcc-10   | omap2plus_defconfig | 1 =
-         =
+Errors:
+    drivers/interconnect/qcom/sc7180.c:158:3: error: =E2=80=98struct qcom_i=
+cc_bcm=E2=80=99 has no member named =E2=80=98enable_mask=E2=80=99
 
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
 
-  Details:     https://kernelci.org/test/plan/id/6560e23bef4dc5f0ac7e4a81
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
 
-  Results:     41 PASS, 10 FAIL, 1 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-4.19/v4.19.299=
--97-g7841746109202/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-4.19/v4.19.299=
--97-g7841746109202/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beag=
-lebone-black.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
 
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
 
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6560e23cef4dc5f0ac7e4ab4
-        new failure (last pass: v4.19.299-70-gb7330b98ae65)
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
 
-    2023-11-24T17:49:24.186141  + set +x<8>[   15.788630] <LAVA_SIGNAL_ENDR=
-UN 0_dmesg 270282_1.5.2.4.1>
-    2023-11-24T17:49:24.186511  =
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
 
-    2023-11-24T17:49:24.298275  / # #
-    2023-11-24T17:49:24.401298  export SHELL=3D/bin/sh
-    2023-11-24T17:49:24.401875  #
-    2023-11-24T17:49:24.503139  / # export SHELL=3D/bin/sh. /lava-270282/en=
-vironment
-    2023-11-24T17:49:24.503539  =
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
 
-    2023-11-24T17:49:24.604806  / # . /lava-270282/environment/lava-270282/=
-bin/lava-test-runner /lava-270282/1
-    2023-11-24T17:49:24.605512  =
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
 
-    2023-11-24T17:49:24.609973  / # /lava-270282/bin/lava-test-runner /lava=
--270282/1 =
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
-    ... (12 line(s) more)  =
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
 
- =20
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
