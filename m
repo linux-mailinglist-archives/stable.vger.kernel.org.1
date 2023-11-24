@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26247F7AAF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E61257F7F54
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C7F1281632
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C241C2149F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAFB39FD7;
-	Fri, 24 Nov 2023 17:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5196B364C3;
+	Fri, 24 Nov 2023 18:40:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NB7dTSRq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQw9auah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEDBD39FC6;
-	Fri, 24 Nov 2023 17:57:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6975EC433C8;
-	Fri, 24 Nov 2023 17:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0385C2FC21;
+	Fri, 24 Nov 2023 18:40:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A5AC433C7;
+	Fri, 24 Nov 2023 18:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848655;
-	bh=rJgtFB/s5JSpCBfqxAJi3+Qy7Q7oq7RVuj0eJo0rqGI=;
+	s=korg; t=1700851231;
+	bh=OgVQL+a4r7aP591mIDbumP5Z94PKZo9zi3Ym5lLGbBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NB7dTSRqXn7U7m9ITF2ylUMY17Bfsx0LmvPPCBQRKISxforZWnuYyct8x2tXnDAKa
-	 NoxPSXZZSfbEd9MdA86YeeQjOP99mKCv+vIUUhmhv6iw29PB+LEOGnv0uLiWCatDnl
-	 wbDArLW7GKsIKOd6wwWiyrOJtOyzXhHHgpFQuYro=
+	b=WQw9auahKU0HRNfPWVAs0IuWiE/lcQgjrg5pwvh2tRIrb5WQlCIlWS7So3uxQN90i
+	 yXM3SxjcpvKGJg+7gcHtxo0DfneEX7Lrp5ViD9Yb7w4OQhp7+ABOrt3Ru3aOldwJ0A
+	 5vdIdXzj56Pwx0MPaz84npVaOXl9t23D12h2qxcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hardik Gajjar <hgajjar@de.adit-jv.com>,
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 29/97] usb: gadget: f_ncm: Always set current gadget in ncm_bind()
+Subject: [PATCH 6.5 366/491] pmdomain: amlogic: Fix mask for the second NNA mem PD domain
 Date: Fri, 24 Nov 2023 17:50:02 +0000
-Message-ID: <20231124171935.234979710@linuxfoundation.org>
+Message-ID: <20231124172035.572871341@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,139 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hardik Gajjar <hgajjar@de.adit-jv.com>
+From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
 
-[ Upstream commit a04224da1f3424b2c607b12a3bd1f0e302fb8231 ]
+[ Upstream commit b131329b9bfbd1b4c0c5e088cb0c6ec03a12930f ]
 
-Previously, gadget assignment to the net device occurred exclusively
-during the initial binding attempt.
+Without this change, the NPU hangs when the 8th NN core is used.
 
-Nevertheless, the gadget pointer could change during bind/unbind
-cycles due to various conditions, including the unloading/loading
-of the UDC device driver or the detachment/reconnection of an
-OTG-capable USB hub device.
+It matches what the out-of-tree driver does.
 
-This patch relocates the gether_set_gadget() function out from
-ncm_opts->bound condition check, ensuring that the correct gadget
-is assigned during each bind request.
-
-The provided logs demonstrate the consistency of ncm_opts throughout
-the power cycle, while the gadget may change.
-
-* OTG hub connected during boot up and assignment of gadget and
-  ncm_opts pointer
-
-[    2.366301] usb 2-1.5: New USB device found, idVendor=2996, idProduct=0105
-[    2.366304] usb 2-1.5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[    2.366306] usb 2-1.5: Product: H2H Bridge
-[    2.366308] usb 2-1.5: Manufacturer: Aptiv
-[    2.366309] usb 2-1.5: SerialNumber: 13FEB2021
-[    2.427989] usb 2-1.5: New USB device found, VID=2996, PID=0105
-[    2.428959] dabridge 2-1.5:1.0: dabridge 2-4 total endpoints=5, 0000000093a8d681
-[    2.429710] dabridge 2-1.5:1.0: P(0105) D(22.06.22) F(17.3.16) H(1.1) high-speed
-[    2.429714] dabridge 2-1.5:1.0: Hub 2-2 P(0151) V(06.87)
-[    2.429956] dabridge 2-1.5:1.0: All downstream ports in host mode
-
-[    2.430093] gadget 000000003c414d59 ------> gadget pointer
-
-* NCM opts and associated gadget pointer during First ncm_bind
-
-[   34.763929] NCM opts 00000000aa304ac9
-[   34.763930] NCM gadget 000000003c414d59
-
-* OTG capable hub disconnecte or assume driver unload.
-
-[   97.203114] usb 2-1: USB disconnect, device number 2
-[   97.203118] usb 2-1.1: USB disconnect, device number 3
-[   97.209217] usb 2-1.5: USB disconnect, device number 4
-[   97.230990] dabr_udc deleted
-
-* Reconnect the OTG hub or load driver assaign new gadget pointer.
-
-[  111.534035] usb 2-1.1: New USB device found, idVendor=2996, idProduct=0120, bcdDevice= 6.87
-[  111.534038] usb 2-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  111.534040] usb 2-1.1: Product: Vendor
-[  111.534041] usb 2-1.1: Manufacturer: Aptiv
-[  111.534042] usb 2-1.1: SerialNumber: Superior
-[  111.535175] usb 2-1.1: New USB device found, VID=2996, PID=0120
-[  111.610995] usb 2-1.5: new high-speed USB device number 8 using xhci-hcd
-[  111.630052] usb 2-1.5: New USB device found, idVendor=2996, idProduct=0105, bcdDevice=21.02
-[  111.630055] usb 2-1.5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  111.630057] usb 2-1.5: Product: H2H Bridge
-[  111.630058] usb 2-1.5: Manufacturer: Aptiv
-[  111.630059] usb 2-1.5: SerialNumber: 13FEB2021
-[  111.687464] usb 2-1.5: New USB device found, VID=2996, PID=0105
-[  111.690375] dabridge 2-1.5:1.0: dabridge 2-8 total endpoints=5, 000000000d87c961
-[  111.691172] dabridge 2-1.5:1.0: P(0105) D(22.06.22) F(17.3.16) H(1.1) high-speed
-[  111.691176] dabridge 2-1.5:1.0: Hub 2-6 P(0151) V(06.87)
-[  111.691646] dabridge 2-1.5:1.0: All downstream ports in host mode
-
-[  111.692298] gadget 00000000dc72f7a9 --------> new gadget ptr on connect
-
-* NCM opts and associated gadget pointer during second ncm_bind
-
-[  113.271786] NCM opts 00000000aa304ac9 -----> same opts ptr used during first bind
-[  113.271788] NCM gadget 00000000dc72f7a9 ----> however new gaget ptr, that will not set
-                                                 in net_device due to ncm_opts->bound = true
-
-Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
-Link: https://lore.kernel.org/r/20231020153324.82794-1-hgajjar@de.adit-jv.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Fixes: 9a217b7e8953 ("soc: amlogic: meson-pwrc: Add NNA power domain for A311D")
+Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231016080205.41982-2-tomeu@tomeuvizoso.net
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c | 27 +++++++++++----------------
- 1 file changed, 11 insertions(+), 16 deletions(-)
+ drivers/soc/amlogic/meson-ee-pwrc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
-index 8d23a870b7b7f..2ef2464a50432 100644
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1435,7 +1435,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 	struct usb_composite_dev *cdev = c->cdev;
- 	struct f_ncm		*ncm = func_to_ncm(f);
- 	struct usb_string	*us;
--	int			status;
-+	int			status = 0;
- 	struct usb_ep		*ep;
- 	struct f_ncm_opts	*ncm_opts;
+diff --git a/drivers/soc/amlogic/meson-ee-pwrc.c b/drivers/soc/amlogic/meson-ee-pwrc.c
+index f54acffc83f9f..f2b24361c8cac 100644
+--- a/drivers/soc/amlogic/meson-ee-pwrc.c
++++ b/drivers/soc/amlogic/meson-ee-pwrc.c
+@@ -229,7 +229,7 @@ static struct meson_ee_pwrc_mem_domain sm1_pwrc_mem_audio[] = {
  
-@@ -1453,22 +1453,17 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
- 		f->os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
- 	}
+ static struct meson_ee_pwrc_mem_domain g12a_pwrc_mem_nna[] = {
+ 	{ G12A_HHI_NANOQ_MEM_PD_REG0, GENMASK(31, 0) },
+-	{ G12A_HHI_NANOQ_MEM_PD_REG1, GENMASK(23, 0) },
++	{ G12A_HHI_NANOQ_MEM_PD_REG1, GENMASK(31, 0) },
+ };
  
--	/*
--	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
--	 * configurations are bound in sequence with list_for_each_entry,
--	 * in each configuration its functions are bound in sequence
--	 * with list_for_each_entry, so we assume no race condition
--	 * with regard to ncm_opts->bound access
--	 */
--	if (!ncm_opts->bound) {
--		mutex_lock(&ncm_opts->lock);
--		gether_set_gadget(ncm_opts->net, cdev->gadget);
-+	mutex_lock(&ncm_opts->lock);
-+	gether_set_gadget(ncm_opts->net, cdev->gadget);
-+	if (!ncm_opts->bound)
- 		status = gether_register_netdev(ncm_opts->net);
--		mutex_unlock(&ncm_opts->lock);
--		if (status)
--			goto fail;
--		ncm_opts->bound = true;
--	}
-+	mutex_unlock(&ncm_opts->lock);
-+
-+	if (status)
-+		goto fail;
-+
-+	ncm_opts->bound = true;
-+
- 	us = usb_gstrings_attach(cdev, ncm_strings,
- 				 ARRAY_SIZE(ncm_string_defs));
- 	if (IS_ERR(us)) {
+ #define VPU_PD(__name, __top_pd, __mem, __is_pwr_off, __resets, __clks)	\
 -- 
 2.42.0
 
