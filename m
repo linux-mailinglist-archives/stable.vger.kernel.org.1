@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037E97F80DC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 335DC7F7CFA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B38232817B4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 650EF1C208E8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1972C364B7;
-	Fri, 24 Nov 2023 18:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDEB3A8CF;
+	Fri, 24 Nov 2023 18:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnUI0nJJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkWkmV2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CA0286B5;
-	Fri, 24 Nov 2023 18:53:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDC5C433C8;
-	Fri, 24 Nov 2023 18:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2832739FF3;
+	Fri, 24 Nov 2023 18:20:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A908BC433C9;
+	Fri, 24 Nov 2023 18:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852004;
-	bh=+FY6OxSJkjCLyxAD3zjAg8/p+YbqKDPXcJDcqZKQFRQ=;
+	s=korg; t=1700850011;
+	bh=z32SZn2KwJ6BWhoKwi4o1W0SKLRMuMh6/s7mqrwvlI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LnUI0nJJHSxHszZkNiRyqAEzPhEgS/IHEc0x3gT7RVRv6bVRXOV8GEDJQeIHqj5i3
-	 zCXa5mmh+o+eSlhaA+2llcTe9WtGmMx50niEXLx52Fw4xIrtroSd3lwjb7XJYGRmZh
-	 bqoo/FlNTRBnOknpMPs2Deng+uti2vEjAJwQKI38=
+	b=dkWkmV2tFdrOX553+w4EnRr10Rl5SfNeeqd7GuabiAaZBj8sNI7jHMyzOYWkfBQfv
+	 V4QhLiZ2yGfUFD/RF/e92xg0p/yuMW+ZOOlE9vJN3Fhyu+RSmRk4uYS3Wc1JNgZsks
+	 8klJxQ3YlL4WwhBgSpO6de4LpnWs86rvjmb+xoEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Krasavin <pkrasavin@imaqliq.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Rokosov <ddrokosov@salutedevices.com>
-Subject: [PATCH 6.1 181/372] tty: serial: meson: fix hard LOCKUP on crtscts mode
+	Andreas Steinmetz <anstein99@googlemail.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 402/530] apparmor: Fix regression in mount mediation
 Date: Fri, 24 Nov 2023 17:49:28 +0000
-Message-ID: <20231124172016.498535623@linuxfoundation.org>
+Message-ID: <20231124172040.271700318@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,87 +53,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Krasavin <pkrasavin@imaqliq.com>
+From: John Johansen <john.johansen@canonical.com>
 
-commit 2a1d728f20edeee7f26dc307ed9df4e0d23947ab upstream.
+[ Upstream commit 157a3537d6bc28ceb9a11fc8cb67f2152d860146 ]
 
-There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
+commit 2db154b3ea8e ("vfs: syscall: Add move_mount(2) to move mounts around")
 
-# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
-[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
-[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
-[   95.906972] Task dump for CPU 3:
-[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
-[   95.920059] Call trace:
-[   95.922485]  __switch_to+0xe4/0x168
-[   95.925951]  0xffffff8003477508
-[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
-[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
+introduced a new move_mount(2) system call and a corresponding new LSM
+security_move_mount hook but did not implement this hook for any
+existing LSM. This creates a regression for AppArmor mediation of
+mount. This patch provides a base mapping of the move_mount syscall to
+the existing mount mediation. In the future we may introduce
+additional mediations around the new mount calls.
 
-Possible solution would be to not allow to setup crtscts on such port.
-
-Tested on S905X3 based board.
-
-Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2db154b3ea8e ("vfs: syscall: Add move_mount(2) to move mounts around")
+CC: stable@vger.kernel.org
+Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/meson_uart.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ security/apparmor/include/mount.h |  7 +++--
+ security/apparmor/lsm.c           | 20 ++++++++++++--
+ security/apparmor/mount.c         | 46 +++++++++++++++++++------------
+ 3 files changed, 51 insertions(+), 22 deletions(-)
 
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -380,10 +380,14 @@ static void meson_uart_set_termios(struc
- 	else
- 		val |= AML_UART_STOP_BIT_1SB;
+diff --git a/security/apparmor/include/mount.h b/security/apparmor/include/mount.h
+index 10c76f906a653..46834f8281794 100644
+--- a/security/apparmor/include/mount.h
++++ b/security/apparmor/include/mount.h
+@@ -38,9 +38,12 @@ int aa_mount_change_type(const struct cred *subj_cred,
+ 			 struct aa_label *label, const struct path *path,
+ 			 unsigned long flags);
  
--	if (cflags & CRTSCTS)
--		val &= ~AML_UART_TWO_WIRE_EN;
--	else
-+	if (cflags & CRTSCTS) {
-+		if (port->flags & UPF_HARD_FLOW)
-+			val &= ~AML_UART_TWO_WIRE_EN;
-+		else
-+			termios->c_cflag &= ~CRTSCTS;
-+	} else {
- 		val |= AML_UART_TWO_WIRE_EN;
-+	}
++int aa_move_mount_old(const struct cred *subj_cred,
++		      struct aa_label *label, const struct path *path,
++		      const char *old_name);
+ int aa_move_mount(const struct cred *subj_cred,
+-		  struct aa_label *label, const struct path *path,
+-		  const char *old_name);
++		  struct aa_label *label, const struct path *from_path,
++		  const struct path *to_path);
  
- 	writel(val, port->membase + AML_UART_CONTROL);
+ int aa_new_mount(const struct cred *subj_cred,
+ 		 struct aa_label *label, const char *dev_name,
+diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
+index 60f95cc4532a8..6fdab1b5ede5c 100644
+--- a/security/apparmor/lsm.c
++++ b/security/apparmor/lsm.c
+@@ -607,8 +607,8 @@ static int apparmor_sb_mount(const char *dev_name, const struct path *path,
+ 			error = aa_mount_change_type(current_cred(), label,
+ 						     path, flags);
+ 		else if (flags & MS_MOVE)
+-			error = aa_move_mount(current_cred(), label, path,
+-					      dev_name);
++			error = aa_move_mount_old(current_cred(), label, path,
++						  dev_name);
+ 		else
+ 			error = aa_new_mount(current_cred(), label, dev_name,
+ 					     path, type, flags, data);
+@@ -618,6 +618,21 @@ static int apparmor_sb_mount(const char *dev_name, const struct path *path,
+ 	return error;
+ }
  
-@@ -698,6 +702,7 @@ static int meson_uart_probe(struct platf
- 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
- 	int ret = 0;
- 	int irq;
-+	bool has_rtscts;
++static int apparmor_move_mount(const struct path *from_path,
++			       const struct path *to_path)
++{
++	struct aa_label *label;
++	int error = 0;
++
++	label = __begin_current_label_crit_section();
++	if (!unconfined(label))
++		error = aa_move_mount(current_cred(), label, from_path,
++				      to_path);
++	__end_current_label_crit_section(label);
++
++	return error;
++}
++
+ static int apparmor_sb_umount(struct vfsmount *mnt, int flags)
+ {
+ 	struct aa_label *label;
+@@ -1240,6 +1255,7 @@ static struct security_hook_list apparmor_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(capget, apparmor_capget),
+ 	LSM_HOOK_INIT(capable, apparmor_capable),
  
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
-@@ -725,6 +730,7 @@ static int meson_uart_probe(struct platf
- 		return irq;
++	LSM_HOOK_INIT(move_mount, apparmor_move_mount),
+ 	LSM_HOOK_INIT(sb_mount, apparmor_sb_mount),
+ 	LSM_HOOK_INIT(sb_umount, apparmor_sb_umount),
+ 	LSM_HOOK_INIT(sb_pivotroot, apparmor_sb_pivotroot),
+diff --git a/security/apparmor/mount.c b/security/apparmor/mount.c
+index 2bb77aacc49ae..f2a114e540079 100644
+--- a/security/apparmor/mount.c
++++ b/security/apparmor/mount.c
+@@ -483,36 +483,46 @@ int aa_mount_change_type(const struct cred *subj_cred,
+ }
  
- 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
-+	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
+ int aa_move_mount(const struct cred *subj_cred,
+-		  struct aa_label *label, const struct path *path,
+-		  const char *orig_name)
++		  struct aa_label *label, const struct path *from_path,
++		  const struct path *to_path)
+ {
+ 	struct aa_profile *profile;
+-	char *buffer = NULL, *old_buffer = NULL;
+-	struct path old_path;
++	char *to_buffer = NULL, *from_buffer = NULL;
+ 	int error;
  
- 	if (meson_ports[pdev->id]) {
- 		dev_err(&pdev->dev, "port %d already allocated\n", pdev->id);
-@@ -744,6 +750,8 @@ static int meson_uart_probe(struct platf
- 	port->mapsize = resource_size(res_mem);
- 	port->irq = irq;
- 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
-+	if (has_rtscts)
-+		port->flags |= UPF_HARD_FLOW;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
- 	port->dev = &pdev->dev;
- 	port->line = pdev->id;
+ 	AA_BUG(!label);
+-	AA_BUG(!path);
++	AA_BUG(!from_path);
++	AA_BUG(!to_path);
++
++	to_buffer = aa_get_buffer(false);
++	from_buffer = aa_get_buffer(false);
++	error = -ENOMEM;
++	if (!to_buffer || !from_buffer)
++		goto out;
++	error = fn_for_each_confined(label, profile,
++			match_mnt(subj_cred, profile, to_path, to_buffer,
++				  from_path, from_buffer,
++				  NULL, MS_MOVE, NULL, false));
++out:
++	aa_put_buffer(to_buffer);
++	aa_put_buffer(from_buffer);
++
++	return error;
++}
++
++int aa_move_mount_old(const struct cred *subj_cred, struct aa_label *label,
++		      const struct path *path, const char *orig_name)
++{
++	struct path old_path;
++	int error;
+ 
+ 	if (!orig_name || !*orig_name)
+ 		return -EINVAL;
+-
+ 	error = kern_path(orig_name, LOOKUP_FOLLOW, &old_path);
+ 	if (error)
+ 		return error;
+ 
+-	buffer = aa_get_buffer(false);
+-	old_buffer = aa_get_buffer(false);
+-	error = -ENOMEM;
+-	if (!buffer || !old_buffer)
+-		goto out;
+-	error = fn_for_each_confined(label, profile,
+-			match_mnt(subj_cred, profile, path, buffer, &old_path,
+-				  old_buffer,
+-				  NULL, MS_MOVE, NULL, false));
+-out:
+-	aa_put_buffer(buffer);
+-	aa_put_buffer(old_buffer);
++	error = aa_move_mount(subj_cred, label, &old_path, path);
+ 	path_put(&old_path);
+ 
+ 	return error;
+-- 
+2.42.0
+
 
 
 
