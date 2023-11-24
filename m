@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3441E7F7BB3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF20F7F7DBE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA396B20FE6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 669441F20F9F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39955364D6;
-	Fri, 24 Nov 2023 18:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD66139FF8;
+	Fri, 24 Nov 2023 18:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebUVkfnP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5AY5ky3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97FE39FE8;
-	Fri, 24 Nov 2023 18:07:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741A2C433C8;
-	Fri, 24 Nov 2023 18:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748EB2F86B;
+	Fri, 24 Nov 2023 18:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BF7C433C7;
+	Fri, 24 Nov 2023 18:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849266;
-	bh=9RhFDLPGqjz9NKvLMFWBJnua7zLSNdbvwsN5uQXLVN0=;
+	s=korg; t=1700850427;
+	bh=20IHLzONR9d5LLGZVXDiq4foYK/oSHDZm6V6qv4UsGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ebUVkfnPrIlg3IMQEqVswcT6mQDdxDmAoBQpmPQ+xsI24TucnuG5k2ifYd+ja2d5k
-	 N7jlxZnG8FH+TvE52yQuFZD15phl4nt6TSSQzP9z1JkzHQhMqeDyGG1tyl0P6q4oQk
-	 2goaFS6EZgzSKsc9f+Nm2sVG0WVuYiRFE/tUUB68=
+	b=O5AY5ky3COHGndaP8vl4aW8AsjlFPpx+m0HkYDDbz1mgr1CsZuoduIUGGG1FGqj4U
+	 0D28LBDk72x6561sYE/mll/yx95Gg8fe6kNSncDqaI6v9DUkZ+GzKSTbcfvWerNVpA
+	 bryZ+4F5zgSX1o+wGKqRDpscxoCjAOmg1dqQNaH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Longfang Liu <liulongfang@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Olli Asikainen <olli.asikainen@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/530] crypto: hisilicon/qm - prevent soft lockup in receive loop
+Subject: [PATCH 6.5 044/491] platform/x86: thinkpad_acpi: Add battery quirk for Thinkpad X120e
 Date: Fri, 24 Nov 2023 17:44:40 +0000
-Message-ID: <20231124172031.582106472@linuxfoundation.org>
+Message-ID: <20231124172026.012384419@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,64 +51,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Longfang Liu <liulongfang@huawei.com>
+From: Olli Asikainen <olli.asikainen@gmail.com>
 
-[ Upstream commit 33fc506d2ac514be1072499a263c3bff8c7c95a0 ]
+[ Upstream commit 916646758aea81a143ce89103910f715ed923346 ]
 
-In the scenario where the accelerator business is fully loaded.
-When the workqueue receiving messages and performing callback
-processing, there are a large number of messages that need to be
-received, and there are continuously messages that have been
-processed and need to be received.
-This will cause the receive loop here to be locked for a long time.
-This scenario will cause watchdog timeout problems on OS with kernel
-preemption turned off.
+Thinkpad X120e also needs this battery quirk.
 
-The error logs:
-watchdog: BUG: soft lockup - CPU#23 stuck for 23s! [kworker/u262:1:1407]
-[ 1461.978428][   C23] Call trace:
-[ 1461.981890][   C23]  complete+0x8c/0xf0
-[ 1461.986031][   C23]  kcryptd_async_done+0x154/0x1f4 [dm_crypt]
-[ 1461.992154][   C23]  sec_skcipher_callback+0x7c/0xf4 [hisi_sec2]
-[ 1461.998446][   C23]  sec_req_cb+0x104/0x1f4 [hisi_sec2]
-[ 1462.003950][   C23]  qm_poll_req_cb+0xcc/0x150 [hisi_qm]
-[ 1462.009531][   C23]  qm_work_process+0x60/0xc0 [hisi_qm]
-[ 1462.015101][   C23]  process_one_work+0x1c4/0x470
-[ 1462.020052][   C23]  worker_thread+0x150/0x3c4
-[ 1462.024735][   C23]  kthread+0x108/0x13c
-[ 1462.028889][   C23]  ret_from_fork+0x10/0x18
-
-Therefore, it is necessary to add an actively scheduled operation in the
-while loop to prevent this problem.
-After adding it, no matter whether the OS turns on or off the kernel
-preemption function. Neither will cause watchdog timeout issues.
-
-Signed-off-by: Longfang Liu <liulongfang@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Olli Asikainen <olli.asikainen@gmail.com>
+Link: https://lore.kernel.org/r/20231024190922.2742-1-olli.asikainen@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/hisilicon/qm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/thinkpad_acpi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
-index 1638c0a7df310..193b0b3a77cda 100644
---- a/drivers/crypto/hisilicon/qm.c
-+++ b/drivers/crypto/hisilicon/qm.c
-@@ -847,6 +847,8 @@ static void qm_poll_req_cb(struct hisi_qp *qp)
- 		qm_db(qm, qp->qp_id, QM_DOORBELL_CMD_CQ,
- 		      qp->qp_status.cq_head, 0);
- 		atomic_dec(&qp->qp_status.used);
-+
-+		cond_resched();
- 	}
- 
- 	/* set c_flag */
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index ad460417f901a..4b13d3e704bf3 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -9810,6 +9810,7 @@ static const struct tpacpi_quirk battery_quirk_table[] __initconst = {
+ 	 * Individual addressing is broken on models that expose the
+ 	 * primary battery as BAT1.
+ 	 */
++	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
+ 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
+ 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
+ 	TPACPI_Q_LNV3('R', '0', 'B', true), /* Thinkpad 11e gen 3 */
 -- 
 2.42.0
 
