@@ -1,48 +1,53 @@
-Return-Path: <stable+bounces-1346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBC087F7F35
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 250867F7AA1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7573C2824B3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA01BB20FB2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1D235F1D;
-	Fri, 24 Nov 2023 18:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD6439FC3;
+	Fri, 24 Nov 2023 17:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1HALjbO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbI4QbSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54E2F86B;
-	Fri, 24 Nov 2023 18:39:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625DCC433C8;
-	Fri, 24 Nov 2023 18:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C4431740;
+	Fri, 24 Nov 2023 17:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE14DC433C7;
+	Fri, 24 Nov 2023 17:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851171;
-	bh=M3Nw2EtxtneWTCn3UvsU3OeE38uYJto1bsz30IVk0U4=;
+	s=korg; t=1700848622;
+	bh=IOJYussMUa9jSqBbf+lLntf3PD3KYPZT0XDbEAzMFYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1HALjbOJbPKyIm148JtX+o4s2Q0m8igktZrr0i02zByMFiFl42CAzOhcYcDGKaI+
-	 sfAkz8eNuStflMfys5fk12qmJSwmM9hdvLuIXo0By5JcJ2UbU818WM8U85hCQ5e2Ak
-	 DIxEzEBYChRpb+RWHQCtSWurTmgl6GgOSxt2jn84=
+	b=CbI4QbSiLECniPW+8/gfWNohKkR+BOOCogXNUZu9+J5pMQ5SlkvXCNGJG4L9HpAkI
+	 ZwGG7o47BxG/IwDIseHZG5JmLw+EQXLab3FTSjHKzYuf4z273F9Jhl/E7QTpXhLPQD
+	 cENXO//nqXyuCjHEMD0H1avgi25VSKQu8tSc4Jo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	kernel test robot <lkp@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.5 342/491] tracing: Have the user copy of synthetic event address use correct context
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Mario Casquero <mcasquer@redhat.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 05/97] x86/mm: Drop the 4 MB restriction on minimal NUMA node memory size
 Date: Fri, 24 Nov 2023 17:49:38 +0000
-Message-ID: <20231124172034.848730712@linuxfoundation.org>
+Message-ID: <20231124171934.331669815@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +59,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Mike Rapoport (IBM) <rppt@kernel.org>
 
-commit 4f7969bcd6d33042d62e249b41b5578161e4c868 upstream.
+[ Upstream commit a1e2b8b36820d8c91275f207e77e91645b7c6836 ]
 
-A synthetic event is created by the synthetic event interface that can
-read both user or kernel address memory. In reality, it reads any
-arbitrary memory location from within the kernel. If the address space is
-in USER (where CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE is set) then
-it uses strncpy_from_user_nofault() to copy strings otherwise it uses
-strncpy_from_kernel_nofault().
+Qi Zheng reported crashes in a production environment and provided a
+simplified example as a reproducer:
 
-But since both functions use the same variable there's no annotation to
-what that variable is (ie. __user). This makes sparse complain.
+ |  For example, if we use Qemu to start a two NUMA node kernel,
+ |  one of the nodes has 2M memory (less than NODE_MIN_SIZE),
+ |  and the other node has 2G, then we will encounter the
+ |  following panic:
+ |
+ |    BUG: kernel NULL pointer dereference, address: 0000000000000000
+ |    <...>
+ |    RIP: 0010:_raw_spin_lock_irqsave+0x22/0x40
+ |    <...>
+ |    Call Trace:
+ |      <TASK>
+ |      deactivate_slab()
+ |      bootstrap()
+ |      kmem_cache_init()
+ |      start_kernel()
+ |      secondary_startup_64_no_verify()
 
-Quiet sparse by typecasting the strncpy_from_user_nofault() variable to
-a __user pointer.
+The crashes happen because of inconsistency between the nodemask that
+has nodes with less than 4MB as memoryless, and the actual memory fed
+into the core mm.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231031151033.73c42e23@gandalf.local.home
+The commit:
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: 0934ae9977c2 ("tracing: Fix reading strings from synthetic events");
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311010013.fm8WTxa5-lkp@intel.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  9391a3f9c7f1 ("[PATCH] x86_64: Clear more state when ignoring empty node in SRAT parsing")
+
+... that introduced minimal size of a NUMA node does not explain why
+a node size cannot be less than 4MB and what boot failures this
+restriction might fix.
+
+Fixes have been submitted to the core MM code to tighten up the
+memory topologies it accepts and to not crash on weird input:
+
+  mm: page_alloc: skip memoryless nodes entirely
+  mm: memory_hotplug: drop memoryless node from fallback lists
+
+Andrew has accepted them into the -mm tree, but there are no
+stable SHA1's yet.
+
+This patch drops the limitation for minimal node size on x86:
+
+  - which works around the crash without the fixes to the core MM.
+  - makes x86 topologies less weird,
+  - removes an arbitrary and undocumented limitation on NUMA topologies.
+
+[ mingo: Improved changelog clarity. ]
+
+Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Rik van Riel <riel@surriel.com>
+Link: https://lore.kernel.org/r/ZS+2qqjEO5/867br@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_synth.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/numa.h | 7 -------
+ arch/x86/mm/numa.c          | 7 -------
+ 2 files changed, 14 deletions(-)
 
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -452,7 +452,7 @@ static unsigned int trace_string(struct
+diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+index bbfde3d2662f4..4bcd9d0c7bee7 100644
+--- a/arch/x86/include/asm/numa.h
++++ b/arch/x86/include/asm/numa.h
+@@ -11,13 +11,6 @@
  
- #ifdef CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 		if ((unsigned long)str_val < TASK_SIZE)
--			ret = strncpy_from_user_nofault(str_field, str_val, STR_VAR_LEN_MAX);
-+			ret = strncpy_from_user_nofault(str_field, (const void __user *)str_val, STR_VAR_LEN_MAX);
- 		else
- #endif
- 			ret = strncpy_from_kernel_nofault(str_field, str_val, STR_VAR_LEN_MAX);
+ #define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
+ 
+-/*
+- * Too small node sizes may confuse the VM badly. Usually they
+- * result from BIOS bugs. So dont recognize nodes as standalone
+- * NUMA entities that have less than this amount of RAM listed:
+- */
+-#define NODE_MIN_SIZE (4*1024*1024)
+-
+ extern int numa_off;
+ 
+ /*
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index b4ff063a43712..a830d49341ecc 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -585,13 +585,6 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
+ 		if (start >= end)
+ 			continue;
+ 
+-		/*
+-		 * Don't confuse VM with a node that doesn't have the
+-		 * minimum amount of memory:
+-		 */
+-		if (end && (end - start) < NODE_MIN_SIZE)
+-			continue;
+-
+ 		alloc_node_data(nid);
+ 	}
+ 
+-- 
+2.42.0
+
 
 
 
