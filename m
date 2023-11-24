@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-1216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D81F7F7E8F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AC87F8047
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEE721C213D5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D27271C21521
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0425F341AE;
-	Fri, 24 Nov 2023 18:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE59B34189;
+	Fri, 24 Nov 2023 18:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYiUMjSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6bh2R8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FD033CC2;
-	Fri, 24 Nov 2023 18:34:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30ACEC433C8;
-	Fri, 24 Nov 2023 18:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D9C33CC7;
+	Fri, 24 Nov 2023 18:48:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1764BC433C9;
+	Fri, 24 Nov 2023 18:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850847;
-	bh=CCTotj3vHCXth1ihqHNSJ7z+j6z80UL24aJ7x669Oks=;
+	s=korg; t=1700851700;
+	bh=T/0qtGPMrWiGH485hA3cy+qBO0LWt7DcAtPnJb4GO0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYiUMjSJ4RC4OwN4YIDTbH7C9x2Rga9BfLNFabxvoKubHNmbOyhmiy5NQunyh2vUM
-	 gnHwjzZ9Qvz79uV+67x1FD9SWxG8BQpTp9kQ2ubuTiA9wMtgrzmwI/zLBu/hXOv0Uh
-	 dWocuRMxr5woea8ppTgMewCkjdMivS5yx4RZphjI=
+	b=F6bh2R8dw+ZfPKToTt1adA0pt+lUtfsm45UpU10/z/6dA7hxAC+Mt55g1LGI+lOHG
+	 F5TQehPOLtdBVDSBzvIkY8uKlSYv5VWrwqydVx/MaL+9J6j1JkM/zTleOV/u1TEBrJ
+	 5VjkBLeCC+llTvQEZNqqLdpzvAJ5FbkWt0PYDaF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yihang Li <liyihang9@huawei.com>,
+	Xingui Yang <yangxingui@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 212/491] net/mlx5: Increase size of irq name buffer
+Subject: [PATCH 6.1 061/372] scsi: hisi_sas: Set debugfs_dir pointer to NULL after removing debugfs
 Date: Fri, 24 Nov 2023 17:47:28 +0000
-Message-ID: <20231124172030.899419921@linuxfoundation.org>
+Message-ID: <20231124172012.517703196@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,78 +55,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 3338bebfc26a1e2cebbba82a1cf12c0159608e73 ]
+[ Upstream commit 6de426f9276c448e2db7238911c97fb157cb23be ]
 
-Without increased buffer size, will trigger -Wformat-truncation with W=1
-for the snprintf operation writing to the buffer.
+If init debugfs failed during device registration due to memory allocation
+failure, debugfs_remove_recursive() is called, after which debugfs_dir is
+not set to NULL. debugfs_remove_recursive() will be called again during
+device removal. As a result, illegal pointer is accessed.
 
-    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c: In function 'mlx5_irq_alloc':
-    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:296:7: error: '@pci:' directive output may be truncated writing 5 bytes into a region of size between 1 and 32 [-Werror=format-truncation=]
-      296 |    "%s@pci:%s", name, pci_name(dev->pdev));
-          |       ^~~~~
-    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:295:2: note: 'snprintf' output 6 or more bytes (assuming 37) into a destination of size 32
-      295 |  snprintf(irq->name, MLX5_MAX_IRQ_NAME,
-          |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      296 |    "%s@pci:%s", name, pci_name(dev->pdev));
-          |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[ 1665.467244] hisi_sas_v3_hw 0000:b4:02.0: failed to init debugfs!
+...
+[ 1669.836708] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000a0
+[ 1669.872669] pc : down_write+0x24/0x70
+[ 1669.876315] lr : down_write+0x1c/0x70
+[ 1669.879961] sp : ffff000036f53a30
+[ 1669.883260] x29: ffff000036f53a30 x28: ffffa027c31549f8
+[ 1669.888547] x27: ffffa027c3140000 x26: 0000000000000000
+[ 1669.893834] x25: ffffa027bf37c270 x24: ffffa027bf37c270
+[ 1669.899122] x23: ffff0000095406b8 x22: ffff0000095406a8
+[ 1669.904408] x21: 0000000000000000 x20: ffffa027bf37c310
+[ 1669.909695] x19: 00000000000000a0 x18: ffff8027dcd86f10
+[ 1669.914982] x17: 0000000000000000 x16: 0000000000000000
+[ 1669.920268] x15: 0000000000000000 x14: ffffa0274014f870
+[ 1669.925555] x13: 0000000000000040 x12: 0000000000000228
+[ 1669.930842] x11: 0000000000000020 x10: 0000000000000bb0
+[ 1669.936129] x9 : ffff000036f537f0 x8 : ffff80273088ca10
+[ 1669.941416] x7 : 000000000000001d x6 : 00000000ffffffff
+[ 1669.946702] x5 : ffff000008a36310 x4 : ffff80273088be00
+[ 1669.951989] x3 : ffff000009513e90 x2 : 0000000000000000
+[ 1669.957276] x1 : 00000000000000a0 x0 : ffffffff00000001
+[ 1669.962563] Call trace:
+[ 1669.965000]  down_write+0x24/0x70
+[ 1669.968301]  debugfs_remove_recursive+0x5c/0x1b0
+[ 1669.972905]  hisi_sas_debugfs_exit+0x24/0x30 [hisi_sas_main]
+[ 1669.978541]  hisi_sas_v3_remove+0x130/0x150 [hisi_sas_v3_hw]
+[ 1669.984175]  pci_device_remove+0x48/0xd8
+[ 1669.988082]  device_release_driver_internal+0x1b4/0x250
+[ 1669.993282]  device_release_driver+0x28/0x38
+[ 1669.997534]  pci_stop_bus_device+0x84/0xb8
+[ 1670.001611]  pci_stop_and_remove_bus_device_locked+0x24/0x40
+[ 1670.007244]  remove_store+0xfc/0x140
+[ 1670.010802]  dev_attr_store+0x44/0x60
+[ 1670.014448]  sysfs_kf_write+0x58/0x80
+[ 1670.018095]  kernfs_fop_write+0xe8/0x1f0
+[ 1670.022000]  __vfs_write+0x60/0x190
+[ 1670.025472]  vfs_write+0xac/0x1c0
+[ 1670.028771]  ksys_write+0x6c/0xd8
+[ 1670.032071]  __arm64_sys_write+0x24/0x30
+[ 1670.035977]  el0_svc_common+0x78/0x130
+[ 1670.039710]  el0_svc_handler+0x38/0x78
+[ 1670.043442]  el0_svc+0x8/0xc
 
-Fixes: ada9f5d00797 ("IB/mlx5: Fix eq names to display nicely in /proc/interrupts")
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-13-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To fix this, set debugfs_dir to NULL after debugfs_remove_recursive().
+
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1694571327-78697-2-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 6 +++---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h | 3 +++
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index cba2a4afb5fda..235e170c65bb7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -28,7 +28,7 @@
- struct mlx5_irq {
- 	struct atomic_notifier_head nh;
- 	cpumask_var_t mask;
--	char name[MLX5_MAX_IRQ_NAME];
-+	char name[MLX5_MAX_IRQ_FORMATTED_NAME];
- 	struct mlx5_irq_pool *pool;
- 	int refcount;
- 	struct msi_map map;
-@@ -289,8 +289,8 @@ struct mlx5_irq *mlx5_irq_alloc(struct mlx5_irq_pool *pool, int i,
- 	else
- 		irq_sf_set_name(pool, name, i);
- 	ATOMIC_INIT_NOTIFIER_HEAD(&irq->nh);
--	snprintf(irq->name, MLX5_MAX_IRQ_NAME,
--		 "%s@pci:%s", name, pci_name(dev->pdev));
-+	snprintf(irq->name, MLX5_MAX_IRQ_FORMATTED_NAME,
-+		 MLX5_IRQ_NAME_FORMAT_STR, name, pci_name(dev->pdev));
- 	err = request_irq(irq->map.virq, irq_int_handler, 0, irq->name,
- 			  &irq->nh);
- 	if (err) {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-index d3a77a0ab8488..c4d377f8df308 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-@@ -7,6 +7,9 @@
- #include <linux/mlx5/driver.h>
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index c0e74d768716d..c4305ec38ebf3 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -4717,6 +4717,12 @@ static void debugfs_bist_init_v3_hw(struct hisi_hba *hisi_hba)
+ 	hisi_hba->debugfs_bist_linkrate = SAS_LINK_RATE_1_5_GBPS;
+ }
  
- #define MLX5_MAX_IRQ_NAME (32)
-+#define MLX5_IRQ_NAME_FORMAT_STR ("%s@pci:%s")
-+#define MLX5_MAX_IRQ_FORMATTED_NAME \
-+	(MLX5_MAX_IRQ_NAME + sizeof(MLX5_IRQ_NAME_FORMAT_STR))
- /* max irq_index is 2047, so four chars */
- #define MLX5_MAX_IRQ_IDX_CHARS (4)
- #define MLX5_EQ_REFS_PER_IRQ (2)
++static void debugfs_exit_v3_hw(struct hisi_hba *hisi_hba)
++{
++	debugfs_remove_recursive(hisi_hba->debugfs_dir);
++	hisi_hba->debugfs_dir = NULL;
++}
++
+ static void debugfs_init_v3_hw(struct hisi_hba *hisi_hba)
+ {
+ 	struct device *dev = hisi_hba->dev;
+@@ -4740,18 +4746,13 @@ static void debugfs_init_v3_hw(struct hisi_hba *hisi_hba)
+ 
+ 	for (i = 0; i < hisi_sas_debugfs_dump_count; i++) {
+ 		if (debugfs_alloc_v3_hw(hisi_hba, i)) {
+-			debugfs_remove_recursive(hisi_hba->debugfs_dir);
++			debugfs_exit_v3_hw(hisi_hba);
+ 			dev_dbg(dev, "failed to init debugfs!\n");
+ 			break;
+ 		}
+ 	}
+ }
+ 
+-static void debugfs_exit_v3_hw(struct hisi_hba *hisi_hba)
+-{
+-	debugfs_remove_recursive(hisi_hba->debugfs_dir);
+-}
+-
+ static int
+ hisi_sas_v3_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ {
 -- 
 2.42.0
 
