@@ -1,49 +1,53 @@
-Return-Path: <stable+bounces-914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AF27F7D20
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A46C7F7F5D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 532D428210A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C879F28216E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486093A8D6;
-	Fri, 24 Nov 2023 18:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523D9381C9;
+	Fri, 24 Nov 2023 18:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCpIURvC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaJRF5RQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06A639FF7;
-	Fri, 24 Nov 2023 18:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342ABC433C9;
-	Fri, 24 Nov 2023 18:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026D22FC4E;
+	Fri, 24 Nov 2023 18:40:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85476C433C8;
+	Fri, 24 Nov 2023 18:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850094;
-	bh=IXVXaekoyxCW5XDekbeGX5zDHuat8T06g1Y4xl1+SI8=;
+	s=korg; t=1700851251;
+	bh=gBSRHvzzNXDxt/WLVhQSxGZzuOMinhYdHjaktU0LC1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCpIURvC511iJRN4oX2+26V03V52b9iQRSFf3prHkkQd4+PgB15xbaCvSWiqq65qc
-	 T7CI1+qIEDACEtXiMwOtTmr+ZKs/j3hTxI1KpDSOWxmHd/okir2gEbKrH8t8VDZaJs
-	 jQbdhOd+3qF68rxw8qqPb52z9bpg/QS1zTG78aJI=
+	b=KaJRF5RQxeYoBFQ2N5zXjLL+jHOw6adk4rB0H2PfKCehZJqS6tU1BjkvFYIFCqnyQ
+	 SGEHDKR56da8gIf4n5mrDTDaQ7fYVEywfnK0lS6FDQQEOWHHWQDgdtt9MqUoZXyNjv
+	 aFNfQGozdrg6mGVlkcWNOEf9GY7NofBBKbSsVe3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuong Tran <chuong@os.amperecomputing.com>,
-	Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.6 443/530] i2c: designware: Disable TX_EMPTY irq while waiting for block length byte
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Valentin Schneider <vschneid@redhat.com>,
+	kernel-team@android.com,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	John Stultz <jstultz@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 373/491] torture: Add a kthread-creation callback to _torture_create_kthread()
 Date: Fri, 24 Nov 2023 17:50:09 +0000
-Message-ID: <20231124172041.584394612@linuxfoundation.org>
+Message-ID: <20231124172035.787391972@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,74 +59,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-commit e8183fa10c25c7b3c20670bf2b430ddcc1ee03c0 upstream.
+[ Upstream commit 67d5404d274376890d6d095a10e6565854918f8e ]
 
-During SMBus block data read process, we have seen high interrupt rate
-because of TX_EMPTY irq status while waiting for block length byte (the
-first data byte after the address phase). The interrupt handler does not
-do anything because the internal state is kept as STATUS_WRITE_IN_PROGRESS.
-Hence, we should disable TX_EMPTY IRQ until I2C DesignWare receives
-first data byte from I2C device, then re-enable it to resume SMBus
-transaction.
+This commit adds a kthread-creation callback to the
+_torture_create_kthread() function, which allows callers of a new
+torture_create_kthread_cb() macro to specify a function to be invoked
+after the kthread is created but before it is awakened for the first time.
 
-It takes 0.789 ms for host to receive data length from slave.
-Without the patch, i2c_dw_isr() is called 99 times by TX_EMPTY interrupt.
-And it is none after applying the patch.
-
-Cc: stable@vger.kernel.org
-Co-developed-by: Chuong Tran <chuong@os.amperecomputing.com>
-Signed-off-by: Chuong Tran <chuong@os.amperecomputing.com>
-Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Josh Triplett <josh@joshtriplett.org>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: kernel-team@android.com
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Acked-by: John Stultz <jstultz@google.com>
+Stable-dep-of: cca42bd8eb1b ("rcutorture: Fix stuttering races and other issues")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-master.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ include/linux/torture.h | 7 +++++--
+ kernel/torture.c        | 6 +++++-
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -519,10 +519,16 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
+diff --git a/include/linux/torture.h b/include/linux/torture.h
+index 7038104463e48..bb466eec01e42 100644
+--- a/include/linux/torture.h
++++ b/include/linux/torture.h
+@@ -108,12 +108,15 @@ bool torture_must_stop(void);
+ bool torture_must_stop_irq(void);
+ void torture_kthread_stopping(char *title);
+ int _torture_create_kthread(int (*fn)(void *arg), void *arg, char *s, char *m,
+-			     char *f, struct task_struct **tp);
++			     char *f, struct task_struct **tp, void (*cbf)(struct task_struct *tp));
+ void _torture_stop_kthread(char *m, struct task_struct **tp);
  
- 		/*
- 		 * Because we don't know the buffer length in the
--		 * I2C_FUNC_SMBUS_BLOCK_DATA case, we can't stop
--		 * the transaction here.
-+		 * I2C_FUNC_SMBUS_BLOCK_DATA case, we can't stop the
-+		 * transaction here. Also disable the TX_EMPTY IRQ
-+		 * while waiting for the data length byte to avoid the
-+		 * bogus interrupts flood.
- 		 */
--		if (buf_len > 0 || flags & I2C_M_RECV_LEN) {
-+		if (flags & I2C_M_RECV_LEN) {
-+			dev->status |= STATUS_WRITE_IN_PROGRESS;
-+			intr_mask &= ~DW_IC_INTR_TX_EMPTY;
-+			break;
-+		} else if (buf_len > 0) {
- 			/* more bytes to be written */
- 			dev->status |= STATUS_WRITE_IN_PROGRESS;
- 			break;
-@@ -558,6 +564,13 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev,
- 	msgs[dev->msg_read_idx].len = len;
- 	msgs[dev->msg_read_idx].flags &= ~I2C_M_RECV_LEN;
+ #define torture_create_kthread(n, arg, tp) \
+ 	_torture_create_kthread(n, (arg), #n, "Creating " #n " task", \
+-				"Failed to create " #n, &(tp))
++				"Failed to create " #n, &(tp), NULL)
++#define torture_create_kthread_cb(n, arg, tp, cbf) \
++	_torture_create_kthread(n, (arg), #n, "Creating " #n " task", \
++				"Failed to create " #n, &(tp), cbf)
+ #define torture_stop_kthread(n, tp) \
+ 	_torture_stop_kthread("Stopping " #n " task", &(tp))
  
-+	/*
-+	 * Received buffer length, re-enable TX_EMPTY interrupt
-+	 * to resume the SMBUS transaction.
-+	 */
-+	regmap_update_bits(dev->map, DW_IC_INTR_MASK, DW_IC_INTR_TX_EMPTY,
-+			   DW_IC_INTR_TX_EMPTY);
+diff --git a/kernel/torture.c b/kernel/torture.c
+index 1a0519b836ac9..1da48f3816f61 100644
+--- a/kernel/torture.c
++++ b/kernel/torture.c
+@@ -926,7 +926,7 @@ EXPORT_SYMBOL_GPL(torture_kthread_stopping);
+  * it starts, you will need to open-code your own.
+  */
+ int _torture_create_kthread(int (*fn)(void *arg), void *arg, char *s, char *m,
+-			    char *f, struct task_struct **tp)
++			    char *f, struct task_struct **tp, void (*cbf)(struct task_struct *tp))
+ {
+ 	int ret = 0;
+ 
+@@ -938,6 +938,10 @@ int _torture_create_kthread(int (*fn)(void *arg), void *arg, char *s, char *m,
+ 		*tp = NULL;
+ 		return ret;
+ 	}
 +
- 	return len;
- }
- 
++	if (cbf)
++		cbf(*tp);
++
+ 	wake_up_process(*tp);  // Process is sleeping, so ordering provided.
+ 	torture_shuffle_task_register(*tp);
+ 	return ret;
+-- 
+2.42.0
+
 
 
 
