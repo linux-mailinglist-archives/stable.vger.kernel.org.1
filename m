@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B407F80A7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4209B7F7ED4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81DF428221A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 739B81C2133E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14FB233CCA;
-	Fri, 24 Nov 2023 18:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608F933CFB;
+	Fri, 24 Nov 2023 18:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJW3rpbO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3TFRgkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0AC2D787;
-	Fri, 24 Nov 2023 18:51:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CEEC433C8;
-	Fri, 24 Nov 2023 18:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177632FC4E;
+	Fri, 24 Nov 2023 18:36:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A78FC433C7;
+	Fri, 24 Nov 2023 18:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851898;
-	bh=mA2DLZbcJkrhF7VxYCol+4RSPc4XwO4oB3Vvq3uxOis=;
+	s=korg; t=1700850982;
+	bh=xozVkcaEh7iPhAoLiWEGHAGBJgNMAmTGUepq5Kiux5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJW3rpbOiiznXaYoJ0FLeBPtssZD89BJlJrby9Al2UmtbHuHa7ddYjBlc0yZntejj
-	 3hEtheAM7knEngbqZHm5D5atvqovxWoc7m4CJTFXA/+rHtbiYPQuaXT+MeTtzUVEBE
-	 5EYVm7zi6Jp/ST0xSSRjQN6uVUTRYPZiM7hin8is=
+	b=F3TFRgkrsJO0yoWcIJLesPHUm9eDMkScYYmM2qjqHJ86J0eX/wDUx9EaEW1tWIew/
+	 mfeQlo93FTOOxu7qoyqvRb6RGBWOmIf8LGCrDe8D1MtpmfMZWQK3IgF5Cz12BSIBcK
+	 cnLrQQIkYy1hoW1RgW5+Ex7rIrqJRS3gDIaTR8iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/372] wifi: iwlwifi: Use FW rate for non-data frames
+	SeongJae Park <sj@kernel.org>,
+	Jakub Acs <acsjakub@amazon.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 266/491] mm/damon/core: avoid divide-by-zero during monitoring results update
 Date: Fri, 24 Nov 2023 17:48:22 +0000
-Message-ID: <20231124172014.319396297@linuxfoundation.org>
+Message-ID: <20231124172032.560975028@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,69 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 499d02790495958506a64f37ceda7e97345a50a8 ]
+commit d35963bfb05877455228ecec6b194f624489f96a upstream.
 
-Currently we are setting the rate in the tx cmd for
-mgmt frames (e.g. during connection establishment).
-This was problematic when sending mgmt frames in eSR mode,
-as we don't know what link this frame will be sent on
-(This is decided by the FW), so we don't know what is the
-lowest rate.
-Fix this by not setting the rate in tx cmd and rely
-on FW to choose the right one.
-Set rate only for injected frames with fixed rate,
-or when no sta is given.
-Also set for important frames (EAPOL etc.) the High Priority flag.
+When monitoring attributes are changed, DAMON updates access rate of the
+monitoring results accordingly.  For that, it divides some values by the
+maximum nr_accesses.  However, due to the type of the related variables,
+simple division-based calculation of the divisor can return zero.  As a
+result, divide-by-zero is possible.  Fix it by using
+damon_max_nr_accesses(), which handles the case.
 
-Fixes: 055b22e770dd ("iwlwifi: mvm: Set Tx rate and flags when there is not station")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230913145231.6c7e59620ee0.I6eaed3ccdd6dd62b9e664facc484081fc5275843@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231019194924.100347-3-sj@kernel.org
+Fixes: 2f5bef5a590b ("mm/damon/core: update monitoring results for new monitoring attributes")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reported-by: Jakub Acs <acsjakub@amazon.de>
+Cc: <stable@vger.kernel.org>	[6.3+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ mm/damon/core.c |   10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 618355ecd9d7b..caaf4d52e2c64 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -524,16 +524,20 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			flags |= IWL_TX_FLAGS_ENCRYPT_DIS;
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -476,20 +476,14 @@ static unsigned int damon_age_for_new_at
+ static unsigned int damon_accesses_bp_to_nr_accesses(
+ 		unsigned int accesses_bp, struct damon_attrs *attrs)
+ {
+-	unsigned int max_nr_accesses =
+-		attrs->aggr_interval / attrs->sample_interval;
+-
+-	return accesses_bp * max_nr_accesses / 10000;
++	return accesses_bp * damon_max_nr_accesses(attrs) / 10000;
+ }
  
- 		/*
--		 * For data packets rate info comes from the fw. Only
--		 * set rate/antenna during connection establishment or in case
--		 * no station is given.
-+		 * For data and mgmt packets rate info comes from the fw. Only
-+		 * set rate/antenna for injected frames with fixed rate, or
-+		 * when no sta is given.
- 		 */
--		if (!sta || !ieee80211_is_data(hdr->frame_control) ||
--		    mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
-+		if (unlikely(!sta ||
-+			     info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT)) {
- 			flags |= IWL_TX_FLAGS_CMD_RATE;
- 			rate_n_flags =
- 				iwl_mvm_get_tx_rate_n_flags(mvm, info, sta,
- 							    hdr->frame_control);
-+		} else if (!ieee80211_is_data(hdr->frame_control) ||
-+			   mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
-+			/* These are important frames */
-+			flags |= IWL_TX_FLAGS_HIGH_PRI;
- 		}
+ /* convert nr_accesses to access ratio in bp (per 10,000) */
+ static unsigned int damon_nr_accesses_to_accesses_bp(
+ 		unsigned int nr_accesses, struct damon_attrs *attrs)
+ {
+-	unsigned int max_nr_accesses =
+-		attrs->aggr_interval / attrs->sample_interval;
+-
+-	return nr_accesses * 10000 / max_nr_accesses;
++	return nr_accesses * 10000 / damon_max_nr_accesses(attrs);
+ }
  
- 		if (mvm->trans->trans_cfg->device_family >=
--- 
-2.42.0
-
+ static unsigned int damon_nr_accesses_for_new_attrs(unsigned int nr_accesses,
 
 
 
