@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-1106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BCE7F7E11
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CD87F7BF5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E3922822DF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0E471F20F9E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C190B3A8E0;
-	Fri, 24 Nov 2023 18:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE5F39FDD;
+	Fri, 24 Nov 2023 18:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6ms/Da8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1HtBBBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED2439FFD;
-	Fri, 24 Nov 2023 18:29:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AF2C433C7;
-	Fri, 24 Nov 2023 18:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D3B381D4;
+	Fri, 24 Nov 2023 18:10:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AC0C433C8;
+	Fri, 24 Nov 2023 18:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850574;
-	bh=pSZ1qwWZudAidwbI+vyN+AGtodErGAnzh8vzh5xoKNw=;
+	s=korg; t=1700849419;
+	bh=2GWgreo128ZMDvAQqoyEh+pCcNBh/yjPyHADNw8dtgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6ms/Da8zYEMr+sHGsZggbrYnaui+Sxi8ZBfEZ8tQhOkP3fkPgBmrj5hA6P275F+F
-	 A/kxMz4BHc67RJCeOexhg85z50GSA0DLV9Alex8Enrzw0wpc8XAsWapBTiQy76keKq
-	 z2DyjEisHQCjpkvYAPbIViIBPYHd+47/FQLsrnrQ=
+	b=A1HtBBBaMGkuh9kaw1OT0dd7GOji8DOHyt8o8v8p741vd7NSw6GYgFEuSov8rqlKZ
+	 1SQAiYQXLHq0/4xMWvcZrIS12Q2vDh0RhxlkBQpdPCFvIvfqz6e+fGUVqHyaKSyLGX
+	 QJsvHFeX2UXF5aw7kEBpFvrrPu/veRQRPz5+MFQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 103/491] PCI: dwc: Add dw_pcie_link_set_max_link_width()
-Date: Fri, 24 Nov 2023 17:45:39 +0000
-Message-ID: <20231124172027.656709306@linuxfoundation.org>
+Subject: [PATCH 6.6 174/530] drm/i915/tc: Fix -Wformat-truncation in intel_tc_port_init
+Date: Fri, 24 Nov 2023 17:45:40 +0000
+Message-ID: <20231124172033.371602125@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,136 +57,83 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Nirmoy Das <nirmoy.das@intel.com>
 
-[ Upstream commit a9a1bcba90254975d4adbcca53f720318cf81c0c ]
+[ Upstream commit 9506fba463fcbdf8c8b7af3ec9ee34360df843fe ]
 
-This is a preparation before adding the Max-Link-width capability
-setup which would in its turn complete the max-link-width setup
-procedure defined by Synopsys in the HW-manual.
+Fix below compiler warning:
 
-Seeing there is a max-link-speed setup method defined in the DW PCIe
-core driver it would be good to have a similar function for the link
-width setup.
+intel_tc.c:1879:11: error: ‘%d’ directive output may be truncated
+writing between 1 and 11 bytes into a region of size 3
+[-Werror=format-truncation=]
+"%c/TC#%d", port_name(port), tc_port + 1);
+           ^~
+intel_tc.c:1878:2: note: ‘snprintf’ output between 7 and 17 bytes
+into a destination of size 8
+  snprintf(tc->port_name, sizeof(tc->port_name),
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    "%c/TC#%d", port_name(port), tc_port + 1);
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-That's why we need to define a dedicated function first from already
-implemented but incomplete link-width setting up code.
+v2: use kasprintf(Imre)
+v3: use const for port_name, and fix tc mem leak(Imre)
 
-Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-3-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Fixes: 3eafcddf766b ("drm/i915/tc: Move TC port fields to a new intel_tc_port struct")
+Cc: Mika Kahola <mika.kahola@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Imre Deak <imre.deak@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231026125636.5080-1-nirmoy.das@intel.com
+(cherry picked from commit 70a3cbbe620ee66afb0c066624196077767e61b2)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.c | 86 ++++++++++----------
- 1 file changed, 41 insertions(+), 45 deletions(-)
+ drivers/gpu/drm/i915/display/intel_tc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-index 1f2ee71da4da2..d14b4da700eaf 100644
---- a/drivers/pci/controller/dwc/pcie-designware.c
-+++ b/drivers/pci/controller/dwc/pcie-designware.c
-@@ -732,6 +732,46 @@ static void dw_pcie_link_set_max_speed(struct dw_pcie *pci, u32 link_gen)
+diff --git a/drivers/gpu/drm/i915/display/intel_tc.c b/drivers/gpu/drm/i915/display/intel_tc.c
+index 3ebf41859043e..cdf2455440bea 100644
+--- a/drivers/gpu/drm/i915/display/intel_tc.c
++++ b/drivers/gpu/drm/i915/display/intel_tc.c
+@@ -58,7 +58,7 @@ struct intel_tc_port {
+ 	struct delayed_work link_reset_work;
+ 	int link_refcount;
+ 	bool legacy_port:1;
+-	char port_name[8];
++	const char *port_name;
+ 	enum tc_port_mode mode;
+ 	enum tc_port_mode init_mode;
+ 	enum phy_fia phy_fia;
+@@ -1841,8 +1841,12 @@ int intel_tc_port_init(struct intel_digital_port *dig_port, bool is_legacy)
+ 	else
+ 		tc->phy_ops = &icl_tc_phy_ops;
  
- }
- 
-+static void dw_pcie_link_set_max_link_width(struct dw_pcie *pci, u32 num_lanes)
-+{
-+	u32 lwsc, plc;
-+
-+	if (!num_lanes)
-+		return;
-+
-+	/* Set the number of lanes */
-+	plc = dw_pcie_readl_dbi(pci, PCIE_PORT_LINK_CONTROL);
-+	plc &= ~PORT_LINK_FAST_LINK_MODE;
-+	plc &= ~PORT_LINK_MODE_MASK;
-+
-+	/* Set link width speed control register */
-+	lwsc = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
-+	lwsc &= ~PORT_LOGIC_LINK_WIDTH_MASK;
-+	switch (num_lanes) {
-+	case 1:
-+		plc |= PORT_LINK_MODE_1_LANES;
-+		lwsc |= PORT_LOGIC_LINK_WIDTH_1_LANES;
-+		break;
-+	case 2:
-+		plc |= PORT_LINK_MODE_2_LANES;
-+		lwsc |= PORT_LOGIC_LINK_WIDTH_2_LANES;
-+		break;
-+	case 4:
-+		plc |= PORT_LINK_MODE_4_LANES;
-+		lwsc |= PORT_LOGIC_LINK_WIDTH_4_LANES;
-+		break;
-+	case 8:
-+		plc |= PORT_LINK_MODE_8_LANES;
-+		lwsc |= PORT_LOGIC_LINK_WIDTH_8_LANES;
-+		break;
-+	default:
-+		dev_err(pci->dev, "num-lanes %u: invalid value\n", num_lanes);
-+		return;
+-	snprintf(tc->port_name, sizeof(tc->port_name),
+-		 "%c/TC#%d", port_name(port), tc_port + 1);
++	tc->port_name = kasprintf(GFP_KERNEL, "%c/TC#%d", port_name(port),
++				  tc_port + 1);
++	if (!tc->port_name) {
++		kfree(tc);
++		return -ENOMEM;
 +	}
-+	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, plc);
-+	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, lwsc);
-+}
-+
- void dw_pcie_iatu_detect(struct dw_pcie *pci)
- {
- 	int max_region, ob, ib;
-@@ -1013,49 +1053,5 @@ void dw_pcie_setup(struct dw_pcie *pci)
- 	val |= PORT_LINK_DLL_LINK_EN;
- 	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, val);
  
--	if (!pci->num_lanes) {
--		dev_dbg(pci->dev, "Using h/w default number of lanes\n");
--		return;
--	}
--
--	/* Set the number of lanes */
--	val &= ~PORT_LINK_FAST_LINK_MODE;
--	val &= ~PORT_LINK_MODE_MASK;
--	switch (pci->num_lanes) {
--	case 1:
--		val |= PORT_LINK_MODE_1_LANES;
--		break;
--	case 2:
--		val |= PORT_LINK_MODE_2_LANES;
--		break;
--	case 4:
--		val |= PORT_LINK_MODE_4_LANES;
--		break;
--	case 8:
--		val |= PORT_LINK_MODE_8_LANES;
--		break;
--	default:
--		dev_err(pci->dev, "num-lanes %u: invalid value\n", pci->num_lanes);
--		return;
--	}
--	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, val);
--
--	/* Set link width speed control register */
--	val = dw_pcie_readl_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL);
--	val &= ~PORT_LOGIC_LINK_WIDTH_MASK;
--	switch (pci->num_lanes) {
--	case 1:
--		val |= PORT_LOGIC_LINK_WIDTH_1_LANES;
--		break;
--	case 2:
--		val |= PORT_LOGIC_LINK_WIDTH_2_LANES;
--		break;
--	case 4:
--		val |= PORT_LOGIC_LINK_WIDTH_4_LANES;
--		break;
--	case 8:
--		val |= PORT_LOGIC_LINK_WIDTH_8_LANES;
--		break;
--	}
--	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, val);
-+	dw_pcie_link_set_max_link_width(pci, pci->num_lanes);
+ 	mutex_init(&tc->lock);
+ 	/* TODO: Combine the two works */
+@@ -1863,6 +1867,7 @@ void intel_tc_port_cleanup(struct intel_digital_port *dig_port)
+ {
+ 	intel_tc_port_suspend(dig_port);
+ 
++	kfree(dig_port->tc->port_name);
+ 	kfree(dig_port->tc);
+ 	dig_port->tc = NULL;
  }
 -- 
 2.42.0
