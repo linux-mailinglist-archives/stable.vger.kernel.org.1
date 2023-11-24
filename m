@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA6F7F7504
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:28:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443487F7505
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC9BD28165E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:28:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 752441C20DC6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D4B28DC1;
-	Fri, 24 Nov 2023 13:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59C0728DC1;
+	Fri, 24 Nov 2023 13:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZ50pWyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rkERd1Qe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA3C18041
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:28:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BC1C43391;
-	Fri, 24 Nov 2023 13:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1927518041
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:28:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 476CBC433C7;
+	Fri, 24 Nov 2023 13:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700832517;
-	bh=sSI1HLT3ElFJHElaj17WatBqXCjYq/JapqcFBokbvC8=;
+	s=korg; t=1700832526;
+	bh=fHiAnb9A9cRNGySV8h9EDjQST5VJoV7ATfcM/6Os0AI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vZ50pWyoKDSk161xcwVrVIXlq8KXnRiSE2Y3vIV3cVlHaIPzl1pGpc886B+mY0QcE
-	 o2z1xvmRPjrl50xrdAxbLaezaH0zOCKeMuHpWOjYit+Hx3Slx0y+YWBUaRdvsiqNRh
-	 lHl682cV5ju9ICD64rNVCJh7hTHLtXR8A6KhOJUU=
-Subject: FAILED: patch "[PATCH] r8169: fix network lost after resume on DASH systems" failed to apply to 4.14-stable tree
+	b=rkERd1Qejc+Ywlb0/jaE/DD5l5NaPVNLy+mNBY5WkVqf9ejENz9g2dZ/eVZv6i3fl
+	 HDXhwv80hj444p3xJyw6+b9wfB2XmTP/mBdchQ8fySho1AdYUUEMOdFKxosPkQ+Cv/
+	 /EN7uyIxHCzp4x03H1/pgmBB18bJXwX60D6zbktI=
+Subject: FAILED: patch "[PATCH] r8169: add handling DASH when DASH is disabled" failed to apply to 5.15-stable tree
 To: hau@realtek.com,hkallweit1@gmail.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:28:30 +0000
-Message-ID: <2023112430-trowel-thee-5ced@gregkh>
+Date: Fri, 24 Nov 2023 13:28:44 +0000
+Message-ID: <2023112444-sector-recapture-7984@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,42 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 868c3b95afef4883bfb66c9397482da6840b5baf
+git cherry-pick -x 0ab0c45d8aaea5192328bfa6989673aceafc767c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112430-trowel-thee-5ced@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112444-sector-recapture-7984@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-868c3b95afef ("r8169: fix network lost after resume on DASH systems")
-f658b90977d2 ("r8169: fix DMA being used after buffer free if WoL is enabled")
-7257c977c811 ("r8169: clean up rtl_pll_power_down/up functions")
-128735a1530e ("r8169: improve handling D3 PLL power-down")
-9224d97183d9 ("r8169: enable PLL power-down for chip versions 34, 35, 36, 42")
-acb58657c869 ("r8169: improve RTL8168g PHY suspend quirk")
-e80bd76fbf56 ("r8169: work around power-saving bug on some chip versions")
-bb13a800620c ("r8169: fix handling ether_clk")
-0439297be951 ("r8169: add support for RTL8125B")
-4640338c36af ("r8169: rename RTL8125 to RTL8125A")
-288302dab34e ("r8169: improve rtl8169_runtime_resume")
-06a14ab852fb ("r8169: remove driver-specific mutex")
-abe5fc42f9ce ("r8169: use RTNL to protect critical sections")
-567ca57faa62 ("r8169: add rtl8169_up")
-ec2f204bddb5 ("r8169: remove no longer needed checks for device being runtime-active")
-476c4f5de368 ("r8169: mark device as not present when in PCI D3")
-9f0b54cd1672 ("r8169: move switching optional clock on/off to pll power functions")
-a2ee847242b3 ("r8169: move updating counters to rtl8169_down")
-0c28a63a47bf ("r8169: move napi_disable call and rename rtl8169_hw_reset")
-e9882208ae98 ("r8169: improve setting WoL on runtime-resume")
+0ab0c45d8aae ("r8169: add handling DASH when DASH is disabled")
+cf2ffdea0839 ("r8169: revert 2ab19de62d67 ("r8169: remove ASPM restrictions now that ASPM is disabled during NAPI poll")")
+162d626f3013 ("r8169: fix ASPM-related problem for chip version 42 and 43")
+2ab19de62d67 ("r8169: remove ASPM restrictions now that ASPM is disabled during NAPI poll")
+49ef7d846d4b ("r8169: prepare rtl_hw_aspm_clkreq_enable for usage in atomic context")
+6bc6c4e6893e ("r8169: use spinlock to protect access to registers Config2 and Config5")
+91c8643578a2 ("r8169: use spinlock to protect mac ocp register access")
+ad425666a1f0 ("r8169: move rtl_wol_enable_rx() and rtl_prepare_power_down()")
+c9ae520ac3fa ("r8169: remove rtl_wol_shutdown_quirk()")
+7e04a111cde2 ("r8169: merge handling of chip versions 12 and 17 (RTL8168B)")
+efc37109c780 ("r8169: remove support for chip version 60")
+133706a960de ("r8169: remove support for chip version 50")
+8a1ab0c4028d ("r8169: remove support for chip version 49")
+ebe598985711 ("r8169: remove support for chip versions 45 and 47")
+44307b27de2e ("r8169: remove support for chip version 41")
+54744510fa9c ("r8169: improve driver unload and system shutdown behavior on DASH-enabled systems")
+68650b4e6c13 ("r8169: support L1.2 control on RTL8168h")
+c217ab7a3961 ("r8169: enable ASPM L1.2 if system vendor flags it as safe")
+8fe6e670640e ("r8169: use new PM macros")
+4b5f82f6aaef ("r8169: enable ASPM L1/L1.1 from RTL8168h")
 
 thanks,
 
@@ -88,42 +88,133 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 868c3b95afef4883bfb66c9397482da6840b5baf Mon Sep 17 00:00:00 2001
+From 0ab0c45d8aaea5192328bfa6989673aceafc767c Mon Sep 17 00:00:00 2001
 From: ChunHao Lin <hau@realtek.com>
-Date: Fri, 10 Nov 2023 01:34:00 +0800
-Subject: [PATCH] r8169: fix network lost after resume on DASH systems
+Date: Fri, 10 Nov 2023 01:33:59 +0800
+Subject: [PATCH] r8169: add handling DASH when DASH is disabled
 
-Device that support DASH may be reseted or powered off during suspend.
-So driver needs to handle DASH during system suspend and resume. Or
-DASH firmware will influence device behavior and causes network lost.
+For devices that support DASH, even DASH is disabled, there may still
+exist a default firmware that will influence device behavior.
+So driver needs to handle DASH for devices that support DASH, no
+matter the DASH status is.
 
-Fixes: b646d90053f8 ("r8169: magic.")
+This patch also prepares for "fix network lost after resume on DASH
+systems".
+
+Fixes: ee7a1beb9759 ("r8169:call "rtl8168_driver_start" "rtl8168_driver_stop" only when hardware dash function is enabled")
 Cc: stable@vger.kernel.org
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
 Signed-off-by: ChunHao Lin <hau@realtek.com>
-Link: https://lore.kernel.org/r/20231109173400.4573-3-hau@realtek.com
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20231109173400.4573-2-hau@realtek.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
 diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index cfcb40d90920..b9bb1d2f0237 100644
+index 0c76c162b8a9..cfcb40d90920 100644
 --- a/drivers/net/ethernet/realtek/r8169_main.c
 +++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4661,10 +4661,16 @@ static void rtl8169_down(struct rtl8169_private *tp)
- 	rtl8169_cleanup(tp);
- 	rtl_disable_exit_l1(tp);
- 	rtl_prepare_power_down(tp);
-+
-+	if (tp->dash_type != RTL_DASH_NONE)
-+		rtl8168_driver_stop(tp);
+@@ -624,6 +624,7 @@ struct rtl8169_private {
+ 
+ 	unsigned supports_gmii:1;
+ 	unsigned aspm_manageable:1;
++	unsigned dash_enabled:1;
+ 	dma_addr_t counters_phys_addr;
+ 	struct rtl8169_counters *counters;
+ 	struct rtl8169_tc_offsets tc_offset;
+@@ -1253,14 +1254,26 @@ static bool r8168ep_check_dash(struct rtl8169_private *tp)
+ 	return r8168ep_ocp_read(tp, 0x128) & BIT(0);
  }
  
- static void rtl8169_up(struct rtl8169_private *tp)
- {
-+	if (tp->dash_type != RTL_DASH_NONE)
-+		rtl8168_driver_start(tp);
+-static enum rtl_dash_type rtl_check_dash(struct rtl8169_private *tp)
++static bool rtl_dash_is_enabled(struct rtl8169_private *tp)
++{
++	switch (tp->dash_type) {
++	case RTL_DASH_DP:
++		return r8168dp_check_dash(tp);
++	case RTL_DASH_EP:
++		return r8168ep_check_dash(tp);
++	default:
++		return false;
++	}
++}
 +
- 	pci_set_master(tp->pci_dev);
- 	phy_init_hw(tp->phydev);
- 	phy_resume(tp->phydev);
++static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
+ {
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_28:
+ 	case RTL_GIGA_MAC_VER_31:
+-		return r8168dp_check_dash(tp) ? RTL_DASH_DP : RTL_DASH_NONE;
++		return RTL_DASH_DP;
+ 	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_53:
+-		return r8168ep_check_dash(tp) ? RTL_DASH_EP : RTL_DASH_NONE;
++		return RTL_DASH_EP;
+ 	default:
+ 		return RTL_DASH_NONE;
+ 	}
+@@ -1453,7 +1466,7 @@ static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
+ 
+ 	device_set_wakeup_enable(tp_to_dev(tp), wolopts);
+ 
+-	if (tp->dash_type == RTL_DASH_NONE) {
++	if (!tp->dash_enabled) {
+ 		rtl_set_d3_pll_down(tp, !wolopts);
+ 		tp->dev->wol_enabled = wolopts ? 1 : 0;
+ 	}
+@@ -2512,7 +2525,7 @@ static void rtl_wol_enable_rx(struct rtl8169_private *tp)
+ 
+ static void rtl_prepare_power_down(struct rtl8169_private *tp)
+ {
+-	if (tp->dash_type != RTL_DASH_NONE)
++	if (tp->dash_enabled)
+ 		return;
+ 
+ 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
+@@ -4869,7 +4882,7 @@ static int rtl8169_runtime_idle(struct device *device)
+ {
+ 	struct rtl8169_private *tp = dev_get_drvdata(device);
+ 
+-	if (tp->dash_type != RTL_DASH_NONE)
++	if (tp->dash_enabled)
+ 		return -EBUSY;
+ 
+ 	if (!netif_running(tp->dev) || !netif_carrier_ok(tp->dev))
+@@ -4895,8 +4908,7 @@ static void rtl_shutdown(struct pci_dev *pdev)
+ 	/* Restore original MAC address */
+ 	rtl_rar_set(tp, tp->dev->perm_addr);
+ 
+-	if (system_state == SYSTEM_POWER_OFF &&
+-	    tp->dash_type == RTL_DASH_NONE) {
++	if (system_state == SYSTEM_POWER_OFF && !tp->dash_enabled) {
+ 		pci_wake_from_d3(pdev, tp->saved_wolopts);
+ 		pci_set_power_state(pdev, PCI_D3hot);
+ 	}
+@@ -5254,7 +5266,8 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1);
+ 	tp->aspm_manageable = !rc;
+ 
+-	tp->dash_type = rtl_check_dash(tp);
++	tp->dash_type = rtl_get_dash_type(tp);
++	tp->dash_enabled = rtl_dash_is_enabled(tp);
+ 
+ 	tp->cp_cmd = RTL_R16(tp, CPlusCmd) & CPCMD_MASK;
+ 
+@@ -5325,7 +5338,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* configure chip for default features */
+ 	rtl8169_set_features(dev, dev->features);
+ 
+-	if (tp->dash_type == RTL_DASH_NONE) {
++	if (!tp->dash_enabled) {
+ 		rtl_set_d3_pll_down(tp, true);
+ 	} else {
+ 		rtl_set_d3_pll_down(tp, false);
+@@ -5365,7 +5378,8 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 			    "ok" : "ko");
+ 
+ 	if (tp->dash_type != RTL_DASH_NONE) {
+-		netdev_info(dev, "DASH enabled\n");
++		netdev_info(dev, "DASH %s\n",
++			    tp->dash_enabled ? "enabled" : "disabled");
+ 		rtl8168_driver_start(tp);
+ 	}
+ 
 
 
