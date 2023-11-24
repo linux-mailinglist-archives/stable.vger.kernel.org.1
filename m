@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E75C7F8364
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B537F8215
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90BE31C25701
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52574284182
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D46364AE;
-	Fri, 24 Nov 2023 19:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C101A2C85B;
+	Fri, 24 Nov 2023 19:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKGctTRU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3+QCjUY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D1133CF2;
-	Fri, 24 Nov 2023 19:17:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2322DC433C8;
-	Fri, 24 Nov 2023 19:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A2C3306F;
+	Fri, 24 Nov 2023 19:04:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B70DC433C7;
+	Fri, 24 Nov 2023 19:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853424;
-	bh=c7FzshMuhHWY/YokJklL1OXjW3MIWXApc6LjSErMRTw=;
+	s=korg; t=1700852655;
+	bh=oVIk4Lgy04swOaSYIW8bYboqO4W4vRtmHZg9/APwmKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKGctTRUfkG56h2jq54H6pe21GLag0xGMk7nDqfbB5oAUK3Ay/zTLW2Nib3BhKN26
-	 GZPEwRQCVbnjt23+RietNYUE0kXekgUODGy/ydGVAzRxcofRr1kTm4jiXY6htkQUFF
-	 cfclOrWnIov2kTty3TSVrMvwJivAM1EFM2/ZLsgY=
+	b=G3+QCjUYUZfy7k1Qbg6Dlpx1flfB/NnR/rQH/CrAUbSh57auZIV6mVmAnoE54Gupq
+	 mCRxveWyLneLLNTzxCDjN3pfh6tCyjhaFm0tlVv1eUSn9EGrRrFcwsjhVRCAi4bvTS
+	 Hh+3cZSH7+L6yaItwuR0svWfk8xQ3y59RI9v2ksI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.15 156/297] media: venus: hfi: add checks to perform sanity on queue pointers
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 071/193] net: hns3: fix VF reset fail issue
 Date: Fri, 24 Nov 2023 17:53:18 +0000
-Message-ID: <20231124172005.715791332@linuxfoundation.org>
+Message-ID: <20231124171950.084562380@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +53,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Jijie Shao <shaojijie@huawei.com>
 
-commit 5e538fce33589da6d7cb2de1445b84d3a8a692f7 upstream.
+[ Upstream commit 65e98bb56fa3ce2edb400930c05238c9b380500e ]
 
-Read and write pointers are used to track the packet index in the memory
-shared between video driver and firmware. There is a possibility of OOB
-access if the read or write pointer goes beyond the queue memory size.
-Add checks for the read and write pointer to avoid OOB access.
+Currently the reset process in hns3 and firmware watchdog init process is
+asynchronous. We think firmware watchdog initialization is completed
+before VF clear the interrupt source. However, firmware initialization
+may not complete early. So VF will receive multiple reset interrupts
+and fail to reset.
 
-Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So we add delay before VF interrupt source and 5 ms delay
+is enough to avoid second reset interrupt.
+
+Fixes: 427900d27d86 ("net: hns3: fix the timing issue of VF clearing interrupt sources")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c  | 14 +++++++++++++-
+ .../ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h  |  1 +
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -205,6 +205,11 @@ static int venus_write_queue(struct venu
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 7d05915c35e38..2bb0ce1761fb0 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -2363,8 +2363,18 @@ static enum hclgevf_evt_cause hclgevf_check_evt_cause(struct hclgevf_dev *hdev,
+ 	return HCLGEVF_VECTOR0_EVENT_OTHER;
+ }
  
- 	new_wr_idx = wr_idx + dwords;
- 	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
++static void hclgevf_reset_timer(struct timer_list *t)
++{
++	struct hclgevf_dev *hdev = from_timer(hdev, t, reset_timer);
 +
-+	if (wr_ptr < (u32 *)queue->qmem.kva ||
-+	    wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*wr_ptr)))
-+		return -EINVAL;
++	hclgevf_clear_event_cause(hdev, HCLGEVF_VECTOR0_EVENT_RST);
++	hclgevf_reset_task_schedule(hdev);
++}
 +
- 	if (new_wr_idx < qsize) {
- 		memcpy(wr_ptr, packet, dwords << 2);
- 	} else {
-@@ -272,6 +277,11 @@ static int venus_read_queue(struct venus
- 	}
+ static irqreturn_t hclgevf_misc_irq_handle(int irq, void *data)
+ {
++#define HCLGEVF_RESET_DELAY	5
++
+ 	enum hclgevf_evt_cause event_cause;
+ 	struct hclgevf_dev *hdev = data;
+ 	u32 clearval;
+@@ -2376,7 +2386,8 @@ static irqreturn_t hclgevf_misc_irq_handle(int irq, void *data)
  
- 	rd_ptr = (u32 *)(queue->qmem.kva + (rd_idx << 2));
-+
-+	if (rd_ptr < (u32 *)queue->qmem.kva ||
-+	    rd_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*rd_ptr)))
-+		return -EINVAL;
-+
- 	dwords = *rd_ptr >> 2;
- 	if (!dwords)
- 		return -EINVAL;
+ 	switch (event_cause) {
+ 	case HCLGEVF_VECTOR0_EVENT_RST:
+-		hclgevf_reset_task_schedule(hdev);
++		mod_timer(&hdev->reset_timer,
++			  jiffies + msecs_to_jiffies(HCLGEVF_RESET_DELAY));
+ 		break;
+ 	case HCLGEVF_VECTOR0_EVENT_MBX:
+ 		hclgevf_mbx_handler(hdev);
+@@ -3269,6 +3280,7 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
+ 		 HCLGEVF_DRIVER_NAME);
+ 
+ 	hclgevf_task_schedule(hdev, round_jiffies_relative(HZ));
++	timer_setup(&hdev->reset_timer, hclgevf_reset_timer, 0);
+ 
+ 	return 0;
+ 
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
+index c9b0fa5e8589d..9469af8c49ace 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
+@@ -274,6 +274,7 @@ struct hclgevf_dev {
+ 	enum hnae3_reset_type reset_level;
+ 	unsigned long reset_pending;
+ 	enum hnae3_reset_type reset_type;
++	struct timer_list reset_timer;
+ 
+ #define HCLGEVF_RESET_REQUESTED		0
+ #define HCLGEVF_RESET_PENDING		1
+-- 
+2.42.0
+
 
 
 
