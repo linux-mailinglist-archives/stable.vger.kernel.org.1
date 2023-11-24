@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24FBF7F7C59
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D897F8036
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 567F11C2118A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AACD282473
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C1E3A8C5;
-	Fri, 24 Nov 2023 18:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF9D364DE;
+	Fri, 24 Nov 2023 18:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqrl97WL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBErFf1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5159E39FE3;
-	Fri, 24 Nov 2023 18:14:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39D0C433C7;
-	Fri, 24 Nov 2023 18:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAAC2D787;
+	Fri, 24 Nov 2023 18:47:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D970DC433C7;
+	Fri, 24 Nov 2023 18:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849662;
-	bh=y5L0h772cZC3OCGdu7RuD0vH8cPpA7AJ5y+eHE85LUI=;
+	s=korg; t=1700851658;
+	bh=3EZM1OpI+af11ggfM9iZ2HDZugKAfQAnxW2T4BFnEyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqrl97WLjQNDl/R7DRlLKXLw4wEJ0M9rYX9VJCRw4wK3nXoTlzBtJ5wiIAjr825IG
-	 dw9qGtuL65SScpxuLj0/zhyC8FNeYH5MqMWl2Sp7qFI/LZvJ2znmq9LAXhuL3Z7P+q
-	 ktU/foUD93rA2oGRJ0QWZbmclyBK/2oiMXooWqPA=
+	b=CBErFf1Fk4gcb1jpuLrlQfvrbvcSR5kQfzWIkLYmLAWJ6ljv05SmUMyjJ6P1gCK5e
+	 IaXitwv3C7v0JVDtt3pvkBsv0rqz5jOdPTsoxwkZw2caXtxZPSahXweQiazHcYtv7k
+	 KQPBzMeBOXuiFps324HcisxWB+CAqheWQbIHY+Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohamed Mahmoud <mmahmoud@redhat.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Tao Lyu <tao.lyu@epfl.ch>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 246/530] bpf: Fix precision tracking for BPF_ALU | BPF_TO_BE | BPF_END
-Date: Fri, 24 Nov 2023 17:46:52 +0000
-Message-ID: <20231124172035.542906837@linuxfoundation.org>
+	ZhengHan Wang <wzhmmmmm@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 026/372] Bluetooth: Fix double free in hci_conn_cleanup
+Date: Fri, 24 Nov 2023 17:46:53 +0000
+Message-ID: <20231124172011.353410488@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,65 +51,146 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+From: ZhengHan Wang <wzhmmmmm@gmail.com>
 
-commit 291d044fd51f8484066300ee42afecf8c8db7b3a upstream.
+[ Upstream commit a85fb91e3d728bdfc80833167e8162cce8bc7004 ]
 
-BPF_END and BPF_NEG has a different specification for the source bit in
-the opcode compared to other ALU/ALU64 instructions, and is either
-reserved or use to specify the byte swap endianness. In both cases the
-source bit does not encode source operand location, and src_reg is a
-reserved field.
+syzbot reports a slab use-after-free in hci_conn_hash_flush [1].
+After releasing an object using hci_conn_del_sysfs in the
+hci_conn_cleanup function, releasing the same object again
+using the hci_dev_put and hci_conn_put functions causes a double free.
+Here's a simplified flow:
 
-backtrack_insn() currently does not differentiate BPF_END and BPF_NEG
-from other ALU/ALU64 instructions, which leads to r0 being incorrectly
-marked as precise when processing BPF_ALU | BPF_TO_BE | BPF_END
-instructions. This commit teaches backtrack_insn() to correctly mark
-precision for such case.
+hci_conn_del_sysfs:
+  hci_dev_put
+    put_device
+      kobject_put
+        kref_put
+          kobject_release
+            kobject_cleanup
+              kfree_const
+                kfree(name)
 
-While precise tracking of BPF_NEG and other BPF_END instructions are
-correct and does not need fixing, this commit opt to process all BPF_NEG
-and BPF_END instructions within the same if-clause to better align with
-current convention used in the verifier (e.g. check_alu_op).
+hci_dev_put:
+  ...
+    kfree(name)
 
-Fixes: b5dc0163d8fd ("bpf: precise scalar_value tracking")
-Cc: stable@vger.kernel.org
-Reported-by: Mohamed Mahmoud <mmahmoud@redhat.com>
-Closes: https://lore.kernel.org/r/87jzrrwptf.fsf@toke.dk
-Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Tested-by: Tao Lyu <tao.lyu@epfl.ch>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Link: https://lore.kernel.org/r/20231102053913.12004-2-shung-hsi.yu@suse.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+hci_conn_put:
+  put_device
+    ...
+      kfree(name)
+
+This patch drop the hci_dev_put and hci_conn_put function
+call in hci_conn_cleanup function, because the object is
+freed in hci_conn_del_sysfs function.
+
+This patch also fixes the refcounting in hci_conn_add_sysfs() and
+hci_conn_del_sysfs() to take into account device_add() failures.
+
+This fixes CVE-2023-28464.
+
+Link: https://syzkaller.appspot.com/bug?id=1bb51491ca5df96a5f724899d1dbb87afda61419 [1]
+
+Signed-off-by: ZhengHan Wang <wzhmmmmm@gmail.com>
+Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c  |  6 ++----
+ net/bluetooth/hci_sysfs.c | 23 ++++++++++++-----------
+ 2 files changed, 14 insertions(+), 15 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -3444,7 +3444,12 @@ static int backtrack_insn(struct bpf_ver
- 	if (class == BPF_ALU || class == BPF_ALU64) {
- 		if (!bt_is_reg_set(bt, dreg))
- 			return 0;
--		if (opcode == BPF_MOV) {
-+		if (opcode == BPF_END || opcode == BPF_NEG) {
-+			/* sreg is reserved and unused
-+			 * dreg still need precision before this insn
-+			 */
-+			return 0;
-+		} else if (opcode == BPF_MOV) {
- 			if (BPF_SRC(insn->code) == BPF_X) {
- 				/* dreg = sreg or dreg = (s8, s16, s32)sreg
- 				 * dreg needs precision after this insn
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 728be9307f526..55e0ecd88543e 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -168,13 +168,11 @@ static void hci_conn_cleanup(struct hci_conn *conn)
+ 			hdev->notify(hdev, HCI_NOTIFY_CONN_DEL);
+ 	}
+ 
+-	hci_conn_del_sysfs(conn);
+-
+ 	debugfs_remove_recursive(conn->debugfs);
+ 
+-	hci_dev_put(hdev);
++	hci_conn_del_sysfs(conn);
+ 
+-	hci_conn_put(conn);
++	hci_dev_put(hdev);
+ }
+ 
+ static void le_scan_cleanup(struct work_struct *work)
+diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
+index 08542dfc2dc53..633b82d542728 100644
+--- a/net/bluetooth/hci_sysfs.c
++++ b/net/bluetooth/hci_sysfs.c
+@@ -33,7 +33,7 @@ void hci_conn_init_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	BT_DBG("conn %p", conn);
++	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+ 	conn->dev.type = &bt_link;
+ 	conn->dev.class = bt_class;
+@@ -46,27 +46,30 @@ void hci_conn_add_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	BT_DBG("conn %p", conn);
++	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+ 	if (device_is_registered(&conn->dev))
+ 		return;
+ 
+ 	dev_set_name(&conn->dev, "%s:%d", hdev->name, conn->handle);
+ 
+-	if (device_add(&conn->dev) < 0) {
++	if (device_add(&conn->dev) < 0)
+ 		bt_dev_err(hdev, "failed to register connection device");
+-		return;
+-	}
+-
+-	hci_dev_hold(hdev);
+ }
+ 
+ void hci_conn_del_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	if (!device_is_registered(&conn->dev))
++	bt_dev_dbg(hdev, "conn %p", conn);
++
++	if (!device_is_registered(&conn->dev)) {
++		/* If device_add() has *not* succeeded, use *only* put_device()
++		 * to drop the reference count.
++		 */
++		put_device(&conn->dev);
+ 		return;
++	}
+ 
+ 	while (1) {
+ 		struct device *dev;
+@@ -78,9 +81,7 @@ void hci_conn_del_sysfs(struct hci_conn *conn)
+ 		put_device(dev);
+ 	}
+ 
+-	device_del(&conn->dev);
+-
+-	hci_dev_put(hdev);
++	device_unregister(&conn->dev);
+ }
+ 
+ static void bt_host_release(struct device *dev)
+-- 
+2.42.0
+
 
 
 
