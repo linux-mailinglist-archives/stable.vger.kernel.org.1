@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-1108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6697F7E13
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E03487F7BF7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAA7B28229A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AFFFB21385
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5900839FE3;
-	Fri, 24 Nov 2023 18:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4EA39FE8;
+	Fri, 24 Nov 2023 18:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GYCyb7Q5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAH3NGuq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF0733063;
-	Fri, 24 Nov 2023 18:29:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EBFC433C7;
-	Fri, 24 Nov 2023 18:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7FE39FF7;
+	Fri, 24 Nov 2023 18:10:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B82C433C8;
+	Fri, 24 Nov 2023 18:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850579;
-	bh=auuLbcASmmmbAO/TX2mzC3OpGBuDO1IlLXAXCy6mf44=;
+	s=korg; t=1700849421;
+	bh=Him7LNA3/3ib5EY7TvAFUzgFuyLfW5PJyZuWYPCl8qY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GYCyb7Q5EOcg+fZ7mML+yUcQQoMuoWWAmUaDECmeNxj+BgLvopjYIqlYZM8OYKdLt
-	 M9qyN6nSwzkOaqEThgbGl587u2Wmcg/Uxet8HAw4hbItwRVvguj4BmpN61hRRTNLi5
-	 rezpgrtAJkbC/OYRqLwCB6ZhVrWaBXcRtYhdCvpU=
+	b=aAH3NGuq3MHQF4xOdGX5GlTjy5pIOQY5/4tMnvrRtEe2mm9tXDIuTD4sC2DON/QRB
+	 lxWYH0EUQM+AnwZ16fpluiE8uKwGkXwvA1L8Mc4WVcsgUVO5hibzqiMmpUh6fE9ctF
+	 0B0eQyzlk8UNCTVrHebtx9dnRushWhmtGVZYN9n4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 105/491] misc: pci_endpoint_test: Add Device ID for R-Car S4-8 PCIe controller
+Subject: [PATCH 6.6 175/530] riscv: split cache ops out of dma-noncoherent.c
 Date: Fri, 24 Nov 2023 17:45:41 +0000
-Message-ID: <20231124172027.714617765@linuxfoundation.org>
+Message-ID: <20231124172033.401804603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +54,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 6c4b39937f4e65688ea294725ae432b2565821ff ]
+[ Upstream commit 946bb33d330251966223f770f64885c79448b1a1 ]
 
-Add Renesas R8A779F0 in pci_device_id table so that pci-epf-test
-can be used for testing PCIe EP on R-Car S4-8.
+The cache ops are also used by the pmem code which is unconditionally
+built into the kernel.  Move them into a separate file that is built
+based on the correct config option.
 
-Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-16-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Fixes: fd962781270e ("riscv: RISCV_NONSTANDARD_CACHE_OPS shouldn't depend on RISCV_DMA_NONCOHERENT")
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> #
+Link: https://lore.kernel.org/r/20231028155101.1039049-1-hch@lst.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pci_endpoint_test.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/riscv/mm/Makefile          |  1 +
+ arch/riscv/mm/cache-ops.c       | 17 +++++++++++++++++
+ arch/riscv/mm/dma-noncoherent.c | 15 ---------------
+ 3 files changed, 18 insertions(+), 15 deletions(-)
+ create mode 100644 arch/riscv/mm/cache-ops.c
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 7e1acc68d4359..af519088732d9 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -82,6 +82,7 @@
- #define PCI_DEVICE_ID_RENESAS_R8A774B1		0x002b
- #define PCI_DEVICE_ID_RENESAS_R8A774C0		0x002d
- #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
-+#define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
+diff --git a/arch/riscv/mm/Makefile b/arch/riscv/mm/Makefile
+index 9c454f90fd3da..3a4dfc8babcf8 100644
+--- a/arch/riscv/mm/Makefile
++++ b/arch/riscv/mm/Makefile
+@@ -36,3 +36,4 @@ endif
  
- static DEFINE_IDA(pci_endpoint_test_ida);
+ obj-$(CONFIG_DEBUG_VIRTUAL) += physaddr.o
+ obj-$(CONFIG_RISCV_DMA_NONCOHERENT) += dma-noncoherent.o
++obj-$(CONFIG_RISCV_NONSTANDARD_CACHE_OPS) += cache-ops.o
+diff --git a/arch/riscv/mm/cache-ops.c b/arch/riscv/mm/cache-ops.c
+new file mode 100644
+index 0000000000000..a993ad11d0eca
+--- /dev/null
++++ b/arch/riscv/mm/cache-ops.c
+@@ -0,0 +1,17 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (c) 2021 Western Digital Corporation or its affiliates.
++ */
++
++#include <asm/dma-noncoherent.h>
++
++struct riscv_nonstd_cache_ops noncoherent_cache_ops __ro_after_init;
++
++void
++riscv_noncoherent_register_cache_ops(const struct riscv_nonstd_cache_ops *ops)
++{
++	if (!ops)
++		return;
++	noncoherent_cache_ops = *ops;
++}
++EXPORT_SYMBOL_GPL(riscv_noncoherent_register_cache_ops);
+diff --git a/arch/riscv/mm/dma-noncoherent.c b/arch/riscv/mm/dma-noncoherent.c
+index b76e7e192eb18..341bd6706b4c5 100644
+--- a/arch/riscv/mm/dma-noncoherent.c
++++ b/arch/riscv/mm/dma-noncoherent.c
+@@ -15,12 +15,6 @@ static bool noncoherent_supported __ro_after_init;
+ int dma_cache_alignment __ro_after_init = ARCH_DMA_MINALIGN;
+ EXPORT_SYMBOL_GPL(dma_cache_alignment);
  
-@@ -991,6 +992,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774B1),},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774C0),},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774E1),},
-+	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A779F0),
-+	  .driver_data = (kernel_ulong_t)&default_data,
-+	},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
- 	  .driver_data = (kernel_ulong_t)&j721e_data,
- 	},
+-struct riscv_nonstd_cache_ops noncoherent_cache_ops __ro_after_init = {
+-	.wback = NULL,
+-	.inv = NULL,
+-	.wback_inv = NULL,
+-};
+-
+ static inline void arch_dma_cache_wback(phys_addr_t paddr, size_t size)
+ {
+ 	void *vaddr = phys_to_virt(paddr);
+@@ -162,12 +156,3 @@ void __init riscv_set_dma_cache_alignment(void)
+ 	if (!noncoherent_supported)
+ 		dma_cache_alignment = 1;
+ }
+-
+-void riscv_noncoherent_register_cache_ops(const struct riscv_nonstd_cache_ops *ops)
+-{
+-	if (!ops)
+-		return;
+-
+-	noncoherent_cache_ops = *ops;
+-}
+-EXPORT_SYMBOL_GPL(riscv_noncoherent_register_cache_ops);
 -- 
 2.42.0
 
