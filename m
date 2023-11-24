@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5A77F821F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4A47F8350
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FBF91C22A89
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24571C25436
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FC535F1A;
-	Fri, 24 Nov 2023 19:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20329364C1;
+	Fri, 24 Nov 2023 19:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiFd1P9G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYY39i+E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D682837E;
-	Fri, 24 Nov 2023 19:04:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE60C433C8;
-	Fri, 24 Nov 2023 19:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D32364AE;
+	Fri, 24 Nov 2023 19:16:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1A9C433C7;
+	Fri, 24 Nov 2023 19:16:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852678;
-	bh=7aPgpP888I2T9ykXGBaCkWWtXQ6xNW2DHPPR5ooSFuA=;
+	s=korg; t=1700853377;
+	bh=zISKXFvFXPL8QaJZNEcgPWf/hNO1PJxBUqnX7m9CTXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iiFd1P9GJHKFuWsLqCgUGiFA2Zy+lIj/hWba0CheJX89sjwuZRqS6lhG/+/brqWTF
-	 O5I7rF5qki8039n9FQi6+qpxGPqes9LAVnHh06fA6wK6TSC3bvvYIjHj0NPde0yGM+
-	 2pd7RVf9/xHYTzzy9hE+tWocWNDdk3MZm8eNKMWU=
+	b=EYY39i+EJqaz8ljLzV+xbJ8zZqRnLii2vO1vcpx+NbRTSVy5RpLDkkfSw+sTHHomJ
+	 fbuIa7MUjEuXx1KtxGUKreMcnxmQMpOoG7LZSwOHHLkU2XB/BrjUDy1nSQxZVR7XGS
+	 XuTRQBIHraj9pyGxIzDTAARevFDnRkz0nJ/pV7qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/193] net: ethernet: cortina: Fix MTU max setting
+	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+	Julian Andres Klode <julian.klode@canonical.com>,
+	Roxana Nicolescu <roxana.nicolescu@canonical.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 164/297] crypto: x86/sha - load modules based on CPU features
 Date: Fri, 24 Nov 2023 17:53:26 +0000
-Message-ID: <20231124171950.390631154@linuxfoundation.org>
+Message-ID: <20231124172005.987135181@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,95 +54,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Roxana Nicolescu <roxana.nicolescu@canonical.com>
 
-[ Upstream commit dc6c0bfbaa947dd7976e30e8c29b10c868b6fa42 ]
+commit 1c43c0f1f84aa59dfc98ce66f0a67b2922aa7f9d upstream.
 
-The RX max frame size is over 10000 for the Gemini ethernet,
-but the TX max frame size is actually just 2047 (0x7ff after
-checking the datasheet). Reflect this in what we offer to Linux,
-cap the MTU at the TX max frame minus ethernet headers.
+x86 optimized crypto modules are built as modules rather than build-in and
+they are not loaded when the crypto API is initialized, resulting in the
+generic builtin module (sha1-generic) being used instead.
 
-We delete the code disabling the hardware checksum for large
-MTUs as netdev->mtu can no longer be larger than
-netdev->max_mtu meaning the if()-clause in gmac_fix_features()
-is never true.
+It was discovered when creating a sha1/sha256 checksum of a 2Gb file by
+using kcapi-tools because it would take significantly longer than creating
+a sha512 checksum of the same file. trace-cmd showed that for sha1/256 the
+generic module was used, whereas for sha512 the optimized module was used
+instead.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-3-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add module aliases() for these x86 optimized crypto modules based on CPU
+feature bits so udev gets a chance to load them later in the boot
+process. This resulted in ~3x decrease in the real-time execution of
+kcapi-dsg.
+
+Fix is inspired from commit
+aa031b8f702e ("crypto: x86/sha512 - load based on CPU features")
+where a similar fix was done for sha512.
+
+Cc: stable@vger.kernel.org # 5.15+
+Suggested-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Suggested-by: Julian Andres Klode <julian.klode@canonical.com>
+Signed-off-by: Roxana Nicolescu <roxana.nicolescu@canonical.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 17 ++++-------------
- drivers/net/ethernet/cortina/gemini.h |  2 +-
- 2 files changed, 5 insertions(+), 14 deletions(-)
+ arch/x86/crypto/sha1_ssse3_glue.c   | 12 ++++++++++++
+ arch/x86/crypto/sha256_ssse3_glue.c | 12 ++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 9ed883e8155ec..c78587ddb32fd 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -2001,15 +2001,6 @@ static int gmac_change_mtu(struct net_device *netdev, int new_mtu)
- 	return 0;
- }
+diff --git a/arch/x86/crypto/sha1_ssse3_glue.c b/arch/x86/crypto/sha1_ssse3_glue.c
+index 44340a1139e0..959afa705e95 100644
+--- a/arch/x86/crypto/sha1_ssse3_glue.c
++++ b/arch/x86/crypto/sha1_ssse3_glue.c
+@@ -24,8 +24,17 @@
+ #include <linux/types.h>
+ #include <crypto/sha1.h>
+ #include <crypto/sha1_base.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/simd.h>
  
--static netdev_features_t gmac_fix_features(struct net_device *netdev,
--					   netdev_features_t features)
--{
--	if (netdev->mtu + ETH_HLEN + VLAN_HLEN > MTU_SIZE_BIT_MASK)
--		features &= ~GMAC_OFFLOAD_FEATURES;
--
--	return features;
--}
--
- static int gmac_set_features(struct net_device *netdev,
- 			     netdev_features_t features)
++static const struct x86_cpu_id module_cpu_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
++
+ static int sha1_update(struct shash_desc *desc, const u8 *data,
+ 			     unsigned int len, sha1_block_fn *sha1_xform)
  {
-@@ -2227,7 +2218,6 @@ static const struct net_device_ops gmac_351x_ops = {
- 	.ndo_set_mac_address	= gmac_set_mac_address,
- 	.ndo_get_stats64	= gmac_get_stats64,
- 	.ndo_change_mtu		= gmac_change_mtu,
--	.ndo_fix_features	= gmac_fix_features,
- 	.ndo_set_features	= gmac_set_features,
- };
+@@ -301,6 +310,9 @@ static inline void unregister_sha1_ni(void) { }
  
-@@ -2485,11 +2475,12 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
+ static int __init sha1_ssse3_mod_init(void)
+ {
++	if (!x86_match_cpu(module_cpu_ids))
++		return -ENODEV;
++
+ 	if (register_sha1_ssse3())
+ 		goto fail;
  
- 	netdev->hw_features = GMAC_OFFLOAD_FEATURES;
- 	netdev->features |= GMAC_OFFLOAD_FEATURES | NETIF_F_GRO;
--	/* We can handle jumbo frames up to 10236 bytes so, let's accept
--	 * payloads of 10236 bytes minus VLAN and ethernet header
-+	/* We can receive jumbo frames up to 10236 bytes but only
-+	 * transmit 2047 bytes so, let's accept payloads of 2047
-+	 * bytes minus VLAN and ethernet header
- 	 */
- 	netdev->min_mtu = ETH_MIN_MTU;
--	netdev->max_mtu = 10236 - VLAN_ETH_HLEN;
-+	netdev->max_mtu = MTU_SIZE_BIT_MASK - VLAN_ETH_HLEN;
+diff --git a/arch/x86/crypto/sha256_ssse3_glue.c b/arch/x86/crypto/sha256_ssse3_glue.c
+index 3a5f6be7dbba..d25235f0ccaf 100644
+--- a/arch/x86/crypto/sha256_ssse3_glue.c
++++ b/arch/x86/crypto/sha256_ssse3_glue.c
+@@ -38,11 +38,20 @@
+ #include <crypto/sha2.h>
+ #include <crypto/sha256_base.h>
+ #include <linux/string.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/simd.h>
  
- 	port->freeq_refill = 0;
- 	netif_napi_add(netdev, &port->napi, gmac_napi_poll,
-diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
-index 99efb11557436..24bb989981f23 100644
---- a/drivers/net/ethernet/cortina/gemini.h
-+++ b/drivers/net/ethernet/cortina/gemini.h
-@@ -502,7 +502,7 @@ union gmac_txdesc_3 {
- #define SOF_BIT			0x80000000
- #define EOF_BIT			0x40000000
- #define EOFIE_BIT		BIT(29)
--#define MTU_SIZE_BIT_MASK	0x1fff
-+#define MTU_SIZE_BIT_MASK	0x7ff /* Max MTU 2047 bytes */
+ asmlinkage void sha256_transform_ssse3(struct sha256_state *state,
+ 				       const u8 *data, int blocks);
  
- /* GMAC Tx Descriptor */
- struct gmac_txdesc {
++static const struct x86_cpu_id module_cpu_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
++
+ static int _sha256_update(struct shash_desc *desc, const u8 *data,
+ 			  unsigned int len, sha256_block_fn *sha256_xform)
+ {
+@@ -366,6 +375,9 @@ static inline void unregister_sha256_ni(void) { }
+ 
+ static int __init sha256_ssse3_mod_init(void)
+ {
++	if (!x86_match_cpu(module_cpu_ids))
++		return -ENODEV;
++
+ 	if (register_sha256_ssse3())
+ 		goto fail;
+ 
 -- 
-2.42.0
+2.42.1
 
 
 
