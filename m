@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E06B7F7BC0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7CD7F7DF4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A15B282139
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0550B21286
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8278039FF7;
-	Fri, 24 Nov 2023 18:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEF93A8E1;
+	Fri, 24 Nov 2023 18:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvdnZEKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMEkzDVp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D9231740;
-	Fri, 24 Nov 2023 18:08:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00BCC433C7;
-	Fri, 24 Nov 2023 18:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796A8364C8;
+	Fri, 24 Nov 2023 18:28:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06016C433C8;
+	Fri, 24 Nov 2023 18:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849302;
-	bh=tNf7V1lol+a/uEeB4996HfefdzgkcwvGHZSxzyiN3jc=;
+	s=korg; t=1700850520;
+	bh=OrWN5J6tbcG5B1L80NjQt/A384QdUxHoCK4dy5q6sLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvdnZEKOgu1q/CqIflerFSbdiKJo+GwCnZLEpfQiysLsyE79/TZ23dqTuW35FCiDH
-	 PoouoBYb5xlvEnbqYswzVm9OJdQR4BZbO2n7lh0t0o4V56E5BNEaC9iFbrk3i6n3dW
-	 8RmkDv+MnPgNcj53agsl3IOcCQ23y2QxaVsTCbeU=
+	b=xMEkzDVpFIB+njfAjiAXhPRrI3slNnW8Ql3kv6TLG6QyTaEdcj+tOMHT8uBWXJvKP
+	 K5iyNq0lwUDntQylMkxxb4TakiSG6LNtP43XZA17eNFX5c2ZxdwUVO/ehOefhLSuBP
+	 Sw1czU2PnRqJr11i1viurJPohfTcMEkIjPcXbVIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	David Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Zack Rusin <zackr@vmware.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/530] f2fs: fix error path of __f2fs_build_free_nids
+Subject: [PATCH 6.5 057/491] string.h: add array-wrappers for (v)memdup_user()
 Date: Fri, 24 Nov 2023 17:44:53 +0000
-Message-ID: <20231124172031.973959319@linuxfoundation.org>
+Message-ID: <20231124172026.382722021@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,72 +56,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Philipp Stanner <pstanner@redhat.com>
 
-[ Upstream commit a5e80e18f268ea7c7a36bc4159de0deb3b5a2171 ]
+[ Upstream commit 313ebe47d75558511aa1237b6e35c663b5c0ec6f ]
 
-If NAT is corrupted, let scan_nat_page() return EFSCORRUPTED, so that,
-caller can set SBI_NEED_FSCK flag into checkpoint for later repair by
-fsck.
+Currently, user array duplications are sometimes done without an
+overflow check. Sometimes the checks are done manually; sometimes the
+array size is calculated with array_size() and sometimes by calculating
+n * size directly in code.
 
-Also, this patch introduces a new fscorrupted error flag, and in above
-scenario, it will persist the error flag into superblock synchronously
-to avoid it has no luck to trigger a checkpoint to record SBI_NEED_FSCK
+Introduce wrappers for arrays for memdup_user() and vmemdup_user() to
+provide a standardized and safe way for duplicating user arrays.
 
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+This is both for new code as well as replacing usage of (v)memdup_user()
+in existing code that uses, e.g., n * size to calculate array sizes.
+
+Suggested-by: David Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-3-pstanner@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c          | 11 +++++++++--
- include/linux/f2fs_fs.h |  1 +
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ include/linux/string.h | 40 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index ee2e1dd64f256..248764badcde8 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -2389,7 +2389,7 @@ static int scan_nat_page(struct f2fs_sb_info *sbi,
- 		blk_addr = le32_to_cpu(nat_blk->entries[i].block_addr);
+diff --git a/include/linux/string.h b/include/linux/string.h
+index 9e3cb6923b0ef..5077776e995e0 100644
+--- a/include/linux/string.h
++++ b/include/linux/string.h
+@@ -5,7 +5,9 @@
+ #include <linux/compiler.h>	/* for inline */
+ #include <linux/types.h>	/* for size_t */
+ #include <linux/stddef.h>	/* for NULL */
++#include <linux/err.h>		/* for ERR_PTR() */
+ #include <linux/errno.h>	/* for E2BIG */
++#include <linux/overflow.h>	/* for check_mul_overflow() */
+ #include <linux/stdarg.h>
+ #include <uapi/linux/string.h>
  
- 		if (blk_addr == NEW_ADDR)
--			return -EINVAL;
-+			return -EFSCORRUPTED;
+@@ -14,6 +16,44 @@ extern void *memdup_user(const void __user *, size_t);
+ extern void *vmemdup_user(const void __user *, size_t);
+ extern void *memdup_user_nul(const void __user *, size_t);
  
- 		if (blk_addr == NULL_ADDR) {
- 			add_free_nid(sbi, start_nid, true, true);
-@@ -2504,7 +2504,14 @@ static int __f2fs_build_free_nids(struct f2fs_sb_info *sbi,
- 
- 			if (ret) {
- 				f2fs_up_read(&nm_i->nat_tree_lock);
--				f2fs_err(sbi, "NAT is corrupt, run fsck to fix it");
++/**
++ * memdup_array_user - duplicate array from user space
++ * @src: source address in user space
++ * @n: number of array members to copy
++ * @size: size of one array member
++ *
++ * Return: an ERR_PTR() on failure. Result is physically
++ * contiguous, to be freed by kfree().
++ */
++static inline void *memdup_array_user(const void __user *src, size_t n, size_t size)
++{
++	size_t nbytes;
 +
-+				if (ret == -EFSCORRUPTED) {
-+					f2fs_err(sbi, "NAT is corrupt, run fsck to fix it");
-+					set_sbi_flag(sbi, SBI_NEED_FSCK);
-+					f2fs_handle_error(sbi,
-+						ERROR_INCONSISTENT_NAT);
-+				}
++	if (check_mul_overflow(n, size, &nbytes))
++		return ERR_PTR(-EOVERFLOW);
 +
- 				return ret;
- 			}
- 		}
-diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
-index a82a4bb6ce68b..cf1adceb02697 100644
---- a/include/linux/f2fs_fs.h
-+++ b/include/linux/f2fs_fs.h
-@@ -104,6 +104,7 @@ enum f2fs_error {
- 	ERROR_CORRUPTED_VERITY_XATTR,
- 	ERROR_CORRUPTED_XATTR,
- 	ERROR_INVALID_NODE_REFERENCE,
-+	ERROR_INCONSISTENT_NAT,
- 	ERROR_MAX,
- };
- 
++	return memdup_user(src, nbytes);
++}
++
++/**
++ * vmemdup_array_user - duplicate array from user space
++ * @src: source address in user space
++ * @n: number of array members to copy
++ * @size: size of one array member
++ *
++ * Return: an ERR_PTR() on failure. Result may be not
++ * physically contiguous. Use kvfree() to free.
++ */
++static inline void *vmemdup_array_user(const void __user *src, size_t n, size_t size)
++{
++	size_t nbytes;
++
++	if (check_mul_overflow(n, size, &nbytes))
++		return ERR_PTR(-EOVERFLOW);
++
++	return vmemdup_user(src, nbytes);
++}
++
+ /*
+  * Include machine specific inline routines
+  */
 -- 
 2.42.0
 
