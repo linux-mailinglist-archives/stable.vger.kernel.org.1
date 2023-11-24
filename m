@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA427F7F63
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B0C27F7ADF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004842824DC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BBA91C20AB4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8974F2FC21;
-	Fri, 24 Nov 2023 18:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AD539FE7;
+	Fri, 24 Nov 2023 17:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0ZDK64C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03Q+Xdv1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4841A2E40E;
-	Fri, 24 Nov 2023 18:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D2EC433C7;
-	Fri, 24 Nov 2023 18:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F81439FDA;
+	Fri, 24 Nov 2023 17:59:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6707FC433C7;
+	Fri, 24 Nov 2023 17:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851261;
-	bh=uM/xI+QnUYTIS7eXNfECArZzYpPBrke2+NaMBk9prtI=;
+	s=korg; t=1700848772;
+	bh=QrzWItsO+qBle6NAM/i/jtjraDx9IR2mrAPzT5kJ5A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0ZDK64CkeOIdmmNYnEGwhzefAuxICqcDMvxDqtxm22Bt5kjIHnU59NmmqgJbQlMk
-	 pKMj7cnpDtkjW6MntH2uH7mkf1rqn50vKEMQ2tKHlg2ektWZ1wDSwAheXaPIu/mlLR
-	 fTKnBYaM79375STBDFxdGMzQOBpIbBGZfRrwVaBE=
+	b=03Q+Xdv1Leoye4oe0LDOuBSiVLvjPgR5Ow2SsyKz/H+pmzWdg79MMXZYedSZ84geH
+	 eQuQP5ByP5kWITbu3GGvBs0iCfV8t/IYLQ0+/fuTn7meX9JTSppSPI8gSDemAEchC6
+	 RYxqn0GnbARBlIPRfROZQSeUqVBoz3W0sg/U1kpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 377/491] torture: Make torture_hrtimeout_ns() take an hrtimer mode parameter
+Subject: [PATCH 4.19 40/97] ppp: limit MRU to 64K
 Date: Fri, 24 Nov 2023 17:50:13 +0000
-Message-ID: <20231124172035.915529968@linuxfoundation.org>
+Message-ID: <20231124171935.644084176@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,102 +55,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit a741deac787f0d2d7068638c067db20af9e63752 ]
+[ Upstream commit c0a2a1b0d631fc460d830f52d06211838874d655 ]
 
-The current torture-test sleeps are waiting for a duration, but there
-are situations where it is better to wait for an absolute time, for
-example, when ending a stutter interval.  This commit therefore adds
-an hrtimer mode parameter to torture_hrtimeout_ns().  Why not also the
-other torture_hrtimeout_*() functions?  The theory is that most absolute
-times will be in nanoseconds, especially not (say) jiffies.
+ppp_sync_ioctl allows setting device MRU, but does not sanity check
+this input.
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Stable-dep-of: cca42bd8eb1b ("rcutorture: Fix stuttering races and other issues")
+Limit to a sane upper bound of 64KB.
+
+No implementation I could find generates larger than 64KB frames.
+RFC 2823 mentions an upper bound of PPP over SDL of 64KB based on the
+16-bit length field. Other protocols will be smaller, such as PPPoE
+(9KB jumbo frame) and PPPoA (18190 maximum CPCS-SDU size, RFC 2364).
+PPTP and L2TP encapsulate in IP.
+
+Syzbot managed to trigger alloc warning in __alloc_pages:
+
+	if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
+
+    WARNING: CPU: 1 PID: 37 at mm/page_alloc.c:4544 __alloc_pages+0x3ab/0x4a0 mm/page_alloc.c:4544
+
+    __alloc_skb+0x12b/0x330 net/core/skbuff.c:651
+    __netdev_alloc_skb+0x72/0x3f0 net/core/skbuff.c:715
+    netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
+    dev_alloc_skb include/linux/skbuff.h:3238 [inline]
+    ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
+    ppp_sync_receive+0xff/0x680 drivers/net/ppp/ppp_synctty.c:334
+    tty_ldisc_receive_buf+0x14c/0x180 drivers/tty/tty_buffer.c:390
+    tty_port_default_receive_buf+0x70/0xb0 drivers/tty/tty_port.c:37
+    receive_buf drivers/tty/tty_buffer.c:444 [inline]
+    flush_to_ldisc+0x261/0x780 drivers/tty/tty_buffer.c:494
+    process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+
+With call
+
+    ioctl$PPPIOCSMRU1(r1, 0x40047452, &(0x7f0000000100)=0x5e6417a8)
+
+Similar code exists in other drivers that implement ppp_channel_ops
+ioctl PPPIOCSMRU. Those might also be in scope. Notably excluded from
+this are pppol2tp_ioctl and pppoe_ioctl.
+
+This code goes back to the start of git history.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/torture.h |  3 ++-
- kernel/torture.c        | 13 +++++++------
- 2 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/ppp/ppp_synctty.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/torture.h b/include/linux/torture.h
-index bb466eec01e42..017f0f710815a 100644
---- a/include/linux/torture.h
-+++ b/include/linux/torture.h
-@@ -81,7 +81,8 @@ static inline void torture_random_init(struct torture_random_state *trsp)
- }
- 
- /* Definitions for high-resolution-timer sleeps. */
--int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, struct torture_random_state *trsp);
-+int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, const enum hrtimer_mode mode,
-+			 struct torture_random_state *trsp);
- int torture_hrtimeout_us(u32 baset_us, u32 fuzzt_ns, struct torture_random_state *trsp);
- int torture_hrtimeout_ms(u32 baset_ms, u32 fuzzt_us, struct torture_random_state *trsp);
- int torture_hrtimeout_jiffies(u32 baset_j, struct torture_random_state *trsp);
-diff --git a/kernel/torture.c b/kernel/torture.c
-index a55cb70b192fc..fd2168058dac8 100644
---- a/kernel/torture.c
-+++ b/kernel/torture.c
-@@ -84,14 +84,15 @@ EXPORT_SYMBOL_GPL(verbose_torout_sleep);
-  * nanosecond random fuzz.  This function and its friends desynchronize
-  * testing from the timer wheel.
-  */
--int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, struct torture_random_state *trsp)
-+int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, const enum hrtimer_mode mode,
-+			 struct torture_random_state *trsp)
- {
- 	ktime_t hto = baset_ns;
- 
- 	if (trsp)
- 		hto += (torture_random(trsp) >> 3) % fuzzt_ns;
- 	set_current_state(TASK_IDLE);
--	return schedule_hrtimeout(&hto, HRTIMER_MODE_REL);
-+	return schedule_hrtimeout(&hto, mode);
- }
- EXPORT_SYMBOL_GPL(torture_hrtimeout_ns);
- 
-@@ -103,7 +104,7 @@ int torture_hrtimeout_us(u32 baset_us, u32 fuzzt_ns, struct torture_random_state
- {
- 	ktime_t baset_ns = baset_us * NSEC_PER_USEC;
- 
--	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
-+	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, HRTIMER_MODE_REL, trsp);
- }
- EXPORT_SYMBOL_GPL(torture_hrtimeout_us);
- 
-@@ -120,7 +121,7 @@ int torture_hrtimeout_ms(u32 baset_ms, u32 fuzzt_us, struct torture_random_state
- 		fuzzt_ns = (u32)~0U;
- 	else
- 		fuzzt_ns = fuzzt_us * NSEC_PER_USEC;
--	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
-+	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, HRTIMER_MODE_REL, trsp);
- }
- EXPORT_SYMBOL_GPL(torture_hrtimeout_ms);
- 
-@@ -133,7 +134,7 @@ int torture_hrtimeout_jiffies(u32 baset_j, struct torture_random_state *trsp)
- {
- 	ktime_t baset_ns = jiffies_to_nsecs(baset_j);
- 
--	return torture_hrtimeout_ns(baset_ns, jiffies_to_nsecs(1), trsp);
-+	return torture_hrtimeout_ns(baset_ns, jiffies_to_nsecs(1), HRTIMER_MODE_REL, trsp);
- }
- EXPORT_SYMBOL_GPL(torture_hrtimeout_jiffies);
- 
-@@ -150,7 +151,7 @@ int torture_hrtimeout_s(u32 baset_s, u32 fuzzt_ms, struct torture_random_state *
- 		fuzzt_ns = (u32)~0U;
- 	else
- 		fuzzt_ns = fuzzt_ms * NSEC_PER_MSEC;
--	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, trsp);
-+	return torture_hrtimeout_ns(baset_ns, fuzzt_ns, HRTIMER_MODE_REL, trsp);
- }
- EXPORT_SYMBOL_GPL(torture_hrtimeout_s);
- 
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index e0de8b32df46a..7a1b903d3fb89 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -467,6 +467,10 @@ ppp_sync_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
+ 	case PPPIOCSMRU:
+ 		if (get_user(val, (int __user *) argp))
+ 			break;
++		if (val > U16_MAX) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (val < PPP_MRU)
+ 			val = PPP_MRU;
+ 		ap->mru = val;
 -- 
 2.42.0
 
