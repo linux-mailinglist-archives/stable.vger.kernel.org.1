@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBC67F7D39
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7497F7F79
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19FEEB2116E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6789282504
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4099C33CFD;
-	Fri, 24 Nov 2023 18:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8CF364DE;
+	Fri, 24 Nov 2023 18:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDAXdqfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQoq5aZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A44639FFD;
-	Fri, 24 Nov 2023 18:22:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19735C433C8;
-	Fri, 24 Nov 2023 18:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6F033CCC;
+	Fri, 24 Nov 2023 18:41:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC51C433C8;
+	Fri, 24 Nov 2023 18:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850152;
-	bh=H5hzRci9Q65Evl66gFRqCZD28X7VzTE/PUgtV5/GKrg=;
+	s=korg; t=1700851306;
+	bh=rSKjR4kPDiHrtOEUb2nxNXOqHhNE005/NufjuESuqNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDAXdqfXdvvgqpeRjoOXvovWkCoYf98+EqLLfsEiW8alqdXaiEgPCt9Aao41D316o
-	 MmTmWd2qxyeFt63dZaOSOVpic7wcTvrl8+gLfmfqPYlyx6bXiPZs23FI7r7kzrtFrf
-	 R2NAr7TkATwxXF/OPHuJQ3rauXnqUiV5LCEgRs2g=
+	b=gQoq5aZg9LmZmvmulfNk5InSDNXh4ZZXF3xBPymaE933L/bc8me8vGf3RNx0SqYRn
+	 nHdn/r56TReCvwbgDm2iAPf1wj08aUwsAI5IhAMs0GE2vmvMSKeLZYNBnnx8j0BrQt
+	 lTzjMSBAb5W564NEPF0QImaJqEgDDNxbuXw2izWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 466/530] LoongArch: Mark __percpu functions as always inline
+	Damian Tometzki <damian@riscv-rocks.de>,
+	Eric Biggers <ebiggers@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.5 396/491] cifs: Fix encryption of cleared, but unset rq_iter data buffers
 Date: Fri, 24 Nov 2023 17:50:32 +0000
-Message-ID: <20231124172042.258192652@linuxfoundation.org>
+Message-ID: <20231124172036.511408593@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,109 +57,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 71945968d8b128c955204baa33ec03bdd91bdc26 upstream.
+commit 37de5a80e932f828c34abeaae63170d73930dca3 upstream.
 
-A recent change to the optimization pipeline in LLVM reveals some
-fragility around the inlining of LoongArch's __percpu functions, which
-manifests as a BUILD_BUG() failure:
+Each smb_rqst struct contains two things: an array of kvecs (rq_iov) that
+contains the protocol data for an RPC op and an iterator (rq_iter) that
+contains the data payload of an RPC op.  When an smb_rqst is allocated
+rq_iter is it always cleared, but we don't set it up unless we're going to
+use it.
 
-  In file included from kernel/sched/build_policy.c:17:
-  In file included from include/linux/sched/cputime.h:5:
-  In file included from include/linux/sched/signal.h:5:
-  In file included from include/linux/rculist.h:11:
-  In file included from include/linux/rcupdate.h:26:
-  In file included from include/linux/irqflags.h:18:
-  arch/loongarch/include/asm/percpu.h:97:3: error: call to '__compiletime_assert_51' declared with 'error' attribute: BUILD_BUG failed
-     97 |                 BUILD_BUG();
-        |                 ^
-  include/linux/build_bug.h:59:21: note: expanded from macro 'BUILD_BUG'
-     59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
-        |                     ^
-  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
-     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-        |                                     ^
-  include/linux/compiler_types.h:425:2: note: expanded from macro 'compiletime_assert'
-    425 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-        |         ^
-  include/linux/compiler_types.h:413:2: note: expanded from macro '_compiletime_assert'
-    413 |         __compiletime_assert(condition, msg, prefix, suffix)
-        |         ^
-  include/linux/compiler_types.h:406:4: note: expanded from macro '__compiletime_assert'
-    406 |                         prefix ## suffix();                             \
-        |                         ^
-  <scratch space>:86:1: note: expanded from here
-     86 | __compiletime_assert_51
-        | ^
-  1 error generated.
+The functions that determines the size of the ciphertext buffer that will
+be needed to encrypt a request, cifs_get_num_sgs(), assumes that rq_iter is
+always initialised - and employs user_backed_iter() to check that the
+iterator isn't user-backed.  This used to incidentally work, because
+->user_backed was set to false because the iterator has never been
+initialised, but with commit f1b4cb650b9a0eeba206d8f069fcdc532bfbcd74[1]
+which changes user_backed_iter() to determine this based on the iterator
+type insted, a warning is now emitted:
 
-If these functions are not inlined (which the compiler is free to do
-even with functions marked with the standard 'inline' keyword), the
-BUILD_BUG() in the default case cannot be eliminated since the compiler
-cannot prove it is never used, resulting in a build failure due to the
-error attribute.
+        WARNING: CPU: 7 PID: 4584 at fs/smb/client/cifsglob.h:2165 smb2_get_aead_req+0x3fc/0x420 [cifs]
+        ...
+        RIP: 0010:smb2_get_aead_req+0x3fc/0x420 [cifs]
+        ...
+         crypt_message+0x33e/0x550 [cifs]
+         smb3_init_transform_rq+0x27d/0x3f0 [cifs]
+         smb_send_rqst+0xc7/0x160 [cifs]
+         compound_send_recv+0x3ca/0x9f0 [cifs]
+         cifs_send_recv+0x25/0x30 [cifs]
+         SMB2_tcon+0x38a/0x820 [cifs]
+         cifs_get_smb_ses+0x69c/0xee0 [cifs]
+         cifs_mount_get_session+0x76/0x1d0 [cifs]
+         dfs_mount_share+0x74/0x9d0 [cifs]
+         cifs_mount+0x6e/0x2e0 [cifs]
+         cifs_smb3_do_mount+0x143/0x300 [cifs]
+         smb3_get_tree+0x15e/0x290 [cifs]
+         vfs_get_tree+0x2d/0xe0
+         do_new_mount+0x124/0x340
+         __se_sys_mount+0x143/0x1a0
 
-Mark these functions as __always_inline to guarantee inlining so that
-the BUILD_BUG() only triggers when the default case genuinely cannot be
-eliminated due to an unexpected size.
+The problem is that rq_iter was never set, so the type is 0 (ie. ITER_UBUF)
+which causes user_backed_iter() to return true.  The code doesn't
+malfunction because it checks the size of the iterator - which is 0.
 
-Cc:  <stable@vger.kernel.org>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1955
-Fixes: 46859ac8af52 ("LoongArch: Add multi-processor (SMP) support")
-Link: https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
-Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fix cifs_get_num_sgs() to ignore rq_iter if its count is 0, thereby
+bypassing the warnings.
+
+It might be better to explicitly initialise rq_iter to a zero-length
+ITER_BVEC, say, as it can always be reinitialised later.
+
+Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
+Reported-by: Damian Tometzki <damian@riscv-rocks.de>
+Closes: https://lore.kernel.org/r/ZUfQo47uo0p2ZsYg@fedora.fritz.box/
+Tested-by: Damian Tometzki <damian@riscv-rocks.de>
+Cc: stable@vger.kernel.org
+cc: Eric Biggers <ebiggers@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f1b4cb650b9a0eeba206d8f069fcdc532bfbcd74 [1]
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/percpu.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/smb/client/cifsglob.h |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/arch/loongarch/include/asm/percpu.h
-+++ b/arch/loongarch/include/asm/percpu.h
-@@ -32,7 +32,7 @@ static inline void set_my_cpu_offset(uns
- #define __my_cpu_offset __my_cpu_offset
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -2113,6 +2113,7 @@ static inline int cifs_get_num_sgs(const
+ 	unsigned int len, skip;
+ 	unsigned int nents = 0;
+ 	unsigned long addr;
++	size_t data_size;
+ 	int i, j;
  
- #define PERCPU_OP(op, asm_op, c_op)					\
--static inline unsigned long __percpu_##op(void *ptr,			\
-+static __always_inline unsigned long __percpu_##op(void *ptr,		\
- 			unsigned long val, int size)			\
- {									\
- 	unsigned long ret;						\
-@@ -63,7 +63,7 @@ PERCPU_OP(and, and, &)
- PERCPU_OP(or, or, |)
- #undef PERCPU_OP
+ 	/*
+@@ -2128,17 +2129,21 @@ static inline int cifs_get_num_sgs(const
+ 	 * rqst[1+].rq_iov[0+] data to be encrypted/decrypted
+ 	 */
+ 	for (i = 0; i < num_rqst; i++) {
++		data_size = iov_iter_count(&rqst[i].rq_iter);
++
+ 		/* We really don't want a mixture of pinned and unpinned pages
+ 		 * in the sglist.  It's hard to keep track of which is what.
+ 		 * Instead, we convert to a BVEC-type iterator higher up.
+ 		 */
+-		if (WARN_ON_ONCE(user_backed_iter(&rqst[i].rq_iter)))
++		if (data_size &&
++		    WARN_ON_ONCE(user_backed_iter(&rqst[i].rq_iter)))
+ 			return -EIO;
  
--static inline unsigned long __percpu_read(void *ptr, int size)
-+static __always_inline unsigned long __percpu_read(void *ptr, int size)
- {
- 	unsigned long ret;
+ 		/* We also don't want to have any extra refs or pins to clean
+ 		 * up in the sglist.
+ 		 */
+-		if (WARN_ON_ONCE(iov_iter_extract_will_pin(&rqst[i].rq_iter)))
++		if (data_size &&
++		    WARN_ON_ONCE(iov_iter_extract_will_pin(&rqst[i].rq_iter)))
+ 			return -EIO;
  
-@@ -100,7 +100,7 @@ static inline unsigned long __percpu_rea
- 	return ret;
- }
- 
--static inline void __percpu_write(void *ptr, unsigned long val, int size)
-+static __always_inline void __percpu_write(void *ptr, unsigned long val, int size)
- {
- 	switch (size) {
- 	case 1:
-@@ -132,8 +132,8 @@ static inline void __percpu_write(void *
+ 		for (j = 0; j < rqst[i].rq_nvec; j++) {
+@@ -2154,7 +2159,8 @@ static inline int cifs_get_num_sgs(const
+ 			}
+ 			skip = 0;
+ 		}
+-		nents += iov_iter_npages(&rqst[i].rq_iter, INT_MAX);
++		if (data_size)
++			nents += iov_iter_npages(&rqst[i].rq_iter, INT_MAX);
  	}
- }
- 
--static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
--						int size)
-+static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
-+						   int size)
- {
- 	switch (size) {
- 	case 1:
+ 	nents += DIV_ROUND_UP(offset_in_page(sig) + SMB2_SIGNATURE_SIZE, PAGE_SIZE);
+ 	return nents;
 
 
 
