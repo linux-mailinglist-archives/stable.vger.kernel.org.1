@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 353E37F7D77
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AF47F7FBF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE09AB21672
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80C9B282536
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA50D39FF7;
-	Fri, 24 Nov 2023 18:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F78364A5;
+	Fri, 24 Nov 2023 18:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNJmy0T4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kttv6G9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC4433CFD;
-	Fri, 24 Nov 2023 18:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15430C433C7;
-	Fri, 24 Nov 2023 18:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F283307D;
+	Fri, 24 Nov 2023 18:44:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60172C433C7;
+	Fri, 24 Nov 2023 18:44:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850286;
-	bh=5Tr6kKqok24oE0sp2mGLgiglh1YjCxmc/uqOljNmthg=;
+	s=korg; t=1700851441;
+	bh=gT1ky3v31Is6AAxv5KOUKZX8YWKwS/F105uWEac+WSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNJmy0T4+k8saCV89ACqu06pPoPcCMcB0sfXnDeVTgr2zaJwTQWW3jYPQKRMPLhKL
-	 Dj9W3Mjobl36aHXTy2ndWjTSdbLgf91lMbOPHG2SXo38LUlUYN0TP7/9ChGJLHRHlm
-	 Jq4PF/3i+XH83SyNFHhMOHdxQas7zBsVfjN1ZHL0=
+	b=kttv6G9hhgFyKvS387JoIIwLQmO4EJbyyIc+YY8qiQDntKaTKQ8EfaKYctkeiON+i
+	 83Ewv4NJVSES5/7KY7aYMVG91Gkb86Z5XgzHU7QgqGdosMIyHuEOysmc9eIkzwzgGs
+	 vtxm0cgb3kQDDT7KDVirogL1msMGmZWXuucWYtbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 520/530] drm/amdgpu: dont use ATRM for external devices
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.5 450/491] media: qcom: camss: Fix vfe_get() error jump
 Date: Fri, 24 Nov 2023 17:51:26 +0000
-Message-ID: <20231124172044.008288335@linuxfoundation.org>
+Message-ID: <20231124172038.127920185@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,53 +53,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 432e664e7c98c243fab4c3c95bd463bea3aeed28 upstream.
+commit 26bda3da00c3edef727a6acb00ed2eb4b22f8723 upstream.
 
-The ATRM ACPI method is for fetching the dGPU vbios rom
-image on laptops and all-in-one systems.  It should not be
-used for external add in cards.  If the dGPU is thunderbolt
-connected, don't try ATRM.
+Right now it is possible to do a vfe_get() with the internal reference
+count at 1. If vfe_check_clock_rates() returns non-zero then we will
+leave the reference count as-is and
 
-v2: pci_is_thunderbolt_attached only works for Intel.  Use
-    pdev->external_facing instead.
-v3: dev_is_removable() seems to be what we want
+run:
+- pm_runtime_put_sync()
+- vfe->ops->pm_domain_off()
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+skip:
+- camss_disable_clocks()
+
+Subsequent vfe_put() calls will when the ref-count is non-zero
+unconditionally run:
+
+- pm_runtime_put_sync()
+- vfe->ops->pm_domain_off()
+- camss_disable_clocks()
+
+vfe_get() should not attempt to roll-back on error when the ref-count is
+non-zero as the upper layers will still do their own vfe_put() operations.
+
+vfe_put() will drop the reference count and do the necessary power
+domain release, the cleanup jumps in vfe_get() should only be run when
+the ref-count is zero.
+
+[   50.095796] CPU: 7 PID: 3075 Comm: cam Not tainted 6.3.2+ #80
+[   50.095798] Hardware name: LENOVO 21BXCTO1WW/21BXCTO1WW, BIOS N3HET82W (1.54 ) 05/26/2023
+[   50.095799] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   50.095802] pc : refcount_warn_saturate+0xf4/0x148
+[   50.095804] lr : refcount_warn_saturate+0xf4/0x148
+[   50.095805] sp : ffff80000c7cb8b0
+[   50.095806] x29: ffff80000c7cb8b0 x28: ffff16ecc0e3fc10 x27: 0000000000000000
+[   50.095810] x26: 0000000000000000 x25: 0000000000020802 x24: 0000000000000000
+[   50.095813] x23: ffff16ecc7360640 x22: 00000000ffffffff x21: 0000000000000005
+[   50.095815] x20: ffff16ed175f4400 x19: ffffb4d9852942a8 x18: ffffffffffffffff
+[   50.095818] x17: ffffb4d9852d4a48 x16: ffffb4d983da5db8 x15: ffff80000c7cb320
+[   50.095821] x14: 0000000000000001 x13: 2e656572662d7265 x12: 7466612d65737520
+[   50.095823] x11: 00000000ffffefff x10: ffffb4d9850cebf0 x9 : ffffb4d9835cf954
+[   50.095826] x8 : 0000000000017fe8 x7 : c0000000ffffefff x6 : 0000000000057fa8
+[   50.095829] x5 : ffff16f813fe3d08 x4 : 0000000000000000 x3 : ffff621e8f4d2000
+[   50.095832] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff16ed32119040
+[   50.095835] Call trace:
+[   50.095836]  refcount_warn_saturate+0xf4/0x148
+[   50.095838]  device_link_put_kref+0x84/0xc8
+[   50.095843]  device_link_del+0x38/0x58
+[   50.095846]  vfe_pm_domain_off+0x3c/0x50 [qcom_camss]
+[   50.095860]  vfe_put+0x114/0x140 [qcom_camss]
+[   50.095869]  csid_set_power+0x2c8/0x408 [qcom_camss]
+[   50.095878]  pipeline_pm_power_one+0x164/0x170 [videodev]
+[   50.095896]  pipeline_pm_power+0xc4/0x110 [videodev]
+[   50.095909]  v4l2_pipeline_pm_use+0x5c/0xa0 [videodev]
+[   50.095923]  v4l2_pipeline_pm_get+0x1c/0x30 [videodev]
+[   50.095937]  video_open+0x7c/0x100 [qcom_camss]
+[   50.095945]  v4l2_open+0x84/0x130 [videodev]
+[   50.095960]  chrdev_open+0xc8/0x250
+[   50.095964]  do_dentry_open+0x1bc/0x498
+[   50.095966]  vfs_open+0x34/0x40
+[   50.095968]  path_openat+0xb44/0xf20
+[   50.095971]  do_filp_open+0xa4/0x160
+[   50.095974]  do_sys_openat2+0xc8/0x188
+[   50.095975]  __arm64_sys_openat+0x6c/0xb8
+[   50.095977]  invoke_syscall+0x50/0x128
+[   50.095982]  el0_svc_common.constprop.0+0x4c/0x100
+[   50.095985]  do_el0_svc+0x40/0xa8
+[   50.095988]  el0_svc+0x2c/0x88
+[   50.095991]  el0t_64_sync_handler+0xf4/0x120
+[   50.095994]  el0t_64_sync+0x190/0x198
+[   50.095996] ---[ end trace 0000000000000000 ]---
+
+Fixes: 779096916dae ("media: camss: vfe: Fix runtime PM imbalance on error")
 Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/media/platform/qcom/camss/camss-vfe.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
-@@ -29,6 +29,7 @@
- #include "amdgpu.h"
- #include "atom.h"
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -611,7 +611,7 @@ int vfe_get(struct vfe_device *vfe)
+ 	} else {
+ 		ret = vfe_check_clock_rates(vfe);
+ 		if (ret < 0)
+-			goto error_pm_runtime_get;
++			goto error_pm_domain;
+ 	}
+ 	vfe->power_count++;
  
-+#include <linux/device.h>
- #include <linux/pci.h>
- #include <linux/slab.h>
- #include <linux/acpi.h>
-@@ -287,6 +288,10 @@ static bool amdgpu_atrm_get_bios(struct
- 	if (adev->flags & AMD_IS_APU)
- 		return false;
- 
-+	/* ATRM is for on-platform devices only */
-+	if (dev_is_removable(&adev->pdev->dev))
-+		return false;
-+
- 	while ((pdev = pci_get_class(PCI_CLASS_DISPLAY_VGA << 8, pdev)) != NULL) {
- 		dhandle = ACPI_HANDLE(&pdev->dev);
- 		if (!dhandle)
 
 
 
