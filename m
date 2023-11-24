@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E12707F7D01
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AEE7F810A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F9621C211FA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F31581C2153D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50467381D4;
-	Fri, 24 Nov 2023 18:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A963035F04;
+	Fri, 24 Nov 2023 18:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/n5272z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxIlhF+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022EB39FF3;
-	Fri, 24 Nov 2023 18:20:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803DDC433C7;
-	Fri, 24 Nov 2023 18:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583B72C85B;
+	Fri, 24 Nov 2023 18:55:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82BAC433C7;
+	Fri, 24 Nov 2023 18:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850030;
-	bh=PLe+Dr7A3+Kch7S0JF0f1ENpFPHAJ/DSOotocBSpHio=;
+	s=korg; t=1700852104;
+	bh=yufmXQz/eo0ky4YwN70cgbYWF2LAlh6+sDS+SXjI24k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f/n5272zNV5vKHdxk2t1JqgVV+GlHL2T93QMswkvUtZt1TsSHyPTPj7GfCsmk11IE
-	 xOxPEhnyGe1LWZKUYuKd7ls86HVFZ6ukaJFqyP6eAEpTHkjw92DuFA9U81Uffuh3lq
-	 An+pbMsNCrUGhLCvlKUKHVpazujTPM4zsqgHm8Qk=
+	b=DxIlhF+YMvMqd5MadMBcqO4CIfw7jIpFSxNAmyrJ0RBTRG0S9aq0qK7m2Hilhd0qL
+	 8ubvI2j+ymBU/+2clWfGjbcqckzKBu8C2y59qgX62p+r9jyV0tbNOHpYlUi0nEtWX/
+	 8+3Ml5AIMLrvTcCxMnp1/aXmXluLO2aXmLCaC6CA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Micah Veilleux <micah.veilleux@iba-group.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 418/530] smb3: fix touch -h of symlink
+	Johan Hovold <johan+linaro@kernel.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.1 197/372] wifi: ath11k: fix htt pktlog locking
 Date: Fri, 24 Nov 2023 17:49:44 +0000
-Message-ID: <20231124172040.795225008@linuxfoundation.org>
+Message-ID: <20231124172017.020985740@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 475efd9808a3094944a56240b2711349e433fb66 upstream.
+commit 3f77c7d605b29df277d77e9ee75d96e7ad145d2d upstream.
 
-For example:
-      touch -h -t 02011200 testfile
-where testfile is a symlink would not change the timestamp, but
-      touch -t 02011200 testfile
-does work to change the timestamp of the target
+The ath11k active pdevs are protected by RCU but the htt pktlog handling
+code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section.
 
-Suggested-by: David Howells <dhowells@redhat.com>
-Reported-by: Micah Veilleux <micah.veilleux@iba-group.com>
-Closes: https://bugzilla.samba.org/show_bug.cgi?id=14476
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
+
+Compile tested only.
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019112521.2071-1-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath11k/dp_rx.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/cifsfs.c
-+++ b/fs/smb/client/cifsfs.c
-@@ -1191,6 +1191,7 @@ const char *cifs_get_link(struct dentry
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1621,14 +1621,20 @@ static void ath11k_htt_pktlog(struct ath
+ 	u8 pdev_id;
  
- const struct inode_operations cifs_symlink_inode_ops = {
- 	.get_link = cifs_get_link,
-+	.setattr = cifs_setattr,
- 	.permission = cifs_permission,
- 	.listxattr = cifs_listxattr,
- };
+ 	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
++
++	rcu_read_lock();
++
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
+ 	if (!ar) {
+ 		ath11k_warn(ab, "invalid pdev id %d on htt pktlog\n", pdev_id);
+-		return;
++		goto out;
+ 	}
+ 
+ 	trace_ath11k_htt_pktlog(ar, data->payload, hdr->size,
+ 				ar->ab->pktlog_defs_checksum);
++
++out:
++	rcu_read_unlock();
+ }
+ 
+ static void ath11k_htt_backpressure_event_handler(struct ath11k_base *ab,
 
 
 
