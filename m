@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743177F8085
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B3E7F7EB2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4C62825C3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CCB11C213C5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC48F33E9;
-	Fri, 24 Nov 2023 18:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A342E839;
+	Fri, 24 Nov 2023 18:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUq5psYE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flHqp61d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF3D2EAEA;
-	Fri, 24 Nov 2023 18:50:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08046C433C7;
-	Fri, 24 Nov 2023 18:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F5833CCA;
+	Fri, 24 Nov 2023 18:35:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50101C433C8;
+	Fri, 24 Nov 2023 18:35:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851826;
-	bh=6sp05aqOm33DVudnnRj90/2gKFfQqku8tJLVWoL/OwA=;
+	s=korg; t=1700850908;
+	bh=+Hzmn29WRJv0t0FUvH57J4CFMaP0yQkmUTb3ZqutTL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FUq5psYEc8qczIMhndieKL7FS7YbCdCU74Lm1wkl84+hs+Hkblok0/KjCc+rnxiKq
-	 GjQaHERfVvNy/AkDlnvXBFHljBFX2lBUrTKhdOD8kB32mf/T6i26voVlyBpp7FUSbA
-	 BtuZK9Xjdk6RD/4/gU0AYNB3lyTRptSqwcuQGclE=
+	b=flHqp61dwX13sQTVa2/HEqpQBcqItzunYJuIXhaQLu3YSyfD82VeaojvrwpgNQlYY
+	 cn9CxBjgcuZXDKupLHZmSoWizD/AJquevBvo66EQbreXVMu/JRzZYWen4BD5h5U5VZ
+	 L1xuAkVj3LSgV71BTt3kwEjJzzJZT/c9uXRWsaPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Shurong <zhang_shurong@foxmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/372] iio: adc: stm32-adc: harden against NULL pointer deref in stm32_adc_probe()
+	Quinn Tran <qutran@marvell.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.5 236/491] scsi: qla2xxx: Fix system crash due to bad pointer access
 Date: Fri, 24 Nov 2023 17:47:52 +0000
-Message-ID: <20231124172013.364118464@linuxfoundation.org>
+Message-ID: <20231124172031.649075462@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +53,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Quinn Tran <qutran@marvell.com>
 
-[ Upstream commit 3a23b384e7e3d64d5587ad10729a34d4f761517e ]
+commit 19597cad64d608aa8ac2f8aef50a50187a565223 upstream.
 
-of_match_device() may fail and returns a NULL pointer.
+User experiences system crash when running AER error injection.  The
+perturbation causes the abort-all-I/O path to trigger. The driver assumes
+all I/O on this path is FCP only. If there is both NVMe & FCP traffic, a
+system crash happens. Add additional check to see if I/O is FCP or not
+before access.
 
-In practice there is no known reasonable way to trigger this, but
-in case one is added in future, harden the code by adding the check
+PID: 999019  TASK: ff35d769f24722c0  CPU: 53  COMMAND: "kworker/53:1"
+ 0 [ff3f78b964847b58] machine_kexec at ffffffffae86973d
+ 1 [ff3f78b964847ba8] __crash_kexec at ffffffffae9be29d
+ 2 [ff3f78b964847c70] crash_kexec at ffffffffae9bf528
+ 3 [ff3f78b964847c78] oops_end at ffffffffae8282ab
+ 4 [ff3f78b964847c98] exc_page_fault at ffffffffaf2da502
+ 5 [ff3f78b964847cc0] asm_exc_page_fault at ffffffffaf400b62
+   [exception RIP: qla2x00_abort_srb+444]
+   RIP: ffffffffc07b5f8c  RSP: ff3f78b964847d78  RFLAGS: 00010046
+   RAX: 0000000000000282  RBX: ff35d74a0195a200  RCX: ff35d76886fd03a0
+   RDX: 0000000000000001  RSI: ffffffffc07c5ec8  RDI: ff35d74a0195a200
+   RBP: ff35d76913d22080   R8: ff35d7694d103200   R9: ff35d7694d103200
+   R10: 0000000100000000  R11: ffffffffb05d6630  R12: 0000000000010000
+   R13: ff3f78b964847df8  R14: ff35d768d8754000  R15: ff35d768877248e0
+   ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ 6 [ff3f78b964847d70] qla2x00_abort_srb at ffffffffc07b5f84 [qla2xxx]
+ 7 [ff3f78b964847de0] __qla2x00_abort_all_cmds at ffffffffc07b6238 [qla2xxx]
+ 8 [ff3f78b964847e38] qla2x00_abort_all_cmds at ffffffffc07ba635 [qla2xxx]
+ 9 [ff3f78b964847e58] qla2x00_terminate_rport_io at ffffffffc08145eb [qla2xxx]
+10 [ff3f78b964847e70] fc_terminate_rport_io at ffffffffc045987e [scsi_transport_fc]
+11 [ff3f78b964847e88] process_one_work at ffffffffae914f15
+12 [ff3f78b964847ed0] worker_thread at ffffffffae9154c0
+13 [ff3f78b964847f10] kthread at ffffffffae91c456
+14 [ff3f78b964847f50] ret_from_fork at ffffffffae8036ef
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_994DA85912C937E3B5405BA960B31ED90A08@qq.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f45bca8c5052 ("scsi: qla2xxx: Fix double scsi_done for abort path")
+Signed-off-by: Quinn Tran <qutran@marvell.com>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20231030064912.37912-1-njavali@marvell.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/stm32-adc-core.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/scsi/qla2xxx/qla_os.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/stm32-adc-core.c b/drivers/iio/adc/stm32-adc-core.c
-index 81d5db91c67bf..dee47b899e5df 100644
---- a/drivers/iio/adc/stm32-adc-core.c
-+++ b/drivers/iio/adc/stm32-adc-core.c
-@@ -695,6 +695,8 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 	struct stm32_adc_priv *priv;
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = pdev->dev.of_node;
-+	const struct of_device_id *of_id;
-+
- 	struct resource *res;
- 	u32 max_rate;
- 	int ret;
-@@ -707,8 +709,11 @@ static int stm32_adc_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 	platform_set_drvdata(pdev, &priv->common);
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1835,8 +1835,16 @@ static void qla2x00_abort_srb(struct qla
+ 		}
  
--	priv->cfg = (const struct stm32_adc_priv_cfg *)
--		of_match_device(dev->driver->of_match_table, dev)->data;
-+	of_id = of_match_device(dev->driver->of_match_table, dev);
-+	if (!of_id)
-+		return -ENODEV;
-+
-+	priv->cfg = (const struct stm32_adc_priv_cfg *)of_id->data;
- 	priv->nb_adc_max = priv->cfg->num_adcs;
- 	spin_lock_init(&priv->common.lock);
- 
--- 
-2.42.0
-
+ 		spin_lock_irqsave(qp->qp_lock_ptr, *flags);
+-		if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
+-			sp->done(sp, res);
++		switch (sp->type) {
++		case SRB_SCSI_CMD:
++			if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
++				sp->done(sp, res);
++			break;
++		default:
++			if (ret_cmd)
++				sp->done(sp, res);
++			break;
++		}
+ 	} else {
+ 		sp->done(sp, res);
+ 	}
 
 
 
