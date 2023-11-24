@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CF5D7F80B8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287D17F7CF9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F993B21916
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBD73B20DC9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7159D33CCA;
-	Fri, 24 Nov 2023 18:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75BE3A8C3;
+	Fri, 24 Nov 2023 18:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR8TvLoh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAbOGM6t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293EA2E858;
-	Fri, 24 Nov 2023 18:52:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6410C433C8;
-	Fri, 24 Nov 2023 18:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF1039FF3;
+	Fri, 24 Nov 2023 18:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFD9C433C8;
+	Fri, 24 Nov 2023 18:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851934;
-	bh=K2iQpWPpxYhqCCpLB1INqDYhCSV2w2vyb5gpWRssjQg=;
+	s=korg; t=1700850008;
+	bh=9+cdHLFVFVLGtebQB9U9enHBSoA8TA7cfsDSUPe1sZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fR8TvLohWtt87akpMYLjk7B+e1miQxqTvPBX8V2OXUTISW8mRJgkp7T1qkOlz77cO
-	 HqJ5KIsdfwxmZDdCxHkGc+vIk4jyVCHLdqW3dud3oF8+gNIrfJWOpMeweGyXS9J7AR
-	 KovMRgRyej23mFkgX2lgZpn6Zc9lWASjO5vMgKMs=
+	b=mAbOGM6tBxLEeWNJLS8tW0no22BMYQ/e3ETZqvAKDZtvpQMjot5PEcYDOvnz3d2Iw
+	 RcJysTJmFmplTtpkRmD1ZgtMd4y+z9WuidCKc+FqEJ+ezmz2rN3Ov/YwDFqjky7BDM
+	 koW2s21FiZx6HoXvbMrQC129Iu7vvC2pyZ0QYIUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/372] net/mlx5e: Reduce the size of icosq_str
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 374/530] dmaengine: stm32-mdma: correct desc prep when channel running
 Date: Fri, 24 Nov 2023 17:49:00 +0000
-Message-ID: <20231124172015.589402172@linuxfoundation.org>
+Message-ID: <20231124172039.392833575@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,78 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit dce94142842e119b982c27c1b62bd20890c7fd21 ]
+commit 03f25d53b145bc2f7ccc82fc04e4482ed734f524 upstream.
 
-icosq_str size is unnecessarily too long, and it causes a build warning
--Wformat-truncation with W=1. Looking closely, It doesn't need to be 255B,
-hence this patch reduces the size to 32B which should be more than enough
-to host the string: "ICOSQ: 0x%x, ".
+In case of the prep descriptor while the channel is already running, the
+CCR register value stored into the channel could already have its EN bit
+set.  This would lead to a bad transfer since, at start transfer time,
+enabling the channel while other registers aren't yet properly set.
+To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
+into the mdma channel structure.
 
-While here, add a missing space in the formatted string.
-
-This fixes the following build warning:
-
-$ KCFLAGS='-Wall -Werror'
-$ make O=/tmp/kbuild/linux W=1 -s -j12 drivers/net/ethernet/mellanox/mlx5/core/
-
-drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c: In function 'mlx5e_reporter_rx_timeout':
-drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c:718:56:
-error: ', CQ: 0x' directive output may be truncated writing 8 bytes into a region of size between 0 and 255 [-Werror=format-truncation=]
-  718 |                  "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
-      |                                                        ^~~~~~~~
-drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c:717:9: note: 'snprintf' output between 43 and 322 bytes into a destination of size 288
-  717 |         snprintf(err_str, sizeof(err_str),
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  718 |                  "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  719 |                  rq->ix, icosq_str, rq->rqn, rq->cq.mcq.cqn);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Fixes: 521f31af004a ("net/mlx5e: Allow RQ outside of channel context")
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-14-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+Tested-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://lore.kernel.org/r/20231009082450.452877-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c | 4 ++--
+ drivers/dma/stm32-mdma.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-index 1ae15b8536a85..9b1f1369ac4d8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-@@ -668,11 +668,11 @@ static int mlx5e_rx_reporter_dump(struct devlink_health_reporter *reporter,
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -489,7 +489,7 @@ static int stm32_mdma_set_xfer_param(str
+ 	src_maxburst = chan->dma_config.src_maxburst;
+ 	dst_maxburst = chan->dma_config.dst_maxburst;
  
- void mlx5e_reporter_rx_timeout(struct mlx5e_rq *rq)
- {
--	char icosq_str[MLX5E_REPORTER_PER_Q_MAX_LEN] = {};
- 	char err_str[MLX5E_REPORTER_PER_Q_MAX_LEN];
- 	struct mlx5e_icosq *icosq = rq->icosq;
- 	struct mlx5e_priv *priv = rq->priv;
- 	struct mlx5e_err_ctx err_ctx = {};
-+	char icosq_str[32] = {};
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
  
- 	err_ctx.ctx = rq;
- 	err_ctx.recover = mlx5e_rx_reporter_timeout_recover;
-@@ -681,7 +681,7 @@ void mlx5e_reporter_rx_timeout(struct mlx5e_rq *rq)
- 	if (icosq)
- 		snprintf(icosq_str, sizeof(icosq_str), "ICOSQ: 0x%x, ", icosq->sqn);
- 	snprintf(err_str, sizeof(err_str),
--		 "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
-+		 "RX timeout on channel: %d, %s RQ: 0x%x, CQ: 0x%x",
- 		 rq->ix, icosq_str, rq->rqn, rq->cq.mcq.cqn);
+@@ -965,7 +965,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_ch
+ 	if (!desc)
+ 		return NULL;
  
- 	mlx5e_health_report(priv, priv->rx_reporter, err_str, &err_ctx);
--- 
-2.42.0
-
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
 
 
 
