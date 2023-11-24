@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4407F7FB5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE43B7F7B3E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9CAD1C214EE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B5801C20D49
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE9A2C85B;
-	Fri, 24 Nov 2023 18:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7235E39FF7;
+	Fri, 24 Nov 2023 18:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8IhzFwi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVgFtssM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569FF2D787;
-	Fri, 24 Nov 2023 18:43:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAD96C433C8;
-	Fri, 24 Nov 2023 18:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2B339FC6;
+	Fri, 24 Nov 2023 18:03:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4DE2C433C8;
+	Fri, 24 Nov 2023 18:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851424;
-	bh=cBxWFi9W6DRgDrWHgWxC3F7eQCvSfGcv5H3e9SoZ9U0=;
+	s=korg; t=1700848994;
+	bh=vcsxQhQuS3M71sn0jWmTLn1OxvkioakeQfP8lswMimE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8IhzFwi3/xcMja/ZcIHjJ9w0/z8zcGIesCdXP+FIgKwcGIhQWRiGvtlWzaxudg1z
-	 ujT+r+5gwTvz9LGEfU08VvCc5P1iD4lMblPnlxmnp5yVnhtR0vD4Bk2Fcj88kJ+Yze
-	 VyF6/7xpyjPAmISxNJO7v9KZXsuOqjIHlKuMEGk8=
+	b=PVgFtssMJywWh+vKO1WwdhoMVkfbYFslXXuFDA1K5uvgcJPYtevuZbyd+NyGwsUCx
+	 fnkBc9hcfiAeVCyszzw3w1sw7aHJ0Lnd750ilZgnh7vG9IuzdDTCA2sy6R3TxPz5SZ
+	 8jELQPgZSLubN4fFrRf+eJbdhSvdf/RuS6j1xhzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang.tang@suse.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.5 443/491] mptcp: add validity check for sending RM_ADDR
-Date: Fri, 24 Nov 2023 17:51:19 +0000
-Message-ID: <20231124172037.920105725@linuxfoundation.org>
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kunkun Jiang <jiangkunkun@huawei.com>
+Subject: [PATCH 4.14 56/57] scsi: virtio_scsi: limit number of hw queues by nr_cpu_ids
+Date: Fri, 24 Nov 2023 17:51:20 +0000
+Message-ID: <20231124171932.417823325@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +54,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-commit 8df220b29282e8b450ea57be62e1eccd4996837c upstream.
+commit 1978f30a87732d4d9072a20abeded9fe17884f1b upstream.
 
-This patch adds the validity check for sending RM_ADDRs for userspace PM
-in mptcp_pm_remove_addrs(), only send a RM_ADDR when the address is in the
-anno_list or conn_list.
+When tag_set->nr_maps is 1, the block layer limits the number of hw queues
+by nr_cpu_ids. No matter how many hw queues are used by virtio-scsi, as it
+has (tag_set->nr_maps == 1), it can use at most nr_cpu_ids hw queues.
 
-Fixes: 8b1c94da1e48 ("mptcp: only send RM_ADDR in nl_cmd_remove")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-3-7b9cd6a7b7f4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In addition, specifically for pci scenario, when the 'num_queues' specified
+by qemu is more than maxcpus, virtio-scsi would not be able to allocate
+more than maxcpus vectors in order to have a vector for each queue. As a
+result, it falls back into MSI-X with one vector for config and one shared
+for queues.
+
+Considering above reasons, this patch limits the number of hw queues used
+by virtio-scsi by nr_cpu_ids.
+
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/scsi/virtio_scsi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1537,8 +1537,9 @@ void mptcp_pm_remove_addrs(struct mptcp_
- 	struct mptcp_pm_addr_entry *entry;
+--- a/drivers/scsi/virtio_scsi.c
++++ b/drivers/scsi/virtio_scsi.c
+@@ -891,6 +891,7 @@ static int virtscsi_probe(struct virtio_
  
- 	list_for_each_entry(entry, rm_list, list) {
--		remove_anno_list_by_saddr(msk, &entry->addr);
--		if (alist.nr < MPTCP_RM_IDS_MAX)
-+		if ((remove_anno_list_by_saddr(msk, &entry->addr) ||
-+		     lookup_subflow_by_saddr(&msk->conn_list, &entry->addr)) &&
-+		    alist.nr < MPTCP_RM_IDS_MAX)
- 			alist.ids[alist.nr++] = entry->addr.id;
- 	}
+ 	/* We need to know how many queues before we allocate. */
+ 	num_queues = virtscsi_config_get(vdev, num_queues) ? : 1;
++	num_queues = min_t(unsigned int, nr_cpu_ids, num_queues);
+ 
+ 	num_targets = virtscsi_config_get(vdev, max_target) + 1;
  
 
 
