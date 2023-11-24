@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24887F7A9E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71C57F810C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF21281439
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:56:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2EC21C21648
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238A4381DF;
-	Fri, 24 Nov 2023 17:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BBB33CCA;
+	Fri, 24 Nov 2023 18:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc65jkbX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfjPBuWn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9A7381D6;
-	Fri, 24 Nov 2023 17:56:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C1DC433C8;
-	Fri, 24 Nov 2023 17:56:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90EFC2E84A;
+	Fri, 24 Nov 2023 18:55:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4E9C433C7;
+	Fri, 24 Nov 2023 18:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848614;
-	bh=IKN1TftxjQxL0xHAw/rfxI86tFXgEGJ2ZooGZcmAy8s=;
+	s=korg; t=1700852107;
+	bh=tvgYrjsdO+oJY9padLlsBpMNTHfYUtj4+VyZtYNVX78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vc65jkbX48MZSfLIPERaQRnTuV5/PvbIurjTKYCivvfpRa0oS2uqt02dDTPGcOoG+
-	 02I13D63eRzH/naULJpKKOAKodTtx8+zuIMsYzXRk6+76Cvb21/EbjJoxWz6rA4Ce9
-	 iu+2DOOTprPFgPqdqMFaCbTXvR8+7gE05q60Q4x4=
+	b=tfjPBuWnwAN7gGBiaCZn/ZuCcrklslzEtkSnPhRqRZaz/OVv29Q7Lp3TYtadqcbvP
+	 F4zBKAFlOwMY6YLubgPTS8vrwm1kSDf3ejYZO3VRrMwwq7vnt5+Rqr2vdKB3YVNs3K
+	 dCgpfnOg7XlbM2+LELNm12PnhA5NMdHgmWbsJWw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 02/97] perf/core: Bail out early if the request AUX area is out of bound
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.1 188/372] watchdog: move softlockup_panic back to early_param
 Date: Fri, 24 Nov 2023 17:49:35 +0000
-Message-ID: <20231124171934.215695134@linuxfoundation.org>
+Message-ID: <20231124172016.732005757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +52,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
+commit 8b793bcda61f6c3ed4f5b2ded7530ef6749580cb upstream.
 
-When perf-record with a large AUX area, e.g 4GB, it fails with:
+Setting softlockup_panic from do_sysctl_args() causes it to take effect
+later in boot.  The lockup detector is enabled before SMP is brought
+online, but do_sysctl_args runs afterwards.  If a user wants to set
+softlockup_panic on boot and have it trigger should a softlockup occur
+during onlining of the non-boot processors, they could do this prior to
+commit f117955a2255 ("kernel/watchdog.c: convert {soft/hard}lockup boot
+parameters to sysctl aliases").  However, after this commit the value
+of softlockup_panic is set too late to be of help for this type of
+problem.  Restore the prior behavior.
 
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate memory)
-
-and it reveals a WARNING with __alloc_pages():
-
-	------------[ cut here ]------------
-	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
-	Call trace:
-	 __alloc_pages+0x1ec/0x248
-	 __kmalloc_large_node+0xc0/0x1f8
-	 __kmalloc_node+0x134/0x1e8
-	 rb_alloc_aux+0xe0/0x298
-	 perf_mmap+0x440/0x660
-	 mmap_region+0x308/0x8a8
-	 do_mmap+0x3c0/0x528
-	 vm_mmap_pgoff+0xf4/0x1b8
-	 ksys_mmap_pgoff+0x18c/0x218
-	 __arm64_sys_mmap+0x38/0x58
-	 invoke_syscall+0x50/0x128
-	 el0_svc_common.constprop.0+0x58/0x188
-	 do_el0_svc+0x34/0x50
-	 el0_svc+0x34/0x108
-	 el0t_64_sync_handler+0xb8/0xc0
-	 el0t_64_sync+0x1a4/0x1a8
-
-'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
-maintains AUX trace pages. The allocated page for this array is physically
-contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
-size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
-WARNING.
-
-So bail out early with -ENOMEM if the request AUX area is out of bound,
-e.g.:
-
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate memory)
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Cc: stable@vger.kernel.org
+Fixes: f117955a2255 ("kernel/watchdog.c: convert {soft/hard}lockup boot parameters to sysctl aliases")
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/ring_buffer.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/proc/proc_sysctl.c |    1 -
+ kernel/watchdog.c     |    7 +++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index 12f351b253bbb..2f6f77658eba2 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -639,6 +639,12 @@ int rb_alloc_aux(struct ring_buffer *rb, struct perf_event *event,
- 		}
- 	}
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1814,7 +1814,6 @@ static const struct sysctl_alias sysctl_
+ 	{"hung_task_panic",			"kernel.hung_task_panic" },
+ 	{"numa_zonelist_order",			"vm.numa_zonelist_order" },
+ 	{"softlockup_all_cpu_backtrace",	"kernel.softlockup_all_cpu_backtrace" },
+-	{"softlockup_panic",			"kernel.softlockup_panic" },
+ 	{ }
+ };
  
-+	/*
-+	 * kcalloc_node() is unable to allocate buffer if the size is larger
-+	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
-+	 */
-+	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
-+		return -ENOMEM;
- 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
- 				     node);
- 	if (!rb->aux_pages)
--- 
-2.42.0
-
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -183,6 +183,13 @@ static DEFINE_PER_CPU(unsigned long, hrt
+ static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts_saved);
+ static unsigned long soft_lockup_nmi_warn;
+ 
++static int __init softlockup_panic_setup(char *str)
++{
++	softlockup_panic = simple_strtoul(str, NULL, 0);
++	return 1;
++}
++__setup("softlockup_panic=", softlockup_panic_setup);
++
+ static int __init nowatchdog_setup(char *str)
+ {
+ 	watchdog_user_enabled = 0;
 
 
 
