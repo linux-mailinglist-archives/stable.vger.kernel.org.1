@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-1341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DC17F7F2F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 632567F7D11
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1579A2823F3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3C00B21692
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95627364BA;
-	Fri, 24 Nov 2023 18:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EE339FFD;
+	Fri, 24 Nov 2023 18:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6q8i0n8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lp3sJe4l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508D12E40E;
-	Fri, 24 Nov 2023 18:39:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1773C433C8;
-	Fri, 24 Nov 2023 18:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3F4381D6;
+	Fri, 24 Nov 2023 18:21:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A16FC433C7;
+	Fri, 24 Nov 2023 18:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851159;
-	bh=RnvbLPXpgSft2FxJMMOVjIV7vNBXhlGzv8xXX09JAo0=;
+	s=korg; t=1700850068;
+	bh=C5YY212lGKekfpS09Ujqwja6tQ6fnTuNioRWYaO7ZpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C6q8i0n8WlfpzNUCUfyYFWlWlvkLwv1DYHVqu8GAjl6V9dDIEHpAkDOEz0hU0nuzv
-	 Qwn0PyDjLazrfhD4DrEnL9WcVf0wbc5wumFR5sd5KeGE7KFrIiSI3vZM+F3DVAvtzP
-	 dvD1+Lwre/dTOi6HKKJpmyE460UjsjEh+NBStp3A=
+	b=lp3sJe4luz5/Pm95/CADIB5nX2rpolYuDFFv6z7Fv0gBikr0yq99bFx1Fr3S8wWAt
+	 fUTl/z4hE8wj5BgZ5mhjnRJL8cNQQFTT15P0hjd6ZQvZMf9u/nunPFgBpWutmDHyFt
+	 N0NO6Jnt9gNApjg3Dz2o7goIHm+rp2a6OawK1ODA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.5 337/491] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
-Date: Fri, 24 Nov 2023 17:49:33 +0000
-Message-ID: <20231124172034.698888553@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	"Wieczor-Retman, Maciej" <maciej.wieczor-retman@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 408/530] selftests/resctrl: Remove bw_report and bm_type from main()
+Date: Fri, 24 Nov 2023 17:49:34 +0000
+Message-ID: <20231124172040.471205466@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +54,176 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
+[ Upstream commit 47e36f16c7846bf3627ff68525e02555c53dc99e ]
 
-JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
-however, other process could intercept the EIO information from bdev's
-mapping, which leads journal recovering successful even EIO occurs during
-data written back to fs device.
+bw_report is always set to "reads" and bm_type is set to "fill_buf" but
+is never used.
 
-We found this problem in our product, iscsi + multipath is chosen for block
-device of ext4. Unstable network may trigger kpartx to rescan partitions in
-device mapper layer. Detailed process is shown as following:
+Set bw_report directly to "reads" in MBA/MBM test and remove bm_type.
 
-  mount          kpartx          irq
-jbd2_journal_recover
- do_one_pass
-  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
-  mark_buffer_dirty // mark bh dirty
-         vfs_read
-	  generic_file_read_iter // dio
-	   filemap_write_and_wait_range
-	    __filemap_fdatawrite_range
-	     do_writepages
-	      block_write_full_folio
-	       submit_bh_wbc
-	            >>  EIO occurs in disk  <<
-	                     end_buffer_async_write
-			      mark_buffer_write_io_error
-			       mapping_set_error
-			        set_bit(AS_EIO, &mapping->flags) // set!
-	    filemap_check_errors
-	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
- err2 = sync_blockdev
-  filemap_write_and_wait
-   filemap_check_errors
-    test_and_clear_bit(AS_EIO, &mapping->flags) // false
- err2 = 0
-
-Filesystem is mounted successfully even data from journal is failed written
-into disk, and ext4/ocfs2 could become corrupted.
-
-Fix it by comparing the wb_err state in fs block device before recovering
-and after recovering.
-
-A reproducer can be found in the kernel bugzilla referenced below.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: "Wieczor-Retman, Maciej" <maciej.wieczor-retman@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: 3aff51464455 ("selftests/resctrl: Extend signal handler coverage to unmount on receiving signal")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/recovery.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/testing/selftests/resctrl/mba_test.c     |  4 ++--
+ tools/testing/selftests/resctrl/mbm_test.c     |  4 ++--
+ tools/testing/selftests/resctrl/resctrl.h      |  4 ++--
+ .../testing/selftests/resctrl/resctrl_tests.c  | 18 +++++++-----------
+ 4 files changed, 13 insertions(+), 17 deletions(-)
 
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -289,6 +289,8 @@ int jbd2_journal_recover(journal_t *jour
- 	journal_superblock_t *	sb;
+diff --git a/tools/testing/selftests/resctrl/mba_test.c b/tools/testing/selftests/resctrl/mba_test.c
+index c7d1ec6d81ea8..c5c0588779d2b 100644
+--- a/tools/testing/selftests/resctrl/mba_test.c
++++ b/tools/testing/selftests/resctrl/mba_test.c
+@@ -141,7 +141,7 @@ void mba_test_cleanup(void)
+ 	remove(RESULT_FILE_NAME);
+ }
  
- 	struct recovery_info	info;
-+	errseq_t		wb_err;
-+	struct address_space	*mapping;
+-int mba_schemata_change(int cpu_no, char *bw_report, char **benchmark_cmd)
++int mba_schemata_change(int cpu_no, char **benchmark_cmd)
+ {
+ 	struct resctrl_val_param param = {
+ 		.resctrl_val	= MBA_STR,
+@@ -149,7 +149,7 @@ int mba_schemata_change(int cpu_no, char *bw_report, char **benchmark_cmd)
+ 		.mongrp		= "m1",
+ 		.cpu_no		= cpu_no,
+ 		.filename	= RESULT_FILE_NAME,
+-		.bw_report	= bw_report,
++		.bw_report	= "reads",
+ 		.setup		= mba_setup
+ 	};
+ 	int ret;
+diff --git a/tools/testing/selftests/resctrl/mbm_test.c b/tools/testing/selftests/resctrl/mbm_test.c
+index d0c26a5e89fb9..724412186d636 100644
+--- a/tools/testing/selftests/resctrl/mbm_test.c
++++ b/tools/testing/selftests/resctrl/mbm_test.c
+@@ -109,7 +109,7 @@ void mbm_test_cleanup(void)
+ 	remove(RESULT_FILE_NAME);
+ }
  
- 	memset(&info, 0, sizeof(info));
- 	sb = journal->j_superblock;
-@@ -306,6 +308,9 @@ int jbd2_journal_recover(journal_t *jour
- 		return 0;
+-int mbm_bw_change(size_t span, int cpu_no, char *bw_report, char **benchmark_cmd)
++int mbm_bw_change(size_t span, int cpu_no, char **benchmark_cmd)
+ {
+ 	struct resctrl_val_param param = {
+ 		.resctrl_val	= MBM_STR,
+@@ -118,7 +118,7 @@ int mbm_bw_change(size_t span, int cpu_no, char *bw_report, char **benchmark_cmd
+ 		.span		= span,
+ 		.cpu_no		= cpu_no,
+ 		.filename	= RESULT_FILE_NAME,
+-		.bw_report	=  bw_report,
++		.bw_report	= "reads",
+ 		.setup		= mbm_setup
+ 	};
+ 	int ret;
+diff --git a/tools/testing/selftests/resctrl/resctrl.h b/tools/testing/selftests/resctrl/resctrl.h
+index 9e46fa90e7be7..df75c89060329 100644
+--- a/tools/testing/selftests/resctrl/resctrl.h
++++ b/tools/testing/selftests/resctrl/resctrl.h
+@@ -93,10 +93,10 @@ int perf_event_open(struct perf_event_attr *hw_event, pid_t pid, int cpu,
+ 		    int group_fd, unsigned long flags);
+ int run_fill_buf(size_t span, int memflush, int op, bool once);
+ int resctrl_val(char **benchmark_cmd, struct resctrl_val_param *param);
+-int mbm_bw_change(size_t span, int cpu_no, char *bw_report, char **benchmark_cmd);
++int mbm_bw_change(size_t span, int cpu_no, char **benchmark_cmd);
+ void tests_cleanup(void);
+ void mbm_test_cleanup(void);
+-int mba_schemata_change(int cpu_no, char *bw_report, char **benchmark_cmd);
++int mba_schemata_change(int cpu_no, char **benchmark_cmd);
+ void mba_test_cleanup(void);
+ int get_cbm_mask(char *cache_type, char *cbm_mask);
+ int get_cache_size(int cpu_no, char *cache_type, unsigned long *cache_size);
+diff --git a/tools/testing/selftests/resctrl/resctrl_tests.c b/tools/testing/selftests/resctrl/resctrl_tests.c
+index 59a361660d8c8..116f67d833f75 100644
+--- a/tools/testing/selftests/resctrl/resctrl_tests.c
++++ b/tools/testing/selftests/resctrl/resctrl_tests.c
+@@ -70,8 +70,7 @@ void tests_cleanup(void)
+ 	cat_test_cleanup();
+ }
+ 
+-static void run_mbm_test(char **benchmark_cmd, size_t span,
+-			 int cpu_no, char *bw_report)
++static void run_mbm_test(char **benchmark_cmd, size_t span, int cpu_no)
+ {
+ 	int res;
+ 
+@@ -90,7 +89,7 @@ static void run_mbm_test(char **benchmark_cmd, size_t span,
+ 		goto umount;
  	}
  
-+	wb_err = 0;
-+	mapping = journal->j_fs_dev->bd_inode->i_mapping;
-+	errseq_check_and_advance(&mapping->wb_err, &wb_err);
- 	err = do_one_pass(journal, &info, PASS_SCAN);
- 	if (!err)
- 		err = do_one_pass(journal, &info, PASS_REVOKE);
-@@ -329,6 +334,9 @@ int jbd2_journal_recover(journal_t *jour
- 	err2 = sync_blockdev(journal->j_fs_dev);
- 	if (!err)
- 		err = err2;
-+	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
-+	if (!err)
-+		err = err2;
- 	/* Make sure all replayed data is on permanent storage */
- 	if (journal->j_flags & JBD2_BARRIER) {
- 		err2 = blkdev_issue_flush(journal->j_fs_dev);
+-	res = mbm_bw_change(span, cpu_no, bw_report, benchmark_cmd);
++	res = mbm_bw_change(span, cpu_no, benchmark_cmd);
+ 	ksft_test_result(!res, "MBM: bw change\n");
+ 	if ((get_vendor() == ARCH_INTEL) && res)
+ 		ksft_print_msg("Intel MBM may be inaccurate when Sub-NUMA Clustering is enabled. Check BIOS configuration.\n");
+@@ -99,7 +98,7 @@ static void run_mbm_test(char **benchmark_cmd, size_t span,
+ 	umount_resctrlfs();
+ }
+ 
+-static void run_mba_test(char **benchmark_cmd, int cpu_no, char *bw_report)
++static void run_mba_test(char **benchmark_cmd, int cpu_no)
+ {
+ 	int res;
+ 
+@@ -118,7 +117,7 @@ static void run_mba_test(char **benchmark_cmd, int cpu_no, char *bw_report)
+ 		goto umount;
+ 	}
+ 
+-	res = mba_schemata_change(cpu_no, bw_report, benchmark_cmd);
++	res = mba_schemata_change(cpu_no, benchmark_cmd);
+ 	ksft_test_result(!res, "MBA: schemata change\n");
+ 
+ umount:
+@@ -179,9 +178,9 @@ static void run_cat_test(int cpu_no, int no_of_bits)
+ int main(int argc, char **argv)
+ {
+ 	bool has_ben = false, mbm_test = true, mba_test = true, cmt_test = true;
+-	char *benchmark_cmd[BENCHMARK_ARGS], bw_report[64], bm_type[64];
+ 	char benchmark_cmd_area[BENCHMARK_ARGS][BENCHMARK_ARG_SIZE];
+ 	int c, cpu_no = 1, argc_new = argc, i, no_of_bits = 0;
++	char *benchmark_cmd[BENCHMARK_ARGS];
+ 	int ben_ind, ben_count, tests = 0;
+ 	size_t span = 250 * MB;
+ 	bool cat_test = true;
+@@ -284,9 +283,6 @@ int main(int argc, char **argv)
+ 		benchmark_cmd[5] = NULL;
+ 	}
+ 
+-	sprintf(bw_report, "reads");
+-	sprintf(bm_type, "fill_buf");
+-
+ 	if (!check_resctrlfs_support())
+ 		return ksft_exit_skip("resctrl FS does not exist. Enable X86_CPU_RESCTRL config option.\n");
+ 
+@@ -298,10 +294,10 @@ int main(int argc, char **argv)
+ 	ksft_set_plan(tests ? : 4);
+ 
+ 	if (mbm_test)
+-		run_mbm_test(benchmark_cmd, span, cpu_no, bw_report);
++		run_mbm_test(benchmark_cmd, span, cpu_no);
+ 
+ 	if (mba_test)
+-		run_mba_test(benchmark_cmd, cpu_no, bw_report);
++		run_mba_test(benchmark_cmd, cpu_no);
+ 
+ 	if (cmt_test)
+ 		run_cmt_test(benchmark_cmd, cpu_no);
+-- 
+2.42.0
+
 
 
 
