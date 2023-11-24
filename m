@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C44B17F7ABB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD847F7D22
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67F50B21021
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57B68282107
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9508439FD4;
-	Fri, 24 Nov 2023 17:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719973A8C3;
+	Fri, 24 Nov 2023 18:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T56YnDNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ehpfpdfi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B75E31740;
-	Fri, 24 Nov 2023 17:58:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6F7C433C8;
-	Fri, 24 Nov 2023 17:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B6D39FE1;
+	Fri, 24 Nov 2023 18:21:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6BBC433C8;
+	Fri, 24 Nov 2023 18:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848684;
-	bh=uuH0shEGo4vJKB7iwFcz99TphHuRy/7cM1bZrc8HI98=;
+	s=korg; t=1700850102;
+	bh=oQe3//lJbPHcIu/5AWz1ZT9gNPolxy3Yg9J0LYU25+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T56YnDNL3bzgPF6ylnOYe2e4UOosQT7fDzwiZYAttGc8+keMbyXq/pLyFoovqvx3c
-	 uFait9be//S8DSRQMlbJpi7dcFZMJtp4qODD9w8FmbD2oeN4qXPzEStsRt8yTOrPtX
-	 bQaHaqnzB8Psy6P/OjyBsnJH/km0mVnw42jriyb8=
+	b=EhpfpdfiFR52/l+3DuEVx0Xv88Og+3h4g5gWaDUYk5hw7LN4+7zOd0ErpigJNUxaG
+	 eDcKzZCywvBy+h+kIm2IHgZIP54PbefC2D97XyCYiSx1Zkm385ZJ/hdWW6m0moN9AL
+	 mk03Di3o5HJ6IypJ7gCmVIzbCCIW8yYNzO8i6L2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 39/97] tipc: Fix kernel-infoleak due to uninitialized TLV value
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 446/530] net: dsa: lan9303: consequently nested-lock physical MDIO
 Date: Fri, 24 Nov 2023 17:50:12 +0000
-Message-ID: <20231124171935.612582487@linuxfoundation.org>
+Message-ID: <20231124172041.671883602@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,118 +53,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit fb317eb23b5ee4c37b0656a9a52a3db58d9dd072 ]
+commit 5a22fbcc10f3f7d94c5d88afbbffa240a3677057 upstream.
 
-KMSAN reported the following kernel-infoleak issue:
+When LAN9303 is MDIO-connected two callchains exist into
+mdio->bus->write():
 
-=====================================================
-BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-BUG: KMSAN: kernel-infoleak in copy_to_user_iter lib/iov_iter.c:24 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_ubuf include/linux/iov_iter.h:29 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
-BUG: KMSAN: kernel-infoleak in iterate_and_advance include/linux/iov_iter.h:271 [inline]
-BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x4ec/0x2bc0 lib/iov_iter.c:186
- instrument_copy_to_user include/linux/instrumented.h:114 [inline]
- copy_to_user_iter lib/iov_iter.c:24 [inline]
- iterate_ubuf include/linux/iov_iter.h:29 [inline]
- iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
- iterate_and_advance include/linux/iov_iter.h:271 [inline]
- _copy_to_iter+0x4ec/0x2bc0 lib/iov_iter.c:186
- copy_to_iter include/linux/uio.h:197 [inline]
- simple_copy_to_iter net/core/datagram.c:532 [inline]
- __skb_datagram_iter.5+0x148/0xe30 net/core/datagram.c:420
- skb_copy_datagram_iter+0x52/0x210 net/core/datagram.c:546
- skb_copy_datagram_msg include/linux/skbuff.h:3960 [inline]
- netlink_recvmsg+0x43d/0x1630 net/netlink/af_netlink.c:1967
- sock_recvmsg_nosec net/socket.c:1044 [inline]
- sock_recvmsg net/socket.c:1066 [inline]
- __sys_recvfrom+0x476/0x860 net/socket.c:2246
- __do_sys_recvfrom net/socket.c:2264 [inline]
- __se_sys_recvfrom net/socket.c:2260 [inline]
- __x64_sys_recvfrom+0x130/0x200 net/socket.c:2260
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+1. switch ports 1&2 ("physical" PHYs):
 
-Uninit was created at:
- slab_post_alloc_hook+0x103/0x9e0 mm/slab.h:768
- slab_alloc_node mm/slub.c:3478 [inline]
- kmem_cache_alloc_node+0x5f7/0xb50 mm/slub.c:3523
- kmalloc_reserve+0x13c/0x4a0 net/core/skbuff.c:560
- __alloc_skb+0x2fd/0x770 net/core/skbuff.c:651
- alloc_skb include/linux/skbuff.h:1286 [inline]
- tipc_tlv_alloc net/tipc/netlink_compat.c:156 [inline]
- tipc_get_err_tlv+0x90/0x5d0 net/tipc/netlink_compat.c:170
- tipc_nl_compat_recv+0x1042/0x15d0 net/tipc/netlink_compat.c:1324
- genl_family_rcv_msg_doit net/netlink/genetlink.c:972 [inline]
- genl_family_rcv_msg net/netlink/genetlink.c:1052 [inline]
- genl_rcv_msg+0x1220/0x12c0 net/netlink/genetlink.c:1067
- netlink_rcv_skb+0x4a4/0x6a0 net/netlink/af_netlink.c:2545
- genl_rcv+0x41/0x60 net/netlink/genetlink.c:1076
- netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
- netlink_unicast+0xf4b/0x1230 net/netlink/af_netlink.c:1368
- netlink_sendmsg+0x1242/0x1420 net/netlink/af_netlink.c:1910
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- ____sys_sendmsg+0x997/0xd60 net/socket.c:2588
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2642
- __sys_sendmsg net/socket.c:2671 [inline]
- __do_sys_sendmsg net/socket.c:2680 [inline]
- __se_sys_sendmsg net/socket.c:2678 [inline]
- __x64_sys_sendmsg+0x2fa/0x4a0 net/socket.c:2678
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+virtual (switch-internal) MDIO bus (lan9303_switch_ops->phy_{read|write})->
+  lan9303_mdio_phy_{read|write} -> mdiobus_{read|write}_nested
 
-Bytes 34-35 of 36 are uninitialized
-Memory access of size 36 starts at ffff88802d464a00
-Data copied to user address 00007ff55033c0a0
+2. LAN9303 virtual PHY:
 
-CPU: 0 PID: 30322 Comm: syz-executor.0 Not tainted 6.6.0-14500-g1c41041124bd #10
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
-=====================================================
+virtual MDIO bus (lan9303_phy_{read|write}) ->
+  lan9303_virt_phy_reg_{read|write} -> regmap -> lan9303_mdio_{read|write}
 
-tipc_add_tlv() puts TLV descriptor and value onto `skb`. This size is
-calculated with TLV_SPACE() macro. It adds the size of struct tlv_desc and
-the length of TLV value passed as an argument, and aligns the result to a
-multiple of TLV_ALIGNTO, i.e., a multiple of 4 bytes.
+If the latter functions just take
+mutex_lock(&sw_dev->device->bus->mdio_lock) it triggers a LOCKDEP
+false-positive splat. It's false-positive because the first
+mdio_lock in the second callchain above belongs to virtual MDIO bus, the
+second mdio_lock belongs to physical MDIO bus.
 
-If the size of struct tlv_desc plus the length of TLV value is not aligned,
-the current implementation leaves the remaining bytes uninitialized. This
-is the cause of the above kernel-infoleak issue.
+Consequent annotation in lan9303_mdio_{read|write} as nested lock
+(similar to lan9303_mdio_phy_{read|write}, it's the same physical MDIO bus)
+prevents the following splat:
 
-This patch resolves this issue by clearing data up to an aligned size.
+WARNING: possible circular locking dependency detected
+5.15.71 #1 Not tainted
+------------------------------------------------------
+kworker/u4:3/609 is trying to acquire lock:
+ffff000011531c68 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}, at: regmap_lock_mutex
+but task is already holding lock:
+ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
+which lock already depends on the new lock.
+the existing dependency chain (in reverse order) is:
+-> #1 (&bus->mdio_lock){+.+.}-{3:3}:
+       lock_acquire
+       __mutex_lock
+       mutex_lock_nested
+       lan9303_mdio_read
+       _regmap_read
+       regmap_read
+       lan9303_probe
+       lan9303_mdio_probe
+       mdio_probe
+       really_probe
+       __driver_probe_device
+       driver_probe_device
+       __device_attach_driver
+       bus_for_each_drv
+       __device_attach
+       device_initial_probe
+       bus_probe_device
+       deferred_probe_work_func
+       process_one_work
+       worker_thread
+       kthread
+       ret_from_fork
+-> #0 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}:
+       __lock_acquire
+       lock_acquire.part.0
+       lock_acquire
+       __mutex_lock
+       mutex_lock_nested
+       regmap_lock_mutex
+       regmap_read
+       lan9303_phy_read
+       dsa_slave_phy_read
+       __mdiobus_read
+       mdiobus_read
+       get_phy_device
+       mdiobus_scan
+       __mdiobus_register
+       dsa_register_switch
+       lan9303_probe
+       lan9303_mdio_probe
+       mdio_probe
+       really_probe
+       __driver_probe_device
+       driver_probe_device
+       __device_attach_driver
+       bus_for_each_drv
+       __device_attach
+       device_initial_probe
+       bus_probe_device
+       deferred_probe_work_func
+       process_one_work
+       worker_thread
+       kthread
+       ret_from_fork
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+       CPU0                    CPU1
+       ----                    ----
+  lock(&bus->mdio_lock);
+                               lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
+                               lock(&bus->mdio_lock);
+  lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
+*** DEADLOCK ***
+5 locks held by kworker/u4:3/609:
+ #0: ffff000002842938 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work
+ #1: ffff80000bacbd60 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work
+ #2: ffff000007645178 (&dev->mutex){....}-{3:3}, at: __device_attach
+ #3: ffff8000096e6e78 (dsa2_mutex){+.+.}-{3:3}, at: dsa_register_switch
+ #4: ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
+stack backtrace:
+CPU: 1 PID: 609 Comm: kworker/u4:3 Not tainted 5.15.71 #1
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+ dump_backtrace
+ show_stack
+ dump_stack_lvl
+ dump_stack
+ print_circular_bug
+ check_noncircular
+ __lock_acquire
+ lock_acquire.part.0
+ lock_acquire
+ __mutex_lock
+ mutex_lock_nested
+ regmap_lock_mutex
+ regmap_read
+ lan9303_phy_read
+ dsa_slave_phy_read
+ __mdiobus_read
+ mdiobus_read
+ get_phy_device
+ mdiobus_scan
+ __mdiobus_register
+ dsa_register_switch
+ lan9303_probe
+ lan9303_mdio_probe
+...
 
-Fixes: d0796d1ef63d ("tipc: convert legacy nl bearer dump to nl compat")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: dc7005831523 ("net: dsa: LAN9303: add MDIO managed mode support")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20231027065741.534971-1-alexander.sverdlin@siemens.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/netlink_compat.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/lan9303_mdio.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/tipc/netlink_compat.c b/net/tipc/netlink_compat.c
-index 59e8e17d8da9c..2276a0704a635 100644
---- a/net/tipc/netlink_compat.c
-+++ b/net/tipc/netlink_compat.c
-@@ -101,6 +101,7 @@ static int tipc_add_tlv(struct sk_buff *skb, u16 type, void *data, u16 len)
- 		return -EMSGSIZE;
+--- a/drivers/net/dsa/lan9303_mdio.c
++++ b/drivers/net/dsa/lan9303_mdio.c
+@@ -32,7 +32,7 @@ static int lan9303_mdio_write(void *ctx,
+ 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
  
- 	skb_put(skb, TLV_SPACE(len));
-+	memset(tlv, 0, TLV_SPACE(len));
- 	tlv->tlv_type = htons(type);
- 	tlv->tlv_len = htons(TLV_LENGTH(len));
- 	if (len && data)
--- 
-2.42.0
-
+ 	reg <<= 2; /* reg num to offset */
+-	mutex_lock(&sw_dev->device->bus->mdio_lock);
++	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
+ 	lan9303_mdio_real_write(sw_dev->device, reg, val & 0xffff);
+ 	lan9303_mdio_real_write(sw_dev->device, reg + 2, (val >> 16) & 0xffff);
+ 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
+@@ -50,7 +50,7 @@ static int lan9303_mdio_read(void *ctx,
+ 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
+ 
+ 	reg <<= 2; /* reg num to offset */
+-	mutex_lock(&sw_dev->device->bus->mdio_lock);
++	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
+ 	*val = lan9303_mdio_real_read(sw_dev->device, reg);
+ 	*val |= (lan9303_mdio_real_read(sw_dev->device, reg + 2) << 16);
+ 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
 
 
 
