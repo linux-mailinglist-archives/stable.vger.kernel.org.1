@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D157F7C70
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE817F8052
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0309E1C21080
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEA63282588
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040FA39FF3;
-	Fri, 24 Nov 2023 18:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E00A381D2;
+	Fri, 24 Nov 2023 18:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEYD7m1j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3UdvQZg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55BB381D7;
-	Fri, 24 Nov 2023 18:15:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FC3C433C8;
-	Fri, 24 Nov 2023 18:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14760364A7;
+	Fri, 24 Nov 2023 18:48:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95757C433C8;
+	Fri, 24 Nov 2023 18:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849713;
-	bh=WRapgMqC16ofJeJ1dgJq6f02D5soKcgFysHUTj3QOjY=;
+	s=korg; t=1700851722;
+	bh=boli1RNEgcHIj7KS9/cYPtZzwJ2spASjxFU2D8a1Fww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEYD7m1jCciO2SOzxeq9W9Q9vG1vOdBKm2raSU8GTQnkgGKWWRfHEZLMgg3NAyg9X
-	 CBOxOZN7A2JnjtIIZ1C9O6zPr0tS/FeHw5Rf5UuBnDeAu45LP2fEJaFvX7wOOFF6ex
-	 wLKYWrTkkcPyLkI9nUXUwjxlY6jkosmfIBlrwu60=
+	b=l3UdvQZg0qppKz0U/Rfk62UwO9k9M8aOLHLip/eFDNnHTcegbx7MYS+x2w81kValk
+	 mE4D/HxMCSKnZZpx6AJB5oK59KtlyqVaWJ05gQJROLQKW/VxcOs7jShRhjYWL+CngX
+	 nrR6Zg7AxHUCprCWeeo51imyyGDle5eRV23iE/JQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.6 290/530] wifi: ath11k: fix temperature event locking
-Date: Fri, 24 Nov 2023 17:47:36 +0000
-Message-ID: <20231124172036.864474883@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 070/372] PCI: tegra194: Use FIELD_GET()/FIELD_PREP() with Link Width fields
+Date: Fri, 24 Nov 2023 17:47:37 +0000
+Message-ID: <20231124172012.826704529@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +52,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 1a5352a81b4720ba43d9c899974e3bddf7ce0ce8 upstream.
+[ Upstream commit 759574abd78e3b47ec45bbd31a64e8832cf73f97 ]
 
-The ath11k active pdevs are protected by RCU but the temperature event
-handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section as reported by RCU lockdep:
+Use FIELD_GET() to extract PCIe Negotiated Link Width field instead of
+custom masking and shifting.
 
-	=============================
-	WARNING: suspicious RCU usage
-	6.6.0-rc6 #7 Not tainted
-	-----------------------------
-	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
+Similarly, change custom code that misleadingly used
+PCI_EXP_LNKSTA_NLW_SHIFT to prepare value for PCI_EXP_LNKCAP write
+to use FIELD_PREP() with correct field define (PCI_EXP_LNKCAP_MLW).
 
-	other info that might help us debug this:
-
-	rcu_scheduler_active = 2, debug_locks = 1
-	no locks held by swapper/0/0.
-	...
-	Call trace:
-	...
-	 lockdep_rcu_suspicious+0x16c/0x22c
-	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
-	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
-	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
-
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
-
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-
-Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
-Cc: stable@vger.kernel.org      # 5.7
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019153115.26401-2-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230919125648.1920-5-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8383,15 +8383,19 @@ ath11k_wmi_pdev_temperature_event(struct
- 	ath11k_dbg(ab, ATH11K_DBG_WMI, "event pdev temperature ev temp %d pdev_id %d\n",
- 		   ev->temp, ev->pdev_id);
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index 2241029537a03..5d1ae2706f6ea 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -9,6 +9,7 @@
+  * Author: Vidya Sagar <vidyas@nvidia.com>
+  */
  
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
- 	if (!ar) {
- 		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
--		kfree(tb);
--		return;
-+		goto exit;
- 	}
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+@@ -324,8 +325,7 @@ static void apply_bad_link_workaround(struct dw_pcie_rp *pp)
+ 	 */
+ 	val = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKSTA);
+ 	if (val & PCI_EXP_LNKSTA_LBMS) {
+-		current_link_width = (val & PCI_EXP_LNKSTA_NLW) >>
+-				     PCI_EXP_LNKSTA_NLW_SHIFT;
++		current_link_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, val);
+ 		if (pcie->init_link_width > current_link_width) {
+ 			dev_warn(pci->dev, "PCIe link is bad, width reduced\n");
+ 			val = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base +
+@@ -740,8 +740,7 @@ static void tegra_pcie_enable_system_interrupts(struct dw_pcie_rp *pp)
  
- 	ath11k_thermal_event_temperature(ar, ev->temp);
+ 	val_w = dw_pcie_readw_dbi(&pcie->pci, pcie->pcie_cap_base +
+ 				  PCI_EXP_LNKSTA);
+-	pcie->init_link_width = (val_w & PCI_EXP_LNKSTA_NLW) >>
+-				PCI_EXP_LNKSTA_NLW_SHIFT;
++	pcie->init_link_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, val_w);
  
-+exit:
-+	rcu_read_unlock();
-+
- 	kfree(tb);
- }
+ 	val_w = dw_pcie_readw_dbi(&pcie->pci, pcie->pcie_cap_base +
+ 				  PCI_EXP_LNKCTL);
+@@ -900,7 +899,7 @@ static int tegra_pcie_dw_host_init(struct dw_pcie_rp *pp)
+ 	/* Configure Max lane width from DT */
+ 	val = dw_pcie_readl_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKCAP);
+ 	val &= ~PCI_EXP_LNKCAP_MLW;
+-	val |= (pcie->num_lanes << PCI_EXP_LNKSTA_NLW_SHIFT);
++	val |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, pcie->num_lanes);
+ 	dw_pcie_writel_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKCAP, val);
  
+ 	/* Clear Slot Clock Configuration bit if SRNS configuration */
+-- 
+2.42.0
+
 
 
 
