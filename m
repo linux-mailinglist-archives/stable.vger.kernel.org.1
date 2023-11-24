@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-1855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360027F81AC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8ADC7F7FF6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5920282D1D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8930CB21A80
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED44364B7;
-	Fri, 24 Nov 2023 19:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B6033CD1;
+	Fri, 24 Nov 2023 18:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moX/hiVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgo+as++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BC02E84A;
-	Fri, 24 Nov 2023 19:00:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CB2C433C7;
-	Fri, 24 Nov 2023 19:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2101F33CFD;
+	Fri, 24 Nov 2023 18:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B95DC433C8;
+	Fri, 24 Nov 2023 18:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852439;
-	bh=sWNBlw66RBrVwGboL5Delp2Ae+2kWAj7xv3Hh7N8kCQ=;
+	s=korg; t=1700851533;
+	bh=lwNZagp+eSfvAzcTE0OzNNovMcom3MdWbM+qVXlUEto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moX/hiVyEnxTXmFbreLlvXFwZCq193R/v4WMdZ+RYd8syHKXm5cYfLvjX4peTnE44
-	 AwxIyE2ew0awbCoFJ924jA+yjUdeRAnwBMBJRpfGVF/6xzmdvO2GwH5i126S5I8/d4
-	 TGICPxiXd8bGqCSjBMzRJpCR77eVEh8663yXg0p0=
+	b=dgo+as++kxDdRjwCDLQdGuMN3mRYK2xxpp6KPzqc8+HkuFUep5btEkPUZ2QOqSwIh
+	 9kQNjFaWRajwNsOTlZ/P/1+VQ0+syUDKRI0IJJ8VKFaozcUNYgKxJ6/3PlxdevVkoR
+	 sh+Z9nnNRcAXpACbtKd6s+7i80uJYLOz0zcVYtGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Roesch <shr@devkernel.io>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Rik van Riel <riel@surriel.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 333/372] mm: fix for negative counter: nr_file_hugepages
-Date: Fri, 24 Nov 2023 17:52:00 +0000
-Message-ID: <20231124172021.485474957@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Hansen Dsouza <hansen.dsouza@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.5 485/491] drm/amd/display: Guard against invalid RPTR/WPTR being set
+Date: Fri, 24 Nov 2023 17:52:01 +0000
+Message-ID: <20231124172039.209709330@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,76 +56,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Roesch <shr@devkernel.io>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-commit a48d5bdc877b85201e42cef9c2fdf5378164c23a upstream.
+commit 1ffa8602e39b89469dc703ebab7a7e44c33da0f7 upstream.
 
-While qualifiying the 6.4 release, the following warning was detected in
-messages:
+[WHY]
+HW can return invalid values on register read, guard against these being
+set and causing us to access memory out of range and page fault.
 
-vmstat_refresh: nr_file_hugepages -15664
+[HOW]
+Guard at sync_inbox1 and guard at pushing commands.
 
-The warning is caused by the incorrect updating of the NR_FILE_THPS
-counter in the function split_huge_page_to_list.  The if case is checking
-for folio_test_swapbacked, but the else case is missing the check for
-folio_test_pmd_mappable.  The other functions that manipulate the counter
-like __filemap_add_folio and filemap_unaccount_folio have the
-corresponding check.
-
-I have a test case, which reproduces the problem. It can be found here:
-  https://github.com/sroeschus/testcase/blob/main/vmstat_refresh/madv.c
-
-The test case reproduces on an XFS filesystem. Running the same test
-case on a BTRFS filesystem does not reproduce the problem.
-
-AFAIK version 6.1 until 6.6 are affected by this problem.
-
-[akpm@linux-foundation.org: whitespace fix]
-[shr@devkernel.io: test for folio_test_pmd_mappable()]
-  Link: https://lkml.kernel.org/r/20231108171517.2436103-1-shr@devkernel.io
-Link: https://lkml.kernel.org/r/20231106181918.1091043-1-shr@devkernel.io
-Signed-off-by: Stefan Roesch <shr@devkernel.io>
-Co-debugged-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Yang Shi <shy828301@gmail.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2757,13 +2757,15 @@ int split_huge_page_to_list(struct page
- 			int nr = folio_nr_pages(folio);
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+@@ -657,9 +657,16 @@ enum dmub_status dmub_srv_sync_inbox1(st
+ 		return DMUB_STATUS_INVALID;
  
- 			xas_split(&xas, folio, folio_order(folio));
--			if (folio_test_swapbacked(folio)) {
--				__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS,
--							-nr);
--			} else {
--				__lruvec_stat_mod_folio(folio, NR_FILE_THPS,
--							-nr);
--				filemap_nr_thps_dec(mapping);
-+			if (folio_test_pmd_mappable(folio)) {
-+				if (folio_test_swapbacked(folio)) {
-+					__lruvec_stat_mod_folio(folio,
-+							NR_SHMEM_THPS, -nr);
-+				} else {
-+					__lruvec_stat_mod_folio(folio,
-+							NR_FILE_THPS, -nr);
-+					filemap_nr_thps_dec(mapping);
-+				}
- 			}
- 		}
+ 	if (dmub->hw_funcs.get_inbox1_rptr && dmub->hw_funcs.get_inbox1_wptr) {
+-		dmub->inbox1_rb.rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
+-		dmub->inbox1_rb.wrpt = dmub->hw_funcs.get_inbox1_wptr(dmub);
+-		dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
++		uint32_t rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
++		uint32_t wptr = dmub->hw_funcs.get_inbox1_wptr(dmub);
++
++		if (rptr > dmub->inbox1_rb.capacity || wptr > dmub->inbox1_rb.capacity) {
++			return DMUB_STATUS_HW_FAILURE;
++		} else {
++			dmub->inbox1_rb.rptr = rptr;
++			dmub->inbox1_rb.wrpt = wptr;
++			dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
++		}
+ 	}
+ 
+ 	return DMUB_STATUS_OK;
+@@ -693,6 +700,11 @@ enum dmub_status dmub_srv_cmd_queue(stru
+ 	if (!dmub->hw_init)
+ 		return DMUB_STATUS_INVALID;
+ 
++	if (dmub->inbox1_rb.rptr > dmub->inbox1_rb.capacity ||
++	    dmub->inbox1_rb.wrpt > dmub->inbox1_rb.capacity) {
++		return DMUB_STATUS_HW_FAILURE;
++	}
++
+ 	if (dmub_rb_push_front(&dmub->inbox1_rb, cmd))
+ 		return DMUB_STATUS_OK;
  
 
 
