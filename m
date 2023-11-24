@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D957F7FFB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2F87F8179
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46F7F1C214CA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECB3D28257A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8684035F04;
-	Fri, 24 Nov 2023 18:45:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BA82E858;
+	Fri, 24 Nov 2023 18:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1lZumbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TvnVdzXl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4720D364A0;
-	Fri, 24 Nov 2023 18:45:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99BDC433C8;
-	Fri, 24 Nov 2023 18:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4473D2FC21;
+	Fri, 24 Nov 2023 18:58:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C578AC433C8;
+	Fri, 24 Nov 2023 18:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851546;
-	bh=Cj8bRIWmgVn40EYdS+iUnRBT55C3/AihejT1nGIXqYU=;
+	s=korg; t=1700852335;
+	bh=1yWaH3D9c6Er6yzW7IyfJ1C4sKRp6AVDR8c44WIHVjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1lZumbFJx4dhiO6vuaR7MD3z8+RR2OZIPizoeuyjBkKc+vYTqFU1kKILddhJtrHU
-	 PSg/gBO1v8/XSgshhzRIjDOWXa5d+HQ3rJtykiA/fuc7haTUN1+nBGjDZ8cJm8gViZ
-	 azAbUD5LhwOf0tzaBx06flD7qqgKnKb49503aU4w=
+	b=TvnVdzXlX2wxZysVV02sCjrCyeghoxx2OUBBeKLixjf4iTRSqnyA3KyLmY5hmuoeR
+	 I2Bvtk63LZ9h19tx5KZ9Oc9J2teCSCpnDSw1guQl4h25zy673CaopXEWXtbj+jjdBd
+	 S+z4HY8/sWysYAEzk54DBMLybn9KiaQM6T8JLHas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.5 466/491] ext4: add missed brelse in update_backups
+	Jean Delvare <jdelvare@suse.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.1 315/372] i2c: i801: fix potential race in i801_block_transaction_byte_by_byte
 Date: Fri, 24 Nov 2023 17:51:42 +0000
-Message-ID: <20231124172038.633516484@linuxfoundation.org>
+Message-ID: <20231124172020.888466281@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +55,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 9adac8b01f4be28acd5838aade42b8daa4f0b642 upstream.
+commit f78ca48a8ba9cdec96e8839351e49eec3233b177 upstream.
 
-add missed brelse in update_backups
+Currently we set SMBHSTCNT_LAST_BYTE only after the host has started
+receiving the last byte. If we get e.g. preempted before setting
+SMBHSTCNT_LAST_BYTE, the host may be finished with receiving the byte
+before SMBHSTCNT_LAST_BYTE is set.
+Therefore change the code to set SMBHSTCNT_LAST_BYTE before writing
+SMBHSTSTS_BYTE_DONE for the byte before the last byte. Now the code
+is also consistent with what we do in i801_isr_byte_done().
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230826174712.4059355-3-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Reported-by: Jean Delvare <jdelvare@suse.com>
+Closes: https://lore.kernel.org/linux-i2c/20230828152747.09444625@endymion.delvare/
+Cc: stable@vger.kernel.org
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/resize.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-i801.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -1186,8 +1186,10 @@ static void update_backups(struct super_
- 			   ext4_group_first_block_no(sb, group));
- 		BUFFER_TRACE(bh, "get_write_access");
- 		if ((err = ext4_journal_get_write_access(handle, sb, bh,
--							 EXT4_JTR_NONE)))
-+							 EXT4_JTR_NONE))) {
-+			brelse(bh);
- 			break;
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -690,15 +690,11 @@ static int i801_block_transaction_byte_b
+ 		return i801_check_post(priv, result ? priv->status : -ETIMEDOUT);
+ 	}
+ 
+-	for (i = 1; i <= len; i++) {
+-		if (i == len && read_write == I2C_SMBUS_READ)
+-			smbcmd |= SMBHSTCNT_LAST_BYTE;
+-		outb_p(smbcmd, SMBHSTCNT(priv));
+-
+-		if (i == 1)
+-			outb_p(inb(SMBHSTCNT(priv)) | SMBHSTCNT_START,
+-			       SMBHSTCNT(priv));
++	if (len == 1 && read_write == I2C_SMBUS_READ)
++		smbcmd |= SMBHSTCNT_LAST_BYTE;
++	outb_p(smbcmd | SMBHSTCNT_START, SMBHSTCNT(priv));
+ 
++	for (i = 1; i <= len; i++) {
+ 		status = i801_wait_byte_done(priv);
+ 		if (status)
+ 			goto exit;
+@@ -721,9 +717,12 @@ static int i801_block_transaction_byte_b
+ 			data->block[0] = len;
+ 		}
+ 
+-		/* Retrieve/store value in SMBBLKDAT */
+-		if (read_write == I2C_SMBUS_READ)
++		if (read_write == I2C_SMBUS_READ) {
+ 			data->block[i] = inb_p(SMBBLKDAT(priv));
++			if (i == len - 1)
++				outb_p(smbcmd | SMBHSTCNT_LAST_BYTE, SMBHSTCNT(priv));
 +		}
- 		lock_buffer(bh);
- 		memcpy(bh->b_data, data, size);
- 		if (rest)
++
+ 		if (read_write == I2C_SMBUS_WRITE && i+1 <= len)
+ 			outb_p(data->block[i+1], SMBBLKDAT(priv));
+ 
 
 
 
