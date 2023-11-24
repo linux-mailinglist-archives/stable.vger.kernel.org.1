@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 817107F83D4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 687437F845C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B31261C266D4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B36AB2504E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7692339BE;
-	Fri, 24 Nov 2023 19:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64404364B7;
+	Fri, 24 Nov 2023 19:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ANwL/ss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdcP0JPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7AC22EB15;
-	Fri, 24 Nov 2023 19:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BC6C433C8;
-	Fri, 24 Nov 2023 19:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2025A3306F;
+	Fri, 24 Nov 2023 19:26:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5670C433CA;
+	Fri, 24 Nov 2023 19:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853683;
-	bh=EyG4p3PvCq4aPaOWgg+I2e915yEFkdkIMw6Gae6LTpU=;
+	s=korg; t=1700853990;
+	bh=Z8BMcyb/+woExFS5faO8x931uO7Z28+rz1YQ5V0UbZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ANwL/ssXiwO0Zpb4KPsnlwRyta/Tm/MKGe4+oqqotC1Jmiv67MnxU83koe+T5xcd
-	 tLtMLeiQhGFPtR1pKnJFifeW77DGk5ghsFzk6AEK023ZLlv+XmpsY2UGG8wGTsdgQN
-	 yj3JKu7qK9RGo/YWDJpB3CGJZxs0odrVlP/Ruu8A=
+	b=KdcP0JPsSZQGdk9RIf1LQzDHZP9dc/AT2yCBximyZ/KOgFRak2KD3ZH9icC5kUDto
+	 o7EXk9gbbzaSbeUR2YzPfKGMHAipEWTilXqRTMuZv9HtTtpoNFCSGo40ql9xfP/sXY
+	 nQLfunHMRcdgVm5gRVgt42V7TorbDPRFi9sdGpYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 286/297] ext4: add missed brelse in update_backups
+	Joseph Hwang <josephsih@chromium.org>,
+	Alain Michaud <alainm@chromium.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 111/159] Bluetooth: btusb: add Realtek 8822CE to usb_device_id table
 Date: Fri, 24 Nov 2023 17:55:28 +0000
-Message-ID: <20231124172010.137066171@linuxfoundation.org>
+Message-ID: <20231124171946.499760665@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +54,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Joseph Hwang <josephsih@chromium.org>
 
-commit 9adac8b01f4be28acd5838aade42b8daa4f0b642 upstream.
+[ Upstream commit 33bfd94a05abb5a63e323dd1454bc580d4bf992c ]
 
-add missed brelse in update_backups
+This patch adds the Realtek 8822CE controller to the usb_device_id
+table to support the wideband speech capability.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230826174712.4059355-3-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Joseph Hwang <josephsih@chromium.org>
+Reviewed-by: Alain Michaud <alainm@chromium.org>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Stable-dep-of: da06ff1f585e ("Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -1160,8 +1160,10 @@ static void update_backups(struct super_
- 			   ext4_group_first_block_no(sb, group));
- 		BUFFER_TRACE(bh, "get_write_access");
- 		if ((err = ext4_journal_get_write_access(handle, sb, bh,
--							 EXT4_JTR_NONE)))
-+							 EXT4_JTR_NONE))) {
-+			brelse(bh);
- 			break;
-+		}
- 		lock_buffer(bh);
- 		memcpy(bh->b_data, data, size);
- 		if (rest)
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index c42324ae8eeff..854bf20353d3b 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -353,6 +353,10 @@ static const struct usb_device_id blacklist_table[] = {
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x8087, 0xe0, 0x01, 0x01),
+ 	  .driver_info = BTUSB_IGNORE },
+ 
++	/* Realtek 8822CE Bluetooth devices */
++	{ USB_DEVICE(0x0bda, 0xb00c), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
++
+ 	/* Realtek Bluetooth devices */
+ 	{ USB_VENDOR_AND_INTERFACE_INFO(0x0bda, 0xe0, 0x01, 0x01),
+ 	  .driver_info = BTUSB_REALTEK },
+-- 
+2.42.0
+
 
 
 
