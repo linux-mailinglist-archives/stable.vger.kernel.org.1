@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BCC77F80D9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CCE7F7F48
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD402814DB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1505B20AB5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB5363A1;
-	Fri, 24 Nov 2023 18:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D41D2FC21;
+	Fri, 24 Nov 2023 18:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2+wXoqb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8X6JsKP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D56633075;
-	Fri, 24 Nov 2023 18:53:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C71B8C433C8;
-	Fri, 24 Nov 2023 18:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31106364C1;
+	Fri, 24 Nov 2023 18:40:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDFEC433C8;
+	Fri, 24 Nov 2023 18:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851997;
-	bh=kbk7wqJAQmvSiz9uZdswUWLCCo1P+Ymova+8ECZ3O38=;
+	s=korg; t=1700851207;
+	bh=LaQkTibzop11ZYkMAwwl497ox55ulL/TQ5HSFzTXGy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2+wXoqbJazXFOOWf9KksDhmwCB9jBHPlosCT5Zjg2qW236RcS82M6Ks9VgcAmWWw
-	 3M6rb2vV0uE7RFB1iEw5XBW+horqSJUWw7cKGfmDFJVin7JA+dUnrjmrzaDWtjuOnm
-	 8M5JheOH4yVWI9BgETeGr6LZYHc/hOFaFQaEOgU0=
+	b=x8X6JsKPU4qZ/yaiRplHnoY2xqcyNOiSmYyBUQ4djeibKf8RxjkZJ51kFGMIX7aLR
+	 qzQ4Og0mQe9r93nZZFle1vcecZX2lk8o0DH0NttS0gjSNm2SMofYaPxaIT3gVl/25M
+	 1X8xEhdQbVQg6M94jFN3B+07rBU+bmhgbRBBHiYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.1 179/372] proc: sysctl: prevent aliased sysctls from getting passed to init
-Date: Fri, 24 Nov 2023 17:49:26 +0000
-Message-ID: <20231124172016.430526927@linuxfoundation.org>
+	Reinette Chatre <reinette.chatre@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.5 331/491] selftests/resctrl: Fix uninitialized .sa_flags
+Date: Fri, 24 Nov 2023 17:49:27 +0000
+Message-ID: <20231124172034.511853832@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,86 +51,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 8001f49394e353f035306a45bcf504f06fca6355 upstream.
+commit beb7f471847663559bd0fe60af1d70e05a1d7c6c upstream.
 
-The code that checks for unknown boot options is unaware of the sysctl
-alias facility, which maps bootparams to sysctl values.  If a user sets
-an old value that has a valid alias, a message about an invalid
-parameter will be printed during boot, and the parameter will get passed
-to init.  Fix by checking for the existence of aliased parameters in the
-unknown boot parameter code.  If an alias exists, don't return an error
-or pass the value to init.
+signal_handler_unregister() calls sigaction() with uninitializing
+sa_flags in the struct sigaction.
 
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
-Cc: stable@vger.kernel.org
-Fixes: 0a477e1ae21b ("kernel/sysctl: support handling command line aliases")
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Make sure sa_flags is always initialized in signal_handler_unregister()
+by initializing the struct sigaction when declaring it. Also add the
+initialization to signal_handler_register() even if there are no know
+bugs in there because correctness is then obvious from the code itself.
+
+Fixes: 73c55fa5ab55 ("selftests/resctrl: Commonize the signal handler register/unregister for all tests")
+Suggested-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/proc_sysctl.c  |    7 +++++++
- include/linux/sysctl.h |    6 ++++++
- init/main.c            |    4 ++++
- 3 files changed, 17 insertions(+)
+ tools/testing/selftests/resctrl/resctrl_val.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1830,6 +1830,13 @@ static const char *sysctl_find_alias(cha
- 	return NULL;
- }
- 
-+bool sysctl_is_alias(char *param)
-+{
-+	const char *alias = sysctl_find_alias(param);
-+
-+	return alias != NULL;
-+}
-+
- /* Set sysctl value passed on kernel command line. */
- static int process_sysctl_arg(char *param, char *val,
- 			       const char *unused, void *arg)
---- a/include/linux/sysctl.h
-+++ b/include/linux/sysctl.h
-@@ -238,6 +238,7 @@ extern void __register_sysctl_init(const
- extern struct ctl_table_header *register_sysctl_mount_point(const char *path);
- 
- void do_sysctl_args(void);
-+bool sysctl_is_alias(char *param);
- int do_proc_douintvec(struct ctl_table *table, int write,
- 		      void *buffer, size_t *lenp, loff_t *ppos,
- 		      int (*conv)(unsigned long *lvalp,
-@@ -301,6 +302,11 @@ static inline void setup_sysctl_set(stru
- static inline void do_sysctl_args(void)
+diff --git a/tools/testing/selftests/resctrl/resctrl_val.c b/tools/testing/selftests/resctrl/resctrl_val.c
+index 51963a6f2186..01bbe11a8983 100644
+--- a/tools/testing/selftests/resctrl/resctrl_val.c
++++ b/tools/testing/selftests/resctrl/resctrl_val.c
+@@ -482,7 +482,7 @@ void ctrlc_handler(int signum, siginfo_t *info, void *ptr)
+  */
+ int signal_handler_register(void)
  {
- }
-+
-+static inline bool sysctl_is_alias(char *param)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SYSCTL */
+-	struct sigaction sigact;
++	struct sigaction sigact = {};
+ 	int ret = 0;
  
- int sysctl_max_threads(struct ctl_table *table, int write, void *buffer,
---- a/init/main.c
-+++ b/init/main.c
-@@ -533,6 +533,10 @@ static int __init unknown_bootoption(cha
+ 	sigact.sa_sigaction = ctrlc_handler;
+@@ -504,7 +504,7 @@ int signal_handler_register(void)
+  */
+ void signal_handler_unregister(void)
  {
- 	size_t len = strlen(param);
+-	struct sigaction sigact;
++	struct sigaction sigact = {};
  
-+	/* Handle params aliased to sysctls */
-+	if (sysctl_is_alias(param))
-+		return 0;
-+
- 	repair_env_string(param, val);
- 
- 	/* Handle obsolete-style parameters */
+ 	sigact.sa_handler = SIG_DFL;
+ 	sigemptyset(&sigact.sa_mask);
+-- 
+2.43.0
+
 
 
 
