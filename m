@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CDC7F7C5D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3C77F7C6C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3190E282187
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 313541F20FA4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7C33A8C4;
-	Fri, 24 Nov 2023 18:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912903A8C2;
+	Fri, 24 Nov 2023 18:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUYWjj/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWm0Z3wB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDB8364A4;
-	Fri, 24 Nov 2023 18:14:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAAFC433C8;
-	Fri, 24 Nov 2023 18:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500362511F;
+	Fri, 24 Nov 2023 18:15:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A0BC433C8;
+	Fri, 24 Nov 2023 18:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849672;
-	bh=3If88vZwZAZ3Q/J76mA5yq9DO1WrAaQLVmWrHFKr0bM=;
+	s=korg; t=1700849701;
+	bh=C1obxVqTt1hEOSqXgCtn/BLDX/Vpv7mWnlYiB9MFYAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pUYWjj/PM+uIPOxpn2vu9w69PVKUEGX7kSWgBaY41JK6G6/a0O9R+NZnAkFEThutf
-	 plkPttumeGt1DFjPmjO1lhgKkGV20FbZ58x1DOyvPCsnUqs/wLmONwGaR7dv2Dv5Bg
-	 tJ16sM/z+nZOPQSRMWtu9lBND/MDwbXz/z8YnAIY=
+	b=XWm0Z3wBSuzYhzr+/hZa5XNumeekmQc60lRdb3lf+X116XPI+d7HJK8V1V0XgpkUZ
+	 l3vozXfO181Xka2CSW1ihUU9yyyYaDGBDSHVUEVgnVxrOMOHoYCnC53Ki9WPX5amha
+	 khRHJM1l38HtQdIYVHFRsQVcmhmdlYz6piPbu3DU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Krasavin <pkrasavin@imaqliq.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Rokosov <ddrokosov@salutedevices.com>
-Subject: [PATCH 6.6 267/530] tty: serial: meson: fix hard LOCKUP on crtscts mode
-Date: Fri, 24 Nov 2023 17:47:13 +0000
-Message-ID: <20231124172036.162141077@linuxfoundation.org>
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Jason Andryuk <jandryuk@gmail.com>,
+	Michal Wilczynski <michal.wilczynski@intel.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 268/530] acpi/processor: sanitize _OSC/_PDC capabilities for Xen dom0
+Date: Fri, 24 Nov 2023 17:47:14 +0000
+Message-ID: <20231124172036.190614961@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -51,89 +52,132 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Krasavin <pkrasavin@imaqliq.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-commit 2a1d728f20edeee7f26dc307ed9df4e0d23947ab upstream.
+commit bfa993b355d33a438a746523e7129391c8664e8a upstream.
 
-There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
+The Processor capability bits notify ACPI of the OS capabilities, and
+so ACPI can adjust the return of other Processor methods taking the OS
+capabilities into account.
 
-# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
-[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
-[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
-[   95.906972] Task dump for CPU 3:
-[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
-[   95.920059] Call trace:
-[   95.922485]  __switch_to+0xe4/0x168
-[   95.925951]  0xffffff8003477508
-[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
-[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
+When Linux is running as a Xen dom0, the hypervisor is the entity
+in charge of processor power management, and hence Xen needs to make
+sure the capabilities reported by _OSC/_PDC match the capabilities of
+the driver in Xen.
 
-Possible solution would be to not allow to setup crtscts on such port.
+Introduce a small helper to sanitize the buffer when running as Xen
+dom0.
 
-Tested on S905X3 based board.
+When Xen supports HWP, this serves as the equivalent of commit
+a21211672c9a ("ACPI / processor: Request native thermal interrupt
+handling via _OSC") to avoid SMM crashes.  Xen will set bit
+ACPI_PROC_CAP_COLLAB_PROC_PERF (bit 12) in the capability bits and the
+_OSC/_PDC call will apply it.
 
-Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
+[ jandryuk: Mention Xen HWP's need.  Support _OSC & _PDC ]
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
+Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
+Reviewed-by: Michal Wilczynski <michal.wilczynski@intel.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20231108212517.72279-1-jandryuk@gmail.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/meson_uart.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/acpi.h           |   14 ++++++++++++++
+ arch/x86/include/asm/xen/hypervisor.h |    9 +++++++++
+ drivers/xen/pcpu.c                    |   22 ++++++++++++++++++++++
+ 3 files changed, 45 insertions(+)
 
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -380,10 +380,14 @@ static void meson_uart_set_termios(struc
- 	else
- 		val |= AML_UART_STOP_BIT_1SB;
+--- a/arch/x86/include/asm/acpi.h
++++ b/arch/x86/include/asm/acpi.h
+@@ -16,6 +16,9 @@
+ #include <asm/x86_init.h>
+ #include <asm/cpufeature.h>
+ #include <asm/irq_vectors.h>
++#include <asm/xen/hypervisor.h>
++
++#include <xen/xen.h>
  
--	if (cflags & CRTSCTS)
--		val &= ~AML_UART_TWO_WIRE_EN;
--	else
-+	if (cflags & CRTSCTS) {
-+		if (port->flags & UPF_HARD_FLOW)
-+			val &= ~AML_UART_TWO_WIRE_EN;
-+		else
-+			termios->c_cflag &= ~CRTSCTS;
-+	} else {
- 		val |= AML_UART_TWO_WIRE_EN;
+ #ifdef CONFIG_ACPI_APEI
+ # include <asm/pgtable_types.h>
+@@ -127,6 +130,17 @@ static inline void arch_acpi_set_proc_ca
+ 	if (!cpu_has(c, X86_FEATURE_MWAIT) ||
+ 	    boot_option_idle_override == IDLE_NOMWAIT)
+ 		*cap &= ~(ACPI_PROC_CAP_C_C1_FFH | ACPI_PROC_CAP_C_C2C3_FFH);
++
++	if (xen_initial_domain()) {
++		/*
++		 * When Linux is running as Xen dom0, the hypervisor is the
++		 * entity in charge of the processor power management, and so
++		 * Xen needs to check the OS capabilities reported in the
++		 * processor capabilities buffer matches what the hypervisor
++		 * driver supports.
++		 */
++		xen_sanitize_proc_cap_bits(cap);
 +	}
+ }
  
- 	writel(val, port->membase + AML_UART_CONTROL);
+ static inline bool acpi_has_cpu_in_madt(void)
+--- a/arch/x86/include/asm/xen/hypervisor.h
++++ b/arch/x86/include/asm/xen/hypervisor.h
+@@ -100,4 +100,13 @@ static inline void leave_lazy(enum xen_l
  
-@@ -705,6 +709,7 @@ static int meson_uart_probe(struct platf
- 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
- 	int ret = 0;
- 	int irq;
-+	bool has_rtscts;
+ enum xen_lazy_mode xen_get_lazy_mode(void);
  
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
-@@ -732,6 +737,7 @@ static int meson_uart_probe(struct platf
- 		return irq;
++#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI)
++void xen_sanitize_proc_cap_bits(uint32_t *buf);
++#else
++static inline void xen_sanitize_proc_cap_bits(uint32_t *buf)
++{
++	BUG();
++}
++#endif
++
+ #endif /* _ASM_X86_XEN_HYPERVISOR_H */
+--- a/drivers/xen/pcpu.c
++++ b/drivers/xen/pcpu.c
+@@ -47,6 +47,9 @@
+ #include <asm/xen/hypervisor.h>
+ #include <asm/xen/hypercall.h>
  
- 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
-+	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
++#ifdef CONFIG_ACPI
++#include <acpi/processor.h>
++#endif
  
- 	if (meson_ports[pdev->id]) {
- 		return dev_err_probe(&pdev->dev, -EBUSY,
-@@ -762,6 +768,8 @@ static int meson_uart_probe(struct platf
- 	port->mapsize = resource_size(res_mem);
- 	port->irq = irq;
- 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
-+	if (has_rtscts)
-+		port->flags |= UPF_HARD_FLOW;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
- 	port->dev = &pdev->dev;
- 	port->line = pdev->id;
+ /*
+  * @cpu_id: Xen physical cpu logic number
+@@ -400,4 +403,23 @@ bool __init xen_processor_present(uint32
+ 
+ 	return online;
+ }
++
++void xen_sanitize_proc_cap_bits(uint32_t *cap)
++{
++	struct xen_platform_op op = {
++		.cmd			= XENPF_set_processor_pminfo,
++		.u.set_pminfo.id	= -1,
++		.u.set_pminfo.type	= XEN_PM_PDC,
++	};
++	u32 buf[3] = { ACPI_PDC_REVISION_ID, 1, *cap };
++	int ret;
++
++	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
++	ret = HYPERVISOR_platform_op(&op);
++	if (ret)
++		pr_err("sanitize of _PDC buffer bits from Xen failed: %d\n",
++		       ret);
++	else
++		*cap = buf[2];
++}
+ #endif
 
 
 
