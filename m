@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-1566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 155FF7F8051
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A1C7F7EB9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9211FB2186E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D432328228A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC0C381CB;
-	Fri, 24 Nov 2023 18:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC9034197;
+	Fri, 24 Nov 2023 18:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3wBLCfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLGs26S0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6CA286B5;
-	Fri, 24 Nov 2023 18:48:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AE6C433C8;
-	Fri, 24 Nov 2023 18:48:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C712633E9;
+	Fri, 24 Nov 2023 18:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B7DC433C8;
+	Fri, 24 Nov 2023 18:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851720;
-	bh=gB0Rmd0XltjEtIBcSMBAEmMpwVuksQiAWVZyScLF2XE=;
+	s=korg; t=1700850928;
+	bh=MkaR2df5HHN/zDuQFvz8Rxa7LV7iIq5F9B9/8/MFjm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3wBLCfeUfkisaWymDkXf7xs7D431Iiw1MzlftPzdUVnXIqeG91CEvQJwUzrCvq1O
-	 mbwKyECZJLp/+G1h+wV54E5AXFk7PUh7ywzrPmmStV95zs3yqcd/TU5m8ggwiWlec5
-	 /woFTfiZdLyZg/a16iO4Ay7S6T84hH4T8M2zDZys=
+	b=OLGs26S0uhcFD/WviuH8V36j99/dtO3woLQmxD7LsgHxaTH08+hebT+wp1ffa/caB
+	 tTAktFvSSKHB0oy5xAKSKzfPborovUfaaZNOPGE25iyVFpGyJB9qcy1fQdYRx4e3dZ
+	 hDPo8JBVcrg7ETqeXXA3V6ORnNFEUDmcVQPe5kio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Naomi Chu <naomi.chu@mediatek.com>,
+	Stanley Chu <stanley.chu@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	Chun-Hung <chun-hung.wu@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/372] ALSA: hda: Fix possible null-ptr-deref when assigning a stream
+Subject: [PATCH 6.5 220/491] scsi: ufs: core: Expand MCQ queue slot to DeviceQueueDepth + 1
 Date: Fri, 24 Nov 2023 17:47:36 +0000
-Message-ID: <20231124172012.787832916@linuxfoundation.org>
+Message-ID: <20231124172031.164146060@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +57,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Naomi Chu <naomi.chu@mediatek.com>
 
-[ Upstream commit f93dc90c2e8ed664985e366aa6459ac83cdab236 ]
+[ Upstream commit defde5a50d91c74e1ce71a7f0bce7fb1ae311d84 ]
 
-While AudioDSP drivers assign streams exclusively of HOST or LINK type,
-nothing blocks a user to attempt to assign a COUPLED stream. As
-supplied substream instance may be a stub, what is the case when
-code-loading, such scenario ends with null-ptr-deref.
+The UFSHCI 4.0 specification mandates that there should always be at least
+one empty slot in each queue for distinguishing between full and empty
+states. Enlarge 'hwq->max_entries' to 'DeviceQueueDepth + 1' to allow
+UFSHCI 4.0 controllers to fully utilize MCQ queue slots.
 
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://lore.kernel.org/r/20231006102857.749143-2-cezary.rojewski@intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 4682abfae2eb ("scsi: ufs: core: mcq: Allocate memory for MCQ mode")
+Signed-off-by: Naomi Chu <naomi.chu@mediatek.com>
+Link: https://lore.kernel.org/r/20231102052426.12006-2-naomi.chu@mediatek.com
+Reviewed-by: Stanley Chu <stanley.chu@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Chun-Hung <chun-hung.wu@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdac_stream.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufs-mcq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
-index 1b8be39c38a96..741a5d17ae4cb 100644
---- a/sound/hda/hdac_stream.c
-+++ b/sound/hda/hdac_stream.c
-@@ -338,8 +338,10 @@ struct hdac_stream *snd_hdac_stream_assign(struct hdac_bus *bus,
- 	struct hdac_stream *res = NULL;
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 386674ead7f0d..4ecbd30c07827 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -433,7 +433,7 @@ int ufshcd_mcq_init(struct ufs_hba *hba)
  
- 	/* make a non-zero unique key for the substream */
--	int key = (substream->pcm->device << 16) | (substream->number << 2) |
--		(substream->stream + 1);
-+	int key = (substream->number << 2) | (substream->stream + 1);
-+
-+	if (substream->pcm)
-+		key |= (substream->pcm->device << 16);
- 
- 	spin_lock_irq(&bus->reg_lock);
- 	list_for_each_entry(azx_dev, &bus->stream_list, list) {
+ 	for (i = 0; i < hba->nr_hw_queues; i++) {
+ 		hwq = &hba->uhq[i];
+-		hwq->max_entries = hba->nutrs;
++		hwq->max_entries = hba->nutrs + 1;
+ 		spin_lock_init(&hwq->sq_lock);
+ 		spin_lock_init(&hwq->cq_lock);
+ 		mutex_init(&hwq->sq_mutex);
 -- 
 2.42.0
 
