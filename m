@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C877F7E51
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FD367F7C2F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BFBE2822B9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C83F8B210FC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57CC3A8C3;
-	Fri, 24 Nov 2023 18:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97873A8C7;
+	Fri, 24 Nov 2023 18:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHCXpRA6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAqJyzEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7637A3A8F3;
-	Fri, 24 Nov 2023 18:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01648C433C8;
-	Fri, 24 Nov 2023 18:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE01381D6;
+	Fri, 24 Nov 2023 18:12:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9820C433C7;
+	Fri, 24 Nov 2023 18:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850716;
-	bh=96qB7PTLTrohUNYPqxIIZAl4KQWNCvaZ4OPO9hKGWfc=;
+	s=korg; t=1700849561;
+	bh=3QZQnVJcrqn5aRJIHiNINULoI5+afrivmxz88d1DbhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHCXpRA67KTvFtDe1NA4w4noRPb8VEerEYMuUFW5ZdK9zZ/n59koKyzltq6D9CVia
-	 G4q/4TXue718uL3KlnVnQSFymYNIcB7K24uk6eBnBo7bPIKQvCKvrheYY+m7a2mCB7
-	 AEor0dFxxnPmZhfPM589JSukj6oemy36puaXD6CU=
+	b=mAqJyzEMamnfkwakQ1VTGSpSTboJP1oLHKwt+v2YROKRhXVGtbOpOUEPDSRZc3ZqR
+	 4w+pxtR3wgk0iaTWHS4jHZEZDdP3rwQbo8iIlReoHaYTea0AJ57AtSs+KZJOKFYZ0X
+	 Z2Gxoj58bIsWl5WUGH1ly7cCpuHH5XlSZ34nTE2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 160/491] NFSv4.1: fix handling NFS4ERR_DELAY when testing for session trunking
-Date: Fri, 24 Nov 2023 17:46:36 +0000
-Message-ID: <20231124172029.285502438@linuxfoundation.org>
+Subject: [PATCH 6.6 231/530] tools/power/turbostat: Fix a knl bug
+Date: Fri, 24 Nov 2023 17:46:37 +0000
+Message-ID: <20231124172035.081089291@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +53,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 6bd1a77dc72dea0b0d8b6014f231143984d18f6d ]
+[ Upstream commit 137f01b3529d292a68d22e9681e2f903c768f790 ]
 
-Currently when client sends an EXCHANGE_ID for a possible trunked
-connection, for any error that happened, the trunk will be thrown
-out. However, an NFS4ERR_DELAY is a transient error that should be
-retried instead.
+MSR_KNL_CORE_C6_RESIDENCY should be evaluated only if
+1. this is KNL platform
+AND
+2. need to get C6 residency or need to calculate C1 residency
 
-Fixes: e818bd085baf ("NFSv4.1 remove xprt from xprt_switch if session trunking test fails")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fix the broken logic introduced by commit 1e9042b9c8d4 ("tools/power
+turbostat: Fix CPU%C1 display value").
+
+Fixes: 1e9042b9c8d4 ("tools/power turbostat: Fix CPU%C1 display value")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tools/power/x86/turbostat/turbostat.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 5f088e3eeca1d..c710fde58be11 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -8934,6 +8934,7 @@ void nfs4_test_session_trunk(struct rpc_clnt *clnt, struct rpc_xprt *xprt,
- 
- 	sp4_how = (adata->clp->cl_sp4_flags == 0 ? SP4_NONE : SP4_MACH_CRED);
- 
-+try_again:
- 	/* Test connection for session trunking. Async exchange_id call */
- 	task = nfs4_run_exchange_id(adata->clp, adata->cred, sp4_how, xprt);
- 	if (IS_ERR(task))
-@@ -8946,11 +8947,15 @@ void nfs4_test_session_trunk(struct rpc_clnt *clnt, struct rpc_xprt *xprt,
- 
- 	if (status == 0)
- 		rpc_clnt_xprt_switch_add_xprt(clnt, xprt);
--	else if (rpc_clnt_xprt_switch_has_addr(clnt,
-+	else if (status != -NFS4ERR_DELAY && rpc_clnt_xprt_switch_has_addr(clnt,
- 				(struct sockaddr *)&xprt->addr))
- 		rpc_clnt_xprt_switch_remove_xprt(clnt, xprt);
- 
- 	rpc_put_task(task);
-+	if (status == -NFS4ERR_DELAY) {
-+		ssleep(1);
-+		goto try_again;
-+	}
- }
- EXPORT_SYMBOL_GPL(nfs4_test_session_trunk);
- 
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 9a10512e34078..4e19bd2fa8b9f 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -2180,7 +2180,7 @@ int get_counters(struct thread_data *t, struct core_data *c, struct pkg_data *p)
+ 	if ((DO_BIC(BIC_CPU_c6) || soft_c1_residency_display(BIC_CPU_c6)) && !do_knl_cstates) {
+ 		if (get_msr(cpu, MSR_CORE_C6_RESIDENCY, &c->c6))
+ 			return -7;
+-	} else if (do_knl_cstates || soft_c1_residency_display(BIC_CPU_c6)) {
++	} else if (do_knl_cstates && soft_c1_residency_display(BIC_CPU_c6)) {
+ 		if (get_msr(cpu, MSR_KNL_CORE_C6_RESIDENCY, &c->c6))
+ 			return -7;
+ 	}
 -- 
 2.42.0
 
