@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35537F7D92
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB497F7BAD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 012441C2126A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCE5B2820D4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E612F39FF3;
-	Fri, 24 Nov 2023 18:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F463A260;
+	Fri, 24 Nov 2023 18:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6+Ipc21"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBc1EVqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FE739FC2;
-	Fri, 24 Nov 2023 18:25:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 333B0C433C7;
-	Fri, 24 Nov 2023 18:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB9D939FE1;
+	Fri, 24 Nov 2023 18:07:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2ABC433C8;
+	Fri, 24 Nov 2023 18:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850346;
-	bh=AxGS71vs0H65iyeDjSm2dMUZdUgd4jiytNFGROudH4k=;
+	s=korg; t=1700849251;
+	bh=VTDvpVwIHv2r1DmkXEoE5uTBRTdyN4LFXFccOwBi0BM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6+Ipc21XlGkP0ZZ9f/prYw2DU+Le3ZrgN4/TQdY1VEqjwSApw/5IttnmDlae7dAT
-	 UfzfYAZwXJ6ZjVEEHZEqe8xAY9JylOB5jCEulS7LyTkBj/GAVfvT6IZeGd2gGsqJMt
-	 mDiFNzIjSB/2C4QpewsACDzeVZifx+yo888vCaQA=
+	b=KBc1EVqBD0V3Zd0ncfxCu1WI2Yyr13YuI22WeyxOlTNeYiNiSq5mIjo+isQbkC/cD
+	 BdlYMNZYlcbhwjoVbv+g5HZ0nDCSVhUTiNafmquA4t4uHCv2eqGpbtNNTbihKUfQbG
+	 R6SnucgG7WLXYgxwo/Fc11631YGtycvDJ5Y13w6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 013/491] cpu/hotplug: Dont offline the last non-isolated CPU
+Subject: [PATCH 6.6 083/530] ASoC: soc-card: Add storage for PCI SSID
 Date: Fri, 24 Nov 2023 17:44:09 +0000
-Message-ID: <20231124172025.086674667@linuxfoundation.org>
+Message-ID: <20231124172030.604102226@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,77 +54,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 38685e2a0476127db766f81b1c06019ddc4c9ffa ]
+[ Upstream commit 47f56e38a199bd45514b8e0142399cba4feeaf1a ]
 
-If a system has isolated CPUs via the "isolcpus=" command line parameter,
-then an attempt to offline the last housekeeping CPU will result in a
-WARN_ON() when rebuilding the scheduler domains and a subsequent panic due
-to and unhandled empty CPU mas in partition_sched_domains_locked().
+Add members to struct snd_soc_card to store the PCI subsystem ID (SSID)
+of the soundcard.
 
-cpuset_hotplug_workfn()
-  rebuild_sched_domains_locked()
-    ndoms = generate_sched_domains(&doms, &attr);
-      cpumask_and(doms[0], top_cpuset.effective_cpus, housekeeping_cpumask(HK_FLAG_DOMAIN));
+The PCI specification provides two registers to store a vendor-specific
+SSID that can be read by drivers to uniquely identify a particular
+"soundcard". This is defined in the PCI specification to distinguish
+products that use the same silicon (and therefore have the same silicon
+ID) so that product-specific differences can be applied.
 
-Thus results in an empty CPU mask which triggers the warning and then the
-subsequent crash:
+PCI only defines 0xFFFF as an invalid value. 0x0000 is not defined as
+invalid. So the usual pattern of zero-filling the struct and then
+assuming a zero value unset will not work. A flag is included to
+indicate when the SSID information has been filled in.
 
-WARNING: CPU: 4 PID: 80 at kernel/sched/topology.c:2366 build_sched_domains+0x120c/0x1408
-Call trace:
- build_sched_domains+0x120c/0x1408
- partition_sched_domains_locked+0x234/0x880
- rebuild_sched_domains_locked+0x37c/0x798
- rebuild_sched_domains+0x30/0x58
- cpuset_hotplug_workfn+0x2a8/0x930
+Unlike DMI information, which has a free-format entirely up to the vendor,
+the PCI SSID has a strictly defined format and a registry of vendor IDs.
 
-Unable to handle kernel paging request at virtual address fffe80027ab37080
- partition_sched_domains_locked+0x318/0x880
- rebuild_sched_domains_locked+0x37c/0x798
+It is usual in Windows drivers that the SSID is used as the sole identifier
+of the specific end-product and the Windows driver contains tables mapping
+that to information about the hardware setup, rather than using ACPI
+properties.
 
-Aside of the resulting crash, it does not make any sense to offline the last
-last housekeeping CPU.
+This SSID is important information for ASoC components that need to apply
+hardware-specific configuration on PCI-based systems.
 
-Prevent this by masking out the non-housekeeping CPUs when selecting a
-target CPU for initiating the CPU unplug operation via the work queue.
+As the SSID is a generic part of the PCI specification and is treated as
+identifying the "soundcard", it is reasonable to include this information
+in struct snd_soc_card, instead of components inventing their own custom
+ways to pass this information around.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/202310171709530660462@zte.com.cn
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230912163207.3498161-2-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cpu.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/sound/soc-card.h | 37 +++++++++++++++++++++++++++++++++++++
+ include/sound/soc.h      | 11 +++++++++++
+ 2 files changed, 48 insertions(+)
 
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 26119d2154102..189ba5fd9af4b 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1503,11 +1503,14 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
- 	/*
- 	 * Ensure that the control task does not run on the to be offlined
- 	 * CPU to prevent a deadlock against cfs_b->period_timer.
-+	 * Also keep at least one housekeeping cpu onlined to avoid generating
-+	 * an empty sched_domain span.
- 	 */
--	cpu = cpumask_any_but(cpu_online_mask, cpu);
--	if (cpu >= nr_cpu_ids)
--		return -EBUSY;
--	return work_on_cpu(cpu, __cpu_down_maps_locked, &work);
-+	for_each_cpu_and(cpu, cpu_online_mask, housekeeping_cpumask(HK_TYPE_DOMAIN)) {
-+		if (cpu != work.cpu)
-+			return work_on_cpu(cpu, __cpu_down_maps_locked, &work);
-+	}
-+	return -EBUSY;
- }
+diff --git a/include/sound/soc-card.h b/include/sound/soc-card.h
+index fc94dfb0021fd..e8ff2e089cd00 100644
+--- a/include/sound/soc-card.h
++++ b/include/sound/soc-card.h
+@@ -59,6 +59,43 @@ int snd_soc_card_add_dai_link(struct snd_soc_card *card,
+ void snd_soc_card_remove_dai_link(struct snd_soc_card *card,
+ 				  struct snd_soc_dai_link *dai_link);
  
- static int cpu_down(unsigned int cpu, enum cpuhp_state target)
++#ifdef CONFIG_PCI
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++	card->pci_subsystem_vendor = vendor;
++	card->pci_subsystem_device = device;
++	card->pci_subsystem_set = true;
++}
++
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	if (!card->pci_subsystem_set)
++		return -ENOENT;
++
++	*vendor = card->pci_subsystem_vendor;
++	*device = card->pci_subsystem_device;
++
++	return 0;
++}
++#else /* !CONFIG_PCI */
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++}
++
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	return -ENOENT;
++}
++#endif /* CONFIG_PCI */
++
+ /* device driver data */
+ static inline void snd_soc_card_set_drvdata(struct snd_soc_card *card,
+ 					    void *data)
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index 37f9d3fe302a6..49ec688eed606 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -932,6 +932,17 @@ struct snd_soc_card {
+ #ifdef CONFIG_DMI
+ 	char dmi_longname[80];
+ #endif /* CONFIG_DMI */
++
++#ifdef CONFIG_PCI
++	/*
++	 * PCI does not define 0 as invalid, so pci_subsystem_set indicates
++	 * whether a value has been written to these fields.
++	 */
++	unsigned short pci_subsystem_vendor;
++	unsigned short pci_subsystem_device;
++	bool pci_subsystem_set;
++#endif /* CONFIG_PCI */
++
+ 	char topology_shortname[32];
+ 
+ 	struct device *dev;
 -- 
 2.42.0
 
