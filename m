@@ -1,46 +1,51 @@
-Return-Path: <stable+bounces-2450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D87E7F8439
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB007F83B4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFF861C233F6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEE801C24435
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2188733CC2;
-	Fri, 24 Nov 2023 19:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B256E381D4;
+	Fri, 24 Nov 2023 19:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbpDlpzq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n31ZpreM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0D03307D;
-	Fri, 24 Nov 2023 19:25:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5A7C433C8;
-	Fri, 24 Nov 2023 19:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66022339BE;
+	Fri, 24 Nov 2023 19:20:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE515C433C8;
+	Fri, 24 Nov 2023 19:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853912;
-	bh=blWI7U3x/ZW7XsOSI3kERFFg5Cy8vRRY/A5xMqBCy90=;
+	s=korg; t=1700853608;
+	bh=Yw1hEo62+TYnV/OVU0azFUtAGB8JTnrZzuqqMxStj9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zbpDlpzqQ8GUMqoK0I3YG32QKwxZkU/YDIzE0oo//WkTtStQ1Tv7jfujMsm6JRRKC
-	 9nBQYuZf6JHk4/vK2VUlRCGVVNDGiL/VcLKtb2+5F/Del9Z8SJ/xU0fC2psEoHEcVj
-	 Jv5pqpVilbh2ed2sBZfc1y07c2H2xw8Z/UAXvtC4=
+	b=n31ZpreMJ8yf4SRkxelQrlaTbUYuPL8JPharxyjLHXRCdI/XcsOQIqeZtJdqFh5wU
+	 ugcWWJV4EH8EDzGA/v14vdEbYkEgZuNWe+LzfyxeL50IIXAFoGG3KozjDn9HpUd3w0
+	 CYLgZTJeprezZnitBMweoRXybl9x1bZ1Vu8DEmo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.4 081/159] PCI: keystone: Dont discard .remove() callback
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	Darren Hart <darren@os.amperecomputing.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	linux-watchdog@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 5.15 256/297] sbsa_gwdt: Calculate timeout with 64-bit math
 Date: Fri, 24 Nov 2023 17:54:58 +0000
-Message-ID: <20231124171945.310624713@linuxfoundation.org>
+Message-ID: <20231124172009.129056335@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +55,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Darren Hart <darren@os.amperecomputing.com>
 
-commit 200bddbb3f5202bbce96444fdc416305de14f547 upstream.
+commit 5d6aa89bba5bd6af2580f872b57f438dab883738 upstream.
 
-With CONFIG_PCIE_KEYSTONE=y and ks_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
+Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+introduced new timer math for watchdog revision 1 with the 48 bit offset
+register.
 
-The right thing to do is do always have the remove callback available.
-Note that this driver cannot be compiled as a module, so ks_pcie_remove()
-was always discarded before this change and modpost couldn't warn about
-this issue. Furthermore the __ref annotation also prevents a warning.
+The gwdt->clk and timeout are u32, but the argument being calculated is
+u64. Without a cast, the compiler performs u32 operations, truncating
+intermediate steps, resulting in incorrect values.
 
-Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
-Link: https://lore.kernel.org/r/20231001170254.2506508-4-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
+A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
+timeout of 600s writes 3647256576 to the one shot watchdog instead of
+300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
+
+Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
+the order of operations explicit with parenthesis.
+
+Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
+Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-watchdog@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: <stable@vger.kernel.org> # 5.14.x
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
+ drivers/watchdog/sbsa_gwdt.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1407,7 +1407,7 @@ err_link:
- 	return ret;
+--- a/drivers/watchdog/sbsa_gwdt.c
++++ b/drivers/watchdog/sbsa_gwdt.c
+@@ -153,14 +153,14 @@ static int sbsa_gwdt_set_timeout(struct
+ 	timeout = clamp_t(unsigned int, timeout, 1, wdd->max_hw_heartbeat_ms / 1000);
+ 
+ 	if (action)
+-		sbsa_gwdt_reg_write(gwdt->clk * timeout, gwdt);
++		sbsa_gwdt_reg_write((u64)gwdt->clk * timeout, gwdt);
+ 	else
+ 		/*
+ 		 * In the single stage mode, The first signal (WS0) is ignored,
+ 		 * the timeout is (WOR * 2), so the WOR should be configured
+ 		 * to half value of timeout.
+ 		 */
+-		sbsa_gwdt_reg_write(gwdt->clk / 2 * timeout, gwdt);
++		sbsa_gwdt_reg_write(((u64)gwdt->clk / 2) * timeout, gwdt);
+ 
+ 	return 0;
  }
- 
--static int __exit ks_pcie_remove(struct platform_device *pdev)
-+static int ks_pcie_remove(struct platform_device *pdev)
- {
- 	struct keystone_pcie *ks_pcie = platform_get_drvdata(pdev);
- 	struct device_link **link = ks_pcie->link;
-@@ -1425,7 +1425,7 @@ static int __exit ks_pcie_remove(struct
- 
- static struct platform_driver ks_pcie_driver __refdata = {
- 	.probe  = ks_pcie_probe,
--	.remove = __exit_p(ks_pcie_remove),
-+	.remove = ks_pcie_remove,
- 	.driver = {
- 		.name	= "keystone-pcie",
- 		.of_match_table = of_match_ptr(ks_pcie_of_match),
 
 
 
