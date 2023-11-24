@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00A47F7AFC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A478C7F7B30
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1F631C20918
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43407B20F37
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470FE39FF8;
-	Fri, 24 Nov 2023 18:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E96364A4;
+	Fri, 24 Nov 2023 18:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V09qRRu6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4Lo/1U+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F37D539FEA;
-	Fri, 24 Nov 2023 18:00:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F5DC433C8;
-	Fri, 24 Nov 2023 18:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEAF39FC2;
+	Fri, 24 Nov 2023 18:02:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF563C433C8;
+	Fri, 24 Nov 2023 18:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848842;
-	bh=EDRnqxepnqG6ISc/UnqOUZifRHU0UgVcdSR1n6oiROY=;
+	s=korg; t=1700848958;
+	bh=luo+iK7dL4+gbnXuoSKo6RAZ+wEgCpnixphdgkNAVsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V09qRRu6lAIG3j0Rjs/Ikz0olWUulM6YEQKURF+/9uIdgSz2YEU7ffYAd6uI9fsRJ
-	 IVWtAV1+gc05YNkgGR6dPs7l+hoFHeEv1+7VixEaUaD+yrkyjCfONqZ2VDuqQTTBxy
-	 /aFDn87/Qmypid02/r6EHApvja3DJ4Fa+cuiaa/4=
+	b=Q4Lo/1U+SRN1f0wPrOhN3cxTvAidQx5VFCp8BljOYGAq8QBpQK3Z6tEqF37ucqcOR
+	 0N6ezFwKMGnT3MHpviZ6txi4NV6nTp3+gzs8OobUVsqKd4azxUqxYrh4+Eu/EkznYr
+	 WfEuinH1ApCiJ1zDX+OmXIIajo9Iu6vyl+OcUFVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Loys Ollivier <lollivier@baylibre.com>,
-	Neil Armstrong <narmstrong@baylibre.com>,
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 76/97] tty: serial: meson: if no alias specified use an available id
+Subject: [PATCH 4.14 25/57] gfs2: ignore negated quota changes
 Date: Fri, 24 Nov 2023 17:50:49 +0000
-Message-ID: <20231124171937.001263843@linuxfoundation.org>
+Message-ID: <20231124171931.195562923@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +53,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loys Ollivier <lollivier@baylibre.com>
+From: Bob Peterson <rpeterso@redhat.com>
 
-[ Upstream commit a26988e8fef4b258d1b771e0f4b2e3b67cb2e044 ]
+[ Upstream commit 4c6a08125f2249531ec01783a5f4317d7342add5 ]
 
-At probe, the uart driver tries to get an id from a device tree alias.
-When no alias was specified, the driver would return an error and probing
-would fail.
+When lots of quota changes are made, there may be cases in which an
+inode's quota information is increased and then decreased, such as when
+blocks are added to a file, then deleted from it. If the timing is
+right, function do_qc can add pending quota changes to a transaction,
+then later, another call to do_qc can negate those changes, resulting
+in a net gain of 0. The quota_change information is recorded in the qc
+buffer (and qd element of the inode as well). The buffer is added to the
+transaction by the first call to do_qc, but a subsequent call changes
+the value from non-zero back to zero. At that point it's too late to
+remove the buffer_head from the transaction. Later, when the quota sync
+code is called, the zero-change qd element is discovered and flagged as
+an assert warning. If the fs is mounted with errors=panic, the kernel
+will panic.
 
-Providing an alias for registering a serial device should not be mandatory.
-If the device tree does not specify an alias, provide an id from a reserved
-range so that the probing can continue.
+This is usually seen when files are truncated and the quota changes are
+negated by punch_hole/truncate which uses gfs2_quota_hold and
+gfs2_quota_unhold rather than block allocations that use gfs2_quota_lock
+and gfs2_quota_unlock which automatically do quota sync.
 
-Suggested-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Loys Ollivier <lollivier@baylibre.com>
-Reviewed-by: Neil Armstrong <narmstrong@baylibre.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+This patch solves the problem by adding a check to qd_check_sync such
+that net-zero quota changes already added to the transaction are no
+longer deemed necessary to be synced, and skipped.
+
+In this case references are taken for the qd and the slot from do_qc
+so those need to be put. The normal sequence of events for a normal
+non-zero quota change is as follows:
+
+gfs2_quota_change
+   do_qc
+      qd_hold
+      slot_hold
+
+Later, when the changes are to be synced:
+
+gfs2_quota_sync
+   qd_fish
+      qd_check_sync
+         gets qd ref via lockref_get_not_dead
+   do_sync
+      do_qc(QC_SYNC)
+         qd_put
+	    lockref_put_or_lock
+   qd_unlock
+      qd_put
+         lockref_put_or_lock
+
+In the net-zero change case, we add a check to qd_check_sync so it puts
+the qd and slot references acquired in gfs2_quota_change and skip the
+unneeded sync.
+
+Signed-off-by: Bob Peterson <rpeterso@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/meson_uart.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/gfs2/quota.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
-index 1838d0be37044..849ce8c1ef392 100644
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -72,7 +72,8 @@
- #define AML_UART_BAUD_USE		BIT(23)
- #define AML_UART_BAUD_XTAL		BIT(24)
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index a833e2e071675..9cef9f1ab63fa 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -434,6 +434,17 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
+ 	    (sync_gen && (qd->qd_sync_gen >= *sync_gen)))
+ 		return 0;
  
--#define AML_UART_PORT_NUM		6
-+#define AML_UART_PORT_NUM		12
-+#define AML_UART_PORT_OFFSET		6
- #define AML_UART_DEV_NAME		"ttyAML"
- 
- 
-@@ -667,10 +668,20 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	struct resource *res_mem, *res_irq;
- 	struct uart_port *port;
- 	int ret = 0;
-+	int id = -1;
- 
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
- 
-+	if (pdev->id < 0) {
-+		for (id = AML_UART_PORT_OFFSET; id < AML_UART_PORT_NUM; id++) {
-+			if (!meson_ports[id]) {
-+				pdev->id = id;
-+				break;
-+			}
-+		}
++	/*
++	 * If qd_change is 0 it means a pending quota change was negated.
++	 * We should not sync it, but we still have a qd reference and slot
++	 * reference taken by gfs2_quota_change -> do_qc that need to be put.
++	 */
++	if (!qd->qd_change && test_and_clear_bit(QDF_CHANGE, &qd->qd_flags)) {
++		slot_put(qd);
++		qd_put(qd);
++		return 0;
 +	}
 +
- 	if (pdev->id < 0 || pdev->id >= AML_UART_PORT_NUM)
- 		return -EINVAL;
+ 	if (!lockref_get_not_dead(&qd->qd_lockref))
+ 		return 0;
  
 -- 
 2.42.0
