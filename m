@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657547F7C2A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F017F7E4F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96A891C21127
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2600D1C21335
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C303B3A8C2;
-	Fri, 24 Nov 2023 18:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D53A3A8C6;
+	Fri, 24 Nov 2023 18:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z22Gqhp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSnrR8Mn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7543439FC2;
-	Fri, 24 Nov 2023 18:12:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006F0C433C7;
-	Fri, 24 Nov 2023 18:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB1139FF3;
+	Fri, 24 Nov 2023 18:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B290EC433C7;
+	Fri, 24 Nov 2023 18:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849551;
-	bh=71DZ2W7lqwsQecmvhT7hZGg8nXsRVrrBBb36imynmPA=;
+	s=korg; t=1700850709;
+	bh=MqFJyPX7UWxwqDFeGifqHVO0CUHcrl1/KLJZIREhdn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z22Gqhp2Wp1HBfLG3+aCsyLtHw91wJ+ZKfv10uK3mp91cBitv/+MmCW03ZNI2psTu
-	 jRcWWX9Bg1iPak3q5FVAQzTUT2g5jprgcktXXoCNy8/UVGYr0wZkVO/ZPylF3X6MpB
-	 urolJVszck61FtIKr5rWNO/sCdI919fDEcY1TWOU=
+	b=XSnrR8MntsPl2Qz8jFO1tEQVRP8Dp2YdR23VwR+Oo+P2nXafF4hZHmdLLyP98p45f
+	 krElVrCcXwnmcqmEUTm6OCnuJePVu405TLCk8ktHKJSsJe/YmRmbf38EuHgB/tW2CB
+	 J6Dw1AaRDA0Vnd6KK1M1t7BqMB9Q9amI2L9Vp0p8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yi Yang <yiyang13@huawei.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/530] net/mlx5e: Check return value of snprintf writing to fw_version buffer
+Subject: [PATCH 6.5 157/491] mtd: rawnand: intel: check return value of devm_kasprintf()
 Date: Fri, 24 Nov 2023 17:46:33 +0000
-Message-ID: <20231124172034.960351727@linuxfoundation.org>
+Message-ID: <20231124172029.192342431@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,73 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 41e63c2baa11dc2aa71df5dd27a5bd87d11b6bbb ]
+[ Upstream commit 74ac5b5e2375f1e8ef797ac7770887e9969f2516 ]
 
-Treat the operation as an error case when the return value is equivalent to
-the size of the name buffer. Failed to write null terminator to the name
-buffer, making the string malformed and should not be used. Provide a
-string with only the firmware version when forming the string with the
-board id fails.
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful by
+checking the pointer validity.
 
-Without check, will trigger -Wformat-truncation with W=1.
-
-    drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c: In function 'mlx5e_ethtool_get_drvinfo':
-    drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c:49:31: warning: '%.16s' directive output may be truncated writing up to 16 bytes into a region of size between 13 and 22 [-Wformat-truncation=]
-      49 |                  "%d.%d.%04d (%.16s)",
-         |                               ^~~~~
-    drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c:48:9: note: 'snprintf' output between 12 and 37 bytes into a destination of size 32
-      48 |         snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      49 |                  "%d.%d.%04d (%.16s)",
-         |                  ~~~~~~~~~~~~~~~~~~~~~
-      50 |                  fw_rev_maj(mdev), fw_rev_min(mdev), fw_rev_sub(mdev),
-         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      51 |                  mdev->board_id);
-         |                  ~~~~~~~~~~~~~~~
-
-Fixes: 84e11edb71de ("net/mlx5e: Show board id in ethtool driver information")
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0b1039f016e8 ("mtd: rawnand: Add NAND controller support on Intel LGM SoC")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231019065537.318391-1-yiyang13@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_ethtool.c    | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/raw/intel-nand-controller.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index dff02434ff458..7c66bd73ddfa2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -43,12 +43,17 @@ void mlx5e_ethtool_get_drvinfo(struct mlx5e_priv *priv,
- 			       struct ethtool_drvinfo *drvinfo)
- {
- 	struct mlx5_core_dev *mdev = priv->mdev;
-+	int count;
+diff --git a/drivers/mtd/nand/raw/intel-nand-controller.c b/drivers/mtd/nand/raw/intel-nand-controller.c
+index a9909eb081244..8231e9828dce7 100644
+--- a/drivers/mtd/nand/raw/intel-nand-controller.c
++++ b/drivers/mtd/nand/raw/intel-nand-controller.c
+@@ -619,6 +619,11 @@ static int ebu_nand_probe(struct platform_device *pdev)
+ 	ebu_host->cs_num = cs;
  
- 	strscpy(drvinfo->driver, KBUILD_MODNAME, sizeof(drvinfo->driver));
--	snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
--		 "%d.%d.%04d (%.16s)",
--		 fw_rev_maj(mdev), fw_rev_min(mdev), fw_rev_sub(mdev),
--		 mdev->board_id);
-+	count = snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-+			 "%d.%d.%04d (%.16s)", fw_rev_maj(mdev),
-+			 fw_rev_min(mdev), fw_rev_sub(mdev), mdev->board_id);
-+	if (count == sizeof(drvinfo->fw_version))
-+		snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-+			 "%d.%d.%04d", fw_rev_maj(mdev),
-+			 fw_rev_min(mdev), fw_rev_sub(mdev));
+ 	resname = devm_kasprintf(dev, GFP_KERNEL, "nand_cs%d", cs);
++	if (!resname) {
++		ret = -ENOMEM;
++		goto err_of_node_put;
++	}
 +
- 	strscpy(drvinfo->bus_info, dev_name(mdev->device),
- 		sizeof(drvinfo->bus_info));
- }
+ 	ebu_host->cs[cs].chipaddr = devm_platform_ioremap_resource_byname(pdev,
+ 									  resname);
+ 	if (IS_ERR(ebu_host->cs[cs].chipaddr)) {
+@@ -655,6 +660,11 @@ static int ebu_nand_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	resname = devm_kasprintf(dev, GFP_KERNEL, "addr_sel%d", cs);
++	if (!resname) {
++		ret = -ENOMEM;
++		goto err_cleanup_dma;
++	}
++
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, resname);
+ 	if (!res) {
+ 		ret = -EINVAL;
 -- 
 2.42.0
 
