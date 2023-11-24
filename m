@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C4637F81A3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F05B7F81EC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD1621C21B40
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F0F81C2237F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4C3364A6;
-	Fri, 24 Nov 2023 19:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A67364B7;
+	Fri, 24 Nov 2023 19:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zow7gQJq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4OoI6ti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E4E2E64F;
-	Fri, 24 Nov 2023 19:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000E6C433C8;
-	Fri, 24 Nov 2023 19:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6041435F1A;
+	Fri, 24 Nov 2023 19:02:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DECC433C8;
+	Fri, 24 Nov 2023 19:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852419;
-	bh=epGhJE+ZmgWtG2JvI243lhWOIA9VbfvO6n5oWWLTVjQ=;
+	s=korg; t=1700852561;
+	bh=A4+QcATy2xGvj6rX9Ngyr+8m3TCd0Zzyu9NCzGZMuu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zow7gQJqOFFuf4O42w5Q2nHlmKOEGbPKm+chnJ59UfS8+LvNc2Em4sKFrWFKAQFuY
-	 LAHTczGJuli5rbWWygqmF/l1MXClFOwqTGAQh2gzqxD/d9gfwwKmvzSOgE+rTqjwak
-	 1AG0vPuv8nv9pCS7LjnTzu8u8y3dDgSVloyD2zus=
+	b=D4OoI6tiHomZQBmCQ5eJ3keqYbeqc2ERa5OUXfCRbmS2z0aYEYxTMJWuSQdG4zrbD
+	 o5DIkCgrTnBx0a6IUFe8i7mu5RKK0jS98TxF2SLRe1TscdEdtEFtUp2Vy2+PaCyDps
+	 tGgD4yD4v3xvigu+MmdzYLiHyZOZ+bHFquDlwPoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 348/372] Revert "net: r8169: Disable multicast filter for RTL8168H and RTL8107E"
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 008/193] bpf: Detect IP == ksym.end as part of BPF program
 Date: Fri, 24 Nov 2023 17:52:15 +0000
-Message-ID: <20231124172021.947945702@linuxfoundation.org>
+Message-ID: <20231124171947.497253833@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +53,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-commit 6a26310273c323380da21eb23fcfd50e31140913 upstream.
+[ Upstream commit 66d9111f3517f85ef2af0337ece02683ce0faf21 ]
 
-This reverts commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df.
+Now that bpf_throw kfunc is the first such call instruction that has
+noreturn semantics within the verifier, this also kicks in dead code
+elimination in unprecedented ways. For one, any instruction following
+a bpf_throw call will never be marked as seen. Moreover, if a callchain
+ends up throwing, any instructions after the call instruction to the
+eventually throwing subprog in callers will also never be marked as
+seen.
 
-I couldn't reproduce the reported issue. What I did, based on a pcap
-packet log provided by the reporter:
-- Used same chip version (RTL8168h)
-- Set MAC address to the one used on the reporters system
-- Replayed the EAPOL unicast packet that, according to the reporter,
-  was filtered out by the mc filter.
-The packet was properly received.
+The tempting way to fix this would be to emit extra 'int3' instructions
+which bump the jited_len of a program, and ensure that during runtime
+when a program throws, we can discover its boundaries even if the call
+instruction to bpf_throw (or to subprogs that always throw) is emitted
+as the final instruction in the program.
 
-Therefore the root cause of the reported issue seems to be somewhere
-else. Disabling mc filtering completely for the most common chip
-version is a quite big hammer. Therefore revert the change and wait
-for further analysis results from the reporter.
+An example of such a program would be this:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+do_something():
+	...
+	r0 = 0
+	exit
+
+foo():
+	r1 = 0
+	call bpf_throw
+	r0 = 0
+	exit
+
+bar(cond):
+	if r1 != 0 goto pc+2
+	call do_something
+	exit
+	call foo
+	r0 = 0  // Never seen by verifier
+	exit	//
+
+main(ctx):
+	r1 = ...
+	call bar
+	r0 = 0
+	exit
+
+Here, if we do end up throwing, the stacktrace would be the following:
+
+bpf_throw
+foo
+bar
+main
+
+In bar, the final instruction emitted will be the call to foo, as such,
+the return address will be the subsequent instruction (which the JIT
+emits as int3 on x86). This will end up lying outside the jited_len of
+the program, thus, when unwinding, we will fail to discover the return
+address as belonging to any program and end up in a panic due to the
+unreliable stack unwinding of BPF programs that we never expect.
+
+To remedy this case, make bpf_prog_ksym_find treat IP == ksym.end as
+part of the BPF program, so that is_bpf_text_address returns true when
+such a case occurs, and we are able to unwind reliably when the final
+instruction ends up being a call instruction.
+
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230912233214.1518551-12-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/bpf/core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2529,9 +2529,7 @@ static void rtl_set_rx_mode(struct net_d
- 		rx_mode &= ~AcceptMulticast;
- 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
- 		   dev->flags & IFF_ALLMULTI ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
-+		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
- 		/* accept all multicasts */
- 	} else if (netdev_mc_empty(dev)) {
- 		rx_mode &= ~AcceptMulticast;
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index d3f6a070875cb..33ea6ab12f47c 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -602,7 +602,11 @@ static __always_inline int bpf_tree_comp(void *key, struct latch_tree_node *n)
+ 
+ 	if (val < ksym->start)
+ 		return -1;
+-	if (val >= ksym->end)
++	/* Ensure that we detect return addresses as part of the program, when
++	 * the final instruction is a call for a program part of the stack
++	 * trace. Therefore, do val > ksym->end instead of val >= ksym->end.
++	 */
++	if (val > ksym->end)
+ 		return  1;
+ 
+ 	return 0;
+-- 
+2.42.0
+
 
 
 
