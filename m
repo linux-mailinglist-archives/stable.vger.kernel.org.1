@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-2460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8BD7F8444
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025677F83D1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09D40284F93
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3341F1C2664C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9901E2C1BA;
-	Fri, 24 Nov 2023 19:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AFB35EE6;
+	Fri, 24 Nov 2023 19:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/lE27eD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vOoLbhQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F14364B7;
-	Fri, 24 Nov 2023 19:25:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38D1C433C8;
-	Fri, 24 Nov 2023 19:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD5A33E9;
+	Fri, 24 Nov 2023 19:21:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7C9C433C7;
+	Fri, 24 Nov 2023 19:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853938;
-	bh=AJAmr2oXj78+zsQMGh2jubGWHbFpuCKRhQIxrIzt3hI=;
+	s=korg; t=1700853673;
+	bh=Vt1vPIQCmWLVIE+LaIIPiUpr+tB5pBCrMZDRqohp74k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/lE27eD2m7/cEDJv137/lePi3YcOHAfjZeAxv5Jiw0f7vWWw8uVrzwCmG6GmgYLG
-	 CbD3HDxgiGEJiGXYZsrNUYomGKFROLd+8u+wwIX9oTDCHH4qfwvIIb4paCHECVTQBI
-	 fTm8ynuAtGYHWqUDwU2QfAMve7R95rYJYS3Mnh30=
+	b=vOoLbhQtLw/kfP0GWIPE6PkSDTYiMsXUPGFElnzQEXBLg2RXcW1mn+MQ+V+610lfR
+	 1PZzYANd0QDXKpvdWtdnHmVj4ApJGZgvdf36kZoqqV8b2iHIjxgsed9XJjrqEiy8eJ
+	 ZxX3TEOfdfAg7/aO/BMK6jJSvjqpLC3Me6RqPYeY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.4 090/159] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
+	Joe Ferner <joe.m.ferner@gmail.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.15 265/297] media: sharp: fix sharp encoding
 Date: Fri, 24 Nov 2023 17:55:07 +0000
-Message-ID: <20231124171945.652501989@linuxfoundation.org>
+Message-ID: <20231124172009.422539302@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,99 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Sean Young <sean@mess.org>
 
-commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
+commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
 
-JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
-however, other process could intercept the EIO information from bdev's
-mapping, which leads journal recovering successful even EIO occurs during
-data written back to fs device.
+The Sharp protocol[1] encoding has incorrect timings for bit space.
 
-We found this problem in our product, iscsi + multipath is chosen for block
-device of ext4. Unstable network may trigger kpartx to rescan partitions in
-device mapper layer. Detailed process is shown as following:
+[1] https://www.sbprojects.net/knowledge/ir/sharp.php
 
-  mount          kpartx          irq
-jbd2_journal_recover
- do_one_pass
-  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
-  mark_buffer_dirty // mark bh dirty
-         vfs_read
-	  generic_file_read_iter // dio
-	   filemap_write_and_wait_range
-	    __filemap_fdatawrite_range
-	     do_writepages
-	      block_write_full_folio
-	       submit_bh_wbc
-	            >>  EIO occurs in disk  <<
-	                     end_buffer_async_write
-			      mark_buffer_write_io_error
-			       mapping_set_error
-			        set_bit(AS_EIO, &mapping->flags) // set!
-	    filemap_check_errors
-	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
- err2 = sync_blockdev
-  filemap_write_and_wait
-   filemap_check_errors
-    test_and_clear_bit(AS_EIO, &mapping->flags) // false
- err2 = 0
-
-Filesystem is mounted successfully even data from journal is failed written
-into disk, and ext4/ocfs2 could become corrupted.
-
-Fix it by comparing the wb_err state in fs block device before recovering
-and after recovering.
-
-A reproducer can be found in the kernel bugzilla referenced below.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
+Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
+Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/recovery.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -247,6 +247,8 @@ int jbd2_journal_recover(journal_t *jour
- 	journal_superblock_t *	sb;
+--- a/drivers/media/rc/ir-sharp-decoder.c
++++ b/drivers/media/rc/ir-sharp-decoder.c
+@@ -15,7 +15,9 @@
+ #define SHARP_UNIT		40  /* us */
+ #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
+ #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
+-#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
++#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
++#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
++#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
+ #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
+ #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
  
- 	struct recovery_info	info;
-+	errseq_t		wb_err;
-+	struct address_space	*mapping;
- 
- 	memset(&info, 0, sizeof(info));
- 	sb = journal->j_superblock;
-@@ -264,6 +266,9 @@ int jbd2_journal_recover(journal_t *jour
- 		return 0;
- 	}
- 
-+	wb_err = 0;
-+	mapping = journal->j_fs_dev->bd_inode->i_mapping;
-+	errseq_check_and_advance(&mapping->wb_err, &wb_err);
- 	err = do_one_pass(journal, &info, PASS_SCAN);
- 	if (!err)
- 		err = do_one_pass(journal, &info, PASS_REVOKE);
-@@ -284,6 +289,9 @@ int jbd2_journal_recover(journal_t *jour
- 	err2 = sync_blockdev(journal->j_fs_dev);
- 	if (!err)
- 		err = err2;
-+	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
-+	if (!err)
-+		err = err2;
- 	/* Make sure all replayed data is on permanent storage */
- 	if (journal->j_flags & JBD2_BARRIER) {
- 		err2 = blkdev_issue_flush(journal->j_fs_dev, GFP_KERNEL, NULL);
+@@ -168,8 +170,8 @@ static const struct ir_raw_timings_pd ir
+ 	.header_pulse  = 0,
+ 	.header_space  = 0,
+ 	.bit_pulse     = SHARP_BIT_PULSE,
+-	.bit_space[0]  = SHARP_BIT_0_PERIOD,
+-	.bit_space[1]  = SHARP_BIT_1_PERIOD,
++	.bit_space[0]  = SHARP_BIT_0_SPACE,
++	.bit_space[1]  = SHARP_BIT_1_SPACE,
+ 	.trailer_pulse = SHARP_BIT_PULSE,
+ 	.trailer_space = SHARP_ECHO_SPACE,
+ 	.msb_first     = 1,
 
 
 
