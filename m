@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A627F7BC2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547177F7DF8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB27FB20E4E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4810282284
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B1639FE8;
-	Fri, 24 Nov 2023 18:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49EA39FE1;
+	Fri, 24 Nov 2023 18:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuR1bEa3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhFeCuDV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A5139FD4;
-	Fri, 24 Nov 2023 18:08:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40626C433C8;
-	Fri, 24 Nov 2023 18:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606F9381D4;
+	Fri, 24 Nov 2023 18:28:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7F8C433C9;
+	Fri, 24 Nov 2023 18:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849304;
-	bh=iGXbLfn1nQ7CTx/84hdsOvidOL8yNSD5/lwU3WMPiLk=;
+	s=korg; t=1700850525;
+	bh=TH5lbTGsWYJWxC7eynhgm7G+0VvOXfnj8R5gsYyYSu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UuR1bEa3aePf/UPmRta4YUijXtaeNaI8bbQBIRJjz/d2041I0p475KOFWo9hFiTpv
-	 aakpaCogUo0UFKNKzOn0EhIXkHFckMRX649yAfgk/jeK3MiyuVP83rMASvsi8+1jbF
-	 R58W+XPO1Nyu0g6hOzY28L25YImM4z9477a1HMyg=
+	b=EhFeCuDVzEIB3ImCU9MfubeUrCd23mw0KrWI7pirG3gMJZRyFEIRHY/QO4BibGAIA
+	 lxYPz7lyM94X9IOtlyQBzQcifyWRitHT6ZITkqoXOUTNqn3JAy9tZ5MAAVvOyfUOTb
+	 iXmCGGOOADGJZ2upsSkWq7Vj0dhkkLx5jACZ7v/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	David Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Zack Rusin <zackr@vmware.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/530] f2fs: fix error handling of __get_node_page
-Date: Fri, 24 Nov 2023 17:44:54 +0000
-Message-ID: <20231124172031.997083454@linuxfoundation.org>
+Subject: [PATCH 6.5 059/491] kernel: watch_queue: copy user-array safely
+Date: Fri, 24 Nov 2023 17:44:55 +0000
+Message-ID: <20231124172026.433270631@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +55,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Philipp Stanner <pstanner@redhat.com>
 
-[ Upstream commit 9b4c8dd99fe48721410741651d426015e03a4b7a ]
+[ Upstream commit ca0776571d3163bd03b3e8c9e3da936abfaecbf6 ]
 
-Use f2fs_handle_error to record inconsistent node block error
-and return -EFSCORRUPTED instead of -EINVAL.
+Currently, there is no overflow-check with memdup_user().
 
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Use the new function memdup_array_user() instead of memdup_user() for
+duplicating the user-space array safely.
+
+Suggested-by: David Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-5-pstanner@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/watch_queue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 248764badcde8..ed963c56ac32a 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1467,7 +1467,8 @@ static struct page *__get_node_page(struct f2fs_sb_info *sbi, pgoff_t nid,
- 			  ofs_of_node(page), cpver_of_node(page),
- 			  next_blkaddr_of_node(page));
- 	set_sbi_flag(sbi, SBI_NEED_FSCK);
--	err = -EINVAL;
-+	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
-+	err = -EFSCORRUPTED;
- out_err:
- 	ClearPageUptodate(page);
- out_put_err:
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index d0b6b390ee423..778b4056700ff 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -331,7 +331,7 @@ long watch_queue_set_filter(struct pipe_inode_info *pipe,
+ 	    filter.__reserved != 0)
+ 		return -EINVAL;
+ 
+-	tf = memdup_user(_filter->filters, filter.nr_filters * sizeof(*tf));
++	tf = memdup_array_user(_filter->filters, filter.nr_filters, sizeof(*tf));
+ 	if (IS_ERR(tf))
+ 		return PTR_ERR(tf);
+ 
 -- 
 2.42.0
 
