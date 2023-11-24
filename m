@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 494047F7C9D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE047F80A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04E5A282045
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC4342819DC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E252511F;
-	Fri, 24 Nov 2023 18:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FB231748;
+	Fri, 24 Nov 2023 18:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwgzW+z0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlDEjBKZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFEEC39FDD;
-	Fri, 24 Nov 2023 18:16:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E64C433C8;
-	Fri, 24 Nov 2023 18:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3514F2D787;
+	Fri, 24 Nov 2023 18:51:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3602C433C8;
+	Fri, 24 Nov 2023 18:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849810;
-	bh=bm8uQJkrAF/ultY/N+YzLzIEZjnD8Y3reJz+V0HDP84=;
+	s=korg; t=1700851886;
+	bh=XEpp5Wna/EkbKZmrGwhI6TExXzxmRCEqzj9uGXMTVCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwgzW+z0DMVTZTVukUxMx/sz9V+5NOOY88O+kQWWnbLcFxsclkerO5K95SMKzBtPX
-	 P5V8Q0bv4tDdKRzv6BnAjvXx6uHSzRjZru6PFL0xy/G5z3SYHA6CY0tyCd3ozlUssK
-	 4mvd9j1QkOoGRPkZUl4LLY8p1z3VVCBYWmGWGmpc=
+	b=jlDEjBKZ9DwjHpAd0yXA0LwXfEEPrcHWMc4EXLKht3pmXW0VeMxMEXgPjxcZjrgVm
+	 i74oQqVVaD+g7P2d8x6kZOF/slbY8ABMSIUkICEeZwq9cCawf0GlyzP0fy9f7xGOBb
+	 MmA8QkqGuzalQVXuNP4L+2lCn0/tz1mVPP7GRfQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Talpey <tom@talpey.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 330/530] svcrdma: Drop connection after an RDMA Read error
-Date: Fri, 24 Nov 2023 17:48:16 +0000
-Message-ID: <20231124172038.069886492@linuxfoundation.org>
+	Zongmin Zhou <zhouzongmin@kylinos.cn>,
+	Dave Airlie <airlied@redhat.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 110/372] drm/qxl: prevent memory leak
+Date: Fri, 24 Nov 2023 17:48:17 +0000
+Message-ID: <20231124172014.163999786@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,38 +54,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Zongmin Zhou <zhouzongmin@kylinos.cn>
 
-commit 197115ebf358cb440c73e868b2a0a5ef728decc6 upstream.
+[ Upstream commit 0e8b9f258baed25f1c5672613699247c76b007b5 ]
 
-When an RPC Call message cannot be pulled from the client, that
-is a message loss, by definition. Close the connection to trigger
-the client to resend.
+The allocated memory for qdev->dumb_heads should be released
+in qxl_destroy_monitors_object before qxl suspend.
+otherwise,qxl_create_monitors_object will be called to
+reallocate memory for qdev->dumb_heads after qxl resume,
+it will cause memory leak.
 
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
+Link: https://lore.kernel.org/r/20230801025309.4049813-1-zhouzongmin@kylinos.cn
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_recvfrom.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/qxl/qxl_display.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-@@ -852,7 +852,8 @@ out_readfail:
- 	if (ret == -EINVAL)
- 		svc_rdma_send_error(rdma_xprt, ctxt, ret);
- 	svc_rdma_recv_ctxt_put(rdma_xprt, ctxt);
--	return ret;
-+	svc_xprt_deferred_close(xprt);
-+	return -ENOTCONN;
+diff --git a/drivers/gpu/drm/qxl/qxl_display.c b/drivers/gpu/drm/qxl/qxl_display.c
+index a152a7c6db215..f91a86225d5e7 100644
+--- a/drivers/gpu/drm/qxl/qxl_display.c
++++ b/drivers/gpu/drm/qxl/qxl_display.c
+@@ -1229,6 +1229,9 @@ int qxl_destroy_monitors_object(struct qxl_device *qdev)
+ 	if (!qdev->monitors_config_bo)
+ 		return 0;
  
- out_backchannel:
- 	svc_rdma_handle_bc_reply(rqstp, ctxt);
++	kfree(qdev->dumb_heads);
++	qdev->dumb_heads = NULL;
++
+ 	qdev->monitors_config = NULL;
+ 	qdev->ram_header->monitors_config = 0;
+ 
+-- 
+2.42.0
+
 
 
 
