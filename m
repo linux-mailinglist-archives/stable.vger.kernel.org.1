@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8BDE7F83F1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 358167F8387
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B4EFB2743A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E16A31F21129
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1B1381A2;
-	Fri, 24 Nov 2023 19:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D624D35F04;
+	Fri, 24 Nov 2023 19:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzkD5hX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj691PwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775792FC36;
-	Fri, 24 Nov 2023 19:22:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9861BC433C8;
-	Fri, 24 Nov 2023 19:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B6E33CC2;
+	Fri, 24 Nov 2023 19:18:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CA8C4339A;
+	Fri, 24 Nov 2023 19:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853745;
-	bh=DyxvkNYlThlPp6nq/FF0tLj4/OrECq/mAb4FHqpe8p0=;
+	s=korg; t=1700853508;
+	bh=yQbJV8cH24TksCOSByq35jDrf24DjQX3tiUR6Zp4lHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzkD5hX4n4CMCinLnyQp4mXaImUMAN79u9Go7DmRMJHDNL4D1I582SmYg5OidFP97
-	 35YMlbg+7pNsaECxqZGHHaFahkJzf2sgO64Kad7JUy4KoCAthaxYeQU9nrcl/wCnJG
-	 bInpVTcPNgeEphxad25THqV6/exrKsGVuXLlGhrM=
+	b=lj691PwGohLE4iXoCYPsdx6LI9zQfzFRh2Bdhjwe8sbS5unIdaFlmLXG8VQqk3j+i
+	 oqUZ9cMKYFsnw9nFkLEVpfa94miIsKe1Kf5XioMJLANWP3J6gDVRLrFHehfYvr9/og
+	 DpNChVFaWIiZSZGd9S7r/6MAAPiqjiBGYwT0/8oE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 006/159] wifi: mac80211_hwsim: fix clang-specific fortify warning
+	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 181/297] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
 Date: Fri, 24 Nov 2023 17:53:43 +0000
-Message-ID: <20231124171942.173794899@linuxfoundation.org>
+Message-ID: <20231124172006.572270360@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +50,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
 
-[ Upstream commit cbaccdc42483c65016f1bae89128c08dc17cfb2a ]
+commit e641a070137dd959932c7c222e000d9d941167a2 upstream.
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
+on the request from dependent clocks. Doing so will result in the
+unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
+clocks.
 
-In file included from drivers/net/wireless/virtual/mac80211_hwsim.c:18:
-In file included from ./include/linux/slab.h:16:
-In file included from ./include/linux/gfp.h:7:
-In file included from ./include/linux/mmzone.h:8:
-In file included from ./include/linux/spinlock.h:56:
-In file included from ./include/linux/preempt.h:79:
-In file included from ./arch/x86/include/asm/preempt.h:9:
-In file included from ./include/linux/thread_info.h:60:
-In file included from ./arch/x86/include/asm/thread_info.h:53:
-In file included from ./arch/x86/include/asm/cpufeature.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
-
-The compiler actually complains on 'mac80211_hwsim_get_et_strings()' where
-fortification logic inteprets call to 'memcpy()' as an attempt to copy the
-whole 'mac80211_hwsim_gstrings_stats' array from its first member and so
-issues an overread warning. This warning may be silenced by passing
-an address of the whole array and not the first member to 'memcpy()'.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://lore.kernel.org/r/20230829094140.234636-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL’s")
+Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mac80211_hwsim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-ipq8074.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
-index a21739b2f44e6..634e8c1e71cca 100644
---- a/drivers/net/wireless/mac80211_hwsim.c
-+++ b/drivers/net/wireless/mac80211_hwsim.c
-@@ -2323,7 +2323,7 @@ static void mac80211_hwsim_get_et_strings(struct ieee80211_hw *hw,
- 					  u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *mac80211_hwsim_gstrings_stats,
-+		memcpy(data, mac80211_hwsim_gstrings_stats,
- 		       sizeof(mac80211_hwsim_gstrings_stats));
- }
+--- a/drivers/clk/qcom/gcc-ipq8074.c
++++ b/drivers/clk/qcom/gcc-ipq8074.c
+@@ -418,7 +418,6 @@ static struct clk_fixed_factor gpll0_out
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_fixed_factor_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
--- 
-2.42.0
-
+@@ -465,7 +464,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -498,7 +496,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -532,7 +529,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -546,7 +542,6 @@ static struct clk_fixed_factor gpll6_out
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_fixed_factor_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -611,7 +606,6 @@ static struct clk_alpha_pll_postdiv nss_
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
 
 
 
