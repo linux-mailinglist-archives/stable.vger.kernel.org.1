@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7774A7F7FC6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9B87F7D7B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16829B21A2A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 752BBB2160C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572ED381CD;
-	Fri, 24 Nov 2023 18:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9195D3A8C5;
+	Fri, 24 Nov 2023 18:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smFcLIpM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcETRDoZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E04033CC7;
-	Fri, 24 Nov 2023 18:44:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4234DC433C7;
-	Fri, 24 Nov 2023 18:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4033E39FE8;
+	Fri, 24 Nov 2023 18:24:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD04C433C7;
+	Fri, 24 Nov 2023 18:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851451;
-	bh=7HkfxB/dWMDRuAU4XNKA5tL/+0RLax+9MCnE45guPsg=;
+	s=korg; t=1700850294;
+	bh=IlOQR+QMS67l8tkFOgc1xLnfS6JZOE8izHmYeqSjyLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smFcLIpMbBev4J/zc/9YBLOutb2tZJ81Oi4R4iTX4rCO5M0WyC6sb2g3/smH0MCgj
-	 30SqB4/gmBP07N27iJHYh5iuDUp0d3mpyb7zZrDE/UrdRdh2iezE6O/Ay6Y5FWBu4g
-	 z77o9e49C9JazzhsGp8ACvMN7d/Hh+OJSLTSTsp4=
+	b=jcETRDoZFOVWBP4DhOMdQ0rAMI0WPo/9105nI7l2vU7SdsQE/WU1X9r2zTfOnByWX
+	 +M4z22TnXNzXh46HOfrFq0UgV5i+hQial6lZw97S5Fj11ho/7awHOQOHcCjnYgB1Zb
+	 Dl54VpqhOzhljUBW55yn80FxF876w4Rwd7wJxIRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.5 453/491] media: qcom: camss: Fix missing vfe_lite clocks check
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 523/530] drm/amdgpu: lower CS errors to debug severity
 Date: Fri, 24 Nov 2023 17:51:29 +0000
-Message-ID: <20231124172038.227740690@linuxfoundation.org>
+Message-ID: <20231124172044.104120081@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +50,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Christian König <christian.koenig@amd.com>
 
-commit b6e1bdca463a932c1ac02caa7d3e14bf39288e0c upstream.
+commit 17daf01ab4e3e5a5929747aa05cc15eb2bad5438 upstream.
 
-check_clock doesn't account for vfe_lite which means that vfe_lite will
-never get validated by this routine. Add the clock name to the expected set
-to remediate.
+Otherwise userspace can spam the logs by using incorrect input values.
 
-Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/camss/camss-vfe.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe.c
-@@ -535,7 +535,8 @@ static int vfe_check_clock_rates(struct
- 		struct camss_clock *clock = &vfe->clock[i];
- 
- 		if (!strcmp(clock->name, "vfe0") ||
--		    !strcmp(clock->name, "vfe1")) {
-+		    !strcmp(clock->name, "vfe1") ||
-+		    !strcmp(clock->name, "vfe_lite")) {
- 			u64 min_rate = 0;
- 			unsigned long rate;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1411,7 +1411,7 @@ int amdgpu_cs_ioctl(struct drm_device *d
+ 		if (r == -ENOMEM)
+ 			DRM_ERROR("Not enough memory for command submission!\n");
+ 		else if (r != -ERESTARTSYS && r != -EAGAIN)
+-			DRM_ERROR("Failed to process the buffer list %d!\n", r);
++			DRM_DEBUG("Failed to process the buffer list %d!\n", r);
+ 		goto error_fini;
+ 	}
  
 
 
