@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A3F07F7CFD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 120D97F7AA2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B8AB1C2114E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4265F1C20988
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB74381D4;
-	Fri, 24 Nov 2023 18:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747A3381DF;
+	Fri, 24 Nov 2023 17:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmLqA+CK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dm8RiZW7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAE739FF8;
-	Fri, 24 Nov 2023 18:20:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ED8C433C8;
-	Fri, 24 Nov 2023 18:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF0331740;
+	Fri, 24 Nov 2023 17:57:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADDDC433C7;
+	Fri, 24 Nov 2023 17:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850018;
-	bh=OPd8WzNcc+Y9/vZasPkGfaq73BQ+wc4S66+nCI3WFHo=;
+	s=korg; t=1700848624;
+	bh=H9zsiHIOCc3HFofp3C+XMYfwe3uvgv7Rb43myySZSd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmLqA+CKZNuJOOMx6T6xMNqRNTs4IBwAuz2ijGerMUBLkgLrIsbPebBI5dWVt+Xa8
-	 wTntOyDBLS6XqtZvM/ZYKGvMGdrmABjPMVxbaIDmAdWQTjr/CAaPjCY1Jz13Ux2/JP
-	 PqfeaSolGDwG4zGgSzAsaCsEK0VwuyaV8QZZgZfI=
+	b=dm8RiZW7QIgsc8uccW72aUbaWP1LHj5KBtOVDN6a8R8MJEkFF7PdvtSGm4RlUu6pH
+	 N3+Gzbef6r5BQnRjmcCYTH4xwkMbEFzDbW8WPFtE/kLvaNDYKh446k27lFMKPRlmE/
+	 Js3lbsc39i0dl5ikuzkPJynJCGXCKsnzveP8+3R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 413/530] parisc/pgtable: Do not drop upper 5 address bits of physical address
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 06/97] wifi: mac80211: dont return unset power in ieee80211_get_tx_power()
 Date: Fri, 24 Nov 2023 17:49:39 +0000
-Message-ID: <20231124172040.626896677@linuxfoundation.org>
+Message-ID: <20231124171934.367387930@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit 166b0110d1ee53290bd11618df6e3991c117495a upstream.
+[ Upstream commit e160ab85166e77347d0cbe5149045cb25e83937f ]
 
-When calculating the pfn for the iitlbt/idtlbt instruction, do not
-drop the upper 5 address bits. This doesn't seem to have an effect
-on physical hardware which uses less physical address bits, but in
-qemu the missing bits are visible.
+We can get a UBSAN warning if ieee80211_get_tx_power() returns the
+INT_MIN value mac80211 internally uses for "unset power level".
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ UBSAN: signed-integer-overflow in net/wireless/nl80211.c:3816:5
+ -2147483648 * 100 cannot be represented in type 'int'
+ CPU: 0 PID: 20433 Comm: insmod Tainted: G        WC OE
+ Call Trace:
+  dump_stack+0x74/0x92
+  ubsan_epilogue+0x9/0x50
+  handle_overflow+0x8d/0xd0
+  __ubsan_handle_mul_overflow+0xe/0x10
+  nl80211_send_iface+0x688/0x6b0 [cfg80211]
+  [...]
+  cfg80211_register_wdev+0x78/0xb0 [cfg80211]
+  cfg80211_netdev_notifier_call+0x200/0x620 [cfg80211]
+  [...]
+  ieee80211_if_add+0x60e/0x8f0 [mac80211]
+  ieee80211_register_hw+0xda5/0x1170 [mac80211]
+
+In this case, simply return an error instead, to indicate
+that no data is available.
+
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://lore.kernel.org/r/20230203023636.4418-1-pkshih@realtek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/entry.S |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ net/mac80211/cfg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -475,13 +475,13 @@
- 	 * to a CPU TLB 4k PFN (4k => 12 bits to shift) */
- 	#define PAGE_ADD_SHIFT		(PAGE_SHIFT-12)
- 	#define PAGE_ADD_HUGE_SHIFT	(REAL_HPAGE_SHIFT-12)
-+	#define PFN_START_BIT	(63-ASM_PFN_PTE_SHIFT+(63-58)-PAGE_ADD_SHIFT)
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 5659af1bec179..77d8ed184c1c4 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2452,6 +2452,10 @@ static int ieee80211_get_tx_power(struct wiphy *wiphy,
+ 	else
+ 		*dbm = sdata->vif.bss_conf.txpower;
  
- 	/* Drop prot bits and convert to page addr for iitlbt and idtlbt */
- 	.macro		convert_for_tlb_insert20 pte,tmp
- #ifdef CONFIG_HUGETLB_PAGE
- 	copy		\pte,\tmp
--	extrd,u		\tmp,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\tmp,PFN_START_BIT,PFN_START_BIT+1,\pte
++	/* INT_MIN indicates no power level was set yet */
++	if (*dbm == INT_MIN)
++		return -EINVAL;
++
+ 	return 0;
+ }
  
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
-@@ -489,8 +489,7 @@
- 	depdi		_HUGE_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_HUGE_SHIFT,\pte
- #else /* Huge pages disabled */
--	extrd,u		\pte,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\pte,PFN_START_BIT,PFN_START_BIT+1,\pte
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
- #endif
+-- 
+2.42.0
+
 
 
 
