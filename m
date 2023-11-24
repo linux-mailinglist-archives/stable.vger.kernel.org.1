@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-2426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 028C57F841E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD287F839F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 336DC1C27130
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFEF128893A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EB9381A2;
-	Fri, 24 Nov 2023 19:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF55381CC;
+	Fri, 24 Nov 2023 19:19:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g308pRgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G74wvD0F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC96339BE;
-	Fri, 24 Nov 2023 19:24:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8E2C433C7;
-	Fri, 24 Nov 2023 19:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E40E2511F;
+	Fri, 24 Nov 2023 19:19:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF214C433C7;
+	Fri, 24 Nov 2023 19:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853853;
-	bh=uK9KlzHatce1xYM+GtbObCxQlcGI1kSsrfraVMm/Dso=;
+	s=korg; t=1700853563;
+	bh=5KQsHZ4woWeW9CoicDJeljD7O/MNMZmz5wZwyIqHlBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g308pRgEE0wrIvTvlTt1BRcHJKnSPiK7jRNRzpJUZWf2yC/zRWSCzXswTJ++1CNgp
-	 g9usTJq+DI0lWORadsB+GucfHOtBPhARUPDLqih3up/+8VXeq5CFYlQFtRy7LxTl65
-	 rYQUinGj7yPM5QBVz29ATn2UPXomY2G8ouFgb/k4=
+	b=G74wvD0FfLI2R4aE0VPRPvJeBW0tC17WVhLTgo8qn6IRM7ZBp8jZUGAAMienQpZy4
+	 +K2lmOH/mK6gix9E+kzAAUyou4Q8eSx/M6nj+2Ft6o+vxHeB2ltUd/2SNCTlcYfxXE
+	 mbPim9BbAWVQIy0Q0G3a5T/EqTUvLf7t224Wmmo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Lei <jun.lei@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/159] drm/amd/display: Avoid NULL dereference of timing generator
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Nishanth Menon <nm@ti.com>,
+	Benjamin Bara <benjamin.bara@skidata.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.15 214/297] kernel/reboot: emergency_restart: Set correct system_state
 Date: Fri, 24 Nov 2023 17:54:16 +0000
-Message-ID: <20231124171943.546159359@linuxfoundation.org>
+Message-ID: <20231124172007.716079483@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,53 +54,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <wayne.lin@amd.com>
+From: Benjamin Bara <benjamin.bara@skidata.com>
 
-[ Upstream commit b1904ed480cee3f9f4036ea0e36d139cb5fee2d6 ]
+commit 60466c067927abbcaff299845abd4b7069963139 upstream.
 
-[Why & How]
-Check whether assigned timing generator is NULL or not before
-accessing its funcs to prevent NULL dereference.
+As the emergency restart does not call kernel_restart_prepare(), the
+system_state stays in SYSTEM_RUNNING.
 
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Hersen Wu <hersenxs.wu@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since bae1d3a05a8b, this hinders i2c_in_atomic_xfer_mode() from becoming
+active, and therefore might lead to avoidable warnings in the restart
+handlers, e.g.:
+
+[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+[   12.676926] Voluntary context switch within RCU read-side critical section!
+...
+[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+...
+[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+[   13.001050]  machine_restart from panic+0x2a8/0x32c
+
+Avoid these by setting the correct system_state.
+
+Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+Cc: stable@vger.kernel.org # v5.2+
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-1-18699d5dcd76@skidata.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/reboot.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-index bb09243758fe3..71b10b45a9b9e 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -492,7 +492,7 @@ uint32_t dc_stream_get_vblank_counter(const struct dc_stream_state *stream)
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
- 
--		if (res_ctx->pipe_ctx[i].stream != stream)
-+		if (res_ctx->pipe_ctx[i].stream != stream || !tg)
- 			continue;
- 
- 		return tg->funcs->get_frame_count(tg);
-@@ -551,7 +551,7 @@ bool dc_stream_get_scanoutpos(const struct dc_stream_state *stream,
- 	for (i = 0; i < MAX_PIPES; i++) {
- 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
- 
--		if (res_ctx->pipe_ctx[i].stream != stream)
-+		if (res_ctx->pipe_ctx[i].stream != stream || !tg)
- 			continue;
- 
- 		tg->funcs->get_scanoutpos(tg,
--- 
-2.42.0
-
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -65,6 +65,7 @@ EXPORT_SYMBOL_GPL(pm_power_off_prepare);
+ void emergency_restart(void)
+ {
+ 	kmsg_dump(KMSG_DUMP_EMERG);
++	system_state = SYSTEM_RESTART;
+ 	machine_emergency_restart();
+ }
+ EXPORT_SYMBOL_GPL(emergency_restart);
 
 
 
