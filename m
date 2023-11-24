@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C647F7340
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:00:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0035B7F7341
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F379D1C20C99
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:00:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44A45B2134D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B84F200BA;
-	Fri, 24 Nov 2023 12:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F182031B;
+	Fri, 24 Nov 2023 12:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCir5rX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3ziOdCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C20B200B2
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:00:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFB8C433C8;
-	Fri, 24 Nov 2023 12:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68E92030D
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:00:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E348DC433C7;
+	Fri, 24 Nov 2023 12:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700827225;
-	bh=gaqPUEKJt7XOgDphprapYsaZRgRBJgJmq11Bq0/F1qs=;
+	s=korg; t=1700827228;
+	bh=JgvtoTlaY7H3YtkEkrnPmMmARMKW3MmxWtwUJmc2OaM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wCir5rX1hDLblmyqjzCBqJJPYHr4zKkf0w0x4xXfaWwVLv6ob3h8x54RUL9bYj++8
-	 T8wpXlqEjjJ6w1WfDWNMQv9nbUr4EtY76rdi8j/RDrNsnUGZF5aWxXS6kErNkBj108
-	 TimFN2rOKeBNjmQJYfcKW/N32nR7nW08HZ1Dr0zs=
-Subject: FAILED: patch "[PATCH] ALSA: hda/realtek: Add quirks for ASUS 2024 Zenbooks" failed to apply to 6.5-stable tree
+	b=N3ziOdCb+ZvTyOG2GrmLHwr9yTa8rFzWDPtJ08Ua5zbEhvpbTG7hRKNsWTamniESn
+	 y7gG4SPKSCitQJfd0fqpUyGE12cPA1x89Zmwb6F43Lb+RDt9HQ5LMLBXuvQNe9HeLZ
+	 HH4/cgvdzJVVvlKfHZRh2p1KomEQqaPzhhGeeD38=
+Subject: FAILED: patch "[PATCH] ALSA: hda/realtek: Add quirks for ASUS 2024 Zenbooks" failed to apply to 6.1-stable tree
 To: sbinding@opensource.cirrus.com,stable@vger.kernel.org,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:00:15 +0000
-Message-ID: <2023112415-unsaid-unhidden-96d2@gregkh>
+Date: Fri, 24 Nov 2023 12:00:16 +0000
+Message-ID: <2023112416-recent-wages-ba54@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 61cbc08fdb04fd445458b0f4cba7e6929afdfaef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112415-unsaid-unhidden-96d2@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112416-recent-wages-ba54@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,9 @@ f0d9da19d7de ("ALSA: hda/realtek: Add support dual speaker for Dell")
 c8c0a03ec1be ("ALSA: hda/realtek - Fixed ASUS platform headset Mic issue")
 d93eeca627db ("ALSA: hda/realtek - ALC287 merge RTK codec with CS CS35L41 AMP")
 e43252db7e20 ("ALSA: hda/realtek - ALC287 I2S speaker platform support")
+c99c26b16c15 ("ALSA: hda/realtek: Add quirk for mute LEDs on HP ENVY x360 15-eu0xxx")
+93dc18e11b1a ("ALSA: hda/realtek: Add quirk for HP Victus 16-d1xxx to enable mute LED")
+a057efde8045 ("Merge branch 'for-linus' into for-next")
 
 thanks,
 
