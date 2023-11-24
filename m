@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-2257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E26ED7F836B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4D77F8376
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D5C0287FED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9731C25A18
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C0535F1A;
-	Fri, 24 Nov 2023 19:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3948D37170;
+	Fri, 24 Nov 2023 19:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+b0GD9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9mCzJBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81E53418E;
-	Fri, 24 Nov 2023 19:17:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471A8C433C7;
-	Fri, 24 Nov 2023 19:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E722C31748;
+	Fri, 24 Nov 2023 19:17:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73200C433C7;
+	Fri, 24 Nov 2023 19:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853441;
-	bh=7vWy8VheujrhkcfMt+Dx8wVVyJu1ag7UNNeS4cfIGYE=;
+	s=korg; t=1700853468;
+	bh=pM3buYN1fntY/gahh4JT9J1jkYz6zT4Cz1n2XeLr2J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+b0GD9imKIk//X0/O5WCUZ6i2yQhrECwTHEWtNpgab+TBow+L/hVUVSW3bB1dfG+
-	 S09BrQPcEOAsd7/9IPeSX+0J/y1/JFZyMa9V5xiLSQGsK2zCS2OjTrJICCSerC2jQb
-	 mwg8Ac5Mg7A8gSHpwpEBQq91aQEqG8RpIRiOXMZ4=
+	b=D9mCzJBpjqDAKujz+wDOxXUZHYHETETYGWA/EAB86tekhQdODkUibtvQKhfB3utgF
+	 In37znVovTEo3KxpemUEvVPtNU5b5LznvYYw0pmCwbQn6T685DzXMNPU3PqNC6/6n/
+	 SGxUxtU4Ngms5Xie5hmYLPF7KhMj/+FXws7UxjPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 182/297] clk: qcom: ipq6018: drop the CLK_SET_RATE_PARENT flag from PLL clocks
-Date: Fri, 24 Nov 2023 17:53:44 +0000
-Message-ID: <20231124172006.601282030@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 183/297] mmc: vub300: fix an error code
+Date: Fri, 24 Nov 2023 17:53:45 +0000
+Message-ID: <20231124172006.635460981@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
 References: <20231124172000.087816911@linuxfoundation.org>
@@ -57,76 +56,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 99cd4935cb972d0aafb16838bb2aeadbcaf196ce upstream.
+commit b44f9da81783fda72632ef9b0d05ea3f3ca447a5 upstream.
 
-GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
-on the request from dependent clocks. Doing so will result in the
-unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
-clocks.
+This error path should return -EINVAL instead of success.
 
+Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Cc: stable@vger.kernel.org
-Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-2-c8ceb1a37680@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/0769d30c-ad80-421b-bf5d-7d6f5d85604e@moroto.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-ipq6018.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/mmc/host/vub300.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/clk/qcom/gcc-ipq6018.c
-+++ b/drivers/clk/qcom/gcc-ipq6018.c
-@@ -75,7 +75,6 @@ static struct clk_fixed_factor gpll0_out
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -89,7 +88,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -164,7 +162,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll6_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -195,7 +192,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll4_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -246,7 +242,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll2_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -277,7 +272,6 @@ static struct clk_alpha_pll_postdiv nss_
- 				&nss_crypto_pll_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -2311,6 +2311,7 @@ static int vub300_probe(struct usb_inter
+ 		vub300->read_only =
+ 			(0x0010 & vub300->system_port_status.port_flags) ? 1 : 0;
+ 	} else {
++		retval = -EINVAL;
+ 		goto error5;
+ 	}
+ 	usb_set_intfdata(interface, vub300);
 
 
 
