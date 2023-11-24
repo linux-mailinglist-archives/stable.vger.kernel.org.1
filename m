@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48B17F7B2A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930157F7D63
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5CF31C2095B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 364BAB21378
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B8B381D7;
-	Fri, 24 Nov 2023 18:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9851539FF7;
+	Fri, 24 Nov 2023 18:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYTIRhnD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLejuf9b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D2939FE3;
-	Fri, 24 Nov 2023 18:02:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9E2C433C7;
-	Fri, 24 Nov 2023 18:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5621239FE8;
+	Fri, 24 Nov 2023 18:24:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D522BC433C8;
+	Fri, 24 Nov 2023 18:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848945;
-	bh=xqWu205QRi/S0g9IxfHMY89v9ayv4kP8Ra+w+sYz8ew=;
+	s=korg; t=1700850244;
+	bh=gpUVdUL5TJ+6NqS0bji47yYyPwwCATH+CY3UjXJWoRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYTIRhnD20XXW8ZsCch+50mKtF9La9olgkH8RzWtw+W43XpcqenLvTUVgAC1rq90e
-	 rfm6qfQhqFUq0d/CFU1tD1F7YhQAeAs0kuZmfCRVv8icy6GT2TLIUo23r2Yr+7Slzx
-	 JXHfO62FoWvgSC7BVEgEDVJn/B8/igC51DjDxBNg=
+	b=HLejuf9byKIfpVqMHdqbHluAlqNKN56R682xOxiTO52MFavWghERno5eGB7FSxJen
+	 2bfn6Ck+E271oMsSuILnpB/aBu8MUCgQxbeG2eUWhPAmWe2BNSXHRV4yc/blK1bnEN
+	 RlK4f6B3wLF1D+EiGQqxGuLSzBcwHMYMwDLKtgOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.14 44/57] parisc: Prevent booting 64-bit kernels on PA1.x machines
+	Zhang Yi <yi.zhang@huawei.com>,
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.6 502/530] ext4: correct the start block of counting reserved clusters
 Date: Fri, 24 Nov 2023 17:51:08 +0000
-Message-ID: <20231124171931.943219792@linuxfoundation.org>
+Message-ID: <20231124172043.441294261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +54,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit a406b8b424fa01f244c1aab02ba186258448c36b upstream.
+commit 40ea98396a3659062267d1fe5f99af4f7e4f05e3 upstream.
 
-Bail out early with error message when trying to boot a 64-bit kernel on
-32-bit machines. This fixes the previous commit to include the check for
-true 64-bit kernels as well.
+When big allocate feature is enabled, we need to count and update
+reserved clusters before removing a delayed only extent_status entry.
+{init|count|get}_rsvd() have already done this, but the start block
+number of this counting isn't correct in the following case.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 591d2108f3abc ("parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines")
-Cc:  <stable@vger.kernel.org> # v6.0+
+  lblk            end
+   |               |
+   v               v
+          -------------------------
+          |                       | orig_es
+          -------------------------
+                   ^              ^
+      len1 is 0    |     len2     |
+
+If the start block of the orig_es entry founded is bigger than lblk, we
+passed lblk as start block to count_rsvd(), but the length is correct,
+finally, the range to be counted is offset. This patch fix this by
+passing the start blocks to 'orig_es->lblk + len1'.
+
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/r/20230824092619.1327976-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/head.S |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/ext4/extents_status.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/parisc/kernel/head.S
-+++ b/arch/parisc/kernel/head.S
-@@ -69,9 +69,8 @@ $bss_loop:
- 	stw,ma          %arg2,4(%r1)
- 	stw,ma          %arg3,4(%r1)
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -1431,8 +1431,8 @@ static int __es_remove_extent(struct ino
+ 			}
+ 		}
+ 		if (count_reserved)
+-			count_rsvd(inode, lblk, orig_es.es_len - len1 - len2,
+-				   &orig_es, &rc);
++			count_rsvd(inode, orig_es.es_lblk + len1,
++				   orig_es.es_len - len1 - len2, &orig_es, &rc);
+ 		goto out_get_reserved;
+ 	}
  
--#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
--	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
--	 * and halt kernel if we detect a PA1.x CPU. */
-+#if defined(CONFIG_PA20)
-+	/* check for 64-bit capable CPU as required by current kernel */
- 	ldi		32,%r10
- 	mtctl		%r10,%cr11
- 	.level 2.0
 
 
 
