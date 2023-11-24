@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 231FE7F8032
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6267F7C53
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 547061C21523
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F083E1C2116F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2093539FC2;
-	Fri, 24 Nov 2023 18:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3313E3A8C5;
+	Fri, 24 Nov 2023 18:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypYAtLR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyKPFohJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28A02E856;
-	Fri, 24 Nov 2023 18:47:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EC2C433C8;
-	Fri, 24 Nov 2023 18:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A1D39FFD;
+	Fri, 24 Nov 2023 18:14:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B87FC433C8;
+	Fri, 24 Nov 2023 18:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851655;
-	bh=Z+VwrfjNJJ8RN2YvctYCI3RUYymBRPanBSFDoGeVCMU=;
+	s=korg; t=1700849649;
+	bh=kGA4yeavj1LukDbBJwMHSKOMbbtM3CdPKA3knA+h//E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ypYAtLR+sjNffw1toKWc4ntzvmSL507wCl5YwprylIiuZ3gNCfBIEIjxQbMsvdN8i
-	 pKOrPdPe3Gwu71/3bLb0O9WGIoViMobsfIjUOpU90Ci4tr5X07YBF8shiqKY+zDMvd
-	 oIH5D2CkFqIUWoy17Da/ti+YHhlBUSomScgx81yE=
+	b=SyKPFohJnqi5U3CWVNdEISGO1tRV6etHjgOjP5mtfPTwpTebMmWbqd8KMCtRFeAfR
+	 beKoxcY0rPME3rqiD6VAkvFKZDNfzudIEZOaP4mFhI3WEM/9WCakuNIJCUq+1rKgU4
+	 jj9qMp8MU7vcAceDOfF03OerKBLqI/7x3UeFXQS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Held <felix.held@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/372] drm/amd: Fix UBSAN array-index-out-of-bounds for SMU7
-Date: Fri, 24 Nov 2023 17:47:10 +0000
-Message-ID: <20231124172011.914889926@linuxfoundation.org>
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.6 265/530] proc: sysctl: prevent aliased sysctls from getting passed to init
+Date: Fri, 24 Nov 2023 17:47:11 +0000
+Message-ID: <20231124172036.101220387@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +52,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-[ Upstream commit 760efbca74a405dc439a013a5efaa9fadc95a8c3 ]
+commit 8001f49394e353f035306a45bcf504f06fca6355 upstream.
 
-For pptable structs that use flexible array sizes, use flexible arrays.
+The code that checks for unknown boot options is unaware of the sysctl
+alias facility, which maps bootparams to sysctl values.  If a user sets
+an old value that has a valid alias, a message about an invalid
+parameter will be printed during boot, and the parameter will get passed
+to init.  Fix by checking for the existence of aliased parameters in the
+unknown boot parameter code.  If an alias exists, don't return an error
+or pass the value to init.
 
-Suggested-by: Felix Held <felix.held@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2874
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Cc: stable@vger.kernel.org
+Fixes: 0a477e1ae21b ("kernel/sysctl: support handling command line aliases")
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/include/pptable.h                 | 4 ++--
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ fs/proc/proc_sysctl.c  |    7 +++++++
+ include/linux/sysctl.h |    6 ++++++
+ init/main.c            |    4 ++++
+ 3 files changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/include/pptable.h b/drivers/gpu/drm/amd/include/pptable.h
-index 0b6a057e0a4c4..5aac8d545bdc6 100644
---- a/drivers/gpu/drm/amd/include/pptable.h
-+++ b/drivers/gpu/drm/amd/include/pptable.h
-@@ -78,7 +78,7 @@ typedef struct _ATOM_PPLIB_THERMALCONTROLLER
- typedef struct _ATOM_PPLIB_STATE
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1592,6 +1592,13 @@ static const char *sysctl_find_alias(cha
+ 	return NULL;
+ }
+ 
++bool sysctl_is_alias(char *param)
++{
++	const char *alias = sysctl_find_alias(param);
++
++	return alias != NULL;
++}
++
+ /* Set sysctl value passed on kernel command line. */
+ static int process_sysctl_arg(char *param, char *val,
+ 			       const char *unused, void *arg)
+--- a/include/linux/sysctl.h
++++ b/include/linux/sysctl.h
+@@ -242,6 +242,7 @@ extern void __register_sysctl_init(const
+ extern struct ctl_table_header *register_sysctl_mount_point(const char *path);
+ 
+ void do_sysctl_args(void);
++bool sysctl_is_alias(char *param);
+ int do_proc_douintvec(struct ctl_table *table, int write,
+ 		      void *buffer, size_t *lenp, loff_t *ppos,
+ 		      int (*conv)(unsigned long *lvalp,
+@@ -287,6 +288,11 @@ static inline void setup_sysctl_set(stru
+ static inline void do_sysctl_args(void)
  {
-     UCHAR ucNonClockStateIndex;
--    UCHAR ucClockStateIndices[1]; // variable-sized
-+    UCHAR ucClockStateIndices[]; // variable-sized
- } ATOM_PPLIB_STATE;
+ }
++
++static inline bool sysctl_is_alias(char *param)
++{
++	return false;
++}
+ #endif /* CONFIG_SYSCTL */
  
+ int sysctl_max_threads(struct ctl_table *table, int write, void *buffer,
+--- a/init/main.c
++++ b/init/main.c
+@@ -530,6 +530,10 @@ static int __init unknown_bootoption(cha
+ {
+ 	size_t len = strlen(param);
  
-@@ -473,7 +473,7 @@ typedef struct _ATOM_PPLIB_STATE_V2
-       /**
-       * Driver will read the first ucNumDPMLevels in this array
-       */
--      UCHAR clockInfoIndex[1];
-+      UCHAR clockInfoIndex[];
- } ATOM_PPLIB_STATE_V2;
++	/* Handle params aliased to sysctls */
++	if (sysctl_is_alias(param))
++		return 0;
++
+ 	repair_env_string(param, val);
  
- typedef struct _StateArray{
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-index b0ac4d121adca..41444e27bfc0c 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-@@ -179,7 +179,7 @@ typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
- typedef struct _ATOM_Tonga_MCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_MCLK_Dependency_Record entries[1];				/* Dynamically allocate entries. */
-+	ATOM_Tonga_MCLK_Dependency_Record entries[];				/* Dynamically allocate entries. */
- } ATOM_Tonga_MCLK_Dependency_Table;
- 
- typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
-@@ -194,7 +194,7 @@ typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
- typedef struct _ATOM_Tonga_SCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
-+	ATOM_Tonga_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
- } ATOM_Tonga_SCLK_Dependency_Table;
- 
- typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
--- 
-2.42.0
-
+ 	/* Handle obsolete-style parameters */
 
 
 
