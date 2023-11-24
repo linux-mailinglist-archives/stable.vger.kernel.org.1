@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E48B7F7B1A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A127F7AE8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BEE58B20EB8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 566BD1C20A6C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F75739FF4;
-	Fri, 24 Nov 2023 18:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFC939FD9;
+	Fri, 24 Nov 2023 17:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZM9cvGFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txaJa3cL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C140B39FF2;
-	Fri, 24 Nov 2023 18:01:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E032C433C8;
-	Fri, 24 Nov 2023 18:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2718E39FEE;
+	Fri, 24 Nov 2023 17:59:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FA0C433C7;
+	Fri, 24 Nov 2023 17:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848910;
-	bh=zMZTUR/p3N7jpTHq5QNF/T9BXt75C9FTNLl9abVix9Y=;
+	s=korg; t=1700848794;
+	bh=LHkvXdj3QNFusoRwwAAVZQO9T8/sA/zfgZR3785h2go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZM9cvGFlOiOVgqX0jZxoYuE21WmALb+zq1IRxd1yI3SNasXXWkF4rrFMIUMOHMlpC
-	 SGCR8QcbAUgJca3wk5G178lOrOwcZ2fvi60onB5wOH2ayt+0UCJetPi/anQwWoh1CK
-	 3p1wbozK7ZOMtzsJGyxSkdCtKUJfabWoLkuz/yzM=
+	b=txaJa3cLersZhOQ+ahcKLBGpdaLVV84bjPIG5dL8IpYBHjCWOKibQJ+xrPXz1LUbS
+	 0H8ikBqw+pCMm6Y6kcZM3bTLwPCkGnowHqjwY4NSP8+1xjAk2ywU/7bVvMxKD0aNbQ
+	 jtwQ2WumuEAInevfo106EE6DafMx/6UGuigblhx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Savkov <asavkov@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 4.14 31/57] audit: dont WARN_ON_ONCE(!current->mm) in audit_exe_compare()
-Date: Fri, 24 Nov 2023 17:50:55 +0000
-Message-ID: <20231124171931.429080603@linuxfoundation.org>
+	Jean Delvare <jdelvare@suse.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 4.19 83/97] i2c: i801: fix potential race in i801_block_transaction_byte_by_byte
+Date: Fri, 24 Nov 2023 17:50:56 +0000
+Message-ID: <20231124171937.279592232@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +55,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 969d90ec212bae4b45bf9d21d7daa30aa6cf055e upstream.
+commit f78ca48a8ba9cdec96e8839351e49eec3233b177 upstream.
 
-eBPF can end up calling into the audit code from some odd places, and
-some of these places don't have @current set properly so we end up
-tripping the `WARN_ON_ONCE(!current->mm)` near the top of
-`audit_exe_compare()`.  While the basic `!current->mm` check is good,
-the `WARN_ON_ONCE()` results in some scary console messages so let's
-drop that and just do the regular `!current->mm` check to avoid
-problems.
+Currently we set SMBHSTCNT_LAST_BYTE only after the host has started
+receiving the last byte. If we get e.g. preempted before setting
+SMBHSTCNT_LAST_BYTE, the host may be finished with receiving the byte
+before SMBHSTCNT_LAST_BYTE is set.
+Therefore change the code to set SMBHSTCNT_LAST_BYTE before writing
+SMBHSTSTS_BYTE_DONE for the byte before the last byte. Now the code
+is also consistent with what we do in i801_isr_byte_done().
 
-Cc: <stable@vger.kernel.org>
-Fixes: 47846d51348d ("audit: don't take task_lock() in audit_exe_compare() code path")
-Reported-by: Artem Savkov <asavkov@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Reported-by: Jean Delvare <jdelvare@suse.com>
+Closes: https://lore.kernel.org/linux-i2c/20230828152747.09444625@endymion.delvare/
+Cc: stable@vger.kernel.org
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/audit_watch.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-i801.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/kernel/audit_watch.c
-+++ b/kernel/audit_watch.c
-@@ -561,7 +561,7 @@ int audit_exe_compare(struct task_struct
- 	if (tsk != current)
- 		return 0;
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -712,15 +712,11 @@ static int i801_block_transaction_byte_b
+ 		return i801_check_post(priv, status);
+ 	}
  
--	if (WARN_ON_ONCE(!current->mm))
-+	if (!current->mm)
- 		return 0;
- 	exe_file = get_mm_exe_file(current->mm);
- 	if (!exe_file)
+-	for (i = 1; i <= len; i++) {
+-		if (i == len && read_write == I2C_SMBUS_READ)
+-			smbcmd |= SMBHSTCNT_LAST_BYTE;
+-		outb_p(smbcmd, SMBHSTCNT(priv));
+-
+-		if (i == 1)
+-			outb_p(inb(SMBHSTCNT(priv)) | SMBHSTCNT_START,
+-			       SMBHSTCNT(priv));
++	if (len == 1 && read_write == I2C_SMBUS_READ)
++		smbcmd |= SMBHSTCNT_LAST_BYTE;
++	outb_p(smbcmd | SMBHSTCNT_START, SMBHSTCNT(priv));
+ 
++	for (i = 1; i <= len; i++) {
+ 		status = i801_wait_byte_done(priv);
+ 		if (status)
+ 			goto exit;
+@@ -743,9 +739,12 @@ static int i801_block_transaction_byte_b
+ 			data->block[0] = len;
+ 		}
+ 
+-		/* Retrieve/store value in SMBBLKDAT */
+-		if (read_write == I2C_SMBUS_READ)
++		if (read_write == I2C_SMBUS_READ) {
+ 			data->block[i] = inb_p(SMBBLKDAT(priv));
++			if (i == len - 1)
++				outb_p(smbcmd | SMBHSTCNT_LAST_BYTE, SMBHSTCNT(priv));
++		}
++
+ 		if (read_write == I2C_SMBUS_WRITE && i+1 <= len)
+ 			outb_p(data->block[i+1], SMBBLKDAT(priv));
+ 
 
 
 
