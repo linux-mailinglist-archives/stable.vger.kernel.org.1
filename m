@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19797F7EAF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F9107F7C80
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C52E61C213AC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 417851C20B5D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D7328DA1;
-	Fri, 24 Nov 2023 18:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128DC3A8C4;
+	Fri, 24 Nov 2023 18:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L33jn2Pq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+P5rv8e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52832D626;
-	Fri, 24 Nov 2023 18:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EC5C433C7;
-	Fri, 24 Nov 2023 18:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53A639FC3;
+	Fri, 24 Nov 2023 18:15:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C54C433C7;
+	Fri, 24 Nov 2023 18:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850901;
-	bh=2c9vLcy9XZLD7IlUggQh70YEJ5KAi+OuYfLeFu2arsY=;
+	s=korg; t=1700849745;
+	bh=EZXYVmhcdOXqy1mNjGj5gBSGchuXAllhGuZsYoTijK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L33jn2Pq5d+WW9R63moXjuOmOi9pDMwcSrlF+5ATDaKnIObx5KsVJ+r6babcp582Y
-	 aOua74hMlNqkXK3ZaL0ArfS5qXRKQZS72566tIO4DhsyzNAmf4rmz3bJtnNODEqNRO
-	 ftpTowTi+9Jozegu+HLNeuhoovG6S/4R6PIkNZ8c=
+	b=A+P5rv8eVDnvJEHx2QB8oiHNw5RUNkTmuGyUGQVfa1vKLUvs9GEf4w391C5UzI6CL
+	 X4gHXO+kfIiRNClwjP3Du/PMV68B5ejHdRaPkaUX9OuM4iMFnkNBzCs2Cx7jzbgMoP
+	 0mixlhVlIh5t69+XdXn07+8E72VMmnJeumSiPP0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.5 234/491] scsi: megaraid_sas: Increase register read retry rount from 3 to 30 for selected registers
+	Tomeu Vizoso <tomeu@tomeuvizoso.net>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 304/530] pmdomain: amlogic: Fix mask for the second NNA mem PD domain
 Date: Fri, 24 Nov 2023 17:47:50 +0000
-Message-ID: <20231124172031.589660113@linuxfoundation.org>
+Message-ID: <20231124172037.288577388@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
 
-commit 8e3ed9e786511ad800c33605ed904b9de49323cf upstream.
+commit b131329b9bfbd1b4c0c5e088cb0c6ec03a12930f upstream.
 
-In BMC environments with concurrent access to multiple registers, certain
-registers occasionally yield a value of 0 even after 3 retries due to
-hardware errata. As a fix, we have extended the retry count from 3 to 30.
+Without this change, the NPU hangs when the 8th NN core is used.
 
-The same errata applies to the mpt3sas driver, and a similar patch has
-been accepted. Please find more details in the mpt3sas patch reference
-link.
+It matches what the out-of-tree driver does.
 
-Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
-Fixes: 272652fcbf1a ("scsi: megaraid_sas: add retry logic in megasas_readl")
+Signed-off-by: Tomeu Vizoso <tomeu@tomeuvizoso.net>
+Fixes: 9a217b7e8953 ("soc: amlogic: meson-pwrc: Add NNA power domain for A311D")
+Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Link: https://lore.kernel.org/r/20231003110021.168862-2-chandrakanth.patil@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20231016080205.41982-2-tomeu@tomeuvizoso.net
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pmdomain/amlogic/meson-ee-pwrc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -263,13 +263,13 @@ u32 megasas_readl(struct megasas_instanc
- 	 * Fusion registers could intermittently return all zeroes.
- 	 * This behavior is transient in nature and subsequent reads will
- 	 * return valid value. As a workaround in driver, retry readl for
--	 * upto three times until a non-zero value is read.
-+	 * up to thirty times until a non-zero value is read.
- 	 */
- 	if (instance->adapter_type == AERO_SERIES) {
- 		do {
- 			ret_val = readl(addr);
- 			i++;
--		} while (ret_val == 0 && i < 3);
-+		} while (ret_val == 0 && i < 30);
- 		return ret_val;
- 	} else {
- 		return readl(addr);
+--- a/drivers/pmdomain/amlogic/meson-ee-pwrc.c
++++ b/drivers/pmdomain/amlogic/meson-ee-pwrc.c
+@@ -228,7 +228,7 @@ static struct meson_ee_pwrc_mem_domain s
+ 
+ static struct meson_ee_pwrc_mem_domain g12a_pwrc_mem_nna[] = {
+ 	{ G12A_HHI_NANOQ_MEM_PD_REG0, GENMASK(31, 0) },
+-	{ G12A_HHI_NANOQ_MEM_PD_REG1, GENMASK(23, 0) },
++	{ G12A_HHI_NANOQ_MEM_PD_REG1, GENMASK(31, 0) },
+ };
+ 
+ #define VPU_PD(__name, __top_pd, __mem, __is_pwr_off, __resets, __clks)	\
 
 
 
