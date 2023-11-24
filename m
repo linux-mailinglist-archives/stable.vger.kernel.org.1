@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7107F8038
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CDC7F7C5D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D611E1C21555
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3190E282187
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F0A381D2;
-	Fri, 24 Nov 2023 18:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7C33A8C4;
+	Fri, 24 Nov 2023 18:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAqx5v2W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUYWjj/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FCB364BE;
-	Fri, 24 Nov 2023 18:47:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CF6C433C8;
-	Fri, 24 Nov 2023 18:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDB8364A4;
+	Fri, 24 Nov 2023 18:14:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAAFC433C8;
+	Fri, 24 Nov 2023 18:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851665;
-	bh=UTwiv+SQHWp9BzG7i20+Rhme4BY2WAxHrCNyMNeq/XE=;
+	s=korg; t=1700849672;
+	bh=3If88vZwZAZ3Q/J76mA5yq9DO1WrAaQLVmWrHFKr0bM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAqx5v2WvBSICJ2a87r4oqF3vtlOq85vgo8+rdQakMSIKLgn6FF3Z/62dyRkOs6Rk
-	 8HJYGUUeuTQ0idYzhXN80xnnQfsxV3QQhounJLKrDpT5kXf09+fbXGLUUG5GBg6E0m
-	 kjzErR16lL1blXSu7Yu0A8HaSw5xL4RnTK7FRDXk=
+	b=pUYWjj/PM+uIPOxpn2vu9w69PVKUEGX7kSWgBaY41JK6G6/a0O9R+NZnAkFEThutf
+	 plkPttumeGt1DFjPmjO1lhgKkGV20FbZ58x1DOyvPCsnUqs/wLmONwGaR7dv2Dv5Bg
+	 tJ16sM/z+nZOPQSRMWtu9lBND/MDwbXz/z8YnAIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make_ruc2021@163.com>,
+	Pavel Krasavin <pkrasavin@imaqliq.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/372] drm/panel: fix a possible null pointer dereference
+	Dmitry Rokosov <ddrokosov@salutedevices.com>
+Subject: [PATCH 6.6 267/530] tty: serial: meson: fix hard LOCKUP on crtscts mode
 Date: Fri, 24 Nov 2023 17:47:13 +0000
-Message-ID: <20231124172012.014602387@linuxfoundation.org>
+Message-ID: <20231124172036.162141077@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +53,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Pavel Krasavin <pkrasavin@imaqliq.com>
 
-[ Upstream commit 924e5814d1f84e6fa5cb19c6eceb69f066225229 ]
+commit 2a1d728f20edeee7f26dc307ed9df4e0d23947ab upstream.
 
-In versatile_panel_get_modes(), the return value of drm_mode_duplicate()
-is assigned to mode, which will lead to a NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
 
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
+# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
+[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
+[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
+[   95.906972] Task dump for CPU 3:
+[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
+[   95.920059] Call trace:
+[   95.922485]  __switch_to+0xe4/0x168
+[   95.925951]  0xffffff8003477508
+[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
+[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
+
+Possible solution would be to not allow to setup crtscts on such port.
+
+Tested on S905X3 based board.
+
+Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231007033105.3997998-1-make_ruc2021@163.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231007033105.3997998-1-make_ruc2021@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-arm-versatile.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/meson_uart.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-arm-versatile.c b/drivers/gpu/drm/panel/panel-arm-versatile.c
-index abb0788843c60..503ecea72c5ea 100644
---- a/drivers/gpu/drm/panel/panel-arm-versatile.c
-+++ b/drivers/gpu/drm/panel/panel-arm-versatile.c
-@@ -267,6 +267,8 @@ static int versatile_panel_get_modes(struct drm_panel *panel,
- 	connector->display_info.bus_flags = vpanel->panel_type->bus_flags;
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -380,10 +380,14 @@ static void meson_uart_set_termios(struc
+ 	else
+ 		val |= AML_UART_STOP_BIT_1SB;
  
- 	mode = drm_mode_duplicate(connector->dev, &vpanel->panel_type->mode);
-+	if (!mode)
-+		return -ENOMEM;
- 	drm_mode_set_name(mode);
- 	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
+-	if (cflags & CRTSCTS)
+-		val &= ~AML_UART_TWO_WIRE_EN;
+-	else
++	if (cflags & CRTSCTS) {
++		if (port->flags & UPF_HARD_FLOW)
++			val &= ~AML_UART_TWO_WIRE_EN;
++		else
++			termios->c_cflag &= ~CRTSCTS;
++	} else {
+ 		val |= AML_UART_TWO_WIRE_EN;
++	}
  
--- 
-2.42.0
-
+ 	writel(val, port->membase + AML_UART_CONTROL);
+ 
+@@ -705,6 +709,7 @@ static int meson_uart_probe(struct platf
+ 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
+ 	int ret = 0;
+ 	int irq;
++	bool has_rtscts;
+ 
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
+@@ -732,6 +737,7 @@ static int meson_uart_probe(struct platf
+ 		return irq;
+ 
+ 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
++	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
+ 
+ 	if (meson_ports[pdev->id]) {
+ 		return dev_err_probe(&pdev->dev, -EBUSY,
+@@ -762,6 +768,8 @@ static int meson_uart_probe(struct platf
+ 	port->mapsize = resource_size(res_mem);
+ 	port->irq = irq;
+ 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
++	if (has_rtscts)
++		port->flags |= UPF_HARD_FLOW;
+ 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+ 	port->dev = &pdev->dev;
+ 	port->line = pdev->id;
 
 
 
