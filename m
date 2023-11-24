@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335DC7F7CFA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFDB7F80DD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 650EF1C208E8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AEE2B21B67
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDEB3A8CF;
-	Fri, 24 Nov 2023 18:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFAB63A1;
+	Fri, 24 Nov 2023 18:53:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkWkmV2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RfJLH1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2832739FF3;
-	Fri, 24 Nov 2023 18:20:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A908BC433C9;
-	Fri, 24 Nov 2023 18:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57591286B5;
+	Fri, 24 Nov 2023 18:53:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEC5C433C7;
+	Fri, 24 Nov 2023 18:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850011;
-	bh=z32SZn2KwJ6BWhoKwi4o1W0SKLRMuMh6/s7mqrwvlI4=;
+	s=korg; t=1700852007;
+	bh=FQl0z9v26/9xoSQUnNPfrTNT6rMaJOwwsTZcEH4Wz20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkWkmV2tFdrOX553+w4EnRr10Rl5SfNeeqd7GuabiAaZBj8sNI7jHMyzOYWkfBQfv
-	 V4QhLiZ2yGfUFD/RF/e92xg0p/yuMW+ZOOlE9vJN3Fhyu+RSmRk4uYS3Wc1JNgZsks
-	 8klJxQ3YlL4WwhBgSpO6de4LpnWs86rvjmb+xoEg=
+	b=1RfJLH1Zo02lEub/mMAg6z3WwamKdh2EZhXFxi+cNoh/u5LGbWjzqtn+JjAnJGiHB
+	 SNzxbCEaJGVREQTG+/+i/lFulmXva23nm6L/RddS+RqDNKTnYNrYJaynGhJ12fyqG7
+	 9XqxV2++iYQSqzaTR5eEeNOZxkQJ9DXFTxN++bgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Steinmetz <anstein99@googlemail.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 402/530] apparmor: Fix regression in mount mediation
-Date: Fri, 24 Nov 2023 17:49:28 +0000
-Message-ID: <20231124172040.271700318@linuxfoundation.org>
+	David Woodhouse <dwmw@amazon.co.uk>
+Subject: [PATCH 6.1 182/372] hvc/xen: fix console unplug
+Date: Fri, 24 Nov 2023 17:49:29 +0000
+Message-ID: <20231124172016.532530518@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,170 +51,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 157a3537d6bc28ceb9a11fc8cb67f2152d860146 ]
+commit a30badfd7c13fc8763a9e10c5a12ba7f81515a55 upstream.
 
-commit 2db154b3ea8e ("vfs: syscall: Add move_mount(2) to move mounts around")
+On unplug of a Xen console, xencons_disconnect_backend() unconditionally
+calls free_irq() via unbind_from_irqhandler(), causing a warning of
+freeing an already-free IRQ:
 
-introduced a new move_mount(2) system call and a corresponding new LSM
-security_move_mount hook but did not implement this hook for any
-existing LSM. This creates a regression for AppArmor mediation of
-mount. This patch provides a base mapping of the move_mount syscall to
-the existing mount mediation. In the future we may introduce
-additional mediations around the new mount calls.
+(qemu) device_del con1
+[   32.050919] ------------[ cut here ]------------
+[   32.050942] Trying to free already-free IRQ 33
+[   32.050990] WARNING: CPU: 0 PID: 51 at kernel/irq/manage.c:1895 __free_irq+0x1d4/0x330
 
-Fixes: 2db154b3ea8e ("vfs: syscall: Add move_mount(2) to move mounts around")
-CC: stable@vger.kernel.org
-Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It should be using evtchn_put() to tear down the event channel binding,
+and let the Linux IRQ side of it be handled by notifier_del_irq() through
+the HVC code.
+
+On which topic... xencons_disconnect_backend() should call hvc_remove()
+*first*, rather than tearing down the event channel and grant mapping
+while they are in use. And then the IRQ is guaranteed to be freed by
+the time it's torn down by evtchn_put().
+
+Since evtchn_put() also closes the actual event channel, avoid calling
+xenbus_free_evtchn() except in the failure path where the IRQ was not
+successfully set up.
+
+However, calling hvc_remove() at the start of xencons_disconnect_backend()
+still isn't early enough. An unplug request is indicated by the backend
+setting its state to XenbusStateClosing, which triggers a notification
+to xencons_backend_changed(), which... does nothing except set its own
+frontend state directly to XenbusStateClosed without *actually* tearing
+down the HVC device or, you know, making sure it isn't actively in use.
+
+So the backend sees the guest frontend set its state to XenbusStateClosed
+and stops servicing the interrupt... and the guest spins for ever in the
+domU_write_console() function waiting for the ring to drain.
+
+Fix that one by calling hvc_remove() from xencons_backend_changed() before
+signalling to the backend that it's OK to proceed with the removal.
+
+Tested with 'dd if=/dev/zero of=/dev/hvc1' while telling Qemu to remove
+the console device.
+
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231020161529.355083-4-dwmw2@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/include/mount.h |  7 +++--
- security/apparmor/lsm.c           | 20 ++++++++++++--
- security/apparmor/mount.c         | 46 +++++++++++++++++++------------
- 3 files changed, 51 insertions(+), 22 deletions(-)
+ drivers/tty/hvc/hvc_xen.c |   32 ++++++++++++++++++++++++--------
+ 1 file changed, 24 insertions(+), 8 deletions(-)
 
-diff --git a/security/apparmor/include/mount.h b/security/apparmor/include/mount.h
-index 10c76f906a653..46834f8281794 100644
---- a/security/apparmor/include/mount.h
-+++ b/security/apparmor/include/mount.h
-@@ -38,9 +38,12 @@ int aa_mount_change_type(const struct cred *subj_cred,
- 			 struct aa_label *label, const struct path *path,
- 			 unsigned long flags);
- 
-+int aa_move_mount_old(const struct cred *subj_cred,
-+		      struct aa_label *label, const struct path *path,
-+		      const char *old_name);
- int aa_move_mount(const struct cred *subj_cred,
--		  struct aa_label *label, const struct path *path,
--		  const char *old_name);
-+		  struct aa_label *label, const struct path *from_path,
-+		  const struct path *to_path);
- 
- int aa_new_mount(const struct cred *subj_cred,
- 		 struct aa_label *label, const char *dev_name,
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 60f95cc4532a8..6fdab1b5ede5c 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -607,8 +607,8 @@ static int apparmor_sb_mount(const char *dev_name, const struct path *path,
- 			error = aa_mount_change_type(current_cred(), label,
- 						     path, flags);
- 		else if (flags & MS_MOVE)
--			error = aa_move_mount(current_cred(), label, path,
--					      dev_name);
-+			error = aa_move_mount_old(current_cred(), label, path,
-+						  dev_name);
- 		else
- 			error = aa_new_mount(current_cred(), label, dev_name,
- 					     path, type, flags, data);
-@@ -618,6 +618,21 @@ static int apparmor_sb_mount(const char *dev_name, const struct path *path,
- 	return error;
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -377,18 +377,21 @@ void xen_console_resume(void)
+ #ifdef CONFIG_HVC_XEN_FRONTEND
+ static void xencons_disconnect_backend(struct xencons_info *info)
+ {
+-	if (info->irq > 0)
+-		unbind_from_irqhandler(info->irq, NULL);
+-	info->irq = 0;
++	if (info->hvc != NULL)
++		hvc_remove(info->hvc);
++	info->hvc = NULL;
++	if (info->irq > 0) {
++		evtchn_put(info->evtchn);
++		info->irq = 0;
++		info->evtchn = 0;
++	}
++	/* evtchn_put() will also close it so this is only an error path */
+ 	if (info->evtchn > 0)
+ 		xenbus_free_evtchn(info->xbdev, info->evtchn);
+ 	info->evtchn = 0;
+ 	if (info->gntref > 0)
+ 		gnttab_free_grant_references(info->gntref);
+ 	info->gntref = 0;
+-	if (info->hvc != NULL)
+-		hvc_remove(info->hvc);
+-	info->hvc = NULL;
  }
  
-+static int apparmor_move_mount(const struct path *from_path,
-+			       const struct path *to_path)
-+{
-+	struct aa_label *label;
-+	int error = 0;
+ static void xencons_free(struct xencons_info *info)
+@@ -553,10 +556,23 @@ static void xencons_backend_changed(stru
+ 		if (dev->state == XenbusStateClosed)
+ 			break;
+ 		fallthrough;	/* Missed the backend's CLOSING state */
+-	case XenbusStateClosing:
++	case XenbusStateClosing: {
++		struct xencons_info *info = dev_get_drvdata(&dev->dev);;
 +
-+	label = __begin_current_label_crit_section();
-+	if (!unconfined(label))
-+		error = aa_move_mount(current_cred(), label, from_path,
-+				      to_path);
-+	__end_current_label_crit_section(label);
++		/*
++		 * Don't tear down the evtchn and grant ref before the other
++		 * end has disconnected, but do stop userspace from trying
++		 * to use the device before we allow the backend to close.
++		 */
++		if (info->hvc) {
++			hvc_remove(info->hvc);
++			info->hvc = NULL;
++		}
 +
-+	return error;
-+}
-+
- static int apparmor_sb_umount(struct vfsmount *mnt, int flags)
- {
- 	struct aa_label *label;
-@@ -1240,6 +1255,7 @@ static struct security_hook_list apparmor_hooks[] __ro_after_init = {
- 	LSM_HOOK_INIT(capget, apparmor_capget),
- 	LSM_HOOK_INIT(capable, apparmor_capable),
- 
-+	LSM_HOOK_INIT(move_mount, apparmor_move_mount),
- 	LSM_HOOK_INIT(sb_mount, apparmor_sb_mount),
- 	LSM_HOOK_INIT(sb_umount, apparmor_sb_umount),
- 	LSM_HOOK_INIT(sb_pivotroot, apparmor_sb_pivotroot),
-diff --git a/security/apparmor/mount.c b/security/apparmor/mount.c
-index 2bb77aacc49ae..f2a114e540079 100644
---- a/security/apparmor/mount.c
-+++ b/security/apparmor/mount.c
-@@ -483,36 +483,46 @@ int aa_mount_change_type(const struct cred *subj_cred,
+ 		xenbus_frontend_closed(dev);
+ 		break;
+ 	}
++	}
  }
  
- int aa_move_mount(const struct cred *subj_cred,
--		  struct aa_label *label, const struct path *path,
--		  const char *orig_name)
-+		  struct aa_label *label, const struct path *from_path,
-+		  const struct path *to_path)
- {
- 	struct aa_profile *profile;
--	char *buffer = NULL, *old_buffer = NULL;
--	struct path old_path;
-+	char *to_buffer = NULL, *from_buffer = NULL;
- 	int error;
- 
- 	AA_BUG(!label);
--	AA_BUG(!path);
-+	AA_BUG(!from_path);
-+	AA_BUG(!to_path);
-+
-+	to_buffer = aa_get_buffer(false);
-+	from_buffer = aa_get_buffer(false);
-+	error = -ENOMEM;
-+	if (!to_buffer || !from_buffer)
-+		goto out;
-+	error = fn_for_each_confined(label, profile,
-+			match_mnt(subj_cred, profile, to_path, to_buffer,
-+				  from_path, from_buffer,
-+				  NULL, MS_MOVE, NULL, false));
-+out:
-+	aa_put_buffer(to_buffer);
-+	aa_put_buffer(from_buffer);
-+
-+	return error;
-+}
-+
-+int aa_move_mount_old(const struct cred *subj_cred, struct aa_label *label,
-+		      const struct path *path, const char *orig_name)
-+{
-+	struct path old_path;
-+	int error;
- 
- 	if (!orig_name || !*orig_name)
- 		return -EINVAL;
--
- 	error = kern_path(orig_name, LOOKUP_FOLLOW, &old_path);
- 	if (error)
- 		return error;
- 
--	buffer = aa_get_buffer(false);
--	old_buffer = aa_get_buffer(false);
--	error = -ENOMEM;
--	if (!buffer || !old_buffer)
--		goto out;
--	error = fn_for_each_confined(label, profile,
--			match_mnt(subj_cred, profile, path, buffer, &old_path,
--				  old_buffer,
--				  NULL, MS_MOVE, NULL, false));
--out:
--	aa_put_buffer(buffer);
--	aa_put_buffer(old_buffer);
-+	error = aa_move_mount(subj_cred, label, &old_path, path);
- 	path_put(&old_path);
- 
- 	return error;
--- 
-2.42.0
-
+ static const struct xenbus_device_id xencons_ids[] = {
+@@ -616,7 +632,7 @@ static int __init xen_hvc_init(void)
+ 		list_del(&info->list);
+ 		spin_unlock_irqrestore(&xencons_lock, flags);
+ 		if (info->irq)
+-			unbind_from_irqhandler(info->irq, NULL);
++			evtchn_put(info->evtchn);
+ 		kfree(info);
+ 		return r;
+ 	}
 
 
 
