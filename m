@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F3D7F7AE6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 254317F7B34
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C2FA2818F9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A911F20F01
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D59E39FEF;
-	Fri, 24 Nov 2023 17:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2882139FF4;
+	Fri, 24 Nov 2023 18:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVv4krt5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyFkKGWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF939FD7;
-	Fri, 24 Nov 2023 17:59:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE48C433C8;
-	Fri, 24 Nov 2023 17:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD14939FD4;
+	Fri, 24 Nov 2023 18:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D4CC433C7;
+	Fri, 24 Nov 2023 18:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848788;
-	bh=E8aVgq1zeAhsnafPvtifcJbo/4Oo9DvhiM0jT+wqNuI=;
+	s=korg; t=1700848971;
+	bh=9f2o/sfzljGtYE5P1FqPE7BdgIhB6in8XFOm8Kjx+94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BVv4krt5qByjEYMMtayfvrzHUhQkGixT8xv+ja21mU2KQ1Ttn0IpPLq6ZqnyosQSf
-	 vRUWjMJBcYoK4gzaCWWA7OfwBAuMGdc3Ybm0FzxPkSOJWqJNl8bKQk6jImVQbphbPH
-	 P91tfDQpjLCZW5em7oUJUR1qlP7ghWWXofyH9wGI=
+	b=SyFkKGWEaOBFT1cCak7pXHstZHDO1KB2XPBgmYkvC4WcDAg9ptK2SrDPW6cjzcXKF
+	 HypKA1Bxjzws6IwUq0M3oqAnjji95d4JIakEfwsAItOA5RKZf3A5K3y4N87RTDQsVc
+	 uACN+Hl9r32+IXFxnVGvZ9v88RlWYPSAvdepZk4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Krasavin <pkrasavin@imaqliq.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Rokosov <ddrokosov@salutedevices.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 81/97] tty: serial: meson: fix hard LOCKUP on crtscts mode
+	Andreas Steinmetz <anstein99@googlemail.com>,
+	John Johansen <john.johanse@canonical.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 4.14 30/57] audit: dont take task_lock() in audit_exe_compare() code path
 Date: Fri, 24 Nov 2023 17:50:54 +0000
-Message-ID: <20231124171937.203125282@linuxfoundation.org>
+Message-ID: <20231124171931.393361106@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,106 +54,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Krasavin <pkrasavin@imaqliq.com>
+From: Paul Moore <paul@paul-moore.com>
 
-[ Upstream commit 2a1d728f20edeee7f26dc307ed9df4e0d23947ab ]
+commit 47846d51348dd62e5231a83be040981b17c955fa upstream.
 
-There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
+The get_task_exe_file() function locks the given task with task_lock()
+which when used inside audit_exe_compare() can cause deadlocks on
+systems that generate audit records when the task_lock() is held. We
+resolve this problem with two changes: ignoring those cases where the
+task being audited is not the current task, and changing our approach
+to obtaining the executable file struct to not require task_lock().
 
-# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
-[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
-[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
-[   95.906972] Task dump for CPU 3:
-[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
-[   95.920059] Call trace:
-[   95.922485]  __switch_to+0xe4/0x168
-[   95.925951]  0xffffff8003477508
-[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
-[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
+With the intent of the audit exe filter being to filter on audit events
+generated by processes started by the specified executable, it makes
+sense that we would only want to use the exe filter on audit records
+associated with the currently executing process, e.g. @current.  If
+we are asked to filter records using a non-@current task_struct we can
+safely ignore the exe filter without negatively impacting the admin's
+expectations for the exe filter.
 
-Possible solution would be to not allow to setup crtscts on such port.
+Knowing that we only have to worry about filtering the currently
+executing task in audit_exe_compare() we can do away with the
+task_lock() and call get_mm_exe_file() with @current->mm directly.
 
-Tested on S905X3 based board.
-
-Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
-
-v6: stable tag added
-v5: https://lore.kernel.org/lkml/OF43DA36FF.2BD3BB21-ON00258A47.005A8125-00258A47.005A9513@gdc.ru/
-added missed Reviewed-by tags, Fixes tag added according to Dmitry and Neil notes
-v4: https://lore.kernel.org/lkml/OF55521400.7512350F-ON00258A47.003F7254-00258A47.0040E15C@gdc.ru/
-More correct patch subject according to Jiri's note
-v3: https://lore.kernel.org/lkml/OF6CF5FFA0.CCFD0E8E-ON00258A46.00549EDF-00258A46.0054BB62@gdc.ru/
-"From:" line added to the mail
-v2: https://lore.kernel.org/lkml/OF950BEF72.7F425944-ON00258A46.00488A76-00258A46.00497D44@gdc.ru/
-braces for single statement removed according to Dmitry's note
-v1: https://lore.kernel.org/lkml/OF28B2B8C9.5BC0CD28-ON00258A46.0037688F-00258A46.0039155B@gdc.ru/
-Link: https://lore.kernel.org/r/OF66360032.51C36182-ON00258A48.003F656B-00258A48.0040092C@gdc.ru
-
+Cc: <stable@vger.kernel.org>
+Fixes: 5efc244346f9 ("audit: fix exe_file access in audit_exe_compare")
+Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
+Reviewed-by: John Johansen <john.johanse@canonical.com>
+Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/meson_uart.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/audit_watch.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
-index a193cbc78ebc0..60c0a4079e093 100644
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -367,10 +367,14 @@ static void meson_uart_set_termios(struct uart_port *port,
- 	else
- 		val |= AML_UART_STOP_BIT_1SB;
+--- a/kernel/audit_watch.c
++++ b/kernel/audit_watch.c
+@@ -557,11 +557,18 @@ int audit_exe_compare(struct task_struct
+ 	unsigned long ino;
+ 	dev_t dev;
  
--	if (cflags & CRTSCTS)
--		val &= ~AML_UART_TWO_WIRE_EN;
--	else
-+	if (cflags & CRTSCTS) {
-+		if (port->flags & UPF_HARD_FLOW)
-+			val &= ~AML_UART_TWO_WIRE_EN;
-+		else
-+			termios->c_cflag &= ~CRTSCTS;
-+	} else {
- 		val |= AML_UART_TWO_WIRE_EN;
-+	}
- 
- 	writel(val, port->membase + AML_UART_CONTROL);
- 
-@@ -666,6 +670,7 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
- 	int ret = 0;
- 	int irq;
-+	bool has_rtscts;
- 
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
-@@ -693,6 +698,7 @@ static int meson_uart_probe(struct platform_device *pdev)
- 		return irq;
- 
- 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
-+	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
- 
- 	if (meson_ports[pdev->id]) {
- 		dev_err(&pdev->dev, "port %d already allocated\n", pdev->id);
-@@ -717,6 +723,8 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	port->mapsize = resource_size(res_mem);
- 	port->irq = irq;
- 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
-+	if (has_rtscts)
-+		port->flags |= UPF_HARD_FLOW;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
- 	port->dev = &pdev->dev;
- 	port->line = pdev->id;
--- 
-2.42.0
-
+-	exe_file = get_task_exe_file(tsk);
++	/* only do exe filtering if we are recording @current events/records */
++	if (tsk != current)
++		return 0;
++
++	if (WARN_ON_ONCE(!current->mm))
++		return 0;
++	exe_file = get_mm_exe_file(current->mm);
+ 	if (!exe_file)
+ 		return 0;
+ 	ino = file_inode(exe_file)->i_ino;
+ 	dev = file_inode(exe_file)->i_sb->s_dev;
+ 	fput(exe_file);
++
+ 	return audit_mark_compare(mark, ino, dev);
+ }
 
 
 
