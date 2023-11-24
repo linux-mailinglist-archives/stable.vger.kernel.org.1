@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11047F7C7D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA7D7F7E9A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 138791C20E14
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7B59282356
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC2F39FC3;
-	Fri, 24 Nov 2023 18:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3761539FCC;
+	Fri, 24 Nov 2023 18:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGAkZaJj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwIgnV7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04B239FD9;
-	Fri, 24 Nov 2023 18:15:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E12C433C8;
-	Fri, 24 Nov 2023 18:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C2A34189;
+	Fri, 24 Nov 2023 18:34:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E9EC433C7;
+	Fri, 24 Nov 2023 18:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849738;
-	bh=qtzOy/3r9KmSnhNfaouzQexGZFLHohSSobkrH1K0ZHc=;
+	s=korg; t=1700850867;
+	bh=16dD4QbnxQifTmKuyi3O13YUEUd4dfcMGtJW3w6dBKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pGAkZaJjNerp+al0xUd92yORYmMW7GdMlXpwUBVLdNv1sJXv0fP9Xwe8BM9Bep/R5
-	 UVVeoYjil49AmQ7qtLUdPqVe7BYt1s9t9q0YSEabz9EGXSgoDacLZToKlP7KjXrwpD
-	 A8XslhE7/azCtlLBKt1dIEwwMstnUvcztb74WLGA=
+	b=gwIgnV7gAJAoi1OG3Sll+KNaoxQWQcS6XkhpubTwuD093od04gzG2nBI6YnMmgITX
+	 uGJNw+qjKvNYEy1VzBrqWueB/BlVrLkG7YYTLUqiwetfFLf6UJUoxnowNHv2OcqYQo
+	 402jIsEu/Co4ajIvnp3jWPAu3/b1dYV6bja23/e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jirislaby@kernel.org,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>
-Subject: [PATCH 6.6 266/530] tty/sysrq: replace smp_processor_id() with get_cpu()
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 196/491] netfilter: nf_tables: fix pointer math issue in nft_byteorder_eval()
 Date: Fri, 24 Nov 2023 17:47:12 +0000
-Message-ID: <20231124172036.129529706@linuxfoundation.org>
+Message-ID: <20231124172030.385902816@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,77 +53,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit dd976a97d15b47656991e185a94ef42a0fa5cfd4 upstream.
+[ Upstream commit c301f0981fdd3fd1ffac6836b423c4d7a8e0eb63 ]
 
-The smp_processor_id() shouldn't be called from preemptible code.
-Instead use get_cpu() and put_cpu() which disables preemption in
-addition to getting the processor id. Enable preemption back after
-calling schedule_work() to make sure that the work gets scheduled on all
-cores other than the current core. We want to avoid a scenario where
-current core's stack trace is printed multiple times and one core's
-stack trace isn't printed because of scheduling of current task.
+The problem is in nft_byteorder_eval() where we are iterating through a
+loop and writing to dst[0], dst[1], dst[2] and so on...  On each
+iteration we are writing 8 bytes.  But dst[] is an array of u32 so each
+element only has space for 4 bytes.  That means that every iteration
+overwrites part of the previous element.
 
-This fixes the following bug:
+I spotted this bug while reviewing commit caf3ef7468f7 ("netfilter:
+nf_tables: prevent OOB access in nft_byteorder_eval") which is a related
+issue.  I think that the reason we have not detected this bug in testing
+is that most of time we only write one element.
 
-[  119.143590] sysrq: Show backtrace of all active CPUs
-[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
-[  119.144586] caller is debug_smp_processor_id+0x20/0x30
-[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
-[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
-[  119.145053] Call trace:
-[  119.145093]  dump_backtrace+0x0/0x1a0
-[  119.145122]  show_stack+0x18/0x70
-[  119.145141]  dump_stack+0xc4/0x11c
-[  119.145159]  check_preemption_disabled+0x100/0x110
-[  119.145175]  debug_smp_processor_id+0x20/0x30
-[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
-[  119.145211]  __handle_sysrq+0x8c/0x1a0
-[  119.145227]  write_sysrq_trigger+0x94/0x12c
-[  119.145247]  proc_reg_write+0xa8/0xe4
-[  119.145266]  vfs_write+0xec/0x280
-[  119.145282]  ksys_write+0x6c/0x100
-[  119.145298]  __arm64_sys_write+0x20/0x30
-[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
-[  119.145332]  do_el0_svc+0x24/0x8c
-[  119.145348]  el0_svc+0x10/0x20
-[  119.145364]  el0_sync_handler+0x134/0x140
-[  119.145381]  el0_sync+0x180/0x1c0
-
-Cc: jirislaby@kernel.org
-Cc: stable@vger.kernel.org
-Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20231009162021.3607632-1-usama.anjum@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ce1e7989d989 ("netfilter: nft_byteorder: provide 64bit le/be conversion")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/sysrq.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h | 4 ++--
+ net/netfilter/nft_byteorder.c     | 5 +++--
+ net/netfilter/nft_meta.c          | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8
- 		if (in_hardirq())
- 			regs = get_irq_regs();
- 
--		pr_info("CPU%d:\n", smp_processor_id());
-+		pr_info("CPU%d:\n", get_cpu());
- 		if (regs)
- 			show_regs(regs);
- 		else
- 			show_stack(NULL, NULL, KERN_INFO);
- 
- 		schedule_work(&sysrq_showallcpus);
-+		put_cpu();
- 	}
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 7c816359d5a98..75972e211ba12 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -178,9 +178,9 @@ static inline __be32 nft_reg_load_be32(const u32 *sreg)
+ 	return *(__force __be32 *)sreg;
  }
  
+-static inline void nft_reg_store64(u32 *dreg, u64 val)
++static inline void nft_reg_store64(u64 *dreg, u64 val)
+ {
+-	put_unaligned(val, (u64 *)dreg);
++	put_unaligned(val, dreg);
+ }
+ 
+ static inline u64 nft_reg_load64(const u32 *sreg)
+diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
+index e596d1a842f70..f6e791a681015 100644
+--- a/net/netfilter/nft_byteorder.c
++++ b/net/netfilter/nft_byteorder.c
+@@ -38,13 +38,14 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 
+ 	switch (priv->size) {
+ 	case 8: {
++		u64 *dst64 = (void *)dst;
+ 		u64 src64;
+ 
+ 		switch (priv->op) {
+ 		case NFT_BYTEORDER_NTOH:
+ 			for (i = 0; i < priv->len / 8; i++) {
+ 				src64 = nft_reg_load64(&src[i]);
+-				nft_reg_store64(&dst[i],
++				nft_reg_store64(&dst64[i],
+ 						be64_to_cpu((__force __be64)src64));
+ 			}
+ 			break;
+@@ -52,7 +53,7 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 			for (i = 0; i < priv->len / 8; i++) {
+ 				src64 = (__force __u64)
+ 					cpu_to_be64(nft_reg_load64(&src[i]));
+-				nft_reg_store64(&dst[i], src64);
++				nft_reg_store64(&dst64[i], src64);
+ 			}
+ 			break;
+ 		}
+diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
+index 8fdc7318c03c7..715484665a907 100644
+--- a/net/netfilter/nft_meta.c
++++ b/net/netfilter/nft_meta.c
+@@ -63,7 +63,7 @@ nft_meta_get_eval_time(enum nft_meta_keys key,
+ {
+ 	switch (key) {
+ 	case NFT_META_TIME_NS:
+-		nft_reg_store64(dest, ktime_get_real_ns());
++		nft_reg_store64((u64 *)dest, ktime_get_real_ns());
+ 		break;
+ 	case NFT_META_TIME_DAY:
+ 		nft_reg_store8(dest, nft_meta_weekday());
+-- 
+2.42.0
+
 
 
 
