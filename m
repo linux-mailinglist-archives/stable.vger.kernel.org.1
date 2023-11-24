@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D107F80FB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5857F7F4D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48347B21AAB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E462428121D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5FC2E84A;
-	Fri, 24 Nov 2023 18:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B70B34189;
+	Fri, 24 Nov 2023 18:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAVGtTJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYy7sEga"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FC335F04;
-	Fri, 24 Nov 2023 18:54:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D755C433C7;
-	Fri, 24 Nov 2023 18:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F962E858;
+	Fri, 24 Nov 2023 18:40:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F44CC433C8;
+	Fri, 24 Nov 2023 18:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852074;
-	bh=8RKcNt9kYUxLGm5yUt/uFTpN+0vpDPIq4ZAlvxMD2kk=;
+	s=korg; t=1700851216;
+	bh=vgE3FpcxN8aYnzV39Q+TqsKGx9rdb9I0gskj5m5Lf3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAVGtTJdiB+5gPGl2yGEZOGvbhaD46Kmwxf+CN1tecOa8MPlHloYgRHaU/V1I2rk9
-	 w3EnkosFUQvld76goePEiBJcXomd6wtiFwgufChWNa9hWMgHEaWkCI7CCIjGoiX+0L
-	 EGr/fLV1LRZ47/vVo9b6ZK9LxQLSoq+GdjQ0RTKc=
+	b=vYy7sEga9zLnitm2YLTIAgtDrYR77cJN9OJ6yMQobQTyykZKfN5xL21XazwM629+U
+	 k989mMsnJrFrR2Jp7lxydRSJp84wwBRGW7cunpeBfcfxM1aeU50YIe9jq57gA18L3T
+	 KLFwJWD8J1mbETrSNlHgYcWnm44GjUY4W3dx6EPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 209/372] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.5 360/491] i3c: master: svc: fix check wrong status register in irq handler
 Date: Fri, 24 Nov 2023 17:49:56 +0000
-Message-ID: <20231124172017.433501644@linuxfoundation.org>
+Message-ID: <20231124172035.392747823@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +51,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit e641a070137dd959932c7c222e000d9d941167a2 upstream.
+commit 225d5ef048c4ed01a475c95d94833bd7dd61072d upstream.
 
-GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
-on the request from dependent clocks. Doing so will result in the
-unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
-clocks.
+svc_i3c_master_irq_handler() wrongly checks register SVC_I3C_MINTMASKED. It
+should be SVC_I3C_MSTATUS.
 
-Cc: stable@vger.kernel.org
-Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL’s")
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231023161658.3890811-5-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-ipq8074.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/qcom/gcc-ipq8074.c
-+++ b/drivers/clk/qcom/gcc-ipq8074.c
-@@ -419,7 +419,6 @@ static struct clk_fixed_factor gpll0_out
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -477,7 +477,7 @@ reenable_ibis:
+ static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
+ {
+ 	struct svc_i3c_master *master = (struct svc_i3c_master *)dev_id;
+-	u32 active = readl(master->regs + SVC_I3C_MINTMASKED);
++	u32 active = readl(master->regs + SVC_I3C_MSTATUS);
  
-@@ -466,7 +465,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -499,7 +497,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -533,7 +530,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -547,7 +543,6 @@ static struct clk_fixed_factor gpll6_out
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -612,7 +607,6 @@ static struct clk_alpha_pll_postdiv nss_
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
+ 	if (!SVC_I3C_MSTATUS_SLVSTART(active))
+ 		return IRQ_NONE;
 
 
 
