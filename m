@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B40A7F80F4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6437F7D09
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 071F6B21B5D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 487BC281D25
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA81C35F1A;
-	Fri, 24 Nov 2023 18:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89C23A8C3;
+	Fri, 24 Nov 2023 18:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODFbeS9l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Th2se05j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DFE321AD;
-	Fri, 24 Nov 2023 18:54:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C52C433C8;
-	Fri, 24 Nov 2023 18:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7524839FD0;
+	Fri, 24 Nov 2023 18:20:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0935C433C8;
+	Fri, 24 Nov 2023 18:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852057;
-	bh=L1sO1cDKRs5zfjV6BFus8OPXh5BUws2VDhWePFI96IE=;
+	s=korg; t=1700850048;
+	bh=F3Db+A/s41z/4lZPB3VLkUjThVHd+Uo288WxOIQZAXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODFbeS9lW1yj5GqvV90Egw1lOEWrXHMFOPNNOs6lFXBB08PjZH1EaF3oIccUsd1Tl
-	 ou7CkjefKgcgvp8AFFihlwzEnu8oini+lQ1H0v7J59lMsa5p4i0SJSFPHgQgrzoslV
-	 /Wi6tdshTP/jFqu98J5+/6EDgryWfl2n9V0wiErY=
+	b=Th2se05jnG7Se1SJRe9vOrC1HfrKB7rRvprNNXPvxNWmEeNhSVl29WkVQGTeS0lhi
+	 pdwU77RVnjAh82hrpjzFdgrhufkjY76EcrCKflqYfpmLjV8a0hU+npqhThL/vkyYSS
+	 xrIHgGo7Qkg/wv3QXV+Nd7TD05yWRk+ZfySycmy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.1 203/372] PCI: keystone: Dont discard .remove() callback
+	Eduard Bachmakov <e.bachmakov@gmail.com>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 424/530] smb: client: fix mount when dns_resolver key is not available
 Date: Fri, 24 Nov 2023 17:49:50 +0000
-Message-ID: <20231124172017.229461732@linuxfoundation.org>
+Message-ID: <20231124172040.970792168@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +51,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 200bddbb3f5202bbce96444fdc416305de14f547 upstream.
+commit 5e2fd17f434d2fed78efb123e2fc6711e4f598f1 upstream.
 
-With CONFIG_PCIE_KEYSTONE=y and ks_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
+There was a wrong assumption that with CONFIG_CIFS_DFS_UPCALL=y there
+would always be a dns_resolver key set up so we could unconditionally
+upcall to resolve UNC hostname rather than using the value provided by
+mount(2).
 
-The right thing to do is do always have the remove callback available.
-Note that this driver cannot be compiled as a module, so ks_pcie_remove()
-was always discarded before this change and modpost couldn't warn about
-this issue. Furthermore the __ref annotation also prevents a warning.
+Only require it when performing automount of junctions within a DFS
+share so users that don't have dns_resolver key still can mount their
+regular shares with server hostname resolved by mount.cifs(8).
 
-Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
-Link: https://lore.kernel.org/r/20231001170254.2506508-4-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: 348a04a8d113 ("smb: client: get rid of dfs code dep in namespace.c")
 Cc: stable@vger.kernel.org
+Tested-by: Eduard Bachmakov <e.bachmakov@gmail.com>
+Reported-by: Eduard Bachmakov <e.bachmakov@gmail.com>
+Closes: https://lore.kernel.org/all/CADCRUiNvZuiUZ0VGZZO9HRyPyw6x92kiA7o7Q4tsX5FkZqUkKg@mail.gmail.com/
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/dfs.c        |   18 +++++++++++++-----
+ fs/smb/client/fs_context.h |    1 +
+ fs/smb/client/namespace.c  |   17 +++++++++++++++--
+ 3 files changed, 29 insertions(+), 7 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1303,7 +1303,7 @@ err_link:
- 	return ret;
+--- a/fs/smb/client/dfs.c
++++ b/fs/smb/client/dfs.c
+@@ -263,15 +263,23 @@ out:
+ 	return rc;
  }
  
--static int __exit ks_pcie_remove(struct platform_device *pdev)
-+static int ks_pcie_remove(struct platform_device *pdev)
+-/* Resolve UNC hostname in @ctx->source and set ip addr in @ctx->dstaddr */
++/*
++ * If @ctx->dfs_automount, then update @ctx->dstaddr earlier with the DFS root
++ * server from where we'll start following any referrals.  Otherwise rely on the
++ * value provided by mount(2) as the user might not have dns_resolver key set up
++ * and therefore failing to upcall to resolve UNC hostname under @ctx->source.
++ */
+ static int update_fs_context_dstaddr(struct smb3_fs_context *ctx)
  {
- 	struct keystone_pcie *ks_pcie = platform_get_drvdata(pdev);
- 	struct device_link **link = ks_pcie->link;
-@@ -1321,7 +1321,7 @@ static int __exit ks_pcie_remove(struct
+ 	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
+-	int rc;
++	int rc = 0;
  
- static struct platform_driver ks_pcie_driver __refdata = {
- 	.probe  = ks_pcie_probe,
--	.remove = __exit_p(ks_pcie_remove),
-+	.remove = ks_pcie_remove,
- 	.driver = {
- 		.name	= "keystone-pcie",
- 		.of_match_table = ks_pcie_of_match,
+-	rc = dns_resolve_server_name_to_ip(ctx->source, addr, NULL);
+-	if (!rc)
+-		cifs_set_port(addr, ctx->port);
++	if (!ctx->nodfs && ctx->dfs_automount) {
++		rc = dns_resolve_server_name_to_ip(ctx->source, addr, NULL);
++		if (!rc)
++			cifs_set_port(addr, ctx->port);
++		ctx->dfs_automount = false;
++	}
+ 	return rc;
+ }
+ 
+--- a/fs/smb/client/fs_context.h
++++ b/fs/smb/client/fs_context.h
+@@ -268,6 +268,7 @@ struct smb3_fs_context {
+ 	bool witness:1; /* use witness protocol */
+ 	char *leaf_fullpath;
+ 	struct cifs_ses *dfs_root_ses;
++	bool dfs_automount:1; /* set for dfs automount only */
+ };
+ 
+ extern const struct fs_parameter_spec smb3_fs_parameters[];
+--- a/fs/smb/client/namespace.c
++++ b/fs/smb/client/namespace.c
+@@ -117,6 +117,18 @@ cifs_build_devname(char *nodename, const
+ 	return dev;
+ }
+ 
++static bool is_dfs_mount(struct dentry *dentry)
++{
++	struct cifs_sb_info *cifs_sb = CIFS_SB(dentry->d_sb);
++	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
++	bool ret;
++
++	spin_lock(&tcon->tc_lock);
++	ret = !!tcon->origin_fullpath;
++	spin_unlock(&tcon->tc_lock);
++	return ret;
++}
++
+ /* Return full path out of a dentry set for automount */
+ static char *automount_fullpath(struct dentry *dentry, void *page)
+ {
+@@ -212,8 +224,9 @@ static struct vfsmount *cifs_do_automoun
+ 		ctx->source = NULL;
+ 		goto out;
+ 	}
+-	cifs_dbg(FYI, "%s: ctx: source=%s UNC=%s prepath=%s\n",
+-		 __func__, ctx->source, ctx->UNC, ctx->prepath);
++	ctx->dfs_automount = is_dfs_mount(mntpt);
++	cifs_dbg(FYI, "%s: ctx: source=%s UNC=%s prepath=%s dfs_automount=%d\n",
++		 __func__, ctx->source, ctx->UNC, ctx->prepath, ctx->dfs_automount);
+ 
+ 	mnt = fc_mount(fc);
+ out:
 
 
 
