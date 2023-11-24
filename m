@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0BF7F7FA5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3481E7F7AF4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A8511C214E7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E53C12814D1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD8B381D4;
-	Fri, 24 Nov 2023 18:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5C639FEE;
+	Fri, 24 Nov 2023 18:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPJG3cCf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bp5jZREV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8DF364A6;
-	Fri, 24 Nov 2023 18:43:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E9BC433C9;
-	Fri, 24 Nov 2023 18:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DA3381DE;
+	Fri, 24 Nov 2023 18:00:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847E2C433C7;
+	Fri, 24 Nov 2023 18:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851394;
-	bh=/mt2/0tvkF+RD+ZLM8MtO5HVTWlneNLtJR6l+Eb8KYM=;
+	s=korg; t=1700848821;
+	bh=sDSf4bauxYSZH7lCpqwTFU1CPLcbeJt2XiEPWyTw8E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPJG3cCfbtyTrPudY5ozYmeQ2rxEfPMdf08yXksVhfCgGHt4SupCNkNSERJZmJzmf
-	 OAgJSzM6Cs8VcqplqbWHeP10JXvXASqLljXv6USQTQChKlCdE9DEYGtIjkj/x83gm1
-	 tBInkLSa4Vw6B4m3/SA9wUfG/Oc9j/3v/32p9Er8=
+	b=bp5jZREV0JTXtgtgB55AecDIkVlaw/Z4EjmAAufhc+PLHCL8jZtEFQPkuF/AhAX5t
+	 +VdKrh26ME1qjJChfG6Ts5xtdOK1i+ArTFcg+9YVtiX6w5PDOgxXA4msFyFCWebVMY
+	 Bn2PN5TjmPINbQiMephqeF0RNAIpY88k7vlseiow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.5 430/491] dm-verity: dont use blocking calls from tasklets
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 4.19 93/97] ext4: remove gdb backup copy for meta bg in setup_new_flex_group_blocks
 Date: Fri, 24 Nov 2023 17:51:06 +0000
-Message-ID: <20231124172037.537585198@linuxfoundation.org>
+Message-ID: <20231124171937.680224906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,180 +53,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-commit 28f07f2ab4b3a2714f1fefcc58ada4bcc195f806 upstream.
+commit 40dd7953f4d606c280074f10d23046b6812708ce upstream.
 
-The commit 5721d4e5a9cd enhanced dm-verity, so that it can verify blocks
-from tasklets rather than from workqueues. This reportedly improves
-performance significantly.
+Wrong check of gdb backup in meta bg as following:
+first_group is the first group of meta_bg which contains target group, so
+target group is always >= first_group. We check if target group has gdb
+backup by comparing first_group with [group + 1] and [group +
+EXT4_DESC_PER_BLOCK(sb) - 1]. As group >= first_group, then [group + N] is
+> first_group. So no copy of gdb backup in meta bg is done in
+setup_new_flex_group_blocks.
 
-However, dm-verity was using the flag CRYPTO_TFM_REQ_MAY_SLEEP from
-tasklets which resulted in warnings about sleeping function being called
-from non-sleeping context.
+No need to do gdb backup copy in meta bg from setup_new_flex_group_blocks
+as we always copy updated gdb block to backups at end of
+ext4_flex_group_add as following:
 
-BUG: sleeping function called from invalid context at crypto/internal.h:206
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 14, name: ksoftirqd/0
-preempt_count: 100, expected: 0
-RCU nest depth: 0, expected: 0
-CPU: 0 PID: 14 Comm: ksoftirqd/0 Tainted: G        W 6.7.0-rc1 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-2 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x32/0x50
- __might_resched+0x110/0x160
- crypto_hash_walk_done+0x54/0xb0
- shash_ahash_update+0x51/0x60
- verity_hash_update.isra.0+0x4a/0x130 [dm_verity]
- verity_verify_io+0x165/0x550 [dm_verity]
- ? free_unref_page+0xdf/0x170
- ? psi_group_change+0x113/0x390
- verity_tasklet+0xd/0x70 [dm_verity]
- tasklet_action_common.isra.0+0xb3/0xc0
- __do_softirq+0xaf/0x1ec
- ? smpboot_thread_fn+0x1d/0x200
- ? sort_range+0x20/0x20
- run_ksoftirqd+0x15/0x30
- smpboot_thread_fn+0xed/0x200
- kthread+0xdc/0x110
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork+0x28/0x40
- ? kthread_complete_and_exit+0x20/0x20
- ret_from_fork_asm+0x11/0x20
- </TASK>
+ext4_flex_group_add
+  /* no gdb backup copy for meta bg any more */
+  setup_new_flex_group_blocks
 
-This commit fixes dm-verity so that it doesn't use the flags
-CRYPTO_TFM_REQ_MAY_SLEEP and CRYPTO_TFM_REQ_MAY_BACKLOG from tasklets. The
-crypto API would do GFP_ATOMIC allocation instead, it could return -ENOMEM
-and we catch -ENOMEM in verity_tasklet and requeue the request to the
-workqueue.
+  /* update current group number */
+  ext4_update_super
+    sbi->s_groups_count += flex_gd->count;
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org	# v6.0+
-Fixes: 5721d4e5a9cd ("dm verity: Add optional "try_verify_in_tasklet" feature")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+  /*
+   * if group in meta bg contains backup is added, the primary gdb block
+   * of the meta bg will be copy to backup in new added group here.
+   */
+  for (; gdb_num <= gdb_num_end; gdb_num++)
+    update_backups(...)
+
+In summary, we can remove wrong gdb backup copy code in
+setup_new_flex_group_blocks.
+
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230826174712.4059355-5-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-fec.c    |    4 ++--
- drivers/md/dm-verity-target.c |   23 ++++++++++++-----------
- drivers/md/dm-verity.h        |    2 +-
- 3 files changed, 15 insertions(+), 14 deletions(-)
+ fs/ext4/resize.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -185,7 +185,7 @@ static int fec_is_erasure(struct dm_veri
- {
- 	if (unlikely(verity_hash(v, verity_io_hash_req(v, io),
- 				 data, 1 << v->data_dev_block_bits,
--				 verity_io_real_digest(v, io))))
-+				 verity_io_real_digest(v, io), true)))
- 		return 0;
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -572,13 +572,8 @@ static int setup_new_flex_group_blocks(s
+ 		if (meta_bg == 0 && !ext4_bg_has_super(sb, group))
+ 			goto handle_itb;
  
- 	return memcmp(verity_io_real_digest(v, io), want_digest,
-@@ -386,7 +386,7 @@ static int fec_decode_rsb(struct dm_veri
- 	/* Always re-validate the corrected block against the expected hash */
- 	r = verity_hash(v, verity_io_hash_req(v, io), fio->output,
- 			1 << v->data_dev_block_bits,
--			verity_io_real_digest(v, io));
-+			verity_io_real_digest(v, io), true);
- 	if (unlikely(r < 0))
- 		return r;
+-		if (meta_bg == 1) {
+-			ext4_group_t first_group;
+-			first_group = ext4_meta_bg_first_group(sb, group);
+-			if (first_group != group + 1 &&
+-			    first_group != group + EXT4_DESC_PER_BLOCK(sb) - 1)
+-				goto handle_itb;
+-		}
++		if (meta_bg == 1)
++			goto handle_itb;
  
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -135,20 +135,21 @@ static int verity_hash_update(struct dm_
-  * Wrapper for crypto_ahash_init, which handles verity salting.
-  */
- static int verity_hash_init(struct dm_verity *v, struct ahash_request *req,
--				struct crypto_wait *wait)
-+				struct crypto_wait *wait, bool may_sleep)
- {
- 	int r;
- 
- 	ahash_request_set_tfm(req, v->tfm);
--	ahash_request_set_callback(req, CRYPTO_TFM_REQ_MAY_SLEEP |
--					CRYPTO_TFM_REQ_MAY_BACKLOG,
--					crypto_req_done, (void *)wait);
-+	ahash_request_set_callback(req,
-+		may_sleep ? CRYPTO_TFM_REQ_MAY_SLEEP | CRYPTO_TFM_REQ_MAY_BACKLOG : 0,
-+		crypto_req_done, (void *)wait);
- 	crypto_init_wait(wait);
- 
- 	r = crypto_wait_req(crypto_ahash_init(req), wait);
- 
- 	if (unlikely(r < 0)) {
--		DMERR("crypto_ahash_init failed: %d", r);
-+		if (r != -ENOMEM)
-+			DMERR("crypto_ahash_init failed: %d", r);
- 		return r;
- 	}
- 
-@@ -179,12 +180,12 @@ out:
- }
- 
- int verity_hash(struct dm_verity *v, struct ahash_request *req,
--		const u8 *data, size_t len, u8 *digest)
-+		const u8 *data, size_t len, u8 *digest, bool may_sleep)
- {
- 	int r;
- 	struct crypto_wait wait;
- 
--	r = verity_hash_init(v, req, &wait);
-+	r = verity_hash_init(v, req, &wait, may_sleep);
- 	if (unlikely(r < 0))
- 		goto out;
- 
-@@ -322,7 +323,7 @@ static int verity_verify_level(struct dm
- 
- 		r = verity_hash(v, verity_io_hash_req(v, io),
- 				data, 1 << v->hash_dev_block_bits,
--				verity_io_real_digest(v, io));
-+				verity_io_real_digest(v, io), !io->in_tasklet);
- 		if (unlikely(r < 0))
- 			goto release_ret_r;
- 
-@@ -556,7 +557,7 @@ static int verity_verify_io(struct dm_ve
- 			continue;
- 		}
- 
--		r = verity_hash_init(v, req, &wait);
-+		r = verity_hash_init(v, req, &wait, !io->in_tasklet);
- 		if (unlikely(r < 0))
- 			return r;
- 
-@@ -652,7 +653,7 @@ static void verity_tasklet(unsigned long
- 
- 	io->in_tasklet = true;
- 	err = verity_verify_io(io);
--	if (err == -EAGAIN) {
-+	if (err == -EAGAIN || err == -ENOMEM) {
- 		/* fallback to retrying with work-queue */
- 		INIT_WORK(&io->work, verity_work);
- 		queue_work(io->v->verify_wq, &io->work);
-@@ -1033,7 +1034,7 @@ static int verity_alloc_zero_digest(stru
- 		goto out;
- 
- 	r = verity_hash(v, req, zero_data, 1 << v->data_dev_block_bits,
--			v->zero_digest);
-+			v->zero_digest, true);
- 
- out:
- 	kfree(req);
---- a/drivers/md/dm-verity.h
-+++ b/drivers/md/dm-verity.h
-@@ -128,7 +128,7 @@ extern int verity_for_bv_block(struct dm
- 					      u8 *data, size_t len));
- 
- extern int verity_hash(struct dm_verity *v, struct ahash_request *req,
--		       const u8 *data, size_t len, u8 *digest);
-+		       const u8 *data, size_t len, u8 *digest, bool may_sleep);
- 
- extern int verity_hash_for_block(struct dm_verity *v, struct dm_verity_io *io,
- 				 sector_t block, u8 *digest, bool *is_zero);
+ 		block = start + ext4_bg_has_super(sb, group);
+ 		/* Copy all of the GDT blocks into the backup in this group */
 
 
 
