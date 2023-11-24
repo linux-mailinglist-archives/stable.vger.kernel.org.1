@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-2345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A57F7F83C7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 450D87F846A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBD261C26518
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F05A328B4E8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05009381D2;
-	Fri, 24 Nov 2023 19:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891F035F04;
+	Fri, 24 Nov 2023 19:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHEhuPWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRmNIUjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9AF339BE;
-	Fri, 24 Nov 2023 19:20:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485F7C433C8;
-	Fri, 24 Nov 2023 19:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390A12EAEA;
+	Fri, 24 Nov 2023 19:27:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57D9C433C8;
+	Fri, 24 Nov 2023 19:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853653;
-	bh=aPXeT0BHA9U/fx7kv/42lQfiQId7C1lqT+7wl+ixO9M=;
+	s=korg; t=1700854022;
+	bh=US4Q48RevMNaTRBJtTQhJouWKUyfp8eCkgQfuExVxmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHEhuPWdxCK3Ihrm1UaN6NhvWvyeznUnPm3qxbYuWmpzo0O+fBVdYDFMyfrBgmVG5
-	 SC4izDkEWKdxu2Bx438A8XBjHmjW74I3J9+k5nfplEMfqxJWDxT6CYcePSLKlrpj4H
-	 Nu1GutswYCAhA8p1KMfFcbjGu4/vjT/BwaEXxrVs=
+	b=rRmNIUjjquMFUO7ZT8Pd16DZnuaoLhdnWISZTw3+ANBbZ0Sj7uUpagguusK4YX2v3
+	 jqgtnSb32d8i0bKXfQc1PJXRDrvIt8if0nKBmkal7z3v8jnvnqiOPZjSxBftN4Q6/J
+	 th7jn0rXKISUkiDklEFeNBt1HiF4fX8ev6nToJQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kai-Heng Feng <kai.heng.geng@canonical.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 275/297] mmc: sdhci-pci-gli: GL9750: Mask the replay timer timeout of AER
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.4 100/159] parisc: Prevent booting 64-bit kernels on PA1.x machines
 Date: Fri, 24 Nov 2023 17:55:17 +0000
-Message-ID: <20231124172009.752007983@linuxfoundation.org>
+Message-ID: <20231124171946.056824603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +51,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Helge Deller <deller@gmx.de>
 
-commit 015c9cbcf0ad709079117d27c2094a46e0eadcdb upstream.
+commit a406b8b424fa01f244c1aab02ba186258448c36b upstream.
 
-Due to a flaw in the hardware design, the GL9750 replay timer frequently
-times out when ASPM is enabled. As a result, the warning messages will
-often appear in the system log when the system accesses the GL9750
-PCI config. Therefore, the replay timer timeout must be masked.
+Bail out early with error message when trying to boot a 64-bit kernel on
+32-bit machines. This fixes the previous commit to include the check for
+true 64-bit kernels as well.
 
-Fixes: d7133797e9e1 ("mmc: sdhci-pci-gli: A workaround to allow GL9750 to enter ASPM L1.2")
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Kai-Heng Feng <kai.heng.geng@canonical.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231107095741.8832-2-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 591d2108f3abc ("parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines")
+Cc:  <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/parisc/kernel/head.S |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -26,6 +26,9 @@
- #define PCI_GLI_9750_PM_CTRL	0xFC
- #define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
+--- a/arch/parisc/kernel/head.S
++++ b/arch/parisc/kernel/head.S
+@@ -69,9 +69,8 @@ $bss_loop:
+ 	stw,ma          %arg2,4(%r1)
+ 	stw,ma          %arg3,4(%r1)
  
-+#define PCI_GLI_9750_CORRERR_MASK				0x214
-+#define   PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
-+
- #define SDHCI_GLI_9750_CFG2          0x848
- #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
- #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
-@@ -446,6 +449,11 @@ static void gl9750_hw_setting(struct sdh
- 	value &= ~PCI_GLI_9750_PM_STATE;
- 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
- 
-+	/* mask the replay timer timeout of AER */
-+	pci_read_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, &value);
-+	value |= PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
-+	pci_write_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, value);
-+
- 	gl9750_wt_off(host);
- }
- 
+-#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
+-	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
+-	 * and halt kernel if we detect a PA1.x CPU. */
++#if defined(CONFIG_PA20)
++	/* check for 64-bit capable CPU as required by current kernel */
+ 	ldi		32,%r10
+ 	mtctl		%r10,%cr11
+ 	.level 2.0
 
 
 
