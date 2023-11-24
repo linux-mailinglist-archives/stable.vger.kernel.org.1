@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA42E7F7C1C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20D3D7F7E59
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 276851C21079
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFA5728224A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7B73A8C5;
-	Fri, 24 Nov 2023 18:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9763A8D7;
+	Fri, 24 Nov 2023 18:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynCYHLlw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FetlDL3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACEB39FEA;
-	Fri, 24 Nov 2023 18:11:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98262C433C8;
-	Fri, 24 Nov 2023 18:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC973A8FB;
+	Fri, 24 Nov 2023 18:32:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752F5C433C8;
+	Fri, 24 Nov 2023 18:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849513;
-	bh=MLVciqWoIOV3bEbYYRWGUuUpc84jKMrWb4muwQiWZ7o=;
+	s=korg; t=1700850728;
+	bh=oklbQznctnN0Rc0zcKp8y4oGjxcvvjuu1y0V0QHziTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ynCYHLlw6sn+stq7i4yHX8pZYKvQuL+n0bny+Q3XsqOnhWvFrRlSCs+4um014NUd+
-	 SPVnBc/ailf+2xwaFEubJ3c3G2ByFRlgmbXckdrlxYlsUJGpvijH7+3rAWZFDILEN4
-	 7mS6m5Evo0Ug5lBUTitAAPnBHfLdjBj4MJZKnWD4=
+	b=FetlDL3XoCTHmAiJGBJ6oxcnnfcu2SR4LRQRCQal6jIxzhuH7+Y18WZpwMdvN9M+k
+	 Z3t2qsm/S4Cx6Ode3HshMixh/9Rn1zSZfAirAlrcpYDYXAZmAdhrVjY3TT+OAzhQPO
+	 CjthW7XNoZQLo6BZqN9N+XnXee7fsTgCgDr39d/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jun Lei <jun.lei@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 211/530] pds_core: use correct index to mask irq
+Subject: [PATCH 6.5 141/491] drm/amd/display: Avoid NULL dereference of timing generator
 Date: Fri, 24 Nov 2023 17:46:17 +0000
-Message-ID: <20231124172034.483610857@linuxfoundation.org>
+Message-ID: <20231124172028.728088782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,69 +56,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Wayne Lin <wayne.lin@amd.com>
 
-[ Upstream commit 09d4c14c6c5e6e781a3879fed7f8e116a18b8c65 ]
+[ Upstream commit b1904ed480cee3f9f4036ea0e36d139cb5fee2d6 ]
 
-Use the qcq's interrupt index, not the irq number, to mask
-the interrupt.  Since the irq number can be out of range from
-the number of possible interrupts, we can end up accessing
-and potentially scribbling on out-of-range and/or unmapped
-memory, making the kernel angry.
+[Why & How]
+Check whether assigned timing generator is NULL or not before
+accessing its funcs to prevent NULL dereference.
 
-    [ 3116.039364] BUG: unable to handle page fault for address: ffffbeea1c3edf84
-    [ 3116.047059] #PF: supervisor write access in kernel mode
-    [ 3116.052895] #PF: error_code(0x0002) - not-present page
-    [ 3116.058636] PGD 100000067 P4D 100000067 PUD 1001f2067 PMD 10f82e067 PTE 0
-    [ 3116.066221] Oops: 0002 [#1] SMP NOPTI
-    [ 3116.092948] RIP: 0010:iowrite32+0x9/0x76
-    [ 3116.190452] Call Trace:
-    [ 3116.193185]  <IRQ>
-    [ 3116.195430]  ? show_trace_log_lvl+0x1d6/0x2f9
-    [ 3116.200298]  ? show_trace_log_lvl+0x1d6/0x2f9
-    [ 3116.205166]  ? pdsc_adminq_isr+0x43/0x55 [pds_core]
-    [ 3116.210618]  ? __die_body.cold+0x8/0xa
-    [ 3116.214806]  ? page_fault_oops+0x16d/0x1ac
-    [ 3116.219382]  ? exc_page_fault+0xbe/0x13b
-    [ 3116.223764]  ? asm_exc_page_fault+0x22/0x27
-    [ 3116.228440]  ? iowrite32+0x9/0x76
-    [ 3116.232143]  pdsc_adminq_isr+0x43/0x55 [pds_core]
-    [ 3116.237627]  __handle_irq_event_percpu+0x3a/0x184
-    [ 3116.243088]  handle_irq_event+0x57/0xb0
-    [ 3116.247575]  handle_edge_irq+0x87/0x225
-    [ 3116.252062]  __common_interrupt+0x3e/0xbc
-    [ 3116.256740]  common_interrupt+0x7b/0x98
-    [ 3116.261216]  </IRQ>
-    [ 3116.263745]  <TASK>
-    [ 3116.266268]  asm_common_interrupt+0x22/0x27
-
-Reported-by: Joao Martins <joao.m.martins@oracle.com>
-Fixes: 01ba61b55b20 ("pds_core: Add adminq processing and commands")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20231113183257.71110-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Hersen Wu <hersenxs.wu@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/adminq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/adminq.c b/drivers/net/ethernet/amd/pds_core/adminq.c
-index 045fe133f6ee9..5beadabc21361 100644
---- a/drivers/net/ethernet/amd/pds_core/adminq.c
-+++ b/drivers/net/ethernet/amd/pds_core/adminq.c
-@@ -146,7 +146,7 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data)
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+index 6e11d2b701f82..569d40eb7059d 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -556,7 +556,7 @@ uint32_t dc_stream_get_vblank_counter(const struct dc_stream_state *stream)
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
  
- 	queue_work(pdsc->wq, &qcq->work);
--	pds_core_intr_mask(&pdsc->intr_ctrl[irq], PDS_CORE_INTR_MASK_CLEAR);
-+	pds_core_intr_mask(&pdsc->intr_ctrl[qcq->intx], PDS_CORE_INTR_MASK_CLEAR);
+-		if (res_ctx->pipe_ctx[i].stream != stream)
++		if (res_ctx->pipe_ctx[i].stream != stream || !tg)
+ 			continue;
  
- 	return IRQ_HANDLED;
- }
+ 		return tg->funcs->get_frame_count(tg);
+@@ -615,7 +615,7 @@ bool dc_stream_get_scanoutpos(const struct dc_stream_state *stream,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
+ 
+-		if (res_ctx->pipe_ctx[i].stream != stream)
++		if (res_ctx->pipe_ctx[i].stream != stream || !tg)
+ 			continue;
+ 
+ 		tg->funcs->get_scanoutpos(tg,
 -- 
 2.42.0
 
