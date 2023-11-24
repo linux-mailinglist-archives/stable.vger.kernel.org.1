@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-1404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC48F7F7F7D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C3D7F8147
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66DAF282501
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6272F28244A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5D02E655;
-	Fri, 24 Nov 2023 18:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0496135F1A;
+	Fri, 24 Nov 2023 18:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtxPVfQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aV09pI6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFBF3307D;
-	Fri, 24 Nov 2023 18:41:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C5C3C433C8;
-	Fri, 24 Nov 2023 18:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2E72C85B;
+	Fri, 24 Nov 2023 18:57:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1039FC433C7;
+	Fri, 24 Nov 2023 18:57:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851313;
-	bh=CqPHPLdiuEMRZqxKe27URL6DEALzgbPOsULzdY0xW3U=;
+	s=korg; t=1700852229;
+	bh=WAz8GX6E+RuREBjJ13IiI8IN/y1qnYQvbmiy6O2bmHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtxPVfQRS55ZgftC806ulkPIRWoyYyGP6TaRqz6YvpUegJ1n6dVWSgiALY1/9GnVP
-	 RwJc0QKoXXUp7tbkz4UoZTRUDlP8LD5Is0kCcd7w4PiclDBzfBRoFUkk/4NXghHJtq
-	 EPRqxECZUvZkXhjXBzFteTC+Mn0FvwuyEUapZsC4=
+	b=aV09pI6q34UfeLLDZ6Hk74VfC3v0EHZmCfklVUXI3x0oEmQmA7+Jac3OwOo4ITr9U
+	 vGgY8FNfY7Qr9flRjSvZbedJKIxkfqpW9m20RY8VCMiGjmplhwUu64ubXEhc2Gn02l
+	 kfsyvyGCi7HgMPMaSsE18NQiAkQQ8uGhE9uSDfy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.5 398/491] btrfs: zoned: wait for data BG to be finished on direct IO allocation
+	stable <stable@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	James Clark <james.clark@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH 6.1 247/372] driver core: Release all resources during unbind before updating device links
 Date: Fri, 24 Nov 2023 17:50:34 +0000
-Message-ID: <20231124172036.563986452@linuxfoundation.org>
+Message-ID: <20231124172018.762999806@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,67 +58,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Saravana Kannan <saravanak@google.com>
 
-commit 776a838f1fa95670c1c1cf7109a898090b473fa3 upstream.
+commit 2e84dc37920012b458e9458b19fc4ed33f81bc74 upstream.
 
-Running the fio command below on a ZNS device results in "Resource
-temporarily unavailable" error.
+This commit fixes a bug in commit 9ed9895370ae ("driver core: Functional
+dependencies tracking support") where the device link status was
+incorrectly updated in the driver unbind path before all the device's
+resources were released.
 
-  $ sudo fio --name=w --directory=/mnt --filesize=1GB --bs=16MB --numjobs=16 \
-        --rw=write --ioengine=libaio --iodepth=128 --direct=1
-
-  fio: io_u error on file /mnt/w.2.0: Resource temporarily unavailable: write offset=117440512, buflen=16777216
-  fio: io_u error on file /mnt/w.2.0: Resource temporarily unavailable: write offset=134217728, buflen=16777216
-  ...
-
-This happens because -EAGAIN error returned from btrfs_reserve_extent()
-called from btrfs_new_extent_direct() is spilling over to the userland.
-
-btrfs_reserve_extent() returns -EAGAIN when there is no active zone
-available. Then, the caller should wait for some other on-going IO to
-finish a zone and retry the allocation.
-
-This logic is already implemented for buffered write in cow_file_range(),
-but it is missing for the direct IO counterpart. Implement the same logic
-for it.
-
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Fixes: 2ce543f47843 ("btrfs: zoned: wait until zone is finished when allocation didn't progress")
-CC: stable@vger.kernel.org # 6.1+
-Tested-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 9ed9895370ae ("driver core: Functional dependencies tracking support")
+Cc: stable <stable@kernel.org>
+Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Closes: https://lore.kernel.org/all/20231014161721.f4iqyroddkcyoefo@pengutronix.de/
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Yang Yingliang <yangyingliang@huawei.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: James Clark <james.clark@arm.com>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Tested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231018013851.3303928-1-saravanak@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/base/dd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -7142,8 +7142,15 @@ static struct extent_map *btrfs_new_exte
- 	int ret;
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -1262,8 +1262,8 @@ static void __device_release_driver(stru
+ 		if (dev->bus && dev->bus->dma_cleanup)
+ 			dev->bus->dma_cleanup(dev);
  
- 	alloc_hint = get_extent_allocation_hint(inode, start, len);
-+again:
- 	ret = btrfs_reserve_extent(root, len, len, fs_info->sectorsize,
- 				   0, alloc_hint, &ins, 1, 1);
-+	if (ret == -EAGAIN) {
-+		ASSERT(btrfs_is_zoned(fs_info));
-+		wait_on_bit_io(&inode->root->fs_info->flags, BTRFS_FS_NEED_ZONE_FINISH,
-+			       TASK_UNINTERRUPTIBLE);
-+		goto again;
-+	}
- 	if (ret)
- 		return ERR_PTR(ret);
+-		device_links_driver_cleanup(dev);
+ 		device_unbind_cleanup(dev);
++		device_links_driver_cleanup(dev);
  
+ 		klist_remove(&dev->p->knode_driver);
+ 		device_pm_check_callbacks(dev);
 
 
 
