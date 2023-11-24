@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BD247F8181
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D15A07F7FDF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0F83B20C89
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6189AB219DA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6ADB3418B;
-	Fri, 24 Nov 2023 18:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A4C2E40E;
+	Fri, 24 Nov 2023 18:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqwjPrjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXfybDVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC2C2C87B;
-	Fri, 24 Nov 2023 18:59:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AB9C433C7;
-	Fri, 24 Nov 2023 18:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA21728E3A;
+	Fri, 24 Nov 2023 18:44:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18B3C433C7;
+	Fri, 24 Nov 2023 18:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852350;
-	bh=N9vzIpRUcRMFtGt5TcKV5Ji6FxkiK7e/PisFw1XLkrs=;
+	s=korg; t=1700851494;
+	bh=1WaubtnBXqWxFNsNdIa8rQ0PfwXTrTFHc55oms/ontw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqwjPrjORTi6iJ4U+7dhu9cbONZ8ga4RbvgU4tNn0fBU2RtW9FQadgKFny1IttqFG
-	 9Jl2J39LiMOTelqrHcn/KRgV/kj49mykHbN75OaEeYW/vADZF8bnoUWbUGDmCWBE1o
-	 kyUMcnXT4ryJN0Z4gvuoFRSL3BFNuEBrkrQ2f6/0=
+	b=vXfybDVjfXFhMjPg3qknP1khqgiNNqiUG4Zw5Wgd18GGwVNm+EIdjGQWiO/LrGy7+
+	 A3vnK/5L/aO6bgdT6W8Db12FYiueK1SaNSD3CqfH0P6JA8CHsl1u15wwZSDLf7XGnZ
+	 zKanAU6Kj7Z2RHZ4b2227FzaclwiYd+z5AjfkAWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 320/372] media: venus: hfi_parser: Add check to keep the number of codecs within range
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Mika Kahola <mika.kahola@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.5 471/491] drm/i915/mtl: Support HBR3 rate with C10 phy and eDP in MTL
 Date: Fri, 24 Nov 2023 17:51:47 +0000
-Message-ID: <20231124172021.062516973@linuxfoundation.org>
+Message-ID: <20231124172038.783067223@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-commit 0768a9dd809ef52440b5df7dce5a1c1c7e97abbd upstream.
+commit ce4941c2d6459664761c9854701015d8e99414fb upstream.
 
-Supported codec bitmask is populated from the payload from venus firmware.
-There is a possible case when all the bits in the codec bitmask is set. In
-such case, core cap for decoder is filled  and MAX_CODEC_NUM is utilized.
-Now while filling the caps for encoder, it can lead to access the caps
-array beyong 32 index. Hence leading to OOB write.
-The fix counts the supported encoder and decoder. If the count is more than
-max, then it skips accessing the caps.
+eDP specification supports HBR3 link rate since v1.4a. Moreover,
+C10 phy can support HBR3 link rate for both DP and eDP. Therefore,
+do not clamp the supported rates for eDP at 6.75Gbps.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: <stable@vger.kernel.org>
+
+BSpec: 70073 74224
+
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Mika Kahola <mika.kahola@intel.com>
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231018113622.2761997-1-chaitanya.kumar.borah@intel.com
+(cherry picked from commit a3431650f30a94b179d419ef87c21213655c28cd)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/i915/display/intel_dp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -19,6 +19,9 @@ static void init_codecs(struct venus_cor
- 	struct hfi_plat_caps *caps = core->caps, *cap;
- 	unsigned long bit;
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -430,7 +430,7 @@ static int mtl_max_source_rate(struct in
+ 	enum phy phy = intel_port_to_phy(i915, dig_port->base.port);
  
-+	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
-+		return;
-+
- 	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
- 		cap = &caps[core->codecs_count++];
- 		cap->codec = BIT(bit);
+ 	if (intel_is_c10phy(i915, phy))
+-		return intel_dp_is_edp(intel_dp) ? 675000 : 810000;
++		return 810000;
+ 
+ 	return 2000000;
+ }
 
 
 
