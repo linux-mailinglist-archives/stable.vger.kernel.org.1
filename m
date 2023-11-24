@@ -1,53 +1,47 @@
-Return-Path: <stable+bounces-2381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665107F83EF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFAE7F8362
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 986551C26A85
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41E181F2101B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B972EB15;
-	Fri, 24 Nov 2023 19:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7032C87B;
+	Fri, 24 Nov 2023 19:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQyKm7mj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlRXg7Dy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253EE3306F;
-	Fri, 24 Nov 2023 19:22:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1536AC433C8;
-	Fri, 24 Nov 2023 19:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13C5339BE;
+	Fri, 24 Nov 2023 19:16:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06885C433C8;
+	Fri, 24 Nov 2023 19:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853743;
-	bh=GSh6zGcHe751DCQwy2F3U3ZwggB5C0ieqcDfEge8cmk=;
+	s=korg; t=1700853419;
+	bh=FKaRS0EcXv0QJBVb4RXkotuBa8oUWUbjV8xyFdc5wes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQyKm7mjS0N90ppHMcrHQ+O6ln9uiDSHKPHde2gVTOWMIWeaI1PDNLniaEO0uKCVz
-	 qdla80zBo2xWiPdZy16RVswJNMzHJO/31YtudvH5o0jEQ47CgXr2ZhlfqXWrvsCx8K
-	 PC9tCRTZEdPOqSE/oPYFM3WoAN7Ywgg8LAE5c+gQ=
+	b=TlRXg7DyrugjlfWxEubMuucITaluasZSKjEbLdXo37sijuji6UCvR+5jLzTVedy+v
+	 opgptlKolEyMgqvIb/AO5ley37pFKwS/Aq34HTivs5w3cZRwzCEy6Vn8RDRgOxLqm3
+	 i+3dlwuOQ+cbRID/mPZoqhxQRkBMYwbRUUInVDpc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Mario Casquero <mcasquer@redhat.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rik van Riel <riel@surriel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 005/159] x86/mm: Drop the 4 MB restriction on minimal NUMA node memory size
+	Kees Cook <keescook@chromium.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 5.15 180/297] clk: socfpga: Fix undefined behavior bug in struct stratix10_clock_data
 Date: Fri, 24 Nov 2023 17:53:42 +0000
-Message-ID: <20231124171942.129997117@linuxfoundation.org>
+Message-ID: <20231124172006.543514684@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,116 +53,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (IBM) <rppt@kernel.org>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit a1e2b8b36820d8c91275f207e77e91645b7c6836 ]
+commit d761bb01c85b22d5b44abe283eb89019693f6595 upstream.
 
-Qi Zheng reported crashes in a production environment and provided a
-simplified example as a reproducer:
+`struct clk_hw_onecell_data` is a flexible structure, which means that
+it contains flexible-array member at the bottom, in this case array
+`hws`:
 
- |  For example, if we use Qemu to start a two NUMA node kernel,
- |  one of the nodes has 2M memory (less than NODE_MIN_SIZE),
- |  and the other node has 2G, then we will encounter the
- |  following panic:
- |
- |    BUG: kernel NULL pointer dereference, address: 0000000000000000
- |    <...>
- |    RIP: 0010:_raw_spin_lock_irqsave+0x22/0x40
- |    <...>
- |    Call Trace:
- |      <TASK>
- |      deactivate_slab()
- |      bootstrap()
- |      kmem_cache_init()
- |      start_kernel()
- |      secondary_startup_64_no_verify()
+include/linux/clk-provider.h:
+1380 struct clk_hw_onecell_data {
+1381         unsigned int num;
+1382         struct clk_hw *hws[] __counted_by(num);
+1383 };
 
-The crashes happen because of inconsistency between the nodemask that
-has nodes with less than 4MB as memoryless, and the actual memory fed
-into the core mm.
+This could potentially lead to an overwrite of the objects following
+`clk_data` in `struct stratix10_clock_data`, in this case
+`void __iomem *base;` at run-time:
 
-The commit:
+drivers/clk/socfpga/stratix10-clk.h:
+  9 struct stratix10_clock_data {
+ 10         struct clk_hw_onecell_data      clk_data;
+ 11         void __iomem            *base;
+ 12 };
 
-  9391a3f9c7f1 ("[PATCH] x86_64: Clear more state when ignoring empty node in SRAT parsing")
+There are currently three different places where memory is allocated for
+`struct stratix10_clock_data`, including the flex-array `hws` in
+`struct clk_hw_onecell_data`:
 
-... that introduced minimal size of a NUMA node does not explain why
-a node size cannot be less than 4MB and what boot failures this
-restriction might fix.
+drivers/clk/socfpga/clk-agilex.c:
+469         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
+470                                 num_clks), GFP_KERNEL);
 
-Fixes have been submitted to the core MM code to tighten up the
-memory topologies it accepts and to not crash on weird input:
+drivers/clk/socfpga/clk-agilex.c:
+509         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
+510                                 num_clks), GFP_KERNEL);
 
-  mm: page_alloc: skip memoryless nodes entirely
-  mm: memory_hotplug: drop memoryless node from fallback lists
+drivers/clk/socfpga/clk-s10.c:
+400         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
+401                                                  num_clks), GFP_KERNEL);
 
-Andrew has accepted them into the -mm tree, but there are no
-stable SHA1's yet.
+I'll use just one of them to describe the issue. See below.
 
-This patch drops the limitation for minimal node size on x86:
+Notice that a total of 440 bytes are allocated for flexible-array member
+`hws` at line 469:
 
-  - which works around the crash without the fixes to the core MM.
-  - makes x86 topologies less weird,
-  - removes an arbitrary and undocumented limitation on NUMA topologies.
+include/dt-bindings/clock/agilex-clock.h:
+ 70 #define AGILEX_NUM_CLKS	55
 
-[ mingo: Improved changelog clarity. ]
+drivers/clk/socfpga/clk-agilex.c:
+459         struct stratix10_clock_data *clk_data;
+460         void __iomem *base;
+...
+466
+467         num_clks = AGILEX_NUM_CLKS;
+468
+469         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
+470                                 num_clks), GFP_KERNEL);
 
-Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Tested-by: Mario Casquero <mcasquer@redhat.com>
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Rik van Riel <riel@surriel.com>
-Link: https://lore.kernel.org/r/ZS+2qqjEO5/867br@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+`struct_size(clk_data, clk_data.hws, num_clks)`	above translates to
+sizeof(struct stratix10_clock_data) + sizeof(struct clk_hw *) * 55 ==
+16 + 8 * 55 == 16 + 440
+		    ^^^
+		     |
+	allocated bytes for flex-array `hws`
+
+474         for (i = 0; i < num_clks; i++)
+475                 clk_data->clk_data.hws[i] = ERR_PTR(-ENOENT);
+476
+477         clk_data->base = base;
+
+and then some data is written into both `hws` and `base` objects.
+
+Fix this by placing the declaration of object `clk_data` at the end of
+`struct stratix10_clock_data`. Also, add a comment to make it clear
+that this object must always be last in the structure.
+
+-Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
+ready to enable it globally.
+
+Fixes: ba7e258425ac ("clk: socfpga: Convert to s10/agilex/n5x to use clk_hw")
+Cc: stable@vger.kernel.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/1da736106d8e0806aeafa6e471a13ced490eae22.1698117815.git.gustavoars@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/numa.h | 7 -------
- arch/x86/mm/numa.c          | 7 -------
- 2 files changed, 14 deletions(-)
+ drivers/clk/socfpga/stratix10-clk.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
-index bbfde3d2662f4..4bcd9d0c7bee7 100644
---- a/arch/x86/include/asm/numa.h
-+++ b/arch/x86/include/asm/numa.h
-@@ -11,13 +11,6 @@
+diff --git a/drivers/clk/socfpga/stratix10-clk.h b/drivers/clk/socfpga/stratix10-clk.h
+index 75234e0783e1..83fe4eb3133c 100644
+--- a/drivers/clk/socfpga/stratix10-clk.h
++++ b/drivers/clk/socfpga/stratix10-clk.h
+@@ -7,8 +7,10 @@
+ #define	__STRATIX10_CLK_H
  
- #define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
+ struct stratix10_clock_data {
+-	struct clk_hw_onecell_data	clk_data;
+ 	void __iomem		*base;
++
++	/* Must be last */
++	struct clk_hw_onecell_data	clk_data;
+ };
  
--/*
-- * Too small node sizes may confuse the VM badly. Usually they
-- * result from BIOS bugs. So dont recognize nodes as standalone
-- * NUMA entities that have less than this amount of RAM listed:
-- */
--#define NODE_MIN_SIZE (4*1024*1024)
--
- extern int numa_off;
- 
- /*
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index 67c617c4a7f20..7316dca7e846a 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -581,13 +581,6 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
- 		if (start >= end)
- 			continue;
- 
--		/*
--		 * Don't confuse VM with a node that doesn't have the
--		 * minimum amount of memory:
--		 */
--		if (end && (end - start) < NODE_MIN_SIZE)
--			continue;
--
- 		alloc_node_data(nid);
- 	}
- 
+ struct stratix10_pll_clock {
 -- 
-2.42.0
+2.43.0
 
 
 
