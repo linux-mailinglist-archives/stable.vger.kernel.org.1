@@ -1,129 +1,96 @@
-Return-Path: <stable+bounces-299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DAB7F7766
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 16:14:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF807F786A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 16:58:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC651282112
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:14:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0435B20AD5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2C32E827;
-	Fri, 24 Nov 2023 15:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6F92E831;
+	Fri, 24 Nov 2023 15:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=gekmihesg.de header.i=@gekmihesg.de header.b="i0aTYYjO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iv7VQiWV"
 X-Original-To: stable@vger.kernel.org
-Received: from vsrv.gekmihesg.de (vsrv.gekmihesg.de [IPv6:2a01:4f8:c17:74cc::2])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62F21727;
-	Fri, 24 Nov 2023 07:14:40 -0800 (PST)
-Message-ID: <c47d3540ece151a2fb30e1c7b5881cb8922db915.camel@gekmihesg.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gekmihesg.de;
-	s=201901; t=1700838878; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zM6/fUk0rJdOH5EFD8vEbULY8RybL+qMHsTdcrITXSg=;
-	b=i0aTYYjO2rovw4TCdihadQUQyTdJv1/OKn6WurEMPqhuSjRBeIWKj0bM9Df0gjCAMSOLUR
-	4uP7YSt0SS/j4bycc03OVfBVs5VEls9l+08MmwQPMG96ir1b1m3xYmOxWqrsqKPIc9Ih6b
-	eXveoQs5DFbko80Af2hu7gZz3xoLApw=
-Subject: [PATCH] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
-From: Markus Weippert <markus@gekmihesg.de>
-To: Bcache Linux <linux-bcache@vger.kernel.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>, Zheng Wang
-	 <zyytlz.wz@163.com>, linux-kernel@vger.kernel.org, Stefan
-	=?ISO-8859-1?Q?F=F6rster?=
-	 <cite@incertum.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"stable@vger.kernel.org"
-	 <stable@vger.kernel.org>, Jens Axboe <axboe@kernel.dk>, Linux kernel
-	regressions list <regressions@lists.linux.dev>, Coly Li <colyli@suse.de>
-Date: Fri, 24 Nov 2023 16:14:37 +0100
-In-Reply-To: <3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de>
-References: <ZV9ZSyDLNDlzutgQ@pharmakeia.incertum.net>
-	 <be371028-efeb-44af-90ea-5c307f27d4c6@leemhuis.info>
-	 <71576a9ff7398bfa4b8c0a1a1a2523383b056168.camel@gekmihesg.de>
-	 <989C39B9-A05D-4E4F-A842-A4943A29FFD6@suse.de>
-	 <1c2a1f362d667d36d83a5ba43218bad199855b11.camel@gekmihesg.de>
-	 <3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE1333062
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 15:57:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65641C433C7;
+	Fri, 24 Nov 2023 15:57:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700841473;
+	bh=lv5ykoEIK5HYy9p2cWVHgs3wx+bPRg5Xd31TWsh6Goc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Iv7VQiWVohBjF3/OmLlHoZ9EMwR5qHsJ0VnQmc3GtegGeKcQu+q1SAywooKcrQxH3
+	 CaQzcSzxtRV3jxggCNaaihQcbOW66U1XKvHsOFKq/fTogIySmx/x8zq6nLEE+K5giD
+	 pLfKFGFmS5uinIeDBpSVRWZ05+7cRiX32CLmMGos=
+Date: Fri, 24 Nov 2023 15:57:51 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Helge Deller <deller@gmx.de>
+Cc: sam@gentoo.org, stable@vger.kernel.org, torvalds@linux-foundation.org,
+	Florent Revest <revest@chromium.org>,
+	Kees Cook <keescook@chromium.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: FAILED: patch "[PATCH] prctl: Disable prctl(PR_SET_MDWE) on
+ parisc" failed to apply to 6.5-stable tree
+Message-ID: <2023112420-reward-relative-f84d@gregkh>
+References: <2023112456-linked-nape-bf19@gregkh>
+ <1aadb9ed-5118-4a6f-a273-495466f4737b@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=markus smtp.mailfrom=markus@gekmihesg.de
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1aadb9ed-5118-4a6f-a273-495466f4737b@gmx.de>
 
-Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
-NULL pointer dereference.
+On Fri, Nov 24, 2023 at 04:10:25PM +0100, Helge Deller wrote:
+> On 11/24/23 12:35, gregkh@linuxfoundation.org wrote:
+> > The patch below does not apply to the 6.5-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> > 
+> > To reproduce the conflict and resubmit, you may use the following commands:
+> > 
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 793838138c157d4c49f4fb744b170747e3dabf58
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112456-linked-nape-bf19@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+> > 
+> > Possible dependencies:
+> > 
+> > 793838138c15 ("prctl: Disable prctl(PR_SET_MDWE) on parisc")
+> > 24e41bf8a6b4 ("mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl")
+> > 0da668333fb0 ("mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long")
+> 
+> Greg, I think the most clean solution is that you pull in this patch:
+> 
+> commit 24e41bf8a6b424c76c5902fb999e9eca61bdf83d
+> Author: Florent Revest <revest@chromium.org>
+> Date:   Mon Aug 28 17:08:57 2023 +0200
+>     mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl
+> 
+> as well into 6.5-stable and 6.6-stable prior to applying my patch.
+> 
+> Florent, Kees and Catalin, do you see any issues if this patch
+> ("mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl") is backported
+> to 6.5 and 6.6 too?
+> If yes, I'm happy to just send the trivial backport of my patch below...
 
-BUG: kernel NULL pointer dereference, address: 0000000000000080
-Call Trace:
- ? __die_body.cold+0x1a/0x1f
- ? page_fault_oops+0xd2/0x2b0
- ? exc_page_fault+0x70/0x170
- ? asm_exc_page_fault+0x22/0x30
- ? btree_node_free+0xf/0x160 [bcache]
- ? up_write+0x32/0x60
- btree_gc_coalesce+0x2aa/0x890 [bcache]
- ? bch_extent_bad+0x70/0x170 [bcache]
- btree_gc_recurse+0x130/0x390 [bcache]
- ? btree_gc_mark_node+0x72/0x230 [bcache]
- bch_btree_gc+0x5da/0x600 [bcache]
- ? cpuusage_read+0x10/0x10
- ? bch_btree_gc+0x600/0x600 [bcache]
- bch_gc_thread+0x135/0x180 [bcache]
+Given that we need an explicit ack for adding mm: patches to the stable
+trees, I'll wait for that to happen here before adding it.
 
-The relevant code starts with:
+thanks,
 
-    new_nodes[0] =3D NULL;
-
-    for (i =3D 0; i < nodes; i++) {
-        if (__bch_keylist_realloc(&keylist, bkey_u64s(&r[i].b->key)))
-            goto out_nocoalesce;
-    // ...
-out_nocoalesce:
-    // ...
-    for (i =3D 0; i < nodes; i++)
-        if (!IS_ERR(new_nodes[i])) {  // IS_ERR_OR_NULL before
-028ddcac477b
-            btree_node_free(new_nodes[i]);  // new_nodes[0] is NULL
-            rw_unlock(true, new_nodes[i]);
-        }
-
-This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
-
-Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations")
-Link:
-https://lore.kernel.org/all/3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de/
-Cc: stable@vger.kernel.org
-Cc: Zheng Wang <zyytlz.wz@163.com>
-Cc: Coly Li <colyli@suse.de>
-Signed-off-by: Markus Weippert <markus@gekmihesg.de>
-
----
- drivers/md/bcache/btree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/md/bcache/btree.c b/drivers/md/bcache/btree.c
-index de3019972..261596791 100644
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1522,7 +1522,7 @@ static int btree_gc_coalesce(struct btree *b,
-struct btree_op *op,
-        bch_keylist_free(&keylist);
-=20
-        for (i =3D 0; i < nodes; i++)
--               if (!IS_ERR(new_nodes[i])) {
-+               if (!IS_ERR_OR_NULL(new_nodes[i])) {
-                        btree_node_free(new_nodes[i]);
-                        rw_unlock(true, new_nodes[i]);
-                }
---
+greg k-h
 
