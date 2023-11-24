@@ -1,52 +1,47 @@
-Return-Path: <stable+bounces-1751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FC37F8131
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E1867F7FB2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B0D5B214ED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9C2728255A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B916933075;
-	Fri, 24 Nov 2023 18:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A000364AE;
+	Fri, 24 Nov 2023 18:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leoUNkYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSG0cS6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6D12C1A2;
-	Fri, 24 Nov 2023 18:56:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F093CC433C7;
-	Fri, 24 Nov 2023 18:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05171364A5;
+	Fri, 24 Nov 2023 18:43:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448B6C433C7;
+	Fri, 24 Nov 2023 18:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852185;
-	bh=MNwLKL8i2WzmHyx2ZCoepX22EMGT0pC0j/xAxlZc7so=;
+	s=korg; t=1700851416;
+	bh=F2TmhOkyB3CEICZexQwiB2WKNrsmS3TLroRiy0ux5ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leoUNkYTSSH3lDnK7qA5nN1Fg1ijStd8AW6j72ul6AY2HEk+nS+0eCtt7LookXAwT
-	 G4eDGI7HHE2J/twGSk/ejZ2dWCLWL8PGu4a/NocdUbAB/Z0ZdMZPMDn/ixsmaT/+Zi
-	 wqY3/EAMrS0Z4O8VGRlSiD1M6qKePwKpHQNn/qb4=
+	b=MSG0cS6g7eFMTnRRquD5GqxEUYXWPHmTPry3b3StaLlKgszKq0y4QnkzQbfZahmti
+	 GJ6YfYn1DjI1TfFz7vJzii/ITgGM42YK5N+bQKsA+01XEdSIr87AHkfEoUBEnT9Cbg
+	 fGS9l0avgvaAfcuesv6qmK5V9eE2W6WW3kCOT4cQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 254/372] mm/cma: use nth_page() in place of direct struct page manipulation
+	Johnathan Mantey <johnathanx.mantey@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 405/491] Revert ncsi: Propagate carrier gain/loss events to the NCSI controller
 Date: Fri, 24 Nov 2023 17:50:41 +0000
-Message-ID: <20231124172018.987230834@linuxfoundation.org>
+Message-ID: <20231124172036.776356781@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,64 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Johnathan Mantey <johnathanx.mantey@intel.com>
 
-commit 2e7cfe5cd5b6b0b98abf57a3074885979e187c1c upstream.
+commit 9e2e7efbbbff69d8340abb56d375dd79d1f5770f upstream.
 
-Patch series "Use nth_page() in place of direct struct page manipulation",
-v3.
+This reverts commit 3780bb29311eccb7a1c9641032a112eed237f7e3.
 
-On SPARSEMEM without VMEMMAP, struct page is not guaranteed to be
-contiguous, since each memory section's memmap might be allocated
-independently.  hugetlb pages can go beyond a memory section size, thus
-direct struct page manipulation on hugetlb pages/subpages might give wrong
-struct page.  Kernel provides nth_page() to do the manipulation properly.
-Use that whenever code can see hugetlb pages.
+The cited commit introduced unwanted behavior.
 
+The intent for the commit was to be able to detect carrier loss/gain
+for just the NIC connected to the BMC. The unwanted effect is a
+carrier loss for auxiliary paths also causes the BMC to lose
+carrier. The BMC never regains carrier despite the secondary NIC
+regaining a link.
 
-This patch (of 5):
+This change, when merged, needs to be backported to stable kernels.
+5.4-stable, 5.10-stable, 5.15-stable, 6.1-stable, 6.5-stable
 
-When dealing with hugetlb pages, manipulating struct page pointers
-directly can get to wrong struct page, since struct page is not guaranteed
-to be contiguous on SPARSEMEM without VMEMMAP.  Use nth_page() to handle
-it properly.
-
-Without the fix, page_kasan_tag_reset() could reset wrong page tags,
-causing a wrong kasan result.  No related bug is reported.  The fix
-comes from code inspection.
-
-Link: https://lkml.kernel.org/r/20230913201248.452081-1-zi.yan@sent.com
-Link: https://lkml.kernel.org/r/20230913201248.452081-2-zi.yan@sent.com
-Fixes: 2813b9c02962 ("kasan, mm, arm64: tag non slab memory allocated via pagealloc")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 3780bb29311e ("ncsi: Propagate carrier gain/loss events to the NCSI controller")
+CC: stable@vger.kernel.org
+Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/cma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ncsi/ncsi-aen.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -500,7 +500,7 @@ struct page *cma_alloc(struct cma *cma,
- 	 */
- 	if (page) {
- 		for (i = 0; i < count; i++)
--			page_kasan_tag_reset(page + i);
-+			page_kasan_tag_reset(nth_page(page, i));
- 	}
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -89,11 +89,6 @@ static int ncsi_aen_handler_lsc(struct n
+ 	if ((had_link == has_link) || chained)
+ 		return 0;
  
- 	if (ret && !no_warn) {
+-	if (had_link)
+-		netif_carrier_off(ndp->ndev.dev);
+-	else
+-		netif_carrier_on(ndp->ndev.dev);
+-
+ 	if (!ndp->multi_package && !nc->package->multi_channel) {
+ 		if (had_link) {
+ 			ndp->flags |= NCSI_DEV_RESHUFFLE;
 
 
 
