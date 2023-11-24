@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-1686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5E3E7F80E3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF217F7CDF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035F81C21617
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4F41C211C8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FAC14F7B;
-	Fri, 24 Nov 2023 18:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618D439FF8;
+	Fri, 24 Nov 2023 18:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0mSzyHl/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK3JP9z+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F0B2FC4E;
-	Fri, 24 Nov 2023 18:53:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AD9C433C8;
-	Fri, 24 Nov 2023 18:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F903A8C5;
+	Fri, 24 Nov 2023 18:19:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E38C433C7;
+	Fri, 24 Nov 2023 18:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852021;
-	bh=/vnhKhKckiuoJ56aa043gcrltkRkN75BaSDPiouB4RU=;
+	s=korg; t=1700849947;
+	bh=7sW12M0f93ur9WkRiQoUD1d1R8qzcAQsYF5APDVe/00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0mSzyHl/MkLKWXCDSPASOMdbvBKzLxVtgicNFsrAHHWvhD6ugKfN/DZ3U/ozGdBlK
-	 yJkLOOdy9Im4NZSsXGpKCk7HsI93nPoC2GtDdVcHtcGOdfHxDdZ8hd2hdRnbBp4gJ9
-	 2rEdooR9sME5t3i3HaNBNQjCbzWYXnm06dw4Advc=
+	b=xK3JP9z+eAskICRPaS4uRjUFXQ+zeE2mJzmtRivkdbRC6HW7WQiHcJRC5cCiok29v
+	 G31z9UJGx/1jcoxdj31YX5HTsn4z0+mSb+ruZYOgQp+fILwmpjOy5NiHZGlsk8rftn
+	 LoU4Leb6uVzVnm5qgnXwbM2grJYLZvaSRTTIPrmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 6.1 164/372] perf intel-pt: Fix async branch flags
+	Jim Harris <jim.harris@samsung.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.6 385/530] cxl/region: Do not try to cleanup after cxl_region_setup_targets() fails
 Date: Fri, 24 Nov 2023 17:49:11 +0000
-Message-ID: <20231124172015.952879460@linuxfoundation.org>
+Message-ID: <20231124172039.738273256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +55,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Jim Harris <jim.harris@samsung.com>
 
-commit f2d87895cbc4af80649850dcf5da36de6b2ed3dd upstream.
+commit 0718588c7aaa7a1510b4de972370535b61dddd0d upstream.
 
-Ensure PERF_IP_FLAG_ASYNC is set always for asynchronous branches (i.e.
-interrupts etc).
+Commit 5e42bcbc3fef ("cxl/region: decrement ->nr_targets on error in
+cxl_region_attach()") tried to avoid 'eiw' initialization errors when
+->nr_targets exceeded 16, by just decrementing ->nr_targets when
+cxl_region_setup_targets() failed.
 
-Fixes: 90e457f7be08 ("perf tools: Add Intel PT support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20230928072953.19369-1-adrian.hunter@intel.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Commit 86987c766276 ("cxl/region: Cleanup target list on attach error")
+extended that cleanup to also clear cxled->pos and p->targets[pos]. The
+initialization error was incidentally fixed separately by:
+Commit 8d4285425714 ("cxl/region: Fix port setup uninitialized variable
+warnings") which was merged a few days after 5e42bcbc3fef.
+
+But now the original cleanup when cxl_region_setup_targets() fails
+prevents endpoint and switch decoder resources from being reused:
+
+1) the cleanup does not set the decoder's region to NULL, which results
+   in future dpa_size_store() calls returning -EBUSY
+2) the decoder is not properly freed, which results in future commit
+   errors associated with the upstream switch
+
+Now that the initialization errors were fixed separately, the proper
+cleanup for this case is to just return immediately. Then the resources
+associated with this target get cleanup up as normal when the failed
+region is deleted.
+
+The ->nr_targets decrement in the error case also helped prevent
+a p->targets[] array overflow, so add a new check to prevent against
+that overflow.
+
+Tested by trying to create an invalid region for a 2 switch * 2 endpoint
+topology, and then following up with creating a valid region.
+
+Fixes: 5e42bcbc3fef ("cxl/region: decrement ->nr_targets on error in cxl_region_attach()")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jim Harris <jim.harris@samsung.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/169703589120.1202031.14696100866518083806.stgit@bgt-140510-bm03.eng.stellus.in
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/intel-pt.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cxl/core/region.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -1483,9 +1483,11 @@ static void intel_pt_sample_flags(struct
- 	} else if (ptq->state->flags & INTEL_PT_ASYNC) {
- 		if (!ptq->state->to_ip)
- 			ptq->flags = PERF_IP_FLAG_BRANCH |
-+				     PERF_IP_FLAG_ASYNC |
- 				     PERF_IP_FLAG_TRACE_END;
- 		else if (ptq->state->from_nr && !ptq->state->to_nr)
- 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
-+				     PERF_IP_FLAG_ASYNC |
- 				     PERF_IP_FLAG_VMEXIT;
- 		else
- 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -1675,6 +1675,12 @@ static int cxl_region_attach(struct cxl_
+ 		return -ENXIO;
+ 	}
+ 
++	if (p->nr_targets >= p->interleave_ways) {
++		dev_dbg(&cxlr->dev, "region already has %d endpoints\n",
++			p->nr_targets);
++		return -EINVAL;
++	}
++
+ 	ep_port = cxled_to_port(cxled);
+ 	root_port = cxlrd_to_port(cxlrd);
+ 	dport = cxl_find_dport_by_dev(root_port, ep_port->host_bridge);
+@@ -1767,7 +1773,7 @@ static int cxl_region_attach(struct cxl_
+ 	if (p->nr_targets == p->interleave_ways) {
+ 		rc = cxl_region_setup_targets(cxlr);
+ 		if (rc)
+-			goto err_decrement;
++			return rc;
+ 		p->state = CXL_CONFIG_ACTIVE;
+ 	}
+ 
+@@ -1799,12 +1805,6 @@ static int cxl_region_attach(struct cxl_
+ 	}
+ 
+ 	return 0;
+-
+-err_decrement:
+-	p->nr_targets--;
+-	cxled->pos = -1;
+-	p->targets[pos] = NULL;
+-	return rc;
+ }
+ 
+ static int cxl_region_detach(struct cxl_endpoint_decoder *cxled)
 
 
 
