@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCAE7F7C1E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 249CB7F7E20
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C6E8281E3E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2FEA2821E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B676139FFD;
-	Fri, 24 Nov 2023 18:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E87F33CFD;
+	Fri, 24 Nov 2023 18:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjVTJk5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bm5qskP6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754E539FF3;
-	Fri, 24 Nov 2023 18:11:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDBDC433C7;
-	Fri, 24 Nov 2023 18:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32C83A8E5;
+	Fri, 24 Nov 2023 18:30:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA70C433C8;
+	Fri, 24 Nov 2023 18:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849519;
-	bh=Cc8JCaLVUS/07bzbZCWZXs+m2cuKuiRQ0f+W+juHMdI=;
+	s=korg; t=1700850614;
+	bh=n5eD3LEAaLXHqF9YHjIqq/d7K5CnbuSLUornq+Mk2dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjVTJk5qHi5zpeJ/V/GhuCp78KYShHaMqakvyJSo7PqJ5mPB4DsD3LInLJl4qonzn
-	 Qpuc4tM4/r+Fn0oWIM6prCmq84UXWuA4DhnuEylQM+43lc0J7v6ma6xo1R5k5VGU2J
-	 ly4bSdHh1lJvM007xtU4kZTyOqa+1pkcr2IxIB9g=
+	b=Bm5qskP67bs/MIXtOWIOlGCYidtd3igBHXLKkZzcTTQydbR6M+/IceGoFIt+a6zz2
+	 Lh6UlsZ/SqS5Z8v3PydyHLkrP3Gm4HL4n96b5Wu9m8aQ7qNa1obq/8akZzcedHiRve
+	 LvRSHQF0IWOQgkNO4VSBUwQNlNtsRWpPIEik3Ml8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Rander Wang <rander.wang@intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 189/530] net: hns3: add barrier in vf mailbox reply process
-Date: Fri, 24 Nov 2023 17:45:55 +0000
-Message-ID: <20231124172033.818027372@linuxfoundation.org>
+Subject: [PATCH 6.5 120/491] soundwire: dmi-quirks: update HP Omen match
+Date: Fri, 24 Nov 2023 17:45:56 +0000
+Message-ID: <20231124172028.136621980@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +55,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit ac92c0a9a0603fb448e60f38e63302e4eebb8035 ]
+[ Upstream commit 4ea2b6d3128ea4d502c4015df0dc16b7d1070954 ]
 
-In hclgevf_mbx_handler() and hclgevf_get_mbx_resp() functions,
-there is a typical store-store and load-load scenario between
-received_resp and additional_info. This patch adds barrier
-to fix the problem.
+New platforms have a slightly different DMI product name, remove
+trailing characters/digits to handle all cases
 
-Fixes: 4671042f1ef0 ("net: hns3: add match_id to check mailbox response from PF to VF")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Closes: https://github.com/thesofproject/linux/issues/4611
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Rander Wang <rander.wang@intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20231013010833.114271-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/soundwire/dmi-quirks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
-index bbf7b14079de3..85c2a634c8f96 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_mbx.c
-@@ -63,6 +63,9 @@ static int hclgevf_get_mbx_resp(struct hclgevf_dev *hdev, u16 code0, u16 code1,
- 		i++;
- 	}
- 
-+	/* ensure additional_info will be seen after received_resp */
-+	smp_rmb();
-+
- 	if (i >= HCLGEVF_MAX_TRY_TIMES) {
- 		dev_err(&hdev->pdev->dev,
- 			"VF could not get mbx(%u,%u) resp(=%d) from PF in %d tries\n",
-@@ -178,6 +181,10 @@ static void hclgevf_handle_mbx_response(struct hclgevf_dev *hdev,
- 	resp->resp_status = hclgevf_resp_to_errno(resp_status);
- 	memcpy(resp->additional_info, req->msg.resp_data,
- 	       HCLGE_MBX_MAX_RESP_DATA_SIZE * sizeof(u8));
-+
-+	/* ensure additional_info will be seen before setting received_resp */
-+	smp_wmb();
-+
- 	if (match_id) {
- 		/* If match_id is not zero, it means PF support match_id.
- 		 * if the match_id is right, VF get the right response, or
+diff --git a/drivers/soundwire/dmi-quirks.c b/drivers/soundwire/dmi-quirks.c
+index 2a1096dab63d3..9ebdd0cd0b1cf 100644
+--- a/drivers/soundwire/dmi-quirks.c
++++ b/drivers/soundwire/dmi-quirks.c
+@@ -141,7 +141,7 @@ static const struct dmi_system_id adr_remap_quirk_table[] = {
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
+-			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16-k0xxx"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "OMEN by HP Gaming Laptop 16"),
+ 		},
+ 		.driver_data = (void *)hp_omen_16,
+ 	},
 -- 
 2.42.0
 
