@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F337F7AAA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 448FB7F80FD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A8951C20A37
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8EDFB21B4D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9263A381DE;
-	Fri, 24 Nov 2023 17:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBDD833CFD;
+	Fri, 24 Nov 2023 18:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pz3yc5H8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekvbZoI5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52672381D6;
-	Fri, 24 Nov 2023 17:57:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0773C433CA;
-	Fri, 24 Nov 2023 17:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA1842E64F;
+	Fri, 24 Nov 2023 18:54:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3848AC433C8;
+	Fri, 24 Nov 2023 18:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848643;
-	bh=Xc7OLJn2gBG864ymaZZvOPCiIvu93nyeyZ1334SfrWk=;
+	s=korg; t=1700852079;
+	bh=HFdyrGPNcHm2VzTXAXUg7Q//XSuu0zlK+9M5zfxd2as=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pz3yc5H81ztqk1Z2gjkbNvFwPV4ifX+U6AaJbyTU+SfRDN1YK3VYDMvJ6+ULRE/cx
-	 8ZIMhTbjSmTsQBhtlTHrdNPoafr9v+zXGmhK1VI6BA9uokitaAd1eZceDzDaQSJQ0a
-	 +6z7VVaJeQPmrKQUGi6ts71XjKbAscuwJ+aez14Y=
+	b=ekvbZoI5uzPyhXv47HTUvng2PU1wOuWczWBkAEGnmLsqGroD8/k8PCFVIaJ75OLur
+	 ZEMQNaxpyu/Qadh11gPxbeLEzX/8SyNkYsAIVP90cf+2FEtbx2ZwTeQpE6xJtJJKov
+	 nnomnQ9ktBmdcam+yZPsi0dIf2PzlyGJ55ZS7K/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 24/97] ALSA: hda: Fix possible null-ptr-deref when assigning a stream
-Date: Fri, 24 Nov 2023 17:49:57 +0000
-Message-ID: <20231124171935.035561415@linuxfoundation.org>
+	Robert Morris <rtm@csail.mit.edu>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 211/372] ksmbd: handle malformed smb1 message
+Date: Fri, 24 Nov 2023 17:49:58 +0000
+Message-ID: <20231124172017.504196679@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit f93dc90c2e8ed664985e366aa6459ac83cdab236 ]
+commit 5a5409d90bd05f87fe5623a749ccfbf3f7c7d400 upstream.
 
-While AudioDSP drivers assign streams exclusively of HOST or LINK type,
-nothing blocks a user to attempt to assign a COUPLED stream. As
-supplied substream instance may be a stub, what is the case when
-code-loading, such scenario ends with null-ptr-deref.
+If set_smb1_rsp_status() is not implemented, It will cause NULL pointer
+dereferece error when client send malformed smb1 message.
+This patch add set_smb1_rsp_status() to ignore malformed smb1 message.
 
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://lore.kernel.org/r/20231006102857.749143-2-cezary.rojewski@intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/hdac_stream.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/smb/server/smb_common.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
-index eee422390d8e2..2569f82b6fa02 100644
---- a/sound/hda/hdac_stream.c
-+++ b/sound/hda/hdac_stream.c
-@@ -241,8 +241,10 @@ struct hdac_stream *snd_hdac_stream_assign(struct hdac_bus *bus,
- 	struct hdac_stream *res = NULL;
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -372,11 +372,22 @@ static int smb1_allocate_rsp_buf(struct
+ 	return 0;
+ }
  
- 	/* make a non-zero unique key for the substream */
--	int key = (substream->pcm->device << 16) | (substream->number << 2) |
--		(substream->stream + 1);
-+	int key = (substream->number << 2) | (substream->stream + 1);
++/**
++ * set_smb1_rsp_status() - set error type in smb response header
++ * @work:	smb work containing smb response header
++ * @err:	error code to set in response
++ */
++static void set_smb1_rsp_status(struct ksmbd_work *work, __le32 err)
++{
++	work->send_no_response = 1;
++}
 +
-+	if (substream->pcm)
-+		key |= (substream->pcm->device << 16);
+ static struct smb_version_ops smb1_server_ops = {
+ 	.get_cmd_val = get_smb1_cmd_val,
+ 	.init_rsp_hdr = init_smb1_rsp_hdr,
+ 	.allocate_rsp_buf = smb1_allocate_rsp_buf,
+ 	.check_user_session = smb1_check_user_session,
++	.set_rsp_status = set_smb1_rsp_status,
+ };
  
- 	list_for_each_entry(azx_dev, &bus->stream_list, list) {
- 		if (azx_dev->direction != substream->stream)
--- 
-2.42.0
-
+ static int smb1_negotiate(struct ksmbd_work *work)
 
 
 
