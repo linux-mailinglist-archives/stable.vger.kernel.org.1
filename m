@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-2326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB007F83B4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AD17F82A5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEE801C24435
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97C3F1C23C0B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B256E381D4;
-	Fri, 24 Nov 2023 19:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74414364B7;
+	Fri, 24 Nov 2023 19:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n31ZpreM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+R7K+lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66022339BE;
-	Fri, 24 Nov 2023 19:20:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE515C433C8;
-	Fri, 24 Nov 2023 19:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C60831748;
+	Fri, 24 Nov 2023 19:09:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAC1C433C8;
+	Fri, 24 Nov 2023 19:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853608;
-	bh=Yw1hEo62+TYnV/OVU0azFUtAGB8JTnrZzuqqMxStj9Q=;
+	s=korg; t=1700852970;
+	bh=Igir/3DWx2Yg2tZ4wP682WjCTZTQPCuOCbV1y4mnYQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n31ZpreMJ8yf4SRkxelQrlaTbUYuPL8JPharxyjLHXRCdI/XcsOQIqeZtJdqFh5wU
-	 ugcWWJV4EH8EDzGA/v14vdEbYkEgZuNWe+LzfyxeL50IIXAFoGG3KozjDn9HpUd3w0
-	 CYLgZTJeprezZnitBMweoRXybl9x1bZ1Vu8DEmo0=
+	b=G+R7K+lcx9H+XzjWGtp79qSPu1SV0Z1YnB9KkvbYSL4rQyCSD5iV4Yt5hVJ6OZIeB
+	 NWE40SfjgEpLaCsEhKUkPCFfr9/AGBCzCVbrY3TN/JG5dyCe7jWGTdTXVd1ERjMvMu
+	 zFFxqq/ctAP44BDoASdgV+j5X0wtEjiaqGhj7k9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-	Darren Hart <darren@os.amperecomputing.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	linux-watchdog@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH 5.15 256/297] sbsa_gwdt: Calculate timeout with 64-bit math
+	Joe Ferner <joe.m.ferner@gmail.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.10 171/193] media: sharp: fix sharp encoding
 Date: Fri, 24 Nov 2023 17:54:58 +0000
-Message-ID: <20231124172009.129056335@linuxfoundation.org>
+Message-ID: <20231124171954.024593749@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,66 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darren Hart <darren@os.amperecomputing.com>
+From: Sean Young <sean@mess.org>
 
-commit 5d6aa89bba5bd6af2580f872b57f438dab883738 upstream.
+commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
 
-Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
-introduced new timer math for watchdog revision 1 with the 48 bit offset
-register.
+The Sharp protocol[1] encoding has incorrect timings for bit space.
 
-The gwdt->clk and timeout are u32, but the argument being calculated is
-u64. Without a cast, the compiler performs u32 operations, truncating
-intermediate steps, resulting in incorrect values.
+[1] https://www.sbprojects.net/knowledge/ir/sharp.php
 
-A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
-timeout of 600s writes 3647256576 to the one shot watchdog instead of
-300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
-
-Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
-the order of operations explicit with parenthesis.
-
-Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
-Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
-Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-watchdog@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: <stable@vger.kernel.org> # 5.14.x
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
+Cc: stable@vger.kernel.org
+Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
+Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/sbsa_gwdt.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/watchdog/sbsa_gwdt.c
-+++ b/drivers/watchdog/sbsa_gwdt.c
-@@ -153,14 +153,14 @@ static int sbsa_gwdt_set_timeout(struct
- 	timeout = clamp_t(unsigned int, timeout, 1, wdd->max_hw_heartbeat_ms / 1000);
+--- a/drivers/media/rc/ir-sharp-decoder.c
++++ b/drivers/media/rc/ir-sharp-decoder.c
+@@ -15,7 +15,9 @@
+ #define SHARP_UNIT		40  /* us */
+ #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
+ #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
+-#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
++#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
++#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
++#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
+ #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
+ #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
  
- 	if (action)
--		sbsa_gwdt_reg_write(gwdt->clk * timeout, gwdt);
-+		sbsa_gwdt_reg_write((u64)gwdt->clk * timeout, gwdt);
- 	else
- 		/*
- 		 * In the single stage mode, The first signal (WS0) is ignored,
- 		 * the timeout is (WOR * 2), so the WOR should be configured
- 		 * to half value of timeout.
- 		 */
--		sbsa_gwdt_reg_write(gwdt->clk / 2 * timeout, gwdt);
-+		sbsa_gwdt_reg_write(((u64)gwdt->clk / 2) * timeout, gwdt);
- 
- 	return 0;
- }
+@@ -168,8 +170,8 @@ static const struct ir_raw_timings_pd ir
+ 	.header_pulse  = 0,
+ 	.header_space  = 0,
+ 	.bit_pulse     = SHARP_BIT_PULSE,
+-	.bit_space[0]  = SHARP_BIT_0_PERIOD,
+-	.bit_space[1]  = SHARP_BIT_1_PERIOD,
++	.bit_space[0]  = SHARP_BIT_0_SPACE,
++	.bit_space[1]  = SHARP_BIT_1_SPACE,
+ 	.trailer_pulse = SHARP_BIT_PULSE,
+ 	.trailer_space = SHARP_ECHO_SPACE,
+ 	.msb_first     = 1,
 
 
 
