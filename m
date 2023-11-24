@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-2435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E052C7F842A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 029C17F825C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83796B27CC8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88545B23F18
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB733381D2;
-	Fri, 24 Nov 2023 19:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1962364A5;
+	Fri, 24 Nov 2023 19:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2zwR8tT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSyf0v2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861691A5A4;
-	Fri, 24 Nov 2023 19:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10E4CC433CB;
-	Fri, 24 Nov 2023 19:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1412E64F;
+	Fri, 24 Nov 2023 19:06:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EA9C433C7;
+	Fri, 24 Nov 2023 19:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853875;
-	bh=Tn5VGOCDvY1zEVfedxy6lkxxf9DN2ZPOdmqo4Rm8Axw=;
+	s=korg; t=1700852812;
+	bh=RK0IN3+y/rFNXNg2CXjsNFse1Gm4ycM4u1EdChge1+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2zwR8tTZpkmSV/JZf61rff81CJ618AHxOD/OwTjXyYJWwmiI/y2NWOoUq60Nr7sK
-	 5A6FzLXkzqsihHNZGwZGaYBZ/U3GHoUnNEn1s8Pl+1oW3fF5tuy5CRzIupm94nSw6b
-	 QJ+z0itza55sHxbAWAizU2XF2X5VIE6y0V3OYmpc=
+	b=PSyf0v2AYH6YFuqmYDgyzpC/21Z9VzC1xLGhqPkuGD+3htbXJlkV131vD7iNplhbm
+	 3hvfccFVfebHaBxEer8PaKifxI6aeNUf2yoW4eQFQEoNdZe0R4jDhV2Adg4aYpqO0t
+	 HVUsyzxrGh+yb6oqtiYZUdmznnw8brwzOPZNHDLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Tony Lindgren <tony@atomide.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/159] ASoC: ti: omap-mcbsp: Fix runtime PM underflow warnings
-Date: Fri, 24 Nov 2023 17:54:18 +0000
-Message-ID: <20231124171943.637302241@linuxfoundation.org>
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Benjamin Bara <benjamin.bara@skidata.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 132/193] i2c: core: Run atomic i2c xfer when !preemptible
+Date: Fri, 24 Nov 2023 17:54:19 +0000
+Message-ID: <20231124171952.507470636@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +55,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Benjamin Bara <benjamin.bara@skidata.com>
 
-[ Upstream commit fbb74e56378d8306f214658e3d525a8b3f000c5a ]
+commit aa49c90894d06e18a1ee7c095edbd2f37c232d02 upstream.
 
-We need to check for an active device as otherwise we get warnings
-for some mcbsp instances for "Runtime PM usage count underflow!".
+Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
+disabled. However, non-atomic i2c transfers require preemption (e.g. in
+wait_for_completion() while waiting for the DMA).
 
-Reported-by: Andreas Kemnade <andreas@kemnade.info>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20231030052340.13415-1-tony@atomide.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+panic() calls preempt_disable_notrace() before calling
+emergency_restart(). Therefore, if an i2c device is used for the
+restart, the xfer should be atomic. This avoids warnings like:
+
+[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+[   12.676926] Voluntary context switch within RCU read-side critical section!
+...
+[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+...
+[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+[   13.001050]  machine_restart from panic+0x2a8/0x32c
+
+Use !preemptible() instead, which is basically the same check as
+pre-v5.2.
+
+Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+Cc: stable@vger.kernel.org # v5.2+
+Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Acked-by: Wolfram Sang <wsa@kernel.org>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/ti/omap-mcbsp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/i2c/i2c-core.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
-index 3273b317fa3b9..3e8ed05f3ebd8 100644
---- a/sound/soc/ti/omap-mcbsp.c
-+++ b/sound/soc/ti/omap-mcbsp.c
-@@ -74,7 +74,8 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp *mcbsp, u8 fck_src_id)
- 		return -EINVAL;
- 	}
+--- a/drivers/i2c/i2c-core.h
++++ b/drivers/i2c/i2c-core.h
+@@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const str
+  */
+ static inline bool i2c_in_atomic_xfer_mode(void)
+ {
+-	return system_state > SYSTEM_RUNNING && irqs_disabled();
++	return system_state > SYSTEM_RUNNING && !preemptible();
+ }
  
--	pm_runtime_put_sync(mcbsp->dev);
-+	if (mcbsp->active)
-+		pm_runtime_put_sync(mcbsp->dev);
- 
- 	r = clk_set_parent(mcbsp->fclk, fck_src);
- 	if (r) {
-@@ -84,7 +85,8 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp *mcbsp, u8 fck_src_id)
- 		return r;
- 	}
- 
--	pm_runtime_get_sync(mcbsp->dev);
-+	if (mcbsp->active)
-+		pm_runtime_get_sync(mcbsp->dev);
- 
- 	clk_put(fck_src);
- 
--- 
-2.42.0
-
+ static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
 
 
 
