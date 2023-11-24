@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-2068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65AD17F82A5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC4F7F83B6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97C3F1C23C0B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8501288DF3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74414364B7;
-	Fri, 24 Nov 2023 19:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F349381CB;
+	Fri, 24 Nov 2023 19:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G+R7K+lc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDg8phTx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C60831748;
-	Fri, 24 Nov 2023 19:09:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAC1C433C8;
-	Fri, 24 Nov 2023 19:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBB335F1A;
+	Fri, 24 Nov 2023 19:20:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66233C433C7;
+	Fri, 24 Nov 2023 19:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852970;
-	bh=Igir/3DWx2Yg2tZ4wP682WjCTZTQPCuOCbV1y4mnYQ0=;
+	s=korg; t=1700853610;
+	bh=RF5A7jozLSkwD5oJWv0kCMeVFoT4vUkKel6iTWorEPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G+R7K+lcx9H+XzjWGtp79qSPu1SV0Z1YnB9KkvbYSL4rQyCSD5iV4Yt5hVJ6OZIeB
-	 NWE40SfjgEpLaCsEhKUkPCFfr9/AGBCzCVbrY3TN/JG5dyCe7jWGTdTXVd1ERjMvMu
-	 zFFxqq/ctAP44BDoASdgV+j5X0wtEjiaqGhj7k9Y=
+	b=KDg8phTxM3czwKMSPnFEOopfGJmeRByqLRST1MX9BLglMqL23zxUlf9VnyikGt6PR
+	 saK3xpSpDrC6fOYZZ/bMrFusK5a3mgSq1/VOtLLAy4sjhWYrbTfR7SlAGys7I9JaEQ
+	 cjHzN2beX2thvOwTvo4efQkTdp+fwK6raruSmYIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Ferner <joe.m.ferner@gmail.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.10 171/193] media: sharp: fix sharp encoding
-Date: Fri, 24 Nov 2023 17:54:58 +0000
-Message-ID: <20231124171954.024593749@linuxfoundation.org>
+	Chuong Tran <chuong@os.amperecomputing.com>,
+	Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.15 257/297] i2c: designware: Disable TX_EMPTY irq while waiting for block length byte
+Date: Fri, 24 Nov 2023 17:54:59 +0000
+Message-ID: <20231124172009.166395574@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +55,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
 
-commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
+commit e8183fa10c25c7b3c20670bf2b430ddcc1ee03c0 upstream.
 
-The Sharp protocol[1] encoding has incorrect timings for bit space.
+During SMBus block data read process, we have seen high interrupt rate
+because of TX_EMPTY irq status while waiting for block length byte (the
+first data byte after the address phase). The interrupt handler does not
+do anything because the internal state is kept as STATUS_WRITE_IN_PROGRESS.
+Hence, we should disable TX_EMPTY IRQ until I2C DesignWare receives
+first data byte from I2C device, then re-enable it to resume SMBus
+transaction.
 
-[1] https://www.sbprojects.net/knowledge/ir/sharp.php
+It takes 0.789 ms for host to receive data length from slave.
+Without the patch, i2c_dw_isr() is called 99 times by TX_EMPTY interrupt.
+And it is none after applying the patch.
 
-Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
 Cc: stable@vger.kernel.org
-Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
-Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Co-developed-by: Chuong Tran <chuong@os.amperecomputing.com>
+Signed-off-by: Chuong Tran <chuong@os.amperecomputing.com>
+Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-designware-master.c |   19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/media/rc/ir-sharp-decoder.c
-+++ b/drivers/media/rc/ir-sharp-decoder.c
-@@ -15,7 +15,9 @@
- #define SHARP_UNIT		40  /* us */
- #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
- #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
--#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
-+#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
-+#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
-+#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
- #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
- #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -456,10 +456,16 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
  
-@@ -168,8 +170,8 @@ static const struct ir_raw_timings_pd ir
- 	.header_pulse  = 0,
- 	.header_space  = 0,
- 	.bit_pulse     = SHARP_BIT_PULSE,
--	.bit_space[0]  = SHARP_BIT_0_PERIOD,
--	.bit_space[1]  = SHARP_BIT_1_PERIOD,
-+	.bit_space[0]  = SHARP_BIT_0_SPACE,
-+	.bit_space[1]  = SHARP_BIT_1_SPACE,
- 	.trailer_pulse = SHARP_BIT_PULSE,
- 	.trailer_space = SHARP_ECHO_SPACE,
- 	.msb_first     = 1,
+ 		/*
+ 		 * Because we don't know the buffer length in the
+-		 * I2C_FUNC_SMBUS_BLOCK_DATA case, we can't stop
+-		 * the transaction here.
++		 * I2C_FUNC_SMBUS_BLOCK_DATA case, we can't stop the
++		 * transaction here. Also disable the TX_EMPTY IRQ
++		 * while waiting for the data length byte to avoid the
++		 * bogus interrupts flood.
+ 		 */
+-		if (buf_len > 0 || flags & I2C_M_RECV_LEN) {
++		if (flags & I2C_M_RECV_LEN) {
++			dev->status |= STATUS_WRITE_IN_PROGRESS;
++			intr_mask &= ~DW_IC_INTR_TX_EMPTY;
++			break;
++		} else if (buf_len > 0) {
+ 			/* more bytes to be written */
+ 			dev->status |= STATUS_WRITE_IN_PROGRESS;
+ 			break;
+@@ -495,6 +501,13 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev,
+ 	msgs[dev->msg_read_idx].len = len;
+ 	msgs[dev->msg_read_idx].flags &= ~I2C_M_RECV_LEN;
+ 
++	/*
++	 * Received buffer length, re-enable TX_EMPTY interrupt
++	 * to resume the SMBUS transaction.
++	 */
++	regmap_update_bits(dev->map, DW_IC_INTR_MASK, DW_IC_INTR_TX_EMPTY,
++			   DW_IC_INTR_TX_EMPTY);
++
+ 	return len;
+ }
+ 
 
 
 
