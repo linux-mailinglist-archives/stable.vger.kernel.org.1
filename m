@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E13C7F7339
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:58:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D367F733A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D239AB21325
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7DB2281B4B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4DA0200DA;
-	Fri, 24 Nov 2023 11:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F536200BF;
+	Fri, 24 Nov 2023 11:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/isPony"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVnj1q44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7986D200B2
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:58:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B77B5C433C7;
-	Fri, 24 Nov 2023 11:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41278200B2
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:58:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBA9C433C7;
+	Fri, 24 Nov 2023 11:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700827121;
-	bh=FRg5A16Z6WAtXLU6tbO5vkgzJJF5+wpQD/TliltYFCM=;
+	s=korg; t=1700827130;
+	bh=aeMN2KosPdYrr+44/0ASgiKRGf+Xy92soRunISrDYQY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=N/isPonyXm7t0mtdFF2BgRy/KMeFwTAtFMWcoAwhaAWuUtyxSA1Cd0YVsRtVY94zm
-	 HmSgCmjZD+ZlNYn2tFDZ2SzWjOMieY0TLJ28PEecsmFRWXo2wqhTGssl2xVREnyN/I
-	 q406je8lYZ+r+LOWTSMK9xTtHFZTBvsBFLSC0hpU=
-Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - Add Dell ALC295 to pin fall back table" failed to apply to 5.4-stable tree
+	b=BVnj1q44ewN0Qa5+XxLtX8cQQnD0U4GPJgD3ZcMGwQk8w6X605XnK4Zb4UI4kI9lK
+	 REUNkGFDAa78wMfdK4etib3xftXRQzdmekQNXozbH7okJIECO/zX2T9bILCng4fM9e
+	 EBNkVI8G4XU1zDc+1gWTq4IBzzUJ/cmXTh6Bxl7U=
+Subject: FAILED: patch "[PATCH] ALSA: hda/realtek - Add Dell ALC295 to pin fall back table" failed to apply to 4.19-stable tree
 To: kailang@realtek.com,stable@vger.kernel.org,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 11:58:38 +0000
-Message-ID: <2023112438-sizably-prudishly-ce00@gregkh>
+Date: Fri, 24 Nov 2023 11:58:39 +0000
+Message-ID: <2023112439-shrubbery-headdress-2323@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4b21a669ca21ed8f24ef4530b2918be5730114de
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112438-sizably-prudishly-ce00@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112439-shrubbery-headdress-2323@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,9 @@ e79c22695abd ("ALSA: hda/realtek - Add Bass Speaker and fixed dac for bass speak
 d2cd795c4ece ("ALSA: hda - fixup for the bass speaker on Lenovo Carbon X1 7th gen")
 436e25505f34 ("ALSA: hda/realtek - Enable internal speaker of ASUS UX431FLC")
 aed8c7f40882 ("ALSA: hda/realtek - Move some alc256 pintbls to fallback table")
+8c8967a7dc01 ("ALSA: hda/realtek - Enable headset mic on Asus MJ401TA")
+bd9c10bc663d ("ALSA: hda/realtek - PCI quirk for Medion E4254")
+7711fb7dac1a ("Merge tag 'asoc-v5.4' of git://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound into for-next")
 
 thanks,
 
