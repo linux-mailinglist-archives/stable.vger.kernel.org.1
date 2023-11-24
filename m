@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC8B7F7DBD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50D67F7BCC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9811B2170F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E1251F20F7A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446763A8CF;
-	Fri, 24 Nov 2023 18:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D1839FEA;
+	Fri, 24 Nov 2023 18:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGYaiqhX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNJVwHgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0798A2F86B;
-	Fri, 24 Nov 2023 18:27:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897ACC433C8;
-	Fri, 24 Nov 2023 18:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D9339FE3;
+	Fri, 24 Nov 2023 18:08:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5684C433C8;
+	Fri, 24 Nov 2023 18:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850424;
-	bh=aoT5pi7flXv8JxGj9e4h+wsYLugVoI/T6YDw5NLWPWE=;
+	s=korg; t=1700849328;
+	bh=Jck3wZcXVkWCZ1m3JcJmkSq0BGYLgQsb3Fx/P7wU9To=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGYaiqhXY3G52tTU9hoAcKfFLA5ZFRAfsorQUu8/afo1HV0DHInmsCXSHwqlDH7Kl
-	 SRYpCT8E8qhhmnrnWrNdMB2S2+VqATlkwUIdPbZ3NsJUnKjgnCQmJ4UoSnZTzDmng1
-	 7ENZuk8JoO5jzLaxuNh8vhnM9w2k9HWNxlGddFTw=
+	b=NNJVwHgplAaaldCjXyVCQ/DsOJJ+ZBygIUc8u2+ASgZKVD5l1VlQV3sCl1vf7lfaz
+	 DvNcovRTt5oMKmKkh3JWV+fx0q3NDvijfwKRxubW2VqDD31qSgk3xYHY6Zu7FIpUt7
+	 9+18Y3g9NGWVWk8igLgT4bL2MmFyRtIpdP6tXGzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rob Herring <robh@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 043/491] of: address: Fix address translation when address-size is greater than 2
+Subject: [PATCH 6.6 113/530] ASoC: Intel: soc-acpi-cht: Add Lenovo Yoga Tab 3 Pro YT3-X90 quirk
 Date: Fri, 24 Nov 2023 17:44:39 +0000
-Message-ID: <20231124172025.981859290@linuxfoundation.org>
+Message-ID: <20231124172031.551000297@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,129 +53,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 42604f8eb7ba04b589375049cc76282dad4677d2 ]
+[ Upstream commit 2cb54788393134d8174ee594002baae3ce52c61e ]
 
-With the recent addition of of_pci_prop_ranges() in commit 407d1a51921e
-("PCI: Create device tree node for bridge"), the ranges property can
-have a 3 cells child address, a 3 cells parent address and a 2 cells
-child size.
+The Lenovo Yoga Tab 3 Pro YT3-X90 x86 tablet, which ships with Android with
+a custom kernel as factory OS, does not list the used WM5102 codec inside
+its DSDT.
 
-A range item property for a PCI device is filled as follow:
-  <BAR_nbr> 0 0 <phys.hi> <phys.mid> <phys.low> <BAR_sizeh> <BAR_sizel>
-  <-- Child --> <-- Parent (PCI definition) --> <- BAR size (64bit) -->
+Workaround this with a new snd_soc_acpi_intel_baytrail_machines[] entry
+which matches on the SST id instead of the codec id like nocodec does,
+combined with using a machine_quirk callback which returns NULL on
+other machines to skip the new entry on other machines.
 
-This allow to translate BAR addresses from the DT. For instance:
-pci@0,0 {
-  #address-cells = <0x03>;
-  #size-cells = <0x02>;
-  device_type = "pci";
-  compatible = "pci11ab,100", "pciclass,060400", "pciclass,0604";
-  ranges = <0x82000000 0x00 0xe8000000
-            0x82000000 0x00 0xe8000000
-	    0x00 0x4400000>;
-  ...
-  dev@0,0 {
-    #address-cells = <0x03>;
-    #size-cells = <0x02>;
-    compatible = "pci1055,9660", "pciclass,020000", "pciclass,0200";
-    /* Translations for BAR0 to BAR5 */
-    ranges = <0x00 0x00 0x00 0x82010000 0x00 0xe8000000 0x00 0x2000000
-              0x01 0x00 0x00 0x82010000 0x00 0xea000000 0x00 0x1000000
-              0x02 0x00 0x00 0x82010000 0x00 0xeb000000 0x00 0x800000
-              0x03 0x00 0x00 0x82010000 0x00 0xeb800000 0x00 0x800000
-              0x04 0x00 0x00 0x82010000 0x00 0xec000000 0x00 0x20000
-              0x05 0x00 0x00 0x82010000 0x00 0xec020000 0x00 0x2000>;
-    ...
-    pci-ep-bus@0 {
-      #address-cells = <0x01>;
-      #size-cells = <0x01>;
-      compatible = "simple-bus";
-      /* Translate 0xe2000000 to BAR0 and 0xe0000000 to BAR1 */
-      ranges = <0xe2000000 0x00 0x00 0x00 0x2000000
-                0xe0000000 0x01 0x00 0x00 0x1000000>;
-      ...
-    };
-  };
-};
-
-During the translation process, the "default-flags" map() function is
-used to select the matching item in the ranges table and determine the
-address offset from this matching item.
-This map() function simply calls of_read_number() and when address-size
-is greater than 2, the map() function skips the extra high address part
-(ie part over 64bit). This lead to a wrong matching item and a wrong
-offset computation.
-Also during the translation itself, the extra high part related to the
-parent address is not present in the translated address.
-
-Fix the "default-flags" map() and translate() in order to take into
-account the child extra high address part in map() and the parent extra
-high address part in translate() and so having a correct address
-translation for ranges patterns such as the one given in the example
-above.
-
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20231017110221.189299-2-herve.codina@bootlin.com
-Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231021211534.114991-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/address.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ .../intel/common/soc-acpi-intel-cht-match.c   | 43 +++++++++++++++++++
+ 1 file changed, 43 insertions(+)
 
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index e692809ff8227..3219c51777507 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -100,6 +100,32 @@ static unsigned int of_bus_default_get_flags(const __be32 *addr)
- 	return IORESOURCE_MEM;
+diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+index cdcbf04b8832f..5e2ec60e2954b 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+@@ -75,6 +75,39 @@ static struct snd_soc_acpi_mach *cht_ess8316_quirk(void *arg)
+ 	return arg;
  }
  
-+static u64 of_bus_default_flags_map(__be32 *addr, const __be32 *range, int na,
-+				    int ns, int pna)
++/*
++ * The Lenovo Yoga Tab 3 Pro YT3-X90, with Android factory OS has a buggy DSDT
++ * with the coded not being listed at all.
++ */
++static const struct dmi_system_id lenovo_yoga_tab3_x90[] = {
++	{
++		/* Lenovo Yoga Tab 3 Pro YT3-X90, codec missing from DSDT */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
++		},
++	},
++	{ }
++};
++
++static struct snd_soc_acpi_mach cht_lenovo_yoga_tab3_x90_mach = {
++	.id = "10WM5102",
++	.drv_name = "bytcr_wm5102",
++	.fw_filename = "intel/fw_sst_22a8.bin",
++	.board = "bytcr_wm5102",
++	.sof_tplg_filename = "sof-cht-wm5102.tplg",
++};
++
++static struct snd_soc_acpi_mach *lenovo_yt3_x90_quirk(void *arg)
 +{
-+	u64 cp, s, da;
++	if (dmi_check_system(lenovo_yoga_tab3_x90))
++		return &cht_lenovo_yoga_tab3_x90_mach;
 +
-+	/* Check that flags match */
-+	if (*addr != *range)
-+		return OF_BAD_ADDR;
-+
-+	/* Read address values, skipping high cell */
-+	cp = of_read_number(range + 1, na - 1);
-+	s  = of_read_number(range + na + pna, ns);
-+	da = of_read_number(addr + 1, na - 1);
-+
-+	pr_debug("default flags map, cp=%llx, s=%llx, da=%llx\n", cp, s, da);
-+
-+	if (da < cp || da >= (cp + s))
-+		return OF_BAD_ADDR;
-+	return da - cp;
++	/* Skip wildcard match snd_soc_acpi_intel_cherrytrail_machines[] entry */
++	return NULL;
 +}
 +
-+static int of_bus_default_flags_translate(__be32 *addr, u64 offset, int na)
-+{
-+	/* Keep "flags" part (high cell) in translated address */
-+	return of_bus_default_translate(addr + 1, offset, na - 1);
-+}
- 
- #ifdef CONFIG_PCI
- static unsigned int of_bus_pci_get_flags(const __be32 *addr)
-@@ -374,8 +400,8 @@ static struct of_bus of_busses[] = {
- 		.addresses = "reg",
- 		.match = of_bus_default_flags_match,
- 		.count_cells = of_bus_default_count_cells,
--		.map = of_bus_default_map,
--		.translate = of_bus_default_translate,
-+		.map = of_bus_default_flags_map,
-+		.translate = of_bus_default_flags_translate,
- 		.has_flags = true,
- 		.get_flags = of_bus_default_flags_get_flags,
+ static const struct snd_soc_acpi_codecs rt5640_comp_ids = {
+ 	.num_codecs = 2,
+ 	.codecs = { "10EC5640", "10EC3276" },
+@@ -175,6 +208,16 @@ struct snd_soc_acpi_mach  snd_soc_acpi_intel_cherrytrail_machines[] = {
+ 		.drv_name = "sof_pcm512x",
+ 		.sof_tplg_filename = "sof-cht-src-50khz-pcm512x.tplg",
  	},
++	/*
++	 * Special case for the Lenovo Yoga Tab 3 Pro YT3-X90 where the DSDT
++	 * misses the codec. Match on the SST id instead, lenovo_yt3_x90_quirk()
++	 * will return a YT3 specific mach or NULL when called on other hw,
++	 * skipping this entry.
++	 */
++	{
++		.id = "808622A8",
++		.machine_quirk = lenovo_yt3_x90_quirk,
++	},
+ 
+ #if IS_ENABLED(CONFIG_SND_SOC_INTEL_BYT_CHT_NOCODEC_MACH)
+ 	/*
 -- 
 2.42.0
 
