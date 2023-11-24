@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68CB57F7CE4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E927F80E8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 219192820B2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9072C2814DB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6833A8C6;
-	Fri, 24 Nov 2023 18:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FB7339BE;
+	Fri, 24 Nov 2023 18:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeQ7CP+6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="03cXiIWP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7010D3A8C3;
-	Fri, 24 Nov 2023 18:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011A2C433C8;
-	Fri, 24 Nov 2023 18:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC8833CCA;
+	Fri, 24 Nov 2023 18:53:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C024CC433C8;
+	Fri, 24 Nov 2023 18:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849960;
-	bh=gNpMbIZSc/6sNpoqiq7V8Kf3a/NnxTsJtrTGJmHbByI=;
+	s=korg; t=1700852034;
+	bh=FHPyYk7QEvJs97bQ6TfV05ElL2ZHU5UMPWRssBI+GHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TeQ7CP+6AqJ/0kbWl2g73ZzoFWJ+A6mm+UcoZ40sUOEbpt6jcsedl/aM+yUxkiZtK
-	 QA7Mr6Cawsq0UdM8+ul+xNbvq6e7fIeRs2LkmEssB/oumMEfaR28bpsZrZzQp5yEem
-	 k9lQg4CQzfhKDkyZeOVoEXFm4AermRYMmWTuBiQA=
+	b=03cXiIWPCjTa/Nz4A3n6sZjhNDEMPK7NUaZSRWVIFbITipDcUKz7qJ99IxsAvzdjt
+	 BfRUbHlW1pL4ZeMIJOAWsdfCkwW/FInUw/WRI6GraGnHOf8aql6uwcPHNpfK96WXDQ
+	 iHH2UV3kj+VZgcKPdu/e+TWWajU0iu8OW5GmK7qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 390/530] i3c: master: svc: fix check wrong status register in irq handler
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 169/372] scsi: mpt3sas: Fix loop logic
 Date: Fri, 24 Nov 2023 17:49:16 +0000
-Message-ID: <20231124172039.895476661@linuxfoundation.org>
+Message-ID: <20231124172016.124945057@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,39 +52,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-commit 225d5ef048c4ed01a475c95d94833bd7dd61072d upstream.
+commit 3c978492c333f0c08248a8d51cecbe5eb5f617c9 upstream.
 
-svc_i3c_master_irq_handler() wrongly checks register SVC_I3C_MINTMASKED. It
-should be SVC_I3C_MSTATUS.
+The retry loop continues to iterate until the count reaches 30, even after
+receiving the correct value. Exit loop when a non-zero value is read.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-5-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 4ca10f3e3174 ("scsi: mpt3sas: Perform additional retries if doorbell read returns 0")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20231020105849.6350-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpt3sas/mpt3sas_base.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -477,7 +477,7 @@ reenable_ibis:
- static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
- {
- 	struct svc_i3c_master *master = (struct svc_i3c_master *)dev_id;
--	u32 active = readl(master->regs + SVC_I3C_MINTMASKED);
-+	u32 active = readl(master->regs + SVC_I3C_MSTATUS);
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -224,8 +224,8 @@ _base_readl_ext_retry(const volatile voi
  
- 	if (!SVC_I3C_MSTATUS_SLVSTART(active))
- 		return IRQ_NONE;
+ 	for (i = 0 ; i < 30 ; i++) {
+ 		ret_val = readl(addr);
+-		if (ret_val == 0)
+-			continue;
++		if (ret_val != 0)
++			break;
+ 	}
+ 
+ 	return ret_val;
 
 
 
