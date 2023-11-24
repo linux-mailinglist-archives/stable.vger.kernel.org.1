@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B3C7F81C5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED4F7F81D6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2C3D2831EE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 801E91C220F0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD4C364A5;
-	Fri, 24 Nov 2023 19:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1FD42C1A2;
+	Fri, 24 Nov 2023 19:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P90Fpwhg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFF1tgNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3976533E9;
-	Fri, 24 Nov 2023 19:01:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6E2C433C7;
-	Fri, 24 Nov 2023 19:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706A32E858;
+	Fri, 24 Nov 2023 19:01:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE125C433A9;
+	Fri, 24 Nov 2023 19:01:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852486;
-	bh=Z3BLflQK3cRAO7lJ1CC+Dz6k3Ue0bAPrG+9eMli8w8Y=;
+	s=korg; t=1700852516;
+	bh=YZWZGxlrQ1VVpCwqcxhtHBocaSXTcnmh9GVAjhcvXOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P90Fpwhg+djyoCbNH7ykO8iHBilQOLfEeNFeCxqEYIQQTH3Sur6a3IH+ysLbAJ5cx
-	 2q+hoCSqnHAoM9SY5FSU1jTeYKVKzaFzawSfz8vMCDxeY46+Wyx77l4jkEXej/utYn
-	 233XDjxhdCTzI6ZwMCVa8OyPbv+m4cOJY+4eqMkY=
+	b=NFF1tgNVC0oAUwnwOiq+6Q3wLTOHZlYdkm2S3M0I0L53oSolQWPrpbHife73qngCs
+	 JOfas+xbYh35giURTsO86V0+vkPvrIm9LWe2aalPLx/3AI+DHToUyynunYEKMkGBva
+	 TOGGZcaGYSEqJHrHULQDSgBl5O9iusvlnWInj4KE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 355/372] ext4: add missed brelse in update_backups
+	ZhengHan Wang <wzhmmmmm@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 015/193] Bluetooth: Fix double free in hci_conn_cleanup
 Date: Fri, 24 Nov 2023 17:52:22 +0000
-Message-ID: <20231124172022.163341188@linuxfoundation.org>
+Message-ID: <20231124171947.778600928@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +53,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: ZhengHan Wang <wzhmmmmm@gmail.com>
 
-commit 9adac8b01f4be28acd5838aade42b8daa4f0b642 upstream.
+[ Upstream commit a85fb91e3d728bdfc80833167e8162cce8bc7004 ]
 
-add missed brelse in update_backups
+syzbot reports a slab use-after-free in hci_conn_hash_flush [1].
+After releasing an object using hci_conn_del_sysfs in the
+hci_conn_cleanup function, releasing the same object again
+using the hci_dev_put and hci_conn_put functions causes a double free.
+Here's a simplified flow:
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230826174712.4059355-3-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+hci_conn_del_sysfs:
+  hci_dev_put
+    put_device
+      kobject_put
+        kref_put
+          kobject_release
+            kobject_cleanup
+              kfree_const
+                kfree(name)
+
+hci_dev_put:
+  ...
+    kfree(name)
+
+hci_conn_put:
+  put_device
+    ...
+      kfree(name)
+
+This patch drop the hci_dev_put and hci_conn_put function
+call in hci_conn_cleanup function, because the object is
+freed in hci_conn_del_sysfs function.
+
+This patch also fixes the refcounting in hci_conn_add_sysfs() and
+hci_conn_del_sysfs() to take into account device_add() failures.
+
+This fixes CVE-2023-28464.
+
+Link: https://syzkaller.appspot.com/bug?id=1bb51491ca5df96a5f724899d1dbb87afda61419 [1]
+
+Signed-off-by: ZhengHan Wang <wzhmmmmm@gmail.com>
+Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c  |  6 ++----
+ net/bluetooth/hci_sysfs.c | 23 ++++++++++++-----------
+ 2 files changed, 14 insertions(+), 15 deletions(-)
 
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -1186,8 +1186,10 @@ static void update_backups(struct super_
- 			   ext4_group_first_block_no(sb, group));
- 		BUFFER_TRACE(bh, "get_write_access");
- 		if ((err = ext4_journal_get_write_access(handle, sb, bh,
--							 EXT4_JTR_NONE)))
-+							 EXT4_JTR_NONE))) {
-+			brelse(bh);
- 			break;
-+		}
- 		lock_buffer(bh);
- 		memcpy(bh->b_data, data, size);
- 		if (rest)
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index a9f6089a2ae2a..74721c3e49b34 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -135,13 +135,11 @@ static void hci_conn_cleanup(struct hci_conn *conn)
+ 			hdev->notify(hdev, HCI_NOTIFY_CONN_DEL);
+ 	}
+ 
+-	hci_conn_del_sysfs(conn);
+-
+ 	debugfs_remove_recursive(conn->debugfs);
+ 
+-	hci_dev_put(hdev);
++	hci_conn_del_sysfs(conn);
+ 
+-	hci_conn_put(conn);
++	hci_dev_put(hdev);
+ }
+ 
+ static void le_scan_cleanup(struct work_struct *work)
+diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
+index ccd2c377bf83c..266112c960ee8 100644
+--- a/net/bluetooth/hci_sysfs.c
++++ b/net/bluetooth/hci_sysfs.c
+@@ -33,7 +33,7 @@ void hci_conn_init_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	BT_DBG("conn %p", conn);
++	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+ 	conn->dev.type = &bt_link;
+ 	conn->dev.class = bt_class;
+@@ -46,27 +46,30 @@ void hci_conn_add_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	BT_DBG("conn %p", conn);
++	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+ 	if (device_is_registered(&conn->dev))
+ 		return;
+ 
+ 	dev_set_name(&conn->dev, "%s:%d", hdev->name, conn->handle);
+ 
+-	if (device_add(&conn->dev) < 0) {
++	if (device_add(&conn->dev) < 0)
+ 		bt_dev_err(hdev, "failed to register connection device");
+-		return;
+-	}
+-
+-	hci_dev_hold(hdev);
+ }
+ 
+ void hci_conn_del_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	if (!device_is_registered(&conn->dev))
++	bt_dev_dbg(hdev, "conn %p", conn);
++
++	if (!device_is_registered(&conn->dev)) {
++		/* If device_add() has *not* succeeded, use *only* put_device()
++		 * to drop the reference count.
++		 */
++		put_device(&conn->dev);
+ 		return;
++	}
+ 
+ 	while (1) {
+ 		struct device *dev;
+@@ -78,9 +81,7 @@ void hci_conn_del_sysfs(struct hci_conn *conn)
+ 		put_device(dev);
+ 	}
+ 
+-	device_del(&conn->dev);
+-
+-	hci_dev_put(hdev);
++	device_unregister(&conn->dev);
+ }
+ 
+ static void bt_host_release(struct device *dev)
+-- 
+2.42.0
+
 
 
 
