@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59ADD7F740A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:43:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A667F740B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B0651C20F87
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:43:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B49B2281C04
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8E418B0B;
-	Fri, 24 Nov 2023 12:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5397A18026;
+	Fri, 24 Nov 2023 12:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="clXnuNfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PZUdy0Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8707D15AC5
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:43:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15184C433C8;
-	Fri, 24 Nov 2023 12:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1205617735
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:43:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E347C433C8;
+	Fri, 24 Nov 2023 12:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700829815;
-	bh=n5MZq7FWvoxKrX1JsX+xIy1c0b70t11slCX5QA5u8I8=;
+	s=korg; t=1700829817;
+	bh=hxXf9NYPspSasAaRRqz7YiVmdiI8uytE8+QPEGZbYpM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=clXnuNfUX60BfWqgAGaOtaw0sO3ZXut1IlUJCwBV7W8zbbakRy1G30lxPMGgIDwZJ
-	 5xTroqHOm2H+omwL89ZTMKaIRccGCGBWeQVrC94/uTbv1MKUtvX8ePSfHA/+zcsEel
-	 Nsld+3ABLlus/LFmlh5wxCynVoFom8VUl1VSt1Bc=
-Subject: FAILED: patch "[PATCH] dm-delay: fix a race between delay_presuspend and delay_bio" failed to apply to 5.10-stable tree
+	b=2PZUdy0Q/IpC5GuTMKSDJyaOQhfnE8CaLU84oVlvrFOgySa17XmVeLwiw4l3+cOoQ
+	 gJcQdz4K+sIJHxHAIsiFp7b22s+IA5vk8gShyTYq2+TRmREZhAR5F8kx3Q2SUYA+0K
+	 lxV69DFXq/dX9fcvsdFNPiKTLa8mXYHDIr90zZls=
+Subject: FAILED: patch "[PATCH] dm-delay: fix a race between delay_presuspend and delay_bio" failed to apply to 5.4-stable tree
 To: mpatocka@redhat.com,snitzer@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:43:24 +0000
-Message-ID: <2023112424-roundworm-barge-cb4e@gregkh>
+Date: Fri, 24 Nov 2023 12:43:26 +0000
+Message-ID: <2023112426-yeast-trifocals-334c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,25 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6fc45b6ed921dc00dfb264dc08c7d67ee63d2656
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112424-roundworm-barge-cb4e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112426-yeast-trifocals-334c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 6fc45b6ed921 ("dm-delay: fix a race between delay_presuspend and delay_bio")
 70bbeb29fab0 ("dm delay: for short delays, use kthread instead of timers and wq")
 c357342186dc ("dm delay: use dm_submit_bio_remap")
+ed00aabd5eb9 ("block: rename generic_make_request to submit_bio_noacct")
+c62b37d96b6e ("block: move ->make_request_fn to struct block_device_operations")
+dcacbc1242c7 ("bcache: check and adjust logical block size for backing devices")
+ac7c5675fa45 ("blk-mq: allow blk_mq_make_request to consume the q_usage_counter reference")
+488f6682c832 ("block: blk-crypto-fallback for Inline Encryption")
+a892c8d52c02 ("block: Inline encryption support for blk-mq")
+1b2628397058 ("block: Keyslot Manager for Inline Encryption")
+71ac860af824 ("block: move blk_io_schedule() out of header file")
+0512a75b98f8 ("block: Introduce REQ_OP_ZONE_APPEND")
+e4581105771b ("block: rename __bio_add_pc_page to bio_add_hw_page")
+accea322f543 ("block: add a bio_queue_enter helper")
+760f83ea63a7 ("block: cleanup the memory stall accounting in submit_bio")
+3fdd40861d80 ("block: improve the submit_bio and generic_make_request documentation")
+8cf7961dab42 ("block: bypass ->make_request_fn for blk-mq drivers")
+cc97923a5bcc ("block: move dma drain handling to scsi")
+0475bd6c6597 ("scsi: merge scsi_init_sgtable into scsi_init_io")
+89de1504d53b ("block: provide a blk_rq_map_sg variant that returns the last element")
 
 thanks,
 
