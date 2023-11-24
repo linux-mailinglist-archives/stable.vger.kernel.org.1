@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7ED7F807A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE737F7C9C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5771528259F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A31471F20FAD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EFA33CC2;
-	Fri, 24 Nov 2023 18:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032613A8C6;
+	Fri, 24 Nov 2023 18:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmJsiwc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJScJP6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDF12FC21;
-	Fri, 24 Nov 2023 18:50:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2D7C433C7;
-	Fri, 24 Nov 2023 18:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD50639FE3;
+	Fri, 24 Nov 2023 18:16:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA414C433C8;
+	Fri, 24 Nov 2023 18:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851800;
-	bh=F81WCoSmeoCAFtfhnOFxjbnqSuzDEH1pHPAHTc44RHU=;
+	s=korg; t=1700849808;
+	bh=VQZeeuii/eSoiiVDMP29la6kmx4dHiws2INPXpMCzDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lmJsiwc7CdkfmuJ79FPAIDYbbraAEkREXFUCjSM/yJz4+RFW4HKf4S5wf1yfZ2pqM
-	 faw+sjFVRItfV/WNFe7f++ywO0AndeQpcW9q+4ocpyKXcMvMRq833rzrRaNTlBsd4F
-	 zVOUyfYhW1S6wQPNN13DCMNwdKAY+3SHfPzP/GoM=
+	b=lJScJP6C8m4mVzJLC+l1dxyoAaNiwxrxnzt1ugUZQrlPmJtr/Upi/mIuxAgdARWZ1
+	 pWMgrVCLwmh9iyTEGhEtWjC9svNkF0RXzZx14pDIt3jEVeW+g4pKm1FgPMYLdODXYa
+	 3QaSAVZfQ6/j/XsrkgV/TMxBQZx66OUac5Oh/HCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/372] media: vivid: avoid integer overflow
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 321/530] mmc: vub300: fix an error code
 Date: Fri, 24 Nov 2023 17:48:07 +0000
-Message-ID: <20231124172013.849830878@linuxfoundation.org>
+Message-ID: <20231124172037.808825227@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +52,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4567ebf8e8f9546b373e78e3b7d584cc30b62028 ]
+commit b44f9da81783fda72632ef9b0d05ea3f3ca447a5 upstream.
 
-Fixes these compiler warnings:
+This error path should return -EINVAL instead of success.
 
-drivers/media/test-drivers/vivid/vivid-rds-gen.c: In function 'vivid_rds_gen_fill':
-drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:56: warning: '.' directive output may be truncated writing 1 byte into a region of size between 0 and 3 [-Wformat-truncation=]
-  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
-      |                                                        ^
-drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:52: note: directive argument in the range [0, 9]
-  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
-      |                                                    ^~~~~~~~~
-drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:9: note: 'snprintf' output between 9 and 12 bytes into a destination of size 9
-  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  148 |                  freq / 16, ((freq & 0xf) * 10) / 16);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/0769d30c-ad80-421b-bf5d-7d6f5d85604e@moroto.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/test-drivers/vivid/vivid-rds-gen.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/vub300.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-rds-gen.c b/drivers/media/test-drivers/vivid/vivid-rds-gen.c
-index b5b104ee64c99..c57771119a34b 100644
---- a/drivers/media/test-drivers/vivid/vivid-rds-gen.c
-+++ b/drivers/media/test-drivers/vivid/vivid-rds-gen.c
-@@ -145,7 +145,7 @@ void vivid_rds_gen_fill(struct vivid_rds_gen *rds, unsigned freq,
- 	rds->ta = alt;
- 	rds->ms = true;
- 	snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
--		 freq / 16, ((freq & 0xf) * 10) / 16);
-+		 (freq / 16) % 1000000, (((freq & 0xf) * 10) / 16) % 10);
- 	if (alt)
- 		strscpy(rds->radiotext,
- 			" The Radio Data System can switch between different Radio Texts ",
--- 
-2.42.0
-
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -2309,6 +2309,7 @@ static int vub300_probe(struct usb_inter
+ 		vub300->read_only =
+ 			(0x0010 & vub300->system_port_status.port_flags) ? 1 : 0;
+ 	} else {
++		retval = -EINVAL;
+ 		goto error5;
+ 	}
+ 	usb_set_intfdata(interface, vub300);
 
 
 
