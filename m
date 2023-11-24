@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 652587F7501
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:28:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9D07F7502
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957C61C20D66
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:28:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AAE8281A03
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658DB28DC7;
-	Fri, 24 Nov 2023 13:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF8128DD3;
+	Fri, 24 Nov 2023 13:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9JiYmpn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUo3CSYS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2289B18041
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:28:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A053DC433CA;
-	Fri, 24 Nov 2023 13:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538A228DC9
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:28:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E579C433C7;
+	Fri, 24 Nov 2023 13:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700832510;
-	bh=OcY0tj/Lo4dpeHwB7yAQOUQ/YjF4Re9Can6Ko2RPMR0=;
+	s=korg; t=1700832512;
+	bh=9RHRTwTNMIiBNbH9IlPiPb3T3pThOPjfUNFaU8tMF14=;
 	h=Subject:To:Cc:From:Date:From;
-	b=t9JiYmpnRLD85vDkXnVK+5ihXrmVnAzfrrlxip4b/5dlYHgF1b+digMGzvIkCXUt3
-	 Iyy2wuTs0zDIk5slNtDnpKseS9k+UYtPSTfpQRaejwOIB5QCwXig6zg8c2CcKgNooN
-	 YvMehT2FOGauYamFotBZX2o/Q1wJUk51Qet14MNY=
-Subject: FAILED: patch "[PATCH] r8169: fix network lost after resume on DASH systems" failed to apply to 5.10-stable tree
+	b=VUo3CSYSawb/XBVdRifl/hN2XQApzo28oB3pgT+r9I9o/Q9ce6WJObISc2GPcpFQs
+	 SIffkY9xNbUe8h3HdaS06W/O3z+f+ZLS1noQPgsbUWxZ1GFJy1gOrwdF1HE6WiuNgV
+	 g5ZU/U8Esu290A813GKVn0JT/Do5qwc4H+nhDQdQ=
+Subject: FAILED: patch "[PATCH] r8169: fix network lost after resume on DASH systems" failed to apply to 5.4-stable tree
 To: hau@realtek.com,hkallweit1@gmail.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:28:27 +0000
-Message-ID: <2023112427-rubbing-storage-3833@gregkh>
+Date: Fri, 24 Nov 2023 13:28:28 +0000
+Message-ID: <2023112428-seclusion-running-5a62@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 868c3b95afef4883bfb66c9397482da6840b5baf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112427-rubbing-storage-3833@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112428-seclusion-running-5a62@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,19 @@ f658b90977d2 ("r8169: fix DMA being used after buffer free if WoL is enabled")
 9224d97183d9 ("r8169: enable PLL power-down for chip versions 34, 35, 36, 42")
 acb58657c869 ("r8169: improve RTL8168g PHY suspend quirk")
 e80bd76fbf56 ("r8169: work around power-saving bug on some chip versions")
+bb13a800620c ("r8169: fix handling ether_clk")
+0439297be951 ("r8169: add support for RTL8125B")
+4640338c36af ("r8169: rename RTL8125 to RTL8125A")
+288302dab34e ("r8169: improve rtl8169_runtime_resume")
+06a14ab852fb ("r8169: remove driver-specific mutex")
+abe5fc42f9ce ("r8169: use RTNL to protect critical sections")
+567ca57faa62 ("r8169: add rtl8169_up")
+ec2f204bddb5 ("r8169: remove no longer needed checks for device being runtime-active")
+476c4f5de368 ("r8169: mark device as not present when in PCI D3")
+9f0b54cd1672 ("r8169: move switching optional clock on/off to pll power functions")
+a2ee847242b3 ("r8169: move updating counters to rtl8169_down")
+0c28a63a47bf ("r8169: move napi_disable call and rename rtl8169_hw_reset")
+e9882208ae98 ("r8169: improve setting WoL on runtime-resume")
 
 thanks,
 
