@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16AB7F7BE9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B76AB7F7DE2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E8AE1C21079
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E89FB1C21329
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569C939FF8;
-	Fri, 24 Nov 2023 18:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBE73A8C9;
+	Fri, 24 Nov 2023 18:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNvKIl7c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXqKiGrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1037239FDD;
-	Fri, 24 Nov 2023 18:09:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90407C433C8;
-	Fri, 24 Nov 2023 18:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC5039FE9;
+	Fri, 24 Nov 2023 18:28:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798CBC433C7;
+	Fri, 24 Nov 2023 18:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849393;
-	bh=oStq+BGZ3k+hGt7Z46PzRQ2bAzIj9EMXOGrpyEfMGvU=;
+	s=korg; t=1700850492;
+	bh=j0RNeaOBqHTrBFfD+rLqG1JoweFofjOz4Fme6iexqHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNvKIl7cWYCxHHjHbC30ay5hcCermGK8ASC2hYQbmscG6KLRHVxzuGi5dXpSD0zXk
-	 BNyI+IgIVr0wU8wej85RHs1g+ygTateSKEOoPwHxw+KxpltnxNp9Iwfm6SQ+OYLTYB
-	 YY3u+JwS+VhHzlGSUJEp3GkvGtM48mxwbO7vhyGM=
+	b=NXqKiGrRRCYTu9aG2i/0xp47I7HMiVoK2ccCr7iyHJfuFSxAMVP28m49m3KdBso5x
+	 4eFVpfl6L36+YTBDal34oN7hhSMA8ofmXADpaQt5cIcQfbEdsqpaiGj9G8Ld3TUQUP
+	 N2xSyULtRycEjEfHK8gHAL6Q9oozu+qDYfPHhAhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e27f3dbdab04e43b9f73@syzkaller.appspotmail.com,
-	Rajeshwar R Shinde <coolrrsh@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Ondrej Jirman <megi@xff.cz>,
+	Frank Oltmanns <frank@oltmanns.dev>,
+	Samuel Holland <samuel@sholland.org>,
+	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/530] media: gspca: cpia1: shift-out-of-bounds in set_flicker
-Date: Fri, 24 Nov 2023 17:45:05 +0000
-Message-ID: <20231124172032.320481592@linuxfoundation.org>
+Subject: [PATCH 6.5 070/491] drm/panel: st7703: Pick different reset sequence
+Date: Fri, 24 Nov 2023 17:45:06 +0000
+Message-ID: <20231124172026.738568264@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,57 +53,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rajeshwar R Shinde <coolrrsh@gmail.com>
+From: Ondrej Jirman <megi@xff.cz>
 
-[ Upstream commit 099be1822d1f095433f4b08af9cc9d6308ec1953 ]
+[ Upstream commit d12d635bb03c7cb4830acb641eb176ee9ff2aa89 ]
 
-Syzkaller reported the following issue:
-UBSAN: shift-out-of-bounds in drivers/media/usb/gspca/cpia1.c:1031:27
-shift exponent 245 is too large for 32-bit type 'int'
+Switching to a different reset sequence, enabling IOVCC before enabling
+VCC.
 
-When the value of the variable "sd->params.exposure.gain" exceeds the
-number of bits in an integer, a shift-out-of-bounds error is reported. It
-is triggered because the variable "currentexp" cannot be left-shifted by
-more than the number of bits in an integer. In order to avoid invalid
-range during left-shift, the conditional expression is added.
+There also needs to be a delay after enabling the supplies and before
+deasserting the reset. The datasheet specifies 1ms after the supplies
+reach the required voltage. Use 10-20ms to also give the power supplies
+some time to reach the required voltage, too.
 
-Reported-by: syzbot+e27f3dbdab04e43b9f73@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/20230818164522.12806-1-coolrrsh@gmail.com
-Link: https://syzkaller.appspot.com/bug?extid=e27f3dbdab04e43b9f73
-Signed-off-by: Rajeshwar R Shinde <coolrrsh@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+This fixes intermittent panel initialization failures and screen
+corruption during resume from sleep on panel xingbangda,xbd599 (e.g.
+used in PinePhone).
+
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+Reported-by: Samuel Holland <samuel@sholland.org>
+Reviewed-by: Guido Günther <agx@sigxcpu.org>
+Tested-by: Guido Günther <agx@sigxcpu.org>
+Signed-off-by: Guido Günther <agx@sigxcpu.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230211171748.36692-2-frank@oltmanns.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/gspca/cpia1.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/panel/panel-sitronix-st7703.c | 25 ++++++++++---------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/media/usb/gspca/cpia1.c b/drivers/media/usb/gspca/cpia1.c
-index 46ed95483e222..5f5fa851ca640 100644
---- a/drivers/media/usb/gspca/cpia1.c
-+++ b/drivers/media/usb/gspca/cpia1.c
-@@ -18,6 +18,7 @@
+diff --git a/drivers/gpu/drm/panel/panel-sitronix-st7703.c b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+index 3aa31f3d61574..687749bbec62c 100644
+--- a/drivers/gpu/drm/panel/panel-sitronix-st7703.c
++++ b/drivers/gpu/drm/panel/panel-sitronix-st7703.c
+@@ -506,29 +506,30 @@ static int st7703_prepare(struct drm_panel *panel)
+ 		return 0;
  
- #include <linux/input.h>
- #include <linux/sched/signal.h>
-+#include <linux/bitops.h>
+ 	dev_dbg(ctx->dev, "Resetting the panel\n");
+-	ret = regulator_enable(ctx->vcc);
++	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++
++	ret = regulator_enable(ctx->iovcc);
+ 	if (ret < 0) {
+-		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
++		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
+ 		return ret;
+ 	}
+-	ret = regulator_enable(ctx->iovcc);
++
++	ret = regulator_enable(ctx->vcc);
+ 	if (ret < 0) {
+-		dev_err(ctx->dev, "Failed to enable iovcc supply: %d\n", ret);
+-		goto disable_vcc;
++		dev_err(ctx->dev, "Failed to enable vcc supply: %d\n", ret);
++		regulator_disable(ctx->iovcc);
++		return ret;
+ 	}
  
- #include "gspca.h"
+-	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
+-	usleep_range(20, 40);
++	/* Give power supplies time to stabilize before deasserting reset. */
++	usleep_range(10000, 20000);
++
+ 	gpiod_set_value_cansleep(ctx->reset_gpio, 0);
+-	msleep(20);
++	usleep_range(15000, 20000);
  
-@@ -1028,6 +1029,8 @@ static int set_flicker(struct gspca_dev *gspca_dev, int on, int apply)
- 			sd->params.exposure.expMode = 2;
- 			sd->exposure_status = EXPOSURE_NORMAL;
- 		}
-+		if (sd->params.exposure.gain >= BITS_PER_TYPE(currentexp))
-+			return -EINVAL;
- 		currentexp = currentexp << sd->params.exposure.gain;
- 		sd->params.exposure.gain = 0;
- 		/* round down current exposure to nearest value */
+ 	ctx->prepared = true;
+ 
+ 	return 0;
+-
+-disable_vcc:
+-	regulator_disable(ctx->vcc);
+-	return ret;
+ }
+ 
+ static const u32 mantix_bus_formats[] = {
 -- 
 2.42.0
 
