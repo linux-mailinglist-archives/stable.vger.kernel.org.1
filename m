@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0484B7F7FAC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43FC7F7D48
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 653D2B21996
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3E761C21298
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3A6381D4;
-	Fri, 24 Nov 2023 18:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE8D39FF8;
+	Fri, 24 Nov 2023 18:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0I9BzR6H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DaU1gYZt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD812C85B;
-	Fri, 24 Nov 2023 18:43:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5D2C433C9;
-	Fri, 24 Nov 2023 18:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0E539FE1;
+	Fri, 24 Nov 2023 18:23:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0307CC433C7;
+	Fri, 24 Nov 2023 18:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851404;
-	bh=lagw3M79FzeaCDkj+dwBz4jw4r/Gpagzc3Zr3u3dKkQ=;
+	s=korg; t=1700850192;
+	bh=grPaHxSaUxwHsmGS3VEj4KAVPYlGq2ClA00OBl1nBNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0I9BzR6H48BAJMIgGaZNHoij5RocAkQOHi/wVaWMXApe6B8uriPOj4fgGM4aODTwY
-	 GjCRwQLxAGlvvvu5WybMMMZyW91C0RKN6Be3PVSVcROwATQfLUd7NbBSCW6w3TM+K/
-	 1K+rlu8pWQ3EKv3/YM7tK0aC2KQoHS9VFvG+9rdM=
+	b=DaU1gYZtSRy7GrYml7JeKY2OeQizumEWj7EAqP1EUUU6a467+KfpxVP8p7dHMpf9l
+	 f72AWwNBG9RLq5SbNRqXHkqPYz9JsUSFh5v8ln+UcprR4HDdZse1z79QNxuBhVQ15z
+	 USA4qG8ty4JhCkryjLVicBw4sDCox+0SivFBRgOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuong Tran <chuong@os.amperecomputing.com>,
-	Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.5 410/491] i2c: designware: Disable TX_EMPTY irq while waiting for block length byte
-Date: Fri, 24 Nov 2023 17:50:46 +0000
-Message-ID: <20231124172036.928427608@linuxfoundation.org>
+	Xiumei Mu <xmu@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 481/530] selftests: mptcp: fix fastclose with csum failure
+Date: Fri, 24 Nov 2023 17:50:47 +0000
+Message-ID: <20231124172042.725255071@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,74 +54,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit e8183fa10c25c7b3c20670bf2b430ddcc1ee03c0 upstream.
+commit 7cefbe5e1dacc7236caa77e9d072423f21422fe2 upstream.
 
-During SMBus block data read process, we have seen high interrupt rate
-because of TX_EMPTY irq status while waiting for block length byte (the
-first data byte after the address phase). The interrupt handler does not
-do anything because the internal state is kept as STATUS_WRITE_IN_PROGRESS.
-Hence, we should disable TX_EMPTY IRQ until I2C DesignWare receives
-first data byte from I2C device, then re-enable it to resume SMBus
-transaction.
+Running the mp_join selftest manually with the following command line:
 
-It takes 0.789 ms for host to receive data length from slave.
-Without the patch, i2c_dw_isr() is called 99 times by TX_EMPTY interrupt.
-And it is none after applying the patch.
+  ./mptcp_join.sh -z -C
 
+leads to some failures:
+
+  002 fastclose server test
+  # ...
+  rtx                                 [fail] got 1 MP_RST[s] TX expected 0
+  # ...
+  rstrx                               [fail] got 1 MP_RST[s] RX expected 0
+
+The problem is really in the wrong expectations for the RST checks
+implied by the csum validation. Note that the same check is repeated
+explicitly in the same test-case, with the correct expectation and
+pass successfully.
+
+Address the issue explicitly setting the correct expectation for
+the failing checks.
+
+Reported-by: Xiumei Mu <xmu@redhat.com>
+Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
 Cc: stable@vger.kernel.org
-Co-developed-by: Chuong Tran <chuong@os.amperecomputing.com>
-Signed-off-by: Chuong Tran <chuong@os.amperecomputing.com>
-Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-5-7b9cd6a7b7f4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-master.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -518,10 +518,16 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
- 
- 		/*
- 		 * Because we don't know the buffer length in the
--		 * I2C_FUNC_SMBUS_BLOCK_DATA case, we can't stop
--		 * the transaction here.
-+		 * I2C_FUNC_SMBUS_BLOCK_DATA case, we can't stop the
-+		 * transaction here. Also disable the TX_EMPTY IRQ
-+		 * while waiting for the data length byte to avoid the
-+		 * bogus interrupts flood.
- 		 */
--		if (buf_len > 0 || flags & I2C_M_RECV_LEN) {
-+		if (flags & I2C_M_RECV_LEN) {
-+			dev->status |= STATUS_WRITE_IN_PROGRESS;
-+			intr_mask &= ~DW_IC_INTR_TX_EMPTY;
-+			break;
-+		} else if (buf_len > 0) {
- 			/* more bytes to be written */
- 			dev->status |= STATUS_WRITE_IN_PROGRESS;
- 			break;
-@@ -557,6 +563,13 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev,
- 	msgs[dev->msg_read_idx].len = len;
- 	msgs[dev->msg_read_idx].flags &= ~I2C_M_RECV_LEN;
- 
-+	/*
-+	 * Received buffer length, re-enable TX_EMPTY interrupt
-+	 * to resume the SMBUS transaction.
-+	 */
-+	regmap_update_bits(dev->map, DW_IC_INTR_MASK, DW_IC_INTR_TX_EMPTY,
-+			   DW_IC_INTR_TX_EMPTY);
-+
- 	return len;
- }
- 
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3237,7 +3237,7 @@ fastclose_tests()
+ 	if reset_check_counter "fastclose server test" "MPTcpExtMPFastcloseRx"; then
+ 		test_linkfail=1024 fastclose=server \
+ 			run_tests $ns1 $ns2 10.0.1.1
+-		chk_join_nr 0 0 0
++		chk_join_nr 0 0 0 0 0 0 1
+ 		chk_fclose_nr 1 1 invert
+ 		chk_rst_nr 1 1
+ 	fi
 
 
 
