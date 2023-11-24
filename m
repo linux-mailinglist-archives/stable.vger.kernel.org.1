@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA55D7F8087
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664A67F7C84
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93EEF28260A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 983A31C210C0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339CC28E3A;
-	Fri, 24 Nov 2023 18:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD873A8C7;
+	Fri, 24 Nov 2023 18:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydw0XVSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAShc26i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56DE28DBB;
-	Fri, 24 Nov 2023 18:50:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773ADC433C7;
-	Fri, 24 Nov 2023 18:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9906A39FEA;
+	Fri, 24 Nov 2023 18:15:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDDFDC433C8;
+	Fri, 24 Nov 2023 18:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851828;
-	bh=/ZRF0bZtdxL9bNPKbESou55AUvj2hS8KDui1ACsT9p0=;
+	s=korg; t=1700849753;
+	bh=z0tIe70DQcj/c0QevsCLPrJ76QhZdU8cUSPXBVQC7fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydw0XVSJHHEEoj/yhFpp6c/DCnEhXV+srcRR2N/rMB7FLei4xt2OQZJL03KbqMKDY
-	 uXxF90Rk1ZrIJOKRi9g2A/yNxut5BTMR7s/5WmW1wi/NOF+Jy79Qo70uWVM9CJU5rd
-	 HH9my1xBYsUEDXlMFGW3+L++vlAnu57YQySVGcac=
+	b=cAShc26iJ6AR/EVtkL6M6qetbgzz0SaKEYg7BapafKTi6RsAMkDnMCm7Zpi+tDsbB
+	 DXTmpsJylQl0BGe+e1fXUvtISx9WjyDLEk/wh0rllr/KKoyiWndJWEAL+E5Dwup/eq
+	 h/dVN0RiUCLNM5nc6WRI4bLLDIUeYibv1NkbsL1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/372] thunderbolt: Apply USB 3.x bandwidth quirk only in software connection manager
+	Pengfei Li <pengfei.li_1@nxp.com>,
+	Emil Kronborg <emil.kronborg@protonmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 307/530] pmdomain: imx: Make imx pgc power domain also set the fwnode
 Date: Fri, 24 Nov 2023 17:47:53 +0000
-Message-ID: <20231124172013.400005066@linuxfoundation.org>
+Message-ID: <20231124172037.378894276@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,40 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Pengfei Li <pengfei.li_1@nxp.com>
 
-[ Upstream commit 0c35ac18256942e66d8dab6ca049185812e60c69 ]
+commit 374de39d38f97b0e58cfee88da590b2d056ccf7f upstream.
 
-This is not needed when firmware connection manager is run so limit this
-to software connection manager.
+Currently, The imx pgc power domain doesn't set the fwnode
+pointer, which results in supply regulator device can't get
+consumer imx pgc power domain device from fwnode when creating
+a link.
 
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This causes the driver core to instead try to create a link
+between the parent gpc device of imx pgc power domain device and
+supply regulator device. However, at this point, the gpc device
+has already been bound, and the link creation will fail. So adding
+the fwnode pointer to the imx pgc power domain device will fix
+this issue.
+
+Signed-off-by: Pengfei Li <pengfei.li_1@nxp.com>
+Tested-by: Emil Kronborg <emil.kronborg@protonmail.com>
+Fixes: 3fb16866b51d ("driver core: fw_devlink: Make cycle detection more robust")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231020185949.537083-1-pengfei.li_1@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/quirks.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pmdomain/imx/gpc.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thunderbolt/quirks.c b/drivers/thunderbolt/quirks.c
-index 8c2ee431fcde8..4ab3803e10c83 100644
---- a/drivers/thunderbolt/quirks.c
-+++ b/drivers/thunderbolt/quirks.c
-@@ -30,6 +30,9 @@ static void quirk_usb3_maximum_bandwidth(struct tb_switch *sw)
- {
- 	struct tb_port *port;
+--- a/drivers/pmdomain/imx/gpc.c
++++ b/drivers/pmdomain/imx/gpc.c
+@@ -498,6 +498,7 @@ static int imx_gpc_probe(struct platform
  
-+	if (tb_switch_is_icm(sw))
-+		return;
-+
- 	tb_switch_for_each_port(sw, port) {
- 		if (!tb_port_is_usb3_down(port))
- 			continue;
--- 
-2.42.0
-
+ 			pd_pdev->dev.parent = &pdev->dev;
+ 			pd_pdev->dev.of_node = np;
++			pd_pdev->dev.fwnode = of_fwnode_handle(np);
+ 
+ 			ret = platform_device_add(pd_pdev);
+ 			if (ret) {
 
 
 
