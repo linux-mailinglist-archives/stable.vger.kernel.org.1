@@ -1,48 +1,58 @@
-Return-Path: <stable+bounces-1799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EAAA7F8168
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06E47F7FA2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E896B20AE1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28210B219E6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1B53418B;
-	Fri, 24 Nov 2023 18:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED45381A2;
+	Fri, 24 Nov 2023 18:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcsK7f9a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spe+evTf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220442E64F;
-	Fri, 24 Nov 2023 18:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D46C433C8;
-	Fri, 24 Nov 2023 18:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1C02F86B;
+	Fri, 24 Nov 2023 18:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8182CC433C9;
+	Fri, 24 Nov 2023 18:43:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852303;
-	bh=ILHGn/0rQ1b23KrEn3FNjDRQBjvd24O/fqR0Zx8VrnI=;
+	s=korg; t=1700851389;
+	bh=gxY2Pwb6/mPD8/2pdVP8iwXCg8MWZ05qEXp2ZThQVhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcsK7f9aXBq3pcOa3fpKbOB5fvbWvSQT+1C6jQab+cK/VUxPW02iSXY2D4bSpJE7i
-	 4qr9iH/74J2pLw9cQ0o7sBaaeyRB8zFyTd1HZyq+eJaw5H5+xk401AhU1zNzKDS2p6
-	 RqSdWMAXxY91p6fWHUTE4fEyQm9DM9ZMLibkF+2E=
+	b=spe+evTfniBtlgwyfkKOrvvrVtaCDf6Y//8zAX6LMlMGegidR03n8E63EnIU2RzFm
+	 LQnM8jVZMLXlpdeIoASTOB1Mq7j47JJWNvNrcZUrnPsV7XXvF1TnIK4muFi4gVxzEl
+	 ngijxFahD16F1RU6XL9Af6EzjvwlOVCUCzoQ2S8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 277/372] btrfs: zoned: wait for data BG to be finished on direct IO allocation
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Guillaume Ranquet <granquet@baylibre.com>,
+	Bo-Chen Chen <rex-bc.chen@mediatek.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.5 428/491] drm/mediatek/dp: fix memory leak on ->get_edid callback error path
 Date: Fri, 24 Nov 2023 17:51:04 +0000
-Message-ID: <20231124172019.691022360@linuxfoundation.org>
+Message-ID: <20231124172037.474108014@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,64 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 776a838f1fa95670c1c1cf7109a898090b473fa3 upstream.
+commit fcaf9761fd5884a64eaac48536f8c27ecfd2e6bc upstream.
 
-Running the fio command below on a ZNS device results in "Resource
-temporarily unavailable" error.
+Setting new_edid to NULL leaks the buffer.
 
-  $ sudo fio --name=w --directory=/mnt --filesize=1GB --bs=16MB --numjobs=16 \
-        --rw=write --ioengine=libaio --iodepth=128 --direct=1
-
-  fio: io_u error on file /mnt/w.2.0: Resource temporarily unavailable: write offset=117440512, buflen=16777216
-  fio: io_u error on file /mnt/w.2.0: Resource temporarily unavailable: write offset=134217728, buflen=16777216
-  ...
-
-This happens because -EAGAIN error returned from btrfs_reserve_extent()
-called from btrfs_new_extent_direct() is spilling over to the userland.
-
-btrfs_reserve_extent() returns -EAGAIN when there is no active zone
-available. Then, the caller should wait for some other on-going IO to
-finish a zone and retry the allocation.
-
-This logic is already implemented for buffered write in cow_file_range(),
-but it is missing for the direct IO counterpart. Implement the same logic
-for it.
-
-Reported-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Fixes: 2ce543f47843 ("btrfs: zoned: wait until zone is finished when allocation didn't progress")
-CC: stable@vger.kernel.org # 6.1+
-Tested-by: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Cc: Markus Schneider-Pargmann <msp@baylibre.com>
+Cc: Guillaume Ranquet <granquet@baylibre.com>
+Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+Cc: CK Hu <ck.hu@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-mediatek@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: <stable@vger.kernel.org> # v6.1+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230914131058.2472260-1-jani.nikula@intel.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_dp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -7166,8 +7166,15 @@ static struct extent_map *btrfs_new_exte
- 	int ret;
- 
- 	alloc_hint = get_extent_allocation_hint(inode, start, len);
-+again:
- 	ret = btrfs_reserve_extent(root, len, len, fs_info->sectorsize,
- 				   0, alloc_hint, &ins, 1, 1);
-+	if (ret == -EAGAIN) {
-+		ASSERT(btrfs_is_zoned(fs_info));
-+		wait_on_bit_io(&inode->root->fs_info->flags, BTRFS_FS_NEED_ZONE_FINISH,
-+			       TASK_UNINTERRUPTIBLE);
-+		goto again;
-+	}
- 	if (ret)
- 		return ERR_PTR(ret);
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -2005,6 +2005,7 @@ static struct edid *mtk_dp_get_edid(stru
+ 	 */
+ 	if (mtk_dp_parse_capabilities(mtk_dp)) {
+ 		drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
++		kfree(new_edid);
+ 		new_edid = NULL;
+ 	}
  
 
 
