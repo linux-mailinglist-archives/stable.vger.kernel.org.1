@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2AF67F7ABA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35C67F7D07
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100241C2098E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E522F1C211BC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB1839FD1;
-	Fri, 24 Nov 2023 17:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C86D39FF7;
+	Fri, 24 Nov 2023 18:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQOC0gNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1YimJxL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 130BA381D8;
-	Fri, 24 Nov 2023 17:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B904C433C7;
-	Fri, 24 Nov 2023 17:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE62381DE;
+	Fri, 24 Nov 2023 18:20:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3CEC433C8;
+	Fri, 24 Nov 2023 18:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848686;
-	bh=tAavmdpIFWMUZ3D+gMbsgLHF0gl/slCWtTUUpQPFc1A=;
+	s=korg; t=1700850045;
+	bh=htycuGr/04OVQnSLWfIFypMnDoqxx1B98Be/g8x7u5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQOC0gNI2tRe+waKMsFIIyjVzo6wxcOPWkoT0QH1BLVCg468SiQohp4xPec/tCopQ
-	 7QJWcsbd06APrcRYFFBWSRjqgRSH0tospm7l5y9JgXQbu9yHuqTGhof9NlmJRU0+XH
-	 6vm/Th0ogOK+fSA8aZp0YHdRJeTdqlPG06Vdg0+M=
+	b=n1YimJxLh7v70iq4oW570ZoP06pSPh556pUah2mjQ61GJy7Y0rbX8cbjYkS/Zhkcb
+	 gzEPP/WnRAjuKKw4PCDGSJRFvjj4WBOjECEONHVrRXyra6xI6Ds9tVwTCizrSILMrq
+	 CZ9Rmf3c8e475VEnpctniImaqpMSSKIu1L4zZ58A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhujun2 <zhujun2@cmss.chinamobile.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 16/97] selftests/efivarfs: create-read: fix a resource leak
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 423/530] smb: client: fix potential deadlock when releasing mids
 Date: Fri, 24 Nov 2023 17:49:49 +0000
-Message-ID: <20231124171934.745712999@linuxfoundation.org>
+Message-ID: <20231124172040.940067092@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,42 +52,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhujun2 <zhujun2@cmss.chinamobile.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 3f6f8a8c5e11a9b384a36df4f40f0c9a653b6975 ]
+commit e6322fd177c6885a21dd4609dc5e5c973d1a2eb7 upstream.
 
-The opened file should be closed in main(), otherwise resource
-leak will occur that this problem was discovered by code reading
+All release_mid() callers seem to hold a reference of @mid so there is
+no need to call kref_put(&mid->refcount, __release_mid) under
+@server->mid_lock spinlock.  If they don't, then an use-after-free bug
+would have occurred anyways.
 
-Signed-off-by: zhujun2 <zhujun2@cmss.chinamobile.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+By getting rid of such spinlock also fixes a potential deadlock as
+shown below
+
+CPU 0                                CPU 1
+------------------------------------------------------------------
+cifs_demultiplex_thread()            cifs_debug_data_proc_show()
+ release_mid()
+  spin_lock(&server->mid_lock);
+                                     spin_lock(&cifs_tcp_ses_lock)
+				      spin_lock(&server->mid_lock)
+  __release_mid()
+   smb2_find_smb_tcon()
+    spin_lock(&cifs_tcp_ses_lock) *deadlock*
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/efivarfs/create-read.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/cifsproto.h |    7 ++++++-
+ fs/smb/client/smb2misc.c  |    2 +-
+ fs/smb/client/transport.c |   11 +----------
+ 3 files changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/efivarfs/create-read.c b/tools/testing/selftests/efivarfs/create-read.c
-index 9674a19396a32..7bc7af4eb2c17 100644
---- a/tools/testing/selftests/efivarfs/create-read.c
-+++ b/tools/testing/selftests/efivarfs/create-read.c
-@@ -32,8 +32,10 @@ int main(int argc, char **argv)
- 	rc = read(fd, buf, sizeof(buf));
- 	if (rc != 0) {
- 		fprintf(stderr, "Reading a new var should return EOF\n");
-+		close(fd);
- 		return EXIT_FAILURE;
- 	}
- 
-+	close(fd);
- 	return EXIT_SUCCESS;
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -81,7 +81,7 @@ extern char *cifs_build_path_to_root(str
+ extern char *build_wildcard_path_from_dentry(struct dentry *direntry);
+ char *cifs_build_devname(char *nodename, const char *prepath);
+ extern void delete_mid(struct mid_q_entry *mid);
+-extern void release_mid(struct mid_q_entry *mid);
++void __release_mid(struct kref *refcount);
+ extern void cifs_wake_up_task(struct mid_q_entry *mid);
+ extern int cifs_handle_standard(struct TCP_Server_Info *server,
+ 				struct mid_q_entry *mid);
+@@ -740,4 +740,9 @@ static inline bool dfs_src_pathname_equa
+ 	return true;
  }
--- 
-2.42.0
-
+ 
++static inline void release_mid(struct mid_q_entry *mid)
++{
++	kref_put(&mid->refcount, __release_mid);
++}
++
+ #endif			/* _CIFSPROTO_H */
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -787,7 +787,7 @@ __smb2_handle_cancelled_cmd(struct cifs_
+ {
+ 	struct close_cancelled_open *cancelled;
+ 
+-	cancelled = kzalloc(sizeof(*cancelled), GFP_ATOMIC);
++	cancelled = kzalloc(sizeof(*cancelled), GFP_KERNEL);
+ 	if (!cancelled)
+ 		return -ENOMEM;
+ 
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -76,7 +76,7 @@ alloc_mid(const struct smb_hdr *smb_buff
+ 	return temp;
+ }
+ 
+-static void __release_mid(struct kref *refcount)
++void __release_mid(struct kref *refcount)
+ {
+ 	struct mid_q_entry *midEntry =
+ 			container_of(refcount, struct mid_q_entry, refcount);
+@@ -156,15 +156,6 @@ static void __release_mid(struct kref *r
+ 	mempool_free(midEntry, cifs_mid_poolp);
+ }
+ 
+-void release_mid(struct mid_q_entry *mid)
+-{
+-	struct TCP_Server_Info *server = mid->server;
+-
+-	spin_lock(&server->mid_lock);
+-	kref_put(&mid->refcount, __release_mid);
+-	spin_unlock(&server->mid_lock);
+-}
+-
+ void
+ delete_mid(struct mid_q_entry *mid)
+ {
 
 
 
