@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275247F7BD0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA287F7DE7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C470B20FE1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AA7A28227C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC54139FEF;
-	Fri, 24 Nov 2023 18:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0ED43A8C9;
+	Fri, 24 Nov 2023 18:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8+nL1TZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jc2+abQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872B639FC3;
-	Fri, 24 Nov 2023 18:08:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADD74C433C8;
-	Fri, 24 Nov 2023 18:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C36739FF7;
+	Fri, 24 Nov 2023 18:28:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AACC433C8;
+	Fri, 24 Nov 2023 18:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849338;
-	bh=GuQWrI2Urnh+E2FybtBakwbGhBFTjdbScjht5juz05o=;
+	s=korg; t=1700850500;
+	bh=yKMUFjaT4CjFVAMoyWGYr8c4RO7AtdZyieSJtzmyNLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8+nL1TZLNkP48zrBx5kVvOCE95ThO8r22nPhdbIaDU7vokbnQqAeCzX/+/aWLkf3
-	 i8x5eBgH7MUHiZwWfJZTuIZl7nk+xko7AiGfc5FVsbh5U07UXAU06Sk4v/JMu0HLkp
-	 Esd7LiCudo31u3RuhciQwYXJPWluvdc7jjro+aLQ=
+	b=Jc2+abQUcy5Am9C40nFn63H9CO59HdSzaiZMG2y0Ga189a4T3MixqQVPXrwkDRfz9
+	 wl+S54tLDgd3qN7KAnHmdWz3nvnlHgXtIBjmddUt36gjVgUZgfyRR+93syDZkNZmVz
+	 1RuJX1e0TzsXajdsPaKnsY0D7UUFn4155Hqi7Rjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Peterson <rpeterso@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/530] gfs2: ignore negated quota changes
-Date: Fri, 24 Nov 2023 17:45:08 +0000
-Message-ID: <20231124172032.403887382@linuxfoundation.org>
+Subject: [PATCH 6.5 073/491] drm/amd: Disable PP_PCIE_DPM_MASK when dynamic speed switching not supported
+Date: Fri, 24 Nov 2023 17:45:09 +0000
+Message-ID: <20231124172026.834797552@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,92 +53,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Peterson <rpeterso@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 4c6a08125f2249531ec01783a5f4317d7342add5 ]
+[ Upstream commit fbf1035b033a51eee48d5f42e781b02fff272ca0 ]
 
-When lots of quota changes are made, there may be cases in which an
-inode's quota information is increased and then decreased, such as when
-blocks are added to a file, then deleted from it. If the timing is
-right, function do_qc can add pending quota changes to a transaction,
-then later, another call to do_qc can negate those changes, resulting
-in a net gain of 0. The quota_change information is recorded in the qc
-buffer (and qd element of the inode as well). The buffer is added to the
-transaction by the first call to do_qc, but a subsequent call changes
-the value from non-zero back to zero. At that point it's too late to
-remove the buffer_head from the transaction. Later, when the quota sync
-code is called, the zero-change qd element is discovered and flagged as
-an assert warning. If the fs is mounted with errors=panic, the kernel
-will panic.
+Rather than individual ASICs checking for the quirk, set the quirk at the
+driver level.
 
-This is usually seen when files are truncated and the quota changes are
-negated by punch_hole/truncate which uses gfs2_quota_hold and
-gfs2_quota_unhold rather than block allocations that use gfs2_quota_lock
-and gfs2_quota_unlock which automatically do quota sync.
-
-This patch solves the problem by adding a check to qd_check_sync such
-that net-zero quota changes already added to the transaction are no
-longer deemed necessary to be synced, and skipped.
-
-In this case references are taken for the qd and the slot from do_qc
-so those need to be put. The normal sequence of events for a normal
-non-zero quota change is as follows:
-
-gfs2_quota_change
-   do_qc
-      qd_hold
-      slot_hold
-
-Later, when the changes are to be synced:
-
-gfs2_quota_sync
-   qd_fish
-      qd_check_sync
-         gets qd ref via lockref_get_not_dead
-   do_sync
-      do_qc(QC_SYNC)
-         qd_put
-	    lockref_put_or_lock
-   qd_unlock
-      qd_put
-         lockref_put_or_lock
-
-In the net-zero change case, we add a check to qd_check_sync so it puts
-the qd and slot references acquired in gfs2_quota_change and skip the
-unneeded sync.
-
-Signed-off-by: Bob Peterson <rpeterso@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/quota.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c              | 2 ++
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c     | 4 +---
+ drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c | 2 +-
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c          | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 171b2713d2e5e..41d0232532a03 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -457,6 +457,17 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
- 	    (sync_gen && (qd->qd_sync_gen >= *sync_gen)))
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index ecc61a6d13e13..65779cbdbad13 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2318,6 +2318,8 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
+ 		adev->pm.pp_feature &= ~PP_GFXOFF_MASK;
+ 	if (amdgpu_sriov_vf(adev) && adev->asic_type == CHIP_SIENNA_CICHLID)
+ 		adev->pm.pp_feature &= ~PP_OVERDRIVE_MASK;
++	if (!amdgpu_device_pcie_dynamic_switching_supported())
++		adev->pm.pp_feature &= ~PP_PCIE_DPM_MASK;
  
-+	/*
-+	 * If qd_change is 0 it means a pending quota change was negated.
-+	 * We should not sync it, but we still have a qd reference and slot
-+	 * reference taken by gfs2_quota_change -> do_qc that need to be put.
-+	 */
-+	if (!qd->qd_change && test_and_clear_bit(QDF_CHANGE, &qd->qd_flags)) {
-+		slot_put(qd);
-+		qd_put(qd);
-+		return 0;
-+	}
-+
- 	if (!lockref_get_not_dead(&qd->qd_lockref))
- 		return 0;
+ 	total = true;
+ 	for (i = 0; i < adev->num_ip_blocks; i++) {
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 1cb4022644977..a38888176805d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -1823,9 +1823,7 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ 
+ 	data->mclk_dpm_key_disabled = hwmgr->feature_mask & PP_MCLK_DPM_MASK ? false : true;
+ 	data->sclk_dpm_key_disabled = hwmgr->feature_mask & PP_SCLK_DPM_MASK ? false : true;
+-	data->pcie_dpm_key_disabled =
+-		!amdgpu_device_pcie_dynamic_switching_supported() ||
+-		!(hwmgr->feature_mask & PP_PCIE_DPM_MASK);
++	data->pcie_dpm_key_disabled = !(hwmgr->feature_mask & PP_PCIE_DPM_MASK);
+ 	/* need to set voltage control types before EVV patching */
+ 	data->voltage_control = SMU7_VOLTAGE_CONTROL_NONE;
+ 	data->vddci_control = SMU7_VOLTAGE_CONTROL_NONE;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 9a5f3d31e7780..94f22df5ac205 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -2107,7 +2107,7 @@ static int sienna_cichlid_update_pcie_parameters(struct smu_context *smu,
+ 	min_lane_width = min_lane_width > max_lane_width ?
+ 			 max_lane_width : min_lane_width;
+ 
+-	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
++	if (!(smu->adev->pm.pp_feature & PP_PCIE_DPM_MASK)) {
+ 		pcie_table->pcie_gen[0] = max_gen_speed;
+ 		pcie_table->pcie_lane[0] = max_lane_width;
+ 	} else {
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index 4fa94f583b87c..223e890575a2b 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -2436,7 +2436,7 @@ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
+ 	uint32_t smu_pcie_arg;
+ 	int ret, i;
+ 
+-	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
++	if (!(smu->adev->pm.pp_feature & PP_PCIE_DPM_MASK)) {
+ 		if (pcie_table->pcie_gen[num_of_levels - 1] < pcie_gen_cap)
+ 			pcie_gen_cap = pcie_table->pcie_gen[num_of_levels - 1];
  
 -- 
 2.42.0
