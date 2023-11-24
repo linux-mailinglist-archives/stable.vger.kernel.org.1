@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-1703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B0E47F80F6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1837F7ABF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9DAA282626
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4934628181B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5634635F04;
-	Fri, 24 Nov 2023 18:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF47931740;
+	Fri, 24 Nov 2023 17:58:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADfIi3yb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjohnqFD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F72321AD;
-	Fri, 24 Nov 2023 18:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8751CC433C8;
-	Fri, 24 Nov 2023 18:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C3D381DE;
+	Fri, 24 Nov 2023 17:58:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21916C433C7;
+	Fri, 24 Nov 2023 17:58:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852064;
-	bh=Ci99OSgqiEYzMsUNSBZyJxIMRbP49uEuD+S/IvuMEoo=;
+	s=korg; t=1700848696;
+	bh=eEByWxVyqFibhK2AMp2Efav7Cy/s4+X1CDLy3e1BK5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADfIi3yb8DZQREDvKWE5ZQziWMRG1xe8d0fcV7ig2qJN78QICOFiccNVy/kB6hriR
-	 n5Sn/9WjGQLmrqpGcgkXi3CsvaCL7LepLsHEV4aX3N46S1CORU6qc6Xul0m7G5hj+N
-	 vfY/K7JW1+lzd90xu/oj0iZK7eVhSfu5lfUGxfg8=
+	b=TjohnqFDNFfVgwAMvnHfVDVOVTbp3KAZ9LKdNaqo7j6awstI2eFJVyx6T/TOy3x64
+	 1wv3mfqnldfDEVGezvnBJBLuadIswmATf9lYJPyRUXsjLwWJ4pf2WxQ0ieWewXIbKT
+	 mNTuduUYQZwXVZ5sH18HoNr/0B/iL++8TQal15AA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 206/372] parisc/pdc: Add width field to struct pdc_model
+	syzbot+38e876a8aa44b7115c76@syzkaller.appspotmail.com,
+	Juntong Deng <juntong.deng@outlook.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 20/97] fs/jfs: Add validity check for db_maxag and db_agpref
 Date: Fri, 24 Nov 2023 17:49:53 +0000
-Message-ID: <20231124172017.330527492@linuxfoundation.org>
+Message-ID: <20231124171934.885497801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,33 +54,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-commit 6240553b52c475d9fc9674de0521b77e692f3764 upstream.
+[ Upstream commit 64933ab7b04881c6c18b21ff206c12278341c72e ]
 
-PDC2.0 specifies the additional PSW-bit field.
+Both db_maxag and db_agpref are used as the index of the
+db_agfree array, but there is currently no validity check for
+db_maxag and db_agpref, which can lead to errors.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The following is related bug reported by Syzbot:
+
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:639:20
+index 7936 is out of range for type 'atomic_t[128]'
+
+Add checking that the values of db_maxag and db_agpref are valid
+indexes for the db_agfree array.
+
+Reported-by: syzbot+38e876a8aa44b7115c76@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=38e876a8aa44b7115c76
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/uapi/asm/pdc.h |    1 +
- 1 file changed, 1 insertion(+)
+ fs/jfs/jfs_dmap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/parisc/include/uapi/asm/pdc.h
-+++ b/arch/parisc/include/uapi/asm/pdc.h
-@@ -472,6 +472,7 @@ struct pdc_model {		/* for PDC_MODEL */
- 	unsigned long arch_rev;
- 	unsigned long pot_key;
- 	unsigned long curr_key;
-+	unsigned long width;	/* default of PSW_W bit (1=enabled) */
- };
- 
- struct pdc_cache_cf {		/* for PDC_CACHE  (I/D-caches) */
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 5e20d7270d5f2..eb86d170f2246 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -208,6 +208,12 @@ int dbMount(struct inode *ipbmap)
+ 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
+ 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
+ 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
++	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
++		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
++		err = -EINVAL;
++		goto err_release_metapage;
++	}
++
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
+-- 
+2.42.0
+
 
 
 
