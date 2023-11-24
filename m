@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855837F8060
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD2E7F7C62
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F7F02825CB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D17F1C21033
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19EB28DBA;
-	Fri, 24 Nov 2023 18:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB493A8C3;
+	Fri, 24 Nov 2023 18:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14VYDCpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQJtHyb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5070C286B5;
-	Fri, 24 Nov 2023 18:49:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57F2C433C9;
-	Fri, 24 Nov 2023 18:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBC0381D6;
+	Fri, 24 Nov 2023 18:14:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB66C433C7;
+	Fri, 24 Nov 2023 18:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851753;
-	bh=mDi/18257KqBe4xvW7+E9RcBtSiTlc2tbjTwqCTnfRc=;
+	s=korg; t=1700849680;
+	bh=EIkD6F3UtHqT1RPzi0h3iN2rz8V76WUXxk2diPWwh/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14VYDCpPlnghPGFS8Lzfd8M3ItNsaO5/2NHzW0DC69wk5ujQcJbwm/uFjbOabZTus
-	 g0YyZVERxo3LB45bdr7Ct5+n4FGrfyuYHq3c2alEZUf7Qwj6nUAuVJsl/YjS4TSvzf
-	 Tpa2dEhytSw9kFgMaUkAV8FYCqJ+h2GzMXDLonJ4=
+	b=EQJtHyb8NZgVIQlqEZrlEEf2TF0AX1VGLbk+5uSqgI61KXbQkDwlN4MNjlF5tVpew
+	 NGJjrqeMlzxTQoGMo9Hf7+ehvO7zEBScGrryISvVXfoibwCGaM7ymXcZoMy73yjnpc
+	 ZoZbsL0VUVxL0ggnnC3ZOJmi85u3CtowrLOz6Gx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Jialin <lujialin4@huawei.com>,
-	Guo Zihua <guozihua@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/372] crypto: pcrypt - Fix hungtask for PADATA_RESET
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.6 278/530] dm crypt: account large pages in cc->n_allocated_pages
 Date: Fri, 24 Nov 2023 17:47:24 +0000
-Message-ID: <20231124172012.377527615@linuxfoundation.org>
+Message-ID: <20231124172036.505949963@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,111 +52,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Jialin <lujialin4@huawei.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 8f4f68e788c3a7a696546291258bfa5fdb215523 ]
+commit 9793c269da6cd339757de6ba5b2c8681b54c99af upstream.
 
-We found a hungtask bug in test_aead_vec_cfg as follows:
+The commit 5054e778fcd9c ("dm crypt: allocate compound pages if
+possible") changed dm-crypt to use compound pages to improve
+performance. Unfortunately, there was an oversight: the allocation of
+compound pages was not accounted at all. Normal pages are accounted in
+a percpu counter cc->n_allocated_pages and dm-crypt is limited to
+allocate at most 2% of memory. Because compound pages were not
+accounted at all, dm-crypt could allocate memory over the 2% limit.
 
-INFO: task cryptomgr_test:391009 blocked for more than 120 seconds.
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-Call trace:
- __switch_to+0x98/0xe0
- __schedule+0x6c4/0xf40
- schedule+0xd8/0x1b4
- schedule_timeout+0x474/0x560
- wait_for_common+0x368/0x4e0
- wait_for_completion+0x20/0x30
- wait_for_completion+0x20/0x30
- test_aead_vec_cfg+0xab4/0xd50
- test_aead+0x144/0x1f0
- alg_test_aead+0xd8/0x1e0
- alg_test+0x634/0x890
- cryptomgr_test+0x40/0x70
- kthread+0x1e0/0x220
- ret_from_fork+0x10/0x18
- Kernel panic - not syncing: hung_task: blocked tasks
+Fix this by adding the accounting of compound pages, so that memory
+consumption of dm-crypt is properly limited.
 
-For padata_do_parallel, when the return err is 0 or -EBUSY, it will call
-wait_for_completion(&wait->completion) in test_aead_vec_cfg. In normal
-case, aead_request_complete() will be called in pcrypt_aead_serial and the
-return err is 0 for padata_do_parallel. But, when pinst->flags is
-PADATA_RESET, the return err is -EBUSY for padata_do_parallel, and it
-won't call aead_request_complete(). Therefore, test_aead_vec_cfg will
-hung at wait_for_completion(&wait->completion), which will cause
-hungtask.
-
-The problem comes as following:
-(padata_do_parallel)                 |
-    rcu_read_lock_bh();              |
-    err = -EINVAL;                   |   (padata_replace)
-                                     |     pinst->flags |= PADATA_RESET;
-    err = -EBUSY                     |
-    if (pinst->flags & PADATA_RESET) |
-        rcu_read_unlock_bh()         |
-        return err
-
-In order to resolve the problem, we replace the return err -EBUSY with
--EAGAIN, which means parallel_data is changing, and the caller should call
-it again.
-
-v3:
-remove retry and just change the return err.
-v2:
-introduce padata_try_do_parallel() in pcrypt_aead_encrypt and
-pcrypt_aead_decrypt to solve the hungtask.
-
-Signed-off-by: Lu Jialin <lujialin4@huawei.com>
-Signed-off-by: Guo Zihua <guozihua@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 5054e778fcd9c ("dm crypt: allocate compound pages if possible")
+Cc: stable@vger.kernel.org	# v6.5+
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/pcrypt.c | 4 ++++
- kernel/padata.c | 2 +-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/md/dm-crypt.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
-index 9d10b846ccf73..005a36cb21bc4 100644
---- a/crypto/pcrypt.c
-+++ b/crypto/pcrypt.c
-@@ -117,6 +117,8 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
- 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
- 	if (!err)
- 		return -EINPROGRESS;
-+	if (err == -EBUSY)
-+		return -EAGAIN;
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -1699,11 +1699,17 @@ retry:
+ 		order = min(order, remaining_order);
  
- 	return err;
- }
-@@ -164,6 +166,8 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
- 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
- 	if (!err)
- 		return -EINPROGRESS;
-+	if (err == -EBUSY)
-+		return -EAGAIN;
+ 		while (order > 0) {
++			if (unlikely(percpu_counter_read_positive(&cc->n_allocated_pages) +
++					(1 << order) > dm_crypt_pages_per_client))
++				goto decrease_order;
+ 			pages = alloc_pages(gfp_mask
+ 				| __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN | __GFP_COMP,
+ 				order);
+-			if (likely(pages != NULL))
++			if (likely(pages != NULL)) {
++				percpu_counter_add(&cc->n_allocated_pages, 1 << order);
+ 				goto have_pages;
++			}
++decrease_order:
+ 			order--;
+ 		}
  
- 	return err;
- }
-diff --git a/kernel/padata.c b/kernel/padata.c
-index 791d9cb07a501..7bef7dae3db54 100644
---- a/kernel/padata.c
-+++ b/kernel/padata.c
-@@ -194,7 +194,7 @@ int padata_do_parallel(struct padata_shell *ps,
- 		*cb_cpu = cpu;
+@@ -1741,10 +1747,13 @@ static void crypt_free_buffer_pages(stru
+ 
+ 	if (clone->bi_vcnt > 0) { /* bio_for_each_folio_all crashes with an empty bio */
+ 		bio_for_each_folio_all(fi, clone) {
+-			if (folio_test_large(fi.folio))
++			if (folio_test_large(fi.folio)) {
++				percpu_counter_sub(&cc->n_allocated_pages,
++						1 << folio_order(fi.folio));
+ 				folio_put(fi.folio);
+-			else
++			} else {
+ 				mempool_free(&fi.folio->page, &cc->page_pool);
++			}
+ 		}
  	}
- 
--	err =  -EBUSY;
-+	err = -EBUSY;
- 	if ((pinst->flags & PADATA_RESET))
- 		goto out;
- 
--- 
-2.42.0
-
+ }
 
 
 
