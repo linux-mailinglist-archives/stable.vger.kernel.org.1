@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-1315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1337F7F0F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 030E47F80C3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A88C1C21448
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ED7D1C215D1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3826E35F1D;
-	Fri, 24 Nov 2023 18:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3AF33CCA;
+	Fri, 24 Nov 2023 18:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haFR8SYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAgS+nAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD3533CCA;
-	Fri, 24 Nov 2023 18:38:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260C7C433C8;
-	Fri, 24 Nov 2023 18:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1102321AD;
+	Fri, 24 Nov 2023 18:52:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF100C433C8;
+	Fri, 24 Nov 2023 18:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851093;
-	bh=dO/jEMuLGn//b3Uzt4135ro6SZZZX/cKVrdGCmwXmAQ=;
+	s=korg; t=1700851951;
+	bh=n7VKm/+9iCwNQy40BeEwu4YVRZLR37GpsmF3pIKJ6Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=haFR8SYkLypBQ17Xw7KZbOrfNeQ52njYDv/TcK1DiGe5nfuCk+ViS7cZQGExSe9bV
-	 1jVYjIJdm3fWgnGLpqt4UClT0Fo//rmK1s4P/VFITKhqQ3dYIZnv8rSwgy36tOXogF
-	 N45BBa2obHvfkw6dzT3Mv4wwXAAD1qJWpRuGORJ8=
+	b=aAgS+nAO+FYYLswKx5eins3QuJ6qH56B2NOWNRX5spl/rqxFVGNj0LYEL5uBI8uCx
+	 WQMo+vHdBVNd7java+tGFc0Pq4U58IsNu0LvHO93NJWJqUYhorGVugns7MP4HdSB8r
+	 1E+6/IaZIkLn/G9VWKp3t1w6Egfd9SLF6DtZ8jhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Geffon <bgeffon@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.5 311/491] PM: hibernate: Use __get_safe_page() rather than touching the list
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Ekaterina Esina <eesina@astralinux.ru>,
+	Anastasia Belova <abelova@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 160/372] cifs: fix check of rc in function generate_smb3signingkey
 Date: Fri, 24 Nov 2023 17:49:07 +0000
-Message-ID: <20231124172033.907361105@linuxfoundation.org>
+Message-ID: <20231124172015.816040771@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +55,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Geffon <bgeffon@google.com>
+From: Ekaterina Esina <eesina@astralinux.ru>
 
-commit f0c7183008b41e92fa676406d87f18773724b48b upstream.
+[ Upstream commit 181724fc72486dec2bec8803459be05b5162aaa8 ]
 
-We found at least one situation where the safe pages list was empty and
-get_buffer() would gladly try to use a NULL pointer.
+Remove extra check after condition, add check after generating key
+for encryption. The check is needed to return non zero rc before
+rewriting it with generating key for decryption.
 
-Signed-off-by: Brian Geffon <bgeffon@google.com>
-Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Fixes: d70e9fa55884 ("cifs: try opening channels after mounting")
+Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>
+Co-developed-by: Anastasia Belova <abelova@astralinux.ru>
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/snapshot.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ fs/smb/client/smb2transport.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -2474,8 +2474,9 @@ static void *get_highmem_page_buffer(str
- 		pbe->copy_page = tmp;
- 	} else {
- 		/* Copy of the page will be stored in normal memory */
--		kaddr = safe_pages_list;
--		safe_pages_list = safe_pages_list->next;
-+		kaddr = __get_safe_page(ca->gfp_mask);
-+		if (!kaddr)
-+			return ERR_PTR(-ENOMEM);
- 		pbe->copy_page = virt_to_page(kaddr);
+diff --git a/fs/smb/client/smb2transport.c b/fs/smb/client/smb2transport.c
+index 22954a9c7a6c7..69dbd08fd4419 100644
+--- a/fs/smb/client/smb2transport.c
++++ b/fs/smb/client/smb2transport.c
+@@ -451,6 +451,8 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 				  ptriplet->encryption.context,
+ 				  ses->smb3encryptionkey,
+ 				  SMB3_ENC_DEC_KEY_SIZE);
++		if (rc)
++			return rc;
+ 		rc = generate_key(ses, ptriplet->decryption.label,
+ 				  ptriplet->decryption.context,
+ 				  ses->smb3decryptionkey,
+@@ -459,9 +461,6 @@ generate_smb3signingkey(struct cifs_ses *ses,
+ 			return rc;
  	}
- 	pbe->next = highmem_pblist;
-@@ -2655,8 +2656,9 @@ static void *get_buffer(struct memory_bi
- 		return ERR_PTR(-ENOMEM);
- 	}
- 	pbe->orig_address = page_address(page);
--	pbe->address = safe_pages_list;
--	safe_pages_list = safe_pages_list->next;
-+	pbe->address = __get_safe_page(ca->gfp_mask);
-+	if (!pbe->address)
-+		return ERR_PTR(-ENOMEM);
- 	pbe->next = restore_pblist;
- 	restore_pblist = pbe;
- 	return pbe->address;
+ 
+-	if (rc)
+-		return rc;
+-
+ #ifdef CONFIG_CIFS_DEBUG_DUMP_KEYS
+ 	cifs_dbg(VFS, "%s: dumping generated AES session keys\n", __func__);
+ 	/*
+-- 
+2.42.0
+
 
 
 
