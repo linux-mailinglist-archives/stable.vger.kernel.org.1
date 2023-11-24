@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958567F8430
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FCA7F839C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4339A28A8EF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8D2E28890D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF25363A1;
-	Fri, 24 Nov 2023 19:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6F62511F;
+	Fri, 24 Nov 2023 19:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LDV3NZMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNtqOFZO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A91339BE;
-	Fri, 24 Nov 2023 19:24:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2420FC433C7;
-	Fri, 24 Nov 2023 19:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356F635F1A;
+	Fri, 24 Nov 2023 19:19:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E09C433C7;
+	Fri, 24 Nov 2023 19:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853890;
-	bh=Uaz7ZKZ3Hdk0VeIBiPe5/vKHluz42YxKAgktwbruVB8=;
+	s=korg; t=1700853558;
+	bh=B5dTbsoDpH/LMl0fsMx37bdOkS6BZi9yo0cSfInNpdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LDV3NZMy53LJh0P+bRj+sKOv0DxJBlz8Ra5veeMh5uUbQTQcKg+mO3lSopitrELzJ
-	 MtN4GHVXvY9weR3WVmoGH7PQ3CnvUmuvE+TVKMe6FNvVmMDdBQDWouFXr4eKbsnnNq
-	 5lPZf2swjUDRaCk1d6f7drBk9Aetu4WnUUxOUTD8=
+	b=QNtqOFZOeLs8w0651htBLTn+cBVi0H952gODwi/iKE7gRBkUXfHrT1teIgOGhKumd
+	 Tl106kkaGa4WbVraZ9WckQXpZH6vvfpvPRAQiRhRlbvhr7SMB0RsVjgHoshBmodd+j
+	 DB4GlpJpbWuONFsf3lo12pedrcxLJ5tx18t/8mLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Peterson <rpeterso@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 037/159] gfs2: ignore negated quota changes
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 212/297] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
 Date: Fri, 24 Nov 2023 17:54:14 +0000
-Message-ID: <20231124171943.450802522@linuxfoundation.org>
+Message-ID: <20231124172007.648318896@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,96 +54,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Peterson <rpeterso@redhat.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 4c6a08125f2249531ec01783a5f4317d7342add5 ]
+commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
 
-When lots of quota changes are made, there may be cases in which an
-inode's quota information is increased and then decreased, such as when
-blocks are added to a file, then deleted from it. If the timing is
-right, function do_qc can add pending quota changes to a transaction,
-then later, another call to do_qc can negate those changes, resulting
-in a net gain of 0. The quota_change information is recorded in the qc
-buffer (and qd element of the inode as well). The buffer is added to the
-transaction by the first call to do_qc, but a subsequent call changes
-the value from non-zero back to zero. At that point it's too late to
-remove the buffer_head from the transaction. Later, when the quota sync
-code is called, the zero-change qd element is discovered and flagged as
-an assert warning. If the fs is mounted with errors=panic, the kernel
-will panic.
+JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
+however, other process could intercept the EIO information from bdev's
+mapping, which leads journal recovering successful even EIO occurs during
+data written back to fs device.
 
-This is usually seen when files are truncated and the quota changes are
-negated by punch_hole/truncate which uses gfs2_quota_hold and
-gfs2_quota_unhold rather than block allocations that use gfs2_quota_lock
-and gfs2_quota_unlock which automatically do quota sync.
+We found this problem in our product, iscsi + multipath is chosen for block
+device of ext4. Unstable network may trigger kpartx to rescan partitions in
+device mapper layer. Detailed process is shown as following:
 
-This patch solves the problem by adding a check to qd_check_sync such
-that net-zero quota changes already added to the transaction are no
-longer deemed necessary to be synced, and skipped.
+  mount          kpartx          irq
+jbd2_journal_recover
+ do_one_pass
+  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
+  mark_buffer_dirty // mark bh dirty
+         vfs_read
+	  generic_file_read_iter // dio
+	   filemap_write_and_wait_range
+	    __filemap_fdatawrite_range
+	     do_writepages
+	      block_write_full_folio
+	       submit_bh_wbc
+	            >>  EIO occurs in disk  <<
+	                     end_buffer_async_write
+			      mark_buffer_write_io_error
+			       mapping_set_error
+			        set_bit(AS_EIO, &mapping->flags) // set!
+	    filemap_check_errors
+	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
+ err2 = sync_blockdev
+  filemap_write_and_wait
+   filemap_check_errors
+    test_and_clear_bit(AS_EIO, &mapping->flags) // false
+ err2 = 0
 
-In this case references are taken for the qd and the slot from do_qc
-so those need to be put. The normal sequence of events for a normal
-non-zero quota change is as follows:
+Filesystem is mounted successfully even data from journal is failed written
+into disk, and ext4/ocfs2 could become corrupted.
 
-gfs2_quota_change
-   do_qc
-      qd_hold
-      slot_hold
+Fix it by comparing the wb_err state in fs block device before recovering
+and after recovering.
 
-Later, when the changes are to be synced:
+A reproducer can be found in the kernel bugzilla referenced below.
 
-gfs2_quota_sync
-   qd_fish
-      qd_check_sync
-         gets qd ref via lockref_get_not_dead
-   do_sync
-      do_qc(QC_SYNC)
-         qd_put
-	    lockref_put_or_lock
-   qd_unlock
-      qd_put
-         lockref_put_or_lock
-
-In the net-zero change case, we add a check to qd_check_sync so it puts
-the qd and slot references acquired in gfs2_quota_change and skip the
-unneeded sync.
-
-Signed-off-by: Bob Peterson <rpeterso@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/quota.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/jbd2/recovery.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index cbee745169b8f..ce3d65787e016 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -431,6 +431,17 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
- 	    (sync_gen && (qd->qd_sync_gen >= *sync_gen)))
- 		return 0;
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -283,6 +283,8 @@ int jbd2_journal_recover(journal_t *jour
+ 	journal_superblock_t *	sb;
  
-+	/*
-+	 * If qd_change is 0 it means a pending quota change was negated.
-+	 * We should not sync it, but we still have a qd reference and slot
-+	 * reference taken by gfs2_quota_change -> do_qc that need to be put.
-+	 */
-+	if (!qd->qd_change && test_and_clear_bit(QDF_CHANGE, &qd->qd_flags)) {
-+		slot_put(qd);
-+		qd_put(qd);
-+		return 0;
-+	}
-+
- 	if (!lockref_get_not_dead(&qd->qd_lockref))
- 		return 0;
+ 	struct recovery_info	info;
++	errseq_t		wb_err;
++	struct address_space	*mapping;
  
--- 
-2.42.0
-
+ 	memset(&info, 0, sizeof(info));
+ 	sb = journal->j_superblock;
+@@ -300,6 +302,9 @@ int jbd2_journal_recover(journal_t *jour
+ 		return 0;
+ 	}
+ 
++	wb_err = 0;
++	mapping = journal->j_fs_dev->bd_inode->i_mapping;
++	errseq_check_and_advance(&mapping->wb_err, &wb_err);
+ 	err = do_one_pass(journal, &info, PASS_SCAN);
+ 	if (!err)
+ 		err = do_one_pass(journal, &info, PASS_REVOKE);
+@@ -320,6 +325,9 @@ int jbd2_journal_recover(journal_t *jour
+ 	err2 = sync_blockdev(journal->j_fs_dev);
+ 	if (!err)
+ 		err = err2;
++	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
++	if (!err)
++		err = err2;
+ 	/* Make sure all replayed data is on permanent storage */
+ 	if (journal->j_flags & JBD2_BARRIER) {
+ 		err2 = blkdev_issue_flush(journal->j_fs_dev);
 
 
 
