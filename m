@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2ACE7F7EC1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DD97F7CA8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48441C213D4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C0431C211A3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38918381BF;
-	Fri, 24 Nov 2023 18:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EBE39FF3;
+	Fri, 24 Nov 2023 18:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaL8vRr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkkAfX46"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54C035F1A;
-	Fri, 24 Nov 2023 18:35:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB48C433C8;
-	Fri, 24 Nov 2023 18:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA01339FD9;
+	Fri, 24 Nov 2023 18:17:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEC3C433C8;
+	Fri, 24 Nov 2023 18:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850945;
-	bh=DuBhBT92BxRQflAknpyf8OBA8Wp3yTqVlsvH/+1kDGA=;
+	s=korg; t=1700849835;
+	bh=q16znvx+ZxbuBjfOIekcl1l6OoGbtzNtytwz42XF3Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eaL8vRr7L8J8zymH9AwGwzL2A3Zi/FBi4XPQz7W7YZ4Ym051+oClloXfxauKzeE7j
-	 SjgiXvxvMaw6/lRFhdKfuV3Os/MjVPIa+uuWuVvJ3iTsNKG2AwdeIFMU192A7iI7CM
-	 OY4KWRxdmHbF1KkkWUAj3XM1PAWiimyxbPBojNzY=
+	b=TkkAfX46FJtws/NImj2qEcdEcZ6EqRKUzYQdjKWUGCrQm1eBYJkkiEL7AFMn4Z6ub
+	 RuYtLSGC3LOBuWBsSGR6j9hizmE1IEnLXJTxXrg4Zxl7odKqxdecmeJBiGYxr8lw0H
+	 V0vqx2Z8Ki++yCqd8MKpeMmtCwrqALGmFj5eul4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Krasavin <pkrasavin@imaqliq.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Rokosov <ddrokosov@salutedevices.com>
-Subject: [PATCH 6.5 252/491] tty: serial: meson: fix hard LOCKUP on crtscts mode
+	Nitin Yadav <n-yadav@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 322/530] mmc: sdhci_am654: fix start loop index for TAP value parsing
 Date: Fri, 24 Nov 2023 17:48:08 +0000
-Message-ID: <20231124172032.142650220@linuxfoundation.org>
+Message-ID: <20231124172037.842987630@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,87 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Krasavin <pkrasavin@imaqliq.com>
+From: Nitin Yadav <n-yadav@ti.com>
 
-commit 2a1d728f20edeee7f26dc307ed9df4e0d23947ab upstream.
+commit 71956d0cb56c1e5f9feeb4819db87a076418e930 upstream.
 
-There might be hard lockup if we set crtscts mode on port without RTS/CTS configured:
+ti,otap-del-sel-legacy/ti,itap-del-sel-legacy passed from DT
+are currently ignored for all SD/MMC and eMMC modes. Fix this
+by making start loop index to MMC_TIMING_LEGACY.
 
-# stty -F /dev/ttyAML6 crtscts; echo 1 > /dev/ttyAML6; echo 2 > /dev/ttyAML6
-[   95.890386] rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-[   95.890857] rcu:     3-...0: (201 ticks this GP) idle=e33c/1/0x4000000000000000 softirq=5844/5846 fqs=4984
-[   95.900212] rcu:     (detected by 2, t=21016 jiffies, g=7753, q=296 ncpus=4)
-[   95.906972] Task dump for CPU 3:
-[   95.910178] task:bash            state:R  running task     stack:0     pid:205   ppid:1      flags:0x00000202
-[   95.920059] Call trace:
-[   95.922485]  __switch_to+0xe4/0x168
-[   95.925951]  0xffffff8003477508
-[   95.974379] watchdog: Watchdog detected hard LOCKUP on cpu 3
-[   95.974424] Modules linked in: 88x2cs(O) rtc_meson_vrtc
-
-Possible solution would be to not allow to setup crtscts on such port.
-
-Tested on S905X3 based board.
-
-Fixes: ff7693d079e5 ("ARM: meson: serial: add MesonX SoC on-chip uart driver")
+Fixes: 8ee5fc0e0b3b ("mmc: sdhci_am654: Update OTAPDLY writes")
+Signed-off-by: Nitin Yadav <n-yadav@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Krasavin <pkrasavin@imaqliq.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
+Link: https://lore.kernel.org/r/20231026061458.1116276-1-n-yadav@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/meson_uart.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci_am654.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -379,10 +379,14 @@ static void meson_uart_set_termios(struc
- 	else
- 		val |= AML_UART_STOP_BIT_1SB;
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -598,7 +598,7 @@ static int sdhci_am654_get_otap_delay(st
+ 		return 0;
+ 	}
  
--	if (cflags & CRTSCTS)
--		val &= ~AML_UART_TWO_WIRE_EN;
--	else
-+	if (cflags & CRTSCTS) {
-+		if (port->flags & UPF_HARD_FLOW)
-+			val &= ~AML_UART_TWO_WIRE_EN;
-+		else
-+			termios->c_cflag &= ~CRTSCTS;
-+	} else {
- 		val |= AML_UART_TWO_WIRE_EN;
-+	}
+-	for (i = MMC_TIMING_MMC_HS; i <= MMC_TIMING_MMC_HS400; i++) {
++	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
  
- 	writel(val, port->membase + AML_UART_CONTROL);
- 
-@@ -697,6 +701,7 @@ static int meson_uart_probe(struct platf
- 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
- 	int ret = 0;
- 	int irq;
-+	bool has_rtscts;
- 
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
-@@ -724,6 +729,7 @@ static int meson_uart_probe(struct platf
- 		return irq;
- 
- 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
-+	has_rtscts = of_property_read_bool(pdev->dev.of_node, "uart-has-rtscts");
- 
- 	if (meson_ports[pdev->id]) {
- 		dev_err(&pdev->dev, "port %d already allocated\n", pdev->id);
-@@ -743,6 +749,8 @@ static int meson_uart_probe(struct platf
- 	port->mapsize = resource_size(res_mem);
- 	port->irq = irq;
- 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
-+	if (has_rtscts)
-+		port->flags |= UPF_HARD_FLOW;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
- 	port->dev = &pdev->dev;
- 	port->line = pdev->id;
+ 		ret = device_property_read_u32(dev, td[i].otap_binding,
+ 					       &sdhci_am654->otap_del_sel[i]);
 
 
 
