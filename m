@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AC27F808D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4EC97F7CAA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4F631C21566
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D56F51C20D26
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1ED2E40E;
-	Fri, 24 Nov 2023 18:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1DD3A8CF;
+	Fri, 24 Nov 2023 18:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SickaHX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgBCtzSo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AE52E64F;
-	Fri, 24 Nov 2023 18:50:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410CCC433C8;
-	Fri, 24 Nov 2023 18:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFEE3A8C2;
+	Fri, 24 Nov 2023 18:17:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A15C433C8;
+	Fri, 24 Nov 2023 18:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851843;
-	bh=Zs/wBK1Dba6nkul5Nuilvfbgl3/BapJeJ+kV/PlFvik=;
+	s=korg; t=1700849838;
+	bh=H+QzWPsBvo2aqikzUn66dAbayTQ5z5il0ZFJXUDdLyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SickaHX54yD0QzlycaRZvX27fPKNKKKA/tS2embOMpMGWzoIHQHzDbV7su9UScxop
-	 DPq1ID4SmnPscZg+yeB3NxFQPaCWA5yzjHcM1GcgU8eW3E2VDk4SbXPHR2uXghPQJY
-	 pNrxuYGsc519SsWoZr3kBA41wUyiANuMb++Hqj8U=
+	b=xgBCtzSo9BvGRBDN59Kn6fkMVdnAjlP7YsTqCzJzvmLHtN1BlVnholiM+gYy8QQGa
+	 TOkjWQQCFfYYm9UIioyxD+7n3wonfmjYbfkuDPF9wtweNsiuzpm31fdFg8dxPxpgt9
+	 pLryMPRteoP9lZIeLfhtZ/IEVKApNlmDvWoOIcRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/372] mtd: rawnand: intel: check return value of devm_kasprintf()
-Date: Fri, 24 Nov 2023 17:48:25 +0000
-Message-ID: <20231124172014.418826441@linuxfoundation.org>
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 340/530] arm64: dts: qcom: ipq8074: Fix hwlock index for SMEM
+Date: Fri, 24 Nov 2023 17:48:26 +0000
+Message-ID: <20231124172038.383190572@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,58 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-[ Upstream commit 74ac5b5e2375f1e8ef797ac7770887e9969f2516 ]
+commit 8a781d04e580705d36f7db07f5c80e748100b69d upstream.
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful by
-checking the pointer validity.
+SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
+in SMEM region shared by the Host and FW.
 
-Fixes: 0b1039f016e8 ("mtd: rawnand: Add NAND controller support on Intel LGM SoC")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231019065537.318391-1-yiyang13@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the SMEM hwlock index to 3 for IPQ8074.
+
+Cc: stable@vger.kernel.org
+Fixes: 42124b947e8e ("arm64: dts: qcom: ipq8074: add SMEM support")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230904172516.479866-4-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/intel-nand-controller.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq8074.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/intel-nand-controller.c b/drivers/mtd/nand/raw/intel-nand-controller.c
-index 6f4cea81f97c0..1f8a33fb84607 100644
---- a/drivers/mtd/nand/raw/intel-nand-controller.c
-+++ b/drivers/mtd/nand/raw/intel-nand-controller.c
-@@ -619,6 +619,11 @@ static int ebu_nand_probe(struct platform_device *pdev)
- 	ebu_host->cs_num = cs;
+--- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
+@@ -101,7 +101,7 @@
+ 			reg = <0x0 0x4ab00000 0x0 0x100000>;
+ 			no-map;
  
- 	resname = devm_kasprintf(dev, GFP_KERNEL, "nand_cs%d", cs);
-+	if (!resname) {
-+		ret = -ENOMEM;
-+		goto err_of_node_put;
-+	}
-+
- 	ebu_host->cs[cs].chipaddr = devm_platform_ioremap_resource_byname(pdev,
- 									  resname);
- 	if (IS_ERR(ebu_host->cs[cs].chipaddr)) {
-@@ -655,6 +660,11 @@ static int ebu_nand_probe(struct platform_device *pdev)
- 	}
+-			hwlocks = <&tcsr_mutex 0>;
++			hwlocks = <&tcsr_mutex 3>;
+ 		};
  
- 	resname = devm_kasprintf(dev, GFP_KERNEL, "addr_sel%d", cs);
-+	if (!resname) {
-+		ret = -ENOMEM;
-+		goto err_cleanup_dma;
-+	}
-+
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, resname);
- 	if (!res) {
- 		ret = -EINVAL;
--- 
-2.42.0
-
+ 		memory@4ac00000 {
 
 
 
