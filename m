@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E52D67F7DE9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70377F7BD6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1019282253
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63054282206
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0DEE3A8C6;
-	Fri, 24 Nov 2023 18:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2FF39FF8;
+	Fri, 24 Nov 2023 18:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKbFYq7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7JwkL4y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9368A39FD9;
-	Fri, 24 Nov 2023 18:28:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2055FC433C7;
-	Fri, 24 Nov 2023 18:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B512B39FC3;
+	Fri, 24 Nov 2023 18:09:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F3AC433C8;
+	Fri, 24 Nov 2023 18:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850505;
-	bh=3RKFQQf1yds9ht+qpxAuKK6ANRm5d7NYSfOAnQZl56o=;
+	s=korg; t=1700849346;
+	bh=w3toZcR/P1j6XIg6iZizGyC40VHJYt/vI/rYf0iK9xA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKbFYq7sxLDaii4RFaD9LJjuSDDF9cL/+v0CPYQbdppKg6v02y4A663i/hlkoSxxT
-	 qydBnSnrd6CL1NxmQvUiTAJ27T50dUMpMXlVqphnhosCQcMPG0rIMAe5LrIAjwnN0s
-	 /huprOlBAxQVjCDWrK5U/M/0aoRCvKAI39DG8LeM=
+	b=q7JwkL4yuVe4UDduluOTUdPPHQzfFyPBV0l6x21MDUebW11U4namXBhXMb99wv8xN
+	 MAmCJAQXTExa2gojUlQyf9oiHbitlBwyv2k2l0plbglrmvpOCw8PsCPJIBe6/8LNF1
+	 ebHpyrfQwqSzZPBYt526YliddTvZvDtuO1af9bcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Lin.Cao" <lincao12@amd.com>,
-	Jingwen Chen <Jingwen.Chen2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 075/491] drm/amd: check num of link levels when update pcie param
+Subject: [PATCH 6.6 145/530] media: ccs: Fix driver quirk struct documentation
 Date: Fri, 24 Nov 2023 17:45:11 +0000
-Message-ID: <20231124172026.888871693@linuxfoundation.org>
+Message-ID: <20231124172032.497151523@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,39 +54,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin.Cao <lincao12@amd.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 406e8845356d18bdf3d3a23b347faf67706472ec ]
+[ Upstream commit 441b5c63d71ec9ec5453328f7e83384ecc1dddd9 ]
 
-In SR-IOV environment, the value of pcie_table->num_of_link_levels will
-be 0, and num_of_levels - 1 will cause array index out of bounds
+Fix documentation for struct ccs_quirk, a device specific struct for
+managing deviations from the standard. The flags field was drifted away
+from where it should have been.
 
-Signed-off-by: Lin.Cao <lincao12@amd.com>
-Acked-by: Jingwen Chen <Jingwen.Chen2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/i2c/ccs/ccs-quirk.h | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-index 223e890575a2b..3bc60ecc7bfef 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
-@@ -2436,6 +2436,9 @@ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
- 	uint32_t smu_pcie_arg;
- 	int ret, i;
- 
-+	if (!num_of_levels)
-+		return 0;
-+
- 	if (!(smu->adev->pm.pp_feature & PP_PCIE_DPM_MASK)) {
- 		if (pcie_table->pcie_gen[num_of_levels - 1] < pcie_gen_cap)
- 			pcie_gen_cap = pcie_table->pcie_gen[num_of_levels - 1];
+diff --git a/drivers/media/i2c/ccs/ccs-quirk.h b/drivers/media/i2c/ccs/ccs-quirk.h
+index 5838fcda92fd4..0b1a64958d714 100644
+--- a/drivers/media/i2c/ccs/ccs-quirk.h
++++ b/drivers/media/i2c/ccs/ccs-quirk.h
+@@ -32,12 +32,10 @@ struct ccs_sensor;
+  *		@reg: Pointer to the register to access
+  *		@value: Register value, set by the caller on write, or
+  *			by the quirk on read
+- *
+- * @flags: Quirk flags
+- *
+  *		@return: 0 on success, -ENOIOCTLCMD if no register
+  *			 access may be done by the caller (default read
+  *			 value is zero), else negative error code on error
++ * @flags: Quirk flags
+  */
+ struct ccs_quirk {
+ 	int (*limits)(struct ccs_sensor *sensor);
 -- 
 2.42.0
 
