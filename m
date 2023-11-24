@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB107F7C3F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5967F7E46
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66F17B20EB1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C39F5B21551
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB0F3A8C3;
-	Fri, 24 Nov 2023 18:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47DD33E9;
+	Fri, 24 Nov 2023 18:31:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4Cbtkui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BovuZoDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3D339FFD;
-	Fri, 24 Nov 2023 18:13:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53C01C433C8;
-	Fri, 24 Nov 2023 18:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A14039FF3;
+	Fri, 24 Nov 2023 18:31:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFBCC433C7;
+	Fri, 24 Nov 2023 18:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849598;
-	bh=H4K0Q6sCfWvzaXmg+GxUm+tw+Ra8SCKKvUb0s6HncNs=;
+	s=korg; t=1700850691;
+	bh=+09Hqg55A1vFlCkFoYKyKzfy4E2ZPAamR7v8vOuMB/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4CbtkuiMGwWNNfDK0r8XwSzF3UdEmu32amniJNbV3h3ZKYYGmewLEUMWiluiDUFG
-	 /Ks3EPDzkfl5m4n8w+03EeIYlyI43w8Ono5WG0CGYhNpFOFA94oK1Ib62JM4rkkv0G
-	 bNmDvk4M11qzRs5gmI5gjnmzSEFVs4XYQuAs6NAY=
+	b=BovuZoDs0iJGRjBWk8axiN0gxR2DRvRvcyVD01+QnBxD0yCYuMuiVEYVdf28Z40Ep
+	 J1kp1WLkp1qmXnR6yo10yc9qaokDTt3b30ZyWqp2/RJwyACLFeEfa8/Ry/GMk3Hk+r
+	 BvnJdVq2kofdPD/PNk+LPrQuLsoAi/Mymt8jGKVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Roi Dayan <roid@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/530] net/mlx5e: Dont modify the peer sent-to-vport rules for IPSec offload
+Subject: [PATCH 6.5 151/491] wifi: iwlwifi: Use FW rate for non-data frames
 Date: Fri, 24 Nov 2023 17:46:27 +0000
-Message-ID: <20231124172034.784327152@linuxfoundation.org>
+Message-ID: <20231124172029.020048266@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,43 +54,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit bdf788cf224f61c20a01c58c00685d394d57887f ]
+[ Upstream commit 499d02790495958506a64f37ceda7e97345a50a8 ]
 
-As IPSec packet offload in switchdev mode is not supported with LAG,
-it's unnecessary to modify those sent-to-vport rules to the peer eswitch.
+Currently we are setting the rate in the tx cmd for
+mgmt frames (e.g. during connection establishment).
+This was problematic when sending mgmt frames in eSR mode,
+as we don't know what link this frame will be sent on
+(This is decided by the FW), so we don't know what is the
+lowest rate.
+Fix this by not setting the rate in tx cmd and rely
+on FW to choose the right one.
+Set rate only for injected frames with fixed rate,
+or when no sta is given.
+Also set for important frames (EAPOL etc.) the High Priority flag.
 
-Fixes: c6c2bf5db4ea ("net/mlx5e: Support IPsec packet offload for TX in switchdev mode")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-9-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 055b22e770dd ("iwlwifi: mvm: Set Tx rate and flags when there is not station")
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230913145231.6c7e59620ee0.I6eaed3ccdd6dd62b9e664facc484081fc5275843@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index b296ac52a4397..88236e75fd901 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -984,7 +984,8 @@ mlx5_eswitch_add_send_to_vport_rule(struct mlx5_eswitch *on_esw,
- 	dest.vport.flags |= MLX5_FLOW_DEST_VPORT_VHCA_ID;
- 	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_FWD_DEST;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 2ede69132fee9..177a4628a913e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -536,16 +536,20 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 			flags |= IWL_TX_FLAGS_ENCRYPT_DIS;
  
--	if (rep->vport == MLX5_VPORT_UPLINK && on_esw->offloads.ft_ipsec_tx_pol) {
-+	if (rep->vport == MLX5_VPORT_UPLINK &&
-+	    on_esw == from_esw && on_esw->offloads.ft_ipsec_tx_pol) {
- 		dest.ft = on_esw->offloads.ft_ipsec_tx_pol;
- 		flow_act.flags = FLOW_ACT_IGNORE_FLOW_LEVEL;
- 		dest.type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
+ 		/*
+-		 * For data packets rate info comes from the fw. Only
+-		 * set rate/antenna during connection establishment or in case
+-		 * no station is given.
++		 * For data and mgmt packets rate info comes from the fw. Only
++		 * set rate/antenna for injected frames with fixed rate, or
++		 * when no sta is given.
+ 		 */
+-		if (!sta || !ieee80211_is_data(hdr->frame_control) ||
+-		    mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
++		if (unlikely(!sta ||
++			     info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT)) {
+ 			flags |= IWL_TX_FLAGS_CMD_RATE;
+ 			rate_n_flags =
+ 				iwl_mvm_get_tx_rate_n_flags(mvm, info, sta,
+ 							    hdr->frame_control);
++		} else if (!ieee80211_is_data(hdr->frame_control) ||
++			   mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
++			/* These are important frames */
++			flags |= IWL_TX_FLAGS_HIGH_PRI;
+ 		}
+ 
+ 		if (mvm->trans->trans_cfg->device_family >=
 -- 
 2.42.0
 
