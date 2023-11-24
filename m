@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB177F7D51
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C951E7F814B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2435B20A54
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 068C51C2167C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEBE39FE9;
-	Fri, 24 Nov 2023 18:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E70364A5;
+	Fri, 24 Nov 2023 18:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLXB/UOJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ro5tjsjI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588DB381D4;
-	Fri, 24 Nov 2023 18:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF110C433C9;
-	Fri, 24 Nov 2023 18:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EC52FC4E;
+	Fri, 24 Nov 2023 18:57:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F819C433C7;
+	Fri, 24 Nov 2023 18:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850202;
-	bh=YwVjVRWSp/d/V6p0uy9SgL+dXozz8xe9oDdttFgRdoE=;
+	s=korg; t=1700852241;
+	bh=dt0LV6eF/qgplyuSJ6/HwtyzBcKJh3WewL2T+VnHiLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLXB/UOJynCGFcvmeZ8PJpnrLMqxPeZbSBy8MAXmA4m/GYmaJhCpEd3fHp2t//VwH
-	 JMkeShyjgOxFSs6+B5UCjRMaOh44v2/NgYNxAV5jS9kkN6U9TnHZtz3u/S5yFInkJC
-	 Tfy1pWIMwHi/KzfA42OiOlESh/eqmKA5fWNGRs9Y=
+	b=Ro5tjsjIBzZG6MV9cr2en896GQMOQREaV59N5ll0WDY+sTKPjfPzhooLvn9ma3zW5
+	 ZCA7ioHgMm1JGthC/qmejIVaLBIHHaZAtUKHAGPvwfoFusTSDJaaDfIOn2+xvSIerA
+	 ZvIJDYEH6YXRqBT9Iu8vbZGLBBu2QbxlmlDCruQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.6 462/530] dm-bufio: fix no-sleep mode
-Date: Fri, 24 Nov 2023 17:50:28 +0000
-Message-ID: <20231124172042.143077590@linuxfoundation.org>
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.1 242/372] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
+Date: Fri, 24 Nov 2023 17:50:29 +0000
+Message-ID: <20231124172018.597041912@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,245 +54,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 2a695062a5a42aead8c539a344168d4806b3fda2 upstream.
+commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
 
-dm-bufio has a no-sleep mode. When activated (with the
-DM_BUFIO_CLIENT_NO_SLEEP flag), the bufio client is read-only and we
-could call dm_bufio_get from tasklets. This is used by dm-verity.
+JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
+however, other process could intercept the EIO information from bdev's
+mapping, which leads journal recovering successful even EIO occurs during
+data written back to fs device.
 
-Unfortunately, commit 450e8dee51aa ("dm bufio: improve concurrent IO
-performance") broke this and the kernel would warn that cache_get()
-was calling down_read() from no-sleeping context. The bug can be
-reproduced by using "veritysetup open" with the "--use-tasklets"
-flag.
+We found this problem in our product, iscsi + multipath is chosen for block
+device of ext4. Unstable network may trigger kpartx to rescan partitions in
+device mapper layer. Detailed process is shown as following:
 
-This commit fixes dm-bufio, so that the tasklet mode works again, by
-expanding use of the 'no_sleep_enabled' static_key to conditionally
-use either a rw_semaphore or rwlock_t (which are colocated in the
-buffer_tree structure using a union).
+  mount          kpartx          irq
+jbd2_journal_recover
+ do_one_pass
+  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
+  mark_buffer_dirty // mark bh dirty
+         vfs_read
+	  generic_file_read_iter // dio
+	   filemap_write_and_wait_range
+	    __filemap_fdatawrite_range
+	     do_writepages
+	      block_write_full_folio
+	       submit_bh_wbc
+	            >>  EIO occurs in disk  <<
+	                     end_buffer_async_write
+			      mark_buffer_write_io_error
+			       mapping_set_error
+			        set_bit(AS_EIO, &mapping->flags) // set!
+	    filemap_check_errors
+	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
+ err2 = sync_blockdev
+  filemap_write_and_wait
+   filemap_check_errors
+    test_and_clear_bit(AS_EIO, &mapping->flags) // false
+ err2 = 0
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org	# v6.4
-Fixes: 450e8dee51aa ("dm bufio: improve concurrent IO performance")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Filesystem is mounted successfully even data from journal is failed written
+into disk, and ext4/ocfs2 could become corrupted.
+
+Fix it by comparing the wb_err state in fs block device before recovering
+and after recovering.
+
+A reproducer can be found in the kernel bugzilla referenced below.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-bufio.c |   87 +++++++++++++++++++++++++++++++++++---------------
- 1 file changed, 62 insertions(+), 25 deletions(-)
+ fs/jbd2/recovery.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/md/dm-bufio.c
-+++ b/drivers/md/dm-bufio.c
-@@ -254,7 +254,7 @@ enum evict_result {
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -288,6 +288,8 @@ int jbd2_journal_recover(journal_t *jour
+ 	journal_superblock_t *	sb;
  
- typedef enum evict_result (*le_predicate)(struct lru_entry *le, void *context);
+ 	struct recovery_info	info;
++	errseq_t		wb_err;
++	struct address_space	*mapping;
  
--static struct lru_entry *lru_evict(struct lru *lru, le_predicate pred, void *context)
-+static struct lru_entry *lru_evict(struct lru *lru, le_predicate pred, void *context, bool no_sleep)
- {
- 	unsigned long tested = 0;
- 	struct list_head *h = lru->cursor;
-@@ -295,7 +295,8 @@ static struct lru_entry *lru_evict(struc
- 
- 		h = h->next;
- 
--		cond_resched();
-+		if (!no_sleep)
-+			cond_resched();
+ 	memset(&info, 0, sizeof(info));
+ 	sb = journal->j_superblock;
+@@ -305,6 +307,9 @@ int jbd2_journal_recover(journal_t *jour
+ 		return 0;
  	}
  
- 	return NULL;
-@@ -382,7 +383,10 @@ struct dm_buffer {
-  */
- 
- struct buffer_tree {
--	struct rw_semaphore lock;
-+	union {
-+		struct rw_semaphore lock;
-+		rwlock_t spinlock;
-+	} u;
- 	struct rb_root root;
- } ____cacheline_aligned_in_smp;
- 
-@@ -393,9 +397,12 @@ struct dm_buffer_cache {
- 	 * on the locks.
- 	 */
- 	unsigned int num_locks;
-+	bool no_sleep;
- 	struct buffer_tree trees[];
- };
- 
-+static DEFINE_STATIC_KEY_FALSE(no_sleep_enabled);
-+
- static inline unsigned int cache_index(sector_t block, unsigned int num_locks)
- {
- 	return dm_hash_locks_index(block, num_locks);
-@@ -403,22 +410,34 @@ static inline unsigned int cache_index(s
- 
- static inline void cache_read_lock(struct dm_buffer_cache *bc, sector_t block)
- {
--	down_read(&bc->trees[cache_index(block, bc->num_locks)].lock);
-+	if (static_branch_unlikely(&no_sleep_enabled) && bc->no_sleep)
-+		read_lock_bh(&bc->trees[cache_index(block, bc->num_locks)].u.spinlock);
-+	else
-+		down_read(&bc->trees[cache_index(block, bc->num_locks)].u.lock);
- }
- 
- static inline void cache_read_unlock(struct dm_buffer_cache *bc, sector_t block)
- {
--	up_read(&bc->trees[cache_index(block, bc->num_locks)].lock);
-+	if (static_branch_unlikely(&no_sleep_enabled) && bc->no_sleep)
-+		read_unlock_bh(&bc->trees[cache_index(block, bc->num_locks)].u.spinlock);
-+	else
-+		up_read(&bc->trees[cache_index(block, bc->num_locks)].u.lock);
- }
- 
- static inline void cache_write_lock(struct dm_buffer_cache *bc, sector_t block)
- {
--	down_write(&bc->trees[cache_index(block, bc->num_locks)].lock);
-+	if (static_branch_unlikely(&no_sleep_enabled) && bc->no_sleep)
-+		write_lock_bh(&bc->trees[cache_index(block, bc->num_locks)].u.spinlock);
-+	else
-+		down_write(&bc->trees[cache_index(block, bc->num_locks)].u.lock);
- }
- 
- static inline void cache_write_unlock(struct dm_buffer_cache *bc, sector_t block)
- {
--	up_write(&bc->trees[cache_index(block, bc->num_locks)].lock);
-+	if (static_branch_unlikely(&no_sleep_enabled) && bc->no_sleep)
-+		write_unlock_bh(&bc->trees[cache_index(block, bc->num_locks)].u.spinlock);
-+	else
-+		up_write(&bc->trees[cache_index(block, bc->num_locks)].u.lock);
- }
- 
- /*
-@@ -442,18 +461,32 @@ static void lh_init(struct lock_history
- 
- static void __lh_lock(struct lock_history *lh, unsigned int index)
- {
--	if (lh->write)
--		down_write(&lh->cache->trees[index].lock);
--	else
--		down_read(&lh->cache->trees[index].lock);
-+	if (lh->write) {
-+		if (static_branch_unlikely(&no_sleep_enabled) && lh->cache->no_sleep)
-+			write_lock_bh(&lh->cache->trees[index].u.spinlock);
-+		else
-+			down_write(&lh->cache->trees[index].u.lock);
-+	} else {
-+		if (static_branch_unlikely(&no_sleep_enabled) && lh->cache->no_sleep)
-+			read_lock_bh(&lh->cache->trees[index].u.spinlock);
-+		else
-+			down_read(&lh->cache->trees[index].u.lock);
-+	}
- }
- 
- static void __lh_unlock(struct lock_history *lh, unsigned int index)
- {
--	if (lh->write)
--		up_write(&lh->cache->trees[index].lock);
--	else
--		up_read(&lh->cache->trees[index].lock);
-+	if (lh->write) {
-+		if (static_branch_unlikely(&no_sleep_enabled) && lh->cache->no_sleep)
-+			write_unlock_bh(&lh->cache->trees[index].u.spinlock);
-+		else
-+			up_write(&lh->cache->trees[index].u.lock);
-+	} else {
-+		if (static_branch_unlikely(&no_sleep_enabled) && lh->cache->no_sleep)
-+			read_unlock_bh(&lh->cache->trees[index].u.spinlock);
-+		else
-+			up_read(&lh->cache->trees[index].u.lock);
-+	}
- }
- 
- /*
-@@ -502,14 +535,18 @@ static struct dm_buffer *list_to_buffer(
- 	return le_to_buffer(le);
- }
- 
--static void cache_init(struct dm_buffer_cache *bc, unsigned int num_locks)
-+static void cache_init(struct dm_buffer_cache *bc, unsigned int num_locks, bool no_sleep)
- {
- 	unsigned int i;
- 
- 	bc->num_locks = num_locks;
-+	bc->no_sleep = no_sleep;
- 
- 	for (i = 0; i < bc->num_locks; i++) {
--		init_rwsem(&bc->trees[i].lock);
-+		if (no_sleep)
-+			rwlock_init(&bc->trees[i].u.spinlock);
-+		else
-+			init_rwsem(&bc->trees[i].u.lock);
- 		bc->trees[i].root = RB_ROOT;
- 	}
- 
-@@ -648,7 +685,7 @@ static struct dm_buffer *__cache_evict(s
- 	struct lru_entry *le;
- 	struct dm_buffer *b;
- 
--	le = lru_evict(&bc->lru[list_mode], __evict_pred, &w);
-+	le = lru_evict(&bc->lru[list_mode], __evict_pred, &w, bc->no_sleep);
- 	if (!le)
- 		return NULL;
- 
-@@ -702,7 +739,7 @@ static void __cache_mark_many(struct dm_
- 	struct evict_wrapper w = {.lh = lh, .pred = pred, .context = context};
- 
- 	while (true) {
--		le = lru_evict(&bc->lru[old_mode], __evict_pred, &w);
-+		le = lru_evict(&bc->lru[old_mode], __evict_pred, &w, bc->no_sleep);
- 		if (!le)
- 			break;
- 
-@@ -915,10 +952,11 @@ static void cache_remove_range(struct dm
- {
- 	unsigned int i;
- 
-+	BUG_ON(bc->no_sleep);
- 	for (i = 0; i < bc->num_locks; i++) {
--		down_write(&bc->trees[i].lock);
-+		down_write(&bc->trees[i].u.lock);
- 		__remove_range(bc, &bc->trees[i].root, begin, end, pred, release);
--		up_write(&bc->trees[i].lock);
-+		up_write(&bc->trees[i].u.lock);
- 	}
- }
- 
-@@ -979,8 +1017,6 @@ struct dm_bufio_client {
- 	struct dm_buffer_cache cache; /* must be last member */
- };
- 
--static DEFINE_STATIC_KEY_FALSE(no_sleep_enabled);
--
- /*----------------------------------------------------------------*/
- 
- #define dm_bufio_in_request()	(!!current->bio_list)
-@@ -1871,7 +1907,8 @@ static void *new_read(struct dm_bufio_cl
- 	if (need_submit)
- 		submit_io(b, REQ_OP_READ, read_endio);
- 
--	wait_on_bit_io(&b->state, B_READING, TASK_UNINTERRUPTIBLE);
-+	if (nf != NF_GET)	/* we already tested this condition above */
-+		wait_on_bit_io(&b->state, B_READING, TASK_UNINTERRUPTIBLE);
- 
- 	if (b->read_error) {
- 		int error = blk_status_to_errno(b->read_error);
-@@ -2421,7 +2458,7 @@ struct dm_bufio_client *dm_bufio_client_
- 		r = -ENOMEM;
- 		goto bad_client;
- 	}
--	cache_init(&c->cache, num_locks);
-+	cache_init(&c->cache, num_locks, (flags & DM_BUFIO_CLIENT_NO_SLEEP) != 0);
- 
- 	c->bdev = bdev;
- 	c->block_size = block_size;
++	wb_err = 0;
++	mapping = journal->j_fs_dev->bd_inode->i_mapping;
++	errseq_check_and_advance(&mapping->wb_err, &wb_err);
+ 	err = do_one_pass(journal, &info, PASS_SCAN);
+ 	if (!err)
+ 		err = do_one_pass(journal, &info, PASS_REVOKE);
+@@ -325,6 +330,9 @@ int jbd2_journal_recover(journal_t *jour
+ 	err2 = sync_blockdev(journal->j_fs_dev);
+ 	if (!err)
+ 		err = err2;
++	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
++	if (!err)
++		err = err2;
+ 	/* Make sure all replayed data is on permanent storage */
+ 	if (journal->j_flags & JBD2_BARRIER) {
+ 		err2 = blkdev_issue_flush(journal->j_fs_dev);
 
 
 
