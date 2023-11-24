@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B61787F837F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E84A7F8411
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 456A5B25F8C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD3AA28A2EB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805ED381CC;
-	Fri, 24 Nov 2023 19:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3BA2EB15;
+	Fri, 24 Nov 2023 19:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouJY3SNP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Syq8z2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4122F35F1A;
-	Fri, 24 Nov 2023 19:18:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2923C433CB;
-	Fri, 24 Nov 2023 19:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3184C33CCA;
+	Fri, 24 Nov 2023 19:23:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0913C433C7;
+	Fri, 24 Nov 2023 19:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853491;
-	bh=Tl5i//zi64sbROncZYffy9DTa2QtHMZ1WaDzsTqQDcg=;
+	s=korg; t=1700853823;
+	bh=sdpaCRLHOOunxzoYusvI2wYZ0Rsz8LXi4P/pqH2Pmxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouJY3SNPfSeM28faxwN84dwqicf34qJ1T2BVXyBhyL2oCXsc33cg5zFf6Sc6JJJ38
-	 e7DF9LbxGoP8BxQzemc/VpsOkgLjuVDyOyLoXkQCRrejnFoxv4fT3XBRHfDgy/MkV+
-	 wAPXt4OyIi7A9XH8QDqpbQ+qtUrdVMeg8SRscphE=
+	b=P/Syq8z2cZ750uLLpj0QJu/K51QU+COCETVyhcjYrn7S1XG/0zngLMtn3X/oRdT24
+	 QLptt4X/XcZ4136wY2k1IACR5u4bRxfg7ZqIZ+tlQfyhktxW4ULjspgmCNJ0EwVl0n
+	 FQnNHcClLOFIWGwC9PXE5hduiQXtd1HUeoKhuXJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Yadav <n-yadav@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 184/297] mmc: sdhci_am654: fix start loop index for TAP value parsing
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 009/159] wifi: ath10k: fix clang-specific fortify warning
 Date: Fri, 24 Nov 2023 17:53:46 +0000
-Message-ID: <20231124172006.670936604@linuxfoundation.org>
+Message-ID: <20231124171942.296660655@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +54,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Yadav <n-yadav@ti.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 71956d0cb56c1e5f9feeb4819db87a076418e930 upstream.
+[ Upstream commit cb4c132ebfeac5962f7258ffc831caa0c4dada1a ]
 
-ti,otap-del-sel-legacy/ti,itap-del-sel-legacy passed from DT
-are currently ignored for all SD/MMC and eMMC modes. Fix this
-by making start loop index to MMC_TIMING_LEGACY.
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-Fixes: 8ee5fc0e0b3b ("mmc: sdhci_am654: Update OTAPDLY writes")
-Signed-off-by: Nitin Yadav <n-yadav@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231026061458.1116276-1-n-yadav@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In file included from drivers/net/wireless/ath/ath10k/debug.c:8:
+In file included from ./include/linux/module.h:13:
+In file included from ./include/linux/stat.h:19:
+In file included from ./include/linux/time.h:60:
+In file included from ./include/linux/time32.h:13:
+In file included from ./include/linux/timex.h:67:
+In file included from ./arch/x86/include/asm/timex.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
+
+The compiler actually complains on 'ath10k_debug_get_et_strings()' where
+fortification logic inteprets call to 'memcpy()' as an attempt to copy
+the whole 'ath10k_gstrings_stats' array from it's first member and so
+issues an overread warning. This warning may be silenced by passing
+an address of the whole array and not the first member to 'memcpy()'.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230829093652.234537-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c |    2 +-
+ drivers/net/wireless/ath/ath10k/debug.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -600,7 +600,7 @@ static int sdhci_am654_get_otap_delay(st
- 		return 0;
- 	}
+diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
+index 04c50a26a4f47..34db968c4bd0b 100644
+--- a/drivers/net/wireless/ath/ath10k/debug.c
++++ b/drivers/net/wireless/ath/ath10k/debug.c
+@@ -1138,7 +1138,7 @@ void ath10k_debug_get_et_strings(struct ieee80211_hw *hw,
+ 				 u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *ath10k_gstrings_stats,
++		memcpy(data, ath10k_gstrings_stats,
+ 		       sizeof(ath10k_gstrings_stats));
+ }
  
--	for (i = MMC_TIMING_MMC_HS; i <= MMC_TIMING_MMC_HS400; i++) {
-+	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
- 
- 		ret = device_property_read_u32(dev, td[i].otap_binding,
- 					       &sdhci_am654->otap_del_sel[i]);
+-- 
+2.42.0
+
 
 
 
