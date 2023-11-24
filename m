@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8467F7B2B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9C47F8152
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFD901C20BFD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 482F128260C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C600364A4;
-	Fri, 24 Nov 2023 18:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB99E2FC21;
+	Fri, 24 Nov 2023 18:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSYGC29H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdEB4CLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E018439FE3;
-	Fri, 24 Nov 2023 18:02:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F1BC433C9;
-	Fri, 24 Nov 2023 18:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D7D28DBB;
+	Fri, 24 Nov 2023 18:57:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 200D4C433C7;
+	Fri, 24 Nov 2023 18:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848950;
-	bh=l1cgDIy7Yyw5sm4Jf73CziEVg2htsgRBb9H1AS59JI4=;
+	s=korg; t=1700852256;
+	bh=yUDZK2tojV2wnr4V2WcI9a+IatWsoLHexVcBsMyYVEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSYGC29HtACjYv9P7jMPD37Df2BhdJa89nEwSpkIvDDR3cQo16TC/BqsGg5FpgY20
-	 vNFWUtoDZWi6+U/PK5ZRksTo4PXY8AF3OILEVtcGw7dmPCPO/upwwZxqUzvukCjcC1
-	 Dcz8lhVIT6TxzsbUHP6d7ONeSaXkS3+JnsXCaHV0=
+	b=gdEB4CLr5cbh/NhCbWndSaqUXEEvmBllxg3ojtERldJl+quifxbhert1XpIv7IZMd
+	 U5eBCEUStEJ3VXaKehrfGW8+G3xyx9b5mcxjtrBrSRvvX73G3l4otHWNcGcotRJHsS
+	 9aOGX0d/UANl6Oz7/e4x+l2kFM52CNYN/1pqVHwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.14 46/57] parisc/power: Fix power soft-off when running on qemu
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 283/372] ALSA: hda/realtek: Add quirks for HP Laptops
 Date: Fri, 24 Nov 2023 17:51:10 +0000
-Message-ID: <20231124171932.020628052@linuxfoundation.org>
+Message-ID: <20231124172019.875071754@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,36 +52,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-commit 6ad6e15a9c46b8f0932cd99724f26f3db4db1cdf upstream.
+commit 5d639b60971f003d3a9b2b31f8ec73b0718b5d57 upstream.
 
-Firmware returns the physical address of the power switch,
-so need to use gsc_writel() instead of direct memory access.
+These HP laptops use Realtek HDA codec combined with 2 or 4 CS35L41
+Amplifiers using SPI with Internal Boost.
 
-Fixes: d0c219472980 ("parisc/power: Add power soft-off when running on qemu")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231115162116.494968-3-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/power.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -197,7 +197,7 @@ static struct notifier_block parisc_pani
- static int qemu_power_off(struct sys_off_data *data)
- {
- 	/* this turns the system off via SeaBIOS */
--	*(int *)data->cb_data = 0;
-+	gsc_writel(0, (unsigned long) data->cb_data);
- 	pdc_soft_power_button(1);
- 	return NOTIFY_DONE;
- }
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9694,6 +9694,9 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 
 
 
