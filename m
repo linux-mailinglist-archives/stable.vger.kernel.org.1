@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-2349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4774D7F83CE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397717F8453
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD831B26C94
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3B9AB24A94
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4E8381A2;
-	Fri, 24 Nov 2023 19:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFCB2E853;
+	Fri, 24 Nov 2023 19:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VePXtDy1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwQ4RUPb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCFDC35EE6;
-	Fri, 24 Nov 2023 19:21:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489D3C433C7;
-	Fri, 24 Nov 2023 19:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED0B3307D;
+	Fri, 24 Nov 2023 19:26:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAFDC433C8;
+	Fri, 24 Nov 2023 19:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853663;
-	bh=bj2+br+FE/EBAoC+FuFKZgcLyWR4K3uC+geZbwoF3II=;
+	s=korg; t=1700853972;
+	bh=5HUemzTQGbVWrGf98L/LO4HohLBkfwLmSmfjFpaSAUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VePXtDy1N/P8n23IUiVRmdFb+v4i/TBoo4P2JeDOd/6DPd2ugjgf7fn6uU62lLX9p
-	 d+5Bpg1VX7PZsUxMQAOswwplRwiCWYM6YJhskW545yl5fr75M0xZB8qRzPzFfGEdqS
-	 0uzLMocZJfeL9IKx60NK8/HxbzpTYNaVKnbD79Y4=
+	b=gwQ4RUPbtzye0EtHJh+IPLp+kIcpvJIfY+G1ticRJkeLA2/3nJiWcWumOK5Nfhtgz
+	 dXqevbJ/LxndynzS6UNlMiPlg/U/pTlo7rFCOe7BE9zchz09Gn6hV/YoEiMmCDA1Ij
+	 peDf7BikHyxAJHFR8dJ0cI65ZjSny0PeXb+JQb14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.15 279/297] media: qcom: camss: Fix missing vfe_lite clocks check
-Date: Fri, 24 Nov 2023 17:55:21 +0000
-Message-ID: <20231124172009.891477521@linuxfoundation.org>
+	Kevin Hilman <khilman@baylibre.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org,
+	Dmitry Safonov <dima@arista.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 105/159] tty/serial: Migrate meson_uart to use has_sysrq
+Date: Fri, 24 Nov 2023 17:55:22 +0000
+Message-ID: <20231124171946.255482138@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +55,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Dmitry Safonov <dima@arista.com>
 
-commit b6e1bdca463a932c1ac02caa7d3e14bf39288e0c upstream.
+[ Upstream commit dca3ac8d3bc9436eb5fd35b80cdcad762fbfa518 ]
 
-check_clock doesn't account for vfe_lite which means that vfe_lite will
-never get validated by this routine. Add the clock name to the expected set
-to remediate.
+The SUPPORT_SYSRQ ifdeffery is not nice as:
+- May create misunderstanding about sizeof(struct uart_port) between
+  different objects
+- Prevents moving functions from serial_core.h
+- Reduces readability (well, it's ifdeffery - it's hard to follow)
 
-Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+In order to remove SUPPORT_SYSRQ, has_sysrq variable has been added.
+Initialise it in driver's probe and remove ifdeffery.
+
+Cc: Kevin Hilman <khilman@baylibre.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-amlogic@lists.infradead.org
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+Link: https://lore.kernel.org/r/20191213000657.931618-22-dima@arista.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/tty/serial/meson_uart.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss-vfe.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe.c
-@@ -533,7 +533,8 @@ static int vfe_check_clock_rates(struct
- 		struct camss_clock *clock = &vfe->clock[i];
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index 849ce8c1ef392..4c3616cc00833 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -5,10 +5,6 @@
+  * Copyright (C) 2014 Carlo Caione <carlo@caione.org>
+  */
  
- 		if (!strcmp(clock->name, "vfe0") ||
--		    !strcmp(clock->name, "vfe1")) {
-+		    !strcmp(clock->name, "vfe1") ||
-+		    !strcmp(clock->name, "vfe_lite")) {
- 			u64 min_rate = 0;
- 			unsigned long rate;
- 
+-#if defined(CONFIG_SERIAL_MESON_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
+-#define SUPPORT_SYSRQ
+-#endif
+-
+ #include <linux/clk.h>
+ #include <linux/console.h>
+ #include <linux/delay.h>
+@@ -716,6 +712,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	port->mapsize = resource_size(res_mem);
+ 	port->irq = res_irq->start;
+ 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
++	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+ 	port->dev = &pdev->dev;
+ 	port->line = pdev->id;
+ 	port->type = PORT_MESON;
+-- 
+2.42.0
+
 
 
 
