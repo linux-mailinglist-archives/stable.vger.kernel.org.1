@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456A97F761A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:15:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3219F7F761B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:15:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBE52B21358
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:15:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 890B5B21417
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D392C1BE;
-	Fri, 24 Nov 2023 14:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30512C871;
+	Fri, 24 Nov 2023 14:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XFzHySD/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXEukl+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93CB2C1AE
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:15:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412FCC433CD;
-	Fri, 24 Nov 2023 14:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6E82C864
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:15:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC4FC433CD;
+	Fri, 24 Nov 2023 14:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700835320;
-	bh=Y4ylUUfYI+Al+fCc9/ErrxYHUYA84abAo49JFNzadrU=;
+	s=korg; t=1700835323;
+	bh=kmtwnCgJSL6D6qMfkKLAw7NIOnD9LrQ0p05yQiwtxAc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=XFzHySD/SxKvVNaNqQU5HSqWznWObhSg0J4qb9s0S84OHbaRgp/W9S3nJEgk/QUD9
-	 OxNyDzELkUWrjmSU6G5f7M/iYgkMzi2VwkS77fvzdm16zWz1QEddpEM5tCCnX+8Lm1
-	 KZlKiVT1ssYcWEt8mBxHKxijHr05kqZIqcMx5/1A=
-Subject: FAILED: patch "[PATCH] drm/amd/display: update blank state on ODM changes" failed to apply to 6.6-stable tree
+	b=YXEukl+2DyLMEfCkMquO6oDz3ARuBHLxIWJMikPuQbEDMG38SdhlcWyUkZF7Uwm4B
+	 i9iIidsKG/1GkrLs8ihaI6OIE7BkC8tZyzhsS70KBZqBaA8abJoIajWS0YhfG7gm/9
+	 MFzz/sHFvsIYwdf4X5AXBzIAe/RrS1YTDZAc94z8=
+Subject: FAILED: patch "[PATCH] drm/amd/display: update blank state on ODM changes" failed to apply to 6.5-stable tree
 To: wenjing.liu@amd.com,alexander.deucher@amd.com,dillon.varone@amd.com,hamza.mahfooz@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 14:15:11 +0000
-Message-ID: <2023112411-drinking-profane-fe9c@gregkh>
+Date: Fri, 24 Nov 2023 14:15:13 +0000
+Message-ID: <2023112412-lagoon-yonder-7f24@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
 git cherry-pick -x 15e6b396f5ac259126f2447fcd2279ed5d3dd14f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112411-drinking-profane-fe9c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112412-lagoon-yonder-7f24@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
