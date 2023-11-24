@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782AD7F7E54
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900E67F7C19
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18D46B21612
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2C6281E61
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474A233E9;
-	Fri, 24 Nov 2023 18:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D229831740;
+	Fri, 24 Nov 2023 18:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVoGgJfn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqcRlt6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F003F3A8F4;
-	Fri, 24 Nov 2023 18:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBB6C433C8;
-	Fri, 24 Nov 2023 18:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8232939FC2;
+	Fri, 24 Nov 2023 18:11:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097BCC433C8;
+	Fri, 24 Nov 2023 18:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850718;
-	bh=AY9MnlDKRJfDVtJfJ2p3hOZRkiOkA2l4ckK3Jag/CEE=;
+	s=korg; t=1700849506;
+	bh=NFnreIiakvkJvlTPmh0eNCU/cO8ZJyv5XEitglfJ+MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DVoGgJfn8HWko8tyGiiFjlx9UX7QX+n9dGk6FZJbwemr4mNu7OuoB/c1FwVVJBW1U
-	 BXxfzjho7yU2D3/ubmMHmln/d2WoPVj6cq6dvhovMxgCQtarWcjdJk5FKeuEjfU4Lz
-	 8KaWblVt8jnCt2PS/76SoBtwOONmk3U9A68uV3CY=
+	b=dqcRlt6zlaWEsEMQVBQIhwoNOj+8E+h10oh5lzBWTQ+ftA49XaX3XL6VfknOMsURJ
+	 V5PN4zmc7P0nAnP6ssx9LX1QSVxeyRidno8516wy6f+5nAZEgveKJCxsXIENJMeOR8
+	 Ot5RxTzku2jl2D1JIy0rwNph/4XSohZBN6aiZ4hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 137/491] gfs2: fix an oops in gfs2_permission
-Date: Fri, 24 Nov 2023 17:46:13 +0000
-Message-ID: <20231124172028.612844547@linuxfoundation.org>
+Subject: [PATCH 6.6 208/530] netfilter: nf_tables: bogus ENOENT when destroying element which does not exist
+Date: Fri, 24 Nov 2023 17:46:14 +0000
+Message-ID: <20231124172034.394432837@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +52,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 0abd1557e21c617bd13fc18f7725fc6363c05913 ]
+[ Upstream commit a7d5a955bfa854ac6b0c53aaf933394b4e6139e4 ]
 
-In RCU mode, we might race with gfs2_evict_inode(), which zeroes
-->i_gl.  Freeing of the object it points to is RCU-delayed, so
-if we manage to fetch the pointer before it's been replaced with
-NULL, we are fine.  Check if we'd fetched NULL and treat that
-as "bail out and tell the caller to get out of RCU mode".
+destroy element command bogusly reports ENOENT in case a set element
+does not exist. ENOENT errors are skipped, however, err is still set
+and propagated to userspace.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+ # nft destroy element ip raw BLACKLIST { 1.2.3.4 }
+ Error: Could not process rule: No such file or directory
+ destroy element ip raw BLACKLIST { 1.2.3.4 }
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Fixes: f80a612dd77c ("netfilter: nf_tables: add support to destroy operation")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/inode.c | 11 +++++++++--
- fs/gfs2/super.c |  2 +-
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 17c994a0c0d09..117b4b5a03072 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1862,14 +1862,21 @@ int gfs2_permission(struct mnt_idmap *idmap, struct inode *inode,
- {
- 	struct gfs2_inode *ip;
- 	struct gfs2_holder i_gh;
-+	struct gfs2_glock *gl;
- 	int error;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3bf428a188ccf..3807c6c1181fd 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7205,10 +7205,11 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
  
- 	gfs2_holder_mark_uninitialized(&i_gh);
- 	ip = GFS2_I(inode);
--	if (gfs2_glock_is_locked_by_me(ip->i_gl) == NULL) {
-+	gl = rcu_dereference(ip->i_gl);
-+	if (unlikely(!gl)) {
-+		/* inode is getting torn down, must be RCU mode */
-+		WARN_ON_ONCE(!(mask & MAY_NOT_BLOCK));
-+		return -ECHILD;
-+        }
-+	if (gfs2_glock_is_locked_by_me(gl) == NULL) {
- 		if (mask & MAY_NOT_BLOCK)
- 			return -ECHILD;
--		error = gfs2_glock_nq_init(ip->i_gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
-+		error = gfs2_glock_nq_init(gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
- 		if (error)
- 			return error;
+ 		if (err < 0) {
+ 			NL_SET_BAD_ATTR(extack, attr);
+-			break;
++			return err;
+ 		}
  	}
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 9f4d5d6549ee6..f98ddb9d19a21 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1558,7 +1558,7 @@ static void gfs2_evict_inode(struct inode *inode)
- 		wait_on_bit_io(&ip->i_flags, GIF_GLOP_PENDING, TASK_UNINTERRUPTIBLE);
- 		gfs2_glock_add_to_lru(ip->i_gl);
- 		gfs2_glock_put_eventually(ip->i_gl);
--		ip->i_gl = NULL;
-+		rcu_assign_pointer(ip->i_gl, NULL);
- 	}
+-	return err;
++
++	return 0;
  }
  
+ /*
 -- 
 2.42.0
 
