@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9957F8198
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94CDB7F8006
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 709861C219BE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FA292823C4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8679B364C1;
-	Fri, 24 Nov 2023 18:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 933B133E9;
+	Fri, 24 Nov 2023 18:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+NtMISb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5UiMznC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07871A5A4;
-	Fri, 24 Nov 2023 18:59:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4C8C433C7;
-	Fri, 24 Nov 2023 18:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C113418B;
+	Fri, 24 Nov 2023 18:46:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF50C433CA;
+	Fri, 24 Nov 2023 18:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852394;
-	bh=G/WtI5g8vkuMsRFr+w4dcAsw/wjliZd+blcgWf1imRA=;
+	s=korg; t=1700851563;
+	bh=EzqlwK9+BkdVleJ/tC1gP3FiVOlFGqG69GUPclxsOAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+NtMISbz9Qje+naUwDDOxuY7agydePY6rFtahLgX7NwfzYoDSH5JlOvyqlUn69T3
-	 fJwCKXWEzhWgpyFn/F8jVBeQJ/YholDnQWp+i7nIdUXorSMRW6g319vctCJ1ImLfK0
-	 rfs+Clo6gGAirgnCcGw3v/akCzJlNi4O+JxmziWA=
+	b=c5UiMznCtZQ5rdE7EFqWm41ZYVrIJLBhi38W9ucsrvh+iTBUdx/Ad3vKg/U6ltBO9
+	 vmgrCmEzONMBZfJpDeU/AgwsXNtDCs0db13nYte376Dwt2FnapxCUappMuFkoFfFJN
+	 OugB8NTwx+T/v4+Ws2mbQrEdXU423nYKNR6XWEqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChunHao Lin <hau@realtek.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 339/372] r8169: add handling DASH when DASH is disabled
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.5 490/491] powerpc/powernv: Fix fortify source warnings in opal-prd.c
 Date: Fri, 24 Nov 2023 17:52:06 +0000
-Message-ID: <20231124172021.685754502@linuxfoundation.org>
+Message-ID: <20231124172039.361301393@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,139 +53,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChunHao Lin <hau@realtek.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 0ab0c45d8aaea5192328bfa6989673aceafc767c upstream.
+commit feea65a338e52297b68ceb688eaf0ffc50310a83 upstream.
 
-For devices that support DASH, even DASH is disabled, there may still
-exist a default firmware that will influence device behavior.
-So driver needs to handle DASH for devices that support DASH, no
-matter the DASH status is.
+As reported by Mahesh & Aneesh, opal_prd_msg_notifier() triggers a
+FORTIFY_SOURCE warning:
 
-This patch also prepares for "fix network lost after resume on DASH
-systems".
+  memcpy: detected field-spanning write (size 32) of single field "&item->msg" at arch/powerpc/platforms/powernv/opal-prd.c:355 (size 4)
+  WARNING: CPU: 9 PID: 660 at arch/powerpc/platforms/powernv/opal-prd.c:355 opal_prd_msg_notifier+0x174/0x188 [opal_prd]
+  NIP opal_prd_msg_notifier+0x174/0x188 [opal_prd]
+  LR  opal_prd_msg_notifier+0x170/0x188 [opal_prd]
+  Call Trace:
+    opal_prd_msg_notifier+0x170/0x188 [opal_prd] (unreliable)
+    notifier_call_chain+0xc0/0x1b0
+    atomic_notifier_call_chain+0x2c/0x40
+    opal_message_notify+0xf4/0x2c0
 
-Fixes: ee7a1beb9759 ("r8169:call "rtl8168_driver_start" "rtl8168_driver_stop" only when hardware dash function is enabled")
-Cc: stable@vger.kernel.org
-Signed-off-by: ChunHao Lin <hau@realtek.com>
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/20231109173400.4573-2-hau@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This happens because the copy is targeting item->msg, which is only 4
+bytes in size, even though the enclosing item was allocated with extra
+space following the msg.
+
+To fix the warning define struct opal_prd_msg with a union of the header
+and a flex array, and have the memcpy target the flex array.
+
+Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Reported-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Tested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230821142820.497107-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |   36 ++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 11 deletions(-)
+ arch/powerpc/platforms/powernv/opal-prd.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -614,6 +614,7 @@ struct rtl8169_private {
+--- a/arch/powerpc/platforms/powernv/opal-prd.c
++++ b/arch/powerpc/platforms/powernv/opal-prd.c
+@@ -24,13 +24,20 @@
+ #include <linux/uaccess.h>
  
- 	unsigned supports_gmii:1;
- 	unsigned aspm_manageable:1;
-+	unsigned dash_enabled:1;
- 	dma_addr_t counters_phys_addr;
- 	struct rtl8169_counters *counters;
- 	struct rtl8169_tc_offsets tc_offset;
-@@ -1186,14 +1187,26 @@ static bool r8168ep_check_dash(struct rt
- 	return r8168ep_ocp_read(tp, 0x128) & BIT(0);
- }
  
--static enum rtl_dash_type rtl_check_dash(struct rtl8169_private *tp)
-+static bool rtl_dash_is_enabled(struct rtl8169_private *tp)
-+{
-+	switch (tp->dash_type) {
-+	case RTL_DASH_DP:
-+		return r8168dp_check_dash(tp);
-+	case RTL_DASH_EP:
-+		return r8168ep_check_dash(tp);
-+	default:
-+		return false;
-+	}
-+}
++struct opal_prd_msg {
++	union {
++		struct opal_prd_msg_header header;
++		DECLARE_FLEX_ARRAY(u8, data);
++	};
++};
 +
-+static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
- {
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_28:
- 	case RTL_GIGA_MAC_VER_31:
--		return r8168dp_check_dash(tp) ? RTL_DASH_DP : RTL_DASH_NONE;
-+		return RTL_DASH_DP;
- 	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_53:
--		return r8168ep_check_dash(tp) ? RTL_DASH_EP : RTL_DASH_NONE;
-+		return RTL_DASH_EP;
- 	default:
- 		return RTL_DASH_NONE;
- 	}
-@@ -1383,7 +1396,7 @@ static void __rtl8169_set_wol(struct rtl
+ /*
+  * The msg member must be at the end of the struct, as it's followed by the
+  * message data.
+  */
+ struct opal_prd_msg_queue_item {
+-	struct list_head		list;
+-	struct opal_prd_msg_header	msg;
++	struct list_head	list;
++	struct opal_prd_msg	msg;
+ };
  
- 	device_set_wakeup_enable(tp_to_dev(tp), wolopts);
+ static struct device_node *prd_node;
+@@ -156,7 +163,7 @@ static ssize_t opal_prd_read(struct file
+ 	int rc;
  
--	if (tp->dash_type == RTL_DASH_NONE) {
-+	if (!tp->dash_enabled) {
- 		rtl_set_d3_pll_down(tp, !wolopts);
- 		tp->dev->wol_enabled = wolopts ? 1 : 0;
- 	}
-@@ -2442,7 +2455,7 @@ static void rtl_wol_enable_rx(struct rtl
+ 	/* we need at least a header's worth of data */
+-	if (count < sizeof(item->msg))
++	if (count < sizeof(item->msg.header))
+ 		return -EINVAL;
  
- static void rtl_prepare_power_down(struct rtl8169_private *tp)
- {
--	if (tp->dash_type != RTL_DASH_NONE)
-+	if (tp->dash_enabled)
- 		return;
- 
- 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
-@@ -4840,7 +4853,7 @@ static int rtl8169_runtime_idle(struct d
- {
- 	struct rtl8169_private *tp = dev_get_drvdata(device);
- 
--	if (tp->dash_type != RTL_DASH_NONE)
-+	if (tp->dash_enabled)
- 		return -EBUSY;
- 
- 	if (!netif_running(tp->dev) || !netif_carrier_ok(tp->dev))
-@@ -4866,8 +4879,7 @@ static void rtl_shutdown(struct pci_dev
- 	/* Restore original MAC address */
- 	rtl_rar_set(tp, tp->dev->perm_addr);
- 
--	if (system_state == SYSTEM_POWER_OFF &&
--	    tp->dash_type == RTL_DASH_NONE) {
-+	if (system_state == SYSTEM_POWER_OFF && !tp->dash_enabled) {
- 		pci_wake_from_d3(pdev, tp->saved_wolopts);
- 		pci_set_power_state(pdev, PCI_D3hot);
- 	}
-@@ -5223,7 +5235,8 @@ static int rtl_init_one(struct pci_dev *
- 		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1);
- 	tp->aspm_manageable = !rc;
- 
--	tp->dash_type = rtl_check_dash(tp);
-+	tp->dash_type = rtl_get_dash_type(tp);
-+	tp->dash_enabled = rtl_dash_is_enabled(tp);
- 
- 	tp->cp_cmd = RTL_R16(tp, CPlusCmd) & CPCMD_MASK;
- 
-@@ -5293,7 +5306,7 @@ static int rtl_init_one(struct pci_dev *
- 	/* configure chip for default features */
- 	rtl8169_set_features(dev, dev->features);
- 
--	if (tp->dash_type == RTL_DASH_NONE) {
-+	if (!tp->dash_enabled) {
- 		rtl_set_d3_pll_down(tp, true);
- 	} else {
- 		rtl_set_d3_pll_down(tp, false);
-@@ -5333,7 +5346,8 @@ static int rtl_init_one(struct pci_dev *
- 			    "ok" : "ko");
- 
- 	if (tp->dash_type != RTL_DASH_NONE) {
--		netdev_info(dev, "DASH enabled\n");
-+		netdev_info(dev, "DASH %s\n",
-+			    tp->dash_enabled ? "enabled" : "disabled");
- 		rtl8168_driver_start(tp);
+ 	if (*ppos)
+@@ -186,7 +193,7 @@ static ssize_t opal_prd_read(struct file
+ 			return -EINTR;
  	}
  
+-	size = be16_to_cpu(item->msg.size);
++	size = be16_to_cpu(item->msg.header.size);
+ 	if (size > count) {
+ 		err = -EINVAL;
+ 		goto err_requeue;
+@@ -352,7 +359,7 @@ static int opal_prd_msg_notifier(struct
+ 	if (!item)
+ 		return -ENOMEM;
+ 
+-	memcpy(&item->msg, msg->params, msg_size);
++	memcpy(&item->msg.data, msg->params, msg_size);
+ 
+ 	spin_lock_irqsave(&opal_prd_msg_queue_lock, flags);
+ 	list_add_tail(&item->list, &opal_prd_msg_queue);
 
 
 
