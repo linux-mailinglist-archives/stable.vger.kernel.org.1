@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267417F7BF0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56EDB7F7E0B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE872B2114F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 113FF2822A3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C980D3A8C3;
-	Fri, 24 Nov 2023 18:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F28339FF3;
+	Fri, 24 Nov 2023 18:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVIN32nv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2r42fZp+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711122511F;
-	Fri, 24 Nov 2023 18:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9A4C433C8;
-	Fri, 24 Nov 2023 18:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D4C381DE;
+	Fri, 24 Nov 2023 18:29:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C72C433C8;
+	Fri, 24 Nov 2023 18:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849406;
-	bh=Kx11AHDQWpy8Vv6Qy5y4LxfbqD7beX2zrVVtNAilymo=;
+	s=korg; t=1700850564;
+	bh=0yAPnlSHTeO/2edgQBoTLpoLSbCYxkxG6IXNiRfIHOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jVIN32nvjH2J7C27icf9PJfHICKyQe4LapmbonM9wyD8RsN0/Xy81HSBL5UpcfwuU
-	 /fp0+tYcRkK6IwzgjMDAMYwVypoXWrX6KAUFrkalgjRqCBnj2bL/60lyRKCoPl8BHB
-	 0kEFhgO9WlGkpTlLPIKMmw6LqYZhnNLnF+ZOpcnY=
+	b=2r42fZp+8cE0Iffq6Iqk2Tzl7Kj9OI/MJEs0HWPlC1snA8mtlhhgyH1hq6HG0gMRz
+	 seLA48KvRA4K5R4E4c4fGRWmFbCquej/Qe5YBaj/vLjE+rQfo0uhHvw0OBQUxi8cPY
+	 Guw1L9jjmFier62+/qL4jM1wVm0QRm6ftcoJoeqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Wenchao Hao <haowenchao2@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/530] NFSv4.1: fix SP4_MACH_CRED protection for pnfs IO
+Subject: [PATCH 6.5 099/491] scsi: libfc: Fix potential NULL pointer dereference in fc_lport_ptp_setup()
 Date: Fri, 24 Nov 2023 17:45:35 +0000
-Message-ID: <20231124172033.226976321@linuxfoundation.org>
+Message-ID: <20231124172027.544431963@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +54,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Wenchao Hao <haowenchao2@huawei.com>
 
-[ Upstream commit 5cc7688bae7f0757c39c1d3dfdd827b724061067 ]
+[ Upstream commit 4df105f0ce9f6f30cda4e99f577150d23f0c9c5f ]
 
-If the client is doing pnfs IO and Kerberos is configured and EXCHANGEID
-successfully negotiated SP4_MACH_CRED and WRITE/COMMIT are on the
-list of state protected operations, then we need to make sure to
-choose the DS's rpc_client structure instead of the MDS's one.
+fc_lport_ptp_setup() did not check the return value of fc_rport_create()
+which can return NULL and would cause a NULL pointer dereference. Address
+this issue by checking return value of fc_rport_create() and log error
+message on fc_rport_create() failed.
 
-Fixes: fb91fb0ee7b2 ("NFS: Move call to nfs4_state_protect_write() to nfs4_write_setup()")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
+Link: https://lore.kernel.org/r/20231011130350.819571-1-haowenchao2@huawei.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/scsi/libfc/fc_lport.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index c3ff98eb6177b..0ff913b4e9e0b 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -5622,7 +5622,7 @@ static void nfs4_proc_write_setup(struct nfs_pgio_header *hdr,
- 
- 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_WRITE];
- 	nfs4_init_sequence(&hdr->args.seq_args, &hdr->res.seq_res, 0, 0);
--	nfs4_state_protect_write(server->nfs_client, clnt, msg, hdr);
-+	nfs4_state_protect_write(hdr->ds_clp ? hdr->ds_clp : server->nfs_client, clnt, msg, hdr);
- }
- 
- static void nfs4_proc_commit_rpc_prepare(struct rpc_task *task, struct nfs_commit_data *data)
-@@ -5663,7 +5663,8 @@ static void nfs4_proc_commit_setup(struct nfs_commit_data *data, struct rpc_mess
- 	data->res.server = server;
- 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_COMMIT];
- 	nfs4_init_sequence(&data->args.seq_args, &data->res.seq_res, 1, 0);
--	nfs4_state_protect(server->nfs_client, NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
-+	nfs4_state_protect(data->ds_clp ? data->ds_clp : server->nfs_client,
-+			NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
- }
- 
- static int _nfs4_proc_commit(struct file *dst, struct nfs_commitargs *args,
+diff --git a/drivers/scsi/libfc/fc_lport.c b/drivers/scsi/libfc/fc_lport.c
+index 9c02c9523c4d4..ab06e9aeb613e 100644
+--- a/drivers/scsi/libfc/fc_lport.c
++++ b/drivers/scsi/libfc/fc_lport.c
+@@ -241,6 +241,12 @@ static void fc_lport_ptp_setup(struct fc_lport *lport,
+ 	}
+ 	mutex_lock(&lport->disc.disc_mutex);
+ 	lport->ptp_rdata = fc_rport_create(lport, remote_fid);
++	if (!lport->ptp_rdata) {
++		printk(KERN_WARNING "libfc: Failed to setup lport 0x%x\n",
++			lport->port_id);
++		mutex_unlock(&lport->disc.disc_mutex);
++		return;
++	}
+ 	kref_get(&lport->ptp_rdata->kref);
+ 	lport->ptp_rdata->ids.port_name = remote_wwpn;
+ 	lport->ptp_rdata->ids.node_name = remote_wwnn;
 -- 
 2.42.0
 
