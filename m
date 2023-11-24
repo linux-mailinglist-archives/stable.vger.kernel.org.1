@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E55B7F7645
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:22:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE06E7F7644
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:22:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC6EFB216C6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:22:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07EA61C21132
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA99E2D057;
-	Fri, 24 Nov 2023 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1ACF2D03D;
+	Fri, 24 Nov 2023 14:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEa/Qfln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqlWzHjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3192D040
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:22:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EDFC433D9;
-	Fri, 24 Nov 2023 14:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A612D2C842
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:22:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DDA4C433D9;
+	Fri, 24 Nov 2023 14:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700835763;
-	bh=mDqJ/hTLKAm5IiDi5tL8nv0JeO9Lh66kR4G7RglwAeA=;
+	s=korg; t=1700835765;
+	bh=Yg0l0YPT6YAXw6F6Egw+IH4tfSguqx6fSPOdbaZWRqY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VEa/Qflnm+nr40CXEDIVhGeXyP/E+W7YKEG3pvabp4q+c+cZG1l6j4vRDIyKClzfs
-	 mQ4Er7IOHIc344irVVgriJ1xQpV2p8a30hlzOeshuMPBV1sGrxwF5LkYz8ID4VEpfu
-	 xS0UK1M7xYcNvyezUbyn9TyL0yvywS4dTuLdywoc=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix encoder disable logic" failed to apply to 6.5-stable tree
+	b=NqlWzHjS8RTk6Kh0+VC6Y6hVnJIMAwBEkfPkKcWYCPo6vLmI8yCddPsHPnanfbFKY
+	 JU9hqeq3l4hvOai6jDYMLHXhLRHkWisOMTxw33948Y7WtJ3dGFCljVLFdyYednMhrp
+	 acEqZDgQ5hg4L8n3Mwk9MCRaupM/p7z5ibaLyoro=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix encoder disable logic" failed to apply to 6.1-stable tree
 To: nicholas.susanto@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 14:22:32 +0000
-Message-ID: <2023112432-yelp-squint-50c2@gregkh>
+Date: Fri, 24 Nov 2023 14:22:33 +0000
+Message-ID: <2023112432-schilling-murkiness-4092@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0ee057e66c4b782809a0a9265cdac5542e646706
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112432-yelp-squint-50c2@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112432-schilling-murkiness-4092@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 0ee057e66c4b ("drm/amd/display: Fix encoder disable logic")
 e0b394a87a11 ("drm/amd/display: Add DCN35 DIO")
+25879d7b4986 ("drm/amd/display: Clean FPGA code in dc")
+7b1b3f5818c3 ("drm/amd/display: update dig enable sequence")
+98ce7d32e215 ("drm/amd/display: convert link.h functions to function pointer style")
+22f1482aff4a ("drm/amd/display: add sysfs entry to read PSR residency from firmware")
+c186c13e6528 ("drm/amd/display: Drop unnecessary DCN guards")
+788c6e2ce5c7 ("drm/amd/display: replace all dc_link function call in link with link functions")
+202a3816f37e ("drm/amd/display: move dc_link functions in protocols folder to dc_link_exports")
+6455cb522191 ("drm/amd/display: link link_dp_dpia_bw.o in makefile")
+76f5dc40ebb1 ("drm/amd/display: move dc_link functions in link root folder to dc_link_exports")
+36516001a7c9 ("drm/amd/display: move dc_link functions in accessories folder to dc_link_exports")
+1e88eb1b2c25 ("drm/amd/display: Drop CONFIG_DRM_AMD_DC_HDCP")
+aee0c07a74d3 ("drm/amd/display: Unify DC logging for BW Alloc")
+7ae1dbe6547c ("drm/amd/display: merge dc_link.h into dc.h and dc_types.h")
+1099238b966e ("drm/amd/display: Update BW ALLOCATION Function declaration")
+a06d565b4a1c ("drm/amd/display: Allocation at stream Enable")
+c32699caeca8 ("drm/amd/display: Updating Video Format Fall Back Policy.")
+c69fc3d0de6c ("drm/amd/display: Reduce CPU busy-waiting for long delays")
+455ad25997ba ("drm/amdgpu: Select DRM_DISPLAY_HDCP_HELPER in amdgpu")
 
 thanks,
 
