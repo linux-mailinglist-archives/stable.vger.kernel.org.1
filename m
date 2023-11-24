@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049687F7E02
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0B57F7C02
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B36722822D5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A60E51F20F83
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5257D3A8C3;
-	Fri, 24 Nov 2023 18:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED94239FC6;
+	Fri, 24 Nov 2023 18:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znpaJrlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DcEthtao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F15E2F86B;
-	Fri, 24 Nov 2023 18:29:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E32BC433C7;
-	Fri, 24 Nov 2023 18:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE3E3A8C2;
+	Fri, 24 Nov 2023 18:10:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA89C433C7;
+	Fri, 24 Nov 2023 18:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850544;
-	bh=qoJdi3wk/MNfHWQ5VAcjOWB2Np9luU+u1q72q1LvN9I=;
+	s=korg; t=1700849451;
+	bh=uT1LOeqCjcHhgoE2rwbY1eij3SBS4vjNHD9Ud5Jqz4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znpaJrltiJ8gPWLlZC+S7+or5SbYhQ4A4A7eUPXh18mUMIaQwX3NIKgiwit92db7u
-	 0T9vSIaMEtnFmjcd3jLwG3QC0wGP+CXly11EcmOQzcrcohTh+XFegCDCTGft1LGRVV
-	 pzFJbOZhyP3R6GpTSsRmqptReaFCX+sWEl87dYv0=
+	b=DcEthtaoJGM8t28WeitcgudYxMx4EC1gouZl0ZEOD7kvack4vVQwlNnj+Uq52AgDP
+	 hU4++wQb0pjkeMm38Jgg33q+fDjk2P/Pcz9EB1+PxvpFTiZEIXuAlNdorjJUh5DU6x
+	 xrcnVxVqQ9uhGpxlkLjq3tB//Haycox1fDqVa+/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <vincent.whitchurch@axis.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 092/491] ARM: 9320/1: fix stack depot IRQ stack filter
+Subject: [PATCH 6.6 162/530] dt-bindings: serial: fix regex pattern for matching serial node children
 Date: Fri, 24 Nov 2023 17:45:28 +0000
-Message-ID: <20231124172027.358792750@linuxfoundation.org>
+Message-ID: <20231124172033.013029944@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Whitchurch <vincent.whitchurch@axis.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit b0150014878c32197cfa66e3e2f79e57f66babc0 ]
+[ Upstream commit 42851dfd4dbe38e34724a00063a9fad5cfc48dcd ]
 
-Place IRQ handlers such as gic_handle_irq() in the irqentry section even
-if FUNCTION_GRAPH_TRACER is not enabled.  Without this, the stack
-depot's filter_irq_stacks() does not correctly filter out IRQ stacks in
-those configurations, which hampers deduplication and eventually leads
-to "Stack depot reached limit capacity" splats with KASAN.
+The regular expression pattern for matching serial node children should
+accept only nodes starting and ending with the set of words: bluetooth,
+gnss, gps or mcu.  Add missing brackets to enforce such matching.
 
-A similar fix was done for arm64 in commit f6794950f0e5ba37e3bbed
-("arm64: set __exception_irq_entry with __irq_entry as a default").
-
-Link: https://lore.kernel.org/r/20230803-arm-irqentry-v1-1-8aad8e260b1c@axis.com
-
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 0c559bc8abfb ("dt-bindings: serial: restrict possible child node names")
+Reported-by: Andreas Kemnade <andreas@kemnade.info>
+Closes: https://lore.kernel.org/all/20231004170021.36b32465@aktux/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20231005093247.128166-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/exception.h | 4 ----
- 1 file changed, 4 deletions(-)
+ Documentation/devicetree/bindings/serial/serial.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/exception.h b/arch/arm/include/asm/exception.h
-index 58e039a851af0..3c82975d46db3 100644
---- a/arch/arm/include/asm/exception.h
-+++ b/arch/arm/include/asm/exception.h
-@@ -10,10 +10,6 @@
+diff --git a/Documentation/devicetree/bindings/serial/serial.yaml b/Documentation/devicetree/bindings/serial/serial.yaml
+index ea277560a5966..5727bd549deca 100644
+--- a/Documentation/devicetree/bindings/serial/serial.yaml
++++ b/Documentation/devicetree/bindings/serial/serial.yaml
+@@ -96,7 +96,7 @@ then:
+     rts-gpios: false
  
- #include <linux/interrupt.h>
- 
--#ifdef CONFIG_FUNCTION_GRAPH_TRACER
- #define __exception_irq_entry	__irq_entry
--#else
--#define __exception_irq_entry
--#endif
- 
- #endif /* __ASM_ARM_EXCEPTION_H */
+ patternProperties:
+-  "^bluetooth|gnss|gps|mcu$":
++  "^(bluetooth|gnss|gps|mcu)$":
+     if:
+       type: object
+     then:
 -- 
 2.42.0
 
