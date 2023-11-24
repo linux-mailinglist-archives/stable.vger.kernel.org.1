@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28447F7E99
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1927F8039
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8356AB217E5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD0EB20A03
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687F0381D6;
-	Fri, 24 Nov 2023 18:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C29364DE;
+	Fri, 24 Nov 2023 18:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swP5T+uy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOzOireX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0721B34189;
-	Fri, 24 Nov 2023 18:34:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D12C433C8;
-	Fri, 24 Nov 2023 18:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9293137170;
+	Fri, 24 Nov 2023 18:47:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3DFC433C7;
+	Fri, 24 Nov 2023 18:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850864;
-	bh=2vX+ycUjyKXFP+PIJ+uoAAVSyfIm65CaKNROSrlqiyc=;
+	s=korg; t=1700851663;
+	bh=QKMPzfNID+Xu02ZDI3vmJwyDJXtoWZTtrsBOggXNrp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swP5T+uypiEdSrS0GI3rzP7HRIZoO0tTwPiZ3OSB3kcSleyJSf9nd+PyZP4UEi7F9
-	 BiVcLXr2KaTwZcSID/nvBu//N/Hhm0RllbEVNdk5afNckMWV7DP20lg7gszltMGpH3
-	 mO5a7SYvrDRMQSaX4L+xKodB9s1Lql8P5ec73lGw=
+	b=jOzOireXuX5sq9HL8aSMnAwrBJ3wjnYj2r6khhtm3ED+0BxSq2o7OqS7th7mKOz1/
+	 Vu90LjVtnqOvRyu6WDm7sBZOuBzuZp0mwJrlCacTScsNyJfK7Ht7pHMpkoXMJruNgs
+	 hTBmIIGpJcEbl2jDy0f6h6QJW3uo5ihprFGHINek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	k2ci <kernel-bot@kylinos.cn>,
-	Linkui Xiao <xiaolinkui@kylinos.cn>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	"Stanley.Yang" <Stanley.Yang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 195/491] netfilter: nf_conntrack_bridge: initialize err to 0
-Date: Fri, 24 Nov 2023 17:47:11 +0000
-Message-ID: <20231124172030.348875780@linuxfoundation.org>
+Subject: [PATCH 6.1 045/372] drm/amdgpu: Fix potential null pointer derefernce
+Date: Fri, 24 Nov 2023 17:47:12 +0000
+Message-ID: <20231124172011.979507761@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +54,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+From: Stanley.Yang <Stanley.Yang@amd.com>
 
-[ Upstream commit a44af08e3d4d7566eeea98d7a29fe06e7b9de944 ]
+[ Upstream commit 80285ae1ec8717b597b20de38866c29d84d321a1 ]
 
-K2CI reported a problem:
+The amdgpu_ras_get_context may return NULL if device
+not support ras feature, so add check before using.
 
-	consume_skb(skb);
-	return err;
-[nf_br_ip_fragment() error]  uninitialized symbol 'err'.
-
-err is not initialized, because returning 0 is expected, initialize err
-to 0.
-
-Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
-Reported-by: k2ci <kernel-bot@kylinos.cn>
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/nf_conntrack_bridge.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index 71056ee847736..0fcf357ea7ad3 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -37,7 +37,7 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 	ktime_t tstamp = skb->tstamp;
- 	struct ip_frag_state state;
- 	struct iphdr *iph;
--	int err;
-+	int err = 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 92fa2faf63e41..dc61cc1659326 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5330,7 +5330,8 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
+ 	 * Flush RAM to disk so that after reboot
+ 	 * the user can read log and see why the system rebooted.
+ 	 */
+-	if (need_emergency_restart && amdgpu_ras_get_context(adev)->reboot) {
++	if (need_emergency_restart && amdgpu_ras_get_context(adev) &&
++		amdgpu_ras_get_context(adev)->reboot) {
+ 		DRM_WARN("Emergency reboot.");
  
- 	/* for offloaded checksums cleanup checksum before fragmentation */
- 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
+ 		ksys_sync_helper();
 -- 
 2.42.0
 
