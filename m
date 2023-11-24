@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C77E7F75A5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:53:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 715307F75A7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:53:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 575222820C6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:53:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DFED2820FE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555F92C1AE;
-	Fri, 24 Nov 2023 13:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233E4286B9;
+	Fri, 24 Nov 2023 13:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llPnO3GM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Tcon48r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C5B286B9
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:53:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA57C433C8;
-	Fri, 24 Nov 2023 13:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE9B28E2C
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:53:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDB8C433C8;
+	Fri, 24 Nov 2023 13:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700833987;
-	bh=9xU7x3G0aKcSK7eMe7QwHRfrR/sC+Nu7TzM3bChe4jM=;
+	s=korg; t=1700834008;
+	bh=+oHwhtPcnz0YzcTw7dqpcxwNcXvJOhCxCrBRWtExkLc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=llPnO3GMTgmvqlZ0Sj4NhmxNaaTX0nMTftZEtdK/9xK0WgcF0pErT+kFYTo+PW5Vw
-	 Nfu5GsaBuSfTIivuUWDw2tL8qfe3bNcKT2k0T6k2d1f0RSOozjZeINEUB9B4uyxght
-	 QL7SMj7F2TULxgHQoAKBpFSNFZ0V0srVNWjko7us=
-Subject: FAILED: patch "[PATCH] drm/amd/display: fix the ability to use lower resolution" failed to apply to 6.5-stable tree
-To: hamza.mahfooz@amd.com,alexander.deucher@amd.com,harry.wentland@amd.com,mark.broadworth@amd.com
+	b=0Tcon48r3K2/FnLtwyqAlQ+rDQD5WhosUfuFNfth4z11AxWjYOWo+NART32Xg/56J
+	 RTf/WCcFkRBwIZe5lzGt9DHizdbHyJJJIyU6cuAG66edpyyW3ttFDJqsl6+G4SHYN/
+	 plr964lG+5J53jmzR8abRGOGBaTT+YyMIOYf/xv0=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: correct gpu clock counter query on cyan skilfish" failed to apply to 6.6-stable tree
+To: Lang.Yu@amd.com,aaron.liu@amd.com,alexander.deucher@amd.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:52:57 +0000
-Message-ID: <2023112457-ranked-morse-c060@gregkh>
+Date: Fri, 24 Nov 2023 13:53:26 +0000
+Message-ID: <2023112426-anthology-applaud-750d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,38 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1101185bc50f5e45b8b89300914d9aa35a0c8cbe
+git cherry-pick -x a19d934986b0f750ca95b5da2ebe54ee27fc25e8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112457-ranked-morse-c060@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112426-anthology-applaud-750d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-1101185bc50f ("drm/amd/display: fix the ability to use lower resolution modes on eDP")
-95dd6efc6bd3 ("drm/amd/display: fix mode scaling (RMX_.*)")
+a19d934986b0 ("drm/amdgpu: correct gpu clock counter query on cyan skilfish")
+4e8303cf2c4d ("drm/amdgpu: Use function for IP version check")
+6b7d211740da ("drm/amdgpu: Fix refclk reporting for SMU v13.0.6")
+1b8e56b99459 ("drm/amdgpu: Restrict bootloader wait to SMUv13.0.6")
+983ac45a06ae ("drm/amdgpu: update SET_HW_RESOURCES definition for UMSCH")
+822f7808291f ("drm/amdgpu/discovery: enable UMSCH 4.0 in IP discovery")
+3488c79beafa ("drm/amdgpu: add initial support for UMSCH")
+2da1b04a2096 ("drm/amdgpu: add UMSCH 4.0 api definition")
+3ee8fb7005ef ("drm/amdgpu: enable VPE for VPE 6.1.0")
+9d4346bdbc64 ("drm/amdgpu: add VPE 6.1.0 support")
+e370f8f38976 ("drm/amdgpu: Add bootloader wait for PSP v13")
+aba2be41470a ("drm/amdgpu: add mmhub 3.3.0 support")
+15e7cbd91de6 ("drm/amdgpu/gfx11: initialize gfx11.5.0")
+f56c1941ebb7 ("drm/amdgpu: use 6.1.0 register offset for HDP CLK_CNTL")
+15c5c5f57514 ("drm/amdgpu: Add bootloader status check")
+3cce0bfcd0f9 ("drm/amd/display: Enable Replay for static screen use cases")
 
 thanks,
 
@@ -70,54 +84,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1101185bc50f5e45b8b89300914d9aa35a0c8cbe Mon Sep 17 00:00:00 2001
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Date: Wed, 13 Sep 2023 14:48:08 -0400
-Subject: [PATCH] drm/amd/display: fix the ability to use lower resolution
- modes on eDP
+From a19d934986b0f750ca95b5da2ebe54ee27fc25e8 Mon Sep 17 00:00:00 2001
+From: Lang Yu <Lang.Yu@amd.com>
+Date: Thu, 21 Sep 2023 12:29:52 +0800
+Subject: [PATCH] drm/amdgpu: correct gpu clock counter query on cyan skilfish
 
-On eDP we can receive invalid modes from dm_update_crtc_state() for
-entirely new streams for which drm_mode_set_crtcinfo() shouldn't be
-called on. So, instead of calling drm_mode_set_crtcinfo() from within
-create_stream_for_sink() we can instead call it from
-amdgpu_dm_connector_mode_valid(). Since, we are guaranteed to only call
-drm_mode_set_crtcinfo() for valid modes from that function (invalid
-modes are rejected by that callback) and that is the only user
-of create_validate_stream_for_sink() that we need to call
-drm_mode_set_crtcinfo() for (as before commit cb841d27b876
-("drm/amd/display: Always pass connector_state to stream validation"),
-that is the only place where create_validate_stream_for_sink()'s
-dm_state was NULL).
+Cayn skilfish uses SMUIO v11.0.8 offset.
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2693
-Fixes: cb841d27b876 ("drm/amd/display: Always pass connector_state to stream validation")
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+Reviewed-by: Aaron Liu <aaron.liu@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: <stable@vger.kernel.org> # v5.15+
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index c462261b3aff..ed1afbb5da78 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6143,8 +6143,6 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 35357364b5b3..d9ccacd06fba 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -102,6 +102,11 @@
+ #define mmGCR_GENERAL_CNTL_Sienna_Cichlid			0x1580
+ #define mmGCR_GENERAL_CNTL_Sienna_Cichlid_BASE_IDX	0
  
- 	if (recalculate_timing)
- 		drm_mode_set_crtcinfo(&saved_mode, 0);
--	else if (!old_stream)
--		drm_mode_set_crtcinfo(&mode, 0);
- 
- 	/*
- 	 * If scaling is enabled and refresh rate didn't change
-@@ -6706,6 +6704,8 @@ enum drm_mode_status amdgpu_dm_connector_mode_valid(struct drm_connector *connec
- 		goto fail;
- 	}
- 
-+	drm_mode_set_crtcinfo(mode, 0);
++#define mmGOLDEN_TSC_COUNT_UPPER_Cyan_Skillfish                0x0105
++#define mmGOLDEN_TSC_COUNT_UPPER_Cyan_Skillfish_BASE_IDX       1
++#define mmGOLDEN_TSC_COUNT_LOWER_Cyan_Skillfish                0x0106
++#define mmGOLDEN_TSC_COUNT_LOWER_Cyan_Skillfish_BASE_IDX       1
 +
- 	stream = create_validate_stream_for_sink(aconnector, mode,
- 						 to_dm_connector_state(connector->state),
- 						 NULL);
+ #define mmGOLDEN_TSC_COUNT_UPPER_Vangogh                0x0025
+ #define mmGOLDEN_TSC_COUNT_UPPER_Vangogh_BASE_IDX       1
+ #define mmGOLDEN_TSC_COUNT_LOWER_Vangogh                0x0026
+@@ -7316,6 +7321,22 @@ static uint64_t gfx_v10_0_get_gpu_clock_counter(struct amdgpu_device *adev)
+ 	uint64_t clock, clock_lo, clock_hi, hi_check;
+ 
+ 	switch (amdgpu_ip_version(adev, GC_HWIP, 0)) {
++	case IP_VERSION(10, 1, 3):
++	case IP_VERSION(10, 1, 4):
++		preempt_disable();
++		clock_hi = RREG32_SOC15_NO_KIQ(SMUIO, 0, mmGOLDEN_TSC_COUNT_UPPER_Cyan_Skillfish);
++		clock_lo = RREG32_SOC15_NO_KIQ(SMUIO, 0, mmGOLDEN_TSC_COUNT_LOWER_Cyan_Skillfish);
++		hi_check = RREG32_SOC15_NO_KIQ(SMUIO, 0, mmGOLDEN_TSC_COUNT_UPPER_Cyan_Skillfish);
++		/* The SMUIO TSC clock frequency is 100MHz, which sets 32-bit carry over
++		 * roughly every 42 seconds.
++		 */
++		if (hi_check != clock_hi) {
++			clock_lo = RREG32_SOC15_NO_KIQ(SMUIO, 0, mmGOLDEN_TSC_COUNT_LOWER_Cyan_Skillfish);
++			clock_hi = hi_check;
++		}
++		preempt_enable();
++		clock = clock_lo | (clock_hi << 32ULL);
++		break;
+ 	case IP_VERSION(10, 3, 1):
+ 	case IP_VERSION(10, 3, 3):
+ 	case IP_VERSION(10, 3, 7):
 
 
