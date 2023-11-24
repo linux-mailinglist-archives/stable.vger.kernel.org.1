@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D0837F7AE2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3CAE7F7B32
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E67C1C20926
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56977B20E12
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE65139FE3;
-	Fri, 24 Nov 2023 17:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B786439FD7;
+	Fri, 24 Nov 2023 18:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziEYg4oO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTTnBicg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE3C39FD0;
-	Fri, 24 Nov 2023 17:59:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FFEC433C8;
-	Fri, 24 Nov 2023 17:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D7A2AF00;
+	Fri, 24 Nov 2023 18:02:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDCDC433C8;
+	Fri, 24 Nov 2023 18:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848780;
-	bh=DzrD9E1yO+CSFd1KYchb2sqmezPkB1CJMnKE9CPaZ8o=;
+	s=korg; t=1700848964;
+	bh=EgvyH82N5Olix1tqH3vdF+zzlKhDEJVyIMCfsniksJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziEYg4oO0wik9DtaezcSWz680GcUFm5+/DBEQ6HmLbiovnmlrMDtFjuUNBx1jO1zI
-	 8QRN0quyBPVFmRmkZjDTguxbiM+mB8r1KuXK/27Ig+jAuLVImpa2IrozQ8td5ARP8O
-	 OTXuIQQHrmOw+fMfZeTDqYAsgueMvVCHccXUSmb8=
+	b=VTTnBicgwSBFqbV3aNLqXhWS19AjrdDE6cUCxL6m/q4yY2J+a/bwBxQTyVVKhsuxG
+	 Je63ue6nB2dXl7I2sr0P1wG/R42dZQm77dUNzIEe06IhTUwp7Kage/eJyqyLNlwg/t
+	 mcoAy4x+VlpR81d0W7/FGd32WkyGv/kuTBBvoh8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hilman <khilman@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Colin Ian King <colin.king@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 78/97] serial: meson: remove redundant initialization of variable id
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 4.14 27/57] media: venus: hfi: add checks to perform sanity on queue pointers
 Date: Fri, 24 Nov 2023 17:50:51 +0000
-Message-ID: <20231124171937.081565084@linuxfoundation.org>
+Message-ID: <20231124171931.276117254@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit 021212f5335229ed12e3d31f9b7d30bd3bb66f7d ]
+commit 5e538fce33589da6d7cb2de1445b84d3a8a692f7 upstream.
 
-The variable id being initialized with a value that is never read
-and it is being updated later with a new value. The initialization is
-redundant and can be removed. Since id is just being used in a for-loop
-inside a local scope, move the declaration of id to that scope.
+Read and write pointers are used to track the packet index in the memory
+shared between video driver and firmware. There is a possibility of OOB
+access if the read or write pointer goes beyond the queue memory size.
+Add checks for the read and write pointer to avoid OOB access.
 
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Addresses-Coverity: ("Unused value")
-Link: https://lore.kernel.org/r/20210426101106.9122-1-colin.king@canonical.com
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/meson_uart.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
-index 4c3616cc00833..6a74a31231ebf 100644
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -664,12 +664,13 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	struct resource *res_mem, *res_irq;
- 	struct uart_port *port;
- 	int ret = 0;
--	int id = -1;
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -220,6 +220,11 @@ static int venus_write_queue(struct venu
  
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
- 
- 	if (pdev->id < 0) {
-+		int id;
+ 	new_wr_idx = wr_idx + dwords;
+ 	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
 +
- 		for (id = AML_UART_PORT_OFFSET; id < AML_UART_PORT_NUM; id++) {
- 			if (!meson_ports[id]) {
- 				pdev->id = id;
--- 
-2.42.0
-
++	if (wr_ptr < (u32 *)queue->qmem.kva ||
++	    wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*wr_ptr)))
++		return -EINVAL;
++
+ 	if (new_wr_idx < qsize) {
+ 		memcpy(wr_ptr, packet, dwords << 2);
+ 	} else {
+@@ -287,6 +292,11 @@ static int venus_read_queue(struct venus
+ 	}
+ 
+ 	rd_ptr = (u32 *)(queue->qmem.kva + (rd_idx << 2));
++
++	if (rd_ptr < (u32 *)queue->qmem.kva ||
++	    rd_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*rd_ptr)))
++		return -EINVAL;
++
+ 	dwords = *rd_ptr >> 2;
+ 	if (!dwords)
+ 		return -EINVAL;
 
 
 
