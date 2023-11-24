@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24AF7F7C4F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 787E67F802E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4BD81C21149
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32359282552
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28EC63A8C6;
-	Fri, 24 Nov 2023 18:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A2B364DE;
+	Fri, 24 Nov 2023 18:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKSeKvIs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HBbSZ0Ra"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB92939FDD;
-	Fri, 24 Nov 2023 18:13:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4752EC433C7;
-	Fri, 24 Nov 2023 18:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739E7364AE;
+	Fri, 24 Nov 2023 18:47:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023B6C433C8;
+	Fri, 24 Nov 2023 18:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849639;
-	bh=qR5phl6Rp/D7LK3R4rnNONaOvwaXzRtJ8wHvE4RHAvc=;
+	s=korg; t=1700851648;
+	bh=40JAoaQ/9WklF0VIPLHHMvVzw5xTn+GEjsNdw81Y11U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKSeKvIsT0JcJc8COkxZuIjAqAknxO2HjpNA0A85H23oFAwMJx3DUFw4Nki//qFzI
-	 2fPAaYuIxEmP7uk+XFevafbk/ln7osNoPfQwd6f7Suxmg+Mv6yd02pLqqo/Y9HWLjv
-	 qrl6xAHI4bd5vsvE7L8pS284G0yk8u7PrIKIydXs=
+	b=HBbSZ0RaouqhDMMpNmgZwr2Jvlvxh0c9f1sWYbVr1RCoQOioogQSqFYklUL3khO95
+	 DSgKSAK3yOQAoyEqeLVLzQ64rpkAFwJ/OZXpHfZmq4WfLGiT/dRe2xqJBFdEA82RtR
+	 +o5AREYyIXZupiaWWiBhQ+ZVbIYacAhIlr/JyuXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Shih <victor.shih@genesyslogic.com.tw>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kai-Heng Feng <kai.heng.geng@canonical.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 261/530] mmc: sdhci-pci-gli: GL9755: Mask the replay timer timeout of AER
+	David Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Zack Rusin <zackr@vmware.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/372] drm_lease.c: copy user-array safely
 Date: Fri, 24 Nov 2023 17:47:07 +0000
-Message-ID: <20231124172035.988395721@linuxfoundation.org>
+Message-ID: <20231124172011.822005241@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +55,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Shih <victor.shih@genesyslogic.com.tw>
+From: Philipp Stanner <pstanner@redhat.com>
 
-commit 85dd3af64965c1c0eb7373b340a1b1f7773586b0 upstream.
+[ Upstream commit f37d63e219c39199a59b8b8a211412ff27192830 ]
 
-Due to a flaw in the hardware design, the GL9755 replay timer frequently
-times out when ASPM is enabled. As a result, the warning messages will
-often appear in the system log when the system accesses the GL9755
-PCI config. Therefore, the replay timer timeout must be masked.
+Currently, there is no overflow-check with memdup_user().
 
-Fixes: 36ed2fd32b2c ("mmc: sdhci-pci-gli: A workaround to allow GL9755 to enter ASPM L1.2")
-Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Kai-Heng Feng <kai.heng.geng@canonical.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231107095741.8832-3-victorshihgli@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use the new function memdup_array_user() instead of memdup_user() for
+duplicating the user-space array safely.
+
+Suggested-by: David Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-6-pstanner@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/drm_lease.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -149,6 +149,9 @@
- #define PCI_GLI_9755_PM_CTRL     0xFC
- #define   PCI_GLI_9755_PM_STATE    GENMASK(1, 0)
- 
-+#define PCI_GLI_9755_CORRERR_MASK				0x214
-+#define   PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
-+
- #define SDHCI_GLI_9767_GM_BURST_SIZE			0x510
- #define   SDHCI_GLI_9767_GM_BURST_SIZE_AXI_ALWAYS_SET	  BIT(8)
- 
-@@ -756,6 +759,11 @@ static void gl9755_hw_setting(struct sdh
- 	value &= ~PCI_GLI_9755_PM_STATE;
- 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
- 
-+	/* mask the replay timer timeout of AER */
-+	pci_read_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, &value);
-+	value |= PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
-+	pci_write_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, value);
-+
- 	gl9755_wt_off(pdev);
- }
- 
+diff --git a/drivers/gpu/drm/drm_lease.c b/drivers/gpu/drm/drm_lease.c
+index d72c2fac0ff1a..b7362356e5448 100644
+--- a/drivers/gpu/drm/drm_lease.c
++++ b/drivers/gpu/drm/drm_lease.c
+@@ -507,8 +507,8 @@ int drm_mode_create_lease_ioctl(struct drm_device *dev,
+ 	/* Handle leased objects, if any */
+ 	idr_init(&leases);
+ 	if (object_count != 0) {
+-		object_ids = memdup_user(u64_to_user_ptr(cl->object_ids),
+-					 array_size(object_count, sizeof(__u32)));
++		object_ids = memdup_array_user(u64_to_user_ptr(cl->object_ids),
++					       object_count, sizeof(__u32));
+ 		if (IS_ERR(object_ids)) {
+ 			ret = PTR_ERR(object_ids);
+ 			idr_destroy(&leases);
+-- 
+2.42.0
+
 
 
 
