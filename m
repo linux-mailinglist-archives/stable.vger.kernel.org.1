@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-2231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4A47F8350
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14EBF7F8220
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24571C25436
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C41BD284390
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20329364C1;
-	Fri, 24 Nov 2023 19:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 115EA33CFD;
+	Fri, 24 Nov 2023 19:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYY39i+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dwv4qP6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D32364AE;
-	Fri, 24 Nov 2023 19:16:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1A9C433C7;
-	Fri, 24 Nov 2023 19:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B153307D;
+	Fri, 24 Nov 2023 19:04:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34BAC433C7;
+	Fri, 24 Nov 2023 19:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853377;
-	bh=zISKXFvFXPL8QaJZNEcgPWf/hNO1PJxBUqnX7m9CTXc=;
+	s=korg; t=1700852681;
+	bh=nnNZL/hKZkE7vjaEMJvGtuRUHjXRjNLp5amxj+lW94s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EYY39i+EJqaz8ljLzV+xbJ8zZqRnLii2vO1vcpx+NbRTSVy5RpLDkkfSw+sTHHomJ
-	 fbuIa7MUjEuXx1KtxGUKreMcnxmQMpOoG7LZSwOHHLkU2XB/BrjUDy1nSQxZVR7XGS
-	 XuTRQBIHraj9pyGxIzDTAARevFDnRkz0nJ/pV7qc=
+	b=Dwv4qP6TxWOsbH4Z9Dl7X83u4lbv7eQybBRUEnRXiqNq4wDh8wdi7xfVyKtpiO0TR
+	 tmZCOar4WVhA0N7zwWbNARnpdG/V7b0pJv+UC5l6656rz/F+l4FXmxoDFipcqMUfw2
+	 GmFXr5rfp/fJVahrxGmkiIBn41FVQ0+IeKAtALcA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
-	Julian Andres Klode <julian.klode@canonical.com>,
-	Roxana Nicolescu <roxana.nicolescu@canonical.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 164/297] crypto: x86/sha - load modules based on CPU features
-Date: Fri, 24 Nov 2023 17:53:26 +0000
-Message-ID: <20231124172005.987135181@linuxfoundation.org>
+	k2ci <kernel-bot@kylinos.cn>,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 080/193] netfilter: nf_conntrack_bridge: initialize err to 0
+Date: Fri, 24 Nov 2023 17:53:27 +0000
+Message-ID: <20231124171950.429337309@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,113 +54,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roxana Nicolescu <roxana.nicolescu@canonical.com>
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-commit 1c43c0f1f84aa59dfc98ce66f0a67b2922aa7f9d upstream.
+[ Upstream commit a44af08e3d4d7566eeea98d7a29fe06e7b9de944 ]
 
-x86 optimized crypto modules are built as modules rather than build-in and
-they are not loaded when the crypto API is initialized, resulting in the
-generic builtin module (sha1-generic) being used instead.
+K2CI reported a problem:
 
-It was discovered when creating a sha1/sha256 checksum of a 2Gb file by
-using kcapi-tools because it would take significantly longer than creating
-a sha512 checksum of the same file. trace-cmd showed that for sha1/256 the
-generic module was used, whereas for sha512 the optimized module was used
-instead.
+	consume_skb(skb);
+	return err;
+[nf_br_ip_fragment() error]  uninitialized symbol 'err'.
 
-Add module aliases() for these x86 optimized crypto modules based on CPU
-feature bits so udev gets a chance to load them later in the boot
-process. This resulted in ~3x decrease in the real-time execution of
-kcapi-dsg.
+err is not initialized, because returning 0 is expected, initialize err
+to 0.
 
-Fix is inspired from commit
-aa031b8f702e ("crypto: x86/sha512 - load based on CPU features")
-where a similar fix was done for sha512.
-
-Cc: stable@vger.kernel.org # 5.15+
-Suggested-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
-Suggested-by: Julian Andres Klode <julian.klode@canonical.com>
-Signed-off-by: Roxana Nicolescu <roxana.nicolescu@canonical.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
+Reported-by: k2ci <kernel-bot@kylinos.cn>
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/sha1_ssse3_glue.c   | 12 ++++++++++++
- arch/x86/crypto/sha256_ssse3_glue.c | 12 ++++++++++++
- 2 files changed, 24 insertions(+)
+ net/bridge/netfilter/nf_conntrack_bridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/crypto/sha1_ssse3_glue.c b/arch/x86/crypto/sha1_ssse3_glue.c
-index 44340a1139e0..959afa705e95 100644
---- a/arch/x86/crypto/sha1_ssse3_glue.c
-+++ b/arch/x86/crypto/sha1_ssse3_glue.c
-@@ -24,8 +24,17 @@
- #include <linux/types.h>
- #include <crypto/sha1.h>
- #include <crypto/sha1_base.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/simd.h>
+diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
+index fdbed31585553..d14b2dbbd1dfb 100644
+--- a/net/bridge/netfilter/nf_conntrack_bridge.c
++++ b/net/bridge/netfilter/nf_conntrack_bridge.c
+@@ -36,7 +36,7 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
+ 	ktime_t tstamp = skb->tstamp;
+ 	struct ip_frag_state state;
+ 	struct iphdr *iph;
+-	int err;
++	int err = 0;
  
-+static const struct x86_cpu_id module_cpu_ids[] = {
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
-+	{}
-+};
-+MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
-+
- static int sha1_update(struct shash_desc *desc, const u8 *data,
- 			     unsigned int len, sha1_block_fn *sha1_xform)
- {
-@@ -301,6 +310,9 @@ static inline void unregister_sha1_ni(void) { }
- 
- static int __init sha1_ssse3_mod_init(void)
- {
-+	if (!x86_match_cpu(module_cpu_ids))
-+		return -ENODEV;
-+
- 	if (register_sha1_ssse3())
- 		goto fail;
- 
-diff --git a/arch/x86/crypto/sha256_ssse3_glue.c b/arch/x86/crypto/sha256_ssse3_glue.c
-index 3a5f6be7dbba..d25235f0ccaf 100644
---- a/arch/x86/crypto/sha256_ssse3_glue.c
-+++ b/arch/x86/crypto/sha256_ssse3_glue.c
-@@ -38,11 +38,20 @@
- #include <crypto/sha2.h>
- #include <crypto/sha256_base.h>
- #include <linux/string.h>
-+#include <asm/cpu_device_id.h>
- #include <asm/simd.h>
- 
- asmlinkage void sha256_transform_ssse3(struct sha256_state *state,
- 				       const u8 *data, int blocks);
- 
-+static const struct x86_cpu_id module_cpu_ids[] = {
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
-+	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
-+	{}
-+};
-+MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
-+
- static int _sha256_update(struct shash_desc *desc, const u8 *data,
- 			  unsigned int len, sha256_block_fn *sha256_xform)
- {
-@@ -366,6 +375,9 @@ static inline void unregister_sha256_ni(void) { }
- 
- static int __init sha256_ssse3_mod_init(void)
- {
-+	if (!x86_match_cpu(module_cpu_ids))
-+		return -ENODEV;
-+
- 	if (register_sha256_ssse3())
- 		goto fail;
- 
+ 	/* for offloaded checksums cleanup checksum before fragmentation */
+ 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
 -- 
-2.42.1
+2.42.0
 
 
 
