@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 857567F827C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 664437F83A7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2811CB24529
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05D7FB26848
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830F52E64F;
-	Fri, 24 Nov 2023 19:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4308E3418E;
+	Fri, 24 Nov 2023 19:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgF0XwPM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MD5AyVAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440A233076;
-	Fri, 24 Nov 2023 19:08:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F85EC433C7;
-	Fri, 24 Nov 2023 19:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03233321AD;
+	Fri, 24 Nov 2023 19:19:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83604C433C7;
+	Fri, 24 Nov 2023 19:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852884;
-	bh=nzW13D0l7kQzgm05nvf3dwAvT3Oo2t50nI0TS1qgzvo=;
+	s=korg; t=1700853580;
+	bh=YyW+X4mXUGCjAmVZ9N+rKOJCJ5E4DsuBl4Se+Prdi5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DgF0XwPM3ELMfr5SL495zeZDIK67IOIUemqlA6SLgxAPESsZ6KkNEGIlUSIVSwAQN
-	 mAmY91+BIV6Yx2AZ4rcsuoKfx8au9JrZqA6VlEA80ohOElWaFMkFpKf0V2pIsZbK8Q
-	 sQ8MAPsRm/zNMuaTOiov01bQrS230rMBWc/Gwp4c=
+	b=MD5AyVART0qvVzTsysvfJSHS7HH0lMsH8fBEN1wkTq0FSLZQwAQ7VVIBNICsoOzn6
+	 00LoDhw21Vea0vfqH1r9ogbXeQJ8w5UGvW6VEl3OnYs4LTr6E93EMW3t1a3mh8lQa2
+	 zcmJS3sHKVb3d2PFO156iNTTVrFX5tYjT5DyQ2yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johnathan Mantey <johnathanx.mantey@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 161/193] Revert ncsi: Propagate carrier gain/loss events to the NCSI controller
+	Meng Tang <tangmeng@uniontech.com>,
+	Guan Wentao <guanwentao@uniontech.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 246/297] Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE
 Date: Fri, 24 Nov 2023 17:54:48 +0000
-Message-ID: <20231124171953.635018181@linuxfoundation.org>
+Message-ID: <20231124172008.797729518@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +54,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johnathan Mantey <johnathanx.mantey@intel.com>
+From: Guan Wentao <guanwentao@uniontech.com>
 
-commit 9e2e7efbbbff69d8340abb56d375dd79d1f5770f upstream.
+[ Upstream commit da06ff1f585ea784c79f80e7fab0e0c4ebb49c1c ]
 
-This reverts commit 3780bb29311eccb7a1c9641032a112eed237f7e3.
+Add PID/VID 0bda:b85b for Realtek RTL8852BE USB bluetooth part.
+The PID/VID was reported by the patch last year. [1]
+Some SBCs like rockpi 5B A8 module contains the device.
+And it`s founded in website. [2] [3]
 
-The cited commit introduced unwanted behavior.
+Here is the device tables in /sys/kernel/debug/usb/devices .
 
-The intent for the commit was to be able to detect carrier loss/gain
-for just the NIC connected to the BMC. The unwanted effect is a
-carrier loss for auxiliary paths also causes the BMC to lose
-carrier. The BMC never regains carrier despite the secondary NIC
-regaining a link.
+T:  Bus=07 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0bda ProdID=b85b Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
-This change, when merged, needs to be backported to stable kernels.
-5.4-stable, 5.10-stable, 5.15-stable, 6.1-stable, 6.5-stable
+Link: https://lore.kernel.org/all/20220420052402.19049-1-tangmeng@uniontech.com/ [1]
+Link: https://forum.radxa.com/t/bluetooth-on-ubuntu/13051/4 [2]
+Link: https://ubuntuforums.org/showthread.php?t=2489527 [3]
 
-Fixes: 3780bb29311e ("ncsi: Propagate carrier gain/loss events to the NCSI controller")
-CC: stable@vger.kernel.org
-Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Meng Tang <tangmeng@uniontech.com>
+Signed-off-by: Guan Wentao <guanwentao@uniontech.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-aen.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -89,11 +89,6 @@ static int ncsi_aen_handler_lsc(struct n
- 	if ((had_link == has_link) || chained)
- 		return 0;
- 
--	if (had_link)
--		netif_carrier_off(ndp->ndev.dev);
--	else
--		netif_carrier_on(ndp->ndev.dev);
--
- 	if (!ndp->multi_package && !nc->package->multi_channel) {
- 		if (had_link) {
- 			ndp->flags |= NCSI_DEV_RESHUFFLE;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index ea0ab93097905..a862f859f7a50 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -441,6 +441,8 @@ static const struct usb_device_id blacklist_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3570), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
+-- 
+2.42.0
+
 
 
 
