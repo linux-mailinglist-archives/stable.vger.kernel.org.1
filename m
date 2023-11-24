@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-2296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB84B7F8394
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC437F8283
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 286331C25E59
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F92AB245C2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633CC37170;
-	Fri, 24 Nov 2023 19:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C962A364C1;
+	Fri, 24 Nov 2023 19:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vl6SjGs9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZVqS7xK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA23339BE;
-	Fri, 24 Nov 2023 19:18:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861E0C433CB;
-	Fri, 24 Nov 2023 19:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A60D2E64F;
+	Fri, 24 Nov 2023 19:08:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5402C433C8;
+	Fri, 24 Nov 2023 19:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853535;
-	bh=S3rpVHOGrQ87LpdRUgHcTzx+l01tw08vUT6Rsg8nwYw=;
+	s=korg; t=1700852903;
+	bh=0Z8tLaq+3nq/83TEB73/h3IN4ph06Ze+55hnzSdJFBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vl6SjGs9MBLeBt4PkFCfVlYqcDA48H09SOgP2JC7dQ0q8xnVsvagDdKXqeSfrbqfX
-	 XjfFzmXqWXbWAFm40TJrJQODenQYonjlUSHsaAUdyH9RjVOb/DgOkWPsLXdFJo0Ojr
-	 BTrOxuZGCLmeEaehQL+5CSpWJquGYqzzkmbCjtOw=
+	b=UZVqS7xK1NV/uDIXwB9aid3YmpDoycwaMPxPtSxuEZ1VkP9SZqLMu3BYkStOhcpIT
+	 5MFy5Fdvs2QQlpuuOTNlam06EUpl4IKyct5YfczFiukU1smy8eRiNwXRzuHbKckktZ
+	 QNVIvRCTzGMVbdrFH3CK219mi4xMZj+N8lcZ6N3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 228/297] i3c: master: svc: fix ibi may not return mandatory data byte
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 143/193] parisc/power: Fix power soft-off when running on qemu
 Date: Fri, 24 Nov 2023 17:54:30 +0000
-Message-ID: <20231124172008.175668697@linuxfoundation.org>
+Message-ID: <20231124171952.922051543@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +51,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Helge Deller <deller@gmx.de>
 
-commit c85e209b799f12d18a90ae6353b997b1bb1274a5 upstream.
+commit 6ad6e15a9c46b8f0932cd99724f26f3db4db1cdf upstream.
 
-MSTATUS[RXPEND] is only updated after the data transfer cycle started. This
-creates an issue when the I3C clock is slow, and the CPU is running fast
-enough that MSTATUS[RXPEND] may not be updated when the code reaches
-checking point. As a result, mandatory data can be missed.
+Firmware returns the physical address of the power switch,
+so need to use gsc_writel() instead of direct memory access.
 
-Add a wait for MSTATUS[COMPLETE] to ensure that all mandatory data is
-already in FIFO. It also works without mandatory data.
-
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-4-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: d0c219472980 ("parisc/power: Add power soft-off when running on qemu")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/parisc/power.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -294,6 +294,7 @@ static int svc_i3c_master_handle_ibi(str
- 	struct i3c_ibi_slot *slot;
- 	unsigned int count;
- 	u32 mdatactrl;
-+	int ret, val;
- 	u8 *buf;
- 
- 	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
-@@ -303,6 +304,13 @@ static int svc_i3c_master_handle_ibi(str
- 	slot->len = 0;
- 	buf = slot->data;
- 
-+	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
-+						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
-+	if (ret) {
-+		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
-+		return ret;
-+	}
-+
- 	while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS))  &&
- 	       slot->len < SVC_I3C_FIFO_SIZE) {
- 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+--- a/drivers/parisc/power.c
++++ b/drivers/parisc/power.c
+@@ -196,7 +196,7 @@ static struct notifier_block parisc_pani
+ static int qemu_power_off(struct sys_off_data *data)
+ {
+ 	/* this turns the system off via SeaBIOS */
+-	*(int *)data->cb_data = 0;
++	gsc_writel(0, (unsigned long) data->cb_data);
+ 	pdc_soft_power_button(1);
+ 	return NOTIFY_DONE;
+ }
 
 
 
