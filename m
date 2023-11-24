@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C857F7DB9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52AE67F7BCB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A08F5282057
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB001C21092
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F71739FF7;
-	Fri, 24 Nov 2023 18:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B042B39FF8;
+	Fri, 24 Nov 2023 18:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNaP8k28"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbfUQVyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE9D39FC3;
-	Fri, 24 Nov 2023 18:26:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0D9C433CA;
-	Fri, 24 Nov 2023 18:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679A8381DF;
+	Fri, 24 Nov 2023 18:08:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A920CC433C8;
+	Fri, 24 Nov 2023 18:08:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850414;
-	bh=atqGYbNOBw5H0ZfSnn0aLkCd9qwsDVo6WrSSJ80Oe/U=;
+	s=korg; t=1700849322;
+	bh=JykbmziV6DL5hniM/FPVRCgQK76mMd/XFFWOO+CJS7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNaP8k285WNkuH1BteFlNRfnKRVhEWI2thhF6a5UxcI8sI+nouysWpfM5txLJkY10
-	 MWmSBc5Hf9NikMmIqC2S71E3pamK33Rgnngamb1XwZADfuMnFDxADOqpmGrnhwNV9K
-	 TbfvW3qmhqUBxTUrHb7mFZEXrthp+tSTAW+XkQgE=
+	b=PbfUQVyyWsdQVlzUs60JOCtXOECK/iXi5zdMliROtLj7eA/78iSM884wNYNj85LFL
+	 puqtJEM5Rq05DTmb7KXSZnCDLeM7ZllZ0GSH3byRnd+l7SEG4Oa8rgtzVxyTQEcS8F
+	 t4M+K6OOhhcVvjtsBm1VdwKIbq49HNncHF49MnuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 040/491] tsnep: Fix tsnep_request_irq() format-overflow warning
-Date: Fri, 24 Nov 2023 17:44:36 +0000
-Message-ID: <20231124172025.894620685@linuxfoundation.org>
+Subject: [PATCH 6.6 111/530] misc: pci_endpoint_test: Add Device ID for R-Car S4-8 PCIe controller
+Date: Fri, 24 Nov 2023 17:44:37 +0000
+Message-ID: <20231124172031.499581486@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,84 +52,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit 00e984cb986b31e9313745e51daceaa1e1eb7351 ]
+[ Upstream commit 6c4b39937f4e65688ea294725ae432b2565821ff ]
 
-Compiler warns about a possible format-overflow in tsnep_request_irq():
-drivers/net/ethernet/engleder/tsnep_main.c:884:55: warning: 'sprintf' may write a terminating nul past the end of the destination [-Wformat-overflow=]
-                         sprintf(queue->name, "%s-rx-%d", name,
-                                                       ^
-drivers/net/ethernet/engleder/tsnep_main.c:881:55: warning: 'sprintf' may write a terminating nul past the end of the destination [-Wformat-overflow=]
-                         sprintf(queue->name, "%s-tx-%d", name,
-                                                       ^
-drivers/net/ethernet/engleder/tsnep_main.c:878:49: warning: '-txrx-' directive writing 6 bytes into a region of size between 5 and 25 [-Wformat-overflow=]
-                         sprintf(queue->name, "%s-txrx-%d", name,
-                                                 ^~~~~~
+Add Renesas R8A779F0 in pci_device_id table so that pci-epf-test
+can be used for testing PCIe EP on R-Car S4-8.
 
-Actually overflow cannot happen. Name is limited to IFNAMSIZ, because
-netdev_name() is called during ndo_open(). queue_index is single char,
-because less than 10 queues are supported.
-
-Fix warning with snprintf(). Additionally increase buffer to 32 bytes,
-because those 7 additional bytes were unused anyway.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310182028.vmDthIUa-lkp@intel.com/
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20231023183856.58373-1-gerhard@engleder-embedded.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-16-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/engleder/tsnep.h      |  2 +-
- drivers/net/ethernet/engleder/tsnep_main.c | 12 ++++++------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/misc/pci_endpoint_test.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/engleder/tsnep.h b/drivers/net/ethernet/engleder/tsnep.h
-index 11b29f56aaf9c..b91abe9efb517 100644
---- a/drivers/net/ethernet/engleder/tsnep.h
-+++ b/drivers/net/ethernet/engleder/tsnep.h
-@@ -142,7 +142,7 @@ struct tsnep_rx {
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index 7e1acc68d4359..af519088732d9 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -82,6 +82,7 @@
+ #define PCI_DEVICE_ID_RENESAS_R8A774B1		0x002b
+ #define PCI_DEVICE_ID_RENESAS_R8A774C0		0x002d
+ #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
++#define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
  
- struct tsnep_queue {
- 	struct tsnep_adapter *adapter;
--	char name[IFNAMSIZ + 9];
-+	char name[IFNAMSIZ + 16];
+ static DEFINE_IDA(pci_endpoint_test_ida);
  
- 	struct tsnep_tx *tx;
- 	struct tsnep_rx *rx;
-diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-index 479156576bc8a..e3fc894fa3f6f 100644
---- a/drivers/net/ethernet/engleder/tsnep_main.c
-+++ b/drivers/net/ethernet/engleder/tsnep_main.c
-@@ -1778,14 +1778,14 @@ static int tsnep_request_irq(struct tsnep_queue *queue, bool first)
- 		dev = queue->adapter;
- 	} else {
- 		if (queue->tx && queue->rx)
--			sprintf(queue->name, "%s-txrx-%d", name,
--				queue->rx->queue_index);
-+			snprintf(queue->name, sizeof(queue->name), "%s-txrx-%d",
-+				 name, queue->rx->queue_index);
- 		else if (queue->tx)
--			sprintf(queue->name, "%s-tx-%d", name,
--				queue->tx->queue_index);
-+			snprintf(queue->name, sizeof(queue->name), "%s-tx-%d",
-+				 name, queue->tx->queue_index);
- 		else
--			sprintf(queue->name, "%s-rx-%d", name,
--				queue->rx->queue_index);
-+			snprintf(queue->name, sizeof(queue->name), "%s-rx-%d",
-+				 name, queue->rx->queue_index);
- 		handler = tsnep_irq_txrx;
- 		dev = queue;
- 	}
+@@ -991,6 +992,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774B1),},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774C0),},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774E1),},
++	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A779F0),
++	  .driver_data = (kernel_ulong_t)&default_data,
++	},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
+ 	  .driver_data = (kernel_ulong_t)&j721e_data,
+ 	},
 -- 
 2.42.0
 
