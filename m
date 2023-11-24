@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F0C7F7620
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:17:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C59D07F7623
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E99E81C2100E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:17:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81284281B45
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6962C1BE;
-	Fri, 24 Nov 2023 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF902836C;
+	Fri, 24 Nov 2023 14:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koZx+1JN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWJdqtxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD66D28E25
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:17:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35FCBC43391;
-	Fri, 24 Nov 2023 14:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD06E28E25
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:17:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19BB5C433CD;
+	Fri, 24 Nov 2023 14:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700835430;
-	bh=bwzObsgjjlEruzEir0nCO5yr3SfWiJdiHe01aSY56VU=;
+	s=korg; t=1700835434;
+	bh=IQvEcGMAX35rD4e1H8x8araq4NKmzTRpSw4vPT3ZsFA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=koZx+1JNbW0esRIzfwxeBM+DeGF9z3u3O43SHCFYgi4e2X7pBZiQJmUUH1jQudNB6
-	 Bt79B+C1fbN91KpXR/ZYXPbe3e3PKGYMBluXiW19W00j/DORlMogDuAqqN3jTV87Ln
-	 7kDhX/iRj+ozRjszLo1+uXXgPfIR4RvLis2GPq9M=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Don't set dpms_off for seamless boot" failed to apply to 5.15-stable tree
+	b=GWJdqtxSm9hz9z1afS+VZTKpAjEYRtL4s1v/jH53LzlEDEZoYnLBBQI9ff/b3UO2N
+	 qsp0QVOFlR80HtENMTEGr6OhDgEY1uN45EhpkPIhs8KmOUuyGXiZR3/zHRCW5AsVHQ
+	 eYgg2BtQQ9i/knyCKPsKxF6x5h1tjLNBkr0MANtE=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Don't set dpms_off for seamless boot" failed to apply to 5.10-stable tree
 To: daniel.miess@amd.com,alexander.deucher@amd.com,charlene.liu@amd.com,chiahsuan.chung@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 14:17:03 +0000
-Message-ID: <2023112403-spendable-tubeless-a40e@gregkh>
+Date: Fri, 24 Nov 2023 14:17:04 +0000
+Message-ID: <2023112403-second-camisole-9772@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x ef013f6fcd8affaae4a5bf4b51cb6244c8a2ed3f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112403-spendable-tubeless-a40e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112403-second-camisole-9772@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 ef013f6fcd8a ("drm/amd/display: Don't set dpms_off for seamless boot")
+850d2fcf3e34 ("drm/amd/display: only check available pipe to disable vbios mode.")
 
 thanks,
 
