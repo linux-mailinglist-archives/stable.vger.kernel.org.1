@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA5A7F8235
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C647F8409
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D28B1C22D53
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B31D528A0D9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569EB2EAEA;
-	Fri, 24 Nov 2023 19:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BB1364B7;
+	Fri, 24 Nov 2023 19:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PY0wWYCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXMUPnwf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E601033076;
-	Fri, 24 Nov 2023 19:05:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C51DC433C7;
-	Fri, 24 Nov 2023 19:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E8731748;
+	Fri, 24 Nov 2023 19:23:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60BC4C433C8;
+	Fri, 24 Nov 2023 19:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852732;
-	bh=rkCy/HxQ00lCHrV7yHp63aGBBVY/ylorPJVnyoJAGOg=;
+	s=korg; t=1700853805;
+	bh=W+FFfTGyNQB9fBlpffnTEzFssPL6NkoZv6jCNOpdLj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PY0wWYCQDexuRpS5s/8aUnIH9UenehsN8n35Kz8wt69/hKubTvuOp4cNu9gpWqVG6
-	 BX0ALIRTsv7Ge1x3e5DacXKs2/kL5zVfan/JFGzxB9N2RrVdPAK7eL3ofqEQLie/rP
-	 a5HcRPxPI+GujY/o7ZayEnVOxaVuaASCtCTsPG6E=
+	b=nXMUPnwf1laHeWAVxNaZAZe1ygTipYyOvQLHDKxiyG/A0gvITk2jkyhVyQiQAuIMS
+	 D2M0A4++9KCZYgi89dqiiMVMHhbs4ijsQ/jq85xU5M5C2TXRjAZxBimGQg3bQLJXEE
+	 4OlrUTA7uwdsnbmQC5FgLqa/yhIfIPLH/O0ImKYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jirislaby@kernel.org,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>
-Subject: [PATCH 5.10 101/193] tty/sysrq: replace smp_processor_id() with get_cpu()
-Date: Fri, 24 Nov 2023 17:53:48 +0000
-Message-ID: <20231124171951.300019806@linuxfoundation.org>
+	Douglas Anderson <dianders@chromium.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 012/159] wifi: ath10k: Dont touch the CE interrupt registers after power up
+Date: Fri, 24 Nov 2023 17:53:49 +0000
+Message-ID: <20231124171942.407914637@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,77 +53,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit dd976a97d15b47656991e185a94ef42a0fa5cfd4 upstream.
+[ Upstream commit 170c75d43a77dc937c58f07ecf847ba1b42ab74e ]
 
-The smp_processor_id() shouldn't be called from preemptible code.
-Instead use get_cpu() and put_cpu() which disables preemption in
-addition to getting the processor id. Enable preemption back after
-calling schedule_work() to make sure that the work gets scheduled on all
-cores other than the current core. We want to avoid a scenario where
-current core's stack trace is printed multiple times and one core's
-stack trace isn't printed because of scheduling of current task.
+As talked about in commit d66d24ac300c ("ath10k: Keep track of which
+interrupts fired, don't poll them"), if we access the copy engine
+register at a bad time then ath10k can go boom. However, it's not
+necessarily easy to know when it's safe to access them.
 
-This fixes the following bug:
+The ChromeOS test labs saw a crash that looked like this at
+shutdown/reboot time (on a chromeos-5.15 kernel, but likely the
+problem could also reproduce upstream):
 
-[  119.143590] sysrq: Show backtrace of all active CPUs
-[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
-[  119.144586] caller is debug_smp_processor_id+0x20/0x30
-[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
-[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
-[  119.145053] Call trace:
-[  119.145093]  dump_backtrace+0x0/0x1a0
-[  119.145122]  show_stack+0x18/0x70
-[  119.145141]  dump_stack+0xc4/0x11c
-[  119.145159]  check_preemption_disabled+0x100/0x110
-[  119.145175]  debug_smp_processor_id+0x20/0x30
-[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
-[  119.145211]  __handle_sysrq+0x8c/0x1a0
-[  119.145227]  write_sysrq_trigger+0x94/0x12c
-[  119.145247]  proc_reg_write+0xa8/0xe4
-[  119.145266]  vfs_write+0xec/0x280
-[  119.145282]  ksys_write+0x6c/0x100
-[  119.145298]  __arm64_sys_write+0x20/0x30
-[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
-[  119.145332]  do_el0_svc+0x24/0x8c
-[  119.145348]  el0_svc+0x10/0x20
-[  119.145364]  el0_sync_handler+0x134/0x140
-[  119.145381]  el0_sync+0x180/0x1c0
+Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+...
+CPU: 4 PID: 6168 Comm: reboot Not tainted 5.15.111-lockdep-19350-g1d624fe6758f #1 010b9b233ab055c27c6dc88efb0be2f4e9e86f51
+Hardware name: Google Kingoftown (DT)
+...
+pc : ath10k_snoc_read32+0x50/0x74 [ath10k_snoc]
+lr : ath10k_snoc_read32+0x24/0x74 [ath10k_snoc]
+...
+Call trace:
+ath10k_snoc_read32+0x50/0x74 [ath10k_snoc ...]
+ath10k_ce_disable_interrupt+0x190/0x65c [ath10k_core ...]
+ath10k_ce_disable_interrupts+0x8c/0x120 [ath10k_core ...]
+ath10k_snoc_hif_stop+0x78/0x660 [ath10k_snoc ...]
+ath10k_core_stop+0x13c/0x1ec [ath10k_core ...]
+ath10k_halt+0x398/0x5b0 [ath10k_core ...]
+ath10k_stop+0xfc/0x1a8 [ath10k_core ...]
+drv_stop+0x148/0x6b4 [mac80211 ...]
+ieee80211_stop_device+0x70/0x80 [mac80211 ...]
+ieee80211_do_stop+0x10d8/0x15b0 [mac80211 ...]
+ieee80211_stop+0x144/0x1a0 [mac80211 ...]
+__dev_close_many+0x1e8/0x2c0
+dev_close_many+0x198/0x33c
+dev_close+0x140/0x210
+cfg80211_shutdown_all_interfaces+0xc8/0x1e0 [cfg80211 ...]
+ieee80211_remove_interfaces+0x118/0x5c4 [mac80211 ...]
+ieee80211_unregister_hw+0x64/0x1f4 [mac80211 ...]
+ath10k_mac_unregister+0x4c/0xf0 [ath10k_core ...]
+ath10k_core_unregister+0x80/0xb0 [ath10k_core ...]
+ath10k_snoc_free_resources+0xb8/0x1ec [ath10k_snoc ...]
+ath10k_snoc_shutdown+0x98/0xd0 [ath10k_snoc ...]
+platform_shutdown+0x7c/0xa0
+device_shutdown+0x3e0/0x58c
+kernel_restart_prepare+0x68/0xa0
+kernel_restart+0x28/0x7c
 
-Cc: jirislaby@kernel.org
-Cc: stable@vger.kernel.org
-Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20231009162021.3607632-1-usama.anjum@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Though there's no known way to reproduce the problem, it makes sense
+that it would be the same issue where we're trying to access copy
+engine registers when it's not allowed.
+
+Let's fix this by changing how we "disable" the interrupts. Instead of
+tweaking the copy engine registers we'll just use disable_irq() and
+enable_irq(). Then we'll configure the interrupts once at power up
+time.
+
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/sysrq.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/snoc.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/tty/sysrq.c
-+++ b/drivers/tty/sysrq.c
-@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(int
- 		if (in_irq())
- 			regs = get_irq_regs();
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index b6762fe2efe26..29d52f7b4336d 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -821,12 +821,20 @@ static void ath10k_snoc_hif_get_default_pipe(struct ath10k *ar,
  
--		pr_info("CPU%d:\n", smp_processor_id());
-+		pr_info("CPU%d:\n", get_cpu());
- 		if (regs)
- 			show_regs(regs);
- 		else
- 			show_stack(NULL, NULL, KERN_INFO);
- 
- 		schedule_work(&sysrq_showallcpus);
-+		put_cpu();
- 	}
+ static inline void ath10k_snoc_irq_disable(struct ath10k *ar)
+ {
+-	ath10k_ce_disable_interrupts(ar);
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	int id;
++
++	for (id = 0; id < CE_COUNT_MAX; id++)
++		disable_irq(ar_snoc->ce_irqs[id].irq_line);
  }
  
+ static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
+ {
+-	ath10k_ce_enable_interrupts(ar);
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	int id;
++
++	for (id = 0; id < CE_COUNT_MAX; id++)
++		enable_irq(ar_snoc->ce_irqs[id].irq_line);
+ }
+ 
+ static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
+@@ -1042,6 +1050,8 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
+ 		goto err_free_rri;
+ 	}
+ 
++	ath10k_ce_enable_interrupts(ar);
++
+ 	return 0;
+ 
+ err_free_rri:
+@@ -1196,8 +1206,8 @@ static int ath10k_snoc_request_irq(struct ath10k *ar)
+ 
+ 	for (id = 0; id < CE_COUNT_MAX; id++) {
+ 		ret = request_irq(ar_snoc->ce_irqs[id].irq_line,
+-				  ath10k_snoc_per_engine_handler, 0,
+-				  ce_name[id], ar);
++				  ath10k_snoc_per_engine_handler,
++				  IRQF_NO_AUTOEN, ce_name[id], ar);
+ 		if (ret) {
+ 			ath10k_err(ar,
+ 				   "failed to register IRQ handler for CE %d: %d",
+-- 
+2.42.0
+
 
 
 
