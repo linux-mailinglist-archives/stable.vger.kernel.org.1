@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BAF7F7D78
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F9F7F8186
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBBAE1C212A0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8335FB21BC2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C33439FE8;
-	Fri, 24 Nov 2023 18:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA2534189;
+	Fri, 24 Nov 2023 18:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zn9D0HH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8X86pda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB95381D4;
-	Fri, 24 Nov 2023 18:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAE6C433C7;
-	Fri, 24 Nov 2023 18:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED7E2C1A2;
+	Fri, 24 Nov 2023 18:59:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCF97C433C8;
+	Fri, 24 Nov 2023 18:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850288;
-	bh=JRQ7ECjK8l59SIGfZUMLkUugmQbG6NRKkP2crKrv71M=;
+	s=korg; t=1700852362;
+	bh=IuvZGcN6Open9V81m0hGtIDsuZg5tMI4diIvc98mRyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zn9D0HH3Dlyb5wawK1or4NICVjtPE03ST6yR/9mr+HYjXuLgffvdncA/sczQJN/hP
-	 OlzyMkm6QccXK2+N08zFykPzFoRE1EUf1Rm1CKzpyF4n4LAWvS5TepwRSJwgeRYgSA
-	 WqMgJ5VSv6WizcfyAOeU5pNINtf6Q7sI4q9sWDLQ=
+	b=T8X86pdarhc4vTr60OajAbHV66DNoSH8Qlhrj+pd+kVl+FdDYEJ4GFyHk3F9+Ahmr
+	 s1cVXvCkgXH2DaIvazDUigevkQLfR1cFnxo3EKZ4nbM/58wNCjURb5LWsUCB46K1KZ
+	 bcTehJZSrbNR3CA4be0bkrb8HJNcNri1aoUobJyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 521/530] drm/amdgpu: fix error handling in amdgpu_vm_init
+	Frank Li <Frank.Li@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 300/372] i3c: master: svc: fix random hot join failure since timeout error
 Date: Fri, 24 Nov 2023 17:51:27 +0000
-Message-ID: <20231124172044.040218426@linuxfoundation.org>
+Message-ID: <20231124172020.434689263@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,93 +55,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 8473bfdcb5b1a32fd05629c4535ccacd73bc5567 upstream.
+[ Upstream commit 9aaeef113c55248ecf3ab941c2e4460aaa8b8b9a ]
 
-When clearing the root PD fails we need to properly release it again.
+master side report:
+  silvaco-i3c-master 44330000.i3c-master: Error condition: MSTATUS 0x020090c7, MERRWARN 0x00100000
 
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BIT 20: TIMEOUT error
+  The module has stalled too long in a frame. This happens when:
+  - The TX FIFO or RX FIFO is not handled and the bus is stuck in the
+middle of a message,
+  - No STOP was issued and between messages,
+  - IBI manual is used and no decision was made.
+  The maximum stall period is 100 μs.
+
+This can be considered as being just a warning as the system IRQ latency
+can easily be greater than 100us.
+
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20231023161658.3890811-7-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |   31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2125,7 +2125,8 @@ long amdgpu_vm_wait_idle(struct amdgpu_v
-  * Returns:
-  * 0 for success, error for failure.
-  */
--int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm, int32_t xcp_id)
-+int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm,
-+		   int32_t xcp_id)
- {
- 	struct amdgpu_bo *root_bo;
- 	struct amdgpu_bo_vm *root;
-@@ -2144,6 +2145,7 @@ int amdgpu_vm_init(struct amdgpu_device
- 	INIT_LIST_HEAD(&vm->done);
- 	INIT_LIST_HEAD(&vm->pt_freed);
- 	INIT_WORK(&vm->pt_free_work, amdgpu_vm_pt_free_work);
-+	INIT_KFIFO(vm->faults);
- 
- 	r = amdgpu_vm_init_entities(adev, vm);
- 	if (r)
-@@ -2178,34 +2180,33 @@ int amdgpu_vm_init(struct amdgpu_device
- 				false, &root, xcp_id);
- 	if (r)
- 		goto error_free_delayed;
--	root_bo = &root->bo;
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 0263f30bae82e..f30d457e91196 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -93,6 +93,7 @@
+ #define SVC_I3C_MINTMASKED   0x098
+ #define SVC_I3C_MERRWARN     0x09C
+ #define   SVC_I3C_MERRWARN_NACK BIT(2)
++#define   SVC_I3C_MERRWARN_TIMEOUT BIT(20)
+ #define SVC_I3C_MDMACTRL     0x0A0
+ #define SVC_I3C_MDATACTRL    0x0AC
+ #define   SVC_I3C_MDATACTRL_FLUSHTB BIT(0)
+@@ -220,6 +221,14 @@ static bool svc_i3c_master_error(struct svc_i3c_master *master)
+ 	if (SVC_I3C_MSTATUS_ERRWARN(mstatus)) {
+ 		merrwarn = readl(master->regs + SVC_I3C_MERRWARN);
+ 		writel(merrwarn, master->regs + SVC_I3C_MERRWARN);
 +
-+	root_bo = amdgpu_bo_ref(&root->bo);
- 	r = amdgpu_bo_reserve(root_bo, true);
--	if (r)
--		goto error_free_root;
-+	if (r) {
-+		amdgpu_bo_unref(&root->shadow);
-+		amdgpu_bo_unref(&root_bo);
-+		goto error_free_delayed;
-+	}
- 
-+	amdgpu_vm_bo_base_init(&vm->root, vm, root_bo);
- 	r = dma_resv_reserve_fences(root_bo->tbo.base.resv, 1);
- 	if (r)
--		goto error_unreserve;
--
--	amdgpu_vm_bo_base_init(&vm->root, vm, root_bo);
-+		goto error_free_root;
- 
- 	r = amdgpu_vm_pt_clear(adev, vm, root, false);
- 	if (r)
--		goto error_unreserve;
-+		goto error_free_root;
- 
- 	amdgpu_bo_unreserve(vm->root.bo);
--
--	INIT_KFIFO(vm->faults);
-+	amdgpu_bo_unref(&root_bo);
- 
- 	return 0;
- 
--error_unreserve:
--	amdgpu_bo_unreserve(vm->root.bo);
--
- error_free_root:
--	amdgpu_bo_unref(&root->shadow);
-+	amdgpu_vm_pt_free_root(adev, vm);
-+	amdgpu_bo_unreserve(vm->root.bo);
- 	amdgpu_bo_unref(&root_bo);
--	vm->root.bo = NULL;
- 
- error_free_delayed:
- 	dma_fence_put(vm->last_tlb_flush);
++		/* Ignore timeout error */
++		if (merrwarn & SVC_I3C_MERRWARN_TIMEOUT) {
++			dev_dbg(master->dev, "Warning condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
++				mstatus, merrwarn);
++			return false;
++		}
++
+ 		dev_err(master->dev,
+ 			"Error condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
+ 			mstatus, merrwarn);
+-- 
+2.42.0
+
 
 
 
