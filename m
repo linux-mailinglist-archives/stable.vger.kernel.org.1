@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6817F7E5F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C25DE7F801B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1BD5B216F8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1E828248D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22B72E621;
-	Fri, 24 Nov 2023 18:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1DA381D4;
+	Fri, 24 Nov 2023 18:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8Z2lgo4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qnr4TsJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666AA2E655;
-	Fri, 24 Nov 2023 18:32:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E51A0C433C7;
-	Fri, 24 Nov 2023 18:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C345E33CFD;
+	Fri, 24 Nov 2023 18:46:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6E5C433C8;
+	Fri, 24 Nov 2023 18:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850741;
-	bh=APtSlRBHwrjBJT0AquUU/5wIq5T+vlADgKWDAgZ6qEc=;
+	s=korg; t=1700851600;
+	bh=p8hc5jGAeZoE1WWCiid90M+BBb3MV2h8FRzLEPfwdv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8Z2lgo4Ez9sSy4itxXKmQd/snIWcZOGBow06AE02U9eI0Q1uXDY+iaOfPvvVZIx5
-	 sQlkcQi4ROXantX9Oqxk7Z2BadhH3Ln6B6cf5IShqvM1QPSS9trz5XzP9IT3TXKmij
-	 Sz5DcqgpMb5gh5lROsc44W88yB/Po3CY4nYmqByk=
+	b=Qnr4TsJU5JLXWm8oyLmiFo+WSrStB38WjGILD5WO6zdSmPD5Xt22Pgl+LCmBDiiDA
+	 S/HM9cUVTd5DhwhQY2Nq/kHDvfzHUa7yJxwE/ahKUasnA53CYdYhdEIj9jF6YgQhih
+	 yZf/VpXXp9ZImGGrMNXOc9crk0CPQLVKdJfqjZCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Hao Sun <sunhao.th@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 171/491] bpf: handle ldimm64 properly in check_cfg()
+Subject: [PATCH 6.1 020/372] net: annotate data-races around sk->sk_tx_queue_mapping
 Date: Fri, 24 Nov 2023 17:46:47 +0000
-Message-ID: <20231124172029.607022009@linuxfoundation.org>
+Message-ID: <20231124172011.149217234@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,155 +53,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3feb263bb516ee7e1da0acd22b15afbb9a7daa19 ]
+[ Upstream commit 0bb4d124d34044179b42a769a0c76f389ae973b6 ]
 
-ldimm64 instructions are 16-byte long, and so have to be handled
-appropriately in check_cfg(), just like the rest of BPF verifier does.
+This field can be read or written without socket lock being held.
 
-This has implications in three places:
-  - when determining next instruction for non-jump instructions;
-  - when determining next instruction for callback address ldimm64
-    instructions (in visit_func_call_insn());
-  - when checking for unreachable instructions, where second half of
-    ldimm64 is expected to be unreachable;
+Add annotations to avoid load-store tearing.
 
-We take this also as an opportunity to report jump into the middle of
-ldimm64. And adjust few test_verifier tests accordingly.
-
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Reported-by: Hao Sun <sunhao.th@gmail.com>
-Fixes: 475fb78fbf48 ("bpf: verifier (add branch/goto checks)")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231110002638.4168352-2-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h                           |  8 ++++--
- kernel/bpf/verifier.c                         | 27 ++++++++++++++-----
- .../testing/selftests/bpf/verifier/ld_imm64.c |  8 +++---
- 3 files changed, 30 insertions(+), 13 deletions(-)
+ include/net/sock.h | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 98a7d6fd10360..a8b775e9d4d1a 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -890,10 +890,14 @@ bpf_ctx_record_field_size(struct bpf_insn_access_aux *aux, u32 size)
- 	aux->ctx_field_size = size;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index a1fcbb2a8a2ce..8d98fcd9e89a9 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2032,21 +2032,33 @@ static inline void sk_tx_queue_set(struct sock *sk, int tx_queue)
+ 	/* sk_tx_queue_mapping accept only upto a 16-bit value */
+ 	if (WARN_ON_ONCE((unsigned short)tx_queue >= USHRT_MAX))
+ 		return;
+-	sk->sk_tx_queue_mapping = tx_queue;
++	/* Paired with READ_ONCE() in sk_tx_queue_get() and
++	 * other WRITE_ONCE() because socket lock might be not held.
++	 */
++	WRITE_ONCE(sk->sk_tx_queue_mapping, tx_queue);
  }
  
-+static bool bpf_is_ldimm64(const struct bpf_insn *insn)
-+{
-+	return insn->code == (BPF_LD | BPF_IMM | BPF_DW);
-+}
-+
- static inline bool bpf_pseudo_func(const struct bpf_insn *insn)
+ #define NO_QUEUE_MAPPING	USHRT_MAX
+ 
+ static inline void sk_tx_queue_clear(struct sock *sk)
  {
--	return insn->code == (BPF_LD | BPF_IMM | BPF_DW) &&
--	       insn->src_reg == BPF_PSEUDO_FUNC;
-+	return bpf_is_ldimm64(insn) && insn->src_reg == BPF_PSEUDO_FUNC;
+-	sk->sk_tx_queue_mapping = NO_QUEUE_MAPPING;
++	/* Paired with READ_ONCE() in sk_tx_queue_get() and
++	 * other WRITE_ONCE() because socket lock might be not held.
++	 */
++	WRITE_ONCE(sk->sk_tx_queue_mapping, NO_QUEUE_MAPPING);
  }
  
- struct bpf_prog_ops {
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index c3b6f282128bf..cb5621000993e 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -14563,15 +14563,16 @@ static int visit_func_call_insn(int t, struct bpf_insn *insns,
- 				struct bpf_verifier_env *env,
- 				bool visit_callee)
+ static inline int sk_tx_queue_get(const struct sock *sk)
  {
--	int ret;
-+	int ret, insn_sz;
+-	if (sk && sk->sk_tx_queue_mapping != NO_QUEUE_MAPPING)
+-		return sk->sk_tx_queue_mapping;
++	if (sk) {
++		/* Paired with WRITE_ONCE() in sk_tx_queue_clear()
++		 * and sk_tx_queue_set().
++		 */
++		int val = READ_ONCE(sk->sk_tx_queue_mapping);
  
--	ret = push_insn(t, t + 1, FALLTHROUGH, env, false);
-+	insn_sz = bpf_is_ldimm64(&insns[t]) ? 2 : 1;
-+	ret = push_insn(t, t + insn_sz, FALLTHROUGH, env, false);
- 	if (ret)
- 		return ret;
- 
--	mark_prune_point(env, t + 1);
-+	mark_prune_point(env, t + insn_sz);
- 	/* when we exit from subprog, we need to record non-linear history */
--	mark_jmp_point(env, t + 1);
-+	mark_jmp_point(env, t + insn_sz);
- 
- 	if (visit_callee) {
- 		mark_prune_point(env, t);
-@@ -14593,15 +14594,17 @@ static int visit_func_call_insn(int t, struct bpf_insn *insns,
- static int visit_insn(int t, struct bpf_verifier_env *env)
- {
- 	struct bpf_insn *insns = env->prog->insnsi, *insn = &insns[t];
--	int ret;
-+	int ret, insn_sz;
- 
- 	if (bpf_pseudo_func(insn))
- 		return visit_func_call_insn(t, insns, env, true);
- 
- 	/* All non-branch instructions have a single fall-through edge. */
- 	if (BPF_CLASS(insn->code) != BPF_JMP &&
--	    BPF_CLASS(insn->code) != BPF_JMP32)
--		return push_insn(t, t + 1, FALLTHROUGH, env, false);
-+	    BPF_CLASS(insn->code) != BPF_JMP32) {
-+		insn_sz = bpf_is_ldimm64(insn) ? 2 : 1;
-+		return push_insn(t, t + insn_sz, FALLTHROUGH, env, false);
++		if (val != NO_QUEUE_MAPPING)
++			return val;
 +	}
+ 	return -1;
+ }
  
- 	switch (BPF_OP(insn->code)) {
- 	case BPF_EXIT:
-@@ -14715,11 +14718,21 @@ static int check_cfg(struct bpf_verifier_env *env)
- 	}
- 
- 	for (i = 0; i < insn_cnt; i++) {
-+		struct bpf_insn *insn = &env->prog->insnsi[i];
-+
- 		if (insn_state[i] != EXPLORED) {
- 			verbose(env, "unreachable insn %d\n", i);
- 			ret = -EINVAL;
- 			goto err_free;
- 		}
-+		if (bpf_is_ldimm64(insn)) {
-+			if (insn_state[i + 1] != 0) {
-+				verbose(env, "jump into the middle of ldimm64 insn %d\n", i);
-+				ret = -EINVAL;
-+				goto err_free;
-+			}
-+			i++; /* skip second half of ldimm64 */
-+		}
- 	}
- 	ret = 0; /* cfg looks good */
- 
-diff --git a/tools/testing/selftests/bpf/verifier/ld_imm64.c b/tools/testing/selftests/bpf/verifier/ld_imm64.c
-index f9297900cea6d..78f19c255f20b 100644
---- a/tools/testing/selftests/bpf/verifier/ld_imm64.c
-+++ b/tools/testing/selftests/bpf/verifier/ld_imm64.c
-@@ -9,8 +9,8 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 2),
- 	BPF_EXIT_INSN(),
- 	},
--	.errstr = "invalid BPF_LD_IMM insn",
--	.errstr_unpriv = "R1 pointer comparison",
-+	.errstr = "jump into the middle of ldimm64 insn 1",
-+	.errstr_unpriv = "jump into the middle of ldimm64 insn 1",
- 	.result = REJECT,
- },
- {
-@@ -23,8 +23,8 @@
- 	BPF_LD_IMM64(BPF_REG_0, 1),
- 	BPF_EXIT_INSN(),
- 	},
--	.errstr = "invalid BPF_LD_IMM insn",
--	.errstr_unpriv = "R1 pointer comparison",
-+	.errstr = "jump into the middle of ldimm64 insn 1",
-+	.errstr_unpriv = "jump into the middle of ldimm64 insn 1",
- 	.result = REJECT,
- },
- {
 -- 
 2.42.0
 
