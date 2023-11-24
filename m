@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8607F819C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1577F81CE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 755F71C219FD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C69283369
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60535321AD;
-	Fri, 24 Nov 2023 19:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17036364A6;
+	Fri, 24 Nov 2023 19:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfVUrM2r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAisfift"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E821B2E858;
-	Fri, 24 Nov 2023 19:00:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BE2C433C7;
-	Fri, 24 Nov 2023 19:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC990339BE;
+	Fri, 24 Nov 2023 19:01:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A49C433C8;
+	Fri, 24 Nov 2023 19:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852401;
-	bh=He74GjRJy99+qbmOHVL+lQgz+BAxOnUtDcsCBu/uI7M=;
+	s=korg; t=1700852503;
+	bh=5CBIdEdPZmODBF2WZzX8AH1b1MDY3I590m2rRWjSWkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfVUrM2rId8BQqak+TN5x6q20TehoZyIeqLkdBRJAXR1TqvZs10SP7Jr018fjXJRH
-	 P63XUUsRiJNxQdor6deBn9dKtAqlgAEegkP87VbStNfZEGFynsap5hK92j6S1XrheJ
-	 EB4bhZFWaL8g8cHXNAFYzm0h8hnigRgUlzYVyJMI=
+	b=GAisfift0WX8y6YUA2VgRPeRnEhgOmdOQdWYEfaJMCNnAaQJZ0s4SoSUkmzWAGoq9
+	 Ak9BLYhUacacjz/carGHZQCFo1Tv3iIpl7pFyQCQJLWi5rOTM76PFaD7E0r7WCAsRy
+	 MEKZVWF4vv2DNPHgwYpTeG+Y65zWeLkyU0QV4y/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 342/372] media: qcom: camss: Fix vfe_get() error jump
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 002/193] perf/core: Bail out early if the request AUX area is out of bound
 Date: Fri, 24 Nov 2023 17:52:09 +0000
-Message-ID: <20231124172021.775717406@linuxfoundation.org>
+Message-ID: <20231124171947.225398449@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,104 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 26bda3da00c3edef727a6acb00ed2eb4b22f8723 upstream.
+[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
 
-Right now it is possible to do a vfe_get() with the internal reference
-count at 1. If vfe_check_clock_rates() returns non-zero then we will
-leave the reference count as-is and
+When perf-record with a large AUX area, e.g 4GB, it fails with:
 
-run:
-- pm_runtime_put_sync()
-- vfe->ops->pm_domain_off()
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
 
-skip:
-- camss_disable_clocks()
+and it reveals a WARNING with __alloc_pages():
 
-Subsequent vfe_put() calls will when the ref-count is non-zero
-unconditionally run:
+	------------[ cut here ]------------
+	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
+	Call trace:
+	 __alloc_pages+0x1ec/0x248
+	 __kmalloc_large_node+0xc0/0x1f8
+	 __kmalloc_node+0x134/0x1e8
+	 rb_alloc_aux+0xe0/0x298
+	 perf_mmap+0x440/0x660
+	 mmap_region+0x308/0x8a8
+	 do_mmap+0x3c0/0x528
+	 vm_mmap_pgoff+0xf4/0x1b8
+	 ksys_mmap_pgoff+0x18c/0x218
+	 __arm64_sys_mmap+0x38/0x58
+	 invoke_syscall+0x50/0x128
+	 el0_svc_common.constprop.0+0x58/0x188
+	 do_el0_svc+0x34/0x50
+	 el0_svc+0x34/0x108
+	 el0t_64_sync_handler+0xb8/0xc0
+	 el0t_64_sync+0x1a4/0x1a8
 
-- pm_runtime_put_sync()
-- vfe->ops->pm_domain_off()
-- camss_disable_clocks()
+'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
+maintains AUX trace pages. The allocated page for this array is physically
+contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
+size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
+WARNING.
 
-vfe_get() should not attempt to roll-back on error when the ref-count is
-non-zero as the upper layers will still do their own vfe_put() operations.
+So bail out early with -ENOMEM if the request AUX area is out of bound,
+e.g.:
 
-vfe_put() will drop the reference count and do the necessary power
-domain release, the cleanup jumps in vfe_get() should only be run when
-the ref-count is zero.
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
 
-[   50.095796] CPU: 7 PID: 3075 Comm: cam Not tainted 6.3.2+ #80
-[   50.095798] Hardware name: LENOVO 21BXCTO1WW/21BXCTO1WW, BIOS N3HET82W (1.54 ) 05/26/2023
-[   50.095799] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   50.095802] pc : refcount_warn_saturate+0xf4/0x148
-[   50.095804] lr : refcount_warn_saturate+0xf4/0x148
-[   50.095805] sp : ffff80000c7cb8b0
-[   50.095806] x29: ffff80000c7cb8b0 x28: ffff16ecc0e3fc10 x27: 0000000000000000
-[   50.095810] x26: 0000000000000000 x25: 0000000000020802 x24: 0000000000000000
-[   50.095813] x23: ffff16ecc7360640 x22: 00000000ffffffff x21: 0000000000000005
-[   50.095815] x20: ffff16ed175f4400 x19: ffffb4d9852942a8 x18: ffffffffffffffff
-[   50.095818] x17: ffffb4d9852d4a48 x16: ffffb4d983da5db8 x15: ffff80000c7cb320
-[   50.095821] x14: 0000000000000001 x13: 2e656572662d7265 x12: 7466612d65737520
-[   50.095823] x11: 00000000ffffefff x10: ffffb4d9850cebf0 x9 : ffffb4d9835cf954
-[   50.095826] x8 : 0000000000017fe8 x7 : c0000000ffffefff x6 : 0000000000057fa8
-[   50.095829] x5 : ffff16f813fe3d08 x4 : 0000000000000000 x3 : ffff621e8f4d2000
-[   50.095832] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff16ed32119040
-[   50.095835] Call trace:
-[   50.095836]  refcount_warn_saturate+0xf4/0x148
-[   50.095838]  device_link_put_kref+0x84/0xc8
-[   50.095843]  device_link_del+0x38/0x58
-[   50.095846]  vfe_pm_domain_off+0x3c/0x50 [qcom_camss]
-[   50.095860]  vfe_put+0x114/0x140 [qcom_camss]
-[   50.095869]  csid_set_power+0x2c8/0x408 [qcom_camss]
-[   50.095878]  pipeline_pm_power_one+0x164/0x170 [videodev]
-[   50.095896]  pipeline_pm_power+0xc4/0x110 [videodev]
-[   50.095909]  v4l2_pipeline_pm_use+0x5c/0xa0 [videodev]
-[   50.095923]  v4l2_pipeline_pm_get+0x1c/0x30 [videodev]
-[   50.095937]  video_open+0x7c/0x100 [qcom_camss]
-[   50.095945]  v4l2_open+0x84/0x130 [videodev]
-[   50.095960]  chrdev_open+0xc8/0x250
-[   50.095964]  do_dentry_open+0x1bc/0x498
-[   50.095966]  vfs_open+0x34/0x40
-[   50.095968]  path_openat+0xb44/0xf20
-[   50.095971]  do_filp_open+0xa4/0x160
-[   50.095974]  do_sys_openat2+0xc8/0x188
-[   50.095975]  __arm64_sys_openat+0x6c/0xb8
-[   50.095977]  invoke_syscall+0x50/0x128
-[   50.095982]  el0_svc_common.constprop.0+0x4c/0x100
-[   50.095985]  do_el0_svc+0x40/0xa8
-[   50.095988]  el0_svc+0x2c/0x88
-[   50.095991]  el0t_64_sync_handler+0xf4/0x120
-[   50.095994]  el0t_64_sync+0x190/0x198
-[   50.095996] ---[ end trace 0000000000000000 ]---
-
-Fixes: 779096916dae ("media: camss: vfe: Fix runtime PM imbalance on error")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/ring_buffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/media/platform/qcom/camss/camss-vfe.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe.c
-@@ -611,7 +611,7 @@ int vfe_get(struct vfe_device *vfe)
- 	} else {
- 		ret = vfe_check_clock_rates(vfe);
- 		if (ret < 0)
--			goto error_pm_runtime_get;
-+			goto error_pm_domain;
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index 4032cd4750001..01351e7e25435 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -691,6 +691,12 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
+ 		max_order--;
  	}
- 	vfe->power_count++;
  
++	/*
++	 * kcalloc_node() is unable to allocate buffer if the size is larger
++	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
++	 */
++	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
++		return -ENOMEM;
+ 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
+ 				     node);
+ 	if (!rb->aux_pages)
+-- 
+2.42.0
+
 
 
 
