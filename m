@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-2294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631B07F8393
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D32267F8276
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE677B263AE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CB561C23629
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A4633CC2;
-	Fri, 24 Nov 2023 19:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D85364B7;
+	Fri, 24 Nov 2023 19:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMzROVg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOzGyZFN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F0235F1A;
-	Fri, 24 Nov 2023 19:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9A1C433CA;
-	Fri, 24 Nov 2023 19:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D103733076;
+	Fri, 24 Nov 2023 19:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0F5C433C8;
+	Fri, 24 Nov 2023 19:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853530;
-	bh=DmgPRQ2NQp5p25fj11NPTV5R1eI6y6Mxg1zyCvYA8Oo=;
+	s=korg; t=1700852877;
+	bh=Cy4MEtaRKJ+YIB0rM/iSTEWQeK7OAQpVTTyq5czDZmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMzROVg3wfdsmj9eqyFeFOr/vAtY8chJ1cdqTl9qhYpMJX2Ym3qTuZcnKGjaaGAK3
-	 QTAysvOnyhQN0ojuHeGwV6r7WpGYc2bHohXFukFyhe2qiL/2dDm0hvLk+ZfKz8nNAt
-	 mi+x359AW2bEf6bEFu6NaAyxt1qprqi99mbPi4i4=
+	b=yOzGyZFNqXRxuIPhbt1ExK3Fg6PUfutZnSBBpeQyhUuqzWfI0OwQnUKWvTuUGxOVK
+	 Ow9OgyJzA9cM6tlumkIRrPn47qhzWU/VbzXwPQgziedrrxlUpRHuz1nDKPhzlojcmB
+	 3p1Rw230cQMowjGimsnoXfNVSE506VPiOITv2io8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 226/297] i3c: master: svc: fix race condition in ibi work thread
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 141/193] parisc: Prevent booting 64-bit kernels on PA1.x machines
 Date: Fri, 24 Nov 2023 17:54:28 +0000
-Message-ID: <20231124172008.102375092@linuxfoundation.org>
+Message-ID: <20231124171952.834008743@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,120 +51,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 6bf3fc268183816856c96b8794cd66146bc27b35 upstream.
+commit a406b8b424fa01f244c1aab02ba186258448c36b upstream.
 
-The ibi work thread operates asynchronously with other transfers, such as
-svc_i3c_master_priv_xfers(). Introduce mutex protection to ensure the
-completion of the entire i3c/i2c transaction.
+Bail out early with error message when trying to boot a 64-bit kernel on
+32-bit machines. This fixes the previous commit to include the check for
+true 64-bit kernels as well.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-2-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 591d2108f3abc ("parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines")
+Cc:  <stable@vger.kernel.org> # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/parisc/kernel/head.S |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -165,6 +165,7 @@ struct svc_i3c_xfer {
-  * @ibi.slots: Available IBI slots
-  * @ibi.tbq_slot: To be queued IBI slot
-  * @ibi.lock: IBI lock
-+ * @lock: Transfer lock, protect between IBI work thread and callbacks from master
-  */
- struct svc_i3c_master {
- 	struct i3c_master_controller base;
-@@ -192,6 +193,7 @@ struct svc_i3c_master {
- 		/* Prevent races within IBI handlers */
- 		spinlock_t lock;
- 	} ibi;
-+	struct mutex lock;
- };
+--- a/arch/parisc/kernel/head.S
++++ b/arch/parisc/kernel/head.S
+@@ -69,9 +69,8 @@ $bss_loop:
+ 	stw,ma          %arg2,4(%r1)
+ 	stw,ma          %arg3,4(%r1)
  
- /**
-@@ -345,6 +347,7 @@ static void svc_i3c_master_ibi_work(stru
- 	u32 status, val;
- 	int ret;
- 
-+	mutex_lock(&master->lock);
- 	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
- 	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
- 	       SVC_I3C_MCTRL_IBIRESP_AUTO,
-@@ -421,6 +424,7 @@ static void svc_i3c_master_ibi_work(stru
- 
- reenable_ibis:
- 	svc_i3c_master_enable_interrupts(master, SVC_I3C_MINT_SLVSTART);
-+	mutex_unlock(&master->lock);
- }
- 
- static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
-@@ -1095,9 +1099,11 @@ static int svc_i3c_master_send_bdcast_cc
- 	cmd->read_len = 0;
- 	cmd->continued = false;
- 
-+	mutex_lock(&master->lock);
- 	svc_i3c_master_enqueue_xfer(master, xfer);
- 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
- 		svc_i3c_master_dequeue_xfer(master, xfer);
-+	mutex_unlock(&master->lock);
- 
- 	ret = xfer->ret;
- 	kfree(buf);
-@@ -1141,9 +1147,11 @@ static int svc_i3c_master_send_direct_cc
- 	cmd->read_len = read_len;
- 	cmd->continued = false;
- 
-+	mutex_lock(&master->lock);
- 	svc_i3c_master_enqueue_xfer(master, xfer);
- 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
- 		svc_i3c_master_dequeue_xfer(master, xfer);
-+	mutex_unlock(&master->lock);
- 
- 	ret = xfer->ret;
- 	svc_i3c_master_free_xfer(xfer);
-@@ -1197,9 +1205,11 @@ static int svc_i3c_master_priv_xfers(str
- 		cmd->continued = (i + 1) < nxfers;
- 	}
- 
-+	mutex_lock(&master->lock);
- 	svc_i3c_master_enqueue_xfer(master, xfer);
- 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
- 		svc_i3c_master_dequeue_xfer(master, xfer);
-+	mutex_unlock(&master->lock);
- 
- 	ret = xfer->ret;
- 	svc_i3c_master_free_xfer(xfer);
-@@ -1235,9 +1245,11 @@ static int svc_i3c_master_i2c_xfers(stru
- 		cmd->continued = (i + 1 < nxfers);
- 	}
- 
-+	mutex_lock(&master->lock);
- 	svc_i3c_master_enqueue_xfer(master, xfer);
- 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
- 		svc_i3c_master_dequeue_xfer(master, xfer);
-+	mutex_unlock(&master->lock);
- 
- 	ret = xfer->ret;
- 	svc_i3c_master_free_xfer(xfer);
-@@ -1407,6 +1419,8 @@ static int svc_i3c_master_probe(struct p
- 
- 	INIT_WORK(&master->hj_work, svc_i3c_master_hj_work);
- 	INIT_WORK(&master->ibi_work, svc_i3c_master_ibi_work);
-+	mutex_init(&master->lock);
-+
- 	ret = devm_request_irq(dev, master->irq, svc_i3c_master_irq_handler,
- 			       IRQF_NO_SUSPEND, "svc-i3c-irq", master);
- 	if (ret)
+-#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
+-	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
+-	 * and halt kernel if we detect a PA1.x CPU. */
++#if defined(CONFIG_PA20)
++	/* check for 64-bit capable CPU as required by current kernel */
+ 	ldi		32,%r10
+ 	mtctl		%r10,%cr11
+ 	.level 2.0
 
 
 
