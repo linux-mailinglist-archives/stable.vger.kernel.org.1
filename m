@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001737F80ED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 217DE7F7D03
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85EDCB21AEC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A658EB21676
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C518133CFD;
-	Fri, 24 Nov 2023 18:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B0F39FFD;
+	Fri, 24 Nov 2023 18:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRNlXAbL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeN8h4pU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459B92C87B;
-	Fri, 24 Nov 2023 18:54:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D7C433C7;
-	Fri, 24 Nov 2023 18:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8872D33063;
+	Fri, 24 Nov 2023 18:20:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1469DC433C8;
+	Fri, 24 Nov 2023 18:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852044;
-	bh=wcPoDI1Cafs2ZtXK9nyQ3TMZKVPxs++10zaxUMFq6Bg=;
+	s=korg; t=1700850033;
+	bh=u+zi5cAcL3tV1PI4uguIYSAj0KWF8GWxsAxQmq097UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRNlXAbLwGHADwVM50MST25UeapbGPQAAB78dRJP3WnXG9kqKyCUYOFoUx/+gvMIF
-	 RYHdCrqfFeYnBwEKYZ0tla1z1SYTqfdA+pB7OcEPa3fAQ5qOQ1FRX8X6oKtlo3k25l
-	 XTIPrKCIKIAHjYunG4cO4kUWZlofMTjjbaZW5xhQ=
+	b=ZeN8h4pUCn7qFk8uAydtfvQdTkifeaynKZDv85wAI25+vlPLx+I6t0tyLvrgUwlYa
+	 akseam+gy7l8l5TITuxKI6wSyOxM7WRKKFHGTc7YR/XTDMK9FA49aNja/hlXkbzcHe
+	 d4MrCpYmjde7OpTDHlNFM5uxI7e5dul4HcKWrOCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carl Huang <quic_cjhuang@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.1 198/372] wifi: ath11k: fix gtk offload status event locking
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 419/530] smb3: allow dumping session and tcon id to improve stats analysis and debugging
 Date: Fri, 24 Nov 2023 17:49:45 +0000
-Message-ID: <20231124172017.060298214@linuxfoundation.org>
+Message-ID: <20231124172040.825620300@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,62 +52,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit 1dea3c0720a146bd7193969f2847ccfed5be2221 upstream.
+commit de4eceab578ead12a71e5b5588a57e142bbe8ceb upstream.
 
-The ath11k active pdevs are protected by RCU but the gtk offload status
-event handling code calling ath11k_mac_get_arvif_by_vdev_id() was not
-marked as a read-side critical section.
+When multiple mounts are to the same share from the same client it was not
+possible to determine which section of /proc/fs/cifs/Stats (and DebugData)
+correspond to that mount.  In some recent examples this turned out to  be
+a significant problem when trying to analyze performance data - since
+there are many cases where unless we know the tree id and session id we
+can't figure out which stats (e.g. number of SMB3.1.1 requests by type,
+the total time they take, which is slowest, how many fail etc.) apply to
+which mount. The only existing loosely related ioctl CIFS_IOC_GET_MNT_INFO
+does not return the information needed to uniquely identify which tcon
+is which mount although it does return various flags and device info.
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
+Add a cifs.ko ioctl CIFS_IOC_GET_TCON_INFO (0x800ccf0c) to return tid,
+session id, tree connect count.
 
-Compile tested only.
-
-Fixes: a16d9b50cfba ("ath11k: support GTK rekey offload")
-Cc: stable@vger.kernel.org      # 5.18
-Cc: Carl Huang <quic_cjhuang@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019155342.31631-1-johan+linaro@kernel.org
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/smb/client/cifs_ioctl.h |    6 ++++++
+ fs/smb/client/ioctl.c      |   25 +++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8001,12 +8001,13 @@ static void ath11k_wmi_gtk_offload_statu
- 		return;
- 	}
+--- a/fs/smb/client/cifs_ioctl.h
++++ b/fs/smb/client/cifs_ioctl.h
+@@ -26,6 +26,11 @@ struct smb_mnt_fs_info {
+ 	__u64   cifs_posix_caps;
+ } __packed;
  
-+	rcu_read_lock();
++struct smb_mnt_tcon_info {
++	__u32	tid;
++	__u64	session_id;
++} __packed;
 +
- 	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
- 	if (!arvif) {
- 		ath11k_warn(ab, "failed to get arvif for vdev_id:%d\n",
- 			    ev->vdev_id);
--		kfree(tb);
--		return;
-+		goto exit;
- 	}
+ struct smb_snapshot_array {
+ 	__u32	number_of_snapshots;
+ 	__u32	number_of_snapshots_returned;
+@@ -108,6 +113,7 @@ struct smb3_notify_info {
+ #define CIFS_IOC_NOTIFY _IOW(CIFS_IOCTL_MAGIC, 9, struct smb3_notify)
+ #define CIFS_DUMP_FULL_KEY _IOWR(CIFS_IOCTL_MAGIC, 10, struct smb3_full_key_debug_info)
+ #define CIFS_IOC_NOTIFY_INFO _IOWR(CIFS_IOCTL_MAGIC, 11, struct smb3_notify_info)
++#define CIFS_IOC_GET_TCON_INFO _IOR(CIFS_IOCTL_MAGIC, 12, struct smb_mnt_tcon_info)
+ #define CIFS_IOC_SHUTDOWN _IOR('X', 125, __u32)
  
- 	ath11k_dbg(ab, ATH11K_DBG_WMI, "wmi gtk offload event refresh_cnt %d\n",
-@@ -8023,6 +8024,8 @@ static void ath11k_wmi_gtk_offload_statu
- 
- 	ieee80211_gtk_rekey_notify(arvif->vif, arvif->bssid,
- 				   (void *)&replay_ctr_be, GFP_ATOMIC);
-+exit:
-+	rcu_read_unlock();
- 
- 	kfree(tb);
+ /*
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -117,6 +117,20 @@ out_drop_write:
+ 	return rc;
  }
+ 
++static long smb_mnt_get_tcon_info(struct cifs_tcon *tcon, void __user *arg)
++{
++	int rc = 0;
++	struct smb_mnt_tcon_info tcon_inf;
++
++	tcon_inf.tid = tcon->tid;
++	tcon_inf.session_id = tcon->ses->Suid;
++
++	if (copy_to_user(arg, &tcon_inf, sizeof(struct smb_mnt_tcon_info)))
++		rc = -EFAULT;
++
++	return rc;
++}
++
+ static long smb_mnt_get_fsinfo(unsigned int xid, struct cifs_tcon *tcon,
+ 				void __user *arg)
+ {
+@@ -414,6 +428,17 @@ long cifs_ioctl(struct file *filep, unsi
+ 			tcon = tlink_tcon(pSMBFile->tlink);
+ 			rc = smb_mnt_get_fsinfo(xid, tcon, (void __user *)arg);
+ 			break;
++		case CIFS_IOC_GET_TCON_INFO:
++			cifs_sb = CIFS_SB(inode->i_sb);
++			tlink = cifs_sb_tlink(cifs_sb);
++			if (IS_ERR(tlink)) {
++				rc = PTR_ERR(tlink);
++				break;
++			}
++			tcon = tlink_tcon(tlink);
++			rc = smb_mnt_get_tcon_info(tcon, (void __user *)arg);
++			cifs_put_tlink(tlink);
++			break;
+ 		case CIFS_ENUMERATE_SNAPSHOTS:
+ 			if (pSMBFile == NULL)
+ 				break;
 
 
 
