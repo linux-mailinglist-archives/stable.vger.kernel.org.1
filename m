@@ -1,58 +1,47 @@
-Return-Path: <stable+bounces-1434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06E47F7FA2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAF287F7B26
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28210B219E6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BCC41F20F1D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED45381A2;
-	Fri, 24 Nov 2023 18:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F59939FF8;
+	Fri, 24 Nov 2023 18:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spe+evTf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6a7s3vv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1C02F86B;
-	Fri, 24 Nov 2023 18:43:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8182CC433C9;
-	Fri, 24 Nov 2023 18:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CB139FEE;
+	Fri, 24 Nov 2023 18:02:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04D5C433C8;
+	Fri, 24 Nov 2023 18:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851389;
-	bh=gxY2Pwb6/mPD8/2pdVP8iwXCg8MWZ05qEXp2ZThQVhc=;
+	s=korg; t=1700848938;
+	bh=y9/5QWP4uyW8/T9UVeIpEs9qdg12mS/C8fH7nvxljmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spe+evTfniBtlgwyfkKOrvvrVtaCDf6Y//8zAX6LMlMGegidR03n8E63EnIU2RzFm
-	 LQnM8jVZMLXlpdeIoASTOB1Mq7j47JJWNvNrcZUrnPsV7XXvF1TnIK4muFi4gVxzEl
-	 ngijxFahD16F1RU6XL9Af6EzjvwlOVCUCzoQ2S8w=
+	b=e6a7s3vv4mIgQ+iuTMuUwdYbxVlD6rrROgM3+J2i05svOBsPKcXpRPV9WxCEfKUlf
+	 ODZtYJYkvTHqU84muzWKNqFU+Rh2e31NKCpB2QGoOUE6nqxT/MZKJg4SjHJ252wL2K
+	 Dn89brflXOn9LAQvj6Ehp7pURify3MKMW/w7QpUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Bo-Chen Chen <rex-bc.chen@mediatek.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.5 428/491] drm/mediatek/dp: fix memory leak on ->get_edid callback error path
-Date: Fri, 24 Nov 2023 17:51:04 +0000
-Message-ID: <20231124172037.474108014@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>,
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Subject: [PATCH 4.14 41/57] mcb: fix error handling for different scenarios when parsing
+Date: Fri, 24 Nov 2023 17:51:05 +0000
+Message-ID: <20231124171931.827079880@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +51,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-commit fcaf9761fd5884a64eaac48536f8c27ecfd2e6bc upstream.
+commit 63ba2d07b4be72b94216d20561f43e1150b25d98 upstream.
 
-Setting new_edid to NULL leaks the buffer.
+chameleon_parse_gdd() may fail for different reasons and end up
+in the err tag. Make sure we at least always free the mcb_device
+allocated with mcb_alloc_dev().
 
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Cc: Markus Schneider-Pargmann <msp@baylibre.com>
-Cc: Guillaume Ranquet <granquet@baylibre.com>
-Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Cc: CK Hu <ck.hu@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-mediatek@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230914131058.2472260-1-jani.nikula@intel.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+If mcb_device_register() fails, make sure to give up the reference
+in the same place the device was added.
+
+Fixes: 728ac3389296 ("mcb: mcb-parse: fix error handing in chameleon_parse_gdd()")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Link: https://lore.kernel.org/r/20231019141434.57971-2-jorge.sanjuangarcia@duagon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mcb/mcb-core.c  |    1 +
+ drivers/mcb/mcb-parse.c |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2005,6 +2005,7 @@ static struct edid *mtk_dp_get_edid(stru
- 	 */
- 	if (mtk_dp_parse_capabilities(mtk_dp)) {
- 		drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
-+		kfree(new_edid);
- 		new_edid = NULL;
- 	}
+--- a/drivers/mcb/mcb-core.c
++++ b/drivers/mcb/mcb-core.c
+@@ -251,6 +251,7 @@ int mcb_device_register(struct mcb_bus *
+ 	return 0;
  
+ out:
++	put_device(&dev->dev);
+ 
+ 	return ret;
+ }
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -105,7 +105,7 @@ static int chameleon_parse_gdd(struct mc
+ 	return 0;
+ 
+ err:
+-	put_device(&mdev->dev);
++	mcb_free_dev(mdev);
+ 
+ 	return ret;
+ }
 
 
 
