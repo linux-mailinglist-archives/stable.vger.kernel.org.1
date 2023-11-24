@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C7137F7F9E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00997F7B22
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E7E81C214CB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755361F20F36
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A9B1D685;
-	Fri, 24 Nov 2023 18:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C143539FE8;
+	Fri, 24 Nov 2023 18:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qM0HsDcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEdw2og3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4332F364C1;
-	Fri, 24 Nov 2023 18:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA88C433C7;
-	Fri, 24 Nov 2023 18:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF9F39FEA;
+	Fri, 24 Nov 2023 18:02:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0899C433C8;
+	Fri, 24 Nov 2023 18:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851384;
-	bh=/CASP2R8gYmFzkM0ZqXpYOAAY6gDtIIcM91IBTOG87k=;
+	s=korg; t=1700848928;
+	bh=he01P8v5MDG6lDWwexyxQghFHBEcplHiJgM8jE37okc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qM0HsDcsyT47dTLFCHhV0M2IWKDIt/NBYPjl3q9Y9zhhwb1ZgWN23JY8wJXmS6PXE
-	 FfbafT/GS7USRObrxWUkJohyBGn+AbLFwnlAMNTL43rp7cKUxAMIy9ye3FhH9R1Uio
-	 JRmMZktGA56kSNASSzTdPXIzkdt8irp5ZOc7PrPQ=
+	b=cEdw2og3PNdUe9MBnG317gjCRQHszPW0YuouqSf73Fq6Rp2bnVWErGR8AxqLidX8D
+	 rhN3waAyc5a6nIcKyw/4mlOL874cp+oW8zUiHRlcXDM3EMiWwAfJTpPaQP1Nd4eZbJ
+	 IYNYxDaF38SlnhefU8sGdJ4whc8Zxq2uhnnF8aLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.5 426/491] media: ccs: Correctly initialise try compose rectangle
+	Rong Chen <rong.chen@amlogic.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.14 38/57] mmc: meson-gx: Remove setting of CMD_CFG_ERROR
 Date: Fri, 24 Nov 2023 17:51:02 +0000
-Message-ID: <20231124172037.411559825@linuxfoundation.org>
+Message-ID: <20231124171931.711182977@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Rong Chen <rong.chen@amlogic.com>
 
-commit 724ff68e968b19d786870d333f9952bdd6b119cb upstream.
+commit 57925e16c9f7d18012bcf45bfa658f92c087981a upstream.
 
-Initialise the try sink compose rectangle size to the sink compose
-rectangle for binner and scaler sub-devices. This was missed due to the
-faulty condition that lead to the compose rectangles to be initialised for
-the pixel array sub-device where it is not relevant.
+For the t7 and older SoC families, the CMD_CFG_ERROR has no effect.
+Starting from SoC family C3, setting this bit without SG LINK data
+address will cause the controller to generate an IRQ and stop working.
 
-Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
+To fix it, don't set the bit CMD_CFG_ERROR anymore.
+
+Fixes: 18f92bc02f17 ("mmc: meson-gx: make sure the descriptor is stopped on errors")
+Signed-off-by: Rong Chen <rong.chen@amlogic.com>
+Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Link: https://lore.kernel.org/r/20231026073156.2868310-1-rong.chen@amlogic.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/meson-gx-mmc.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3097,7 +3097,7 @@ static int ccs_open(struct v4l2_subdev *
- 		try_fmt->code = sensor->internal_csi_format->code;
- 		try_fmt->field = V4L2_FIELD_NONE;
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -908,7 +908,6 @@ static void meson_mmc_start_cmd(struct m
  
--		if (ssd != sensor->pixel_array)
-+		if (ssd == sensor->pixel_array)
- 			continue;
+ 	cmd_cfg |= FIELD_PREP(CMD_CFG_CMD_INDEX_MASK, cmd->opcode);
+ 	cmd_cfg |= CMD_CFG_OWNER;  /* owned by CPU */
+-	cmd_cfg |= CMD_CFG_ERROR; /* stop in case of error */
  
- 		try_comp = v4l2_subdev_get_try_compose(sd, fh->state, i);
+ 	meson_mmc_set_response_bits(cmd, &cmd_cfg);
+ 
 
 
 
