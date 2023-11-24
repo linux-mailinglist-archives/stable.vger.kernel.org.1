@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552317F81A0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0F077F81EE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 103EB282998
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BBD6B229A5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608F028DBB;
-	Fri, 24 Nov 2023 19:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996532C87B;
+	Fri, 24 Nov 2023 19:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSXbk1sB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/mIMlYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F42233CFD;
-	Fri, 24 Nov 2023 19:00:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB6AC433C7;
-	Fri, 24 Nov 2023 19:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045D8381C9;
+	Fri, 24 Nov 2023 19:02:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A3AC433C7;
+	Fri, 24 Nov 2023 19:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852414;
-	bh=v4XJyoRYKLCSu+nkUMVv/ItbxHHX5605/e006/f9SQQ=;
+	s=korg; t=1700852558;
+	bh=qn5MZj9eExm6pa7owvxRTlY95AOZI0wUtThzVe7n4SI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSXbk1sB+aZxsZo5JTXgU+wH/B8CkrzrBqBVw5HtfNbiDfAhAx5gsfrO8QK96ymqn
-	 lad3XVf+GqsNy0fjHP9aCaQbZp8lZ8vi6FSDqmik4Xa0VtwhxGP3YK5I+j7S/av65E
-	 twZAv7r55EhnZjU4yicXjpObyl5UTlEC83FluwcU=
+	b=a/mIMlYcaj5fI46O0K9Bpjuhtw49VQy3bS9suJ8/Z7Ng8jvfO8/A51VN9A0W1Vcid
+	 bwaYlM8oJDM/q7bzlkQnFnwzxE6sZsbbtk1s9Mqb2TkLWAmmf3TTksWSuXVqmYNJWn
+	 KVz9xqfvpQiOi16UEWeVz37PR+4RGTnh/hGdTJ94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 346/372] media: qcom: camss: Fix invalid clock enable bit disjunction
-Date: Fri, 24 Nov 2023 17:52:13 +0000
-Message-ID: <20231124172021.891326202@linuxfoundation.org>
+	Zong-Zhe Yang <kevin_yang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 007/193] wifi: mac80211: dont return unset power in ieee80211_get_tx_power()
+Date: Fri, 24 Nov 2023 17:52:14 +0000
+Message-ID: <20231124171947.447219955@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,41 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-commit d8f7e1a60d01739a1d78db2b08603089c6cf7c8e upstream.
+[ Upstream commit e160ab85166e77347d0cbe5149045cb25e83937f ]
 
-define CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE BIT(7)
+We can get a UBSAN warning if ieee80211_get_tx_power() returns the
+INT_MIN value mac80211 internally uses for "unset power level".
 
-disjunction for gen2 ? BIT(7) : is a nop we are setting the same bit
-either way.
+ UBSAN: signed-integer-overflow in net/wireless/nl80211.c:3816:5
+ -2147483648 * 100 cannot be represented in type 'int'
+ CPU: 0 PID: 20433 Comm: insmod Tainted: G        WC OE
+ Call Trace:
+  dump_stack+0x74/0x92
+  ubsan_epilogue+0x9/0x50
+  handle_overflow+0x8d/0xd0
+  __ubsan_handle_mul_overflow+0xe/0x10
+  nl80211_send_iface+0x688/0x6b0 [cfg80211]
+  [...]
+  cfg80211_register_wdev+0x78/0xb0 [cfg80211]
+  cfg80211_netdev_notifier_call+0x200/0x620 [cfg80211]
+  [...]
+  ieee80211_if_add+0x60e/0x8f0 [mac80211]
+  ieee80211_register_hw+0xda5/0x1170 [mac80211]
 
-Fixes: 4abb21309fda ("media: camss: csiphy: Move to hardcode CSI Clock Lane number")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In this case, simply return an error instead, to indicate
+that no data is available.
+
+Cc: Zong-Zhe Yang <kevin_yang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://lore.kernel.org/r/20230203023636.4418-1-pkshih@realtek.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/cfg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-+++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
-@@ -476,7 +476,7 @@ static void csiphy_lanes_enable(struct c
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index c6a7f1c99abc5..45bb6f2755987 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -2726,6 +2726,10 @@ static int ieee80211_get_tx_power(struct wiphy *wiphy,
+ 	else
+ 		*dbm = sdata->vif.bss_conf.txpower;
  
- 	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
++	/* INT_MIN indicates no power level was set yet */
++	if (*dbm == INT_MIN)
++		return -EINVAL;
++
+ 	return 0;
+ }
  
--	val = is_gen2 ? BIT(7) : CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
-+	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
- 	for (i = 0; i < c->num_data; i++)
- 		val |= BIT(c->data[i].pos * 2);
- 
+-- 
+2.42.0
+
 
 
 
