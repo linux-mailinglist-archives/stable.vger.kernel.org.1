@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F04B7F7D40
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2EE17F7F83
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1A971C21280
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E25128251F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83F039FF3;
-	Fri, 24 Nov 2023 18:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0297B321AD;
+	Fri, 24 Nov 2023 18:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnJkppUB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlM6MF+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6B339FE9;
-	Fri, 24 Nov 2023 18:22:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08420C433C8;
-	Fri, 24 Nov 2023 18:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C162EAEA;
+	Fri, 24 Nov 2023 18:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC04C433C8;
+	Fri, 24 Nov 2023 18:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850172;
-	bh=9Hxm26nSCLKY1Q/MlanqrAoguEApA9yjPQTFMZCux/I=;
+	s=korg; t=1700851329;
+	bh=IvPLyYHYZD3WQkgiGWi2OQZA/QSq0zc0Vi7upZfKXFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NnJkppUBkmYaEqLfG+ONNVEaGAIVesxG5DEu5fVUazCfGUWZxq6YyALhWsP6jcAqg
-	 El9z18g3kSl18Px0MEI2hL/7XQ0qiLwbppCtELsabSC5iGGfgL0JT/YeLYobwOnX5l
-	 b3bhJOout0AGKmBBubOW05Hn+YOaToOWfpdO72dc=
+	b=nlM6MF+irBqi06cKKiQkb9rcUCPdorQb03SissPzVzqsOXXm4o62y3ibK9l6WwGx4
+	 T29ZcS6BFQfx2U1/ZqLxPZbqM7P6aZICSp9bvSglxDeTrfJX1xW4SffHoBW56KNrPe
+	 IqRfbpkdCrxdmz6dEbBIwbjZDOGuazSCqMrKQzNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcaov@gmail.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 474/530] riscv: kprobes: allow writing to x0
+	Stefan Binding <sbinding@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.5 404/491] ALSA: hda/realtek: Add quirks for HP Laptops
 Date: Fri, 24 Nov 2023 17:50:40 +0000
-Message-ID: <20231124172042.495072919@linuxfoundation.org>
+Message-ID: <20231124172036.746054343@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +52,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcaov@gmail.com>
+From: Stefan Binding <sbinding@opensource.cirrus.com>
 
-commit 8cb22bec142624d21bc85ff96b7bad10b6220e6a upstream.
+commit 5d639b60971f003d3a9b2b31f8ec73b0718b5d57 upstream.
 
-Instructions can write to x0, so we should simulate these instructions
-normally.
+These HP laptops use Realtek HDA codec combined with 2 or 4 CS35L41
+Amplifiers using SPI with Internal Boost.
 
-Currently, the kernel hangs if an instruction who writes to x0 is
-simulated.
-
-Fixes: c22b0bcb1dd0 ("riscv: Add kprobes supported")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nam Cao <namcaov@gmail.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20230829182500.61875-1-namcaov@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231115162116.494968-3-sbinding@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/probes/simulate-insn.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/riscv/kernel/probes/simulate-insn.c
-+++ b/arch/riscv/kernel/probes/simulate-insn.c
-@@ -24,7 +24,7 @@ static inline bool rv_insn_reg_set_val(s
- 				       unsigned long val)
- {
- 	if (index == 0)
--		return false;
-+		return true;
- 	else if (index <= 31)
- 		*((unsigned long *)regs + index) = val;
- 	else
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9740,6 +9740,9 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c70, "HP EliteBook 835 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x106d, "Asus K53BE", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
 
 
 
