@@ -1,186 +1,488 @@
-Return-Path: <stable+bounces-1684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BBE7F80E1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7F27F7AA6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53AAF1C2158A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 800311C208E1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69E4833CD1;
-	Fri, 24 Nov 2023 18:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9682039FD1;
+	Fri, 24 Nov 2023 17:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WhjDZio"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmaXolBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A47728DBB;
-	Fri, 24 Nov 2023 18:53:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B079EC433C8;
-	Fri, 24 Nov 2023 18:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516A631740;
+	Fri, 24 Nov 2023 17:57:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DE0C433C8;
+	Fri, 24 Nov 2023 17:57:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852017;
-	bh=896H0XAGbSfRAUjYaJtyQMorXgJs7j7IuMN/s5c2b1A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WhjDZioUmn4V0vejZ1GpluSL6/dWnMyeNsLgHlRdgpu620jRO/iaoDdvHNYHOIZr
-	 7nL/2rObKIGOFTxsYQIcD24GiyXAkDxEeHIqHKqXKt2LmCr1autTmwodKEj4fOhPWh
-	 DW00B4sJKfV3ubE3YyWAS4E7b66pNqXKCYAf/wJ8=
+	s=korg; t=1700848635;
+	bh=2JjcSbgitpI0HISfWEs/FS/TJekmaWwCjl5cbRCJIy0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XmaXolBS7G1Upq5wP0Py6drBFGx2hRzGRxbLuKZ5OoyIs5Z+rF89oe6rurmcS/kfG
+	 v6/yRymqnNqqzBJfH8PI+CCjmcDkPMESkeRiiUw8kZRVOgpNR+cIIrCqOa2rx43LsK
+	 KrSefakN1alZWPPgTNFd5QVxCFhfaY5Hfa36TjLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 186/372] mm/damon/sysfs: remove requested targets when online-commit inputs
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org
+Subject: [PATCH 4.19 00/97] 4.19.300-rc1 review
 Date: Fri, 24 Nov 2023 17:49:33 +0000
-Message-ID: <20231124172016.665199381@linuxfoundation.org>
+Message-ID: <20231124171934.122298957@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.300-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-4.19.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 4.19.300-rc1
+X-KernelTest-Deadline: 2023-11-26T17:19+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 4.19.300 release.
+There are 97 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sun, 26 Nov 2023 17:19:17 +0000.
+Anything received after that time might be too late.
 
-From: SeongJae Park <sj@kernel.org>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.300-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+and the diffstat can be found below.
 
-commit 19467a950b49432a84bf6dbadbbb17bdf89418b7 upstream.
+thanks,
 
-damon_sysfs_set_targets(), which updates the targets of the context for
-online commitment, do not remove targets that removed from the
-corresponding sysfs files.  As a result, more than intended targets of the
-context can exist and hence consume memory and monitoring CPU resource
-more than expected.
+greg k-h
 
-Fix it by removing all targets of the context and fill up again using the
-user input.  This could cause unnecessary memory dealloc and realloc
-operations, but this is not a hot code path.  Also, note that damon_target
-is stateless, and hence no data is lost.
+-------------
+Pseudo-Shortlog of commits:
 
-[sj@kernel.org: fix unnecessary monitoring results removal]
-  Link: https://lkml.kernel.org/r/20231028213353.45397-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20231022210735.46409-2-sj@kernel.org
-Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendanhiggins@google.com>
-Cc: <stable@vger.kernel.org>	[5.19.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- mm/damon/sysfs.c |   68 ++++++++++++++++++++++++++++---------------------------
- 1 file changed, 35 insertions(+), 33 deletions(-)
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 4.19.300-rc1
 
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -2188,58 +2188,60 @@ destroy_targets_out:
- 	return err;
- }
- 
--/*
-- * Search a target in a context that corresponds to the sysfs target input.
-- *
-- * Return: pointer to the target if found, NULL if not found, or negative
-- * error code if the search failed.
-- */
--static struct damon_target *damon_sysfs_existing_target(
--		struct damon_sysfs_target *sys_target, struct damon_ctx *ctx)
-+static int damon_sysfs_update_target(struct damon_target *target,
-+		struct damon_ctx *ctx,
-+		struct damon_sysfs_target *sys_target)
- {
- 	struct pid *pid;
--	struct damon_target *t;
-+	struct damon_region *r, *next;
- 
--	if (!damon_target_has_pid(ctx)) {
--		/* Up to only one target for paddr could exist */
--		damon_for_each_target(t, ctx)
--			return t;
--		return NULL;
--	}
-+	if (!damon_target_has_pid(ctx))
-+		return 0;
- 
--	/* ops.id should be DAMON_OPS_VADDR or DAMON_OPS_FVADDR */
- 	pid = find_get_pid(sys_target->pid);
- 	if (!pid)
--		return ERR_PTR(-EINVAL);
--	damon_for_each_target(t, ctx) {
--		if (t->pid == pid) {
--			put_pid(pid);
--			return t;
--		}
-+		return -EINVAL;
-+
-+	/* no change to the target */
-+	if (pid == target->pid) {
-+		put_pid(pid);
-+		return 0;
- 	}
--	put_pid(pid);
--	return NULL;
-+
-+	/* remove old monitoring results and update the target's pid */
-+	damon_for_each_region_safe(r, next, target)
-+		damon_destroy_region(r, target);
-+	put_pid(target->pid);
-+	target->pid = pid;
-+	return 0;
- }
- 
- static int damon_sysfs_set_targets(struct damon_ctx *ctx,
- 		struct damon_sysfs_targets *sysfs_targets)
- {
--	int i, err;
-+	struct damon_target *t, *next;
-+	int i = 0, err;
- 
- 	/* Multiple physical address space monitoring targets makes no sense */
- 	if (ctx->ops.id == DAMON_OPS_PADDR && sysfs_targets->nr > 1)
- 		return -EINVAL;
- 
--	for (i = 0; i < sysfs_targets->nr; i++) {
-+	damon_for_each_target_safe(t, next, ctx) {
-+		if (i < sysfs_targets->nr) {
-+			damon_sysfs_update_target(t, ctx,
-+					sysfs_targets->targets_arr[i]);
-+		} else {
-+			if (damon_target_has_pid(ctx))
-+				put_pid(t->pid);
-+			damon_destroy_target(t);
-+		}
-+		i++;
-+	}
-+
-+	for (; i < sysfs_targets->nr; i++) {
- 		struct damon_sysfs_target *st = sysfs_targets->targets_arr[i];
--		struct damon_target *t = damon_sysfs_existing_target(st, ctx);
- 
--		if (IS_ERR(t))
--			return PTR_ERR(t);
--		if (!t)
--			err = damon_sysfs_add_target(st, ctx);
--		else
--			err = damon_sysfs_set_regions(t, st->regions);
-+		err = damon_sysfs_add_target(st, ctx);
- 		if (err)
- 			return err;
- 	}
+Eric Dumazet <edumazet@google.com>
+    net: sched: fix race condition in qdisc_graft()
+
+Matthew Wilcox (Oracle) <willy@infradead.org>
+    iomap: Set all uptodate bits for an Uptodate page
+
+Dongli Zhang <dongli.zhang@oracle.com>
+    scsi: virtio_scsi: limit number of hw queues by nr_cpu_ids
+
+Christian König <christian.koenig@amd.com>
+    drm/amdgpu: fix error handling in amdgpu_bo_list_get()
+
+Kemeng Shi <shikemeng@huaweicloud.com>
+    ext4: remove gdb backup copy for meta bg in setup_new_flex_group_blocks
+
+Kemeng Shi <shikemeng@huaweicloud.com>
+    ext4: correct return value of ext4_convert_meta_bg
+
+Kemeng Shi <shikemeng@huaweicloud.com>
+    ext4: correct offset of gdb backup in non meta_bg group to update_backups
+
+Max Kellermann <max.kellermann@ionos.com>
+    ext4: apply umask if ACL support is disabled
+
+Heiner Kallweit <hkallweit1@gmail.com>
+    Revert "net: r8169: Disable multicast filter for RTL8168H and RTL8107E"
+
+Vikash Garodia <quic_vgarodia@quicinc.com>
+    media: venus: hfi: add checks to handle capabilities from firmware
+
+Vikash Garodia <quic_vgarodia@quicinc.com>
+    media: venus: hfi: fix the check to handle session buffer requirement
+
+Vikash Garodia <quic_vgarodia@quicinc.com>
+    media: venus: hfi_parser: Add check to keep the number of codecs within range
+
+Sean Young <sean@mess.org>
+    media: sharp: fix sharp encoding
+
+Sean Young <sean@mess.org>
+    media: lirc: drop trailing space from scancode transmit
+
+Heiner Kallweit <hkallweit1@gmail.com>
+    i2c: i801: fix potential race in i801_block_transaction_byte_by_byte
+
+Alexander Sverdlin <alexander.sverdlin@siemens.com>
+    net: dsa: lan9303: consequently nested-lock physical MDIO
+
+Pavel Krasavin <pkrasavin@imaqliq.com>
+    tty: serial: meson: fix hard LOCKUP on crtscts mode
+
+Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+    serial: meson: Use platform_get_irq() to get the interrupt
+
+Neil Armstrong <narmstrong@baylibre.com>
+    tty: serial: meson: retrieve port FIFO size from DT
+
+Colin Ian King <colin.king@canonical.com>
+    serial: meson: remove redundant initialization of variable id
+
+Dmitry Safonov <dima@arista.com>
+    tty/serial: Migrate meson_uart to use has_sysrq
+
+Loys Ollivier <lollivier@baylibre.com>
+    tty: serial: meson: if no alias specified use an available id
+
+Chandradeep Dey <codesigning@chandradeepdey.com>
+    ALSA: hda/realtek - Enable internal speaker of ASUS K6500ZC
+
+Takashi Iwai <tiwai@suse.de>
+    ALSA: info: Fix potential deadlock at disconnection
+
+Helge Deller <deller@gmx.de>
+    parisc/power: Fix power soft-off when running on qemu
+
+Helge Deller <deller@gmx.de>
+    parisc/pgtable: Do not drop upper 5 address bits of physical address
+
+Helge Deller <deller@gmx.de>
+    parisc: Prevent booting 64-bit kernels on PA1.x machines
+
+Heiko Carstens <hca@linux.ibm.com>
+    s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
+
+Heiko Carstens <hca@linux.ibm.com>
+    s390/cmma: fix initial kernel address space page table walk
+
+Alain Volmat <alain.volmat@foss.st.com>
+    dmaengine: stm32-mdma: correct desc prep when channel running
+
+Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
+    mcb: fix error handling for different scenarios when parsing
+
+Eric Biggers <ebiggers@google.com>
+    quota: explicitly forbid quota files from being encrypted
+
+Zhihao Cheng <chengzhihao1@huawei.com>
+    jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
+
+Brian Geffon <bgeffon@google.com>
+    PM: hibernate: Clean up sync_read handling in snapshot_write_next()
+
+Brian Geffon <bgeffon@google.com>
+    PM: hibernate: Use __get_safe_page() rather than touching the list
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    mmc: vub300: fix an error code
+
+Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+    clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
+
+Helge Deller <deller@gmx.de>
+    parisc/power: Add power soft-off when running on qemu
+
+Helge Deller <deller@gmx.de>
+    parisc/pdc: Add width field to struct pdc_model
+
+Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+    PCI: keystone: Don't discard .probe() callback
+
+Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+    PCI: keystone: Don't discard .remove() callback
+
+Herve Codina <herve.codina@bootlin.com>
+    genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
+
+Rong Chen <rong.chen@amlogic.com>
+    mmc: meson-gx: Remove setting of CMD_CFG_ERROR
+
+Lukas Wunner <lukas@wunner.de>
+    PCI/sysfs: Protect driver's D3cold preference from user space
+
+David Woodhouse <dwmw@amazon.co.uk>
+    hvc/xen: fix error path in xen_hvc_init() to always register frontend driver
+
+Paul Moore <paul@paul-moore.com>
+    audit: don't WARN_ON_ONCE(!current->mm) in audit_exe_compare()
+
+Paul Moore <paul@paul-moore.com>
+    audit: don't take task_lock() in audit_exe_compare() code path
+
+Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+    KVM: x86: Ignore MSR_AMD64_TW_CFG access
+
+Kees Cook <keescook@chromium.org>
+    randstruct: Fix gcc-plugin performance mode to stay in group
+
+Vikash Garodia <quic_vgarodia@quicinc.com>
+    media: venus: hfi: add checks to perform sanity on queue pointers
+
+Anastasia Belova <abelova@astralinux.ru>
+    cifs: spnego: add ';' in HOST_KEY_LEN
+
+Vlad Buslov <vladbu@nvidia.com>
+    macvlan: Don't propagate promisc change to lower dev in passthru
+
+Linus Walleij <linus.walleij@linaro.org>
+    net: ethernet: cortina: Fix MTU max setting
+
+Linus Walleij <linus.walleij@linaro.org>
+    net: ethernet: cortina: Handle large frames
+
+Linus Walleij <linus.walleij@linaro.org>
+    net: ethernet: cortina: Fix max RX frame define
+
+Eric Dumazet <edumazet@google.com>
+    ptp: annotate data-race around q->head and q->tail
+
+Juergen Gross <jgross@suse.com>
+    xen/events: fix delayed eoi list handling
+
+Willem de Bruijn <willemb@google.com>
+    ppp: limit MRU to 64K
+
+Shigeru Yoshida <syoshida@redhat.com>
+    tipc: Fix kernel-infoleak due to uninitialized TLV value
+
+Shigeru Yoshida <syoshida@redhat.com>
+    tty: Fix uninit-value access in ppp_sync_receive()
+
+Eric Dumazet <edumazet@google.com>
+    ipvlan: add ipvlan_route_v6_outbound() helper
+
+Olga Kornievskaia <kolga@netapp.com>
+    NFSv4.1: fix SP4_MACH_CRED protection for pnfs IO
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    pwm: Fix double shift bug
+
+Wayne Lin <wayne.lin@amd.com>
+    drm/amd/display: Avoid NULL dereference of timing generator
+
+Bob Peterson <rpeterso@redhat.com>
+    gfs2: ignore negated quota changes
+
+Hans Verkuil <hverkuil-cisco@xs4all.nl>
+    media: vivid: avoid integer overflow
+
+Rajeshwar R Shinde <coolrrsh@gmail.com>
+    media: gspca: cpia1: shift-out-of-bounds in set_flicker
+
+Axel Lin <axel.lin@ingics.com>
+    i2c: sun6i-p2wi: Prevent potential division by zero
+
+Hardik Gajjar <hgajjar@de.adit-jv.com>
+    usb: gadget: f_ncm: Always set current gadget in ncm_bind()
+
+Yi Yang <yiyang13@huawei.com>
+    tty: vcc: Add check for kstrdup() in vcc_probe()
+
+Jiri Kosina <jkosina@suse.cz>
+    HID: Add quirk for Dell Pro Wireless Keyboard and Mouse KM5221W
+
+Wenchao Hao <haowenchao2@huawei.com>
+    scsi: libfc: Fix potential NULL pointer dereference in fc_lport_ptp_setup()
+
+Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+    atm: iphase: Do PCI error checks on own line
+
+Cezary Rojewski <cezary.rojewski@intel.com>
+    ALSA: hda: Fix possible null-ptr-deref when assigning a stream
+
+Vincent Whitchurch <vincent.whitchurch@axis.com>
+    ARM: 9320/1: fix stack depot IRQ stack filter
+
+Manas Ghandat <ghandatmanas@gmail.com>
+    jfs: fix array-index-out-of-bounds in diAlloc
+
+Manas Ghandat <ghandatmanas@gmail.com>
+    jfs: fix array-index-out-of-bounds in dbFindLeaf
+
+Juntong Deng <juntong.deng@outlook.com>
+    fs/jfs: Add validity check for db_maxag and db_agpref
+
+Juntong Deng <juntong.deng@outlook.com>
+    fs/jfs: Add check for negative db_l2nbperpage
+
+Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+    RDMA/hfi1: Use FIELD_GET() to extract Link Width
+
+Lu Jialin <lujialin4@huawei.com>
+    crypto: pcrypt - Fix hungtask for PADATA_RESET
+
+zhujun2 <zhujun2@cmss.chinamobile.com>
+    selftests/efivarfs: create-read: fix a resource leak
+
+Qu Huang <qu.huang@linux.dev>
+    drm/amdgpu: Fix a null pointer access when the smc_rreg pointer is NULL
+
+Mario Limonciello <mario.limonciello@amd.com>
+    drm/amd: Fix UBSAN array-index-out-of-bounds for Polaris and Tonga
+
+Mario Limonciello <mario.limonciello@amd.com>
+    drm/amd: Fix UBSAN array-index-out-of-bounds for SMU7
+
+Olli Asikainen <olli.asikainen@gmail.com>
+    platform/x86: thinkpad_acpi: Add battery quirk for Thinkpad X120e
+
+ZhengHan Wang <wzhmmmmm@gmail.com>
+    Bluetooth: Fix double free in hci_conn_cleanup
+
+Eric Dumazet <edumazet@google.com>
+    net: annotate data-races around sk->sk_dst_pending_confirm
+
+Eric Dumazet <edumazet@google.com>
+    net: annotate data-races around sk->sk_tx_queue_mapping
+
+Dmitry Antipov <dmantipov@yandex.ru>
+    wifi: ath10k: fix clang-specific fortify warning
+
+Dmitry Antipov <dmantipov@yandex.ru>
+    wifi: ath9k: fix clang-specific fortify warnings
+
+Ping-Ke Shih <pkshih@realtek.com>
+    wifi: mac80211: don't return unset power in ieee80211_get_tx_power()
+
+Mike Rapoport (IBM) <rppt@kernel.org>
+    x86/mm: Drop the 4 MB restriction on minimal NUMA node memory size
+
+Ronald Wahl <ronald.wahl@raritan.com>
+    clocksource/drivers/timer-atmel-tcb: Fix initialization on SAM9 hardware
+
+Jacky Bai <ping.bai@nxp.com>
+    clocksource/drivers/timer-imx-gpt: Fix potential memory leak
+
+Shuai Xue <xueshuai@linux.alibaba.com>
+    perf/core: Bail out early if the request AUX area is out of bound
+
+John Stultz <jstultz@google.com>
+    locking/ww_mutex/test: Fix potential workqueue corruption
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |  4 +-
+ arch/arm/include/asm/exception.h                   |  4 --
+ arch/parisc/include/uapi/asm/pdc.h                 |  1 +
+ arch/parisc/kernel/entry.S                         |  7 ++--
+ arch/parisc/kernel/head.S                          |  5 +--
+ arch/s390/mm/page-states.c                         | 19 +++++++--
+ arch/x86/include/asm/msr-index.h                   |  1 +
+ arch/x86/include/asm/numa.h                        |  7 ----
+ arch/x86/kvm/x86.c                                 |  2 +
+ arch/x86/mm/numa.c                                 |  7 ----
+ crypto/pcrypt.c                                    |  4 ++
+ drivers/atm/iphase.c                               | 20 +++++----
+ drivers/clk/qcom/gcc-ipq8074.c                     |  6 ---
+ drivers/clocksource/tcb_clksrc.c                   |  1 +
+ drivers/clocksource/timer-imx-gpt.c                | 18 +++++---
+ drivers/dma/stm32-mdma.c                           |  4 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c        |  1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c        |  6 +++
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c    |  4 +-
+ drivers/gpu/drm/amd/include/pptable.h              |  4 +-
+ drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h | 16 +++----
+ drivers/hid/hid-ids.h                              |  1 +
+ drivers/hid/hid-quirks.c                           |  1 +
+ drivers/i2c/busses/i2c-i801.c                      | 19 ++++-----
+ drivers/i2c/busses/i2c-sun6i-p2wi.c                |  5 +++
+ drivers/infiniband/hw/hfi1/pcie.c                  |  9 +---
+ drivers/mcb/mcb-core.c                             |  1 +
+ drivers/mcb/mcb-parse.c                            |  2 +-
+ drivers/media/platform/qcom/venus/hfi_msgs.c       |  2 +-
+ drivers/media/platform/qcom/venus/hfi_parser.c     | 15 +++++++
+ drivers/media/platform/qcom/venus/hfi_venus.c      | 10 +++++
+ drivers/media/platform/vivid/vivid-rds-gen.c       |  2 +-
+ drivers/media/rc/ir-sharp-decoder.c                |  8 ++--
+ drivers/media/rc/lirc_dev.c                        |  6 ++-
+ drivers/media/usb/gspca/cpia1.c                    |  3 ++
+ drivers/mmc/host/meson-gx-mmc.c                    |  1 -
+ drivers/mmc/host/vub300.c                          |  1 +
+ drivers/net/dsa/lan9303_mdio.c                     |  4 +-
+ drivers/net/ethernet/cortina/gemini.c              | 45 +++++++++++++-------
+ drivers/net/ethernet/cortina/gemini.h              |  4 +-
+ drivers/net/ethernet/realtek/r8169_main.c          |  4 +-
+ drivers/net/ipvlan/ipvlan_core.c                   | 41 +++++++++++-------
+ drivers/net/macvlan.c                              |  2 +-
+ drivers/net/ppp/ppp_synctty.c                      |  6 ++-
+ drivers/net/wireless/ath/ath10k/debug.c            |  2 +-
+ drivers/net/wireless/ath/ath9k/debug.c             |  2 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_debug.c     |  2 +-
+ drivers/parisc/power.c                             | 16 ++++++-
+ drivers/pci/controller/dwc/pci-keystone.c          |  8 ++--
+ drivers/pci/pci-acpi.c                             |  2 +-
+ drivers/pci/pci-sysfs.c                            |  5 +--
+ drivers/platform/x86/thinkpad_acpi.c               |  1 +
+ drivers/ptp/ptp_chardev.c                          |  3 +-
+ drivers/ptp/ptp_clock.c                            |  5 ++-
+ drivers/ptp/ptp_private.h                          |  8 +++-
+ drivers/ptp/ptp_sysfs.c                            |  3 +-
+ drivers/scsi/libfc/fc_lport.c                      |  6 +++
+ drivers/scsi/virtio_scsi.c                         |  1 +
+ drivers/tty/hvc/hvc_xen.c                          |  5 ++-
+ drivers/tty/serial/meson_uart.c                    | 49 +++++++++++++++-------
+ drivers/tty/vcc.c                                  | 16 +++++--
+ drivers/usb/gadget/function/f_ncm.c                | 27 +++++-------
+ drivers/xen/events/events_base.c                   |  4 +-
+ fs/cifs/cifs_spnego.c                              |  4 +-
+ fs/ext4/acl.h                                      |  5 +++
+ fs/ext4/resize.c                                   | 19 ++++-----
+ fs/gfs2/quota.c                                    | 11 +++++
+ fs/iomap.c                                         |  3 ++
+ fs/jbd2/recovery.c                                 |  8 ++++
+ fs/jfs/jfs_dmap.c                                  | 23 +++++++---
+ fs/jfs/jfs_imap.c                                  |  5 ++-
+ fs/nfs/nfs4proc.c                                  |  5 ++-
+ fs/quota/dquot.c                                   | 14 +++++++
+ include/linux/pwm.h                                |  4 +-
+ include/net/sock.h                                 | 26 ++++++++----
+ kernel/audit_watch.c                               |  9 +++-
+ kernel/events/ring_buffer.c                        |  6 +++
+ kernel/irq/generic-chip.c                          | 25 ++++++++---
+ kernel/locking/test-ww_mutex.c                     | 20 +++++----
+ kernel/padata.c                                    |  2 +-
+ kernel/power/snapshot.c                            | 16 ++++---
+ net/bluetooth/hci_conn.c                           |  6 +--
+ net/bluetooth/hci_sysfs.c                          | 23 +++++-----
+ net/core/sock.c                                    |  2 +-
+ net/ipv4/tcp_output.c                              |  2 +-
+ net/mac80211/cfg.c                                 |  4 ++
+ net/sched/sch_api.c                                |  5 ++-
+ net/tipc/netlink_compat.c                          |  1 +
+ scripts/gcc-plugins/randomize_layout_plugin.c      | 11 +++--
+ sound/core/info.c                                  | 21 ++++++----
+ sound/hda/hdac_stream.c                            |  6 ++-
+ sound/pci/hda/patch_realtek.c                      |  1 +
+ tools/testing/selftests/efivarfs/create-read.c     |  2 +
+ 93 files changed, 514 insertions(+), 273 deletions(-)
 
 
 
