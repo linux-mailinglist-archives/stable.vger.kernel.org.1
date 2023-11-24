@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C3D7F7EE2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C2A7F7CCA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5C2C28240C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2593B21149
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBC533CFD;
-	Fri, 24 Nov 2023 18:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A945F3A8D7;
+	Fri, 24 Nov 2023 18:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dV9h3KBm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/cza0Ot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EFB22F1D;
-	Fri, 24 Nov 2023 18:36:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78552C433C8;
-	Fri, 24 Nov 2023 18:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE76364A4;
+	Fri, 24 Nov 2023 18:18:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC16DC433C8;
+	Fri, 24 Nov 2023 18:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851013;
-	bh=CSvK6Y4o/Gx3j/WZcLBIISJ7QvwY52s0voyxWpSmezk=;
+	s=korg; t=1700849903;
+	bh=98ydLc5uzPhsHbaamUelUwY3r+OVqhuZCyBc3gck0aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dV9h3KBmwkJtwsJ5IiZOtOuGQNtowmxcEmo7xUCia3OA660uXhKYf3KNttXVPYBV1
-	 ynjL/kLAinFu3K+OIiy9PzySjRY1wiWP1pKCfpS2DJBUJIiFiIIxgdABU9AiUPYssv
-	 d+lfw2DglYP2cMlz3MNIrY06n5VyCRZg15sA24MI=
+	b=m/cza0Ot8NVsnfZE7KjcjVHvE5oLzJ9U94eTOZy4YGrDXDRXAMGNiMKbxYaKPCQrh
+	 /Ud5lkUbT+PuXzNaD+BLFoXd3RFdfRohs33myTeSFp2jECur1zywyreZX1Kg7wkwiX
+	 ejlrSSRqIC1/sSdHpXJifPckVYHGbFfb6cx6mAIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rong Chen <rong.chen@amlogic.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.5 279/491] mmc: meson-gx: Remove setting of CMD_CFG_ERROR
+	Amir Goldstein <amir73il@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.6 349/530] ima: detect changes to the backing overlay file
 Date: Fri, 24 Nov 2023 17:48:35 +0000
-Message-ID: <20231124172032.958065841@linuxfoundation.org>
+Message-ID: <20231124172038.639607333@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +54,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rong Chen <rong.chen@amlogic.com>
+From: Mimi Zohar <zohar@linux.ibm.com>
 
-commit 57925e16c9f7d18012bcf45bfa658f92c087981a upstream.
+commit b836c4d29f2744200b2af41e14bf50758dddc818 upstream.
 
-For the t7 and older SoC families, the CMD_CFG_ERROR has no effect.
-Starting from SoC family C3, setting this bit without SG LINK data
-address will cause the controller to generate an IRQ and stop working.
+Commit 18b44bc5a672 ("ovl: Always reevaluate the file signature for
+IMA") forced signature re-evaulation on every file access.
 
-To fix it, don't set the bit CMD_CFG_ERROR anymore.
+Instead of always re-evaluating the file's integrity, detect a change
+to the backing file, by comparing the cached file metadata with the
+backing file's metadata.  Verifying just the i_version has not changed
+is insufficient.  In addition save and compare the i_ino and s_dev
+as well.
 
-Fixes: 18f92bc02f17 ("mmc: meson-gx: make sure the descriptor is stopped on errors")
-Signed-off-by: Rong Chen <rong.chen@amlogic.com>
-Reviewed-by: Jerome Brunet <jbrunet@baylibre.com>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Tested-by: Eric Snowberg <eric.snowberg@oracle.com>
+Tested-by: Raul E Rangel <rrangel@chromium.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231026073156.2868310-1-rong.chen@amlogic.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/meson-gx-mmc.c |    1 -
- 1 file changed, 1 deletion(-)
+ fs/overlayfs/super.c              |    2 +-
+ security/integrity/ima/ima_api.c  |    5 +++++
+ security/integrity/ima/ima_main.c |   16 +++++++++++++++-
+ security/integrity/integrity.h    |    2 ++
+ 4 files changed, 23 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/meson-gx-mmc.c
-+++ b/drivers/mmc/host/meson-gx-mmc.c
-@@ -801,7 +801,6 @@ static void meson_mmc_start_cmd(struct m
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1489,7 +1489,7 @@ int ovl_fill_super(struct super_block *s
+ 		ovl_trusted_xattr_handlers;
+ 	sb->s_fs_info = ofs;
+ 	sb->s_flags |= SB_POSIXACL;
+-	sb->s_iflags |= SB_I_SKIP_SYNC | SB_I_IMA_UNVERIFIABLE_SIGNATURE;
++	sb->s_iflags |= SB_I_SKIP_SYNC;
  
- 	cmd_cfg |= FIELD_PREP(CMD_CFG_CMD_INDEX_MASK, cmd->opcode);
- 	cmd_cfg |= CMD_CFG_OWNER;  /* owned by CPU */
--	cmd_cfg |= CMD_CFG_ERROR; /* stop in case of error */
+ 	err = -ENOMEM;
+ 	root_dentry = ovl_get_root(sb, ctx->upper.dentry, oe);
+--- a/security/integrity/ima/ima_api.c
++++ b/security/integrity/ima/ima_api.c
+@@ -243,6 +243,7 @@ int ima_collect_measurement(struct integ
+ {
+ 	const char *audit_cause = "failed";
+ 	struct inode *inode = file_inode(file);
++	struct inode *real_inode = d_real_inode(file_dentry(file));
+ 	const char *filename = file->f_path.dentry->d_name.name;
+ 	struct ima_max_digest_data hash;
+ 	struct kstat stat;
+@@ -302,6 +303,10 @@ int ima_collect_measurement(struct integ
+ 	iint->ima_hash = tmpbuf;
+ 	memcpy(iint->ima_hash, &hash, length);
+ 	iint->version = i_version;
++	if (real_inode != inode) {
++		iint->real_ino = real_inode->i_ino;
++		iint->real_dev = real_inode->i_sb->s_dev;
++	}
  
- 	meson_mmc_set_response_bits(cmd, &cmd_cfg);
+ 	/* Possibly temporary failure due to type of read (eg. O_DIRECT) */
+ 	if (!result)
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -25,6 +25,7 @@
+ #include <linux/xattr.h>
+ #include <linux/ima.h>
+ #include <linux/fs.h>
++#include <linux/iversion.h>
  
+ #include "ima.h"
+ 
+@@ -207,7 +208,7 @@ static int process_measurement(struct fi
+ 			       u32 secid, char *buf, loff_t size, int mask,
+ 			       enum ima_hooks func)
+ {
+-	struct inode *inode = file_inode(file);
++	struct inode *backing_inode, *inode = file_inode(file);
+ 	struct integrity_iint_cache *iint = NULL;
+ 	struct ima_template_desc *template_desc = NULL;
+ 	char *pathbuf = NULL;
+@@ -284,6 +285,19 @@ static int process_measurement(struct fi
+ 		iint->measured_pcrs = 0;
+ 	}
+ 
++	/* Detect and re-evaluate changes made to the backing file. */
++	backing_inode = d_real_inode(file_dentry(file));
++	if (backing_inode != inode &&
++	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
++		if (!IS_I_VERSION(backing_inode) ||
++		    backing_inode->i_sb->s_dev != iint->real_dev ||
++		    backing_inode->i_ino != iint->real_ino ||
++		    !inode_eq_iversion(backing_inode, iint->version)) {
++			iint->flags &= ~IMA_DONE_MASK;
++			iint->measured_pcrs = 0;
++		}
++	}
++
+ 	/* Determine if already appraised/measured based on bitmask
+ 	 * (IMA_MEASURE, IMA_MEASURED, IMA_XXXX_APPRAISE, IMA_XXXX_APPRAISED,
+ 	 *  IMA_AUDIT, IMA_AUDITED)
+--- a/security/integrity/integrity.h
++++ b/security/integrity/integrity.h
+@@ -164,6 +164,8 @@ struct integrity_iint_cache {
+ 	unsigned long flags;
+ 	unsigned long measured_pcrs;
+ 	unsigned long atomic_flags;
++	unsigned long real_ino;
++	dev_t real_dev;
+ 	enum integrity_status ima_file_status:4;
+ 	enum integrity_status ima_mmap_status:4;
+ 	enum integrity_status ima_bprm_status:4;
 
 
 
