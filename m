@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 011BA7F7BE1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3EA77F7E1B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B10EF28221C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58EAA2822BF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9A6381DF;
-	Fri, 24 Nov 2023 18:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E2639FFD;
+	Fri, 24 Nov 2023 18:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWC4g34l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls4FMMdN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064F939FF7;
-	Fri, 24 Nov 2023 18:09:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B46C433C7;
-	Fri, 24 Nov 2023 18:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A738E39FF3;
+	Fri, 24 Nov 2023 18:29:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A0EC433C9;
+	Fri, 24 Nov 2023 18:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849373;
-	bh=TjNY3yPnIN9tvJR1DwOPBPcnvOCEODCPrcEtw99OpZQ=;
+	s=korg; t=1700850599;
+	bh=9iwwR2R2k7goO3GZVf3fmOxcxEiAhEA3TX5W5k0QOGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWC4g34lqT4V6s64XxPT9wG/E6Sc0cDj7Fxk7edXxAa6crrSMpk3oH4yWgDdoqqQp
-	 0ilYsdmuz76wvJdsZKXYKeDAtECmQ83i3bqL2rWaD42W7U/zK9ozW6lYLaJ1ReH/uJ
-	 4qD8z+KZ81Ll2VsSjPU5wh1+GaAs6yTK1V/cEWDk=
+	b=Ls4FMMdN+Cle+rpKWR7Mza2VI7isM0Imrq4/jskgKA35uIMaOZ4igYmox9cRIVpUF
+	 lMedc0sHHihaSVteT995nGZA1PywIWC69ljXgR0c7jLKv3FRscPh8C/A3TW2T7TYl6
+	 wt9Ytx95Cn0hLccY2RtZeSTM3xWReawAvQxXu/BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <hawking.zhang@amd.com>,
-	Luben Tuikov <luben.tuikov@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Christian Koenig <christian.koenig@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	Brian King <brking@linux.vnet.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/530] drm/amdgpu: fix software pci_unplug on some chips
-Date: Fri, 24 Nov 2023 17:45:21 +0000
-Message-ID: <20231124172032.808618761@linuxfoundation.org>
+Subject: [PATCH 6.5 086/491] scsi: ibmvfc: Remove BUG_ON in the case of an empty event pool
+Date: Fri, 24 Nov 2023 17:45:22 +0000
+Message-ID: <20231124172027.196605649@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,105 +54,324 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+From: Tyrel Datwyler <tyreld@linux.ibm.com>
 
-[ Upstream commit 4638e0c29a3f2294d5de0d052a4b8c9f33ccb957 ]
+[ Upstream commit b39f2d10b86d0af353ea339e5815820026bca48f ]
 
-When software 'pci unplug' using IGT is executed we got a sysfs directory
-entry is NULL for differant ras blocks like hdp, umc, etc.
-Before call 'sysfs_remove_file_from_group' and 'sysfs_remove_group'
-check that 'sd' is  not NULL.
+In practice the driver should never send more commands than are allocated
+to a queue's event pool. In the unlikely event that this happens, the code
+asserts a BUG_ON, and in the case that the kernel is not configured to
+crash on panic returns a junk event pointer from the empty event list
+causing things to spiral from there. This BUG_ON is a historical artifact
+of the ibmvfc driver first being upstreamed, and it is well known now that
+the use of BUG_ON is bad practice except in the most unrecoverable
+scenario. There is nothing about this scenario that prevents the driver
+from recovering and carrying on.
 
-[  +0.000001] RIP: 0010:sysfs_remove_group+0x83/0x90
-[  +0.000002] Code: 31 c0 31 d2 31 f6 31 ff e9 9a a8 b4 00 4c 89 e7 e8 f2 a2 ff ff eb c2 49 8b 55 00 48 8b 33 48 c7 c7 80 65 94 82 e8 cd 82 bb ff <0f> 0b eb cc 66 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90
-[  +0.000001] RSP: 0018:ffffc90002067c90 EFLAGS: 00010246
-[  +0.000002] RAX: 0000000000000000 RBX: ffffffff824ea180 RCX: 0000000000000000
-[  +0.000001] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[  +0.000001] RBP: ffffc90002067ca8 R08: 0000000000000000 R09: 0000000000000000
-[  +0.000001] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-[  +0.000001] R13: ffff88810a395f48 R14: ffff888101aab0d0 R15: 0000000000000000
-[  +0.000001] FS:  00007f5ddaa43a00(0000) GS:ffff88841e800000(0000) knlGS:0000000000000000
-[  +0.000002] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  +0.000001] CR2: 00007f8ffa61ba50 CR3: 0000000106432000 CR4: 0000000000350ef0
-[  +0.000001] Call Trace:
-[  +0.000001]  <TASK>
-[  +0.000001]  ? show_regs+0x72/0x90
-[  +0.000002]  ? sysfs_remove_group+0x83/0x90
-[  +0.000002]  ? __warn+0x8d/0x160
-[  +0.000001]  ? sysfs_remove_group+0x83/0x90
-[  +0.000001]  ? report_bug+0x1bb/0x1d0
-[  +0.000003]  ? handle_bug+0x46/0x90
-[  +0.000001]  ? exc_invalid_op+0x19/0x80
-[  +0.000002]  ? asm_exc_invalid_op+0x1b/0x20
-[  +0.000003]  ? sysfs_remove_group+0x83/0x90
-[  +0.000001]  dpm_sysfs_remove+0x61/0x70
-[  +0.000002]  device_del+0xa3/0x3d0
-[  +0.000002]  ? ktime_get_mono_fast_ns+0x46/0xb0
-[  +0.000002]  device_unregister+0x18/0x70
-[  +0.000001]  i2c_del_adapter+0x26d/0x330
-[  +0.000002]  arcturus_i2c_control_fini+0x25/0x50 [amdgpu]
-[  +0.000236]  smu_sw_fini+0x38/0x260 [amdgpu]
-[  +0.000241]  amdgpu_device_fini_sw+0x116/0x670 [amdgpu]
-[  +0.000186]  ? mutex_lock+0x13/0x50
-[  +0.000003]  amdgpu_driver_release_kms+0x16/0x40 [amdgpu]
-[  +0.000192]  drm_minor_release+0x4f/0x80 [drm]
-[  +0.000025]  drm_release+0xfe/0x150 [drm]
-[  +0.000027]  __fput+0x9f/0x290
-[  +0.000002]  ____fput+0xe/0x20
-[  +0.000002]  task_work_run+0x61/0xa0
-[  +0.000002]  exit_to_user_mode_prepare+0x150/0x170
-[  +0.000002]  syscall_exit_to_user_mode+0x2a/0x50
+Remove the BUG_ON in question from ibmvfc_get_event() and return a NULL
+pointer in the case of an empty event pool. Update all call sites to
+ibmvfc_get_event() to check for a NULL pointer and perfrom the appropriate
+failure or recovery action.
 
-Cc: Hawking Zhang <hawking.zhang@amd.com>
-Cc: Luben Tuikov <luben.tuikov@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Link: https://lore.kernel.org/r/20230921225435.3537728-2-tyreld@linux.ibm.com
+Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/scsi/ibmvscsi/ibmvfc.c | 124 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 122 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-index 163445baa4fc8..6f6341f702789 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
-@@ -1373,7 +1373,8 @@ static void amdgpu_ras_sysfs_remove_bad_page_node(struct amdgpu_device *adev)
+diff --git a/drivers/scsi/ibmvscsi/ibmvfc.c b/drivers/scsi/ibmvscsi/ibmvfc.c
+index 470e8e6c41b62..c98346e464b48 100644
+--- a/drivers/scsi/ibmvscsi/ibmvfc.c
++++ b/drivers/scsi/ibmvscsi/ibmvfc.c
+@@ -1518,7 +1518,11 @@ static struct ibmvfc_event *ibmvfc_get_event(struct ibmvfc_queue *queue)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&queue->l_lock, flags);
+-	BUG_ON(list_empty(&queue->free));
++	if (list_empty(&queue->free)) {
++		ibmvfc_log(queue->vhost, 4, "empty event pool on queue:%ld\n", queue->hwq_id);
++		spin_unlock_irqrestore(&queue->l_lock, flags);
++		return NULL;
++	}
+ 	evt = list_entry(queue->free.next, struct ibmvfc_event, queue_list);
+ 	atomic_set(&evt->free, 0);
+ 	list_del(&evt->queue_list);
+@@ -1947,9 +1951,15 @@ static int ibmvfc_queuecommand(struct Scsi_Host *shost, struct scsi_cmnd *cmnd)
+ 	if (vhost->using_channels) {
+ 		scsi_channel = hwq % vhost->scsi_scrqs.active_queues;
+ 		evt = ibmvfc_get_event(&vhost->scsi_scrqs.scrqs[scsi_channel]);
++		if (!evt)
++			return SCSI_MLQUEUE_HOST_BUSY;
++
+ 		evt->hwq = hwq % vhost->scsi_scrqs.active_queues;
+-	} else
++	} else {
+ 		evt = ibmvfc_get_event(&vhost->crq);
++		if (!evt)
++			return SCSI_MLQUEUE_HOST_BUSY;
++	}
+ 
+ 	ibmvfc_init_event(evt, ibmvfc_scsi_done, IBMVFC_CMD_FORMAT);
+ 	evt->cmnd = cmnd;
+@@ -2037,6 +2047,11 @@ static int ibmvfc_bsg_timeout(struct bsg_job *job)
+ 
+ 	vhost->aborting_passthru = 1;
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		spin_unlock_irqrestore(vhost->host->host_lock, flags);
++		return -ENOMEM;
++	}
++
+ 	ibmvfc_init_event(evt, ibmvfc_bsg_timeout_done, IBMVFC_MAD_FORMAT);
+ 
+ 	tmf = &evt->iu.tmf;
+@@ -2095,6 +2110,10 @@ static int ibmvfc_bsg_plogi(struct ibmvfc_host *vhost, unsigned int port_id)
+ 		goto unlock_out;
+ 
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		rc = -ENOMEM;
++		goto unlock_out;
++	}
+ 	ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_MAD_FORMAT);
+ 	plogi = &evt->iu.plogi;
+ 	memset(plogi, 0, sizeof(*plogi));
+@@ -2213,6 +2232,11 @@ static int ibmvfc_bsg_request(struct bsg_job *job)
+ 	}
+ 
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		spin_unlock_irqrestore(vhost->host->host_lock, flags);
++		rc = -ENOMEM;
++		goto out;
++	}
+ 	ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_MAD_FORMAT);
+ 	mad = &evt->iu.passthru;
+ 
+@@ -2301,6 +2325,11 @@ static int ibmvfc_reset_device(struct scsi_device *sdev, int type, char *desc)
+ 		else
+ 			evt = ibmvfc_get_event(&vhost->crq);
+ 
++		if (!evt) {
++			spin_unlock_irqrestore(vhost->host->host_lock, flags);
++			return -ENOMEM;
++		}
++
+ 		ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_CMD_FORMAT);
+ 		tmf = ibmvfc_init_vfc_cmd(evt, sdev);
+ 		iu = ibmvfc_get_fcp_iu(vhost, tmf);
+@@ -2504,6 +2533,8 @@ static struct ibmvfc_event *ibmvfc_init_tmf(struct ibmvfc_queue *queue,
+ 	struct ibmvfc_tmf *tmf;
+ 
+ 	evt = ibmvfc_get_event(queue);
++	if (!evt)
++		return NULL;
+ 	ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_MAD_FORMAT);
+ 
+ 	tmf = &evt->iu.tmf;
+@@ -2560,6 +2591,11 @@ static int ibmvfc_cancel_all_mq(struct scsi_device *sdev, int type)
+ 
+ 		if (found_evt && vhost->logged_in) {
+ 			evt = ibmvfc_init_tmf(&queues[i], sdev, type);
++			if (!evt) {
++				spin_unlock(queues[i].q_lock);
++				spin_unlock_irqrestore(vhost->host->host_lock, flags);
++				return -ENOMEM;
++			}
+ 			evt->sync_iu = &queues[i].cancel_rsp;
+ 			ibmvfc_send_event(evt, vhost, default_timeout);
+ 			list_add_tail(&evt->cancel, &cancelq);
+@@ -2773,6 +2809,10 @@ static int ibmvfc_abort_task_set(struct scsi_device *sdev)
+ 
+ 	if (vhost->state == IBMVFC_ACTIVE) {
+ 		evt = ibmvfc_get_event(&vhost->crq);
++		if (!evt) {
++			spin_unlock_irqrestore(vhost->host->host_lock, flags);
++			return -ENOMEM;
++		}
+ 		ibmvfc_init_event(evt, ibmvfc_sync_completion, IBMVFC_CMD_FORMAT);
+ 		tmf = ibmvfc_init_vfc_cmd(evt, sdev);
+ 		iu = ibmvfc_get_fcp_iu(vhost, tmf);
+@@ -4031,6 +4071,12 @@ static void ibmvfc_tgt_send_prli(struct ibmvfc_target *tgt)
+ 
+ 	kref_get(&tgt->kref);
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_NONE);
++		kref_put(&tgt->kref, ibmvfc_release_tgt);
++		__ibmvfc_reset_host(vhost);
++		return;
++	}
+ 	vhost->discovery_threads++;
+ 	ibmvfc_init_event(evt, ibmvfc_tgt_prli_done, IBMVFC_MAD_FORMAT);
+ 	evt->tgt = tgt;
+@@ -4138,6 +4184,12 @@ static void ibmvfc_tgt_send_plogi(struct ibmvfc_target *tgt)
+ 	kref_get(&tgt->kref);
+ 	tgt->logo_rcvd = 0;
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_NONE);
++		kref_put(&tgt->kref, ibmvfc_release_tgt);
++		__ibmvfc_reset_host(vhost);
++		return;
++	}
+ 	vhost->discovery_threads++;
+ 	ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_INIT_WAIT);
+ 	ibmvfc_init_event(evt, ibmvfc_tgt_plogi_done, IBMVFC_MAD_FORMAT);
+@@ -4214,6 +4266,8 @@ static struct ibmvfc_event *__ibmvfc_tgt_get_implicit_logout_evt(struct ibmvfc_t
+ 
+ 	kref_get(&tgt->kref);
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt)
++		return NULL;
+ 	ibmvfc_init_event(evt, done, IBMVFC_MAD_FORMAT);
+ 	evt->tgt = tgt;
+ 	mad = &evt->iu.implicit_logout;
+@@ -4241,6 +4295,13 @@ static void ibmvfc_tgt_implicit_logout(struct ibmvfc_target *tgt)
+ 	vhost->discovery_threads++;
+ 	evt = __ibmvfc_tgt_get_implicit_logout_evt(tgt,
+ 						   ibmvfc_tgt_implicit_logout_done);
++	if (!evt) {
++		vhost->discovery_threads--;
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_NONE);
++		kref_put(&tgt->kref, ibmvfc_release_tgt);
++		__ibmvfc_reset_host(vhost);
++		return;
++	}
+ 
+ 	ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_INIT_WAIT);
+ 	if (ibmvfc_send_event(evt, vhost, default_timeout)) {
+@@ -4380,6 +4441,12 @@ static void ibmvfc_tgt_move_login(struct ibmvfc_target *tgt)
+ 
+ 	kref_get(&tgt->kref);
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_DEL_RPORT);
++		kref_put(&tgt->kref, ibmvfc_release_tgt);
++		__ibmvfc_reset_host(vhost);
++		return;
++	}
+ 	vhost->discovery_threads++;
+ 	ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_INIT_WAIT);
+ 	ibmvfc_init_event(evt, ibmvfc_tgt_move_login_done, IBMVFC_MAD_FORMAT);
+@@ -4546,6 +4613,14 @@ static void ibmvfc_adisc_timeout(struct timer_list *t)
+ 	vhost->abort_threads++;
+ 	kref_get(&tgt->kref);
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		tgt_err(tgt, "Failed to get cancel event for ADISC.\n");
++		vhost->abort_threads--;
++		kref_put(&tgt->kref, ibmvfc_release_tgt);
++		__ibmvfc_reset_host(vhost);
++		spin_unlock_irqrestore(vhost->host->host_lock, flags);
++		return;
++	}
+ 	ibmvfc_init_event(evt, ibmvfc_tgt_adisc_cancel_done, IBMVFC_MAD_FORMAT);
+ 
+ 	evt->tgt = tgt;
+@@ -4596,6 +4671,12 @@ static void ibmvfc_tgt_adisc(struct ibmvfc_target *tgt)
+ 
+ 	kref_get(&tgt->kref);
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_NONE);
++		kref_put(&tgt->kref, ibmvfc_release_tgt);
++		__ibmvfc_reset_host(vhost);
++		return;
++	}
+ 	vhost->discovery_threads++;
+ 	ibmvfc_init_event(evt, ibmvfc_tgt_adisc_done, IBMVFC_MAD_FORMAT);
+ 	evt->tgt = tgt;
+@@ -4699,6 +4780,12 @@ static void ibmvfc_tgt_query_target(struct ibmvfc_target *tgt)
+ 
+ 	kref_get(&tgt->kref);
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		ibmvfc_set_tgt_action(tgt, IBMVFC_TGT_ACTION_NONE);
++		kref_put(&tgt->kref, ibmvfc_release_tgt);
++		__ibmvfc_reset_host(vhost);
++		return;
++	}
+ 	vhost->discovery_threads++;
+ 	evt->tgt = tgt;
+ 	ibmvfc_init_event(evt, ibmvfc_tgt_query_target_done, IBMVFC_MAD_FORMAT);
+@@ -4871,6 +4958,13 @@ static void ibmvfc_discover_targets(struct ibmvfc_host *vhost)
  {
- 	struct amdgpu_ras *con = amdgpu_ras_get_context(adev);
+ 	struct ibmvfc_discover_targets *mad;
+ 	struct ibmvfc_event *evt = ibmvfc_get_event(&vhost->crq);
++	int level = IBMVFC_DEFAULT_LOG_LEVEL;
++
++	if (!evt) {
++		ibmvfc_log(vhost, level, "Discover Targets failed: no available events\n");
++		ibmvfc_hard_reset_host(vhost);
++		return;
++	}
  
--	sysfs_remove_file_from_group(&adev->dev->kobj,
-+	if (adev->dev->kobj.sd)
-+		sysfs_remove_file_from_group(&adev->dev->kobj,
- 				&con->badpages_attr.attr,
- 				RAS_FS_NAME);
- }
-@@ -1390,7 +1391,8 @@ static int amdgpu_ras_sysfs_remove_feature_node(struct amdgpu_device *adev)
- 		.attrs = attrs,
- 	};
+ 	ibmvfc_init_event(evt, ibmvfc_discover_targets_done, IBMVFC_MAD_FORMAT);
+ 	mad = &evt->iu.discover_targets;
+@@ -4948,8 +5042,15 @@ static void ibmvfc_channel_setup(struct ibmvfc_host *vhost)
+ 	struct ibmvfc_scsi_channels *scrqs = &vhost->scsi_scrqs;
+ 	unsigned int num_channels =
+ 		min(vhost->client_scsi_channels, vhost->max_vios_scsi_channels);
++	int level = IBMVFC_DEFAULT_LOG_LEVEL;
+ 	int i;
  
--	sysfs_remove_group(&adev->dev->kobj, &group);
-+	if (adev->dev->kobj.sd)
-+		sysfs_remove_group(&adev->dev->kobj, &group);
++	if (!evt) {
++		ibmvfc_log(vhost, level, "Channel Setup failed: no available events\n");
++		ibmvfc_hard_reset_host(vhost);
++		return;
++	}
++
+ 	memset(setup_buf, 0, sizeof(*setup_buf));
+ 	if (num_channels == 0)
+ 		setup_buf->flags = cpu_to_be32(IBMVFC_CANCEL_CHANNELS);
+@@ -5011,6 +5112,13 @@ static void ibmvfc_channel_enquiry(struct ibmvfc_host *vhost)
+ {
+ 	struct ibmvfc_channel_enquiry *mad;
+ 	struct ibmvfc_event *evt = ibmvfc_get_event(&vhost->crq);
++	int level = IBMVFC_DEFAULT_LOG_LEVEL;
++
++	if (!evt) {
++		ibmvfc_log(vhost, level, "Channel Enquiry failed: no available events\n");
++		ibmvfc_hard_reset_host(vhost);
++		return;
++	}
  
- 	return 0;
- }
-@@ -1437,7 +1439,8 @@ int amdgpu_ras_sysfs_remove(struct amdgpu_device *adev,
- 	if (!obj || !obj->attr_inuse)
- 		return -EINVAL;
+ 	ibmvfc_init_event(evt, ibmvfc_channel_enquiry_done, IBMVFC_MAD_FORMAT);
+ 	mad = &evt->iu.channel_enquiry;
+@@ -5133,6 +5241,12 @@ static void ibmvfc_npiv_login(struct ibmvfc_host *vhost)
+ 	struct ibmvfc_npiv_login_mad *mad;
+ 	struct ibmvfc_event *evt = ibmvfc_get_event(&vhost->crq);
  
--	sysfs_remove_file_from_group(&adev->dev->kobj,
-+	if (adev->dev->kobj.sd)
-+		sysfs_remove_file_from_group(&adev->dev->kobj,
- 				&obj->sysfs_attr.attr,
- 				RAS_FS_NAME);
- 	obj->attr_inuse = 0;
++	if (!evt) {
++		ibmvfc_dbg(vhost, "NPIV Login failed: no available events\n");
++		ibmvfc_hard_reset_host(vhost);
++		return;
++	}
++
+ 	ibmvfc_gather_partition_info(vhost);
+ 	ibmvfc_set_login_info(vhost);
+ 	ibmvfc_init_event(evt, ibmvfc_npiv_login_done, IBMVFC_MAD_FORMAT);
+@@ -5197,6 +5311,12 @@ static void ibmvfc_npiv_logout(struct ibmvfc_host *vhost)
+ 	struct ibmvfc_event *evt;
+ 
+ 	evt = ibmvfc_get_event(&vhost->crq);
++	if (!evt) {
++		ibmvfc_dbg(vhost, "NPIV Logout failed: no available events\n");
++		ibmvfc_hard_reset_host(vhost);
++		return;
++	}
++
+ 	ibmvfc_init_event(evt, ibmvfc_npiv_logout_done, IBMVFC_MAD_FORMAT);
+ 
+ 	mad = &evt->iu.npiv_logout;
 -- 
 2.42.0
 
