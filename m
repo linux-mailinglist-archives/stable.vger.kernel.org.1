@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-1456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E887F7FC1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BAF7F7D78
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EB2CB218E8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBBAE1C212A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900A333CD1;
-	Fri, 24 Nov 2023 18:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C33439FE8;
+	Fri, 24 Nov 2023 18:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zDlC35h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zn9D0HH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427E034189;
-	Fri, 24 Nov 2023 18:44:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C689FC433C7;
-	Fri, 24 Nov 2023 18:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEB95381D4;
+	Fri, 24 Nov 2023 18:24:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DAE6C433C7;
+	Fri, 24 Nov 2023 18:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851444;
-	bh=uXIe8wui04kiIsdTvvCclW3uQd/CrhuxiIaTpGNKqak=;
+	s=korg; t=1700850288;
+	bh=JRQ7ECjK8l59SIGfZUMLkUugmQbG6NRKkP2crKrv71M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1zDlC35hN1LfLT9UTsLUxy2N5Zj4NmIu0iDbMgkDSXiUf7e4mvMhqzwzM18tRlZNu
-	 e0c9I33l39y1ybYWfAwn1E3mU3v5cFXXV451I8SVAVYTQdzCTiv+rLV1HtLhT64ck2
-	 HAoUpC4h6GY6tnRNWLiL6Fm7/2OC+9eddBxQzMNs=
+	b=Zn9D0HH3Dlyb5wawK1or4NICVjtPE03ST6yR/9mr+HYjXuLgffvdncA/sczQJN/hP
+	 OlzyMkm6QccXK2+N08zFykPzFoRE1EUf1Rm1CKzpyF4n4LAWvS5TepwRSJwgeRYgSA
+	 WqMgJ5VSv6WizcfyAOeU5pNINtf6Q7sI4q9sWDLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.5 451/491] media: qcom: camss: Fix VFE-17x vfe_disable_output()
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 521/530] drm/amdgpu: fix error handling in amdgpu_vm_init
 Date: Fri, 24 Nov 2023 17:51:27 +0000
-Message-ID: <20231124172038.161811393@linuxfoundation.org>
+Message-ID: <20231124172044.040218426@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,98 +50,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Christian König <christian.koenig@amd.com>
 
-commit 3143ad282fc08bf995ee73e32a9e40c527bf265d upstream.
+commit 8473bfdcb5b1a32fd05629c4535ccacd73bc5567 upstream.
 
-There are two problems with the current vfe_disable_output() routine.
+When clearing the root PD fails we need to properly release it again.
 
-Firstly we rightly use a spinlock to protect output->gen2.active_num
-everywhere except for in the IDLE timeout path of vfe_disable_output().
-Even if that is not racy "in practice" somehow it is by happenstance not
-by design.
-
-Secondly we do not get consistent behaviour from this routine. On
-sc8280xp 50% of the time I get "VFE idle timeout - resetting". In this
-case the subsequent capture will succeed. The other 50% of the time, we
-don't hit the idle timeout, never do the VFE reset and subsequent
-captures stall indefinitely.
-
-Rewrite the vfe_disable_output() routine to
-
-- Quiesce write masters with vfe_wm_stop()
-- Set active_num = 0
-
-remembering to hold the spinlock when we do so followed by
-
-- Reset the VFE
-
-Testing on sc8280xp and sdm845 shows this to be a valid fix.
-
-Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe-170.c |   22 +++-------------------
- 1 file changed, 3 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |   31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss-vfe-170.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe-170.c
-@@ -7,7 +7,6 @@
-  * Copyright (C) 2020-2021 Linaro Ltd.
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2125,7 +2125,8 @@ long amdgpu_vm_wait_idle(struct amdgpu_v
+  * Returns:
+  * 0 for success, error for failure.
   */
- 
--#include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-@@ -494,35 +493,20 @@ static int vfe_enable_output(struct vfe_
- 	return 0;
- }
- 
--static int vfe_disable_output(struct vfe_line *line)
-+static void vfe_disable_output(struct vfe_line *line)
+-int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm, int32_t xcp_id)
++int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm,
++		   int32_t xcp_id)
  {
- 	struct vfe_device *vfe = to_vfe(line);
- 	struct vfe_output *output = &line->output;
- 	unsigned long flags;
- 	unsigned int i;
--	bool done;
--	int timeout = 0;
+ 	struct amdgpu_bo *root_bo;
+ 	struct amdgpu_bo_vm *root;
+@@ -2144,6 +2145,7 @@ int amdgpu_vm_init(struct amdgpu_device
+ 	INIT_LIST_HEAD(&vm->done);
+ 	INIT_LIST_HEAD(&vm->pt_freed);
+ 	INIT_WORK(&vm->pt_free_work, amdgpu_vm_pt_free_work);
++	INIT_KFIFO(vm->faults);
+ 
+ 	r = amdgpu_vm_init_entities(adev, vm);
+ 	if (r)
+@@ -2178,34 +2180,33 @@ int amdgpu_vm_init(struct amdgpu_device
+ 				false, &root, xcp_id);
+ 	if (r)
+ 		goto error_free_delayed;
+-	root_bo = &root->bo;
++
++	root_bo = amdgpu_bo_ref(&root->bo);
+ 	r = amdgpu_bo_reserve(root_bo, true);
+-	if (r)
+-		goto error_free_root;
++	if (r) {
++		amdgpu_bo_unref(&root->shadow);
++		amdgpu_bo_unref(&root_bo);
++		goto error_free_delayed;
++	}
+ 
++	amdgpu_vm_bo_base_init(&vm->root, vm, root_bo);
+ 	r = dma_resv_reserve_fences(root_bo->tbo.base.resv, 1);
+ 	if (r)
+-		goto error_unreserve;
 -
--	do {
--		spin_lock_irqsave(&vfe->output_lock, flags);
--		done = !output->gen2.active_num;
--		spin_unlock_irqrestore(&vfe->output_lock, flags);
--		usleep_range(10000, 20000);
+-	amdgpu_vm_bo_base_init(&vm->root, vm, root_bo);
++		goto error_free_root;
+ 
+ 	r = amdgpu_vm_pt_clear(adev, vm, root, false);
+ 	if (r)
+-		goto error_unreserve;
++		goto error_free_root;
+ 
+ 	amdgpu_bo_unreserve(vm->root.bo);
 -
--		if (timeout++ == 100) {
--			dev_err(vfe->camss->dev, "VFE idle timeout - resetting\n");
--			vfe_reset(vfe);
--			output->gen2.active_num = 0;
--			return 0;
--		}
--	} while (!done);
+-	INIT_KFIFO(vm->faults);
++	amdgpu_bo_unref(&root_bo);
  
- 	spin_lock_irqsave(&vfe->output_lock, flags);
- 	for (i = 0; i < output->wm_num; i++)
- 		vfe_wm_stop(vfe, output->wm_idx[i]);
-+	output->gen2.active_num = 0;
- 	spin_unlock_irqrestore(&vfe->output_lock, flags);
+ 	return 0;
  
--	return 0;
-+	vfe_reset(vfe);
- }
+-error_unreserve:
+-	amdgpu_bo_unreserve(vm->root.bo);
+-
+ error_free_root:
+-	amdgpu_bo_unref(&root->shadow);
++	amdgpu_vm_pt_free_root(adev, vm);
++	amdgpu_bo_unreserve(vm->root.bo);
+ 	amdgpu_bo_unref(&root_bo);
+-	vm->root.bo = NULL;
  
- /*
+ error_free_delayed:
+ 	dma_fence_put(vm->last_tlb_flush);
 
 
 
