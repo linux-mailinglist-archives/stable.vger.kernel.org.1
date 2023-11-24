@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF217F7CDF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CA37F7F13
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4F41C211C8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65A3628245F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618D439FF8;
-	Fri, 24 Nov 2023 18:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEAC33CFB;
+	Fri, 24 Nov 2023 18:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK3JP9z+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12+lDj5C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F903A8C5;
-	Fri, 24 Nov 2023 18:19:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E38C433C7;
-	Fri, 24 Nov 2023 18:19:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C67633CCA;
+	Fri, 24 Nov 2023 18:38:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2954DC433C8;
+	Fri, 24 Nov 2023 18:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849947;
-	bh=7sW12M0f93ur9WkRiQoUD1d1R8qzcAQsYF5APDVe/00=;
+	s=korg; t=1700851103;
+	bh=mg+Skvr0nske2Txva6fcijWBijT1aLLLQwOVhcJkRrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK3JP9z+eAskICRPaS4uRjUFXQ+zeE2mJzmtRivkdbRC6HW7WQiHcJRC5cCiok29v
-	 G31z9UJGx/1jcoxdj31YX5HTsn4z0+mSb+ruZYOgQp+fILwmpjOy5NiHZGlsk8rftn
-	 LoU4Leb6uVzVnm5qgnXwbM2grJYLZvaSRTTIPrmc=
+	b=12+lDj5CLIrnriUrRzIYAK/0kBMoQtgD0Lz+6OvglvJY8ZBHl5O8qU/6VjAwdu9ek
+	 zgUtGo14TWQX2RvUARw8DdERE37rDEXx8I802FU7Df7nv8nC726iHSVXu6ZlmBRUmB
+	 HLO9r6W7qcweAOqCK6Rt/yM9l4bxya5PeXdfqkjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Harris <jim.harris@samsung.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.6 385/530] cxl/region: Do not try to cleanup after cxl_region_setup_targets() fails
+	David Arcari <darcari@redhat.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.5 315/491] thermal: intel: powerclamp: fix mismatch in get function for max_idle
 Date: Fri, 24 Nov 2023 17:49:11 +0000
-Message-ID: <20231124172039.738273256@linuxfoundation.org>
+Message-ID: <20231124172034.039792218@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,95 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Harris <jim.harris@samsung.com>
+From: David Arcari <darcari@redhat.com>
 
-commit 0718588c7aaa7a1510b4de972370535b61dddd0d upstream.
+commit fae633cfb729da2771b5433f6b84ae7e8b4aa5f7 upstream.
 
-Commit 5e42bcbc3fef ("cxl/region: decrement ->nr_targets on error in
-cxl_region_attach()") tried to avoid 'eiw' initialization errors when
-->nr_targets exceeded 16, by just decrementing ->nr_targets when
-cxl_region_setup_targets() failed.
+KASAN reported this
 
-Commit 86987c766276 ("cxl/region: Cleanup target list on attach error")
-extended that cleanup to also clear cxled->pos and p->targets[pos]. The
-initialization error was incidentally fixed separately by:
-Commit 8d4285425714 ("cxl/region: Fix port setup uninitialized variable
-warnings") which was merged a few days after 5e42bcbc3fef.
+      [ 444.853098] BUG: KASAN: global-out-of-bounds in param_get_int+0x77/0x90
+      [ 444.853111] Read of size 4 at addr ffffffffc16c9220 by task cat/2105
+      ...
+      [ 444.853442] The buggy address belongs to the variable:
+      [ 444.853443] max_idle+0x0/0xffffffffffffcde0 [intel_powerclamp]
 
-But now the original cleanup when cxl_region_setup_targets() fails
-prevents endpoint and switch decoder resources from being reused:
+There is a mismatch between the param_get_int and the definition of
+max_idle.  Replacing param_get_int with param_get_byte resolves this
+issue.
 
-1) the cleanup does not set the decoder's region to NULL, which results
-   in future dpa_size_store() calls returning -EBUSY
-2) the decoder is not properly freed, which results in future commit
-   errors associated with the upstream switch
-
-Now that the initialization errors were fixed separately, the proper
-cleanup for this case is to just return immediately. Then the resources
-associated with this target get cleanup up as normal when the failed
-region is deleted.
-
-The ->nr_targets decrement in the error case also helped prevent
-a p->targets[] array overflow, so add a new check to prevent against
-that overflow.
-
-Tested by trying to create an invalid region for a 2 switch * 2 endpoint
-topology, and then following up with creating a valid region.
-
-Fixes: 5e42bcbc3fef ("cxl/region: decrement ->nr_targets on error in cxl_region_attach()")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jim Harris <jim.harris@samsung.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/169703589120.1202031.14696100866518083806.stgit@bgt-140510-bm03.eng.stellus.in
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: ebf519710218 ("thermal: intel: powerclamp: Add two module parameters")
+Cc: 6.3+ <stable@vger.kernel.org> # 6.3+
+Signed-off-by: David Arcari <darcari@redhat.com>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/region.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/thermal/intel/intel_powerclamp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1675,6 +1675,12 @@ static int cxl_region_attach(struct cxl_
- 		return -ENXIO;
- 	}
+diff --git a/drivers/thermal/intel/intel_powerclamp.c b/drivers/thermal/intel/intel_powerclamp.c
+index 36243a3972fd..5ac5cb60bae6 100644
+--- a/drivers/thermal/intel/intel_powerclamp.c
++++ b/drivers/thermal/intel/intel_powerclamp.c
+@@ -256,7 +256,7 @@ static int max_idle_set(const char *arg, const struct kernel_param *kp)
  
-+	if (p->nr_targets >= p->interleave_ways) {
-+		dev_dbg(&cxlr->dev, "region already has %d endpoints\n",
-+			p->nr_targets);
-+		return -EINVAL;
-+	}
-+
- 	ep_port = cxled_to_port(cxled);
- 	root_port = cxlrd_to_port(cxlrd);
- 	dport = cxl_find_dport_by_dev(root_port, ep_port->host_bridge);
-@@ -1767,7 +1773,7 @@ static int cxl_region_attach(struct cxl_
- 	if (p->nr_targets == p->interleave_ways) {
- 		rc = cxl_region_setup_targets(cxlr);
- 		if (rc)
--			goto err_decrement;
-+			return rc;
- 		p->state = CXL_CONFIG_ACTIVE;
- 	}
+ static const struct kernel_param_ops max_idle_ops = {
+ 	.set = max_idle_set,
+-	.get = param_get_int,
++	.get = param_get_byte,
+ };
  
-@@ -1799,12 +1805,6 @@ static int cxl_region_attach(struct cxl_
- 	}
- 
- 	return 0;
--
--err_decrement:
--	p->nr_targets--;
--	cxled->pos = -1;
--	p->targets[pos] = NULL;
--	return rc;
- }
- 
- static int cxl_region_detach(struct cxl_endpoint_decoder *cxled)
+ module_param_cb(max_idle, &max_idle_ops, &max_idle, 0644);
+-- 
+2.43.0
+
 
 
 
