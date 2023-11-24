@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A75B7F7CC5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6535E7F7EFC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F0828208F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937721C21432
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E893A8C3;
-	Fri, 24 Nov 2023 18:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37F635F1A;
+	Fri, 24 Nov 2023 18:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOD9MCh9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb3C2PUw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9A833063;
-	Fri, 24 Nov 2023 18:18:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAAEC433C8;
-	Fri, 24 Nov 2023 18:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6273E2E658;
+	Fri, 24 Nov 2023 18:37:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD84C433C8;
+	Fri, 24 Nov 2023 18:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849898;
-	bh=1GJFaYuBH2lZha6rNYUwAMzmix2hPcxJ4RnJT7EId9s=;
+	s=korg; t=1700851056;
+	bh=8VnTqDjN995EH68KD0oRJeVT8dD+ftkqhBp8MreETIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOD9MCh9vHLtxGJPZVA1EKvdpMuzEvarrxICgVTTUS6zLjr93pPc2G8YMqF0MQ6Dy
-	 7FQhyDDfkHdQ314bBtfr+SdcFe8bBJbaBEglNU1IfcuYq4gglTgaNRBmhOWxHo7A/x
-	 K8P8eIQWCnOGK6GjVS629nyTwbpD2eEIIOkanR/8=
+	b=bb3C2PUws7rcuAuOTnQeg77QW2WcqEXDcRJh/7O8pnBacSXH+OUe8AUydOkgY3yv1
+	 mMekmJpjmTabKZ1xM08AwzA/Tki81mHaoC88WVxq64H20lUDH6ja0KFMMFp1X3GGaF
+	 UOxLr75UxEXwZimriuAyCdmH5uVuDO5n9dDiQrog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	Kieran Bingham <kbingham@kernel.org>,
-	Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 365/530] scripts/gdb/vmalloc: disable on no-MMU
+	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 295/491] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
 Date: Fri, 24 Nov 2023 17:48:51 +0000
-Message-ID: <20231124172039.127207493@linuxfoundation.org>
+Message-ID: <20231124172033.435614576@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,85 +50,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
 
-commit 6620999f0d41e4fd6f047727936a964c3399d249 upstream.
+commit e641a070137dd959932c7c222e000d9d941167a2 upstream.
 
-vmap_area does not exist on no-MMU, therefore the GDB scripts fail to
-load:
+GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
+on the request from dependent clocks. Doing so will result in the
+unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
+clocks.
 
-Traceback (most recent call last):
-  File "<...>/vmlinux-gdb.py", line 51, in <module>
-    import linux.vmalloc
-  File "<...>/scripts/gdb/linux/vmalloc.py", line 14, in <module>
-    vmap_area_ptr_type = vmap_area_type.get_type().pointer()
-                         ^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "<...>/scripts/gdb/linux/utils.py", line 28, in get_type
-    self._type = gdb.lookup_type(self._name)
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-gdb.error: No struct type named vmap_area.
-
-To fix this, disable the command and add an informative error message if
-CONFIG_MMU is not defined, following the example of lx-slabinfo.
-
-Link: https://lkml.kernel.org/r/20231031202235.2655333-2-ben.wolsieffer@hefring.com
-Fixes: 852622bf3616 ("scripts/gdb/vmalloc: add vmallocinfo support")
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL’s")
+Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gdb/linux/constants.py.in | 1 +
- scripts/gdb/linux/vmalloc.py      | 8 ++++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-ipq8074.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
-index 04c87b570aab..e810e0c27ff1 100644
---- a/scripts/gdb/linux/constants.py.in
-+++ b/scripts/gdb/linux/constants.py.in
-@@ -158,3 +158,4 @@ LX_CONFIG(CONFIG_STACKDEPOT)
- LX_CONFIG(CONFIG_PAGE_OWNER)
- LX_CONFIG(CONFIG_SLUB_DEBUG)
- LX_CONFIG(CONFIG_SLAB_FREELIST_HARDENED)
-+LX_CONFIG(CONFIG_MMU)
-diff --git a/scripts/gdb/linux/vmalloc.py b/scripts/gdb/linux/vmalloc.py
-index 48e4a4fae7bb..d3c8a0274d1e 100644
---- a/scripts/gdb/linux/vmalloc.py
-+++ b/scripts/gdb/linux/vmalloc.py
-@@ -10,8 +10,9 @@ import gdb
- import re
- from linux import lists, utils, stackdepot, constants, mm
+--- a/drivers/clk/qcom/gcc-ipq8074.c
++++ b/drivers/clk/qcom/gcc-ipq8074.c
+@@ -76,7 +76,6 @@ static struct clk_fixed_factor gpll0_out
+ 				&gpll0_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_fixed_factor_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
--vmap_area_type = utils.CachedType('struct vmap_area')
--vmap_area_ptr_type = vmap_area_type.get_type().pointer()
-+if constants.LX_CONFIG_MMU:
-+    vmap_area_type = utils.CachedType('struct vmap_area')
-+    vmap_area_ptr_type = vmap_area_type.get_type().pointer()
+@@ -122,7 +121,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 				&gpll2_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
- def is_vmalloc_addr(x):
-     pg_ops = mm.page_ops().ops
-@@ -25,6 +26,9 @@ class LxVmallocInfo(gdb.Command):
-         super(LxVmallocInfo, self).__init__("lx-vmallocinfo", gdb.COMMAND_DATA)
+@@ -155,7 +153,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 				&gpll4_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
-     def invoke(self, arg, from_tty):
-+        if not constants.LX_CONFIG_MMU:
-+            raise gdb.GdbError("Requires MMU support")
-+
-         vmap_area_list = gdb.parse_and_eval('vmap_area_list')
-         for vmap_area in lists.list_for_each_entry(vmap_area_list, vmap_area_ptr_type, "list"):
-             if not vmap_area['vm']:
--- 
-2.43.0
-
+@@ -189,7 +186,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 				&gpll6_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -202,7 +198,6 @@ static struct clk_fixed_factor gpll6_out
+ 				&gpll6_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_fixed_factor_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -267,7 +262,6 @@ static struct clk_alpha_pll_postdiv nss_
+ 				&nss_crypto_pll_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
 
 
 
