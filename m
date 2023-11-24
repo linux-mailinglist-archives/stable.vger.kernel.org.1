@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FCCD7F7B2E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 940CC7F813A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D04DB1C20BEA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EF1728244D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE8539FFC;
-	Fri, 24 Nov 2023 18:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9889364A5;
+	Fri, 24 Nov 2023 18:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f70hEfdF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKLBxK7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CFF39FE3;
-	Fri, 24 Nov 2023 18:02:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C86C433C7;
-	Fri, 24 Nov 2023 18:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA223339BE;
+	Fri, 24 Nov 2023 18:56:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6A0C433C8;
+	Fri, 24 Nov 2023 18:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848955;
-	bh=Gl/wVKn6jMigxL7WVZXwBIgysZHmfg2eQbcKeKYYLXM=;
+	s=korg; t=1700852202;
+	bh=TOgFeR0o+1KnFl2FE2mYpepbkCN01NTJRm97a2Uy9F4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f70hEfdFFW4347N2uVQrVegv5Fs5t/O/ama5hjXwjq71RpwcS19i3SrLjrjXnoZQl
-	 oPTTAC3lc62trcaP5DfODhf0smuV1Pq4sctbeI3wV9VNp6zL+Zrz5CDhX8GxdgrWAR
-	 YclldoYFDauIrzI6yOqUTzFsb23/Qoyhf+eP83yk=
+	b=TKLBxK7cBwLSZTPVjej9BTovCi9eV7Q5DheU5GjH1p4PEYGgmmiRuJ3AsStwq6hFR
+	 BNDfabe9gmh73ypqpklQ7i1yr/wOs+1BdrjL9G4tQ4DBRdUctU/TWavMlvxV+tiXxW
+	 cbOI8cUGjP0UmaY3cdM5j8uYZZEqYrnI8MpAmr8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 24/57] media: vivid: avoid integer overflow
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 261/372] i3c: master: svc: fix check wrong status register in irq handler
 Date: Fri, 24 Nov 2023 17:50:48 +0000
-Message-ID: <20231124171931.162090183@linuxfoundation.org>
+Message-ID: <20231124172019.192145786@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +53,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 4567ebf8e8f9546b373e78e3b7d584cc30b62028 ]
+commit 225d5ef048c4ed01a475c95d94833bd7dd61072d upstream.
 
-Fixes these compiler warnings:
+svc_i3c_master_irq_handler() wrongly checks register SVC_I3C_MINTMASKED. It
+should be SVC_I3C_MSTATUS.
 
-drivers/media/test-drivers/vivid/vivid-rds-gen.c: In function 'vivid_rds_gen_fill':
-drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:56: warning: '.' directive output may be truncated writing 1 byte into a region of size between 0 and 3 [-Wformat-truncation=]
-  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
-      |                                                        ^
-drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:52: note: directive argument in the range [0, 9]
-  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
-      |                                                    ^~~~~~~~~
-drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:9: note: 'snprintf' output between 9 and 12 bytes into a destination of size 9
-  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  148 |                  freq / 16, ((freq & 0xf) * 10) / 16);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231023161658.3890811-5-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/vivid/vivid-rds-gen.c | 2 +-
+ drivers/i3c/master/svc-i3c-master.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/vivid/vivid-rds-gen.c b/drivers/media/platform/vivid/vivid-rds-gen.c
-index 53c7777dc0019..d2b014336f9c4 100644
---- a/drivers/media/platform/vivid/vivid-rds-gen.c
-+++ b/drivers/media/platform/vivid/vivid-rds-gen.c
-@@ -157,7 +157,7 @@ void vivid_rds_gen_fill(struct vivid_rds_gen *rds, unsigned freq,
- 	rds->ta = alt;
- 	rds->ms = true;
- 	snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
--		 freq / 16, ((freq & 0xf) * 10) / 16);
-+		 (freq / 16) % 1000000, (((freq & 0xf) * 10) / 16) % 10);
- 	if (alt)
- 		strlcpy(rds->radiotext,
- 			" The Radio Data System can switch between different Radio Texts ",
--- 
-2.42.0
-
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -469,7 +469,7 @@ reenable_ibis:
+ static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
+ {
+ 	struct svc_i3c_master *master = (struct svc_i3c_master *)dev_id;
+-	u32 active = readl(master->regs + SVC_I3C_MINTMASKED);
++	u32 active = readl(master->regs + SVC_I3C_MSTATUS);
+ 
+ 	if (!SVC_I3C_MSTATUS_SLVSTART(active))
+ 		return IRQ_NONE;
 
 
 
