@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-2307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD287F839F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC117F825A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFEF128893A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D21AEB23E0A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF55381CC;
-	Fri, 24 Nov 2023 19:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E97364C8;
+	Fri, 24 Nov 2023 19:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G74wvD0F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udV2Ey4U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E40E2511F;
-	Fri, 24 Nov 2023 19:19:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF214C433C7;
-	Fri, 24 Nov 2023 19:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2A733CFD;
+	Fri, 24 Nov 2023 19:06:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65FF2C433C9;
+	Fri, 24 Nov 2023 19:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853563;
-	bh=5KQsHZ4woWeW9CoicDJeljD7O/MNMZmz5wZwyIqHlBc=;
+	s=korg; t=1700852804;
+	bh=6aXNy9YmIR4BC7zpVCIERVd7av6M8KkkkpLhtjXgqKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G74wvD0FfLI2R4aE0VPRPvJeBW0tC17WVhLTgo8qn6IRM7ZBp8jZUGAAMienQpZy4
-	 +K2lmOH/mK6gix9E+kzAAUyou4Q8eSx/M6nj+2Ft6o+vxHeB2ltUd/2SNCTlcYfxXE
-	 mbPim9BbAWVQIy0Q0G3a5T/EqTUvLf7t224Wmmo4=
+	b=udV2Ey4Usv9ed3TPqB1YgHMiGEdJM0brT7WSFJfFvAqm2qoZF0hM7m+8fjGDQ38Fi
+	 MfP9HMRZf7Ska+l3fjrEXg8o43/IpstdPEL3ojyCTYN8yed4UOTHxWnNf42JrLGFSU
+	 a7VA4UPXe9NNlMsxYqKOMAGDoksOCAwNUrtJfmi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Nishanth Menon <nm@ti.com>,
-	Benjamin Bara <benjamin.bara@skidata.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 214/297] kernel/reboot: emergency_restart: Set correct system_state
-Date: Fri, 24 Nov 2023 17:54:16 +0000
-Message-ID: <20231124172007.716079483@linuxfoundation.org>
+	Eric Biggers <ebiggers@google.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.10 130/193] quota: explicitly forbid quota files from being encrypted
+Date: Fri, 24 Nov 2023 17:54:17 +0000
+Message-ID: <20231124171952.429953489@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +52,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Bara <benjamin.bara@skidata.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit 60466c067927abbcaff299845abd4b7069963139 upstream.
+commit d3cc1b0be258191d6360c82ea158c2972f8d3991 upstream.
 
-As the emergency restart does not call kernel_restart_prepare(), the
-system_state stays in SYSTEM_RUNNING.
+Since commit d7e7b9af104c ("fscrypt: stop using keyrings subsystem for
+fscrypt_master_key"), xfstest generic/270 causes a WARNING when run on
+f2fs with test_dummy_encryption in the mount options:
 
-Since bae1d3a05a8b, this hinders i2c_in_atomic_xfer_mode() from becoming
-active, and therefore might lead to avoidable warnings in the restart
-handlers, e.g.:
+$ kvm-xfstests -c f2fs/encrypt generic/270
+[...]
+WARNING: CPU: 1 PID: 2453 at fs/crypto/keyring.c:240 fscrypt_destroy_keyring+0x1f5/0x260
 
-[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-[   12.676926] Voluntary context switch within RCU read-side critical section!
-...
-[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-...
-[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-[   13.001050]  machine_restart from panic+0x2a8/0x32c
+The cause of the WARNING is that not all encrypted inodes have been
+evicted before fscrypt_destroy_keyring() is called, which violates an
+assumption.  This happens because the test uses an external quota file,
+which gets automatically encrypted due to test_dummy_encryption.
 
-Avoid these by setting the correct system_state.
+Encryption of quota files has never really been supported.  On ext4,
+ext4_quota_read() does not decrypt the data, so encrypted quota files
+are always considered invalid on ext4.  On f2fs, f2fs_quota_read() uses
+the pagecache, so trying to use an encrypted quota file gets farther,
+resulting in the issue described above being possible.  But this was
+never intended to be possible, and there is no use case for it.
 
-Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-Cc: stable@vger.kernel.org # v5.2+
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-1-18699d5dcd76@skidata.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Therefore, make the quota support layer explicitly reject using
+IS_ENCRYPTED inodes when quotaon is attempted.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230905003227.326998-1-ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/reboot.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/quota/dquot.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -65,6 +65,7 @@ EXPORT_SYMBOL_GPL(pm_power_off_prepare);
- void emergency_restart(void)
- {
- 	kmsg_dump(KMSG_DUMP_EMERG);
-+	system_state = SYSTEM_RESTART;
- 	machine_emergency_restart();
- }
- EXPORT_SYMBOL_GPL(emergency_restart);
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -2398,6 +2398,20 @@ static int vfs_setup_quota_inode(struct
+ 	if (sb_has_quota_loaded(sb, type))
+ 		return -EBUSY;
+ 
++	/*
++	 * Quota files should never be encrypted.  They should be thought of as
++	 * filesystem metadata, not user data.  New-style internal quota files
++	 * cannot be encrypted by users anyway, but old-style external quota
++	 * files could potentially be incorrectly created in an encrypted
++	 * directory, hence this explicit check.  Some reasons why encrypted
++	 * quota files don't work include: (1) some filesystems that support
++	 * encryption don't handle it in their quota_read and quota_write, and
++	 * (2) cleaning up encrypted quota files at unmount would need special
++	 * consideration, as quota files are cleaned up later than user files.
++	 */
++	if (IS_ENCRYPTED(inode))
++		return -EINVAL;
++
+ 	dqopt->files[type] = igrab(inode);
+ 	if (!dqopt->files[type])
+ 		return -EIO;
 
 
 
