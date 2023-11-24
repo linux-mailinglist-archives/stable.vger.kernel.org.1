@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-2414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E84A7F8411
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6217F83F4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD3AA28A2EB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 869331F21477
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3BA2EB15;
-	Fri, 24 Nov 2023 19:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90368381CC;
+	Fri, 24 Nov 2023 19:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/Syq8z2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUcAZX9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3184C33CCA;
-	Fri, 24 Nov 2023 19:23:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0913C433C7;
-	Fri, 24 Nov 2023 19:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F21A35EE6;
+	Fri, 24 Nov 2023 19:22:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC34C433C7;
+	Fri, 24 Nov 2023 19:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853823;
-	bh=sdpaCRLHOOunxzoYusvI2wYZ0Rsz8LXi4P/pqH2Pmxk=;
+	s=korg; t=1700853756;
+	bh=uWXugTsMzPqDt1eAXU/XeQ8FRkaJBRD8dwwVCEPNCSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/Syq8z2cZ750uLLpj0QJu/K51QU+COCETVyhcjYrn7S1XG/0zngLMtn3X/oRdT24
-	 QLptt4X/XcZ4136wY2k1IACR5u4bRxfg7ZqIZ+tlQfyhktxW4ULjspgmCNJ0EwVl0n
-	 FQnNHcClLOFIWGwC9PXE5hduiQXtd1HUeoKhuXJE=
+	b=WUcAZX9K/pLjEMJfuDcb0MjQhH13xzSt7DtgWbbDIKNChDfwzISf5EliXyEgZDsWV
+	 KgPNgse4bYzKPHJZdG22xk0yOkc547aaHMBm53DkbEIqnxNUVrg2zsXI8ndD7ZAJVe
+	 qzsDleUNtf/7+gZI9Gt0hGxVPdFnac0OttEn7YkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 009/159] wifi: ath10k: fix clang-specific fortify warning
-Date: Fri, 24 Nov 2023 17:53:46 +0000
-Message-ID: <20231124171942.296660655@linuxfoundation.org>
+Subject: [PATCH 5.4 010/159] net: annotate data-races around sk->sk_tx_queue_mapping
+Date: Fri, 24 Nov 2023 17:53:47 +0000
+Message-ID: <20231124171942.337647084@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
 References: <20231124171941.909624388@linuxfoundation.org>
@@ -58,58 +57,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cb4c132ebfeac5962f7258ffc831caa0c4dada1a ]
+[ Upstream commit 0bb4d124d34044179b42a769a0c76f389ae973b6 ]
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+This field can be read or written without socket lock being held.
 
-In file included from drivers/net/wireless/ath/ath10k/debug.c:8:
-In file included from ./include/linux/module.h:13:
-In file included from ./include/linux/stat.h:19:
-In file included from ./include/linux/time.h:60:
-In file included from ./include/linux/time32.h:13:
-In file included from ./include/linux/timex.h:67:
-In file included from ./arch/x86/include/asm/timex.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+Add annotations to avoid load-store tearing.
 
-The compiler actually complains on 'ath10k_debug_get_et_strings()' where
-fortification logic inteprets call to 'memcpy()' as an attempt to copy
-the whole 'ath10k_gstrings_stats' array from it's first member and so
-issues an overread warning. This warning may be silenced by passing
-an address of the whole array and not the first member to 'memcpy()'.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230829093652.234537-1-dmantipov@yandex.ru
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/sock.h | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index 04c50a26a4f47..34db968c4bd0b 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -1138,7 +1138,7 @@ void ath10k_debug_get_et_strings(struct ieee80211_hw *hw,
- 				 u32 sset, u8 *data)
+diff --git a/include/net/sock.h b/include/net/sock.h
+index f73ef7087a187..b021c8912e2cf 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1782,21 +1782,33 @@ static inline void sk_tx_queue_set(struct sock *sk, int tx_queue)
+ 	/* sk_tx_queue_mapping accept only upto a 16-bit value */
+ 	if (WARN_ON_ONCE((unsigned short)tx_queue >= USHRT_MAX))
+ 		return;
+-	sk->sk_tx_queue_mapping = tx_queue;
++	/* Paired with READ_ONCE() in sk_tx_queue_get() and
++	 * other WRITE_ONCE() because socket lock might be not held.
++	 */
++	WRITE_ONCE(sk->sk_tx_queue_mapping, tx_queue);
+ }
+ 
+ #define NO_QUEUE_MAPPING	USHRT_MAX
+ 
+ static inline void sk_tx_queue_clear(struct sock *sk)
  {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath10k_gstrings_stats,
-+		memcpy(data, ath10k_gstrings_stats,
- 		       sizeof(ath10k_gstrings_stats));
+-	sk->sk_tx_queue_mapping = NO_QUEUE_MAPPING;
++	/* Paired with READ_ONCE() in sk_tx_queue_get() and
++	 * other WRITE_ONCE() because socket lock might be not held.
++	 */
++	WRITE_ONCE(sk->sk_tx_queue_mapping, NO_QUEUE_MAPPING);
+ }
+ 
+ static inline int sk_tx_queue_get(const struct sock *sk)
+ {
+-	if (sk && sk->sk_tx_queue_mapping != NO_QUEUE_MAPPING)
+-		return sk->sk_tx_queue_mapping;
++	if (sk) {
++		/* Paired with WRITE_ONCE() in sk_tx_queue_clear()
++		 * and sk_tx_queue_set().
++		 */
++		int val = READ_ONCE(sk->sk_tx_queue_mapping);
+ 
++		if (val != NO_QUEUE_MAPPING)
++			return val;
++	}
+ 	return -1;
  }
  
 -- 
