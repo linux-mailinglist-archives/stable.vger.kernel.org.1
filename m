@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-1727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63BDC7F8114
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FCD7F7D2A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE9F8B208A0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3F131C20FC9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B04D321AD;
-	Fri, 24 Nov 2023 18:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6633A8D7;
+	Fri, 24 Nov 2023 18:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OhYjARS7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xUimzU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10AD33CC2;
-	Fri, 24 Nov 2023 18:55:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF43C433C8;
-	Fri, 24 Nov 2023 18:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147D633CCA;
+	Fri, 24 Nov 2023 18:21:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1CDC433C7;
+	Fri, 24 Nov 2023 18:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852124;
-	bh=T7KjMSi+nN0EqmmjwTIuDVO9HdE4mqbzvCt73XeUKzM=;
+	s=korg; t=1700850117;
+	bh=c0LcbN0jEzWS8Qh0eY3oCSwdzqwMEqOcCyiWbEdHjxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OhYjARS7rk8WORWfbz7Ghni57bb9pbjEuvpplFCMXlH1kK+2W7dxEa6SWYGoclZdn
-	 ibaT8EcLlQir9sTzq/so9GtgvJ0bAOEdZ0Q7E2X8ND5eGtGb6uv//0JREyUi8imalT
-	 7A9O81OLEiLtosb71EYuQhUZwu+RfcE01jHD8Yhs=
+	b=1xUimzU/90c9gc4mQMEd+O6TXoveKqn9wbMXj75MxiVQsecor7HksqOC3cJGCuYGE
+	 BwRm2jeFyr2gkb3kfmxCI4iuXzuy86opI6HDL63rI2Xc2iaFgsqNEk0QnM9MdcSvfv
+	 YAEyPMlYzes7ecbifNQ86Lh3HA/D2qRkGaJ17yrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 230/372] arm64: dts: qcom: ipq6018: Fix tcsr_mutex register size
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 451/530] f2fs: set the default compress_level on ioctl
 Date: Fri, 24 Nov 2023 17:50:17 +0000
-Message-ID: <20231124172018.171853523@linuxfoundation.org>
+Message-ID: <20231124172041.820170844@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +51,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-commit 72fc3d58b87b0d622039c6299b89024fbb7b420f upstream.
+commit f5f3bd903a5d3e3b2ba89f11e0e29db25e60c048 upstream.
 
-IPQ6018's TCSR Mutex HW lock register has 32 locks of size 4KB each.
-Total size of the TCSR Mutex registers is 128KB.
+Otherwise, we'll get a broken inode.
 
-Fix size of the tcsr_mutex hwlock register to 0x20000.
+ # touch $FILE
+ # f2fs_io setflags compression $FILE
+ # f2fs_io set_coption 2 8 $FILE
 
-Changes in v2:
- - Drop change to remove qcom,ipq6018-tcsr-mutex compatible string
- - Added Fixes and stable tags
+[  112.227612] F2FS-fs (dm-51): sanity_check_compress_inode: inode (ino=8d3fe) has unsupported compress level: 0, run fsck to fix
 
 Cc: stable@vger.kernel.org
-Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230905095535.1263113-2-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/file.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -248,7 +248,7 @@
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4006,6 +4006,15 @@ static int f2fs_ioc_set_compress_option(
+ 	F2FS_I(inode)->i_compress_algorithm = option.algorithm;
+ 	F2FS_I(inode)->i_log_cluster_size = option.log_cluster_size;
+ 	F2FS_I(inode)->i_cluster_size = BIT(option.log_cluster_size);
++	/* Set default level */
++	if (F2FS_I(inode)->i_compress_algorithm == COMPRESS_ZSTD)
++		F2FS_I(inode)->i_compress_level = F2FS_ZSTD_DEFAULT_CLEVEL;
++	else
++		F2FS_I(inode)->i_compress_level = 0;
++	/* Adjust mount option level */
++	if (option.algorithm == F2FS_OPTION(sbi).compress_algorithm &&
++	    F2FS_OPTION(sbi).compress_level)
++		F2FS_I(inode)->i_compress_level = F2FS_OPTION(sbi).compress_level;
+ 	f2fs_mark_inode_dirty_sync(inode, true);
  
- 		tcsr_mutex: hwlock@1905000 {
- 			compatible = "qcom,ipq6018-tcsr-mutex", "qcom,tcsr-mutex";
--			reg = <0x0 0x01905000 0x0 0x1000>;
-+			reg = <0x0 0x01905000 0x0 0x20000>;
- 			#hwlock-cells = <1>;
- 		};
- 
+ 	if (!f2fs_is_compress_backend_ready(inode))
 
 
 
