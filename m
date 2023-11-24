@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-1830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CA67F818E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DE57F7D88
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B46C3B21BF5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39D791C21282
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05111A5A4;
-	Fri, 24 Nov 2023 18:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B84C381BF;
+	Fri, 24 Nov 2023 18:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEJ/cwKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rb3epQTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E88D2EAEA;
-	Fri, 24 Nov 2023 18:59:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061B8C433C8;
-	Fri, 24 Nov 2023 18:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A77E381D4;
+	Fri, 24 Nov 2023 18:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC2BC433C8;
+	Fri, 24 Nov 2023 18:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852377;
-	bh=/OxRqtQDiY84py3QbPsb8nT2kv8u+SDeWY5ztXFzHq8=;
+	s=korg; t=1700850329;
+	bh=RD0jKt94bLZsgzd91+2LY/UANdEO4uS166WrUpP0S6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEJ/cwKdftjhcbhIiiJRaPfD6rc/0t6mnLhaXIJiqvOUnL7Vqy77gUn/mbQ4H7B0i
-	 2X+LhOAEQ2xd4tOG25BMNka7+j6lOh+yBDSuVUNrCOBeSsI2EPVmzbnVAofvCSgLm6
-	 7Mo6nHbAyYWXfBUWbT1TJvL+zQwZDRwejPShHBTs=
+	b=rb3epQTEC3BD7HzC3ywhKNqQKkCj5PoNhS0iowfDHi1jRH+DXshkM507mIhJJfHvM
+	 vqHnnvLXicrQtpWCACOgspTleq6mpGdVeh9/UpbAAoS/vpvyD7clPTV0rk3Dax6udt
+	 nL3agvxZ+owYn70pH5p0T+Rviz78iFR+rOiFdG8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 296/372] cxl/region: Cleanup target list on attach error
-Date: Fri, 24 Nov 2023 17:51:23 +0000
-Message-ID: <20231124172020.295869644@linuxfoundation.org>
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>
+Subject: [PATCH 6.6 518/530] drm/amdgpu: fix GRBM read timeout when do mes_self_test
+Date: Fri, 24 Nov 2023 17:51:24 +0000
+Message-ID: <20231124172043.955737625@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,47 +53,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 86987c766276acf1289700cd38bd6d5b5a167fea ]
+commit 36e7ff5c13cb15cb7b06c76d42bb76cbf6b7ea75 upstream.
 
-Jonathan noticed that the target list setup is not unwound completely
-upon error. Undo all the setup in the 'err_decrement:' exit path.
+Use a proper MEID to make sure the CP_HQD_* and CP_GFX_HQD_* registers
+can be touched when initialize the compute and gfx mqd in mes_self_test.
+Otherwise, we expect no response from CP and an GRBM eventual timeout.
 
-Fixes: 27b3f8d13830 ("cxl/region: Program target lists")
-Reported-by: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Link: http://lore.kernel.org/r/20230208123031.00006990@Huawei.com
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/167601996980.1924368.390423634911157277.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 0718588c7aaa ("cxl/region: Do not try to cleanup after cxl_region_setup_targets() fails")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/region.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index 99b0501066e57..bd1c511bba987 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1317,6 +1317,8 @@ static int cxl_region_attach(struct cxl_region *cxlr,
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+@@ -556,8 +556,20 @@ static void amdgpu_mes_queue_init_mqd(st
+ 	mqd_prop.hqd_queue_priority = p->hqd_queue_priority;
+ 	mqd_prop.hqd_active = false;
  
- err_decrement:
- 	p->nr_targets--;
-+	cxled->pos = -1;
-+	p->targets[pos] = NULL;
- err:
- 	for (iter = ep_port; !is_cxl_root(iter);
- 	     iter = to_cxl_port(iter->dev.parent))
--- 
-2.42.0
-
++	if (p->queue_type == AMDGPU_RING_TYPE_GFX ||
++	    p->queue_type == AMDGPU_RING_TYPE_COMPUTE) {
++		mutex_lock(&adev->srbm_mutex);
++		amdgpu_gfx_select_me_pipe_q(adev, p->ring->me, p->ring->pipe, 0, 0, 0);
++	}
++
+ 	mqd_mgr->init_mqd(adev, q->mqd_cpu_ptr, &mqd_prop);
+ 
++	if (p->queue_type == AMDGPU_RING_TYPE_GFX ||
++	    p->queue_type == AMDGPU_RING_TYPE_COMPUTE) {
++		amdgpu_gfx_select_me_pipe_q(adev, 0, 0, 0, 0, 0);
++		mutex_unlock(&adev->srbm_mutex);
++	}
++
+ 	amdgpu_bo_unreserve(q->mqd_obj);
+ }
+ 
+@@ -993,9 +1005,13 @@ int amdgpu_mes_add_ring(struct amdgpu_de
+ 	switch (queue_type) {
+ 	case AMDGPU_RING_TYPE_GFX:
+ 		ring->funcs = adev->gfx.gfx_ring[0].funcs;
++		ring->me = adev->gfx.gfx_ring[0].me;
++		ring->pipe = adev->gfx.gfx_ring[0].pipe;
+ 		break;
+ 	case AMDGPU_RING_TYPE_COMPUTE:
+ 		ring->funcs = adev->gfx.compute_ring[0].funcs;
++		ring->me = adev->gfx.compute_ring[0].me;
++		ring->pipe = adev->gfx.compute_ring[0].pipe;
+ 		break;
+ 	case AMDGPU_RING_TYPE_SDMA:
+ 		ring->funcs = adev->sdma.instance[0].ring.funcs;
 
 
 
