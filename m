@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A724D7F7BDF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7E07F7E18
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48486B210FC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07731C212FD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C48239FF3;
-	Fri, 24 Nov 2023 18:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C023A8C3;
+	Fri, 24 Nov 2023 18:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KG7cguUX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7tsGZ+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17786381D4;
-	Fri, 24 Nov 2023 18:09:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B1FC433C7;
-	Fri, 24 Nov 2023 18:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6DC364A4;
+	Fri, 24 Nov 2023 18:29:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB9CC433C8;
+	Fri, 24 Nov 2023 18:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849368;
-	bh=PvW9lLCLuFpnUj86LJ/Xi22n3cgZlf5ZitY4+qIFGmU=;
+	s=korg; t=1700850591;
+	bh=pDMfyixugRO78sbxdcJo+8qRwK0WCv4HemXCy3lvosA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KG7cguUXEXVCwRrCbYxtkoV5I0SZsIe+E6WGzFBl3s0m6Tz5a81WeEinlAuGljtqg
-	 hQ1aLIwdAyfrs/tmQ6T2+2fzSrb46zRAqga8r5goOW/b+/JP6ZB1EJO2pV3P13hhmw
-	 v6hdppkNeCfTikMVQyHopk81UDAdnSvzPM3591rI=
+	b=G7tsGZ+90+qWZEb+iyr731nfah3fW36qgobSnHWSAqn1MlLctVTUZlvcgZYM5pkPH
+	 LeJdDVWdiQqNPT62Przdlps7OfR8j9TCf1rEOtQ5J0Zp98JnQQFdaqk9ocR50Vnwn/
+	 QsTWHljn+c1cVom/m8FHr9TGfVkOFLkWaAnf1q4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zongmin Zhou <zhouzongmin@kylinos.cn>,
-	Dave Airlie <airlied@redhat.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Rander Wang <rander.wang@intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/530] drm/qxl: prevent memory leak
+Subject: [PATCH 6.5 083/491] ASoC: SOF: ipc4: handle EXCEPTION_CAUGHT notification from firmware
 Date: Fri, 24 Nov 2023 17:45:19 +0000
-Message-ID: <20231124172032.747013027@linuxfoundation.org>
+Message-ID: <20231124172027.112343287@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +55,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zongmin Zhou <zhouzongmin@kylinos.cn>
+From: Rander Wang <rander.wang@intel.com>
 
-[ Upstream commit 0e8b9f258baed25f1c5672613699247c76b007b5 ]
+[ Upstream commit c1c48fd6bbe788458e3685fea74bdb3cb148ff93 ]
 
-The allocated memory for qdev->dumb_heads should be released
-in qxl_destroy_monitors_object before qxl suspend.
-otherwise,qxl_create_monitors_object will be called to
-reallocate memory for qdev->dumb_heads after qxl resume,
-it will cause memory leak.
+Driver will receive exception IPC message and process it by
+snd_sof_dsp_panic.
 
-Signed-off-by: Zongmin Zhou <zhouzongmin@kylinos.cn>
-Link: https://lore.kernel.org/r/20230801025309.4049813-1-zhouzongmin@kylinos.cn
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Rander Wang <rander.wang@intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20230919092416.4137-10-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/qxl/qxl_display.c | 3 +++
+ sound/soc/sof/ipc4.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/qxl/qxl_display.c b/drivers/gpu/drm/qxl/qxl_display.c
-index 6492a70e3c396..404b0483bb7cb 100644
---- a/drivers/gpu/drm/qxl/qxl_display.c
-+++ b/drivers/gpu/drm/qxl/qxl_display.c
-@@ -1229,6 +1229,9 @@ int qxl_destroy_monitors_object(struct qxl_device *qdev)
- 	if (!qdev->monitors_config_bo)
- 		return 0;
- 
-+	kfree(qdev->dumb_heads);
-+	qdev->dumb_heads = NULL;
-+
- 	qdev->monitors_config = NULL;
- 	qdev->ram_header->monitors_config = 0;
- 
+diff --git a/sound/soc/sof/ipc4.c b/sound/soc/sof/ipc4.c
+index ab6eddd91bb77..1b09496733fb8 100644
+--- a/sound/soc/sof/ipc4.c
++++ b/sound/soc/sof/ipc4.c
+@@ -614,6 +614,9 @@ static void sof_ipc4_rx_msg(struct snd_sof_dev *sdev)
+ 	case SOF_IPC4_NOTIFY_LOG_BUFFER_STATUS:
+ 		sof_ipc4_mtrace_update_pos(sdev, SOF_IPC4_LOG_CORE_GET(ipc4_msg->primary));
+ 		break;
++	case SOF_IPC4_NOTIFY_EXCEPTION_CAUGHT:
++		snd_sof_dsp_panic(sdev, 0, true);
++		break;
+ 	default:
+ 		dev_dbg(sdev->dev, "Unhandled DSP message: %#x|%#x\n",
+ 			ipc4_msg->primary, ipc4_msg->extension);
 -- 
 2.42.0
 
