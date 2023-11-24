@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24357F8093
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C04487F7EFE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7061281206
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A8852822E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411FB33CC7;
-	Fri, 24 Nov 2023 18:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F355D1A5A4;
+	Fri, 24 Nov 2023 18:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FA663SDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLNZfB/7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80E333075;
-	Fri, 24 Nov 2023 18:50:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7759AC433C7;
-	Fri, 24 Nov 2023 18:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B749633CFD;
+	Fri, 24 Nov 2023 18:37:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447FCC433C8;
+	Fri, 24 Nov 2023 18:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851855;
-	bh=LqXzB6Bby4SnVEjvD9RiiW5d0jQHqDqeo/Y28Oj7CaM=;
+	s=korg; t=1700851063;
+	bh=R6MMomudBxtbcy8Xp5umPO53kODY80Vg8RSHOCqK8s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FA663SDV6j8uYs1yJHOFLfetDxhFNx8bHKWeCCeRaAoXLaivBcYdL0iI0LTFcp8fb
-	 M/6OrwWa0jVOKlqnPywm4HBhV0OrdVF8Gp+Y5NaiopAm6L727lg/09YXVf6CvAKrew
-	 4ClqH1JOEcggdy3w9fCbw2q2PuQd17XcbEQeh3BE=
+	b=gLNZfB/7uEchJbWVnhdHKYkKgmZedrxU7B4X1t3Nf+yHwYnbTfEi2aOkXdXvKXWtM
+	 b0+/asnBD/ZOqH2Db0uVYCdxPVRW/hy+T+EqzRiiuMZOFBpo9c9TwNgpRSiO2/6abG
+	 lrZ5dqu5dQP6BEiJGWPGQknIc6DZy05Lqpd5Tz/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	felix <fuzhen5@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/372] SUNRPC: Fix RPC client cleaned up the freed pipefs dentries
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.5 274/491] wifi: ath11k: fix dfs radar event locking
 Date: Fri, 24 Nov 2023 17:48:30 +0000
-Message-ID: <20231124172014.579922598@linuxfoundation.org>
+Message-ID: <20231124172032.811726593@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,126 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: felix <fuzhen5@huawei.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit bfca5fb4e97c46503ddfc582335917b0cc228264 ]
+commit 3b6c14833165f689cc5928574ebafe52bbce5f1e upstream.
 
-RPC client pipefs dentries cleanup is in separated rpc_remove_pipedir()
-workqueue,which takes care about pipefs superblock locking.
-In some special scenarios, when kernel frees the pipefs sb of the
-current client and immediately alloctes a new pipefs sb,
-rpc_remove_pipedir function would misjudge the existence of pipefs
-sb which is not the one it used to hold. As a result,
-the rpc_remove_pipedir would clean the released freed pipefs dentries.
+The ath11k active pdevs are protected by RCU but the DFS radar event
+handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section.
 
-To fix this issue, rpc_remove_pipedir should check whether the
-current pipefs sb is consistent with the original pipefs sb.
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-This error can be catched by KASAN:
-=========================================================
-[  250.497700] BUG: KASAN: slab-use-after-free in dget_parent+0x195/0x200
-[  250.498315] Read of size 4 at addr ffff88800a2ab804 by task kworker/0:18/106503
-[  250.500549] Workqueue: events rpc_free_client_work
-[  250.501001] Call Trace:
-[  250.502880]  kasan_report+0xb6/0xf0
-[  250.503209]  ? dget_parent+0x195/0x200
-[  250.503561]  dget_parent+0x195/0x200
-[  250.503897]  ? __pfx_rpc_clntdir_depopulate+0x10/0x10
-[  250.504384]  rpc_rmdir_depopulate+0x1b/0x90
-[  250.504781]  rpc_remove_client_dir+0xf5/0x150
-[  250.505195]  rpc_free_client_work+0xe4/0x230
-[  250.505598]  process_one_work+0x8ee/0x13b0
-...
-[   22.039056] Allocated by task 244:
-[   22.039390]  kasan_save_stack+0x22/0x50
-[   22.039758]  kasan_set_track+0x25/0x30
-[   22.040109]  __kasan_slab_alloc+0x59/0x70
-[   22.040487]  kmem_cache_alloc_lru+0xf0/0x240
-[   22.040889]  __d_alloc+0x31/0x8e0
-[   22.041207]  d_alloc+0x44/0x1f0
-[   22.041514]  __rpc_lookup_create_exclusive+0x11c/0x140
-[   22.041987]  rpc_mkdir_populate.constprop.0+0x5f/0x110
-[   22.042459]  rpc_create_client_dir+0x34/0x150
-[   22.042874]  rpc_setup_pipedir_sb+0x102/0x1c0
-[   22.043284]  rpc_client_register+0x136/0x4e0
-[   22.043689]  rpc_new_client+0x911/0x1020
-[   22.044057]  rpc_create_xprt+0xcb/0x370
-[   22.044417]  rpc_create+0x36b/0x6c0
-...
-[   22.049524] Freed by task 0:
-[   22.049803]  kasan_save_stack+0x22/0x50
-[   22.050165]  kasan_set_track+0x25/0x30
-[   22.050520]  kasan_save_free_info+0x2b/0x50
-[   22.050921]  __kasan_slab_free+0x10e/0x1a0
-[   22.051306]  kmem_cache_free+0xa5/0x390
-[   22.051667]  rcu_core+0x62c/0x1930
-[   22.051995]  __do_softirq+0x165/0x52a
-[   22.052347]
-[   22.052503] Last potentially related work creation:
-[   22.052952]  kasan_save_stack+0x22/0x50
-[   22.053313]  __kasan_record_aux_stack+0x8e/0xa0
-[   22.053739]  __call_rcu_common.constprop.0+0x6b/0x8b0
-[   22.054209]  dentry_free+0xb2/0x140
-[   22.054540]  __dentry_kill+0x3be/0x540
-[   22.054900]  shrink_dentry_list+0x199/0x510
-[   22.055293]  shrink_dcache_parent+0x190/0x240
-[   22.055703]  do_one_tree+0x11/0x40
-[   22.056028]  shrink_dcache_for_umount+0x61/0x140
-[   22.056461]  generic_shutdown_super+0x70/0x590
-[   22.056879]  kill_anon_super+0x3a/0x60
-[   22.057234]  rpc_kill_sb+0x121/0x200
+Compile tested only.
 
-Fixes: 0157d021d23a ("SUNRPC: handle RPC client pipefs dentries by network namespace aware routines")
-Signed-off-by: felix <fuzhen5@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019153115.26401-3-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sunrpc/clnt.h | 1 +
- net/sunrpc/clnt.c           | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/wmi.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/linux/sunrpc/clnt.h b/include/linux/sunrpc/clnt.h
-index 770ef2cb57752..c794b0ce4e782 100644
---- a/include/linux/sunrpc/clnt.h
-+++ b/include/linux/sunrpc/clnt.h
-@@ -84,6 +84,7 @@ struct rpc_clnt {
- 	};
- 	const struct cred	*cl_cred;
- 	unsigned int		cl_max_connect; /* max number of transports not to the same IP */
-+	struct super_block *pipefs_sb;
- };
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -8337,6 +8337,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
+ 		   ev->detector_id, ev->segment_id, ev->timestamp, ev->is_chirp,
+ 		   ev->freq_offset, ev->sidx);
  
- /*
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index f0bbd6cb4e39b..61e5c77462e94 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -111,7 +111,8 @@ static void rpc_clnt_remove_pipedir(struct rpc_clnt *clnt)
- 
- 	pipefs_sb = rpc_get_sb_net(net);
- 	if (pipefs_sb) {
--		__rpc_clnt_remove_pipedir(clnt);
-+		if (pipefs_sb == clnt->pipefs_sb)
-+			__rpc_clnt_remove_pipedir(clnt);
- 		rpc_put_sb_net(net);
- 	}
- }
-@@ -151,6 +152,8 @@ rpc_setup_pipedir(struct super_block *pipefs_sb, struct rpc_clnt *clnt)
- {
- 	struct dentry *dentry;
- 
-+	clnt->pipefs_sb = pipefs_sb;
++	rcu_read_lock();
 +
- 	if (clnt->cl_program->pipe_dir_name != NULL) {
- 		dentry = rpc_setup_pipedir_sb(pipefs_sb, clnt);
- 		if (IS_ERR(dentry))
--- 
-2.42.0
-
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+ 
+ 	if (!ar) {
+@@ -8354,6 +8356,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
+ 		ieee80211_radar_detected(ar->hw);
+ 
+ exit:
++	rcu_read_unlock();
++
+ 	kfree(tb);
+ }
+ 
 
 
 
