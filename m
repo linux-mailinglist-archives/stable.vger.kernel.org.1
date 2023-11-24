@@ -1,47 +1,53 @@
-Return-Path: <stable+bounces-1844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AED17F81A1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 483B67F81E1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBDBF1C21AEE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793D41C22213
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C0B34189;
-	Fri, 24 Nov 2023 19:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4AE435F04;
+	Fri, 24 Nov 2023 19:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0rIzURj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlTsZy2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8063173F;
-	Fri, 24 Nov 2023 19:00:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30E0C433C7;
-	Fri, 24 Nov 2023 19:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7387431748;
+	Fri, 24 Nov 2023 19:02:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01059C433C8;
+	Fri, 24 Nov 2023 19:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852412;
-	bh=zM2ZbavUMaaopsI/qEY45fLu+/4trlkECK8uynl4uMI=;
+	s=korg; t=1700852536;
+	bh=VvL67BqBKFWKmou2anWTTw3IA89dTRb4wURjXvHloTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i0rIzURjqy9v5k7LJ3VP+jg/ZSgnEMWFbLeRAb6TKl8wvLTxR+ijXtFuTM6FixDwH
-	 5ragJB4+q/nx7cGN/fb1BukTXOo2WIjbZ7QfDFJMGA6gr1hN6d7dRA7CSS9Lu9xMmW
-	 +Fmj33J7cSzQjJE5NZ6fZgIk3OMME3gUrh3FwA9Q=
+	b=AlTsZy2Q1dkoBI9c+Y6LzK6yW1WIrI6Pbjh1yV5RDDXl4EL0AY5zFBegj6pRgynOM
+	 D3wnJMiLjNJPwUZWNaLOQe3Zf4M0FjOi34Rvi8e0F7fNJfEEpP/u/RuRClIB7at5T8
+	 6wE45jEPFClcEppAWB4TSvp3Lb3TSQOsDhRQ6Myg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 345/372] media: qcom: camss: Fix missing vfe_lite clocks check
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Mario Casquero <mcasquer@redhat.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rik van Riel <riel@surriel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 005/193] x86/mm: Drop the 4 MB restriction on minimal NUMA node memory size
 Date: Fri, 24 Nov 2023 17:52:12 +0000
-Message-ID: <20231124172021.865118539@linuxfoundation.org>
+Message-ID: <20231124171947.353900599@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +59,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Mike Rapoport (IBM) <rppt@kernel.org>
 
-commit b6e1bdca463a932c1ac02caa7d3e14bf39288e0c upstream.
+[ Upstream commit a1e2b8b36820d8c91275f207e77e91645b7c6836 ]
 
-check_clock doesn't account for vfe_lite which means that vfe_lite will
-never get validated by this routine. Add the clock name to the expected set
-to remediate.
+Qi Zheng reported crashes in a production environment and provided a
+simplified example as a reproducer:
 
-Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ |  For example, if we use Qemu to start a two NUMA node kernel,
+ |  one of the nodes has 2M memory (less than NODE_MIN_SIZE),
+ |  and the other node has 2G, then we will encounter the
+ |  following panic:
+ |
+ |    BUG: kernel NULL pointer dereference, address: 0000000000000000
+ |    <...>
+ |    RIP: 0010:_raw_spin_lock_irqsave+0x22/0x40
+ |    <...>
+ |    Call Trace:
+ |      <TASK>
+ |      deactivate_slab()
+ |      bootstrap()
+ |      kmem_cache_init()
+ |      start_kernel()
+ |      secondary_startup_64_no_verify()
+
+The crashes happen because of inconsistency between the nodemask that
+has nodes with less than 4MB as memoryless, and the actual memory fed
+into the core mm.
+
+The commit:
+
+  9391a3f9c7f1 ("[PATCH] x86_64: Clear more state when ignoring empty node in SRAT parsing")
+
+... that introduced minimal size of a NUMA node does not explain why
+a node size cannot be less than 4MB and what boot failures this
+restriction might fix.
+
+Fixes have been submitted to the core MM code to tighten up the
+memory topologies it accepts and to not crash on weird input:
+
+  mm: page_alloc: skip memoryless nodes entirely
+  mm: memory_hotplug: drop memoryless node from fallback lists
+
+Andrew has accepted them into the -mm tree, but there are no
+stable SHA1's yet.
+
+This patch drops the limitation for minimal node size on x86:
+
+  - which works around the crash without the fixes to the core MM.
+  - makes x86 topologies less weird,
+  - removes an arbitrary and undocumented limitation on NUMA topologies.
+
+[ mingo: Improved changelog clarity. ]
+
+Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Rik van Riel <riel@surriel.com>
+Link: https://lore.kernel.org/r/ZS+2qqjEO5/867br@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/numa.h | 7 -------
+ arch/x86/mm/numa.c          | 7 -------
+ 2 files changed, 14 deletions(-)
 
---- a/drivers/media/platform/qcom/camss/camss-vfe.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe.c
-@@ -535,7 +535,8 @@ static int vfe_check_clock_rates(struct
- 		struct camss_clock *clock = &vfe->clock[i];
+diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+index e3bae2b60a0db..ef2844d691735 100644
+--- a/arch/x86/include/asm/numa.h
++++ b/arch/x86/include/asm/numa.h
+@@ -12,13 +12,6 @@
  
- 		if (!strcmp(clock->name, "vfe0") ||
--		    !strcmp(clock->name, "vfe1")) {
-+		    !strcmp(clock->name, "vfe1") ||
-+		    !strcmp(clock->name, "vfe_lite")) {
- 			u64 min_rate = 0;
- 			unsigned long rate;
+ #define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
  
+-/*
+- * Too small node sizes may confuse the VM badly. Usually they
+- * result from BIOS bugs. So dont recognize nodes as standalone
+- * NUMA entities that have less than this amount of RAM listed:
+- */
+-#define NODE_MIN_SIZE (4*1024*1024)
+-
+ extern int numa_off;
+ 
+ /*
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index 9dc31996c7edb..62a119170376b 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -602,13 +602,6 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
+ 		if (start >= end)
+ 			continue;
+ 
+-		/*
+-		 * Don't confuse VM with a node that doesn't have the
+-		 * minimum amount of memory:
+-		 */
+-		if (end && (end - start) < NODE_MIN_SIZE)
+-			continue;
+-
+ 		alloc_node_data(nid);
+ 	}
+ 
+-- 
+2.42.0
+
 
 
 
