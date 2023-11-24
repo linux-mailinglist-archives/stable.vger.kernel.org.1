@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381E67F7CAD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE0B57F8092
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7F9B282047
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A8C9280FBE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E273A8C5;
-	Fri, 24 Nov 2023 18:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5F628DBB;
+	Fri, 24 Nov 2023 18:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDtbWWM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sginFG91"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2D039FFD;
-	Fri, 24 Nov 2023 18:17:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DABCC433CC;
-	Fri, 24 Nov 2023 18:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758A522F1D;
+	Fri, 24 Nov 2023 18:50:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03605C433C9;
+	Fri, 24 Nov 2023 18:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849845;
-	bh=2E8eUnWksydqAD2fEVm6vIPBlaqA6PQcPNApcDxRhRw=;
+	s=korg; t=1700851853;
+	bh=PzCgMmZmHMvPDRubdZlQYHhrk259IExRxRpQzOPf+fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDtbWWM+cZAqdF9vCLI17Te60YxelHv2eYVxf+6NDROrNxVbte3rzsGyLSsphm7FG
-	 PC7RPrVVyPlEkW996twOZ/qnIuSzGb2BfrAzCKKhlbWOImcPkeHWfWDeeKgLXwHSiF
-	 8SfHKzzcjKGuwu3bWON+f77CMrizgeD/xsOFBwa0=
+	b=sginFG913TLS2468tbLHYVuspjR6ENX+MGe2WFnm7L1MBrH5yv5R3Ds7cxNw4fYx0
+	 41ZUeR3r0KNCyboV9eRu+hERgseijXdqw2K/sf1raz6bHLgu2OpEZdkiy8c/wN+W6N
+	 PlZTWkpJzX+HW9JjE5j2Gm9L1X1hIEH69SyxuR2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 343/530] arm64: dts: qcom: ipq9574: Fix hwlock index for SMEM
+	Olga Kornievskaia <kolga@netapp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 122/372] NFSv4.1: fix SP4_MACH_CRED protection for pnfs IO
 Date: Fri, 24 Nov 2023 17:48:29 +0000
-Message-ID: <20231124172038.472628588@linuxfoundation.org>
+Message-ID: <20231124172014.548740366@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-commit 5fe8508e2bc8eb4208b0434b6c1ca306c1519ade upstream.
+[ Upstream commit 5cc7688bae7f0757c39c1d3dfdd827b724061067 ]
 
-SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-in SMEM region shared by the Host and FW.
+If the client is doing pnfs IO and Kerberos is configured and EXCHANGEID
+successfully negotiated SP4_MACH_CRED and WRITE/COMMIT are on the
+list of state protected operations, then we need to make sure to
+choose the DS's rpc_client structure instead of the MDS's one.
 
-Fix the SMEM hwlock index to 3 for IPQ9574.
-
-Cc: stable@vger.kernel.org
-Fixes: 46384ac7a618 ("arm64: dts: qcom: ipq9574: Add SMEM support")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230904172516.479866-5-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fb91fb0ee7b2 ("NFS: Move call to nfs4_state_protect_write() to nfs4_write_setup()")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq9574.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-@@ -195,7 +195,7 @@
- 		smem@4aa00000 {
- 			compatible = "qcom,smem";
- 			reg = <0x0 0x4aa00000 0x0 0x100000>;
--			hwlocks = <&tcsr_mutex 0>;
-+			hwlocks = <&tcsr_mutex 3>;
- 			no-map;
- 		};
- 	};
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 4058861c72123..85a952143e9fb 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5628,7 +5628,7 @@ static void nfs4_proc_write_setup(struct nfs_pgio_header *hdr,
+ 
+ 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_WRITE];
+ 	nfs4_init_sequence(&hdr->args.seq_args, &hdr->res.seq_res, 0, 0);
+-	nfs4_state_protect_write(server->nfs_client, clnt, msg, hdr);
++	nfs4_state_protect_write(hdr->ds_clp ? hdr->ds_clp : server->nfs_client, clnt, msg, hdr);
+ }
+ 
+ static void nfs4_proc_commit_rpc_prepare(struct rpc_task *task, struct nfs_commit_data *data)
+@@ -5669,7 +5669,8 @@ static void nfs4_proc_commit_setup(struct nfs_commit_data *data, struct rpc_mess
+ 	data->res.server = server;
+ 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_COMMIT];
+ 	nfs4_init_sequence(&data->args.seq_args, &data->res.seq_res, 1, 0);
+-	nfs4_state_protect(server->nfs_client, NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
++	nfs4_state_protect(data->ds_clp ? data->ds_clp : server->nfs_client,
++			NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
+ }
+ 
+ static int _nfs4_proc_commit(struct file *dst, struct nfs_commitargs *args,
+-- 
+2.42.0
+
 
 
 
