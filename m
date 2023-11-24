@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 754907F7AC3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 896947F8110
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 310CD2814E5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 447B8280D0D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01B439FD4;
-	Fri, 24 Nov 2023 17:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DD1364A5;
+	Fri, 24 Nov 2023 18:55:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFjDTkXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPoxibHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7962E381DF;
-	Fri, 24 Nov 2023 17:58:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040C6C433C7;
-	Fri, 24 Nov 2023 17:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8277E33E9;
+	Fri, 24 Nov 2023 18:55:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12A49C433C7;
+	Fri, 24 Nov 2023 18:55:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848706;
-	bh=goVZ9i3RnYhyFuKZolJa6aSKKEmZhpqiAKzBv4EeacE=;
+	s=korg; t=1700852117;
+	bh=NCa7/0XC+EGIZyBcmwIWIUgKMuUl88o60ANck1U2GUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFjDTkXvIGtte9ENzu/MJcyoBqRH9Yzp2R90igkakKgwgvG+kg7wSnm/oWsPpZ194
-	 G1pHZBLQ3RYPMPrSicPqSG5jQiusp+yPVb2qa0V8vmoiU9XkqrLluD45/voxBcvOHD
-	 qhDppwIbKTAZ49KBb0oIOa4jODQhgB/jFwMXG4eM=
+	b=kPoxibHs1o8LAHQe1071ROnZVSuMd9z8SGF5jCd1ehE8daR5uo1fe7LpLvrtoljcv
+	 89IOIWVBZ223OACQrtHmr3H+PU1j+wVdEIWJCCekYHyQd+XWVszd3oUQNKccfi5NR+
+	 3mX6wW7fJ8j4fdBJJD2MiQVS3M6uhuOLgTcBU7BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 41/97] xen/events: fix delayed eoi list handling
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 227/372] arm64: dts: qcom: ipq8074: Fix hwlock index for SMEM
 Date: Fri, 24 Nov 2023 17:50:14 +0000
-Message-ID: <20231124171935.681070664@linuxfoundation.org>
+Message-ID: <20231124172018.063708906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-[ Upstream commit 47d970204054f859f35a2237baa75c2d84fcf436 ]
+commit 8a781d04e580705d36f7db07f5c80e748100b69d upstream.
 
-When delaying eoi handling of events, the related elements are queued
-into the percpu lateeoi list. In case the list isn't empty, the
-elements should be sorted by the time when eoi handling is to happen.
+SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
+in SMEM region shared by the Host and FW.
 
-Unfortunately a new element will never be queued at the start of the
-list, even if it has a handling time lower than all other list
-elements.
+Fix the SMEM hwlock index to 3 for IPQ8074.
 
-Fix that by handling that case the same way as for an empty list.
-
-Fixes: e99502f76271 ("xen/events: defer eoi in case of excessive number of events")
-Reported-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 42124b947e8e ("arm64: dts: qcom: ipq8074: add SMEM support")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230904172516.479866-4-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/events/events_base.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/ipq8074.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 960666aba12bf..3b27b98175c6d 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -490,7 +490,9 @@ static void lateeoi_list_add(struct irq_info *info)
+--- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
+@@ -90,7 +90,7 @@
+ 			reg = <0x0 0x4ab00000 0x0 0x00100000>;
+ 			no-map;
  
- 	spin_lock_irqsave(&eoi->eoi_list_lock, flags);
+-			hwlocks = <&tcsr_mutex 0>;
++			hwlocks = <&tcsr_mutex 3>;
+ 		};
  
--	if (list_empty(&eoi->eoi_list)) {
-+	elem = list_first_entry_or_null(&eoi->eoi_list, struct irq_info,
-+					eoi_list);
-+	if (!elem || info->eoi_time < elem->eoi_time) {
- 		list_add(&info->eoi_list, &eoi->eoi_list);
- 		mod_delayed_work_on(info->eoi_cpu, system_wq,
- 				    &eoi->delayed, delay);
--- 
-2.42.0
-
+ 		memory@4ac00000 {
 
 
 
