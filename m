@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57DF57F81A4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3777F81EF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FBF7282B2A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55ADF1C2235A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C313173F;
-	Fri, 24 Nov 2023 19:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9468733CFD;
+	Fri, 24 Nov 2023 19:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6ZO6KhP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+SZ5x0s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4483834189;
-	Fri, 24 Nov 2023 19:00:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2CDC433C8;
-	Fri, 24 Nov 2023 19:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557AE22F1D;
+	Fri, 24 Nov 2023 19:02:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FEBC433C8;
+	Fri, 24 Nov 2023 19:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852421;
-	bh=Tf91UA69LYZocgRcK6WTZiCjw+Nt0Yr/t6FoG45FLQ4=;
+	s=korg; t=1700852566;
+	bh=AfYLQm0h2cyAe82Fb6wNT8zIZStURTFaOseTs4G8QQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6ZO6KhPsv1oUmlcsQ8iBljUGbkJ0jdspLJaL6BRT5LSG3cW4wVDFFkbiFlGlh5vg
-	 +3twPMSYYYb5P4pU5ov7PJw+SNVST2ZydfDcsuGAW0J3hpKbRTeNVzFeOE0Z716Y10
-	 Li8uG6czTr+EIWKJWPhgJtIH4w+f7BD8GrzjIWHI=
+	b=N+SZ5x0s05cbZRD7l0Uo0HEvs/8gwMBv4ttJ8MbQRQGgvWFpVWhgP+ZcjxEoa9LG0
+	 GEEEnkwKy99+khNcHt/Nv+192iOtnYJZuS9fS2kEiL+5cMObsOJiSPituqLTYiEFfG
+	 RBiTQUdy4lK8WM5XYpK236A/r/FJ3KHcQ1dMdUhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"J. Bruce Fields" <bfields@redhat.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 349/372] ext4: apply umask if ACL support is disabled
-Date: Fri, 24 Nov 2023 17:52:16 +0000
-Message-ID: <20231124172021.983896672@linuxfoundation.org>
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 010/193] wifi: ath10k: fix clang-specific fortify warning
+Date: Fri, 24 Nov 2023 17:52:17 +0000
+Message-ID: <20231124171947.578018174@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +54,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 484fd6c1de13b336806a967908a927cc0356e312 upstream.
+[ Upstream commit cb4c132ebfeac5962f7258ffc831caa0c4dada1a ]
 
-The function ext4_init_acl() calls posix_acl_create() which is
-responsible for applying the umask.  But without
-CONFIG_EXT4_FS_POSIX_ACL, ext4_init_acl() is an empty inline function,
-and nobody applies the umask.
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-This fixes a bug which causes the umask to be ignored with O_TMPFILE
-on ext4:
+In file included from drivers/net/wireless/ath/ath10k/debug.c:8:
+In file included from ./include/linux/module.h:13:
+In file included from ./include/linux/stat.h:19:
+In file included from ./include/linux/time.h:60:
+In file included from ./include/linux/time32.h:13:
+In file included from ./include/linux/timex.h:67:
+In file included from ./arch/x86/include/asm/timex.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
 
- https://github.com/MusicPlayerDaemon/MPD/issues/558
- https://bugs.gentoo.org/show_bug.cgi?id=686142#c3
- https://bugzilla.kernel.org/show_bug.cgi?id=203625
+The compiler actually complains on 'ath10k_debug_get_et_strings()' where
+fortification logic inteprets call to 'memcpy()' as an attempt to copy
+the whole 'ath10k_gstrings_stats' array from it's first member and so
+issues an overread warning. This warning may be silenced by passing
+an address of the whole array and not the first member to 'memcpy()'.
 
-Reviewed-by: "J. Bruce Fields" <bfields@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Link: https://lore.kernel.org/r/20230919081824.1096619-1-max.kellermann@ionos.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230829093652.234537-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/acl.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/wireless/ath/ath10k/debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/acl.h
-+++ b/fs/ext4/acl.h
-@@ -68,6 +68,11 @@ extern int ext4_init_acl(handle_t *, str
- static inline int
- ext4_init_acl(handle_t *handle, struct inode *inode, struct inode *dir)
+diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
+index e8250a6654338..ab737177a86bf 100644
+--- a/drivers/net/wireless/ath/ath10k/debug.c
++++ b/drivers/net/wireless/ath/ath10k/debug.c
+@@ -1139,7 +1139,7 @@ void ath10k_debug_get_et_strings(struct ieee80211_hw *hw,
+ 				 u32 sset, u8 *data)
  {
-+	/* usually, the umask is applied by posix_acl_create(), but if
-+	   ext4 ACL support is disabled at compile time, we need to do
-+	   it here, because posix_acl_create() will never be called */
-+	inode->i_mode &= ~current_umask();
-+
- 	return 0;
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *ath10k_gstrings_stats,
++		memcpy(data, ath10k_gstrings_stats,
+ 		       sizeof(ath10k_gstrings_stats));
  }
- #endif  /* CONFIG_EXT4_FS_POSIX_ACL */
+ 
+-- 
+2.42.0
+
 
 
 
