@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D7E7F7DAF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A0A7F7BCD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B447B1C212C3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62AB22821A3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90953A8D8;
-	Fri, 24 Nov 2023 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D0E39FFC;
+	Fri, 24 Nov 2023 18:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYucOC7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrJ6EfS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5184381DE;
-	Fri, 24 Nov 2023 18:26:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F840C433CD;
-	Fri, 24 Nov 2023 18:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA31364A4;
+	Fri, 24 Nov 2023 18:08:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27DD5C433C7;
+	Fri, 24 Nov 2023 18:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850399;
-	bh=7pjHWNs7cJhEJ7N6aNwhdy54IpVagzCdC5ebNJnHXEo=;
+	s=korg; t=1700849330;
+	bh=3E/inGU1NH/BLX+tutRv11R5iy5v9qHnSmXgeZY6Sqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYucOC7XpSTIyAj792e5zhfyLfLIVg9PePqzxurLjGEk81Yx0pbLT6vXXaR9Tirh6
-	 l7/OCBbAdTHWkhSw6zytX5VotGDaCYqIW0uWY16JJpcQgmlVLcsmJQm2XZSvkxL2Zv
-	 5P4xJVQXiERZFdXD7WnZPSLbRUwvEgaiwKJUFOFE=
+	b=UrJ6EfS1NcTjQtkkJxWHOdY7tSG8Kx3petl3kLXYpiHg+hbc/CaCCcVJcXoo+Lr2y
+	 Ao1lNr5c4N4tJItkuXQqCUNko74WSZRp9IkKMWtukUd8atbr7Fmh6zcFlXw4jYOxDt
+	 aP+QWsrw07lWH78fGqoX2FSgT8qjfC+mGBAQexKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 034/491] vsock: read from sockets error queue
+Subject: [PATCH 6.6 104/530] PCI: Do error check on own line to split long "if" conditions
 Date: Fri, 24 Nov 2023 17:44:30 +0000
-Message-ID: <20231124172025.722438342@linuxfoundation.org>
+Message-ID: <20231124172031.287726870@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,101 +51,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 49dbe25adac42d3e06f65d1420946bec65896222 ]
+[ Upstream commit d15f18053e5cc5576af9e7eef0b2a91169b6326d ]
 
-This adds handling of MSG_ERRQUEUE input flag in receive call. This flag
-is used to read socket's error queue instead of data queue. Possible
-scenario of error queue usage is receiving completions for transmission
-with MSG_ZEROCOPY flag. This patch also adds new defines: 'SOL_VSOCK'
-and 'VSOCK_RECVERR'.
+Placing PCI error code check inside "if" condition usually results in need
+to split lines. Combined with additional conditions the "if" condition
+becomes messy.
 
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Convert to the usual error handling pattern with an additional variable to
+improve code readability. In addition, reverse the logic in
+pci_find_vsec_capability() to get rid of &&.
+
+No functional changes intended.
+
+Link: https://lore.kernel.org/r/20230911125354.25501-5-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+[bhelgaas: PCI_POSSIBLE_ERROR()]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/socket.h          |  1 +
- include/uapi/linux/vm_sockets.h | 17 +++++++++++++++++
- net/vmw_vsock/af_vsock.c        |  6 ++++++
- 3 files changed, 24 insertions(+)
+ drivers/pci/pci.c    | 9 ++++++---
+ drivers/pci/probe.c  | 6 +++---
+ drivers/pci/quirks.c | 6 +++---
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/socket.h b/include/linux/socket.h
-index 39b74d83c7c4a..cfcb7e2c3813f 100644
---- a/include/linux/socket.h
-+++ b/include/linux/socket.h
-@@ -383,6 +383,7 @@ struct ucred {
- #define SOL_MPTCP	284
- #define SOL_MCTP	285
- #define SOL_SMC		286
-+#define SOL_VSOCK	287
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 59c01d68c6d5e..5e51e8bd5c13a 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -732,15 +732,18 @@ u16 pci_find_vsec_capability(struct pci_dev *dev, u16 vendor, int cap)
+ {
+ 	u16 vsec = 0;
+ 	u32 header;
++	int ret;
  
- /* IPX options */
- #define IPX_TYPE	1
-diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
-index c60ca33eac594..ed07181d4eff9 100644
---- a/include/uapi/linux/vm_sockets.h
-+++ b/include/uapi/linux/vm_sockets.h
-@@ -191,4 +191,21 @@ struct sockaddr_vm {
+ 	if (vendor != dev->vendor)
+ 		return 0;
  
- #define IOCTL_VM_SOCKETS_GET_LOCAL_CID		_IO(7, 0xb9)
+ 	while ((vsec = pci_find_next_ext_capability(dev, vsec,
+ 						     PCI_EXT_CAP_ID_VNDR))) {
+-		if (pci_read_config_dword(dev, vsec + PCI_VNDR_HEADER,
+-					  &header) == PCIBIOS_SUCCESSFUL &&
+-		    PCI_VNDR_HEADER_ID(header) == cap)
++		ret = pci_read_config_dword(dev, vsec + PCI_VNDR_HEADER, &header);
++		if (ret != PCIBIOS_SUCCESSFUL)
++			continue;
++
++		if (PCI_VNDR_HEADER_ID(header) == cap)
+ 			return vsec;
+ 	}
  
-+/* MSG_ZEROCOPY notifications are encoded in the standard error format,
-+ * sock_extended_err. See Documentation/networking/msg_zerocopy.rst in
-+ * kernel source tree for more details.
-+ */
-+
-+/* 'cmsg_level' field value of 'struct cmsghdr' for notification parsing
-+ * when MSG_ZEROCOPY flag is used on transmissions.
-+ */
-+
-+#define SOL_VSOCK	287
-+
-+/* 'cmsg_type' field value of 'struct cmsghdr' for notification parsing
-+ * when MSG_ZEROCOPY flag is used on transmissions.
-+ */
-+
-+#define VSOCK_RECVERR	1
-+
- #endif /* _UAPI_VM_SOCKETS_H */
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 020cf17ab7e47..ccd8cefeea7ba 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -89,6 +89,7 @@
- #include <linux/types.h>
- #include <linux/bitops.h>
- #include <linux/cred.h>
-+#include <linux/errqueue.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/kernel.h>
-@@ -110,6 +111,7 @@
- #include <linux/workqueue.h>
- #include <net/sock.h>
- #include <net/af_vsock.h>
-+#include <uapi/linux/vm_sockets.h>
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 795534589b985..43159965e09e9 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1652,15 +1652,15 @@ static void pci_set_removable(struct pci_dev *dev)
+ static bool pci_ext_cfg_is_aliased(struct pci_dev *dev)
+ {
+ #ifdef CONFIG_PCI_QUIRKS
+-	int pos;
++	int pos, ret;
+ 	u32 header, tmp;
  
- static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr);
- static void vsock_sk_destruct(struct sock *sk);
-@@ -2134,6 +2136,10 @@ vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 	int err;
+ 	pci_read_config_dword(dev, PCI_VENDOR_ID, &header);
  
- 	sk = sock->sk;
-+
-+	if (unlikely(flags & MSG_ERRQUEUE))
-+		return sock_recv_errqueue(sk, msg, len, SOL_VSOCK, VSOCK_RECVERR);
-+
- 	vsk = vsock_sk(sk);
- 	err = 0;
+ 	for (pos = PCI_CFG_SPACE_SIZE;
+ 	     pos < PCI_CFG_SPACE_EXP_SIZE; pos += PCI_CFG_SPACE_SIZE) {
+-		if (pci_read_config_dword(dev, pos, &tmp) != PCIBIOS_SUCCESSFUL
+-		    || header != tmp)
++		ret = pci_read_config_dword(dev, pos, &tmp);
++		if ((ret != PCIBIOS_SUCCESSFUL) || (header != tmp))
+ 			return false;
+ 	}
  
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index e3e915329510f..7b62797e242b1 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5385,7 +5385,7 @@ int pci_dev_specific_disable_acs_redir(struct pci_dev *dev)
+  */
+ static void quirk_intel_qat_vf_cap(struct pci_dev *pdev)
+ {
+-	int pos, i = 0;
++	int pos, i = 0, ret;
+ 	u8 next_cap;
+ 	u16 reg16, *cap;
+ 	struct pci_cap_saved_state *state;
+@@ -5431,8 +5431,8 @@ static void quirk_intel_qat_vf_cap(struct pci_dev *pdev)
+ 		pdev->pcie_mpss = reg16 & PCI_EXP_DEVCAP_PAYLOAD;
+ 
+ 		pdev->cfg_size = PCI_CFG_SPACE_EXP_SIZE;
+-		if (pci_read_config_dword(pdev, PCI_CFG_SPACE_SIZE, &status) !=
+-		    PCIBIOS_SUCCESSFUL || (status == 0xffffffff))
++		ret = pci_read_config_dword(pdev, PCI_CFG_SPACE_SIZE, &status);
++		if ((ret != PCIBIOS_SUCCESSFUL) || (PCI_POSSIBLE_ERROR(status)))
+ 			pdev->cfg_size = PCI_CFG_SPACE_SIZE;
+ 
+ 		if (pci_find_saved_cap(pdev, PCI_CAP_ID_EXP))
 -- 
 2.42.0
 
