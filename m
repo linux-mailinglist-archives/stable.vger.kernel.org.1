@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-1414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD8D7F7F89
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE2C7F7ADC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 306A2B20B0E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8CF5B2102A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143C01A5A4;
-	Fri, 24 Nov 2023 18:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B1139FED;
+	Fri, 24 Nov 2023 17:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1nLAk51"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0gD9VdM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713C52F86B;
-	Fri, 24 Nov 2023 18:42:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83F3C433C7;
-	Fri, 24 Nov 2023 18:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7324E381D8;
+	Fri, 24 Nov 2023 17:59:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04CC0C433C9;
+	Fri, 24 Nov 2023 17:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851339;
-	bh=y72AlVQ3jAyqtcUEp0WVqRyrec+JVjdbQJxXBd/8VB8=;
+	s=korg; t=1700848763;
+	bh=4Oqn5zE446T0GWLdc2i6JSQqaE3A/RP+I6bhBMcRRO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1nLAk51RBiPThd4zSxcizWzO2tQHt9KQSqlJkC0CDTlEU2b6DwUdlEYVT2fGeJn8
-	 mb+TicN1cwe9ftOl2BtGO2Nxk8259QfTMFheEsQewqgp6XAzn4jz0vyJpJs3JtRbuW
-	 z3MRyvgLZj0SZv+oQCyPQeQm9gMZ9ZhoOwLxVsok=
+	b=z0gD9VdMklhjdZCHVW/eWnKdUF/V8Nx8wfQsBemULzpE5Mlr79yWiRYee19LERGLE
+	 bxuKtCzRNmj93VkrJvs6oz4f70MjWkfmbp4xkgNWEmarwBlI8864CUViPcVmIQtvID
+	 svQ7ooGUQMmIK+ZSa7ABQV/q0pDHTBWd+D2XwR4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Oleksandr Natalenko <oleksandr@natalenko.name>
-Subject: [PATCH 6.5 384/491] xhci: Enable RPM on controllers that support low-power states
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Anastasia Belova <abelova@astralinux.ru>,
+	Ekaterina Esina <eesina@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 47/97] cifs: spnego: add ; in HOST_KEY_LEN
 Date: Fri, 24 Nov 2023 17:50:20 +0000
-Message-ID: <20231124172036.138906860@linuxfoundation.org>
+Message-ID: <20231124171935.921447524@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,46 +55,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+From: Anastasia Belova <abelova@astralinux.ru>
 
-commit a5d6264b638efeca35eff72177fd28d149e0764b upstream.
+[ Upstream commit ff31ba19d732efb9aca3633935d71085e68d5076 ]
 
-Use the low-power states of the underlying platform to enable runtime PM.
-If the platform doesn't support runtime D3, then enabling default RPM will
-result in the controller malfunctioning, as in the case of hotplug devices
-not being detected because of a failed interrupt generation.
+"host=" should start with ';' (as in cifs_get_spnego_key)
+So its length should be 6.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20231019102924.2797346-16-mathias.nyman@linux.intel.com
-Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Fixes: 7c9c3760b3a5 ("[CIFS] add constants for string lengths of keynames in SPNEGO upcall string")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Co-developed-by: Ekaterina Esina <eesina@astralinux.ru>
+Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-pci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/cifs/cifs_spnego.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index bde43cef8846..95ed9404f6f8 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -695,7 +695,9 @@ static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
- 	/* USB-2 and USB-3 roothubs initialized, allow runtime pm suspend */
- 	pm_runtime_put_noidle(&dev->dev);
+diff --git a/fs/cifs/cifs_spnego.c b/fs/cifs/cifs_spnego.c
+index 7f01c6e607918..6eb65988321fc 100644
+--- a/fs/cifs/cifs_spnego.c
++++ b/fs/cifs/cifs_spnego.c
+@@ -76,8 +76,8 @@ struct key_type cifs_spnego_key_type = {
+  * strlen(";sec=ntlmsspi") */
+ #define MAX_MECH_STR_LEN	13
  
--	if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
-+	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
-+		pm_runtime_forbid(&dev->dev);
-+	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
- 		pm_runtime_allow(&dev->dev);
+-/* strlen of "host=" */
+-#define HOST_KEY_LEN		5
++/* strlen of ";host=" */
++#define HOST_KEY_LEN		6
  
- 	dma_set_max_seg_size(&dev->dev, UINT_MAX);
+ /* strlen of ";ip4=" or ";ip6=" */
+ #define IP_KEY_LEN		5
 -- 
-2.43.0
+2.42.0
 
 
 
