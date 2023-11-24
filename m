@@ -1,54 +1,47 @@
-Return-Path: <stable+bounces-1475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF907F7FDD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD247F8181
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E950C1C214FA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0F83B20C89
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47BB35F04;
-	Fri, 24 Nov 2023 18:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6ADB3418B;
+	Fri, 24 Nov 2023 18:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJgtJzrP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqwjPrjO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005CD364A7;
-	Fri, 24 Nov 2023 18:44:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD9C433C7;
-	Fri, 24 Nov 2023 18:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC2C2C87B;
+	Fri, 24 Nov 2023 18:59:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AB9C433C7;
+	Fri, 24 Nov 2023 18:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851491;
-	bh=0+EsvImk43SeTnm6yrFUYl9kui2L6E5yH3XOKIgXotI=;
+	s=korg; t=1700852350;
+	bh=N9vzIpRUcRMFtGt5TcKV5Ji6FxkiK7e/PisFw1XLkrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJgtJzrPyJaXPk17ps12oHvQZdoYn/5SAvKRuL5GIR55ONn/BEbjNSmipWQ7h9prb
-	 F6Pv54flOpEoeg/eTb1V8CwPZZmmmVZIzK39Of3lnVCnDqoD6Xw6HpqcIm1GBDplzc
-	 4eiddN/XNJO5RJ3d9rEatyj6cXPKrKmXI2WKRmV4=
+	b=LqwjPrjORTi6iJ4U+7dhu9cbONZ8ga4RbvgU4tNn0fBU2RtW9FQadgKFny1IttqFG
+	 9Jl2J39LiMOTelqrHcn/KRgV/kj49mykHbN75OaEeYW/vADZF8bnoUWbUGDmCWBE1o
+	 kyUMcnXT4ryJN0Z4gvuoFRSL3BFNuEBrkrQ2f6/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	Robert Foss <robert.foss@linaro.org>,
-	Phong LE <ple@baylibre.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.5 470/491] drm: bridge: it66121: ->get_edid callback must not return err pointers
-Date: Fri, 24 Nov 2023 17:51:46 +0000
-Message-ID: <20231124172038.750176839@linuxfoundation.org>
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 320/372] media: venus: hfi_parser: Add check to keep the number of codecs within range
+Date: Fri, 24 Nov 2023 17:51:47 +0000
+Message-ID: <20231124172021.062516973@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 81995ee1620318b4c7bbeb02bcc372da2c078c76 upstream.
+commit 0768a9dd809ef52440b5df7dce5a1c1c7e97abbd upstream.
 
-The drm stack does not expect error valued pointers for EDID anywhere.
+Supported codec bitmask is populated from the payload from venus firmware.
+There is a possible case when all the bits in the codec bitmask is set. In
+such case, core cap for decoder is filled  and MAX_CODEC_NUM is utilized.
+Now while filling the caps for encoder, it can lead to access the caps
+array beyong 32 index. Hence leading to OOB write.
+The fix counts the supported encoder and decoder. If the count is more than
+max, then it skips accessing the caps.
 
-Fixes: e66856508746 ("drm: bridge: it66121: Set DDC preamble only once before reading EDID")
-Cc: Paul Cercueil <paul@crapouillou.net>
-Cc: Robert Foss <robert.foss@linaro.org>
-Cc: Phong LE <ple@baylibre.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Robert Foss <rfoss@kernel.org>
-Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
-Cc: Jonas Karlman <jonas@kwiboo.se>
-Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
-Cc: <stable@vger.kernel.org> # v6.3+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230914131159.2472513-1-jani.nikula@intel.com
+Cc: stable@vger.kernel.org
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ite-it66121.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
-index 3c9b42c9d2ee..1cf3fb1f13dc 100644
---- a/drivers/gpu/drm/bridge/ite-it66121.c
-+++ b/drivers/gpu/drm/bridge/ite-it66121.c
-@@ -884,14 +884,14 @@ static struct edid *it66121_bridge_get_edid(struct drm_bridge *bridge,
- 	mutex_lock(&ctx->lock);
- 	ret = it66121_preamble_ddc(ctx);
- 	if (ret) {
--		edid = ERR_PTR(ret);
-+		edid = NULL;
- 		goto out_unlock;
- 	}
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -19,6 +19,9 @@ static void init_codecs(struct venus_cor
+ 	struct hfi_plat_caps *caps = core->caps, *cap;
+ 	unsigned long bit;
  
- 	ret = regmap_write(ctx->regmap, IT66121_DDC_HEADER_REG,
- 			   IT66121_DDC_HEADER_EDID);
- 	if (ret) {
--		edid = ERR_PTR(ret);
-+		edid = NULL;
- 		goto out_unlock;
- 	}
- 
--- 
-2.43.0
-
++	if (hweight_long(core->dec_codecs) + hweight_long(core->enc_codecs) > MAX_CODEC_NUM)
++		return;
++
+ 	for_each_set_bit(bit, &core->dec_codecs, MAX_CODEC_NUM) {
+ 		cap = &caps[core->codecs_count++];
+ 		cap->codec = BIT(bit);
 
 
 
