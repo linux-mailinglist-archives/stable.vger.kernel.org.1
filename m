@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EFC7F7ED9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 694DA7F7C90
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AC102823D7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 239A5281D58
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC292F86B;
-	Fri, 24 Nov 2023 18:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4B03A8C5;
+	Fri, 24 Nov 2023 18:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKh8bPdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3g3suHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642782EAEA;
-	Fri, 24 Nov 2023 18:36:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB904C433C7;
-	Fri, 24 Nov 2023 18:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7980C39FF3;
+	Fri, 24 Nov 2023 18:16:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A4CC433C7;
+	Fri, 24 Nov 2023 18:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850995;
-	bh=5+4QT7N7GLummeBKlMooruYIbS2pxepfuZ/3J6Zo9AA=;
+	s=korg; t=1700849780;
+	bh=Pe//psJX5oka+jrWmzhpr8QAxMLyPe1ItVgI2pJEr4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKh8bPdPKwluCnxDPVFiKsnr1175qYEyjgvryyMDNZCaeDP6Qoa29GC5OBnrW2GcK
-	 XRIDDLsp4CI/fBRz8ph9XnI9eZvQ+67b773J6p1dq0xBR1EKp5h3fsa1JuEAijFNW+
-	 /HfrJsYsDxhCcyuZzYWR9I2CCox+OuittafnrP1E=
+	b=W3g3suHSfMAQmVg70c1g0/RdN+jNsvSOKFSrMbbNQN7t9uEnVyIIdRe16+xRLhAn5
+	 68IxU9WoVFMKk71t1KfMVFfaGD2F6P++fvIq8q4zGucX9ANPQLFz7zO8qQ8tHm7PSk
+	 wKiGe3CwvKb++I2ZMI/X6G/TeoUKhqSdJ6DqG3dU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <bluca@debian.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: [PATCH 6.5 247/491] sched: psi: fix unprivileged polling against cgroups
+	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 317/530] clk: qcom: ipq6018: drop the CLK_SET_RATE_PARENT flag from PLL clocks
 Date: Fri, 24 Nov 2023 17:48:03 +0000
-Message-ID: <20231124172031.980875640@linuxfoundation.org>
+Message-ID: <20231124172037.689564220@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,102 +53,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Weiner <hannes@cmpxchg.org>
+From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
 
-commit 8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69 upstream.
+commit 99cd4935cb972d0aafb16838bb2aeadbcaf196ce upstream.
 
-519fabc7aaba ("psi: remove 500ms min window size limitation for
-triggers") breaks unprivileged psi polling on cgroups.
+GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
+on the request from dependent clocks. Doing so will result in the
+unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
+clocks.
 
-Historically, we had a privilege check for polling in the open() of a
-pressure file in /proc, but were erroneously missing it for the open()
-of cgroup pressure files.
-
-When unprivileged polling was introduced in d82caa273565 ("sched/psi:
-Allow unprivileged polling of N*2s period"), it needed to filter
-privileges depending on the exact polling parameters, and as such
-moved the CAP_SYS_RESOURCE check from the proc open() callback to
-psi_trigger_create(). Both the proc files as well as cgroup files go
-through this during write(). This implicitly added the missing check
-for privileges required for HT polling for cgroups.
-
-When 519fabc7aaba ("psi: remove 500ms min window size limitation for
-triggers") followed right after to remove further restrictions on the
-RT polling window, it incorrectly assumed the cgroup privilege check
-was still missing and added it to the cgroup open(), mirroring what we
-used to do for proc files in the past.
-
-As a result, unprivileged poll requests that would be supported now
-get rejected when opening the cgroup pressure file for writing.
-
-Remove the cgroup open() check. psi_trigger_create() handles it.
-
-Fixes: 519fabc7aaba ("psi: remove 500ms min window size limitation for triggers")
-Reported-by: Luca Boccassi <bluca@debian.org>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Luca Boccassi <bluca@debian.org>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Cc: stable@vger.kernel.org # 6.5+
-Link: https://lore.kernel.org/r/20231026164114.2488682-1-hannes@cmpxchg.org
+Cc: stable@vger.kernel.org
+Fixes: d9db07f088af ("clk: qcom: Add ipq6018 Global Clock Controller support")
+Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-2-c8ceb1a37680@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup.c |   12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/clk/qcom/gcc-ipq6018.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -3836,14 +3836,6 @@ static __poll_t cgroup_pressure_poll(str
- 	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
- }
+--- a/drivers/clk/qcom/gcc-ipq6018.c
++++ b/drivers/clk/qcom/gcc-ipq6018.c
+@@ -72,7 +72,6 @@ static struct clk_fixed_factor gpll0_out
+ 				&gpll0_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_fixed_factor_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
--static int cgroup_pressure_open(struct kernfs_open_file *of)
--{
--	if (of->file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
--		return -EPERM;
--
--	return 0;
--}
--
- static void cgroup_pressure_release(struct kernfs_open_file *of)
- {
- 	struct cgroup_file_ctx *ctx = of->priv;
-@@ -5243,7 +5235,6 @@ static struct cftype cgroup_psi_files[]
- 	{
- 		.name = "io.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IO]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_io_pressure_show,
- 		.write = cgroup_io_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5252,7 +5243,6 @@ static struct cftype cgroup_psi_files[]
- 	{
- 		.name = "memory.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_MEM]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_memory_pressure_show,
- 		.write = cgroup_memory_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5261,7 +5251,6 @@ static struct cftype cgroup_psi_files[]
- 	{
- 		.name = "cpu.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_CPU]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_cpu_pressure_show,
- 		.write = cgroup_cpu_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5271,7 +5260,6 @@ static struct cftype cgroup_psi_files[]
- 	{
- 		.name = "irq.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IRQ]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_irq_pressure_show,
- 		.write = cgroup_irq_pressure_write,
- 		.poll = cgroup_pressure_poll,
+@@ -86,7 +85,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 				&gpll0_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -161,7 +159,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 				&gpll6_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -192,7 +189,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 				&gpll4_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -243,7 +239,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 				&gpll2_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -274,7 +269,6 @@ static struct clk_alpha_pll_postdiv nss_
+ 				&nss_crypto_pll_main.clkr.hw },
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
 
 
 
