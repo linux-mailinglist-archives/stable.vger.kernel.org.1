@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA1A7F8180
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8E57F7FE0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90E301C216FA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47533B21983
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD58835F1A;
-	Fri, 24 Nov 2023 18:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D0B381D4;
+	Fri, 24 Nov 2023 18:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4IPqJSo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6oI7kko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8826B63A1;
-	Fri, 24 Nov 2023 18:59:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174A8C433C8;
-	Fri, 24 Nov 2023 18:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0338F381D2;
+	Fri, 24 Nov 2023 18:44:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F28FC433C8;
+	Fri, 24 Nov 2023 18:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852352;
-	bh=T8GbqL7gpb3XziMuVTfNe0gpt9m8KzJe+oY4S67DA3o=;
+	s=korg; t=1700851496;
+	bh=sIJYbIVzCuyYtpRp+n/qxrqFUDqCtjbwBukGbkAmkWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4IPqJSor6/8Z0c3gsBC54wmFDh+pnG4AT4sC9GX9f9P+qt3oqSMb0PgPl6tR5wkC
-	 WACz5ClYNslNBaattQ4IdzYTW8SXRCM5nJreoh3MXW++/7akadCp+qoFZj19JetOGE
-	 Q+vpxo0c+abTQm7em96hZhS1Tj1StwV4hdY9r+7g=
+	b=j6oI7kkosvi0w403mIp3dyDImWZK9tncwjPydCKJnqzABEZ9rRHyF8FS/5pybtcwB
+	 sB7HPXmINK8tbp08e6wdKtSUaU7XV8i9l0SN+u/DDTYTps1GbvG0KAZUU/1dzBKtQc
+	 AHt0289Q4EFLRoybPt4pkirlgtJGyQbM9w9H3URI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Hebert <nhebert@chromium.org>,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 321/372] media: venus: hfi: fix the check to handle session buffer requirement
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.5 472/491] drm/i915: Bump GLK CDCLK frequency when driving multiple pipes
 Date: Fri, 24 Nov 2023 17:51:48 +0000
-Message-ID: <20231124172021.098006067@linuxfoundation.org>
+Message-ID: <20231124172038.813995457@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +50,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit b18e36dfd6c935da60a971310374f3dfec3c82e1 upstream.
+commit 0cb89cd42fd22bbdec0b046c48f35775f5b88bdb upstream.
 
-Buffer requirement, for different buffer type, comes from video firmware.
-While copying these requirements, there is an OOB possibility when the
-payload from firmware is more than expected size. Fix the check to avoid
-the OOB possibility.
+On GLK CDCLK frequency needs to be at least 2*96 MHz when accessing
+the audio hardware. Currently we bump the CDCLK frequency up
+temporarily (if not high enough already) whenever audio hardware
+is being accessed, and drop it back down afterwards.
+
+With a single active pipe this works just fine as we can switch
+between all the valid CDCLK frequencies by changing the cd2x
+divider, which doesn't require a full modeset. However with
+multiple active pipes the cd2x divider trick no longer works,
+and thus we end up blinking all displays off and back on.
+
+To avoid this let's just bump the CDCLK frequency to >=2*96MHz
+whenever multiple pipes are active. The downside is slightly
+higher power consumption, but that seems like an acceptable
+tradeoff. With a single active pipe we can stick to the current
+more optiomal (from power comsumption POV) behaviour.
 
 Cc: stable@vger.kernel.org
-Fixes: 09c2845e8fe4 ("[media] media: venus: hfi: add Host Firmware Interface (HFI)")
-Reviewed-by: Nathan Hebert <nhebert@chromium.org>
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9599
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231031160800.18371-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 451eaa1a614c911f5a51078dcb68022874e4cb12)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_msgs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_cdclk.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/media/platform/qcom/venus/hfi_msgs.c
-+++ b/drivers/media/platform/qcom/venus/hfi_msgs.c
-@@ -374,7 +374,7 @@ session_get_prop_buf_req(struct hfi_msg_
- 		memcpy(&bufreq[idx], buf_req, sizeof(*bufreq));
- 		idx++;
+--- a/drivers/gpu/drm/i915/display/intel_cdclk.c
++++ b/drivers/gpu/drm/i915/display/intel_cdclk.c
+@@ -2680,6 +2680,18 @@ static int intel_compute_min_cdclk(struc
+ 	for_each_pipe(dev_priv, pipe)
+ 		min_cdclk = max(cdclk_state->min_cdclk[pipe], min_cdclk);
  
--		if (idx > HFI_BUFFER_TYPE_MAX)
-+		if (idx >= HFI_BUFFER_TYPE_MAX)
- 			return HFI_ERR_SESSION_INVALID_PARAMETER;
- 
- 		req_bytes -= sizeof(struct hfi_buffer_requirements);
++	/*
++	 * Avoid glk_force_audio_cdclk() causing excessive screen
++	 * blinking when multiple pipes are active by making sure
++	 * CDCLK frequency is always high enough for audio. With a
++	 * single active pipe we can always change CDCLK frequency
++	 * by changing the cd2x divider (see glk_cdclk_table[]) and
++	 * thus a full modeset won't be needed then.
++	 */
++	if (IS_GEMINILAKE(dev_priv) && cdclk_state->active_pipes &&
++	    !is_power_of_2(cdclk_state->active_pipes))
++		min_cdclk = max(2 * 96000, min_cdclk);
++
+ 	if (min_cdclk > dev_priv->display.cdclk.max_cdclk_freq) {
+ 		drm_dbg_kms(&dev_priv->drm,
+ 			    "required cdclk (%d kHz) exceeds max (%d kHz)\n",
 
 
 
