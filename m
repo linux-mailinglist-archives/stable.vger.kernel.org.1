@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5557F7DB7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79F217F7BC7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73C39B2187A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB9391C2102C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314EF39FE9;
-	Fri, 24 Nov 2023 18:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1912364A4;
+	Fri, 24 Nov 2023 18:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JR611NfK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPdwZeXY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBAE33063;
-	Fri, 24 Nov 2023 18:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC040C433CA;
-	Fri, 24 Nov 2023 18:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B01FF39FEA;
+	Fri, 24 Nov 2023 18:08:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400B7C433C8;
+	Fri, 24 Nov 2023 18:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850407;
-	bh=8O4kCmT8ZzqP5zfM9epxQn2lqh8mOlrhhW8W8OpmebM=;
+	s=korg; t=1700849314;
+	bh=OXQQeu7dXj6aPFvjqGzBoV8Ypql1yp8VrDTltZuvAeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JR611NfKTRBpPAb49yYUXYyuBZs11qv+KXDKQzJVBxo4cEP46IRfoEkKxAzhIvBRy
-	 2ULJAQPFLKy8j9uPPTs06PSgUCgP/RigeruocNQ8oYjpIFTRFeyQ8PYE9zNzYMxwPt
-	 eZBMn1cy73WOLm8VG38yTCUJkII1OU+qsKyPDvSg=
+	b=HPdwZeXYgQWDuhlPWz3IGMS44EYLiBj7cwa7I6nuafjh+LB+vEFZbEEQrmrzvzVS4
+	 zdjGjeNwuk2sMySXWNpj+is3mb2+L+GOTHDqyU9pwpQpmpVFLo529KHMIsNuJaESL8
+	 OJ6qCeIpgqs+L+HVPbtEfqsmWqw+DjMMpuSjzN6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	youwan Wang <wangyouwan@126.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 037/491] Bluetooth: btusb: Add date->evt_skb is NULL check
-Date: Fri, 24 Nov 2023 17:44:33 +0000
-Message-ID: <20231124172025.809950781@linuxfoundation.org>
+Subject: [PATCH 6.6 108/530] PCI: Disable ATS for specific Intel IPU E2000 devices
+Date: Fri, 24 Nov 2023 17:44:34 +0000
+Message-ID: <20231124172031.411455621@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +55,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: youwan Wang <wangyouwan@126.com>
+From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 
-[ Upstream commit 624820f7c8826dd010e8b1963303c145f99816e9 ]
+[ Upstream commit a18615b1cfc04f00548c60eb9a77e0ce56e848fd ]
 
-fix crash because of null pointers
+Due to a hardware issue in A and B steppings of Intel IPU E2000, it expects
+wrong endianness in ATS invalidation message body. This problem can lead to
+outdated translations being returned as valid and finally cause system
+instability.
 
-[ 6104.969662] BUG: kernel NULL pointer dereference, address: 00000000000000c8
-[ 6104.969667] #PF: supervisor read access in kernel mode
-[ 6104.969668] #PF: error_code(0x0000) - not-present page
-[ 6104.969670] PGD 0 P4D 0
-[ 6104.969673] Oops: 0000 [#1] SMP NOPTI
-[ 6104.969684] RIP: 0010:btusb_mtk_hci_wmt_sync+0x144/0x220 [btusb]
-[ 6104.969688] RSP: 0018:ffffb8d681533d48 EFLAGS: 00010246
-[ 6104.969689] RAX: 0000000000000000 RBX: ffff8ad560bb2000 RCX: 0000000000000006
-[ 6104.969691] RDX: 0000000000000000 RSI: ffffb8d681533d08 RDI: 0000000000000000
-[ 6104.969692] RBP: ffffb8d681533d70 R08: 0000000000000001 R09: 0000000000000001
-[ 6104.969694] R10: 0000000000000001 R11: 00000000fa83b2da R12: ffff8ad461d1d7c0
-[ 6104.969695] R13: 0000000000000000 R14: ffff8ad459618c18 R15: ffffb8d681533d90
-[ 6104.969697] FS:  00007f5a1cab9d40(0000) GS:ffff8ad578200000(0000) knlGS:00000
-[ 6104.969699] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 6104.969700] CR2: 00000000000000c8 CR3: 000000018620c001 CR4: 0000000000760ef0
-[ 6104.969701] PKRU: 55555554
-[ 6104.969702] Call Trace:
-[ 6104.969708]  btusb_mtk_shutdown+0x44/0x80 [btusb]
-[ 6104.969732]  hci_dev_do_close+0x470/0x5c0 [bluetooth]
-[ 6104.969748]  hci_rfkill_set_block+0x56/0xa0 [bluetooth]
-[ 6104.969753]  rfkill_set_block+0x92/0x160
-[ 6104.969755]  rfkill_fop_write+0x136/0x1e0
-[ 6104.969759]  __vfs_write+0x18/0x40
-[ 6104.969761]  vfs_write+0xdf/0x1c0
-[ 6104.969763]  ksys_write+0xb1/0xe0
-[ 6104.969765]  __x64_sys_write+0x1a/0x20
-[ 6104.969769]  do_syscall_64+0x51/0x180
-[ 6104.969771]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[ 6104.969773] RIP: 0033:0x7f5a21f18fef
-[ 6104.9] RSP: 002b:00007ffeefe39010 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-[ 6104.969780] RAX: ffffffffffffffda RBX: 000055c10a7560a0 RCX: 00007f5a21f18fef
-[ 6104.969781] RDX: 0000000000000008 RSI: 00007ffeefe39060 RDI: 0000000000000012
-[ 6104.969782] RBP: 00007ffeefe39060 R08: 0000000000000000 R09: 0000000000000017
-[ 6104.969784] R10: 00007ffeefe38d97 R11: 0000000000000293 R12: 0000000000000002
-[ 6104.969785] R13: 00007ffeefe39220 R14: 00007ffeefe391a0 R15: 000055c10a72acf0
+To prevent such issues, add quirk_intel_e2000_no_ats() to disable ATS for
+vulnerable IPU E2000 devices.
 
-Signed-off-by: youwan Wang <wangyouwan@126.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Link: https://lore.kernel.org/r/20230908143606.685930-3-bartosz.pawlowski@intel.com
+Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/quirks.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index ca9e2a210fff2..ea29469fe0cff 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -2803,6 +2803,9 @@ static int btusb_mtk_hci_wmt_sync(struct hci_dev *hdev,
- 		goto err_free_wc;
- 	}
- 
-+	if (data->evt_skb == NULL)
-+		goto err_free_wc;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 8a8f601b5d693..3da1a044827d8 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5554,6 +5554,25 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7347, quirk_amd_harvest_no_ats);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x734f, quirk_amd_harvest_no_ats);
+ /* AMD Raven platform iGPU */
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x15d8, quirk_amd_harvest_no_ats);
 +
- 	/* Parse and handle the return WMT event */
- 	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
- 	if (wmt_evt->whdr.op != hdr->op) {
++/*
++ * Intel IPU E2000 revisions before C0 implement incorrect endianness
++ * in ATS Invalidate Request message body. Disable ATS for those devices.
++ */
++static void quirk_intel_e2000_no_ats(struct pci_dev *pdev)
++{
++	if (pdev->revision < 0x20)
++		quirk_no_ats(pdev);
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1451, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1452, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1453, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1454, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1455, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1457, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1459, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145a, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145c, quirk_intel_e2000_no_ats);
+ #endif /* CONFIG_PCI_ATS */
+ 
+ /* Freescale PCIe doesn't support MSI in RC mode */
 -- 
 2.42.0
 
