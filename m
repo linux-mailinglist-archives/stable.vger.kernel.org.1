@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D2E7F7ED6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BCC7F7CA9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA3D92823D6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0737EB20ADD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B4833CC7;
-	Fri, 24 Nov 2023 18:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5428539FF7;
+	Fri, 24 Nov 2023 18:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpZ2kOXx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZEww5iV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077E333E9;
-	Fri, 24 Nov 2023 18:36:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896FBC433C7;
-	Fri, 24 Nov 2023 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AB5381DE;
+	Fri, 24 Nov 2023 18:17:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D254FC433C8;
+	Fri, 24 Nov 2023 18:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850987;
-	bh=qmoairIXoawYWno9WUd077VGndqOTnRwuatQh9Z0fH4=;
+	s=korg; t=1700849833;
+	bh=L69wNXoD0y6QaSVwparptB5A3gfaSOiJhwMeLxmAD0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpZ2kOXxcRqLvrY2N2C3xSKw0u+u3vJlbfOwMw9zS9B5ln73KsmzFkDeJtbDgLC1H
-	 c7Eo4MVNUXOjPEWMb3jC1F4sLMGQFOPYVzAVUlcy1gIHVlbSSiXEdgf2h79jrf6bff
-	 U5Cp3+DisKTK6HbdBNkS3vuHI84prN20e9oDZuUU=
+	b=mZEww5iVbKv/Bu8xIcc9g8DIAu/kywCsyS/OxZ8Bwek3qgjLC+ccn5D6frVGYyLiv
+	 e+yjn065ph8qghJb48DKCpP/cmI3W4zmVloRKXQEry/1H3tQdKkQ7JNbT2o7/BJO0n
+	 4Py650GFkNx9zTOnAKkH5x1HTL4ZYwLD715jlOZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 268/491] mm/damon/sysfs-schemes: handle tried regions sysfs directory allocation failure
-Date: Fri, 24 Nov 2023 17:48:24 +0000
-Message-ID: <20231124172032.627283746@linuxfoundation.org>
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 339/530] arm64: dts: qcom: ipq5332: Fix hwlock index for SMEM
+Date: Fri, 24 Nov 2023 17:48:25 +0000
+Message-ID: <20231124172038.343997761@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-commit 84055688b6bc075c92a88e2d6c3ad26ab93919f9 upstream.
+commit d08afd80158399a081b478a19902364e3dd0f84c upstream.
 
-DAMOS tried regions sysfs directory allocation function
-(damon_sysfs_scheme_regions_alloc()) is not handling the memory allocation
-failure.  In the case, the code will dereference NULL pointer.  Handle the
-failure to avoid such invalid access.
+SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
+in SMEM region shared by the Host and FW.
 
-Link: https://lkml.kernel.org/r/20231106233408.51159-3-sj@kernel.org
-Fixes: 9277d0367ba1 ("mm/damon/sysfs-schemes: implement scheme region directory")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.2+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fix the SMEM hwlock index to 3 for IPQ5332.
+
+Cc: stable@vger.kernel.org
+Fixes: d56dd7f935e1 ("arm64: dts: qcom: ipq5332: add SMEM support")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230904172516.479866-2-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/sysfs-schemes.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq5332.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -125,6 +125,9 @@ damon_sysfs_scheme_regions_alloc(void)
- 	struct damon_sysfs_scheme_regions *regions = kmalloc(sizeof(*regions),
- 			GFP_KERNEL);
+--- a/arch/arm64/boot/dts/qcom/ipq5332.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq5332.dtsi
+@@ -135,7 +135,7 @@
+ 			reg = <0x0 0x4a800000 0x0 0x100000>;
+ 			no-map;
  
-+	if (!regions)
-+		return NULL;
-+
- 	regions->kobj = (struct kobject){};
- 	INIT_LIST_HEAD(&regions->regions_list);
- 	regions->nr_regions = 0;
+-			hwlocks = <&tcsr_mutex 0>;
++			hwlocks = <&tcsr_mutex 3>;
+ 		};
+ 	};
+ 
 
 
 
